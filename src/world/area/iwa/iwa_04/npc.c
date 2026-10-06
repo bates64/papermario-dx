@@ -3,7 +3,7 @@
 
 #include "world/common/enemy/Cleft/wander.inc.c"
 
-EvtScript N(EVS_FlapWingSounds) = {
+EvtScript EVS_FlapWingSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BUZZAR_FLAP, SOUND_SPACE_DEFAULT)
         Wait(16)
@@ -12,7 +12,7 @@ EvtScript N(EVS_FlapWingSounds) = {
     End
 };
 
-EvtScript N(EVS_MonitorFlyingAnimation) = {
+EvtScript EVS_MonitorFlyingAnimation = {
     Loop(0)
         Loop(0)
             Call(GetNpcAnimation, NPC_SELF, LVar0)
@@ -21,7 +21,7 @@ EvtScript N(EVS_MonitorFlyingAnimation) = {
             EndIf
             Wait(1)
         EndLoop
-        ExecGetTID(N(EVS_FlapWingSounds), LVarA)
+        ExecGetTID(EVS_FlapWingSounds, LVarA)
         Loop(0)
             Call(GetNpcAnimation, NPC_SELF, LVar0)
             IfNe(LVar0, ANIM_Buzzar_Fly)
@@ -35,11 +35,11 @@ EvtScript N(EVS_MonitorFlyingAnimation) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_Buzzar) = {
+EvtScript EVS_NpcCreate_Buzzar = {
     IfEq(GF_IWA04_Defeated_Buzzar, true)
         Call(RemoveNpc, NPC_SELF)
     Else
-        Exec(N(EVS_MonitorFlyingAnimation))
+        Exec(EVS_MonitorFlyingAnimation)
         Call(SetNpcPos, NPC_SELF, 10, 96, -347)
         Call(EnableNpcShadow, NPC_SELF, false)
     EndIf
@@ -47,7 +47,7 @@ EvtScript N(EVS_NpcCreate_Buzzar) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Buzzar) = {
+EvtScript EVS_NpcAI_Buzzar = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(GetNpcPos, NPC_Buzzar, LVar3, LVar4, LVar5)
@@ -191,7 +191,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, LVarC, ANIM_Buzzar_Idle, 0, LVarB)
     IfEq(LVarA, 1)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_WaveThrough)
         Wait(30 * DT)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Fly)
@@ -227,12 +227,12 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Buzzar) = {
+EvtScript EVS_NpcDefeat_Buzzar = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Set(GF_IWA04_Defeated_Buzzar, true)
-            Exec(N(EVS_SetupMusic))
+            Exec(EVS_SetupMusic)
             Call(SetNpcPos, NPC_SELF, 530, 15, -20)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Hurt)
             Call(AdjustCam, CAM_DEFAULT, Float(90.0), 50, 350, Float(15.0), Float(-12.0))
@@ -257,16 +257,16 @@ EvtScript N(EVS_NpcDefeat_Buzzar) = {
     End
 };
 
-NpcSettings N(NpcSettings_Buzzar) = {
+NpcSettings NpcSettings_Buzzar = {
     .defaultAnim = ANIM_Buzzar_Roost,
     .height = 32,
     .radius = 32,
-    .doAI = &N(EVS_NpcAI_Buzzar),
-    .onCreate = &N(EVS_NpcCreate_Buzzar),
-    .onDefeat = &N(EVS_NpcDefeat_Buzzar),
+    .doAI = &EVS_NpcAI_Buzzar,
+    .onCreate = &EVS_NpcCreate_Buzzar,
+    .onDefeat = &EVS_NpcDefeat_Buzzar,
 };
 
-NpcData N(NpcData_Cleft) = {
+NpcData NpcData_Cleft = {
     .id = NPC_Cleft,
     .pos = { -412.0f, -250.0f, 143.0f },
     .yaw = 0,
@@ -282,18 +282,18 @@ NpcData N(NpcData_Cleft) = {
             .detectSize = { 175, 195 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Buzzar) = {
+NpcData NpcData_Buzzar = {
     .id = NPC_Buzzar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .settings = &N(NpcSettings_Buzzar),
+    .settings = &NpcSettings_Buzzar,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = {
         .dropFlags = NPC_DROP_FLAG_80,
@@ -322,8 +322,8 @@ NpcData N(NpcData_Buzzar) = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Cleft), BTL_IWA_FORMATION_01, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_Buzzar), BTL_IWA_FORMATION_0C, BTL_IWA_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Cleft, BTL_IWA_FORMATION_01, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_Buzzar, BTL_IWA_FORMATION_0C, BTL_IWA_STAGE_02),
     {}
 };

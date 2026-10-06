@@ -3,7 +3,7 @@
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-void N(BooPatrolAI_Move)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void BooPatrolAI_Move(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, posW;
@@ -39,7 +39,7 @@ void N(BooPatrolAI_Move)(Evt* script, MobileAISettings* aiSettings, EnemyDetectV
     }
 }
 
-void N(BooPatrolAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void BooPatrolAI_Loiter(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -56,7 +56,7 @@ void N(BooPatrolAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     }
 }
 
-API_CALLABLE(N(BooPatrolAI_Main)) {
+API_CALLABLE(BooPatrolAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_unsafe(enemy->npcID);
@@ -81,24 +81,24 @@ API_CALLABLE(N(BooPatrolAI_Main)) {
 
     switch (script->functionTemp[0]) {
         case 0:
-            N(PatrolAI_MoveInit)(script, aiSettings, territoryPtr);
+            PatrolAI_MoveInit(script, aiSettings, territoryPtr);
         case 1:
-            N(BooPatrolAI_Move)(script, aiSettings, territoryPtr);
+            BooPatrolAI_Move(script, aiSettings, territoryPtr);
             break;
         case 2:
-            N(PatrolAI_LoiterInit)(script, aiSettings, territoryPtr);
+            PatrolAI_LoiterInit(script, aiSettings, territoryPtr);
         case 3:
-            N(BooPatrolAI_Loiter)(script, aiSettings, territoryPtr);
+            BooPatrolAI_Loiter(script, aiSettings, territoryPtr);
             break;
         case 4:
-            N(PatrolAI_PostLoiter)(script, aiSettings, territoryPtr);
+            PatrolAI_PostLoiter(script, aiSettings, territoryPtr);
     }
 
     enemy->varTable[0] = npc->pos.y;
     return ApiStatus_BLOCK;
 }
 
-MobileAISettings N(AISettings_Boo_Patrol) = {
+MobileAISettings AISettings_Boo_Patrol = {
     .moveSpeed = 1.0f,
     .moveTime = 25,
     .waitTime = 30,
@@ -110,15 +110,15 @@ MobileAISettings N(AISettings_Boo_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Boo_Patrol) = {
-    Call(N(BooPatrolAI_Main), Ref(N(AISettings_Boo_Patrol)))
+EvtScript EVS_NpcAI_Boo_Patrol = {
+    Call(BooPatrolAI_Main, Ref(AISettings_Boo_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Boo_Patrol) = {
+NpcSettings NpcSettings_Boo_Patrol = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_Boo_Patrol),
+    .doAI = &EVS_NpcAI_Boo_Patrol,
 };

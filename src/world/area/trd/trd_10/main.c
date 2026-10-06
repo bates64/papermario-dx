@@ -1,19 +1,19 @@
 #include "trd_10.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_InitFakeBowser);
-extern EvtScript N(EVS_SetupFakeBowser);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_InitFakeBowser;
+extern EvtScript EVS_SetupFakeBowser;
+extern NpcGroupList DefaultNPCs;
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
 
-API_CALLABLE(N(SetMapChangeFadeRate)) {
+API_CALLABLE(SetMapChangeFadeRate) {
     set_map_change_fade_rate(10);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_BossDefeated) = {
+EvtScript EVS_BossDefeated = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
             Set(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
@@ -36,14 +36,14 @@ EvtScript N(EVS_BossDefeated) = {
         Call(SetPanTarget, CAM_DEFAULT, -135, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 0, 180, -135, 10, 0, -135, 85, 0, 30, 0)
+        Call(InitSpiritCardSpawn, MV_SpiritCardData, 0, 180, -135, 10, 0, -135, 85, 0, 30, 0)
         Thread
-            Call(N(UpdateSpiritCardSpawn))
+            Call(UpdateSpiritCardSpawn)
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(AwaitSpiritOrbBurst))
+            Call(AwaitSpiritOrbBurst)
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, -135, 85, 0)
         EndThread
@@ -56,7 +56,7 @@ EvtScript N(EVS_BossDefeated) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, -135, 85, 0)
         EndThread
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -64,7 +64,7 @@ EvtScript N(EVS_BossDefeated) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, -135, 0, 0)
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -73,13 +73,13 @@ EvtScript N(EVS_BossDefeated) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
-        Call(N(SpawnExistingSpiritCard), 0, -135, 30, 0, 0)
+        Call(SpawnExistingSpiritCard, 0, -135, 30, 0, 0)
         Thread
-            Call(N(UpdateExistingSpiritCard))
+            Call(UpdateExistingSpiritCard)
         EndThread
         Wait(1)
     EndIf
-    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
+    Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_RESCUED)
@@ -89,7 +89,7 @@ EvtScript N(EVS_BossDefeated) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(trd_10_ENTRY_0)
@@ -107,30 +107,30 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_trd_09_1) = EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1,
+EvtScript EVS_ExitDoors_trd_09_1 = EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1,
     COLLIDER_ttw, MODEL_o192, MODEL_o191);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_09_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_trd_09_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(N(SetMapChangeFadeRate))
+    Call(SetMapChangeFadeRate)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_InitFakeBowser))
-    Exec(N(EVS_SetupFakeBowser))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_InitFakeBowser)
+    Exec(EVS_SetupFakeBowser)
     IfEq(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
-        Exec(N(EVS_BossDefeated))
+        Exec(EVS_BossDefeated)
     EndIf
-    Exec(N(EVS_BindExitTriggers))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_BindExitTriggers)
+    Exec(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
-        Exec(N(EVS_EnterMap))
+        Exec(EVS_EnterMap)
     EndIf
     Wait(1)
     Return

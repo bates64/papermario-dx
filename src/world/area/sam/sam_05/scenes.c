@@ -1,7 +1,7 @@
 #include "sam_05.h"
 #include "effects.h"
 
-EvtScript N(EVS_Scene_MonstarAppears) = {
+EvtScript EVS_Scene_MonstarAppears = {
     Set(LFlag0, false)
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -63,7 +63,7 @@ EvtScript N(EVS_Scene_MonstarAppears) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Monstar_Idle1)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(DisablePlayerInput, false)
         Label(4)
         Call(GetPlayerPos, LVar3, LVar4, LVar5)
@@ -100,7 +100,7 @@ EvtScript N(EVS_Scene_MonstarAppears) = {
 };
 
 // npcID followed by initial pos Vec3i
-s32 N(StarKidList)[] = {
+s32 StarKidList[] = {
     NPC_StarKid_01, 615, 129, 0,
     NPC_StarKid_02, 612, 157, 2,
     NPC_StarKid_03, 606, 146, 4,
@@ -120,7 +120,7 @@ s32 N(StarKidList)[] = {
     -1,
 };
 
-Vec3f N(RelativeFleePath)[] = {
+Vec3f RelativeFleePath[] = {
     {    0.0,     0.0,    0.0 },
     {   40.0,    10.0,    0.0 },
     {   50.0,    15.0,    0.0 },
@@ -130,7 +130,7 @@ Vec3f N(RelativeFleePath)[] = {
     {  200.0,    45.0,    0.0 },
 };
 
-EvtScript N(EVS_StarKid_LookAroundPanic) = {
+EvtScript EVS_StarKid_LookAroundPanic = {
     Call(RandInt, 4, LVar0)
     Wait(LVar0)
     Loop(0)
@@ -143,17 +143,17 @@ EvtScript N(EVS_StarKid_LookAroundPanic) = {
     End
 };
 
-EvtScript N(EVS_StarKid_RunAway) = {
+EvtScript EVS_StarKid_RunAway = {
     IfEq(LVarA, NPC_StarKid_01)
         Add(LVarB, 40 * DT)
     EndIf
-    ExecGetTID(N(EVS_StarKid_LookAroundPanic), LVar9)
+    ExecGetTID(EVS_StarKid_LookAroundPanic, LVar9)
     Add(LVarB, 20 * DT)
     Wait(LVarB)
     KillThread(LVar9)
     Call(PlaySoundAtNpc, LVarA, SOUND_STAR_KID_FLYING, SOUND_SPACE_DEFAULT)
     Call(GetNpcPos, LVarA, LVar7, LVar8, LVar9)
-    Call(LoadPath, 60 * DT, Ref(N(RelativeFleePath)), ARRAY_COUNT(N(RelativeFleePath)), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, Ref(RelativeFleePath), ARRAY_COUNT(RelativeFleePath), EASING_LINEAR)
     Label(0)
         Call(GetNextPathPos)
         Add(LVar1, LVar7)
@@ -170,7 +170,7 @@ EvtScript N(EVS_StarKid_RunAway) = {
     End
 };
 
-EvtScript N(EVS_StarKid_SpawnSparkles) = {
+EvtScript EVS_StarKid_SpawnSparkles = {
     Loop(20)
         Call(RandInt, 80, LVar0)
         Call(RandInt, 80, LVar1)
@@ -191,8 +191,8 @@ EvtScript N(EVS_StarKid_SpawnSparkles) = {
     End
 };
 
-EvtScript N(EVS_StarKidsFlee) = {
-    UseBuf(Ref(N(StarKidList)))
+EvtScript EVS_StarKidsFlee = {
+    UseBuf(Ref(StarKidList))
     Loop(0)
         BufRead4(LVar0, LVar1, LVar2, LVar3)
         IfEq(LVar0, -1)
@@ -204,14 +204,14 @@ EvtScript N(EVS_StarKidsFlee) = {
     Thread
         Call(NpcMoveTo, NPC_Monstar, 615, -5, 10 * DT)
     EndThread
-    Exec(N(EVS_StarKid_SpawnSparkles))
+    Exec(EVS_StarKid_SpawnSparkles)
     Call(MakeLerp, 220, 0, 90, EASING_COS_IN_OUT)
     Label(0)
     Call(UpdateLerp)
     Call(SetNpcVar, NPC_Monstar, 3, LVar0)
     Set(LVar2, 255)
     Sub(LVar2, LVar0)
-    UseBuf(Ref(N(StarKidList)))
+    UseBuf(Ref(StarKidList))
     Loop(0)
         BufRead4(LVarA, LVar9, LVar9, LVar9)
         IfEq(LVarA, -1)
@@ -225,14 +225,14 @@ EvtScript N(EVS_StarKidsFlee) = {
     EndIf
     Call(SetNpcPos, NPC_Monstar, NPC_DISPOSE_LOCATION)
     Wait(10 * DT)
-    UseBuf(Ref(N(StarKidList)))
+    UseBuf(Ref(StarKidList))
     Set(LVarB, 0)
     Loop(0)
         BufRead4(LVarA, LVar9, LVar9, LVar9)
         IfEq(LVarA, -1)
             BreakLoop
         EndIf
-        Exec(N(EVS_StarKid_RunAway))
+        Exec(EVS_StarKid_RunAway)
         Add(LVarB, 1)
     EndLoop
     Wait(100 * DT)
@@ -240,7 +240,7 @@ EvtScript N(EVS_StarKidsFlee) = {
     End
 };
 
-EvtScript N(EVS_Scene_MonstarDefeated) = {
+EvtScript EVS_Scene_MonstarDefeated = {
     Call(ClearDefeatedEnemies)
     Call(SetNpcFlagBits, NPC_Monstar, NPC_FLAG_GRAVITY, false)
     Call(SetNpcPos, NPC_Monstar, 615, 87, -4)
@@ -261,7 +261,7 @@ EvtScript N(EVS_Scene_MonstarDefeated) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_Monstar, ANIM_Monstar_Flail, ANIM_Monstar_Flail, 256, 170, 150, MSG_CH7_00E8)
-    ExecWait(N(EVS_StarKidsFlee))
+    ExecWait(EVS_StarKidsFlee)
     Set(GB_StoryProgress, STORY_CH7_DEFEATED_MONSTAR)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -271,7 +271,7 @@ EvtScript N(EVS_Scene_MonstarDefeated) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(DisablePlayerInput, false)
     Return
     End

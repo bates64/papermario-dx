@@ -25,12 +25,10 @@ enum {
     NPC_KentCKoopa_02           = 8,
 };
 
-#define NAMESPACE nok_11
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PlayJrTroopaSong);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(JrTroopaNPCs);
-extern NpcGroupList N(KentCKoopaNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PlayJrTroopaSong;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList JrTroopaNPCs;
+extern NpcGroupList KentCKoopaNPCs;

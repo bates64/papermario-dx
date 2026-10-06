@@ -2,12 +2,12 @@
 
 #include "common.h"
 
-API_CALLABLE(N(GetPlayerCoins)) {
+API_CALLABLE(GetPlayerCoins) {
     script->varTable[0] = gPlayerData.coins;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCurrentStatMaxima)) {
+API_CALLABLE(GetCurrentStatMaxima) {
     Bytecode* args = script->ptrReadPos;
     s32 out1 = *args++;
     s32 out2 = *args++;
@@ -19,7 +19,7 @@ API_CALLABLE(N(GetCurrentStatMaxima)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AdjustStatMaxima)) {
+API_CALLABLE(AdjustStatMaxima) {
     PlayerData* playerData = &gPlayerData;
     s32 bp = 0;
     s32 fp = 0;
@@ -66,7 +66,7 @@ API_CALLABLE(N(AdjustStatMaxima)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCurrentStatValues)) {
+API_CALLABLE(GetCurrentStatValues) {
     PlayerData* playerData = &gPlayerData;
 
     script->varTable[0] = playerData->curMaxHP;
@@ -75,7 +75,7 @@ API_CALLABLE(N(GetCurrentStatValues)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetNpcShadowScale)) {
+API_CALLABLE(SetNpcShadowScale) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     f32 newShadowScale = evt_get_float_variable(script, *args++);
@@ -84,47 +84,47 @@ API_CALLABLE(N(SetNpcShadowScale)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStatusBarIgnoreChanges)) {
+API_CALLABLE(SetStatusBarIgnoreChanges) {
     status_bar_ignore_changes();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStatusBarRespondToChanges)) {
+API_CALLABLE(SetStatusBarRespondToChanges) {
     status_bar_respond_to_changes();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ForceStatusBarToAppear)) {
+API_CALLABLE(ForceStatusBarToAppear) {
     status_bar_respond_to_changes();
     open_status_bar_slowly();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_ChetRippo) = {
+EvtScript EVS_NpcInteract_ChetRippo = {
     IfEq(GF_MAC04_Met_ChetRippo, false)
         Set(LVar0, MSG_MAC_Housing_00A8)
         Set(GF_MAC04_Met_ChetRippo, true)
     Else
         Set(LVar0, MSG_MAC_Housing_00A9)
     EndIf
-    Call(N(SetStatusBarIgnoreChanges))
+    Call(SetStatusBarIgnoreChanges)
     Call(SpeakToPlayer, NPC_ChetRippo, ANIM_ChetRippo_Talk, ANIM_ChetRippo_Idle, 0, LVar0)
     Call(ShowCoinCounter, true)
     Call(ShowChoice, MSG_Choice_000E)
     IfNe(LVar0, 0)
         Call(ShowCoinCounter, false)
         Call(ContinueSpeech, NPC_ChetRippo, ANIM_ChetRippo_Talk, ANIM_ChetRippo_Idle, 0, MSG_MAC_Housing_00AA)
-        Call(N(SetStatusBarRespondToChanges))
+        Call(SetStatusBarRespondToChanges)
         Return
     EndIf
-    Call(N(GetPlayerCoins))
+    Call(GetPlayerCoins)
     IfLt(LVar0, 39)
         Call(ShowCoinCounter, false)
         Call(ContinueSpeech, NPC_ChetRippo, ANIM_ChetRippo_Talk, ANIM_ChetRippo_Idle, 0, MSG_MAC_Housing_00AB)
-        Call(N(SetStatusBarRespondToChanges))
+        Call(SetStatusBarRespondToChanges)
         Return
     EndIf
-    Call(N(GetCurrentStatValues))
+    Call(GetCurrentStatValues)
     Call(SetMessageValue, LVar0, 0)
     Call(SetMessageValue, LVar1, 1)
     Call(SetMessageValue, LVar2, 2)
@@ -133,11 +133,11 @@ EvtScript N(EVS_NpcInteract_ChetRippo) = {
     IfEq(LVar0, 3)
         Call(ShowCoinCounter, false)
         Call(ContinueSpeech, NPC_ChetRippo, ANIM_ChetRippo_Talk, ANIM_ChetRippo_Idle, 0, MSG_MAC_Housing_00AD)
-        Call(N(SetStatusBarRespondToChanges))
+        Call(SetStatusBarRespondToChanges)
         Return
     EndIf
     Set(LVar2, 0)
-    Call(N(GetCurrentStatMaxima), LVar3, LVar4, LVar5)
+    Call(GetCurrentStatMaxima, LVar3, LVar4, LVar5)
     Switch(LVar0)
         CaseEq(0)
             IfGt(LVar3, 40)
@@ -159,7 +159,7 @@ EvtScript N(EVS_NpcInteract_ChetRippo) = {
     IfEq(LVar2, 1)
         Call(ShowCoinCounter, false)
         Call(ContinueSpeech, NPC_ChetRippo, ANIM_ChetRippo_Talk, ANIM_ChetRippo_Idle, 0, MSG_MAC_Housing_00B1)
-        Call(N(SetStatusBarRespondToChanges))
+        Call(SetStatusBarRespondToChanges)
         Return
     EndIf
     Call(AddCoin, -39)
@@ -176,8 +176,8 @@ EvtScript N(EVS_NpcInteract_ChetRippo) = {
     Call(SetNpcAnimation, NPC_ChetRippo, ANIM_ChetRippo_ShakeSlow)
     Wait(80)
     Call(SetNpcAnimation, NPC_ChetRippo, ANIM_ChetRippo_Idle)
-    Call(N(AdjustStatMaxima))
-    Call(N(EnforceNewStatLimits), LVar6)
+    Call(AdjustStatMaxima)
+    Call(EnforceNewStatLimits, LVar6)
     IfEq(LVar6, 0)
         Set(LVar7, MSG_MAC_Housing_00AF)
     Else
@@ -187,18 +187,18 @@ EvtScript N(EVS_NpcInteract_ChetRippo) = {
     Wait(10)
     Call(GetNpcPos, NPC_ChetRippo, LVar0, LVar1, LVar2)
     Call(PlaySoundAtNpc, NPC_ChetRippo, SOUND_VANISH_IN_SMOKE, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_ChetRippo, NPC_DISPOSE_LOCATION)
     Set(AF_MAC04_UsedChetRippo, true)
-    Call(N(ForceStatusBarToAppear))
+    Call(ForceStatusBarToAppear)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ChetRippo) = {
+EvtScript EVS_NpcInit_ChetRippo = {
     IfEq(AF_MAC04_UsedChetRippo, false)
         Set(LVar0, 0)
-        Call(N(GetCurrentStatMaxima), LVar1, LVar2, LVar3)
+        Call(GetCurrentStatMaxima, LVar1, LVar2, LVar3)
         IfLe(LVar1, 5)
             Set(LVar0, 1)
         EndIf
@@ -213,9 +213,9 @@ EvtScript N(EVS_NpcInit_ChetRippo) = {
     EndIf
     IfEq(LVar0, 0)
         Call(SetNpcCollisionSize, NPC_SELF, 38, 52)
-        Call(N(SetNpcShadowScale), -1, Float(2.0))
+        Call(SetNpcShadowScale, -1, Float(2.0))
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_DIRTY_SHADOW, true)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ChetRippo)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ChetRippo))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

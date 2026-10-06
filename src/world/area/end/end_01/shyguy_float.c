@@ -1,7 +1,7 @@
 #include "end_01.h"
 
 
-EvtScript N(EVS_TexPan_ShyGuyFloat_Sides) = {
+EvtScript EVS_TexPan_ShyGuyFloat_Sides = {
     Call(EnableTexPanning, MODEL_omo1, true)
     Call(EnableTexPanning, MODEL_omo4, true)
     Call(EnableTexPanning, MODEL_omo6, true)
@@ -16,7 +16,7 @@ EvtScript N(EVS_TexPan_ShyGuyFloat_Sides) = {
     End
 };
 
-EvtScript N(EVS_TexPan_ShyGuyFloat_Top) = {
+EvtScript EVS_TexPan_ShyGuyFloat_Top = {
     Call(EnableTexPanning, MODEL_omo8, true)
     Call(EnableTexPanning, MODEL_omo13, true)
     Set(LVar0, 0)
@@ -29,12 +29,12 @@ EvtScript N(EVS_TexPan_ShyGuyFloat_Top) = {
     End
 };
 
-s32 N(ShyGuyFloat_InteriorModels)[] = {
+s32 ShyGuyFloat_InteriorModels[] = {
     MODEL_omo7, MODEL_omo9, MODEL_omo10, MODEL_omo11,
     MODEL_omo12, MODEL_omo13, MODEL_omo14, 0xFFFF
 };
 
-EvtScript N(EVS_ShyGuyFloat_Open) = {
+EvtScript EVS_ShyGuyFloat_Open = {
     Thread
         Call(MakeLerp, 0, -90, 30, EASING_LINEAR)
         Loop(0)
@@ -57,7 +57,7 @@ EvtScript N(EVS_ShyGuyFloat_Open) = {
             EndIf
         EndLoop
     EndThread
-    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ShyGuyFloat_InteriorModels)), ENV_TINT_REMAP)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(ShyGuyFloat_InteriorModels), ENV_TINT_REMAP)
     Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 120, 120, 80, 0, 0, 0)
     Wait(30)
     Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 0, 0, 0, 0, 0, 0)
@@ -65,7 +65,7 @@ EvtScript N(EVS_ShyGuyFloat_Open) = {
     End
 };
 
-EvtScript N(EVS_GeneralGuy) = {
+EvtScript EVS_GeneralGuy = {
     Set(LVar0, 270)
     Loop(0)
         IfEq(LVar0, 270)
@@ -83,7 +83,7 @@ EvtScript N(EVS_GeneralGuy) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_BackupDancer) = {
+EvtScript EVS_ShyGuy_BackupDancer = {
     Set(LVar2, LVar0)
     Loop(0)
         Loop(3)
@@ -109,7 +109,7 @@ EvtScript N(EVS_ShyGuy_BackupDancer) = {
     End
 };
 
-EvtScript N(EVS_GrooveGuy) = {
+EvtScript EVS_GrooveGuy = {
     Wait(30)
     Set(LVar2, LVar0)
     Set(LVar3, LVar1)
@@ -142,24 +142,24 @@ EvtScript N(EVS_GrooveGuy) = {
     End
 };
 
-EvtScript N(EVS_ShyGuyFloat_Performers) = {
-    ExecGetTID(N(EVS_GeneralGuy), LVar7)
+EvtScript EVS_ShyGuyFloat_Performers = {
+    ExecGetTID(EVS_GeneralGuy, LVar7)
     Set(LVar0, NPC_BackupDancer1)
-    ExecGetTID(N(EVS_ShyGuy_BackupDancer), LVar8)
+    ExecGetTID(EVS_ShyGuy_BackupDancer, LVar8)
     Set(LVar0, NPC_BackupDancer2)
-    ExecGetTID(N(EVS_ShyGuy_BackupDancer), LVar9)
+    ExecGetTID(EVS_ShyGuy_BackupDancer, LVar9)
     Set(LVar0, NPC_GrooveGuy1)
     Set(LVar1, -1508)
-    ExecGetTID(N(EVS_GrooveGuy), LVarA)
+    ExecGetTID(EVS_GrooveGuy, LVarA)
     Set(LVar0, NPC_GrooveGuy2)
     Set(LVar1, -1468)
-    ExecGetTID(N(EVS_GrooveGuy), LVarB)
+    ExecGetTID(EVS_GrooveGuy, LVarB)
     Set(LVar0, NPC_GrooveGuy3)
     Set(LVar1, -1428)
-    ExecGetTID(N(EVS_GrooveGuy), LVarC)
+    ExecGetTID(EVS_GrooveGuy, LVarC)
     Set(LVar0, NPC_GrooveGuy4)
     Set(LVar1, -1388)
-    ExecGetTID(N(EVS_GrooveGuy), LVarD)
+    ExecGetTID(EVS_GrooveGuy, LVarD)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -178,10 +178,10 @@ EvtScript N(EVS_ShyGuyFloat_Performers) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_ShyGuyDancing) = {
+EvtScript EVS_ParadePhase_ShyGuyDancing = {
     Set(LVar0, 4)
-    ExecGetTID(N(EVS_TexPan_ShyGuyFloat_Sides), LVarA)
-    ExecGetTID(N(EVS_TexPan_ShyGuyFloat_Top), LVarB)
+    ExecGetTID(EVS_TexPan_ShyGuyFloat_Sides, LVarA)
+    ExecGetTID(EVS_TexPan_ShyGuyFloat_Top, LVarB)
     Wait(10)
     Call(NpcMoveTo, NPC_ShyGuyMarshall, -1648, 0, 50)
     Call(SetNpcAnimation, NPC_ShyGuyMarshall, ANIM_ParadeShyGuy_MarshallStill)
@@ -199,14 +199,14 @@ EvtScript N(EVS_ParadePhase_ShyGuyDancing) = {
         Call(SetNpcAnimation, NPC_ShyGuyMarshall, ANIM_ParadeShyGuy_MarshallWalk)
         Call(NpcMoveTo, NPC_ShyGuyMarshall, -1748, 0, 50)
     EndThread
-    Exec(N(EVS_ShyGuyFloat_Performers))
+    Exec(EVS_ShyGuyFloat_Performers)
     KillThread(LVarA)
     Set(LVar0, 2)
-    ExecGetTID(N(EVS_TexPan_ShyGuyFloat_Sides), LVarA)
-    ExecWait(N(EVS_ShyGuyFloat_Open))
+    ExecGetTID(EVS_TexPan_ShyGuyFloat_Sides, LVarA)
+    ExecWait(EVS_ShyGuyFloat_Open)
     KillThread(LVarA)
     Set(LVar0, 4)
-    ExecGetTID(N(EVS_TexPan_ShyGuyFloat_Sides), LVarA)
+    ExecGetTID(EVS_TexPan_ShyGuyFloat_Sides, LVarA)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -220,7 +220,7 @@ EvtScript N(EVS_ParadePhase_ShyGuyDancing) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_PauseFormation) = {
+EvtScript EVS_ShyGuy_PauseFormation = {
     Call(GetNpcPos, NPC_ShyGuyFormation11, LVar0, LVar1, LVar2)
     SetF(LVar0, LVar0)
     SetF(LVar1, LVar0)
@@ -242,44 +242,44 @@ EvtScript N(EVS_ShyGuy_PauseFormation) = {
     Call(SetNpcPos, NPC_ShyGuyFormation42, LVar3, 0, 0)
     Call(SetNpcPos, NPC_ShyGuyFormation43, LVar3, 0, 30)
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation12)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation12)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation13)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation13)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation21)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation21)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation22)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation22)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation23)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation23)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation31)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation31)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation32)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation32)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation33)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation33)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation41)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation41)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation42)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation42)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation43)
+        Call(AddScrollToNpcPos, NPC_ShyGuyFormation43)
     EndChildThread
-    Call(N(AddScrollToNpcPos), NPC_ShyGuyFormation11)
+    Call(AddScrollToNpcPos, NPC_ShyGuyFormation11)
     Return
     End
 };
 
-EvtScript N(EVS_ShyGuy_MarchInFormation) = {
+EvtScript EVS_ShyGuy_MarchInFormation = {
     Call(GetNpcPos, LVar0, LVar2, LVar3, LVar4)
     Add(LVar2, -180)
     Call(NpcMoveTo, LVar0, LVar2, LVar4, 90)
@@ -308,38 +308,38 @@ EvtScript N(EVS_ShyGuy_MarchInFormation) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_ShyGuyFormation) = {
+EvtScript EVS_ParadePhase_ShyGuyFormation = {
     Set(LVar1, 0)
     Set(LVar0, NPC_ShyGuyFormation11)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation12)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation13)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar1, 8)
     Set(LVar0, NPC_ShyGuyFormation21)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation22)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation23)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar1, 10)
     Set(LVar0, NPC_ShyGuyFormation31)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation32)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation33)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar1, 18)
     Set(LVar0, NPC_ShyGuyFormation41)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation42)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     Set(LVar0, NPC_ShyGuyFormation43)
-    Exec(N(EVS_ShyGuy_MarchInFormation))
+    Exec(EVS_ShyGuy_MarchInFormation)
     // at a certain point, cause the formation to stop moving
     Wait(90)
-    ExecGetTID(N(EVS_ShyGuy_PauseFormation), LVarA)
+    ExecGetTID(EVS_ShyGuy_PauseFormation, LVarA)
     Wait(48)
     KillThread(LVarA)
     Wait(130)
@@ -363,7 +363,7 @@ EvtScript N(EVS_ParadePhase_ShyGuyFormation) = {
     Add(LVar0, -45)
     Call(NpcJump0, NPC_Pratfaller, LVar0, LVar1, LVar2, 10)
     Set(LVar0, NPC_Pratfaller)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarA)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarA)
     Wait(80)
     Call(SetNpcRotationPivot, NPC_Pratfaller, 0)
     KillThread(LVarA)

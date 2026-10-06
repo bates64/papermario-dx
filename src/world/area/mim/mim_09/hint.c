@@ -1,6 +1,6 @@
 #include "mim_09.h"
 
-EvtScript N(EVS_FlowersGentleRocking) = {
+EvtScript EVS_FlowersGentleRocking = {
     Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0, -0x8000)
     Wait(2)
     Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0, -0x10000)
@@ -55,7 +55,7 @@ EvtScript N(EVS_FlowersGentleRocking) = {
     End
 };
 
-EvtScript N(EVS_InspectBush) = {
+EvtScript EVS_InspectBush = {
     IfEq(MV_FoundHint, false)
         Set(MV_FoundHint, true)
         Call(SetGroupVisibility, MODEL_hana, MODEL_GROUP_VISIBLE)
@@ -75,21 +75,21 @@ EvtScript N(EVS_InspectBush) = {
             Goto(0)
         EndIf
         Wait(10)
-        ExecWait(N(EVS_FlowersGentleRocking))
+        ExecWait(EVS_FlowersGentleRocking)
     Else
-        ExecWait(N(EVS_FlowersGentleRocking))
+        ExecWait(EVS_FlowersGentleRocking)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_SetupExitHint) = {
+EvtScript EVS_SetupExitHint = {
     Set(MV_FoundHint, 0)
     Call(SetGroupVisibility, MODEL_hana, MODEL_GROUP_HIDDEN)
     Call(SetTexPanner, MODEL_o465, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o467, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o469, TEX_PANNER_0)
-    BindTrigger(Ref(N(EVS_InspectBush)), TRIGGER_WALL_PRESS_A, COLLIDER_atari_kusa, 1, 0)
+    BindTrigger(Ref(EVS_InspectBush), TRIGGER_WALL_PRESS_A, COLLIDER_atari_kusa, 1, 0)
     Return
     End
 };

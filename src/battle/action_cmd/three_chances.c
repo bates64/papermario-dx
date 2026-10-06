@@ -2,8 +2,6 @@
 #include "battle/action_cmd.h"
 #include "include_asset.h"
 
-#define NAMESPACE action_command_three_chances
-
 extern s32 actionCmdTableWaterBlock[][2];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -88,7 +86,7 @@ HudScriptList DigitScripts = {
     HES_Digit4,
 };
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -192,7 +190,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -223,7 +221,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 pos;
@@ -628,7 +626,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -653,7 +651,7 @@ void N(draw)(void) {
     hud_element_draw_clipped(acs->hudElemIDs[HIDX_TICK_2]);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_FRAME]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_LIGHT_1]);
@@ -667,3 +665,5 @@ void N(free)(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_TICK_2]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUFF_ICON]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_THREE_CHANCES);

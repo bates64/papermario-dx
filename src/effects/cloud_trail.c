@@ -16,7 +16,6 @@ void cloud_trail_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     s32 numParts = 1;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = cloud_trail_init;
     bp.update = cloud_trail_update;
     bp.renderScene = cloud_trail_render;

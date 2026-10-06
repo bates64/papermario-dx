@@ -1,16 +1,14 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
-#include "battle/action_cmd/jump.h"
 #include "effects.h"
 #include "sprite/player.h"
-
-#define NAMESPACE battle_move_jump_charge_0
 
 #include "battle/common/move/JumpSupport.inc.c"
 
 #include "battle/common/IsJumpMaxCharged.inc.c"
 
-API_CALLABLE(N(func_802A1108_74D678)) {
+API_CALLABLE(func_802A1108_74D678) {
     Bytecode* args = script->ptrReadPos;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 var1 = evt_get_variable(script, *args++);
@@ -31,7 +29,7 @@ API_CALLABLE(N(func_802A1108_74D678)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A120C_74D77C)) {
+API_CALLABLE(func_802A120C_74D77C) {
     Bytecode* args = script->ptrReadPos;
     s32 var0 = evt_get_variable(script, *args++);
     s32 var1 = evt_get_variable(script, *args++);
@@ -43,12 +41,12 @@ API_CALLABLE(N(func_802A120C_74D77C)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UseMove_Unimplemented) = {
+EvtScript EVS_UseMove_Unimplemented = {
     Return
     End
 };
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
     ChildThread
@@ -59,19 +57,19 @@ EvtScript N(EVS_UseMove) = {
     EndChildThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_FightingStance)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(func_802A120C_74D77C), LVar0, LVar1, LVar2, Float(1.2))
+    Call(func_802A120C_74D77C, LVar0, LVar1, LVar2, Float(1.2))
     Wait(3)
-    Call(N(func_802A120C_74D77C), LVar0, LVar1, LVar2, Float(0.8))
+    Call(func_802A120C_74D77C, LVar0, LVar1, LVar2, Float(0.8))
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
-    Call(N(IsJumpMaxCharged))
+    Call(IsJumpMaxCharged)
     IfEq(LVar0, false)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 10)
         Add(LVar1, 25)
         Add(LVar2, 5)
-        Call(N(func_802A1108_74D678), LVar0, LVar1, LVar2)
+        Call(func_802A1108_74D678, LVar0, LVar1, LVar2)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_CHARGE_UP)
         Wait(4)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
@@ -104,3 +102,8 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &EVS_UseMove,
+    &EVS_UseMove_Unimplemented,
+);

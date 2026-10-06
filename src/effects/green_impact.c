@@ -28,7 +28,6 @@ EffectInstance* green_impact_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 ar
     }
     numParts++;
 
-    bpPtr->unk_00 = 0;
     bpPtr->init = green_impact_init;
     bpPtr->update = green_impact_update;
     bpPtr->renderScene = green_impact_render;

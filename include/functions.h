@@ -176,6 +176,10 @@ void entity_base_switch_init(Entity* entity);
 void entity_block_hit_init_scale(Entity* entity);
 void entity_block_hit_animate_scale(Entity* entity);
 s32 entity_block_handle_collision(Entity* entity);
+void entity_inactive_block_hit_init(Entity* entity);
+void entity_inactive_block_hit_anim(Entity* entity);
+void entity_inactive_block_recoil_anim(Entity* entity);
+void entity_MulticoinBlock_update_timer(Entity* entity);
 void entity_BlueSwitch_init(Entity* entity);
 void entity_HugeBlueSwitch_init(Entity* entity);
 
@@ -547,6 +551,8 @@ s32 add_star_points(s32 amt);
 s32 add_star_pieces(s32 amt);
 s32 make_item_entity_at_player(s32 itemID, s32 arg1, s32 pickupMsgFlags);
 
+b32 action_is_locomotion(s32 actionState);
+b32 action_8bit_supported(s32 actionState);
 void set_action_state(s32 actionState);
 s32 get_collider_flags(s32 colliderID);
 void suggest_player_anim_always_forward(AnimID anim);

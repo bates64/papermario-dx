@@ -1,7 +1,7 @@
 #include "kkj_15.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(UpdateRotatingPartyPositions)) {
+API_CALLABLE(UpdateRotatingPartyPositions) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
     f32 var = EVT_FIXED_TO_FLOAT(script->varTable[2]);
     f32 angle;
@@ -22,7 +22,7 @@ API_CALLABLE(N(UpdateRotatingPartyPositions)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateRotatingWall_AlmostCaught) = {
+EvtScript EVS_AnimateRotatingWall_AlmostCaught = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g22, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o96, COLLIDER_FLAGS_UPPER_MASK)
@@ -39,7 +39,7 @@ EvtScript N(EVS_AnimateRotatingWall_AlmostCaught) = {
         SetF(LVar2, LVar0)
         DivF(LVar2, 10)
         Call(RotateGroup, MODEL_g28, LVar2, 0, 1, 0)
-        Call(N(UpdateRotatingPartyPositions))
+        Call(UpdateRotatingPartyPositions)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -52,7 +52,7 @@ EvtScript N(EVS_AnimateRotatingWall_AlmostCaught) = {
     End
 };
 
-EvtScript N(EVS_AnimateRotatingWall_Default) = {
+EvtScript EVS_AnimateRotatingWall_Default = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g22, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o96, COLLIDER_FLAGS_UPPER_MASK)
@@ -64,7 +64,7 @@ EvtScript N(EVS_AnimateRotatingWall_Default) = {
         SetF(LVar2, LVar0)
         DivF(LVar2, 10)
         Call(RotateGroup, MODEL_g28, LVar2, 0, 1, 0)
-        Call(N(UpdateRotatingPartyPositions))
+        Call(UpdateRotatingPartyPositions)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -77,20 +77,20 @@ EvtScript N(EVS_AnimateRotatingWall_Default) = {
     End
 };
 
-EvtScript N(EVS_RotatingWall_Default) = {
+EvtScript EVS_RotatingWall_Default = {
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 10, -35)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(SetPanTarget, CAM_DEFAULT, 50, 10, -35)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    ExecWait(N(EVS_AnimateRotatingWall_Default))
+    ExecWait(EVS_AnimateRotatingWall_Default)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
 };
 
 // used during chapter 1, adds an extra camera move and a remark by twink
-EvtScript N(EVS_RotatingWall_FirstTime) = {
+EvtScript EVS_RotatingWall_FirstTime = {
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 10, -35)
     Call(SetPanTarget, CAM_DEFAULT, 50, 35, -35)
     Call(SetCamDistance, CAM_DEFAULT, 200)
@@ -107,14 +107,14 @@ EvtScript N(EVS_RotatingWall_FirstTime) = {
 #endif
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
-    ExecWait(N(EVS_AnimateRotatingWall_Default))
+    ExecWait(EVS_AnimateRotatingWall_Default)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0049)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
 };
 
-EvtScript N(EVS_EnterRotatingWall) = {
+EvtScript EVS_EnterRotatingWall = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -124,9 +124,9 @@ EvtScript N(EVS_EnterRotatingWall) = {
     Call(InterpPlayerYaw, 270, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
-            ExecWait(N(EVS_RotatingWall_FirstTime))
+            ExecWait(EVS_RotatingWall_FirstTime)
         CaseDefault
-            ExecWait(N(EVS_RotatingWall_Default))
+            ExecWait(EVS_RotatingWall_Default)
     EndSwitch
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)

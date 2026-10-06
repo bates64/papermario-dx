@@ -36,7 +36,7 @@ enum CleftAiAnims {
     AI_ANIM_CLEFT_USE_CAMO              = 14,
 };
 
-b32 N(CleftAI_CanSeePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+b32 CleftAI_CanSeePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Camera* camera = &gCameras[gCurrentCamID];
@@ -70,7 +70,7 @@ b32 N(CleftAI_CanSeePlayer)(Evt* script, MobileAISettings* settings, EnemyDetect
     return true;
 }
 
-void N(CleftAI_HidingInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_HidingInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -83,7 +83,7 @@ void N(CleftAI_HidingInit)(Evt* script, MobileAISettings* settings, EnemyDetectV
     script->AI_TEMP_STATE = AI_STATE_CLEFT_HIDING;
 }
 
-void N(CleftAI_Hiding)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_Hiding(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -101,7 +101,7 @@ void N(CleftAI_Hiding)(Evt* script, MobileAISettings* settings, EnemyDetectVolum
     script->functionTemp[1]--;
 }
 
-void N(CleftAI_PreAmbush)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_PreAmbush(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -115,7 +115,7 @@ void N(CleftAI_PreAmbush)(Evt* script, MobileAISettings* settings, EnemyDetectVo
     }
 }
 
-void N(CleftAI_Ambush)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_Ambush(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->duration--;
@@ -127,7 +127,7 @@ void N(CleftAI_Ambush)(Evt* script, MobileAISettings* settings, EnemyDetectVolum
     }
 }
 
-void N(CleftAI_FindPlayerInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_FindPlayerInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -137,7 +137,7 @@ void N(CleftAI_FindPlayerInit)(Evt* script, MobileAISettings* settings, EnemyDet
     script->AI_TEMP_STATE = AI_STATE_CLEFT_FIND_PLAYER;
 }
 
-void N(CleftAI_FindPlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_FindPlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -160,7 +160,7 @@ void N(CleftAI_FindPlayer)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(CleftAI_RevUpInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_RevUpInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -169,7 +169,7 @@ void N(CleftAI_RevUpInit)(Evt* script, MobileAISettings* settings, EnemyDetectVo
     script->AI_TEMP_STATE = AI_STATE_CLEFT_REV_UP;
 }
 
-void N(CleftAI_RevUp)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_RevUp(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -194,7 +194,7 @@ void N(CleftAI_RevUp)(Evt* script, MobileAISettings* settings, EnemyDetectVolume
     }
 }
 
-void N(CleftAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_Tackle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ;
@@ -227,7 +227,7 @@ void N(CleftAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolum
     }
 }
 
-void N(CleftAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_LosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -243,7 +243,7 @@ void N(CleftAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(CleftAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_ReturnHome(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -259,7 +259,7 @@ void N(CleftAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(CleftAI_DisguiseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_DisguiseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -274,7 +274,7 @@ void N(CleftAI_DisguiseInit)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-void N(CleftAI_Disguise)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_Disguise(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -286,7 +286,7 @@ void N(CleftAI_Disguise)(Evt* script, MobileAISettings* settings, EnemyDetectVol
     }
 }
 
-void N(CleftAI_PostDisguise)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void CleftAI_PostDisguise(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -296,7 +296,7 @@ void N(CleftAI_PostDisguise)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-API_CALLABLE(N(CleftAI_Main)) {
+API_CALLABLE(CleftAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -338,7 +338,7 @@ API_CALLABLE(N(CleftAI_Main)) {
         case AI_STATE_CLEFT_CHASE_INIT:
         case AI_STATE_CLEFT_CHASE:
         case AI_STATE_CLEFT_CHASE_COOLDOWN:
-            if (N(CleftAI_CanSeePlayer)(script, settings, detect)) {
+            if (CleftAI_CanSeePlayer(script, settings, detect)) {
                 script->AI_TEMP_STATE = AI_STATE_CLEFT_REV_UP_INIT;
             }
             break;
@@ -346,31 +346,31 @@ API_CALLABLE(N(CleftAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_CLEFT_HIDING_INIT:
-            N(CleftAI_HidingInit)(script, settings, detect);
+            CleftAI_HidingInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CLEFT_HIDING:
-            N(CleftAI_Hiding)(script, settings, detect);
+            CleftAI_Hiding(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_CLEFT_PRE_AMBUSH) {
                 break;
             }
             // fallthrough
         case AI_STATE_CLEFT_PRE_AMBUSH:
-            N(CleftAI_PreAmbush)(script, settings, detect);
+            CleftAI_PreAmbush(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_CLEFT_AMBUSH) {
                 break;
             }
             // fallthrough
         case AI_STATE_CLEFT_AMBUSH:
-            N(CleftAI_Ambush)(script, settings, detect);
+            CleftAI_Ambush(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_CLEFT_FIND_PLAYER_INIT) {
                 break;
             }
             // fallthrough
         case AI_STATE_CLEFT_FIND_PLAYER_INIT:
-            N(CleftAI_FindPlayerInit)(script, settings, detect);
+            CleftAI_FindPlayerInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CLEFT_FIND_PLAYER:
-            N(CleftAI_FindPlayer)(script, settings, detect);
+            CleftAI_FindPlayer(script, settings, detect);
             break;
 
         case AI_STATE_CLEFT_CHASE_INIT:
@@ -393,37 +393,37 @@ API_CALLABLE(N(CleftAI_Main)) {
             break;
 
         case AI_STATE_CLEFT_REV_UP_INIT:
-            N(CleftAI_RevUpInit)(script, settings, detect);
+            CleftAI_RevUpInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CLEFT_REV_UP:
-            N(CleftAI_RevUp)(script, settings, detect);
+            CleftAI_RevUp(script, settings, detect);
             break;
 
         case AI_STATE_CLEFT_TACKLE:
-            N(CleftAI_Tackle)(script, settings, detect);
+            CleftAI_Tackle(script, settings, detect);
             break;
 
         case AI_STATE_CLEFT_LOSE_PLAYER:
-            N(CleftAI_LosePlayer)(script, settings, detect);
+            CleftAI_LosePlayer(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_CLEFT_RETURN_HOME) {
                 break;
             }
             // fallthrough
         case AI_STATE_CLEFT_RETURN_HOME:
-            N(CleftAI_ReturnHome)(script, settings, detect);
+            CleftAI_ReturnHome(script, settings, detect);
             break;
 
         case AI_STATE_CLEFT_DISGUISE_INIT:
-            N(CleftAI_DisguiseInit)(script, settings, detect);
+            CleftAI_DisguiseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CLEFT_DISGUISE:
-            N(CleftAI_Disguise)(script, settings, detect);
+            CleftAI_Disguise(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_CLEFT_POST_DISGUISE) {
                 break;
             }
             // fallthrough
         case AI_STATE_CLEFT_POST_DISGUISE:
-            N(CleftAI_PostDisguise)(script, settings, detect);
+            CleftAI_PostDisguise(script, settings, detect);
             break;
     }
 

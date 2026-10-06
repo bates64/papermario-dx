@@ -1,7 +1,7 @@
 #include "kkj_14.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_Chapter4) = {
+EvtScript EVS_Scene_Chapter4 = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 270, 0)
     Call(DisablePartnerAI, false)

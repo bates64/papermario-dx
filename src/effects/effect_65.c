@@ -30,7 +30,6 @@ EffectInstance* effect_65_main(
     bp.init = effect_65_init;
     bp.update = effect_65_update;
     bp.renderScene = effect_65_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_65;
 

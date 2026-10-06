@@ -1,6 +1,6 @@
 #include "mgm_02.h"
 
-EvtScript N(EVS_SetupCamera) = {
+EvtScript EVS_SetupCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, -300, -20, 200)
     Call(SetPanTarget, CAM_DEFAULT, 250, -20, 220)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -21,12 +21,12 @@ EvtScript N(EVS_SetupCamera) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Exec(N(EVS_SetupCamera))
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_Dummy))
-    ExecWait(N(EVS_InitializeMinigame))
+    Exec(EVS_SetupCamera)
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_Dummy)
+    ExecWait(EVS_InitializeMinigame)
     Return
     End
 };

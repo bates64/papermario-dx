@@ -25,8 +25,8 @@
         AddF(LVar1, LVar7) \
         Call(TranslateModel, bushModelL, moveVarL, 0, 0) \
         Call(TranslateModel, bushmodelR, moveVarR, 0, 0) \
-        Call(N(MoveBush_AnimateShearing), bushModelL, LVar6) \
-        Call(N(MoveBush_AnimateShearing), bushmodelR, LVar7) \
+        Call(MoveBush_AnimateShearing, bushModelL, LVar6) \
+        Call(MoveBush_AnimateShearing, bushmodelR, LVar7) \
         Wait(1) \
     EndLoop \
     Return \
@@ -47,7 +47,7 @@
         AddF(LVar6, LVar4) \
         AddF(LVar0, LVar6) \
         Call(TranslateModel, bushModel, moveVar, 0, 0) \
-        Call(N(MoveBush_AnimateShearing), bushModel, LVar6) \
+        Call(MoveBush_AnimateShearing, bushModel, LVar6) \
         Wait(1) \
     EndLoop \
     Return \

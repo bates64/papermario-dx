@@ -11,7 +11,7 @@
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/WorldBow.h"
 
-API_CALLABLE(N(FadeScreenToRedAndWhite)) {
+API_CALLABLE(FadeScreenToRedAndWhite) {
     enum FT_states {
         TEMP_FADE_TO_RED    = 0,
         TEMP_FADE_TO_WHITE  = 1,
@@ -66,7 +66,7 @@ API_CALLABLE(N(FadeScreenToRedAndWhite)) {
     #undef FT_alpha
 }
 
-API_CALLABLE(N(FadeScreenFromWhite)) {
+API_CALLABLE(FadeScreenFromWhite) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -85,7 +85,7 @@ API_CALLABLE(N(FadeScreenFromWhite)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SpawnStarsOrbitingBowser)) {
+API_CALLABLE(SpawnStarsOrbitingBowser) {
     EffectInstance* effect;
 
     fx_stars_orbiting(0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4], &effect);
@@ -94,14 +94,14 @@ API_CALLABLE(N(SpawnStarsOrbitingBowser)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DismissStarsOrbitingBowser)) {
+API_CALLABLE(DismissStarsOrbitingBowser) {
     EffectInstance* effect = (EffectInstance*) script->varTablePtr[0];
 
     effect->data.starsOrbiting->enabled = false;
     return ApiStatus_DONE2;
 }
 
-s32 N(ArenaExplosions)[][6] = {
+s32 ArenaExplosions[][6] = {
     {   0,    0,   0, 30, Float(3.0), Float(1.0) },
     { 450,  -50, 330, 40, Float(4.0), Float(2.0) },
     { 280, -100, 350, 50, Float(5.0), Float(2.0) },
@@ -110,7 +110,7 @@ s32 N(ArenaExplosions)[][6] = {
     { 350, -120, 350, 50, Float(5.0), Float(2.0) },
 };
 
-EvtScript N(EVS_ManageShaking) = {
+EvtScript EVS_ManageShaking = {
     Loop(0)
         IfGt(MV_DestructState, DESTRUCT_STATE_NONE)
             Set(MV_PrevDestructState, MV_DestructState)
@@ -127,8 +127,8 @@ EvtScript N(EVS_ManageShaking) = {
                 Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
                 Set(MV_DestructState, DESTRUCT_STATE_TREMBLE)
             CaseEq(DESTRUCT_STATE_4)
-                UseBuf(Ref(N(ArenaExplosions)))
-                Loop(ARRAY_COUNT(N(ArenaExplosions)))
+                UseBuf(Ref(ArenaExplosions))
+                Loop(ARRAY_COUNT(ArenaExplosions))
                     BufRead4(LVar0, LVar1, LVar2, LVar3)
                     FBufRead2(LVar4, LVar5)
                     Call(PlaySoundAt, SOUND_SEQ_FINALE_EXPLOSION, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
@@ -168,7 +168,7 @@ EvtScript N(EVS_ManageShaking) = {
 };
 
 // x, y, z, delay
-s32 N(ChainExplosionLocations)[][4] = {
+s32 ChainExplosionLocations[][4] = {
     { 400,  -10, 400, 20 },
     { 350,  -50, 370, 25 },
     { 300,  -30, 340, 25 },
@@ -182,7 +182,7 @@ s32 N(ChainExplosionLocations)[][4] = {
     { 230, -100, 100, 20 },
 };
 
-EvtScript N(EVS_BowserAndKammyBlownAway) = {
+EvtScript EVS_BowserAndKammyBlownAway = {
     Thread
         Call(SetNpcJumpscale, NPC_Bowser_03, Float(0.1))
         Call(NpcJump0, NPC_Bowser_03, 700, -50, 1000, 100)
@@ -232,8 +232,8 @@ EvtScript N(EVS_BowserAndKammyBlownAway) = {
         EndLoop
     EndThread
     Thread
-        UseBuf(Ref(N(ChainExplosionLocations)))
-        Loop(ARRAY_COUNT(N(ChainExplosionLocations)))
+        UseBuf(Ref(ChainExplosionLocations))
+        Loop(ARRAY_COUNT(ChainExplosionLocations))
             BufRead4(LVar0, LVar1, LVar2, LVar3)
             Call(PlaySoundAt, SOUND_SEQ_FINALE_EXPLOSION, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
             PlayEffect(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, Float(2.0), 30)
@@ -245,10 +245,10 @@ EvtScript N(EVS_BowserAndKammyBlownAway) = {
     End
 };
 
-EvtScript N(EVS_Scene_BowserDefeated) = {
+EvtScript EVS_Scene_BowserDefeated = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
-    Exec(N(EVS_ManageShaking))
+    Exec(EVS_ManageShaking)
     Call(SetPlayerPos, 150, 0, 0)
     Call(InterpPlayerYaw, 90, 0)
     Call(PartnerIsFlying, LVar0)
@@ -264,7 +264,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     Add(LVar1, 60)
     Set(LVar3, 20)
     Set(LVar4, 3)
-    Call(N(SpawnStarsOrbitingBowser))
+    Call(SpawnStarsOrbitingBowser)
     Set(MV_OrbitingEffectAIdx, LVar0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 300, 0, 50)
@@ -284,7 +284,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Set(LVar0, MV_OrbitingEffectAIdx)
-        Call(N(DismissStarsOrbitingBowser))
+        Call(DismissStarsOrbitingBowser)
     EndThread
     Call(FadeOutMusic, 0, 150)
     Call(ClearAmbientSounds, 150)
@@ -465,7 +465,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     Set(MV_DestructState, DESTRUCT_STATE_7)
     Call(SetNpcAnimation, NPC_Bowser_03, ANIM_WorldBowser_Shock)
     Call(ShowMessageAtScreenPos, MSG_CH8_00B1, 160, 40)
-    Call(N(FadeScreenToRedAndWhite))
+    Call(FadeScreenToRedAndWhite)
     Call(TranslateGroup, MODEL_Root, -200, 0, 0)
     Call(UpdateColliderTransform, COLLIDER_o128)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -493,9 +493,9 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(SetNpcRotationPivot, NPC_Kammy_05, 12)
     Wait(10)
     Thread
-        Call(N(FadeScreenFromWhite))
+        Call(FadeScreenFromWhite)
     EndThread
-    ExecWait(N(EVS_BowserAndKammyBlownAway))
+    ExecWait(EVS_BowserAndKammyBlownAway)
     Call(GotoMap, Ref("osr_03"), osr_03_ENTRY_5)
     Wait(100)
     Return

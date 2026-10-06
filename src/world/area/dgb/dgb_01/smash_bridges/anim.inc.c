@@ -1,6 +1,6 @@
 #include "break_bridges.h"
 
-AnimScript N(AS_SmashBridges) = {
+AnimScript AS_SmashBridges = {
     as_DisableMirroring
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)

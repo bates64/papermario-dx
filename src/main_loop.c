@@ -258,6 +258,10 @@ void gfx_draw_frame(void) {
 
     #if DX_DEBUG_MENU
     dx_debug_console_main();
+    if (dx_debug_consume_discard_frame()) {
+        gCurrentDisplayContextIndex ^= 1;
+        return;
+    }
     #endif
 
     gDPFullSync(gMainGfxPos++);
@@ -299,7 +303,8 @@ void load_engine_data(void) {
     gGameStatusPtr->altViewportOffset.x = -8;
     gGameStatusPtr->altViewportOffset.y = 4;
     gTimeFreezeMode = TIME_FREEZE_NONE;
-    gGameStatusPtr->debugQuizmo = gGameStatusPtr->unk_13C = 0;
+    gGameStatusPtr->debugQuizmo = 0;
+    gGameStatusPtr->unk_13C = 0;
     gGameStepDelayCount = 5;
     gGameStatusPtr->saveCount = 0;
     fio_init_flash();

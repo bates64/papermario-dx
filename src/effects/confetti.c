@@ -103,7 +103,6 @@ EffectInstance* confetti_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
     bpPtr->init = confetti_init;
     bpPtr->update = confetti_update;
     bpPtr->renderScene = confetti_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_CONFETTI;
 

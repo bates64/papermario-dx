@@ -4,13 +4,13 @@
 
 extern AnimScript Entity_SimpleSpring_AnimLaunch;
 
-API_CALLABLE(N(DismissGotItem)) {
+API_CALLABLE(DismissGotItem) {
     Entity* bigChest = get_entity_by_index(script->varTable[0]);
     bigChest->dataBuf.chest->gotItemDone = true;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
+EvtScript EVS_SetupGiantChest_UltraBoots = {
     IfEq(GF_TIK25_GiantChest, false)
         Label(10)
         IfEq(GF_TIK25_GiantChest, false)
@@ -18,15 +18,15 @@ EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
             Goto(10)
         EndIf
         Wait(60)
-        Exec(N(EVS_PlayUpgradeSong))
+        Exec(EVS_PlayUpgradeSong)
         Call(ShowMessageAtScreenPos, MSG_Menus_0187, 160, 40)
-        Call(N(DismissGotItem))
+        Call(DismissGotItem)
     EndIf
     Return
     End
 };
 
-API_CALLABLE(N(PlaySpringReboundAnimation)) {
+API_CALLABLE(PlaySpringReboundAnimation) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
 
@@ -38,7 +38,7 @@ API_CALLABLE(N(PlaySpringReboundAnimation)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_OnBreakBlock_SpringR) = {
+EvtScript EVS_OnBreakBlock_SpringR = {
     IfEq(GF_TIK25_SpringBrickA, true)
         Return
     EndIf
@@ -67,13 +67,13 @@ EvtScript N(EVS_OnBreakBlock_SpringR) = {
     EndLoop
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
     Call(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
-    Call(N(PlaySpringReboundAnimation), MV_EntityID_SpringR)
+    Call(PlaySpringReboundAnimation, MV_EntityID_SpringR)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_SpringL) = {
+EvtScript EVS_OnBreakBlock_SpringL = {
     IfEq(GF_TIK25_SpringBrickB, true)
         Return
     EndIf
@@ -102,18 +102,18 @@ EvtScript N(EVS_OnBreakBlock_SpringL) = {
     EndLoop
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
     Call(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
-    Call(N(PlaySpringReboundAnimation), MV_EntityID_SpringL)
+    Call(PlaySpringReboundAnimation, MV_EntityID_SpringL)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_GiantChest), -270, -90, 0, 90, ITEM_ULTRA_BOOTS, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_TIK25_GiantChest)
-    Exec(N(EVS_SetupGiantChest_UltraBoots))
+    Exec(EVS_SetupGiantChest_UltraBoots)
     Call(MakeEntity, Ref(Entity_BrickBlock), 210, -75, -20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_OnBreakBlock_SpringR)))
+    Call(AssignScript, Ref(EVS_OnBreakBlock_SpringR))
     IfEq(GF_TIK25_SpringBrickA, false)
         Call(MakeEntity, Ref(Entity_SimpleSpring), 210, -50, -20, 0, 100, MAKE_ENTITY_END)
         Set(MV_EntityID_SpringR, LVar0)
@@ -121,7 +121,7 @@ EvtScript N(EVS_MakeEntities) = {
         Call(MakeEntity, Ref(Entity_SimpleSpring), 150, -135, -20, 0, 100, MAKE_ENTITY_END)
     EndIf
     Call(MakeEntity, Ref(Entity_BrickBlock), -120, -45, -20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_OnBreakBlock_SpringL)))
+    Call(AssignScript, Ref(EVS_OnBreakBlock_SpringL))
     IfEq(GF_TIK25_SpringBrickB, false)
         Call(MakeEntity, Ref(Entity_SimpleSpring), -120, -20, -20, 0, 100, MAKE_ENTITY_END)
         Set(MV_EntityID_SpringL, LVar0)

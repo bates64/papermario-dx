@@ -17,9 +17,7 @@ enum {
     NPC_BuzzyBeetle     = 1,
 };
 
-#define NAMESPACE isk_08
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupFlames);
-extern EvtScript N(EVS_SetupBombableWall);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupFlames;
+extern EvtScript EVS_SetupBombableWall;
+extern NpcGroupList DefaultNPCs;

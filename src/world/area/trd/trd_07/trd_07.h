@@ -25,5 +25,3 @@ enum {
     MV_DoorScaleZ               = MapVar(0), // reusing
     MV_DoorScaleY               = MapVar(1),
 };
-
-#define NAMESPACE trd_07

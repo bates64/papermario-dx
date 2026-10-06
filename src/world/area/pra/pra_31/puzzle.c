@@ -27,25 +27,25 @@ enum {
     CELL_DINO      = -1,
 };
 
-s32 N(InitialConfigurationBefore)[DINO_COUNT][3] = {
+s32 InitialConfigurationBefore[DINO_COUNT][3] = {
     { 2, 0, 270 },
     { 3, 2, 270 },
     { 5, 1, 270 },
 };
 
-s32 N(InitialConfigurationAfter)[DINO_COUNT][3]= {
+s32 InitialConfigurationAfter[DINO_COUNT][3]= {
     { 1, 1, 270 },
     { 4, 1, 270 },
     { 7, 1, 270 },
 };
 
-s16 N(PuzzleSolution)[GRID_SIZE_Z][GRID_SIZE_X] = {
+s16 PuzzleSolution[GRID_SIZE_Z][GRID_SIZE_X] = {
     { CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY },
     { CELL_EMPTY, CELL_DINO,  CELL_EMPTY, CELL_EMPTY, CELL_DINO,  CELL_EMPTY, CELL_EMPTY, CELL_DINO,  CELL_EMPTY },
     { CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY },
 };
 
-API_CALLABLE(N(EVS_ManagePuzzle)) {
+API_CALLABLE(EVS_ManagePuzzle) {
     DinoPuzzleData* puzzle;
     DinoData* dino;
     s32 storyProgress;
@@ -65,13 +65,13 @@ API_CALLABLE(N(EVS_ManagePuzzle)) {
 
         for (j = 0, dino = &puzzle->dinos[0]; j < DINO_COUNT; j++, dino++) {
             if (storyProgress < STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE) {
-                dino->ci = N(InitialConfigurationBefore)[j][0];
-                dino->cj = N(InitialConfigurationBefore)[j][1];
-                dino->angle = N(InitialConfigurationBefore)[j][2];
+                dino->ci = InitialConfigurationBefore[j][0];
+                dino->cj = InitialConfigurationBefore[j][1];
+                dino->angle = InitialConfigurationBefore[j][2];
             } else {
-                dino->ci = N(InitialConfigurationAfter)[j][0];
-                dino->cj = N(InitialConfigurationAfter)[j][1];
-                dino->angle = N(InitialConfigurationAfter)[j][2];
+                dino->ci = InitialConfigurationAfter[j][0];
+                dino->cj = InitialConfigurationAfter[j][1];
+                dino->angle = InitialConfigurationAfter[j][2];
             }
             dino->corPosX = dino->goalPosX = (dino->ci * DINO_CELL_SIZE) + DINO_CELL_SIZE;
             dino->curPosZ = dino->goalPosZ = (dino->cj * DINO_CELL_SIZE) + DINO_CELL_SIZE + DINO_CELL_SIZE / 2;
@@ -106,7 +106,7 @@ API_CALLABLE(N(EVS_ManagePuzzle)) {
                 puzzle->cells[i][j]--;
             }
 
-            if (puzzle->cells[i][j] != N(PuzzleSolution)[i][j]) {
+            if (puzzle->cells[i][j] != PuzzleSolution[i][j]) {
                 incorrect = true;
             }
         }
@@ -118,7 +118,7 @@ API_CALLABLE(N(EVS_ManagePuzzle)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetDinoAngle)) {
+API_CALLABLE(SetDinoAngle) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     f32 angle = evt_get_float_variable(script, *args++);
@@ -129,7 +129,7 @@ API_CALLABLE(N(SetDinoAngle)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsDestCellUnavailable)) {
+API_CALLABLE(IsDestCellUnavailable) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
@@ -188,7 +188,7 @@ API_CALLABLE(N(IsDestCellUnavailable)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(BeginPushingStatue)) {
+API_CALLABLE(BeginPushingStatue) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
@@ -216,7 +216,7 @@ API_CALLABLE(N(BeginPushingStatue)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetPlayerPushDirection)) {
+API_CALLABLE(GetPlayerPushDirection) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
@@ -239,7 +239,7 @@ API_CALLABLE(N(GetPlayerPushDirection)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetPlayerPushLerpValues)) {
+API_CALLABLE(GetPlayerPushLerpValues) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
@@ -271,7 +271,7 @@ API_CALLABLE(N(GetPlayerPushLerpValues)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetDinoStatuePosRot)) {
+API_CALLABLE(GetDinoStatuePosRot) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
@@ -283,7 +283,7 @@ API_CALLABLE(N(GetDinoStatuePosRot)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetDinoNpcPosRot)) {
+API_CALLABLE(GetDinoNpcPosRot) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
@@ -295,14 +295,14 @@ API_CALLABLE(N(GetDinoNpcPosRot)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EndBlockPushingState)) {
+API_CALLABLE(EndBlockPushingState) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     playerStatus->animFlags |= PA_FLAG_ABORT_PUSHING_BLOCK;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_PuzzleSolved) = {
+EvtScript EVS_Scene_PuzzleSolved = {
     Loop(0)
         IfEq(MV_PuzzleSolved, true)
             BreakLoop
@@ -386,7 +386,7 @@ EvtScript N(EVS_Scene_PuzzleSolved) = {
         Call(EnableModel, MODEL_n5, false)
         Call(EnableModel, MODEL_k5, true)
     EndThread
-    Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(N(AS_Stairs_Unfold)))
+    Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AS_Stairs_Unfold))
     Wait(200)
     Set(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -395,29 +395,29 @@ EvtScript N(EVS_Scene_PuzzleSolved) = {
     End
 };
 
-EvtScript N(EVS_UpdateStatuePositions) = {
+EvtScript EVS_UpdateStatuePositions = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
-    Call(N(GetDinoStatuePosRot), NPC_AlbinoDino_01)
+    Call(GetDinoStatuePosRot, NPC_AlbinoDino_01)
     Set(MV_StatueYaw_01, LVar2)
-    Call(N(GetDinoStatuePosRot), NPC_AlbinoDino_02)
+    Call(GetDinoStatuePosRot, NPC_AlbinoDino_02)
     Set(MV_StatueYaw_02, LVar2)
-    Call(N(GetDinoStatuePosRot), NPC_AlbinoDino_03)
+    Call(GetDinoStatuePosRot, NPC_AlbinoDino_03)
     Set(MV_StatueYaw_03, LVar2)
     Loop(0)
-        Call(N(GetDinoStatuePosRot), NPC_AlbinoDino_01)
+        Call(GetDinoStatuePosRot, NPC_AlbinoDino_01)
         Call(TranslateGroup, MODEL_s01, LVar0, 0, LVar1)
         Call(RotateGroup, MODEL_g292, MV_StatueYaw_01, 0, 1, 0)
-        Call(N(GetDinoStatuePosRot), NPC_AlbinoDino_02)
+        Call(GetDinoStatuePosRot, NPC_AlbinoDino_02)
         Call(TranslateGroup, MODEL_s02, LVar0, 0, LVar1)
         Call(RotateGroup, MODEL_g298, MV_StatueYaw_02, 0, 1, 0)
-        Call(N(GetDinoStatuePosRot), NPC_AlbinoDino_03)
+        Call(GetDinoStatuePosRot, NPC_AlbinoDino_03)
         Call(TranslateGroup, MODEL_s03, LVar0, 0, LVar1)
         Call(RotateGroup, MODEL_g299, MV_StatueYaw_03, 0, 1, 0)
-        Call(N(GetDinoNpcPosRot), NPC_AlbinoDino_01)
+        Call(GetDinoNpcPosRot, NPC_AlbinoDino_01)
         Call(SetNpcPos, NPC_AlbinoDino_01, LVar0, -10, LVar1)
-        Call(N(GetDinoNpcPosRot), NPC_AlbinoDino_02)
+        Call(GetDinoNpcPosRot, NPC_AlbinoDino_02)
         Call(SetNpcPos, NPC_AlbinoDino_02, LVar0, -10, LVar1)
-        Call(N(GetDinoNpcPosRot), NPC_AlbinoDino_03)
+        Call(GetDinoNpcPosRot, NPC_AlbinoDino_03)
         Call(SetNpcPos, NPC_AlbinoDino_03, LVar0, -10, LVar1)
         Call(UpdateColliderTransform, COLLIDER_s01n)
         Call(UpdateColliderTransform, COLLIDER_s01e)
@@ -439,11 +439,11 @@ EvtScript N(EVS_UpdateStatuePositions) = {
 
 #include "world/common/util/PushObjectSupport.inc.c"
 
-EvtScript N(EVS_PushStatue_Impl) = {
-    Call(N(GetPlayerPushDirection), LVarA)
+EvtScript EVS_PushStatue_Impl = {
+    Call(GetPlayerPushDirection, LVarA)
     Call(InterpPlayerYaw, LVar0, 0)
     Loop(20)
-        Call(N(IsPlayerPushingCollider), LVar9)
+        Call(IsPlayerPushingCollider, LVar9)
         IfEq(LVar0, 0)
             Return
         Else
@@ -453,12 +453,12 @@ EvtScript N(EVS_PushStatue_Impl) = {
     EndLoop
     Call(DisablePlayerInput, true)
     Thread
-        Call(N(GetPlayerPushLerpValues), LVarA)
+        Call(GetPlayerPushLerpValues, LVarA)
         Call(MakeLerp, LVar3, LVar4, PUSH_TIME, EASING_LINEAR)
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UpdatePlayerPushPosition))
+            Call(UpdatePlayerPushPosition)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -470,17 +470,17 @@ EvtScript N(EVS_PushStatue_Impl) = {
     EndThread
     Set(MV_PushingStatue, true)
     Call(PlaySoundAtCollider, LVar9, SOUND_PRA_PUSH_STATUE, 0)
-    Call(N(BeginPushingStatue), LVarA)
+    Call(BeginPushingStatue, LVarA)
     Wait(PUSH_TIME)
     Set(MV_PushingStatue, false)
-    Call(N(EndBlockPushingState))
+    Call(EndBlockPushingState)
     Thread
         Call(DisablePlayerInput, false)
         Wait(2)
-        Call(N(IsPlayerPushingCollider), LVar9)
+        Call(IsPlayerPushingCollider, LVar9)
         IfEq(LVar0, 0)
             Wait(2)
-            Call(N(IsPlayerPushingCollider), LVar9)
+            Call(IsPlayerPushingCollider, LVar9)
             IfEq(LVar0, 0)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
             EndIf
@@ -490,58 +490,58 @@ EvtScript N(EVS_PushStatue_Impl) = {
     End
 };
 
-EvtScript N(EVS_PushStatue_01) = {
+EvtScript EVS_PushStatue_01 = {
     IfGe(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
         Return
     EndIf
-    Call(N(IsDestCellUnavailable), NPC_AlbinoDino_01)
+    Call(IsDestCellUnavailable, NPC_AlbinoDino_01)
     IfEq(LVar0, true)
         Return
     EndIf
     Set(LVarA, NPC_AlbinoDino_01)
     Set(LVar9, COLLIDER_s01e)
-    ExecWait(N(EVS_PushStatue_Impl))
+    ExecWait(EVS_PushStatue_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_PushStatue_02) = {
+EvtScript EVS_PushStatue_02 = {
     IfGe(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
         Return
     EndIf
-    Call(N(IsDestCellUnavailable), NPC_AlbinoDino_02)
+    Call(IsDestCellUnavailable, NPC_AlbinoDino_02)
     IfEq(LVar0, true)
         Return
     EndIf
     Set(LVarA, NPC_AlbinoDino_02)
     Set(LVar9, COLLIDER_s02e)
-    ExecWait(N(EVS_PushStatue_Impl))
+    ExecWait(EVS_PushStatue_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_PushStatue_03) = {
+EvtScript EVS_PushStatue_03 = {
     IfGe(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
         Return
     EndIf
-    Call(N(IsDestCellUnavailable), NPC_AlbinoDino_03)
+    Call(IsDestCellUnavailable, NPC_AlbinoDino_03)
     IfEq(LVar0, true)
         Return
     EndIf
     Set(LVarA, NPC_AlbinoDino_03)
     Set(LVar9, COLLIDER_s03e)
-    ExecWait(N(EVS_PushStatue_Impl))
+    ExecWait(EVS_PushStatue_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_SetupPuzzle) = {
+EvtScript EVS_SetupPuzzle = {
     Call(InitAnimatedModels)
-    Call(LoadAnimatedModel, MDL_ANIMATOR_0, Ref(N(AS_Stairs_Skeleton)))
+    Call(LoadAnimatedModel, MDL_ANIMATOR_0, Ref(AS_Stairs_Skeleton))
     Call(SetAnimatedModelRootPosition, MDL_ANIMATOR_0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, MDL_ANIMATOR_0, RENDER_MODE_SURFACE_OPA)
     Thread
-        Call(N(EVS_ManagePuzzle))
+        Call(EVS_ManagePuzzle)
     EndThread
     Wait(1)
     Call(ParentColliderToModel, COLLIDER_s01n, MODEL_o1032)
@@ -557,24 +557,24 @@ EvtScript N(EVS_SetupPuzzle) = {
     Call(ParentColliderToModel, COLLIDER_s03s, MODEL_o1044)
     Call(ParentColliderToModel, COLLIDER_s03w, MODEL_o1044)
     Set(MV_PuzzleSolved, false)
-    Exec(N(EVS_UpdateStatuePositions))
-    BindTrigger(Ref(N(EVS_PushStatue_01)), TRIGGER_WALL_PUSH, COLLIDER_s01e, 1, 0)
-    BindTrigger(Ref(N(EVS_PushStatue_02)), TRIGGER_WALL_PUSH, COLLIDER_s02e, 1, 0)
-    BindTrigger(Ref(N(EVS_PushStatue_03)), TRIGGER_WALL_PUSH, COLLIDER_s03e, 1, 0)
+    Exec(EVS_UpdateStatuePositions)
+    BindTrigger(Ref(EVS_PushStatue_01), TRIGGER_WALL_PUSH, COLLIDER_s01e, 1, 0)
+    BindTrigger(Ref(EVS_PushStatue_02), TRIGGER_WALL_PUSH, COLLIDER_s02e, 1, 0)
+    BindTrigger(Ref(EVS_PushStatue_03), TRIGGER_WALL_PUSH, COLLIDER_s03e, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_SOLVED_ALBINO_DINO_PUZZLE)
-        Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(N(AS_Stairs_InitializeAfter)))
+        Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AS_Stairs_InitializeAfter))
         Call(SetGroupVisibility, MODEL_no, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_kage_yuka, MODEL_GROUP_VISIBLE)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1071, COLLIDER_FLAGS_UPPER_MASK)
-        Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(N(AS_Stairs_InitializeBefore)))
+        Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AS_Stairs_InitializeBefore))
         Call(SetGroupVisibility, MODEL_g255, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g262, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g264, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g265, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_no, MODEL_GROUP_VISIBLE)
         Call(SetGroupVisibility, MODEL_kage_yuka, MODEL_GROUP_HIDDEN)
-        Exec(N(EVS_Scene_PuzzleSolved))
+        Exec(EVS_Scene_PuzzleSolved)
     EndIf
     Return
     End

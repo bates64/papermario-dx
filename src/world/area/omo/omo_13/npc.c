@@ -4,7 +4,7 @@
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 #include "world/common/enemy/GrooveGuy/wander.inc.c"
 
-NpcSettings N(NpcSettings_AntiGuy) = {
+NpcSettings NpcSettings_AntiGuy = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
@@ -13,7 +13,7 @@ NpcSettings N(NpcSettings_AntiGuy) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-EvtScript N(EVS_NpcInteract_AntiGuy) = {
+EvtScript EVS_NpcInteract_AntiGuy = {
     IfEq(GF_OMO13_Defeated_AntiGuy, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Hiding, ANIM_ShyGuy_Black_Hiding, 5, MSG_CH4_004D)
         Return
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcInteract_AntiGuy) = {
     End
 };
 
-API_CALLABLE(N(UpdateAntiGuyPosition)) {
+API_CALLABLE(UpdateAntiGuyPosition) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_safe(NPC_AntiGuy);
     f32 theta;
@@ -123,9 +123,9 @@ API_CALLABLE(N(UpdateAntiGuyPosition)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_AntiGuy) = {
+EvtScript EVS_NpcIdle_AntiGuy = {
     Label(0)
-        Call(N(UpdateAntiGuyPosition))
+        Call(UpdateAntiGuyPosition)
         Call(GetSelfVar, 0, LVar0)
         IfEq(LVar0, 0)
             Wait(1)
@@ -172,7 +172,7 @@ EvtScript N(EVS_NpcIdle_AntiGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_AntiGuy) = {
+EvtScript EVS_NpcDefeat_AntiGuy = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -188,11 +188,11 @@ EvtScript N(EVS_NpcDefeat_AntiGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_AntiGuy) = {
+EvtScript EVS_NpcInit_AntiGuy = {
     IfEq(GF_OMO13_Defeated_AntiGuy, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_AntiGuy)))
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_AntiGuy)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_AntiGuy)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_AntiGuy))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AntiGuy))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_AntiGuy))
     Else
         Call(RemoveEncounter, NPC_SELF)
     EndIf
@@ -200,19 +200,19 @@ EvtScript N(EVS_NpcInit_AntiGuy) = {
     End
 };
 
-NpcData N(NpcData_AntiGuy) = {
+NpcData NpcData_AntiGuy = {
     .id = NPC_AntiGuy,
     .pos = { 110.0f, 0.0f, -20.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_AntiGuy),
-    .settings = &N(NpcSettings_AntiGuy),
+    .init = &EVS_NpcInit_AntiGuy,
+    .settings = &NpcSettings_AntiGuy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = ANTI_GUY_ANIMS,
     .tattle = MSG_NpcTattle_AntiGuy,
 };
 
-NpcData N(NpcData_ShyGuy) = {
+NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
     .pos = { 300.0f, 0.0f, 50.0f },
     .yaw = 270,
@@ -228,14 +228,14 @@ NpcData N(NpcData_ShyGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = YELLOW_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_GrooveGuy) = {
+NpcData NpcData_GrooveGuy = {
     .id = NPC_GrooveGuy,
     .pos = { -222.0f, 0.0f, 35.0f },
     .yaw = 90,
@@ -251,16 +251,16 @@ NpcData N(NpcData_GrooveGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_GrooveGuy_Wander),
+    .settings = &NpcSettings_GrooveGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_B,
     .animations = GROOVE_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_AntiGuy), BTL_OMO_FORMATION_2C, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO_FORMATION_03, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_GrooveGuy), BTL_OMO_FORMATION_25, BTL_OMO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_AntiGuy, BTL_OMO_FORMATION_2C, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO_FORMATION_03, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_GrooveGuy, BTL_OMO_FORMATION_25, BTL_OMO_STAGE_00),
     {}
 };

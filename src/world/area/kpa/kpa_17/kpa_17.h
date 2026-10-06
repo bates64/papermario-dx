@@ -21,11 +21,9 @@ enum {
     NPC_ToadMinister            = 3,
 };
 
-#define NAMESPACE kpa_17
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_BlastWall);
-extern EvtScript N(EVS_Scene_FallIntoCell);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_BlastWall;
+extern EvtScript EVS_Scene_FallIntoCell;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

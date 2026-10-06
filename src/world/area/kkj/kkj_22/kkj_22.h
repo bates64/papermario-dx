@@ -11,7 +11,5 @@
 #include "mapfs/kkj_22_shape.h"
 #include "mapfs/kkj_22_hit.h"
 
-#define NAMESPACE kkj_22
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;

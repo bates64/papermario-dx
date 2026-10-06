@@ -24,5 +24,3 @@ enum {
     MV_EntityID_PadlockLower    = MapVar(1),
     MV_EntityID_Switch          = MapVar(2),
 };
-
-#define NAMESPACE trd_04

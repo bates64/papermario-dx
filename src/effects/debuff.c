@@ -19,7 +19,6 @@ EffectInstance* debuff_main(s32 type, f32 x, f32 y, f32 z) {
     s32 numParts = 8;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = debuff_init;
     bp.update = debuff_update;
     bp.renderScene = debuff_render;

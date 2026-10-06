@@ -10,7 +10,7 @@
     .idle = anim, \
 }
 
-FollowAnims N(GoombariaAnims) = {
+FollowAnims GoombariaAnims = {
     ANIM_Goombaria_Walk,
     ANIM_Goombaria_Jump,
     ANIM_Goombaria_Fall,
@@ -19,13 +19,13 @@ FollowAnims N(GoombariaAnims) = {
     ANIM_Goombaria_Run,
 };
 
-API_CALLABLE(N(InitNpcFollowTest)) {
+API_CALLABLE(InitNpcFollowTest) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (rand_int(1000) < 500) {
         npc_follow_init(npc,
             NPC_SELF,
-            &N(GoombariaAnims),
+            &GoombariaAnims,
             rand_int(4) + 1,
             rand_int(3) + 5,
             rand_int(50) + 50,
@@ -33,7 +33,7 @@ API_CALLABLE(N(InitNpcFollowTest)) {
     } else {
         npc_follow_init(npc,
             rand_int(3) + NPC_Goompa,
-             &N(GoombariaAnims),
+             &GoombariaAnims,
             rand_int(4) + 1,
             rand_int(3) + 5,
             rand_int(50) + 50,
@@ -42,28 +42,28 @@ API_CALLABLE(N(InitNpcFollowTest)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateNpcTracking)) {
+API_CALLABLE(UpdateNpcTracking) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_update_npc_tracking(npc);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateNpcFollow)) {
+API_CALLABLE(UpdateNpcFollow) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_follow_npc(npc);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetupChapter0)) {
+API_CALLABLE(SetupChapter0) {
     PlayerData* playerData = &gPlayerData;
     s32 i;
 
     playerData->curHP = 5;
     playerData->curMaxHP = 5;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = -1;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NONE;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
         playerData->partners[i].enabled = false;
@@ -72,7 +72,7 @@ API_CALLABLE(N(SetupChapter0)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetupStarRodPaletteCycling)) {
+API_CALLABLE(SetupStarRodPaletteCycling) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS);
@@ -81,14 +81,14 @@ API_CALLABLE(N(SetupStarRodPaletteCycling)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetupChapter1)) {
+API_CALLABLE(SetupChapter1) {
     PlayerData* playerData = &gPlayerData;
     s32 i;
 
     playerData->curHP = 8;
     playerData->curMaxHP = 8;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = 0;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NORMAL;
     playerData->partners[PARTNER_NONE].enabled = true;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {
@@ -97,14 +97,14 @@ API_CALLABLE(N(SetupChapter1)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetupChapter2)) {
+API_CALLABLE(SetupChapter2) {
     PlayerData* playerData = &gPlayerData;
     s32 i;
 
     playerData->curHP = 11;
     playerData->curMaxHP = 11;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = 0;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NORMAL;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
         playerData->partners[i].enabled = false;
@@ -116,59 +116,59 @@ API_CALLABLE(N(SetupChapter2)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcCreate_Goompa) = {
+EvtScript EVS_NpcCreate_Goompa = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcFollowTest) = {
-    Call(N(InitNpcFollowTest))
+EvtScript EVS_NpcFollowTest = {
+    Call(InitNpcFollowTest)
     Label(0)
-        Call(N(UpdateNpcTracking))
-        Call(N(UpdateNpcFollow))
+        Call(UpdateNpcTracking)
+        Call(UpdateNpcFollow)
         Wait(1)
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Goompa) = {
+EvtScript EVS_NpcInteract_Goompa = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Goompa) = {
+EvtScript EVS_NpcHit_Goompa = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Goompa) = {
+EvtScript EVS_NpcDefeat_Goompa = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Unused) = {
+EvtScript EVS_NpcAI_Unused = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_Unused) = {
+EvtScript EVS_NpcCreate_Unused = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Unused) = {
+EvtScript EVS_NpcInteract_Unused = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Unused) = {
+EvtScript EVS_NpcHit_Unused = {
     Call(StartBattle)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Unused) = {
+EvtScript EVS_NpcDefeat_Unused = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -180,7 +180,7 @@ EvtScript N(EVS_NpcDefeat_Unused) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarRod) = {
+EvtScript EVS_NpcInteract_StarRod = {
     Call(BringPartnerOut, PARTNER_PARAKARRY)
     Wait(200)
     Call(PutPartnerAway)
@@ -188,83 +188,83 @@ EvtScript N(EVS_NpcInteract_StarRod) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_StarRod) = {
+EvtScript EVS_NpcAI_StarRod = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_StarRod) = {
-    Call(N(SetupStarRodPaletteCycling))
+EvtScript EVS_NpcCreate_StarRod = {
+    Call(SetupStarRodPaletteCycling)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa) = {
-    Call(N(SetupChapter1))
+EvtScript EVS_NpcInteract_Koopa = {
+    Call(SetupChapter1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Koopa) = {
+EvtScript EVS_NpcAI_Koopa = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
-    Call(N(SetupChapter2))
+EvtScript EVS_NpcInteract_Kolorado = {
+    Call(SetupChapter2)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Kolorado) = {
+EvtScript EVS_NpcAI_Kolorado = {
     Return
     End
 };
 
-NpcSettings N(NpcSettings_StarRod) = {
+NpcSettings NpcSettings_StarRod = {
     .defaultAnim = ANIM_StarRod_Still,
     .height = 24,
     .radius = 24,
-    .doAI = &N(EVS_NpcAI_StarRod),
-    .onCreate = &N(EVS_NpcCreate_StarRod),
-    .onInteract = &N(EVS_NpcInteract_StarRod),
+    .doAI = &EVS_NpcAI_StarRod,
+    .onCreate = &EVS_NpcCreate_StarRod,
+    .onInteract = &EVS_NpcInteract_StarRod,
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
-NpcSettings N(NpcSettings_Koopa) = {
+NpcSettings NpcSettings_Koopa = {
     .defaultAnim = ANIM_Koopa_Walk,
     .height = 24,
     .radius = 24,
-    .doAI = &N(EVS_NpcAI_Koopa),
-    .onInteract = &N(EVS_NpcInteract_Koopa),
+    .doAI = &EVS_NpcAI_Koopa,
+    .onInteract = &EVS_NpcInteract_Koopa,
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
-NpcSettings N(NpcSettings_Kolorado) = {
+NpcSettings NpcSettings_Kolorado = {
     .defaultAnim = ANIM_Kolorado_Walk,
     .height = 24,
     .radius = 24,
-    .doAI = &N(EVS_NpcAI_Kolorado),
-    .onInteract = &N(EVS_NpcInteract_Kolorado),
+    .doAI = &EVS_NpcAI_Kolorado,
+    .onInteract = &EVS_NpcInteract_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
-NpcSettings N(NpcSettings_Goompa) = {
+NpcSettings NpcSettings_Goompa = {
     .defaultAnim = ANIM_Goompa_Walk,
     .height = 24,
     .radius = 24,
-    .onCreate = &N(EVS_NpcCreate_Goompa),
-    .onInteract = &N(EVS_NpcInteract_Goompa),
-    .onHit = &N(EVS_NpcHit_Goompa),
+    .onCreate = &EVS_NpcCreate_Goompa,
+    .onInteract = &EVS_NpcInteract_Goompa,
+    .onHit = &EVS_NpcHit_Goompa,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE,
 };
 
-NpcData N(NpcData_05)[] = {
+NpcData NpcData_05[] = {
     {
         .id = NPC_05,
         .pos = { 16.0f, 0.0f, -411.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_StarRod),
+        .settings = &NpcSettings_StarRod,
         .flags = 0,
         .animations = NPC_SINGLE_ANIM(ANIM_StarRod_Still),
     },
@@ -272,7 +272,7 @@ NpcData N(NpcData_05)[] = {
         .id = NPC_06,
         .pos = { 389.0f, 0.0f, -278.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopa),
+        .settings = &NpcSettings_Koopa,
         .flags = 0,
         .animations = NPC_SINGLE_ANIM(ANIM_Koopa_Walk),
     },
@@ -280,27 +280,27 @@ NpcData N(NpcData_05)[] = {
         .id = NPC_07,
         .pos = { 481.0f, 0.0f, -44.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Kolorado),
+        .settings = &NpcSettings_Kolorado,
         .flags = 0,
         .animations = NPC_SINGLE_ANIM(ANIM_Kolorado_Walk),
     },
 };
 
-NpcData N(NpcData_GoombaFamily) = {
+NpcData NpcData_GoombaFamily = {
     .id = NPC_Goompa,
     .pos = { 0.0f, 0.0f, 0.0f },
     .yaw = 0,
-    .settings = &N(NpcSettings_Goompa),
+    .settings = &NpcSettings_Goompa,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
     .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
 };
 
-NpcData N(NpcData_GoompaClones)[] = {
+NpcData NpcData_GoompaClones[] = {
     {
         .id = NPC_0B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -308,7 +308,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_0C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -316,7 +316,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_0D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -324,7 +324,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_0E,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -332,7 +332,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_0F,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -340,7 +340,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_10,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -348,7 +348,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_11,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -356,7 +356,7 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_12,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
@@ -364,24 +364,24 @@ NpcData N(NpcData_GoompaClones)[] = {
         .id = NPC_13,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .animations = NPC_SINGLE_ANIM(ANIM_Goompa_Walk),
     },
 };
 
-NpcData N(NpcData_GoombaKing) = {
+NpcData NpcData_GoombaKing = {
     .id = NPC_GoombaKing,
     .pos = { 12.0f, 0.0f, -13.0f },
     .yaw = 0,
-    .settings = &N(NpcSettings_GoombaKing),
+    .settings = &NpcSettings_GoombaKing,
     .flags = 0,
     .animations = NPC_SINGLE_ANIM(ANIM_GoombaKing_Idle),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_05), BTL_KMR_1_FORMATION_08),
-    NPC_GROUP(N(NpcData_GoombaFamily), BTL_KMR_1_FORMATION_08),
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_05, BTL_KMR_1_FORMATION_08),
+    NPC_GROUP(NpcData_GoombaFamily, BTL_KMR_1_FORMATION_08),
+    NPC_GROUP(NpcData_Misstar),
     {}
 };

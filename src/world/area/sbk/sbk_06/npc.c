@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Bandit/wander.inc.c"
 
-NpcData N(NpcData_Bandit) = {
+NpcData NpcData_Bandit = {
     .id = NPC_Bandit,
     .pos = { -200.0f, 0.0f, 230.0f },
     .yaw = 90,
@@ -18,14 +18,14 @@ NpcData N(NpcData_Bandit) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Bandit_Wander),
+    .settings = &NpcSettings_Bandit_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BANDIT_DROPS,
     .animations = BANDIT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Bandit), BTL_SBK_FORMATION_0C, BTL_SBK_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Bandit, BTL_SBK_FORMATION_0C, BTL_SBK_STAGE_00),
     {}
 };

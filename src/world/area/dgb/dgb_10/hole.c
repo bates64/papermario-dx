@@ -1,6 +1,6 @@
 #include "dgb_10.h"
 
-API_CALLABLE(N(AwaitFallInHole)) {
+API_CALLABLE(AwaitFallInHole) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 entry;
 
@@ -20,17 +20,17 @@ API_CALLABLE(N(AwaitFallInHole)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AwaitFallDownHole)) {
+API_CALLABLE(AwaitFallDownHole) {
     if (gPlayerStatus.pos.y > -60.0f) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupHoles) = {
-    Call(N(AwaitFallInHole))
+EvtScript EVS_SetupHoles = {
+    Call(AwaitFallInHole)
     Call(GrabCamera, CAM_DEFAULT, LVar2, LVar3, LVar4, LVar5)
-    Call(N(AwaitFallDownHole))
+    Call(AwaitFallDownHole)
 #if VERSION_PAL
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(DisablePlayerPhysics, true)

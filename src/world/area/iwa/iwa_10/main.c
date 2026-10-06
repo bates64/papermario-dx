@@ -1,33 +1,33 @@
 #include "iwa_10.h"
 
-EvtScript N(EVS_ExitWalk_iwa_00_0) = EVT_EXIT_WALK(60, iwa_10_ENTRY_1, "iwa_00", iwa_00_ENTRY_0);
+EvtScript EVS_ExitWalk_iwa_00_0 = EVT_EXIT_WALK(60, iwa_10_ENTRY_1, "iwa_00", iwa_00_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_iwa_00_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_iwa_00_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, iwa_10_ENTRY_1)
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
     Else
-        Exec(N(EVS_ArriveFromToadTown))
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_ArriveFromToadTown)
+        Exec(EVS_BindExitTriggers)
     EndIf
     Return
     End
 };
 
-API_CALLABLE(N(GetClockHandAngles)) {
+API_CALLABLE(GetClockHandAngles) {
     if (script->varTable[15] > 720) {
         script->varTable[15] = 0;
     }
@@ -36,7 +36,7 @@ API_CALLABLE(N(GetClockHandAngles)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -45,20 +45,20 @@ EvtScript N(EVS_Main) = {
     Call(SetModelTexVariant, MODEL_o110, LVar0)
 #endif
     Set(GF_MAP_MtRugged, true)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
     Call(ClearDefeatedEnemies)
-    ExecWait(N(EVS_MakeEntities))
-    ExecWait(N(EVS_InitializeTrainScene))
-    Exec(N(EVS_EnterMap))
+    ExecWait(EVS_MakeEntities)
+    ExecWait(EVS_InitializeTrainScene)
+    Exec(EVS_EnterMap)
     Wait(1)
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_SetupFoliage))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_SetupFoliage)
     Call(PlaySoundAtF, SOUND_LOOP_IWA10_FLOW1, SOUND_SPACE_WITH_DEPTH, -560, 0, -233)
     Thread
         Set(LVarF, 0)
         Label(10)
             Add(LVarF, 1)
-            Call(N(GetClockHandAngles))
+            Call(GetClockHandAngles)
             Call(RotateModel, MODEL_o148, LVar0, 0, 0, -1)
             Call(RotateModel, MODEL_o147, LVar1, 0, 0, -1)
             Wait(10)
@@ -74,7 +74,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH2_SPOKE_WITH_PARAKARRY)
-        Exec(N(EVS_Scene_MeetParakarry))
+        Exec(EVS_Scene_MeetParakarry)
     EndIf
     Return
     End

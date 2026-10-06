@@ -1,6 +1,6 @@
 #include "flo_21.h"
 
-EvtScript N(EVS_SetupCloudPuffs) = {
+EvtScript EVS_SetupCloudPuffs = {
     Thread
         Set(LVarF, 0)
         Label(0)

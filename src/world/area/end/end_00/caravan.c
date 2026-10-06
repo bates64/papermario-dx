@@ -1,6 +1,6 @@
 #include "end_00.h"
 
-EvtScript N(EVS_CaravanStopMarching) = {
+EvtScript EVS_CaravanStopMarching = {
     Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
     SetF(LVar1, LVar1)
     Loop(0)
@@ -13,7 +13,7 @@ EvtScript N(EVS_CaravanStopMarching) = {
 };
 
 // unused
-EvtScript N(EVS_MoustafaStopMarching) = {
+EvtScript EVS_MoustafaStopMarching = {
     Call(GetNpcPos, NPC_Moustafa, LVar0, LVar1, LVar2)
     SetF(LVar0, LVar0)
     Loop(0)
@@ -25,12 +25,12 @@ EvtScript N(EVS_MoustafaStopMarching) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Caravan) = {
+EvtScript EVS_ParadePhase_Caravan = {
     Call(SetNpcScale, NPC_Rhuff, Float(0.75), Float(0.75), Float(0.75))
     Thread
         Call(NpcMoveTo, NPC_Rowf, -1447, -2, 200 * DT)
         Set(LVar0, NPC_Rowf)
-        ExecGetTID(N(EVS_CaravanStopMarching), LVarA)
+        ExecGetTID(EVS_CaravanStopMarching, LVarA)
         Call(SetNpcAnimation, NPC_Rowf, ANIM_Rowf_PackedIdle)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_Rowf, ANIM_Rowf_PackedTalk)
@@ -53,7 +53,7 @@ EvtScript N(EVS_ParadePhase_Caravan) = {
     Thread
         Call(NpcMoveTo, NPC_Rhuff, -1412, -2, 200 * DT)
         Set(LVar0, NPC_Rhuff)
-        ExecGetTID(N(EVS_CaravanStopMarching), LVarA)
+        ExecGetTID(EVS_CaravanStopMarching, LVarA)
         Call(SetNpcAnimation, NPC_Rhuff, ANIM_Rowf_PackedIdle)
         Wait(220 * DT)
         Call(SetNpcAnimation, NPC_Rhuff, ANIM_Rowf_PackedWalk)
@@ -64,7 +64,7 @@ EvtScript N(EVS_ParadePhase_Caravan) = {
     Thread
         Call(NpcMoveTo, NPC_Moustafa, -1380, 2, 180 * DT)
         Set(LVar0, NPC_Moustafa)
-        ExecGetTID(N(EVS_CaravanStopMarching), LVarA)
+        ExecGetTID(EVS_CaravanStopMarching, LVarA)
         Call(SetNpcAnimation, NPC_Moustafa, ANIM_Moustafa_Idle)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_Moustafa, ANIM_Moustafa_Toss)
@@ -95,7 +95,7 @@ EvtScript N(EVS_ParadePhase_Caravan) = {
         Wait(10 * DT)
         Call(NpcMoveTo, NPC_Mouser1, -1342, 2, 180 * DT)
         Set(LVar0, NPC_Mouser1)
-        ExecGetTID(N(EVS_CaravanStopMarching), LVarA)
+        ExecGetTID(EVS_CaravanStopMarching, LVarA)
         Call(SetNpcAnimation, NPC_Mouser1, ANIM_Mouser_Blue_IdleOnlyBlink)
         Wait(110 * DT)
         Call(SetNpcAnimation, NPC_Mouser1, ANIM_Mouser_Blue_Whisper)
@@ -110,7 +110,7 @@ EvtScript N(EVS_ParadePhase_Caravan) = {
         Wait(10)
         Call(NpcMoveTo, NPC_Mouser2, -1312, 2, 180 * DT)
         Set(LVar0, NPC_Mouser2)
-        ExecGetTID(N(EVS_CaravanStopMarching), LVarA)
+        ExecGetTID(EVS_CaravanStopMarching, LVarA)
         Call(SetNpcAnimation, NPC_Mouser2, ANIM_Mouser_Blue_IdleOnlyBlink)
         Wait(230 * DT)
         Call(SetNpcAnimation, NPC_Mouser2, ANIM_Mouser_Blue_Run)
@@ -173,7 +173,7 @@ EvtScript N(EVS_ParadePhase_Caravan) = {
     End
 };
 
-Vec3f N(BuzzarFlightPath)[] = {
+Vec3f BuzzarFlightPath[] = {
     { -805.0,   100.0,  -80.0 },
     { -675.0,   100.0, -230.0 },
     { -805.0,   100.0, -280.0 },
@@ -181,7 +181,7 @@ Vec3f N(BuzzarFlightPath)[] = {
     { -805.0,   100.0,  -80.0 },
 };
 
-EvtScript N(EVS_ParadePhase_BuzzarNest) = {
+EvtScript EVS_ParadePhase_BuzzarNest = {
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -219,7 +219,7 @@ EvtScript N(EVS_ParadePhase_BuzzarNest) = {
     EndThread
     Thread
         Loop(6)
-            Call(LoadPath, 80 * DT, Ref(N(BuzzarFlightPath)), ARRAY_COUNT(N(BuzzarFlightPath)), EASING_LINEAR)
+            Call(LoadPath, 80 * DT, Ref(BuzzarFlightPath), ARRAY_COUNT(BuzzarFlightPath), EASING_LINEAR)
             Loop(0)
                 Call(GetNextPathPos)
                 Call(SetNpcPos, NPC_Buzzar, LVar1, LVar2, LVar3)

@@ -1,7 +1,7 @@
 #include "hos_01.h"
 #include "effects.h"
 
-API_CALLABLE(N(DrawAppearSparkles)) {
+API_CALLABLE(DrawAppearSparkles) {
     Bytecode* args = script->ptrReadPos;
     s32 type = evt_get_variable(script, *args++);
     s32 posX = evt_get_variable(script, *args++);
@@ -15,7 +15,7 @@ API_CALLABLE(N(DrawAppearSparkles)) {
 
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-EvtScript N(EVS_MuteMusicOnPlayerApproach) = {
+EvtScript EVS_MuteMusicOnPlayerApproach = {
     Set(LVarA, 0)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -49,7 +49,7 @@ EvtScript N(EVS_MuteMusicOnPlayerApproach) = {
     End
 };
 
-EvtScript N(EVS_Scene_StarSpiritsPlea) = {
+EvtScript EVS_Scene_StarSpiritsPlea = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -35, 250, -145)
@@ -79,22 +79,22 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(PlaySound, SOUND_MULTIPLE_STAR_SPIRITS_APPEAR)
     Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    Call(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
+    Call(DrawAppearSparkles, 0, LVar0, LVar1, LVar2, 10)
     Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    Call(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
+    Call(DrawAppearSparkles, 0, LVar0, LVar1, LVar2, 10)
     Call(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    Call(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
+    Call(DrawAppearSparkles, 0, LVar0, LVar1, LVar2, 10)
     Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    Call(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
+    Call(DrawAppearSparkles, 0, LVar0, LVar1, LVar2, 10)
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    Call(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
+    Call(DrawAppearSparkles, 0, LVar0, LVar1, LVar2, 10)
     Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    Call(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
+    Call(DrawAppearSparkles, 0, LVar0, LVar1, LVar2, 10)
     Call(EnableModel, MODEL_2, true)
     Call(EnableModel, MODEL_3, true)
     Call(EnableModel, MODEL_4, true)
@@ -256,13 +256,13 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Eldstar) = {
-    Exec(N(EVS_Scene_StarSpiritsPlea))
+EvtScript EVS_NpcInteract_Eldstar = {
+    Exec(EVS_Scene_StarSpiritsPlea)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAux_Eldstar) = {
+EvtScript EVS_NpcAux_Eldstar = {
     Set(AB_HOS_StatcAmt_Eldstar,  0)
     Set(AB_HOS_StatcAmt_Mamar,    0)
     Set(AB_HOS_StatcAmt_Skolar,   0)
@@ -420,11 +420,11 @@ EvtScript N(EVS_NpcAux_Eldstar) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Eldstar) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Eldstar)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+EvtScript EVS_NpcInit_Eldstar = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Eldstar))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     IfLt(GB_StoryProgress, STORY_CH0_MET_STAR_SPIRITS)
-        Exec(N(EVS_MuteMusicOnPlayerApproach))
+        Exec(EVS_MuteMusicOnPlayerApproach)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH0_MET_STAR_SPIRITS)
         Call(SetNpcPos, NPC_Eldstar,  NPC_DISPOSE_LOCATION)
@@ -448,13 +448,13 @@ EvtScript N(EVS_NpcInit_Eldstar) = {
     End
 };
 
-NpcData N(NpcData_StarSpirits)[] = {
+NpcData NpcData_StarSpirits[] = {
     {
         .id = NPC_Eldstar,
         .pos = { -30.0f, 260.0f, -170.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
@@ -464,7 +464,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Mamar,
         .pos = { 100.0f, 260.0f, -215.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_StarSpirit),
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
@@ -473,7 +473,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Skolar,
         .pos = { -145.0f, 260.0f, -225.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_StarSpirit),
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
@@ -482,7 +482,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Muskular,
         .pos = { 20.0f, 260.0f, -45.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_StarSpirit),
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
@@ -491,7 +491,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Misstar,
         .pos = { -155.0f, 260.0f, -125.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_StarSpirit),
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
@@ -500,7 +500,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Klevar,
         .pos = { 90.0f, 260.0f, -110.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_StarSpirit),
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
@@ -509,14 +509,14 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Kalmar,
         .pos = { -75.0f, 260.0f, -290.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_StarSpirit),
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_StarSpirits)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_StarSpirits),
     {}
 };

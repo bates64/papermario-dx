@@ -11,7 +11,7 @@ typedef struct PartyImage {
     /* 0x3F86 */ PAD(10);
 } PartyImage; // size = 0x3F90
 
-API_CALLABLE(N(LoadPartyImage)) {
+API_CALLABLE(LoadPartyImage) {
     static PartyImage img;
     static MessageImageData image;
 

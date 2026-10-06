@@ -1,14 +1,11 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "model.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_thunder_bolt
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(SpawnLightningFX)) {
+API_CALLABLE(SpawnLightningFX) {
     Actor* enemyTarget = get_actor(script->owner1.actorID);
     Actor* actor = get_actor(enemyTarget->targetActorID);
     f32 posY, posX, posZ;
@@ -41,15 +38,15 @@ API_CALLABLE(N(SpawnLightningFX)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_THUNDER_BOLT)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Thread
         Wait(5)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 20)
     EndThread
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(PlaySound, SOUND_THUNDER_BOLT)
     Wait(10)
     Call(InitTargetIterator)
@@ -58,7 +55,7 @@ EvtScript N(EVS_UseItem) = {
     IfEq(LVar0, HIT_RESULT_MISS)
         Goto(1)
     EndIf
-    Call(N(SpawnLightningFX))
+    Call(SpawnLightningFX)
     Wait(5)
     Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
     Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
@@ -70,8 +67,12 @@ EvtScript N(EVS_UseItem) = {
     Call(MoveBattleCamOver, 20)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Wait(30)
-    Call(N(FadeBackgroundLighten))
-    ExecWait(N(PlayerGoHome))
+    Call(LightenBackground)
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

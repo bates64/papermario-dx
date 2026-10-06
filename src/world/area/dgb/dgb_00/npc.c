@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(PlaySentinelSounds)) {
+API_CALLABLE(PlaySentinelSounds) {
     Npc* npc = get_npc_unsafe(get_enemy(NPC_Sentinel)->npcID);
 
     sfx_adjust_env_sound_pos(SOUND_LRAW_SENTINEL_ALARM, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
@@ -13,7 +13,7 @@ API_CALLABLE(N(PlaySentinelSounds)) {
 #include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/enemy/Sentinel/base.h"
 
-EvtScript N(EVS_SetDoorRots) = {
+EvtScript EVS_SetDoorRots = {
     Set(LVar3, 0)
     Sub(LVar3, LVar2)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deiliwt, COLLIDER_FLAGS_UPPER_MASK)
@@ -31,7 +31,7 @@ EvtScript N(EVS_SetDoorRots) = {
     End
 };
 
-EvtScript N(EVS_CloseDoors) = {
+EvtScript EVS_CloseDoors = {
     Set(LVar3, 0)
     Sub(LVar3, LVar2)
     Call(MakeLerp, 80, 0, 12, EASING_LINEAR)
@@ -49,7 +49,7 @@ EvtScript N(EVS_CloseDoors) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBoo1) = {
+EvtScript EVS_AdvanceBoo1 = {
     Call(GetNpcPos, NPC_Boo_01, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(NpcMoveTo, NPC_Boo_01, LVar0, LVar2, 46 * DT)
@@ -57,7 +57,7 @@ EvtScript N(EVS_AdvanceBoo1) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBoo2) = {
+EvtScript EVS_AdvanceBoo2 = {
     Call(GetNpcPos, NPC_Boo_02, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(NpcMoveTo, NPC_Boo_02, LVar0, LVar2, 50 * DT)
@@ -65,7 +65,7 @@ EvtScript N(EVS_AdvanceBoo2) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBoo3) = {
+EvtScript EVS_AdvanceBoo3 = {
     Call(GetNpcPos, NPC_Boo_03, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(NpcMoveTo, NPC_Boo_03, LVar0, LVar2, 53 * DT)
@@ -73,7 +73,7 @@ EvtScript N(EVS_AdvanceBoo3) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBoo4) = {
+EvtScript EVS_AdvanceBoo4 = {
     Call(GetNpcPos, NPC_Boo_04, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(NpcMoveTo, NPC_Boo_04, LVar0, LVar2, 46 * DT)
@@ -81,7 +81,7 @@ EvtScript N(EVS_AdvanceBoo4) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBoo5) = {
+EvtScript EVS_AdvanceBoo5 = {
     Call(GetNpcPos, NPC_Boo_05, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(NpcMoveTo, NPC_Boo_05, LVar0, LVar2, 50 * DT)
@@ -89,7 +89,7 @@ EvtScript N(EVS_AdvanceBoo5) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBoo6) = {
+EvtScript EVS_AdvanceBoo6 = {
     Call(GetNpcPos, NPC_Boo_06, LVar0, LVar1, LVar2)
     Add(LVar0, 200)
     Call(NpcMoveTo, NPC_Boo_06, LVar0, LVar2, 53 * DT)
@@ -97,18 +97,18 @@ EvtScript N(EVS_AdvanceBoo6) = {
     End
 };
 
-EvtScript N(EVS_AdvanceBooPhalanx) = {
-    Exec(N(EVS_AdvanceBoo1))
-    Exec(N(EVS_AdvanceBoo2))
-    Exec(N(EVS_AdvanceBoo3))
-    Exec(N(EVS_AdvanceBoo4))
-    Exec(N(EVS_AdvanceBoo5))
-    Exec(N(EVS_AdvanceBoo6))
+EvtScript EVS_AdvanceBooPhalanx = {
+    Exec(EVS_AdvanceBoo1)
+    Exec(EVS_AdvanceBoo2)
+    Exec(EVS_AdvanceBoo3)
+    Exec(EVS_AdvanceBoo4)
+    Exec(EVS_AdvanceBoo5)
+    Exec(EVS_AdvanceBoo6)
     Return
     End
 };
 
-EvtScript N(EVS_BraceDoor1) = {
+EvtScript EVS_BraceDoor1 = {
     Call(SetNpcJumpscale, NPC_Boo_01, Float(-0.2))
     Call(NpcJump0, NPC_Boo_01, 257, 30, -90, 5 * DT)
     Call(EnableNpcShadow, NPC_Boo_01, false)
@@ -117,7 +117,7 @@ EvtScript N(EVS_BraceDoor1) = {
     End
 };
 
-EvtScript N(EVS_BraceDoor2) = {
+EvtScript EVS_BraceDoor2 = {
     Call(SetNpcJumpscale, NPC_Boo_02, Float(-0.3))
     Call(NpcJump0, NPC_Boo_02, 272, 112, -81, 12 * DT)
     Call(EnableNpcShadow, NPC_Boo_02, false)
@@ -126,7 +126,7 @@ EvtScript N(EVS_BraceDoor2) = {
     End
 };
 
-EvtScript N(EVS_BraceDoor3) = {
+EvtScript EVS_BraceDoor3 = {
     Call(SetNpcJumpscale, NPC_Boo_03, Float(-0.4))
     Call(NpcJump0, NPC_Boo_03, 237, 120, -118, 10 * DT)
     Call(EnableNpcShadow, NPC_Boo_03, false)
@@ -135,7 +135,7 @@ EvtScript N(EVS_BraceDoor3) = {
     End
 };
 
-EvtScript N(EVS_BraceDoor4) = {
+EvtScript EVS_BraceDoor4 = {
     Call(SetNpcJumpscale, NPC_Boo_04, Float(-0.3))
     Call(NpcJump0, NPC_Boo_04, 280, 60, -79, 8 * DT)
     Call(EnableNpcShadow, NPC_Boo_04, false)
@@ -144,7 +144,7 @@ EvtScript N(EVS_BraceDoor4) = {
     End
 };
 
-EvtScript N(EVS_BraceDoor5) = {
+EvtScript EVS_BraceDoor5 = {
     Call(SetNpcJumpscale, NPC_Boo_05, Float(-0.4))
     Call(NpcJump0, NPC_Boo_05, 250, 81, -97, 9 * DT)
     Call(EnableNpcShadow, NPC_Boo_05, false)
@@ -153,7 +153,7 @@ EvtScript N(EVS_BraceDoor5) = {
     End
 };
 
-EvtScript N(EVS_BraceDoor6) = {
+EvtScript EVS_BraceDoor6 = {
     Call(SetNpcJumpscale, NPC_Boo_06, Float(-0.5))
     Call(NpcJump0, NPC_Boo_06, 227, 43, -123, 15 * DT)
     Call(EnableNpcShadow, NPC_Boo_06, false)
@@ -162,17 +162,17 @@ EvtScript N(EVS_BraceDoor6) = {
     End
 };
 
-EvtScript N(EVS_BoosBraceDoor) = {
-    Exec(N(EVS_BraceDoor2))
-    Exec(N(EVS_BraceDoor3))
-    Exec(N(EVS_BraceDoor4))
-    Exec(N(EVS_BraceDoor5))
-    Exec(N(EVS_BraceDoor6))
+EvtScript EVS_BoosBraceDoor = {
+    Exec(EVS_BraceDoor2)
+    Exec(EVS_BraceDoor3)
+    Exec(EVS_BraceDoor4)
+    Exec(EVS_BraceDoor5)
+    Exec(EVS_BraceDoor6)
     Return
     End
 };
 
-EvtScript N(EVS_LeaderBooShivering) = {
+EvtScript EVS_LeaderBooShivering = {
     Call(GetNpcPos, NPC_Boo_01, LVar0, LVar1, LVar2)
     Loop(0)
         Call(RandInt, 5, LVarA)
@@ -199,7 +199,7 @@ EvtScript N(EVS_LeaderBooShivering) = {
     End
 };
 
-EvtScript N(EVS_TubbaTaunting) = {
+EvtScript EVS_TubbaTaunting = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Loop(0)
         Call(RandInt, 50 * DT, LVar0)
@@ -217,7 +217,7 @@ EvtScript N(EVS_TubbaTaunting) = {
     End
 };
 
-EvtScript N(EVS_Scene_BoosApproachManor) = {
+EvtScript EVS_Scene_BoosApproachManor = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerPos, 350, 10, -150)
@@ -241,7 +241,7 @@ EvtScript N(EVS_Scene_BoosApproachManor) = {
     Call(SetNpcPos, NPC_Boo_04, -100, 10, -30)
     Call(SetNpcPos, NPC_Boo_05, -140, 10, -70)
     Call(SetNpcPos, NPC_Boo_06, -180, 10, -100)
-    ExecWait(N(EVS_AdvanceBooPhalanx))
+    ExecWait(EVS_AdvanceBooPhalanx)
     Wait(60 * DT)
     Call(InterpNpcYaw, NPC_Boo_01, 270, 1)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00DB)
@@ -258,12 +258,12 @@ EvtScript N(EVS_Scene_BoosApproachManor) = {
     Call(InterpPlayerYaw, 270, 1)
     Call(SetNpcPos, NPC_PARTNER, 350, 10, -150)
     Set(LVar2, 1)
-    ExecWait(N(EVS_SetDoorRots))
+    ExecWait(EVS_SetDoorRots)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_EscapeFromTubba) = {
+EvtScript EVS_Scene_EscapeFromTubba = {
     Call(SetPlayerSpeed, Float(8.0 / DT))
     Call(PlayerMoveTo, 184, -44, 0)
     Call(PlaySoundAtNpc, NPC_Boo_01, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -280,8 +280,8 @@ EvtScript N(EVS_Scene_EscapeFromTubba) = {
     Call(ShowEmote, NPC_Boo_06, EMOTE_EXCLAMATION, 45, 20, EMOTER_NPC, 0, 0, 0, 0)
     Wait(50 * DT)
     Set(LVar2, 1)
-    Exec(N(EVS_CloseDoors))
-    Exec(N(EVS_BoosBraceDoor))
+    Exec(EVS_CloseDoors)
+    Exec(EVS_BoosBraceDoor)
     Wait(20 * DT)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(6.0 / DT))
@@ -292,7 +292,7 @@ EvtScript N(EVS_Scene_EscapeFromTubba) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    ExecGetTID(N(EVS_LeaderBooShivering), LVarA)
+    ExecGetTID(EVS_LeaderBooShivering, LVarA)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00DF)
     KillThread(LVarA)
     Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
@@ -331,18 +331,18 @@ EvtScript N(EVS_Scene_EscapeFromTubba) = {
     Call(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
     Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
     Call(ShowMessageAtScreenPos, MSG_CH3_00E7, 160, 40)
-    ExecWait(N(EVS_BraceDoor1))
+    ExecWait(EVS_BraceDoor1)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 5, MSG_CH3_00E8)
     Call(SetNpcAnimation, NPC_Boo_01, ANIM_Boo_Tan_Flail)
-    Exec(N(EVS_TubbaTaunting))
+    Exec(EVS_TubbaTaunting)
     Set(GB_StoryProgress, STORY_CH3_ESCAPED_TUBBAS_MANOR)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetBoosBracingDoor) = {
+EvtScript EVS_SetBoosBracingDoor = {
     Call(SetNpcPos, NPC_Boo_01, 246, 30, -110)
     Call(SetNpcPos, NPC_Boo_02, 276, 120, -80)
     Call(SetNpcPos, NPC_Boo_03, 216, 120, -140)
@@ -371,7 +371,7 @@ EvtScript N(EVS_SetBoosBracingDoor) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_01) = {
+EvtScript EVS_NpcInteract_Boo_01 = {
     Set(MV_PreventTaunting, true)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 5, MSG_CH3_00E9)
     Call(SetNpcAnimation, NPC_Boo_01, ANIM_Boo_Tan_Flail)
@@ -405,105 +405,105 @@ EvtScript N(EVS_NpcInteract_Boo_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_01)))
+EvtScript EVS_NpcInit_Boo_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_02) = {
+EvtScript EVS_NpcInit_Boo_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_03) = {
+EvtScript EVS_NpcInit_Boo_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_04) = {
+EvtScript EVS_NpcInit_Boo_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_05) = {
+EvtScript EVS_NpcInit_Boo_05 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_06) = {
+EvtScript EVS_NpcInit_Boo_06 = {
     Return
     End
 };
 
-NpcData N(NpcData_Boo_01) = {
+NpcData NpcData_Boo_01 = {
     .id = NPC_Boo_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Boo_01),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_Boo_01,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GUSTY_BOO_ANIMS,
     .tattle = MSG_NpcTattle_BraveBoo,
 };
 
-NpcData N(NpcData_Boo_02) = {
+NpcData NpcData_Boo_02 = {
     .id = NPC_Boo_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Boo_02),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_Boo_02,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = GUSTY_BOO_ANIMS,
 };
 
-NpcData N(NpcData_Boo_03) = {
+NpcData NpcData_Boo_03 = {
     .id = NPC_Boo_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Boo_03),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_Boo_03,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = GUSTY_BOO_ANIMS,
 };
 
-NpcData N(NpcData_Boo_04) = {
+NpcData NpcData_Boo_04 = {
     .id = NPC_Boo_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Boo_04),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_Boo_04,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = GUSTY_BOO_ANIMS,
 };
 
-NpcData N(NpcData_Boo_05) = {
+NpcData NpcData_Boo_05 = {
     .id = NPC_Boo_05,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Boo_05),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_Boo_05,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = GUSTY_BOO_ANIMS,
 };
 
-NpcData N(NpcData_Boo_06) = {
+NpcData NpcData_Boo_06 = {
     .id = NPC_Boo_06,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Boo_06),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_Boo_06,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = GUSTY_BOO_ANIMS,
 };
 
-EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
+EvtScript EVS_Scene_ThrownOutBySentinel = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -512,7 +512,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     Thread
         Loop(180)
             Call(GetNpcPos, NPC_Sentinel, LVar0, LVar1, LVar2)
-            Call(N(PlaySentinelSounds))
+            Call(PlaySentinelSounds)
             Wait(1)
         EndLoop
     EndThread
@@ -530,7 +530,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     Wait(20)
     Thread
         Set(LVar2, 1)
-        Exec(N(EVS_SetDoorRots))
+        Exec(EVS_SetDoorRots)
     EndThread
     Wait(15)
     Thread
@@ -565,7 +565,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     Thread
         Wait(60)
         Set(LVar2, 1)
-        Exec(N(EVS_CloseDoors))
+        Exec(EVS_CloseDoors)
     EndThread
     Call(SetPlayerJumpscale, 0)
     Call(PlayerJump1, 175, 0, -35, 10)
@@ -644,33 +644,33 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sentinel) = {
+EvtScript EVS_NpcInit_Sentinel = {
     Return
     End
 };
 
-NpcData N(NpcData_Sentinel) = {
+NpcData NpcData_Sentinel = {
     .id = NPC_Sentinel,
     .pos = { 0.0f, 0.0f, -1000.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Sentinel),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_Sentinel,
+    .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-NpcGroupList N(BooNPCs) = {
-    NPC_GROUP(N(NpcData_Boo_01)),
-    NPC_GROUP(N(NpcData_Boo_02)),
-    NPC_GROUP(N(NpcData_Boo_03)),
-    NPC_GROUP(N(NpcData_Boo_04)),
-    NPC_GROUP(N(NpcData_Boo_05)),
-    NPC_GROUP(N(NpcData_Boo_06)),
+NpcGroupList BooNPCs = {
+    NPC_GROUP(NpcData_Boo_01),
+    NPC_GROUP(NpcData_Boo_02),
+    NPC_GROUP(NpcData_Boo_03),
+    NPC_GROUP(NpcData_Boo_04),
+    NPC_GROUP(NpcData_Boo_05),
+    NPC_GROUP(NpcData_Boo_06),
     {}
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Sentinel)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Sentinel),
     {}
 };

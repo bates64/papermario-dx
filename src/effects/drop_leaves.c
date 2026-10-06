@@ -19,7 +19,6 @@ void drop_leaves_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
     bp.init = drop_leaves_init;
     bp.update = drop_leaves_update;
     bp.renderScene = drop_leaves_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_DROP_LEAVES;
 

@@ -1,6 +1,6 @@
 #include "kkj_03.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_03_ENTRY_0)

@@ -1,9 +1,9 @@
 #include "jan_04.h"
 #include "world/partners.h"
 
-Evt* N(DemoRideScript);
+Evt* DemoRideScript;
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Call(DemoJoystickXY, -40, 30)
     Wait(1)
     Call(DemoJoystickXY, -67, 50)
@@ -78,7 +78,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -97,47 +97,47 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-s32 N(DemoInitState) = 0;
+s32 DemoInitState = 0;
 
-API_CALLABLE(N(SetupDemoScene)) {
+API_CALLABLE(SetupDemoScene) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EvtScript* rideScriptSrc;
 
-    switch (N(DemoInitState)) {
+    switch (DemoInitState) {
         case 0:
             rideScriptSrc = partner_get_enter_map_script();
             if (rideScriptSrc != nullptr) {
                 Evt* newScript;
 
-                N(DemoInitState)++;
+                DemoInitState++;
                 newScript = start_script(rideScriptSrc, EVT_PRIORITY_0, EVT_FLAG_RUN_IMMEDIATELY);
                 newScript->varTable[1] = playerStatus->pos.x - 10.0f;
                 newScript->varTable[2] = playerStatus->pos.y;
                 newScript->varTable[3] = playerStatus->pos.z;
                 newScript->varTable[12] = 1;
-                N(DemoRideScript) = newScript;
+                DemoRideScript = newScript;
             }
             break;
         case 1:
         case 2:
-            N(DemoInitState)++;
+            DemoInitState++;
             break;
         case 3:
             gPartnerNpc->yaw = 270.0f;
             playerStatus->targetYaw = 270.0f;
             playerStatus->curYaw = 270.0f;
             playerStatus->spriteFacingAngle = 180.0f;
-            N(DemoRideScript)->functionTemp[1] = 1;
+            DemoRideScript->functionTemp[1] = 1;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_PlayDemoScene) = {
-    Call(N(SetupDemoScene))
+EvtScript EVS_PlayDemoScene = {
+    Call(SetupDemoScene)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

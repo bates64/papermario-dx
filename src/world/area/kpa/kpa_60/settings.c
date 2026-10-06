@@ -1,6 +1,6 @@
 #include "kpa_60.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [kpa_60_ENTRY_0]    { -191.0,    0.0, -135.0,  180.0 },
     [kpa_60_ENTRY_1]    {  276.0,    0.0, -305.0,  180.0 },
     [kpa_60_ENTRY_2]    {  386.0,  -25.0, -231.0,  180.0 },
@@ -9,10 +9,10 @@ EntryList N(Entrances) = {
     [kpa_60_ENTRY_5]    {    0.0, -1000.0,    0.0,  180.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "kpa_bg",
     .tattle = { MSG_MapTattle_kpa_62 },
 };

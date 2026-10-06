@@ -1,6 +1,6 @@
 #include "flo_16.h"
 
-API_CALLABLE(N(CheckForPoundInput)) {
+API_CALLABLE(CheckForPoundInput) {
     script->varTable[0] = false;
     if (gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND || gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND) {
         script->varTable[0] = true;
@@ -8,8 +8,8 @@ API_CALLABLE(N(CheckForPoundInput)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_OnTouch_RedPillar) = {
-    Call(N(CheckForPoundInput))
+EvtScript EVS_OnTouch_RedPillar = {
+    Call(CheckForPoundInput)
     IfEq(LVar0, false)
         Return
     EndIf
@@ -71,8 +71,8 @@ EvtScript N(EVS_OnTouch_RedPillar) = {
     End
 };
 
-EvtScript N(EVS_OnTouch_GreenPillar) = {
-    Call(N(CheckForPoundInput))
+EvtScript EVS_OnTouch_GreenPillar = {
+    Call(CheckForPoundInput)
     IfEq(LVar0, false)
         Return
     EndIf
@@ -142,8 +142,8 @@ EvtScript N(EVS_OnTouch_GreenPillar) = {
     End
 };
 
-EvtScript N(EVS_OnTouch_PurplePillar) = {
-    Call(N(CheckForPoundInput))
+EvtScript EVS_OnTouch_PurplePillar = {
+    Call(CheckForPoundInput)
     IfEq(LVar0, false)
         Return
     EndIf
@@ -205,7 +205,7 @@ EvtScript N(EVS_OnTouch_PurplePillar) = {
     End
 };
 
-EvtScript N(EVS_SetupPillarPuzzle) = {
+EvtScript EVS_SetupPillarPuzzle = {
     Set(AF_FLO_RaisedRedPillar, false)
     Set(AF_FLO_RaisedGreenPillar, false)
     Set(AF_FLO_LoweredPurplePillar, false)
@@ -223,13 +223,13 @@ EvtScript N(EVS_SetupPillarPuzzle) = {
     Call(ParentColliderToModel, COLLIDER_o255, MODEL_g91)
     Call(ParentColliderToModel, COLLIDER_o248, MODEL_g93)
     Call(ParentColliderToModel, COLLIDER_o256, MODEL_g93)
-    BindTrigger(Ref(N(EVS_OnTouch_RedPillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o242, 1, 0)
-    BindTrigger(Ref(N(EVS_OnTouch_GreenPillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o243, 1, 0)
-    BindTrigger(Ref(N(EVS_OnTouch_RedPillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
-    BindTrigger(Ref(N(EVS_OnTouch_GreenPillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o245, 1, 0)
-    BindTrigger(Ref(N(EVS_OnTouch_PurplePillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o246, 1, 0)
-    BindTrigger(Ref(N(EVS_OnTouch_GreenPillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o247, 1, 0)
-    BindTrigger(Ref(N(EVS_OnTouch_PurplePillar)), TRIGGER_FLOOR_TOUCH, COLLIDER_o248, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_RedPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o242, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_GreenPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o243, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_RedPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_GreenPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o245, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_PurplePillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o246, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_GreenPillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o247, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_PurplePillar), TRIGGER_FLOOR_TOUCH, COLLIDER_o248, 1, 0)
     Return
     End
 };

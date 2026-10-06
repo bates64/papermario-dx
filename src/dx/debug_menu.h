@@ -21,6 +21,8 @@ typedef enum DebugCheat {
 
 void dx_debug_menu_main();
 void dx_debug_console_main();
+// A debug transition may free data referenced by the frame being constructed.
+b32 dx_debug_consume_discard_frame(void);
 void dx_debug_draw_collision();
 
 b32 dx_debug_menu_is_open();
@@ -42,9 +44,12 @@ enum DebugEvtStep {
 };
 
 void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...);
+void dx_unhashed_debug_printf(const char* fmt, ...);
 
 #define debug_print(text) dx_hashed_debug_printf(__FILE__,__LINE__,text)
 #define debug_printf(fmt, args...) dx_hashed_debug_printf(__FILE__,__LINE__,fmt,##args)
+#define debug_print_always(text) dx_unhashed_debug_printf(text)
+#define debug_printf_always(fmt, args...) dx_unhashed_debug_printf(fmt,##args)
 
 #define DebugPrint(text) Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), 0)
 #define DebugPrintf(args...) VFUNC(DebugPrintf, args)
@@ -94,6 +99,8 @@ API_CALLABLE(_dxDebugFloatPrintf);
 
 #define debug_print(text)
 #define debug_printf(fmt, args...)
+#define debug_print_always(text)
+#define debug_printf_always(fmt, args...)
 
 #endif
 #endif // _DX_DEBUG_MENU_H

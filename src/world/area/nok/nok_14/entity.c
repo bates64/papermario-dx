@@ -1,7 +1,7 @@
 #include "nok_14.h"
 #include "entity.h"
 
-API_CALLABLE(N(CheckItemExists)) {
+API_CALLABLE(CheckItemExists) {
     Bytecode* args = script->ptrReadPos;
     s32 itemIdx = evt_get_variable(script, *args++);
     s32 outVar = *args++;
@@ -11,7 +11,7 @@ API_CALLABLE(N(CheckItemExists)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ReadSign_NoEntry) = {
+EvtScript EVS_ReadSign_NoEntry = {
     Call(IsStartingConversation, LVar0)
     IfEq(LVar0, true)
         Return
@@ -26,7 +26,7 @@ EvtScript N(EVS_ReadSign_NoEntry) = {
     End
 };
 
-EvtScript N(EVS_BreakBlock_ThunderBolt) = {
+EvtScript EVS_BreakBlock_ThunderBolt = {
     IfEq(GF_NOK14_Item_ThunderBolt, true)
         Return
     EndIf
@@ -35,7 +35,7 @@ EvtScript N(EVS_BreakBlock_ThunderBolt) = {
         Loop(25)
             Wait(1)
             Call(GetNpcPos, NPC_KoopaTroopa_02, LVar0, LVar1, LVar2)
-            Call(N(CheckItemExists), MV_Item_ThunderBolt, LVarA)
+            Call(CheckItemExists, MV_Item_ThunderBolt, LVarA)
             IfEq(LVarA, 0)
                 // prevent crash from player picking up the item before the loop ends
                 BreakLoop
@@ -57,9 +57,9 @@ EvtScript N(EVS_BreakBlock_ThunderBolt) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Signpost), -150, 0, -175, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_ReadSign_NoEntry)))
+    Call(AssignScript, Ref(EVS_ReadSign_NoEntry))
     Set(LVar0, 1)
     IfLt(GB_StoryProgress, STORY_CH1_MADE_SECOND_BRIDGE)
         Set(LVar0, 0)
@@ -74,7 +74,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeItemEntity, ITEM_COIN, -670, 75, -20, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinD)
     Call(MakeItemEntity, ITEM_COIN, -670, 75, -50, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinE)
     Call(MakeEntity, Ref(Entity_BrickBlock), -345, 77, -117, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_BreakBlock_ThunderBolt)))
+    Call(AssignScript, Ref(EVS_BreakBlock_ThunderBolt))
     Call(MakeItemEntity, ITEM_THUNDER_BOLT, -345, 102, -117, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_ThunderBolt)
     Set(MV_Item_ThunderBolt, LVar0)
     Call(MakeEntity, Ref(Entity_BrickBlock), 200, 60, -160, 0, MAKE_ENTITY_END)

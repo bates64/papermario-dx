@@ -3,22 +3,22 @@
 #include "world/common/npc/TubbasHeart/idle.inc.c"
 #include "world/common/npc/Yakkey/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_TubbasHeart) = {
+EvtScript EVS_NpcIdle_TubbasHeart = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TubbasHeart) = {
+EvtScript EVS_NpcInit_TubbasHeart = {
     IfNe(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WELL)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Else
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TubbasHeart)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yakkey) = {
+EvtScript EVS_NpcInteract_Yakkey = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_WHALE_MOUTH_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yakkey_Talk, ANIM_Yakkey_Idle, 0, MSG_CH3_00BA)
@@ -35,41 +35,41 @@ EvtScript N(EVS_NpcInteract_Yakkey) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yakkey) = {
+EvtScript EVS_NpcInit_Yakkey = {
     IfLt(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yakkey)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yakkey))
     EndIf
     Return
     End
 };
 
-NpcData N(NpcData_TubbasHeart) = {
+NpcData NpcData_TubbasHeart = {
     .id = NPC_TubbasHeart,
     .pos = { -23.0f, 75.0f, 31.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_TubbasHeart),
-    .settings = &N(NpcSettings_TubbasHeart),
+    .init = &EVS_NpcInit_TubbasHeart,
+    .settings = &NpcSettings_TubbasHeart,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
     .drops = NO_DROPS,
     .animations = TUBBAS_HEART_ANIMS,
 };
 
-NpcData N(NpcData_Yakkey) = {
+NpcData NpcData_Yakkey = {
     .id = NPC_Yakkey,
     .pos = { 38.0f, 0.0f, 97.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Yakkey),
-    .settings = &N(NpcSettings_Yakkey),
+    .init = &EVS_NpcInit_Yakkey,
+    .settings = &NpcSettings_Yakkey,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = YAKKEY_ANIMS,
     .tattle = MSG_NpcTattle_Yakkey,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TubbasHeart)),
-    NPC_GROUP(N(NpcData_Yakkey)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TubbasHeart),
+    NPC_GROUP(NpcData_Yakkey),
     {}
 };

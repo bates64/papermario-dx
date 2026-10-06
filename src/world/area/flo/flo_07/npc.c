@@ -3,7 +3,7 @@
 
 #include "world/common/npc/Posie/idle.inc.c"
 
-EvtScript N(EVS_Scene_SunReturns) = {
+EvtScript EVS_Scene_SunReturns = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(GetNpcPos, NPC_Posie, LVar0, LVar1, LVar2)
@@ -24,7 +24,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-EvtScript N(EVS_ShakeGround) = {
+EvtScript EVS_ShakeGround = {
     Label(0)
         Call(ShakeCam, CAM_DEFAULT, 0, 1, Float(1.0))
         Wait(1)
@@ -33,7 +33,7 @@ EvtScript N(EVS_ShakeGround) = {
     End
 };
 
-EvtScript N(EVS_MakeCrystalBerry) = {
+EvtScript EVS_MakeCrystalBerry = {
     IfEq(AF_FLO_MadeCrystalBerry, true)
         Return
     EndIf
@@ -45,7 +45,7 @@ EvtScript N(EVS_MakeCrystalBerry) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlaySound, SOUND_LOOP_RUMBLE)
-    ExecGetTID(N(EVS_ShakeGround), MV_GroundShakingScript)
+    ExecGetTID(EVS_ShakeGround, MV_GroundShakingScript)
     Call(SpeakToPlayer, NPC_Posie, ANIM_Posie_Strain, ANIM_Posie_Strain, 0, MSG_CH6_0069)
     KillThread(MV_GroundShakingScript)
     Call(SetCamDistance, CAM_DEFAULT, 350)
@@ -72,8 +72,8 @@ EvtScript N(EVS_MakeCrystalBerry) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Posie) = {
-    ExecWait(N(EVS_PushFlowerSong))
+EvtScript EVS_NpcInteract_Posie = {
+    ExecWait(EVS_PushFlowerSong)
     Call(NpcFacePlayer, NPC_SELF, 1)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
@@ -93,14 +93,14 @@ EvtScript N(EVS_NpcInteract_Posie) = {
             Set(GB_StoryProgress, STORY_CH6_GOT_FERTILE_SOIL)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_0066)
             IfEq(GF_FLO12_RosieRequestedSomethingBeautiful, true)
-                ExecWait(N(EVS_MakeCrystalBerry))
+                ExecWait(EVS_MakeCrystalBerry)
             EndIf
             Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
         CaseLt(STORY_CH6_GOT_CRYSTAL_BERRY)
             IfEq(GF_FLO12_RosieRequestedSomethingBeautiful, true)
                 IfEq(AF_FLO_MadeCrystalBerry, false)
                     Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, Float(350.0), Float(18.0), Float(-7.5))
-                    ExecWait(N(EVS_MakeCrystalBerry))
+                    ExecWait(EVS_MakeCrystalBerry)
                     Call(ResetCam, CAM_DEFAULT, Float(4.0))
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_0072)
@@ -124,12 +124,12 @@ EvtScript N(EVS_NpcInteract_Posie) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_0077)
     EndSwitch
-    ExecWait(N(EVS_PopSong))
+    ExecWait(EVS_PopSong)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Posie) = {
+EvtScript EVS_NpcInit_Posie = {
     IfEq(GB_StoryProgress, STORY_CH6_GOT_CRYSTAL_BERRY)
         IfEq(GF_FLO07_Item_CrystalBerry, false)
             IfEq(GF_FLO07_CrystalBerryFellOnLeftSide, false)
@@ -140,12 +140,12 @@ EvtScript N(EVS_NpcInit_Posie) = {
         EndIf
     EndIf
     Set(AF_FLO07_ToggleDialogue_Posie, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Posie)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Posie))
     Return
     End
 };
 
-EvtScript N(EVS_TryKickingPlayerOut) = {
+EvtScript EVS_TryKickingPlayerOut = {
     IfNe(AB_FLO_PoiseKickedOutCount, 0)
         Call(DisablePlayerInput, true)
         Wait(10)
@@ -164,7 +164,7 @@ EvtScript N(EVS_TryKickingPlayerOut) = {
     End
 };
 
-EvtScript N(EVS_OnHit_CrystalTree) = {
+EvtScript EVS_OnHit_CrystalTree = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH6_GOT_CRYSTAL_BERRY)
         Call(NpcFacePlayer, NPC_Posie, 1)
@@ -176,7 +176,7 @@ EvtScript N(EVS_OnHit_CrystalTree) = {
                 Call(SetPanTarget, CAM_DEFAULT, -250, 0, 0)
                 Call(SetCamDistance, CAM_DEFAULT, 350)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
-                ExecWait(N(EVS_MakeCrystalBerry))
+                ExecWait(EVS_MakeCrystalBerry)
                 Call(ResetCam, CAM_DEFAULT, Float(4.0))
             EndIf
         EndIf
@@ -206,41 +206,41 @@ EvtScript N(EVS_OnHit_CrystalTree) = {
     End
 };
 
-FoliageModelList N(CrystalTree_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o6, MODEL_o7, MODEL_o8);
-FoliageModelList N(CrystalTree_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o5);
+FoliageModelList CrystalTree_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o6, MODEL_o7, MODEL_o8);
+FoliageModelList CrystalTree_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o5);
 
-ShakeTreeConfig N(ShakeTree_CrystalTree) = {
-    .leaves = &N(CrystalTree_LeafModels),
-    .trunk = &N(CrystalTree_TrunkModels),
-    .callback = &N(EVS_OnHit_CrystalTree),
+ShakeTreeConfig ShakeTree_CrystalTree = {
+    .leaves = &CrystalTree_LeafModels,
+    .trunk = &CrystalTree_TrunkModels,
+    .callback = &EVS_OnHit_CrystalTree,
 };
 
-BombTrigger N(BombPos_CrystalTree) = {
+BombTrigger BombPos_CrystalTree = {
     .pos = { -309.0f, 0.0f, 31.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(ShakeTree_CrystalTree)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(ShakeTree_CrystalTree))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o5, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_CrystalTree)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_CrystalTree), 1, 0)
     Return
     End
 };
 
-NpcData N(NpcData_Posie) = {
+NpcData NpcData_Posie = {
     .id = NPC_Posie,
     .pos = { -260.0f, 0.0f, 0.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Posie),
-    .settings = &N(NpcSettings_Posie),
+    .init = &EVS_NpcInit_Posie,
+    .settings = &NpcSettings_Posie,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = POSIE_ANIMS,
     .tattle = MSG_NpcTattle_Posie,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Posie)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Posie),
     {}
 };

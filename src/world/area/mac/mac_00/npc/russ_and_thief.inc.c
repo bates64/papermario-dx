@@ -1,6 +1,6 @@
 #include "../mac_00.h"
 
-LetterDelivery N(LetterDelivery_RussT) = {
+LetterDelivery LetterDelivery_RussT = {
     .recipientID = NPC_RussT,
     .recipientTalk = ANIM_RussT_Talk,
     .recipientIdle = ANIM_RussT_Idle,
@@ -12,7 +12,7 @@ LetterDelivery N(LetterDelivery_RussT) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_ShyGuy_PlayRunningSounds) = {
+EvtScript EVS_ShyGuy_PlayRunningSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, LVar0, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -29,7 +29,7 @@ typedef struct RussTLoreEntry {
     /* 0x10 */ s32 hasBeenGivenFlag;
 } RussTLoreEntry; // size = 0x14
 
-RussTLoreEntry N(RussTLore)[] = {
+RussTLoreEntry RussTLore[] = {
     { MSG_RussTHint_0000, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_00, GF_MAC00_RussT_HeardLore_00, AF_MAC00_LoreGiven_00 },
     { MSG_RussTHint_0001, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_01, GF_MAC00_RussT_HeardLore_01, AF_MAC00_LoreGiven_01 },
     { MSG_RussTHint_0002, STORY_CH0_WAKE_UP,             AF_MAC00_LoreAvailable_02, GF_MAC00_RussT_HeardLore_02, AF_MAC00_LoreGiven_02 },
@@ -68,21 +68,21 @@ RussTLoreEntry N(RussTLore)[] = {
     { MSG_RussTHint_0023, STORY_CH7_BEGAN_PEACH_MISSION, AF_MAC00_LoreAvailable_23, GF_MAC00_RussT_HeardLore_23, AF_MAC00_LoreGiven_23 },
 };
 
-API_CALLABLE(N(ResetRussHintsGiven)) {
-    RussTLoreEntry* entry = N(RussTLore);
+API_CALLABLE(ResetRussHintsGiven) {
+    RussTLoreEntry* entry = RussTLore;
     u32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
+    for (i = 0; i < ARRAY_COUNT(RussTLore); i++, entry++) {
         evt_set_variable(script, entry->hasBeenGivenFlag, false);
     }
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitRussHintUnlocks)) {
-    RussTLoreEntry* entry = N(RussTLore);
+API_CALLABLE(InitRussHintUnlocks) {
+    RussTLoreEntry* entry = RussTLore;
     u32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
+    for (i = 0; i < ARRAY_COUNT(RussTLore); i++, entry++) {
         s32 progress = evt_get_variable(script, GB_StoryProgress);
 
         evt_set_variable(script, entry->isAvailableFlag, progress >= entry->progressRequired);
@@ -90,13 +90,13 @@ API_CALLABLE(N(InitRussHintUnlocks)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetRussHintMessage)) {
-    RussTLoreEntry* entry = N(RussTLore);
+API_CALLABLE(GetRussHintMessage) {
+    RussTLoreEntry* entry = RussTLore;
     s32 hasHintMessage = false;
     s32 count = 0;
     u32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
+    for (i = 0; i < ARRAY_COUNT(RussTLore); i++, entry++) {
         if (evt_get_variable(script, entry->isAvailableFlag)) {
             if (!evt_get_variable(script, entry->savedFlag)) {
                 hasHintMessage = true;
@@ -110,14 +110,14 @@ API_CALLABLE(N(GetRussHintMessage)) {
     }
 
     if (!hasHintMessage) {
-        entry = N(RussTLore);
+        entry = RussTLore;
         i = 0;
         if (count != 0) {
             s32 chosenHint = rand_int(count - 1);
 
             count = 0;
 
-            for (i = hasHintMessage; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
+            for (i = hasHintMessage; i < ARRAY_COUNT(RussTLore); i++, entry++) {
                 if (evt_get_variable(script, entry->isAvailableFlag) &&
                     !evt_get_variable(script, entry->hasBeenGivenFlag) &&
                     count++ >= chosenHint)
@@ -135,12 +135,12 @@ API_CALLABLE(N(GetRussHintMessage)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetRussHintCount)) {
-    RussTLoreEntry* entry = N(RussTLore);
+API_CALLABLE(GetRussHintCount) {
+    RussTLoreEntry* entry = RussTLore;
     s32 count = 0;
     u32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
+    for (i = 0; i < ARRAY_COUNT(RussTLore); i++, entry++) {
         if (evt_get_variable(script, entry->isAvailableFlag) && !evt_get_variable(script, entry->hasBeenGivenFlag)) {
             count++;
         }
@@ -149,7 +149,7 @@ API_CALLABLE(N(GetRussHintCount)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ManageCarriedDictionary) = {
+EvtScript EVS_ManageCarriedDictionary = {
     Call(GetNpcPos, NPC_ShyGuyThief, LVar2, LVar3, LVar4)
     Add(LVar3, 20)
     Call(MakeItemEntity, ITEM_DICTIONARY, LVar2, LVar3, LVar4, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -166,7 +166,7 @@ EvtScript N(EVS_ManageCarriedDictionary) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_StealDictionary) = {
+EvtScript EVS_ShyGuy_StealDictionary = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGt(LVar0, -60)
@@ -181,7 +181,7 @@ EvtScript N(EVS_ShyGuy_StealDictionary) = {
     Wait(1)
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_MAC_Gate_0009, 160, 40)
-    Exec(N(EVS_ManageCarriedDictionary))
+    Exec(EVS_ManageCarriedDictionary)
     Thread
         Call(SetGroupVisibility, MODEL_intel_inn, MODEL_GROUP_VISIBLE)
         Call(PlaySoundAtCollider, COLLIDER_deilit3, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -202,14 +202,14 @@ EvtScript N(EVS_ShyGuy_StealDictionary) = {
     Wait(5)
     Call(SetNpcSpeed, NPC_ShyGuyThief, 10)
     Set(LVar0, 21)
-    ExecGetTID(N(EVS_ShyGuy_PlayRunningSounds), LVarA)
+    ExecGetTID(EVS_ShyGuy_PlayRunningSounds, LVarA)
     Call(NpcMoveTo, NPC_ShyGuyThief, -10, -410, 0)
     KillThread(LVarA)
     Call(PlaySoundAtNpc, NPC_ShyGuyThief, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_ShyGuyThief, -10, 0, -340, 0)
     Set(LVar0, 21)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(EVS_ShyGuy_PlayRunningSounds), LVarA)
+    ExecGetTID(EVS_ShyGuy_PlayRunningSounds, LVarA)
     Call(NpcMoveTo, NPC_ShyGuyThief, 45, -186, 0)
     Call(NpcMoveTo, NPC_ShyGuyThief, 139, -67, 0)
     Thread
@@ -224,7 +224,7 @@ EvtScript N(EVS_ShyGuy_StealDictionary) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuyThief) = {
+EvtScript EVS_NpcInit_ShyGuyThief = {
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Return
     EndIf
@@ -234,24 +234,24 @@ EvtScript N(EVS_NpcInit_ShyGuyThief) = {
     IfNe(GF_MAC00_DictionaryStolen, false)
         Return
     EndIf
-    Exec(N(EVS_ShyGuy_StealDictionary))
+    Exec(EVS_ShyGuy_StealDictionary)
     Return
     End
 };
 
-EvtScript N(EVS_RussT_GetHint) = {
-    Call(N(InitRussHintUnlocks))
+EvtScript EVS_RussT_GetHint = {
+    Call(InitRussHintUnlocks)
     IfEq(GF_MAC00_Met_RussT, false)
         Set(GF_MAC00_Met_RussT, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0004)
         Return
     EndIf
-    Call(N(GetRussHintCount))
+    Call(GetRussHintCount)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_RussT, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0008)
         Return
     EndIf
-    Call(N(GetRussHintMessage))
+    Call(GetRussHintMessage)
     IfNe(LVar2, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0005)
     Else
@@ -263,18 +263,18 @@ EvtScript N(EVS_RussT_GetHint) = {
     End
 };
 
-ITEM_LIST(N(ItemList_RussDocuments1), ITEM_DICTIONARY, ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
+ITEM_LIST(ItemList_RussDocuments1, ITEM_DICTIONARY, ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
 
-ITEM_LIST(N(ItemList_RussDocuments2), ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
+ITEM_LIST(ItemList_RussDocuments2, ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
 
-EvtScript N(EVS_ItemPrompt_Dictionary) = {
+EvtScript EVS_ItemPrompt_Dictionary = {
     IfEq(AF_MAC00_HeardDictionaryLament, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000A)
         Set(AF_MAC00_HeardDictionaryLament, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000B)
     EndIf
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments1), NPC_RussT)
+    EVT_CHOOSE_KEY_ITEM_FROM(ItemList_RussDocuments1, NPC_RussT)
     Switch(LVar0)
         CaseEq(ITEM_DICTIONARY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000D)
@@ -306,9 +306,9 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Documents) = {
+EvtScript EVS_ItemPrompt_Documents = {
     Set(LVarA, 0)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments2), NPC_RussT)
+    EVT_CHOOSE_KEY_ITEM_FROM(ItemList_RussDocuments2, NPC_RussT)
     Switch(LVar0)
         CaseEq(ITEM_CHOICE_NONE)
             IfLt(GB_StoryProgress, STORY_CH4_SOLVED_COLOR_PUZZLE)
@@ -344,29 +344,29 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RussT) = {
+EvtScript EVS_NpcInteract_RussT = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfEq(GF_MAC00_DictionaryReturned, false)
-            ExecWait(N(EVS_ItemPrompt_Dictionary))
-            Set(LVar0, Ref(N(LetterDelivery_RussT)))
+            ExecWait(EVS_ItemPrompt_Dictionary)
+            Set(LVar0, Ref(LetterDelivery_RussT))
             ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
-        ExecWait(N(EVS_ItemPrompt_Documents))
+        ExecWait(EVS_ItemPrompt_Documents)
         IfNe(LVarA, 0)
             Return
         EndIf
     EndIf
-    ExecWait(N(EVS_RussT_GetHint))
-    Set(LVar0, Ref(N(LetterDelivery_RussT)))
+    ExecWait(EVS_RussT_GetHint)
+    Set(LVar0, Ref(LetterDelivery_RussT))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_RussT) = {
-    Call(N(ResetRussHintsGiven))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RussT)))
+EvtScript EVS_NpcInit_RussT = {
+    Call(ResetRussHintsGiven)
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RussT))
     Return
     End
 };

@@ -3,4 +3,4 @@
 
 #define NpcSettings_ToadGuard NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_ToadGuard);
+extern NpcSettings NpcSettings_ToadGuard;

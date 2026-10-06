@@ -1,20 +1,20 @@
 #include "kmr_03.h"
 #include "entity.h"
 
-EvtScript N(EVS_OnSmashBlock1) = {
+EvtScript EVS_OnSmashBlock1 = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     Set(GB_StoryProgress, STORY_CH0_LEFT_THE_PLAYGROUND)
     Return
     End
 };
 
-EvtScript N(EVS_OnSmashBlock2) = {
+EvtScript EVS_OnSmashBlock2 = {
     Set(GF_KMR03_Hammer1Block, true)
     Return
     End
 };
 
-API_CALLABLE(N(GetPlayerForwardPosition)) {
+API_CALLABLE(GetPlayerForwardPosition) {
     f32 dx = gPlayerStatus.curSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
     f32 dy = gPlayerStatus.curSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
 
@@ -24,7 +24,7 @@ API_CALLABLE(N(GetPlayerForwardPosition)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TetherCameraToPlayer) = {
+EvtScript EVS_TetherCameraToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -34,16 +34,16 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH0_LEFT_THE_PLAYGROUND)
         Call(MakeEntity, Ref(Entity_Hammer1Block), 45, 0, 70, 15, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_OnSmashBlock1)))
+        Call(AssignScript, Ref(EVS_OnSmashBlock1))
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     IfEq(GF_KMR03_Hammer1Block, false)
         Call(MakeEntity, Ref(Entity_Hammer2Block), 230, 0, 310, 15, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_OnSmashBlock2)))
+        Call(AssignScript, Ref(EVS_OnSmashBlock2))
     EndIf
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 230, 60, 310, 15, ITEM_REPEL_GEL, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KMR03_HiddenItem_RepelGel)

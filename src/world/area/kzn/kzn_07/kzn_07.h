@@ -21,10 +21,8 @@ enum {
     MV_GlowIntensity        = MapVar(0),
 };
 
-#define NAMESPACE kzn_07
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PlayUpgradeFanfare);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PlayUpgradeFanfare;

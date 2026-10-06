@@ -3,20 +3,20 @@
 
 #include "../common/LavaGlowLighting.inc.c"
 
-ModelIDList N(LavaModelIDs) = {
+ModelIDList LavaModelIDs = {
     .count = 1,
     .list = { MODEL_yougan }
 };
 
-EvtScript N(EVS_ExitWalk_kzn_06) = EVT_EXIT_WALK(60, kzn_07_ENTRY_0, "kzn_06", kzn_06_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_06 = EVT_EXIT_WALK(60, kzn_07_ENTRY_0, "kzn_06", kzn_06_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_kzn_06), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_kzn_06, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetupTexPanners) = {
+EvtScript EVS_SetupTexPanners = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_yougan,  TEX_PANNER_0)
     Call(SetTexPanner, MODEL_yougan1, TEX_PANNER_1)
@@ -42,33 +42,33 @@ EvtScript N(EVS_SetupTexPanners) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o365, .pos = {  120.0, 0.0, 100.0 }},
     { .colliderID = COLLIDER_o411, .pos = { -120.0, 0.0, 100.0 }},
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_07)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_doro, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
-    Exec(N(EVS_SetupTexPanners))
-    Set(LVar0, N(EVS_BindExitTriggers))
+    Exec(EVS_SetupTexPanners)
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(N(ApplyLavaGlowLighting), LAVA_GLOW_MODE_0, nullptr)
+        Call(ApplyLavaGlowLighting, LAVA_GLOW_MODE_0, nullptr)
     EndThread
     Thread
-        Call(N(ClearLavaGlowLighting), Ref(N(LavaModelIDs)))
+        Call(ClearLavaGlowLighting, Ref(LavaModelIDs))
     EndThread
     Return
     End

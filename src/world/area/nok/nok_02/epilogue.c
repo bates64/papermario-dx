@@ -1,6 +1,6 @@
 #include "nok_02.h"
 
-EvtScript N(EVS_Scene_Epilogue) = {
+EvtScript EVS_Scene_Epilogue = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)

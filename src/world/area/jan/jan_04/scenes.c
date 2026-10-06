@@ -1,6 +1,6 @@
 #include "jan_04.h"
 
-Vec3f N(YoshiKidsRunPath)[] = {
+Vec3f YoshiKidsRunPath[] = {
     { -350.0,     0.0,   15.0 },
     { -220.0,    25.0,   15.0 },
     { -110.0,     0.0,   30.0 },
@@ -10,7 +10,7 @@ Vec3f N(YoshiKidsRunPath)[] = {
     {  255.0,     0.0,  285.0 },
 };
 
-EvtScript N(EVS_Scene_Epilogue) = {
+EvtScript EVS_Scene_Epilogue = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -29,7 +29,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
     Thread
         Call(SetNpcPos, NPC_YoshiKid_01, -350, 0, 15)
         Call(SetNpcAnimation, NPC_YoshiKid_01, ANIM_YoshiKid_Green_Run)
-        Call(LoadPath, 90, Ref(N(YoshiKidsRunPath)), ARRAY_COUNT(N(YoshiKidsRunPath)), EASING_LINEAR)
+        Call(LoadPath, 90, Ref(YoshiKidsRunPath), ARRAY_COUNT(YoshiKidsRunPath), EASING_LINEAR)
         Label(10)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_YoshiKid_01, LVar1, LVar2, LVar3)
@@ -42,7 +42,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
         Wait(15)
         Call(SetNpcPos, NPC_YoshiKid_05, -350, 0, 15)
         Call(SetNpcAnimation, NPC_YoshiKid_05, ANIM_YoshiKid_Purple_Run)
-        Call(LoadPath, 90, Ref(N(YoshiKidsRunPath)), ARRAY_COUNT(N(YoshiKidsRunPath)), EASING_LINEAR)
+        Call(LoadPath, 90, Ref(YoshiKidsRunPath), ARRAY_COUNT(YoshiKidsRunPath), EASING_LINEAR)
         Label(11)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_YoshiKid_05, LVar1, LVar2, LVar3)

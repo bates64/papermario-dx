@@ -1,12 +1,11 @@
 #include "common.h"
 #include "world/disguise.h"
-#include "world/partner/sushie.h"
-#include "world/partner/lakilester.h"
+#include "world/partners.h"
 #include "sprite/player.h"
 
 BSS f32 D_802B6770_E27C80;
 
-void action_update_ride(void) {
+export void action_update_ride(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
@@ -21,15 +20,14 @@ void action_update_ride(void) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_RIDING_PARTNER) {
-        if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
-            world_lakilester_sync_player_position();
-        } else if (partnerStatus->actingPartner == PARTNER_SUSHIE) {
-            world_sushie_sync_player_position();
+        if (partnerStatus->actingPartner == PARTNER_LAKILESTER
+            || partnerStatus->actingPartner == PARTNER_SUSHIE) {
+            partner_sync_player_position();
         }
     }
 }
 
-void action_update_state_23(void) {
+export void action_update_state_23(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 hitDirZ;
     f32 hitDirX;
@@ -114,7 +112,7 @@ void action_update_state_23(void) {
     }
 }
 
-void action_update_launch(void) {
+export void action_update_launch(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -138,7 +136,7 @@ void action_update_launch(void) {
     }
 }
 
-void action_update_first_strike(void) {
+export void action_update_first_strike(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -159,7 +157,7 @@ void action_update_first_strike(void) {
     }
 }
 
-void action_update_raise_arms(void) {
+export void action_update_raise_arms(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -178,7 +176,7 @@ void action_update_raise_arms(void) {
     }
 }
 
-void action_update_pushing_block(void) {
+export void action_update_pushing_block(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
@@ -210,7 +208,7 @@ void action_update_pushing_block(void) {
     }
 }
 
-void action_update_talk(void) {
+export void action_update_talk(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

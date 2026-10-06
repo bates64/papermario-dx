@@ -19,9 +19,7 @@ enum {
     NPC_Sentinel                = 4,
 };
 
-#define NAMESPACE dgb_09
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupBreakable);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupBreakable;
+extern NpcGroupList DefaultNPCs;

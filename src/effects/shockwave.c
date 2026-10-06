@@ -58,7 +58,6 @@ void shockwave_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     bpPtr->init = shockwave_init;
     bpPtr->update = shockwave_update;
     bpPtr->renderScene = shockwave_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_SHOCKWAVE;
 

@@ -173,13 +173,6 @@ Actor* get_actor(s32 actorID) {
     return ret;
 }
 
-API_CALLABLE(LoadBattleSection) {
-    BattleArea* battleArea = &gBattleAreas[evt_get_variable(script, *script->ptrReadPos)];
-
-    dma_copy(battleArea->dmaStart, battleArea->dmaEnd, battleArea->dmaDest);
-    return ApiStatus_DONE1;
-}
-
 API_CALLABLE(GetBattlePhase) {
     evt_set_variable(script, *script->ptrReadPos, gBattleStatus.battlePhase);
     return ApiStatus_DONE2;
@@ -2029,6 +2022,22 @@ API_CALLABLE(SetActorStatusOffsets) {
     actor->statusIconOffset.y = iconY;
     actor->statusTextOffset.x = textX;
     actor->statusTextOffset.y = textY;
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetAbsoluteStatusOffsets) {
+    Bytecode* args = script->ptrReadPos;
+    s32 iconX = evt_get_variable(script, *args++);
+    s32 iconY = evt_get_variable(script, *args++);
+    s32 textX = evt_get_variable(script, *args++);
+    s32 textY = evt_get_variable(script, *args++);
+    Actor* actor = get_actor(script->owner1.actorID);
+
+    actor->statusIconOffset.x = (s8)(iconX - actor->actorBlueprint->statusIconOffset.x);
+    actor->statusIconOffset.y = (s8)(iconY - actor->actorBlueprint->statusIconOffset.y);
+    actor->statusTextOffset.x = (s8)(textX - actor->actorBlueprint->statusTextOffset.x);
+    actor->statusTextOffset.y = (s8)(textY - actor->actorBlueprint->statusTextOffset.y);
 
     return ApiStatus_DONE2;
 }

@@ -1,15 +1,13 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_please_come_back
-
-#include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_PLEASE_COME_BACK)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Call(SetGoalToHome, ACTOR_PLAYER)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
     Call(SetActorSpeed, ACTOR_PLAYER, Float(4.0))
@@ -21,3 +19,7 @@ EvtScript N(EVS_UseItem) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

@@ -35,7 +35,7 @@ void func_802B6000_E27510(void) {
     MaxSlideVelocity = slide->maxDescendVel;
 }
 
-void action_update_sliding(void) {
+export void action_update_sliding(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus;
     s32 surfaceType;

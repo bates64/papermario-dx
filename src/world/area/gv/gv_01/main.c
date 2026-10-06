@@ -6,25 +6,25 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-s32 N(DropLetterYCurve)[] = {
+s32 DropLetterYCurve[] = {
     200, 170, 140, 110, 80, 50, 20, 10,
     26, 29, 30, 29, 26, 10, 0, 12,
     15, 16, 15, 11, 6, 0, 4, 3,
     1, 0,
 };
 
-s32 N(DropLastLetterYCurve)[] = {
+s32 DropLastLetterYCurve[] = {
     200, 170, 140, 110, 80, 50, 20, 0,
     12, 15, 16, 15, 11, 6, 0, 4,
     3, 1, 0,
 };
 
-API_CALLABLE(N(FadeToTitleScreen));
-API_CALLABLE(N(ChangeStateToTitleScreen));
+API_CALLABLE(FadeToTitleScreen);
+API_CALLABLE(ChangeStateToTitleScreen);
 
-EvtScript N(EVS_DropLetter) = {
-    UseBuf(N(DropLetterYCurve))
-    Loop(ARRAY_COUNT(N(DropLetterYCurve)))
+EvtScript EVS_DropLetter = {
+    UseBuf(DropLetterYCurve)
+    Loop(ARRAY_COUNT(DropLetterYCurve))
         BufRead1(LVar1)
         Call(TranslateGroup, LVar0, 0, LVar1, 0)
         Wait(1)
@@ -33,9 +33,9 @@ EvtScript N(EVS_DropLetter) = {
     End
 };
 
-EvtScript N(EVS_DropLastLetter) = {
-    UseBuf(N(DropLastLetterYCurve))
-    Loop(ARRAY_COUNT(N(DropLastLetterYCurve)))
+EvtScript EVS_DropLastLetter = {
+    UseBuf(DropLastLetterYCurve)
+    Loop(ARRAY_COUNT(DropLastLetterYCurve))
         BufRead1(LVar1)
         Call(TranslateGroup, LVar0, 0, LVar1, 0)
         Wait(1)
@@ -47,7 +47,7 @@ EvtScript N(EVS_DropLastLetter) = {
 #if VERSION_PAL
 // TODO: define MODEL_ constants for PAL version of gv_01 map
 
-EvtScript N(EVS_E8C6F8) = {
+EvtScript EVS_E8C6F8 = {
     Call(EnableGroup, 20, 0)
     Call(EnableGroup, 22, 0)
     Call(EnableGroup, 24, 0)
@@ -69,33 +69,33 @@ EvtScript N(EVS_E8C6F8) = {
     Call(TranslateGroup, 18, 0, 200, 0)
     Wait(5)
     Set(LVar0, 4)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(5)
     Set(LVar0, 6)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(10)
     Set(LVar0, 8)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(5)
     Set(LVar0, 10)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(5)
     Set(LVar0, 12)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(5)
     Set(LVar0, 14)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(5)
     Set(LVar0, 16)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(15)
     Set(LVar0, 18)
-    Exec(N(EVS_DropLastLetter))
+    Exec(EVS_DropLastLetter)
     Return
     End
 };
 
-EvtScript N(EVS_E8CA04) = {
+EvtScript EVS_E8CA04 = {
     Call(EnableGroup, 4, 0)
     Call(EnableGroup, 6, 0)
     Call(EnableGroup, 8, 0)
@@ -117,43 +117,43 @@ EvtScript N(EVS_E8CA04) = {
     Call(TranslateGroup, 40, 0, 200, 0)
     Wait(5)
     Set(LVar0, 20)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 22)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(7)
     Set(LVar0, 24)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 26)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 28)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 30)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(7)
     Set(LVar0, 32)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 34)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 36)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(4)
     Set(LVar0, 38)
-    Exec(N(EVS_DropLetter))
+    Exec(EVS_DropLetter)
     Wait(12)
     Set(LVar0, 40)
-    Exec(N(EVS_DropLastLetter))
+    Exec(EVS_DropLastLetter)
     Return
     End
 };
 #endif
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(DisablePlayerInput, true)
     Call(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -185,17 +185,17 @@ EvtScript N(EVS_Main) = {
     Call(ClearAmbientSounds, 0)
     Thread
         Wait(200 * DT)
-        Call(N(FadeToTitleScreen))
-        Call(N(ChangeStateToTitleScreen))
+        Call(FadeToTitleScreen)
+        Call(ChangeStateToTitleScreen)
         Wait(100 * DT)
     EndThread
     Call(SetMotionBlurParams, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 128, 10)
 #if VERSION_PAL
     Call(GetLanguage, LVar0)
     IfEq(LVar0, LANGUAGE_ES)
-        Exec(N(EVS_E8CA04))
+        Exec(EVS_E8CA04)
     Else
-        Exec(N(EVS_E8C6F8))
+        Exec(EVS_E8C6F8)
     EndIf
 #else
     Call(TranslateGroup, MODEL_g,  0, 200, 0)
@@ -210,42 +210,42 @@ EvtScript N(EVS_Main) = {
 #if VERSION_IQUE
         Wait(6)
         Set(LVar0, MODEL_g)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_m)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_o)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_e2)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(18)
 #else
         Wait(6)
         Set(LVar0, MODEL_g)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_a)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(12)
         Set(LVar0, MODEL_m)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_e)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_o)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_v)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(6)
         Set(LVar0, MODEL_e2)
-        Exec(N(EVS_DropLetter))
+        Exec(EVS_DropLetter)
         Wait(18)
         Set(LVar0, MODEL_r)
-        Exec(N(EVS_DropLastLetter))
+        Exec(EVS_DropLastLetter)
 #endif
     EndThread
 #endif
@@ -261,7 +261,7 @@ EvtScript N(EVS_Main) = {
     End
 };
 
-API_CALLABLE(N(FadeToTitleScreen)) {
+API_CALLABLE(FadeToTitleScreen) {
     if (isInitialCall) {
         script->functionTemp[0] = 0;
         set_curtain_scale_goal(1.0);
@@ -279,7 +279,7 @@ API_CALLABLE(N(FadeToTitleScreen)) {
     return script->functionTemp[0] == 255;
 }
 
-API_CALLABLE(N(ChangeStateToTitleScreen)) {
+API_CALLABLE(ChangeStateToTitleScreen) {
     gGameStatusPtr->context = CONTEXT_WORLD;
     gGameStatusPtr->debugUnused1 = false;
     gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;

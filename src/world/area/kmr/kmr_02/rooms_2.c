@@ -1,12 +1,12 @@
 #include "kmr_02.h"
 
-EvtScript N(EVS_SetDoorRot_ToadHouse) = {
+EvtScript EVS_SetDoorRot_ToadHouse = {
     Call(RotateModel, MODEL_o275, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_ToadHouse) = {
+EvtScript EVS_SetWallRot_ToadHouse = {
     Set(LVar1, LVar0)
     Add(LVar1, LVar0)
     Call(RotateModel, MODEL_k_k_1, LVar1, 0, 1, 0)
@@ -17,7 +17,7 @@ EvtScript N(EVS_SetWallRot_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_ToadHouse) = {
+EvtScript EVS_RoomListener_ToadHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_kino_in, MODEL_GROUP_VISIBLE)
@@ -41,7 +41,7 @@ EvtScript N(EVS_RoomListener_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_SetWallsDown_ToadHouse) = {
+EvtScript EVS_SetWallsDown_ToadHouse = {
     Call(SetGroupVisibility, MODEL_kino_in, MODEL_GROUP_VISIBLE)
     Call(RotateModel, MODEL_k_k_1, 180, 0, 1, 0)
     Call(RotateModel, MODEL_k_k_2, 180, 0, 1, 0)
@@ -53,7 +53,7 @@ EvtScript N(EVS_SetWallsDown_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_ToadSignSwinging) = {
+EvtScript EVS_ToadSignSwinging = {
     Label(9)
         Call(MakeLerp, 10, -10, 30, EASING_COS_IN_OUT)
         Label(10)
@@ -76,12 +76,12 @@ EvtScript N(EVS_ToadSignSwinging) = {
     End
 };
 
-s32 N(InsideNPCs_ToadHouse)[] = {
+s32 InsideNPCs_ToadHouse[] = {
     NPC_Toad,
     -1
 };
 
-EvtScript N(EVS_SetupToadHouse) = {
+EvtScript EVS_SetupToadHouse = {
     Call(RotateModel, MODEL_o320, 180, 0, 1, 0)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, kmr_02_ENTRY_5)
@@ -90,15 +90,15 @@ EvtScript N(EVS_SetupToadHouse) = {
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_ToadHouse)),
-        Ref(N(EVS_SetWallRot_ToadHouse)),
+        Ref(EVS_SetDoorRot_ToadHouse),
+        Ref(EVS_SetWallRot_ToadHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_ToadHouse)),
+        Ref(EVS_RoomListener_ToadHouse),
         COLLIDER_deilit7,
         COLLIDER_deilit8,
         MODEL_kinopi,
-        Ref(N(InsideNPCs_ToadHouse)))
-    Exec(N(EVS_ToadSignSwinging))
+        Ref(InsideNPCs_ToadHouse))
+    Exec(EVS_ToadSignSwinging)
     Return
     End
 };

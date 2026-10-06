@@ -1,4 +1,3 @@
-#define NAMESPACE A(green_shy_guy)
 
 #define ANIM_SHYGUY_Still           ANIM_ShyGuy_Green_Still
 #define ANIM_SHYGUY_Idle            ANIM_ShyGuy_Green_Idle

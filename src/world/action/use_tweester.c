@@ -11,7 +11,7 @@ enum {
     SUBSTATE_DONE       = 1
 };
 
-void action_update_use_tweester(void) {
+export void action_update_use_tweester(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 sinAngle, cosAngle, liftoffVelocity;
     Entity* entity;
@@ -76,4 +76,3 @@ void action_update_use_tweester(void) {
             break;
     }
 }
-

@@ -7,18 +7,18 @@
 #include "model.h"
 
 #if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_END;
-extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_START;
-extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_END;
-extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_START;
-extern Addr entity_model_HitRedBlock_anim_ROM_END;
-extern Addr entity_model_HitRedBlock_anim_ROM_START;
-extern Addr entity_model_HitRedBlock_gfx_ROM_END;
-extern Addr entity_model_HitRedBlock_gfx_ROM_START;
-extern Addr entity_model_HitYellowBlock_anim_ROM_END;
-extern Addr entity_model_HitYellowBlock_anim_ROM_START;
-extern Addr entity_model_HitYellowBlock_gfx_ROM_END;
-extern Addr entity_model_HitYellowBlock_gfx_ROM_START;
+extern Addr entity_anim_HitFloatingYellowBlock_ROM_END;
+extern Addr entity_anim_HitFloatingYellowBlock_ROM_START;
+extern Addr entity_model_HitFloatingYellowBlock_ROM_END;
+extern Addr entity_model_HitFloatingYellowBlock_ROM_START;
+extern Addr entity_anim_HitRedBlock_ROM_END;
+extern Addr entity_anim_HitRedBlock_ROM_START;
+extern Addr entity_model_HitRedBlock_ROM_END;
+extern Addr entity_model_HitRedBlock_ROM_START;
+extern Addr entity_anim_HitYellowBlock_ROM_END;
+extern Addr entity_anim_HitYellowBlock_ROM_START;
+extern Addr entity_model_HitYellowBlock_ROM_END;
+extern Addr entity_model_HitYellowBlock_ROM_START;
 extern Addr entity_model_RedBlock_ROM_END;
 extern Addr entity_model_RedBlock_ROM_START;
 extern Addr entity_model_YellowBlock_ROM_END;
@@ -37,16 +37,9 @@ extern StaticAnimatorNode* Entity_HitRedBlock_Mesh[];
 
 extern s32 D_802EA310[];
 
-extern EntityBlueprint Entity_HitGroundedYellowBlock;
-extern EntityBlueprint Entity_HitFloatingYellowBlock;
-extern EntityBlueprint Entity_HitRedBlock;
-
 BSS EffectInstance* TriggerBlockVanishEffect;
 
 f32 player_get_camera_facing_angle(void);
-void entity_inactive_block_hit_init(Entity*);
-void entity_inactive_block_hit_anim(Entity*);
-void entity_inactive_block_recoil_anim(Entity*);
 
 void entity_ItemBlock_idle(Entity* entity) {
     entity_base_block_idle(entity);
@@ -346,16 +339,16 @@ EntityScript Entity_TriggerBlock_Script = {
     es_End
 };
 
-DmaEntry Entity_HitYellowBlock_dma[] = { ENTITY_ROM(HitYellowBlock_gfx), ENTITY_ROM(HitYellowBlock_anim) };
-DmaEntry Entity_HitFloatinYellowBlock_dma[] = { ENTITY_ROM(HitFloatingYellowBlock_gfx), ENTITY_ROM(HitFloatingYellowBlock_anim) };
-DmaEntry Entity_HitRedBlock_dma[] = { ENTITY_ROM(HitRedBlock_gfx), ENTITY_ROM(HitRedBlock_anim) };
+DmaEntry Entity_HitYellowBlock_dma[] = { ENTITY_ROM(HitYellowBlock), ENTITY_ANIM_ROM(HitYellowBlock) };
+DmaEntry Entity_HitFloatinYellowBlock_dma[] = { ENTITY_ROM(HitFloatingYellowBlock), ENTITY_ANIM_ROM(HitFloatingYellowBlock) };
+DmaEntry Entity_HitRedBlock_dma[] = { ENTITY_ROM(HitRedBlock), ENTITY_ANIM_ROM(HitRedBlock) };
 
 EntityModelScript Entity_YellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_HiddenYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
 EntityModelScript Entity_RedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_HiddenRedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
 
-EntityBlueprint Entity_YellowBlock = {
+ENTITY_IMPLEMENTATION(YellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_YellowBlock_RenderScript,
@@ -368,7 +361,7 @@ EntityBlueprint Entity_YellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HiddenYellowBlock = {
+ENTITY_IMPLEMENTATION(HiddenYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HiddenYellowBlock_RenderScript,
@@ -381,7 +374,7 @@ EntityBlueprint Entity_HiddenYellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_RedBlock = {
+ENTITY_IMPLEMENTATION(RedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_RedBlock_RenderScript,
@@ -394,7 +387,7 @@ EntityBlueprint Entity_RedBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HiddenRedBlock = {
+ENTITY_IMPLEMENTATION(HiddenRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HiddenRedBlock_RenderScript,
@@ -407,7 +400,7 @@ EntityBlueprint Entity_HiddenRedBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_TriggerBlock = {
+ENTITY_IMPLEMENTATION(TriggerBlock) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitYellowBlock_AnimationIdle,
@@ -420,7 +413,7 @@ EntityBlueprint Entity_TriggerBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HitGroundedYellowBlock = {
+ENTITY_IMPLEMENTATION(HitGroundedYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitYellowBlock_AnimationIdle,
@@ -433,7 +426,7 @@ EntityBlueprint Entity_HitGroundedYellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HitFloatingYellowBlock = {
+ENTITY_IMPLEMENTATION(HitFloatingYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitFloatingYellowBlock_AnimationIdle,
@@ -446,7 +439,7 @@ EntityBlueprint Entity_HitFloatingYellowBlock = {
     .aabbSize = { 25, 25, 25 }
 };
 
-EntityBlueprint Entity_HitRedBlock = {
+ENTITY_IMPLEMENTATION(HitRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitRedBlock_AnimationHit,

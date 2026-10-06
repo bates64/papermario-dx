@@ -2,7 +2,7 @@
 
 #include "sprite/player.h"
 
-EvtScript N(EVS_NpcInit_TwinkEndCh4) = {
+EvtScript EVS_NpcInit_TwinkEndCh4 = {
     Call(GetEntryID, LVar0)
     IfNe(LVar0, mac_04_ENTRY_5)
         Call(RemoveNpc, NPC_SELF)
@@ -11,19 +11,19 @@ EvtScript N(EVS_NpcInit_TwinkEndCh4) = {
     End
 };
 
-Vec3f N(FlightPath_TwinkArrive)[] = {
+Vec3f FlightPath_TwinkArrive[] = {
     {  -70.0,   106.0,    0.0 },
     {  -50.0,    30.0,    0.0 },
     {    0.0,     0.0,    0.0 },
 };
 
-Vec3f N(FlightPath_TwinkDepart)[] = {
+Vec3f FlightPath_TwinkDepart[] = {
     {    0.0,     0.0,    0.0 },
     {  -50.0,    30.0,    0.0 },
     {  -70.0,   106.0,    0.0 },
 };
 
-EvtScript N(EVS_NpcIdle_TwinkStartCh4) = {
+EvtScript EVS_NpcIdle_TwinkStartCh4 = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(PushSong, SONG_TWINK_THEME, 0)
@@ -32,7 +32,7 @@ EvtScript N(EVS_NpcIdle_TwinkStartCh4) = {
     SubF(LVar4, Float(50.0))
     AddF(LVar5, Float(40.0))
     Call(InterpNpcYaw, NPC_Twink, 90, 0)
-    Call(LoadPath, 35 * DT, Ref(N(FlightPath_TwinkArrive)), ARRAY_COUNT(N(FlightPath_TwinkArrive)), EASING_COS_IN_OUT)
+    Call(LoadPath, 35 * DT, Ref(FlightPath_TwinkArrive), ARRAY_COUNT(FlightPath_TwinkArrive), EASING_COS_IN_OUT)
     Loop(0)
         Call(GetNextPathPos)
         AddF(LVar1, LVar4)
@@ -69,7 +69,7 @@ EvtScript N(EVS_NpcIdle_TwinkStartCh4) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(InterpNpcYaw, NPC_Twink, 270, 0)
     Call(GetNpcPos, NPC_Twink, LVar4, LVar5, LVar6)
-    Call(LoadPath, 35 * DT, Ref(N(FlightPath_TwinkDepart)), ARRAY_COUNT(N(FlightPath_TwinkDepart)), EASING_QUADRATIC_IN)
+    Call(LoadPath, 35 * DT, Ref(FlightPath_TwinkDepart), ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
     Loop(0)
         Call(GetNextPathPos)
         Add(LVar1, LVar4)
@@ -89,9 +89,9 @@ EvtScript N(EVS_NpcIdle_TwinkStartCh4) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TwinkStartCh4) = {
+EvtScript EVS_NpcInit_TwinkStartCh4 = {
     IfEq(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TwinkStartCh4)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TwinkStartCh4))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

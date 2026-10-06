@@ -15,11 +15,9 @@ enum {
     NPC_Peach   = 0,
 };
 
-#define NAMESPACE kkj_03
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Scene_MeetingPeach;
+extern EvtScript EVS_Scene_Ascending;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Scene_MeetingPeach);
-extern EvtScript N(EVS_Scene_Ascending);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

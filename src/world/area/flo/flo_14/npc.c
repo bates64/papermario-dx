@@ -4,13 +4,13 @@
 
 #include "world/common/npc/Bubulb/base.h"
 
-NpcSettings N(NpcSettings_BubbleFlower) = {
+NpcSettings NpcSettings_BubbleFlower = {
     .height = 56,
     .radius = 40,
     .level = ACTOR_LEVEL_NONE,
 };
 
-EvtScript N(EVS_NpcInteract_BubbleFlower) = {
+EvtScript EVS_NpcInteract_BubbleFlower = {
     IfEq(AF_FLO_BigBubbleReady, true)
         Set(AF_FLO_PauseBlowingBubbles, true)
         Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0063)
@@ -38,7 +38,7 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
             Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
             Wait(5)
             Call(AdjustCam, CAM_DEFAULT, Float(1.0), 0, 350, Float(17.0), Float(-6.0))
-            Exec(N(EVS_BlowBigBubble))
+            Exec(EVS_BlowBigBubble)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0062)
             Thread
                 Wait(40)
@@ -52,7 +52,7 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
             Call(ResetCam, CAM_DEFAULT, Float(4.0))
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH6_0063)
             Set(GF_FLO14_GaveBerryToBubblePlant, true)
-            BindTrigger(Ref(N(EVS_RideBigBubble)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o154, 1, 0)
+            BindTrigger(Ref(EVS_RideBigBubble), TRIGGER_FLOOR_PRESS_A, COLLIDER_o154, 1, 0)
         EndIf
     EndIf
     Set(AF_FLO_PauseBlowingBubbles, false)
@@ -60,28 +60,28 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_BubbleFlower) = {
+EvtScript EVS_NpcInit_BubbleFlower = {
     Set(AF_FLO_BlowingBigBubble, false)
     Set(AF_FLO_BigBubbleReady, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_BubbleFlower)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_BubbleFlower))
     Return
     End
 };
 
 // uses a dummy bubulb for collision
-NpcData N(NpcData_BubbleFlower) = {
+NpcData NpcData_BubbleFlower = {
     .id = NPC_BubbleFlower,
     .pos = { 617.0f, 0.0f, 108.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_BubbleFlower),
-    .settings = &N(NpcSettings_BubbleFlower),
+    .init = &EVS_NpcInit_BubbleFlower,
+    .settings = &NpcSettings_BubbleFlower,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_HAS_NO_SPRITE,
     .drops = NO_DROPS,
     .animations = BUBULB_PINK_ANIMS,
     .tattle = MSG_NpcTattle_BubblePlant,
 };
 
-NpcData N(NpcData_Bzzap) = {
+NpcData NpcData_Bzzap = {
     .id = NPC_Bzzap,
     .pos = { -175.0f, 55.0f, 15.0f },
     .yaw = 90,
@@ -97,15 +97,15 @@ NpcData N(NpcData_Bzzap) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Bzzap_Wander),
+    .settings = &NpcSettings_Bzzap_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BubbleFlower)),
-    NPC_GROUP(N(NpcData_Bzzap), BTL_FLO_FORMATION_19, BTL_FLO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BubbleFlower),
+    NPC_GROUP(NpcData_Bzzap, BTL_FLO_FORMATION_19, BTL_FLO_STAGE_00),
     {}
 };

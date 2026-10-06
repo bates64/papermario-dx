@@ -28,7 +28,6 @@ EffectInstance* floating_cloud_puff_main(
     bp.init = floating_cloud_puff_init;
     bp.update = floating_cloud_puff_update;
     bp.renderScene = floating_cloud_puff_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_FLOATING_CLOUD_PUFF;
 

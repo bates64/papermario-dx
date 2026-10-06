@@ -1,6 +1,6 @@
 #include "jan_04.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseRange(jan_04_ENTRY_1, jan_04_ENTRY_2)
@@ -15,13 +15,13 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PushNewPartnerSong) = {
+EvtScript EVS_PushNewPartnerSong = {
     Call(PushSong, SONG_NEW_PARTNER, 0)
     Return
     End
 };
 
-EvtScript N(EVS_PopSong) = {
+EvtScript EVS_PopSong = {
     Call(FadeOutMusic, 0, 500)
     Wait(15)
     Call(PopSong)

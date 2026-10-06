@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 
-API_CALLABLE(N(CheckMagikoopaCastTarget)) {
+static API_CALLABLE(CheckMagikoopaCastTarget) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor;
 

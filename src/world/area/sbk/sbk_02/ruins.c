@@ -3,14 +3,14 @@
 #include "model.h"
 
 
-API_CALLABLE(N(HideSun)) {
+API_CALLABLE(HideSun) {
     EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Effect_Sun);
 
     effect->data.sun->targetAlpha = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InterpWorldEnvColor)) {
+API_CALLABLE(InterpWorldEnvColor) {
     static u8 savedPrimR, savedPrimG, savedPrimB;
     static u8 savedEnvR, savedEnvG, savedEnvB;
     static s32 targetPrimR, targetPrimG, targetPrimB;
@@ -54,9 +54,9 @@ API_CALLABLE(N(InterpWorldEnvColor)) {
     return ApiStatus_BLOCK;
 }
 
-ITEM_LIST(N(PedestalKeyList), ITEM_PULSE_STONE);
+ITEM_LIST(PedestalKeyList, ITEM_PULSE_STONE);
 
-EvtScript N(EVS_Pedestal_Sink) = {
+EvtScript EVS_Pedestal_Sink = {
     PlayEffect(EFFECT_SMOKE_IMPACT, 0, 0, 0, 0, 20, 10, 0, 60)
     PlayEffect(EFFECT_DUST, 2, 0, 0, 0, 60)
     Call(PlaySoundAtCollider, COLLIDER_iwa, SOUND_SBK_RUINS_PEDESTAL_SINK, SOUND_SPACE_DEFAULT)
@@ -80,27 +80,27 @@ EvtScript N(EVS_Pedestal_Sink) = {
     End
 };
 
-s32 N(ModelList_Solid)[] = {
+s32 ModelList_Solid[] = {
     MODEL_ruins, MODEL_step, 0xFFFF
 };
 
-s32 N(ModelList_Translucent)[] = {
+s32 ModelList_Translucent[] = {
     MODEL_upper_light, MODEL_o225, 0xFFFF
 };
 
-EvtScript N(EVS_DarkenEnvironment) = {
+EvtScript EVS_DarkenEnvironment = {
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
-    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
-    Call(N(InterpWorldEnvColor), 255, 255, 255, 0, 0, 0, 0)
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(ModelList_Solid), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(ModelList_Translucent), ENV_TINT_NONE)
+    Call(InterpWorldEnvColor, 255, 255, 255, 0, 0, 0, 0)
     Wait(1)
-    Call(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 60)
+    Call(InterpWorldEnvColor, 44, 32, 177, 0, 0, 0, 60)
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_SandRing) = {
+EvtScript EVS_TexPan_SandRing = {
     Call(SetRenderMode, MODEL_o225, RENDER_MODE_SURFACE_XLU_LAYER2)
     Call(EnableTexPanning, MODEL_o225, true)
     Call(EnableTexPanning, CLONED_MODEL(0), true)
@@ -128,7 +128,7 @@ EvtScript N(EVS_TexPan_SandRing) = {
     End
 };
 
-EvtScript N(EVS_SandRing_Appear) = {
+EvtScript EVS_SandRing_Appear = {
     Call(EnableModel, MODEL_o225, true)
     Set(LVar2, 0)
     Set(LVar0, -100)
@@ -149,7 +149,7 @@ EvtScript N(EVS_SandRing_Appear) = {
     End
 };
 
-EvtScript N(EVS_SandRingClone_Appear) = {
+EvtScript EVS_SandRingClone_Appear = {
     Wait(10)
     Call(EnableModel, CLONED_MODEL(0), true)
     Set(LVar2, 0)
@@ -171,7 +171,7 @@ EvtScript N(EVS_SandRingClone_Appear) = {
     End
 };
 
-EvtScript N(EVS_SandRing_Vanish) = {
+EvtScript EVS_SandRing_Vanish = {
     Call(EnableModel, MODEL_o225, true)
     Set(LVar0, 0)
     Set(LVar2, 100)
@@ -194,7 +194,7 @@ EvtScript N(EVS_SandRing_Vanish) = {
     End
 };
 
-EvtScript N(EVS_SandRingClone_Vanish) = {
+EvtScript EVS_SandRingClone_Vanish = {
     Wait(10)
     Call(EnableModel, CLONED_MODEL(0), true)
     Set(LVar0, 0)
@@ -218,7 +218,7 @@ EvtScript N(EVS_SandRingClone_Vanish) = {
     End
 };
 
-EvtScript N(EVS_LightRays_Appear) = {
+EvtScript EVS_LightRays_Appear = {
     ChildThread
         Call(EnableTexPanning, MODEL_upper_light, true)
         Set(LVar0, 0)
@@ -246,7 +246,7 @@ EvtScript N(EVS_LightRays_Appear) = {
     End
 };
 
-EvtScript N(EVS_LightRays_Vanish) = {
+EvtScript EVS_LightRays_Vanish = {
     ChildThread
         Call(EnableTexPanning, MODEL_upper_light, true)
         Set(LVar0, 0)
@@ -272,7 +272,7 @@ EvtScript N(EVS_LightRays_Vanish) = {
     End
 };
 
-EvtScript N(EVS_Ruins_Arise) = {
+EvtScript EVS_Ruins_Arise = {
     Call(MakeTransformGroup, MODEL_ruins)
     Call(EnableGroup, MODEL_ruins, true)
     Thread
@@ -340,7 +340,7 @@ EvtScript N(EVS_Ruins_Arise) = {
     End
 };
 
-EvtScript N(EVS_Ruins_FinishRising) = {
+EvtScript EVS_Ruins_FinishRising = {
     Call(MakeTransformGroup, MODEL_ruins)
     Call(EnableGroup, MODEL_ruins, true)
     Thread
@@ -406,7 +406,7 @@ EvtScript N(EVS_Ruins_FinishRising) = {
     End
 };
 
-EvtScript N(EVS_SetChompStatueRotation) = {
+EvtScript EVS_SetChompStatueRotation = {
     Call(RotateGroup, MODEL_c_wang, LVar0, 0, 1, 0)
     Call(RotateGroup, MODEL_d_wang, LVar0, 0, 1, 0)
     Set(LVar2, 0)
@@ -417,11 +417,11 @@ EvtScript N(EVS_SetChompStatueRotation) = {
     End
 };
 
-EvtScript N(EVS_InterpChompStatueRotation) = {
+EvtScript EVS_InterpChompStatueRotation = {
     Call(MakeLerp, 180, 0, 60, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        ExecWait(N(EVS_SetChompStatueRotation))
+        ExecWait(EVS_SetChompStatueRotation)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -431,7 +431,7 @@ EvtScript N(EVS_InterpChompStatueRotation) = {
     End
 };
 
-EvtScript N(EVS_Doors_Open) = {
+EvtScript EVS_Doors_Open = {
     Call(MakeLerp, 0, 60, 180, EASING_QUADRATIC_IN)
     Label(10)
         Call(UpdateLerp)
@@ -518,7 +518,7 @@ EvtScript N(EVS_Doors_Open) = {
     End
 };
 
-EvtScript N(EVS_Steps_Arise) = {
+EvtScript EVS_Steps_Arise = {
     Call(EnableGroup, MODEL_step, true)
     Call(MakeLerp, -310, 0, 310, EASING_LINEAR)
     Loop(0)
@@ -533,7 +533,7 @@ EvtScript N(EVS_Steps_Arise) = {
     End
 };
 
-EvtScript N(EVS_Steps_FinishRising) = {
+EvtScript EVS_Steps_FinishRising = {
     Call(EnableGroup, MODEL_step, true)
     Call(MakeLerp, -20, 0, 20, EASING_LINEAR)
     Loop(0)
@@ -548,7 +548,7 @@ EvtScript N(EVS_Steps_FinishRising) = {
     End
 };
 
-EvtScript N(EVS_Steps_Unfold) = {
+EvtScript EVS_Steps_Unfold = {
     Call(PlaySoundAt, SOUND_SBK_RUINS_STEPS_UNFOLD, SOUND_SPACE_DEFAULT, 0, 39, -80)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.2))
@@ -575,7 +575,7 @@ EvtScript N(EVS_Steps_Unfold) = {
     End
 };
 
-EvtScript N(EVS_OnInteract_Pedestal) = {
+EvtScript EVS_OnInteract_Pedestal = {
     Call(DisablePulseStone, true)
     Call(ShowKeyChoicePopup)
     IfLe(LVar0, ITEM_CHOICE_NONE)
@@ -588,7 +588,7 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
-    Call(N(HideSun))
+    Call(HideSun)
     Call(SetMusic, 0, SONG_DRY_DRY_RUINS_APPEAR, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 210, 0, 137)
@@ -600,13 +600,13 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
     Set(LVar0, 180)
-    ExecWait(N(EVS_SetChompStatueRotation))
+    ExecWait(EVS_SetChompStatueRotation)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 120, Float(0.2))
         Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.5))
         Call(ShakeCam, CAM_DEFAULT, 0, 300, Float(0.2))
     EndThread
-    Exec(N(EVS_Pedestal_Sink))
+    Exec(EVS_Pedestal_Sink)
     Wait(30)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 0)
@@ -622,23 +622,23 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
         Call(PlayerMoveTo, LVar0, 80, 0)
         Call(FacePlayerTowardPoint, 0, 0, 0)
     EndThread
-    Exec(N(EVS_DarkenEnvironment))
+    Exec(EVS_DarkenEnvironment)
     Wait(30)
     Call(CloneModel, MODEL_o225, CLONED_MODEL(0))
-    Exec(N(EVS_TexPan_SandRing))
-    Exec(N(EVS_SandRing_Appear))
-    Exec(N(EVS_SandRingClone_Appear))
+    Exec(EVS_TexPan_SandRing)
+    Exec(EVS_SandRing_Appear)
+    Exec(EVS_SandRingClone_Appear)
     Wait(100)
-    Exec(N(EVS_LightRays_Appear))
+    Exec(EVS_LightRays_Appear)
     Wait(150)
-    Exec(N(EVS_Ruins_Arise))
-    Exec(N(EVS_Steps_Arise))
+    Exec(EVS_Ruins_Arise)
+    Exec(EVS_Steps_Arise)
     Wait(100)
     Call(SetCamPitch, CAM_DEFAULT, Float(8.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.2))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(80)
-    Exec(N(EVS_InterpChompStatueRotation))
+    Exec(EVS_InterpChompStatueRotation)
     Wait(60)
     Wait(50)
     IfEq(LFlag0, false)
@@ -651,7 +651,7 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
     End
 };
 
-EvtScript N(EVS_SetupRuins) = {
+EvtScript EVS_SetupRuins = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_GOT_PULSE_STONE)
             Call(EnableGroup, MODEL_day_version, false)
@@ -659,7 +659,7 @@ EvtScript N(EVS_SetupRuins) = {
         CaseLt(STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
             Call(EnableGroup, MODEL_day_version, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ruin, COLLIDER_FLAGS_UPPER_MASK)
-            BindPadlock(Ref(N(EVS_OnInteract_Pedestal)), TRIGGER_WALL_PRESS_A, COLLIDER_iwa, Ref(N(PedestalKeyList)), 0, 1)
+            BindPadlock(Ref(EVS_OnInteract_Pedestal), TRIGGER_WALL_PRESS_A, COLLIDER_iwa, Ref(PedestalKeyList), 0, 1)
         CaseDefault
             Call(EnableModel, MODEL_point_iwa, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_pikapika, COLLIDER_FLAGS_UPPER_MASK)
@@ -672,7 +672,7 @@ EvtScript N(EVS_SetupRuins) = {
     End
 };
 
-EvtScript N(EVS_Ruins_Arise_Continued) = {
+EvtScript EVS_Ruins_Arise_Continued = {
     Call(PlaySound, SOUND_SBK_RUINS_FINISH_RISING)
     Call(DisablePlayerInput, true)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
@@ -693,17 +693,17 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(ModelList_Solid)), ENV_TINT_NONE)
-    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(N(ModelList_Translucent)), ENV_TINT_NONE)
-    Call(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 0)
-    Exec(N(EVS_Ruins_FinishRising))
-    Exec(N(EVS_Steps_FinishRising))
+    Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(ModelList_Solid), ENV_TINT_NONE)
+    Call(SetModelTintMode, APPLY_TINT_MODELS, Ref(ModelList_Translucent), ENV_TINT_NONE)
+    Call(InterpWorldEnvColor, 44, 32, 177, 0, 0, 0, 0)
+    Exec(EVS_Ruins_FinishRising)
+    Exec(EVS_Steps_FinishRising)
     Call(CloneModel, MODEL_o225, CLONED_MODEL(0))
-    Exec(N(EVS_TexPan_SandRing))
-    Exec(N(EVS_SandRing_Vanish))
-    Exec(N(EVS_SandRingClone_Vanish))
+    Exec(EVS_TexPan_SandRing)
+    Exec(EVS_SandRing_Vanish)
+    Exec(EVS_SandRingClone_Vanish)
     Wait(20)
-    Exec(N(EVS_LightRays_Vanish))
+    Exec(EVS_LightRays_Vanish)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
@@ -712,9 +712,9 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.2))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(100)
-    Exec(N(EVS_Doors_Open))
+    Exec(EVS_Doors_Open)
     Wait(100)
-    ExecWait(N(EVS_Steps_Unfold))
+    ExecWait(EVS_Steps_Unfold)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ruin, COLLIDER_FLAGS_UPPER_MASK)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(60)

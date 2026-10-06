@@ -1,20 +1,20 @@
 #include "isk_11.h"
 
-extern EvtScript N(EVS_ItemPrompt_Socket1);
-extern EvtScript N(EVS_ItemPrompt_Socket2);
-extern EvtScript N(EVS_ItemPrompt_Socket3);
-extern EvtScript N(EVS_ItemPrompt_Socket4);
-extern EvtScript N(EVS_ItemPrompt_Socket5);
+extern EvtScript EVS_ItemPrompt_Socket1;
+extern EvtScript EVS_ItemPrompt_Socket2;
+extern EvtScript EVS_ItemPrompt_Socket3;
+extern EvtScript EVS_ItemPrompt_Socket4;
+extern EvtScript EVS_ItemPrompt_Socket5;
 
-ITEM_LIST(N(ItemList_Artifacts), ITEM_LUNAR_STONE, ITEM_PYRAMID_STONE, ITEM_DIAMOND_STONE);
+ITEM_LIST(ItemList_Artifacts, ITEM_LUNAR_STONE, ITEM_PYRAMID_STONE, ITEM_DIAMOND_STONE);
 
-EvtScript N(EVS_SetupPuzzle) = {
+EvtScript EVS_SetupPuzzle = {
     IfLt(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
-        BindPadlock(Ref(N(EVS_ItemPrompt_Socket1)), TRIGGER_WALL_PRESS_A, COLLIDER_o2087, Ref(N(ItemList_Artifacts)), 0, 1)
-        BindPadlock(Ref(N(EVS_ItemPrompt_Socket2)), TRIGGER_WALL_PRESS_A, COLLIDER_o2091, Ref(N(ItemList_Artifacts)), 0, 1)
-        BindPadlock(Ref(N(EVS_ItemPrompt_Socket3)), TRIGGER_WALL_PRESS_A, COLLIDER_o2090, Ref(N(ItemList_Artifacts)), 0, 1)
-        BindPadlock(Ref(N(EVS_ItemPrompt_Socket4)), TRIGGER_WALL_PRESS_A, COLLIDER_o2089, Ref(N(ItemList_Artifacts)), 0, 1)
-        BindPadlock(Ref(N(EVS_ItemPrompt_Socket5)), TRIGGER_WALL_PRESS_A, COLLIDER_o2088, Ref(N(ItemList_Artifacts)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_Socket1), TRIGGER_WALL_PRESS_A, COLLIDER_o2087, Ref(ItemList_Artifacts), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_Socket2), TRIGGER_WALL_PRESS_A, COLLIDER_o2091, Ref(ItemList_Artifacts), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_Socket3), TRIGGER_WALL_PRESS_A, COLLIDER_o2090, Ref(ItemList_Artifacts), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_Socket4), TRIGGER_WALL_PRESS_A, COLLIDER_o2089, Ref(ItemList_Artifacts), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_Socket5), TRIGGER_WALL_PRESS_A, COLLIDER_o2088, Ref(ItemList_Artifacts), 0, 1)
     EndIf
     Set(MV_ItemEntity_Socket1, -1)
     Set(MV_ItemEntity_Socket2, -1)
@@ -45,7 +45,7 @@ EvtScript N(EVS_SetupPuzzle) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Socket1) = {
+EvtScript EVS_ItemPrompt_Socket1 = {
     IfGe(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
         Unbind
         Return
@@ -96,7 +96,7 @@ EvtScript N(EVS_ItemPrompt_Socket1) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Socket2) = {
+EvtScript EVS_ItemPrompt_Socket2 = {
     IfGe(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
         Unbind
         Return
@@ -147,7 +147,7 @@ EvtScript N(EVS_ItemPrompt_Socket2) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Socket3) = {
+EvtScript EVS_ItemPrompt_Socket3 = {
     IfGe(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
         Unbind
         Return
@@ -198,7 +198,7 @@ EvtScript N(EVS_ItemPrompt_Socket3) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Socket4) = {
+EvtScript EVS_ItemPrompt_Socket4 = {
     IfGe(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
         Unbind
         Return
@@ -249,7 +249,7 @@ EvtScript N(EVS_ItemPrompt_Socket4) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Socket5) = {
+EvtScript EVS_ItemPrompt_Socket5 = {
     IfGe(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
         Unbind
         Return

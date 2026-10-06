@@ -36,7 +36,7 @@ typedef struct MagikoopaTeleportAnim {
     /* 0x09 */ PAD(3);
 } MagikoopaTeleportAnim; // size = 0x0C
 
-MagikoopaTeleportAnim N(MagikoopaAI_TeleportAnim)[] = {
+MagikoopaTeleportAnim MagikoopaAI_TeleportAnim[] = {
     { 0.80f, 1.0f, 200 },
     { 0.60f, 1.0f, 180 },
     { 0.50f, 1.0f, 160 },
@@ -50,7 +50,7 @@ MagikoopaTeleportAnim N(MagikoopaAI_TeleportAnim)[] = {
     { 0.00f, 0.0f, 0 },
 };
 
-void N(MagikoopaAI_Idle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_Idle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -63,12 +63,12 @@ void N(MagikoopaAI_Idle)(Evt* script, MobileAISettings* settings, EnemyDetectVol
     }
 }
 
-void N(MagikoopaAI_Vanish)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_Vanish(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    npc->scale.x = N(MagikoopaAI_TeleportAnim)[npc->duration].scaleX;
-    npc->scale.y = N(MagikoopaAI_TeleportAnim)[npc->duration].scaleY;
-    npc->alpha = N(MagikoopaAI_TeleportAnim)[npc->duration].alpha;
+    npc->scale.x = MagikoopaAI_TeleportAnim[npc->duration].scaleX;
+    npc->scale.y = MagikoopaAI_TeleportAnim[npc->duration].scaleY;
+    npc->alpha = MagikoopaAI_TeleportAnim[npc->duration].alpha;
 
     npc->duration++;
     if (npc->duration == 4) {
@@ -76,7 +76,7 @@ void N(MagikoopaAI_Vanish)(Evt* script, MobileAISettings* settings, EnemyDetectV
         enemy->flags |= ENEMY_INTANGIBLE_FLAGS;
     }
 
-    if (N(MagikoopaAI_TeleportAnim)[npc->duration].alpha == 0) {
+    if (MagikoopaAI_TeleportAnim[npc->duration].alpha == 0) {
         npc->alpha = 255;
         npc->scale.x = 1.0f;
         npc->scale.y = 1.0f;
@@ -86,7 +86,7 @@ void N(MagikoopaAI_Vanish)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(MagikoopaAI_WarpInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_WarpInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     f32 angle = (rand_int(100) % 2) * 180.0f; // equal chance of 0 or 180
 
@@ -96,7 +96,7 @@ void N(MagikoopaAI_WarpInit)(Evt* script, MobileAISettings* settings, EnemyDetec
     script->AI_TEMP_STATE = AI_STATE_MAGIKOOPA_WARP_MOVE;
 }
 
-void N(MagikoopaAI_WarpMove)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_WarpMove(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -107,7 +107,7 @@ void N(MagikoopaAI_WarpMove)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-void N(MagikoopaAI_AppearInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_AppearInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ;
@@ -133,7 +133,7 @@ void N(MagikoopaAI_AppearInit)(Evt* script, MobileAISettings* settings, EnemyDet
     script->AI_TEMP_STATE = AI_STATE_MAGIKOOPA_APPEAR;
 }
 
-void N(MagikoopaAI_Appear)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_Appear(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s16 alpha;
@@ -181,7 +181,7 @@ void N(MagikoopaAI_Appear)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(MagikoopaAI_CastInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_CastInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -189,7 +189,7 @@ void N(MagikoopaAI_CastInit)(Evt* script, MobileAISettings* settings, EnemyDetec
     script->AI_TEMP_STATE = AI_STATE_MAGIKOOPA_TARGETING;
 }
 
-void N(MagikoopaAI_Targeting)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_Targeting(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ;
@@ -204,7 +204,7 @@ void N(MagikoopaAI_Targeting)(Evt* script, MobileAISettings* settings, EnemyDete
         return;
     }
 
-    if (N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
+    if (MagikoopaAI_CanShootSpell(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
         ai_enemy_play_sound(npc, SOUND_SPELL_CAST1, 0);
         npc->curAnim = enemy->animList[AI_ANIM_MAGIKOOPA_CAST];
         posX = npc->pos.x;
@@ -217,7 +217,7 @@ void N(MagikoopaAI_Targeting)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(MagikoopaAI_Casting)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_Casting(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -229,13 +229,13 @@ void N(MagikoopaAI_Casting)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(MagikoopaAI_Firing)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_Firing(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration--;
     if (npc->duration <= 0) {
-        if (N(MagikoopaAI_CanShootSpell)(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
+        if (MagikoopaAI_CanShootSpell(script, settings->chaseRadius, settings->chaseOffsetDist, detect) == 1) {
             ai_enemy_play_sound(npc, SOUND_SPELL_CAST2, 0);
             get_enemy(enemy->npcID + 1)->varTable[AI_VAR_SPELL_STATUS] = SPELL_STATUS_REQUESTED;
             npc->duration = 20;
@@ -249,7 +249,7 @@ void N(MagikoopaAI_Firing)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(MagikoopaAI_PostCast)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void MagikoopaAI_PostCast(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -261,7 +261,7 @@ void N(MagikoopaAI_PostCast)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-API_CALLABLE(N(MagikoopaAI_Main)) {
+API_CALLABLE(MagikoopaAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -297,53 +297,53 @@ API_CALLABLE(N(MagikoopaAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_MAGIKOOPA_IDLE:
-            N(MagikoopaAI_Idle)(script, settings, detect);
+            MagikoopaAI_Idle(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_MAGIKOOPA_VANISH) {
                 break;
             }
             // fallthrough
         case AI_STATE_MAGIKOOPA_VANISH:
-            N(MagikoopaAI_Vanish)(script, settings, detect);
+            MagikoopaAI_Vanish(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_WARP_INIT:
-            N(MagikoopaAI_WarpInit)(script, settings, detect);
+            MagikoopaAI_WarpInit(script, settings, detect);
             // fallthrough
         case AI_STATE_MAGIKOOPA_WARP_MOVE:
-            N(MagikoopaAI_WarpMove)(script, settings, detect);
+            MagikoopaAI_WarpMove(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_APPEAR_INIT:
-            N(MagikoopaAI_AppearInit)(script, settings, detect);
+            MagikoopaAI_AppearInit(script, settings, detect);
             // fallthrough
         case AI_STATE_MAGIKOOPA_APPEAR:
-            N(MagikoopaAI_Appear)(script, settings, detect);
+            MagikoopaAI_Appear(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_CAST_INIT:
-            N(MagikoopaAI_CastInit)(script, settings, detect);
+            MagikoopaAI_CastInit(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_TARGETING:
-            N(MagikoopaAI_Targeting)(script, settings, detect);
+            MagikoopaAI_Targeting(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_CASTING:
-            N(MagikoopaAI_Casting)(script, settings, detect);
+            MagikoopaAI_Casting(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_FIRING:
-            N(MagikoopaAI_Firing)(script, settings, detect);
+            MagikoopaAI_Firing(script, settings, detect);
             break;
 
         case AI_STATE_MAGIKOOPA_POST_CAST:
-            N(MagikoopaAI_PostCast)(script, settings, detect);
+            MagikoopaAI_PostCast(script, settings, detect);
             break;
     }
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(MagikoopaAI_OnPlayerWon)) {
+API_CALLABLE(MagikoopaAI_OnPlayerWon) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -352,7 +352,7 @@ API_CALLABLE(N(MagikoopaAI_OnPlayerWon)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MagikoopaAI_OnPlayerFled)) {
+API_CALLABLE(MagikoopaAI_OnPlayerFled) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 

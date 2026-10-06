@@ -25,7 +25,6 @@ EffectInstance* breaking_junk_main(s32 arg0, f32 x, f32 y, f32 z, f32 scale, s32
     u32 g;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = breaking_junk_init;
     bp.update = breaking_junk_update;
     bp.renderScene = breaking_junk_render;

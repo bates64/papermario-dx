@@ -30,27 +30,25 @@ enum {
     NPC_Ch7_Kammy               = 3,
 };
 
-#define NAMESPACE kkj_14
-
 #include "world/common/npc/Bowser/idle.h"
 #include "world/common/enemy/Kammy/idle.h"
 #include "world/common/enemy/Koopatrol/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupInteractables);
-extern EvtScript N(EVS_Scene_Chapter0);
-extern EvtScript N(EVS_Scene_Chapter1);
-extern EvtScript N(EVS_Scene_Chapter2);
-extern EvtScript N(EVS_Scene_Chapter3);
-extern EvtScript N(EVS_Scene_Chapter4);
-extern EvtScript N(EVS_Scene_Chapter5);
-extern EvtScript N(EVS_Scene_Chapter6);
-extern EvtScript N(EVS_Scene_Chapter7);
-extern EvtScript N(EVS_Scene_TossedBackInRoom);
-extern EvtScript N(EVS_EndPeachChapter7);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupInteractables;
+extern EvtScript EVS_Scene_Chapter0;
+extern EvtScript EVS_Scene_Chapter1;
+extern EvtScript EVS_Scene_Chapter2;
+extern EvtScript EVS_Scene_Chapter3;
+extern EvtScript EVS_Scene_Chapter4;
+extern EvtScript EVS_Scene_Chapter5;
+extern EvtScript EVS_Scene_Chapter6;
+extern EvtScript EVS_Scene_Chapter7;
+extern EvtScript EVS_Scene_TossedBackInRoom;
+extern EvtScript EVS_EndPeachChapter7;
 
-extern NpcGroupList N(Chapter0NPCs);
-extern NpcGroupList N(Chapter2NPCs);
-extern NpcGroupList N(Chapter7NPCs);
-extern NpcGroupList N(TossBackNPCs);
+extern NpcGroupList Chapter0NPCs;
+extern NpcGroupList Chapter2NPCs;
+extern NpcGroupList Chapter7NPCs;
+extern NpcGroupList TossBackNPCs;

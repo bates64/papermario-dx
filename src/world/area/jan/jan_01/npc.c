@@ -5,7 +5,7 @@
 #include "world/common/enemy/JungleFuzzy/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
 
-EvtScript N(EVS_PlayerWatchKolorado) = {
+EvtScript EVS_PlayerWatchKolorado = {
     Loop(0)
         Call(PlayerFaceNpc, NPC_SELF, false)
         Wait(1)
@@ -14,8 +14,8 @@ EvtScript N(EVS_PlayerWatchKolorado) = {
     End
 };
 
-EvtScript N(EVS_Kolorado_RunToVillage) = {
-    ExecGetTID(N(EVS_PlayerWatchKolorado), LVar9)
+EvtScript EVS_Kolorado_RunToVillage = {
+    ExecGetTID(EVS_PlayerWatchKolorado, LVar9)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Run)
     Call(SetNpcSpeed, NPC_SELF, Float(4.5 / DT))
@@ -32,7 +32,7 @@ EvtScript N(EVS_Kolorado_RunToVillage) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Fallen)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Loop(0)
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                     Wait(10 * DT)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0011)
                     Set(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_FUZZIES)
-                    ExecWait(N(EVS_Kolorado_RunToVillage))
+                    ExecWait(EVS_Kolorado_RunToVillage)
                     Call(DisablePlayerInput, false)
                 EndIf
             CaseEq(1)
@@ -97,7 +97,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Set(GF_JAN01_SavedKolorado, true)
                 Call(SetSelfVar, 0, 2)
                 Set(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_FUZZIES)
-                ExecWait(N(EVS_Kolorado_RunToVillage))
+                ExecWait(EVS_Kolorado_RunToVillage)
                 Call(SetPartnerForcedFollowMode, 0)
                 Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
                 SetGroup(EVT_GROUP_HOSTILE_NPC)
@@ -112,7 +112,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_Kolorado) = {
+EvtScript EVS_NpcHit_Kolorado = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -138,11 +138,11 @@ EvtScript N(EVS_NpcHit_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_FUZZIES)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
-        Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Kolorado)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Kolorado))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -150,7 +150,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_JungleFuzzy_01) = {
+EvtScript EVS_NpcIdle_JungleFuzzy_01 = {
     ChildThread
         Call(GetNpcPos, NPC_Kolorado, LVar3, LVar1, LVar2)
         Set(LVar4, LVar3)
@@ -204,7 +204,7 @@ EvtScript N(EVS_NpcIdle_JungleFuzzy_01) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_JungleFuzzyBoss) = {
+EvtScript EVS_NpcDefeat_JungleFuzzyBoss = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -254,12 +254,12 @@ EvtScript N(EVS_NpcDefeat_JungleFuzzyBoss) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_JungleFuzzy_01) = {
+EvtScript EVS_NpcInit_JungleFuzzy_01 = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_FUZZIES)
         Call(SetSelfVar, 0, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Jungle_Leech)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JungleFuzzy_01)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_JungleFuzzyBoss)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JungleFuzzy_01))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JungleFuzzyBoss))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -267,30 +267,30 @@ EvtScript N(EVS_NpcInit_JungleFuzzy_01) = {
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { -70.0f, -9.0f, 90.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_JungleFuzzy_01) = {
+NpcData NpcData_JungleFuzzy_01 = {
     .id = NPC_JungleFuzzy_01,
     .pos = { -30.0f, 0.0f, 90.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_JungleFuzzy_01),
-    .settings = &N(NpcSettings_JungleFuzzy),
+    .init = &EVS_NpcInit_JungleFuzzy_01,
+    .settings = &NpcSettings_JungleFuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
 };
 
-EvtScript N(EVS_NpcInit_JungleFuzzy_02) = {
+EvtScript EVS_NpcInit_JungleFuzzy_02 = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_FUZZIES)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -298,7 +298,7 @@ EvtScript N(EVS_NpcInit_JungleFuzzy_02) = {
     End
 };
 
-NpcData N(NpcData_JungleFuzzy_02) = {
+NpcData NpcData_JungleFuzzy_02 = {
     .id = NPC_JungleFuzzy_02,
     .pos = { -350.0f, 3.0f, 40.0f },
     .yaw = 270,
@@ -314,15 +314,15 @@ NpcData N(NpcData_JungleFuzzy_02) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_JungleFuzzy_02),
-    .settings = &N(NpcSettings_JungleFuzzy_Wander),
+    .init = &EVS_NpcInit_JungleFuzzy_02,
+    .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_JungleFuzzy_03) = {
+NpcData NpcData_JungleFuzzy_03 = {
     .id = NPC_JungleFuzzy_03,
     .pos = { 0.0f, -10.0f, 110.0f },
     .yaw = 90,
@@ -338,15 +338,15 @@ NpcData N(NpcData_JungleFuzzy_03) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_JungleFuzzy_02),
-    .settings = &N(NpcSettings_JungleFuzzy_Wander),
+    .init = &EVS_NpcInit_JungleFuzzy_02,
+    .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_JungleFuzzy_04) = {
+NpcData NpcData_JungleFuzzy_04 = {
     .id = NPC_JungleFuzzy_04,
     .pos = { 350.0f, 3.0f, 40.0f },
     .yaw = 270,
@@ -362,19 +362,19 @@ NpcData N(NpcData_JungleFuzzy_04) = {
             .detectSize = { 200, 125 },
         }
     },
-    .init = &N(EVS_NpcInit_JungleFuzzy_02),
-    .settings = &N(NpcSettings_JungleFuzzy_Wander),
+    .init = &EVS_NpcInit_JungleFuzzy_02,
+    .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_JungleFuzzy_01), BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
-    NPC_GROUP(N(NpcData_JungleFuzzy_02), BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
-    NPC_GROUP(N(NpcData_JungleFuzzy_03), BTL_JAN_FORMATION_0B, BTL_JAN_STAGE_00),
-    NPC_GROUP(N(NpcData_JungleFuzzy_04), BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_JungleFuzzy_01, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
+    NPC_GROUP(NpcData_JungleFuzzy_02, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
+    NPC_GROUP(NpcData_JungleFuzzy_03, BTL_JAN_FORMATION_0B, BTL_JAN_STAGE_00),
+    NPC_GROUP(NpcData_JungleFuzzy_04, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_00),
     {}
 };

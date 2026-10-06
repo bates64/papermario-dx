@@ -2,24 +2,22 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Whacka.h"
 
-#define NAMESPACE A(whacka)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_MakeWhackaBump;
+extern EvtScript EVS_Death;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_MakeWhackaBump);
-extern EvtScript N(EVS_Death);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_SpawnedBump    = 0,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Whacka_Idle,
     STATUS_KEY_STONE,     ANIM_Whacka_Still,
     STATUS_KEY_SLEEP,     ANIM_Whacka_Idle,
@@ -32,12 +30,12 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,               0,
@@ -62,30 +60,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 30 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -5 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_NO_HEALTH_BAR,
     .type = ACTOR_TYPE_WHACKA,
     .level = ACTOR_LEVEL_WHACKA,
     .maxHP = 99,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 0,
     .airLiftChance = 0,
     .hurricaneChance = 0,
@@ -100,7 +98,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 30 },
 };
 
-API_CALLABLE(N(IsHitEightTimes)) {
+API_CALLABLE(IsHitEightTimes) {
     script->varTable[0] = 0;
     if (evt_get_variable(nullptr, GB_IWA00_Whacka_HitCount) >= 8) {
         script->varTable[0] = 1;
@@ -109,12 +107,12 @@ API_CALLABLE(N(IsHitEightTimes)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_SpawnedBump, false)
-    Call(N(IsHitEightTimes))
+    Call(IsHitEightTimes)
     IfEq(LVar0, 0)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_INVISIBLE | ACTOR_FLAG_NO_ATTACK | ACTOR_FLAG_NO_DMG_APPLY, true)
         Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_NO_TARGET, true)
@@ -123,7 +121,7 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Wait(1)
         Goto(0)
@@ -131,7 +129,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -144,32 +142,32 @@ EvtScript N(EVS_HandleEvent) = {
         CaseEq(EVENT_HIT)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Whacka_Hurt)
-            ExecWait(N(EVS_MakeWhackaBump))
+            ExecWait(EVS_MakeWhackaBump)
             ExecWait(EVS_Enemy_Hit)
             Call(RandInt, 100, LVar0)
             IfLe(LVar0, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             EndIf
         CaseEq(EVENT_BURN_HIT)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Whacka_Idle)
             SetConst(LVar2, ANIM_Whacka_Idle)
-            ExecWait(N(EVS_MakeWhackaBump))
+            ExecWait(EVS_MakeWhackaBump)
             ExecWait(EVS_Enemy_Hit)
             Call(RandInt, 100, LVar0)
             IfLe(LVar0, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             EndIf
         CaseEq(EVENT_BURN_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Whacka_Idle)
             SetConst(LVar2, ANIM_Whacka_Idle)
-            ExecWait(N(EVS_MakeWhackaBump))
+            ExecWait(EVS_MakeWhackaBump)
             ExecWait(EVS_Enemy_Hit)
             IfGe(100, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             Else
                 SetConst(LVar0, PRT_MAIN)
@@ -183,7 +181,7 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_SpinSmashHit)
             Call(RandInt, 100, LVar0)
             IfLe(LVar0, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             EndIf
         CaseEq(EVENT_SPIN_SMASH_DEATH)
@@ -191,7 +189,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_Whacka_Idle)
             ExecWait(EVS_Enemy_SpinSmashHit)
             IfGe(100, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             Else
                 SetConst(LVar0, PRT_MAIN)
@@ -227,7 +225,7 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_NoDamageHit)
             Call(RandInt, 100, LVar0)
             IfLe(LVar0, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             EndIf
         CaseEq(EVENT_AIR_LIFT_FAILED)
@@ -236,17 +234,17 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_NoDamageHit)
             Call(RandInt, 100, LVar0)
             IfLe(LVar0, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             EndIf
         CaseEq(EVENT_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Whacka_Hurt)
-            ExecWait(N(EVS_MakeWhackaBump))
+            ExecWait(EVS_MakeWhackaBump)
             ExecWait(EVS_Enemy_Hit)
             Wait(10)
             IfGe(100, 100)
-                ExecWait(N(EVS_Death))
+                ExecWait(EVS_Death)
                 Return
             Else
                 SetConst(LVar0, PRT_MAIN)
@@ -281,17 +279,17 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(RandInt, 100, LVar0)
     IfLe(LVar0, 100)
-        ExecWait(N(EVS_Death))
+        ExecWait(EVS_Death)
         Return
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_MakeWhackaBump) = {
+EvtScript EVS_MakeWhackaBump = {
     Call(SetActorVar, ACTOR_SELF, AVAR_SpawnedBump, true)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HIT_WHACKA)
     Thread
@@ -307,7 +305,7 @@ EvtScript N(EVS_MakeWhackaBump) = {
     End
 };
 
-EvtScript N(EVS_Death) = {
+EvtScript EVS_Death = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_DIG)

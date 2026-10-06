@@ -1,7 +1,7 @@
 #include "hos_01.h"
 #include "effects.h"
 
-EvtScript N(EVS_Scene_StarWayOpened) = {
+EvtScript EVS_Scene_StarWayOpened = {
     Label(0)
         Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o234)
@@ -47,11 +47,11 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
     Set(MV_StarWarpFXPtr, LVarF)
-    Call(N(SetStarWarpIdleParams), MV_StarWarpFXPtr)
+    Call(SetStarWarpIdleParams, MV_StarWarpFXPtr)
     Call(MakeLerp, 1, 255, 55, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetStarWarpMasterAlpha), MV_StarWarpFXPtr, LVar0)
+        Call(SetStarWarpMasterAlpha, MV_StarWarpFXPtr, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -79,8 +79,8 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     End
 };
 
-EvtScript N(EVS_AscendStarWarp) = {
-    Call(N(SetStarWarpTravelParams), MV_StarWarpFXPtr)
+EvtScript EVS_AscendStarWarp = {
+    Call(SetStarWarpTravelParams, MV_StarWarpFXPtr)
     Call(UseSettingsFrom, CAM_DEFAULT, -30, 250, -160)
     Call(SetPanTarget, CAM_DEFAULT, -30, 250, -160)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))

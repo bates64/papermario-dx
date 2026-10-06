@@ -2,14 +2,14 @@
 
 #include "../common/MapInit_EnableFloorReflection.inc.c"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [pra_11_ENTRY_0]    {   23.0,    0.0,   81.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .tattle = { MSG_MapTattle_pra_11 },
     .songVariation = 1,
     .sfxReverb = 1,

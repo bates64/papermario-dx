@@ -2,7 +2,7 @@
 #include "omo_03.h"
 #include "effects.h"
 
-EvtScript N(EVS_Gizmos_Wheels) = {
+EvtScript EVS_Gizmos_Wheels = {
     Label(0)
         Call(MakeLerp, 0, -360, 100, EASING_LINEAR)
         Label(1)
@@ -20,7 +20,7 @@ EvtScript N(EVS_Gizmos_Wheels) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Shutters) = {
+EvtScript EVS_Gizmos_Shutters = {
     Label(0)
         Call(MakeLerp, 0, 160, 60, EASING_COS_IN_OUT)
         Label(1)
@@ -45,7 +45,7 @@ EvtScript N(EVS_Gizmos_Shutters) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Clocks) = {
+EvtScript EVS_Gizmos_Clocks = {
     Label(0)
         Call(MakeLerp, 0, -360, 100, EASING_LINEAR)
         Label(1)
@@ -60,7 +60,7 @@ EvtScript N(EVS_Gizmos_Clocks) = {
     End
 };
 
-EvtScript N(EVS_Scene_PullBlueSwitch) = {
+EvtScript EVS_Scene_PullBlueSwitch = {
     Call(DisablePlayerInput, true)
     Call(MakeLerp, 0, 70, 30, EASING_COS_IN_OUT)
     Label(0)
@@ -107,13 +107,13 @@ EvtScript N(EVS_Scene_PullBlueSwitch) = {
     End
 };
 
-EvtScript N(EVS_SetupGizmos) = {
-    Exec(N(EVS_Gizmos_Wheels))
-    Exec(N(EVS_Gizmos_Shutters))
-    Exec(N(EVS_Gizmos_Clocks))
+EvtScript EVS_SetupGizmos = {
+    Exec(EVS_Gizmos_Wheels)
+    Exec(EVS_Gizmos_Shutters)
+    Exec(EVS_Gizmos_Clocks)
     Call(ParentColliderToModel, COLLIDER_bou1, MODEL_bou1)
     IfEq(GF_OMO03_BlueSwitchActivated, false)
-        BindTrigger(Ref(N(EVS_Scene_PullBlueSwitch)), TRIGGER_WALL_PRESS_A, COLLIDER_o801, 1, 0)
+        BindTrigger(Ref(EVS_Scene_PullBlueSwitch), TRIGGER_WALL_PRESS_A, COLLIDER_o801, 1, 0)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o978, COLLIDER_FLAGS_UPPER_MASK)
     Else
         Call(RotateModel, MODEL_bou1, 70, 0, 0, 1)

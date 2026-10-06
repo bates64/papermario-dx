@@ -1,7 +1,7 @@
 #include "isk_12.h"
 
 // switch for draining the sand into the lower chamber
-EvtScript N(EVS_OnTouch_DrainSwitch) = {
+EvtScript EVS_OnTouch_DrainSwitch = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -42,7 +42,7 @@ EvtScript N(EVS_OnTouch_DrainSwitch) = {
 };
 
 // switch for creating a staircase of bricks emerging from the wall
-EvtScript N(EVS_OnTouch_StaircaseSwitch) = {
+EvtScript EVS_OnTouch_StaircaseSwitch = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -125,12 +125,12 @@ EvtScript N(EVS_OnTouch_StaircaseSwitch) = {
     End
 };
 
-EvtScript N(EVS_SetupSwitches) = {
+EvtScript EVS_SetupSwitches = {
     Call(ParentColliderToModel, COLLIDER_o2056, MODEL_g367)
     Call(ParentColliderToModel, COLLIDER_o2059, MODEL_g367)
     Call(ParentColliderToModel, COLLIDER_o2090, MODEL_B2)
     IfEq(AF_ISK12_SandSwitchActivated, false)
-        BindTrigger(Ref(N(EVS_OnTouch_DrainSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2059, 1, 0)
+        BindTrigger(Ref(EVS_OnTouch_DrainSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2059, 1, 0)
     Else
         Call(TranslateModel, MODEL_g367, 0, -14, 0)
         Call(UpdateColliderTransform, COLLIDER_o2056)
@@ -167,7 +167,7 @@ EvtScript N(EVS_SetupSwitches) = {
                 Wait(3)
                 Call(DisablePlayerInput, false)
             EndIf
-            BindTrigger(Ref(N(EVS_OnTouch_StaircaseSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2090, 1, 0)
+            BindTrigger(Ref(EVS_OnTouch_StaircaseSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2090, 1, 0)
         EndThread
     EndIf
     Return

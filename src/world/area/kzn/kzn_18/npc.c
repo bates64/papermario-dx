@@ -3,7 +3,7 @@
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/enemy/PutridPiranhaSentinel/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_RAN_AHEAD)
         Label(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -81,9 +81,9 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_IN_TREASURE_ROOM)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -91,7 +91,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Piranha) = {
+EvtScript EVS_NpcIdle_Piranha = {
     Label(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -129,9 +129,9 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Piranha) = {
+EvtScript EVS_NpcInit_Piranha = {
     IfEq(GF_KZN18_IntruderAlert, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Piranha)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Piranha))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -139,31 +139,31 @@ EvtScript N(EVS_NpcInit_Piranha) = {
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Piranha) = {
+NpcData NpcData_Piranha = {
     .id = NPC_PutridPiranha,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Piranha),
-    .settings = &N(NpcSettings_PutridPiranhaSentinel),
+    .init = &EVS_NpcInit_Piranha,
+    .settings = &NpcSettings_PutridPiranhaSentinel,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = PIRANHA_SENTINEL_DROPS,
     .animations = PIRANHA_SENTINEL_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Piranha)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Piranha),
     {}
 };

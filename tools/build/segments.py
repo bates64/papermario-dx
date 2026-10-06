@@ -1,10 +1,10 @@
 """Works out which segment each source file belongs to, and how to compile it.
 
 A directory belongs to the segment its path names, so src/engine1 holds
-engine1 and src/battle/area/arn holds battle/area/arn. A directory naming no
-segment belongs to whichever its parent does, and src itself is main. Adding a
-source file therefore needs no configuration; only the handful of directories
-whose segment is not the one their path names are written down.
+engine1. A directory naming no segment belongs to whichever its parent does,
+and src itself is main. Adding a source file therefore needs no configuration;
+only the handful of directories whose segment is not the one their path names
+are written down.
 """
 
 from pathlib import Path

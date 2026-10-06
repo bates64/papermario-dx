@@ -5,7 +5,7 @@
 #define SUPER_BLOCK_GAMEFLAG GF_DGB04_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(500, -360, 110, 0)
     Return
     End

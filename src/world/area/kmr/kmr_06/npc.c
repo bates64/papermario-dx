@@ -3,7 +3,7 @@
 #include "world/common/enemy/SpikedGoomba/wander.inc.c"
 #include "world/common/enemy/Paragoomba/wander.inc.c"
 
-NpcData N(NpcData_SpikedGoomba) = {
+NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
     .pos = { 160.0f, 0.0f, 30.0f },
     .yaw = 270,
@@ -19,13 +19,13 @@ NpcData N(NpcData_SpikedGoomba) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_SpikedGoomba_Wander),
+    .settings = &NpcSettings_SpikedGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKED_GOOMBA_DROPS,
     .animations = SPIKED_GOOMBA_ANIMS,
 };
 
-NpcData N(NpcData_Paragoomba) = {
+NpcData NpcData_Paragoomba = {
     .id = NPC_Paragoomba,
     .pos = { 525.0f, 60.0f, 15.0f },
     .yaw = 270,
@@ -41,14 +41,14 @@ NpcData N(NpcData_Paragoomba) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_Paragoomba_Wander),
+    .settings = &NpcSettings_Paragoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGOOMBA_DROPS,
     .animations = PARAGOOMBA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_KMR_1_FORMATION_0B, BTL_KMR_1_STAGE_02),
-    NPC_GROUP(N(NpcData_Paragoomba), BTL_KMR_1_FORMATION_09, BTL_KMR_1_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_KMR_1_FORMATION_0B, BTL_KMR_1_STAGE_02),
+    NPC_GROUP(NpcData_Paragoomba, BTL_KMR_1_FORMATION_09, BTL_KMR_1_STAGE_02),
     {}
 };

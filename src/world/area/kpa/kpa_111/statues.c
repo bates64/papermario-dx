@@ -2,7 +2,7 @@
 
 #include "world/common/util/PushObjectSupport.inc.c"
 
-EvtScript N(EVS_PushRightStatue_Impl) = {
+EvtScript EVS_PushRightStatue_Impl = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Loop(20)
         Call(GetPartnerInUse, LVarA)
@@ -10,7 +10,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
             Set(LVar8, -1)
             Return
         EndIf
-        Call(N(IsPlayerPushingCollider), LVar9)
+        Call(IsPlayerPushingCollider, LVar9)
         IfEq(LVar0, 0)
             Set(LVar8, -1)
             Return
@@ -44,7 +44,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UpdatePlayerPushPosition))
+            Call(UpdatePlayerPushPosition)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -71,7 +71,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
     End
 };
 
-EvtScript N(EVS_PushRightStatue_FromLeft) = {
+EvtScript EVS_PushRightStatue_FromLeft = {
     IfEq(GB_KPA111_StatuePosition, 2)
         Return
     EndIf
@@ -85,7 +85,7 @@ EvtScript N(EVS_PushRightStatue_FromLeft) = {
         Set(LVar8, 0)
     EndIf
     Set(LVar9, COLLIDER_kpa_l)
-    ExecWait(N(EVS_PushRightStatue_Impl))
+    ExecWait(EVS_PushRightStatue_Impl)
     IfNe(LVar8, -1)
         Set(GB_KPA111_StatuePosition, LVar8)
     EndIf
@@ -93,7 +93,7 @@ EvtScript N(EVS_PushRightStatue_FromLeft) = {
     End
 };
 
-EvtScript N(EVS_PushRightStatue_FromRight) = {
+EvtScript EVS_PushRightStatue_FromRight = {
     IfEq(GB_KPA111_StatuePosition, 1)
         Return
     EndIf
@@ -107,7 +107,7 @@ EvtScript N(EVS_PushRightStatue_FromRight) = {
         Set(LVar8, 0)
     EndIf
     Set(LVar9, COLLIDER_kpa_r)
-    ExecWait(N(EVS_PushRightStatue_Impl))
+    ExecWait(EVS_PushRightStatue_Impl)
     IfNe(LVar8, -1)
         Set(GB_KPA111_StatuePosition, LVar8)
     EndIf
@@ -115,7 +115,7 @@ EvtScript N(EVS_PushRightStatue_FromRight) = {
     End
 };
 
-EvtScript N(EVS_SetupStatues) = {
+EvtScript EVS_SetupStatues = {
     Switch(GB_KPA111_StatuePosition)
         CaseEq(1)
             Call(TranslateGroup, MODEL_g21, -50, 0, 0)
@@ -125,8 +125,8 @@ EvtScript N(EVS_SetupStatues) = {
     Call(ParentColliderToModel, COLLIDER_kpa_c, MODEL_o105)
     Call(ParentColliderToModel, COLLIDER_kpa_l, MODEL_o105)
     Call(ParentColliderToModel, COLLIDER_kpa_r, MODEL_o105)
-    BindTrigger(Ref(N(EVS_PushRightStatue_FromLeft)), TRIGGER_WALL_PUSH, COLLIDER_kpa_l, 1, 0)
-    BindTrigger(Ref(N(EVS_PushRightStatue_FromRight)), TRIGGER_WALL_PUSH, COLLIDER_kpa_r, 1, 0)
+    BindTrigger(Ref(EVS_PushRightStatue_FromLeft), TRIGGER_WALL_PUSH, COLLIDER_kpa_l, 1, 0)
+    BindTrigger(Ref(EVS_PushRightStatue_FromRight), TRIGGER_WALL_PUSH, COLLIDER_kpa_r, 1, 0)
     Return
     End
 };

@@ -35,7 +35,6 @@ void big_smoke_puff_main(f32 x, f32 y, f32 z) {
     s32 numParts = 10;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = big_smoke_puff_init;
     bp.update = big_smoke_puff_update;
     bp.renderScene = big_smoke_puff_render;

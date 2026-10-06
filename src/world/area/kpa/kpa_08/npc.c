@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Magikoopa/wander.inc.c"
 
-NpcData N(NpcData_Magikoopa)[] = {
+NpcData NpcData_Magikoopa[] = {
     {
         .id = NPC_Magikoopa,
         .pos = { -210.0f, 0.0f, 25.0f },
@@ -19,17 +19,17 @@ NpcData N(NpcData_Magikoopa)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa_Wander),
+        .settings = &NpcSettings_Magikoopa_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .limitAnimations = N(LimitAnims_Magikoopa),
+        .limitAnimations = LimitAnims_Magikoopa,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_Spell)
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Magikoopa), BTL_KPA_FORMATION_2B, BTL_KPA_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Magikoopa, BTL_KPA_FORMATION_2B, BTL_KPA_STAGE_01),
     {}
 };

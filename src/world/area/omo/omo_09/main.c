@@ -1,14 +1,14 @@
 #include "omo_09.h"
 
-EvtScript N(EVS_ExitWalk_omo_08_0) = EVT_EXIT_WALK(60, omo_09_ENTRY_0, "omo_08", omo_08_ENTRY_0);
+EvtScript EVS_ExitWalk_omo_08_0 = EVT_EXIT_WALK(60, omo_09_ENTRY_0, "omo_08", omo_08_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_omo_08_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_omo_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     IfGe(GB_StoryProgress, STORY_CH4_DEFEATED_GENERAL_GUY)
         Set(GF_OMO09_SpawnedPeachChoice3, true)
@@ -24,34 +24,34 @@ EvtScript N(EVS_Main) = {
     Call(SetModelTexVariant, MODEL_s2, LVar0)
 #endif
     IfEq(GF_OMO09_SpawnedPeachChoice3, false)
-        Call(MakeNpcs, true, Ref(N(KammySceneNPCs)))
+        Call(MakeNpcs, true, Ref(KammySceneNPCs))
         Call(EnableNpcShadow, NPC_Pokey, false)
         Call(EnableNpcShadow, NPC_Koopatrol, false)
     Else
         IfEq(GF_OMO09_Item_SuperSoda, false)
             Switch(GB_OMO_PeachChoice3)
                 CaseEq(0)
-                    Call(MakeNpcs, true, Ref(N(PokeyAmbushNPCs)))
+                    Call(MakeNpcs, true, Ref(PokeyAmbushNPCs))
                 CaseEq(1)
-                    Call(MakeNpcs, true, Ref(N(KoopatrolAmbushNPCs)))
+                    Call(MakeNpcs, true, Ref(KoopatrolAmbushNPCs))
                 CaseEq(2)
-                    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+                    Call(MakeNpcs, true, Ref(DefaultNPCs))
                     Call(MakeItemEntity, ITEM_SUPER_SODA, 1900, 150, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO09_Item_SuperSoda)
             EndSwitch
         Else
-            Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, true, Ref(DefaultNPCs))
         EndIf
     EndIf
-    ExecWait(N(EVS_MakeEntities))
-    ExecWait(N(EVS_SetupGizmos))
-    ExecWait(N(EVS_SetupMusic))
-    ExecWait(N(EVS_SetupConveyors))
-    ExecWait(N(EVS_SetupSlotMachine))
+    ExecWait(EVS_MakeEntities)
+    ExecWait(EVS_SetupGizmos)
+    ExecWait(EVS_SetupMusic)
+    ExecWait(EVS_SetupConveyors)
+    ExecWait(EVS_SetupSlotMachine)
     IfEq(GF_OMO09_SpawnedPeachChoice3, false)
-        Exec(N(EVS_Scene_KammySetAmbush))
+        Exec(EVS_Scene_KammySetAmbush)
         Wait(2)
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
         Wait(1)
     EndIf

@@ -1,12 +1,12 @@
 #include "mac_00.h"
 
-EvtScript N(EVS_SetDoorRot_RussHouse) = {
+EvtScript EVS_SetDoorRot_RussHouse = {
     Call(RotateModel, MODEL_o210, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_RussHouse) = {
+EvtScript EVS_SetWallRot_RussHouse = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(-2.0))
     Call(RotateModel, MODEL_o201, LVar1, 0, 1, 0)
@@ -31,13 +31,13 @@ EvtScript N(EVS_SetWallRot_RussHouse) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_RussHouse) = {
+EvtScript EVS_DropDoor_RussHouse = {
     Call(RotateModel, MODEL_o210, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_RussHouse) = {
+EvtScript EVS_RoomListener_RussHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_intel_inn, MODEL_GROUP_VISIBLE)
@@ -50,13 +50,13 @@ EvtScript N(EVS_RoomListener_RussHouse) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Shop) = {
+EvtScript EVS_SetDoorRot_Shop = {
     Call(RotateModel, MODEL_o121, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Shop) = {
+EvtScript EVS_SetWallRot_Shop = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_o370, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o371, LVar1, 1, 0, 0)
@@ -71,7 +71,7 @@ EvtScript N(EVS_SetWallRot_Shop) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_Shop) = {
+EvtScript EVS_RoomListener_Shop = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_shop_in, MODEL_GROUP_VISIBLE)
@@ -86,13 +86,13 @@ EvtScript N(EVS_RoomListener_Shop) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Dojo) = {
+EvtScript EVS_SetDoorRot_Dojo = {
     Call(RotateModel, MODEL_o168, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Dojo) = {
+EvtScript EVS_SetWallRot_Dojo = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(2.0))
     Call(RotateModel, MODEL_o159, LVar1, 0, 1, 0)
@@ -103,13 +103,13 @@ EvtScript N(EVS_SetWallRot_Dojo) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_Dojo) = {
+EvtScript EVS_DropDoor_Dojo = {
     Call(RotateModel, MODEL_o168, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_Dojo) = {
+EvtScript EVS_RoomListener_Dojo = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_minka_inn, MODEL_GROUP_VISIBLE)
@@ -123,13 +123,13 @@ EvtScript N(EVS_RoomListener_Dojo) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Waterfront) = {
+EvtScript EVS_SetDoorRot_Waterfront = {
     Call(RotateModel, MODEL_o228, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Waterfront) = {
+EvtScript EVS_SetWallRot_Waterfront = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_o437, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o453, LVar1, 1, 0, 0)
@@ -144,12 +144,12 @@ EvtScript N(EVS_SetWallRot_Waterfront) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_Waterfront) = {
+EvtScript EVS_RoomListener_Waterfront = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Switch(GB_StoryProgress)
                 CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
-                    Exec(N(EVS_WaterfrontHouse_DoorLocked))
+                    Exec(EVS_WaterfrontHouse_DoorLocked)
                     Set(LVar0, -1)
                 CaseDefault
                     Call(SetGroupVisibility, MODEL_minka2_inn, MODEL_GROUP_VISIBLE)
@@ -161,26 +161,26 @@ EvtScript N(EVS_RoomListener_Waterfront) = {
     End
 };
 
-s32 N(InteriorNPCs_RussHouse)[] = {
+s32 InteriorNPCs_RussHouse[] = {
     NPC_RussT,
     -1
 };
 
-s32 N(InteriorNPCs_Shop)[] = {
+s32 InteriorNPCs_Shop[] = {
     NPC_Toad_01,
     NPC_ShyGuy_02,
     NPC_HarryT,
     -1
 };
 
-s32 N(InteriorNPCs_Dojo)[] = {
+s32 InteriorNPCs_Dojo[] = {
     NPC_TheMaster,
     NPC_Chan,
     NPC_Lee,
     -1
 };
 
-s32 N(InteriorNPCs_WaterfrontHouse)[] = {
+s32 InteriorNPCs_WaterfrontHouse[] = {
     NPC_Waterfront_Dad,
     NPC_Waterfront_Mom,
     NPC_Waterfront_Kid1,
@@ -188,54 +188,54 @@ s32 N(InteriorNPCs_WaterfrontHouse)[] = {
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     // RussT's house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_RussHouse)),
-        Ref(N(EVS_SetWallRot_RussHouse)),
-        Ref(N(EVS_DropDoor_RussHouse)),
-        Ref(N(EVS_RoomListener_RussHouse)),
+        Ref(EVS_SetDoorRot_RussHouse),
+        Ref(EVS_SetWallRot_RussHouse),
+        Ref(EVS_DropDoor_RussHouse),
+        Ref(EVS_RoomListener_RussHouse),
         COLLIDER_deilit3,
         COLLIDER_deilit3u,
         MODEL_intel_house,
-        Ref(N(InteriorNPCs_RussHouse)))
+        Ref(InteriorNPCs_RussHouse))
     // harry's shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_Shop)),
-        Ref(N(EVS_SetWallRot_Shop)),
+        Ref(EVS_SetDoorRot_Shop),
+        Ref(EVS_SetWallRot_Shop),
         nullptr,
-        Ref(N(EVS_RoomListener_Shop)),
-        COLLIDER_deilit5, COLLIDER_deilit5u, MODEL_omise, Ref(N(InteriorNPCs_Shop)))
+        Ref(EVS_RoomListener_Shop),
+        COLLIDER_deilit5, COLLIDER_deilit5u, MODEL_omise, Ref(InteriorNPCs_Shop))
     // the dojo
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_Dojo)),
-        Ref(N(EVS_SetWallRot_Dojo)),
-        Ref(N(EVS_DropDoor_Dojo)),
-        Ref(N(EVS_RoomListener_Dojo)),
+        Ref(EVS_SetDoorRot_Dojo),
+        Ref(EVS_SetWallRot_Dojo),
+        Ref(EVS_DropDoor_Dojo),
+        Ref(EVS_RoomListener_Dojo),
         COLLIDER_deilit6,
         COLLIDER_deilit6u,
         MODEL_minka_1,
-        Ref(N(InteriorNPCs_Dojo)))
+        Ref(InteriorNPCs_Dojo))
     // the waterfront house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_Waterfront)),
-        Ref(N(EVS_SetWallRot_Waterfront)),
+        Ref(EVS_SetDoorRot_Waterfront),
+        Ref(EVS_SetWallRot_Waterfront),
         nullptr,
-        Ref(N(EVS_RoomListener_Waterfront)),
+        Ref(EVS_RoomListener_Waterfront),
         COLLIDER_deilit4,
         COLLIDER_deilit4u,
         MODEL_minka2,
-        Ref(N(InteriorNPCs_WaterfrontHouse)))
+        Ref(InteriorNPCs_WaterfrontHouse))
     // initial visibility
     Set(LVar0, VIS_GROUP_3)
-    Exec(N(EVS_RoomListener_RussHouse))
-    Exec(N(EVS_RoomListener_Waterfront))
-    Exec(N(EVS_RoomListener_Shop))
-    Exec(N(EVS_RoomListener_Dojo))
+    Exec(EVS_RoomListener_RussHouse)
+    Exec(EVS_RoomListener_Waterfront)
+    Exec(EVS_RoomListener_Shop)
+    Exec(EVS_RoomListener_Dojo)
     Return
     End
 };

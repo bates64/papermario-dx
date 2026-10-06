@@ -1,9 +1,9 @@
 #include "hos_04.h"
 
-EvtScript N(EVS_ExitWalk_hos_03_1) = EVT_EXIT_WALK(60, hos_04_ENTRY_0, "hos_03", hos_03_ENTRY_1);
+EvtScript EVS_ExitWalk_hos_03_1 = EVT_EXIT_WALK(60, hos_04_ENTRY_0, "hos_03", hos_03_ENTRY_1);
 
 #if VERSION_JP
-EvtScript N(EVS_ExitWalk_hos_05_0) = {
+EvtScript EVS_ExitWalk_hos_05_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o162, COLLIDER_FLAGS_UPPER_MASK)
     Call(UseExitHeading, 60, hos_04_ENTRY_1)
@@ -14,17 +14,17 @@ EvtScript N(EVS_ExitWalk_hos_05_0) = {
     End
 };
 #else
-EvtScript N(EVS_ExitWalk_hos_05_0) = EVT_EXIT_WALK(60, hos_04_ENTRY_1, "hos_05", hos_05_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_05_0 = EVT_EXIT_WALK(60, hos_04_ENTRY_1, "hos_05", hos_05_ENTRY_0);
 #endif
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_03_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_05_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_o163, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_hos_03_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_hos_05_0), TRIGGER_FLOOR_ABOVE, COLLIDER_o163, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Set(AF_HOS05_SkipMusicChange, false)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -56,7 +56,7 @@ EvtScript N(EVS_EnterMap) = {
                     Call(PanToTarget, CAM_DEFAULT, 0, true)
                     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                     Wait(30)
-                    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+                    Set(LVar0, Ref(EVS_BindExitTriggers))
                     ExecWait(EnterWalk)
                     Wait(20)
                     Set(GF_HOS04_Visited, true)
@@ -71,46 +71,46 @@ EvtScript N(EVS_EnterMap) = {
                     Call(DisablePlayerInput, false)
                 EndThread
             Else
-                Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+                Set(LVar0, Ref(EVS_BindExitTriggers))
                 Exec(EnterWalk)
                 Wait(1)
             EndIf
         CaseEq(hos_04_ENTRY_1)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitnw, COLLIDER_FLAGS_UPPER_MASK)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(hos_04_ENTRY_2)
-            Exec(N(EVS_Starship_FlyingAway))
+            Exec(EVS_Starship_FlyingAway)
         CaseEq(hos_04_ENTRY_3)
-            ExecWait(N(EVS_Intro_PreHeist_Unused))
+            ExecWait(EVS_Intro_PreHeist_Unused)
         CaseEq(hos_04_ENTRY_4)
-            ExecWait(N(EVS_Intro_PostHeist))
+            ExecWait(EVS_Intro_PostHeist)
         CaseEq(hos_04_ENTRY_5)
             Call(EnableGroup, MODEL_g1, false)
-            Exec(N(EVS_BetaStarship_Flight1))
+            Exec(EVS_BetaStarship_Flight1)
         CaseEq(hos_04_ENTRY_6)
             Call(EnableGroup, MODEL_g1, false)
-            Exec(N(EVS_BetaStarship_Flight2))
+            Exec(EVS_BetaStarship_Flight2)
         CaseEq(hos_04_ENTRY_7)
             Call(EnableGroup, MODEL_g1, false)
-            Exec(N(EVS_BetaStarship_Return))
+            Exec(EVS_BetaStarship_Return)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_STAR_HAVEN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Thread
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndThread
-    Exec(N(EVS_SetupFountains))
-    ExecWait(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupFountains)
+    ExecWait(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
-    Exec(N(EVS_SetupNarrator))
+    Exec(EVS_SetupNarrator)
     Return
     End
 };

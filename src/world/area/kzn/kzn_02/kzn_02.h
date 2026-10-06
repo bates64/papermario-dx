@@ -16,10 +16,8 @@ enum {
     NPC_LavaBubble              = 1,
 };
 
-#define NAMESPACE kzn_02
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_InitializePlatforms);
-extern EvtScript N(EVS_PlayDemoScene);
-extern EvtScript N(EVS_KoloradoSinkingPlatform);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_InitializePlatforms;
+extern EvtScript EVS_PlayDemoScene;
+extern EvtScript EVS_KoloradoSinkingPlatform;
+extern NpcGroupList DefaultNPCs;

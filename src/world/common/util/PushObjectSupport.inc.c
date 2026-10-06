@@ -1,7 +1,7 @@
 #include "common.h"
 #include "npc.h"
 
-API_CALLABLE(N(IsPlayerPushingCollider)) {
+API_CALLABLE(IsPlayerPushingCollider) {
     s32 colliderID = evt_get_variable(script, *script->ptrReadPos);
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
@@ -32,7 +32,7 @@ API_CALLABLE(N(IsPlayerPushingCollider)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatePlayerPushPosition)) {
+API_CALLABLE(UpdatePlayerPushPosition) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 posX, posY, posZ, hitDepth;
 

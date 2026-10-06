@@ -1,13 +1,17 @@
 #include "ld_addrs.h"
 
-BSS s32 N(VineRenderState);
+#ifndef PIRANHA_VINE_GFX
+#error "PIRANHA_VINE_GFX must name the map's vine display list"
+#endif
+
+BSS s32 VineRenderState;
 
 #define PIRANHA_DMA_ENTRY(name) \
     (s32) world_model_anim_kzn_##name##_ROM_START,\
     (s32) world_model_anim_kzn_##name##_ROM_END,\
     (s32) world_model_anim_kzn_##name##_VRAM
 
-s32 N(VineAnimationsDmaTable)[] = {
+s32 VineAnimationsDmaTable[] = {
     PIRANHA_DMA_ENTRY(00),
     PIRANHA_DMA_ENTRY(01),
     PIRANHA_DMA_ENTRY(02),
@@ -47,7 +51,7 @@ s32 N(VineAnimationsDmaTable)[] = {
     PIRANHA_DMA_ENTRY(24),
 };
 
-void N(make_vine_interpolation)(LavaPiranhaVine* vine) {
+void make_vine_interpolation(LavaPiranhaVine* vine) {
     Evt dummyEvt;
     Evt* dummyEvtPtr = &dummyEvt;
     s32 args[4];
@@ -72,7 +76,7 @@ void N(make_vine_interpolation)(LavaPiranhaVine* vine) {
     vine->numPoints = count;
 }
 
-API_CALLABLE(N(SetVineBonePos)) {
+API_CALLABLE(SetVineBonePos) {
     Bytecode* args = script->ptrReadPos;
     s32 vineIdx = evt_get_variable(script, *args++);
     s32 jointIdx = evt_get_variable(script, *args++);
@@ -88,7 +92,7 @@ API_CALLABLE(N(SetVineBonePos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetVineBoneRot)) {
+API_CALLABLE(SetVineBoneRot) {
     Bytecode* args = script->ptrReadPos;
     s32 vineIdx = evt_get_variable(script, *args++);
     s32 jointIdx = evt_get_variable(script, *args++);
@@ -102,7 +106,7 @@ API_CALLABLE(N(SetVineBoneRot)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetVineBoneScale)) {
+API_CALLABLE(SetVineBoneScale) {
     Bytecode* args = script->ptrReadPos;
     s32 vineIdx = evt_get_variable(script, *args++);
     s32 jointIdx = evt_get_variable(script, *args++);
@@ -115,7 +119,7 @@ API_CALLABLE(N(SetVineBoneScale)) {
     return ApiStatus_DONE2;
 }
 
-void N(appendGfx_piranha_vines)(void* data) {
+void appendGfx_piranha_vines(void* data) {
     Vtx_t* vtxBuffer;
     Vtx_t* vtx;
 
@@ -137,11 +141,11 @@ void N(appendGfx_piranha_vines)(void* data) {
     f32 deltaX, deltaY;
     f32 posX, posY, posZ;
 
-    if (N(VineRenderState) == -1) {
+    if (VineRenderState == -1) {
         return;
     }
 
-    if (N(VineRenderState) == 0) {
+    if (VineRenderState == 0) {
         for (i = 0; i < NUM_VINES; i++) {
             LavaPiranhaVine* vines = (LavaPiranhaVine*) evt_get_variable(nullptr, MV_VinesData);
             LavaPiranhaVine* vine = &vines[i];
@@ -186,14 +190,14 @@ void N(appendGfx_piranha_vines)(void* data) {
                 }
             }
 
-            N(make_vine_interpolation)(vine);
+            make_vine_interpolation(vine);
         }
 
-        N(VineRenderState) = 1;
+        VineRenderState = 1;
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPDisplayList(gMainGfxPos++, N(lava_piranha_vine_gfx));
+    gSPDisplayList(gMainGfxPos++, PIRANHA_VINE_GFX);
 
     for (i = 0; i < NUM_VINES; i++) {
         LavaPiranhaVine* vines = (LavaPiranhaVine*) evt_get_variable(nullptr, MV_VinesData);
@@ -268,10 +272,10 @@ void N(appendGfx_piranha_vines)(void* data) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-void N(worker_render_piranha_vines)(void) {
+void worker_render_piranha_vines(void) {
     RenderTask renderTask;
 
-    renderTask.appendGfx = &N(appendGfx_piranha_vines);
+    renderTask.appendGfx = &appendGfx_piranha_vines;
     renderTask.appendGfxArg = 0;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_SURFACE_OPA;
@@ -279,15 +283,15 @@ void N(worker_render_piranha_vines)(void) {
     queue_render_task(&renderTask);
 }
 
-API_CALLABLE(N(MarkVineInterpolationDirty)) {
-    N(VineRenderState) = 0;
+API_CALLABLE(MarkVineInterpolationDirty) {
+    VineRenderState = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreateVineRenderer)) {
+API_CALLABLE(CreateVineRenderer) {
     LavaPiranhaVine* data = heap_malloc(NUM_VINES * sizeof(*data));
     evt_set_variable(script, MV_VinesData, (s32) data);
-    N(VineRenderState) = -1;
-    create_worker_scene(nullptr, &N(worker_render_piranha_vines));
+    VineRenderState = -1;
+    create_worker_scene(nullptr, &worker_render_piranha_vines);
     return ApiStatus_DONE2;
 }

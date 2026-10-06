@@ -1,17 +1,17 @@
 #include "obk_02.h"
 
-API_CALLABLE(N(GetPendulumAngle)) {
+API_CALLABLE(GetPendulumAngle) {
     script->varTable[0] = sin_deg(script->varTable[1]) * 10.0f;
     script->varTable[1] = clamp_angle(script->varTable[1] + (s32)(6 * DT));
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ClockDoNothing) = {
+EvtScript EVS_ClockDoNothing = {
     Return
     End
 };
 
-EvtScript N(EVS_UpdateClock) = {
+EvtScript EVS_UpdateClock = {
     Thread
         Set(LVar0, 0)
         Label(10)
@@ -31,7 +31,7 @@ EvtScript N(EVS_UpdateClock) = {
     Thread
         Set(LVar1, 0)
         Label(30)
-        Call(N(GetPendulumAngle))
+        Call(GetPendulumAngle)
         Call(RotateModel, MODEL_fu, LVar0, 0, 0, 1)
         Wait(1)
         Goto(30)

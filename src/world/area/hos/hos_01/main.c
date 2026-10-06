@@ -2,7 +2,7 @@
 
 #include "../common/FallingStars.inc.c"
 
-EvtScript N(EVS_GotoMap_kmr_24_0) = {
+EvtScript EVS_GotoMap_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
     Call(GotoMapSpecial, Ref("kmr_24"), kmr_24_ENTRY_0, TRANSITION_AFTER_SAVE_PROMPT)
     Wait(100)
@@ -10,9 +10,9 @@ EvtScript N(EVS_GotoMap_kmr_24_0) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_hos_00_1) = EVT_EXIT_WALK(60, hos_01_ENTRY_0, "hos_00", hos_00_ENTRY_1);
+EvtScript EVS_ExitWalk_hos_00_1 = EVT_EXIT_WALK(60, hos_01_ENTRY_0, "hos_00", hos_00_ENTRY_1);
 
-EvtScript N(EVS_ExitStarWarp) = {
+EvtScript EVS_ExitStarWarp = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
         Return
@@ -32,24 +32,24 @@ EvtScript N(EVS_ExitStarWarp) = {
     EndIf
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
-    ExecWait(N(EVS_AscendStarWarp))
+    ExecWait(EVS_AscendStarWarp)
     Call(GotoMap, Ref("hos_02"), hos_02_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_00_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_hos_00_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, hos_01_ENTRY_1)
-        BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
+        BindTrigger(Ref(EVS_ExitStarWarp), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_EnterStarWarp) = {
+EvtScript EVS_EnterStarWarp = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -93,7 +93,7 @@ EvtScript N(EVS_EnterStarWarp) = {
             Goto(10)
         EndIf
     Call(SetNpcRotation, NPC_PARTNER, 0, 0, 0)
-    Call(N(SetStarWarpIdleParams), MV_StarWarpFXPtr)
+    Call(SetStarWarpIdleParams, MV_StarWarpFXPtr)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
@@ -106,12 +106,12 @@ EvtScript N(EVS_EnterStarWarp) = {
             Wait(1)
             Goto(20)
         EndIf
-    BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
+    BindTrigger(Ref(EVS_ExitStarWarp), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHOOTING_STAR_SUMMIT)
     Call(SetSpriteShading, SHADING_HOS_01)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -122,27 +122,27 @@ EvtScript N(EVS_Main) = {
             Goto(1)
         EndIf
         Call(DisablePlayerInput, true)
-        ExecWait(N(EVS_GotoMap_kmr_24_0))
+        ExecWait(EVS_GotoMap_kmr_24_0)
     EndThread
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupModelFX))
-    Exec(N(EVS_Starfall_Random))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupModelFX)
+    Exec(EVS_Starfall_Random)
+    Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_01_ENTRY_0)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(hos_01_ENTRY_1)
             Thread
-                ExecWait(N(EVS_EnterStarWarp))
-                Exec(N(EVS_BindExitTriggers))
+                ExecWait(EVS_EnterStarWarp)
+                Exec(EVS_BindExitTriggers)
             EndThread
     EndSwitch
     IfEq(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
-        Exec(N(EVS_Scene_StarWayOpened))
+        Exec(EVS_Scene_StarWayOpened)
     EndIf
     Return
     End

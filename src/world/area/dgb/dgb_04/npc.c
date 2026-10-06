@@ -4,7 +4,7 @@
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
 #include "world/common/enemy/Sentinel/wander.inc.c"
 
-NpcData N(NpcData_Sentinel) = {
+NpcData NpcData_Sentinel = {
     .id = NPC_Sentinel,
     .pos = { 70.0f, -220.0f, 186.0f },
     .yaw = 90,
@@ -20,14 +20,14 @@ NpcData N(NpcData_Sentinel) = {
             .detectSize = { 80, 150 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Sentinel)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Sentinel),
     {}
 };

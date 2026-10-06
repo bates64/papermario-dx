@@ -1,14 +1,14 @@
 #include "kkj_25.h"
 
-EvtScript N(EVS_ExitDoors_kkj_24_1) = EVT_EXIT_DOUBLE_DOOR(kkj_25_ENTRY_0, "kkj_24", kkj_24_ENTRY_1, COLLIDER_ttw, MODEL_o84, MODEL_o85);
+EvtScript EVS_ExitDoors_kkj_24_1 = EVT_EXIT_DOUBLE_DOOR(kkj_25_ENTRY_0, "kkj_24", kkj_24_ENTRY_1, COLLIDER_ttw, MODEL_o84, MODEL_o85);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_24_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_kkj_24_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_25_ENTRY_0)
@@ -47,18 +47,18 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_o84)
             Set(LVar3, MODEL_o85)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
-            Exec(N(EVS_Scene_BowserTrapsMario))
+            Exec(EVS_BindExitTriggers)
+            Exec(EVS_Scene_BowserTrapsMario)
         CaseEq(kkj_25_ENTRY_1)
-            Exec(N(EVS_Scene_KammyDefeated))
+            Exec(EVS_Scene_KammyDefeated)
         CaseEq(kkj_25_ENTRY_2)
-            Exec(N(EVS_Scene_BowserDefeated))
+            Exec(EVS_Scene_BowserDefeated)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Rotate_Propellers) = {
+EvtScript EVS_Rotate_Propellers = {
     Thread
         Set(LVar2, 0)
         Loop(0)
@@ -84,7 +84,7 @@ EvtScript N(EVS_Rotate_Propellers) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(1)
@@ -99,20 +99,20 @@ EvtScript N(EVS_Main) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.75))
     IfEq(GF_KKJ25_Defeated_Bowser, false)
         IfEq(GF_KKJ25_Defeated_Kammy, false)
-            Call(MakeNpcs, false, Ref(N(InitialNpcs)))
+            Call(MakeNpcs, false, Ref(InitialNpcs))
         Else
-            Call(MakeNpcs, false, Ref(N(MidpointNpcs)))
+            Call(MakeNpcs, false, Ref(MidpointNpcs))
             Call(EnableGroup, MODEL_g30, false)
         EndIf
     Else
-        Call(MakeNpcs, false, Ref(N(FinaleNpcs)))
+        Call(MakeNpcs, false, Ref(FinaleNpcs))
         Call(EnableGroup, MODEL_g30, false)
     EndIf
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(ParentColliderToModel, COLLIDER_o128, MODEL_o1)
-    Exec(N(EVS_Rotate_Propellers))
+    Exec(EVS_Rotate_Propellers)
     Call(GetEntryID, LVar0)
     Thread
         Set(MV_ArenaState, ARENA_STATE_IDLE)
@@ -127,7 +127,7 @@ EvtScript N(EVS_Main) = {
         Else
             Call(ScaleModel, MODEL_o122, 250, 1, 250)
         EndIf
-        Exec(N(EVS_ManageArenaEffects))
+        Exec(EVS_ManageArenaEffects)
     EndThread
     Return
     End

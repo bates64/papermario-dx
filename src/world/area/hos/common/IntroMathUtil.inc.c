@@ -9,7 +9,7 @@ enum {
     INTRO_MATH_EASING_5                 = 5,
 };
 
-void N(lerp_value_with_max_step)(f32 start, f32 end, f32 current, f32 maximum, f32* out) {
+void lerp_value_with_max_step(f32 start, f32 end, f32 current, f32 maximum, f32* out) {
     f32 remaining = end - current;
 
     if (end - start > 0.0f) {
@@ -29,7 +29,7 @@ void N(lerp_value_with_max_step)(f32 start, f32 end, f32 current, f32 maximum, f
     }
 }
 
-void N(interp_value_with_easing)(s32 easingMode, f32 start, f32 end, f32 curent, f32 max, f32* out) {
+void interp_value_with_easing(s32 easingMode, f32 start, f32 end, f32 curent, f32 max, f32* out) {
     f32 alpha;
 
     if (curent > max) {

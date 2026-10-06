@@ -1,19 +1,19 @@
 #include "trd_05.h"
 #include "effects.h"
 
-extern EvtScript N(EVS_StartKoopaBrosTheme);
-extern EvtScript N(EVS_EndKoopaBrosTheme);
-extern EvtScript N(EVS_EnterMap);
+extern EvtScript EVS_StartKoopaBrosTheme;
+extern EvtScript EVS_EndKoopaBrosTheme;
+extern EvtScript EVS_EnterMap;
 
 #include "world/common/enemy/KoopaBros/idle.inc.c"
 
-API_CALLABLE(N(MakeHammerDust)) {
+API_CALLABLE(MakeHammerDust) {
     fx_walking_dust(2, script->varTable[0], script->varTable[1], script->varTable[2], 0, 0);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_KoopaBros_SetTrap) = {
-    Exec(N(EVS_StartKoopaBrosTheme))
+EvtScript EVS_KoopaBros_SetTrap = {
+    Exec(EVS_StartKoopaBrosTheme)
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -350, 0, 0)
@@ -38,11 +38,11 @@ EvtScript N(EVS_KoopaBros_SetTrap) = {
             Wait(5 * DT)
             Call(GetNpcPos, NPC_KoopaBros_02, LVar0, LVar1, LVar2)
             Add(LVar1, 8)
-            Call(N(MakeHammerDust))
+            Call(MakeHammerDust)
             Wait(5 * DT)
             Call(GetNpcPos, NPC_KoopaBros_01, LVar0, LVar1, LVar2)
             Add(LVar1, 8)
-            Call(N(MakeHammerDust))
+            Call(MakeHammerDust)
             Wait(1)
         EndLoop
     EndThread
@@ -159,7 +159,7 @@ EvtScript N(EVS_KoopaBros_SetTrap) = {
     Call(PlaySound, SOUND_RUN_AWAY)
     Call(SetNpcSpeed, NPC_KoopaBros_01, Float(8.0 / DT))
     Call(NpcMoveTo, NPC_KoopaBros_01, -400, -10, 0)
-    Exec(N(EVS_EndKoopaBrosTheme))
+    Exec(EVS_EndKoopaBrosTheme)
     Call(UseSettingsFrom, CAM_DEFAULT, -270, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -270, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
@@ -179,14 +179,14 @@ EvtScript N(EVS_KoopaBros_SetTrap) = {
     Call(DisablePlayerInput, false)
     Call(EnablePartnerAI)
     Call(SetPlayerPos, -310, 0, 0)
-    ExecWait(N(EVS_EnterMap))
+    ExecWait(EVS_EnterMap)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_StoryProgress, STORY_CH1_KOOPA_BROS_SET_TRAP)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaBros) = {
+EvtScript EVS_NpcInit_KoopaBros = {
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     IfGe(GB_StoryProgress, STORY_CH1_MARIO_ACTIVATED_TRAP)
         Call(RemoveNpc, NPC_SELF)
@@ -195,13 +195,13 @@ EvtScript N(EVS_NpcInit_KoopaBros) = {
     End
 };
 
-NpcData N(NpcData_KoopaBros)[] = {
+NpcData NpcData_KoopaBros[] = {
     {
         .id = NPC_KoopaBros_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopaBros),
-        .settings = &N(NpcSettings_KoopaBros),
+        .init = &EVS_NpcInit_KoopaBros,
+        .settings = &NpcSettings_KoopaBros,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
@@ -210,15 +210,15 @@ NpcData N(NpcData_KoopaBros)[] = {
         .id = NPC_KoopaBros_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopaBros),
-        .settings = &N(NpcSettings_KoopaBros),
+        .init = &EVS_NpcInit_KoopaBros,
+        .settings = &NpcSettings_KoopaBros,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaBros)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaBros),
     {}
 };

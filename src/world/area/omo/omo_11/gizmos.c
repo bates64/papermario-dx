@@ -1,7 +1,7 @@
 #include "omo_11.h"
 #include "model.h"
 
-s32 N(PlatformFloorModels)[] = {
+s32 PlatformFloorModels[] = {
     MODEL_1_1,
     MODEL_1_2,
     MODEL_1_3,
@@ -12,7 +12,7 @@ s32 N(PlatformFloorModels)[] = {
     MODEL_2_5,
 };
 
-s32 N(RotatingPlatformModels)[] = {
+s32 RotatingPlatformModels[] = {
     MODEL_1_1,
     MODEL_f1_1,
     MODEL_1_2,
@@ -21,7 +21,7 @@ s32 N(RotatingPlatformModels)[] = {
     MODEL_f1_3,
 };
 
-s32 N(RotatingPlatformColliders)[] = {
+s32 RotatingPlatformColliders[] = {
     COLLIDER_1_1,
     COLLIDER_f1_1,
     COLLIDER_1_2,
@@ -30,42 +30,42 @@ s32 N(RotatingPlatformColliders)[] = {
     COLLIDER_f1_3,
 };
 
-s32 N(BasicPlatform1)[] = {
+s32 BasicPlatform1[] = {
     MODEL_2_1,
     COLLIDER_2_1,
     MODEL_f2_1,
     COLLIDER_f2_1,
 };
 
-s32 N(BasicPlatform2)[] = {
+s32 BasicPlatform2[] = {
     MODEL_2_2,
     COLLIDER_2_2,
     MODEL_f2_2,
     COLLIDER_f2_2,
 };
 
-s32 N(BasicPlatform3)[] = {
+s32 BasicPlatform3[] = {
     MODEL_2_3,
     COLLIDER_2_3,
     MODEL_f2_3,
     COLLIDER_f2_3,
 };
 
-s32 N(BasicPlatform4)[] = {
+s32 BasicPlatform4[] = {
     MODEL_2_4,
     COLLIDER_2_4,
     MODEL_f2_4,
     COLLIDER_f2_4,
 };
 
-s32 N(BasicPlatform5)[] = {
+s32 BasicPlatform5[] = {
     MODEL_2_5,
     COLLIDER_2_5,
     MODEL_f2_5,
     COLLIDER_f2_5,
 };
 
-API_CALLABLE(N(UpdatePlatformShadows)) {
+API_CALLABLE(UpdatePlatformShadows) {
     s32 (*shadowIDs)[8];
     Model* model;
     Shadow* shadow;
@@ -76,16 +76,16 @@ API_CALLABLE(N(UpdatePlatformShadows)) {
 
     if (isInitialCall) {
         script->functionTempPtr[0] = shadowIDs = heap_malloc(sizeof(*shadowIDs));
-        for (i = 0; i < ARRAY_COUNT(N(PlatformFloorModels)); i++) {
-            model = get_model_from_list_index(get_model_list_index_from_tree_index(N(PlatformFloorModels)[i]));
+        for (i = 0; i < ARRAY_COUNT(PlatformFloorModels); i++) {
+            model = get_model_from_list_index(get_model_list_index_from_tree_index(PlatformFloorModels[i]));
             (*shadowIDs)[i] = create_shadow_type(SHADOW_VARYING_CIRCLE, model->center.x, model->center.y - 100.0f, model->center.z);
         }
     }
 
     shadowIDs = script->functionTempPtr[0];
-    for (i = 0; i < ARRAY_COUNT(N(PlatformFloorModels)); i++) {
+    for (i = 0; i < ARRAY_COUNT(PlatformFloorModels); i++) {
         shadow = get_shadow_by_index((*shadowIDs)[i]);
-        model = get_model_from_list_index(get_model_list_index_from_tree_index(N(PlatformFloorModels)[i]));
+        model = get_model_from_list_index(get_model_list_index_from_tree_index(PlatformFloorModels[i]));
         x = model->center.x;
         y = model->center.y;
         z = model->center.z;
@@ -110,7 +110,7 @@ typedef struct RotatingPlatform {
     /* 0x18 */ Matrix4f transformMatrix;
 } RotatingPlatform; // size = 0x58
 
-API_CALLABLE(N(UpdateRotatingPlatforms)) {
+API_CALLABLE(UpdateRotatingPlatforms) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Matrix4f sp20, sp60, spA0, spE0;
     Npc* partner = get_npc_unsafe(NPC_PARTNER);
@@ -126,11 +126,11 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
 
     if (isInitialCall) {
         sfx_play_sound_at_position(SOUND_LOOP_OMO_ROTATING_WHEEL, SOUND_SPACE_DEFAULT, 315.0f, 125.0f, -100.0f);
-        script->functionTempPtr[0] = it = heap_malloc(sizeof(*it) * ARRAY_COUNT(N(RotatingPlatformModels)));
+        script->functionTempPtr[0] = it = heap_malloc(sizeof(*it) * ARRAY_COUNT(RotatingPlatformModels));
         script->functionTemp[1] = 0;
 
-        for (i = 0; i < ARRAY_COUNT(N(RotatingPlatformModels)); it++, i += 2) {
-            loopModel = get_model_from_list_index(get_model_list_index_from_tree_index(N(RotatingPlatformModels)[i]));
+        for (i = 0; i < ARRAY_COUNT(RotatingPlatformModels); it++, i += 2) {
+            loopModel = get_model_from_list_index(get_model_list_index_from_tree_index(RotatingPlatformModels[i]));
 
             it->relativePos.x = x = loopModel->center.x - axisModel->center.x;
             it->relativePos.y = y = loopModel->center.y - axisModel->center.y;
@@ -147,7 +147,7 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
             }
 
             it++;
-            loopModel = get_model_from_list_index(get_model_list_index_from_tree_index(N(RotatingPlatformModels)[i + 1]));
+            loopModel = get_model_from_list_index(get_model_list_index_from_tree_index(RotatingPlatformModels[i + 1]));
 
             it->relativePos.x = ox;
             it->relativePos.y = oy;
@@ -162,8 +162,8 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
     }
 
     it = script->functionTempPtr[0];
-    for (i = 0; i < ARRAY_COUNT(N(RotatingPlatformModels)); i++, it++) {
-        loopModel = get_model_from_list_index(get_model_list_index_from_tree_index(N(RotatingPlatformModels)[i]));
+    for (i = 0; i < ARRAY_COUNT(RotatingPlatformModels); i++, it++) {
+        loopModel = get_model_from_list_index(get_model_list_index_from_tree_index(RotatingPlatformModels[i]));
 
         for (j = 0; j < 4; j++) {
             for (k = 0; k < 4; k++) {
@@ -180,16 +180,16 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
         guMtxCatF(spA0, sp60, sp60);
         guMtxCatF(spE0, sp60, sp60);
         guMtxCatF(loopModel->userTransformMtx, sp60, loopModel->userTransformMtx);
-        update_collider_transform(N(RotatingPlatformColliders)[i]);
+        update_collider_transform(RotatingPlatformColliders[i]);
         guMtxXFMF(loopModel->userTransformMtx, 0.0f, 0.0f, 0.0f, &ox, &oy, &oz);
-        if (gCollisionStatus.curFloor == N(RotatingPlatformColliders)[i] ||
-            gCollisionStatus.lastTouchedFloor == N(RotatingPlatformColliders)[i])
+        if (gCollisionStatus.curFloor == RotatingPlatformColliders[i] ||
+            gCollisionStatus.lastTouchedFloor == RotatingPlatformColliders[i])
         {
             playerStatus->pushVel.x = ox - it->lastRelativePos.x;
             playerStatus->pushVel.y = oy - it->lastRelativePos.y;
             playerStatus->pushVel.z = oz - it->lastRelativePos.z;
         }
-        if (partner->curFloor == N(RotatingPlatformColliders)[i]) {
+        if (partner->curFloor == RotatingPlatformColliders[i]) {
             partner->pos.x += ox - it->lastRelativePos.x;
             partner->pos.y += oy - it->lastRelativePos.y;
             partner->pos.z += oz - it->lastRelativePos.z;
@@ -208,8 +208,8 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
     update_collider_transform(COLLIDER_1_0);
 
     isPounding = false;
-    for (i = 0; i < ARRAY_COUNT(N(RotatingPlatformColliders)); i++) {
-        if (gCollisionStatus.curFloor == N(RotatingPlatformColliders)[i]) {
+    for (i = 0; i < ARRAY_COUNT(RotatingPlatformColliders); i++) {
+        if (gCollisionStatus.curFloor == RotatingPlatformColliders[i]) {
             if (playerStatus->flags & PS_FLAG_NO_STATIC_COLLISION) {
                 gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
                 gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
@@ -229,7 +229,7 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_UpdateBasicPlatform_Silent) = {
+EvtScript EVS_UpdateBasicPlatform_Silent = {
     Call(RandInt, 20, LVarA)
     Wait(LVarA)
     UseBuf(LVar0)
@@ -264,7 +264,7 @@ EvtScript N(EVS_UpdateBasicPlatform_Silent) = {
     End
 };
 
-EvtScript N(EVS_UpdateBasicPlatform_Audible) = {
+EvtScript EVS_UpdateBasicPlatform_Audible = {
     Call(RandInt, 20, LVarA)
     Wait(LVarA)
     UseBuf(LVar0)
@@ -301,7 +301,7 @@ EvtScript N(EVS_UpdateBasicPlatform_Audible) = {
     End
 };
 
-EvtScript N(EVS_SetupGizmos) = {
+EvtScript EVS_SetupGizmos = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(ParentColliderToModel, COLLIDER_1_0, MODEL_1_0)
     Call(ParentColliderToModel, COLLIDER_fl, MODEL_fl)
@@ -312,7 +312,7 @@ EvtScript N(EVS_SetupGizmos) = {
     Call(ParentColliderToModel, COLLIDER_1_3, MODEL_1_3)
     Call(ParentColliderToModel, COLLIDER_f1_3, MODEL_f1_3)
     Thread
-        Call(N(UpdateRotatingPlatforms))
+        Call(UpdateRotatingPlatforms)
     EndThread
     Call(ParentColliderToModel, COLLIDER_2_1, MODEL_2_1)
     Call(ParentColliderToModel, COLLIDER_f2_1, MODEL_f2_1)
@@ -324,18 +324,18 @@ EvtScript N(EVS_SetupGizmos) = {
     Call(ParentColliderToModel, COLLIDER_f2_4, MODEL_f2_4)
     Call(ParentColliderToModel, COLLIDER_2_5, MODEL_2_5)
     Call(ParentColliderToModel, COLLIDER_f2_5, MODEL_f2_5)
-    Set(LVar0, Ref(N(BasicPlatform1)))
-    Exec(N(EVS_UpdateBasicPlatform_Silent))
-    Set(LVar0, Ref(N(BasicPlatform2)))
-    Exec(N(EVS_UpdateBasicPlatform_Silent))
-    Set(LVar0, Ref(N(BasicPlatform3)))
-    Exec(N(EVS_UpdateBasicPlatform_Silent))
-    Set(LVar0, Ref(N(BasicPlatform4)))
-    Exec(N(EVS_UpdateBasicPlatform_Audible))
-    Set(LVar0, Ref(N(BasicPlatform5)))
-    Exec(N(EVS_UpdateBasicPlatform_Silent))
+    Set(LVar0, Ref(BasicPlatform1))
+    Exec(EVS_UpdateBasicPlatform_Silent)
+    Set(LVar0, Ref(BasicPlatform2))
+    Exec(EVS_UpdateBasicPlatform_Silent)
+    Set(LVar0, Ref(BasicPlatform3))
+    Exec(EVS_UpdateBasicPlatform_Silent)
+    Set(LVar0, Ref(BasicPlatform4))
+    Exec(EVS_UpdateBasicPlatform_Audible)
+    Set(LVar0, Ref(BasicPlatform5))
+    Exec(EVS_UpdateBasicPlatform_Silent)
     Thread
-        Call(N(UpdatePlatformShadows))
+        Call(UpdatePlatformShadows)
     EndThread
     Return
     End

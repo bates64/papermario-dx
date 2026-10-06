@@ -2,14 +2,14 @@
 
 #include "world/common/enemy/AlbinoDino/idle.inc.c"
 
-API_CALLABLE(N(GetAngleToPlayer)) {
+API_CALLABLE(GetDinoAngleToPlayer) {
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
     script->varTable[0] = clamp_angle(atan2(npc->pos.x, npc->pos.z, gPlayerStatus.pos.x, gPlayerStatus.pos.z));
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CalculateDinoLerpValues)) {
+API_CALLABLE(CalculateDinoLerpValues) {
     script->varTable[6] = script->varTable[0] + 90;
     script->varTable[7] = script->varTable[5] + 90;
     script->varTable[8] = abs(script->varTable[6] - script->varTable[7]);
@@ -26,8 +26,8 @@ API_CALLABLE(N(CalculateDinoLerpValues)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ChangeDinoDirection) = {
-    Call(N(GetAngleToPlayer))
+EvtScript EVS_ChangeDinoDirection = {
+    Call(GetDinoAngleToPlayer)
     Switch(LVar0)
         CaseRange(45, 134)
             Set(LVar5, 90)
@@ -56,7 +56,7 @@ EvtScript N(EVS_ChangeDinoDirection) = {
     EndSwitch
     IfNe(LVar5, LVar0)
         Thread
-            Call(N(CalculateDinoLerpValues))
+            Call(CalculateDinoLerpValues)
             Call(MakeLerp, LVar6, LVar7, LVar8, EASING_LINEAR)
             Loop(0)
                 Call(UpdateLerp)
@@ -115,61 +115,61 @@ EvtScript N(EVS_ChangeDinoDirection) = {
         CaseEq(NPC_AlbinoDino_03)
             Set(MV_DinoYaw_03, LVar5)
     EndSwitch
-    Call(N(SetDinoAngle), LVar3, LVar5)
+    Call(SetDinoAngle, LVar3, LVar5)
     Call(SpeakToPlayer, NPC_SELF, LVar6, LVar6, 5, LVar4)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_AlbinoDino_01) = {
+EvtScript EVS_NpcInteract_AlbinoDino_01 = {
     Set(LVar3, NPC_AlbinoDino_01)
     Set(LVar4, MSG_CH7_0167)
-    ExecWait(N(EVS_ChangeDinoDirection))
+    ExecWait(EVS_ChangeDinoDirection)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_AlbinoDino_02) = {
+EvtScript EVS_NpcInteract_AlbinoDino_02 = {
     Set(LVar3, NPC_AlbinoDino_02)
     Set(LVar4, MSG_CH7_0168)
-    ExecWait(N(EVS_ChangeDinoDirection))
+    ExecWait(EVS_ChangeDinoDirection)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_AlbinoDino_03) = {
+EvtScript EVS_NpcInteract_AlbinoDino_03 = {
     Set(LVar3, NPC_AlbinoDino_03)
     Set(LVar4, MSG_CH7_0169)
-    ExecWait(N(EVS_ChangeDinoDirection))
+    ExecWait(EVS_ChangeDinoDirection)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_AlbinoDino_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_AlbinoDino_01)))
+EvtScript EVS_NpcInit_AlbinoDino_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AlbinoDino_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_AlbinoDino_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_AlbinoDino_02)))
+EvtScript EVS_NpcInit_AlbinoDino_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AlbinoDino_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_AlbinoDino_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_AlbinoDino_03)))
+EvtScript EVS_NpcInit_AlbinoDino_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_AlbinoDino_03))
     Return
     End
 };
 
-NpcData N(NpcData_AlbinoDinos)[] = {
+NpcData NpcData_AlbinoDinos[] = {
     {
         .id = NPC_AlbinoDino_01,
         .pos = { 190.0f, -10.0f, 165.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_AlbinoDino_01),
-        .settings = &N(NpcSettings_AlbinoDino),
+        .init = &EVS_NpcInit_AlbinoDino_01,
+        .settings = &NpcSettings_AlbinoDino,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = ALBINO_DINO_ANIMS,
@@ -179,8 +179,8 @@ NpcData N(NpcData_AlbinoDinos)[] = {
         .id = NPC_AlbinoDino_02,
         .pos = { 300.0f, -10.0f, 89.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_AlbinoDino_02),
-        .settings = &N(NpcSettings_AlbinoDino),
+        .init = &EVS_NpcInit_AlbinoDino_02,
+        .settings = &NpcSettings_AlbinoDino,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = ALBINO_DINO_ANIMS,
@@ -190,8 +190,8 @@ NpcData N(NpcData_AlbinoDinos)[] = {
         .id = NPC_AlbinoDino_03,
         .pos = { 452.0f, -10.0f, 139.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_AlbinoDino_03),
-        .settings = &N(NpcSettings_AlbinoDino),
+        .init = &EVS_NpcInit_AlbinoDino_03,
+        .settings = &NpcSettings_AlbinoDino,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = ALBINO_DINO_ANIMS,
@@ -199,7 +199,7 @@ NpcData N(NpcData_AlbinoDinos)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_AlbinoDinos), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_AlbinoDinos, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
     {}
 };

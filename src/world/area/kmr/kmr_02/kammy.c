@@ -1,13 +1,13 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-Vec3f N(FlightPath_KammyAppear)[] = {
+Vec3f FlightPath_KammyAppear[] = {
     {  473.0,   150.0,  301.0 },
     {  234.0,    80.0,  200.0 },
     {   46.0,   150.0,  180.0 },
 };
 
-Vec3f N(FlightPath_ToGate1)[] = {
+Vec3f FlightPath_ToGate1[] = {
     {   46.0,   150.0,  180.0 },
     {  -93.0,   262.0,  114.0 },
     {  118.0,   121.0,  141.0 },
@@ -15,26 +15,26 @@ Vec3f N(FlightPath_ToGate1)[] = {
     {  550.0,   108.0,  320.0 },
 };
 
-Vec3f N(FlightPath_ToGate2)[] = {
+Vec3f FlightPath_ToGate2[] = {
     {  465.0,   108.0,  320.0 },
     {  433.0,    78.0,  306.0 },
     {  399.0,    56.0,  288.0 },
 };
 
-Vec3f N(FlightPath_ToGate3)[] = {
+Vec3f FlightPath_ToGate3[] = {
     {  399.0,    56.0,  288.0 },
     {  390.0,    53.0,  284.0 },
     {  380.0,    50.0,  282.0 },
 };
 
-Vec3f N(FlightPath_KammyDepart)[] = {
+Vec3f FlightPath_KammyDepart[] = {
     {  380.0,    50.0,  282.0 },
     {  290.0,   100.0,  240.0 },
     {  204.0,   142.0,  202.0 },
     { -391.0,   520.0, -212.0 },
 };
 
-EvtScript N(EVS_PlayKammyFlightSounds) = {
+EvtScript EVS_PlayKammyFlightSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_Kammy, SOUND_FLIGHT, SOUND_SPACE_DEFAULT)
         Wait(4 * DT)
@@ -43,7 +43,7 @@ EvtScript N(EVS_PlayKammyFlightSounds) = {
     End
 };
 
-EvtScript N(EVS_UpdateKammyTracking) = {
+EvtScript EVS_UpdateKammyTracking = {
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Kammy, LVar3, LVar4, LVar5)
@@ -67,7 +67,7 @@ EvtScript N(EVS_UpdateKammyTracking) = {
     End
 };
 
-EvtScript N(EVS_Scene_KammyCrushesGate) = {
+EvtScript EVS_Scene_KammyCrushesGate = {
     Call(DisablePlayerInput, true)
     Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -77,13 +77,13 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(EnableNpcAI, NPC_Goomama, false)
     Call(SetNpcAnimation, NPC_Goomama, ANIM_Goomama_Idle)
     Call(EnableNpcAI, NPC_Kammy, true)
-    Call(SetNpcAux, NPC_Kammy, Ref(N(EVS_NpcAux_Kammy)))
+    Call(SetNpcAux, NPC_Kammy, Ref(EVS_NpcAux_Kammy))
     Call(ShowMessageAtScreenPos, MSG_CH0_0059, 160, 40)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyFastSly)
     Thread
-        ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_KammySoundsTID)
-        ExecGetTID(N(EVS_UpdateKammyTracking), MV_TrackKammyTID)
-        Call(LoadPath, 40 * DT, Ref(N(FlightPath_KammyAppear)), ARRAY_COUNT(N(FlightPath_KammyAppear)), EASING_LINEAR)
+        ExecGetTID(EVS_PlayKammyFlightSounds, MV_KammySoundsTID)
+        ExecGetTID(EVS_UpdateKammyTracking, MV_TrackKammyTID)
+        Call(LoadPath, 40 * DT, Ref(FlightPath_KammyAppear), ARRAY_COUNT(FlightPath_KammyAppear), EASING_LINEAR)
         Label(10)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -105,7 +105,7 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
-    Call(LoadPath, 120 * DT, Ref(N(FlightPath_ToGate1)), ARRAY_COUNT(N(FlightPath_ToGate1)), EASING_LINEAR)
+    Call(LoadPath, 120 * DT, Ref(FlightPath_ToGate1), ARRAY_COUNT(FlightPath_ToGate1), EASING_LINEAR)
     Label(20)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -130,7 +130,7 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(SetPlayerPos, 220, 0, 213)
     Call(SetNpcPos, NPC_Goompapa, 255, 0, 232)
     Call(SetNpcPos, NPC_Goombaria, 190, 0, 212)
-    Call(LoadPath, 10 * DT, Ref(N(FlightPath_ToGate2)), ARRAY_COUNT(N(FlightPath_ToGate2)), EASING_LINEAR)
+    Call(LoadPath, 10 * DT, Ref(FlightPath_ToGate2), ARRAY_COUNT(FlightPath_ToGate2), EASING_LINEAR)
     Label(30)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -164,7 +164,7 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
         Wait(3)
         Call(SetNpcRotation, NPC_Kammy, 0, 0, 0)
     EndThread
-    Call(LoadPath, 10, Ref(N(FlightPath_ToGate3)), ARRAY_COUNT(N(FlightPath_ToGate3)), EASING_LINEAR)
+    Call(LoadPath, 10, Ref(FlightPath_ToGate3), ARRAY_COUNT(FlightPath_ToGate3), EASING_LINEAR)
     Label(40)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -205,7 +205,7 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Wait(10 * DT)
-    ExecWait(N(EVS_SummonGateBlock))
+    ExecWait(EVS_SummonGateBlock)
     Thread
         Call(SetPlayerAnimation, ANIM_MarioW2_PanicHoverStill)
         Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM)
@@ -273,12 +273,12 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
         EndLoop
     EndThread
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyFastSly)
-    ExecGetTID(N(EVS_UpdateKammyTracking), MV_TrackKammyTID)
+    ExecGetTID(EVS_UpdateKammyTracking, MV_TrackKammyTID)
     Wait(40 * DT)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_FlyTalkSly, ANIM_WorldKammy_FlyIdleSly, 0x200, MSG_CH0_005E)
     Call(FadeOutMusic, 0, 3000 * DT)
-    ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_KammySoundsTID)
-    Call(LoadPath, 90 * DT, Ref(N(FlightPath_KammyDepart)), ARRAY_COUNT(N(FlightPath_KammyDepart)), EASING_QUADRATIC_IN)
+    ExecGetTID(EVS_PlayKammyFlightSounds, MV_KammySoundsTID)
+    Call(LoadPath, 90 * DT, Ref(FlightPath_KammyDepart), ARRAY_COUNT(FlightPath_KammyDepart), EASING_QUADRATIC_IN)
     Label(70)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -289,7 +289,7 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     KillThread(MV_KammySoundsTID)
     KillThread(MV_TrackKammyTID)
     Wait(20 * DT)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Angry)
     Call(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_Idle)
     Call(SetNpcPos, NPC_Goombaria, 166, 0, 188)
@@ -330,12 +330,12 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Idle)
-    Call(N(SetWanderTerritory), NPC_Goomama, 1)
-    Call(BindNpcAI, NPC_Goomama, Ref(N(EVS_NpcIdle_SwitchedWander)))
-    Call(N(SetWanderTerritory), NPC_Goombario, 2)
-    Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcIdle_SwitchedWander)))
-    Call(N(SetWanderTerritory), NPC_Goombaria, 3)
-    Call(BindNpcAI, NPC_Goombaria, Ref(N(EVS_NpcIdle_SwitchedWander)))
+    Call(SetWanderTerritory, NPC_Goomama, 1)
+    Call(BindNpcAI, NPC_Goomama, Ref(EVS_NpcIdle_SwitchedWander))
+    Call(SetWanderTerritory, NPC_Goombario, 2)
+    Call(BindNpcAI, NPC_Goombario, Ref(EVS_NpcIdle_SwitchedWander))
+    Call(SetWanderTerritory, NPC_Goombaria, 3)
+    Call(BindNpcAI, NPC_Goombaria, Ref(EVS_NpcIdle_SwitchedWander))
     Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return

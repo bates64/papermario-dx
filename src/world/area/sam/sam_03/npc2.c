@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Gulpit/wander.inc.c"
 
-NpcData N(NpcData_Gulpit_01)[] = {
+NpcData NpcData_Gulpit_01[] = {
     {
         .id = NPC_Gulpit_01,
         .pos = { -345.0f, 0.0f, 115.0f },
@@ -19,17 +19,17 @@ NpcData N(NpcData_Gulpit_01)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit_Wander),
+        .settings = &NpcSettings_Gulpit_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
-        .limitAnimations = N(LimitAnims_Gulpit),
+        .limitAnimations = LimitAnims_Gulpit,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     GULPIT_HITBOX(NPC_Gulpit_01_Hitbox),
 };
 
-NpcData N(NpcData_Gulpit_02)[] = {
+NpcData NpcData_Gulpit_02[] = {
     {
         .id = NPC_Gulpit_02,
         .pos = { 200.0f, 0.0f, 0.0f },
@@ -46,18 +46,18 @@ NpcData N(NpcData_Gulpit_02)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit_Wander),
+        .settings = &NpcSettings_Gulpit_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
-        .limitAnimations = N(LimitAnims_Gulpit),
+        .limitAnimations = LimitAnims_Gulpit,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     GULPIT_HITBOX(NPC_Gulpit_02_Hitbox),
 };
 
-NpcGroupList N(AfterNPCs) = {
-    NPC_GROUP(N(NpcData_Gulpit_01), BTL_SAM_FORMATION_01, BTL_SAM_STAGE_00),
-    NPC_GROUP(N(NpcData_Gulpit_02), BTL_SAM_FORMATION_02, BTL_SAM_STAGE_00),
+NpcGroupList AfterNPCs = {
+    NPC_GROUP(NpcData_Gulpit_01, BTL_SAM_FORMATION_01, BTL_SAM_STAGE_00),
+    NPC_GROUP(NpcData_Gulpit_02, BTL_SAM_FORMATION_02, BTL_SAM_STAGE_00),
     {}
 };

@@ -1,10 +1,10 @@
 #include "jan_15.h"
 #include "foliage.h"
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o73, MODEL_o74, MODEL_o75);
-FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o72);
+FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o73, MODEL_o74, MODEL_o75);
+FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o72);
 
-FoliageVectorList N(Tree1_Effects) = {
+FoliageVectorList Tree1_Effects = {
     .count = 2,
     .vectors = {
         { -134.0f, 114.0f, -72.0f },
@@ -12,21 +12,21 @@ FoliageVectorList N(Tree1_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree1_LeafModels),
-    .trunk = &N(Tree1_TrunkModels),
-    .vectors = &N(Tree1_Effects),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree1_LeafModels,
+    .trunk = &Tree1_TrunkModels,
+    .vectors = &Tree1_Effects,
 };
 
-BombTrigger N(BombPos_Tree1) = {
+BombTrigger BombPos_Tree1 = {
     .pos = { -94.0f, 0.0f, -102.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o65, MODEL_o66, MODEL_o67);
-FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o64);
+FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o65, MODEL_o66, MODEL_o67);
+FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o64);
 
-FoliageDropList N(Tree2_Drops) = {
+FoliageDropList Tree2_Drops = {
     .count = 1,
     .drops = {
         {
@@ -38,7 +38,7 @@ FoliageDropList N(Tree2_Drops) = {
     }
 };
 
-FoliageVectorList N(Tree2_Effects) = {
+FoliageVectorList Tree2_Effects = {
     .count = 2,
     .vectors = {
         { 164.0f, 114.0f, -71.0f },
@@ -46,25 +46,25 @@ FoliageVectorList N(Tree2_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree2) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
-    .drops = &N(Tree2_Drops),
-    .vectors = &N(Tree2_Effects),
+ShakeTreeConfig ShakeTree_Tree2 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
+    .drops = &Tree2_Drops,
+    .vectors = &Tree2_Effects,
 };
 
-BombTrigger N(BombPos_Tree2) = {
+BombTrigger BombPos_Tree2 = {
     .pos = { 204.0f, 0.0f, -101.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupTrees) = {
-    Set(LVar0, Ref(N(ShakeTree_Tree1)))
+EvtScript EVS_SetupTrees = {
+    Set(LVar0, Ref(ShakeTree_Tree1))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o97, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree2)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree2))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o98, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree2)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
     Return
     End
 };

@@ -1,7 +1,7 @@
 #include "hos_10.h"
 #include "effects.h"
 
-API_CALLABLE(N(ResumeIntroState)) {
+API_CALLABLE(ResumeIntroState) {
     if (gGameStatusPtr->introPart > INTRO_PART_NONE && gGameStatusPtr->introPart < INTRO_PART_5) {
         gGameStatusPtr->introPart++;
         state_init_intro();
@@ -9,7 +9,7 @@ API_CALLABLE(N(ResumeIntroState)) {
     return ApiStatus_DONE1;
 }
 
-void N(lerp_value_with_max_step)(f32 start, f32 end, f32 current, f32 maxStep, f32* out) {
+void lerp_value_with_max_step(f32 start, f32 end, f32 current, f32 maxStep, f32* out) {
     f32 remaining = end - current;
 
     if (end - start > 0.0f) {
@@ -29,12 +29,12 @@ void N(lerp_value_with_max_step)(f32 start, f32 end, f32 current, f32 maxStep, f
     }
 }
 
-API_CALLABLE(N(MakeShootingStar)) {
+API_CALLABLE(MakeShootingStar) {
     fx_star(FX_STAR_FOREGROUND, 200.0f, 400.0f, 1200.0f, -300.0f, -100.0f, 0.0f, 30.0f);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_Unused_Impl) = {
+EvtScript EVS_Scene_Unused_Impl = {
     Thread
         SetF(LVar0, 0)
         Loop(310)
@@ -44,12 +44,12 @@ EvtScript N(EVS_Scene_Unused_Impl) = {
         EndLoop
     EndThread
     Wait(100)
-    Call(N(ResumeIntroState))
+    Call(ResumeIntroState)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_Rising_Impl) = {
+EvtScript EVS_Scene_Rising_Impl = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(  400,    0,    0,    0)
@@ -95,7 +95,7 @@ EvtScript N(EVS_Scene_Rising_Impl) = {
     Call(EnableTexPanning, MODEL_s2, true)
     Thread
         Wait(510)
-        Call(N(MakeShootingStar))
+        Call(MakeShootingStar)
     EndThread
     Call(EnableModel, MODEL_nagare, false)
     Call(SetTexPanner, MODEL_nagare, TEX_PANNER_1)
@@ -151,12 +151,12 @@ EvtScript N(EVS_Scene_Rising_Impl) = {
         EndLoop
     EndThread
     Wait(740)
-    Call(N(ResumeIntroState))
+    Call(ResumeIntroState)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_UnusedWhiteScreen) = {
+EvtScript EVS_Scene_UnusedWhiteScreen = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
@@ -165,12 +165,12 @@ EvtScript N(EVS_Scene_UnusedWhiteScreen) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(EnableModel, MODEL_nagare, false)
-    Exec(N(EVS_Scene_Unused_Impl))
+    Exec(EVS_Scene_Unused_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_RisingAboveClouds) = {
+EvtScript EVS_Scene_RisingAboveClouds = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
@@ -178,7 +178,7 @@ EvtScript N(EVS_Scene_RisingAboveClouds) = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Exec(N(EVS_Scene_Rising_Impl))
+    Exec(EVS_Scene_Rising_Impl)
     Return
     End
 };

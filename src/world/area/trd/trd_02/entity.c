@@ -1,9 +1,9 @@
 #include "trd_02.h"
 #include "entity.h"
 
-extern EvtScript N(EVS_ExitDoors_trd_01_2);
+extern EvtScript EVS_ExitDoors_trd_01_2;
 
-EvtScript N(EVS_UnlockFortressDoor) = {
+EvtScript EVS_UnlockFortressDoor = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
@@ -30,16 +30,16 @@ EvtScript N(EVS_UnlockFortressDoor) = {
     End
 };
 
-EvtScript N(EVS_BindLockTrigger) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_01_2)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
+EvtScript EVS_BindLockTrigger = {
+    BindTrigger(Ref(EVS_ExitDoors_trd_01_2), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD02_UnlockedDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), -265, 195, -55, 80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BindLockTrigger)))
+        Call(AssignScript, Ref(EVS_BindLockTrigger))
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_LOWERED_SECOND_STAIRS)

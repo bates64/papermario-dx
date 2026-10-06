@@ -1,7 +1,7 @@
 #include "osr_02.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_KKJ25_Defeated_Bowser, true)
         Return
     EndIf

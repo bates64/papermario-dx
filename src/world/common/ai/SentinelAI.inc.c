@@ -47,7 +47,7 @@ enum SentinelAiAnims {
 
 #define SENTINEL_AI_DESCEND_RATE    (1.8f)
 
-void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_ChaseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 deltaAngle;
@@ -77,7 +77,7 @@ void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-void N(SentinelAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_Chase(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -99,7 +99,7 @@ void N(SentinelAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVol
     }
 }
 
-void N(SentinelAI_DescendInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_DescendInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 i;
@@ -121,7 +121,7 @@ void N(SentinelAI_DescendInit)(Evt* script, MobileAISettings* settings, EnemyDet
     script->AI_TEMP_STATE = AI_STATE_SENTINEL_DESCEND;
 }
 
-void N(SentinelAI_Descend)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_Descend(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
@@ -166,7 +166,7 @@ void N(SentinelAI_Descend)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(SentinelAI_LosePlayerInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_LosePlayerInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -181,7 +181,7 @@ void N(SentinelAI_LosePlayerInit)(Evt* script, MobileAISettings* settings, Enemy
     script->AI_TEMP_STATE = AI_STATE_SENTINEL_LOSE_PLAYER;
 }
 
-void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_LosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
@@ -202,7 +202,7 @@ void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(SentinelAI_PostLosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_PostLosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -212,7 +212,7 @@ void N(SentinelAI_PostLosePlayer)(Evt* script, MobileAISettings* settings, Enemy
     }
 }
 
-void N(SentinelAI_GrabPlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_GrabPlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -229,7 +229,7 @@ void N(SentinelAI_GrabPlayer)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(SentinelAI_ReturnHomeInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_ReturnHomeInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -241,7 +241,7 @@ void N(SentinelAI_ReturnHomeInit)(Evt* script, MobileAISettings* settings, Enemy
     script->functionTemp[1] = 30;
 }
 
-void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SentinelAI_ReturnHome(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX = npc->pos.x;
@@ -284,7 +284,7 @@ void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-API_CALLABLE(N(SentinelAI_Main)) {
+API_CALLABLE(SentinelAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -303,64 +303,64 @@ API_CALLABLE(N(SentinelAI_Main)) {
 
     if (isInitialCall) {
         script->AI_TEMP_STATE = AI_STATE_SENTINEL_WANDER_INIT;
-        N(FlyingAI_Init)(npc, enemy, script, settings);
+        FlyingAI_Init(npc, enemy, script, settings);
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_SENTINEL_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, settings, detect);
+            FlyingAI_WanderInit(script, settings, detect);
             set_npc_imgfx_all(npc->spriteInstanceID, IMGFX_CLEAR, 0, 0, 0, 0, 0);
             // fallthrough
         case AI_STATE_SENTINEL_WANDER:
-            N(FlyingAI_Wander)(script, settings, detect);
+            FlyingAI_Wander(script, settings, detect);
             if (script->AI_TEMP_STATE == AI_STATE_SENTINEL_CHASE_INIT) {
                 npc->duration = 6;
             }
             break;
         case AI_STATE_SENTINEL_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, settings, detect);
+            FlyingAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_SENTINEL_LOITER:
-            N(FlyingAI_Loiter)(script, settings, detect);
+            FlyingAI_Loiter(script, settings, detect);
             if (script->AI_TEMP_STATE == AI_STATE_SENTINEL_CHASE_INIT) {
                 npc->duration = 6;
             }
             break;
         case AI_STATE_SENTINEL_CHASE_INIT:
-            N(SentinelAI_ChaseInit)(script, settings, detect);
+            SentinelAI_ChaseInit(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SENTINEL_CHASE) {
                 break;
             }
             // fallthrough
         case AI_STATE_SENTINEL_CHASE:
-            N(SentinelAI_Chase)(script, settings, detect);
+            SentinelAI_Chase(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_DESCEND_INIT:
-            N(SentinelAI_DescendInit)(script, settings, detect);
+            SentinelAI_DescendInit(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SENTINEL_DESCEND) {
                 break;
             }
             // fallthrough
         case AI_STATE_SENTINEL_DESCEND:
-            N(SentinelAI_Descend)(script, settings, detect);
+            SentinelAI_Descend(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_LOSE_PLAYER_INIT:
-            N(SentinelAI_LosePlayerInit)(script, settings, detect);
+            SentinelAI_LosePlayerInit(script, settings, detect);
             // fallthrough
         case AI_STATE_SENTINEL_LOSE_PLAYER:
-            N(SentinelAI_LosePlayer)(script, settings, detect);
+            SentinelAI_LosePlayer(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_POST_LOSE_PLAYER:
-            N(SentinelAI_PostLosePlayer)(script, settings, detect);
+            SentinelAI_PostLosePlayer(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_GRAB_PLAYER:
-            N(SentinelAI_GrabPlayer)(script, settings, detect);
+            SentinelAI_GrabPlayer(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_RETURN_HOME_INIT:
-            N(SentinelAI_ReturnHomeInit)(script, settings, detect);
+            SentinelAI_ReturnHomeInit(script, settings, detect);
             // fallthrough
         case AI_STATE_SENTINEL_RETURN_HOME:
-            N(SentinelAI_ReturnHome)(script, settings, detect);
+            SentinelAI_ReturnHome(script, settings, detect);
             break;
     }
 

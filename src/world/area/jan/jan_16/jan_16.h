@@ -27,12 +27,10 @@ enum {
     MV_BranchWobbleVel  = MapVar(10),
 };
 
-#define NAMESPACE jan_16
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupBushes;
+extern EvtScript EVS_Scene_ReachedRaphaelsTree;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_Scene_ReachedRaphaelsTree);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

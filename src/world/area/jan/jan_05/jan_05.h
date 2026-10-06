@@ -31,13 +31,11 @@ enum {
     MF_KillLogShadow    = MapFlag(11),
 };
 
-#define NAMESPACE jan_05
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupLogs;
+extern EvtScript EVS_SetupTrees;
+extern EvtScript EVS_SetupBushes;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupLogs);
-extern EvtScript N(EVS_SetupTrees);
-extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

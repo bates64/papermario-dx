@@ -42,7 +42,6 @@ EffectInstance* shape_spell_main(
     bp.init = shape_spell_init;
     bp.update = shape_spell_update;
     bp.renderScene = shape_spell_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SHAPE_SPELL;
 

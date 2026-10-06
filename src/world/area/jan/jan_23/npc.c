@@ -4,7 +4,7 @@
 #include "world/common/npc/RaphaelRaven/idle.inc.c"
 #include "world/common/npc/Raven/idle.inc.c"
 
-EvtScript N(EVS_Ravens_Converse) = {
+EvtScript EVS_Ravens_Converse = {
     Loop(4)
         Call(SetNpcAnimation, NPC_RaphaelRaven, ANIM_RaphaelRaven_TalkNoFeet)
         Call(InterpNpcYaw, NPC_Raven_01, 90, 1)
@@ -35,7 +35,7 @@ EvtScript N(EVS_Ravens_Converse) = {
     End
 };
 
-EvtScript N(EVS_Raven1_Descend) = {
+EvtScript EVS_Raven1_Descend = {
     Call(SetNpcRotationPivot, NPC_Raven_01, 50)
     Loop(2)
         Set(LVar3, -30)
@@ -60,7 +60,7 @@ EvtScript N(EVS_Raven1_Descend) = {
     End
 };
 
-EvtScript N(EVS_Raven2_Descend) = {
+EvtScript EVS_Raven2_Descend = {
     Call(SetNpcRotationPivot, NPC_Raven_02, 60)
     Loop(2)
         Set(LVar3, -30)
@@ -85,7 +85,7 @@ EvtScript N(EVS_Raven2_Descend) = {
     End
 };
 
-EvtScript N(EVS_Raven3_Descend) = {
+EvtScript EVS_Raven3_Descend = {
     Call(SetNpcRotationPivot, NPC_Raven_03, 50)
     Loop(2)
         Set(LVar3, -30)
@@ -110,7 +110,7 @@ EvtScript N(EVS_Raven3_Descend) = {
     End
 };
 
-EvtScript N(EVS_Raven4_Descend) = {
+EvtScript EVS_Raven4_Descend = {
     Call(SetNpcRotationPivot, NPC_Raven_04, 60)
     Loop(2)
         Set(LVar3, -30)
@@ -135,7 +135,7 @@ EvtScript N(EVS_Raven4_Descend) = {
     End
 };
 
-EvtScript N(EVS_Raven5_Descend) = {
+EvtScript EVS_Raven5_Descend = {
     Call(SetNpcRotationPivot, NPC_Raven_05, 50)
     Loop(2)
         Set(LVar3, -30)
@@ -160,7 +160,7 @@ EvtScript N(EVS_Raven5_Descend) = {
     End
 };
 
-EvtScript N(EVS_Raven1_MoveToMeetingPos) = {
+EvtScript EVS_Raven1_MoveToMeetingPos = {
     Wait(10)
     Call(SetNpcAnimation, NPC_Raven_01, ANIM_Raven_Walk)
     Call(SetNpcSpeed, NPC_Raven_01, Float(3.0))
@@ -171,7 +171,7 @@ EvtScript N(EVS_Raven1_MoveToMeetingPos) = {
     End
 };
 
-EvtScript N(EVS_Raven2_MoveToMeetingPos) = {
+EvtScript EVS_Raven2_MoveToMeetingPos = {
     Wait(10)
     Call(SetNpcAnimation, NPC_Raven_02, ANIM_Raven_Walk)
     Call(SetNpcSpeed, NPC_Raven_02, Float(3.0))
@@ -182,7 +182,7 @@ EvtScript N(EVS_Raven2_MoveToMeetingPos) = {
     End
 };
 
-EvtScript N(EVS_Raven3_MoveToMeetingPos) = {
+EvtScript EVS_Raven3_MoveToMeetingPos = {
     Wait(10)
     Call(SetNpcAnimation, NPC_Raven_03, ANIM_Raven_Walk)
     Call(SetNpcSpeed, NPC_Raven_03, Float(3.0))
@@ -193,7 +193,7 @@ EvtScript N(EVS_Raven3_MoveToMeetingPos) = {
     End
 };
 
-EvtScript N(EVS_Raven4_MoveToMeetingPos) = {
+EvtScript EVS_Raven4_MoveToMeetingPos = {
     Wait(10)
     Call(SetNpcAnimation, NPC_Raven_04, ANIM_Raven_Walk)
     Call(SetNpcSpeed, NPC_Raven_04, Float(3.0))
@@ -204,7 +204,7 @@ EvtScript N(EVS_Raven4_MoveToMeetingPos) = {
     End
 };
 
-EvtScript N(EVS_Raven5_Sweat) = {
+EvtScript EVS_Raven5_Sweat = {
     Label(0)
         Call(ShowSweat, NPC_Raven_05, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
         Wait(8)
@@ -213,9 +213,9 @@ EvtScript N(EVS_Raven5_Sweat) = {
     End
 };
 
-EvtScript N(EVS_Raven5_MoveToMeetingPos) = {
+EvtScript EVS_Raven5_MoveToMeetingPos = {
     Wait(10)
-    ExecGetTID(N(EVS_Raven5_Sweat), LVar9)
+    ExecGetTID(EVS_Raven5_Sweat, LVar9)
     Call(SetNpcAnimation, NPC_Raven_05, ANIM_Raven_Walk)
     Call(SetNpcSpeed, NPC_Raven_05, Float(4.0))
     Call(NpcMoveTo, NPC_Raven_05, 645, 78, 0)
@@ -227,7 +227,7 @@ EvtScript N(EVS_Raven5_MoveToMeetingPos) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
+EvtScript EVS_NpcInteract_RaphaelRaven_Before = {
     Call(DisablePlayerInput, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -300,7 +300,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     Call(EnableNpcShadow, NPC_Raven_04, false)
     Call(EnableNpcShadow, NPC_Raven_05, false)
     Thread
-        Exec(N(EVS_Raven1_Descend))
+        Exec(EVS_Raven1_Descend)
         Call(SetNpcJumpscale, NPC_Raven_01, 0)
         Call(GetNpcPos, NPC_Raven_01, LVar0, LVar1, LVar2)
         Add(LVar0, -120)
@@ -310,11 +310,11 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         Call(NpcJump0, NPC_Raven_01, LVar0, LVar1, LVar2, 100)
         Call(SetNpcAnimation, NPC_Raven_01, ANIM_Raven_Idle)
         Call(EnableNpcShadow, NPC_Raven_01, true)
-        ExecWait(N(EVS_Raven1_MoveToMeetingPos))
+        ExecWait(EVS_Raven1_MoveToMeetingPos)
     EndThread
     Wait(20)
     Thread
-        Exec(N(EVS_Raven2_Descend))
+        Exec(EVS_Raven2_Descend)
         Call(SetNpcJumpscale, NPC_Raven_02, 0)
         Call(GetNpcPos, NPC_Raven_02, LVar0, LVar1, LVar2)
         Add(LVar0, -120)
@@ -324,7 +324,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         Call(NpcJump0, NPC_Raven_02, LVar0, LVar1, LVar2, 100)
         Call(SetNpcAnimation, NPC_Raven_02, ANIM_Raven_Idle)
         Call(EnableNpcShadow, NPC_Raven_02, true)
-        ExecWait(N(EVS_Raven2_MoveToMeetingPos))
+        ExecWait(EVS_Raven2_MoveToMeetingPos)
     EndThread
     Wait(20)
     Thread
@@ -336,7 +336,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         Call(InterpPlayerYaw, 10, 4)
     EndThread
     Thread
-        Exec(N(EVS_Raven3_Descend))
+        Exec(EVS_Raven3_Descend)
         Call(SetNpcJumpscale, NPC_Raven_03, 0)
         Call(GetNpcPos, NPC_Raven_03, LVar0, LVar1, LVar2)
         Add(LVar0, -100)
@@ -346,11 +346,11 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         Call(NpcJump0, NPC_Raven_03, LVar0, LVar1, LVar2, 90)
         Call(SetNpcAnimation, NPC_Raven_03, ANIM_Raven_Idle)
         Call(EnableNpcShadow, NPC_Raven_03, true)
-        ExecWait(N(EVS_Raven3_MoveToMeetingPos))
+        ExecWait(EVS_Raven3_MoveToMeetingPos)
     EndThread
     Wait(40)
     Thread
-        Exec(N(EVS_Raven4_Descend))
+        Exec(EVS_Raven4_Descend)
         Call(SetNpcJumpscale, NPC_Raven_04, 0)
         Call(GetNpcPos, NPC_Raven_04, LVar0, LVar1, LVar2)
         Add(LVar0, -100)
@@ -360,21 +360,21 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         Call(NpcJump0, NPC_Raven_04, LVar0, LVar1, LVar2, 100)
         Call(SetNpcAnimation, NPC_Raven_04, ANIM_Raven_Idle)
         Call(EnableNpcShadow, NPC_Raven_04, true)
-        ExecWait(N(EVS_Raven4_MoveToMeetingPos))
+        ExecWait(EVS_Raven4_MoveToMeetingPos)
     EndThread
     Wait(20)
-    Exec(N(EVS_Raven5_Descend))
+    Exec(EVS_Raven5_Descend)
     Call(SetNpcJumpscale, NPC_Raven_05, 0)
     Call(PlaySoundAtNpc, NPC_Raven_05, SOUND_RAVEN_FALL_B, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_Raven_05, 737, 200, 65, 100)
     Call(SetNpcAnimation, NPC_Raven_05, ANIM_Raven_Idle)
     Call(EnableNpcShadow, NPC_Raven_05, true)
-    ExecWait(N(EVS_Raven5_MoveToMeetingPos))
+    ExecWait(EVS_Raven5_MoveToMeetingPos)
     Wait(20)
     Call(InterpPlayerYaw, 350, 4)
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeet, ANIM_RaphaelRaven_IdleNoFeet, 5, MSG_CH5_00DD)
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeet, ANIM_RaphaelRaven_IdleNoFeet, 5, MSG_CH5_00DE)
-    ExecWait(N(EVS_Ravens_Converse))
+    ExecWait(EVS_Ravens_Converse)
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeet, ANIM_RaphaelRaven_IdleNoFeet, 5, MSG_CH5_00DF)
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -544,19 +544,19 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RaphaelRaven_After) = {
+EvtScript EVS_NpcInteract_RaphaelRaven_After = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeet, ANIM_RaphaelRaven_IdleNoFeet, 0, MSG_CH5_00E0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_RaphaelRaven) = {
+EvtScript EVS_NpcInit_RaphaelRaven = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_RaphaelRaven_IdleNoFeet)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RaphaelRaven_Before)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RaphaelRaven_Before))
         CaseGe(STORY_CH5_ZIP_LINE_READY)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RaphaelRaven_After)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RaphaelRaven_After))
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -564,38 +564,38 @@ EvtScript N(EVS_NpcInit_RaphaelRaven) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven_01) = {
+EvtScript EVS_NpcInit_Raven_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven_02) = {
+EvtScript EVS_NpcInit_Raven_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven_03) = {
+EvtScript EVS_NpcInit_Raven_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven_04) = {
+EvtScript EVS_NpcInit_Raven_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven_05) = {
+EvtScript EVS_NpcInit_Raven_05 = {
     Return
     End
 };
 
-NpcData N(NpcData_Ravens)[] = {
+NpcData NpcData_Ravens[] = {
     {
         .id = NPC_RaphaelRaven,
         .pos = { 590.0f, 210.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_RaphaelRaven),
-        .settings = &N(NpcSettings_RaphaelRaven),
+        .init = &EVS_NpcInit_RaphaelRaven,
+        .settings = &NpcSettings_RaphaelRaven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY,
         .drops = NO_DROPS,
         .animations = RAPHAEL_RAVEN_ANIMS,
@@ -605,8 +605,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven_01),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven_01,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -616,8 +616,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven_02),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven_02,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -629,8 +629,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven_03),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven_03,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -640,8 +640,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven_04),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven_04,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -651,8 +651,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven_05),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven_05,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -660,7 +660,7 @@ NpcData N(NpcData_Ravens)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Ravens)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Ravens),
     {}
 };

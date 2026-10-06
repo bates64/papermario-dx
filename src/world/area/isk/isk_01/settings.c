@@ -1,14 +1,14 @@
 #include "isk_01.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [isk_01_ENTRY_0]    { -576.0,    0.0,  -71.0,  179.0 },
     [isk_01_ENTRY_1]    { -555.0,    0.0,  170.0,  350.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "sbk3_bg",
     .tattle = { MSG_MapTattle_isk_01 },
     .songVariation = 1,

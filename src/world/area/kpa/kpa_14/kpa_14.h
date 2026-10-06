@@ -17,10 +17,8 @@ enum {
     MV_TakingLavaFallDamage     = MapVar(11),
 };
 
-#define NAMESPACE kpa_14
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupPlatforms);
-extern EvtScript N(EVS_ExitDoor_kpa_01_0);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupPlatforms;
+extern EvtScript EVS_ExitDoor_kpa_01_0;
+extern EvtScript EVS_MakeEntities;

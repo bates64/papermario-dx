@@ -1,29 +1,25 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "entity.h"
 #include "ld_addrs.h"
 #include "include_asset.h"
 
-#define NAMESPACE battle_item_mystery
-
-#include "battle/common/move/ItemRefund.inc.c"
-
 #include "battle/common/move/UseItem.inc.c"
-
 
 #include "battle/move/item/mystery.png.h"
 INCLUDE_IMG("battle/move/item/mystery.png", battle_item_mystery_png);
 INCLUDE_PAL("battle/move/item/mystery.pal", battle_item_mystery_pal);
 
-Vtx N(model)[] = {
+Vtx model[] = {
     { .v = {{ -16, -16, 0 }, false, { 0,    0    }, { 0, 0, 0, 255 }}},
     { .v = {{ 15,  -16, 0 }, false, { 1024, 0    }, { 0, 0, 0, 255 }}},
     { .v = {{ 15,  15,  0 }, false, { 1024, 1024 }, { 0, 0, 0, 255 }}},
     { .v = {{ -16, 15,  0 }, false, { 0,    1024 }, { 0, 0, 0, 255 }}},
 };
 
-Gfx N(displayList)[] = {
+Gfx displayList[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -38,16 +34,16 @@ Gfx N(displayList)[] = {
     gsDPLoadTextureTile_4b(battle_item_mystery_png, G_IM_FMT_CI, battle_item_mystery_png_width, battle_item_mystery_png_height, 0, 0, battle_item_mystery_png_width - 1, battle_item_mystery_png_height - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPVertex(N(model), ARRAY_COUNT(N(model)), 0),
+    gsSPVertex(model, ARRAY_COUNT(model), 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSP1Triangle(0, 2, 3, 0),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
 
-EntityModelScript N(modelCommandList) = STANDARD_ENTITY_MODEL_SCRIPT(N(displayList), RENDER_MODE_ALPHATEST);
+EntityModelScript modelCommandList = STANDARD_ENTITY_MODEL_SCRIPT(displayList, RENDER_MODE_ALPHATEST);
 
-s32 N(D_802A227C_72D82C)[8] = {
+s32 D_802A227C_72D82C[8] = {
     ITEM_MUSHROOM,
     ITEM_SUPER_SHROOM,
     ITEM_FIRE_FLOWER,
@@ -58,7 +54,7 @@ s32 N(D_802A227C_72D82C)[8] = {
     ITEM_MUSHROOM
 };
 
-s32 N(D_802A229C_72D84C)[8] = {
+s32 D_802A229C_72D84C[8] = {
     ITEM_MUSHROOM,
     ITEM_SUPER_SHROOM,
     ITEM_PEBBLE,
@@ -81,7 +77,7 @@ BSS s32 D_802A25F4;
 BSS s32 D_802A25F8;
 BSS s32* D_802A25FC;
 
-void N(func_802A123C_72C7EC(void)) {
+void func_802A123C_72C7EC(void) {
     s32 id;
     s32 i;
 
@@ -102,7 +98,7 @@ void N(func_802A123C_72C7EC(void)) {
     }
 }
 
-API_CALLABLE(N(func_802A13E4_72C994)) {
+API_CALLABLE(func_802A13E4_72C994) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 temp_a0_4;
     s32 temp_v1_3;
@@ -117,10 +113,10 @@ API_CALLABLE(N(func_802A13E4_72C994)) {
 
     switch (D_802A25E4) {
         case 0:
-            D_802A25F8 = create_worker_frontUI(nullptr, N(func_802A123C_72C7EC));
+            D_802A25F8 = create_worker_frontUI(nullptr, func_802A123C_72C7EC);
             D_802A25EC = rand_int(18200);
             D_802A25F0 = 1000;
-            D_802A25FC = N(D_802A227C_72D82C);
+            D_802A25FC = D_802A227C_72D82C;
 
             if (battleStatus->darknessMode > BTL_DARKNESS_STATE_NONE) {
                 u8 type;
@@ -128,7 +124,7 @@ API_CALLABLE(N(func_802A13E4_72C994)) {
 
                 get_screen_overlay_params(SCREEN_LAYER_BACK, &type, &zoom);
                 if (zoom >= 215.0f) {
-                    D_802A25FC = N(D_802A229C_72D84C);
+                    D_802A25FC = D_802A229C_72D84C;
                 }
             }
 
@@ -222,7 +218,7 @@ API_CALLABLE(N(func_802A13E4_72C994)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802A188C_72CE3C)) {
+API_CALLABLE(func_802A188C_72CE3C) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -233,21 +229,21 @@ API_CALLABLE(N(func_802A188C_72CE3C)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_MYSTERY)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Thread
         Wait(220)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_DING)
     EndThread
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_MYSTERY_REEL)
-    Call(N(func_802A13E4_72C994))
+    Call(func_802A13E4_72C994)
     Wait(2)
     IfNe(LVar0, 133)
         Jump(Ref(EVS_UseMystery))
         Return
     EndIf
-    Call(CreateVirtualEntity, LVarA, Ref(N(modelCommandList)))
+    Call(CreateVirtualEntity, LVarA, Ref(modelCommandList))
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 150)
     Call(SetVirtualEntityPosition, LVarA, LVar0, LVar1, LVar2)
@@ -274,9 +270,13 @@ EvtScript N(EVS_UseItem) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    Call(N(func_802A188C_72CE3C), LVar0, LVar1, LVar2)
+    Call(func_802A188C_72CE3C, LVar0, LVar1, LVar2)
     Call(SetBattleFlagBits, BS_FLAGS1_TRIGGER_EVENTS, true)
     Call(DispatchDamageEventPlayer, 1, EVENT_HIT)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

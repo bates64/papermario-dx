@@ -1,6 +1,6 @@
 #include "common.h"
 
-EvtScript N(EVS_Flotsam_Bobbing) = {
+EvtScript EVS_Flotsam_Bobbing = {
     Loop(0)
         Call(MakeLerp, 0, -10, 25, EASING_QUADRATIC_OUT)
         Loop(0)

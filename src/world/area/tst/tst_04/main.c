@@ -1,12 +1,12 @@
 
 #include "tst_04.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupReflection);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupReflection;
+extern NpcGroupList DefaultNPCs;
 
-API_CALLABLE(N(PushGoompaTest)) {
+API_CALLABLE(PushGoompaTest) {
     Npc* npc = get_npc_safe(NPC_Goompa);
 
     if (npc != nullptr && npc->curFloor == COLLIDER_o3) {
@@ -27,7 +27,7 @@ API_CALLABLE(N(PushGoompaTest)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PushPartnerTest)) {
+API_CALLABLE(PushPartnerTest) {
     Npc *npc = get_npc_safe(NPC_PARTNER);
     f32 angle, sinAngle, cosAngle;
     f32 dist;
@@ -58,7 +58,7 @@ API_CALLABLE(N(PushPartnerTest)) {
     return ApiStatus_DONE2;
 }
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [tst_04_ENTRY_0]    { -484.0,    0.0,    0.0,    0.0 },
     [tst_04_ENTRY_1]    {  484.0,    0.0,    0.0,    0.0 },
     [tst_04_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
@@ -72,20 +72,20 @@ EntryList N(Entrances) = {
     [tst_04_ENTRY_A]    {  354.0,    0.0,  294.0,  117.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
 };
 
-EvtScript N(EVS_GotoMap_tst_03_1) = {
+EvtScript EVS_GotoMap_tst_03_1 = {
     Call(GotoMap, Ref("tst_03"), tst_03_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_UpdateMovingFloor) = {
+EvtScript EVS_UpdateMovingFloor = {
     Label(0)
         Call(MakeLerp, 0, 100, 50, EASING_COS_IN_OUT)
         Label(10)
@@ -110,14 +110,14 @@ EvtScript N(EVS_UpdateMovingFloor) = {
     End
 };
 
-EvtScript N(EVS_UpdateSpinningFloor) = {
+EvtScript EVS_UpdateSpinningFloor = {
     Label(0)
         Call(MakeLerp, 0, 360, 360, EASING_LINEAR)
         Label(10)
             Call(UpdateLerp)
             Call(RotateModel, MODEL_o3, LVar0, 0, 1, 0)
             Call(UpdateColliderTransform, COLLIDER_o3)
-            Call(N(PushGoompaTest))
+            Call(PushGoompaTest)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(10)
@@ -137,7 +137,7 @@ EvtScript N(EVS_UpdateSpinningFloor) = {
     End
 };
 
-EvtScript N(EVS_UpdateSpinningWall) = {
+EvtScript EVS_UpdateSpinningWall = {
     Label(0)
         Call(MakeLerp, 0, 360, 360, EASING_LINEAR)
         Label(10)
@@ -153,22 +153,22 @@ EvtScript N(EVS_UpdateSpinningWall) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    BindTrigger(Ref(N(EVS_GotoMap_tst_03_1)), TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    BindTrigger(Ref(EVS_GotoMap_tst_03_1), TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o5, MODEL_o5)
     Call(ParentColliderToModel, COLLIDER_o3, MODEL_o3)
     Call(ParentColliderToModel, COLLIDER_o1, MODEL_o1)
     Call(ParentColliderToModel, COLLIDER_o2, MODEL_o2)
     Call(ParentColliderToModel, COLLIDER_o18, MODEL_o18)
-    Exec(N(EVS_UpdateMovingFloor))
-    Exec(N(EVS_UpdateSpinningFloor))
-    Exec(N(EVS_UpdateSpinningWall))
-    Exec(N(EVS_SetupReflection))
+    Exec(EVS_UpdateMovingFloor)
+    Exec(EVS_UpdateSpinningFloor)
+    Exec(EVS_UpdateSpinningWall)
+    Exec(EVS_SetupReflection)
     Return
     End
 };

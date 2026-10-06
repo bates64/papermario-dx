@@ -2,15 +2,15 @@
 #include "model.h"
 #include "nu/nusys.h"
 
-s32 N(CrystallBallRenderCounter) = 0;
-s32 N(UnusedCrystalBallField) = 0;
+s32 CrystallBallRenderCounter = 0;
+s32 UnusedCrystalBallField = 0;
 
-void N(gfx_build_crystal_ball_pre)(void) {
+void gfx_build_crystal_ball_pre(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
     Matrix4f sp50;
     LookAt sp90;
 
-    N(CrystallBallRenderCounter)++;
+    CrystallBallRenderCounter++;
     guLookAtHiliteF(sp50, &sp90, &gDisplayContext->hilite,
                     camera->lookAtEye.x, camera->lookAtEye.y, camera->lookAtEye.z,
                     camera->lookAtObj.x, camera->lookAtObj.y, camera->lookAtObj.z,
@@ -26,12 +26,12 @@ void N(gfx_build_crystal_ball_pre)(void) {
     gSPSetGeometryMode(gMainGfxPos++, G_TEXTURE_GEN);
 }
 
-void N(gfx_build_crystal_ball_post)(void) {
+void gfx_build_crystal_ball_post(void) {
     gSPClearGeometryMode(gMainGfxPos++, G_TEXTURE_GEN);
     gSPEndDisplayList(gMainGfxPos++);
 }
 
-void N(gfx_build_inside_crystal_ball)(void) {
+void gfx_build_inside_crystal_ball(void) {
     f32 x, y, z, s;
     f32 f20, f22;
     f32 f0, f2;
@@ -123,12 +123,12 @@ void N(gfx_build_inside_crystal_ball)(void) {
     gSPTexture(gMainGfxPos++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-EvtScript N(EVS_SetupCrystalBallGfx) = {
+EvtScript EVS_SetupCrystalBallGfx = {
     Wait(1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(N(gfx_build_crystal_ball_pre)), Ref(N(gfx_build_crystal_ball_post)))
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(gfx_build_crystal_ball_pre), Ref(gfx_build_crystal_ball_post))
     Call(SetModelCustomGfx, MODEL_mirrorball, CUSTOM_GFX_2, -1)
     Call(EnableModel, MODEL_mirrorball, false)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(N(gfx_build_inside_crystal_ball)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(gfx_build_inside_crystal_ball), nullptr)
     Call(SetModelCustomGfx, MODEL_tama, CUSTOM_GFX_3, -1)
     Call(SetModelFlags, MODEL_tama, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_ohosi, MODEL_FLAG_BILLBOARD, true)

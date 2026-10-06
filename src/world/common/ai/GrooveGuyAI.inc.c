@@ -18,7 +18,7 @@ enum GrooveDancePhases {
     DANCE_PHASE_DONE            = 4,
 };
 
-void N(GrooveGuyAI_DanceInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void GrooveGuyAI_DanceInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -28,7 +28,7 @@ void N(GrooveGuyAI_DanceInit)(Evt* script, MobileAISettings* settings, EnemyDete
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
-void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void GrooveGuyAI_Dance(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 animPart;
@@ -82,7 +82,7 @@ void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVo
     }
 }
 
-API_CALLABLE(N(GrooveGuyAI_Main)) {
+API_CALLABLE(GrooveGuyAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -143,10 +143,10 @@ API_CALLABLE(N(GrooveGuyAI_Main)) {
             break;
 
         case AI_STATE_LOITER_INIT:
-            N(GrooveGuyAI_DanceInit)(script, settings, detect);
+            GrooveGuyAI_DanceInit(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(GrooveGuyAI_Dance)(script, settings, detect);
+            GrooveGuyAI_Dance(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:

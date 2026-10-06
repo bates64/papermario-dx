@@ -3,7 +3,7 @@
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-MobileAISettings N(AISettings_Dryite_Patrol) = {
+MobileAISettings AISettings_Dryite_Patrol = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -11,16 +11,16 @@ MobileAISettings N(AISettings_Dryite_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Dryite_Patrol) = {
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Dryite_Patrol)))
+EvtScript EVS_NpcAI_Dryite_Patrol = {
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_Dryite_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Dryite_Patrol) = {
+NpcSettings NpcSettings_Dryite_Patrol = {
     .height = 26,
     .radius = 23,
-    .doAI = &N(EVS_NpcAI_Dryite_Patrol),
+    .doAI = &EVS_NpcAI_Dryite_Patrol,
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = 16,
 };

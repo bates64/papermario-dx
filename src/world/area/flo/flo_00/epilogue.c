@@ -1,10 +1,10 @@
 #include "flo_00.h"
 
 #include "world/common/npc/Lakilester/idle.inc.c"
-#include "world/common/npc/Lakilulu/idle.inc.c"
+#include "world/common/npc/Lakilulu/idle.h"
 #include "world/common/npc/Parakarry/idle.inc.c"
 
-EvtScript N(EVS_Scene_Epilogue) = {
+EvtScript EVS_Scene_Epilogue = {
     Call(SetPlayerPos, -400, 0, 200)
     Call(SetNpcPos, NPC_PARTNER, -380, 0, 200)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
@@ -41,7 +41,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakilester_Epilogue) = {
+EvtScript EVS_NpcInit_Lakilester_Epilogue = {
     Call(SetPlayerPos, -400, 0, 200)
     Call(SetNpcPos, NPC_PARTNER, -380, 0, 200)
     Call(SetNpcPos, NPC_Lakilester_Epilogue, 196, 20, 354)
@@ -50,27 +50,27 @@ EvtScript N(EVS_NpcInit_Lakilester_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakilulu_Epilogue) = {
+EvtScript EVS_NpcInit_Lakilulu_Epilogue = {
     Call(SetNpcPos, NPC_Lakilulu_Epilogue, 163, 20, 370)
     Call(SetNpcYaw, NPC_Lakilulu_Epilogue, 90)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Parakarry_Epilogue) = {
+EvtScript EVS_NpcInit_Parakarry_Epilogue = {
     Call(SetNpcPos, NPC_Parakarry_Epilogue, 266, 20, 322)
     Call(SetNpcYaw, NPC_Parakarry_Epilogue, 270)
     Return
     End
 };
 
-NpcData N(NpcData_Lakilester_Epilogue)[] = {
+NpcData NpcData_Lakilester_Epilogue[] = {
     {
         .id = NPC_Lakilester_Epilogue,
         .pos = { 144.0f, 0.0f, 374.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Lakilester_Epilogue),
-        .settings = &N(NpcSettings_Lakilester),
+        .init = &EVS_NpcInit_Lakilester_Epilogue,
+        .settings = &NpcSettings_Lakilester,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = LAKILESTER_ANIMS,
@@ -79,8 +79,8 @@ NpcData N(NpcData_Lakilester_Epilogue)[] = {
         .id = NPC_Lakilulu_Epilogue,
         .pos = { 198.0f, 0.0f, 363.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Lakilulu_Epilogue),
-        .settings = &N(NpcSettings_Lakilulu),
+        .init = &EVS_NpcInit_Lakilulu_Epilogue,
+        .settings = &NpcSettings_Lakilulu,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = LAKILULU_ANIMS,
@@ -89,15 +89,15 @@ NpcData N(NpcData_Lakilester_Epilogue)[] = {
         .id = NPC_Parakarry_Epilogue,
         .pos = { 266.0f, 0.0f, 322.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Parakarry_Epilogue),
-        .settings = &N(NpcSettings_Parakarry),
+        .init = &EVS_NpcInit_Parakarry_Epilogue,
+        .settings = &NpcSettings_Parakarry,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = PARAKARRY_ANIMS,
     },
 };
 
-NpcGroupList N(EpilogueNPCs) = {
-    NPC_GROUP(N(NpcData_Lakilester_Epilogue)),
+NpcGroupList EpilogueNPCs = {
+    NPC_GROUP(NpcData_Lakilester_Epilogue),
     {}
 };

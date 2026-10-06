@@ -4,11 +4,17 @@
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 #include "game_modes.h"
 #include "battle/battle.h"
+#include "battle/action_cmd.h"
+#include "battle/menu.h"
+#include "battle/partner.h"
+#include "battle/script_module.h"
+#include "nu/nusys.h"
 #include "hud_element.h"
 #include "inventory.h"
 #include "qsort.h"
 #include <string.h>
 #include "dx/utils.h"
+#include "dx/overlay.h"
 #include "msg.h"
 #include "fio.h"
 
@@ -173,6 +179,14 @@ void dx_debug_draw_ascii(const char* text, s32 color, s32 posX, s32 posY) {
     };
     dx_string_to_msg(&buf[4], text);
     draw_msg((s32)buf, posX, posY, 255, color, 0);
+}
+
+static s32 dx_debug_get_ascii_width(const char* text) {
+    MSG_BIN buf[128] = {
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+    };
+    dx_string_to_msg(&buf[4], text);
+    return get_msg_width((s32)buf, MSG_FONT_NORMAL);
 }
 
 void dx_debug_draw_ascii_with_effect(const char* text, s32 color, s32 posX, s32 posY, s32 effect) {
@@ -941,183 +955,40 @@ s32 BattleDigitOffsets[] = {
 s32 DebugBattleColumn = 0;
 
 #define DEBUG_BATTLE_PREVIEW_ROWS       6
-#define DEBUG_BATTLE_PREVIEW_NAME_LEN   24
-#define DEBUG_BATTLE_SCAN_ROWS          8
-
+#define DEBUG_BATTLE_PREVIEW_NAME_LEN   64
+#define DEBUG_BATTLE_PREVIEW_MIN_WIDTH  104
 s32 DebugBattlePreviewBattleCount;
 s32 DebugBattlePreviewStageCount;
 s32 DebugBattlePreviewLineCount;
-Battle DebugBattleScan[DEBUG_BATTLE_SCAN_ROWS] ALIGNED8;
-StageListRow DebugBattleStageScan[DEBUG_BATTLE_SCAN_ROWS] ALIGNED8;
-FormationRow DebugBattlePreviewRows[DEBUG_BATTLE_PREVIEW_ROWS] ALIGNED8;
 char DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
-u8 DebugBattlePreviewStringBuf[DEBUG_BATTLE_PREVIEW_NAME_LEN + 2] ALIGNED8;
+static b32 DebugBattlePreviewCached;
+static s32 DebugBattlePreviewAreaID;
+static s32 DebugBattlePreviewFormationID;
+static b32 DebugDiscardFrame;
 
-// copies a small piece of a battle area from ROM without loading the overlay
-b32 dx_debug_read_battle_data(BattleArea* battleArea, void* address, void* dest, s32 size) {
-    u32 areaVramStart;
-    u32 areaSize;
-    u32 addressValue;
-    u32 offset;
-    u8* romStart;
-
-    if (battleArea->dmaStart == nullptr
-        || battleArea->dmaEnd == nullptr
-        || battleArea->dmaDest == nullptr
-        || size <= 0
-    ) {
-        return false;
-    }
-
-    areaVramStart = (u32)battleArea->dmaDest;
-    areaSize = (u32)battleArea->dmaEnd - (u32)battleArea->dmaStart;
-    addressValue = (u32)address;
-    if (addressValue < areaVramStart || (u32)size > areaSize) {
-        return false;
-    }
-
-    offset = addressValue - areaVramStart;
-    if (offset > areaSize - size) {
-        return false;
-    }
-
-    romStart = (u8*)battleArea->dmaStart + offset;
-    dma_copy(romStart, romStart + size, dest);
-    return true;
+b32 dx_debug_consume_discard_frame(void) {
+    b32 discard = DebugDiscardFrame;
+    DebugDiscardFrame = false;
+    return discard;
 }
 
-// reads an actor overlay name from an unloaded battle area
-b32 dx_debug_read_actor_overlay_name(BattleArea* battleArea, const char* address, char* dest) {
-    u32 areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    u32 alignedAddress = (u32)address & ~1;
-    s32 nameOffset = (u32)address - alignedAddress;
-    s32 readSize = DEBUG_BATTLE_PREVIEW_NAME_LEN + nameOffset;
-    s32 i;
-
-    if (readSize & 1) {
-        readSize++;
-    }
-    if (alignedAddress + readSize > areaVramEnd) {
-        readSize = (areaVramEnd - alignedAddress) & ~1;
-    }
-    if (readSize <= nameOffset
-        || !dx_debug_read_battle_data(battleArea, (void*)alignedAddress, DebugBattlePreviewStringBuf, readSize)
-    ) {
-        dest[0] = '\0';
-        return false;
-    }
-
-    for (i = 0; i < DEBUG_BATTLE_PREVIEW_NAME_LEN - 1 && i + nameOffset < readSize; i++) {
-        dest[i] = DebugBattlePreviewStringBuf[i + nameOffset];
-        if (dest[i] == '\0') {
-            return true;
-        }
-    }
-    dest[i] = '\0';
-    return true;
-}
-
-// counts the battles in an unloaded area using a small scratch buffer
-s32 dx_debug_count_battles(BattleArea* battleArea) {
-    u32 areaVramEnd;
-    u32 listAddress;
-    s32 maxEntries;
-    s32 readPos;
-    s32 i;
-
-    if (battleArea->battles == nullptr) {
-        return 0;
-    }
-
-    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    listAddress = (u32)battleArea->battles;
-    if (listAddress >= areaVramEnd) {
-        return 0;
-    }
-
-    maxEntries = (areaVramEnd - listAddress) / sizeof(Battle);
-    if (maxEntries > 0x100) {
-        maxEntries = 0x100;
-    }
-
-    for (readPos = 0; readPos < maxEntries; readPos += DEBUG_BATTLE_SCAN_ROWS) {
-        s32 readCount = maxEntries - readPos;
-
-        if (readCount > DEBUG_BATTLE_SCAN_ROWS) {
-            readCount = DEBUG_BATTLE_SCAN_ROWS;
-        }
-        if (!dx_debug_read_battle_data(
-            battleArea,
-            (void*)(listAddress + readPos * sizeof(Battle)),
-            DebugBattleScan,
-            readCount * sizeof(Battle)
-        )) {
-            return 0;
-        }
-
-        for (i = 0; i < readCount; i++) {
-            if (DebugBattleScan[i].name == nullptr) {
-                return readPos + i;
-            }
-        }
-    }
-    return 0;
-}
-
-// counts the stages in an unloaded area using a small scratch buffer
-s32 dx_debug_count_stages(BattleArea* battleArea) {
-    u32 areaVramEnd;
-    u32 listAddress;
-    s32 maxEntries;
-    s32 readPos;
-    s32 i;
-
-    if (battleArea->stages == nullptr) {
-        return 0;
-    }
-
-    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    listAddress = (u32)battleArea->stages;
-    if (listAddress >= areaVramEnd) {
-        return 0;
-    }
-
-    maxEntries = (areaVramEnd - listAddress) / sizeof(StageListRow);
-    if (maxEntries > 0x100) {
-        maxEntries = 0x100;
-    }
-
-    for (readPos = 0; readPos < maxEntries; readPos += DEBUG_BATTLE_SCAN_ROWS) {
-        s32 readCount = maxEntries - readPos;
-
-        if (readCount > DEBUG_BATTLE_SCAN_ROWS) {
-            readCount = DEBUG_BATTLE_SCAN_ROWS;
-        }
-        if (!dx_debug_read_battle_data(
-            battleArea,
-            (void*)(listAddress + readPos * sizeof(StageListRow)),
-            DebugBattleStageScan,
-            readCount * sizeof(StageListRow)
-        )) {
-            return 0;
-        }
-
-        for (i = 0; i < readCount; i++) {
-            if (DebugBattleStageScan[i].name == nullptr) {
-                return readPos + i;
-            }
-        }
-    }
-    return 0;
-}
-
-// builds the actor list shown beneath the selected battle ID
+// Copy only display data out of a temporary area overlay. Borrow the running
+// battle's module when selected, and never unload it on the preview's behalf.
 void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
-    BattleArea* battleArea;
-    Battle* battle;
+    Overlay* overlay;
+    const BattleArea* area;
+    const Battle* battle;
     s32 actorRows;
     s32 i;
 
+    if (DebugBattlePreviewCached && areaID == DebugBattlePreviewAreaID
+        && formationID == DebugBattlePreviewFormationID
+    ) {
+        return;
+    }
+    DebugBattlePreviewCached = true;
+    DebugBattlePreviewAreaID = areaID;
+    DebugBattlePreviewFormationID = formationID;
     DebugBattlePreviewBattleCount = 0;
     DebugBattlePreviewStageCount = 0;
     DebugBattlePreviewLineCount = 1;
@@ -1126,61 +997,103 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
         return;
     }
 
-    battleArea = &gBattleAreas[areaID];
-    DebugBattlePreviewBattleCount = dx_debug_count_battles(battleArea);
-    DebugBattlePreviewStageCount = dx_debug_count_stages(battleArea);
-    if (formationID < 0 || formationID >= DebugBattlePreviewBattleCount) {
+    overlay = ovl_load(gBattleAreas[areaID].overlay, OVL_BATTLE_AREA);
+    area = ovl_import(overlay, BATTLE_AREA_EXPORT_NAME);
+    if (area == nullptr) {
+        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
+        goto done;
+    }
+    DebugBattlePreviewBattleCount = area->battleCount;
+    DebugBattlePreviewStageCount = area->stageCount;
+    if (formationID < 0 || formationID >= area->battleCount) {
         strcpy(DebugBattlePreviewNames[0], "(invalid battle)");
-        return;
+        goto done;
     }
 
-    battle = &DebugBattleScan[0];
-    if (!dx_debug_read_battle_data(
-        battleArea,
-        &(*battleArea->battles)[formationID],
-        battle,
-        sizeof(Battle)
-    )) {
-        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
-        return;
-    }
+    battle = &(*area->battles)[formationID];
     if (battle->formationSize <= 0) {
         strcpy(DebugBattlePreviewNames[0], "(empty formation)");
-        return;
+        goto done;
     }
-
     actorRows = battle->formationSize;
     if (actorRows > DEBUG_BATTLE_PREVIEW_ROWS) {
         actorRows = DEBUG_BATTLE_PREVIEW_ROWS - 1;
     }
-    if (!dx_debug_read_battle_data(
-        battleArea,
-        &(*battle->formation)[0],
-        DebugBattlePreviewRows,
-        actorRows * sizeof(FormationRow)
-    )) {
-        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
-        return;
-    }
-
     for (i = 0; i < actorRows; i++) {
-        const char* actorName = DebugBattlePreviewRows[i].overlay;
+        const FormationRow* actor = &(*battle->formation)[i];
+        const char* actorName = actor->overlay;
 
         if (actorName == nullptr) {
-            strcpy(DebugBattlePreviewNames[i], "(anonymous)");
-        } else if (!dx_debug_read_actor_overlay_name(battleArea, actorName, DebugBattlePreviewNames[i])) {
-            strcpy(DebugBattlePreviewNames[i], "(unavailable)");
+            actorName = "(anonymous)";
+        } else if (actor->blueprint != nullptr
+            && strcmp(actor->blueprint, ACTOR_BLUEPRINT_EXPORT_NAME) != 0
+        ) {
+            const char* prefix = ACTOR_BLUEPRINT_EXPORT_NAME "_";
+            s32 prefixLength = strlen(prefix);
+
+            actorName = actor->blueprint;
+            if (strncmp(actorName, prefix, prefixLength) == 0 && actorName[prefixLength] != '\0') {
+                actorName += prefixLength;
+            }
+        }
+        strncpy(DebugBattlePreviewNames[i], actorName, DEBUG_BATTLE_PREVIEW_NAME_LEN - 1);
+        DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 1] = '\0';
+        if (strlen(actorName) >= DEBUG_BATTLE_PREVIEW_NAME_LEN) {
+            strcpy(&DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 4], "...");
         }
     }
-
     DebugBattlePreviewLineCount = actorRows;
     if (battle->formationSize > DEBUG_BATTLE_PREVIEW_ROWS) {
-        sprintf(
-            DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1],
-            "... and %ld more",
-            battle->formationSize - (DEBUG_BATTLE_PREVIEW_ROWS - 1)
-        );
+        sprintf(DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1], "... and %ld more",
+            battle->formationSize - (DEBUG_BATTLE_PREVIEW_ROWS - 1));
         DebugBattlePreviewLineCount = DEBUG_BATTLE_PREVIEW_ROWS;
+    }
+
+done:
+    if (area == nullptr || area != get_loaded_battle_area()) {
+        ovl_unload(overlay);
+    }
+}
+
+void dx_debug_draw_battle_preview(void) {
+    char names[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
+    s32 boxWidth = DEBUG_BATTLE_PREVIEW_MIN_WIDTH;
+    s32 maxTextWidth = SCREEN_WIDTH - 4 * BoxOutsetX;
+    s32 boxX;
+    s32 i;
+
+    for (i = 0; i < DebugBattlePreviewLineCount; i++) {
+        s32 textWidth;
+        s32 length;
+
+        strcpy(names[i], DebugBattlePreviewNames[i]);
+        textWidth = dx_debug_get_ascii_width(names[i]);
+        length = strlen(names[i]);
+        // Only elide text when it cannot fit across the screen, not the old box.
+        while (textWidth > maxTextWidth && length > 3) {
+            length--;
+            strcpy(&names[i][length - 3], "...");
+            textWidth = dx_debug_get_ascii_width(names[i]);
+        }
+        boxWidth = MAX(boxWidth, textWidth + 2 * BoxOutsetX);
+    }
+    // Keep the usual anchor until expansion would run past the right edge.
+    boxX = MIN(SubBoxPosX, SCREEN_WIDTH - BoxOutsetX - boxWidth);
+    dx_debug_draw_box(
+        boxX,
+        SubBoxPosY + 4 * RowHeight,
+        boxWidth,
+        DebugBattlePreviewLineCount * RowHeight + 8,
+        WINDOW_STYLE_20,
+        192
+    );
+    for (i = 0; i < DebugBattlePreviewLineCount; i++) {
+        dx_debug_draw_ascii(
+            names[i],
+            DefaultColor,
+            boxX + BoxOutsetX,
+            SubmenuPosY + (i + 4) * RowHeight
+        );
     }
 }
 
@@ -1193,6 +1106,30 @@ void dx_debug_force_end_battle(void) {
     if (gGameStatusPtr->context != CONTEXT_BATTLE) {
         return;
     }
+
+    // Debug actions run while drawing UI. Finish older graphics tasks and
+    // discard this frame's unsubmitted display list before freeing its data.
+    nuGfxTaskAllEndWait();
+    DebugDiscardFrame = true;
+    kill_all_scripts();
+    for (i = 0; i < ARRAY_COUNT(gBattleStatus.enemyActors); i++) {
+        btl_delete_actor(gBattleStatus.enemyActors[i]);
+        ASSERT(gBattleStatus.enemyActors[i] == nullptr);
+    }
+    btl_delete_actor(gBattleStatus.partnerActor);
+    ASSERT(gBattleStatus.partnerActor == nullptr);
+    if (gBattleStatus.playerActor != nullptr) {
+        btl_delete_player_actor(gBattleStatus.playerActor);
+        gBattleStatus.playerActor = nullptr;
+    }
+    remove_all_effects();
+    set_windows_visible(0);
+    unload_action_command();
+    unload_battle_script();
+    unload_battle_partner();
+    unload_battle_menu();
+    btl_set_state(BATTLE_STATE_NONE);
+    gLastDrawBattleState = gBattleState;
 
     state_init_end_battle();
     for (i = 0; i < 8; i++) {
@@ -1257,7 +1194,7 @@ s32 dx_debug_get_battle_area_count() {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gBattleAreas); i++) {
-        if (gBattleAreas[i].battles == nullptr) {
+        if (gBattleAreas[i].overlay == nullptr) {
             return i;
         }
     }
@@ -1420,11 +1357,11 @@ void dx_debug_update_select_battle() {
         && (stageID == -1 || (stageID >= 0 && stageID < DebugBattlePreviewStageCount));
 
     // draw
-    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 104, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
-    dx_debug_draw_ascii("Start Battle:", DefaultColor, SubmenuPosX, SubmenuPosY + 1 * RowHeight);
-    dx_debug_draw_ascii("-", DefaultColor, SubmenuPosX + 26, SubmenuPosY + 2 * RowHeight);
-    dx_debug_draw_ascii("(", DefaultColor, SubmenuPosX + 55, SubmenuPosY + 2 * RowHeight);
-    dx_debug_draw_ascii(")", DefaultColor, SubmenuPosX + 77, SubmenuPosY + 2 * RowHeight);
+    dx_debug_draw_box(SubBoxPosX, SubBoxPosY, 104, 3 * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_ascii("Start Battle:", DefaultColor, SubmenuPosX, SubmenuPosY);
+    dx_debug_draw_ascii("-", DefaultColor, SubmenuPosX + 26, SubmenuPosY + RowHeight);
+    dx_debug_draw_ascii("(", DefaultColor, SubmenuPosX + 55, SubmenuPosY + RowHeight);
+    dx_debug_draw_ascii(")", DefaultColor, SubmenuPosX + 77, SubmenuPosY + RowHeight);
 
     for (idx = 0; idx < 5; idx++) {
         b32 isInvalid;
@@ -1453,25 +1390,19 @@ void dx_debug_update_select_battle() {
             }
         }
 
-        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight);
+        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + RowHeight);
     }
 
-    dx_debug_draw_box(
-        SubBoxPosX,
-        SubBoxPosY + 4 * RowHeight,
-        104,
-        DebugBattlePreviewLineCount * RowHeight + 8,
-        WINDOW_STYLE_20,
-        192
-    );
-    for (idx = 0; idx < DebugBattlePreviewLineCount; idx++) {
+    if (isAreaValid) {
         dx_debug_draw_ascii(
-            DebugBattlePreviewNames[idx],
+            gBattleAreas[areaID].name,
             DefaultColor,
-            SubmenuPosX,
-            SubmenuPosY + (idx + 4) * RowHeight
+            SubmenuPosX + BattleDigitOffsets[DEBUG_BATTLE_AREA_TENS],
+            SubmenuPosY + 2 * RowHeight
         );
     }
+
+    dx_debug_draw_battle_preview();
 }
 
 // ----------------------------------------------------------------------------
@@ -3252,6 +3183,11 @@ u32 dx_debug_hash_location(const char* filename, s32 line) {
 
     hash = ((hash << 5) + hash) + line;
 
+    // hash zero is reserved for messages which bypass source deduplication
+    if (hash == 0) {
+        hash = 1;
+    }
+
     return hash;
 }
 
@@ -3259,56 +3195,146 @@ static char *proutSprintf(char *dst, const char *src, size_t count) {
     return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
 }
 
-void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
+static s32 dx_debug_get_escape_color(char code) {
+    switch (code) {
+        case 'r': return MSG_PAL_RED;
+        case 'b': return MSG_PAL_BLUE;
+        case 'y': return MSG_PAL_YELLOW;
+        case 'g': return MSG_PAL_GREEN;
+        case 'd': return DefaultColor;
+        default: return -1;
+    }
+}
+
+static void dx_debug_string_to_msg(u8* msg, s32 msgSize, const char* str) {
+    s32 pos = 0;
+
+    while (*str != '\0') {
+        s32 color = -1;
+
+        if (*str == '\\') {
+            if (str[1] == '\\') {
+                str++;
+            } else {
+                color = dx_debug_get_escape_color(str[1]);
+            }
+        }
+
+        if (color >= 0) {
+            ASSERT(pos + 3 < msgSize);
+            if (pos + 3 >= msgSize) {
+                break;
+            }
+            msg[pos++] = MSG_CHAR_READ_FUNCTION;
+            msg[pos++] = MSG_READ_FUNC_COLOR;
+            msg[pos++] = color;
+            str += 2;
+        } else {
+            ASSERT(pos + 1 < msgSize);
+            if (pos + 1 >= msgSize) {
+                break;
+            }
+            msg[pos++] = dx_ascii_char_to_msg(*str++);
+        }
+    }
+
+    msg[pos] = MSG_CHAR_READ_END;
+}
+
+static void dx_debug_vprintf(const char* filename, s32 line, b32 deduplicate, const char* fmt, va_list args) {
     char fmtBuf[128];
-    va_list args;
-    va_start(args, fmt);
     s32 len = _Printf(&proutSprintf, fmtBuf, fmt, args);
     if (len >= 0) {
         fmtBuf[len] = 0;
     }
-    ASSERT(len < 85);
+    ASSERT(len <= DEBUG_CONSOLE_MSG_BUF_SIZE - 5);
 
-    u32 hash = dx_debug_hash_location(filename, line);
+    u32 hash = 0;
     s32 matchedLine = -1;
     s32 idx;
 
-    // find a line with the matching hash
-    for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
-        if (DebugConsole[idx]->hash == hash) {
-            matchedLine = idx;
-            break;
-        }
-    }
+    if (deduplicate) {
+        hash = dx_debug_hash_location(filename, line);
 
-    // find the oldest line
-    if (matchedLine == -1) {
-        s32 minTimeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
-
+        // find a line with the matching source-location hash
         for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
-            if (DebugConsole[idx]->timeLeft == 0) {
+            if (DebugConsole[idx]->hash == hash) {
                 matchedLine = idx;
                 break;
             }
-            if (DebugConsole[idx]->timeLeft < minTimeLeft) {
-                minTimeLeft = DebugConsole[idx]->timeLeft;
-                matchedLine = idx;
-            }
         }
     }
 
-    // update the ConsoleLine entry
-    if (matchedLine != -1) {
-        DebugConsole[matchedLine]->buf[0] = MSG_CHAR_READ_FUNCTION;
-        DebugConsole[matchedLine]->buf[1] = MSG_READ_FUNC_SIZE;
-        DebugConsole[matchedLine]->buf[2] = 12;
-        DebugConsole[matchedLine]->buf[3] = 12;
+    // find an empty line or evict the oldest
+    if (matchedLine == -1) {
+        if (deduplicate) {
+            s32 minTimeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
 
-        dx_string_to_msg(&DebugConsole[matchedLine]->buf[4], fmtBuf);
+            for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
+                if (DebugConsole[idx]->timeLeft == 0) {
+                    matchedLine = idx;
+                    break;
+                }
+                if (DebugConsole[idx]->timeLeft < minTimeLeft) {
+                    minTimeLeft = DebugConsole[idx]->timeLeft;
+                    matchedLine = idx;
+                }
+            }
+        } else {
+            s32 minTimeLeft = DebugConsole[0]->timeLeft;
 
-        DebugConsole[matchedLine]->hash = hash;
-        DebugConsole[matchedLine]->timeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+            matchedLine = 0;
+            for (idx = 1; idx < ARRAY_COUNT(DebugConsole); idx++) {
+                if (DebugConsole[idx]->timeLeft <= minTimeLeft) {
+                    minTimeLeft = DebugConsole[idx]->timeLeft;
+                    matchedLine = idx;
+                }
+            }
+        }
+
+        // always-print messages use pointer order to preserve every distinct
+        // call in a burst, retaining the newest eight messages when full
+        if (!deduplicate && matchedLine != 0) {
+            DebugConsoleLine* selectedLine = DebugConsole[matchedLine];
+
+            for (idx = matchedLine; idx > 0; idx--) {
+                DebugConsole[idx] = DebugConsole[idx - 1];
+            }
+            DebugConsole[0] = selectedLine;
+            matchedLine = 0;
+        }
     }
+
+    if (matchedLine == -1) {
+        return;
+    }
+
+    // update the console line entry
+    DebugConsole[matchedLine]->buf[0] = MSG_CHAR_READ_FUNCTION;
+    DebugConsole[matchedLine]->buf[1] = MSG_READ_FUNC_SIZE;
+    DebugConsole[matchedLine]->buf[2] = 12;
+    DebugConsole[matchedLine]->buf[3] = 12;
+
+    dx_debug_string_to_msg(&DebugConsole[matchedLine]->buf[4], DEBUG_CONSOLE_MSG_BUF_SIZE - 4, fmtBuf);
+
+    DebugConsole[matchedLine]->hash = hash;
+    DebugConsole[matchedLine]->timeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+}
+
+void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
+    va_list args;
+
+    va_start(args, fmt);
+    dx_debug_vprintf(filename, line, true, fmt, args);
+    va_end(args);
+}
+
+void dx_unhashed_debug_printf(const char* fmt, ...) {
+    va_list args;
+
+    va_start(args, fmt);
+    dx_debug_vprintf(nullptr, 0, false, fmt, args);
+    va_end(args);
 }
 
 API_CALLABLE(_dxDebugIntPrintf) {

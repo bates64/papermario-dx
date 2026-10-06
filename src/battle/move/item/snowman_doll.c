@@ -1,14 +1,11 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "model.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_snowman_doll
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_71C06C)) {
+API_CALLABLE(func_802A123C_71C06C) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -25,10 +22,10 @@ API_CALLABLE(N(func_802A123C_71C06C)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_SNOWMAN_DOLL)
-    ExecWait(N(UseItemWithEffect))
-    Call(N(FadeBackgroundDarken))
+    ExecWait(UseItemWithEffect)
+    Call(DarkenBackground)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_WINTERY_JINGLE)
     Thread
         Loop(45)
@@ -37,7 +34,7 @@ EvtScript N(EVS_UseItem) = {
             Set(LVar1, 170)
             Call(RandInt, 50, LVar2)
             Sub(LVar2, 25)
-            PlayEffect(EFFECT_SNOWFLAKE, LVar0, LVar1, LVar2, 60, 0)
+            PlayEffect(EFFECT_SNOWFLAKE, LVar0, LVar1, LVar2, 60)
             Wait(2)
         EndLoop
     EndThread
@@ -45,7 +42,7 @@ EvtScript N(EVS_UseItem) = {
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(MoveBattleCamOver, 50)
     Wait(50)
-    PlayEffect(EFFECT_SNOWMAN_DOLL, 0, 0, 0, 20, Float(1.0), 160, 0)
+    PlayEffect(EFFECT_SNOWMAN_DOLL, 0, 0, 0, 20, Float(1.0), 160)
     Thread
         Wait(17)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SNOWMAN_DOLL_JUMP)
@@ -78,7 +75,7 @@ EvtScript N(EVS_UseItem) = {
             Goto(1)
         EndIf
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(N(func_802A123C_71C06C), LVar0, LVar1, LVar2)
+        Call(func_802A123C_71C06C, LVar0, LVar1, LVar2)
         Call(GetItemPower, ITEM_SNOWMAN_DOLL, LVar0, LVar1)
         Call(ItemDamageEnemy, LVar0, DAMAGE_TYPE_ICE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)
         Wait(5)
@@ -89,8 +86,12 @@ EvtScript N(EVS_UseItem) = {
         EndIf
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Wait(30)
-    Call(N(FadeBackgroundLighten))
-    ExecWait(N(PlayerGoHome))
+    Call(LightenBackground)
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

@@ -26,19 +26,17 @@ enum {
     MV_BossDefeated             = MapVar(10),
 };
 
-#define NAMESPACE kzn_19
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_UpdateEruption;
+extern EvtScript EVS_Misstar_Escape;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList BossNPCs;
+extern NpcGroupList EscapeNPCs;
 
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_UpdateEruption);
-extern EvtScript N(EVS_Misstar_Escape);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(BossNPCs);
-extern NpcGroupList N(EscapeNPCs);
-
-extern EvtScript N(EVS_TrySpawningStarCard);
-extern StaticAnimatorNode* N(AnimModel_MainHeadVine)[];
-extern StaticAnimatorNode* N(AnimModel_SideHeadVine)[];
-extern StaticAnimatorNode* N(AnimModel_ExtraVine)[];
+extern EvtScript EVS_TrySpawningStarCard;
+extern StaticAnimatorNode* AnimModel_MainHeadVine[];
+extern StaticAnimatorNode* AnimModel_SideHeadVine[];
+extern StaticAnimatorNode* AnimModel_ExtraVine[];
 
 #include "world/common/npc/Kolorado/idle.h"
 #include "world/common/npc/StarSpirit/idle.h"

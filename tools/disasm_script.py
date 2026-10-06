@@ -652,6 +652,7 @@ class ScriptDisassembler:
         prelude=True,
         transform_symbol_name=None,
         use_script_lib=True,
+        symbol_types=None,
     ):
         self.bytes = bytes
         self.script_name = script_name
@@ -664,6 +665,7 @@ class ScriptDisassembler:
 
         self.romstart = romstart
         self.transform_symbol_name = transform_symbol_name
+        self.symbol_types = symbol_types or {}
         self.INCLUDES_NEEDED = INCLUDES_NEEDED
         self.INCLUDED = INCLUDED
 
@@ -763,7 +765,7 @@ class ScriptDisassembler:
 
     def replace_star_rod_function_name(self, name):
         vram = int(name.split("_", 1)[1], 16)
-        name = "N(" + name.replace("function", "func") + f"_{(vram - 0x80240000)+self.romstart:X}" + ")"
+        name = name.replace("function", "func") + f"_{(vram - 0x80240000)+self.romstart:X}"
         return name
 
     def replace_star_rod_prefix(self, addr, isArg=False):
@@ -775,25 +777,26 @@ class ScriptDisassembler:
                 name = self.transform_symbol_name(name)
             toReplace = True
             suffix = ""
-            if False and name.startswith("N(func_"):
-                prefix = "ApiStatus "
-                name = self.replace_star_rod_function_name(name[2:-1])
-                suffix = "(Evt* script, s32 isInitialCall)"
-            elif name[2:-1] in self.INCLUDED["includes"]:
+            kind = self.symbol_types.get(addr)
+            if name in self.INCLUDED["includes"] or kind == "ApiStatus":
                 prefix = "ApiStatus "
                 suffix = "(Evt* script, s32 isInitialCall)"
-            elif name.startswith("N(npcAISettings_"):
+            elif kind == "MobileAISettings" or name.startswith("npcAISettings_"):
                 prefix = "MobileAISettings "
-            elif name.startswith("N(npcSettings_"):
+            elif kind == "NpcSettings" or name.startswith("npcSettings_"):
                 prefix = "NpcSettings "
-            elif name.startswith("N(npcGroup_"):
+            elif kind == "NpcData" or name.startswith("npcGroup_"):
                 prefix = "NpcData "
-            elif name.startswith("N(entryList_"):
+            elif kind == "EntryList" or name.startswith("entryList_"):
                 prefix = "EntryList "
-            elif name.startswith("N(npcGroupList_"):
+            elif kind == "NpcGroupList" or name.startswith("npcGroupList_"):
                 prefix = "NpcGroupList "
-            elif name.startswith("N("):
+            elif kind == "EvtScript" or name.startswith("EVS_"):
                 prefix = "EvtScript "
+            elif kind is not None:
+                # Other local data is still a symbolic argument, not an engine
+                # address or an event script needing a guessed declaration.
+                return name
             else:
                 toReplace = False
 
@@ -1252,7 +1255,7 @@ if __name__ == "__main__":
                         vram = f"{args.vram:X}_" if vram_base > 0 else f""
                         script_text = script_text.replace(
                             "EvtScript script = SCRIPT({",
-                            f"EvtScript N(D_{vram}{offset:X}) = " + "SCRIPT({",
+                            f"EvtScript D_{vram}{offset:X} = " + "SCRIPT({",
                         )
                         print(script_text, end="")
                         print()

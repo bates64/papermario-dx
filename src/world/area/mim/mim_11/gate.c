@@ -1,6 +1,6 @@
 #include "mim_11.h"
 
-EvtScript N(EVS_Scene_FirstUseMansionGate) = {
+EvtScript EVS_Scene_FirstUseMansionGate = {
     Wait(30 * DT)
     Call(PlaySoundAtCollider, COLLIDER_mon, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 80, 30, EASING_LINEAR)
@@ -84,7 +84,7 @@ EvtScript N(EVS_Scene_FirstUseMansionGate) = {
     End
 };
 
-EvtScript N(EVS_EnterMansionGate) = {
+EvtScript EVS_EnterMansionGate = {
     Call(PlaySoundAtCollider, COLLIDER_mon, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mon, COLLIDER_FLAGS_UPPER_MASK)
     Thread
@@ -121,7 +121,7 @@ EvtScript N(EVS_EnterMansionGate) = {
     End
 };
 
-EvtScript N(EVS_ExitMansionGate) = {
+EvtScript EVS_ExitMansionGate = {
     Call(PlaySoundAtCollider, COLLIDER_mon, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mon, COLLIDER_FLAGS_UPPER_MASK)
     Thread
@@ -157,20 +157,20 @@ EvtScript N(EVS_ExitMansionGate) = {
     End
 };
 
-EvtScript N(EVS_UseMansionGate) = {
+EvtScript EVS_UseMansionGate = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_OPENED_BOOS_MANSION_GATE)
             Set(GB_StoryProgress, STORY_CH3_OPENED_BOOS_MANSION_GATE)
             Set(AF_MIM11_MansionGateOpen, true)
-            ExecWait(N(EVS_Scene_FirstUseMansionGate))
+            ExecWait(EVS_Scene_FirstUseMansionGate)
         CaseGe(STORY_CH3_OPENED_BOOS_MANSION_GATE)
             IfEq(AF_MIM11_MansionGateOpen, false)
-                ExecWait(N(EVS_EnterMansionGate))
+                ExecWait(EVS_EnterMansionGate)
                 Set(AF_MIM11_MansionGateOpen, true)
             Else
-                ExecWait(N(EVS_ExitMansionGate))
+                ExecWait(EVS_ExitMansionGate)
                 Set(AF_MIM11_MansionGateOpen, false)
             EndIf
     EndSwitch
@@ -179,8 +179,8 @@ EvtScript N(EVS_UseMansionGate) = {
     End
 };
 
-EvtScript N(EVS_SetupMansionGate) = {
-    BindTrigger(Ref(N(EVS_UseMansionGate)), TRIGGER_WALL_PRESS_A, COLLIDER_mon, 1, 0)
+EvtScript EVS_SetupMansionGate = {
+    BindTrigger(Ref(EVS_UseMansionGate), TRIGGER_WALL_PRESS_A, COLLIDER_mon, 1, 0)
     Return
     End
 };

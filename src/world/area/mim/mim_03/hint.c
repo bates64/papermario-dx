@@ -2,32 +2,32 @@
 
 #include "../common/GetFlowerNormal.inc.c"
 
-s32 N(FlowerModels_North)[] = {
+s32 FlowerModels_North[] = {
     MODEL_o1, MODEL_o2,
     MODEL_o3, MODEL_o4,
     MODEL_o5, MODEL_o6,
 };
 
-s32 N(FlowerModels_West)[] = {
+s32 FlowerModels_West[] = {
     MODEL_o19, MODEL_o20,
     MODEL_o21, MODEL_o22,
     MODEL_o23, MODEL_o24,
     MODEL_o25, MODEL_o26,
 };
 
-s32 N(FlowerModels_South)[] = {
+s32 FlowerModels_South[] = {
     MODEL_o13, MODEL_o14,
     MODEL_o15, MODEL_o16,
     MODEL_o17, MODEL_o18,
 };
 
-s32 N(FlowerModels_East)[] = {
+s32 FlowerModels_East[] = {
     MODEL_o7, MODEL_o8,
     MODEL_o9, MODEL_o10,
     MODEL_o11, MODEL_o12,
 };
 
-EvtScript N(EVS_FlowersReact_Wrong) = {
+EvtScript EVS_FlowersReact_Wrong = {
     Call(SetTexPanOffset, LVar9, 0, 0, -0x8000)
     Wait(2)
     Call(SetTexPanOffset, LVar9, 0, 0, -0x10000)
@@ -38,7 +38,7 @@ EvtScript N(EVS_FlowersReact_Wrong) = {
     UseBuf(LVar8)
     Loop(3)
         BufRead2(LVar6, LVar7)
-        Call(N(GetFlowerNormal), LVar6, LVar3, LVar4, LVar5)
+        Call(GetFlowerNormal, LVar6, LVar3, LVar4, LVar5)
         Call(RotateModel, LVar6, LVar0, LVar3, LVar4, LVar5)
         Call(RotateModel, LVar7, LVar0, LVar3, LVar4, LVar5)
     EndLoop
@@ -54,7 +54,7 @@ EvtScript N(EVS_FlowersReact_Wrong) = {
     End
 };
 
-EvtScript N(EVS_FlowersReact_Correct) = {
+EvtScript EVS_FlowersReact_Correct = {
     Loop(2)
         Call(SetTexPanOffset, LVar9, 0, 0, -0x8000)
         Wait(2)
@@ -64,7 +64,7 @@ EvtScript N(EVS_FlowersReact_Correct) = {
         UseBuf(LVar8)
         Loop(4)
             BufRead2(LVar6, LVar7)
-            Call(N(GetFlowerNormal), LVar6, LVar3, LVar4, LVar5)
+            Call(GetFlowerNormal, LVar6, LVar3, LVar4, LVar5)
             Call(RotateModel, LVar6, LVar0, LVar3, LVar4, LVar5)
             Call(RotateModel, LVar7, LVar0, LVar3, LVar4, LVar5)
         EndLoop
@@ -78,7 +78,7 @@ EvtScript N(EVS_FlowersReact_Correct) = {
         UseBuf(LVar8)
         Loop(4)
             BufRead2(LVar6, LVar7)
-            Call(N(GetFlowerNormal), LVar6, LVar3, LVar4, LVar5)
+            Call(GetFlowerNormal, LVar6, LVar3, LVar4, LVar5)
             Call(RotateModel, LVar6, LVar0, LVar3, LVar4, LVar5)
             Call(RotateModel, LVar7, LVar0, LVar3, LVar4, LVar5)
         EndLoop
@@ -92,7 +92,7 @@ EvtScript N(EVS_FlowersReact_Correct) = {
         UseBuf(LVar8)
         Loop(4)
             BufRead2(LVar6, LVar7)
-            Call(N(GetFlowerNormal), LVar6, LVar3, LVar4, LVar5)
+            Call(GetFlowerNormal, LVar6, LVar3, LVar4, LVar5)
             Call(RotateModel, LVar6, LVar0, LVar3, LVar4, LVar5)
             Call(RotateModel, LVar7, LVar0, LVar3, LVar4, LVar5)
         EndLoop
@@ -107,43 +107,43 @@ EvtScript N(EVS_FlowersReact_Correct) = {
     End
 };
 
-EvtScript N(EVS_CheckFlowers_North) = {
+EvtScript EVS_CheckFlowers_North = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 0, 0, -300)
-    Set(LVar8, Ref(N(FlowerModels_North)))
+    Set(LVar8, Ref(FlowerModels_North))
     Set(LVar9, TEX_PANNER_0)
-    ExecWait(N(EVS_FlowersReact_Wrong))
+    ExecWait(EVS_FlowersReact_Wrong)
     Return
     End
 };
 
-EvtScript N(EVS_CheckFlowers_West) = {
+EvtScript EVS_CheckFlowers_West = {
     Call(PlaySoundAt, SOUND_FLOWERS_SAD_GIGGLE, SOUND_SPACE_DEFAULT, -300, 0, 0)
-    Set(LVar8, Ref(N(FlowerModels_West)))
+    Set(LVar8, Ref(FlowerModels_West))
     Set(LVar9, TEX_PANNER_1)
-    ExecWait(N(EVS_FlowersReact_Correct))
+    ExecWait(EVS_FlowersReact_Correct)
     Return
     End
 };
 
-EvtScript N(EVS_CheckFlowers_South) = {
+EvtScript EVS_CheckFlowers_South = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 300)
-    Set(LVar8, Ref(N(FlowerModels_South)))
+    Set(LVar8, Ref(FlowerModels_South))
     Set(LVar9, TEX_PANNER_2)
-    ExecWait(N(EVS_FlowersReact_Wrong))
+    ExecWait(EVS_FlowersReact_Wrong)
     Return
     End
 };
 
-EvtScript N(EVS_CheckFlowers_East) = {
+EvtScript EVS_CheckFlowers_East = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 300, 0, 0)
-    Set(LVar8, Ref(N(FlowerModels_East)))
+    Set(LVar8, Ref(FlowerModels_East))
     Set(LVar9, TEX_PANNER_3)
-    ExecWait(N(EVS_FlowersReact_Wrong))
+    ExecWait(EVS_FlowersReact_Wrong)
     Return
     End
 };
 
-EvtScript N(EVS_SetupExitHint) = {
+EvtScript EVS_SetupExitHint = {
     Call(SetTexPanner, MODEL_o2, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o4, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o6, TEX_PANNER_0)
@@ -157,10 +157,10 @@ EvtScript N(EVS_SetupExitHint) = {
     Call(SetTexPanner, MODEL_o8, TEX_PANNER_3)
     Call(SetTexPanner, MODEL_o10, TEX_PANNER_3)
     Call(SetTexPanner, MODEL_o12, TEX_PANNER_3)
-    BindTrigger(Ref(N(EVS_CheckFlowers_West)),  TRIGGER_WALL_PRESS_A, COLLIDER_o132, 1, 0)
-    BindTrigger(Ref(N(EVS_CheckFlowers_North)), TRIGGER_WALL_PRESS_A, COLLIDER_o149, 1, 0)
-    BindTrigger(Ref(N(EVS_CheckFlowers_South)), TRIGGER_WALL_PRESS_A, COLLIDER_o151, 1, 0)
-    BindTrigger(Ref(N(EVS_CheckFlowers_East)),  TRIGGER_WALL_PRESS_A, COLLIDER_o150, 1, 0)
+    BindTrigger(Ref(EVS_CheckFlowers_West),  TRIGGER_WALL_PRESS_A, COLLIDER_o132, 1, 0)
+    BindTrigger(Ref(EVS_CheckFlowers_North), TRIGGER_WALL_PRESS_A, COLLIDER_o149, 1, 0)
+    BindTrigger(Ref(EVS_CheckFlowers_South), TRIGGER_WALL_PRESS_A, COLLIDER_o151, 1, 0)
+    BindTrigger(Ref(EVS_CheckFlowers_East),  TRIGGER_WALL_PRESS_A, COLLIDER_o150, 1, 0)
     Return
     End
 };

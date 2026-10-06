@@ -1,7 +1,7 @@
 #include "kmr_30.h"
 #include "effects.h"
 
-API_CALLABLE(N(ChooseFireworkColors)) {
+API_CALLABLE(ChooseFireworkColors) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     s32 colR1, colG1, colB1;
@@ -49,7 +49,7 @@ API_CALLABLE(N(ChooseFireworkColors)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_RandomFireworks) = {
+EvtScript EVS_RandomFireworks = {
     Set(LVarA, LVar0)
     Call(RandInt, 400, LVar0)
     Set(LVar1, -47)
@@ -74,7 +74,7 @@ EvtScript N(EVS_RandomFireworks) = {
     MulF(LVar0, Float(0.1))
     AddF(LVar7, LVar0)
     PlayEffect(EFFECT_FIREWORK_ROCKET, LVarA, LVar1, LVar2, LVar3, LVar4, LVar5, LVar6, LVar7, 70)
-    Call(N(ChooseFireworkColors), LVarF)
+    Call(ChooseFireworkColors, LVarF)
     IfNe(LVarA, 2)
         Call(RandInt, 100, LVar8)
         IfLt(LVar8, 50)
@@ -83,7 +83,7 @@ EvtScript N(EVS_RandomFireworks) = {
             Else
                 PlayEffect(EFFECT_FIREWORK_ROCKET, 0, LVar1, LVar2, LVar3, LVar4, LVar5, LVar6, LVar7, 70)
             EndIf
-            Call(N(ChooseFireworkColors), LVarF)
+            Call(ChooseFireworkColors, LVarF)
         EndIf
     EndIf
     Return
@@ -92,17 +92,17 @@ EvtScript N(EVS_RandomFireworks) = {
 
 s32 TheEndModelAlpha = 0;
 
-API_CALLABLE(N(UpdateTheEndAlpha)) {
+API_CALLABLE(UpdateTheEndAlpha) {
     Bytecode* args = script->ptrReadPos;
     TheEndModelAlpha = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
-void N(gfx_build_the_end)(void) {
+void gfx_build_the_end(void) {
     gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, TheEndModelAlpha);
 }
 
-EvtScript N(EVS_Scene_TheEnd) = {
+EvtScript EVS_Scene_TheEnd = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 270, 0)
     Call(SetPlayerPos, 520, 0, -180)
@@ -135,16 +135,16 @@ EvtScript N(EVS_Scene_TheEnd) = {
     Call(PlayerMoveTo, 300, -120, 0)
     Wait(30)
     PlayEffect(EFFECT_FIREWORK_ROCKET, 0, 153, 370, -350, -1, 4, -1, Float(1.6), 70)
-    Call(N(ChooseFireworkColors), LVarF)
+    Call(ChooseFireworkColors, LVarF)
     Wait(30)
     PlayEffect(EFFECT_FIREWORK_ROCKET, 1, 333, 420, -270, -1, 4, -1, Float(1.6), 70)
-    Call(N(ChooseFireworkColors), LVarF)
+    Call(ChooseFireworkColors, LVarF)
     Wait(30)
     PlayEffect(EFFECT_FIREWORK_ROCKET, 0, -27, 320, -430, -1, 4, -1, Float(1.6), 70)
-    Call(N(ChooseFireworkColors), LVarF)
+    Call(ChooseFireworkColors, LVarF)
     Wait(80)
     PlayEffect(EFFECT_FIREWORK_ROCKET, 2, 153, 370, -350, -1, 4, -1, Float(1.6), 70)
-    Call(N(ChooseFireworkColors), LVarF)
+    Call(ChooseFireworkColors, LVarF)
     Wait(30)
     Thread
         Wait(150)
@@ -155,14 +155,14 @@ EvtScript N(EVS_Scene_TheEnd) = {
             Add(LVar2, 1)
             Loop(LVar2)
                 Set(LVar0, 0)
-                Exec(N(EVS_RandomFireworks))
+                Exec(EVS_RandomFireworks)
                 Wait(LVar1)
             EndLoop
             Call(RandInt, 60, LVar0)
             Add(LVar0, 60)
             Wait(LVar0)
             Set(LVar0, 2)
-            Exec(N(EVS_RandomFireworks))
+            Exec(EVS_RandomFireworks)
             Call(RandInt, 60, LVar0)
             Add(LVar0, 60)
             Wait(LVar0)
@@ -177,14 +177,14 @@ EvtScript N(EVS_Scene_TheEnd) = {
             Add(LVar2, 1)
             Loop(LVar2)
                 Set(LVar0, 1)
-                Exec(N(EVS_RandomFireworks))
+                Exec(EVS_RandomFireworks)
                 Wait(LVar1)
             EndLoop
             Call(RandInt, 60, LVar0)
             Add(LVar0, 60)
             Wait(LVar0)
             Set(LVar0, 2)
-            Exec(N(EVS_RandomFireworks))
+            Exec(EVS_RandomFireworks)
             Call(RandInt, 60, LVar0)
             Add(LVar0, 60)
             Wait(LVar0)
@@ -197,11 +197,11 @@ EvtScript N(EVS_Scene_TheEnd) = {
     Call(SetModelCustomGfx, MODEL_e, CUSTOM_GFX_1, -1)
     Call(SetModelCustomGfx, MODEL_d, CUSTOM_GFX_1, -1)
     Call(SetModelCustomGfx, MODEL_n, CUSTOM_GFX_1, -1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(gfx_build_the_end)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(gfx_build_the_end), nullptr)
     Call(MakeLerp, 0, 255, 90, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(UpdateTheEndAlpha), LVar0)
+        Call(UpdateTheEndAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -210,7 +210,7 @@ EvtScript N(EVS_Scene_TheEnd) = {
     Wait(600)
     Thread
         PlayEffect(EFFECT_FIREWORK_ROCKET, 0, 310, 280, -250, -1, 6, -1, Float(1.6), 70)
-        Call(N(ChooseFireworkColors), LVarF)
+        Call(ChooseFireworkColors, LVarF)
     EndThread
     Wait(20)
     Call(MakeLerp, 0, 100, 30, EASING_LINEAR)

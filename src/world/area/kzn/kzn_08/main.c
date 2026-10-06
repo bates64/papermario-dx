@@ -3,7 +3,7 @@
 
 #include "../common/LavaGlowLighting.inc.c"
 
-EvtScript N(EVS_StartTexPanners) = {
+EvtScript EVS_StartTexPanners = {
     // background lava fall
     Call(SetTexPanner, MODEL_yougan1, TEX_PANNER_0)
     Thread
@@ -44,20 +44,20 @@ EvtScript N(EVS_StartTexPanners) = {
     End
 };
 
-ModelIDList N(LavaModelIDs) = {
+ModelIDList LavaModelIDs = {
     .count = 1,
     .list = { MODEL_yougan }
 };
 
-EvtScript N(EVS_ExitWalk_kzn_06) = EVT_EXIT_WALK(60, kzn_08_ENTRY_0, "kzn_06", kzn_06_ENTRY_2);
+EvtScript EVS_ExitWalk_kzn_06 = EVT_EXIT_WALK(60, kzn_08_ENTRY_0, "kzn_06", kzn_06_ENTRY_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_kzn_06), TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_kzn_06, TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
     Return
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o468, .pos = { -230.0, 0.0, 100.0 }},
     { .colliderID = COLLIDER_o470, .pos = { -230.0, 0.0, 100.0 }},
     { .colliderID = COLLIDER_o322, .pos = {  -10.0, 0.0, 100.0 }},
@@ -66,7 +66,7 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_AnimateLavaScale) = {
+EvtScript EVS_AnimateLavaScale = {
     Call(DisablePlayerInput, true)
     Call(MakeLerp, 1, 100, 200, EASING_LINEAR)
     Label(0)
@@ -94,7 +94,7 @@ EvtScript N(EVS_AnimateLavaScale) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS,  COLLIDER_yougan_atari, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan_atari, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
     Call(DisablePlayerInput, false)
     Unbind
@@ -102,33 +102,33 @@ EvtScript N(EVS_AnimateLavaScale) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_08)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
     Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
-    Set(LVar0, N(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
-    Exec(N(EVS_UpdateLavaRoomDarkness))
+    Exec(EVS_UpdateLavaRoomDarkness)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yougan_atari, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
     Call(ScaleModel, MODEL_yougan1, Float(10.0), Float(1.0), Float(1.0))
     Call(TranslateModel, MODEL_yougan, 0, 40, 0)
     Set(MV_GlowIntensity, 0)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(N(ApplyLavaGlowLighting), LAVA_GLOW_MODE_2, nullptr)
+        Call(ApplyLavaGlowLighting, LAVA_GLOW_MODE_2, nullptr)
     EndThread
     Thread
-        Call(N(ClearLavaGlowLighting), Ref(N(LavaModelIDs)))
+        Call(ClearLavaGlowLighting, Ref(LavaModelIDs))
     EndThread
-    Exec(N(EVS_StartTexPanners))
+    Exec(EVS_StartTexPanners)
     Return
     End
 };

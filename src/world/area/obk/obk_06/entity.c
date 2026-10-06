@@ -1,7 +1,7 @@
 #include "obk_06.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_OBK06_Item_BoosPortrait, false)
         Call(MakeItemEntity, ITEM_BOO_PORTRAIT, 230, 125, -215, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OBK06_Item_BoosPortrait)
         Thread

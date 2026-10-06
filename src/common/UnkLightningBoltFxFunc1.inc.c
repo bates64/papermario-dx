@@ -10,7 +10,7 @@ typedef struct FxLightningBoltState {
     /* 0x1C */ s32 duration;
 } FxLightningBoltState; // size = 0x20
 
-API_CALLABLE(N(UnkLightningBoltFxFunc1)) {
+static API_CALLABLE(UnkLightningBoltFxFunc1) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
     s32 i;

@@ -23,11 +23,9 @@ enum {
     MV_SpiritCardData   = MapVar(1),
 };
 
-#define NAMESPACE pra_32
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_RespawnStarCard);
-extern EvtScript N(EVS_SpawnStarCard);
-extern EvtScript N(EVS_80240D3C);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_RespawnStarCard;
+extern EvtScript EVS_SpawnStarCard;
+extern EvtScript EVS_80240D3C;
+extern NpcGroupList DefaultNPCs;

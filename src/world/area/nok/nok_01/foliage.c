@@ -2,9 +2,9 @@
 
 #include "foliage.h"
 
-FoliageModelList N(Bush5_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o315);
+FoliageModelList Bush5_BushModels = FOLIAGE_MODEL_LIST(MODEL_o315);
 
-FoliageDropList N(Bush5_Drops) = {
+FoliageDropList Bush5_Drops = {
     .count = 1,
     .drops = {
         {
@@ -16,14 +16,14 @@ FoliageDropList N(Bush5_Drops) = {
     }
 };
 
-SearchBushConfig N(SearchBush_Bush5) = {
-    .bush = &N(Bush5_BushModels),
-    .drops = &N(Bush5_Drops),
+SearchBushConfig SearchBush_Bush5 = {
+    .bush = &Bush5_BushModels,
+    .drops = &Bush5_Drops,
 };
 
-FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o322, MODEL_o320);
+FoliageModelList Bush4_BushModels = FOLIAGE_MODEL_LIST(MODEL_o322, MODEL_o320);
 
-FoliageDropList N(Bush3_Drops) = {
+FoliageDropList Bush3_Drops = {
     .count = 1,
     .drops = {
         {
@@ -36,18 +36,18 @@ FoliageDropList N(Bush3_Drops) = {
     }
 };
 
-SearchBushConfig N(SearchBush_Bush4) = {
-    .bush = &N(Bush4_BushModels),
+SearchBushConfig SearchBush_Bush4 = {
+    .bush = &Bush4_BushModels,
 };
 
-SearchBushConfig N(SearchBush_Bush3) = {
-    .bush = &N(Bush4_BushModels),
-    .drops = &N(Bush3_Drops),
+SearchBushConfig SearchBush_Bush3 = {
+    .bush = &Bush4_BushModels,
+    .drops = &Bush3_Drops,
 };
 
-FoliageModelList N(Bush6_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o390, MODEL_o396, MODEL_o397, MODEL_o398);
+FoliageModelList Bush6_BushModels = FOLIAGE_MODEL_LIST(MODEL_o390, MODEL_o396, MODEL_o397, MODEL_o398);
 
-EvtScript N(EVS_Bush6_HideFlowers) = {
+EvtScript EVS_Bush6_HideFlowers = {
     Call(EnableModel, MODEL_o396, false)
     Call(EnableModel, MODEL_o397, false)
     Call(EnableModel, MODEL_o398, false)
@@ -55,7 +55,7 @@ EvtScript N(EVS_Bush6_HideFlowers) = {
     End
 };
 
-EvtScript N(EVS_OnSearchBush6) = {
+EvtScript EVS_OnSearchBush6 = {
     Call(EnableModel, MODEL_o396, true)
     Wait(10)
     Call(EnableModel, MODEL_o398, true)
@@ -65,14 +65,14 @@ EvtScript N(EVS_OnSearchBush6) = {
     End
 };
 
-SearchBushConfig N(SearchBush_Bush6) = {
-    .bush = &N(Bush6_BushModels),
-    .callback = &N(EVS_OnSearchBush6),
+SearchBushConfig SearchBush_Bush6 = {
+    .bush = &Bush6_BushModels,
+    .callback = &EVS_OnSearchBush6,
 };
 
-FoliageModelList N(Bush7_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o391);
+FoliageModelList Bush7_BushModels = FOLIAGE_MODEL_LIST(MODEL_o391);
 
-FoliageDropList N(Bush7_Drops) = {
+FoliageDropList Bush7_Drops = {
     .count = 1,
     .drops = {
         {
@@ -84,14 +84,14 @@ FoliageDropList N(Bush7_Drops) = {
     }
 };
 
-SearchBushConfig N(SearchBush_Bush7) = {
-    .bush = &N(Bush7_BushModels),
-    .drops = &N(Bush7_Drops),
+SearchBushConfig SearchBush_Bush7 = {
+    .bush = &Bush7_BushModels,
+    .drops = &Bush7_Drops,
 };
 
-FoliageModelList N(Bush8_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o392);
+FoliageModelList Bush8_BushModels = FOLIAGE_MODEL_LIST(MODEL_o392);
 
-FoliageDropList N(Bush8_Drops) = {
+FoliageDropList Bush8_Drops = {
     .count = 1,
     .drops = {
         {
@@ -104,14 +104,14 @@ FoliageDropList N(Bush8_Drops) = {
     }
 };
 
-SearchBushConfig N(SearchBush_Bush8) = {
-    .bush = &N(Bush8_BushModels),
-    .drops = &N(Bush8_Drops),
+SearchBushConfig SearchBush_Bush8 = {
+    .bush = &Bush8_BushModels,
+    .drops = &Bush8_Drops,
 };
 
-FoliageModelList N(Bush9_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o393, MODEL_o402);
+FoliageModelList Bush9_BushModels = FOLIAGE_MODEL_LIST(MODEL_o393, MODEL_o402);
 
-FoliageDropList N(Bush9_Drops) = {
+FoliageDropList Bush9_Drops = {
     .count = 1,
     .drops = {
         {
@@ -124,14 +124,14 @@ FoliageDropList N(Bush9_Drops) = {
     }
 };
 
-SearchBushConfig N(SearchBush_Bush9) = {
-    .bush = &N(Bush9_BushModels),
-    .drops = &N(Bush9_Drops),
+SearchBushConfig SearchBush_Bush9 = {
+    .bush = &Bush9_BushModels,
+    .drops = &Bush9_Drops,
 };
 
-FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o394, MODEL_o399, MODEL_o400, MODEL_o401);
+FoliageModelList Bush2_BushModels = FOLIAGE_MODEL_LIST(MODEL_o394, MODEL_o399, MODEL_o400, MODEL_o401);
 
-FoliageDropList N(Bush1_Drops) = {
+FoliageDropList Bush1_Drops = {
     .count = 1,
     .drops = {
         {
@@ -144,7 +144,7 @@ FoliageDropList N(Bush1_Drops) = {
     }
 };
 
-EvtScript N(EVS_Bush2_HideFlowers) = {
+EvtScript EVS_Bush2_HideFlowers = {
     Call(EnableModel, MODEL_o399, false)
     Call(EnableModel, MODEL_o400, false)
     Call(EnableModel, MODEL_o401, false)
@@ -152,7 +152,7 @@ EvtScript N(EVS_Bush2_HideFlowers) = {
     End
 };
 
-EvtScript N(EVS_OnSearchBush2) = {
+EvtScript EVS_OnSearchBush2 = {
     Call(EnableModel, MODEL_o399, true)
     Wait(10)
     Call(EnableModel, MODEL_o401, true)
@@ -162,62 +162,62 @@ EvtScript N(EVS_OnSearchBush2) = {
     End
 };
 
-SearchBushConfig N(SearchBush_Bush2) = {
-    .bush = &N(Bush2_BushModels),
-    .callback = &N(EVS_OnSearchBush2),
+SearchBushConfig SearchBush_Bush2 = {
+    .bush = &Bush2_BushModels,
+    .callback = &EVS_OnSearchBush2,
 };
 
-SearchBushConfig N(SearchBush_Bush1) = {
-    .bush = &N(Bush2_BushModels),
-    .drops = &N(Bush1_Drops),
-    .callback = &N(EVS_OnSearchBush2),
+SearchBushConfig SearchBush_Bush1 = {
+    .bush = &Bush2_BushModels,
+    .drops = &Bush1_Drops,
+    .callback = &EVS_OnSearchBush2,
 };
 
-FoliageModelList N(Tree1_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o300);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o300);
 
-FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o299);
+FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o299);
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree1_LeafModels),
-    .trunk = &N(Tree1_TrunkModels),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree1_LeafModels,
+    .trunk = &Tree1_TrunkModels,
 };
 
-BombTrigger N(BombPos_Tree1) = {
+BombTrigger BombPos_Tree1 = {
     .pos = { 198.0f, 0.0f, 147.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(SearchBush_Bush5)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(SearchBush_Bush5))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o312, 1, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH6_2)
-        Set(LVar0, Ref(N(SearchBush_Bush3)))
+        Set(LVar0, Ref(SearchBush_Bush3))
     Else
-        Set(LVar0, Ref(N(SearchBush_Bush4)))
+        Set(LVar0, Ref(SearchBush_Bush4))
     EndIf
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o313, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush6)))
+    Set(LVar0, Ref(SearchBush_Bush6))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o419, 1, 0)
-    Exec(N(EVS_Bush6_HideFlowers))
-    Set(LVar0, Ref(N(SearchBush_Bush7)))
+    Exec(EVS_Bush6_HideFlowers)
+    Set(LVar0, Ref(SearchBush_Bush7))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o420, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush8)))
+    Set(LVar0, Ref(SearchBush_Bush8))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o421, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush9)))
+    Set(LVar0, Ref(SearchBush_Bush9))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o422, 1, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH3_2)
-        Set(LVar0, Ref(N(SearchBush_Bush1)))
+        Set(LVar0, Ref(SearchBush_Bush1))
     Else
-        Set(LVar0, Ref(N(SearchBush_Bush2)))
+        Set(LVar0, Ref(SearchBush_Bush2))
     EndIf
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o423, 1, 0)
-    Exec(N(EVS_Bush2_HideFlowers))
-    Set(LVar0, Ref(N(ShakeTree_Tree1)))
+    Exec(EVS_Bush2_HideFlowers)
+    Set(LVar0, Ref(ShakeTree_Tree1))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
     // bind the same tree a second time for the koopa shell stuck inside
-    BindTrigger(Ref(N(EVS_Scene_RecoverTreeShell)), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
-    BindTrigger(Ref(N(EVS_Scene_RecoverTreeShell)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_Scene_RecoverTreeShell), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
+    BindTrigger(Ref(EVS_Scene_RecoverTreeShell), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
     Return
     End
 };

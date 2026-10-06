@@ -2,9 +2,9 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_ExitWalk_nok_01_1) = EVT_EXIT_WALK(60, nok_02_ENTRY_0, "nok_01", nok_01_ENTRY_1);
+EvtScript EVS_ExitWalk_nok_01_1 = EVT_EXIT_WALK(60, nok_02_ENTRY_0, "nok_01", nok_01_ENTRY_1);
 
-EvtScript N(EVS_ExitWalk_nok_03_0) = {
+EvtScript EVS_ExitWalk_nok_03_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, true)
@@ -17,14 +17,14 @@ EvtScript N(EVS_ExitWalk_nok_03_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_01_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_03_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_nok_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_Flowers) = {
+EvtScript EVS_TexPan_Flowers = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_o312, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o460, TEX_PANNER_0)
@@ -49,7 +49,7 @@ EvtScript N(EVS_TexPan_Flowers) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(nok_02_ENTRY_2)
@@ -69,27 +69,27 @@ EvtScript N(EVS_EnterMap) = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-            ExecWait(N(EVS_Pipe_EnterVertical))
+            Set(LVarA, Ref(EVS_BindExitTriggers))
+            ExecWait(EVS_Pipe_EnterVertical)
         CaseEq(nok_02_ENTRY_4)
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, nok_02_ENTRY_3)
-        Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
-        ExecWait(N(EVS_MakeEntities))
-        Exec(N(EVS_TexPan_Flowers))
-        Exec(N(EVS_Scene_Epilogue))
+        Call(MakeNpcs, false, Ref(EpilogueNPCs))
+        ExecWait(EVS_MakeEntities)
+        Exec(EVS_TexPan_Flowers)
+        Exec(EVS_Scene_Epilogue)
         Call(FadeInMusic, 0, SONG_KOOPA_VILLAGE, 0, 3000, 0, 127)
         Wait(1)
         Return
@@ -104,25 +104,25 @@ EvtScript N(EVS_Main) = {
         Set(GF_NOK02_RecoveredShellB, true)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        Call(MakeNpcs, false, Ref(N(CrisisNPCs)))
+        Call(MakeNpcs, false, Ref(CrisisNPCs))
     Else
-        Call(MakeNpcs, false, Ref(N(NormalNPCs)))
+        Call(MakeNpcs, false, Ref(NormalNPCs))
     EndIf
     Call(ClearDefeatedEnemies)
-    ExecWait(N(EVS_MakeEntities))
-    ExecWait(N(EVS_SetupFoliage))
-    Exec(N(EVS_TexPan_Flowers))
-    BindTrigger(Ref(N(EVS_Setup_Bookshelf)), TRIGGER_WALL_PRESS_A, COLLIDER_o236, 1, 0)
-    ExecWait(N(EVS_SetupRooms))
+    ExecWait(EVS_MakeEntities)
+    ExecWait(EVS_SetupFoliage)
+    Exec(EVS_TexPan_Flowers)
+    BindTrigger(Ref(EVS_Setup_Bookshelf), TRIGGER_WALL_PRESS_A, COLLIDER_o236, 1, 0)
+    ExecWait(EVS_SetupRooms)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
-        ExecWait(N(EVS_SetupDemo))
+        ExecWait(EVS_SetupDemo)
         Return
     EndIf
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

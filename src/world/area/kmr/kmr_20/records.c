@@ -24,7 +24,7 @@ typedef struct GameRecords {
     /* 0x16 */ PAD(2);
 } GameRecords; // size = 0x18
 
-s32 N(RecipeFoundVars)[] = {
+s32 RecipeFoundVars[] = {
     GF_MAC02_DiscoveredRecipe_00, GF_MAC02_DiscoveredRecipe_01,
     GF_MAC02_DiscoveredRecipe_02, GF_MAC02_DiscoveredRecipe_03,
     GF_MAC02_DiscoveredRecipe_04, GF_MAC02_DiscoveredRecipe_05,
@@ -53,7 +53,7 @@ s32 N(RecipeFoundVars)[] = {
     0
 };
 
-void N(appendGfx_records_impl)(GameRecords* records, s32 alpha) {
+void appendGfx_records_impl(GameRecords* records, s32 alpha) {
     s32 width;
 
 #if VERSION_PAL
@@ -64,7 +64,7 @@ void N(appendGfx_records_impl)(GameRecords* records, s32 alpha) {
 
     if (alpha > 0) {
 #if VERSION_JP
-        gSPDisplayList(gMainGfxPos++, N(records_screen_gfx));
+        gSPDisplayList(gMainGfxPos++, kmr_20_records_screen_gfx);
         gDPPipeSync(gMainGfxPos++);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 16, 120, 24, alpha * 0.65);
         gDPFillRectangle(gMainGfxPos++, 63, 43, 257, 192);
@@ -123,7 +123,7 @@ void N(appendGfx_records_impl)(GameRecords* records, s32 alpha) {
             draw_number(gPlayerData.powerBounces, 194, 170, 1, MSG_PAL_WHITE, alpha, 2);
         }
 #else
-        gSPDisplayList(gMainGfxPos++, N(records_screen_gfx));
+        gSPDisplayList(gMainGfxPos++, kmr_20_records_screen_gfx);
         gDPPipeSync(gMainGfxPos++);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 16, 120, 24, alpha * 0.65);
         gDPFillRectangle(gMainGfxPos++, 33, 43, 287, 192);
@@ -189,7 +189,7 @@ void N(appendGfx_records_impl)(GameRecords* records, s32 alpha) {
 #undef CHARSET
 }
 
-void N(appendGfx_records)(void* data) {
+void appendGfx_records(void* data) {
     GameRecords* records = (GameRecords*) evt_get_variable(nullptr, MV_RecordsDataPtr);
 
     switch (records->state) {
@@ -230,20 +230,20 @@ void N(appendGfx_records)(void* data) {
             }
             break;
     }
-    N(appendGfx_records_impl)(records, records->alpha);
+    appendGfx_records_impl(records, records->alpha);
 }
 
-void N(worker_render_game_records)(void) {
+void worker_render_game_records(void) {
     RenderTask rt;
 
     rt.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     rt.appendGfxArg = nullptr;
-    rt.appendGfx = N(appendGfx_records);
+    rt.appendGfx = appendGfx_records;
     rt.dist = 0;
     queue_render_task(&rt);
 }
 
-void N(calculate_records)(GameRecords* records) {
+void calculate_records(GameRecords* records) {
     PlayerData* playerData = &gPlayerData;
     s32 count;
     s32 i;
@@ -258,8 +258,8 @@ void N(calculate_records)(GameRecords* records) {
 
     count = 0;
     for (i = 0; true; i++) {
-        if (N(RecipeFoundVars)[i] != 0) {
-            if (evt_get_variable(nullptr, N(RecipeFoundVars)[i]) != 0) {
+        if (RecipeFoundVars[i] != 0) {
+            if (evt_get_variable(nullptr, RecipeFoundVars[i]) != 0) {
                 count++;
             }
         } else {
@@ -273,16 +273,16 @@ void N(calculate_records)(GameRecords* records) {
     }
 }
 
-API_CALLABLE(N(ShowGameRecords)) {
+API_CALLABLE(ShowGameRecords) {
     GameRecords* records;
 
     if (isInitialCall) {
         records = script->functionTempPtr[0] = heap_malloc(sizeof(*records));
         records->state = RECORDS_STATE_BEGIN_FADE_IN;
         records->alpha = 255;
-        records->workerID = create_worker_scene(nullptr, N(worker_render_game_records));
+        records->workerID = create_worker_scene(nullptr, worker_render_game_records);
         evt_set_variable(script, MV_RecordsDataPtr, (s32) records);
-        N(calculate_records)(records);
+        calculate_records(records);
     }
 
     records = script->functionTempPtr[0];
@@ -294,7 +294,7 @@ API_CALLABLE(N(ShowGameRecords)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_Inspect_Records) = {
+EvtScript EVS_Inspect_Records = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(GetPlayerPos, LVarA, LVarB, LVarC)
@@ -304,7 +304,7 @@ EvtScript N(EVS_Inspect_Records) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.2))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(N(ShowGameRecords))
+    Call(ShowGameRecords)
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.2))
     Call(PanToTarget, CAM_DEFAULT, 0, true)

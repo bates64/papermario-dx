@@ -1,9 +1,9 @@
 #include "kkj_22.h"
 
-EvtScript N(EVS_ExitDoor_kkj_13_1) = EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_0, "kkj_13", kkj_13_ENTRY_1, COLLIDER_ttw, MODEL_o51, MODEL_o52);
-EvtScript N(EVS_ExitDoor_kkj_23_0) = EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_1, "kkj_23", kkj_23_ENTRY_0, COLLIDER_ttnw, MODEL_o94, MODEL_o95);
+EvtScript EVS_ExitDoor_kkj_13_1 = EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_0, "kkj_13", kkj_13_ENTRY_1, COLLIDER_ttw, MODEL_o51, MODEL_o52);
+EvtScript EVS_ExitDoor_kkj_23_0 = EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_1, "kkj_23", kkj_23_ENTRY_0, COLLIDER_ttnw, MODEL_o94, MODEL_o95);
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_22_ENTRY_0)
@@ -19,15 +19,15 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_22)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    BindTrigger(Ref(N(EVS_ExitDoor_kkj_13_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoor_kkj_23_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttnw, 1, 0)
-    Exec(N(EVS_EnterMap))
+    BindTrigger(Ref(EVS_ExitDoor_kkj_13_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_kkj_23_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttnw, 1, 0)
+    Exec(EVS_EnterMap)
     Return
     End
 };

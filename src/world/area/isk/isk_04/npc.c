@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/SpikeTop/wander.inc.c"
 
-NpcData N(NpcData_BuzzyBeetle_01) = {
+NpcData NpcData_BuzzyBeetle_01 = {
     .id = NPC_BuzzyBeetle_01,
     .pos = { 561.0f, 25.0f, 47.0f },
     .yaw = 355,
@@ -18,13 +18,13 @@ NpcData N(NpcData_BuzzyBeetle_01) = {
             .detectSize = { 80 },
         }
     },
-    .settings = &N(NpcSettings_BuzzyBeetle_Wander),
+    .settings = &NpcSettings_BuzzyBeetle_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = ISK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,
 };
 
-NpcData N(NpcData_BuzzyBeetle_02) = {
+NpcData NpcData_BuzzyBeetle_02 = {
     .id = NPC_BuzzyBeetle_02,
     .pos = { 608.0f, -260.0f, -158.0f },
     .yaw = 175,
@@ -40,14 +40,14 @@ NpcData N(NpcData_BuzzyBeetle_02) = {
             .detectSize = { 80 },
         }
     },
-    .settings = &N(NpcSettings_BuzzyBeetle_Wander),
+    .settings = &NpcSettings_BuzzyBeetle_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = ISK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BuzzyBeetle_01), BTL_ISK_1_FORMATION_09, BTL_ISK_1_STAGE_03),
-    NPC_GROUP(N(NpcData_BuzzyBeetle_02), BTL_ISK_1_FORMATION_09, BTL_ISK_1_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BuzzyBeetle_01, BTL_ISK_1_FORMATION_09, BTL_ISK_1_STAGE_03),
+    NPC_GROUP(NpcData_BuzzyBeetle_02, BTL_ISK_1_FORMATION_09, BTL_ISK_1_STAGE_03),
     {}
 };

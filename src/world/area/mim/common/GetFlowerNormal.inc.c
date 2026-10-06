@@ -1,7 +1,7 @@
 #include "common.h"
 #include "model.h"
 
-static Vtx_t* N(TriNormVertexBuffer)[32];
+static Vtx_t* TriNormVertexBuffer[32];
 
 enum {
     READ_STATE_CONTINUE    = 0,
@@ -9,7 +9,7 @@ enum {
     READ_STATE_TRIANGLE    = 2,
 };
 
-void N(GetFirstTriangleNormal)(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
+void GetFirstTriangleNormal(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
     Gfx* gfx = inGfx;
     s32 readState;
     f32 v1x, v1y, v1z;
@@ -39,38 +39,38 @@ void N(GetFirstTriangleNormal)(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
                 readState = READ_STATE_DONE;
                 break;
             case G_DL:
-                N(GetFirstTriangleNormal)((Gfx* ) w1, outNx, outNy, outNz);
+                GetFirstTriangleNormal((Gfx* ) w1, outNx, outNy, outNz);
                 break;
             case G_VTX:
                 vtxCount = (w0 >> 0xC) & 0xFF;
                 vtxArray = (Vtx_t*) w1;
                 for (i = 0; i < vtxCount; i++) {
                     vtxEnd = (w0 >> 1) & 0x7F;
-                    N(TriNormVertexBuffer)[(vtxEnd - vtxCount) + i] = &(vtxArray)[i];
+                    TriNormVertexBuffer[(vtxEnd - vtxCount) + i] = &(vtxArray)[i];
                 }
                 break;
             case G_TRI1:
-                v1x = N(TriNormVertexBuffer)[((w1 >> 16) & 0xFF) / 2]->ob[0];
-                v1y = N(TriNormVertexBuffer)[((w1 >> 16) & 0xFF) / 2]->ob[1];
-                v1z = N(TriNormVertexBuffer)[((w1 >> 16) & 0xFF) / 2]->ob[2];
-                v2x = N(TriNormVertexBuffer)[((w1 >> 8) & 0xFF) / 2]->ob[0];
-                v2y = N(TriNormVertexBuffer)[((w1 >> 8) & 0xFF) / 2]->ob[1];
-                v2z = N(TriNormVertexBuffer)[((w1 >> 8) & 0xFF) / 2]->ob[2];
-                v3x = N(TriNormVertexBuffer)[(w1 & 0xFF) / 2]->ob[0];
-                v3y = N(TriNormVertexBuffer)[(w1 & 0xFF) / 2]->ob[1];
-                v3z = N(TriNormVertexBuffer)[(w1 & 0xFF) / 2]->ob[2];
+                v1x = TriNormVertexBuffer[((w1 >> 16) & 0xFF) / 2]->ob[0];
+                v1y = TriNormVertexBuffer[((w1 >> 16) & 0xFF) / 2]->ob[1];
+                v1z = TriNormVertexBuffer[((w1 >> 16) & 0xFF) / 2]->ob[2];
+                v2x = TriNormVertexBuffer[((w1 >> 8) & 0xFF) / 2]->ob[0];
+                v2y = TriNormVertexBuffer[((w1 >> 8) & 0xFF) / 2]->ob[1];
+                v2z = TriNormVertexBuffer[((w1 >> 8) & 0xFF) / 2]->ob[2];
+                v3x = TriNormVertexBuffer[(w1 & 0xFF) / 2]->ob[0];
+                v3y = TriNormVertexBuffer[(w1 & 0xFF) / 2]->ob[1];
+                v3z = TriNormVertexBuffer[(w1 & 0xFF) / 2]->ob[2];
                 readState = READ_STATE_TRIANGLE;
                 break;
             case G_TRI2:
-                v1x = N(TriNormVertexBuffer)[((w0 >> 16) & 0xFF) / 2]->ob[0];
-                v1y = N(TriNormVertexBuffer)[((w0 >> 16) & 0xFF) / 2]->ob[1];
-                v1z = N(TriNormVertexBuffer)[((w0 >> 16) & 0xFF) / 2]->ob[2];
-                v2x = N(TriNormVertexBuffer)[((w0 >> 8) & 0xFF) / 2]->ob[0];
-                v2y = N(TriNormVertexBuffer)[((w0 >> 8) & 0xFF) / 2]->ob[1];
-                v2z = N(TriNormVertexBuffer)[((w0 >> 8) & 0xFF) / 2]->ob[2];
-                v3x = N(TriNormVertexBuffer)[(w0 & 0xFF) / 2]->ob[0];
-                v3y = N(TriNormVertexBuffer)[(w0 & 0xFF) / 2]->ob[1];
-                v3z = N(TriNormVertexBuffer)[(w0 & 0xFF) / 2]->ob[2];
+                v1x = TriNormVertexBuffer[((w0 >> 16) & 0xFF) / 2]->ob[0];
+                v1y = TriNormVertexBuffer[((w0 >> 16) & 0xFF) / 2]->ob[1];
+                v1z = TriNormVertexBuffer[((w0 >> 16) & 0xFF) / 2]->ob[2];
+                v2x = TriNormVertexBuffer[((w0 >> 8) & 0xFF) / 2]->ob[0];
+                v2y = TriNormVertexBuffer[((w0 >> 8) & 0xFF) / 2]->ob[1];
+                v2z = TriNormVertexBuffer[((w0 >> 8) & 0xFF) / 2]->ob[2];
+                v3x = TriNormVertexBuffer[(w0 & 0xFF) / 2]->ob[0];
+                v3y = TriNormVertexBuffer[(w0 & 0xFF) / 2]->ob[1];
+                v3z = TriNormVertexBuffer[(w0 & 0xFF) / 2]->ob[2];
                 readState = READ_STATE_TRIANGLE;
                 break;
         }
@@ -100,14 +100,14 @@ void N(GetFirstTriangleNormal)(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
     }
 }
 
-API_CALLABLE(N(GetFlowerNormal)) {
+API_CALLABLE(GetFlowerNormal) {
     Bytecode* args = script->ptrReadPos;
     s32 modelID = evt_get_variable(script, *args++);
     s32 treeIndex = get_model_list_index_from_tree_index(modelID);
     Model* mdl = get_model_from_list_index(treeIndex);
     f32 x, y, z;
 
-    N(GetFirstTriangleNormal)(mdl->modelNode->displayData->displayList, &x, &y, &z);
+    GetFirstTriangleNormal(mdl->modelNode->displayData->displayList, &x, &y, &z);
 
     evt_set_variable(script, *args++, FLOAT_TO_FIXED(x));
     evt_set_variable(script, *args++, FLOAT_TO_FIXED(y));

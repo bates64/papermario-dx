@@ -1,14 +1,13 @@
 #include "common.h"
 #include "script_api/battle.h"
-#include "battle/action_cmd/jump.h"
 #include "sprite/player.h"
 
-s32 N(D_802A10F0)[] = {
+s32 D_802A10F0[] = {
     9, 3, 9, 3, 9, 3, 8, 3,
     7, 3, 6, 2, 5, 2, 4, 2,
 };
 
-API_CALLABLE(N(CalcJumpReboundTime)) {
+API_CALLABLE(CalcJumpReboundTime) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* playerActor = battleStatus->playerActor;
     f32 posX = playerActor->curPos.x;
@@ -35,7 +34,7 @@ API_CALLABLE(N(CalcJumpReboundTime)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_CheckForAPress) = {
+EvtScript EVS_CheckForAPress = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_BeforeJump)
     Loop(5)
         Call(CheckButtonPress, BUTTON_A, LVar0)
@@ -48,7 +47,7 @@ EvtScript N(EVS_CheckForAPress) = {
     End
 };
 
-EvtScript N(EVS_JumpSupport_Approach) = {
+EvtScript EVS_JumpSupport_Approach = {
     Call(SetGoalToFirstTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 40)
@@ -66,14 +65,14 @@ EvtScript N(EVS_JumpSupport_Approach) = {
     Call(CancelablePlayerRunToGoal, 0, LVar0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(SetGoalToTarget, ACTOR_PLAYER)
-    ExecWait(N(EVS_CheckForAPress))
+    ExecWait(EVS_CheckForAPress)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_BeforeJump)
     Return
     End
 };
 
 // calculate time for a jump attack based on player and target positions
-EvtScript N(EVS_JumpSupport_CalcJumpTime) = {
+EvtScript EVS_JumpSupport_CalcJumpTime = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(GetGoalPos, ACTOR_PLAYER, LVar6, LVar7, LVar8)
     Call(GetActorPos, ACTOR_PLAYER, LVar7, LVar8, LVar9)
@@ -94,7 +93,7 @@ EvtScript N(EVS_JumpSupport_CalcJumpTime) = {
 
 // calculate time for a jump attack based on player and target positions
 // this variation is only used for first strikes with Super Boots
-EvtScript N(EVS_JumpSupport_CalcJumpTime_Alt1) = {
+EvtScript EVS_JumpSupport_CalcJumpTime_Alt1 = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(GetGoalPos, ACTOR_PLAYER, LVar6, LVar7, LVar8)
     Call(GetActorPos, ACTOR_PLAYER, LVar7, LVar8, LVar9)
@@ -115,7 +114,7 @@ EvtScript N(EVS_JumpSupport_CalcJumpTime_Alt1) = {
 
 // calculate time for a jump attack based on player and target positions
 // this variation is only used for first strikes with Ultra Boots
-EvtScript N(EVS_JumpSupport_CalcJumpTime_Alt2) = {
+EvtScript EVS_JumpSupport_CalcJumpTime_Alt2 = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(GetGoalPos, ACTOR_PLAYER, LVar6, LVar7, LVar8)
     Call(GetActorPos, ACTOR_PLAYER, LVar7, LVar8, LVar9)
@@ -135,7 +134,7 @@ EvtScript N(EVS_JumpSupport_CalcJumpTime_Alt2) = {
 };
 
 // normal dismount after successful follow-up hit
-EvtScript N(EVS_JumpSupport_Rebound) = {
+EvtScript EVS_JumpSupport_Rebound = {
     Call(PlayerYieldTurn)
     Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
@@ -147,7 +146,7 @@ EvtScript N(EVS_JumpSupport_Rebound) = {
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
     Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.3))
-    Call(N(CalcJumpReboundTime))
+    Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     // small second jump 20 units back
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
@@ -168,7 +167,7 @@ EvtScript N(EVS_JumpSupport_Rebound) = {
 };
 
 // weak dismount after unsuccessful Power/Mega Jump
-EvtScript N(EVS_JumpSupport_WeakRebound) = {
+EvtScript EVS_JumpSupport_WeakRebound = {
     Call(PlayerYieldTurn)
     Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
@@ -180,7 +179,7 @@ EvtScript N(EVS_JumpSupport_WeakRebound) = {
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
     Call(SetActorJumpGravity, ACTOR_PLAYER, Float(0.8))
-    Call(N(CalcJumpReboundTime))
+    Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     // small second jump 30 units back
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
@@ -200,7 +199,7 @@ EvtScript N(EVS_JumpSupport_WeakRebound) = {
     End
 };
 
-EvtScript N(EVS_JumpSupport_NoFollowUp) = {
+EvtScript EVS_JumpSupport_NoFollowUp = {
     Call(PlayerYieldTurn)
     Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_MISTAKE)
@@ -212,7 +211,7 @@ EvtScript N(EVS_JumpSupport_NoFollowUp) = {
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
     Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
-    Call(N(CalcJumpReboundTime))
+    Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     // small second jump 20 units back
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
@@ -233,7 +232,7 @@ EvtScript N(EVS_JumpSupport_NoFollowUp) = {
 };
 
 // Unused
-EvtScript N(EVS_JumpSupport_UnusedRebound) = {
+EvtScript EVS_JumpSupport_UnusedRebound = {
     Call(PlayerYieldTurn)
     Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
@@ -245,7 +244,7 @@ EvtScript N(EVS_JumpSupport_UnusedRebound) = {
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
     Call(SetActorJumpGravity, ACTOR_PLAYER, Float(0.8))
-    Call(N(CalcJumpReboundTime))
+    Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
     Wait(1)
@@ -267,7 +266,7 @@ EvtScript N(EVS_JumpSupport_UnusedRebound) = {
 
 // Unused
 // dismount after hit bouncing all the way to home position
-EvtScript N(EVS_JumpSupport_BouncingRebound) = {
+EvtScript EVS_JumpSupport_BouncingRebound = {
     Call(PlayerYieldTurn)
     Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
@@ -281,7 +280,7 @@ EvtScript N(EVS_JumpSupport_BouncingRebound) = {
     Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.0))
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Hurt, ANIM_Mario1_Hurt, ANIM_Mario1_Land)
-    Call(N(CalcJumpReboundTime))
+    Call(CalcJumpReboundTime)
     Call(PlayerHopToGoal, LVar0, 0, 0)
     ChildThread
         Call(ShakeCam, CAM_BATTLE, 0, 4, Float(1.0))
@@ -307,7 +306,7 @@ EvtScript N(EVS_JumpSupport_BouncingRebound) = {
     End
 };
 
-EvtScript N(EVS_JumpSupport_Miss) = {
+EvtScript EVS_JumpSupport_Miss = {
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, 0, 0, ANIM_Mario1_SpinFall)
     Call(PlayerLandJump)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_SpinFall)
@@ -336,12 +335,12 @@ EvtScript N(EVS_JumpSupport_Miss) = {
 };
 
 // load the action command
-EvtScript N(EVS_JumpSupport_ApproachAndJump) = {
+EvtScript EVS_JumpSupport_ApproachAndJump = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
-    ExecWait(N(EVS_JumpSupport_Approach))
-    ExecWait(N(EVS_JumpSupport_CalcJumpTime))
-    Call(action_command_jump_start, LVarA, AC_DIFFICULTY_3)
+    Call(InitActionCommand)
+    ExecWait(EVS_JumpSupport_Approach)
+    ExecWait(EVS_JumpSupport_CalcJumpTime)
+    Call(StartActionCommand, LVarA, AC_DIFFICULTY_3)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_JUMP_MIDAIR)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_MarioB1_Stomp)
@@ -351,16 +350,16 @@ EvtScript N(EVS_JumpSupport_ApproachAndJump) = {
 };
 
 // Incomplete and unused variation of EVS_JumpSupport_ApproachAndJump at one point intended for Super Jump
-EvtScript N(EVS_JumpSupport_UnusedSuper) = {
+EvtScript EVS_JumpSupport_UnusedSuper = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
-    ExecWait(N(EVS_JumpSupport_Approach))
+    Call(InitActionCommand)
+    ExecWait(EVS_JumpSupport_Approach)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_JumpSupport_CalcJumpTime_Alt1))
+    ExecWait(EVS_JumpSupport_CalcJumpTime_Alt1)
     Set(LVarB, LVarA)
     Add(LVarB, 14)
     Add(LVarB, -3)
-    Call(action_command_jump_start, LVarB, AC_DIFFICULTY_3)
+    Call(StartActionCommand, LVarB, AC_DIFFICULTY_3)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_SUPER_JUMP_MIDAIR)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Sit, ANIM_Mario1_SpinJump)
@@ -378,16 +377,16 @@ EvtScript N(EVS_JumpSupport_UnusedSuper) = {
 };
 
 // Incomplete and unused variation of EVS_JumpSupport_ApproachAndJump at one point intended for Ultra Jump
-EvtScript N(EVS_JumpSupport_UnusedUltra) = {
+EvtScript EVS_JumpSupport_UnusedUltra = {
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
-    ExecWait(N(EVS_JumpSupport_Approach))
-    ExecWait(N(EVS_JumpSupport_CalcJumpTime_Alt2))
-    Call(SetActionDifficultyTable, Ref(N(D_802A10F0)))
+    Call(InitActionCommand)
+    ExecWait(EVS_JumpSupport_Approach)
+    ExecWait(EVS_JumpSupport_CalcJumpTime_Alt2)
+    Call(SetActionDifficultyTable, Ref(D_802A10F0))
     Set(LVarB, LVarA)
     Sub(LVarB, 4)
     Add(LVarB, -3)
-    Call(action_command_jump_start, LVarB, AC_DIFFICULTY_3)
+    Call(StartActionCommand, LVarB, AC_DIFFICULTY_3)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_ULTRA_JUMP_MIDAIR)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_MarioW2_Carried, ANIM_MarioB1_Stomp)
@@ -403,15 +402,15 @@ EvtScript N(EVS_JumpSupport_UnusedUltra) = {
         Wait(2)
         Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
         Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-        Call(action_command_jump_init)
-        Call(action_command_jump_start, 13, AC_DIFFICULTY_3)
+        Call(InitActionCommand)
+        Call(StartActionCommand, 13, AC_DIFFICULTY_3)
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_UNUSED_ULTRA_JUMP)
         Call(PlayerUltraJumpToGoal, 15, PLAYER_ULTRA_JUMP_2)
         Goto(10)
     Else
         Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-        Call(action_command_jump_init)
-        Call(action_command_jump_start, 2, AC_DIFFICULTY_3)
+        Call(InitActionCommand)
+        Call(StartActionCommand, 2, AC_DIFFICULTY_3)
         Call(PlayerUltraJumpToGoal, 4, PLAYER_ULTRA_JUMP_1)
         Goto(10)
     EndIf

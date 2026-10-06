@@ -1,6 +1,6 @@
 #include "omo_17.h"
 
-EvtScript N(EVS_Gizmos_Wheels) = {
+EvtScript EVS_Gizmos_Wheels = {
     Label(0)
         Call(MakeLerp, 0, -360, 100, EASING_LINEAR)
         Label(1)
@@ -32,8 +32,8 @@ EvtScript N(EVS_Gizmos_Wheels) = {
     End
 };
 
-EvtScript N(EVS_SetupGizmos) = {
-    Exec(N(EVS_Gizmos_Wheels))
+EvtScript EVS_SetupGizmos = {
+    Exec(EVS_Gizmos_Wheels)
     Return
     End
 };

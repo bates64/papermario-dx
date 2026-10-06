@@ -1,7 +1,7 @@
 #include "kkj_15.h"
 #include "sprite/player.h"
 
-Vec3f N(TwinkFollowCh1Path1)[] = {
+Vec3f TwinkFollowCh1Path1[] = {
     {  -70.0,   120.0,  -70.0 },
     {  -40.0,   110.0,  -70.0 },
     {  -10.0,   120.0,  -70.0 },
@@ -15,13 +15,13 @@ Vec3f N(TwinkFollowCh1Path1)[] = {
     {  230.0,   120.0,  -70.0 },
 };
 
-Vec3f N(TwinkFollowCh1Path2)[] = {
+Vec3f TwinkFollowCh1Path2[] = {
     {  230.0,   120.0,  -70.0 },
     {  220.0,    60.0,  -70.0 },
     {  250.0,    40.0,  -70.0 },
 };
 
-EvtScript N(EVS_GetApproachPeachPos_Ch1) = {
+EvtScript EVS_GetApproachPeachPos_Ch1 = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, 10)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
@@ -60,7 +60,7 @@ EvtScript N(EVS_GetApproachPeachPos_Ch1) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach_Ch1) = {
+EvtScript EVS_PickUpPeach_Ch1 = {
     Thread
         Call(GetNpcPos, NPC_Koopatrol_01, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -96,7 +96,7 @@ EvtScript N(EVS_PickUpPeach_Ch1) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway_Ch1) = {
+EvtScript EVS_CarryPeachAway_Ch1 = {
     Call(InterpNpcYaw, NPC_Koopatrol_02, 90, 3)
     Wait(10)
     Thread
@@ -134,7 +134,7 @@ EvtScript N(EVS_CarryPeachAway_Ch1) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Door) = {
+EvtScript EVS_Inspect_Door = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_004A)
@@ -144,7 +144,7 @@ EvtScript N(EVS_Inspect_Door) = {
     End
 };
 
-EvtScript N(EVS_Inspect_BowsersDiary) = {
+EvtScript EVS_Inspect_BowsersDiary = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
@@ -291,13 +291,13 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     Call(SpeakToNpc, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 5, NPC_Bowser, MSG_Peach_0058)
     Call(SpeakToNpc, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 5, NPC_Koopatrol_01, MSG_Peach_0059)
     Call(SpeakToNpc, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 5, NPC_Bowser, MSG_Peach_005A)
-    ExecWait(N(EVS_GetApproachPeachPos_Ch1))
-    ExecWait(N(EVS_PickUpPeach_Ch1))
+    ExecWait(EVS_GetApproachPeachPos_Ch1)
+    ExecWait(EVS_PickUpPeach_Ch1)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_005B)
-    ExecWait(N(EVS_CarryPeachAway_Ch1))
+    ExecWait(EVS_CarryPeachAway_Ch1)
     Wait(10 * DT)
     Call(SetNpcPos, NPC_PARTNER, -70, 120, -70)
-    Call(LoadPath, 80 * DT, Ref(N(TwinkFollowCh1Path1)), ARRAY_COUNT(N(TwinkFollowCh1Path1)), EASING_LINEAR)
+    Call(LoadPath, 80 * DT, Ref(TwinkFollowCh1Path1), ARRAY_COUNT(TwinkFollowCh1Path1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -317,7 +317,7 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     Wait(15 * DT)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 7 * DT)
-    Call(LoadPath, 15 * DT, Ref(N(TwinkFollowCh1Path2)), ARRAY_COUNT(N(TwinkFollowCh1Path2)), EASING_LINEAR)
+    Call(LoadPath, 15 * DT, Ref(TwinkFollowCh1Path2), ARRAY_COUNT(TwinkFollowCh1Path2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -328,7 +328,7 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     EndLoop
     Wait(30 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)
-    ExecWait(N(EVS_EndPeachChapter1))
+    ExecWait(EVS_EndPeachChapter1)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
@@ -337,9 +337,9 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     End
 };
 
-EvtScript N(EVS_SetupChapter1) = {
-    BindTrigger(Ref(N(EVS_Inspect_BowsersDiary)), TRIGGER_WALL_PRESS_A, COLLIDER_o100, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Door)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+EvtScript EVS_SetupChapter1 = {
+    BindTrigger(Ref(EVS_Inspect_BowsersDiary), TRIGGER_WALL_PRESS_A, COLLIDER_o100, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Door), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };

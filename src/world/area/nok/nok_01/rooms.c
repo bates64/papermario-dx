@@ -1,20 +1,20 @@
 #include "nok_01.h"
 
-API_CALLABLE(N(OnEnterShop)) {
+API_CALLABLE(OnEnterShop) {
     status_bar_always_show_on();
     status_bar_ignore_changes();
     open_status_bar_slowly();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(OnExitShop)) {
+API_CALLABLE(OnExitShop) {
     status_bar_always_show_off();
     status_bar_respond_to_changes();
     close_status_bar();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateSwingingSigns) = {
+EvtScript EVS_AnimateSwingingSigns = {
     Label(9)
         Call(MakeLerp, 10, -10, 30, EASING_COS_IN_OUT)
         Label(10)
@@ -39,7 +39,7 @@ EvtScript N(EVS_AnimateSwingingSigns) = {
     End
 };
 
-EvtScript N(EVS_SpinCeilingFan) = {
+EvtScript EVS_SpinCeilingFan = {
     Label(0)
         Set(LVar0, 35)
         Loop(LVar0)
@@ -53,13 +53,13 @@ EvtScript N(EVS_SpinCeilingFan) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_ToadHouse) = {
+EvtScript EVS_SetDoorRot_ToadHouse = {
     Call(RotateModel, MODEL_o200, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallsRot_ToadHouse) = {
+EvtScript EVS_SetWallsRot_ToadHouse = {
     Call(RotateModel, MODEL_o197, LVar0, 0, -1, 0)
     Call(RotateModel, MODEL_o196, LVar0, 0, -1, 0)
     Call(RotateModel, MODEL_o195, LVar0, 0, -1, 0)
@@ -72,33 +72,33 @@ EvtScript N(EVS_SetWallsRot_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_SetWallRot_ToadHouse) = {
+EvtScript EVS_SetWallRot_ToadHouse = {
     Switch(LVar0)
         CaseEq(0)
             Wait(20)
             Set(LVar0, 0)
             Loop(18)
                 Add(LVar0, 5)
-                ExecWait(N(EVS_SetWallsRot_ToadHouse))
+                ExecWait(EVS_SetWallsRot_ToadHouse)
             EndLoop
         CaseEq(3)
             Set(LVar0, 90)
             Loop(18)
                 Sub(LVar0, 5)
-                ExecWait(N(EVS_SetWallsRot_ToadHouse))
+                ExecWait(EVS_SetWallsRot_ToadHouse)
             EndLoop
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Shop) = {
+EvtScript EVS_SetDoorRot_Shop = {
     Call(RotateModel, MODEL_o226, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallsRot_Shop) = {
+EvtScript EVS_SetWallsRot_Shop = {
     Set(LVar1, LVar0)
     DivF(LVar1, 45)
     Call(TranslateModel, MODEL_o225, 0, LVar1, 0)
@@ -109,35 +109,35 @@ EvtScript N(EVS_SetWallsRot_Shop) = {
     End
 };
 
-EvtScript N(EVS_SetWallRot_Shop) = {
+EvtScript EVS_SetWallRot_Shop = {
     Switch(LVar0)
         CaseEq(0)
             Wait(20)
-            Call(N(OnEnterShop))
+            Call(OnEnterShop)
             Set(LVar0, 0)
             Loop(18)
                 Add(LVar0, 5)
-                ExecWait(N(EVS_SetWallsRot_Shop))
+                ExecWait(EVS_SetWallsRot_Shop)
             EndLoop
         CaseEq(3)
-            Call(N(OnExitShop))
+            Call(OnExitShop)
             Set(LVar0, 90)
             Loop(18)
                 Sub(LVar0, 5)
-                ExecWait(N(EVS_SetWallsRot_Shop))
+                ExecWait(EVS_SetWallsRot_Shop)
             EndLoop
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_SetDoorRot_BeachHouse) = {
+EvtScript EVS_SetDoorRot_BeachHouse = {
     Call(RotateModel, MODEL_o246, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallsRot_BeachHouse) = {
+EvtScript EVS_SetWallsRot_BeachHouse = {
     SetF(LVar1, LVar0)
     DivF(LVar1, 2)
     Call(RotateModel, MODEL_o243, LVar1, -1, 0, 0)
@@ -148,26 +148,26 @@ EvtScript N(EVS_SetWallsRot_BeachHouse) = {
     End
 };
 
-EvtScript N(EVS_SetWallRot_BeachHouse) = {
+EvtScript EVS_SetWallRot_BeachHouse = {
     Switch(LVar0)
         CaseEq(0)
             Set(LVar0, 0)
             Loop(18)
                 Add(LVar0, 5)
-                ExecWait(N(EVS_SetWallsRot_BeachHouse))
+                ExecWait(EVS_SetWallsRot_BeachHouse)
             EndLoop
         CaseEq(3)
             Set(LVar0, 90)
             Loop(18)
                 Sub(LVar0, 5)
-                ExecWait(N(EVS_SetWallsRot_BeachHouse))
+                ExecWait(EVS_SetWallsRot_BeachHouse)
             EndLoop
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_DropDoor_BeachHouse) = {
+EvtScript EVS_DropDoor_BeachHouse = {
     Set(LVar1, LVar0)
     DivF(LVar1, 45)
     Call(TranslateModel, MODEL_o246, 0, LVar1, 0)
@@ -176,7 +176,7 @@ EvtScript N(EVS_DropDoor_BeachHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_ToadHouse) = {
+EvtScript EVS_RoomListener_ToadHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_g111, MODEL_GROUP_VISIBLE)
@@ -187,7 +187,7 @@ EvtScript N(EVS_RoomListener_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_Shop) = {
+EvtScript EVS_RoomListener_Shop = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_g114, MODEL_GROUP_VISIBLE)
@@ -199,101 +199,101 @@ EvtScript N(EVS_RoomListener_Shop) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_BeachHouse) = {
+EvtScript EVS_RoomListener_BeachHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_g79, MODEL_GROUP_VISIBLE)
-            Call(N(SetRadioVolumeMax), AB_NOK01_RadioStation)
-            Exec(N(EVS_80242C38))
+            Call(SetRadioVolumeMax, AB_NOK01_RadioStation)
+            Exec(EVS_80242C38)
         CaseEq(ROOM_UPDATE_ENTER_DONE)
             // do nothing
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
-            Call(N(SetRadioVolumeMute), AB_NOK01_RadioStation)
-            Exec(N(EVS_80242DE0))
+            Call(SetRadioVolumeMute, AB_NOK01_RadioStation)
+            Exec(EVS_80242DE0)
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_g79, MODEL_GROUP_HIDDEN)
-            Call(N(MuteAllRadioStations))
+            Call(MuteAllRadioStations)
     EndSwitch
     Return
     End
 };
 
-s32 N(InteriorNPCs_ToadHouse)[] = {
+s32 InteriorNPCs_ToadHouse[] = {
     NPC_MortT,
     -1
 };
 
-s32 N(InteriorNPCs_Shop)[] = {
+s32 InteriorNPCs_Shop[] = {
     NPC_Koopa_ShopOwner,
     -1
 };
 
-s32 N(InteriorNPCs_BeachHouse_Before)[] = {
+s32 InteriorNPCs_BeachHouse_Before[] = {
     NPC_RelaxedKoopa,
     NPC_Bobomb_01,
     NPC_Bobomb_02,
     -1
 };
 
-s32 N(InteriorNPCs_BeachHouse_After)[] = {
+s32 InteriorNPCs_BeachHouse_After[] = {
     NPC_RelaxedKoopa,
     -1
 };
 
-EvtScript N(EVS_MakeRooms) = {
+EvtScript EVS_MakeRooms = {
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-        Ref(N(EVS_SetDoorRot_ToadHouse)),
-        Ref(N(EVS_SetWallRot_ToadHouse)),
+        Ref(EVS_SetDoorRot_ToadHouse),
+        Ref(EVS_SetWallRot_ToadHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_ToadHouse)),
+        Ref(EVS_RoomListener_ToadHouse),
         COLLIDER_o200,
         COLLIDER_o284,
         MODEL_aka,
-        Ref(N(InteriorNPCs_ToadHouse)))
+        Ref(InteriorNPCs_ToadHouse))
     // shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-        Ref(N(EVS_SetDoorRot_Shop)),
-        Ref(N(EVS_SetWallRot_Shop)),
+        Ref(EVS_SetDoorRot_Shop),
+        Ref(EVS_SetWallRot_Shop),
         nullptr,
-        Ref(N(EVS_RoomListener_Shop)),
+        Ref(EVS_RoomListener_Shop),
         COLLIDER_o226,
         COLLIDER_o286,
         MODEL_ki,
-        Ref(N(InteriorNPCs_Shop)))
+        Ref(InteriorNPCs_Shop))
     // beach house
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(N(EVS_SetDoorRot_BeachHouse)),
-            Ref(N(EVS_SetWallRot_BeachHouse)),
-            Ref(N(EVS_DropDoor_BeachHouse)),
-            Ref(N(EVS_RoomListener_BeachHouse)),
+            Ref(EVS_SetDoorRot_BeachHouse),
+            Ref(EVS_SetWallRot_BeachHouse),
+            Ref(EVS_DropDoor_BeachHouse),
+            Ref(EVS_RoomListener_BeachHouse),
             COLLIDER_o246,
             COLLIDER_o291,
             MODEL_ao,
-            Ref(N(InteriorNPCs_BeachHouse_Before)))
+            Ref(InteriorNPCs_BeachHouse_Before))
     Else
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
-            Ref(N(EVS_SetDoorRot_BeachHouse)),
-            Ref(N(EVS_SetWallRot_BeachHouse)),
-            Ref(N(EVS_DropDoor_BeachHouse)),
-            Ref(N(EVS_RoomListener_BeachHouse)),
+            Ref(EVS_SetDoorRot_BeachHouse),
+            Ref(EVS_SetWallRot_BeachHouse),
+            Ref(EVS_DropDoor_BeachHouse),
+            Ref(EVS_RoomListener_BeachHouse),
             COLLIDER_o246,
             COLLIDER_o291,
             MODEL_ao,
-            Ref(N(InteriorNPCs_BeachHouse_After)))
+            Ref(InteriorNPCs_BeachHouse_After))
     EndIf
-    Call(N(InitializeRadio))
+    Call(InitializeRadio)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
-    Exec(N(EVS_RoomListener_ToadHouse))
-    Exec(N(EVS_RoomListener_Shop))
-    Exec(N(EVS_RoomListener_BeachHouse))
-    Exec(N(EVS_AnimateSwingingSigns))
-    Exec(N(EVS_SpinCeilingFan))
+    Exec(EVS_RoomListener_ToadHouse)
+    Exec(EVS_RoomListener_Shop)
+    Exec(EVS_RoomListener_BeachHouse)
+    Exec(EVS_AnimateSwingingSigns)
+    Exec(EVS_SpinCeilingFan)
     Return
     End
 };

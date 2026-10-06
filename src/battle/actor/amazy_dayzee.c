@@ -2,28 +2,26 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Dayzee.h"
 
-#define NAMESPACE A(amazy_dayzee)
+extern s32 DefaultAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(DefaultAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SING        = 20,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   1,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              10,
@@ -48,30 +46,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 30 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_AMAZY_DAYZEE,
     .level = ACTOR_LEVEL_AMAZY_DAYZEE,
     .maxHP = 20,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 90,
     .airLiftChance = 85,
     .hurricaneChance = 80,
@@ -86,7 +84,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 9, 25 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Dayzee_Amazy_Idle,
     STATUS_KEY_STONE,     ANIM_Dayzee_Amazy_Still,
     STATUS_KEY_SLEEP,     ANIM_Dayzee_Amazy_Sleep,
@@ -99,27 +97,27 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
         Sub(LVar2, 2)
-        PlayEffect(EFFECT_SPARKLES, 2, LVar0, LVar1, LVar2, 30, 0)
+        PlayEffect(EFFECT_SPARKLES, 2, LVar0, LVar1, LVar2, 30)
         Wait(15)
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Dayzee_Amazy_Run)
     ExecWait(EVS_Enemy_ReturnHome)
@@ -127,7 +125,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
@@ -170,7 +168,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Dayzee_Amazy_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Dayzee_Amazy_Hurt)
@@ -229,7 +227,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Sing) = {
+EvtScript EVS_Attack_Sing = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(GetBattlePhase, LVar0)
@@ -287,7 +285,7 @@ EvtScript N(EVS_Attack_Sing) = {
         Call(RandInt, 30, LVar3)
         Sub(LVar3, 15)
         Add(LVar3, LVar0)
-        PlayEffect(EFFECT_MUSIC_NOTE, 1, LVar3, LVar1, LVar2, 0)
+        PlayEffect(EFFECT_MUSIC_NOTE, 1, LVar3, LVar1, LVar2)
         Wait(10)
     EndLoop
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Dayzee_Amazy_Idle)
@@ -305,7 +303,7 @@ EvtScript N(EVS_Attack_Sing) = {
             Call(YieldTurn)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -323,7 +321,7 @@ EvtScript N(EVS_Attack_Sing) = {
             Call(MoveBattleCamOver, 10)
             Wait(20)
             Call(YieldTurn)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -331,7 +329,7 @@ EvtScript N(EVS_Attack_Sing) = {
     End
 };
 
-EvtScript N(EVS_Move_Flee) = {
+EvtScript EVS_Move_Flee = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(SetBattleCamDist, 300)
@@ -364,18 +362,18 @@ EvtScript N(EVS_Move_Flee) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Sing))
+        ExecWait(EVS_Attack_Sing)
         Return
     EndIf
     Call(RandInt, 1000, LVar0)
     Switch(LVar0)
         CaseLt(850)
-            ExecWait(N(EVS_Move_Flee))
+            ExecWait(EVS_Move_Flee)
         CaseDefault
-            ExecWait(N(EVS_Attack_Sing))
+            ExecWait(EVS_Attack_Sing)
     EndSwitch
     Return
     End

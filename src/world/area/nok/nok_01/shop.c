@@ -1,7 +1,7 @@
 #include "nok_01.h"
 #include "sprite/npc/Koopa.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_NOK01,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_NOK01,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_NOK01,
@@ -27,7 +27,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_NOK01,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_DIZZY_DIAL,   .price = 10, MSG_ItemShopDesc_DizzyDial },
     { .itemID = ITEM_POW_BLOCK,    .price =  4, MSG_ItemShopDesc_POWBlock },
     { .itemID = ITEM_FIRE_FLOWER,  .price =  8, MSG_ItemShopDesc_FireFlower },
@@ -37,7 +37,7 @@ ShopItemData N(Inventory)[] = {
     {}
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_KOOPASTA,       .sellPrice = 12 },
     { .itemID = ITEM_KOOPA_TEA,      .sellPrice =  4 },
     { .itemID = ITEM_KOOKY_COOKIE,   .sellPrice = 15 },
@@ -48,7 +48,7 @@ ShopSellPriceData N(PriceList)[] = {
     {}
 };
 
-s32 N(missing_8024FC20_FC20)[] = {
+s32 missing_8024FC20_FC20[] = {
     ITEM_FIRE_FLOWER,    5,
     ITEM_SNOWMAN_DOLL,   5,
     ITEM_THUNDER_RAGE,   5,
@@ -60,7 +60,7 @@ s32 N(missing_8024FC20_FC20)[] = {
     ITEM_VOLT_SHROOM,    5,
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -71,7 +71,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_o213, .triggerColliderID = COLLIDER_o343 },
     { .posModelID = MODEL_o214, .triggerColliderID = COLLIDER_o344 },
     { .posModelID = MODEL_o215, .triggerColliderID = COLLIDER_o345 },
@@ -80,17 +80,17 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o218, .triggerColliderID = COLLIDER_o348 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_Koopa_ShopOwner,
     .idleAnim = ANIM_Koopa_Idle,
     .talkAnim = ANIM_Koopa_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), ITEM_ENTITY_FLAG_TOSS_LOWER)
-    Call(MakeShopOwner, Ref(N(Owner)))
+EvtScript EVS_SetupShop = {
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), ITEM_ENTITY_FLAG_TOSS_LOWER)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };

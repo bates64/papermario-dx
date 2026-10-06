@@ -2,35 +2,33 @@
 #include "script_api/battle.h"
 #include "sprite/npc/MontyMole.h"
 
-#define NAMESPACE A(monty_mole)
+extern s32 DefaultAnims[];
+extern s32 RockAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(DefaultAnims)[];
-extern s32 N(RockAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_TARGET      = 2,
     PRT_ROCK        = 3,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_IN_Hole_Small  = 0,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_TOSS        = 2,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              90,
@@ -55,15 +53,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 16 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -7 },
@@ -74,8 +72,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, -15 },
         .targetOffset = { -2, 12 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -7 },
@@ -86,23 +84,23 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(RockAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = RockAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_MONTY_MOLE,
     .level = ACTOR_LEVEL_MONTY_MOLE,
     .maxHP = 3,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 80,
     .airLiftChance = 70,
     .hurricaneChance = 50,
@@ -117,7 +115,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_MontyMole_Idle,
     STATUS_KEY_STONE,     ANIM_MontyMole_Still,
     STATUS_KEY_SLEEP,     ANIM_MontyMole_Sleep,
@@ -130,30 +128,30 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(RockAnims)[] = {
+s32 RockAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_MontyMole_Rock,
     STATUS_END,
 };
 
-s32 N(EmptyHoleAnims)[] = {
+s32 EmptyHoleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_MontyMole_Hole,
     STATUS_END,
 };
 
 // unused
-s32 N(LeapAnims)[] = {
+s32 LeapAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_MontyMole_HurtJump,
     STATUS_END,
 };
 
-ActorPartBlueprint N(HoleParts)[] = {
+ActorPartBlueprint HoleParts[] = {
     {
         .flags = ACTOR_PART_FLAG_DAMAGE_IMMUNE | ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(EmptyHoleAnims),
+        .idleAnimations = EmptyHoleAnims,
         .defenseTable = nullptr,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
@@ -161,7 +159,7 @@ ActorPartBlueprint N(HoleParts)[] = {
     },
 };
 
-EvtScript N(EVS_Hole_Init) = {
+EvtScript EVS_Hole_Init = {
     Call(GetActorVar, ACTOR_SELF, AVAR_IN_Hole_Small, LVar0)
     IfEq(LVar0, true)
         Call(SetPartScale, ACTOR_SELF, PRT_MAIN, Float(0.4), Float(0.4), Float(0.4))
@@ -170,14 +168,14 @@ EvtScript N(EVS_Hole_Init) = {
     End
 };
 
-ActorBlueprint N(hole) = {
+ActorBlueprint hole = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_NO_HEALTH_BAR | ACTOR_FLAG_NO_ATTACK | ACTOR_FLAG_NO_DMG_APPLY,
     .type = ACTOR_TYPE_MONTY_HOLE,
     .level = ACTOR_LEVEL_MONTY_HOLE,
     .maxHP = 5,
-    .partCount = ARRAY_COUNT(N(HoleParts)),
-    .partsData = N(HoleParts),
-    .initScript = &N(EVS_Hole_Init),
+    .partCount = ARRAY_COUNT(HoleParts),
+    .partsData = HoleParts,
+    .initScript = &EVS_Hole_Init,
     .statusTable = nullptr,
     .escapeChance = 80,
     .airLiftChance = 0,
@@ -193,22 +191,22 @@ ActorBlueprint N(hole) = {
     .statusTextOffset = { 10, 20 },
 };
 
-Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
+Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
-Formation N(HoleFormation) = {
-    ACTOR_BY_POS(N(hole), N(SummonPos), 0, false),
+Formation HoleFormation = {
+    ACTOR_BY_POS(hole, SummonPos, 0, false),
 };
 
-Formation N(SmallHoleFormation) = {
-    ACTOR_BY_POS(N(hole), N(SummonPos), 0, true),
+Formation SmallHoleFormation = {
+    ACTOR_BY_POS(hole, SummonPos, 0, true),
 };
 
-EvtScript N(EVS_CreateEmptyHole) = {
+EvtScript EVS_CreateEmptyHole = {
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SummonEnemy, Ref(N(SmallHoleFormation)), false)
+        Call(SummonEnemy, Ref(SmallHoleFormation), false)
     Else
-        Call(SummonEnemy, Ref(N(HoleFormation)), false)
+        Call(SummonEnemy, Ref(HoleFormation), false)
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Sub(LVar3, 1)
@@ -217,21 +215,21 @@ EvtScript N(EVS_CreateEmptyHole) = {
     End
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, true)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastElement, LVarE)
@@ -265,7 +263,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_MontyMole_BurnHurt)
             SetConst(LVar2, ANIM_MontyMole_BurnStill)
             ExecWait(EVS_Enemy_BurnHit)
-            ExecWait(N(EVS_CreateEmptyHole))
+            ExecWait(EVS_CreateEmptyHole)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_MontyMole_BurnHurtJump)
             ExecWait(EVS_Enemy_Death)
@@ -296,7 +294,7 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_Hit)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_HurtJump)
             Wait(10)
-            ExecWait(N(EVS_CreateEmptyHole))
+            ExecWait(EVS_CreateEmptyHole)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_MontyMole_Panic)
             ExecWait(EVS_Enemy_Death)
@@ -316,14 +314,14 @@ EvtScript N(EVS_HandleEvent) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_HurtDropDown)
             Wait(15)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TARGET_ONLY | ACTOR_FLAG_NO_DMG_APPLY, true)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(EmptyHoleAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(EmptyHoleAnims))
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_MontyMole_Hurt)
             ExecWait(EVS_Enemy_AirLift)
         CaseEq(EVENT_BLOW_AWAY)
-            ExecWait(N(EVS_CreateEmptyHole))
+            ExecWait(EVS_CreateEmptyHole)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, -5, 0)
@@ -350,7 +348,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Sleep)
             Wait(20)
         CaseEq(EVENT_UP_AND_AWAY)
-            ExecWait(N(EVS_CreateEmptyHole))
+            ExecWait(EVS_CreateEmptyHole)
         CaseDefault
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -359,7 +357,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)

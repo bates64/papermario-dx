@@ -5,12 +5,12 @@
 #include "../common/MoveBush.inc.c"
 #include "../common/MoveBushTemplates.h"
 
-EvtScript N(EVS_MoveBushes_Separate) = EVT_MOVE_BUSHES(COLLIDER_o12,
+EvtScript EVS_MoveBushes_Separate = EVT_MOVE_BUSHES(COLLIDER_o12,
     MODEL_o12, MODEL_o26, MV_BushOffsetL, MV_BushOffsetR);
 
-EvtScript N(EVS_Inspect_MoveBushes) = {
+EvtScript EVS_Inspect_MoveBushes = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o12, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_MoveBushes_Separate))
+    Exec(EVS_MoveBushes_Separate)
     Call(DisablePlayerInput, true)
     Call(MakeLerp, 0, 45, 30, EASING_CUBIC_OUT)
     Loop(0)
@@ -28,7 +28,7 @@ EvtScript N(EVS_Inspect_MoveBushes) = {
     End
 };
 
-EvtScript N(EVS_OnPullVine) = {
+EvtScript EVS_OnPullVine = {
     Call(GetModelCenter, LVar9)
     Add(LVar2, 10)
     Call(MakeItemEntity, ITEM_EGG, LVar0, 100, LVar2, ITEM_SPAWN_MODE_FALL, GF_JAN12_PullVine_Egg2)
@@ -36,11 +36,11 @@ EvtScript N(EVS_OnPullVine) = {
     End
 };
 
-EvtScript N(EVS_SetupVines) = {
-    BindTrigger(Ref(N(EVS_Inspect_MoveBushes)), TRIGGER_WALL_PRESS_A, COLLIDER_o12, 1, 0)
+EvtScript EVS_SetupVines = {
+    BindTrigger(Ref(EVS_Inspect_MoveBushes), TRIGGER_WALL_PRESS_A, COLLIDER_o12, 1, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_12_ENTRY_1)
-        Exec(N(EVS_Inspect_MoveBushes))
+        Exec(EVS_Inspect_MoveBushes)
     EndIf
     Set(LVarF, MODEL_o47)
     Set(LVarC, 0)
@@ -49,9 +49,9 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o6)
     Set(LVarA, MODEL_o62)
     Set(LVarB, MODEL_o63)
-    Set(LVar4, Ref(N(EVS_OnPullVine)))
+    Set(LVar4, Ref(EVS_OnPullVine))
     Set(LVar5, 15)
-    Exec(N(EVS_PullVine_Manage))
+    Exec(EVS_PullVine_Manage)
     Return
     End
 };

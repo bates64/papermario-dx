@@ -8,13 +8,13 @@
 #include "world/common/enemy/TubbaBlubba/idle.inc.c"
 #include "world/common/npc/Yakkey/idle.inc.c"
 
-API_CALLABLE(N(PostBattleHideWorld)) {
+API_CALLABLE(PostBattleHideWorld) {
     increment_status_bar_disabled();
     set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_Tubba_Floor3) = {
+EvtScript EVS_NpcIdle_Tubba_Floor3 = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         IfEq(LVar0, 1)
@@ -78,24 +78,24 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor3) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba_Floor3) = {
+EvtScript EVS_NpcInit_Tubba_Floor3 = {
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Tubba_Floor3)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba_Floor3))
     Return
     End
 };
 
 // failsafe if the player somehow defeats Tubba
-EvtScript N(EVS_NpcDefeat_Tubba_Floor2) = {
-    Call(N(PostBattleHideWorld))
+EvtScript EVS_NpcDefeat_Tubba_Floor2 = {
+    Call(PostBattleHideWorld)
     Call(GotoMap, Ref("dgb_08"), dgb_08_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba_Floor2) = {
+EvtScript EVS_NpcInit_Tubba_Floor2 = {
     IfNe(GB_ARN_Tubba_MapID, 1)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
@@ -107,7 +107,7 @@ EvtScript N(EVS_NpcInit_Tubba_Floor2) = {
         Return
     EndIf
     Call(SetNpcPos, NPC_Tubba, 137, 244, 35)
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Tubba_Floor2)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba_Floor2))
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
     Thread
         Loop(0)
@@ -121,7 +121,7 @@ EvtScript N(EVS_NpcInit_Tubba_Floor2) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Tubba_Floor1) = {
+EvtScript EVS_NpcIdle_Tubba_Floor1 = {
     Call(AwaitPlayerApproach, 0, 420, 400)
     Set(GB_ARN_Tubba_MapID, 1)
     Set(GB_StoryProgress, STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
@@ -166,33 +166,33 @@ EvtScript N(EVS_NpcIdle_Tubba_Floor1) = {
     EndThread
     Call(SetNpcSpeed, NPC_SELF, Float(5.0))
     Call(NpcMoveTo, NPC_SELF, 259, 167, 0)
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Tubba_Patrol)))
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba_Patrol))
     Return
     End
 };
 
 // failsafe if the player somehow defeats Tubba
-EvtScript N(EVS_NpcDefeat_Tubba_Floor1) = {
-    Call(N(PostBattleHideWorld))
+EvtScript EVS_NpcDefeat_Tubba_Floor1 = {
+    Call(PostBattleHideWorld)
     Call(GotoMap, Ref("dgb_00"), dgb_00_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba_Floor1) = {
+EvtScript EVS_NpcInit_Tubba_Floor1 = {
     IfNe(GB_ARN_Tubba_MapID, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Tubba_Floor1)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba_Floor1))
     Else
         Call(SetNpcPos, NPC_SELF, 136, 0, -330)
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Tubba_Floor1)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba_Floor1))
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Sentinel_01) = {
+EvtScript EVS_NpcInit_Sentinel_01 = {
     Set(LVar0, GB_StoryProgress)
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
@@ -206,7 +206,7 @@ EvtScript N(EVS_NpcInit_Sentinel_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sentinel_02) = {
+EvtScript EVS_NpcInit_Sentinel_02 = {
     Set(LVar0, GB_StoryProgress)
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
@@ -220,7 +220,7 @@ EvtScript N(EVS_NpcInit_Sentinel_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sentinel_03) = {
+EvtScript EVS_NpcInit_Sentinel_03 = {
     Set(LVar0, GB_StoryProgress)
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
@@ -234,7 +234,7 @@ EvtScript N(EVS_NpcInit_Sentinel_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sentinel_04) = {
+EvtScript EVS_NpcInit_Sentinel_04 = {
     Set(LVar0, GB_StoryProgress)
     IfGe(LVar0, STORY_CH3_TUBBA_WOKE_UP)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
@@ -248,7 +248,7 @@ EvtScript N(EVS_NpcInit_Sentinel_04) = {
     End
 };
 
-NpcData N(NpcData_Sentinel_01) = {
+NpcData NpcData_Sentinel_01 = {
     .id = NPC_Sentinel_01,
     .pos = { -180.0f, 100.0f, 230.0f },
     .yaw = 90,
@@ -264,14 +264,14 @@ NpcData N(NpcData_Sentinel_01) = {
             .detectSize = { 450, 1000 },
         }
     },
-    .init = &N(EVS_NpcInit_Sentinel_01),
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .init = &EVS_NpcInit_Sentinel_01,
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-NpcData N(NpcData_Sentinel_02) = {
+NpcData NpcData_Sentinel_02 = {
     .id = NPC_Sentinel_02,
     .pos = { 180.0f, 100.0f, 230.0f },
     .yaw = 270,
@@ -287,14 +287,14 @@ NpcData N(NpcData_Sentinel_02) = {
             .detectSize = { 450, 1000 },
         }
     },
-    .init = &N(EVS_NpcInit_Sentinel_02),
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .init = &EVS_NpcInit_Sentinel_02,
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-NpcData N(NpcData_Sentinel_03) = {
+NpcData NpcData_Sentinel_03 = {
     .id = NPC_Sentinel_03,
     .pos = { -180.0f, 100.0f, -230.0f },
     .yaw = 90,
@@ -310,14 +310,14 @@ NpcData N(NpcData_Sentinel_03) = {
             .detectSize = { 450, 1000 },
         }
     },
-    .init = &N(EVS_NpcInit_Sentinel_03),
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .init = &EVS_NpcInit_Sentinel_03,
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-NpcData N(NpcData_Sentinel_04) = {
+NpcData NpcData_Sentinel_04 = {
     .id = NPC_Sentinel_04,
     .pos = { 180.0f, 100.0f, -230.0f },
     .yaw = 270,
@@ -333,14 +333,14 @@ NpcData N(NpcData_Sentinel_04) = {
             .detectSize = { 450, 1000 },
         }
     },
-    .init = &N(EVS_NpcInit_Sentinel_04),
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .init = &EVS_NpcInit_Sentinel_04,
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-AnimID N(LimitAnims_Tubba)[] = {
+AnimID LimitAnims_Tubba[] = {
     ANIM_WorldTubba_Idle,
     ANIM_WorldTubba_Talk,
     ANIM_WorldTubba_Walk,
@@ -355,19 +355,19 @@ AnimID N(LimitAnims_Tubba)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Tubba_Floor3) = {
+NpcData NpcData_Tubba_Floor3 = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Tubba_Floor3),
-    .settings = &N(NpcSettings_TubbaBlubba),
+    .init = &EVS_NpcInit_Tubba_Floor3,
+    .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = TUBBA_ANIMS,
-    .limitAnimations = N(LimitAnims_Tubba),
+    .limitAnimations = LimitAnims_Tubba,
 };
 
-NpcData N(NpcData_Tubba_Floor2) = {
+NpcData NpcData_Tubba_Floor2 = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -385,16 +385,16 @@ NpcData N(NpcData_Tubba_Floor2) = {
             .detectSize = { 1000, 250 },
         }
     },
-    .init = &N(EVS_NpcInit_Tubba_Floor2),
-    .settings = &N(NpcSettings_TubbaBlubba_Patrol),
+    .init = &EVS_NpcInit_Tubba_Floor2,
+    .settings = &NpcSettings_TubbaBlubba_Patrol,
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = TUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
-    .limitAnimations = N(LimitAnims_Tubba),
+    .limitAnimations = LimitAnims_Tubba,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Tubba_Floor1) = {
+NpcData NpcData_Tubba_Floor1 = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -418,46 +418,46 @@ NpcData N(NpcData_Tubba_Floor1) = {
             .detectSize = { 1000, 250 },
         }
     },
-    .init = &N(EVS_NpcInit_Tubba_Floor1),
-    .settings = &N(NpcSettings_TubbaBlubba_Patrol),
+    .init = &EVS_NpcInit_Tubba_Floor1,
+    .settings = &NpcSettings_TubbaBlubba_Patrol,
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = TUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
-    .limitAnimations = N(LimitAnims_Tubba),
+    .limitAnimations = LimitAnims_Tubba,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Sentinel_01)),
-    NPC_GROUP(N(NpcData_Sentinel_02)),
-    NPC_GROUP(N(NpcData_Sentinel_03)),
-    NPC_GROUP(N(NpcData_Sentinel_04)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Sentinel_01),
+    NPC_GROUP(NpcData_Sentinel_02),
+    NPC_GROUP(NpcData_Sentinel_03),
+    NPC_GROUP(NpcData_Sentinel_04),
     {}
 };
 
-NpcGroupList N(ThirdFloorEscapeNPCs) = {
-    NPC_GROUP(N(NpcData_Sentinel_01)),
-    NPC_GROUP(N(NpcData_Sentinel_02)),
-    NPC_GROUP(N(NpcData_Sentinel_03)),
-    NPC_GROUP(N(NpcData_Sentinel_04)),
-    NPC_GROUP(N(NpcData_Tubba_Floor3), BTL_DGB_FORMATION_04),
+NpcGroupList ThirdFloorEscapeNPCs = {
+    NPC_GROUP(NpcData_Sentinel_01),
+    NPC_GROUP(NpcData_Sentinel_02),
+    NPC_GROUP(NpcData_Sentinel_03),
+    NPC_GROUP(NpcData_Sentinel_04),
+    NPC_GROUP(NpcData_Tubba_Floor3, BTL_DGB_FORMATION_04),
     {}
 };
 
-NpcGroupList N(SecondFloorEscapeNPCs) = {
-    NPC_GROUP(N(NpcData_Sentinel_01)),
-    NPC_GROUP(N(NpcData_Sentinel_02)),
-    NPC_GROUP(N(NpcData_Sentinel_03)),
-    NPC_GROUP(N(NpcData_Sentinel_04)),
-    NPC_GROUP(N(NpcData_Tubba_Floor2), BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+NpcGroupList SecondFloorEscapeNPCs = {
+    NPC_GROUP(NpcData_Sentinel_01),
+    NPC_GROUP(NpcData_Sentinel_02),
+    NPC_GROUP(NpcData_Sentinel_03),
+    NPC_GROUP(NpcData_Sentinel_04),
+    NPC_GROUP(NpcData_Tubba_Floor2, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
     {}
 };
 
-NpcGroupList N(FirstFloorEscapeNPCs) = {
-    NPC_GROUP(N(NpcData_Sentinel_01)),
-    NPC_GROUP(N(NpcData_Sentinel_02)),
-    NPC_GROUP(N(NpcData_Sentinel_03)),
-    NPC_GROUP(N(NpcData_Sentinel_04)),
-    NPC_GROUP(N(NpcData_Tubba_Floor1), BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+NpcGroupList FirstFloorEscapeNPCs = {
+    NPC_GROUP(NpcData_Sentinel_01),
+    NPC_GROUP(NpcData_Sentinel_02),
+    NPC_GROUP(NpcData_Sentinel_03),
+    NPC_GROUP(NpcData_Sentinel_04),
+    NPC_GROUP(NpcData_Tubba_Floor1, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
     {}
 };

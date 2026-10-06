@@ -1,7 +1,7 @@
 #include "tik_08.h"
 #include "entity.h"
 
-EvtScript N(EVS_SpawnSwitch) = {
+EvtScript EVS_SpawnSwitch = {
     Call(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, 90, 200, 100)
     Call(MakeLerp, 200, -10, 25, EASING_QUADRATIC_IN)
     Loop(0)
@@ -19,14 +19,14 @@ EvtScript N(EVS_SpawnSwitch) = {
     End
 };
 
-EvtScript N(EVS_GotoMap_jan_03_3) = {
+EvtScript EVS_GotoMap_jan_03_3 = {
     Call(GotoMap, Ref("jan_03"), jan_03_ENTRY_3)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_OnSwitchActivate) = {
+EvtScript EVS_OnSwitchActivate = {
     Wait(10)
     Call(PlaySound, SOUND_GROW)
     Set(GF_TIK08_WarpPipe, true)
@@ -35,17 +35,17 @@ EvtScript N(EVS_OnSwitchActivate) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_TIK08_WarpPipe, false)
         Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK08_Switch_WarpPipe))
         Set(MV_BlueSwitch, LVar0)
-        BindTrigger(Ref(N(EVS_OnSwitchActivate)), TRIGGER_AREA_FLAG_SET, AF_TIK08_Switch_WarpPipe, 1, 0)
+        BindTrigger(Ref(EVS_OnSwitchActivate), TRIGGER_AREA_FLAG_SET, AF_TIK08_Switch_WarpPipe, 1, 0)
         IfEq(GF_TIK08_Defeated_Blooper, true)
             Call(SetEntityPosition, MV_BlueSwitch, 90, -10, 100)
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 95, -10, -88, 0, tik_08_ENTRY_4, Ref(N(EVS_GotoMap_jan_03_3)), EVT_INDEX_OF_GAME_FLAG(GF_TIK08_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 95, -10, -88, 0, tik_08_ENTRY_4, Ref(EVS_GotoMap_jan_03_3), EVT_INDEX_OF_GAME_FLAG(GF_TIK08_WarpPipe), MAKE_ENTITY_END)
     Return
     End
 };

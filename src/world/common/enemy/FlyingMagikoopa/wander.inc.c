@@ -3,7 +3,7 @@
 
 #include "world/common/ai/FlyingMagikoopaAI.inc.c"
 
-MobileAISettings N(AISettings_FlyingMagikoopa_Wander) = {
+MobileAISettings AISettings_FlyingMagikoopa_Wander = {
     .moveSpeed = 1.5f,
     .moveTime = 60,
     .waitTime = 30,
@@ -18,13 +18,13 @@ MobileAISettings N(AISettings_FlyingMagikoopa_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_FlyingMagikoopa_Wander) = {
-    Call(N(FlyingMagikoopaAI_Main), Ref(N(AISettings_FlyingMagikoopa_Wander)))
+EvtScript EVS_NpcAI_FlyingMagikoopa_Wander = {
+    Call(FlyingMagikoopaAI_Main, Ref(AISettings_FlyingMagikoopa_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_FlyingMagikoopa) = {
+EvtScript EVS_NpcDefeat_FlyingMagikoopa = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -39,16 +39,16 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa) = {
     End
 };
 
-NpcSettings N(NpcSettings_FlyingMagikoopa_Wander) = {
+NpcSettings NpcSettings_FlyingMagikoopa_Wander = {
     .height = 33,
     .radius = 32,
     .level = ACTOR_LEVEL_FLYING_MAGIKOOPA,
-    .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Wander),
+    .doAI = &EVS_NpcAI_FlyingMagikoopa_Wander,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa),
+    .onDefeat = &EVS_NpcDefeat_FlyingMagikoopa,
 };
 
-AnimID N(LimitAnims_FlyingMagikoopa)[] = {
+AnimID LimitAnims_FlyingMagikoopa[] = {
     ANIM_FlyingMagikoopa_Still,
     ANIM_FlyingMagikoopa_Idle,
     ANIM_FlyingMagikoopa_Idle,
@@ -59,38 +59,38 @@ AnimID N(LimitAnims_FlyingMagikoopa)[] = {
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox) = {
+EvtScript EVS_NpcCreate_FlyingMagikoopa_AltHitbox = {
     Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 10)
     Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 40)
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_FlyingMagikoopa_Hitbox) = {
+EvtScript EVS_NpcCreate_FlyingMagikoopa_Hitbox = {
     Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 0)
     Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 55)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_FlyingMagikoopa_Hitbox) = {
-    Call(N(MagikoopaSpellAI_Main))
+EvtScript EVS_NpcAI_FlyingMagikoopa_Hitbox = {
+    Call(MagikoopaSpellAI_Main)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_FlyingMagikoopa_Hitbox) = {
-    Call(N(MagikoopaSpellAI_OnHitInit))
+EvtScript EVS_NpcHit_FlyingMagikoopa_Hitbox = {
+    Call(MagikoopaSpellAI_OnHitInit)
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(N(MagikoopaSpellAI_OnHit))
+    Call(MagikoopaSpellAI_OnHit)
     Exec(EnemyNpcHit)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox) = {
+EvtScript EVS_NpcDefeat_FlyingMagikoopa_Hitbox = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -106,18 +106,18 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox) = {
     End
 };
 
-NpcSettings N(NpcSettings_FlyingMagikoopa_AltHitbox) = {
+NpcSettings NpcSettings_FlyingMagikoopa_AltHitbox = {
     .defaultAnim = ANIM_Magikoopa_Still,
-    .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
-    .onCreate = &N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox),
-    .onHit = &N(EVS_NpcHit_FlyingMagikoopa_Hitbox),
-    .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox),
+    .doAI = &EVS_NpcAI_FlyingMagikoopa_Hitbox,
+    .onCreate = &EVS_NpcCreate_FlyingMagikoopa_AltHitbox,
+    .onHit = &EVS_NpcHit_FlyingMagikoopa_Hitbox,
+    .onDefeat = &EVS_NpcDefeat_FlyingMagikoopa_Hitbox,
 };
 
-NpcSettings N(NpcSettings_FlyingMagikoopa_Hitbox) = {
+NpcSettings NpcSettings_FlyingMagikoopa_Hitbox = {
     .defaultAnim = ANIM_FlyingMagikoopa_Still,
-    .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
-    .onCreate = &N(EVS_NpcCreate_FlyingMagikoopa_Hitbox),
-    .onHit = &N(EVS_NpcHit_FlyingMagikoopa_Hitbox),
-    .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox),
+    .doAI = &EVS_NpcAI_FlyingMagikoopa_Hitbox,
+    .onCreate = &EVS_NpcCreate_FlyingMagikoopa_Hitbox,
+    .onHit = &EVS_NpcHit_FlyingMagikoopa_Hitbox,
+    .onDefeat = &EVS_NpcDefeat_FlyingMagikoopa_Hitbox,
 };

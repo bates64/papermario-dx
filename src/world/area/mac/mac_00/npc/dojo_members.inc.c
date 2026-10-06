@@ -2,7 +2,7 @@
 
 #include "sprite/player.h"
 
-s32 N(DojoBattleIDs)[] = {
+s32 DojoBattleIDs[] = {
     BTL_MAC_FORMATION_00,
     BTL_MAC_FORMATION_01,
     BTL_MAC_FORMATION_02,
@@ -10,15 +10,15 @@ s32 N(DojoBattleIDs)[] = {
     BTL_MAC_FORMATION_04
 };
 
-API_CALLABLE(N(SetDojoBattle)) {
+API_CALLABLE(SetDojoBattle) {
     Enemy* enemy = script->owner1.enemy;
     s32 battleIndex = evt_get_variable(script, GB_MAC00_DojoRank);
 
-    gCurrentEncounter.encounterList[enemy->encounterIndex]->battle = N(DojoBattleIDs)[battleIndex];
+    gCurrentEncounter.encounterList[enemy->encounterIndex]->battle = DojoBattleIDs[battleIndex];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ResetBackgroundPostBattle)) {
+API_CALLABLE(ResetBackgroundPostBattle) {
     mdl_group_set_custom_gfx(MODEL_minka_1, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
     gCameras[CAM_DEFAULT].bgColor[0] = 0;
@@ -27,7 +27,7 @@ API_CALLABLE(N(ResetBackgroundPostBattle)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_Chan) = {
+EvtScript EVS_NpcInteract_Chan = {
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Set(LVar0, MSG_MAC_Gate_0015)
     Else
@@ -38,7 +38,7 @@ EvtScript N(EVS_NpcInteract_Chan) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Chan) = {
+EvtScript EVS_NpcAI_Chan = {
     Call(ContinueSpeech, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_001D)
     Call(SpeakToNpc, NPC_SELF, ANIM_Chan_Run, ANIM_Chan_Idle, 0, NPC_TheMaster, MSG_MAC_Gate_001E)
     Wait(10)
@@ -58,15 +58,15 @@ EvtScript N(EVS_NpcAI_Chan) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Idle)
     Call(InterpNpcYaw, NPC_SELF, 225, 0)
     Wait(20)
-    Call(N(SetDojoBattle))
+    Call(SetDojoBattle)
     Call(StartBattle)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Chan) = {
+EvtScript EVS_NpcDefeat_Chan = {
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_SKIP_FLEE_DROPS, true)
-    Call(N(ResetBackgroundPostBattle))
+    Call(ResetBackgroundPostBattle)
     Thread
         Call(SetNpcAnimation, NPC_SELF, ANIM_Chan_Walk)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -83,19 +83,19 @@ EvtScript N(EVS_NpcDefeat_Chan) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Chan) = {
+EvtScript EVS_NpcInit_Chan = {
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Call(SetNpcPos, NPC_SELF, 570, 20, -150)
         Call(SetNpcYaw, NPC_SELF, 270)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Chan)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Chan))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Lee) = {
+EvtScript EVS_NpcInteract_Lee = {
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Set(LVar0, MSG_MAC_Gate_0016)
     Else
@@ -106,7 +106,7 @@ EvtScript N(EVS_NpcInteract_Lee) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Lee) = {
+EvtScript EVS_NpcAI_Lee = {
     Call(ContinueSpeech, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_0024)
     Call(SpeakToNpc, NPC_SELF, ANIM_Lee_Talk, ANIM_Lee_Idle, 0, NPC_TheMaster, MSG_MAC_Gate_0025)
     Wait(10)
@@ -126,15 +126,15 @@ EvtScript N(EVS_NpcAI_Lee) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Idle)
     Call(InterpNpcYaw, NPC_SELF, 225, 0)
     Wait(20)
-    Call(N(SetDojoBattle))
+    Call(SetDojoBattle)
     Call(StartBattle)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Lee) = {
+EvtScript EVS_NpcDefeat_Lee = {
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_SKIP_FLEE_DROPS, true)
-    Call(N(ResetBackgroundPostBattle))
+    Call(ResetBackgroundPostBattle)
     Thread
         Call(SetNpcAnimation, NPC_SELF, ANIM_Lee_Walk)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -151,17 +151,17 @@ EvtScript N(EVS_NpcDefeat_Lee) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lee) = {
+EvtScript EVS_NpcInit_Lee = {
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Call(SetNpcPos, NPC_SELF, 600, 20, -145)
         Call(SetNpcYaw, NPC_SELF, 270)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lee)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lee))
     Return
     End
 };
 
-API_CALLABLE(N(SetPlayer1HP)) {
+API_CALLABLE(SetPlayer1HP) {
     gPlayerData.curHP = 1;
     sync_status_bar();
     return ApiStatus_DONE2;
@@ -174,7 +174,7 @@ enum {
     VAR_STARTED_BATTLE  = 2,
 };
 
-EvtScript N(EVS_NpcIdle_TheMaster) = {
+EvtScript EVS_NpcIdle_TheMaster = {
     Label(0)
         Call(SetSelfVar, VAR_FINISHED_BATTLE, false)
         Call(SetSelfVar, VAR_STARTED_BATTLE, false)
@@ -199,7 +199,7 @@ EvtScript N(EVS_NpcIdle_TheMaster) = {
         Call(GetSelfVar, VAR_BATTLE_OUTCOME, LVar0)
         Switch(LVar0)
             CaseEq(OUTCOME_PLAYER_LOST)
-                Call(N(SetPlayer1HP))
+                Call(SetPlayer1HP)
                 Call(SpeakToPlayer, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_0042)
             CaseEq(OUTCOME_PLAYER_FLED)
                 Call(SpeakToPlayer, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_0042)
@@ -245,9 +245,9 @@ EvtScript N(EVS_NpcIdle_TheMaster) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Dojo) = {
+EvtScript EVS_NpcDefeat_Dojo = {
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_SKIP_FLEE_DROPS, true)
-    Call(N(ResetBackgroundPostBattle))
+    Call(ResetBackgroundPostBattle)
     Call(GetBattleOutcome, LVar0)
     Call(SetSelfVar, VAR_BATTLE_OUTCOME, LVar0)
     Call(SetSelfVar, VAR_FINISHED_BATTLE, true)
@@ -256,7 +256,7 @@ EvtScript N(EVS_NpcDefeat_Dojo) = {
     End
 };
 
-EvtScript N(EVS_TheMaster_InteractImpl) = {
+EvtScript EVS_TheMaster_InteractImpl = {
     Call(DisablePlayerInput, true)
     IfEq(GF_MAC00_Met_TheMaster, false)
         Set(GF_MAC00_Met_TheMaster, true)
@@ -280,13 +280,13 @@ EvtScript N(EVS_TheMaster_InteractImpl) = {
     Wait(1)
     Switch(GB_MAC00_DojoRank)
         CaseEq(0)
-            Call(BindNpcDefeat, NPC_Chan, Ref(N(EVS_NpcDefeat_Chan)))
-            Call(BindNpcAI, NPC_Chan, Ref(N(EVS_NpcAI_Chan)))
+            Call(BindNpcDefeat, NPC_Chan, Ref(EVS_NpcDefeat_Chan))
+            Call(BindNpcAI, NPC_Chan, Ref(EVS_NpcAI_Chan))
             Call(DisablePlayerInput, false)
             Return
         CaseEq(1)
-            Call(BindNpcDefeat, NPC_Lee, Ref(N(EVS_NpcDefeat_Lee)))
-            Call(BindNpcAI, NPC_Lee, Ref(N(EVS_NpcAI_Lee)))
+            Call(BindNpcDefeat, NPC_Lee, Ref(EVS_NpcDefeat_Lee))
+            Call(BindNpcAI, NPC_Lee, Ref(EVS_NpcAI_Lee))
             Call(DisablePlayerInput, false)
             Return
         CaseEq(2)
@@ -310,9 +310,9 @@ EvtScript N(EVS_TheMaster_InteractImpl) = {
     Call(InterpNpcYaw, NPC_TheMaster, 225, 0)
     Wait(30)
     Call(SetNpcFlagBits, NPC_TheMaster, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Dojo)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Dojo))
     Wait(1)
-    Call(N(SetDojoBattle))
+    Call(SetDojoBattle)
     IfLt(GB_MAC00_DojoRank, 2)
         Call(StartBattle)
     Else
@@ -323,16 +323,16 @@ EvtScript N(EVS_TheMaster_InteractImpl) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_TheMaster) = {
-    Exec(N(EVS_TheMaster_InteractImpl))
+EvtScript EVS_NpcInteract_TheMaster = {
+    Exec(EVS_TheMaster_InteractImpl)
     Wait(30) // purpose unknown -- perhaps somehow prevents double interaction?
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TheMaster) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TheMaster)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TheMaster)))
+EvtScript EVS_NpcInit_TheMaster = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TheMaster))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TheMaster))
     Return
     End
 };

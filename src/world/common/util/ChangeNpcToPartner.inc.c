@@ -2,7 +2,7 @@
 #include "map.h"
 #include "npc.h"
 
-API_CALLABLE(N(ChangeNpcToPartner)) {
+API_CALLABLE(ChangeNpcToPartner) {
     Bytecode* args = script->ptrReadPos;
     PlayerData* playerData = &gPlayerData;
     s32 npcID = evt_get_variable(script, *args++);

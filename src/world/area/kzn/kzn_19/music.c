@@ -1,6 +1,6 @@
 #include "kzn_19.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_DEFEATED_LAVA_PIRANHA)
             Call(GetEntryID, LVar0)

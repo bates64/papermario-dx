@@ -4,28 +4,26 @@
 #include "script_api/battle.h"
 #include "sprite/npc/KoopaTroopa.h"
 
-#define NAMESPACE A(koopa_troopa)
+extern s32 DefaultAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(DefaultAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_IsFlipped     = 8,
     AVAR_FlippedTurns  = 9,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SHELL_TOSS      = 1,
 };
 
-s32 N(NormalDefense)[] = {
+s32 NormalDefense[] = {
     ELEMENT_NORMAL,   1,
     ELEMENT_SMASH,    1,
     ELEMENT_JUMP,     1,
@@ -34,12 +32,12 @@ s32 N(NormalDefense)[] = {
     ELEMENT_END,
 };
 
-s32 N(FlippedDefense)[] = {
+s32 FlippedDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              90,
@@ -64,30 +62,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 36 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(NormalDefense),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = NormalDefense,
         .eventFlags = ACTOR_EVENT_FLAG_FLIPABLE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -7 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_KOOPA_TROOPA,
     .level = ACTOR_LEVEL_KOOPA_TROOPA,
     .maxHP = 4,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 70,
     .airLiftChance = 90,
     .hurricaneChance = 90,
@@ -102,7 +100,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 5, 32 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Idle,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Still,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Sleep,
@@ -115,7 +113,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ShuffleAnims)[] = {
+s32 ShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Walk,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Still,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Sleep,
@@ -128,7 +126,7 @@ s32 N(ShuffleAnims)[] = {
     STATUS_END,
 };
 
-s32 N(FlippedAnims)[] = {
+s32 FlippedAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_ToppleStruggle,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_ToppleStill,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_ToppleSleep,
@@ -141,39 +139,37 @@ s32 N(FlippedAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, false)
     Return
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-EvtScript N(EVS_UpdateTargetOffsets) = {
+EvtScript EVS_UpdateTargetOffsets = {
     Switch(LVar0)
         CaseEq(0)
             IfFlag(LVar1, STATUS_FLAG_SLEEP | STATUS_FLAG_DIZZY)
                 Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -5, 15)
                 Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
-                Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+                Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
             Else
                 Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -4, 32)
                 Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -4)
-                Call(N(SetAbsoluteStatusOffsets), -15, 32, 5, 32)
+                Call(SetAbsoluteStatusOffsets, -15, 32, 5, 32)
             EndIf
         CaseEq(1)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -5, 15)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(RandInt, 80, LVarA)
         Add(LVarA, 80)
@@ -181,7 +177,7 @@ EvtScript N(EVS_Idle) = {
             Label(1)
                 Call(GetActorVar, ACTOR_SELF, AVAR_IsFlipped, LVar0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateTargetOffsets))
+                ExecWait(EVS_UpdateTargetOffsets)
                 IfEq(LVar0, 1)
                     Wait(1)
                     Goto(1)
@@ -195,21 +191,21 @@ EvtScript N(EVS_Idle) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleRunToGoal, ACTOR_SELF, 0)
         Call(GetActorVar, ACTOR_SELF, AVAR_IsFlipped, LVar0)
         Switch(LVar0)
             CaseEq(0)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
             CaseEq(1)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(FlippedAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlippedAnims))
         EndSwitch
         Loop(20)
             Label(2)
                 Call(GetActorVar, ACTOR_SELF, AVAR_IsFlipped, LVar0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateTargetOffsets))
+                ExecWait(EVS_UpdateTargetOffsets)
                 IfEq(LVar0, 1)
                     Wait(1)
                     Goto(2)
@@ -223,21 +219,21 @@ EvtScript N(EVS_Idle) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleRunToGoal, ACTOR_SELF, 0)
         Call(GetActorVar, ACTOR_SELF, AVAR_IsFlipped, LVar0)
         Switch(LVar0)
             CaseEq(0)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
             CaseEq(1)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(FlippedAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlippedAnims))
         EndSwitch
         Loop(80)
             Label(3)
                 Call(GetActorVar, ACTOR_SELF, AVAR_IsFlipped, LVar0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateTargetOffsets))
+                ExecWait(EVS_UpdateTargetOffsets)
                 IfEq(LVar0, 1)
                     Wait(1)
                     Goto(3)
@@ -253,9 +249,9 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-s32 N(FlipPosOffsets)[] = { 9, 16, 22, 26, 30, 32, 33, 32, 30, 26, 22, 16, 9, 0, 4, 6, 7, 6, 4, 0, 2, 0 };
+s32 FlipPosOffsets[] = { 9, 16, 22, 26, 30, 32, 33, 32, 30, 26, 22, 16, 9, 0, 4, 6, 7, 6, 4, 0, 2, 0 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorYaw, ACTOR_SELF, 0)
@@ -296,8 +292,8 @@ EvtScript N(EVS_HandleEvent) = {
         CaseEq(EVENT_FLIP_TRIGGER)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, true)
             Call(SetActorVar, ACTOR_SELF, AVAR_FlippedTurns, 2)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(FlippedDefense)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(FlippedAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(FlippedDefense))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlippedAnims))
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -5, 15)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
@@ -317,8 +313,8 @@ EvtScript N(EVS_HandleEvent) = {
                 Call(SetActorRotation, ACTOR_SELF, 0, 0, -75)
                 Wait(1)
             EndChildThread
-            UseBuf(Ref(N(FlipPosOffsets)))
-            Loop(ARRAY_COUNT(N(FlipPosOffsets)))
+            UseBuf(Ref(FlipPosOffsets))
+            Loop(ARRAY_COUNT(FlipPosOffsets))
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
                 Wait(1)
@@ -448,7 +444,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -495,8 +491,8 @@ EvtScript N(EVS_TakeTurn) = {
                 Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KoopaTroopa_Idle)
                 Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, false)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
-                Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(NormalDefense)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+                Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(NormalDefense))
                 Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -4, 32)
                 Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -4)
                 Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
@@ -514,11 +510,11 @@ EvtScript N(EVS_TakeTurn) = {
         ChildThread
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar1, 4)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
             Wait(3)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
             Wait(2)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         EndChildThread
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHELL_SPIN)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KoopaTroopa_ShellSpin)

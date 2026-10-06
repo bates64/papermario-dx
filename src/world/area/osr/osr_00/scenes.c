@@ -6,7 +6,7 @@
 #include "sprite/npc/Luigi.h"
 
 
-API_CALLABLE(N(SetModelRemapTint)) {
+API_CALLABLE(SetModelRemapTint) {
     Bytecode* args = script->ptrReadPos;
     s32 primR = *args++;
     s32 primG = *args++;
@@ -18,30 +18,30 @@ API_CALLABLE(N(SetModelRemapTint)) {
     return ApiStatus_DONE2;
 }
 
-BSS IMG_BIN N(PeachLetterImg)[charset_peach_letter_png_width * charset_peach_letter_png_height];
-BSS PAL_BIN N(PeachLetterPal)[0x100];
+BSS IMG_BIN PeachLetterImg[charset_peach_letter_png_width * charset_peach_letter_png_height];
+BSS PAL_BIN PeachLetterPal[0x100];
 
-BSS MessageImageData N(MsgImage);
+BSS MessageImageData MsgImage;
 
-API_CALLABLE(N(LoadPeachLetterImage)) {
+API_CALLABLE(LoadPeachLetterImage) {
     u8* romStart = charset_ROM_START;
     u8* rasterOffset = charset_peach_letter_OFFSET;
     u16* paletteOffset = charset_peach_letter_pal_OFFSET;
 
-    dma_copy(romStart + (s32)rasterOffset, romStart + (s32)rasterOffset + sizeof(N(PeachLetterImg)), &N(PeachLetterImg));
-    dma_copy(romStart + (s32)paletteOffset, romStart + (s32)paletteOffset + sizeof(N(PeachLetterPal)), &N(PeachLetterPal));
+    dma_copy(romStart + (s32)rasterOffset, romStart + (s32)rasterOffset + sizeof(PeachLetterImg), &PeachLetterImg);
+    dma_copy(romStart + (s32)paletteOffset, romStart + (s32)paletteOffset + sizeof(PeachLetterPal), &PeachLetterPal);
 
-    N(MsgImage).raster   = N(PeachLetterImg);
-    N(MsgImage).palette  = N(PeachLetterPal);
-    N(MsgImage).width    = charset_peach_letter_png_width;
-    N(MsgImage).height   = charset_peach_letter_png_height;
-    N(MsgImage).format   = G_IM_FMT_CI;
-    N(MsgImage).bitDepth = G_IM_SIZ_8b;
-    set_message_images(&N(MsgImage));
+    MsgImage.raster   = PeachLetterImg;
+    MsgImage.palette  = PeachLetterPal;
+    MsgImage.width    = charset_peach_letter_png_width;
+    MsgImage.height   = charset_peach_letter_png_height;
+    MsgImage.format   = G_IM_FMT_CI;
+    MsgImage.bitDepth = G_IM_SIZ_8b;
+    set_message_images(&MsgImage);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_ShowInvitation) = {
+EvtScript EVS_Scene_ShowInvitation = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
@@ -51,8 +51,8 @@ EvtScript N(EVS_Scene_ShowInvitation) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
-    Call(N(SetModelRemapTint), 200, 200, 200, 40, 40, 40)
-    Call(N(LoadPeachLetterImage))
+    Call(SetModelRemapTint, 200, 200, 200, 40, 40, 40)
+    Call(LoadPeachLetterImage)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Intro_0022, 160, 40)
     Wait(12 * DT)
@@ -64,7 +64,7 @@ EvtScript N(EVS_Scene_ShowInvitation) = {
     End
 };
 
-EvtScript N(EVS_Scene_ApproachParty) = {
+EvtScript EVS_Scene_ApproachParty = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)

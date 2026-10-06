@@ -1,0 +1,131 @@
+#include "battle/battle.h"
+#include "script_api/battle.h"
+#include "effects.h"
+#include "sprite/npc/PetitPiranha.h"
+
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+
+enum ActorPartIDs {
+    PRT_MAIN        = 1,
+};
+
+s32 DefaultAnims[] = {
+    STATUS_KEY_NORMAL,    ANIM_PetitPiranha_Idle,
+    STATUS_KEY_STONE,     ANIM_PetitPiranha_Still,
+    STATUS_KEY_SLEEP,     ANIM_PetitPiranha_Still,
+    STATUS_KEY_POISON,    ANIM_PetitPiranha_Idle,
+    STATUS_KEY_STOP,      ANIM_PetitPiranha_Still,
+    STATUS_KEY_STATIC,    ANIM_PetitPiranha_Still,
+    STATUS_KEY_PARALYZE,  ANIM_PetitPiranha_Still,
+    STATUS_KEY_PARALYZE,  ANIM_PetitPiranha_Still,
+    STATUS_KEY_DIZZY,     ANIM_PetitPiranha_Idle,
+    STATUS_KEY_DIZZY,     ANIM_PetitPiranha_Idle,
+    STATUS_END,
+};
+
+s32 DefenseTable[] = {
+    ELEMENT_NORMAL,   0,
+    ELEMENT_WATER,   -2,
+    ELEMENT_ICE,     -2,
+    ELEMENT_FIRE,    99,
+    ELEMENT_BLAST,    0,
+    ELEMENT_END,
+};
+
+s32 StatusTable[] = {
+    STATUS_KEY_NORMAL,              0,
+    STATUS_KEY_DEFAULT,             0,
+    STATUS_KEY_SLEEP,               0,
+    STATUS_KEY_POISON,              0,
+    STATUS_KEY_FROZEN,              0,
+    STATUS_KEY_DIZZY,               0,
+    STATUS_KEY_UNUSED,              0,
+    STATUS_KEY_STATIC,              0,
+    STATUS_KEY_PARALYZE,            0,
+    STATUS_KEY_SHRINK,              0,
+    STATUS_KEY_STOP,                0,
+    STATUS_TURN_MOD_DEFAULT,        0,
+    STATUS_TURN_MOD_SLEEP,          0,
+    STATUS_TURN_MOD_POISON,         0,
+    STATUS_TURN_MOD_FROZEN,         0,
+    STATUS_TURN_MOD_DIZZY,          0,
+    STATUS_TURN_MOD_UNUSED,         0,
+    STATUS_TURN_MOD_STATIC,         0,
+    STATUS_TURN_MOD_PARALYZE,       0,
+    STATUS_TURN_MOD_SHRINK,         0,
+    STATUS_TURN_MOD_STOP,           0,
+    STATUS_END,
+};
+
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_MAIN,
+        .posOffset = { 0, 0, 0 },
+        .targetOffset = { 0, 24 },
+        .opacity = 255,
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
+        .eventFlags = ACTOR_EVENT_FLAG_FIREY,
+        .elementImmunityFlags = ELEMENT_FIRE,
+        .projectileTargetOffset = { -2, -22 },
+    },
+};
+
+ACTOR_BLUEPRINT() = {
+    .flags = ACTOR_FLAG_FLYING,
+    .type = ACTOR_TYPE_PETIT_PIRANHA_BOMB,
+    .level = ACTOR_LEVEL_PETIT_PIRANHA_BOMB,
+    .maxHP = 1,
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
+    .escapeChance = 0,
+    .airLiftChance = 0,
+    .hurricaneChance = 0,
+    .spookChance = 0,
+    .upAndAwayChance = 0,
+    .spinSmashReq = 0,
+    .powerBounceChance = 80,
+    .coinReward = 0,
+    .size = { 30, 30 },
+    .healthBarOffset = { 0, 0 },
+    .statusIconOffset = { -10, 20 },
+    .statusTextOffset = { 10, 20 },
+};
+
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Return
+    End
+};
+
+EvtScript EVS_Idle = {
+    Label(0)
+        Wait(1)
+        Goto(0)
+    Return
+    End
+};
+
+EvtScript EVS_HandleEvent = {
+    Label(0)
+        Wait(1)
+        Goto(0)
+    Return
+    End
+};
+
+EvtScript EVS_TakeTurn = {
+    Label(0)
+        Wait(1)
+        Goto(0)
+    Return
+    End
+};

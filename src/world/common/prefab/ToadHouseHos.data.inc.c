@@ -2,11 +2,11 @@
 #include "sprite/npc/StarMan.h"
 
 // to use this include, you must also define these
-extern EvtScript N(EVS_ToadHouse_SetDialogue);
-extern EvtScript N(EVS_ToadHouse_ReturnFromRest);
-extern EvtScript N(EVS_ToadHouse_GetInBed);
+extern EvtScript EVS_ToadHouse_SetDialogue;
+extern EvtScript EVS_ToadHouse_ReturnFromRest;
+extern EvtScript EVS_ToadHouse_GetInBed;
 
-EvtScript N(EVS_ToadHouse_ResetBedCovers) = {
+EvtScript EVS_ToadHouse_ResetBedCovers = {
     Call(EnableModel, LVar4, false)
     Call(EnableModel, LVar5, true)
     Call(RotateModel, LVar6, 0, 0, 0, 1)
@@ -15,7 +15,7 @@ EvtScript N(EVS_ToadHouse_ResetBedCovers) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_OpenBedCovers) = {
+EvtScript EVS_ToadHouse_OpenBedCovers = {
     Set(LVar9, LVar7)
     Set(LVar8, LVar6)
     Set(LVar7, LVar5)
@@ -40,16 +40,16 @@ EvtScript N(EVS_ToadHouse_OpenBedCovers) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
-    Call(N(ToadHouse_InitScreenOverlay), 0, 0, 0)
-    ExecWait(N(EVS_ToadHouse_SetDialogue))
+EvtScript EVS_NpcInteract_ToadHouseKeeper = {
+    Call(ToadHouse_InitScreenOverlay, 0, 0, 0)
+    ExecWait(EVS_ToadHouse_SetDialogue)
     IfEq(LVar0, 0)
         Return
     EndIf
     Set(LVar9, LVar1)
     Set(LVarA, LVar2)
     Set(LVarB, LVar3)
-    Call(N(ToadHouse_DoesPlayerNeedSleep))
+    Call(ToadHouse_DoesPlayerNeedSleep)
     IfEq(LVar1, 0)
         Set(LVar8, LVar0)
     EndIf
@@ -64,18 +64,18 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     Call(SetPlayerJumpscale, 1)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(N(ToadHouse_SuspendStatusBar))
+    Call(ToadHouse_SuspendStatusBar)
     IfNe(LVar4, 0)
-        Exec(N(EVS_ToadHouse_OpenBedCovers))
+        Exec(EVS_ToadHouse_OpenBedCovers)
     EndIf
-    Call(N(ToadHouse_PutPartnerAway), LVarA)
+    Call(ToadHouse_PutPartnerAway, LVarA)
     Wait(20)
-    ExecWait(N(EVS_ToadHouse_GetInBed))
+    ExecWait(EVS_ToadHouse_GetInBed)
     Thread
         Call(MakeLerp, 0, 255, 60, EASING_LINEAR)
         Label(0)
         Call(UpdateLerp)
-        Call(N(ToadHouse_UpdateScreenOverlay), 3, LVar0)
+        Call(ToadHouse_UpdateScreenOverlay, 3, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
@@ -83,25 +83,25 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
         Call(FullyRestoreHPandFP)
         Call(FullyRestoreSP)
         IfNe(LVar4, 0)
-            Exec(N(EVS_ToadHouse_ResetBedCovers))
+            Exec(EVS_ToadHouse_ResetBedCovers)
         EndIf
-        Call(N(ToadHouse_GetPartnerOut), LVarA)
+        Call(ToadHouse_GetPartnerOut, LVarA)
         Wait(45)
         Call(MakeLerp, 255, 0, 30, EASING_LINEAR)
         Label(1)
         Call(UpdateLerp)
-        Call(N(ToadHouse_UpdateScreenOverlay), 0, LVar0)
+        Call(ToadHouse_UpdateScreenOverlay, 0, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(1)
         EndIf
     EndThread
     Wait(105)
-    ExecWait(N(EVS_ToadHouse_ReturnFromRest))
+    ExecWait(EVS_ToadHouse_ReturnFromRest)
     Call(DisablePlayerPhysics, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, LVarB)
-    Call(N(ToadHouse_ResumeStatusBar))
+    Call(ToadHouse_ResumeStatusBar)
     Return
     End
 };

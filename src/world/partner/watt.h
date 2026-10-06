@@ -4,11 +4,11 @@
 #include "common.h"
 #include "script_api/map.h"
 
-void world_watt_init(Npc*);
-void world_watt_pre_battle(Npc*);
-void world_watt_post_battle(Npc*);
+void init(Npc*);
+void pre_battle(Npc*);
+void post_battle(Npc*);
 
-void world_watt_sync_held_position(void);
+void sync_held_position(void);
 
 extern EvtScript EVS_WorldWatt_TakeOut;
 extern EvtScript EVS_WorldWatt_Update;

@@ -1,14 +1,13 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "hud_element.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleEldstar.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_refresh
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-API_CALLABLE(N(FlyAroundPlayer)) {
+API_CALLABLE(FlyAroundPlayer) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID;
     Npc* npc;
@@ -83,7 +82,7 @@ API_CALLABLE(N(FlyAroundPlayer)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(RemovePlayerDebuffs)) {
+API_CALLABLE(RemovePlayerDebuffs) {
     Actor* actor = gBattleStatus.playerActor;
 
     if (actor->debuff != 0) {
@@ -102,11 +101,7 @@ API_CALLABLE(N(RemovePlayerDebuffs)) {
     return ApiStatus_DONE2;
 }
 
-#include "common/AddHP.inc.c"
-
-#include "common/AddFP.inc.c"
-
-API_CALLABLE(N(SpawnHeartRecoverFX)) {
+API_CALLABLE(SpawnHeartRecoverFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -118,7 +113,7 @@ API_CALLABLE(N(SpawnHeartRecoverFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnFlowerRecoverFX)) {
+API_CALLABLE(SpawnFlowerRecoverFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -130,10 +125,10 @@ API_CALLABLE(N(SpawnFlowerRecoverFX)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleEldstar_Idle)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleEldstar_Shout)
     Wait(16)
     Thread
@@ -142,26 +137,30 @@ EvtScript N(EVS_UsePower) = {
     EndThread
     Call(PlaySound, SOUND_REFRESH)
     Call(EnableNpcBlur, NPC_BTL_SPIRIT, true)
-    Call(N(FlyAroundPlayer), NPC_BTL_SPIRIT)
+    Call(FlyAroundPlayer, NPC_BTL_SPIRIT)
     Call(EnableNpcBlur, NPC_BTL_SPIRIT, false)
     Call(DeleteNpc, NPC_BTL_SPIRIT)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 0)
     Add(LVar1, 35)
-    Call(N(SpawnHeartRecoverFX), LVar0, LVar1, LVar2, 5)
+    Call(SpawnHeartRecoverFX, LVar0, LVar1, LVar2, 5)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
     Add(LVar1, 25)
-    Call(N(SpawnFlowerRecoverFX), LVar0, LVar1, LVar2, 5)
+    Call(SpawnFlowerRecoverFX, LVar0, LVar1, LVar2, 5)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, 5)
-    Call(N(AddHP), 5)
-    Call(N(AddFP), 5)
-    Call(N(RemovePlayerDebuffs))
+    Call(AddHP, 5)
+    Call(AddFP, 5)
+    Call(RemovePlayerDebuffs)
     Wait(30)
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_EndWish))
+    ExecWait(EVS_StarPower_EndWish)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
+    &EVS_UsePower,
+);

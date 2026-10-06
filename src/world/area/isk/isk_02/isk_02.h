@@ -23,10 +23,8 @@ enum {
     MV_EntityID_Padlock         = MapVar(0),
 };
 
-#define NAMESPACE isk_02
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupLock);
-extern EvtScript N(EVS_SetupSarcophagi);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupLock;
+extern EvtScript EVS_SetupSarcophagi;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

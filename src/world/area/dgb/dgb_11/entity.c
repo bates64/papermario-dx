@@ -5,7 +5,7 @@
 
 extern AnimScript Entity_ScriptSpring_AnimLaunch;
 
-API_CALLABLE(N(PlaySpringAnimation)) {
+API_CALLABLE(PlaySpringAnimation) {
     Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_SpringEntityID));
 
     if (entity == nullptr) {
@@ -17,7 +17,7 @@ API_CALLABLE(N(PlaySpringAnimation)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGe(LVar1, LVar3)
@@ -30,13 +30,13 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-EvtScript N(EVS_LaunchToCeiling) = {
+EvtScript EVS_LaunchToCeiling = {
     Call(PlayerJump, 375, 270, -250, 20)
     Return
     End
 };
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     IfEq(AF_DGB11_SpringInUse, true)
         Return
     EndIf
@@ -49,9 +49,9 @@ EvtScript N(EVS_UseSpring) = {
             Call(SetPlayerActionState, ACTION_STATE_JUMP)
             Wait(1)
             Set(LVar3, 500)
-            ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+            ExecGetTID(EVS_TetherCamToPlayer, LVarA)
             Call(SetPlayerJumpscale, Float(0.7))
-            ExecGetTID(N(EVS_LaunchToCeiling), LVarB)
+            ExecGetTID(EVS_LaunchToCeiling, LVarB)
             Loop(0)
                 Wait(1)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -68,7 +68,7 @@ EvtScript N(EVS_UseSpring) = {
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
             Call(SetPlayerJumpscale, Float(0.0))
             Call(PlayerJump1, 375, 25, -250, 10)
-            Call(N(PlaySpringAnimation))
+            Call(PlaySpringAnimation)
             Call(PlaySoundAtPlayer, SOUND_SPRING, SOUND_SPACE_DEFAULT)
             Call(SetPlayerJumpscale, Float(0.7))
             Call(PlayerJump, 375, 0, -175, 15)
@@ -89,7 +89,7 @@ EvtScript N(EVS_UseSpring) = {
                 Wait(100)
             EndThread
             Set(LVar3, 500)
-            ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+            ExecGetTID(EVS_TetherCamToPlayer, LVarA)
             Call(SetPlayerJumpscale, Float(0.7))
             Call(PlayerJump, 375, 270, -250, 20)
             Set(AF_DGB11_SpringInUse, false)
@@ -112,10 +112,10 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_D_DOWN_JUMP, 250, 75, -100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB11_Item_DDownJump)
     Call(MakeEntity, Ref(Entity_ScriptSpring), 375, 0, -250, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Set(MV_SpringEntityID, LVar0)
     Return
     End

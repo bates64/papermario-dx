@@ -2,25 +2,25 @@
 #include "model.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_LaunchFromCouch_Crash);
+extern EvtScript EVS_LaunchFromCouch_Crash;
 
-ITEM_LIST(N(ItemList_BooWeight), ITEM_BOO_WEIGHT);
+ITEM_LIST(ItemList_BooWeight, ITEM_BOO_WEIGHT);
 
-s32 N(ChandelierModels)[] = {
+s32 ChandelierModels[] = {
     MODEL_kusari_1,
     MODEL_kusari_2,
     MODEL_wa,
     MODEL_hi
 };
 
-API_CALLABLE(N(SetCameraVFOV)) {
+API_CALLABLE(SetCameraVFOV) {
     Bytecode* args = script->ptrReadPos;
 
     gCameras[CAM_DEFAULT].vfov = (s32) evt_get_float_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckForAPress)) {
+API_CALLABLE(CheckForAPress) {
     u32 pressedButtons = gGameStatusPtr->pressedButtons[0];
     s32 pressed;
 
@@ -42,7 +42,7 @@ typedef struct Chandelier {
     /* 0x14 */ f32 swingAngle;
     /* 0x18 */ f32 swingMagnitude;
     /* 0x1C */ Matrix4f transformMtx;
-    /* 0x5C */ Model* models[ARRAY_COUNT(N(ChandelierModels))];
+    /* 0x5C */ Model* models[ARRAY_COUNT(ChandelierModels)];
 } Chandelier; // size = 0x6C;
 
 enum {
@@ -80,7 +80,7 @@ enum {
     CONTROL_DATA_8      = ArrayVar(2),
 };
 
-API_CALLABLE(N(UpdateChandelier)) {
+API_CALLABLE(UpdateChandelier) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Chandelier* chandelier;
@@ -98,7 +98,7 @@ API_CALLABLE(N(UpdateChandelier)) {
         chandelier->controlData->chandelier = chandelier;
 
         for (i = 0; i < ARRAY_COUNT(chandelier->models); i++) {
-            s32 modelID = N(ChandelierModels)[i];
+            s32 modelID = ChandelierModels[i];
             s32 modelIndex = get_model_list_index_from_tree_index(modelID);
             chandelier->models[i] = get_model_from_list_index(modelIndex);
         }
@@ -262,7 +262,7 @@ API_CALLABLE(N(UpdateChandelier)) {
 }
 
 // unused
-API_CALLABLE(N(ChandelierTryCancel)) {
+API_CALLABLE(ChandelierTryCancel) {
     Bytecode* args = script->ptrReadPos;
     Chandelier* chandelier;
 
@@ -284,7 +284,7 @@ API_CALLABLE(N(ChandelierTryCancel)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(ChandelierTryRelease)) {
+API_CALLABLE(ChandelierTryRelease) {
     Bytecode* args = script->ptrReadPos;
     Chandelier* chandelier;
 
@@ -301,13 +301,13 @@ API_CALLABLE(N(ChandelierTryRelease)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_ManageChandelierPosition) = {
-    Call(N(UpdateChandelier), LVar0)
+EvtScript EVS_ManageChandelierPosition = {
+    Call(UpdateChandelier, LVar0)
     Return
     End
 };
 
-EvtScript N(EVS_ManageCabinetPosition) = {
+EvtScript EVS_ManageCabinetPosition = {
     Label(10)
         IfNe(AF_OBK01_CabinetMoved, false)
             Goto(30)
@@ -334,7 +334,7 @@ EvtScript N(EVS_ManageCabinetPosition) = {
     End
 };
 
-EvtScript N(EVS_Couch_AnimateCushion) = {
+EvtScript EVS_Couch_AnimateCushion = {
     Call(TranslateModel, LVar8, 0, -1, 0)
     Wait(1)
     Call(TranslateModel, LVar8, 0, -2, 0)
@@ -363,7 +363,7 @@ EvtScript N(EVS_Couch_AnimateCushion) = {
     End
 };
 
-EvtScript N(EVS_Couch_AnimateSpring) = {
+EvtScript EVS_Couch_AnimateSpring = {
     Wait(2)
     Call(MakeLerp, 10, 25, 3, EASING_COS_FAST_OVERSHOOT)
     Label(5)
@@ -395,7 +395,7 @@ EvtScript N(EVS_Couch_AnimateSpring) = {
     End
 };
 
-EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
+EvtScript EVS_LaunchFromCouch_GrabChandelier = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(InterruptUsePartner)
@@ -411,10 +411,10 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     UseArray(LVar0)
     Set(CONTROL_DATA_8, false)
     Set(LVar8, MODEL_tobu1)
-    Exec(N(EVS_Couch_AnimateCushion))
+    Exec(EVS_Couch_AnimateCushion)
     Call(PlaySoundAtCollider, COLLIDER_o567, SOUND_SPRING, SOUND_SPACE_DEFAULT)
     Set(LVar8, MODEL_bane1)
-    Exec(N(EVS_Couch_AnimateSpring))
+    Exec(EVS_Couch_AnimateSpring)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     Call(EnableCameraFollowPlayerY)
@@ -470,7 +470,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
         Call(SetPanTarget, CAM_DEFAULT, 455, -420, 279)
     EndChildThread
-    Call(N(ChandelierTryRelease), LVarA)
+    Call(ChandelierTryRelease, LVarA)
     Call(ShowKeyChoicePopup)
     IfEq(LVar0, ITEM_CHOICE_NONE)
         Goto(35)
@@ -510,7 +510,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-    BindTrigger(Ref(N(EVS_LaunchFromCouch_Crash)), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
+    BindTrigger(Ref(EVS_LaunchFromCouch_Crash), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -519,7 +519,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     End
 };
 
-EvtScript N(EVS_TetherCameraToPlayer) = {
+EvtScript EVS_TetherCameraToPlayer = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -532,7 +532,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
     End
 };
 
-EvtScript N(EVS_LaunchFromCouch_Crash) = {
+EvtScript EVS_LaunchFromCouch_Crash = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
     Call(DisablePartnerAI, false)
@@ -545,12 +545,12 @@ EvtScript N(EVS_LaunchFromCouch_Crash) = {
     EndLoop
     Call(DisablePlayerPhysics, true)
     Set(LVar8, MODEL_tobu1)
-    Exec(N(EVS_Couch_AnimateCushion))
+    Exec(EVS_Couch_AnimateCushion)
     Call(PlaySoundAtCollider, COLLIDER_o567, SOUND_SPRING, SOUND_SPACE_DEFAULT)
     Set(LVar8, MODEL_bane1)
-    Exec(N(EVS_Couch_AnimateSpring))
+    Exec(EVS_Couch_AnimateSpring)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
-    ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Sub(LVar3, 1)
     Call(SetPlayerPos, LVar2, LVar3, LVar4)
@@ -584,7 +584,7 @@ EvtScript N(EVS_LaunchFromCouch_Crash) = {
     End
 };
 
-EvtScript N(EVS_SetupChandelier) = {
+EvtScript EVS_SetupChandelier = {
     MallocArray(3, LVarA)
     Set(CONTROL_DATA_PTR, nullptr)
     Set(CONTROL_DATA_STATE, CONTROL_STATE_WAITING)
@@ -606,15 +606,15 @@ EvtScript N(EVS_SetupChandelier) = {
         Call(TranslateModel, MODEL_wa, 0, LVar0, 0)
         Call(TranslateModel, MODEL_hi, 0, LVar0, 0)
         Call(MakeItemEntity, ITEM_BOO_WEIGHT, 447, -350, 278, ITEM_SPAWN_MODE_DECORATION, 0)
-        BindTrigger(Ref(N(EVS_LaunchFromCouch_Crash)), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
+        BindTrigger(Ref(EVS_LaunchFromCouch_Crash), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
     Else
         Set(MV_UnusedPosOffset, 0)
         Set(MV_CabinetPosOffset, 0)
-        Exec(N(EVS_ManageCabinetPosition))
+        Exec(EVS_ManageCabinetPosition)
         Set(LVar0, LVarA)
-        Exec(N(EVS_ManageChandelierPosition))
+        Exec(EVS_ManageChandelierPosition)
         Set(LVar0, LVarA)
-        BindPadlock(Ref(N(EVS_LaunchFromCouch_GrabChandelier)), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, Ref(N(ItemList_BooWeight)), 0, 1)
+        BindPadlock(Ref(EVS_LaunchFromCouch_GrabChandelier), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, Ref(ItemList_BooWeight), 0, 1)
     EndIf
     Return
     End

@@ -17,8 +17,6 @@ enum {
     NPC_Door    = 0,
 };
 
-#define NAMESPACE kpa_81
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

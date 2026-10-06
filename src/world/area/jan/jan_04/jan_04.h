@@ -28,19 +28,17 @@ enum {
     MF_TreeDrop_Letter  = MapFlag(10),
 };
 
-#define NAMESPACE jan_04
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PushNewPartnerSong;
+extern EvtScript EVS_PopSong;
+extern EvtScript EVS_GotoMap_kmr_24_0;
+extern EvtScript EVS_Scene_TreasureChest;
+extern EvtScript EVS_Scene_Epilogue;
+extern EvtScript EVS_SetupTrees;
+extern EvtScript EVS_SetupBushes;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_PlayDemoScene;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PushNewPartnerSong);
-extern EvtScript N(EVS_PopSong);
-extern EvtScript N(EVS_GotoMap_kmr_24_0);
-extern EvtScript N(EVS_Scene_TreasureChest);
-extern EvtScript N(EVS_Scene_Epilogue);
-extern EvtScript N(EVS_SetupTrees);
-extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_PlayDemoScene);
-
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(EpilogueNPCs);
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList EpilogueNPCs;

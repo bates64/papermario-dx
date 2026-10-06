@@ -38,7 +38,6 @@ void smoke_impact_main(
     bp.init = smoke_impact_init;
     bp.update = smoke_impact_update;
     bp.renderScene = smoke_impact_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SMOKE_IMPACT;
 

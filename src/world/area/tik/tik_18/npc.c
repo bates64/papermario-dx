@@ -3,7 +3,7 @@
 #include "world/common/enemy/Gloomba/wander.inc.c"
 #include "world/common/enemy/SpikedGloomba/wander.inc.c"
 
-EvtScript N(EVS_NpcIdle_SpikedGloomba) = {
+EvtScript EVS_NpcIdle_SpikedGloomba = {
     // wait for activation from block breaking
     Label(0)
         Call(GetSelfVar, 0, LVar0)
@@ -38,20 +38,20 @@ EvtScript N(EVS_NpcIdle_SpikedGloomba) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Dark_Laugh)
     Wait(20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Dark_Idle)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_SpikedGloomba_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGloomba_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_SpikedGloomba) = {
+EvtScript EVS_NpcInit_SpikedGloomba = {
     Call(SetNpcPos, NPC_SELF, 150, 76, -63)
     Call(SetNpcRotation, NPC_SELF, -85, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SpikedGloomba)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGloomba))
     Return
     End
 };
 
-NpcData N(NpcData_Gloomba) = {
+NpcData NpcData_Gloomba = {
     .id = NPC_Gloomba,
     .pos = { -60.0f, -10.0f, -30.0f },
     .yaw = 90,
@@ -67,13 +67,13 @@ NpcData N(NpcData_Gloomba) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Gloomba_Wander),
+    .settings = &NpcSettings_Gloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = GLOOMBA_DROPS,
     .animations = GLOOMBA_ANIMS,
 };
 
-NpcData N(NpcData_SpikedGloomba) = {
+NpcData NpcData_SpikedGloomba = {
     .id = NPC_SpikedGloomba,
     .pos = { 30.0f, -10.0f, -20.0f },
     .yaw = 270,
@@ -89,15 +89,15 @@ NpcData N(NpcData_SpikedGloomba) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_SpikedGloomba),
-    .settings = &N(NpcSettings_SpikedGloomba_Wander),
+    .init = &EVS_NpcInit_SpikedGloomba,
+    .settings = &NpcSettings_SpikedGloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKED_GLOOMBA_DROPS,
     .animations = SPIKED_GLOOMBA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Gloomba), BTL_TIK_FORMATION_0A, BTL_TIK_STAGE_00),
-    NPC_GROUP(N(NpcData_SpikedGloomba), BTL_TIK_FORMATION_0E, BTL_TIK_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Gloomba, BTL_TIK_FORMATION_0A, BTL_TIK_STAGE_00),
+    NPC_GROUP(NpcData_SpikedGloomba, BTL_TIK_FORMATION_0E, BTL_TIK_STAGE_00),
     {}
 };

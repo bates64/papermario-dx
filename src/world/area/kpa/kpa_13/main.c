@@ -1,18 +1,18 @@
 #include "kpa_13.h"
 
-EvtScript N(EVS_ExitWalk_kpa_12_1) = EVT_EXIT_WALK(60, kpa_13_ENTRY_0, "kpa_12", kpa_12_ENTRY_1);
-EvtScript N(EVS_ExitWalk_kpa_15_0) = EVT_EXIT_WALK(60, kpa_13_ENTRY_2, "kpa_15", kpa_15_ENTRY_0);
-EvtScript N(EVS_ExitWalk_kpa_14_0) = EVT_EXIT_WALK(60, kpa_13_ENTRY_1, "kpa_14", kpa_14_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_12_1 = EVT_EXIT_WALK(60, kpa_13_ENTRY_0, "kpa_12", kpa_12_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_15_0 = EVT_EXIT_WALK(60, kpa_13_ENTRY_2, "kpa_15", kpa_15_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_14_0 = EVT_EXIT_WALK(60, kpa_13_ENTRY_1, "kpa_14", kpa_14_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_12_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_15_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_14_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_14_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_Lava) = {
+EvtScript EVS_TexPan_Lava = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
@@ -28,7 +28,7 @@ EvtScript N(EVS_TexPan_Lava) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o1043, .pos = {  110.0,   30.0, -150.0 }},
     { .colliderID = COLLIDER_o1047, .pos = {  285.0,   30.0,  -20.0 }},
     { .colliderID = COLLIDER_o1048, .pos = {  500.0,   30.0,  -90.0 }},
@@ -44,23 +44,23 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfEq(GF_KPA16_ShutOffLava, false)
         Call(EnableGroup, MODEL_after, false)
-        Exec(N(EVS_TexPan_Lava))
+        Exec(EVS_TexPan_Lava)
     Else
         Call(EnableGroup, MODEL_before, false)
     EndIf
-    Exec(N(EVS_SetupMusic))
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Exec(EVS_SetupMusic)
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Exec(N(EVS_SetupPlatforms))
+        Exec(EVS_SetupPlatforms)
     EndIf
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread
@@ -82,7 +82,7 @@ EvtScript N(EVS_Main) = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1075, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilin, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+                Call(ResetFromLava, Ref(SafeFloorColliders))
             EndThread
         EndThread
     EndIf

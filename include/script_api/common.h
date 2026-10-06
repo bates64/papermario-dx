@@ -1671,6 +1671,12 @@ API_CALLABLE(AwaitPlayerLeave);
 /// @param angle
 API_CALLABLE(AddVectorPolar);
 
+/// Starts controller rumble without waiting for it to finish.
+/// @evtapi
+/// @param frequency
+/// @param duration Duration in frames.
+API_CALLABLE(StartRumbleWithParams);
+
 /// @evtapi
 /// @param value
 API_CALLABLE(EnableScreenMotionBlur);

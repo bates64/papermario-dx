@@ -21,7 +21,6 @@ void ring_blast_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, s32 arg5)
     effectBp.init = ring_blast_init;
     effectBp.update = ring_blast_update;
     effectBp.renderScene = ring_blast_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_RING_BLAST;
 

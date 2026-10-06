@@ -1,15 +1,12 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleMisstar.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_smooch
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-#include "common/AddHP.inc.c"
-
-API_CALLABLE(N(SpawnRecoverFX)) {
+API_CALLABLE(SpawnRecoverFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -21,7 +18,7 @@ API_CALLABLE(N(SpawnRecoverFX)) {
     return ApiStatus_DONE2;
 }
 
-Vec2i N(RecoverEffectPositions)[] = {
+Vec2i RecoverEffectPositions[] = {
     {  15,  15 },
     { -33,  27 },
     { -22, -26 },
@@ -29,10 +26,10 @@ Vec2i N(RecoverEffectPositions)[] = {
     {  35,   0 },
 };
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleMisstar_Still)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Wait(16)
     Thread
         Wait(10)
@@ -63,16 +60,16 @@ EvtScript N(EVS_UsePower) = {
     Call(NpcFlyTo, NPC_BTL_SPIRIT, LVar0, LVar1, LVar2, 10, 0, EASING_COS_IN_OUT)
     Call(PlaySound, SOUND_SMOOCH)
     Thread
-        PlayEffect(EFFECT_RECOVER, 2, LVar0, LVar1, LVar2, 1, 0)
+        PlayEffect(EFFECT_RECOVER, 2, LVar0, LVar1, LVar2, 1)
         Wait(2)
-        UseBuf(Ref(N(RecoverEffectPositions)))
-        Loop(ARRAY_COUNT(N(RecoverEffectPositions)))
+        UseBuf(Ref(RecoverEffectPositions))
+        Loop(ARRAY_COUNT(RecoverEffectPositions))
             BufRead2(LVar5, LVar6)
             Set(LVar3, LVar0)
             Set(LVar4, LVar1)
             Add(LVar3, LVar5)
             Add(LVar4, LVar6)
-            PlayEffect(EFFECT_RECOVER, 2, LVar3, LVar4, LVar2, 1, 0)
+            PlayEffect(EFFECT_RECOVER, 2, LVar3, LVar4, LVar2, 1)
             Wait(2)
         EndLoop
     EndThread
@@ -80,7 +77,7 @@ EvtScript N(EVS_UsePower) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
         Add(LVar0, 5)
-        Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
+        Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 20)
         Add(LVar0, 25)
@@ -89,7 +86,7 @@ EvtScript N(EVS_UsePower) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_FallBack)
     Wait(12)
     Thread
-        ExecWait(N(EVS_StarPower_SpiritDeparts))
+        ExecWait(EVS_StarPower_SpiritDeparts)
     EndThread
     Thread
         Loop(2)
@@ -145,13 +142,13 @@ EvtScript N(EVS_UsePower) = {
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 0)
     Add(LVar1, 35)
-    Call(N(SpawnRecoverFX), LVar0, LVar1, LVar2, 20)
+    Call(SpawnRecoverFX, LVar0, LVar1, LVar2, 20)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, 20)
-    Call(N(AddHP), 20)
+    Call(AddHP, 20)
     Thread
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
     EndThread
     Call(PlayerYieldTurn)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
@@ -172,3 +169,7 @@ EvtScript N(EVS_UsePower) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
+    &EVS_UsePower,
+);

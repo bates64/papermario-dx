@@ -16,7 +16,5 @@ enum {
     MV_CastleLiftDist   = MapVar(14),
 };
 
-#define NAMESPACE osr_04
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_Scene_BowsersAssault);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_Scene_BowsersAssault;

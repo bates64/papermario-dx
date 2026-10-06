@@ -13,7 +13,7 @@ enum {
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
-MobileAISettings N(AISettings_Short) = {
+MobileAISettings AISettings_Short = {
     .moveSpeed = 5.0f,
     .moveTime = 1,
     .alertRadius = 1.0f,
@@ -25,20 +25,20 @@ MobileAISettings N(AISettings_Short) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Short) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Short)))
+EvtScript EVS_NpcAI_Short = {
+    Call(BasicAI_Main, Ref(AISettings_Short))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Short) = {
+NpcSettings NpcSettings_Short = {
     .height = 22,
     .radius = 24,
     .level = ACTOR_LEVEL_GOOMBA,
-    .doAI = &N(EVS_NpcAI_Short),
+    .doAI = &EVS_NpcAI_Short,
 };
 
-MobileAISettings N(AISettings_Koopa) = {
+MobileAISettings AISettings_Koopa = {
     .moveSpeed = 5.0f,
     .moveTime = 1,
     .alertRadius = 1.0f,
@@ -50,20 +50,20 @@ MobileAISettings N(AISettings_Koopa) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_KoopaTroopa_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Koopa)))
+EvtScript EVS_NpcAI_KoopaTroopa_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_Koopa))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_KoopaTroopa_Wander) = {
+NpcSettings NpcSettings_KoopaTroopa_Wander = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_DARK_KOOPA,
-    .doAI = &N(EVS_NpcAI_KoopaTroopa_Wander),
+    .doAI = &EVS_NpcAI_KoopaTroopa_Wander,
 };
 
-MobileAISettings N(AISettings_ShyGuy_Wander) = {
+MobileAISettings AISettings_ShyGuy_Wander = {
     .moveSpeed = 5.0f,
     .moveTime = 1,
     .alertRadius = 1.0f,
@@ -75,20 +75,20 @@ MobileAISettings N(AISettings_ShyGuy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_ShyGuy_Wander)))
+EvtScript EVS_NpcAI_ShyGuy_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_ShyGuy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy_Wander) = {
+NpcSettings NpcSettings_ShyGuy_Wander = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_Wander),
+    .doAI = &EVS_NpcAI_ShyGuy_Wander,
 };
 
-EvtScript N(EVS_SetCam_MeetingDoor) = {
+EvtScript EVS_SetCam_MeetingDoor = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-10.0))
@@ -102,7 +102,7 @@ EvtScript N(EVS_SetCam_MeetingDoor) = {
     End
 };
 
-EvtScript N(EVS_SetCam_AfterBattle) = {
+EvtScript EVS_SetCam_AfterBattle = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(5.0), Float(-14.0))
@@ -116,7 +116,7 @@ EvtScript N(EVS_SetCam_AfterBattle) = {
     End
 };
 
-EvtScript N(EVS_SetCam_AfterResult) = {
+EvtScript EVS_SetCam_AfterResult = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-14.0))
@@ -130,7 +130,7 @@ EvtScript N(EVS_SetCam_AfterResult) = {
     End
 };
 
-EvtScript N(EVS_SetCam_AskQuestion) = {
+EvtScript EVS_SetCam_AskQuestion = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-10.5))
@@ -143,7 +143,7 @@ EvtScript N(EVS_SetCam_AskQuestion) = {
     End
 };
 
-EvtScript N(EVS_SetCam_ViewRoom) = {
+EvtScript EVS_SetCam_ViewRoom = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamDistance, CAM_DEFAULT, Float(470.0))
@@ -157,7 +157,7 @@ EvtScript N(EVS_SetCam_ViewRoom) = {
     End
 };
 
-EvtScript N(EVS_SetCam_BeforeBattle) = {
+EvtScript EVS_SetCam_BeforeBattle = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamDistance, CAM_DEFAULT, Float(470.0))
@@ -171,7 +171,7 @@ EvtScript N(EVS_SetCam_BeforeBattle) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRots) = {
+EvtScript EVS_SetDoorRots = {
     Call(MakeLerp, 0, 60, 30 * DT, EASING_LINEAR)
     Call(PlaySound, SOUND_KPA_QUIZ_DOORS_OPEN)
     Label(0)
@@ -191,7 +191,7 @@ EvtScript N(EVS_SetDoorRots) = {
     End
 };
 
-EvtScript N(EVS_CloseDoors) = {
+EvtScript EVS_CloseDoors = {
     Call(MakeLerp, 60, 0, 30 * DT, EASING_LINEAR)
     Call(PlaySound, SOUND_KPA_QUIZ_DOORS_CLOSE)
     Label(0)
@@ -211,7 +211,7 @@ EvtScript N(EVS_CloseDoors) = {
     End
 };
 
-EvtScript N(EVS_ReleaseFrom_Door_0) = {
+EvtScript EVS_ReleaseFrom_Door_0 = {
     Call(SetNpcAnimation, NPC_SELF, LVar3)
     Call(SetNpcPos, NPC_SELF, -100, 0, 0)
     Call(RandInt, 40, LVar1)
@@ -223,7 +223,7 @@ EvtScript N(EVS_ReleaseFrom_Door_0) = {
     End
 };
 
-EvtScript N(EVS_ReleaseFrom_Door_1) = {
+EvtScript EVS_ReleaseFrom_Door_1 = {
     Call(SetNpcAnimation, NPC_SELF, LVar3)
     Call(SetNpcPos, NPC_SELF, 0, 0, 0)
     Call(RandInt, 40, LVar1)
@@ -235,7 +235,7 @@ EvtScript N(EVS_ReleaseFrom_Door_1) = {
     End
 };
 
-EvtScript N(EVS_ReleaseFrom_Door_2) = {
+EvtScript EVS_ReleaseFrom_Door_2 = {
     Call(SetNpcAnimation, NPC_SELF, LVar3)
     Call(SetNpcPos, NPC_SELF, 100, 0, 0)
     Call(RandInt, 40, LVar1)
@@ -247,7 +247,7 @@ EvtScript N(EVS_ReleaseFrom_Door_2) = {
     End
 };
 
-EvtScript N(EVS_WithdrawTo_Door_0) = {
+EvtScript EVS_WithdrawTo_Door_0 = {
     Call(SetNpcAnimation, NPC_SELF, LVar3)
     Call(RandInt, 20 * DT, LVar1)
     Add(LVar1, 20 * DT)
@@ -257,7 +257,7 @@ EvtScript N(EVS_WithdrawTo_Door_0) = {
     End
 };
 
-EvtScript N(EVS_WithdrawTo_Door_1) = {
+EvtScript EVS_WithdrawTo_Door_1 = {
     Call(SetNpcAnimation, NPC_SELF, LVar3)
     Call(RandInt, 20 * DT, LVar1)
     Add(LVar1, 20 * DT)
@@ -267,7 +267,7 @@ EvtScript N(EVS_WithdrawTo_Door_1) = {
     End
 };
 
-EvtScript N(EVS_WithdrawTo_Door_2) = {
+EvtScript EVS_WithdrawTo_Door_2 = {
     Call(SetNpcAnimation, NPC_SELF, LVar3)
     Call(RandInt, 20 * DT, LVar1)
     Add(LVar1, 20 * DT)
@@ -277,210 +277,210 @@ EvtScript N(EVS_WithdrawTo_Door_2) = {
     End
 };
 
-EvtScript N(EVS_ReleaseFrom_RandomDoor) = {
+EvtScript EVS_ReleaseFrom_RandomDoor = {
     Call(RandInt, 2, LVar0)
     Switch(LVar0)
         CaseEq(0)
-            ExecWait(N(EVS_ReleaseFrom_Door_0))
+            ExecWait(EVS_ReleaseFrom_Door_0)
         CaseEq(1)
-            ExecWait(N(EVS_ReleaseFrom_Door_1))
+            ExecWait(EVS_ReleaseFrom_Door_1)
         CaseEq(2)
-            ExecWait(N(EVS_ReleaseFrom_Door_2))
+            ExecWait(EVS_ReleaseFrom_Door_2)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_WithdrawTo_RandomDoor) = {
+EvtScript EVS_WithdrawTo_RandomDoor = {
     Call(RandInt, 2, LVar0)
     Switch(LVar0)
         CaseEq(0)
-            ExecWait(N(EVS_WithdrawTo_Door_0))
+            ExecWait(EVS_WithdrawTo_Door_0)
         CaseEq(1)
-            ExecWait(N(EVS_WithdrawTo_Door_1))
+            ExecWait(EVS_WithdrawTo_Door_1)
         CaseEq(2)
-            ExecWait(N(EVS_WithdrawTo_Door_2))
+            ExecWait(EVS_WithdrawTo_Door_2)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Goomba) = {
+EvtScript EVS_NpcIdle_Goomba = {
     Return
     End
 };
 
-EvtScript N(EVS_Release_Goomba) = {
+EvtScript EVS_Release_Goomba = {
     Set(LVar3, ANIM_Goomba_Run)
     Set(LVar4, ANIM_Goomba_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_Short)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_Short))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_Goomba) = {
+EvtScript EVS_Withdraw_Goomba = {
     Set(LVar3, ANIM_Goomba_Run)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy) = {
+EvtScript EVS_NpcIdle_ShyGuy = {
     Return
     End
 };
 
-EvtScript N(EVS_Release_RedShyGuy) = {
+EvtScript EVS_Release_RedShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Red_Dash)
     Set(LVar4, ANIM_ShyGuy_Red_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_RedShyGuy) = {
+EvtScript EVS_Withdraw_RedShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Red_Dash)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Release_RedShyGuy_Door_1) = {
+EvtScript EVS_Release_RedShyGuy_Door_1 = {
     Set(LVar3, ANIM_ShyGuy_Red_Dash)
     Set(LVar4, ANIM_ShyGuy_Red_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_Door_1))
+    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    ExecWait(EVS_ReleaseFrom_Door_1)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_RedShyGuy_Door_1) = {
+EvtScript EVS_Withdraw_RedShyGuy_Door_1 = {
     Set(LVar3, ANIM_ShyGuy_Red_Dash)
-    ExecWait(N(EVS_WithdrawTo_Door_1))
+    ExecWait(EVS_WithdrawTo_Door_1)
     Return
     End
 };
 
-EvtScript N(EVS_Release_BlueShyGuy) = {
+EvtScript EVS_Release_BlueShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Blue_Dash)
     Set(LVar4, ANIM_ShyGuy_Blue_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_BlueShyGuy) = {
+EvtScript EVS_Withdraw_BlueShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Blue_Dash)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Release_BlueShyGuy_Door_2) = {
+EvtScript EVS_Release_BlueShyGuy_Door_2 = {
     Set(LVar3, ANIM_ShyGuy_Blue_Dash)
     Set(LVar4, ANIM_ShyGuy_Blue_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_Door_2))
+    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    ExecWait(EVS_ReleaseFrom_Door_2)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_BlueShyGuy_Door_2) = {
+EvtScript EVS_Withdraw_BlueShyGuy_Door_2 = {
     Set(LVar3, ANIM_ShyGuy_Blue_Dash)
-    ExecWait(N(EVS_WithdrawTo_Door_2))
+    ExecWait(EVS_WithdrawTo_Door_2)
     Return
     End
 };
 
-EvtScript N(EVS_Release_GreenShyGuy) = {
+EvtScript EVS_Release_GreenShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Green_Dash)
     Set(LVar4, ANIM_ShyGuy_Green_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_ShyGuy_Wander))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_GreenShyGuy) = {
+EvtScript EVS_Withdraw_GreenShyGuy = {
     Set(LVar3, ANIM_ShyGuy_Green_Dash)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
+EvtScript EVS_NpcIdle_KoopaTroopa = {
     Return
     End
 };
 
-EvtScript N(EVS_Release_DarkTroopa) = {
+EvtScript EVS_Release_DarkTroopa = {
     Set(LVar3, ANIM_KoopaTroopa_Dark_Run)
     Set(LVar4, ANIM_KoopaTroopa_Dark_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_KoopaTroopa_Wander))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_DarkTroopa) = {
+EvtScript EVS_Withdraw_DarkTroopa = {
     Set(LVar3, ANIM_KoopaTroopa_Dark_Run)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Release_KoopaTroopa) = {
+EvtScript EVS_Release_KoopaTroopa = {
     Set(LVar3, ANIM_KoopaTroopa_Run)
     Set(LVar4, ANIM_KoopaTroopa_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_KoopaTroopa_Wander))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_KoopaTroopa) = {
+EvtScript EVS_Withdraw_KoopaTroopa = {
     Set(LVar3, ANIM_KoopaTroopa_Run)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Bobomb) = {
+EvtScript EVS_NpcIdle_Bobomb = {
     Return
     End
 };
 
-EvtScript N(EVS_Release_Bobomb) = {
+EvtScript EVS_Release_Bobomb = {
     Set(LVar3, ANIM_WorldBobomb_Green_Run)
     Set(LVar4, ANIM_WorldBobomb_Green_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_Short)))
-    ExecWait(N(EVS_ReleaseFrom_RandomDoor))
+    Set(LVar5, Ref(EVS_NpcAI_Short))
+    ExecWait(EVS_ReleaseFrom_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_Bobomb) = {
+EvtScript EVS_Withdraw_Bobomb = {
     Set(LVar3, ANIM_WorldBobomb_Green_Run)
-    ExecWait(N(EVS_WithdrawTo_RandomDoor))
+    ExecWait(EVS_WithdrawTo_RandomDoor)
     Return
     End
 };
 
-EvtScript N(EVS_Release_Bobomb_Door_0) = {
+EvtScript EVS_Release_Bobomb_Door_0 = {
     Set(LVar3, ANIM_WorldBobomb_Green_Run)
     Set(LVar4, ANIM_WorldBobomb_Green_Idle)
-    Set(LVar5, Ref(N(EVS_NpcAI_Short)))
-    ExecWait(N(EVS_ReleaseFrom_Door_0))
+    Set(LVar5, Ref(EVS_NpcAI_Short))
+    ExecWait(EVS_ReleaseFrom_Door_0)
     Return
     End
 };
 
-EvtScript N(EVS_Withdraw_Bobomb_Door_0) = {
+EvtScript EVS_Withdraw_Bobomb_Door_0 = {
     Set(LVar3, ANIM_WorldBobomb_Green_Run)
-    ExecWait(N(EVS_WithdrawTo_Door_0))
+    ExecWait(EVS_WithdrawTo_Door_0)
     Return
     End
 };
@@ -490,237 +490,237 @@ EvtScript N(EVS_Withdraw_Bobomb_Door_0) = {
 #define QS_WAIT(n)  -2, n,
 #define QS_END      -1,
 
-s32 N(QS_Release_Wave_0)[] = {
-    QS_NEXT(NPC_DarkTroopa_01,  N(EVS_Release_DarkTroopa))
+s32 QS_Release_Wave_0[] = {
+    QS_NEXT(NPC_DarkTroopa_01,  EVS_Release_DarkTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Release_Goomba))
+    QS_NEXT(NPC_Goomba_01,      EVS_Release_Goomba)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_DarkTroopa_02,  N(EVS_Release_DarkTroopa))
+    QS_NEXT(NPC_DarkTroopa_02,  EVS_Release_DarkTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_Goomba_02,      N(EVS_Release_Goomba))
+    QS_NEXT(NPC_Goomba_02,      EVS_Release_Goomba)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_Goomba_03,      N(EVS_Release_Goomba))
+    QS_NEXT(NPC_Goomba_03,      EVS_Release_Goomba)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_DarkTroopa_03,  N(EVS_Release_DarkTroopa))
+    QS_NEXT(NPC_DarkTroopa_03,  EVS_Release_DarkTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_Goomba_04,      N(EVS_Release_Goomba))
+    QS_NEXT(NPC_Goomba_04,      EVS_Release_Goomba)
     QS_END
 };
 
-s32 N(QS_Release_Wave_1)[] = {
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Release_RedShyGuy))
+s32 QS_Release_Wave_1[] = {
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Release_RedShyGuy)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Release_RedShyGuy))
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Release_RedShyGuy)
     QS_WAIT(10 * DT)
-    QS_NEXT(NPC_RedShyGuy_03,   N(EVS_Release_RedShyGuy))
+    QS_NEXT(NPC_RedShyGuy_03,   EVS_Release_RedShyGuy)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Release_BlueShyGuy))
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Release_BlueShyGuy)
     QS_WAIT(3 * DT)
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Release_BlueShyGuy))
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Release_BlueShyGuy)
     QS_WAIT(6 * DT)
-    QS_NEXT(NPC_BlueShyGuy_03,  N(EVS_Release_BlueShyGuy))
+    QS_NEXT(NPC_BlueShyGuy_03,  EVS_Release_BlueShyGuy)
     QS_WAIT(7 * DT)
-    QS_NEXT(NPC_BlueShyGuy_04,  N(EVS_Release_BlueShyGuy))
+    QS_NEXT(NPC_BlueShyGuy_04,  EVS_Release_BlueShyGuy)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_GreenShyGuy_01, N(EVS_Release_GreenShyGuy))
+    QS_NEXT(NPC_GreenShyGuy_01, EVS_Release_GreenShyGuy)
     QS_WAIT(4 * DT)
-    QS_NEXT(NPC_GreenShyGuy_02, N(EVS_Release_GreenShyGuy))
+    QS_NEXT(NPC_GreenShyGuy_02, EVS_Release_GreenShyGuy)
     QS_WAIT(6 * DT)
-    QS_NEXT(NPC_GreenShyGuy_03, N(EVS_Release_GreenShyGuy))
+    QS_NEXT(NPC_GreenShyGuy_03, EVS_Release_GreenShyGuy)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_GreenShyGuy_04, N(EVS_Release_GreenShyGuy))
+    QS_NEXT(NPC_GreenShyGuy_04, EVS_Release_GreenShyGuy)
     QS_END
 };
 
-s32 N(QS_Release_Wave_2)[] = {
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Release_RedShyGuy_Door_1))
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Release_BlueShyGuy_Door_2))
-    QS_NEXT(NPC_Bobomb_01,      N(EVS_Release_Bobomb_Door_0))
+s32 QS_Release_Wave_2[] = {
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Release_RedShyGuy_Door_1)
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Release_BlueShyGuy_Door_2)
+    QS_NEXT(NPC_Bobomb_01,      EVS_Release_Bobomb_Door_0)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Release_RedShyGuy_Door_1))
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Release_BlueShyGuy_Door_2))
-    QS_NEXT(NPC_Bobomb_02,      N(EVS_Release_Bobomb_Door_0))
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Release_RedShyGuy_Door_1)
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Release_BlueShyGuy_Door_2)
+    QS_NEXT(NPC_Bobomb_02,      EVS_Release_Bobomb_Door_0)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_BlueShyGuy_03,  N(EVS_Release_BlueShyGuy_Door_2))
+    QS_NEXT(NPC_BlueShyGuy_03,  EVS_Release_BlueShyGuy_Door_2)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_BlueShyGuy_04,  N(EVS_Release_BlueShyGuy_Door_2))
+    QS_NEXT(NPC_BlueShyGuy_04,  EVS_Release_BlueShyGuy_Door_2)
     QS_END
 };
 
-s32 N(QS_Release_Wave_3)[] = {
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Release_Goomba))
+s32 QS_Release_Wave_3[] = {
+    QS_NEXT(NPC_Goomba_01,      EVS_Release_Goomba)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_KoopaTroopa_01, N(EVS_Release_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_02, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_01, EVS_Release_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_02, EVS_Release_KoopaTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Release_BlueShyGuy))
-    QS_NEXT(NPC_GreenShyGuy_01, N(EVS_Release_GreenShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Release_BlueShyGuy))
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Release_BlueShyGuy)
+    QS_NEXT(NPC_GreenShyGuy_01, EVS_Release_GreenShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Release_BlueShyGuy)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_Goomba_02,      N(EVS_Release_Goomba))
-    QS_NEXT(NPC_BlueShyGuy_03,  N(EVS_Release_BlueShyGuy))
+    QS_NEXT(NPC_Goomba_02,      EVS_Release_Goomba)
+    QS_NEXT(NPC_BlueShyGuy_03,  EVS_Release_BlueShyGuy)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_KoopaTroopa_03, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_03, EVS_Release_KoopaTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_KoopaTroopa_04, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_04, EVS_Release_KoopaTroopa)
     QS_END
 };
 
-s32 N(QS_Release_Wave_4)[] = {
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Release_Goomba))
+s32 QS_Release_Wave_4[] = {
+    QS_NEXT(NPC_Goomba_01,      EVS_Release_Goomba)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_KoopaTroopa_01, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_01, EVS_Release_KoopaTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_DarkTroopa_01,  N(EVS_Release_DarkTroopa))
+    QS_NEXT(NPC_DarkTroopa_01,  EVS_Release_DarkTroopa)
     QS_END
 };
 
-s32 N(QS_Release_Wave_5)[] = {
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Release_RedShyGuy))
+s32 QS_Release_Wave_5[] = {
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Release_RedShyGuy)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Release_RedShyGuy))
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Release_RedShyGuy)
     QS_WAIT(4 * DT)
-    QS_NEXT(NPC_GreenShyGuy_01, N(EVS_Release_GreenShyGuy))
+    QS_NEXT(NPC_GreenShyGuy_01, EVS_Release_GreenShyGuy)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_Bobomb_01,      N(EVS_Release_Bobomb))
+    QS_NEXT(NPC_Bobomb_01,      EVS_Release_Bobomb)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_Bobomb_02,      N(EVS_Release_Bobomb))
+    QS_NEXT(NPC_Bobomb_02,      EVS_Release_Bobomb)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_Bobomb_03,      N(EVS_Release_Bobomb))
+    QS_NEXT(NPC_Bobomb_03,      EVS_Release_Bobomb)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_KoopaTroopa_01, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_01, EVS_Release_KoopaTroopa)
     QS_WAIT(10 * DT)
-    QS_NEXT(NPC_KoopaTroopa_02, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_02, EVS_Release_KoopaTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_KoopaTroopa_03, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_03, EVS_Release_KoopaTroopa)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_KoopaTroopa_04, N(EVS_Release_KoopaTroopa))
+    QS_NEXT(NPC_KoopaTroopa_04, EVS_Release_KoopaTroopa)
     QS_END
 };
 
-s32 N(QS_Release_Wave_6)[] = {
-    QS_NEXT(NPC_DarkTroopa_01,  N(EVS_Release_DarkTroopa))
+s32 QS_Release_Wave_6[] = {
+    QS_NEXT(NPC_DarkTroopa_01,  EVS_Release_DarkTroopa)
     QS_WAIT(10 * DT)
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Release_BlueShyGuy))
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Release_Goomba))
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Release_BlueShyGuy)
+    QS_NEXT(NPC_Goomba_01,      EVS_Release_Goomba)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Release_BlueShyGuy))
-    QS_NEXT(NPC_Goomba_02,      N(EVS_Release_Goomba))
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Release_BlueShyGuy)
+    QS_NEXT(NPC_Goomba_02,      EVS_Release_Goomba)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_Goomba_03,      N(EVS_Release_Goomba))
-    QS_NEXT(NPC_DarkTroopa_02,  N(EVS_Release_DarkTroopa))
+    QS_NEXT(NPC_Goomba_03,      EVS_Release_Goomba)
+    QS_NEXT(NPC_DarkTroopa_02,  EVS_Release_DarkTroopa)
     QS_WAIT(8 * DT)
-    QS_NEXT(NPC_DarkTroopa_03,  N(EVS_Release_DarkTroopa))
+    QS_NEXT(NPC_DarkTroopa_03,  EVS_Release_DarkTroopa)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Release_RedShyGuy))
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Release_RedShyGuy)
     QS_WAIT(5 * DT)
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Release_RedShyGuy))
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Release_RedShyGuy)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_0)[] = {
-    QS_NEXT(NPC_DarkTroopa_01,  N(EVS_Withdraw_DarkTroopa))
-    QS_NEXT(NPC_DarkTroopa_02,  N(EVS_Withdraw_DarkTroopa))
-    QS_NEXT(NPC_DarkTroopa_03,  N(EVS_Withdraw_DarkTroopa))
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_Goomba_02,      N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_Goomba_03,      N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_Goomba_04,      N(EVS_Withdraw_Goomba))
+s32 QS_Withdraw_Wave_0[] = {
+    QS_NEXT(NPC_DarkTroopa_01,  EVS_Withdraw_DarkTroopa)
+    QS_NEXT(NPC_DarkTroopa_02,  EVS_Withdraw_DarkTroopa)
+    QS_NEXT(NPC_DarkTroopa_03,  EVS_Withdraw_DarkTroopa)
+    QS_NEXT(NPC_Goomba_01,      EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_Goomba_02,      EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_Goomba_03,      EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_Goomba_04,      EVS_Withdraw_Goomba)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_1)[] = {
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Withdraw_RedShyGuy))
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Withdraw_RedShyGuy))
-    QS_NEXT(NPC_RedShyGuy_03,   N(EVS_Withdraw_RedShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_03,  N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_04,  N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_GreenShyGuy_01, N(EVS_Withdraw_GreenShyGuy))
-    QS_NEXT(NPC_GreenShyGuy_02, N(EVS_Withdraw_GreenShyGuy))
-    QS_NEXT(NPC_GreenShyGuy_03, N(EVS_Withdraw_GreenShyGuy))
-    QS_NEXT(NPC_GreenShyGuy_04, N(EVS_Withdraw_GreenShyGuy))
+s32 QS_Withdraw_Wave_1[] = {
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Withdraw_RedShyGuy)
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Withdraw_RedShyGuy)
+    QS_NEXT(NPC_RedShyGuy_03,   EVS_Withdraw_RedShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_03,  EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_04,  EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_GreenShyGuy_01, EVS_Withdraw_GreenShyGuy)
+    QS_NEXT(NPC_GreenShyGuy_02, EVS_Withdraw_GreenShyGuy)
+    QS_NEXT(NPC_GreenShyGuy_03, EVS_Withdraw_GreenShyGuy)
+    QS_NEXT(NPC_GreenShyGuy_04, EVS_Withdraw_GreenShyGuy)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_2)[] = {
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Withdraw_RedShyGuy_Door_1))
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Withdraw_RedShyGuy_Door_1))
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Withdraw_BlueShyGuy_Door_2))
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Withdraw_BlueShyGuy_Door_2))
-    QS_NEXT(NPC_BlueShyGuy_03,  N(EVS_Withdraw_BlueShyGuy_Door_2))
-    QS_NEXT(NPC_BlueShyGuy_04,  N(EVS_Withdraw_BlueShyGuy_Door_2))
-    QS_NEXT(NPC_Bobomb_01,      N(EVS_Withdraw_Bobomb_Door_0))
-    QS_NEXT(NPC_Bobomb_02,      N(EVS_Withdraw_Bobomb_Door_0))
+s32 QS_Withdraw_Wave_2[] = {
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Withdraw_RedShyGuy_Door_1)
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Withdraw_RedShyGuy_Door_1)
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Withdraw_BlueShyGuy_Door_2)
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Withdraw_BlueShyGuy_Door_2)
+    QS_NEXT(NPC_BlueShyGuy_03,  EVS_Withdraw_BlueShyGuy_Door_2)
+    QS_NEXT(NPC_BlueShyGuy_04,  EVS_Withdraw_BlueShyGuy_Door_2)
+    QS_NEXT(NPC_Bobomb_01,      EVS_Withdraw_Bobomb_Door_0)
+    QS_NEXT(NPC_Bobomb_02,      EVS_Withdraw_Bobomb_Door_0)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_3)[] = {
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_Goomba_02,      N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_KoopaTroopa_01, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_02, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_03, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_04, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_GreenShyGuy_01, N(EVS_Withdraw_GreenShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_01,  N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_02,  N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_03,  N(EVS_Withdraw_BlueShyGuy))
+s32 QS_Withdraw_Wave_3[] = {
+    QS_NEXT(NPC_Goomba_01,      EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_Goomba_02,      EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_KoopaTroopa_01, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_02, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_03, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_04, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_GreenShyGuy_01, EVS_Withdraw_GreenShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_01,  EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_02,  EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_03,  EVS_Withdraw_BlueShyGuy)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_4)[] = {
-    QS_NEXT(NPC_Goomba_01,      N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_KoopaTroopa_01, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_DarkTroopa_01,  N(EVS_Withdraw_DarkTroopa))
+s32 QS_Withdraw_Wave_4[] = {
+    QS_NEXT(NPC_Goomba_01,      EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_KoopaTroopa_01, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_DarkTroopa_01,  EVS_Withdraw_DarkTroopa)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_5)[] = {
-    QS_NEXT(NPC_RedShyGuy_01,   N(EVS_Withdraw_RedShyGuy))
-    QS_NEXT(NPC_RedShyGuy_02,   N(EVS_Withdraw_RedShyGuy))
-    QS_NEXT(NPC_GreenShyGuy_01, N(EVS_Withdraw_GreenShyGuy))
-    QS_NEXT(NPC_Bobomb_01,      N(EVS_Withdraw_Bobomb))
-    QS_NEXT(NPC_Bobomb_02,      N(EVS_Withdraw_Bobomb))
-    QS_NEXT(NPC_Bobomb_03,      N(EVS_Withdraw_Bobomb))
-    QS_NEXT(NPC_KoopaTroopa_01, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_02, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_03, N(EVS_Withdraw_KoopaTroopa))
-    QS_NEXT(NPC_KoopaTroopa_04, N(EVS_Withdraw_KoopaTroopa))
+s32 QS_Withdraw_Wave_5[] = {
+    QS_NEXT(NPC_RedShyGuy_01,   EVS_Withdraw_RedShyGuy)
+    QS_NEXT(NPC_RedShyGuy_02,   EVS_Withdraw_RedShyGuy)
+    QS_NEXT(NPC_GreenShyGuy_01, EVS_Withdraw_GreenShyGuy)
+    QS_NEXT(NPC_Bobomb_01,      EVS_Withdraw_Bobomb)
+    QS_NEXT(NPC_Bobomb_02,      EVS_Withdraw_Bobomb)
+    QS_NEXT(NPC_Bobomb_03,      EVS_Withdraw_Bobomb)
+    QS_NEXT(NPC_KoopaTroopa_01, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_02, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_03, EVS_Withdraw_KoopaTroopa)
+    QS_NEXT(NPC_KoopaTroopa_04, EVS_Withdraw_KoopaTroopa)
     QS_END
 };
 
-s32 N(QS_Withdraw_Wave_6)[] = {
-    QS_NEXT(NPC_DarkTroopa_01, N(EVS_Withdraw_DarkTroopa))
-    QS_NEXT(NPC_DarkTroopa_02, N(EVS_Withdraw_DarkTroopa))
-    QS_NEXT(NPC_DarkTroopa_03, N(EVS_Withdraw_DarkTroopa))
-    QS_NEXT(NPC_BlueShyGuy_01, N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_BlueShyGuy_02, N(EVS_Withdraw_BlueShyGuy))
-    QS_NEXT(NPC_Goomba_01,     N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_Goomba_02,     N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_Goomba_03,     N(EVS_Withdraw_Goomba))
-    QS_NEXT(NPC_RedShyGuy_01,  N(EVS_Withdraw_RedShyGuy))
-    QS_NEXT(NPC_RedShyGuy_02,  N(EVS_Withdraw_RedShyGuy))
+s32 QS_Withdraw_Wave_6[] = {
+    QS_NEXT(NPC_DarkTroopa_01, EVS_Withdraw_DarkTroopa)
+    QS_NEXT(NPC_DarkTroopa_02, EVS_Withdraw_DarkTroopa)
+    QS_NEXT(NPC_DarkTroopa_03, EVS_Withdraw_DarkTroopa)
+    QS_NEXT(NPC_BlueShyGuy_01, EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_BlueShyGuy_02, EVS_Withdraw_BlueShyGuy)
+    QS_NEXT(NPC_Goomba_01,     EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_Goomba_02,     EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_Goomba_03,     EVS_Withdraw_Goomba)
+    QS_NEXT(NPC_RedShyGuy_01,  EVS_Withdraw_RedShyGuy)
+    QS_NEXT(NPC_RedShyGuy_02,  EVS_Withdraw_RedShyGuy)
     QS_END
 };
 
-EvtScript N(EVS_Release_Wave) = {
+EvtScript EVS_Release_Wave = {
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
-            UseBuf(Ref(N(QS_Release_Wave_0)))
+            UseBuf(Ref(QS_Release_Wave_0))
         CaseEq(1)
-            UseBuf(Ref(N(QS_Release_Wave_1)))
+            UseBuf(Ref(QS_Release_Wave_1))
         CaseEq(2)
-            UseBuf(Ref(N(QS_Release_Wave_2)))
+            UseBuf(Ref(QS_Release_Wave_2))
         CaseEq(3)
-            UseBuf(Ref(N(QS_Release_Wave_3)))
+            UseBuf(Ref(QS_Release_Wave_3))
         CaseEq(4)
-            UseBuf(Ref(N(QS_Release_Wave_4)))
+            UseBuf(Ref(QS_Release_Wave_4))
         CaseEq(5)
-            UseBuf(Ref(N(QS_Release_Wave_5)))
+            UseBuf(Ref(QS_Release_Wave_5))
         CaseEq(6)
-            UseBuf(Ref(N(QS_Release_Wave_6)))
+            UseBuf(Ref(QS_Release_Wave_6))
     EndSwitch
     Loop(0)
         BufRead2(LVarA, LVarB)
@@ -737,22 +737,22 @@ EvtScript N(EVS_Release_Wave) = {
     End
 };
 
-EvtScript N(EVS_Withdraw_Wave) = {
+EvtScript EVS_Withdraw_Wave = {
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
-            UseBuf(Ref(N(QS_Withdraw_Wave_0)))
+            UseBuf(Ref(QS_Withdraw_Wave_0))
         CaseEq(1)
-            UseBuf(Ref(N(QS_Withdraw_Wave_1)))
+            UseBuf(Ref(QS_Withdraw_Wave_1))
         CaseEq(2)
-            UseBuf(Ref(N(QS_Withdraw_Wave_2)))
+            UseBuf(Ref(QS_Withdraw_Wave_2))
         CaseEq(3)
-            UseBuf(Ref(N(QS_Withdraw_Wave_3)))
+            UseBuf(Ref(QS_Withdraw_Wave_3))
         CaseEq(4)
-            UseBuf(Ref(N(QS_Withdraw_Wave_4)))
+            UseBuf(Ref(QS_Withdraw_Wave_4))
         CaseEq(5)
-            UseBuf(Ref(N(QS_Withdraw_Wave_5)))
+            UseBuf(Ref(QS_Withdraw_Wave_5))
         CaseEq(6)
-            UseBuf(Ref(N(QS_Withdraw_Wave_6)))
+            UseBuf(Ref(QS_Withdraw_Wave_6))
     EndSwitch
     Loop(0)
         BufRead2(LVarA, LVarB)
@@ -769,8 +769,8 @@ EvtScript N(EVS_Withdraw_Wave) = {
     End
 };
 
-EvtScript N(EVS_AskQuestion) = {
-    ExecWait(N(EVS_SetCam_AskQuestion))
+EvtScript EVS_AskQuestion = {
+    ExecWait(EVS_SetCam_AskQuestion)
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0035)
@@ -835,7 +835,7 @@ EvtScript N(EVS_AskQuestion) = {
     End
 };
 
-EvtScript N(EVS_ShowUnknownCard) = {
+EvtScript EVS_ShowUnknownCard = {
     Call(EnableModel, MODEL_m_, true)
     Call(MakeLerp, 180, LVar0, 60 * DT, EASING_QUADRATIC_IN)
     Loop(0)
@@ -856,7 +856,7 @@ EvtScript N(EVS_ShowUnknownCard) = {
     End
 };
 
-EvtScript N(EVS_TetherResultCardToDummyPos) = {
+EvtScript EVS_TetherResultCardToDummyPos = {
     Loop(0)
         Call(GetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
         Sub(LVar0, 0)
@@ -872,7 +872,7 @@ EvtScript N(EVS_TetherResultCardToDummyPos) = {
     End
 };
 
-EvtScript N(EVS_ScaleResultCard) = {
+EvtScript EVS_ScaleResultCard = {
     Call(EnableModel, LVarA, true)
     Call(MakeLerp, 100, 50, 30 * DT, EASING_LINEAR)
     Loop(0)
@@ -889,11 +889,11 @@ EvtScript N(EVS_ScaleResultCard) = {
     End
 };
 
-EvtScript N(EVS_MoveCardToScoreboard) = {
+EvtScript EVS_MoveCardToScoreboard = {
     Call(EnableModel, LVarA, true)
     Call(SetNpcPos, NPC_Dummy, 0, 130, 50)
-    ExecGetTID(N(EVS_TetherResultCardToDummyPos), LVarB)
-    Exec(N(EVS_ScaleResultCard))
+    ExecGetTID(EVS_TetherResultCardToDummyPos, LVarB)
+    Exec(EVS_ScaleResultCard)
     Wait(1)
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
@@ -933,7 +933,7 @@ EvtScript N(EVS_MoveCardToScoreboard) = {
     End
 };
 
-EvtScript N(EVS_GetCorrectScoreboardModel) = {
+EvtScript EVS_GetCorrectScoreboardModel = {
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
             Set(LVar0, MODEL_m1)
@@ -954,7 +954,7 @@ EvtScript N(EVS_GetCorrectScoreboardModel) = {
     End
 };
 
-EvtScript N(EVS_GetWrongScoreboardModel) = {
+EvtScript EVS_GetWrongScoreboardModel = {
     Switch(AB_KPA82_QuizRound)
         CaseEq(0)
             Set(LVar0, MODEL_b1)
@@ -975,41 +975,41 @@ EvtScript N(EVS_GetWrongScoreboardModel) = {
     End
 };
 
-EvtScript N(EVS_ShowResultCard) = {
+EvtScript EVS_ShowResultCard = {
     Set(LVar6, Float(2.0 / DT))
-    ExecWait(N(EVS_SetCam_ViewRoom))
+    ExecWait(EVS_SetCam_ViewRoom)
     Wait(5)
     IfEq(MV_LastAnswerResult, ANSWER_CORRECT)
         Set(LVar0, 2160)
-        ExecWait(N(EVS_ShowUnknownCard))
+        ExecWait(EVS_ShowUnknownCard)
         Call(PlaySound, SOUND_APPROVE)
         Wait(10 * DT)
         Call(EnableGroup, MODEL_g47, false)
         Set(LVarA, MODEL_m_kai)
-        ExecWait(N(EVS_MoveCardToScoreboard))
-        ExecWait(N(EVS_GetCorrectScoreboardModel))
+        ExecWait(EVS_MoveCardToScoreboard)
+        ExecWait(EVS_GetCorrectScoreboardModel)
         Call(EnableModel, MODEL_m_kai, false)
         Call(EnableModel, LVar0, true)
         Wait(30 * DT)
     Else
         Set(LVar0, 2340)
-        ExecWait(N(EVS_ShowUnknownCard))
+        ExecWait(EVS_ShowUnknownCard)
         Call(PlaySound, SOUND_MENU_ERROR)
         Wait(10 * DT)
         Call(EnableGroup, MODEL_g47, false)
         Set(LVarA, MODEL_b_kai)
-        ExecWait(N(EVS_MoveCardToScoreboard))
-        ExecWait(N(EVS_GetWrongScoreboardModel))
+        ExecWait(EVS_MoveCardToScoreboard)
+        ExecWait(EVS_GetWrongScoreboardModel)
         Call(EnableModel, MODEL_b_kai, false)
         Call(EnableModel, LVar0, true)
         Wait(30 * DT)
     EndIf
-    ExecWait(N(EVS_SetCam_AfterResult))
+    ExecWait(EVS_SetCam_AfterResult)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Door) = {
+EvtScript EVS_NpcIdle_Door = {
     Label(1)
         Wait(1)
         IfEq(GF_KPA82_PassedThroughDoor, false)
@@ -1017,7 +1017,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         EndIf
     Set(GF_KPA82_PassedThroughDoor, false)
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_SetCam_MeetingDoor))
+    ExecWait(EVS_SetCam_MeetingDoor)
     Set(MF_Sync_MusicChange, false)
     Thread
         Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -1030,7 +1030,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         IfNe(MF_Sync_MusicChange, false)
             Goto(5)
         EndIf
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Label(5)
     EndThread
     IfEq(GF_KPA82_SpokeToDoor, false)
@@ -1079,22 +1079,22 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Set(AB_KPA82_WrongAnswers, 0)
     Label(10)
         Set(LVar6, Float(2.0 / DT))
-        ExecWait(N(EVS_SetCam_ViewRoom))
+        ExecWait(EVS_SetCam_ViewRoom)
         Set(MF_Sync_MusicChange, true)
         Wait(2)
         Call(SetMusic, 0, SONG_NORMAL_BATTLE, 0, VOL_LEVEL_FULL)
-        ExecWait(N(EVS_SetDoorRots))
-        ExecWait(N(EVS_Release_Wave))
+        ExecWait(EVS_SetDoorRots)
+        ExecWait(EVS_Release_Wave)
         Wait(200 * DT)
         Thread
             Call(ShowMessageAtScreenPos, MSG_CH8_0034, 300, 200)
             Set(MV_Sync_TimesUp, true)
         EndThread
         Wait(60 * DT)
-        ExecWait(N(EVS_Withdraw_Wave))
+        ExecWait(EVS_Withdraw_Wave)
         Wait(35 * DT)
-        ExecWait(N(EVS_CloseDoors))
-        Exec(N(EVS_SetupMusic))
+        ExecWait(EVS_CloseDoors)
+        Exec(EVS_SetupMusic)
         Wait(30 * DT)
         Label(12)
             Wait(1)
@@ -1102,8 +1102,8 @@ EvtScript N(EVS_NpcIdle_Door) = {
                 Goto(12)
             EndIf
         Set(MV_Sync_TimesUp, false)
-        ExecWait(N(EVS_AskQuestion))
-        ExecWait(N(EVS_ShowResultCard))
+        ExecWait(EVS_AskQuestion)
+        ExecWait(EVS_ShowResultCard)
         IfEq(MV_LastAnswerResult, ANSWER_CORRECT)
             Add(AB_KPA82_RightAnswers, 1)
             IfEq(AB_KPA82_RightAnswers, 5)
@@ -1131,18 +1131,18 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Label(20)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0041)
     Set(LVar6, Float(2.0 / DT))
-    ExecWait(N(EVS_SetCam_ViewRoom))
+    ExecWait(EVS_SetCam_ViewRoom)
     Call(SetNpcPos, NPC_AntiGuy_01, -100, 0, 0)
     Call(SetNpcPos, NPC_AntiGuy_02, 0, 0, 0)
     Call(SetNpcPos, NPC_AntiGuy_03, 100, 0, 0)
     Call(InterpPlayerYaw, 315, 0)
     Call(InterpNpcYaw, NPC_PARTNER, 315, 0)
-    ExecWait(N(EVS_SetDoorRots))
+    ExecWait(EVS_SetDoorRots)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0042)
     Call(PlayerFaceNpc, NPC_AntiGuy_02, 5)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_SetCam_BeforeBattle))
+    ExecWait(EVS_SetCam_BeforeBattle)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Thread
         Call(SetNpcAnimation, NPC_AntiGuy_01, ANIM_ShyGuy_Black_Dash)
@@ -1159,7 +1159,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
-    ExecWait(N(EVS_SetCam_AfterBattle))
+    ExecWait(EVS_SetCam_AfterBattle)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Idle, ANIM_ShyGuy_Black_Idle, 0, MSG_CH8_0043)
     Goto(40)
     Label(30)
@@ -1185,12 +1185,12 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_KPA82_BowserDoorState, 1)
     Call(DisablePlayerInput, false)
-    BindTrigger(Ref(N(EVS_ExitDoors_kpa_61_0)), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kpa_61_0), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Door) = {
+EvtScript EVS_NpcDefeat_Door = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -1212,11 +1212,11 @@ EvtScript N(EVS_NpcDefeat_Door) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Door) = {
+EvtScript EVS_NpcInit_Door = {
     IfEq(GB_KPA82_BowserDoorState, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Door))
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Door)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Door))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
@@ -1224,39 +1224,39 @@ EvtScript N(EVS_NpcInit_Door) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Goomba) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomba)))
+EvtScript EVS_NpcInit_Goomba = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy)))
+EvtScript EVS_NpcInit_ShyGuy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa)))
+EvtScript EVS_NpcInit_KoopaTroopa = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Bobomb)))
+EvtScript EVS_NpcInit_Bobomb = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bobomb))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_AntiGuy) = {
+EvtScript EVS_NpcInit_AntiGuy = {
     Return
     End
 };
@@ -1292,13 +1292,13 @@ EvtScript N(EVS_NpcInit_AntiGuy) = {
     | ENEMY_FLAG_IGNORE_JUMP \
     )
 
-NpcData N(NpcData_AntiGuys)[] = {
+NpcData NpcData_AntiGuys[] = {
     {
         .id = NPC_Dummy,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Door),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_Door,
+        .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_DOOR_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1307,8 +1307,8 @@ NpcData N(NpcData_AntiGuys)[] = {
         .id = NPC_AntiGuy_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_AntiGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_AntiGuy,
+        .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1317,8 +1317,8 @@ NpcData N(NpcData_AntiGuys)[] = {
         .id = NPC_AntiGuy_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_AntiGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_AntiGuy,
+        .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1327,8 +1327,8 @@ NpcData N(NpcData_AntiGuys)[] = {
         .id = NPC_AntiGuy_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_AntiGuy),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_AntiGuy,
+        .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = ANTI_GUY_ANIMS,
@@ -1350,7 +1350,7 @@ NpcData N(NpcData_AntiGuys)[] = {
     | ENEMY_FLAG_IGNORE_JUMP \
     )
 
-NpcData N(NpcData_Goombas)[] = {
+NpcData NpcData_Goombas[] = {
     {
         .id = NPC_Goomba_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -1367,8 +1367,8 @@ NpcData N(NpcData_Goombas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Goomba),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Goomba,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = GOOMBA_DROPS,
         .animations = GOOMBA_ANIMS,
@@ -1389,8 +1389,8 @@ NpcData N(NpcData_Goombas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Goomba),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Goomba,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = GOOMBA_DROPS,
         .animations = GOOMBA_ANIMS,
@@ -1411,8 +1411,8 @@ NpcData N(NpcData_Goombas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Goomba),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Goomba,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = GOOMBA_DROPS,
         .animations = GOOMBA_ANIMS,
@@ -1433,8 +1433,8 @@ NpcData N(NpcData_Goombas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Goomba),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Goomba,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = GOOMBA_DROPS,
         .animations = GOOMBA_ANIMS,
@@ -1455,15 +1455,15 @@ NpcData N(NpcData_Goombas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Goomba),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Goomba,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = GOOMBA_DROPS,
         .animations = GOOMBA_ANIMS,
     },
 };
 
-NpcData N(NpcData_RedShyGuys)[] = {
+NpcData NpcData_RedShyGuys[] = {
     {
         .id = NPC_RedShyGuy_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -1480,8 +1480,8 @@ NpcData N(NpcData_RedShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1502,8 +1502,8 @@ NpcData N(NpcData_RedShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1524,8 +1524,8 @@ NpcData N(NpcData_RedShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1546,8 +1546,8 @@ NpcData N(NpcData_RedShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -1568,15 +1568,15 @@ NpcData N(NpcData_RedShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
 };
 
-NpcData N(NpcData_BlueShyGuys)[] = {
+NpcData NpcData_BlueShyGuys[] = {
     {
         .id = NPC_BlueShyGuy_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -1593,8 +1593,8 @@ NpcData N(NpcData_BlueShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1615,8 +1615,8 @@ NpcData N(NpcData_BlueShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1637,8 +1637,8 @@ NpcData N(NpcData_BlueShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1659,8 +1659,8 @@ NpcData N(NpcData_BlueShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
@@ -1681,15 +1681,15 @@ NpcData N(NpcData_BlueShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = BLUE_SHY_GUY_ANIMS,
     },
 };
 
-NpcData N(NpcData_GreenShyGuys)[] = {
+NpcData NpcData_GreenShyGuys[] = {
     {
         .id = NPC_GreenShyGuy_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -1706,8 +1706,8 @@ NpcData N(NpcData_GreenShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1728,8 +1728,8 @@ NpcData N(NpcData_GreenShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1750,8 +1750,8 @@ NpcData N(NpcData_GreenShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1772,8 +1772,8 @@ NpcData N(NpcData_GreenShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
@@ -1794,15 +1794,15 @@ NpcData N(NpcData_GreenShyGuys)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_ShyGuy),
-        .settings = &N(NpcSettings_ShyGuy_Wander),
+        .init = &EVS_NpcInit_ShyGuy,
+        .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = SHY_GUY_DROPS,
         .animations = GREEN_SHY_GUY_ANIMS,
     },
 };
 
-NpcData N(NpcData_DarkTroopas)[] = {
+NpcData NpcData_DarkTroopas[] = {
     {
         .id = NPC_DarkTroopa_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -1819,8 +1819,8 @@ NpcData N(NpcData_DarkTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1841,8 +1841,8 @@ NpcData N(NpcData_DarkTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1863,8 +1863,8 @@ NpcData N(NpcData_DarkTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1885,8 +1885,8 @@ NpcData N(NpcData_DarkTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
@@ -1907,15 +1907,15 @@ NpcData N(NpcData_DarkTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = DARK_TROOPA_ANIMS,
     },
 };
 
-NpcData N(NpcData_KoopaTroopas)[] = {
+NpcData NpcData_KoopaTroopas[] = {
     {
         .id = NPC_KoopaTroopa_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -1932,8 +1932,8 @@ NpcData N(NpcData_KoopaTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -1954,8 +1954,8 @@ NpcData N(NpcData_KoopaTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -1976,8 +1976,8 @@ NpcData N(NpcData_KoopaTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -1998,8 +1998,8 @@ NpcData N(NpcData_KoopaTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
@@ -2020,15 +2020,15 @@ NpcData N(NpcData_KoopaTroopas)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa_Wander),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = KOOPA_TROOPA_NOK_DROPS,
         .animations = KOOPA_TROOPA_ANIMS,
     },
 };
 
-NpcData N(NpcData_Bobombs)[] = {
+NpcData NpcData_Bobombs[] = {
     {
         .id = NPC_Bobomb_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -2045,8 +2045,8 @@ NpcData N(NpcData_Bobombs)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bobomb),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Bobomb,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -2067,8 +2067,8 @@ NpcData N(NpcData_Bobombs)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bobomb),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Bobomb,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -2089,8 +2089,8 @@ NpcData N(NpcData_Bobombs)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bobomb),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Bobomb,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -2111,8 +2111,8 @@ NpcData N(NpcData_Bobombs)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bobomb),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Bobomb,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -2133,22 +2133,22 @@ NpcData N(NpcData_Bobombs)[] = {
                 .detectSize = { 130, 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bobomb),
-        .settings = &N(NpcSettings_Short),
+        .init = &EVS_NpcInit_Bobomb,
+        .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_AntiGuys), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_Goombas), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_RedShyGuys), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_BlueShyGuys), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_GreenShyGuys), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_DarkTroopas), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_KoopaTroopas), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(N(NpcData_Bobombs), BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_AntiGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_Goombas, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_RedShyGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_BlueShyGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_GreenShyGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_DarkTroopas, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_KoopaTroopas, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_Bobombs, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
     {}
 };

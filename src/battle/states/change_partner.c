@@ -116,6 +116,9 @@ void btl_state_update_change_partner(void) {
                 break;
             }
             btl_delete_actor(partner);
+            if (battleStatus->partnerActor != nullptr) {
+                break;
+            }
             gPlayerData.curPartner = battleStatus->lastSelectedPartner;
             load_partner_actor();
             partner = battleStatus->partnerActor;

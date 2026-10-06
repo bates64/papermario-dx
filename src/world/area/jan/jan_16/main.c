@@ -1,19 +1,19 @@
 #include "jan_16.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitWalk_jan_15_1) = EVT_EXIT_WALK(60, jan_16_ENTRY_0, "jan_15", jan_15_ENTRY_1);
-EvtScript N(EVS_ExitWalk_jan_22_1) = EVT_EXIT_WALK(60, jan_16_ENTRY_1, "jan_22", jan_22_ENTRY_1);
-EvtScript N(EVS_ExitWalk_jan_17_0) = EVT_EXIT_WALK(60, jan_16_ENTRY_2, "jan_17", jan_17_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_15_1 = EVT_EXIT_WALK(60, jan_16_ENTRY_0, "jan_15", jan_15_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_22_1 = EVT_EXIT_WALK(60, jan_16_ENTRY_1, "jan_22", jan_22_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_17_0 = EVT_EXIT_WALK(60, jan_16_ENTRY_2, "jan_17", jan_17_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_jan_15_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_jan_22_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_jan_17_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_o83, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_jan_15_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_jan_22_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_jan_17_0), TRIGGER_FLOOR_ABOVE, COLLIDER_o83, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SpawnButterflies) = {
+EvtScript EVS_SpawnButterflies = {
     IfNe(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         PlayEffect(EFFECT_BUTTERFLIES, 5, -310, 10, 0)
         PlayEffect(EFFECT_BUTTERFLIES, 5, -210, 10, 240)
@@ -29,7 +29,7 @@ EvtScript N(EVS_SpawnButterflies) = {
 // represent branch wobble with a damped spring system
 // provide impulses with MV_BranchWobbleVel and the scale of MODEL_g47 with be
 // modulated by the displacement of the 'spring'
-EvtScript N(EVS_UpdateBranchWobble) = {
+EvtScript EVS_UpdateBranchWobble = {
     SetF(LVarA, Float(0.0)) // system "displacement"
     Loop(0)
         // scaleX = 1.0 - 0.02 * vel
@@ -56,8 +56,8 @@ EvtScript N(EVS_UpdateBranchWobble) = {
     End
 };
 
-EvtScript N(EVS_EnterFalling) = {
-    Exec(N(EVS_UpdateBranchWobble))
+EvtScript EVS_EnterFalling = {
+    Exec(EVS_UpdateBranchWobble)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -126,26 +126,26 @@ EvtScript N(EVS_EnterFalling) = {
 };
 
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_Scene_ReachedRaphaelsTree))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_Scene_ReachedRaphaelsTree)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_16_ENTRY_4)
-        Exec(N(EVS_EnterFalling))
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_EnterFalling)
+        Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
     EndIf
-    ExecWait(N(EVS_SetupMusic))
-    Exec(N(EVS_SetupBushes))
-    Exec(N(EVS_SpawnButterflies))
+    ExecWait(EVS_SetupMusic)
+    Exec(EVS_SetupBushes)
+    Exec(EVS_SpawnButterflies)
     Call(SetModelTintMode, APPLY_TINT_MODELS, -1, ENV_TINT_REMAP)
     Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
     Call(SetModelTintParams, ENV_TINT_REMAP, 255, 255, 255, 0, 0, 25, 0, 0, 0)

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "entity.h"
@@ -6,11 +7,7 @@
 #include "sprite/player.h"
 #include "include_asset.h"
 
-#define NAMESPACE battle_item_insecticide_herb
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_72A98C)) {
+API_CALLABLE(func_802A123C_72A98C) {
     Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target = get_actor(enemy->targetActorID);
 
@@ -19,7 +16,7 @@ API_CALLABLE(N(func_802A123C_72A98C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A1280_72A9D0)) {
+API_CALLABLE(func_802A1280_72A9D0) {
     Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target;
 
@@ -30,7 +27,7 @@ API_CALLABLE(N(func_802A1280_72A9D0)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A12E0_72AA30)) {
+API_CALLABLE(func_802A12E0_72AA30) {
     Bytecode* args = script->ptrReadPos;
     f32 a = evt_get_variable(script, *args++);
     f32 b = evt_get_variable(script, *args++);
@@ -54,19 +51,18 @@ API_CALLABLE(N(func_802A12E0_72AA30)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/insecticide_herb.png.h"
 INCLUDE_IMG("battle/move/item/insecticide_herb.png", battle_item_insecticide_herb_png);
 INCLUDE_PAL("battle/move/item/insecticide_herb.pal", battle_item_insecticide_herb_pal);
 
-Vtx N(model)[] = {
+Vtx model[] = {
     { .v = { .ob = {-16, -16, 0}, false, .tc = {0,    0},    .cn = {0, 0, 0, 255} } },
     { .v = { .ob = {15,  -16, 0}, false, .tc = {1024, 0},    .cn = {0, 0, 0, 255} } },
     { .v = { .ob = {15,  15,  0}, false, .tc = {1024, 1024}, .cn = {0, 0, 0, 255} } },
     { .v = { .ob = {-16, 15,  0}, false, .tc = {0,    1024}, .cn = {0, 0, 0, 255} } },
 };
 
-Gfx N(displayList)[] = {
+Gfx displayList[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -81,24 +77,24 @@ Gfx N(displayList)[] = {
     gsDPLoadTextureTile_4b(battle_item_insecticide_herb_png, G_IM_FMT_CI, battle_item_insecticide_herb_png_width, battle_item_insecticide_herb_png_height, 0, 0, battle_item_insecticide_herb_png_width - 1, battle_item_insecticide_herb_png_height - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPVertex(N(model), ARRAY_COUNT(N(model)), 0),
+    gsSPVertex(model, ARRAY_COUNT(model), 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSP1Triangle(0, 2, 3, 0),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
 
-EntityModelScript N(modelCommandList) = STANDARD_ENTITY_MODEL_SCRIPT(N(displayList), RENDER_MODE_ALPHATEST);
+EntityModelScript modelCommandList = STANDARD_ENTITY_MODEL_SCRIPT(displayList, RENDER_MODE_ALPHATEST);
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_INSECTICIDE_HERB)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(MoveBattleCamOver, 15)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Call(PlaySound, SOUND_THROW)
     Wait(3)
-    Call(CreateVirtualEntity, LVarA, Ref(N(modelCommandList)))
+    Call(CreateVirtualEntity, LVarA, Ref(modelCommandList))
     SetF(LVar0, Float(1.0))
     Call(MultiplyByActorScale, LVar0)
     Call(SetVirtualEntityScale, LVarA, LVar0, LVar0, LVar0)
@@ -125,30 +121,34 @@ EvtScript N(EVS_UseItem) = {
     Call(SetVirtualEntityJumpGravity, LVarA, Float(0.8))
     Add(LVar2, 5)
     Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 18)
-    PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)
     Sub(LVar0, 10)
-    PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)
     Add(LVar0, 20)
-    PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 3, LVar0, LVar1, LVar2, 0, 0)
     Thread
-        Call(N(func_802A12E0_72AA30), LVar0, LVar1, LVar2)
+        Call(func_802A12E0_72AA30, LVar0, LVar1, LVar2)
         Wait(3)
-        Call(N(func_802A12E0_72AA30), LVar0, LVar1, LVar2)
+        Call(func_802A12E0_72AA30, LVar0, LVar1, LVar2)
         Wait(3)
-        Call(N(func_802A12E0_72AA30), LVar0, LVar1, LVar2)
+        Call(func_802A12E0_72AA30, LVar0, LVar1, LVar2)
     EndThread
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(N(func_802A123C_72A98C))
+    Call(func_802A123C_72A98C)
     Call(DeleteVirtualEntity, LVarA)
     IfEq(LVar9, 0)
         Call(ItemDamageEnemy, LVar0, 0, 0, 0, BS_FLAGS1_TRIGGER_EVENTS)
     Else
         Call(InitTargetIterator)
         Call(SetGoalToTarget, ACTOR_SELF)
-        Call(N(func_802A1280_72A9D0))
+        Call(func_802A1280_72A9D0)
     EndIf
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

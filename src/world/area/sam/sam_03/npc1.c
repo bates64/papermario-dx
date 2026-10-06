@@ -2,14 +2,14 @@
 
 #include "world/common/npc/JrTroopa/idle.inc.c"
 
-API_CALLABLE(N(GetAngleToPlayer)) {
+API_CALLABLE(GetJrTroopaAngleToPlayer) {
     Npc* npc = get_npc_unsafe(NPC_JrTroopa);
 
     script->varTable[0] = atan2(npc->pos.x, npc->pos.z, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_JrTroopa) = {
+EvtScript EVS_NpcIdle_JrTroopa = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_JR_TROOPA)
         Return
     EndIf
@@ -49,7 +49,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(GetNpcPos, NPC_JrTroopa, LVar3, LVar4, LVar5)
     Call(GetDist2D, LVar6, LVar0, LVar2, LVar3, LVar5)
     MulF(LVar6, Float(0.7))
-    Call(N(GetAngleToPlayer))
+    Call(GetJrTroopaAngleToPlayer)
     Call(AddVectorPolar, LVar3, LVar5, LVar6, LVar0)
     Call(SetNpcSpeed, NPC_JrTroopa, Float(4.0 / DT))
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_Charge)
@@ -62,13 +62,13 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_JrTroopa) = {
+EvtScript EVS_NpcInteract_JrTroopa = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Defeated, ANIM_JrTroopa_Defeated, 5, MSG_CH7_00DF)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_JrTroopaHitbox) = {
+EvtScript EVS_NpcHit_JrTroopaHitbox = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_JUMP)
@@ -83,7 +83,7 @@ EvtScript N(EVS_NpcHit_JrTroopaHitbox) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_JrTroopa) = {
+EvtScript EVS_NpcDefeat_JrTroopa = {
     Call(ClearDefeatedEnemies)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -111,9 +111,9 @@ EvtScript N(EVS_NpcDefeat_JrTroopa) = {
             Call(SetNpcCollisionSize, NPC_JrTroopa, 26, 24)
             Call(SetNpcCollisionSize, NPC_JrTroopa_Hitbox, 26, 24)
             Call(SetNpcFlagBits, NPC_JrTroopa_Hitbox, NPC_FLAG_INVISIBLE, true)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_JrTroopa)))
-            Call(BindNpcHit, NPC_JrTroopa_Hitbox, Ref(N(EVS_NpcHit_JrTroopaHitbox)))
-            Exec(N(EVS_SetupMusic))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_JrTroopa))
+            Call(BindNpcHit, NPC_JrTroopa_Hitbox, Ref(EVS_NpcHit_JrTroopaHitbox))
+            Exec(EVS_SetupMusic)
             Call(DisablePlayerInput, false)
         CaseEq(OUTCOME_PLAYER_FLED)
     EndSwitch
@@ -121,9 +121,9 @@ EvtScript N(EVS_NpcDefeat_JrTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_JrTroopa) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_JrTroopa)))
+EvtScript EVS_NpcInit_JrTroopa = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JrTroopa))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_DEFEATED_JR_TROOPA)
             Call(SetNpcPos, NPC_JrTroopa, 600, 0, -65)
@@ -137,20 +137,20 @@ EvtScript N(EVS_NpcInit_JrTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_JrTroopaHitbox) = {
+EvtScript EVS_NpcInit_JrTroopaHitbox = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Return
     End
 };
 
 // first Jr Troopa is for interacting with player, the second is 'hostile' and can respond to being hit
-NpcData N(NpcData_JrTroopa)[] = {
+NpcData NpcData_JrTroopa[] = {
     {
         .id = NPC_JrTroopa,
         .pos = { 261.0f, 0.0f, -76.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_JrTroopa),
-        .settings = &N(NpcSettings_JrTroopa),
+        .init = &EVS_NpcInit_JrTroopa,
+        .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
@@ -160,8 +160,8 @@ NpcData N(NpcData_JrTroopa)[] = {
         .id = NPC_JrTroopa_Hitbox,
         .pos = { 261.0f, 0.0f, -76.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_JrTroopaHitbox),
-        .settings = &N(NpcSettings_JrTroopa),
+        .init = &EVS_NpcInit_JrTroopaHitbox,
+        .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
@@ -169,7 +169,7 @@ NpcData N(NpcData_JrTroopa)[] = {
     },
 };
 
-NpcGroupList N(BeforeNPCs) = {
-    NPC_GROUP(N(NpcData_JrTroopa), BTL_KMR_3_FORMATION_06),
+NpcGroupList BeforeNPCs = {
+    NPC_GROUP(NpcData_JrTroopa, BTL_KMR_3_FORMATION_06),
     {}
 };

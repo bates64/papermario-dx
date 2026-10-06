@@ -5,7 +5,7 @@
 #define SUPER_BLOCK_GAMEFLAG GF_ISK10_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"
 
-API_CALLABLE(N(MonitorPlayerLastFloor)) {
+API_CALLABLE(MonitorPlayerLastFloor) {
     s32 level = -1;
 
     if (gPlayerStatus.lastGoodPos.y > -600.0) {
@@ -20,7 +20,7 @@ API_CALLABLE(N(MonitorPlayerLastFloor)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
@@ -46,13 +46,13 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(-550, -720, 0, 0)
     Thread
-        Call(N(MonitorPlayerLastFloor))
+        Call(MonitorPlayerLastFloor)
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), -516, -780, -71, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -453, 43, Float(0.3), LVar0)
     PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -713, 43, Float(0.3), LVar0)
     Return

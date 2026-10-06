@@ -11,6 +11,4 @@
 #include "mapfs/kkj_28_shape.h"
 #include "mapfs/kkj_28_hit.h"
 
-#define NAMESPACE kkj_28
-
-extern EvtScript N(EVS_Main);
+extern EvtScript EVS_Main;

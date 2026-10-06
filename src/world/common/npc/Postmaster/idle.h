@@ -3,4 +3,4 @@
 
 #define NpcSettings_Postmaster NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Postmaster);
+extern NpcSettings NpcSettings_Postmaster;

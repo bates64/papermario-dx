@@ -12,5 +12,3 @@
 #include "mapfs/sbk_24_hit.h"
 
 #include "sprite/npc/Bandit.h"
-
-#define NAMESPACE sbk_24

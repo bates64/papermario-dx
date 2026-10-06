@@ -80,7 +80,6 @@ void flame_main(
     bpPtr->init = flame_init;
     bpPtr->update = flame_update;
     bpPtr->renderScene = flame_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_FLAME;
 

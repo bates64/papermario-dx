@@ -1,15 +1,15 @@
 #include "kmr_20.h"
 #include "entity.h"
 
-API_CALLABLE(N(SetAmbienceVolumeHalf_Entity)){
+API_CALLABLE(SetAmbienceVolumeHalf_Entity){
     snd_ambient_set_volume(0, 1000, 63);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SecretPanel_FlipBack) = {
+EvtScript EVS_SecretPanel_FlipBack = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o252, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_o252, SOUND_FLIP_PANEL, SOUND_SPACE_DEFAULT)
-    Call(N(SetAmbienceVolumeHalf_Entity))
+    Call(SetAmbienceVolumeHalf_Entity)
     Call(MakeLerp, 0, -2160, 60, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -25,7 +25,7 @@ EvtScript N(EVS_SecretPanel_FlipBack) = {
     End
 };
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -35,12 +35,12 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseSpring_Basement) = {
+EvtScript EVS_UseSpring_Basement = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCamToPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     IfEq(AF_KMR20_SpringCanLaunch, false)
         // bounce off the spring when falling from above
@@ -49,7 +49,7 @@ EvtScript N(EVS_UseSpring_Basement) = {
     Else
         // launch out of the basement
         Call(EnableCameraFollowPlayerY)
-        Exec(N(EVS_SecretPanel_FlipBack))
+        Exec(EVS_SecretPanel_FlipBack)
         Call(PlayerJump, -150, 30, -90, 30)
         Call(InterpPlayerYaw, 180, 0)
         Set(AF_KMR20_SpringCanLaunch, false)
@@ -63,7 +63,7 @@ EvtScript N(EVS_UseSpring_Basement) = {
     End
 };
 
-EvtScript N(EVS_Luigi_JumpFromBlock) = {
+EvtScript EVS_Luigi_JumpFromBlock = {
     Call(DisablePlayerInput, true)
     Call(SetEnemyFlagBits, NPC_Luigi_1, ENEMY_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_GRAVITY, true)
@@ -79,7 +79,7 @@ EvtScript N(EVS_Luigi_JumpFromBlock) = {
     End
 };
 
-EvtScript N(EVS_Luigi_JumpFromHighBlock) = {
+EvtScript EVS_Luigi_JumpFromHighBlock = {
     Call(DisablePlayerInput, true)
     Call(SetEnemyFlagBits, NPC_Luigi_1, ENEMY_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_GRAVITY, true)
@@ -96,49 +96,49 @@ EvtScript N(EVS_Luigi_JumpFromHighBlock) = {
     End
 };
 
-EvtScript N(EVS_BlastRock) = {
+EvtScript EVS_BlastRock = {
     Call(SetNpcAux, NPC_Luigi_1, 0)
-    Exec(N(EVS_Luigi_JumpFromBlock))
+    Exec(EVS_Luigi_JumpFromBlock)
     Return
     End
 };
 
-EvtScript N(EVS_SmashBlock) = {
+EvtScript EVS_SmashBlock = {
     Call(SetNpcAux, NPC_Luigi_1, 0)
     Thread
-        ExecWait(N(EVS_Luigi_JumpFromBlock))
+        ExecWait(EVS_Luigi_JumpFromBlock)
     EndThread
     Return
     End
 };
 
-EvtScript N(EVS_BreakBlock_Brick) = {
+EvtScript EVS_BreakBlock_Brick = {
     Call(SetNpcAux, NPC_Luigi_1, 0)
     Thread
-        ExecWait(N(EVS_Luigi_JumpFromHighBlock))
+        ExecWait(EVS_Luigi_JumpFromHighBlock)
     EndThread
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_ScriptSpring), -150, -80, -50, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring_Basement)))
+    Call(AssignScript, Ref(EVS_UseSpring_Basement))
     Call(SetEntityCullMode, 1)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             Call(MakeEntity, Ref(Entity_BombableRock), 300, 0, 150, 0, MAKE_ENTITY_END)
-            Call(AssignScript, Ref(N(EVS_BlastRock)))
+            Call(AssignScript, Ref(EVS_BlastRock))
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
             Call(MakeEntity, Ref(Entity_Hammer3Block), 300, 0, 150, 55, MAKE_ENTITY_END)
-            Call(AssignScript, Ref(N(EVS_SmashBlock)))
+            Call(AssignScript, Ref(EVS_SmashBlock))
         CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(MakeEntity, Ref(Entity_BrickBlock), 300, 90, 150, 55, MAKE_ENTITY_END)
-            Call(AssignScript, Ref(N(EVS_BreakBlock_Brick)))
+            Call(AssignScript, Ref(EVS_BreakBlock_Brick))
         CaseLt(STORY_EPILOGUE)
     EndSwitch
     Return

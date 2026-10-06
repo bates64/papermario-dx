@@ -1,6 +1,6 @@
 #include "../mac_02.h"
 
-EvtScript N(EVS_NpcInteract_Bubulb) = {
+EvtScript EVS_NpcInteract_Bubulb = {
     IfEq(GF_MAC02_Gift_MagicalSeed1, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_BuriedIdle, ANIM_Bubulb_Pink_BuriedIdle, 0, MSG_MAC_Bridge_0085)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
@@ -43,8 +43,8 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb)))
+EvtScript EVS_NpcInit_Bubulb = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
     IfEq(GF_MAC02_Gift_MagicalSeed1, false)
         Call(SetNpcCollisionSize, NPC_SELF, 25, 25)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Pink_BuriedIdle)

@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/ShyGuy/avoid_player.inc.c"
 
-EvtScript N(EVS_ShyGuy_CarryItem) = {
+EvtScript EVS_ShyGuy_CarryItem = {
     Set(LVarA, LVar0) // npcID
     Set(LVarB, LVar1) // itemID
     Set(LVarD, LVar2) // item type
@@ -36,7 +36,7 @@ EvtScript N(EVS_ShyGuy_CarryItem) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_ShyGuy) = {
+EvtScript EVS_NpcDefeat_ShyGuy = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -55,13 +55,13 @@ EvtScript N(EVS_NpcDefeat_ShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy) = {
+EvtScript EVS_NpcInit_ShyGuy = {
     IfEq(GF_OMO09_Defeated_CalculatorThief, true)
         IfEq(GF_OMO01_Item_Calculator, false)
             Call(RemoveNpc, NPC_SELF)
         EndIf
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
     Set(LVar0, NPC_ShyGuy_01)
     IfEq(GF_OMO01_Item_Calculator, false)
         Set(LVar1, ITEM_CALCULATOR)
@@ -72,12 +72,12 @@ EvtScript N(EVS_NpcInit_ShyGuy) = {
         Set(LVar2, ITEM_TYPE_CONSUMABLE)
         Set(LVar3, 0)
     EndIf
-    Exec(N(EVS_ShyGuy_CarryItem))
+    Exec(EVS_ShyGuy_CarryItem)
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy_01) = {
+NpcData NpcData_ShyGuy_01 = {
     .id = NPC_ShyGuy_01,
     .pos = { -165.0f, 0.0f, -50.0f },
     .yaw = 90,
@@ -93,26 +93,26 @@ NpcData N(NpcData_ShyGuy_01) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_AvoidPlayer),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_ShyGuy_AvoidPlayer,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = RED_AVOID_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_02) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy)))
+EvtScript EVS_NpcInit_ShyGuy_02 = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
     Set(LVar0, NPC_ShyGuy_02)
     Set(LVar1, ITEM_CAKE_MIX)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
     Set(LVar3, 0)
-    Exec(N(EVS_ShyGuy_CarryItem))
+    Exec(EVS_ShyGuy_CarryItem)
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy_02) = {
+NpcData NpcData_ShyGuy_02 = {
     .id = NPC_ShyGuy_02,
     .pos = { -25.0f, 0.0f, -160.0f },
     .yaw = 270,
@@ -128,26 +128,26 @@ NpcData N(NpcData_ShyGuy_02) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_02),
-    .settings = &N(NpcSettings_ShyGuy_AvoidPlayer),
+    .init = &EVS_NpcInit_ShyGuy_02,
+    .settings = &NpcSettings_ShyGuy_AvoidPlayer,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = YELLOW_AVOID_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_03) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy)))
+EvtScript EVS_NpcInit_ShyGuy_03 = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
     Set(LVar0, NPC_ShyGuy_03)
     Set(LVar1, ITEM_CAKE_MIX)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
     Set(LVar3, 0)
-    Exec(N(EVS_ShyGuy_CarryItem))
+    Exec(EVS_ShyGuy_CarryItem)
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy_03) = {
+NpcData NpcData_ShyGuy_03 = {
     .id = NPC_ShyGuy_03,
     .pos = { -60.0f, 0.0f, 390.0f },
     .yaw = 270,
@@ -163,26 +163,26 @@ NpcData N(NpcData_ShyGuy_03) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_03),
-    .settings = &N(NpcSettings_ShyGuy_AvoidPlayer),
+    .init = &EVS_NpcInit_ShyGuy_03,
+    .settings = &NpcSettings_ShyGuy_AvoidPlayer,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = YELLOW_AVOID_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_04) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy)))
+EvtScript EVS_NpcInit_ShyGuy_04 = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
     Set(LVar0, NPC_ShyGuy_04)
     Set(LVar1, ITEM_MUSHROOM)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
     Set(LVar3, 0)
-    Exec(N(EVS_ShyGuy_CarryItem))
+    Exec(EVS_ShyGuy_CarryItem)
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy_04) = {
+NpcData NpcData_ShyGuy_04 = {
     .id = NPC_ShyGuy_04,
     .pos = { 50.0f, 0.0f, 230.0f },
     .yaw = 270,
@@ -198,26 +198,26 @@ NpcData N(NpcData_ShyGuy_04) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_04),
-    .settings = &N(NpcSettings_ShyGuy_AvoidPlayer),
+    .init = &EVS_NpcInit_ShyGuy_04,
+    .settings = &NpcSettings_ShyGuy_AvoidPlayer,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = BLUE_AVOID_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_05) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy)))
+EvtScript EVS_NpcInit_ShyGuy_05 = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
     Set(LVar0, NPC_ShyGuy_05)
     Set(LVar1, ITEM_FIRE_FLOWER)
     Set(LVar2, ITEM_TYPE_CONSUMABLE)
     Set(LVar3, 0)
-    Exec(N(EVS_ShyGuy_CarryItem))
+    Exec(EVS_ShyGuy_CarryItem)
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy_05) = {
+NpcData NpcData_ShyGuy_05 = {
     .id = NPC_ShyGuy_05,
     .pos = { 340.0f, 0.0f, 120.0f },
     .yaw = 270,
@@ -233,19 +233,19 @@ NpcData N(NpcData_ShyGuy_05) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_05),
-    .settings = &N(NpcSettings_ShyGuy_AvoidPlayer),
+    .init = &EVS_NpcInit_ShyGuy_05,
+    .settings = &NpcSettings_ShyGuy_AvoidPlayer,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = GREEN_AVOID_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy_01), BTL_OMO_FORMATION_00, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO_FORMATION_02, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO_FORMATION_02, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO_FORMATION_01, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy_05), BTL_OMO_FORMATION_05, BTL_OMO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO_FORMATION_00, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO_FORMATION_02, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO_FORMATION_02, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO_FORMATION_01, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy_05, BTL_OMO_FORMATION_05, BTL_OMO_STAGE_00),
     {}
 };

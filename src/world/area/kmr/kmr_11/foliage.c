@@ -2,52 +2,52 @@
 
 #include "foliage.h"
 
-FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_kusa1);
+FoliageModelList Bush2_BushModels = FOLIAGE_MODEL_LIST(MODEL_kusa1);
 
-FoliageVectorList N(Bush2_Effects) = {
+FoliageVectorList Bush2_Effects = {
     .count = 1,
     .vectors = {
         { -257.0f, 13.0f, 32.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush2) = {
-    .bush = &N(Bush2_BushModels),
-    .vectors = &N(Bush2_Effects),
+SearchBushConfig SearchBush_Bush2 = {
+    .bush = &Bush2_BushModels,
+    .vectors = &Bush2_Effects,
 };
 
-FoliageModelList N(Bush3_BushModels) = FOLIAGE_MODEL_LIST(MODEL_kusa2);
+FoliageModelList Bush3_BushModels = FOLIAGE_MODEL_LIST(MODEL_kusa2);
 
-FoliageVectorList N(Bush3_Effects) = {
+FoliageVectorList Bush3_Effects = {
     .count = 1,
     .vectors = {
         { 415.0f, 21.0f, -208.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush3) = {
-    .bush = &N(Bush3_BushModels),
-    .vectors = &N(Bush3_Effects),
+SearchBushConfig SearchBush_Bush3 = {
+    .bush = &Bush3_BushModels,
+    .vectors = &Bush3_Effects,
 };
 
-FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o517);
+FoliageModelList Bush4_BushModels = FOLIAGE_MODEL_LIST(MODEL_o517);
 
-FoliageVectorList N(Bush4_Effects) = {
+FoliageVectorList Bush4_Effects = {
     .count = 1,
     .vectors = {
         { -905.0f, 21.0f, 72.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush4) = {
-    .bush = &N(Bush4_BushModels),
-    .vectors = &N(Bush4_Effects),
+SearchBushConfig SearchBush_Bush4 = {
+    .bush = &Bush4_BushModels,
+    .vectors = &Bush4_Effects,
 };
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o349);
-FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o352);
+FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o349);
+FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o352);
 
-FoliageDropList N(Tree1_Drops) = {
+FoliageDropList Tree1_Drops = {
     .count = 1,
     .drops = {
         {
@@ -60,7 +60,7 @@ FoliageDropList N(Tree1_Drops) = {
     }
 };
 
-FoliageVectorList N(Tree1_Effects) = {
+FoliageVectorList Tree1_Effects = {
     .count = 2,
     .vectors = {
         { -725.0f, 117.0f, -137.0f },
@@ -68,22 +68,22 @@ FoliageVectorList N(Tree1_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree1_LeafModels),
-    .trunk = &N(Tree1_TrunkModels),
-    .drops = &N(Tree1_Drops),
-    .vectors = &N(Tree1_Effects),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree1_LeafModels,
+    .trunk = &Tree1_TrunkModels,
+    .drops = &Tree1_Drops,
+    .vectors = &Tree1_Effects,
 };
 
-BombTrigger N(BombPos_Tree1) = {
+BombTrigger BombPos_Tree1 = {
     .pos = { -665.0f, 0.0f, -149.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o458);
-FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o461);
+FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o458);
+FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o461);
 
-FoliageDropList N(Tree2_Drops) = {
+FoliageDropList Tree2_Drops = {
     .count = 1,
     .drops = {
         {
@@ -95,7 +95,7 @@ FoliageDropList N(Tree2_Drops) = {
     }
 };
 
-FoliageVectorList N(Tree2_Effects) = {
+FoliageVectorList Tree2_Effects = {
     .count = 2,
     .vectors = {
         { 259.0f, 77.0f, -443.0f },
@@ -103,31 +103,31 @@ FoliageVectorList N(Tree2_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree2) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
-    .drops = &N(Tree2_Drops),
-    .vectors = &N(Tree2_Effects),
+ShakeTreeConfig ShakeTree_Tree2 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
+    .drops = &Tree2_Drops,
+    .vectors = &Tree2_Effects,
 };
 
-BombTrigger N(BombPos_Tree2) = {
+BombTrigger BombPos_Tree2 = {
     .pos = { 320.0f, 0.0f, -496.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(SearchBush_Bush2)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(SearchBush_Bush2))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_kusa1, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush3)))
+    Set(LVar0, Ref(SearchBush_Bush3))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_kusa2, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush4)))
+    Set(LVar0, Ref(SearchBush_Bush4))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o419, 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree1)))
+    Set(LVar0, Ref(ShakeTree_Tree1))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_tree1, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree2)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree2))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_tree2, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree2)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
     Return
     End
 };

@@ -188,7 +188,7 @@ EntityScript Entity_SaveBlock_ScriptResume = {
 
 EntityModelScript Entity_SaveBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_SaveBlock_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER3);
 
-EntityBlueprint Entity_SavePoint = {
+ENTITY_IMPLEMENTATION(SavePoint) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(SaveBlockData),
     .renderCommandList = Entity_SaveBlock_RenderScript,

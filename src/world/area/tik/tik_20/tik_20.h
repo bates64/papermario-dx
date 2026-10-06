@@ -16,9 +16,7 @@ enum {
     NPC_DarkTroopa_02          = 1,
 };
 
-#define NAMESPACE tik_20
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_MakeEntities;

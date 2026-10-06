@@ -1,13 +1,13 @@
 #include "kmr_11.h"
 
-Vec3f N(FlightPath_Away)[] = {
+Vec3f FlightPath_Away[] = {
     {    0.0,     0.0,    0.0 },
     {  100.0,    50.0,    0.0 },
     {  200.0,   150.0,    0.0 },
     {  250.0,   400.0,    0.0 },
 };
 
-EvtScript N(EVS_Scene_KammyWatching) = {
+EvtScript EVS_Scene_KammyWatching = {
     Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(SetNpcVar, NPC_Kammy, 0, 1)
     Call(SetNpcPos, NPC_Kammy, 100, 182, -353)
@@ -34,7 +34,7 @@ EvtScript N(EVS_Scene_KammyWatching) = {
     Wait(30 * DT)
     Thread
         Call(GetNpcPos, NPC_Kammy, LVar7, LVar8, LVar9)
-        Call(LoadPath, 80 * DT, Ref(N(FlightPath_Away)), ARRAY_COUNT(N(FlightPath_Away)), EASING_LINEAR)
+        Call(LoadPath, 80 * DT, Ref(FlightPath_Away), ARRAY_COUNT(FlightPath_Away), EASING_LINEAR)
         Label(0)
         Call(GetNextPathPos)
         Add(LVar1, LVar7)
@@ -53,7 +53,7 @@ EvtScript N(EVS_Scene_KammyWatching) = {
         EndLoop
     EndThread
     Wait(110 * DT)
-    ExecWait(N(EVS_BadExit_kmr_24_0))
+    ExecWait(EVS_BadExit_kmr_24_0)
     Return
     End
 };

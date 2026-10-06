@@ -1,12 +1,12 @@
 #include "obk_02.h"
 #include "effects.h"
 
-BombTrigger N(BombPos_Wall) = {
+BombTrigger BombPos_Wall = {
     .pos = { 237.0f, -210.0f, 53.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_OnBlast_Wall) = {
+EvtScript EVS_OnBlast_Wall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 1, 33, 33, 1, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_bomu_ato, false)
@@ -23,9 +23,9 @@ EvtScript N(EVS_OnBlast_Wall) = {
     End
 };
 
-EvtScript N(EVS_SetupBombableWall) = {
+EvtScript EVS_SetupBombableWall = {
     IfEq(GF_OBK06_BombedWall, false)
-        BindTrigger(Ref(N(EVS_OnBlast_Wall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
+        BindTrigger(Ref(EVS_OnBlast_Wall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
         Call(EnableModel, MODEL_bomu_ato, false)
     Else
         Call(EnableModel, MODEL_bom_mae, false)

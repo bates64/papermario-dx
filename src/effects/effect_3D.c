@@ -61,7 +61,6 @@ void effect_3D_main(s32 type, f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, s32 c
                 vy *= 8.0f;
                 vz *= 8.0f;
 
-                bpPtr->unk_00 = 0;
                 bpPtr->init = effect_3D_init;
                 bpPtr->update = effect_3D_update;
                 bpPtr->renderScene = effect_3D_render;

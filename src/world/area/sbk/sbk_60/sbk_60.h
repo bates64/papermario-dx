@@ -16,6 +16,3 @@
 enum {
     NPC_Pokey                   = 0,
 };
-
-
-#define NAMESPACE sbk_60

@@ -25,7 +25,7 @@ enum SpellStatus {
     SPELL_STATUS_FIZZLING       = 3, // missed and is ready for cleanup
 };
 
-s32 N(MagikoopaAI_CanShootSpell)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* detect) {
+s32 MagikoopaAI_CanShootSpell(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Camera* camera = &gCameras[gCurrentCamID];
@@ -68,7 +68,7 @@ enum SpellStopReason {
     SPELL_STOP_TIMEOUT      = 20,
 };
 
-API_CALLABLE(N(MagikoopaSpellAI_Main)) {
+API_CALLABLE(MagikoopaSpellAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     s32 stopReason = SPELL_STOP_NONE;
     Npc* spellNpc = get_npc_unsafe(enemy->npcID);
@@ -182,14 +182,14 @@ API_CALLABLE(N(MagikoopaSpellAI_Main)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(MagikoopaSpellAI_OnHitInit)) {
+API_CALLABLE(MagikoopaSpellAI_OnHitInit) {
     Enemy* enemy = script->owner1.enemy;
 
     evt_set_variable(script, LVar0, gCurrentEncounter.curEnemy == enemy);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MagikoopaSpellAI_OnHit)) {
+API_CALLABLE(MagikoopaSpellAI_OnHit) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 

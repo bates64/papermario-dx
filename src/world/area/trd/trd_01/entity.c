@@ -1,9 +1,9 @@
 #include "trd_01.h"
 #include "entity.h"
 
-extern EvtScript N(EVS_ExitDoors_trd_02_0);
+extern EvtScript EVS_ExitDoors_trd_02_0;
 
-EvtScript N(EVS_FocusCamOnLock) = {
+EvtScript EVS_FocusCamOnLock = {
     Label(0)
         IfEq(GF_TRD01_Item_FortressKey, true)
             Call(AwaitPlayerApproach, 320, 0, 40)
@@ -23,7 +23,7 @@ EvtScript N(EVS_FocusCamOnLock) = {
     End
 };
 
-EvtScript N(EVS_UnlockDoors) = {
+EvtScript EVS_UnlockDoors = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
@@ -51,16 +51,16 @@ EvtScript N(EVS_UnlockDoors) = {
     End
 };
 
-EvtScript N(EVS_BindLockTrigger) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_02_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+EvtScript EVS_BindLockTrigger = {
+    BindTrigger(Ref(EVS_ExitDoors_trd_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD01_UnlockedDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 315, 8, 0, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BindLockTrigger)))
+        Call(AssignScript, Ref(EVS_BindLockTrigger))
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_RAISED_SUBMERGED_STAIRS)

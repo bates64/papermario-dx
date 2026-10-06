@@ -162,10 +162,8 @@ enum {
     PARADE_PHASE_DONE           = 2580,
 };
 
-#define NAMESPACE end_00
+extern EvtScript EVS_Main;
+extern EvtScript EVS_ManageParade;
+extern EvtScript EVS_OffsetNpcScroll;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_ManageParade);
-extern EvtScript N(EVS_OffsetNpcScroll);
-
-API_CALLABLE(N(AddScrollToNpcPos));
+API_CALLABLE(AddScrollToNpcPos);

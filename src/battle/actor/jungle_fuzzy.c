@@ -4,36 +4,33 @@
 #include "script_api/battle.h"
 #include "sprite/player.h"
 #include "sprite/npc/Fuzzy.h"
-#include "battle/action_cmd/stop_leech.h"
 
-#define NAMESPACE A(jungle_fuzzy)
+extern s32 DefaultAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern Formation SummonFormation;
 
-extern s32 N(DefaultAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern Formation N(SummonFormation);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Generation     = 0,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_LEECH       = 2,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_FIRE,     0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              95,
@@ -58,30 +55,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint  N(ActorParts)[] = {
+ActorPartBlueprint  ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 20 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_JUNGLE_FUZZY,
     .level = ACTOR_LEVEL_JUNGLE_FUZZY,
     .maxHP = 7,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 30,
     .airLiftChance = 85,
     .hurricaneChance = 80,
@@ -96,7 +93,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Fuzzy_Jungle_Idle,
     STATUS_KEY_STONE,     ANIM_Fuzzy_Jungle_Still,
     STATUS_KEY_SLEEP,     ANIM_Fuzzy_Jungle_Sleep,
@@ -109,21 +106,21 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Generation, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
@@ -248,7 +245,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Move_Divide) = {
+EvtScript EVS_Move_Divide = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -273,7 +270,7 @@ EvtScript N(EVS_Move_Divide) = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzy_Jungle_Divide)
     Wait(130)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzy_Jungle_Walk)
-    Call(SummonEnemy, Ref(N(SummonFormation)), false)
+    Call(SummonEnemy, Ref(SummonFormation), false)
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Call(SetActorPos, LVar0, LVar1, LVar2, LVar3)
     Call(SetGoalToIndex, LVar0, LVarA)
@@ -309,7 +306,7 @@ EvtScript N(EVS_Move_Divide) = {
 
 #include "common/SpawnEnemyDrainFX.inc.c"
 
-EvtScript N(EVS_Attack_Leech) = {
+EvtScript EVS_Attack_Leech = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
@@ -442,11 +439,11 @@ EvtScript N(EVS_Attack_Leech) = {
         Call(ShowMessageBox, BTL_MSG_ACTION_TIP_MASH_BUTTON, AC_LEECH_MAX_TIME)
         Call(ShowActionHud, true)
         Call(LoadActionCommand, ACTION_COMMAND_STOP_LEECH)
-        Call(action_command_stop_leech_init)
+        Call(InitActionCommand)
         Call(SetupMashMeter, 1, 23, 0, 0, 0, 0)
         Wait(10)
         Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
-        Call(action_command_stop_leech_start, 0, AC_LEECH_MAX_TIME, AC_DIFFICULTY_3)
+        Call(StartActionCommand, 0, AC_LEECH_MAX_TIME, AC_DIFFICULTY_3)
         Set(LVarD, 0)
         Loop(5)
             Call(UseIdleAnimation, ACTOR_PLAYER, false)
@@ -575,15 +572,15 @@ EvtScript N(EVS_Attack_Leech) = {
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEART_BOUNCE)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Add(LVar1, 10)
-                Call(N(SpawnDrainHealthStartFX), LVar0, LVar1, LVar2, LVar3)
+                Call(SpawnDrainHealthStartFX, LVar0, LVar1, LVar2, LVar3)
                 Thread
                     Wait(15)
                     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_STAR_BOUNCE_A)
-                    Call(N(SpawnDrainHealthContinueFX), LVar0, LVar1, LVar2, LVar3)
+                    Call(SpawnDrainHealthContinueFX, LVar0, LVar1, LVar2, LVar3)
                 EndThread
                 Add(LVar0, 20)
                 Add(LVar1, 20)
-                PlayEffect(EFFECT_RECOVER, 0, LVar0, LVar1, LVar2, LVar3, 0)
+                PlayEffect(EFFECT_RECOVER, 0, LVar0, LVar1, LVar2, LVar3)
                 Call(GetActorHP, ACTOR_SELF, LVar0)
                 Add(LVar0, LVar3)
                 Call(SetEnemyHP, ACTOR_SELF, LVar0)
@@ -693,7 +690,7 @@ EvtScript N(EVS_Attack_Leech) = {
     End
 };
 
-EvtScript N(EVS_GetAvailableColumn) = {
+EvtScript EVS_GetAvailableColumn = {
     Set(LFlag1, false)
     Set(LFlag2, false)
     Set(LFlag3, false)
@@ -763,7 +760,7 @@ EvtScript N(EVS_GetAvailableColumn) = {
     End
 };
 
-EvtScript N(EVS_CountActiveSummoners) = {
+EvtScript EVS_CountActiveSummoners = {
     Set(LVar9, 0)
     Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
@@ -798,50 +795,50 @@ EvtScript N(EVS_CountActiveSummoners) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Leech))
+        ExecWait(EVS_Attack_Leech)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_Generation, LVar0)
     IfEq(LVar0, 2)
-        ExecWait(N(EVS_Attack_Leech))
+        ExecWait(EVS_Attack_Leech)
         Return
     EndIf
-    ExecWait(N(EVS_GetAvailableColumn))
+    ExecWait(EVS_GetAvailableColumn)
     IfEq(LVarA, -1)
-        ExecWait(N(EVS_Attack_Leech))
+        ExecWait(EVS_Attack_Leech)
         Return
     EndIf
-    ExecWait(N(EVS_CountActiveSummoners))
+    ExecWait(EVS_CountActiveSummoners)
     Switch(LVar9)
         CaseEq(1)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 400)
-                ExecWait(N(EVS_Move_Divide))
+                ExecWait(EVS_Move_Divide)
                 Return
             EndIf
         CaseEq(2)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 150)
-                ExecWait(N(EVS_Move_Divide))
+                ExecWait(EVS_Move_Divide)
                 Return
             EndIf
         CaseEq(3)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 70)
-                ExecWait(N(EVS_Move_Divide))
+                ExecWait(EVS_Move_Divide)
                 Return
             EndIf
     EndSwitch
-    ExecWait(N(EVS_Attack_Leech))
+    ExecWait(EVS_Attack_Leech)
     Return
     End
 };
 
-Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
+Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
-Formation N(SummonFormation) = {
-    ACTOR_BY_POS(blueprint, N(SummonPos), 0),
+Formation SummonFormation = {
+    ACTOR_BY_POS(blueprint, SummonPos, 0),
 };

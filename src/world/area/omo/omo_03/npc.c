@@ -6,7 +6,7 @@
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
-EvtScript N(EVS_ItemPrompt_ToyTrain) = {
+EvtScript EVS_ItemPrompt_ToyTrain = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
         Call(ShowKeyChoicePopup)
@@ -50,9 +50,9 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
             EndIf
         Else
             IfEq(AF_OMO03_TrainStuck, false)
-                ExecWait(N(EVS_Conductor_ChooseRoute))
+                ExecWait(EVS_Conductor_ChooseRoute)
             Else
-                ExecWait(N(EVS_Conductor_ResumeStuckTrain))
+                ExecWait(EVS_Conductor_ResumeStuckTrain)
             EndIf
         EndIf
     EndIf
@@ -62,24 +62,24 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     End
 };
 
-ITEM_LIST(N(ToyTrainList), ITEM_TOY_TRAIN);
+ITEM_LIST(ToyTrainList, ITEM_TOY_TRAIN);
 
-EvtScript N(EVS_NpcInteract_Conductor) = {
-    BindPadlock(Ref(N(EVS_ItemPrompt_ToyTrain)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ToyTrainList)), 0, 1)
+EvtScript EVS_NpcInteract_Conductor = {
+    BindPadlock(Ref(EVS_ItemPrompt_ToyTrain), TRIGGER_FORCE_ACTIVATE, 0, Ref(ToyTrainList), 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Conductor) = {
+EvtScript EVS_NpcInit_Conductor = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
         Call(SetNpcAnimation, NPC_SELF, ANIM_TrainToad_SadIdle)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Conductor)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Conductor))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_TrainToad) = {
+EvtScript EVS_NpcInteract_TrainToad = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_GOT_STOREROOM_KEY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_Blue_SadTalk, ANIM_TrainToad_Blue_SadIdle, 0, MSG_CH4_0017)
@@ -113,19 +113,19 @@ EvtScript N(EVS_NpcInteract_TrainToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TrainToad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TrainToad)))
+EvtScript EVS_NpcInit_TrainToad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad))
     Return
     End
 };
 
-NpcData N(NpcData_TrainToads)[] = {
+NpcData NpcData_TrainToads[] = {
     {
         .id = NPC_Conductor,
         .pos = { 170.0f, 50.0f, -115.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Conductor),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_Conductor,
+        .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_CONDUCTOR_ANIMS,
@@ -135,8 +135,8 @@ NpcData N(NpcData_TrainToads)[] = {
         .id = NPC_TrainToad,
         .pos = { 158.0f, 0.0f, 85.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TrainToad),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_TrainToad,
+        .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_TOAD_BLUE_ANIMS,
@@ -144,12 +144,12 @@ NpcData N(NpcData_TrainToads)[] = {
     }
 };
 
-NpcData N(NpcData_Epilogue)[] = {
+NpcData NpcData_Epilogue[] = {
     {
         .id = NPC_Parakarry,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_Parakarry),
+        .settings = &NpcSettings_Parakarry,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = PARAKARRY_ANIMS,
@@ -158,7 +158,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_Watt,
         .pos = { 50.0f, 15.0f, 160.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = WATT_ANIMS,
@@ -167,7 +167,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_ShyGuy_01,
         .pos = { 100.0f, 0.0f, 160.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -176,7 +176,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_ShyGuy_02,
         .pos = { 115.0f, 0.0f, 200.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -185,21 +185,21 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_ShyGuy_03,
         .pos = { 145.0f, 0.0f, 150.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ShyGuy),
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TrainToads)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TrainToads),
     {}
 };
 
-NpcGroupList N(EpilogueNPCs) = {
+NpcGroupList EpilogueNPCs = {
     //@bug? only loads the first NPC from the group, cannot use macro here
-    { .npcCount = 1, .npcs = &N(NpcData_TrainToads)[0] },
-    NPC_GROUP(N(NpcData_Epilogue)),
+    { .npcCount = 1, .npcs = &NpcData_TrainToads[0] },
+    NPC_GROUP(NpcData_Epilogue),
     {}
 };

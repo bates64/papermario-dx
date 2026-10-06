@@ -1,7 +1,7 @@
 #include "jan_03.h"
 #include "sprite/npc/Yoshi.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_JAN03,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_JAN03,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_JAN03,
@@ -27,7 +27,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_JAN03,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_SNOWMAN_DOLL,  .price = 15, MSG_ItemShopDesc_SnowmanDoll },
     { .itemID = ITEM_THUNDER_RAGE,  .price = 15, MSG_ItemShopDesc_ThunderRage },
     { .itemID = ITEM_FIRE_FLOWER,   .price =  5, MSG_ItemShopDesc_FireFlower },
@@ -37,7 +37,7 @@ ShopItemData N(Inventory)[] = {
     {}
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_SNOWMAN_DOLL,  .sellPrice = 10 },
     { .itemID = ITEM_SUPER_SODA,    .sellPrice =  7 },
     { .itemID = ITEM_ICED_POTATO,   .sellPrice = 10 },
@@ -46,7 +46,7 @@ ShopSellPriceData N(PriceList)[] = {
     {}
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -57,7 +57,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_o363, .triggerColliderID = COLLIDER_o391 },
     { .posModelID = MODEL_o364, .triggerColliderID = COLLIDER_o392 },
     { .posModelID = MODEL_o365, .triggerColliderID = COLLIDER_o393 },
@@ -66,18 +66,18 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o368, .triggerColliderID = COLLIDER_o396 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_Yoshi_01,
     .idleAnim = ANIM_Yoshi_Blue_Idle,
     .talkAnim = ANIM_Yoshi_Blue_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
+EvtScript EVS_SetupShop = {
     Call(EnableGroup, MODEL_g126, false)
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), ITEM_ENTITY_FLAG_TOSS_LOWER)
-    Call(MakeShopOwner, Ref(N(Owner)))
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), ITEM_ENTITY_FLAG_TOSS_LOWER)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };

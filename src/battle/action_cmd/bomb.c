@@ -1,8 +1,6 @@
 #include "common.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_bomb
-
 extern s32 actionCmdTableBomb[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -17,11 +15,11 @@ enum {
 #define SUPER_FILL_TICK 800
 #define ULTRA_FILL_TICK 740
 
-s32 N(DrainRateTable)[] = { 0, 25, 50, 75, 75 };
+s32 DrainRateTable[] = { 0, 25, 50, 75, 75 };
 
-#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(N(DrainRateTable), pct)
+#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(DrainRateTable, pct)
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -69,7 +67,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -101,7 +99,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -230,3 +228,5 @@ void N(update)(void) {
 #include "common/MashCommandDraw.inc.c"
 
 #include "common/MashCommandFree.inc.c"
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_BOMB);

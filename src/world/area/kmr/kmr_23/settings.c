@@ -1,11 +1,11 @@
 #include "kmr_23.h"
 
 // skip loading shape/hit/tex for this map
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     return true;
 }
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [kmr_23_ENTRY_0]    {    0.0,    0.0,    0.0,    0.0 },
     [kmr_23_ENTRY_1]    {    0.0,    0.0,    0.0,    0.0 },
     [kmr_23_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
@@ -16,8 +16,8 @@ EntryList N(Entrances) = {
     [kmr_23_ENTRY_7]    {    0.0,    0.0,    0.0,    0.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
 };

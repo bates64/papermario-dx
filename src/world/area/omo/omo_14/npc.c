@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SurroundPlayer)) {
+API_CALLABLE(SurroundPlayer) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     f32 goalPosX = playerStatus->pos.x +
@@ -39,7 +39,7 @@ API_CALLABLE(N(SurroundPlayer)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SimpleMoveNPC)) {
+API_CALLABLE(SimpleMoveNPC) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     f32 x = evt_get_float_variable(script, *args++);
@@ -60,7 +60,7 @@ API_CALLABLE(N(SimpleMoveNPC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetActingPartner)) {
+API_CALLABLE(GetActingPartner) {
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         script->varTable[9] = gPartnerStatus.actingPartner;
     } else {
@@ -69,7 +69,7 @@ API_CALLABLE(N(GetActingPartner)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsPartnerWatt)) {
+API_CALLABLE(IsPartnerWatt) {
     if (gPartnerStatus.actingPartner == PARTNER_WATT) {
         script->varTable[1] = true;
     } else {
@@ -80,7 +80,7 @@ API_CALLABLE(N(IsPartnerWatt)) {
 
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
-Vec2i N(CrowdChaseGoalPositions)[] = {
+Vec2i CrowdChaseGoalPositions[] = {
     { 200,   0 },
     { 210, -10 },
     { 210,  10 },
@@ -94,7 +94,7 @@ Vec2i N(CrowdChaseGoalPositions)[] = {
     { 230,  30 },
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
+EvtScript EVS_NpcIdle_ShyGuy_Loner = {
     SetF(LVarA, Float(3.5 / DT))
     Call(SetNpcSpeed, NPC_SELF, LVarA)
     Label(0)
@@ -103,12 +103,12 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
         CaseEq(0)
             Call(GetPlayerPos, LVar2, LVar3, LVar4)
             IfGt(LVar2, -210)
-                Call(N(GetActingPartner))
+                Call(GetActingPartner)
                 Set(MV_ActingPartner, LVar9)
                 Switch(LVar9)
                     CaseEq(-1)
                         Call(SetNpcSpeed, NPC_SELF, LVarA)
-                        Call(N(SurroundPlayer))
+                        Call(SurroundPlayer)
                         IfGt(LVarE, 30)
                             Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
                             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -131,7 +131,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                             Set(LVarE, 0)
                         EndIf
                     CaseEq(PARTNER_WATT)
-                        UseBuf(Ref(N(CrowdChaseGoalPositions)))
+                        UseBuf(Ref(CrowdChaseGoalPositions))
                         BufRead2(LVar3, LVar4)
                         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                         IfLt(LVar0, 180)
@@ -141,10 +141,10 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                                 Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
                                 Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15 * DT)
                             EndIf
-                            UseBuf(Ref(N(CrowdChaseGoalPositions)))
+                            UseBuf(Ref(CrowdChaseGoalPositions))
                             BufRead2(LVar1, LVar2)
                             Call(SetNpcSpeed, NPC_SELF, Float(4.0 / DT))
-                            Call(N(SimpleMoveNPC), LVar3, LVar4)
+                            Call(SimpleMoveNPC, LVar3, LVar4)
                         Else
                             Call(GetPlayerPos, LVar0, LVar1, LVar2)
                             IfLt(LVar0, 150)
@@ -163,20 +163,20 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                     CaseEq(PARTNER_BOW)
                         Call(GetPlayerPos, LVar2, LVar3, LVar4)
                         IfLt(LVar2, 30)
-                            Call(N(SimpleMoveNPC), 200, 0)
+                            Call(SimpleMoveNPC, 200, 0)
                         Else
-                            Call(N(SimpleMoveNPC), -150, 0)
+                            Call(SimpleMoveNPC, -150, 0)
                         EndIf
                 EndSwitch
                 Set(LVar9, MV_ActingPartner)
                 Call(SetSelfVar, 1, LVar9)
             Else
-                Call(N(SimpleMoveNPC), 200, 0)
+                Call(SimpleMoveNPC, 200, 0)
             EndIf
         CaseEq(1)
             Call(GetPlayerPos, LVar2, LVar3, LVar4)
             IfLt(LVar2, 150)
-                Call(N(GetActingPartner))
+                Call(GetActingPartner)
                 IfNe(LVar9, 6)
                     Call(SetSelfVar, 0, 0)
                 EndIf
@@ -229,7 +229,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
+EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
     Call(RandInt, 15, LVarA)
     Add(LVarA, 20)
     DivF(LVarA, Float(10.0 * DT))
@@ -240,12 +240,12 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
         CaseEq(0)
             Call(GetPlayerPos, LVar2, LVar3, LVar4)
             IfGt(LVar2, -210)
-                Call(N(GetActingPartner))
+                Call(GetActingPartner)
                 Set(MV_ActingPartner, LVar9)
                 Switch(LVar9)
                     CaseEq(-1)
                         Call(SetNpcSpeed, NPC_SELF, LVarA)
-                        Call(N(SurroundPlayer))
+                        Call(SurroundPlayer)
                         IfGt(LVarE, 30)
                             Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
                             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -265,7 +265,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
                             Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15 * DT)
                         EndIf
                         Call(GetSelfNpcID, LVar5)
-                        UseBuf(Ref(N(CrowdChaseGoalPositions)))
+                        UseBuf(Ref(CrowdChaseGoalPositions))
                         Loop(LVar5)
                             BufRead2(LVar3, LVar4)
                         EndLoop
@@ -276,7 +276,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
                         EndIf
                         Set(LVarF, LVar0)
                         Call(SetNpcSpeed, NPC_SELF, Float(7.0 / DT))
-                        Call(N(SimpleMoveNPC), LVar3, LVar4)
+                        Call(SimpleMoveNPC, LVar3, LVar4)
                         Call(GetNpcVar, NPC_ShyGuy_01, 0, LVar0)
                         IfEq(LVar0, 1)
                             Call(SetSelfVar, 0, 1)
@@ -284,15 +284,15 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
                     CaseEq(PARTNER_BOW)
                         Call(GetPlayerPos, LVar2, LVar3, LVar4)
                         IfLt(LVar2, 30)
-                            Call(N(SimpleMoveNPC), 200, 0)
+                            Call(SimpleMoveNPC, 200, 0)
                         Else
-                            Call(N(SimpleMoveNPC), -150, 0)
+                            Call(SimpleMoveNPC, -150, 0)
                         EndIf
                 EndSwitch
                 Set(LVar9, MV_ActingPartner)
                 Call(SetSelfVar, 1, LVar9)
             Else
-                Call(N(SimpleMoveNPC), 200, 0)
+                Call(SimpleMoveNPC, 200, 0)
             EndIf
         CaseEq(1)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -307,7 +307,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
             Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 12 * DT)
             Call(GetSelfVar, 0, LVar0)
             IfEq(LVar0, 1)
-                Call(N(GetActingPartner))
+                Call(GetActingPartner)
                 IfNe(LVar9, 6)
                     Call(SetSelfVar, 0, 0)
                 EndIf
@@ -335,9 +335,9 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_Loner) = {
+EvtScript EVS_NpcInit_ShyGuy_Loner = {
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy_Loner)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_Loner))
         Call(SetNpcPos, NPC_SELF, 120, 0, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Walk)
     Else
@@ -347,7 +347,7 @@ EvtScript N(EVS_NpcInit_ShyGuy_Loner) = {
     End
 };
 
-Vec3i N(CrowdInitialPositions)[] = {
+Vec3i CrowdInitialPositions[] = {
     { 150, 0, -100 },
     { 150, 0,  -50 },
     { 150, 0,    0 },
@@ -360,12 +360,12 @@ Vec3i N(CrowdInitialPositions)[] = {
     { 180, 0,  100 },
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_Crowd) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy_Crowd)))
+EvtScript EVS_NpcInit_ShyGuy_Crowd = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_Crowd))
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
         Call(GetSelfNpcID, LVar0)
         Sub(LVar0, 0)
-        UseBuf(Ref(N(CrowdInitialPositions)))
+        UseBuf(Ref(CrowdInitialPositions))
         Loop(LVar0)
             BufRead3(LVar1, LVar2, LVar3)
         EndLoop
@@ -378,24 +378,24 @@ EvtScript N(EVS_NpcInit_ShyGuy_Crowd) = {
     End
 };
 
-NpcData N(NpcData_ShyGuy_Loner) = {
+NpcData NpcData_ShyGuy_Loner = {
     .id = NPC_ShyGuy_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_ShyGuy_Loner),
-    .settings = &N(NpcSettings_ShyGuy),
+    .init = &EVS_NpcInit_ShyGuy_Loner,
+    .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_Crowd)[] = {
+NpcData NpcData_ShyGuy_Crowd[] = {
     {
         .id = NPC_ShyGuy_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -404,8 +404,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -414,8 +414,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -424,8 +424,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -434,8 +434,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_06,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -444,8 +444,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_07,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -454,8 +454,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_08,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -464,8 +464,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_09,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -474,8 +474,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_10,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -484,16 +484,16 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_11,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy_Loner)),
-    NPC_GROUP(N(NpcData_ShyGuy_Crowd)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ShyGuy_Loner),
+    NPC_GROUP(NpcData_ShyGuy_Crowd),
     {}
 };

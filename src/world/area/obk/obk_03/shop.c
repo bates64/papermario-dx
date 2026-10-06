@@ -1,6 +1,6 @@
 #include "obk_03.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_OBK03,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_OBK03,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_OBK03,
@@ -26,7 +26,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_OBK03,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_MYSTERY,       .price = 1,  .descMsg = MSG_ItemShopDesc_Mystery },
     { .itemID = ITEM_STOP_WATCH,    .price = 25, .descMsg = MSG_ItemShopDesc_StopWatch },
     { .itemID = ITEM_SNOWMAN_DOLL,  .price = 15, .descMsg = MSG_ItemShopDesc_SnowmanDoll },
@@ -36,7 +36,7 @@ ShopItemData N(Inventory)[] = {
     {}
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_DUSTY_HAMMER,  .sellPrice = 4 },
     { .itemID = ITEM_DRIED_SHROOM,  .sellPrice = 3 },
     { .itemID = ITEM_MISTAKE,       .sellPrice = 5 },
@@ -45,7 +45,7 @@ ShopSellPriceData N(PriceList)[] = {
     {}
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_o354, .triggerColliderID = COLLIDER_o485 },
     { .posModelID = MODEL_o355, .triggerColliderID = COLLIDER_o486 },
     { .posModelID = MODEL_o356, .triggerColliderID = COLLIDER_o487 },
@@ -54,7 +54,7 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o359, .triggerColliderID = COLLIDER_o490 },
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -65,15 +65,15 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_Igor,
     .idleAnim = ANIM_Boo_Idle,
     .talkAnim = ANIM_Boo_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
+EvtScript EVS_SetupShop = {
     IfGe(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_dummy, COLLIDER_FLAGS_UPPER_MASK)
     Else
@@ -84,8 +84,8 @@ EvtScript N(EVS_SetupShop) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o489, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o490, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), 0)
-    Call(MakeShopOwner, Ref(N(Owner)))
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };

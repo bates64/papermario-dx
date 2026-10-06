@@ -8,7 +8,6 @@ EffectInstance* quizmo_answer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     EffectBlueprint bp;
     EffectInstance* effect;
 
-    bp.unk_00 = 0;
     bp.init = nullptr;
     bp.update = nullptr;
     bp.renderScene = nullptr;

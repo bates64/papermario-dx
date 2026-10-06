@@ -44,7 +44,7 @@ enum HitboxAiVars {
     AI_VAR_HITBOX_SOUND         = 15,
 };
 
-void N(MeleeAttacker_Init)(Evt* script) {
+void MeleeAttacker_Init(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -58,7 +58,7 @@ void N(MeleeAttacker_Init)(Evt* script) {
     }
 }
 
-void N(MeleeAttacker_Pre)(Evt* script) {
+void MeleeAttacker_Pre(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -71,7 +71,7 @@ void N(MeleeAttacker_Pre)(Evt* script) {
     }
 }
 
-void N(MeleeAttacker_Swing)(Evt* script) {
+void MeleeAttacker_Swing(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -87,7 +87,7 @@ void N(MeleeAttacker_Swing)(Evt* script) {
     }
 }
 
-void N(MeleeAttacker_Post)(Evt* script) {
+void MeleeAttacker_Post(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -98,7 +98,7 @@ void N(MeleeAttacker_Post)(Evt* script) {
     }
 }
 
-b32 N(MeleeHitbox_CanTargetPlayer)(Evt* script) {
+b32 MeleeHitbox_CanTargetPlayer(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Camera* camera = &gCameras[gCurrentCamID];
@@ -136,7 +136,7 @@ b32 N(MeleeHitbox_CanTargetPlayer)(Evt* script) {
     return ret;
 }
 
-API_CALLABLE(N(MeleeHitbox_Main)) {
+API_CALLABLE(MeleeHitbox_Main) {
     Enemy* hitboxEnemy = script->owner1.enemy;
     Npc* hitboxNpc = get_npc_unsafe(hitboxEnemy->npcID);
     Enemy* parentEnemy;

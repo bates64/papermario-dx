@@ -1,6 +1,6 @@
 #include "../mac_02.h"
 
-LetterDelivery N(LetterDelivery_FiceT) = {
+LetterDelivery LetterDelivery_FiceT = {
     .recipientID = NPC_FiceT,
     .recipientTalk = ANIM_FiceT_Talk,
     .recipientIdle = ANIM_FiceT_Idle,
@@ -13,7 +13,7 @@ LetterDelivery N(LetterDelivery_FiceT) = {
     .deferReward = true,
 };
 
-EvtScript N(EVS_NpcInteract_FiceT) = {
+EvtScript EVS_NpcInteract_FiceT = {
     Set(LVar3, 0)
     Switch(GB_StoryProgress)
 #if VERSION_JP
@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcInteract_FiceT) = {
             Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Afraid, ANIM_FiceT_Afraid, 0, LVar0)
         EndIf
     EndIf
-    Set(LVar0, Ref(N(LetterDelivery_FiceT)))
+    Set(LVar0, Ref(LetterDelivery_FiceT))
     ExecWait(EVS_TryLetterDelivery)
     IfEq(LVar0, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle, 0, MSG_MAC_Bridge_0039)
@@ -67,13 +67,13 @@ EvtScript N(EVS_NpcInteract_FiceT) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_FiceT) = {
+EvtScript EVS_NpcInit_FiceT = {
     IfEq(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
         Call(SetNpcAnimation, NPC_SELF, ANIM_FiceT_Afraid)
     Else
         Call(SetNpcPos, NPC_SELF, 390, 0, -50)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FiceT)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FiceT))
     Return
     End
 };

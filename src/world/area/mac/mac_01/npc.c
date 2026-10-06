@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_MerlonBargeOut);
+extern EvtScript EVS_MerlonBargeOut;
 
 #include "world/common/enemy/KoopaBros/base.h"
 
@@ -39,12 +39,12 @@ extern EvtScript N(EVS_MerlonBargeOut);
 #include "world/common/prefab/ToadHouse.inc.c"
 #include "world/common/prefab/ToadHouse.data.inc.c"
 
-API_CALLABLE(N(GetPlayerCoins)) {
+API_CALLABLE(GetPlayerCoins) {
     script->varTable[0] = gPlayerData.coins;
     return ApiStatus_DONE2;
 }
 
-LetterDelivery N(LetterDelivery_Merlon) = {
+LetterDelivery LetterDelivery_Merlon = {
     .recipientID = NPC_Merlon,
     .recipientTalk = ANIM_Merlon_Talk,
     .recipientIdle = ANIM_Merlon_Idle,
@@ -57,7 +57,7 @@ LetterDelivery N(LetterDelivery_Merlon) = {
     .deferReward = true,
 };
 
-LetterDelivery N(LetterDelivery_MinhT) = {
+LetterDelivery LetterDelivery_MinhT = {
     .recipientID = NPC_MinhT,
     .recipientTalk = ANIM_MinhT_Talk,
     .recipientIdle = ANIM_MinhT_Idle,
@@ -69,7 +69,7 @@ LetterDelivery N(LetterDelivery_MinhT) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -81,7 +81,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_ArtifactReward_Kolorado) = {
+EvtScript EVS_ArtifactReward_Kolorado = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E8)
     EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E9)
@@ -90,7 +90,7 @@ EvtScript N(EVS_ArtifactReward_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
+EvtScript EVS_ArtifactPrompt_Kolorado = {
     IfEq(GF_SBK_GaveArtifactToKolorado, true)
         Return
     EndIf
@@ -112,14 +112,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
-            ExecWait(N(EVS_ArtifactReward_Kolorado))
+            ExecWait(EVS_ArtifactReward_Kolorado)
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E6)
             EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
-                    ExecWait(N(EVS_ArtifactReward_Kolorado))
+                    ExecWait(EVS_ArtifactReward_Kolorado)
                 CaseDefault
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E7)
             EndSwitch
@@ -128,7 +128,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_PlayShyGuyRunSounds) = {
+EvtScript EVS_PlayShyGuyRunSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, LVar0, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -137,7 +137,7 @@ EvtScript N(EVS_PlayShyGuyRunSounds) = {
     End
 };
 
-EvtScript N(EVS_MerlonDoor_Open) = {
+EvtScript EVS_MerlonDoor_Open = {
     Call(PlaySoundAtCollider, COLLIDER_deilitd, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, -80, 30, EASING_COS_IN_OUT)
     Loop(0)
@@ -152,7 +152,7 @@ EvtScript N(EVS_MerlonDoor_Open) = {
     End
 };
 
-EvtScript N(EVS_MerlonDoor_Close) = {
+EvtScript EVS_MerlonDoor_Close = {
     Call(MakeLerp, -80, 0, 30, EASING_COS_IN_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -171,7 +171,7 @@ EvtScript N(EVS_MerlonDoor_Close) = {
 
 #include "world/common/util/CheckPositionRelativeToPlane.inc.c"
 
-API_CALLABLE(N(MerlonSceneFadeOut)) {
+API_CALLABLE(MerlonSceneFadeOut) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -190,7 +190,7 @@ API_CALLABLE(N(MerlonSceneFadeOut)) {
     }
 }
 
-API_CALLABLE(N(MerlonSceneFadeIn)) {
+API_CALLABLE(MerlonSceneFadeIn) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -205,7 +205,7 @@ API_CALLABLE(N(MerlonSceneFadeIn)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(MerlonSceneHideOutside)) {
+API_CALLABLE(MerlonSceneHideOutside) {
     s32 alpha;
 
     if (isInitialCall) {
@@ -240,7 +240,7 @@ API_CALLABLE(N(MerlonSceneHideOutside)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_QuickChange_CheckForPound) = {
+EvtScript EVS_QuickChange_CheckForPound = {
     Call(GetPlayerActionState, LVar0)
     IfEq(LVar0, ACTION_STATE_SPIN_POUND)
         Goto(0)
@@ -266,7 +266,7 @@ EvtScript N(EVS_QuickChange_CheckForPound) = {
         Call(DisablePlayerInput, false)
         Return
     EndIf
-    Call(N(CheckPositionRelativeToPlane), -380, -245, -225, -408)
+    Call(CheckPositionRelativeToPlane, -380, -245, -225, -408)
     IfEq(LVar0, ACTION_STATE_IDLE)
         Set(LVar2, -232)
         Set(LVar4, -331)
@@ -303,9 +303,9 @@ EvtScript N(EVS_QuickChange_CheckForPound) = {
     End
 };
 
-EvtScript N(EVS_SetupQuickChangeTrigger) = {
+EvtScript EVS_SetupQuickChangeTrigger = {
     IfEq(GF_MAC01_QuickChangeDropped, false)
-        BindTrigger(Ref(N(EVS_QuickChange_CheckForPound)), TRIGGER_FLOOR_TOUCH, COLLIDER_dr_yuka, 1, 0)
+        BindTrigger(Ref(EVS_QuickChange_CheckForPound), TRIGGER_FLOOR_TOUCH, COLLIDER_dr_yuka, 1, 0)
     Else
         Call(MakeItemEntity, ITEM_QUICK_CHANGE, -232, 20, -331, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC01_Item_QuickChange)
     EndIf
@@ -313,7 +313,7 @@ EvtScript N(EVS_SetupQuickChangeTrigger) = {
     End
 };
 
-EvtScript N(EVS_MerlonShooAway) = {
+EvtScript EVS_MerlonShooAway = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -334,7 +334,7 @@ EvtScript N(EVS_MerlonShooAway) = {
                 Call(ShowMessageAtScreenPos, MSG_MAC_Plaza_001F, 160, 40)
                 Set(GF_MAC01_Merlon_Shoo3, true)
             Else
-                ExecWait(N(EVS_MerlonBargeOut))
+                ExecWait(EVS_MerlonBargeOut)
             EndIf
     EndSwitch
     Call(DisablePlayerInput, false)
@@ -342,7 +342,7 @@ EvtScript N(EVS_MerlonShooAway) = {
     End
 };
 
-EvtScript N(EVS_MerlonBargeOut) = {
+EvtScript EVS_MerlonBargeOut = {
     Call(ShowMessageAtScreenPos, MSG_MAC_Plaza_0020, 160, 40)
     Call(SetGroupVisibility, MODEL_dr_in, MODEL_GROUP_VISIBLE)
     Thread
@@ -371,20 +371,20 @@ EvtScript N(EVS_MerlonBargeOut) = {
         Call(PlayerJump1, -222, 20, -158, 8 * DT)
         Wait(5 * DT)
         Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, false)
-        Call(N(KnockdownCreate), SPR_Mario1, SPR_IMG_Mario1_25)
-        Call(N(KnockdownSetPos), -215, 20, -158)
+        Call(KnockdownCreate, SPR_Mario1, SPR_IMG_Mario1_25)
+        Call(KnockdownSetPos, -215, 20, -158)
         Wait(1)
         Call(SetPlayerPos, -215, 1000, -158)
         Call(MakeLerp, 0, 90, 10 * DT, EASING_QUADRATIC_IN)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(KnockdownSetRot), LVar0, 0, 0)
+            Call(KnockdownSetRot, LVar0, 0, 0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
             EndIf
         EndLoop
-        Call(N(KnockdownSetPos), -215, 21, -158)
+        Call(KnockdownSetPos, -215, 21, -158)
         Call(PlaySoundAtPlayer, SOUND_TRIP, SOUND_SPACE_DEFAULT)
     EndThread
     Wait(50 * DT)
@@ -395,18 +395,18 @@ EvtScript N(EVS_MerlonBargeOut) = {
     Call(GetAngleToPlayer, NPC_Merlon, LVar0)
     Call(InterpNpcYaw, NPC_Merlon, LVar0, 5)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0021)
-    Call(N(KnockdownSetPos), -215, 20, -158)
+    Call(KnockdownSetPos, -215, 20, -158)
     Call(MakeLerp, 90, 0, 15 * DT, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(KnockdownSetRot), LVar0, 0, 0)
+        Call(KnockdownSetRot, LVar0, 0, 0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
     EndLoop
     Call(SetPlayerPos, -222, 20, -158)
-    Call(N(KnockdownDestroy))
+    Call(KnockdownDestroy)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Call(SetPlayerJumpscale, Float(1.0))
@@ -424,14 +424,14 @@ EvtScript N(EVS_MerlonBargeOut) = {
     EndThread
     Call(PlayerMoveTo, -168, -198, 20 * DT)
     Call(PlayerMoveTo, -275, -305, 30 * DT)
-    Exec(N(EVS_MerlonDoor_Close))
+    Exec(EVS_MerlonDoor_Close)
     Wait(5 * DT)
     Call(SetNpcPos, NPC_PARTNER, -240, 20, -284)
-    Call(N(MerlonSceneFadeOut))
+    Call(MerlonSceneFadeOut)
     Thread
         Set(LVarF, 53)
         Set(LVar0, 0)
-        Call(N(MerlonSceneHideOutside))
+        Call(MerlonSceneHideOutside)
     EndThread
     Call(RotateGroup, MODEL_off_kabe, 180, 0, 1, 0)
     Set(MF_MusicMixTrigger1, true)
@@ -440,14 +440,14 @@ EvtScript N(EVS_MerlonBargeOut) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
-    Call(N(MerlonSceneFadeIn))
+    Call(MerlonSceneFadeIn)
     Call(InterpNpcYaw, NPC_Merlon, 135, 5)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0023)
-    Call(N(MerlonSceneFadeOut))
+    Call(MerlonSceneFadeOut)
     Wait(60 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     Thread
-        Call(N(MerlonSceneFadeIn))
+        Call(MerlonSceneFadeIn)
     EndThread
     Wait(10 * DT)
     Call(ContinueSpeech, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0024)
@@ -476,7 +476,7 @@ EvtScript N(EVS_MerlonBargeOut) = {
     End
 };
 
-EvtScript N(EVS_Merlon_WalkToDarkToads) = {
+EvtScript EVS_Merlon_WalkToDarkToads = {
     Call(AwaitPlayerApproach, -130, -110, 150)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
     Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, true)
@@ -490,7 +490,7 @@ EvtScript N(EVS_Merlon_WalkToDarkToads) = {
     End
 };
 
-EvtScript N(EVS_Scene_KoopaBrosUnmasked) = {
+EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Call(SetNpcVar, NPC_Merlon, 0, 0)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Thread
@@ -720,7 +720,7 @@ EvtScript N(EVS_Scene_KoopaBrosUnmasked) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Merlon) = {
+EvtScript EVS_NpcInteract_Merlon = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
             IfEq(GF_MAC01_Merlon_HintFromDarkToads, false)
@@ -767,7 +767,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                 Call(PlaySoundAtCollider, COLLIDER_deilitud, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
                 Call(SetNpcPos, NPC_SELF, -150, 10, -160)
                 Call(SetNpcYaw, NPC_Merlon, 90)
-                Exec(N(EVS_Merlon_WalkToDarkToads))
+                Exec(EVS_Merlon_WalkToDarkToads)
             EndIf
         CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_0028)
@@ -815,12 +815,12 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
                 Call(NpcMoveTo, NPC_Merlon, -170, -225, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
                 Call(SetGroupVisibility, MODEL_dr_in, MODEL_GROUP_VISIBLE)
-                ExecWait(N(EVS_MerlonDoor_Open))
+                ExecWait(EVS_MerlonDoor_Open)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Walk)
                 Call(SetNpcSpeed, NPC_Merlon, Float(3.0))
                 Call(NpcMoveTo, NPC_Merlon, -265, -300, 0)
                 Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
-                ExecWait(N(EVS_MerlonDoor_Close))
+                ExecWait(EVS_MerlonDoor_Close)
                 Call(SetGroupVisibility, MODEL_dr_in, MODEL_GROUP_HIDDEN)
                 Set(GF_MAC01_Merlon_HeardAboutDream, true)
                 Call(InterpNpcYaw, NPC_Merlon, 133, 0)
@@ -845,7 +845,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_003B)
     EndSwitch
-    Set(LVar0, Ref(N(LetterDelivery_Merlon)))
+    Set(LVar0, Ref(LetterDelivery_Merlon))
     ExecWait(EVS_TryLetterDelivery)
     IfEq(LVar0, DELIVERY_ACCEPTED)
         EVT_GIVE_REWARD(LVar1)
@@ -855,7 +855,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Merlon) = {
+EvtScript EVS_NpcInit_Merlon = {
     Call(InterpNpcYaw, NPC_SELF, 133, 1)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
@@ -874,12 +874,12 @@ EvtScript N(EVS_NpcInit_Merlon) = {
         CaseDefault
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o336, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merlon)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merlon))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_DarkToad_01) = {
+EvtScript EVS_NpcInteract_DarkToad_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Call(SpeakToPlayer, NPC_DarkToad_01, ANIM_DarkToad_Red_Talk, ANIM_DarkToad_Red_Idle, 0, MSG_MAC_Plaza_004D)
@@ -903,7 +903,7 @@ EvtScript N(EVS_NpcInteract_DarkToad_01) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_DarkToad_01) = {
+EvtScript EVS_NpcIdle_DarkToad_01 = {
     Loop(0)
         IfGe(GB_StoryProgress, STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
             Set(LVar0, 0)
@@ -930,26 +930,26 @@ EvtScript N(EVS_NpcIdle_DarkToad_01) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_Scene_KoopaBrosUnmasked))
+    ExecWait(EVS_Scene_KoopaBrosUnmasked)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_DarkToad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_DarkToad_01)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_DarkToad_01)))
+EvtScript EVS_NpcInit_DarkToad_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_DarkToad_01))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_DarkToad_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_DarkToad_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_DarkToad_01)))
+EvtScript EVS_NpcInit_DarkToad_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_DarkToad_01))
     Return
     End
 };
 
-EvtScript N(EVS_Scene_MerlonAndNinji) = {
+EvtScript EVS_Scene_MerlonAndNinji = {
     IfNe(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
         Return
     EndIf
@@ -1011,25 +1011,25 @@ EvtScript N(EVS_Scene_MerlonAndNinji) = {
     End
 };
 
-NpcData N(NpcData_Merlon) = {
+NpcData NpcData_Merlon = {
     .id = NPC_Merlon,
     .pos = { -337.0f, 20.0f, -360.0f },
     .yaw = 30,
-    .init = &N(EVS_NpcInit_Merlon),
-    .settings = &N(NpcSettings_Merlon),
+    .init = &EVS_NpcInit_Merlon,
+    .settings = &NpcSettings_Merlon,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = MERLON_ANIMS,
     .tattle = MSG_NpcTattle_Merlon,
 };
 
-NpcData N(NpcData_DarkToads)[] = {
+NpcData NpcData_DarkToads[] = {
     {
         .id = NPC_DarkToad_01,
         .pos = { 505.0f, 0.0f, 5.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_DarkToad_01),
-        .settings = &N(NpcSettings_DarkToad),
+        .init = &EVS_NpcInit_DarkToad_01,
+        .settings = &NpcSettings_DarkToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = DARK_TOAD_RED_ANIMS,
@@ -1039,8 +1039,8 @@ NpcData N(NpcData_DarkToads)[] = {
         .id = NPC_DarkToad_02,
         .pos = { 530.0f, 0.0f, -35.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_DarkToad_02),
-        .settings = &N(NpcSettings_DarkToad),
+        .init = &EVS_NpcInit_DarkToad_02,
+        .settings = &NpcSettings_DarkToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = DARK_TOAD_BLACK_ANIMS,
@@ -1050,8 +1050,8 @@ NpcData N(NpcData_DarkToads)[] = {
         .id = NPC_DarkToad_03,
         .pos = { 540.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_DarkToad_02),
-        .settings = &N(NpcSettings_DarkToad),
+        .init = &EVS_NpcInit_DarkToad_02,
+        .settings = &NpcSettings_DarkToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = DARK_TOAD_YELLOW_ANIMS,
@@ -1061,8 +1061,8 @@ NpcData N(NpcData_DarkToads)[] = {
         .id = NPC_DarkToad_04,
         .pos = { 550.0f, 0.0f, 35.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_DarkToad_02),
-        .settings = &N(NpcSettings_DarkToad),
+        .init = &EVS_NpcInit_DarkToad_02,
+        .settings = &NpcSettings_DarkToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = DARK_TOAD_GREEN_ANIMS,
@@ -1070,7 +1070,7 @@ NpcData N(NpcData_DarkToads)[] = {
     },
 };
 
-AnimID N(LimitAnims_KoopaBros)[] = {
+AnimID LimitAnims_KoopaBros[] = {
     ANIM_KoopaBros_Black_Run,
     ANIM_KoopaBros_Black_Idle,
     ANIM_KoopaBros_Black_Hurt,
@@ -1078,54 +1078,54 @@ AnimID N(LimitAnims_KoopaBros)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_KoopaBros)[] = {
+NpcData NpcData_KoopaBros[] = {
     {
         .id = NPC_KoopaBros_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_KoopaBros_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_KoopaBros_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_KoopaBros_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
 };
 
-NpcData N(NpcData_Ninji) = {
+NpcData NpcData_Ninji = {
     .id = NPC_Ninji,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .settings = &N(NpcSettings_Ninji),
+    .settings = &NpcSettings_Ninji,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = NINJI_ANIMS,
@@ -1136,7 +1136,7 @@ NpcData N(NpcData_Ninji) = {
 #include "npc/post_office.inc.c"
 #include "npc/flower_gate.inc.c"
 
-EvtScript N(EVS_NpcIdle_Toad_04) = {
+EvtScript EVS_NpcIdle_Toad_04 = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -1148,7 +1148,7 @@ EvtScript N(EVS_NpcIdle_Toad_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_04) = {
+EvtScript EVS_NpcInteract_Toad_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_007C)
@@ -1196,17 +1196,17 @@ EvtScript N(EVS_NpcInteract_Toad_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_04) = {
+EvtScript EVS_NpcInit_Toad_04 = {
     IfEq(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Call(SetNpcPos, NPC_SELF, -25, 0, -500)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_04)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_04))
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_04)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_05) = {
+EvtScript EVS_NpcInteract_Toad_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_008C)
@@ -1254,12 +1254,12 @@ EvtScript N(EVS_NpcInteract_Toad_05) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Toad_05) = {
+EvtScript EVS_NpcIdle_Toad_05 = {
     Return
     End
 };
 
-EvtScript N(EVS_Toad_05_BlockSouthExit) = {
+EvtScript EVS_Toad_05_BlockSouthExit = {
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_Toad_05, 0)
     Wait(5)
@@ -1272,19 +1272,19 @@ EvtScript N(EVS_Toad_05_BlockSouthExit) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_05) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_05)))
+EvtScript EVS_NpcInit_Toad_05 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_05))
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, -50, 0, 580)
         Call(SetNpcYaw, NPC_SELF, 90)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_05)))
-        BindTrigger(Ref(N(EVS_Toad_05_BlockSouthExit)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_05))
+        BindTrigger(Ref(EVS_Toad_05_BlockSouthExit), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_06) = {
+EvtScript EVS_NpcInteract_Toad_06 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_009C)
@@ -1332,23 +1332,23 @@ EvtScript N(EVS_NpcInteract_Toad_06) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Toad_06) = {
+EvtScript EVS_NpcIdle_Toad_06 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_06) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_06)))
+EvtScript EVS_NpcInit_Toad_06 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_06))
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, -110, 20, -380)
         Call(SetNpcYaw, NPC_SELF, 90)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_06)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_06))
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_07) = {
+EvtScript EVS_NpcInteract_Toad_07 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_00AC)
@@ -1396,12 +1396,12 @@ EvtScript N(EVS_NpcInteract_Toad_07) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Toad_07) = {
+EvtScript EVS_NpcIdle_Toad_07 = {
     Return
     End
 };
 
-EvtScript N(EVS_Toad_07_BlockEastExit) = {
+EvtScript EVS_Toad_07_BlockEastExit = {
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_Toad_07, 0)
     Wait(5)
@@ -1414,19 +1414,19 @@ EvtScript N(EVS_Toad_07_BlockEastExit) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_07) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_07)))
+EvtScript EVS_NpcInit_Toad_07 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_07))
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, 530, 0, -50)
         Call(SetNpcYaw, NPC_SELF, 270)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_07)))
-        BindTrigger(Ref(N(EVS_Toad_07_BlockEastExit)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_07))
+        BindTrigger(Ref(EVS_Toad_07_BlockEastExit), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_08) = {
+EvtScript EVS_NpcInteract_Toad_08 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_00BC)
@@ -1478,13 +1478,13 @@ EvtScript N(EVS_NpcInteract_Toad_08) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_08) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_08)))
+EvtScript EVS_NpcInit_Toad_08 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_08))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_09) = {
+EvtScript EVS_NpcInteract_Toad_09 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_00CB)
@@ -1532,13 +1532,13 @@ EvtScript N(EVS_NpcInteract_Toad_09) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_09) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_09)))
+EvtScript EVS_NpcInit_Toad_09 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_09))
     Return
     End
 };
 
-EvtScript N(EVS_CarryStolenCalculator) = {
+EvtScript EVS_CarryStolenCalculator = {
     Call(GetNpcPos, NPC_PostOfficeShyGuy, LVar2, LVar3, LVar4)
     Add(LVar3, 20)
     Call(MakeItemEntity, ITEM_CALCULATOR, LVar2, LVar3, LVar4, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -1555,7 +1555,7 @@ EvtScript N(EVS_CarryStolenCalculator) = {
     End
 };
 
-EvtScript N(EVS_Scene_CalculatorStolen) = {
+EvtScript EVS_Scene_CalculatorStolen = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGt(LVar2, 200)
@@ -1570,10 +1570,10 @@ EvtScript N(EVS_Scene_CalculatorStolen) = {
     Wait(21)
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_0007)
-    Exec(N(EVS_CarryStolenCalculator))
+    Exec(EVS_CarryStolenCalculator)
     Set(LVar0, 6)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
+    ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, -45, 330, 30)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, -45, 710, 30)
     KillThread(LVarA)
@@ -1583,7 +1583,7 @@ EvtScript N(EVS_Scene_CalculatorStolen) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_01) = {
+EvtScript EVS_NpcInit_ShyGuy_01 = {
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Return
     EndIf
@@ -1594,24 +1594,24 @@ EvtScript N(EVS_NpcInit_ShyGuy_01) = {
         Return
     EndIf
     Set(GF_MAC01_CalculatorStolen, true)
-    Exec(N(EVS_Scene_CalculatorStolen))
+    Exec(EVS_Scene_CalculatorStolen)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadHouseKeeper_A) = {
+EvtScript EVS_NpcInteract_ToadHouseKeeper_A = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MAC_Plaza_001A)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadHouseKeeper_B) = {
+EvtScript EVS_NpcInteract_ToadHouseKeeper_B = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_Outro_0044)
     Return
     End
 };
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     IfEq(AF_MAC01_JustDroveShyGuyFromToadHouse, false)
         Set(LVar0, MSG_MAC_Plaza_0015)
         Set(LVar8, MSG_MAC_Plaza_0016)
@@ -1626,12 +1626,12 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestingSong))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestingSong)
     Call(PlayerMoveTo, 535, -155, 20)
     Thread
         Wait(5)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamDistance, CAM_DEFAULT, 116)
         Call(SetCamPitch, CAM_DEFAULT, 99, -58)
@@ -1654,7 +1654,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Wait(20)
     Thread
         Wait(63)
-        Call(N(ToadHouse_CamSetFOV), 0, 25)
+        Call(ToadHouse_CamSetFOV, 0, 25)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
@@ -1664,8 +1664,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Exec(N(EVS_SetupMusic))
+EvtScript EVS_ToadHouse_ReturnFromRest = {
+    Exec(EVS_SetupMusic)
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerSpeed, Float(3.0))
@@ -1675,29 +1675,29 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
+EvtScript EVS_NpcInit_ToadHouseKeeper = {
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_SELF, 370, 20, -150)
         Call(SetNpcYaw, NPC_SELF, 270)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper_B)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper_B))
         Return
     EndIf
     IfEq(GF_MAC01_ChasedShyGuyFromToadHouse, false)
         Switch(GB_StoryProgress)
             CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper_A)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper_A))
             CaseDefault
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
         EndSwitch
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
     EndIf
     Set(AF_MAC01_JustDroveShyGuyFromToadHouse, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy_02) = {
+EvtScript EVS_NpcIdle_ShyGuy_02 = {
     Call(SetNpcPos, NPC_SELF, 572, 36, -226)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
@@ -1721,7 +1721,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_02) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_02) = {
+EvtScript EVS_NpcAI_ShyGuy_02 = {
     Call(DisablePlayerInput, true)
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
@@ -1751,17 +1751,17 @@ EvtScript N(EVS_NpcAI_ShyGuy_02) = {
     Call(ShowSweat, NPC_SELF, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
     Set(LVar0, -1)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
+    ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
     Call(NpcMoveTo, NPC_SELF, 420, -118, 0)
     KillThread(LVarA)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(BindNpcInteract, NPC_ToadHouseToad, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+    Call(BindNpcInteract, NPC_ToadHouseToad, Ref(EVS_NpcInteract_ToadHouseKeeper))
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_ShyGuy_02) = {
+EvtScript EVS_NpcHit_ShyGuy_02 = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -1776,7 +1776,7 @@ EvtScript N(EVS_NpcHit_ShyGuy_02) = {
     IfEq(LVar1, 0)
         Return
     EndIf
-    Call(N(CheckPositionRelativeToPlane), 450, -190, 500, -103)
+    Call(CheckPositionRelativeToPlane, 450, -190, 500, -103)
     IfEq(LVar0, ENCOUNTER_TRIGGER_NONE)
         Return
     EndIf
@@ -1784,16 +1784,16 @@ EvtScript N(EVS_NpcHit_ShyGuy_02) = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     Set(GF_MAC01_ChasedShyGuyFromToadHouse, true)
     Set(AF_MAC01_JustDroveShyGuyFromToadHouse, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_02)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_02))
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_02) = {
+EvtScript EVS_NpcInit_ShyGuy_02 = {
     IfEq(GF_MAC01_ChasedShyGuyFromToadHouse, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy_02)))
-        Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_ShyGuy_02)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_02))
+        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_ShyGuy_02))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -1801,19 +1801,19 @@ EvtScript N(EVS_NpcInit_ShyGuy_02) = {
     End
 };
 
-Vec3f N(FlightPath_TwinkArrive)[] = {
+Vec3f FlightPath_TwinkArrive[] = {
     {  -80.0,   106.0,    0.0 },
     {  -50.0,    30.0,    0.0 },
     {    0.0,     0.0,    0.0 },
 };
 
-Vec3f N(FlightPath_TwinkDepart)[] = {
+Vec3f FlightPath_TwinkDepart[] = {
     {    0.0,     0.0,    0.0 },
     {  -50.0,    30.0,    0.0 },
     {  -70.0,   106.0,    0.0 },
 };
 
-EvtScript N(EVS_NpcIdle_Twink) = {
+EvtScript EVS_NpcIdle_Twink = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, 560)
@@ -1839,7 +1839,7 @@ EvtScript N(EVS_NpcIdle_Twink) = {
     SubF(LVar4, Float(50.0))
     AddF(LVar5, Float(40.0))
     Call(InterpNpcYaw, NPC_Twink, 90, 0)
-    Call(LoadPath, 35 * DT, Ref(N(FlightPath_TwinkArrive)), ARRAY_COUNT(N(FlightPath_TwinkArrive)), EASING_COS_IN_OUT)
+    Call(LoadPath, 35 * DT, Ref(FlightPath_TwinkArrive), ARRAY_COUNT(FlightPath_TwinkArrive), EASING_COS_IN_OUT)
     Loop(0)
         Call(GetNextPathPos)
         AddF(LVar1, LVar4)
@@ -1872,7 +1872,7 @@ EvtScript N(EVS_NpcIdle_Twink) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(InterpNpcYaw, NPC_Twink, 270, 0)
     Call(GetNpcPos, NPC_Twink, LVar4, LVar5, LVar6)
-    Call(LoadPath, 35 * DT, Ref(N(FlightPath_TwinkDepart)), ARRAY_COUNT(N(FlightPath_TwinkDepart)), EASING_QUADRATIC_IN)
+    Call(LoadPath, 35 * DT, Ref(FlightPath_TwinkDepart), ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
     Loop(0)
         Call(GetNextPathPos)
         Add(LVar1, LVar4)
@@ -1885,7 +1885,7 @@ EvtScript N(EVS_NpcIdle_Twink) = {
         EndIf
     EndLoop
     Call(SetNpcPos, NPC_Twink, NPC_DISPOSE_LOCATION)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Set(GB_StoryProgress, STORY_CH1_RETURNED_TO_TOAD_TOWN)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(DisablePlayerInput, false)
@@ -1893,9 +1893,9 @@ EvtScript N(EVS_NpcIdle_Twink) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Twink) = {
+EvtScript EVS_NpcInit_Twink = {
     IfEq(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Twink)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Twink))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -1903,20 +1903,20 @@ EvtScript N(EVS_NpcInit_Twink) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00DF)
-    ExecWait(N(EVS_ArtifactPrompt_Kolorado))
-    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_ArtifactPrompt_Kolorado)
+    Set(LVar0, Ref(LetterDelivery_Kolorado))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH5_RETURNED_TO_TOAD_TOWN, STORY_CH7_BEGAN_PEACH_MISSION)
             IfEq(GF_NOK11_Defeated_KentC, false)
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
             Else
                 Call(RemoveNpc, NPC_SELF)
             EndIf
@@ -1927,7 +1927,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-AnimID N(LimitAnims_Toad)[] = {
+AnimID LimitAnims_Toad[] = {
     ANIM_Toad_Red_Still,
     ANIM_Toad_Red_Idle,
     ANIM_Toad_Red_Walk,
@@ -1936,24 +1936,24 @@ AnimID N(LimitAnims_Toad)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Bubulb)[] = {
+AnimID LimitAnims_Bubulb[] = {
     ANIM_Bubulb_Pink_Idle,
     ANIM_Bubulb_Pink_EmbedIdle,
     ANIM_Bubulb_Pink_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Townsfolk)[] = {
+NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_Toad_04,
         .pos = { -94.0f, 0.0f, -117.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_04,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_RunsHisMouth,
     },
     {
@@ -1972,12 +1972,12 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_05),
-        .settings = &N(NpcSettings_Toad_Wander),
+        .init = &EVS_NpcInit_Toad_05,
+        .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_KnowsTheGossip,
     },
     {
@@ -1998,12 +1998,12 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_06),
-        .settings = &N(NpcSettings_Toad_Patrol),
+        .init = &EVS_NpcInit_Toad_06,
+        .settings = &NpcSettings_Toad_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_PrincessFan,
     },
     {
@@ -2024,12 +2024,12 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_07),
-        .settings = &N(NpcSettings_Toad_Patrol),
+        .init = &EVS_NpcInit_Toad_07,
+        .settings = &NpcSettings_Toad_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_KnowsTheRumors,
     },
     {
@@ -2050,56 +2050,56 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_08),
-        .settings = &N(NpcSettings_Toad_Patrol),
+        .init = &EVS_NpcInit_Toad_08,
+        .settings = &NpcSettings_Toad_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_CrushingOnMinhT,
     },
     {
         .id = NPC_Toad_09,
         .pos = { -380.0f, 20.0f, -100.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Toad_09),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_09,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_SeeksTheSouth,
     },
     {
         .id = NPC_ToadHouseToad,
         .pos = { 488.0f, 20.0f, -174.0f },
         .yaw = 30,
-        .init = &N(EVS_NpcInit_ToadHouseKeeper),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_ToadHouseKeeper,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .limitAnimations = N(LimitAnims_Toad),
+        .limitAnimations = LimitAnims_Toad,
         .tattle = MSG_NpcTattle_MAC_ToadHouseToad,
     },
     {
         .id = NPC_Bubulb,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bubulb),
-        .settings = &N(NpcSettings_Bubulb),
+        .init = &EVS_NpcInit_Bubulb,
+        .settings = &NpcSettings_Bubulb,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BUBULB_PINK_ANIMS,
-        .limitAnimations = N(LimitAnims_Bubulb),
+        .limitAnimations = LimitAnims_Bubulb,
         .tattle = MSG_NpcTattle_MAC_FlowerGateBubulb,
     },
     {
         .id = NPC_MinhT,
         .pos = { 150.0f, 20.0f, 485.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_MinhT),
-        .settings = &N(NpcSettings_MinhT),
+        .init = &EVS_NpcInit_MinhT,
+        .settings = &NpcSettings_MinhT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MINH_T_ANIMS,
@@ -2109,8 +2109,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_Postmaster,
         .pos = { 312.0f, 30.0f, -438.0f },
         .yaw = 300,
-        .init = &N(EVS_NpcInit_Postmaster),
-        .settings = &N(NpcSettings_Postmaster),
+        .init = &EVS_NpcInit_Postmaster,
+        .settings = &NpcSettings_Postmaster,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = POSTMASTER_ANIMS,
@@ -2118,45 +2118,45 @@ NpcData N(NpcData_Townsfolk)[] = {
     },
 };
 
-NpcData N(NpcData_Parakarry) = {
+NpcData NpcData_Parakarry = {
     .id = NPC_Parakarry,
     .pos = { 145.0f, 20.0f, -472.0f },
     .yaw = 120,
-    .init = &N(EVS_NpcInit_Parakarry),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_Parakarry,
+    .settings = &NpcSettings_Dummy,
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = PARAKARRY_ANIMS,
-    .limitAnimations = N(LimitAnims_Parakarry),
+    .limitAnimations = LimitAnims_Parakarry,
     .tattle = MSG_NpcTattle_MAC_Parakarry,
 };
 
-AnimID N(LimitAnims_Twink)[] = {
+AnimID LimitAnims_Twink[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Fly,
     ANIM_Twink_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Twink) = {
+NpcData NpcData_Twink = {
     .id = NPC_Twink,
     .pos = { -350.0f, 20.0f, -100.0f },
     .yaw = 274,
-    .init = &N(EVS_NpcInit_Twink),
-    .settings = &N(NpcSettings_Twink),
+    .init = &EVS_NpcInit_Twink,
+    .settings = &NpcSettings_Twink,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
-    .limitAnimations = N(LimitAnims_Twink),
+    .limitAnimations = LimitAnims_Twink,
 };
 
-NpcData N(NpcData_ShyGuys)[] = {
+NpcData NpcData_ShyGuys[] = {
     {
         .id = NPC_PostOfficeShyGuy,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_01),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_01,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -2165,8 +2165,8 @@ NpcData N(NpcData_ShyGuys)[] = {
         .id = NPC_ToadHouseShyGuy,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_02),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_02,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -2175,8 +2175,8 @@ NpcData N(NpcData_ShyGuys)[] = {
         .id = NPC_GardenShyGuy1,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_GardenShyGuy1),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_GardenShyGuy1,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -2185,95 +2185,95 @@ NpcData N(NpcData_ShyGuys)[] = {
         .id = NPC_GardenShyGuy2,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_GardenShyGuy2),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_GardenShyGuy2,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
 };
 
-AnimID N(LimitAnims_Kolorado)[] = {
+AnimID LimitAnims_Kolorado[] = {
     ANIM_Kolorado_Still,
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { 520.0f, 0.0f, -25.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
-    .limitAnimations = N(LimitAnims_Kolorado),
+    .limitAnimations = LimitAnims_Kolorado,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_ChuckQuizmo) = {
+NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
     .pos = { -440.0f, 20.0f, -140.0f },
     .yaw = 30,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_MAC, QUIZ_COUNT_MAC, QUIZ_MAP_MAC_01 }},
-    .settings = &N(NpcSettings_ChuckQuizmo),
+    .settings = &NpcSettings_ChuckQuizmo,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_HAS_NO_SPRITE,
     .drops = NO_DROPS,
     .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Merlon)),
-    NPC_GROUP(N(NpcData_RowfAndRhuff)),
-    NPC_GROUP(N(NpcData_Townsfolk)),
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_ChuckQuizmo)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Merlon),
+    NPC_GROUP(NpcData_RowfAndRhuff),
+    NPC_GROUP(NpcData_Townsfolk),
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
-NpcGroupList N(Chapter0NPCs) = {
-    NPC_GROUP(N(NpcData_Parakarry)),
-    NPC_GROUP(N(NpcData_KoopaBros)),
-    NPC_GROUP(N(NpcData_DarkToads)),
-    NPC_GROUP(N(NpcData_Merlon)),
-    NPC_GROUP(N(NpcData_RowfAndRhuff)),
-    NPC_GROUP(N(NpcData_Townsfolk)),
+NpcGroupList Chapter0NPCs = {
+    NPC_GROUP(NpcData_Parakarry),
+    NPC_GROUP(NpcData_KoopaBros),
+    NPC_GROUP(NpcData_DarkToads),
+    NPC_GROUP(NpcData_Merlon),
+    NPC_GROUP(NpcData_RowfAndRhuff),
+    NPC_GROUP(NpcData_Townsfolk),
     {}
 };
 
-NpcGroupList N(Chapter1NPCs) = {
-    NPC_GROUP(N(NpcData_Parakarry)),
-    NPC_GROUP(N(NpcData_Merlon)),
-    NPC_GROUP(N(NpcData_RowfAndRhuff)),
-    NPC_GROUP(N(NpcData_Townsfolk)),
+NpcGroupList Chapter1NPCs = {
+    NPC_GROUP(NpcData_Parakarry),
+    NPC_GROUP(NpcData_Merlon),
+    NPC_GROUP(NpcData_RowfAndRhuff),
+    NPC_GROUP(NpcData_Townsfolk),
     {}
 };
 
-NpcGroupList N(TwinkMeetingNPCs) = {
-    NPC_GROUP(N(NpcData_Twink)),
-    NPC_GROUP(N(NpcData_Merlon)),
-    NPC_GROUP(N(NpcData_RowfAndRhuff)),
-    NPC_GROUP(N(NpcData_Townsfolk)),
+NpcGroupList TwinkMeetingNPCs = {
+    NPC_GROUP(NpcData_Twink),
+    NPC_GROUP(NpcData_Merlon),
+    NPC_GROUP(NpcData_RowfAndRhuff),
+    NPC_GROUP(NpcData_Townsfolk),
     {}
 };
 
-NpcGroupList N(Chapter4NPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuys)),
-    NPC_GROUP(N(NpcData_Merlon)),
-    NPC_GROUP(N(NpcData_RowfAndRhuff)),
-    NPC_GROUP(N(NpcData_Townsfolk)),
+NpcGroupList Chapter4NPCs = {
+    NPC_GROUP(NpcData_ShyGuys),
+    NPC_GROUP(NpcData_Merlon),
+    NPC_GROUP(NpcData_RowfAndRhuff),
+    NPC_GROUP(NpcData_Townsfolk),
     {}
 };
 
-NpcGroupList N(NinjiMeetingNPCs) = {
-    NPC_GROUP(N(NpcData_Ninji)),
-    NPC_GROUP(N(NpcData_Merlon)),
-    NPC_GROUP(N(NpcData_RowfAndRhuff)),
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Townsfolk)),
+NpcGroupList NinjiMeetingNPCs = {
+    NPC_GROUP(NpcData_Ninji),
+    NPC_GROUP(NpcData_Merlon),
+    NPC_GROUP(NpcData_RowfAndRhuff),
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Townsfolk),
     {}
 };

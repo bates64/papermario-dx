@@ -1,8 +1,10 @@
 #include "states.h"
 #include "script_api/battle.h"
+#include "battle/action_cmd.h"
+#include "battle/menu.h"
+#include "battle/partner.h"
+#include "battle/script_module.h"
 #include "game_modes.h"
-
-extern StageListRow* gCurrentStagePtr;
 
 enum {
     // BTL_SUBSTATE_INIT                    = 0,
@@ -15,7 +17,6 @@ enum {
 void btl_state_update_end_battle(void) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     BattleStatus* battleStatus = &gBattleStatus;
-    Battle* battle = gCurrentBattlePtr;
     Stage* stage;
     Evt* script;
     s16 areaID, mapID;
@@ -48,11 +49,7 @@ void btl_state_update_end_battle(void) {
         case BTL_SUBSTATE_EXEC_STAGE_SCRIPT:
             BattleScreenFadeAmt = 255;
             gBattleStatus.flags1 &= ~BS_FLAGS1_ACTORS_VISIBLE;
-            if (gCurrentStagePtr == nullptr) {
-                stage = battle->stage;
-            } else {
-                stage = gCurrentStagePtr->stage;
-            }
+            stage = battleStatus->curStage;
             if (stage->postBattle == nullptr) {
                 gBattleSubState = BTL_SUBSTATE_CLEANUP;
                 return;
@@ -79,6 +76,15 @@ void btl_state_update_end_battle(void) {
                 btl_delete_actor(battleStatus->partnerActor);
             }
 
+            for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
+                if (battleStatus->enemyActors[i] != nullptr) {
+                    break;
+                }
+            }
+            if (i < ARRAY_COUNT(battleStatus->enemyActors) || battleStatus->partnerActor != nullptr) {
+                break;
+            }
+
             btl_delete_player_actor(battleStatus->playerActor);
 
             if (battleStatus->nextMerleeSpellType == MERLEE_SPELL_COIN_BOOST) {
@@ -98,6 +104,11 @@ void btl_state_update_end_battle(void) {
             if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
                 decrement_status_bar_disabled();
             }
+
+            unload_action_command();
+            unload_battle_script();
+            unload_battle_partner();
+            unload_battle_menu();
 
             if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST
                 && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)

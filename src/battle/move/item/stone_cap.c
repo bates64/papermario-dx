@@ -1,13 +1,10 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_stone_cap
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_7217DC)) {
+API_CALLABLE(func_802A123C_7217DC) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     s32 i;
@@ -51,18 +48,22 @@ API_CALLABLE(N(func_802A123C_7217DC)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_STONE_CAP)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Call(PlaySound, SOUND_PUT_ON_CAP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_AdjustCap)
     Wait(30)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Crouch)
     Call(GetItemPower, ITEM_STONE_CAP, LVar0, LVar1)
     Call(PlaySound, SOUND_BECOME_STONE)
-    Call(N(func_802A123C_7217DC))
+    Call(func_802A123C_7217DC)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Wait(20)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

@@ -1,20 +1,20 @@
 #include "tst_12.h"
 #include "effects.h"
 
-extern EvtScript N(EVS_Main);
+extern EvtScript EVS_Main;
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [tst_12_ENTRY_0]    {  416.0,    0.0,   76.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
 };
 
-EvtScript N(EVS_SpawnFloatingFlowers) = {
+EvtScript EVS_SpawnFloatingFlowers = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
@@ -40,7 +40,7 @@ EvtScript N(EVS_SpawnFloatingFlowers) = {
         Add(LVar0, LVarA)
         Add(LVar1, LVarB)
         Add(LVar2, LVarE)
-        PlayEffect(EFFECT_FLOATING_FLOWER, LVar0, LVar2, LVar1, LVar3)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, LVar0, LVar2, LVar1, LVar3)
     EndLoop
     Wait(LVarF)
     Label(0)
@@ -48,14 +48,14 @@ EvtScript N(EVS_SpawnFloatingFlowers) = {
     Call(RandInt, LVarD, LVar1)
     Add(LVar0, LVarA)
     Add(LVar1, LVarB)
-    PlayEffect(EFFECT_FLOATING_FLOWER, LVar0, LVarE, LVar1, 200)
+    PlayEffect(EFFECT_FLOATING_FLOWER, 0, LVar0, LVarE, LVar1, 200)
     Wait(LVarF)
     Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
@@ -66,14 +66,14 @@ EvtScript N(EVS_Main) = {
     Set(LVar3, 386)
     Set(LVar4, 174)
     Set(LVar5, 40)
-    Exec(N(EVS_SpawnFloatingFlowers))
+    Exec(EVS_SpawnFloatingFlowers)
     Set(LVar0, 327)
     Set(LVar1, 0)
     Set(LVar2, 24)
     Set(LVar3, 89)
     Set(LVar4, 252)
     Set(LVar5, 40)
-    Exec(N(EVS_SpawnFloatingFlowers))
+    Exec(EVS_SpawnFloatingFlowers)
     Return
     End
 };

@@ -22,7 +22,6 @@ EffectInstance* huff_puff_breath_main(s32 type, f32 posX, f32 posY, f32 posZ, f3
     effectBp.init = huff_puff_breath_init;
     effectBp.update = huff_puff_breath_update;
     effectBp.renderScene = huff_puff_breath_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_HUFF_PUFF_BREATH;
 

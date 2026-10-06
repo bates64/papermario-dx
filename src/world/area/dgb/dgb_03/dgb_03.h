@@ -24,12 +24,10 @@ enum {
     MV_EntityID_Padlock      = MapVar(0),
 };
 
-#define NAMESPACE dgb_03
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_ExitDoors_dgb_14_0);
-extern EvtScript N(EVS_UnlockPrompt_UpperDoor);
-extern EvtScript N(EVS_SetupClock);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_ExitDoors_dgb_14_0;
+extern EvtScript EVS_UnlockPrompt_UpperDoor;
+extern EvtScript EVS_SetupClock;
+extern NpcGroupList DefaultNPCs;

@@ -56,7 +56,6 @@ void bulb_glow_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 unusedScale, Eff
     bp.init = bulb_glow_init;
     bp.update = bulb_glow_update;
     bp.renderScene = bulb_glow_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_BULB_GLOW;
 

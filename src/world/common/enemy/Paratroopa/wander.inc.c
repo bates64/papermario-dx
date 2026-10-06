@@ -3,7 +3,7 @@
 
 #include "world/common/ai/ParatroopaAI.inc.c"
 
-MobileAISettings N(AISettings_ParaTroopa_Wander) = {
+MobileAISettings AISettings_ParaTroopa_Wander = {
     .moveSpeed = 2.0f,
     .moveTime = 30,
     .waitTime = 30,
@@ -18,19 +18,19 @@ MobileAISettings N(AISettings_ParaTroopa_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ParaTroopa_Wander) = {
+EvtScript EVS_NpcAI_ParaTroopa_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
-    Call(N(ParatroopaAI_Main), Ref(N(AISettings_ParaTroopa_Wander)))
+    Call(ParatroopaAI_Main, Ref(AISettings_ParaTroopa_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ParaTroopa_Wander) = {
+NpcSettings NpcSettings_ParaTroopa_Wander = {
     .height = 40,
     .radius = 24,
     .level = ACTOR_LEVEL_PARATROOPA,
-    .doAI = &N(EVS_NpcAI_ParaTroopa_Wander),
+    .doAI = &EVS_NpcAI_ParaTroopa_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

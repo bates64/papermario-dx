@@ -1,7 +1,16 @@
 #include "common.h"
+#include "audio/audio.h"
+#include "dx/overlay.h"
 
 BSS u8 heap_generalHead[GENERAL_HEAP_SIZE];
 BSS u8 heap_spriteHead[SPRITE_HEAP_SIZE];
 BSS u16 gFrameBuf0[FRAME_BUFFER_SIZE / 2];
 BSS u16 gFrameBuf1[FRAME_BUFFER_SIZE / 2];
 BSS u16 gFrameBuf2[FRAME_BUFFER_SIZE / 2];
+BSS u8 gEffectOverlayBuffer[EFFECT_OVERLAY_SLOT_COUNT][EFFECT_OVERLAY_SLOT_SIZE] ALIGNED(0x1000);
+BSS u8 gBattlePartnerOverlayBuffer[BATTLE_PARTNER_OVERLAY_SLOT_SIZE] ALIGNED(0x1000);
+BSS u8 gActionCommandOverlayBuffer[ACTION_COMMAND_OVERLAY_SLOT_SIZE] ALIGNED(0x1000);
+BSS u8 gBattleScriptOverlayBuffer[BATTLE_SCRIPT_OVERLAY_SLOT_SIZE] ALIGNED(0x1000);
+BSS u8 gBattleMenuOverlayBuffer[BATTLE_MENU_OVERLAY_SLOT_SIZE] ALIGNED(0x1000);
+// Lower RAM contains fixed-address graphics/map scratch space starting at 0x80200000.
+BSS u8 AuHeapBase[AUDIO_HEAP_SIZE] ALIGNED(0x1000);

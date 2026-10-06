@@ -49,30 +49,28 @@ enum {
     MF_SpawnFlag_Goomnut    = MapFlag(11),
 };
 
-#define NAMESPACE kmr_02
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_FadeOutMusic;
+extern EvtScript EVS_PlayRestingSong;
+extern EvtScript EVS_PushNewPartnerSong;
+extern EvtScript EVS_PopSong;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_SetupToadHouse;
+extern EvtScript EVS_SetWallsDown_ToadHouse;
+extern EvtScript EVS_Scene_KammyCrushesGate;
+extern EvtScript EVS_NpcAux_Kammy;
+extern EvtScript EVS_SummonGateBlock;
+extern EvtScript EVS_NpcInteract_ToadHouse;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList EpilogueNPCs;
+extern NpcGroupList NpcGroup1;
+extern NpcGroupList PrologueNPCs;
+extern NpcGroupList DefaultNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_FadeOutMusic);
-extern EvtScript N(EVS_PlayRestingSong);
-extern EvtScript N(EVS_PushNewPartnerSong);
-extern EvtScript N(EVS_PopSong);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_SetupToadHouse);
-extern EvtScript N(EVS_SetWallsDown_ToadHouse);
-extern EvtScript N(EVS_Scene_KammyCrushesGate);
-extern EvtScript N(EVS_NpcAux_Kammy);
-extern EvtScript N(EVS_SummonGateBlock);
-extern EvtScript N(EVS_NpcInteract_ToadHouse);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(EpilogueNPCs);
-extern NpcGroupList N(NpcGroup1);
-extern NpcGroupList N(PrologueNPCs);
-extern NpcGroupList N(DefaultNPCs);
-
-extern API_CALLABLE(N(SetWanderTerritory));
-extern EvtScript N(EVS_NpcIdle_SwitchedWander);
+extern API_CALLABLE(SetWanderTerritory);
+extern EvtScript EVS_NpcIdle_SwitchedWander;
 
 
 #include "world/common/npc/Goombaria/wander.h"
@@ -82,5 +80,5 @@ extern EvtScript N(EVS_NpcIdle_SwitchedWander);
 #include "world/common/npc/Goomama/wander.h"
 #include "world/common/npc/Goompapa/wander.h"
 
-extern IMG_BIN N(heart_block_img)[];
-extern PAL_BIN N(heart_block_pal)[];
+extern IMG_BIN kmr_02_heart_block_img[];
+extern PAL_BIN kmr_02_heart_block_pal[];

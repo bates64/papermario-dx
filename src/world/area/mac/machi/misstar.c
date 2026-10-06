@@ -1,6 +1,6 @@
 #include "machi.h"
 
-API_CALLABLE(N(MisstarFlyAway)) {
+API_CALLABLE(MisstarFlyAway) {
     Npc* npc = get_npc_unsafe(NPC_Misstar);
 
     if (isInitialCall) {
@@ -39,12 +39,12 @@ API_CALLABLE(N(MisstarFlyAway)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcCreate_Misstar) = {
+EvtScript EVS_NpcCreate_Misstar = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAux_Misstar) = {
+EvtScript EVS_NpcAux_Misstar = {
     Label(0)
         SetF(LVar0, Float(40.0))
         Loop(20)
@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcAux_Misstar) = {
     End
 };
 
-EvtScript N(EVS_Misstar_Bobbing) = {
+EvtScript EVS_Misstar_Bobbing = {
     Label(0)
         Loop(10)
             Loop(10)
@@ -83,33 +83,33 @@ EvtScript N(EVS_Misstar_Bobbing) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Misstar) = {
-    ExecGetTID(N(EVS_Misstar_Bobbing), LVarA)
+EvtScript EVS_NpcAI_Misstar = {
+    ExecGetTID(EVS_Misstar_Bobbing, LVarA)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(AwaitPlayerApproach, LVar0, LVar2, 60)
-    Call(N(MisstarFlyAway))
+    Call(MisstarFlyAway)
     KillThread(LVarA)
     Call(RemoveNpc, NPC_SELF)
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Misstar) = {
+NpcSettings NpcSettings_Misstar = {
     .defaultAnim = ANIM_WorldMisstar_Idle,
     .height = 24,
     .radius = 24,
-    .doAux = &N(EVS_NpcAux_Misstar),
-    .doAI = &N(EVS_NpcAI_Misstar),
-    .onCreate = &N(EVS_NpcCreate_Misstar),
+    .doAux = &EVS_NpcAux_Misstar,
+    .doAI = &EVS_NpcAI_Misstar,
+    .onCreate = &EVS_NpcCreate_Misstar,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcData N(NpcData_Misstar) = {
+NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
     .pos = { 320.0f, 30.0f, -290.0f },
     .yaw = 100,
-    .settings = &N(NpcSettings_Misstar),
+    .settings = &NpcSettings_Misstar,
     .flags = ENEMY_FLAG_PASSIVE,
     .animations = {
         .idle = ANIM_WorldMisstar_Idle,

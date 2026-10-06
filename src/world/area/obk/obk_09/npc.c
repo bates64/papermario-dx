@@ -9,7 +9,7 @@ typedef struct ImprisonedCard {
     /* 0x1C */ EffectInstance* effect;
 } ImprisonedCard; // size = 0x20
 
-API_CALLABLE(N(ImprisonedCardSetup)) {
+API_CALLABLE(ImprisonedCardSetup) {
     Npc* npc = get_npc_safe(script->owner2.npcID);
     ImprisonedCard* card = heap_malloc(sizeof(*card));
 
@@ -24,7 +24,7 @@ API_CALLABLE(N(ImprisonedCardSetup)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ImprisonedCardUpdate)) {
+API_CALLABLE(ImprisonedCardUpdate) {
     ImprisonedCard* card = script->userData;
     Npc* npc = get_npc_safe(script->owner2.npcID);
     Shadow* shadow = get_shadow_by_index(card->shadowID);
@@ -53,12 +53,12 @@ API_CALLABLE(N(ImprisonedCardUpdate)) {
 #include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-EvtScript N(EVS_NpcInit_Bow) = {
+EvtScript EVS_NpcInit_Bow = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bootler) = {
+EvtScript EVS_NpcInteract_Bootler = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_BOW)
         Call(SpeakToNpc, NPC_Bootler, ANIM_Bootler_Talk, ANIM_Bootler_Talk, 0, NPC_PARTNER, MSG_CH3_0057)
@@ -84,8 +84,8 @@ EvtScript N(EVS_NpcInteract_Bootler) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bootler) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bootler)))
+EvtScript EVS_NpcInit_Bootler = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bootler))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_BOW_JOINED_PARTY)
         CaseGe(STORY_CH3_BOW_JOINED_PARTY)
@@ -97,15 +97,15 @@ EvtScript N(EVS_NpcInit_Bootler) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_Skolar) = {
-    Call(N(ImprisonedCardSetup))
-    Call(N(ImprisonedCardUpdate))
+EvtScript EVS_NpcAux_Skolar = {
+    Call(ImprisonedCardSetup)
+    Call(ImprisonedCardUpdate)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Skolar) = {
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Skolar)))
+EvtScript EVS_NpcInit_Skolar = {
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Skolar))
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldSkolar_IdleSad)
     Call(SetNpcPos, NPC_SELF, 0, NPC_DISPOSE_POS_Y, -100)
     Call(EnableNpcShadow, NPC_SELF, false)
@@ -117,27 +117,27 @@ EvtScript N(EVS_NpcInit_Skolar) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bow_Epilogue) = {
+EvtScript EVS_NpcInit_Bow_Epilogue = {
     Call(SetNpcPos, NPC_SELF, -196, 10, 121)
     Call(SetNpcYaw, NPC_SELF, 90)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bootler_Epilogue) = {
+EvtScript EVS_NpcInit_Bootler_Epilogue = {
     Call(SetNpcPos, NPC_SELF, -82, 10, 212)
     Call(SetNpcYaw, NPC_SELF, 270)
     Return
     End
 };
 
-NpcData N(NpcData_Default)[] = {
+NpcData NpcData_Default[] = {
     {
         .id = NPC_Bow,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bow),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_Bow,
+        .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOW_ANIMS,
@@ -146,8 +146,8 @@ NpcData N(NpcData_Default)[] = {
         .id = NPC_Bootler,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bootler),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_Bootler,
+        .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOOTLER_ANIMS,
@@ -157,21 +157,21 @@ NpcData N(NpcData_Default)[] = {
         .id = NPC_Skolar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Skolar),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_Skolar,
+        .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Epilogue)[] = {
+NpcData NpcData_Epilogue[] = {
     {
         .id = NPC_Bow,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bow_Epilogue),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_Bow_Epilogue,
+        .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOW_ANIMS,
@@ -180,8 +180,8 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_Bootler,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bootler_Epilogue),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_Bootler_Epilogue,
+        .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOOTLER_ANIMS,
@@ -189,12 +189,12 @@ NpcData N(NpcData_Epilogue)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Default)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Default),
     {}
 };
 
-NpcGroupList N(EpilogueNPCs) = {
-    NPC_GROUP(N(NpcData_Epilogue)),
+NpcGroupList EpilogueNPCs = {
+    NPC_GROUP(NpcData_Epilogue),
     {}
 };

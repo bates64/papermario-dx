@@ -1,6 +1,6 @@
 #include "flo_21.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfEq(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         Call(FadeOutMusic, 0, 500)
     Else

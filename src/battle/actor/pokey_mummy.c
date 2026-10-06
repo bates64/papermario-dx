@@ -4,24 +4,22 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Pokey.h"
 
-#define NAMESPACE A(pokey_mummy)
-
-extern s32 N(FourPartAnims)[];
-extern s32 N(ThrownPartAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_KnockPartAway);
-extern EvtScript N(EVS_Attack_SinglePartLeap);
-extern EvtScript N(EVS_Pokey_SpinSmashHit);
-extern EvtScript N(EVS_DecrementSize);
-extern EvtScript N(EVS_Pokey_Hit);
-extern EvtScript N(EVS_Pokey_ScareAway);
+extern s32 FourPartAnims[];
+extern s32 ThrownPartAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_KnockPartAway;
+extern EvtScript EVS_Attack_SinglePartLeap;
+extern EvtScript EVS_Pokey_SpinSmashHit;
+extern EvtScript EVS_DecrementSize;
+extern EvtScript EVS_Pokey_Hit;
+extern EvtScript EVS_Pokey_ScareAway;
 
 // while these parts seem set up to manage Pokeys changing size, its actually all handled via animations
 // and the PRT_BODY* are always invisible
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1, // top part of a 4-part Pokey
     PRT_BODY3       = 2, // bottom part of a 4-part Pokey
     PRT_BODY2       = 3,
@@ -30,7 +28,7 @@ enum N(ActorPartIDs) {
     PRT_PROJECTILE  = 6, // part which is thrown
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_IN_CantSummon      = 1,
     AVAR_PartsThrown        = 0,
     AVAR_Anim_Immune        = 1,
@@ -48,17 +46,17 @@ enum N(ActorVars) {
     AVAL_Generation_Last    = 2,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_THROW_PART         = 2, // throw a body part at the player
     DMG_LEAP               = 2, // jump onto the player, used when no more parts can be thrown
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              80,
@@ -83,15 +81,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 20 },
         .opacity = 255,
-        .idleAnimations = N(FourPartAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = FourPartAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -103,7 +101,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .targetOffset = { 0, 72 },
         .opacity = 255,
         .idleAnimations = nullptr,
-        .defenseTable = N(DefenseTable),
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
@@ -115,7 +113,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .targetOffset = { 0, 54 },
         .opacity = 255,
         .idleAnimations = nullptr,
-        .defenseTable = N(DefenseTable),
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
@@ -127,7 +125,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .targetOffset = { 0, 36 },
         .opacity = 255,
         .idleAnimations = nullptr,
-        .defenseTable = N(DefenseTable),
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
@@ -139,7 +137,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .targetOffset = { 0, 16 },
         .opacity = 255,
         .idleAnimations = nullptr,
-        .defenseTable = N(DefenseTable),
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
@@ -150,23 +148,23 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(ThrownPartAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ThrownPartAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_POKEY_MUMMY,
     .level = ACTOR_LEVEL_POKEY_MUMMY,
     .maxHP = 4,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 60,
     .airLiftChance = 90,
     .hurricaneChance = 85,
@@ -181,7 +179,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 65 },
 };
 
-s32 N(FourPartAnims)[] = {
+s32 FourPartAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Pokey_Mummy_Idle4,
     STATUS_KEY_STONE,     ANIM_Pokey_Mummy_Still4,
     STATUS_KEY_SLEEP,     ANIM_Pokey_Mummy_Sleep4,
@@ -192,7 +190,7 @@ s32 N(FourPartAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ThreePartAnims)[] = {
+s32 ThreePartAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Pokey_Mummy_Idle3,
     STATUS_KEY_STONE,     ANIM_Pokey_Mummy_Still3,
     STATUS_KEY_SLEEP,     ANIM_Pokey_Mummy_Sleep3,
@@ -203,7 +201,7 @@ s32 N(ThreePartAnims)[] = {
     STATUS_END,
 };
 
-s32 N(TwoPartAnims)[] = {
+s32 TwoPartAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Pokey_Mummy_Idle2,
     STATUS_KEY_STONE,     ANIM_Pokey_Mummy_Still2,
     STATUS_KEY_SLEEP,     ANIM_Pokey_Mummy_Sleep2,
@@ -214,7 +212,7 @@ s32 N(TwoPartAnims)[] = {
     STATUS_END,
 };
 
-s32 N(OnePartAnims)[] = {
+s32 OnePartAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Pokey_Mummy_Idle1,
     STATUS_KEY_STONE,     ANIM_Pokey_Mummy_Still1,
     STATUS_KEY_SLEEP,     ANIM_Pokey_Mummy_Sleep1,
@@ -225,17 +223,15 @@ s32 N(OnePartAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ThrownPartAnims)[] = {
+s32 ThrownPartAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Pokey_Mummy_Projectile,
     STATUS_END,
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Generation, AVAL_Generation_First)
     // copy input var from Formation
     Call(GetActorVar, ACTOR_SELF, AVAR_IN_CantSummon, LVar0)
@@ -254,12 +250,12 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -286,7 +282,7 @@ EvtScript N(EVS_HandleEvent) = {
                         CaseOrEq(DMG_SRC_SHELL_TOSS)
                         CaseOrEq(DMG_SRC_POWER_SHELL)
                         CaseOrEq(DMG_SRC_FIRE_SHELL)
-                            ExecWait(N(EVS_Pokey_Hit))
+                            ExecWait(EVS_Pokey_Hit)
                         EndCaseGroup
                         CaseDefault
                             SetConst(LVar0, PRT_MAIN)
@@ -315,7 +311,7 @@ EvtScript N(EVS_HandleEvent) = {
                         CaseOrEq(DMG_SRC_SHELL_TOSS)
                         CaseOrEq(DMG_SRC_POWER_SHELL)
                         CaseOrEq(DMG_SRC_FIRE_SHELL)
-                            ExecWait(N(EVS_Pokey_Hit))
+                            ExecWait(EVS_Pokey_Hit)
                         EndCaseGroup
                         CaseDefault
                             SetConst(LVar0, PRT_MAIN)
@@ -346,7 +342,7 @@ EvtScript N(EVS_HandleEvent) = {
                         CaseOrEq(DMG_SRC_SHELL_TOSS)
                         CaseOrEq(DMG_SRC_POWER_SHELL)
                         CaseOrEq(DMG_SRC_FIRE_SHELL)
-                            ExecWait(N(EVS_Pokey_Hit))
+                            ExecWait(EVS_Pokey_Hit)
                         EndCaseGroup
                         CaseDefault
                             ExecWait(EVS_Enemy_BurnHit)
@@ -370,7 +366,7 @@ EvtScript N(EVS_HandleEvent) = {
                         CaseOrEq(DMG_SRC_SHELL_TOSS)
                         CaseOrEq(DMG_SRC_POWER_SHELL)
                         CaseOrEq(DMG_SRC_FIRE_SHELL)
-                            ExecWait(N(EVS_Pokey_Hit))
+                            ExecWait(EVS_Pokey_Hit)
                         EndCaseGroup
                         CaseDefault
                             ExecWait(EVS_Enemy_BurnHit)
@@ -382,9 +378,9 @@ EvtScript N(EVS_HandleEvent) = {
             ExecWait(EVS_Enemy_Death)
             Return
         CaseEq(EVENT_SPIN_SMASH_HIT)
-            ExecWait(N(EVS_Pokey_SpinSmashHit))
+            ExecWait(EVS_Pokey_SpinSmashHit)
         CaseEq(EVENT_SPIN_SMASH_DEATH)
-            ExecWait(N(EVS_Pokey_SpinSmashHit))
+            ExecWait(EVS_Pokey_SpinSmashHit)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Hit, LVar1)
             ExecWait(EVS_Enemy_Death)
@@ -396,7 +392,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Hit, LVar1)
                 ExecWait(EVS_Enemy_Hit)
             Else
-                ExecWait(N(EVS_Pokey_Hit))
+                ExecWait(EVS_Pokey_Hit)
             EndIf
         CaseEq(EVENT_SPIN_SMASH_LAUNCH_DEATH)
             Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -405,7 +401,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Hit, LVar1)
                 ExecWait(EVS_Enemy_Hit)
             Else
-                ExecWait(N(EVS_Pokey_Hit))
+                ExecWait(EVS_Pokey_Hit)
             EndIf
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, -1)
@@ -474,14 +470,14 @@ EvtScript N(EVS_HandleEvent) = {
             EndIf
             AddF(LVar3, LVar0)
             AddF(LVar4, LVar1)
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar3, LVar4, LVar5, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar3, LVar4, LVar5, 20)
             Wait(30)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Immune, LVar1)
             ExecWait(EVS_Enemy_Recover)
         CaseEq(EVENT_SCARE_AWAY)
-            ExecWait(N(EVS_Pokey_ScareAway))
+            ExecWait(EVS_Pokey_ScareAway)
             Return
         CaseDefault
     EndSwitch
@@ -491,10 +487,10 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVarA)
     IfEq(LVarA, 3)
-        ExecWait(N(EVS_Attack_SinglePartLeap))
+        ExecWait(EVS_Attack_SinglePartLeap)
         Return
     EndIf
     Call(UseIdleAnimation, ACTOR_SELF, false)
@@ -556,7 +552,7 @@ EvtScript N(EVS_TakeTurn) = {
     Wait(1)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_POKEY_THROW)
     Wait(3)
-    ExecWait(N(EVS_DecrementSize))
+    ExecWait(EVS_DecrementSize)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, 2, BS_FLAGS1_TRIGGER_EVENTS)
     Switch(LVar0)
@@ -617,7 +613,7 @@ EvtScript N(EVS_TakeTurn) = {
     End
 };
 
-EvtScript N(EVS_Attack_SinglePartLeap) = {
+EvtScript EVS_Attack_SinglePartLeap = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_WALK, SOUND_POKEY_STEP, SOUND_POKEY_STEP)
@@ -753,7 +749,7 @@ EvtScript N(EVS_Attack_SinglePartLeap) = {
     End
 };
 
-EvtScript N(EVS_Pokey_SpinSmashHit) = {
+EvtScript EVS_Pokey_SpinSmashHit = {
     Call(GetStatusFlags, ACTOR_SELF, LVarA)
     IfFlag(LVarA, STATUS_FLAG_SHRINK)
         SetConst(LVar0, PRT_MAIN)
@@ -764,11 +760,11 @@ EvtScript N(EVS_Pokey_SpinSmashHit) = {
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVarA)
     Switch(LVarA)
         CaseEq(0)
-            ExecWait(N(EVS_KnockPartAway))
+            ExecWait(EVS_KnockPartAway)
         CaseEq(1)
-            ExecWait(N(EVS_KnockPartAway))
+            ExecWait(EVS_KnockPartAway)
         CaseEq(2)
-            ExecWait(N(EVS_KnockPartAway))
+            ExecWait(EVS_KnockPartAway)
         CaseEq(3)
             SetConst(LVar0, PRT_MAIN)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Hit, LVar1)
@@ -778,7 +774,7 @@ EvtScript N(EVS_Pokey_SpinSmashHit) = {
     End
 };
 
-EvtScript N(EVS_DecrementSize) = {
+EvtScript EVS_DecrementSize = {
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVarA)
     Switch(LVarA)
         CaseEq(0)
@@ -789,7 +785,7 @@ EvtScript N(EVS_DecrementSize) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Throw, ANIM_Pokey_Mummy_Throw2)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_BurnHurt, ANIM_Pokey_Mummy_BurnHurt3)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_BurnStill, ANIM_Pokey_Mummy_BurnStill3)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ThreePartAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ThreePartAnims))
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY3, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY3, ACTOR_PART_FLAG_NO_TARGET, true)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY2, ACTOR_PART_FLAG_NO_TARGET, false)
@@ -797,7 +793,7 @@ EvtScript N(EVS_DecrementSize) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_PartsThrown, 1)
             Call(SetActorSize, ACTOR_SELF, 62, EVT_IGNORE_ARG)
             Call(SetPartSize, ACTOR_SELF, PRT_MAIN, 62, EVT_IGNORE_ARG)
-            Call(N(SetAbsoluteStatusOffsets), -15, 55, 10, 45)
+            Call(SetAbsoluteStatusOffsets, -15, 55, 10, 45)
         CaseEq(1)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Immune, ANIM_Pokey_Mummy_Idle2)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Run, ANIM_Pokey_Mummy_Run2)
@@ -806,7 +802,7 @@ EvtScript N(EVS_DecrementSize) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Throw, ANIM_Pokey_Mummy_Throw1)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_BurnHurt, ANIM_Pokey_Mummy_BurnHurt2)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_BurnStill, ANIM_Pokey_Mummy_BurnStill2)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(TwoPartAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(TwoPartAnims))
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY2, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY2, ACTOR_PART_FLAG_NO_TARGET, true)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY1, ACTOR_PART_FLAG_NO_TARGET, false)
@@ -814,14 +810,14 @@ EvtScript N(EVS_DecrementSize) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_PartsThrown, 2)
             Call(SetActorSize, ACTOR_SELF, 44, EVT_IGNORE_ARG)
             Call(SetPartSize, ACTOR_SELF, PRT_MAIN, 44, EVT_IGNORE_ARG)
-            Call(N(SetAbsoluteStatusOffsets), -15, 35, 10, 25)
+            Call(SetAbsoluteStatusOffsets, -15, 35, 10, 25)
         CaseEq(2)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Immune, ANIM_Pokey_Mummy_Idle1)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Run, ANIM_Pokey_Mummy_Run1)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Hit, ANIM_Pokey_Mummy_Hurt1)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_BurnHurt, ANIM_Pokey_Mummy_BurnHurt1)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_BurnStill, ANIM_Pokey_Mummy_BurnStill1)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(OnePartAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(OnePartAnims))
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY1, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_BODY1, ACTOR_PART_FLAG_NO_TARGET, true)
             Call(SetPartFlagBits, ACTOR_SELF, PRT_SINGLE, ACTOR_PART_FLAG_NO_TARGET, false)
@@ -829,13 +825,13 @@ EvtScript N(EVS_DecrementSize) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_PartsThrown, 3)
             Call(SetActorSize, ACTOR_SELF, 26, EVT_IGNORE_ARG)
             Call(SetPartSize, ACTOR_SELF, PRT_MAIN, 26, EVT_IGNORE_ARG)
-            Call(N(SetAbsoluteStatusOffsets), -15, 15, 10, 5)
+            Call(SetAbsoluteStatusOffsets, -15, 15, 10, 5)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_HitReactionBounce) = {
+EvtScript EVS_HitReactionBounce = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 18)
     Call(SetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -878,7 +874,7 @@ EvtScript N(EVS_HitReactionBounce) = {
     End
 };
 
-EvtScript N(EVS_KnockPartAway) = {
+EvtScript EVS_KnockPartAway = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetPartPos, ACTOR_SELF, PRT_PROJECTILE, LVar0, LVar1, LVar2)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_PROJECTILE, ACTOR_PART_FLAG_INVISIBLE, false)
@@ -888,13 +884,13 @@ EvtScript N(EVS_KnockPartAway) = {
     Else
         Call(SetPartScale, ACTOR_SELF, PRT_PROJECTILE, Float(0.4), Float(0.4), Float(1.0))
     EndIf
-    ExecWait(N(EVS_DecrementSize))
+    ExecWait(EVS_DecrementSize)
     SetConst(LVar0, PRT_MAIN)
     Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Hit, LVar1)
     Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
     ChildThread
         Wait(4)
-        ExecWait(N(EVS_HitReactionBounce))
+        ExecWait(EVS_HitReactionBounce)
     EndChildThread
     Call(CreateHomeTargetList, TARGET_FLAG_GROUND | TARGET_FLAG_PRIMARY_ONLY | TARGET_FLAG_ALLOW_TARGET_ONLY)
     Call(InitTargetIterator)
@@ -942,14 +938,14 @@ EvtScript N(EVS_KnockPartAway) = {
     End
 };
 
-EvtScript N(EVS_Pokey_Hit) = {
+EvtScript EVS_Pokey_Hit = {
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Call(SetPartScale, ACTOR_SELF, PRT_PROJECTILE, Float(1.0), Float(1.0), Float(1.0))
     Else
         Call(SetPartScale, ACTOR_SELF, PRT_PROJECTILE, Float(0.4), Float(0.4), Float(1.0))
     EndIf
-    ExecWait(N(EVS_DecrementSize))
+    ExecWait(EVS_DecrementSize)
     SetConst(LVar0, PRT_MAIN)
     Call(GetLastEvent, ACTOR_SELF, LVar1)
     Switch(LVar1)
@@ -964,7 +960,7 @@ EvtScript N(EVS_Pokey_Hit) = {
     Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
     ChildThread
         Wait(4)
-        ExecWait(N(EVS_HitReactionBounce))
+        ExecWait(EVS_HitReactionBounce)
     EndChildThread
     Call(GetActorVar, ACTOR_SELF, AVAR_PartsThrown, LVarA)
     IfNe(LVarA, 3)
@@ -1000,7 +996,7 @@ EvtScript N(EVS_Pokey_Hit) = {
             Add(LVar1, LVar3)
             Add(LVar2, 5)
             DivF(LVar3, Float(10.0))
-            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10, 0)
+            PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, LVar3, 10)
         CaseEq(EVENT_BURN_DEATH)
             Call(GetActorVar, ACTOR_SELF, AVAR_Anim_BurnStill, LVar1)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, LVar1)
@@ -1011,7 +1007,7 @@ EvtScript N(EVS_Pokey_Hit) = {
     End
 };
 
-EvtScript N(EVS_Pokey_ScareAway) = {
+EvtScript EVS_Pokey_ScareAway = {
     SetConst(LVar0, PRT_MAIN)
     Call(GetActorVar, ACTOR_SELF, AVAR_Anim_Hit, LVar1)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)

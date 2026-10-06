@@ -3,7 +3,7 @@
 
 #include "world/common/entity/Chest.inc.c"
 
-API_CALLABLE(N(MonitorPlayerAltitude)) {
+API_CALLABLE(MonitorPlayerAltitude) {
     s32 result = -1;
 
     if (gPlayerStatus.lastGoodPos.y > 200.0) {
@@ -18,7 +18,7 @@ API_CALLABLE(N(MonitorPlayerAltitude)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_TetherCameraToPlayer) = {
+EvtScript EVS_TetherCameraToPlayer = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -28,12 +28,12 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
-    ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     IfEq(MV_PlayerCliffLevel, 0)
         Call(SetPlayerJumpscale, Float(1.4))
         Call(PlayerJump, -1582, 23, 60, 15)
@@ -49,14 +49,14 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_OpenChest) = EVT_OPEN_CHEST(ITEM_DAMAGE_DODGE_B, GF_IWA03_Chest_DamageDodgeB);
+EvtScript EVS_OpenChest = EVT_OPEN_CHEST(ITEM_DAMAGE_DODGE_B, GF_IWA03_Chest_DamageDodgeB);
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Thread
-        Call(N(MonitorPlayerAltitude))
+        Call(MonitorPlayerAltitude)
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), -1580, 23, 20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Call(MakeEntity, Ref(Entity_YellowBlock), -1775, 408, -120, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_IWA03_ItemBlock_Coin)
     Call(MakeEntity, Ref(Entity_YellowBlock), -620, -15, -69, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
@@ -75,7 +75,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeItemEntity, ITEM_COIN, -1707, -60, 60, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA03_Item_CoinB)
     Call(MakeEntity, Ref(Entity_Chest), -1717, 93, -127, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_IWA03_Chest_DamageDodgeB)
-    Call(AssignScript, Ref(N(EVS_OpenChest)))
+    Call(AssignScript, Ref(EVS_OpenChest))
     Return
     End
 };

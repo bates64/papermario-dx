@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "include_asset.h"
 
-void N(draw_narration_window)(void);
+void draw_narration_window(void);
 
 typedef struct EndChapter {
     /* 0x00 */ Vec3f pos;
@@ -19,13 +19,13 @@ typedef struct EndChapter {
 
 #include "world/common/npc/StarSpirit/base.h"
 
-NpcSettings N(NpcSettings_StarSpirit) = {
+NpcSettings NpcSettings_StarSpirit = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
 };
 
-AnimID N(StarSpiritAnimations)[][2] = {
+AnimID StarSpiritAnimations[][2] = {
     { ANIM_WorldEldstar_Idle,   ANIM_WorldEldstar_Back },
     { ANIM_WorldMamar_Idle,     ANIM_WorldMamar_Back },
     { ANIM_WorldSkolar_Idle,    ANIM_WorldSkolar_Back },
@@ -40,7 +40,7 @@ INCLUDE_IMG("world/area/kmr/kmr_23/window_ur.png", kmr_23_window_ur_img);
 INCLUDE_IMG("world/area/kmr/kmr_23/window_ll.png", kmr_23_window_ll_img);
 INCLUDE_IMG("world/area/kmr/kmr_23/window_lr.png", kmr_23_window_lr_img);
 
-API_CALLABLE(N(CreateEndChapterData)) {
+API_CALLABLE(CreateEndChapterData) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_safe(NPC_StarSpirit);
     EndChapter* data;
@@ -62,7 +62,7 @@ API_CALLABLE(N(CreateEndChapterData)) {
         data->spiritCardEffect = fx_spirit_card(1, data->pos.x, data->pos.y, data->pos.z, 1.0f, 0);
         data->spiritCardEffect->data.spiritCard->chapter = data->chapter;
         data->spiritCardEffect->data.spiritCard->unk_20 = 0;
-        set_curtain_draw_callback(N(draw_narration_window));
+        set_curtain_draw_callback(draw_narration_window);
     }
     data = script->userData;
     npc->pos.x = data->pos.x;
@@ -74,7 +74,7 @@ API_CALLABLE(N(CreateEndChapterData)) {
         if ((data->yaw > 90.0f) && (data->yaw < 270.0f)) {
             backFacing = true;
         }
-        npc->curAnim = N(StarSpiritAnimations)[data->chapter][backFacing];
+        npc->curAnim = StarSpiritAnimations[data->chapter][backFacing];
     }
 
     if (data->spiritCardEffect != nullptr) {
@@ -86,7 +86,7 @@ API_CALLABLE(N(CreateEndChapterData)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AddCardAngularVelocity)) {
+API_CALLABLE(AddCardAngularVelocity) {
     Bytecode* args = script->ptrReadPos;
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
 
@@ -102,7 +102,7 @@ API_CALLABLE(N(AddCardAngularVelocity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AccelerateCardSpin)) {
+API_CALLABLE(AccelerateCardSpin) {
     Bytecode* args = script->ptrReadPos;
     EndChapter* data;
     s32 duration;
@@ -125,7 +125,7 @@ API_CALLABLE(N(AccelerateCardSpin)) {
     }
 }
 
-API_CALLABLE(N(MakeCardFloatUpward)) {
+API_CALLABLE(MakeCardFloatUpward) {
     Bytecode* args = script->ptrReadPos;
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
 
@@ -149,7 +149,7 @@ API_CALLABLE(N(MakeCardFloatUpward)) {
     }
 }
 
-API_CALLABLE(N(ShowRadialShimmer)) {
+API_CALLABLE(ShowRadialShimmer) {
     Bytecode* args = script->ptrReadPos;
     f32 scale = evt_get_float_variable(script, *args++);
     s32 duration = evt_get_variable(script, *args++);
@@ -159,7 +159,7 @@ API_CALLABLE(N(ShowRadialShimmer)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FadeInSpiritNpc)) {
+API_CALLABLE(FadeInSpiritNpc) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_safe(NPC_StarSpirit);
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
@@ -179,7 +179,7 @@ API_CALLABLE(N(FadeInSpiritNpc)) {
     }
 }
 
-API_CALLABLE(N(FlashScreenWhite)) {
+API_CALLABLE(FlashScreenWhite) {
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
     EffectInstance* effect;
 
@@ -234,7 +234,7 @@ API_CALLABLE(N(FlashScreenWhite)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SpinDownStarSpirit)) {
+API_CALLABLE(SpinDownStarSpirit) {
     Bytecode* args = script->ptrReadPos;
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
 
@@ -258,7 +258,7 @@ API_CALLABLE(N(SpinDownStarSpirit)) {
     }
 }
 
-API_CALLABLE(N(EndOfChapterBounceIn)) {
+API_CALLABLE(EndOfChapterBounceIn) {
     Bytecode* args = script->ptrReadPos;
     EndChapter* endChatper = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
     s32 posY;
@@ -288,7 +288,7 @@ API_CALLABLE(N(EndOfChapterBounceIn)) {
     }
 }
 
-API_CALLABLE(N(EndOfChapterSplitApart)) {
+API_CALLABLE(EndOfChapterSplitApart) {
     Bytecode* args = script->ptrReadPos;
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
     s32 leftDx, rightDx;
@@ -316,7 +316,7 @@ API_CALLABLE(N(EndOfChapterSplitApart)) {
     }
 }
 
-API_CALLABLE(N(AwaitConfirmInput)) {
+API_CALLABLE(AwaitConfirmInput) {
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
         return ApiStatus_DONE1;
     } else {
@@ -324,30 +324,30 @@ API_CALLABLE(N(AwaitConfirmInput)) {
     }
 }
 
-API_CALLABLE(N(ShowMessagesInFrontOfCurtains)) {
+API_CALLABLE(ShowMessagesInFrontOfCurtains) {
     EndChapter* data = (EndChapter*) evt_get_variable(nullptr, MV_EndChapterDataPtr);
     data->showNarrationWindow = true;
     gOverrideFlags |= GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ShowMessagesBehindCurtains)) {
+API_CALLABLE(ShowMessagesBehindCurtains) {
     EndChapter* data = (EndChapter*) evt_get_variable(nullptr, MV_EndChapterDataPtr);
     data->showNarrationWindow = false;
     gOverrideFlags &= ~GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS;
     return ApiStatus_DONE2;
 }
 
-s32 N(NarrationBoxState) = 0;
-s32 N(NarrationBoxW) = 0;
-s32 N(NarrationBoxH) = 0;
+s32 NarrationBoxState = 0;
+s32 NarrationBoxW = 0;
+s32 NarrationBoxH = 0;
 
-WindowStyleCustom N(NarrationWindowStyle) = {
+WindowStyleCustom NarrationWindowStyle = {
     .background = {
         .imgData = nullptr,
     },
     .corners = {
-        .imgData = N(window_ul_img),
+        .imgData = kmr_23_window_ul_img,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
         .size1 = { 8, 8 },
@@ -371,63 +371,63 @@ enum NarrationWindowStates {
 
 // updates and draws the message box for the narration text
 // installed to gCurtainDrawCallback so it draws on top of the curtains
-void N(draw_narration_window)(void) {
+void draw_narration_window(void) {
     s32 fullWidth = 226;
     s32 fullHeight = 70;
     s32 baseX = SCREEN_WIDTH / 2 - fullWidth / 2;
     s32 baseY = 100;
     EndChapter* data = (EndChapter*) evt_get_variable(nullptr, MV_EndChapterDataPtr);
 
-    switch (N(NarrationBoxState)) {
+    switch (NarrationBoxState) {
         case NARRATION_WINDOW_IDLE:
             if (data->showNarrationWindow) {
-                N(NarrationBoxState) = NARRATION_WINDOW_OPENING;
+                NarrationBoxState = NARRATION_WINDOW_OPENING;
             }
             break;
         case NARRATION_WINDOW_OPENING:
-            N(NarrationBoxW) += 20;
-            N(NarrationBoxH) += 5;
-            if (N(NarrationBoxW) >= fullWidth) {
-                N(NarrationBoxW) = fullWidth;
+            NarrationBoxW += 20;
+            NarrationBoxH += 5;
+            if (NarrationBoxW >= fullWidth) {
+                NarrationBoxW = fullWidth;
             }
-            if (N(NarrationBoxH) >= fullHeight) {
-                N(NarrationBoxH) = fullHeight;
+            if (NarrationBoxH >= fullHeight) {
+                NarrationBoxH = fullHeight;
             }
-            if (N(NarrationBoxW) == fullWidth && N(NarrationBoxH) == fullHeight) {
-                N(NarrationBoxState) = NARRATION_WINDOW_OPEN;
+            if (NarrationBoxW == fullWidth && NarrationBoxH == fullHeight) {
+                NarrationBoxState = NARRATION_WINDOW_OPEN;
             }
             break;
         case NARRATION_WINDOW_OPEN:
             if (!data->showNarrationWindow) {
-               N(NarrationBoxState) = NARRATION_WINDOW_CLOSING;
+               NarrationBoxState = NARRATION_WINDOW_CLOSING;
             }
             break;
         case NARRATION_WINDOW_CLOSING:
-            N(NarrationBoxW) -= 20;
-            N(NarrationBoxH) -= 5;
-            if (N(NarrationBoxW) < 0) {
-                N(NarrationBoxW) = 0;
+            NarrationBoxW -= 20;
+            NarrationBoxH -= 5;
+            if (NarrationBoxW < 0) {
+                NarrationBoxW = 0;
             }
-            if (N(NarrationBoxH) < 0) {
-                N(NarrationBoxH) = 0;
+            if (NarrationBoxH < 0) {
+                NarrationBoxH = 0;
             }
-            if (N(NarrationBoxW) == 0 && N(NarrationBoxH) == 0) {
-                N(NarrationBoxState) = NARRATION_WINDOW_CLOSED;
+            if (NarrationBoxW == 0 && NarrationBoxH == 0) {
+                NarrationBoxState = NARRATION_WINDOW_CLOSED;
             }
             break;
         case NARRATION_WINDOW_CLOSED:
             break;
     }
 
-    if (N(NarrationBoxW) != 0 && N(NarrationBoxH) != 0) {
-        f64 ulx = baseX + (fullWidth * 0.5) - (N(NarrationBoxW) * 0.5);
-        f64 uly = baseY + (fullHeight * 0.5) - (N(NarrationBoxH) * 0.5);
-        f64 lrx = baseX + (fullWidth * 0.5) + (N(NarrationBoxW) * 0.5);
-        f64 lry = baseY + (fullHeight * 0.5) + (N(NarrationBoxH) * 0.5);
+    if (NarrationBoxW != 0 && NarrationBoxH != 0) {
+        f64 ulx = baseX + (fullWidth * 0.5) - (NarrationBoxW * 0.5);
+        f64 uly = baseY + (fullHeight * 0.5) - (NarrationBoxH * 0.5);
+        f64 lrx = baseX + (fullWidth * 0.5) + (NarrationBoxW * 0.5);
+        f64 lry = baseY + (fullHeight * 0.5) + (NarrationBoxH * 0.5);
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
-        draw_box(DRAW_FLAG_NO_CLIP, &N(NarrationWindowStyle),
+        draw_box(DRAW_FLAG_NO_CLIP, &NarrationWindowStyle,
             ulx, uly, 0,
-            N(NarrationBoxW), N(NarrationBoxH),
+            NarrationBoxW, NarrationBoxH,
             180, 0,
             1.0f, 1.0f,
             0.0f, 0.0f, 0.0f,
@@ -437,40 +437,40 @@ void N(draw_narration_window)(void) {
     }
 }
 
-EvtScript N(EVS_Scene_EndOfChapter) = {
+EvtScript EVS_Scene_EndOfChapter = {
     Thread
         Set(MF_SpiritReleased, false)
         Call(GetEntryID, LVar0)
         Call(GetNpcPos, NPC_StarSpirit, LVar1, LVar2, LVar3)
-        Call(N(CreateEndChapterData), LVar0, LVar1, LVar2, LVar3)
+        Call(CreateEndChapterData, LVar0, LVar1, LVar2, LVar3)
     EndThread
     Wait(1)
     Thread
-        Call(N(AddCardAngularVelocity), 10 / DT)
+        Call(AddCardAngularVelocity, 10 / DT)
     EndThread
     Thread
-        Call(N(AccelerateCardSpin), 20, 150 * DT)
+        Call(AccelerateCardSpin, 20, 150 * DT)
     EndThread
-    Call(N(MakeCardFloatUpward), 5, 0, 60, 150 * DT)
+    Call(MakeCardFloatUpward, 5, 0, 60, 150 * DT)
     Wait(30)
-    Call(N(ShowRadialShimmer), 1, 120 * DT)
-    Call(N(FadeInSpiritNpc), 60 * DT)
+    Call(ShowRadialShimmer, 1, 120 * DT)
+    Call(FadeInSpiritNpc, 60 * DT)
     Wait(30 * DT)
-    Call(N(FlashScreenWhite))
-    Call(N(SpinDownStarSpirit), 1800, 100 * DT)
+    Call(FlashScreenWhite)
+    Call(SpinDownStarSpirit, 1800, 100 * DT)
 #if VERSION_JP
-    Call(N(EndOfChapterBounceIn), 64, 0, 55, 60)
+    Call(EndOfChapterBounceIn, 64, 0, 55, 60)
 #else
-    Call(N(EndOfChapterBounceIn), 36, 0, 55, 60)
+    Call(EndOfChapterBounceIn, 36, 0, 55, 60)
 #endif
     Thread
-        Call(N(AddCardAngularVelocity), 0)
+        Call(AddCardAngularVelocity, 0)
     EndThread
     Wait(60 * DT)
     Set(MF_SpiritReleased, true)
     Wait(1)
     Call(SetNpcAnimation, NPC_StarSpirit, ENEMY_ANIM_8)
-    Call(N(ShowMessagesInFrontOfCurtains))
+    Call(ShowMessagesInFrontOfCurtains)
     Wait(16)
     Call(GetEntryID, LVar0)
     Set(LVar1, MSG_Menus_01A5)
@@ -491,24 +491,24 @@ EvtScript N(EVS_Scene_EndOfChapter) = {
             Set(LVar1, MSG_Menus_01AB)
     EndSwitch
     Call(ShowMessageAtScreenPos, LVar1, 160, 40)
-    Call(N(ShowMessagesBehindCurtains))
+    Call(ShowMessagesBehindCurtains)
     Wait(15 * DT)
     Set(MF_EndChapterSceneDone, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Eldstar_01) = {
+EvtScript EVS_NpcInit_Eldstar_01 = {
     Call(SetNpcScale, NPC_SELF, Float(0.85), Float(0.85), Float(0.85))
     Call(SetNpcPos, NPC_SELF, 0, 0, 20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     Call(EnableNpcShadow, NPC_SELF, false)
-    Exec(N(EVS_Scene_EndOfChapter))
+    Exec(EVS_Scene_EndOfChapter)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Eldstar_02) = {
+EvtScript EVS_NpcInit_Eldstar_02 = {
     Call(SetNpcAnimation, NPC_SELF, ENEMY_ANIM_8)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_TINT, 0, 0, 0, 0)
     Call(SetNpcPos, NPC_SELF, 0, 94, 0)
@@ -517,13 +517,13 @@ EvtScript N(EVS_NpcInit_Eldstar_02) = {
     End
 };
 
-NpcData N(NpcData_Eldstar)[] = {
+NpcData NpcData_Eldstar[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
@@ -532,21 +532,21 @@ NpcData N(NpcData_Eldstar)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Mamar)[] = {
+NpcData NpcData_Mamar[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
@@ -555,21 +555,21 @@ NpcData N(NpcData_Mamar)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Skolar)[] = {
+NpcData NpcData_Skolar[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
@@ -578,21 +578,21 @@ NpcData N(NpcData_Skolar)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Muskular)[] = {
+NpcData NpcData_Muskular[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
@@ -601,21 +601,21 @@ NpcData N(NpcData_Muskular)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Misstar)[] = {
+NpcData NpcData_Misstar[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
@@ -624,21 +624,21 @@ NpcData N(NpcData_Misstar)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Klevar)[] = {
+NpcData NpcData_Klevar[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
@@ -647,21 +647,21 @@ NpcData N(NpcData_Klevar)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Kalmar)[] = {
+NpcData NpcData_Kalmar[] = {
     {
         .id = NPC_StarSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_01),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_01,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
@@ -670,45 +670,45 @@ NpcData N(NpcData_Kalmar)[] = {
         .id = NPC_AuxSpirit,
         .pos = { -40.0f, 96.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar_02),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar_02,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
     },
 };
 
-NpcGroupList N(NpcGroup_Eldstar) = {
-    NPC_GROUP(N(NpcData_Eldstar)),
+NpcGroupList NpcGroup_Eldstar = {
+    NPC_GROUP(NpcData_Eldstar),
     {}
 };
 
-NpcGroupList N(NpcGroup_Mamar) = {
-    NPC_GROUP(N(NpcData_Mamar)),
+NpcGroupList NpcGroup_Mamar = {
+    NPC_GROUP(NpcData_Mamar),
     {}
 };
 
-NpcGroupList N(NpcGroup_Skolar) = {
-    NPC_GROUP(N(NpcData_Skolar)),
+NpcGroupList NpcGroup_Skolar = {
+    NPC_GROUP(NpcData_Skolar),
     {}
 };
 
-NpcGroupList N(NpcGroup_Muskular) = {
-    NPC_GROUP(N(NpcData_Muskular)),
+NpcGroupList NpcGroup_Muskular = {
+    NPC_GROUP(NpcData_Muskular),
     {}
 };
 
-NpcGroupList N(NpcGroup_Misstar) = {
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList NpcGroup_Misstar = {
+    NPC_GROUP(NpcData_Misstar),
     {}
 };
 
-NpcGroupList N(NpcGroup_Klevar) = {
-    NPC_GROUP(N(NpcData_Klevar)),
+NpcGroupList NpcGroup_Klevar = {
+    NPC_GROUP(NpcData_Klevar),
     {}
 };
 
-NpcGroupList N(NpcGroup_Kalmar) = {
-    NPC_GROUP(N(NpcData_Kalmar)),
+NpcGroupList NpcGroup_Kalmar = {
+    NPC_GROUP(NpcData_Kalmar),
     {}
 };

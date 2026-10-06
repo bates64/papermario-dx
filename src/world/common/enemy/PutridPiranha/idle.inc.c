@@ -5,14 +5,14 @@
 
 #include "world/common/ai/GenericHitboxDefeat.inc.c"
 
-MobileAISettings N(AISettings_PutridPiranha) = {
+MobileAISettings AISettings_PutridPiranha = {
     .moveTime = 30,
     .waitTime = 30,
     .alertRadius = 150.0f,
     .playerSearchInterval = 1,
 };
 
-EvtScript N(EVS_NpcAI_PutridPiranha) = {
+EvtScript EVS_NpcAI_PutridPiranha = {
     Call(SetSelfVar, AI_VAR_PIRANHA_PATH_USING_COLLISION, true)
     Call(SetSelfVar, AI_VAR_PIRANHA_BURROW_TIME, 10)
     Call(SetSelfVar, AI_VAR_PIRANHA_INTANGIBLE_TIME, 9)
@@ -22,32 +22,32 @@ EvtScript N(EVS_NpcAI_PutridPiranha) = {
     Call(SetSelfVar, AI_VAR_PIRANHA_BEGIN_ATTACK_TIME, 18)
     Call(SetSelfVar, AI_VAR_PIRANHA_END_ATTACK_TIME, 30)
     Call(SetSelfVar, AI_VAR_PIRANHA_COOLDOWN_TIME, 15)
-    Call(N(PiranhaPlantAI_Main), Ref(N(AISettings_PutridPiranha)))
+    Call(PiranhaPlantAI_Main, Ref(AISettings_PutridPiranha))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_PutridPiranha) = {
+NpcSettings NpcSettings_PutridPiranha = {
     .height = 50,
     .radius = 36,
     .level = ACTOR_LEVEL_PUTRID_PIRANHA,
-    .doAI = &N(EVS_NpcAI_PutridPiranha),
+    .doAI = &EVS_NpcAI_PutridPiranha,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-EvtScript N(EVS_NpcAI_PutridPiranha_Hitbox) = {
+EvtScript EVS_NpcAI_PutridPiranha_Hitbox = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 14)
     Call(SetSelfVar, AI_VAR_HITBOX_DIST, 28)
     Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 3)
     Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_PIRANHA_BITE)
-    Call(N(MeleeHitbox_Main))
+    Call(MeleeHitbox_Main)
     Return
     End
 };
 
-EvtScript N(EVS_80244090) = {
+EvtScript EVS_80244090 = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_NONE)
@@ -63,10 +63,10 @@ EvtScript N(EVS_80244090) = {
     End
 };
 
-NpcSettings N(NpcSettings_PutridPiranha_Hitbox) = {
+NpcSettings NpcSettings_PutridPiranha_Hitbox = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_PUTRID_PIRANHA,
-    .doAI = &N(EVS_NpcAI_PutridPiranha_Hitbox),
-    .onDefeat = &N(EVS_GenericHitboxDefeat),
+    .doAI = &EVS_NpcAI_PutridPiranha_Hitbox,
+    .onDefeat = &EVS_GenericHitboxDefeat,
 };

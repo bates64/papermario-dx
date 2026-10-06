@@ -11,8 +11,6 @@
 #include "mapfs/isk_11_shape.h"
 #include "mapfs/isk_11_hit.h"
 
-#define NAMESPACE isk_11
-
 enum {
     MV_LockEntityID             = MapVar(0),
     MV_HiddenStairsRevealed     = MapVar(1),
@@ -24,9 +22,9 @@ enum {
     MV_ItemEntity_Socket5       = MapVar(14),
 };
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupPuzzle);
-extern EvtScript N(EVS_ManageSecretPassage);
-extern EvtScript N(EVS_SetupLock);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupPuzzle;
+extern EvtScript EVS_ManageSecretPassage;
+extern EvtScript EVS_SetupLock;
+extern EvtScript EVS_MakeEntities;

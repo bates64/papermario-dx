@@ -1,7 +1,7 @@
 #include "trd_09.h"
 #include "world/partners.h"
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Wait(5)
     Call(DemoJoystickXY, 78, 0)
     Wait(11)
@@ -56,7 +56,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -75,19 +75,19 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-s32 N(DemoInitState) = 0;
+s32 DemoInitState = 0;
 
 // duplicate of SetupDemoScene from isk_04
-API_CALLABLE(N(SetupDemoScene)) {
+API_CALLABLE(SetupDemoScene) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    switch (N(DemoInitState)) {
+    switch (DemoInitState) {
         case 0:
-            N(DemoInitState) = 1;
+            DemoInitState = 1;
             break;
         case 1:
         case 2:
-            N(DemoInitState)++;
+            DemoInitState++;
             break;
         case 3:
             gPartnerNpc->pos.x = playerStatus->pos.x - 30.0f;
@@ -104,12 +104,12 @@ API_CALLABLE(N(SetupDemoScene)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_PlayDemoScene) = {
-    Call(N(SetupDemoScene))
+EvtScript EVS_PlayDemoScene = {
+    Call(SetupDemoScene)
     Call(SetNpcYaw, NPC_PARTNER, 90)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

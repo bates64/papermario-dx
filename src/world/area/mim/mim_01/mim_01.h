@@ -18,12 +18,10 @@ enum {
     NPC_PiranhaPlant_Hitbox     = 2,
 };
 
-#define NAMESPACE mim_01
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupExitHint);
-extern EvtScript N(EVS_SetupGates);
-extern EvtScript N(EVS_BindExitTriggers);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupExitHint;
+extern EvtScript EVS_SetupGates;
+extern EvtScript EVS_BindExitTriggers;
+extern NpcGroupList DefaultNPCs;

@@ -2,7 +2,7 @@
 
 #include "world/common/npc/HarryT/base.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_MAC04,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_MAC04,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_MAC04,
@@ -28,7 +28,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_MAC04,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_STONE_CAP,     .price = 30, .descMsg = MSG_ItemShopDesc_StoneCap },
     { .itemID = ITEM_DIZZY_DIAL,    .price = 15, .descMsg = MSG_ItemShopDesc_DizzyDial },
     { .itemID = ITEM_THUNDER_RAGE,  .price = 20, .descMsg = MSG_ItemShopDesc_ThunderRage },
@@ -38,7 +38,7 @@ ShopItemData N(Inventory)[] = {
     {}
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_FIRE_FLOWER,   .sellPrice =  7 },
     { .itemID = ITEM_POW_BLOCK,     .sellPrice =  5 },
     { .itemID = ITEM_SHOOTING_STAR, .sellPrice = 20 },
@@ -48,7 +48,7 @@ ShopSellPriceData N(PriceList)[] = {
     {}
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -58,7 +58,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_mono1, .triggerColliderID = COLLIDER_mono1 },
     { .posModelID = MODEL_mono2, .triggerColliderID = COLLIDER_mono2 },
     { .posModelID = MODEL_mono3, .triggerColliderID = COLLIDER_mono3 },
@@ -67,17 +67,17 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_mono6, .triggerColliderID = COLLIDER_mono6 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_HarryT,
     .idleAnim = ANIM_HarryT_Idle,
     .talkAnim = ANIM_HarryT_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), ITEM_ENTITY_FLAG_TOSS_LOWER)
-    Call(MakeShopOwner, Ref(N(Owner)))
+EvtScript EVS_SetupShop = {
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), ITEM_ENTITY_FLAG_TOSS_LOWER)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };

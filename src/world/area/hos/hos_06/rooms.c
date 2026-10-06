@@ -1,18 +1,18 @@
 #include "hos_06.h"
 
 // unused, makes sense to be in this source file
-API_CALLABLE(N(GetEntryID)) {
+API_CALLABLE(GetEntryIDToLVar0) {
     script->varTable[0] = gGameStatusPtr->entryID;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetDoorRot_House) = {
+EvtScript EVS_SetDoorRot_House = {
     Call(RotateGroup, MODEL_g10, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_House) = {
+EvtScript EVS_SetWallRot_House = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(2.0))
     Call(RotateGroup, MODEL_g12, LVar1, 0, 0, 1)
@@ -38,13 +38,13 @@ EvtScript N(EVS_SetWallRot_House) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_House) = {
+EvtScript EVS_DropDoor_House = {
     Call(RotateGroup, MODEL_g10, LVar0, 1, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_House) = {
+EvtScript EVS_RoomListener_House = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_g29, MODEL_GROUP_VISIBLE)
@@ -66,19 +66,19 @@ EvtScript N(EVS_RoomListener_House) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Downstairs) = {
+EvtScript EVS_SetDoorRot_Downstairs = {
     Call(RotateGroup, MODEL_g32, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Upstairs) = {
+EvtScript EVS_SetDoorRot_Upstairs = {
     Call(RotateGroup, MODEL_g61, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_ManageUpstairsVisibility) = {
+EvtScript EVS_ManageUpstairsVisibility = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar1, 100)
         Call(SetGroupVisibility, MODEL_g31, MODEL_GROUP_HIDDEN)
@@ -91,19 +91,19 @@ EvtScript N(EVS_ManageUpstairsVisibility) = {
     End
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_g29, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_g81, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_g31, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_g51, MODEL_GROUP_HIDDEN)
-    BindPadlock(Ref(N(EVS_ManageUpstairsVisibility)), TRIGGER_FLOOR_TOUCH, COLLIDER_o92, 0, 0, 1)
+    BindPadlock(Ref(EVS_ManageUpstairsVisibility), TRIGGER_FLOOR_TOUCH, COLLIDER_o92, 0, 0, 1)
     // front door
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_House)),
-        Ref(N(EVS_SetWallRot_House)),
-        Ref(N(EVS_DropDoor_House)),
-        Ref(N(EVS_RoomListener_House)),
+        Ref(EVS_SetDoorRot_House),
+        Ref(EVS_SetWallRot_House),
+        Ref(EVS_DropDoor_House),
+        Ref(EVS_RoomListener_House),
         COLLIDER_o158,
         COLLIDER_o159,
         MODEL_g2,
@@ -111,7 +111,7 @@ EvtScript N(EVS_SetupRooms) = {
     // staircase
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_Downstairs)),
+        Ref(EVS_SetDoorRot_Downstairs),
         nullptr,
         nullptr,
         nullptr,
@@ -122,7 +122,7 @@ EvtScript N(EVS_SetupRooms) = {
     // loft
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_IN),
-        Ref(N(EVS_SetDoorRot_Upstairs)),
+        Ref(EVS_SetDoorRot_Upstairs),
         nullptr,
         nullptr,
         nullptr,

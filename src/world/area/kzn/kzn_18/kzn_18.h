@@ -19,5 +19,3 @@ enum {
 enum {
     MV_KoloradoJumpDone         = MapVar(10),
 };
-
-#define NAMESPACE kzn_18

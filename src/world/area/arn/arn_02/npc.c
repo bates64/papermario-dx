@@ -3,7 +3,7 @@
 #include "world/common/enemy/HyperGoomba/wander.inc.c"
 #include "world/common/enemy/HyperCleft/wander.inc.c"
 
-NpcData N(NpcData_HyperCleft_01) = {
+NpcData NpcData_HyperCleft_01 = {
     .id = NPC_HyperCleft_01,
     .pos = { -196.0f, 130.0f, 104.0f },
     .yaw = 90,
@@ -19,14 +19,14 @@ NpcData N(NpcData_HyperCleft_01) = {
             .detectSize = { 120 },
         }
     },
-    .settings = &N(NpcSettings_HyperCleft_Wander),
+    .settings = &NpcSettings_HyperCleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_CLEFT_DROPS,
     .animations = HYPER_CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_HyperCleft_02) = {
+NpcData NpcData_HyperCleft_02 = {
     .id = NPC_HyperCleft_02,
     .pos = { 641.0f, 268.0f, 202.0f },
     .yaw = 90,
@@ -42,14 +42,14 @@ NpcData N(NpcData_HyperCleft_02) = {
             .detectSize = { 120 },
         }
     },
-    .settings = &N(NpcSettings_HyperCleft_Wander),
+    .settings = &NpcSettings_HyperCleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_CLEFT_DROPS,
     .animations = HYPER_CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_HyperGoomba) = {
+NpcData NpcData_HyperGoomba = {
     .id = NPC_HyperGoomba,
     .pos = { 333.0f, 215.0f, 85.0f },
     .yaw = 90,
@@ -65,16 +65,16 @@ NpcData N(NpcData_HyperGoomba) = {
             .detectSize = { 120, 137 },
         }
     },
-    .settings = &N(NpcSettings_HyperGoomba_Wander),
+    .settings = &NpcSettings_HyperGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_GOOMBA_DROPS,
     .animations = HYPER_GOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_HyperCleft_01), BTL_ARN_FORMATION_0A, BTL_ARN_STAGE_00),
-    NPC_GROUP(N(NpcData_HyperCleft_02), BTL_ARN_FORMATION_0D, BTL_ARN_STAGE_00),
-    NPC_GROUP(N(NpcData_HyperGoomba), BTL_ARN_FORMATION_03, BTL_ARN_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_HyperCleft_01, BTL_ARN_FORMATION_0A, BTL_ARN_STAGE_00),
+    NPC_GROUP(NpcData_HyperCleft_02, BTL_ARN_FORMATION_0D, BTL_ARN_STAGE_00),
+    NPC_GROUP(NpcData_HyperGoomba, BTL_ARN_FORMATION_03, BTL_ARN_STAGE_00),
     {}
 };

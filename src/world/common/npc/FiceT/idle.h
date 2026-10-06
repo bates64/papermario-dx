@@ -3,4 +3,4 @@
 
 #define NpcSettings_FiceT NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_FiceT);
+extern NpcSettings NpcSettings_FiceT;

@@ -1,7 +1,7 @@
 #include "nok_12.h"
 #include "entity.h"
 
-API_CALLABLE(N(SetNpcVarSafe)) {
+API_CALLABLE(SetNpcVarSafe) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
@@ -20,13 +20,13 @@ API_CALLABLE(N(SetNpcVarSafe)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_BreakBlock_Ambush) = {
-    Call(N(SetNpcVarSafe), NPC_SpikedGoomba, 0, 1)
+EvtScript EVS_BreakBlock_Ambush = {
+    Call(SetNpcVarSafe, NPC_SpikedGoomba, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_OnShakeTree_DropSwitch) = {
+EvtScript EVS_OnShakeTree_DropSwitch = {
     IfLt(GB_StoryProgress, STORY_CH1_KNOCKED_SWITCH_FROM_TREE)
         Set(GB_StoryProgress, STORY_CH1_KNOCKED_SWITCH_FROM_TREE)
         Wait(15)
@@ -53,7 +53,7 @@ EvtScript N(EVS_OnShakeTree_DropSwitch) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfLe(GB_StoryProgress, STORY_CH1_KNOCKED_SWITCH_FROM_TREE)
         IfEq(GB_StoryProgress, STORY_CH1_KNOCKED_SWITCH_FROM_TREE)
             Call(MakeEntity, Ref(Entity_BlueSwitch), -470, 0, -150, 0, MAKE_ENTITY_END)
@@ -67,7 +67,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_YellowBlock), -560, 60, -120, 0, ITEM_POW_BLOCK, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_NOK12_ItemBlock_POWBlock)
     Call(MakeEntity, Ref(Entity_BrickBlock), -165, 60, -130, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_BreakBlock_Ambush)))
+    Call(AssignScript, Ref(EVS_BreakBlock_Ambush))
     Call(MakeEntity, Ref(Entity_BrickBlock), 520, 110, -180, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BrickBlock), 595, 110, -180, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BrickBlock), 720, 135, -180, 0, MAKE_ENTITY_END)

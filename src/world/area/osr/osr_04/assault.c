@@ -1,20 +1,20 @@
 #include "osr_04.h"
 
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
     sprintf(wMapShapeName, "osr_03_shape");
     sprintf(wMapHitName, "osr_03_hit");
     return false;
 }
 
-API_CALLABLE(N(MakeCastleChainAngle)) {
+API_CALLABLE(MakeCastleChainAngle) {
     Bytecode* args = script->ptrReadPos;
     s32 angle = evt_get_variable(script, *args);
     evt_set_variable(script, *args++, (sin_deg(angle) * 20.0f));
     return ApiStatus_DONE2;
 }
 
-s32 N(ThinTileSpawnPositions)[] = {
+s32 ThinTileSpawnPositions[] = {
     -440, 1100,  30 * DT,
     -190, 1030,  40 * DT,
     -105, 1100,  30 * DT,
@@ -26,8 +26,8 @@ s32 N(ThinTileSpawnPositions)[] = {
     -1,
 };
 
-EvtScript N(EVS_DropDebris_ThinTiles) = {
-    UseBuf(Ref(N(ThinTileSpawnPositions)))
+EvtScript EVS_DropDebris_ThinTiles = {
+    UseBuf(Ref(ThinTileSpawnPositions))
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -50,7 +50,7 @@ EvtScript N(EVS_DropDebris_ThinTiles) = {
     End
 };
 
-s32 N(ThickTileSpawnPositions)[] = {
+s32 ThickTileSpawnPositions[] = {
     -340,  960,  50 * DT,
     -410,  900,  55 * DT,
     -230, 1200,  45 * DT,
@@ -61,8 +61,8 @@ s32 N(ThickTileSpawnPositions)[] = {
     -1,
 };
 
-EvtScript N(EVS_DropDebris_ThickTiles) = {
-    UseBuf(Ref(N(ThickTileSpawnPositions)))
+EvtScript EVS_DropDebris_ThickTiles = {
+    UseBuf(Ref(ThickTileSpawnPositions))
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -85,7 +85,7 @@ EvtScript N(EVS_DropDebris_ThickTiles) = {
     End
 };
 
-EvtScript N(EVS_DropDebris_Flag) = {
+EvtScript EVS_DropDebris_Flag = {
     Call(MakeLerp, 500, 0, 80, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
@@ -101,15 +101,15 @@ EvtScript N(EVS_DropDebris_Flag) = {
     End
 };
 
-s32 N(LeafClumpSpawnPositions)[] = {
+s32 LeafClumpSpawnPositions[] = {
     -350,  600,  60 * DT,
     -230, 1200,  40 * DT,
     -340,  960,  40 * DT,
     -1,
 };
 
-EvtScript N(EVS_DropDebris_Leaves) = {
-    UseBuf(Ref(N(LeafClumpSpawnPositions)))
+EvtScript EVS_DropDebris_Leaves = {
+    UseBuf(Ref(LeafClumpSpawnPositions))
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -132,7 +132,7 @@ EvtScript N(EVS_DropDebris_Leaves) = {
     End
 };
 
-EvtScript N(EVS_DropDebris_TreeTrunk) = {
+EvtScript EVS_DropDebris_TreeTrunk = {
     Call(MakeLerp, 500, 0, 80, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
@@ -148,7 +148,7 @@ EvtScript N(EVS_DropDebris_TreeTrunk) = {
     End
 };
 
-s32 N(StoneBlockSpawnPositions)[] = {
+s32 StoneBlockSpawnPositions[] = {
     -500,  940,  20 * DT,
       80,  770,  60 * DT,
     -340,  960,  15 * DT,
@@ -159,8 +159,8 @@ s32 N(StoneBlockSpawnPositions)[] = {
     -1,
 };
 
-EvtScript N(EVS_DropDebris_StoneBlocks) = {
-    UseBuf(Ref(N(StoneBlockSpawnPositions)))
+EvtScript EVS_DropDebris_StoneBlocks = {
+    UseBuf(Ref(StoneBlockSpawnPositions))
     Loop(0)
         BufRead3(LVar2, LVar3, LVar4)
         IfEq(LVar2, -1)
@@ -183,13 +183,13 @@ EvtScript N(EVS_DropDebris_StoneBlocks) = {
     End
 };
 
-EvtScript N(EVS_AnimateSwingingChains) = {
+EvtScript EVS_AnimateSwingingChains = {
     Loop(0)
         Call(MakeLerp, 90, -90, 30 * DT, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
             Call(TranslateGroup, MODEL_ku_ta, 0, MV_CastleLiftDist, 0)
-            Call(N(MakeCastleChainAngle), LVar0)
+            Call(MakeCastleChainAngle, LVar0)
             Call(RotateGroup, MODEL_ku_ta, LVar0, 0, 0, 1)
             Wait(1)
             IfEq(LVar1, 0)
@@ -205,7 +205,7 @@ EvtScript N(EVS_AnimateSwingingChains) = {
         Loop(0)
             Call(UpdateLerp)
             Call(TranslateGroup, MODEL_ku_ta, 0, MV_CastleLiftDist, 0)
-            Call(N(MakeCastleChainAngle), LVar0)
+            Call(MakeCastleChainAngle, LVar0)
             Call(RotateGroup, MODEL_ku_ta, LVar0, 0, 0, 1)
             Wait(1)
             IfEq(LVar1, 0)
@@ -222,7 +222,7 @@ EvtScript N(EVS_AnimateSwingingChains) = {
     End
 };
 
-EvtScript N(EVS_AnimateSpinningRing) = {
+EvtScript EVS_AnimateSpinningRing = {
     Loop(0)
         Call(MakeLerp, 45, -45, 60, EASING_QUADRATIC_OUT)
         Loop(0)
@@ -247,7 +247,7 @@ EvtScript N(EVS_AnimateSpinningRing) = {
     End
 };
 
-EvtScript N(EVS_LiftCastleUp) = {
+EvtScript EVS_LiftCastleUp = {
     Thread
         Wait(120 * DT)
         Call(SetMusic, 0, SONG_BOWSER_ATTACKS, 0, VOL_LEVEL_FULL)
@@ -268,8 +268,8 @@ EvtScript N(EVS_LiftCastleUp) = {
             EndIf
         EndLoop
     EndThread
-    Exec(N(EVS_AnimateSwingingChains))
-    Exec(N(EVS_AnimateSpinningRing))
+    Exec(EVS_AnimateSwingingChains)
+    Exec(EVS_AnimateSpinningRing)
     Thread
         Loop(0)
             Call(MakeLerp, 10, -10, 40 * DT, EASING_LINEAR)
@@ -311,19 +311,19 @@ EvtScript N(EVS_LiftCastleUp) = {
         Goto(23)
     EndIf
     Set(LVar3, 0)
-    Exec(N(EVS_DropDebris_ThinTiles))
-    Exec(N(EVS_DropDebris_ThickTiles))
-    Exec(N(EVS_DropDebris_StoneBlocks))
+    Exec(EVS_DropDebris_ThinTiles)
+    Exec(EVS_DropDebris_ThickTiles)
+    Exec(EVS_DropDebris_StoneBlocks)
     Wait(10 * DT)
-    Exec(N(EVS_DropDebris_Flag))
-    Exec(N(EVS_DropDebris_Leaves))
-    Exec(N(EVS_DropDebris_TreeTrunk))
+    Exec(EVS_DropDebris_Flag)
+    Exec(EVS_DropDebris_Leaves)
+    Exec(EVS_DropDebris_TreeTrunk)
     Wait(150 * DT)
     Return
     End
 };
 
-EvtScript N(EVS_RaiseSmokeClouds) = {
+EvtScript EVS_RaiseSmokeClouds = {
     Set(MV_SmokeVelY, 0)
     Thread
         Call(PlaySound, SOUND_OSR_SMOKE_RISING_1)
@@ -434,7 +434,7 @@ EvtScript N(EVS_RaiseSmokeClouds) = {
     End
 };
 
-EvtScript N(EVS_Scene_BowsersAssault) = {
+EvtScript EVS_Scene_BowsersAssault = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(EnableGroup, MODEL_yoru, false)
@@ -570,8 +570,8 @@ EvtScript N(EVS_Scene_BowsersAssault) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_RaiseSmokeClouds))
-    ExecWait(N(EVS_LiftCastleUp))
+    Exec(EVS_RaiseSmokeClouds)
+    ExecWait(EVS_LiftCastleUp)
     Call(GotoMap, Ref("kkj_03"), kkj_03_ENTRY_1)
     Wait(100 * DT)
     Call(DisablePlayerPhysics, false)

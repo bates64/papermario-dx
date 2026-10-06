@@ -1,6 +1,6 @@
 #include "mac_00.h"
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Wait(50)
     Call(DemoJoystickXY, 22, -26)
     Wait(1)
@@ -89,7 +89,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -108,10 +108,10 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-EvtScript N(EVS_SetupDemo) = {
+EvtScript EVS_SetupDemo = {
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

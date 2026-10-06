@@ -1,7 +1,7 @@
 #include "sbk_22.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_YellowBlock), -225, 0, -225, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_SBK22_ItemBlock_CoinA)
     Call(MakeEntity, Ref(Entity_YellowBlock), -225, 0, 225, 0, ITEM_COIN, MAKE_ENTITY_END)

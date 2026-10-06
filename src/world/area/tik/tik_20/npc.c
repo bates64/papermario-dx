@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/DarkTroopa/wander.inc.c"
 
-NpcData N(NpcData_DarkTroopa_01) = {
+NpcData NpcData_DarkTroopa_01 = {
     .id = NPC_DarkTroopa_01,
     .pos = { -50.0f, -20.0f, 100.0f },
     .yaw = 90,
@@ -18,14 +18,14 @@ NpcData N(NpcData_DarkTroopa_01) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_DarkTroopa_Wander),
+    .settings = &NpcSettings_DarkTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = DARK_TROOPA_DROPS,
     .animations = DARK_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_DarkTroopa_02) = {
+NpcData NpcData_DarkTroopa_02 = {
     .id = NPC_DarkTroopa_02,
     .pos = { 250.0f, -20.0f, 100.0f },
     .yaw = 90,
@@ -41,15 +41,15 @@ NpcData N(NpcData_DarkTroopa_02) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_DarkTroopa_Wander),
+    .settings = &NpcSettings_DarkTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = DARK_TROOPA_DROPS,
     .animations = DARK_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_DarkTroopa_01), BTL_TIK_FORMATION_04, BTL_TIK_STAGE_03),
-    NPC_GROUP(N(NpcData_DarkTroopa_02), BTL_TIK_FORMATION_05, BTL_TIK_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_DarkTroopa_01, BTL_TIK_FORMATION_04, BTL_TIK_STAGE_03),
+    NPC_GROUP(NpcData_DarkTroopa_02, BTL_TIK_FORMATION_05, BTL_TIK_STAGE_03),
     {}
 };

@@ -1,7 +1,6 @@
 #pragma once
 #include "base.h"
 
-extern MobileAISettings N(AISettings_Toad_Wander);
-extern EvtScript N(EVS_NpcAI_Toad_Wander);
-extern NpcSettings N(NpcSettings_Toad_Wander);
-extern NpcSettings N(NpcSettings_ToadKid_Wander);
+extern MobileAISettings AISettings_ToadKid_Wander;
+extern EvtScript EVS_NpcAI_ToadKid_Wander;
+extern NpcSettings NpcSettings_ToadKid_Wander;

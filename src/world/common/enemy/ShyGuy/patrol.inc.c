@@ -3,7 +3,7 @@
 
 #include "world/common/ai/ShyGuyPatrolAI.inc.c"
 
-MobileAISettings N(AISettings_ShyGuy_Patrol) = {
+MobileAISettings AISettings_ShyGuy_Patrol = {
     .moveSpeed = 2.0f,
     .moveTime = 60,
     .alertRadius = 100.0f,
@@ -17,33 +17,33 @@ MobileAISettings N(AISettings_ShyGuy_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Patrol) = {
-    Call(N(ShyGuyPatrolAI_Main), Ref(N(AISettings_ShyGuy_Patrol)))
+EvtScript EVS_NpcAI_ShyGuy_Patrol = {
+    Call(ShyGuyPatrolAI_Main, Ref(AISettings_ShyGuy_Patrol))
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Patrol_Passive) = {
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_ShyGuy_Patrol)))
+EvtScript EVS_NpcAI_ShyGuy_Patrol_Passive = {
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_ShyGuy_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy_Patrol) = {
+NpcSettings NpcSettings_ShyGuy_Patrol = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_Patrol),
+    .doAI = &EVS_NpcAI_ShyGuy_Patrol,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-NpcSettings N(NpcSettings_ShyGuy_Patrol_Passive) = {
+NpcSettings NpcSettings_ShyGuy_Patrol_Passive = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_Patrol_Passive),
+    .doAI = &EVS_NpcAI_ShyGuy_Patrol_Passive,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SpawnStarsOrbitingKammy2)) {
+API_CALLABLE(SpawnStarsOrbitingKammy2) {
     EffectInstance* effect;
 
     fx_stars_orbiting(0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4], &effect);
@@ -11,14 +11,14 @@ API_CALLABLE(N(SpawnStarsOrbitingKammy2)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DismissStarsOrbitingKammy2)) {
+API_CALLABLE(DismissStarsOrbitingKammy2) {
     EffectInstance* effect = (EffectInstance*) script->varTablePtr[0];
 
     effect->data.starsOrbiting->enabled = false;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpgradeStarBeam)) {
+API_CALLABLE(UpgradeStarBeam) {
     gPlayerData.starBeamLevel = 2;
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
@@ -28,13 +28,13 @@ API_CALLABLE(N(UpgradeStarBeam)) {
     return ApiStatus_DONE2;
 }
 
-Vec3f N(TwinkStrikeBowserPath)[] = {
+Vec3f TwinkStrikeBowserPath[] = {
     {  510.0,    30.0,    0.0 },
     {  430.0,    15.0,   15.0 },
     {  350.0,    20.0,    0.0 },
 };
 
-EvtScript N(AddStarSpiritHovering) = {
+EvtScript AddStarSpiritHovering = {
     Loop(0)
         Loop(5)
             Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
@@ -53,7 +53,7 @@ EvtScript N(AddStarSpiritHovering) = {
     End
 };
 
-EvtScript N(EVS_Scene_KammyDefeated) = {
+EvtScript EVS_Scene_KammyDefeated = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
@@ -78,7 +78,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     Add(LVar1, 30)
     Set(LVar3, 20)
     Set(LVar4, 3)
-    Call(N(SpawnStarsOrbitingKammy2))
+    Call(SpawnStarsOrbitingKammy2)
     Set(MV_OrbitingEffectBIdx, LVar0)
     Wait(20)
     Call(InterpNpcYaw, NPC_Peach_01, 90, 0)
@@ -105,7 +105,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     Wait(10)
     Call(SetNpcAnimation, NPC_Peach_01, ANIM_Peach3_Pray)
     Wait(10)
-    Call(LoadPath, 20, Ref(N(TwinkStrikeBowserPath)), ARRAY_COUNT(N(TwinkStrikeBowserPath)), EASING_QUADRATIC_IN)
+    Call(LoadPath, 20, Ref(TwinkStrikeBowserPath), ARRAY_COUNT(TwinkStrikeBowserPath), EASING_QUADRATIC_IN)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Twink_01, LVar1, LVar2, LVar3)
@@ -132,7 +132,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     Call(SetNpcDecoration, NPC_Bowser_02, 0, NPC_DECORATION_BOWSER_AURA)
     Call(SetNpcDecoration, NPC_Bowser_02, 1, NPC_DECORATION_CHARGED)
     Set(LVar8, NPC_Bowser_02)
-    Exec(N(EVS_SpawnBowserStarEnergyWaves))
+    Exec(EVS_SpawnBowserStarEnergyWaves)
     Wait(5)
     Call(GetNpcPos, NPC_Bowser_02, LVar0, LVar1, LVar2)
     Add(LVar0, -50)
@@ -143,7 +143,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(LVar0, MV_OrbitingEffectBIdx)
-    Call(N(DismissStarsOrbitingKammy2))
+    Call(DismissStarsOrbitingKammy2)
     Wait(20)
     Call(SpeakToPlayer, NPC_Bowser_02, ANIM_WorldBowser_RearUpLaugh, ANIM_WorldBowser_RearUpLaugh, 0, MSG_CH8_00A0)
     Wait(10)
@@ -181,19 +181,19 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     Call(PlaySound, SOUND_WISH_ASCENDING)
     Wait(30)
     Set(LVar0, NPC_Eldstar)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Set(LVar0, NPC_Mamar)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Set(LVar0, NPC_Skolar)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Set(LVar0, NPC_Muskular)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Set(LVar0, NPC_Misstar)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Set(LVar0, NPC_Klevar)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Set(LVar0, NPC_Kalmar)
-    Exec(N(AddStarSpiritHovering))
+    Exec(AddStarSpiritHovering)
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_APPEAR, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
@@ -372,7 +372,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
         PlayEffect(EFFECT_SPARKLES, 0, 110, 20, 3, 30)
         Wait(6)
     EndLoop
-    Call(N(UpgradeStarBeam))
+    Call(UpgradeStarBeam)
     Wait(30)
     Call(ShowMessageAtScreenPos, MSG_Menus_0199, 160, 40)
     Wait(30)

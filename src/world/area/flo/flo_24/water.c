@@ -1,6 +1,6 @@
 #include "flo_24.h"
 
-EvtScript N(EVS_Scene_FillWithWater) = {
+EvtScript EVS_Scene_FillWithWater = {
     Call(DisablePlayerInput, true)
     Call(TranslateGroup, MODEL_g73, 0, 45, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, 170, 0, 160)
@@ -42,7 +42,7 @@ EvtScript N(EVS_Scene_FillWithWater) = {
     End
 };
 
-EvtScript N(EVS_SetupWater) = {
+EvtScript EVS_SetupWater = {
     IfLt(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
         Call(EnableGroup, MODEL_water1, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g58, COLLIDER_FLAGS_UPPER_MASK)

@@ -21,14 +21,12 @@ enum {
     MV_StarWarpEffect   = MapVar(10),
 };
 
-#define NAMESPACE hos_02
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupModelFX;
+extern EvtScript EVS_DescendStarWarp;
+extern EvtScript EVS_SetupUnused;
+extern NpcGroupList DefaultNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupModelFX);
-extern EvtScript N(EVS_DescendStarWarp);
-extern EvtScript N(EVS_SetupUnused);
-extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(SetStarWarpIdleParams));
-API_CALLABLE(N(SetStarWarpTravelParams));
+API_CALLABLE(SetStarWarpIdleParams);
+API_CALLABLE(SetStarWarpTravelParams);

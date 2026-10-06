@@ -1,7 +1,7 @@
 #include "kpa_09.h"
 #include "entity.h"
 
-API_CALLABLE(N(ElevatePlayer)) {
+API_CALLABLE(ElevatePlayer) {
     Bytecode* args = script->ptrReadPos;
     s32 floor = evt_get_variable(script, *args++);
     s32 yOffset = evt_get_variable(script, *args++);
@@ -13,7 +13,7 @@ API_CALLABLE(N(ElevatePlayer)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ActivateSwitch) = {
+EvtScript EVS_ActivateSwitch = {
     IfNe(AF_KPA09_PlatformRaised, false)
         Return
     EndIf
@@ -25,7 +25,7 @@ EvtScript N(EVS_ActivateSwitch) = {
         Call(MakeLerp, -50, 0, 15, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(ElevatePlayer), COLLIDER_o19, 100)
+            Call(ElevatePlayer, COLLIDER_o19, 100)
             Call(TranslateGroup, MODEL_move, 0, LVar0, 0)
             Call(UpdateColliderTransform, COLLIDER_o19)
             Wait(1)
@@ -38,7 +38,7 @@ EvtScript N(EVS_ActivateSwitch) = {
         Call(MakeLerp, 0, -50, 15, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(ElevatePlayer), COLLIDER_o19, 100)
+            Call(ElevatePlayer, COLLIDER_o19, 100)
             Call(TranslateGroup, MODEL_move, 0, LVar0, 0)
             Call(UpdateColliderTransform, COLLIDER_o19)
             Wait(1)
@@ -55,7 +55,7 @@ EvtScript N(EVS_ActivateSwitch) = {
         Call(MakeLerp, -50, 0, 15, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(ElevatePlayer), COLLIDER_o106, 100)
+            Call(ElevatePlayer, COLLIDER_o106, 100)
             Call(TranslateGroup, MODEL_move2, 0, LVar0, 0)
             Call(UpdateColliderTransform, COLLIDER_o106)
             Wait(1)
@@ -69,7 +69,7 @@ EvtScript N(EVS_ActivateSwitch) = {
         Call(MakeLerp, 0, -50, 15, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(ElevatePlayer), COLLIDER_o106, 100)
+            Call(ElevatePlayer, COLLIDER_o106, 100)
             Call(TranslateGroup, MODEL_move2, 0, LVar0, 0)
             Call(UpdateColliderTransform, COLLIDER_o106)
             Wait(1)
@@ -83,10 +83,10 @@ EvtScript N(EVS_ActivateSwitch) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Set(AF_KPA09_PlatformRaised, false)
     Call(MakeEntity, Ref(Entity_RedSwitch), -325, 0, -8, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_ActivateSwitch)))
+    Call(AssignScript, Ref(EVS_ActivateSwitch))
     Call(ParentColliderToModel, COLLIDER_o19, MODEL_m_yuka)
     Call(TranslateGroup, MODEL_move, 0, -50, 0)
     Call(UpdateColliderTransform, COLLIDER_o19)

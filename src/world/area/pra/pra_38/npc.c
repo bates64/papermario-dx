@@ -2,13 +2,13 @@
 
 #include "world/common/enemy/Swooper/wander.inc.c"
 
-EvtScript N(EVS_NpcInit_Swoopula) = {
+EvtScript EVS_NpcInit_Swoopula = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Return
     End
 };
 
-NpcData N(NpcData_Swoopula_01) = {
+NpcData NpcData_Swoopula_01 = {
     .id = NPC_Swoopula_01,
     .pos = { 175.0f, 130.0f, 75.0f },
     .yaw = 270,
@@ -24,15 +24,15 @@ NpcData N(NpcData_Swoopula_01) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Swoopula),
-    .settings = &N(NpcSettings_Swoopula_Wander),
+    .init = &EVS_NpcInit_Swoopula,
+    .settings = &NpcSettings_Swoopula_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = SWOOPULA_DROPS,
     .animations = SWOOPULA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Swoopula_02) = {
+NpcData NpcData_Swoopula_02 = {
     .id = NPC_Swoopula_02,
     .pos = { 325.0f, 130.0f, 75.0f },
     .yaw = 270,
@@ -48,16 +48,16 @@ NpcData N(NpcData_Swoopula_02) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Swoopula),
-    .settings = &N(NpcSettings_Swoopula_Wander),
+    .init = &EVS_NpcInit_Swoopula,
+    .settings = &NpcSettings_Swoopula_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = SWOOPULA_DROPS,
     .animations = SWOOPULA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Swoopula_01), BTL_PRA_FORMATION_01, BTL_PRA_STAGE_00),
-    NPC_GROUP(N(NpcData_Swoopula_02), BTL_PRA_FORMATION_02, BTL_PRA_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Swoopula_01, BTL_PRA_FORMATION_01, BTL_PRA_STAGE_00),
+    NPC_GROUP(NpcData_Swoopula_02, BTL_PRA_FORMATION_02, BTL_PRA_STAGE_00),
     {}
 };

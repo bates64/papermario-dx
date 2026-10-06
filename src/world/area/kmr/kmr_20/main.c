@@ -2,36 +2,36 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-API_CALLABLE(N(SetupBeginGameTransition)){
+API_CALLABLE(SetupBeginGameTransition){
     set_map_transition_effect(TRANSITION_BEGIN_OR_END_GAME);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GotoMap_mac_00_4) = {
-    Exec(N(EVS_FadeOutAmbientSounds))
+EvtScript EVS_GotoMap_mac_00_4 = {
+    Exec(EVS_FadeOutAmbientSounds)
     Call(GotoMap, Ref("mac_00"), mac_00_ENTRY_4)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_ExitPipe_mac_00_4) = {
+EvtScript EVS_ExitPipe_mac_00_4 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(LVarA, kmr_20_ENTRY_4)
     Set(LVarB, COLLIDER_o244)
-    Set(LVarC, Ref(N(EVS_GotoMap_mac_00_4)))
-    ExecWait(N(EVS_Pipe_ExitVertical))
+    Set(LVarC, Ref(EVS_GotoMap_mac_00_4))
+    ExecWait(EVS_Pipe_ExitVertical)
     Return
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitPipe_mac_00_4)), TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitPipe_mac_00_4), TRIGGER_FLOOR_TOUCH, COLLIDER_o244, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MARIOS_HOUSE)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kmr_20_ENTRY_2)
@@ -50,40 +50,40 @@ EvtScript N(EVS_Main) = {
     Set(MF_HouseInteriorVisible, false)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfLt(LVar0, kmr_20_ENTRY_4)
-        Call(MakeNpcs, false, Ref(N(SceneNPCs)))
+        Call(MakeNpcs, false, Ref(SceneNPCs))
     Else
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndIf
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(EnableGroup, MODEL_g100, false)
-    Exec(N(EVS_SetupTrees))
-    Exec(N(EVS_SetupBushes))
-    Exec(N(EVS_SetupRooms))
-    Exec(N(EVS_Setup_Interactables))
+    Exec(EVS_SetupTrees)
+    Exec(EVS_SetupBushes)
+    Exec(EVS_SetupRooms)
+    Exec(EVS_Setup_Interactables)
     IfLt(GB_StoryProgress, STORY_EPILOGUE)
-        Exec(N(EVS_SetupBed))
+        Exec(EVS_SetupBed)
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kmr_20_ENTRY_0)
-            Call(N(SetupBeginGameTransition))
-            Exec(N(EVS_Scene_BeginGame))
+            Call(SetupBeginGameTransition)
+            Exec(EVS_Scene_BeginGame)
             Wait(5)
         CaseEq(kmr_20_ENTRY_1)
-            Exec(N(EVS_Scene_SettingOff))
+            Exec(EVS_Scene_SettingOff)
         CaseEq(kmr_20_ENTRY_2)
             Wait(60)
-            Exec(N(EVS_Scene_BeginEpilogue))
+            Exec(EVS_Scene_BeginEpilogue)
         CaseEq(kmr_20_ENTRY_3)
-            Exec(N(EVS_BindExitTriggers))
-            Exec(N(EVS_Scene_EpilogueGetLetter))
+            Exec(EVS_BindExitTriggers)
+            Exec(EVS_Scene_EpilogueGetLetter)
         CaseEq(kmr_20_ENTRY_4)
             Set(GF_MAP_MariosHouse, true)
             IfEq(MF_LuigiWaiting, true)
-                Exec(N(EVS_Scene_LuigiWaitingAround))
+                Exec(EVS_Scene_LuigiWaitingAround)
                 Thread
                     Call(DisablePlayerPhysics, true)
                     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
@@ -92,12 +92,12 @@ EvtScript N(EVS_Main) = {
                             Wait(1)
                             Goto(0)
                         EndIf
-                    Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-                    Exec(N(EVS_Pipe_EnterVertical))
+                    Set(LVarA, Ref(EVS_BindExitTriggers))
+                    Exec(EVS_Pipe_EnterVertical)
                 EndThread
             Else
-                Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-                Exec(N(EVS_Pipe_EnterVertical))
+                Set(LVarA, Ref(EVS_BindExitTriggers))
+                Exec(EVS_Pipe_EnterVertical)
             EndIf
     EndSwitch
     Return

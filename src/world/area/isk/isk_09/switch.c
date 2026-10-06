@@ -1,11 +1,11 @@
 #include "isk_09.h"
 
-extern EvtScript N(EVS_OnTouch_BlueSwitchCenter);
-extern EvtScript N(EVS_OnTouch_BlueSwitchMidLeft);
-extern EvtScript N(EVS_OnTouch_BlueSwitchTopLeft);
-extern EvtScript N(EVS_OnTouch_RedSwitch);
+extern EvtScript EVS_OnTouch_BlueSwitchCenter;
+extern EvtScript EVS_OnTouch_BlueSwitchMidLeft;
+extern EvtScript EVS_OnTouch_BlueSwitchTopLeft;
+extern EvtScript EVS_OnTouch_RedSwitch;
 
-API_CALLABLE(N(WaitForPlayerTouchingGround)) {
+API_CALLABLE(WaitForPlayerTouchingGround) {
     Bytecode* args = script->ptrReadPos;
     s32 colliderID = evt_get_variable(script, *args++);
     if (gCollisionStatus.curFloor != colliderID) {
@@ -15,20 +15,20 @@ API_CALLABLE(N(WaitForPlayerTouchingGround)) {
     }
 }
 
-EvtScript N(EVS_SetupSwitches) = {
+EvtScript EVS_SetupSwitches = {
     Call(ParentColliderToModel, COLLIDER_o2096, MODEL_g332)
-    BindTrigger(Ref(N(EVS_OnTouch_BlueSwitchCenter)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2096, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_BlueSwitchCenter), TRIGGER_FLOOR_TOUCH, COLLIDER_o2096, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o2099, MODEL_g334)
-    BindTrigger(Ref(N(EVS_OnTouch_BlueSwitchMidLeft)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2099, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_BlueSwitchMidLeft), TRIGGER_FLOOR_TOUCH, COLLIDER_o2099, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o2102, MODEL_g335)
-    BindTrigger(Ref(N(EVS_OnTouch_BlueSwitchTopLeft)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2102, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_BlueSwitchTopLeft), TRIGGER_FLOOR_TOUCH, COLLIDER_o2102, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o2105, MODEL_g336)
-    BindTrigger(Ref(N(EVS_OnTouch_RedSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2105, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_RedSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2105, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_OnTouch_BlueSwitchCenter) = {
+EvtScript EVS_OnTouch_BlueSwitchCenter = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -60,12 +60,12 @@ EvtScript N(EVS_OnTouch_BlueSwitchCenter) = {
         IfEq(LVar1, 1)
             Goto(20)
         EndIf
-    Call(N(WaitForPlayerTouchingGround), COLLIDER_o2096)
+    Call(WaitForPlayerTouchingGround, COLLIDER_o2096)
     Return
     End
 };
 
-EvtScript N(EVS_OnTouch_BlueSwitchMidLeft) = {
+EvtScript EVS_OnTouch_BlueSwitchMidLeft = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -97,12 +97,12 @@ EvtScript N(EVS_OnTouch_BlueSwitchMidLeft) = {
         IfEq(LVar1, 1)
             Goto(20)
         EndIf
-    Call(N(WaitForPlayerTouchingGround), COLLIDER_o2099)
+    Call(WaitForPlayerTouchingGround, COLLIDER_o2099)
     Return
     End
 };
 
-EvtScript N(EVS_OnTouch_BlueSwitchTopLeft) = {
+EvtScript EVS_OnTouch_BlueSwitchTopLeft = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -134,12 +134,12 @@ EvtScript N(EVS_OnTouch_BlueSwitchTopLeft) = {
         IfEq(LVar1, 1)
             Goto(20)
         EndIf
-    Call(N(WaitForPlayerTouchingGround), COLLIDER_o2102)
+    Call(WaitForPlayerTouchingGround, COLLIDER_o2102)
     Return
     End
 };
 
-EvtScript N(EVS_OnTouch_RedSwitch) = {
+EvtScript EVS_OnTouch_RedSwitch = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -171,7 +171,7 @@ EvtScript N(EVS_OnTouch_RedSwitch) = {
         IfEq(LVar1, 1)
             Goto(20)
         EndIf
-    Call(N(WaitForPlayerTouchingGround), COLLIDER_o2105)
+    Call(WaitForPlayerTouchingGround, COLLIDER_o2105)
     Return
     End
 };

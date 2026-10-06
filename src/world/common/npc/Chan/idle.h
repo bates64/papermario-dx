@@ -3,4 +3,4 @@
 
 #define NpcSettings_Chan NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Chan);
+extern NpcSettings NpcSettings_Chan;

@@ -1,6 +1,6 @@
 #include "dgb_13.h"
 
-EvtScript N(EVS_OpenLowerDrawer) = {
+EvtScript EVS_OpenLowerDrawer = {
     Call(MakeLerp, 0, 30, 15, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -15,7 +15,7 @@ EvtScript N(EVS_OpenLowerDrawer) = {
     End
 };
 
-EvtScript N(EVS_CloseLowerDrawer) = {
+EvtScript EVS_CloseLowerDrawer = {
     Call(MakeLerp, 30, 0, 15, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -30,7 +30,7 @@ EvtScript N(EVS_CloseLowerDrawer) = {
     End
 };
 
-EvtScript N(EVS_OpenUpperDrawer) = {
+EvtScript EVS_OpenUpperDrawer = {
     Call(MakeLerp, 0, 30, 15, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -45,7 +45,7 @@ EvtScript N(EVS_OpenUpperDrawer) = {
     End
 };
 
-EvtScript N(EVS_CloseUpperDrawer) = {
+EvtScript EVS_CloseUpperDrawer = {
     Call(MakeLerp, 30, 0, 15, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -60,12 +60,12 @@ EvtScript N(EVS_CloseUpperDrawer) = {
     End
 };
 
-EvtScript N(EVS_Interact_LowerDrawer) = {
+EvtScript EVS_Interact_LowerDrawer = {
     IfEq(MV_LowerDrawerOpen, false)
-        ExecWait(N(EVS_OpenLowerDrawer))
+        ExecWait(EVS_OpenLowerDrawer)
         Set(MV_LowerDrawerOpen, true)
     Else
-        ExecWait(N(EVS_CloseLowerDrawer))
+        ExecWait(EVS_CloseLowerDrawer)
         Set(MV_LowerDrawerOpen, false)
     EndIf
     Unbind
@@ -73,9 +73,9 @@ EvtScript N(EVS_Interact_LowerDrawer) = {
     End
 };
 
-EvtScript N(EVS_SetupDrawers) = {
+EvtScript EVS_SetupDrawers = {
     Call(ParentColliderToModel, COLLIDER_o265, MODEL_o419)
-    BindTrigger(Ref(N(EVS_Interact_LowerDrawer)), TRIGGER_WALL_PRESS_A, COLLIDER_o265, 1, 0)
+    BindTrigger(Ref(EVS_Interact_LowerDrawer), TRIGGER_WALL_PRESS_A, COLLIDER_o265, 1, 0)
     Return
     End
 };

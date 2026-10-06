@@ -3,7 +3,7 @@
 #include "world/common/enemy/Koopatrol/base.h"
 #include "world/common/enemy/Magikoopa/base.h"
 
-API_CALLABLE(N(SetScreenBlackFadeAmount)) {
+API_CALLABLE(SetScreenBlackFadeAmount) {
     Bytecode* args = script->ptrReadPos;
     f32 amount = evt_get_variable(script, *args++);
 
@@ -11,18 +11,18 @@ API_CALLABLE(N(SetScreenBlackFadeAmount)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MuteAmbience)) {
+API_CALLABLE(MuteAmbience) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
 
-NpcSettings N(NpcSettings_Dummy) = {
+NpcSettings NpcSettings_Dummy = {
     .height = 40,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPATROL,
 };
 
-EvtScript N(EVS_Scene_LavaShutoff) = {
+EvtScript EVS_Scene_LavaShutoff = {
     Label(0)
     IfEq(AF_KPA16_HitSwitch, false)
         Wait(1)
@@ -47,7 +47,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
     Call(SetPanTarget, CAM_DEFAULT, 330, 170, -150)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
-        Call(N(MuteAmbience))
+        Call(MuteAmbience)
         SetF(LVar2, 1)
         Call(MakeLerp, 0, -20, 100 * DT, EASING_LINEAR)
         Loop(0)
@@ -66,7 +66,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
     Call(MakeLerp, 0, 255, 50 * DT, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetScreenBlackFadeAmount), LVar0)
+        Call(SetScreenBlackFadeAmount, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -80,7 +80,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o954, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deiliw, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o952, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_TexPan_Steam))
+    Exec(EVS_TexPan_Steam)
     Call(EnableGroup, MODEL_before, false)
     Call(EnableGroup, MODEL_after, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o782, COLLIDER_FLAGS_UPPER_MASK)
@@ -90,7 +90,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
     Call(MakeLerp, 255, 0, 50 * DT, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetScreenBlackFadeAmount), LVar0)
+        Call(SetScreenBlackFadeAmount, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -123,7 +123,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
     End
 };
 
-EvtScript N(EVS_ChargeAtPlayer) = {
+EvtScript EVS_ChargeAtPlayer = {
     ChildThread
         Wait(15 * DT)
         Call(SetNpcSpeed, NPC_Koopatrol_01, Float(3.0 / DT))
@@ -141,7 +141,7 @@ EvtScript N(EVS_ChargeAtPlayer) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Guards) = {
+EvtScript EVS_NpcIdle_Guards = {
     Label(0)
         Wait(1)
         Call(GetPlayerFloorCollider, LVar0)
@@ -233,7 +233,7 @@ EvtScript N(EVS_NpcIdle_Guards) = {
     Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Run)
     Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Run)
     Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Run)
-    Exec(N(EVS_ChargeAtPlayer))
+    Exec(EVS_ChargeAtPlayer)
     Call(DisablePlayerInput, false)
     Thread
         Loop(0)
@@ -253,7 +253,7 @@ EvtScript N(EVS_NpcIdle_Guards) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Guards) = {
+EvtScript EVS_NpcDefeat_Guards = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -267,13 +267,13 @@ EvtScript N(EVS_NpcDefeat_Guards) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Guards) = {
+EvtScript EVS_NpcInit_Guards = {
     IfEq(GF_KPA16_ShutOffLava, false)
-        Exec(N(EVS_Scene_LavaShutoff))
+        Exec(EVS_Scene_LavaShutoff)
     EndIf
     IfEq(GF_KPA16_Defeated_SwitchGuards, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Guards)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Guards)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Guards))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Guards))
     Else
         Call(RemoveNpc, NPC_Magikoopa)
         Call(RemoveNpc, NPC_Koopatrol_02)
@@ -284,13 +284,13 @@ EvtScript N(EVS_NpcInit_Guards) = {
     End
 };
 
-NpcData N(NpcData_Guards)[] = {
+NpcData NpcData_Guards[] = {
     {
         .id = NPC_Koopatrol_01,
         .pos = { 585.0f, 230.0f, -145.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Guards),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_Guards,
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = KOOPATROL_DROPS,
         .animations = KOOPATROL_ANIMS,
@@ -299,7 +299,7 @@ NpcData N(NpcData_Guards)[] = {
         .id = NPC_Koopatrol_02,
         .pos = { 525.0f, 230.0f, -165.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = KOOPATROL_DROPS,
         .animations = KOOPATROL_ANIMS,
@@ -308,7 +308,7 @@ NpcData N(NpcData_Guards)[] = {
         .id = NPC_Koopatrol_03,
         .pos = { 550.0f, 230.0f, -120.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = KOOPATROL_DROPS,
         .animations = KOOPATROL_ANIMS,
@@ -317,14 +317,14 @@ NpcData N(NpcData_Guards)[] = {
         .id = NPC_Magikoopa,
         .pos = { 505.0f, 230.0f, -120.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Guards), BTL_KPA_FORMATION_1D, BTL_KPA_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Guards, BTL_KPA_FORMATION_1D, BTL_KPA_STAGE_02),
     {}
 };

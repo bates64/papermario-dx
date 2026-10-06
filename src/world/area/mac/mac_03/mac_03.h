@@ -60,16 +60,14 @@ enum {
     MV_LilOinkEffect            = MapVar(2),
 };
 
-#define NAMESPACE mac_03
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_InitializeTrainScene;
+extern EvtScript EVS_ArriveFromMtRugged;
+extern EvtScript EVS_DepartForMtRugged;
+extern EvtScript EVS_InitializeLilOinks;
+extern EvtScript EVS_PlayDemoScene;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_InitializeTrainScene);
-extern EvtScript N(EVS_ArriveFromMtRugged);
-extern EvtScript N(EVS_DepartForMtRugged);
-extern EvtScript N(EVS_InitializeLilOinks);
-extern EvtScript N(EVS_PlayDemoScene);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

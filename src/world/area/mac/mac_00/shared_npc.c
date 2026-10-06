@@ -4,7 +4,7 @@
 #include "world/common/npc/Toad/idle.h"
 #include "world/common/npc/Toadette/idle.h"
 
-LetterDelivery N(LetterDelivery_MissT) = {
+LetterDelivery LetterDelivery_MissT = {
     .recipientID = NPC_MissT,
     .recipientTalk = ANIM_Toadette_Orange_Talk,
     .recipientIdle = ANIM_Toadette_Orange_Idle,
@@ -16,7 +16,7 @@ LetterDelivery N(LetterDelivery_MissT) = {
     .reward = ITEM_LETTER_CHAIN_LITTLE_MOUSER,
 };
 
-EvtScript N(EVS_Scene_ToadTownGreeting) = {
+EvtScript EVS_Scene_ToadTownGreeting = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -225, 0, -300)
     Call(SetPanTarget, CAM_DEFAULT, -225, 0, -300)
@@ -59,7 +59,7 @@ EvtScript N(EVS_Scene_ToadTownGreeting) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_04) = {
+EvtScript EVS_NpcInteract_Toad_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_007F)
@@ -107,7 +107,7 @@ EvtScript N(EVS_NpcInteract_Toad_04) = {
     End
 };
 
-EvtScript N(EVS_Scene_CantLeaveTown) = {
+EvtScript EVS_Scene_CantLeaveTown = {
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_Toad_04, 0)
     Wait(5)
@@ -120,13 +120,13 @@ EvtScript N(EVS_Scene_CantLeaveTown) = {
     End
 };
 
-EvtScript N(EVS_BlockExitToGoomaRoad) = {
-    BindTrigger(Ref(N(EVS_Scene_CantLeaveTown)), TRIGGER_FLOOR_TOUCH, COLLIDER_o484, 1, 0)
+EvtScript EVS_BlockExitToGoomaRoad = {
+    BindTrigger(Ref(EVS_Scene_CantLeaveTown), TRIGGER_FLOOR_TOUCH, COLLIDER_o484, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_05) = {
+EvtScript EVS_NpcInteract_Toad_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_008F)
@@ -174,7 +174,7 @@ EvtScript N(EVS_NpcInteract_Toad_05) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_06) = {
+EvtScript EVS_NpcInteract_Toad_06 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_009F)
@@ -222,7 +222,7 @@ EvtScript N(EVS_NpcInteract_Toad_06) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Lovers) = {
+EvtScript EVS_NpcInteract_Lovers = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_00AF)
@@ -288,7 +288,7 @@ EvtScript N(EVS_NpcInteract_Lovers) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toadette) = {
+EvtScript EVS_NpcInteract_Toadette = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_00CF)
@@ -370,15 +370,15 @@ EvtScript N(EVS_NpcInteract_Toadette) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_MissT) = {
-    ExecWait(N(EVS_NpcInteract_Toadette))
-    Set(LVar0, Ref(N(LetterDelivery_MissT)))
+EvtScript EVS_NpcInteract_MissT = {
+    ExecWait(EVS_NpcInteract_Toadette)
+    Set(LVar0, Ref(LetterDelivery_MissT))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_08) = {
+EvtScript EVS_NpcInteract_Toad_08 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_0103)
@@ -426,7 +426,7 @@ EvtScript N(EVS_NpcInteract_Toad_08) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_ShamelessLover) = {
+EvtScript EVS_NpcAux_ShamelessLover = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Pink_Still)
     Wait(3)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Pink_Idle)
@@ -434,7 +434,7 @@ EvtScript N(EVS_NpcAux_ShamelessLover) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_KrisT) = {
+EvtScript EVS_NpcAux_KrisT = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Green_Still)
     Wait(2)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Green_Idle)
@@ -442,7 +442,7 @@ EvtScript N(EVS_NpcAux_KrisT) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_MissT) = {
+EvtScript EVS_NpcAux_MissT = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Orange_Still)
     Wait(6)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Orange_Idle)
@@ -450,7 +450,7 @@ EvtScript N(EVS_NpcAux_MissT) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_FelissaT) = {
+EvtScript EVS_NpcAux_FelissaT = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Purple_Still)
     Wait(8)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toadette_Purple_Idle)
@@ -458,7 +458,7 @@ EvtScript N(EVS_NpcAux_FelissaT) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_09) = {
+EvtScript EVS_NpcInteract_Toad_09 = {
     Call(FindItem, ITEM_FIRST_DEGREE_CARD, LVar1)
     Call(FindItem, ITEM_SECOND_DEGREE_CARD, LVar2)
     Call(FindItem, ITEM_THIRD_DEGREE_CARD, LVar3)
@@ -489,87 +489,87 @@ EvtScript N(EVS_NpcInteract_Toad_09) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_04)))
+EvtScript EVS_NpcInit_Toad_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
     IfLt(GB_StoryProgress, STORY_EPILOGUE)
         Return
     EndIf
     Call(GetEntryID, LVar0)
     IfNe(LVar0, mac_00_ENTRY_7)
-        Exec(N(EVS_BlockExitToGoomaRoad))
+        Exec(EVS_BlockExitToGoomaRoad)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_05) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_05)))
+EvtScript EVS_NpcInit_Toad_05 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_05))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_06) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_06)))
+EvtScript EVS_NpcInit_Toad_06 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_06))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FickleLover) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lovers)))
+EvtScript EVS_NpcInit_FickleLover = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lovers))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShamelessLover) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lovers)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_ShamelessLover)))
+EvtScript EVS_NpcInit_ShamelessLover = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lovers))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_ShamelessLover))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KrisT) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_KrisT)))
+EvtScript EVS_NpcInit_KrisT = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_KrisT))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_MissT) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_MissT)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_MissT)))
+EvtScript EVS_NpcInit_MissT = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MissT))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_MissT))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FelissaT) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_FelissaT)))
+EvtScript EVS_NpcInit_FelissaT = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_FelissaT))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_DojoSpectator) = {
+EvtScript EVS_NpcInit_DojoSpectator = {
     IfGe(GB_StoryProgress, STORY_EPILOGUE)
         Call(SetNpcPos, NPC_DojoSpectator, 350, 20, -100)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_08)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_08))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_DojoFan) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_09)))
+EvtScript EVS_NpcInit_DojoFan = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_09))
     Return
     End
 };
 
-NpcData N(NpcData_SharedTownsfolk)[] = {
+NpcData NpcData_SharedTownsfolk[] = {
     {
         .id = NPC_Toad_04,
         .pos = { -150.0f, 0.0f, -275.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_04,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -596,8 +596,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
                 .detectSize = { 200 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_05),
-        .settings = &N(NpcSettings_Toad_Wander),
+        .init = &EVS_NpcInit_Toad_05,
+        .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -621,8 +621,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
                 .detectSize = { 200 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_06),
-        .settings = &N(NpcSettings_Toad_Patrol),
+        .init = &EVS_NpcInit_Toad_06,
+        .settings = &NpcSettings_Toad_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -632,8 +632,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_FickleLover,
         .pos = { -40.0f, 0.0f, 61.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FickleLover),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_FickleLover,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -643,8 +643,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_ShamelessLover,
         .pos = { -15.0f, 0.0f, 60.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShamelessLover),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_ShamelessLover,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -654,8 +654,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_KrisT,
         .pos = { 426.0f, 20.0f, 268.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_KrisT),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_KrisT,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -665,8 +665,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_MissT,
         .pos = { 381.0f, 20.0f, 326.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_MissT),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_MissT,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -676,8 +676,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_FelissaT,
         .pos = { 476.0f, 20.0f, 326.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_FelissaT),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_FelissaT,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -687,8 +687,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_DojoSpectator,
         .pos = { 424.0f, 20.0f, -85.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_DojoSpectator),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_DojoSpectator,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -698,8 +698,8 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .id = NPC_DojoFan,
         .pos = { 373.0f, 0.0f, 22.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_DojoFan),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_DojoFan,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,

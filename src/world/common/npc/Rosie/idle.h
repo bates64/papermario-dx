@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Rosie);
+extern NpcSettings NpcSettings_Rosie;

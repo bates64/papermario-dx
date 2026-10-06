@@ -1,6 +1,6 @@
 #include "dgb_13.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_MEGA_RUSH, -910, 50, -206, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_MegaRush)
     Call(MakeItemEntity, ITEM_COIN, -530, 55, -190, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinA)
     Call(MakeItemEntity, ITEM_COIN, -510, 55, -175, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinB)

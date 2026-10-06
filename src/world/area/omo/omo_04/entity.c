@@ -3,17 +3,17 @@
 
 #include "world/common/entity/Chest.inc.c"
 
-EvtScript N(EVS_OpenChest_StoreroomKey) = {
+EvtScript EVS_OpenChest_StoreroomKey = {
     Set(LVarA, ITEM_STOREROOM_KEY)
     Set(GF_OMO04_Chest_StoreroomKey, true)
-    ExecWait(N(EVS_Chest_GetItem))
+    ExecWait(EVS_Chest_GetItem)
     Set(GF_MAC04_StoreroomKeyStolen, true)
     Set(GB_StoryProgress, STORY_CH4_GOT_STOREROOM_KEY)
     Return
     End
 };
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -23,7 +23,7 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-Vec3i N(StarBoxLaunchTargets)[] = {
+Vec3i StarBoxLaunchTargets[] = {
     { -852,   0, -125 },
     { -887,   0,   98 },
     { -682,  80,  -77 },
@@ -34,10 +34,10 @@ Vec3i N(StarBoxLaunchTargets)[] = {
     {  927,  80,  -87 },
 };
 
-EvtScript N(EVS_StarBoxLaunch_Impl) = {
+EvtScript EVS_StarBoxLaunch_Impl = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    UseBuf(Ref(N(StarBoxLaunchTargets)))
+    UseBuf(Ref(StarBoxLaunchTargets))
     Loop(LVar0)
         BufRead3(LVar7, LVar8, LVar9)
     EndLoop
@@ -46,7 +46,7 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
     Call(EnableCameraFollowPlayerY)
-    ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCamToPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, LVar7, LVar8, LVar9, 40)
     KillThread(LVarA)
@@ -59,56 +59,56 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch1) = {
+EvtScript EVS_StarBoxLaunch1 = {
     Set(LVar0, 1) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch2) = {
+EvtScript EVS_StarBoxLaunch2 = {
     Set(LVar0, 2) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch3) = {
+EvtScript EVS_StarBoxLaunch3 = {
     Set(LVar0, 3) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch4) = {
+EvtScript EVS_StarBoxLaunch4 = {
     Set(LVar0, 4) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch5) = {
+EvtScript EVS_StarBoxLaunch5 = {
     Set(LVar0, 5) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch6) = {
+EvtScript EVS_StarBoxLaunch6 = {
     Set(LVar0, 6) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch7) = {
+EvtScript EVS_StarBoxLaunch7 = {
     Set(LVar0, 7) // entityID
-    ExecWait(N(EVS_StarBoxLaunch_Impl))
+    ExecWait(EVS_StarBoxLaunch_Impl)
     Return
     End
 };
 
-API_CALLABLE(N(GetPlayerForwardPos)) {
+API_CALLABLE(GetPlayerForwardPos) {
     f32 playerVx = gPlayerStatus.curSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
     f32 playerVz = gPlayerStatus.curSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
     script->varTable[0] = (gPlayerStatus.pos.x + playerVx);
@@ -117,24 +117,24 @@ API_CALLABLE(N(GetPlayerForwardPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Chest), 1150, 0, 0, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OMO04_Chest_StoreroomKey)
-    Call(AssignScript, Ref(N(EVS_OpenChest_StoreroomKey)))
+    Call(AssignScript, Ref(EVS_OpenChest_StoreroomKey))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -892, 0, -125, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch1)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch1))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -847, 0, 98, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch2)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch2))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -722, 0, -72, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch3)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch3))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -647, 80, 62, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch4)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch4))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -607, 0, 133, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch5)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch5))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -467, 0, 133, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch6)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch6))
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), 712, 0, 133, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch7)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch7))
     Call(MakeEntity, Ref(Entity_YellowBlock), 575, 60, 60, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO04_ItemBlock_CoinA)
     Call(MakeEntity, Ref(Entity_YellowBlock), 761, 60, -85, 0, ITEM_COIN, MAKE_ENTITY_END)

@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EvtScript N(EVS_NpcInteract_GossipTrio) = {
+EvtScript EVS_NpcInteract_GossipTrio = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -80,20 +80,20 @@ EvtScript N(EVS_NpcInteract_GossipTrio) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GossipTrio1) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GossipTrio)))
+EvtScript EVS_NpcInit_GossipTrio1 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GossipTrio))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_GossipTrio2) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GossipTrio)))
+EvtScript EVS_NpcInit_GossipTrio2 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GossipTrio))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_GossipTrio3) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GossipTrio)))
+EvtScript EVS_NpcInit_GossipTrio3 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GossipTrio))
     Return
     End
 };

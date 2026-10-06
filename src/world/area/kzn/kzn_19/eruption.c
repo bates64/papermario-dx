@@ -1,7 +1,7 @@
 #include "kzn_19.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_CrackFloor) = {
+EvtScript EVS_CrackFloor = {
     Call(EnableGroup, MODEL_naka, false)
     Call(EnableGroup, MODEL_g93, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_hoshi_ato, COLLIDER_FLAGS_UPPER_MASK)
@@ -37,7 +37,7 @@ EvtScript N(EVS_CrackFloor) = {
     End
 };
 
-EvtScript N(EVS_SetFloorCracked) = {
+EvtScript EVS_SetFloorCracked = {
     Call(RotateModel, MODEL_o2, 20, 0, 0, -1)
     Call(RotateModel, MODEL_o3, 30, 0, 0, -1)
     Call(RotateModel, MODEL_o4, 15, 0, 0, -1)
@@ -46,7 +46,7 @@ EvtScript N(EVS_SetFloorCracked) = {
     End
 };
 
-EvtScript N(EVS_UpdateEruption) = {
+EvtScript EVS_UpdateEruption = {
     Set(AF_KZN_BossRoomFloorBroken, false)
     IfGe(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
         Return
@@ -68,7 +68,7 @@ EvtScript N(EVS_UpdateEruption) = {
         Call(InterpPlayerYaw, 270, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
-        Exec(N(EVS_CrackFloor))
+        Exec(EVS_CrackFloor)
         Call(MakeLerp, 200, 50, 75, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -81,7 +81,7 @@ EvtScript N(EVS_UpdateEruption) = {
         EndLoop
     Else
         // GB_StoryProgress == STORY_CH5_MT_LAVA_LAVA_ERUPTING
-        Exec(N(EVS_SetFloorCracked))
+        Exec(EVS_SetFloorCracked)
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_hoshi, COLLIDER_FLAGS_UPPER_MASK)
     Loop(0)

@@ -2,15 +2,11 @@
 #include "ld_addrs.h"
 #include "world/disguise.h"
 #include "world/surfaces.h"
-#include "world/partner/watt.h"
+#include "world/partners.h"
 #include "sprite/player.h"
 
 PlayerStatus gPlayerStatus;
 PlayerData gPlayerData;
-
-extern s32 WorldTattleInteractionID;
-
-
 
 void phys_update_standard(void);
 void phys_update_lava_reset(void);
@@ -28,7 +24,6 @@ void clear_interact_prompt(void);
 void update_partner_timers(void);
 void player_update_sprite(void);
 void update_player_shadow(void);
-s32 partner_use_ability(void);
 
 // main function for player physics called from state step functions
 void update_player(void) {
@@ -127,14 +122,14 @@ void update_player(void) {
 void check_input_use_partner(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    u32 actionState = playerStatus->actionState;
+    s32 actionState = playerStatus->actionState;
 
     if (!(playerStatus->animFlags & PA_FLAG_8BIT_MARIO)
         && (playerStatus->animFlags & PA_FLAG_FORCE_USE_PARTNER || playerStatus->inputDisabledCount == 0)
         && (playerStatus->pressedButtons & BUTTON_C_DOWN && !(playerStatus->flags & PS_FLAG_NO_PARTNER_USAGE))
         && !(playerStatus->pressedButtons & BUTTON_B)
         && !(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)
-        && actionState <= ACTION_STATE_RUN
+        && action_is_locomotion(actionState)
     ) {
         if (playerData->curPartner == PARTNER_GOOMBARIO) {
             WorldTattleInteractionID = playerStatus->interactingWithID;
@@ -189,7 +184,7 @@ void phys_update_standard(void) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_WATT_IN_HANDS) {
-        world_watt_sync_held_position();
+        partner_sync_player_position();
     }
 
     if (!(playerStatus->flags & PS_FLAG_CAMERA_DOESNT_FOLLOW)) {

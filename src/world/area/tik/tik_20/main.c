@@ -2,27 +2,27 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_ExitWalk_tik_08_1) = EVT_EXIT_WALK(60, tik_20_ENTRY_0, "tik_08", tik_08_ENTRY_1);
-EvtScript N(EVS_ExitWalk_tik_21_0) = EVT_EXIT_WALK(60, tik_20_ENTRY_1, "tik_21", tik_21_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_08_1 = EVT_EXIT_WALK(60, tik_20_ENTRY_0, "tik_08", tik_08_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_21_0 = EVT_EXIT_WALK(60, tik_20_ENTRY_1, "tik_21", tik_21_ENTRY_0);
 
-EvtScript N(EVS_GotoMap_tik_23_1) = {
+EvtScript EVS_GotoMap_tik_23_1 = {
     Call(GotoMap, Ref("tik_23"), tik_23_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_ExitPipe_tik_23_1) = EVT_EXIT_PIPE_VERTICAL(tik_20_ENTRY_2, COLLIDER_o109, N(EVS_GotoMap_tik_23_1));
+EvtScript EVS_ExitPipe_tik_23_1 = EVT_EXIT_PIPE_VERTICAL(tik_20_ENTRY_2, COLLIDER_o109, EVS_GotoMap_tik_23_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_08_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_21_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitPipe_tik_23_1)), TRIGGER_FLOOR_TOUCH, COLLIDER_o109, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_tik_08_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_tik_21_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitPipe_tik_23_1), TRIGGER_FLOOR_TOUCH, COLLIDER_o109, 1, 0)
     Return
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_yuka, .pos = { -190.0,   30.0,  -85.0 }},
     { .colliderID = COLLIDER_yuka2, .pos = {  200.0,   30.0,  -70.0 }},
     { .colliderID = NO_COLLIDER }
@@ -30,7 +30,7 @@ LavaReset N(SafeFloorColliders)[] = {
 
 #include "../common/DripVolumes.inc.c"
 
-DripVolumeList N(DripVolumes) = {
+DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
@@ -52,29 +52,29 @@ DripVolumeList N(DripVolumes) = {
     }
 };
 
-EvtScript N(EVS_SetupDrips) = {
-    Set(LVar0, Ref(N(DripVolumes)))
+EvtScript EVS_SetupDrips = {
+    Set(LVar0, Ref(DripVolumes))
     Set(LVar1, MODEL_sizuku)
-    Exec(N(EVS_CreateDripVolumes))
+    Exec(EVS_CreateDripVolumes)
     Return
     End
 };
 
 #include "../common/Flotsam.inc.c"
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_20)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_toge, SURFACE_TYPE_SPIKES)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK20_WATER)
-    Exec(N(EVS_SetupDrips))
+    Exec(EVS_SetupDrips)
     Call(SetTexPanner, MODEL_nagare, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -85,24 +85,24 @@ EvtScript N(EVS_Main) = {
     EndThread
     Thread
         Set(LVar2, MODEL_bin)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
         Wait(5)
         Set(LVar2, MODEL_kan1)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
         Wait(5)
         Set(LVar2, MODEL_kan2)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
     EndThread
     Wait(1)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(tik_20_ENTRY_0)
         CaseOrEq(tik_20_ENTRY_1)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         EndCaseGroup
         CaseEq(tik_20_ENTRY_2)
-            EVT_ENTER_PIPE_VERTICAL(N(EVS_BindExitTriggers))
+            EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
     EndSwitch
     Wait(1)
     Return

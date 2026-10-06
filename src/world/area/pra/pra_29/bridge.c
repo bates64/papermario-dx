@@ -1,7 +1,7 @@
 #include "pra_29.h"
 #include "effects.h"
 
-void N(set_bride_vertex_positions)(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVerticies, s32 extendAmt) {
+void set_bride_vertex_positions(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVerticies, s32 extendAmt) {
     s32 temp_t3;
     s32 var_t2;
     s32 temp_t5;
@@ -23,7 +23,7 @@ void N(set_bride_vertex_positions)(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVerti
     }
 }
 
-void N(setup_gfx_bridge)(s32 index) {
+void setup_gfx_bridge(s32 index) {
     Vtx* srcVtx1;
     Vtx* srcVtx2;
     Vtx* dest1;
@@ -33,7 +33,7 @@ void N(setup_gfx_bridge)(s32 index) {
     if (extendAmt <= 255) {
         mdl_get_copied_vertices(index * 3 + 0, &srcVtx1, &dest1, &numVertices);
         mdl_get_copied_vertices(index * 3 + 1, &srcVtx2, &dest2, &numVertices);
-        N(set_bride_vertex_positions)(srcVtx2, srcVtx1, dest1, numVertices, extendAmt);
+        set_bride_vertex_positions(srcVtx2, srcVtx1, dest1, numVertices, extendAmt);
         if (extendAmt == 0) {
             return;
         }
@@ -41,12 +41,12 @@ void N(setup_gfx_bridge)(s32 index) {
     } else {
         mdl_get_copied_vertices(index * 3 + 0, &srcVtx1, &dest1, &numVertices);
         mdl_get_copied_vertices(index * 3 + 2, &srcVtx2, &dest2, &numVertices);
-        N(set_bride_vertex_positions)(srcVtx1, srcVtx2, dest1, numVertices, extendAmt - 256);
+        set_bride_vertex_positions(srcVtx1, srcVtx2, dest1, numVertices, extendAmt - 256);
         gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(index * 3));
     }
 }
 
-API_CALLABLE(N(PlayRisingBubble)) {
+API_CALLABLE(PlayRisingBubble) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -57,11 +57,11 @@ API_CALLABLE(N(PlayRisingBubble)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExtendBridgeFromMirror) = {
+EvtScript EVS_ExtendBridgeFromMirror = {
     Wait(40)
     Thread
         Loop(5)
-            Call(N(PlayRisingBubble), 260, 0, 0)
+            Call(PlayRisingBubble, 260, 0, 0)
             Wait(10)
         EndLoop
     EndThread
@@ -82,7 +82,7 @@ EvtScript N(EVS_ExtendBridgeFromMirror) = {
     End
 };
 
-EvtScript N(EVS_SetupBridge) = {
+EvtScript EVS_SetupBridge = {
     IfLt(GB_StoryProgress, STORY_CH7_EXTENDED_PALACE_BRIDGE)
         Call(EnableModel, MODEL_u00, false)
         Call(EnableModel, MODEL_s00, false)
@@ -92,8 +92,8 @@ EvtScript N(EVS_SetupBridge) = {
         Call(SetModelCustomGfx, MODEL_s02, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
         Call(SetModelFlags, MODEL_u02, MODEL_FLAG_USES_CUSTOM_GFX, false)
         Call(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX, false)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_bridge)), nullptr)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_bridge)), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_bridge), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_bridge), nullptr)
         Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_u02, true)
         Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_u01, false)
         Call(MakeLocalVertexCopy, VTX_COPY_2, MODEL_u03, false)
@@ -102,7 +102,7 @@ EvtScript N(EVS_SetupBridge) = {
         Call(MakeLocalVertexCopy, VTX_COPY_4, MODEL_s01, false)
         Call(MakeLocalVertexCopy, VTX_COPY_5, MODEL_s03, false)
         Call(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
-        BindTrigger(Ref(N(EVS_ExtendBridgeFromMirror)), TRIGGER_AREA_FLAG_SET, AF_PRA09_HitSwitch, 1, 0)
+        BindTrigger(Ref(EVS_ExtendBridgeFromMirror), TRIGGER_AREA_FLAG_SET, AF_PRA09_HitSwitch, 1, 0)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1041, COLLIDER_FLAGS_UPPER_MASK)
         Call(EnableModel, MODEL_u00, false)

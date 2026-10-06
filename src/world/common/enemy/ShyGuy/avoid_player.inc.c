@@ -3,7 +3,7 @@
 
 #include "world/common/ai/AvoidPlayerAI.inc.c"
 
-MobileAISettings N(AISettings_ShyGuy_AvoidPlayer) = {
+MobileAISettings AISettings_ShyGuy_AvoidPlayer = {
     .moveSpeed = 2.5f,
     .moveTime = 50,
     .waitTime = 15,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_ShyGuy_AvoidPlayer) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_AvoidPlayer) = {
-    Call(N(AvoidPlayerAI_Main), Ref(N(AISettings_ShyGuy_AvoidPlayer)))
+EvtScript EVS_NpcAI_ShyGuy_AvoidPlayer = {
+    Call(AvoidPlayerAI_Main, Ref(AISettings_ShyGuy_AvoidPlayer))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy_AvoidPlayer) = {
+NpcSettings NpcSettings_ShyGuy_AvoidPlayer = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_AvoidPlayer),
+    .doAI = &EVS_NpcAI_ShyGuy_AvoidPlayer,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

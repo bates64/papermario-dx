@@ -1,7 +1,7 @@
 #include "jan_01.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_LETTER_TO_IGOR, -110, 90, -230, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN01_Item_Letter11)
     Call(MakeEntity, Ref(Entity_BellbellPlant), -375, -3, -75, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), -335, 57, -55, 0, ITEM_REPEL_GEL, MAKE_ENTITY_END)

@@ -11,8 +11,6 @@
 #include "mapfs/pra_15_shape.h"
 #include "mapfs/pra_15_hit.h"
 
-#define NAMESPACE pra_15
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;

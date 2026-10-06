@@ -1,6 +1,6 @@
 #include "dro_02.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(dro_02_ENTRY_2)
@@ -13,13 +13,13 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PlayRestMusic) = {
+EvtScript EVS_PlayRestMusic = {
     Call(SetMusic, 0, SONG_TAKING_REST, 0, VOL_LEVEL_FULL)
     Return
     End
 };
 
-EvtScript N(EVS_PlayMoustafaMusic) = {
+EvtScript EVS_PlayMoustafaMusic = {
     Call(SetMusic, 0, SONG_MOUSTAFA_THEME, 0, VOL_LEVEL_FULL)
     Return
     End

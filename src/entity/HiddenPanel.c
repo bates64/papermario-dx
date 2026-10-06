@@ -363,7 +363,7 @@ EntityModelScript ERS_AltHiddenPanel = {
     ems_End
 };
 
-EntityBlueprint Entity_HiddenPanel = {
+ENTITY_IMPLEMENTATION(HiddenPanel) = {
     .flags = ENTITY_FLAG_HIDDEN,
     .typeDataSize = sizeof(HiddenPanelData),
     .renderCommandList = ERS_HiddenPanel,

@@ -32,16 +32,14 @@ enum {
     NPC_Misstar     = 55,
 };
 
-#define NAMESPACE machi
+extern EvtScript EVS_Main;
+extern EvtScript EVS_GoombaKing_Init;
+extern EvtScript EVS_FlyPartnerAround;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_GoombaKing_Init);
-extern EvtScript N(EVS_FlyPartnerAround);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcSettings N(NpcSettings_GoombaKing);
-extern NpcData N(NpcData_Misstar);
-extern NpcGroupList N(DefaultNPCs);
+extern NpcSettings NpcSettings_GoombaKing;
+extern NpcData NpcData_Misstar;
+extern NpcGroupList DefaultNPCs;
 
 typedef struct GameVarRange {
     /* 00 */ char* name;
@@ -50,5 +48,5 @@ typedef struct GameVarRange {
     /* 0C */ s32 next;
 } GameVarRange; // size = 0x10
 
-extern GameVarRange N(GameByteTable)[];
-extern GameVarRange N(GameFlagTable)[];
+extern GameVarRange GameByteTable[];
+extern GameVarRange GameFlagTable[];

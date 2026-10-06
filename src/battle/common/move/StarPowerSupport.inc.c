@@ -4,7 +4,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SpawnStarSparkleFX)) {
+API_CALLABLE(SpawnStarSparkleFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -14,7 +14,7 @@ API_CALLABLE(N(SpawnStarSparkleFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnWishSparkleFX)) {
+API_CALLABLE(SpawnWishSparkleFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -24,7 +24,7 @@ API_CALLABLE(N(SpawnWishSparkleFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnStarSpiritArriveFX)) {
+API_CALLABLE(SpawnStarSpiritArriveFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -34,7 +34,7 @@ API_CALLABLE(N(SpawnStarSpiritArriveFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnStarSpiritDepartFX)) {
+API_CALLABLE(SpawnStarSpiritDepartFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -46,7 +46,7 @@ API_CALLABLE(N(SpawnStarSpiritDepartFX)) {
 
 #include "common/FadeBackgroundDarken.inc.c"
 
-API_CALLABLE(N(FadeBackgroundDarkenForBeam)) {
+API_CALLABLE(FadeBackgroundDarkenForBeam) {
     if (isInitialCall) {
         mdl_set_all_tint_type(ENV_TINT_SHROUD);
         *gBackgroundTintModePtr = ENV_TINT_SHROUD;
@@ -67,7 +67,7 @@ API_CALLABLE(N(FadeBackgroundDarkenForBeam)) {
 
 #include "common/FadeBackgroundLighten.inc.c"
 
-API_CALLABLE(N(SetPartnerWishAnim)) {
+API_CALLABLE(SetPartnerWishAnim) {
     PlayerData* playerData = &gPlayerData;
     Bytecode* args = script->ptrReadPos;
     s32 wishAnimIdx = evt_get_variable(script, *args++);
@@ -78,7 +78,7 @@ API_CALLABLE(N(SetPartnerWishAnim)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStarSpiritSize)) {
+API_CALLABLE(SetStarSpiritSize) {
     Npc* npc = get_npc_unsafe(NPC_BTL_SPIRIT);
 
     npc->collisionHeight = 32;
@@ -86,7 +86,7 @@ API_CALLABLE(N(SetStarSpiritSize)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_StarPower_WishForSpirit) = {
+EvtScript EVS_StarPower_WishForSpirit = {
     Call(GetOwnerID, LVarA)
     IfEq(LVarA, ACTOR_PLAYER)
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
@@ -101,47 +101,47 @@ EvtScript N(EVS_StarPower_WishForSpirit) = {
         Call(PlaySound, SOUND_BEGIN_WISH)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
-        Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
-        Call(N(FadeBackgroundDarken))
+        Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
+        Call(DarkenBackground)
         Wait(20)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Pray)
         Wait(10)
         Call(PlaySound, SOUND_WISH_ASCENDING)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(N(SpawnWishSparkleFX), LVar0, LVar1, LVar2)
+        Call(SpawnWishSparkleFX, LVar0, LVar1, LVar2)
         Wait(30)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_LookUp)
     Else
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
         Wait(10)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_WALK)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_WALK)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar0, 16)
         Call(SetActorSpeed, ACTOR_PARTNER, Float(4.0))
         Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Call(RunToGoal, ACTOR_PARTNER, 0, false)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_IDLE)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_IDLE)
         Wait(8)
         Call(PlaySound, SOUND_BEGIN_WISH)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_PRAY)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_PRAY)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
-        Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
-        Call(N(FadeBackgroundDarken))
+        Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
+        Call(DarkenBackground)
         Wait(20)
         Call(PlaySound, SOUND_WISH_ASCENDING)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_PRAY)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_PRAY)
         Wait(10)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-        Call(N(SpawnWishSparkleFX), LVar0, LVar1, LVar2)
+        Call(SpawnWishSparkleFX, LVar0, LVar1, LVar2)
         Wait(30)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_IDLE)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_IDLE)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_StarPower_WishForBeam) = {
+EvtScript EVS_StarPower_WishForBeam = {
     Call(GetOwnerID, LVarA)
     IfEq(LVarA, ACTOR_PLAYER)
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
@@ -156,58 +156,58 @@ EvtScript N(EVS_StarPower_WishForBeam) = {
         Call(PlaySound, SOUND_BEGIN_WISH)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
-        Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
-        Call(N(FadeBackgroundDarkenForBeam))
+        Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
+        Call(FadeBackgroundDarkenForBeam)
         Wait(20)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Pray)
         Wait(10)
         Call(PlaySound, SOUND_WISH_ASCENDING)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(N(SpawnWishSparkleFX), LVar0, LVar1, LVar2)
+        Call(SpawnWishSparkleFX, LVar0, LVar1, LVar2)
         Wait(30)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_LookUp)
     Else
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
         Wait(10)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_WALK)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_WALK)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar0, 16)
         Call(SetActorSpeed, ACTOR_PARTNER, Float(4.0))
         Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Call(RunToGoal, ACTOR_PARTNER, 0, false)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_IDLE)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_IDLE)
         Wait(8)
         Call(PlaySound, SOUND_BEGIN_WISH)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_PRAY)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_PRAY)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
-        Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
-        Call(N(FadeBackgroundDarkenForBeam))
+        Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
+        Call(FadeBackgroundDarkenForBeam)
         Wait(20)
         Call(PlaySound, SOUND_WISH_ASCENDING)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_PRAY)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_PRAY)
         Wait(10)
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-        Call(N(SpawnWishSparkleFX), LVar0, LVar1, LVar2)
+        Call(SpawnWishSparkleFX, LVar0, LVar1, LVar2)
         Wait(30)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_IDLE)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_IDLE)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_StarPower_SpiritSummoned) = {
+EvtScript EVS_StarPower_SpiritSummoned = {
     Wait(8)
     Call(SetForegroundModelsVisible, false)
     Call(UseBattleCamPresetImmediately, BTL_CAM_STAR_SPIRIT)
     Call(MoveBattleCamOver, 1)
     Call(PlaySound, SOUND_STAR_SPIRIT_APPEAR_A)
     Call(CreateNpc, NPC_BTL_SPIRIT, LVar0)
-    Call(N(SetStarSpiritSize))
+    Call(SetStarSpiritSize)
     Call(SetNpcFlagBits, NPC_BTL_SPIRIT, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     Call(SetNpcPos, NPC_BTL_SPIRIT, -75, 150, 0)
     Call(SetNpcDecoration, NPC_BTL_SPIRIT, 0, NPC_DECORATION_WHITE_GLOW_BEHIND)
-    Call(N(SpawnStarSpiritArriveFX), -75, 167, 0)
+    Call(SpawnStarSpiritArriveFX, -75, 167, 0)
     Wait(10)
     Call(EnableNpcBlur, NPC_BTL_SPIRIT, true)
     Set(LVar0, 0)
@@ -230,7 +230,7 @@ EvtScript N(EVS_StarPower_SpiritSummoned) = {
     End
 };
 
-EvtScript N(EVS_StarPower_SpiritDeparts) = {
+EvtScript EVS_StarPower_SpiritDeparts = {
     Call(GetOwnerID, LVarA)
     IfEq(LVarA, ACTOR_PLAYER)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -239,7 +239,7 @@ EvtScript N(EVS_StarPower_SpiritDeparts) = {
             Loop(5)
                 Wait(6)
                 Call(GetNpcPos, NPC_BTL_SPIRIT, LVar0, LVar1, LVar2)
-                Call(N(SpawnStarSpiritDepartFX), LVar0, LVar1, LVar2)
+                Call(SpawnStarSpiritDepartFX, LVar0, LVar1, LVar2)
             EndLoop
         EndThread
         Call(EnableNpcBlur, NPC_BTL_SPIRIT, true)
@@ -271,7 +271,7 @@ EvtScript N(EVS_StarPower_SpiritDeparts) = {
             Loop(5)
                 Wait(6)
                 Call(GetNpcPos, NPC_BTL_SPIRIT, LVar0, LVar1, LVar2)
-                Call(N(SpawnStarSpiritDepartFX), LVar0, LVar1, LVar2)
+                Call(SpawnStarSpiritDepartFX, LVar0, LVar1, LVar2)
             EndLoop
         EndThread
         Call(EnableNpcBlur, NPC_BTL_SPIRIT, true)
@@ -301,10 +301,10 @@ EvtScript N(EVS_StarPower_SpiritDeparts) = {
     End
 };
 
-EvtScript N(EVS_StarPower_EndWish) = {
+EvtScript EVS_StarPower_EndWish = {
     Call(GetOwnerID, LVarA)
     IfEq(LVarA, ACTOR_PLAYER)
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
         Wait(15)
         Call(SetGoalToHome, ACTOR_PLAYER)
         Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
@@ -312,13 +312,13 @@ EvtScript N(EVS_StarPower_EndWish) = {
         Call(PlayerRunToGoal, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Else
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
         Wait(15)
         Call(SetGoalToHome, ACTOR_PARTNER)
         Call(SetActorSpeed, ACTOR_PARTNER, Float(8.0))
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_RETURN)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_RETURN)
         Call(RunToGoal, ACTOR_PARTNER, 0)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_IDLE)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_IDLE)
     EndIf
     Return
     End

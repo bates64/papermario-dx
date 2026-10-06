@@ -4,4 +4,4 @@
 
 #define NpcSettings_Goombario_Wander NpcSettings_GoombaFamily_Wander
 
-extern NpcSettings N(NpcSettings_Goombario_Wander);
+extern NpcSettings NpcSettings_Goombario_Wander;

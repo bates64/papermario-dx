@@ -5,7 +5,7 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
 
-EvtScript N(EVS_NpcInteract_TrainToad_01) = {
+EvtScript EVS_NpcInteract_TrainToad_01 = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, iwa_10_ENTRY_0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_White_Talk, ANIM_TrainToad_White_Idle, 0, MSG_CH2_0001)
@@ -14,7 +14,7 @@ EvtScript N(EVS_NpcInteract_TrainToad_01) = {
         Call(ShowChoice, MSG_Choice_000C)
         Call(EndSpeech, NPC_SELF, ANIM_TrainToad_White_Talk, ANIM_TrainToad_White_Idle, 0)
         IfEq(LVar0, 0)
-            Exec(N(EVS_DepartForToadTown))
+            Exec(EVS_DepartForToadTown)
         Else
         EndIf
     EndIf
@@ -22,13 +22,13 @@ EvtScript N(EVS_NpcInteract_TrainToad_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TrainToad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TrainToad_01)))
+EvtScript EVS_NpcInit_TrainToad_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TrainToad_02) = {
+EvtScript EVS_NpcInit_TrainToad_02 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, iwa_10_ENTRY_0)
@@ -42,14 +42,14 @@ EvtScript N(EVS_NpcInit_TrainToad_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad) = {
+EvtScript EVS_NpcInteract_Toad = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_CH2_0004)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad)))
+EvtScript EVS_NpcInit_Toad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
     IfGe(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -57,7 +57,7 @@ EvtScript N(EVS_NpcInit_Toad) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toadette_02) = {
+EvtScript EVS_NpcInteract_Toadette_02 = {
     Call(SpeakToPlayer, NPC_Toadette_02, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_000B)
     Call(SpeakToPlayer, NPC_Toadette_03, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_000C)
     Call(SpeakToPlayer, NPC_Toadette_04, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_000D)
@@ -65,8 +65,8 @@ EvtScript N(EVS_NpcInteract_Toadette_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toadette_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette_02)))
+EvtScript EVS_NpcInit_Toadette_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02))
     IfLt(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -78,7 +78,7 @@ EvtScript N(EVS_NpcInit_Toadette_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Dryite) = {
+EvtScript EVS_NpcInteract_Dryite = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfEq(AF_IWA_SpokeWIthDryite, false)
@@ -98,13 +98,13 @@ EvtScript N(EVS_NpcInteract_Dryite) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite)))
+EvtScript EVS_NpcInit_Dryite = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toadette_01) = {
+EvtScript EVS_NpcInteract_Toadette_01 = {
     IfLt(GB_IWA00_Whacka_HitCount, 8)
         Set(LVar0, MSG_CH2_0009)
     Else
@@ -115,19 +115,19 @@ EvtScript N(EVS_NpcInteract_Toadette_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toadette_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette_01)))
+EvtScript EVS_NpcInit_Toadette_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01))
     Return
     End
 };
 
-NpcData N(NpcData_TrainToad)[] = {
+NpcData NpcData_TrainToad[] = {
     {
         .id = NPC_TrainToad_01,
         .pos = { -440.0f, 20.0f, 110.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TrainToad_01),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_TrainToad_01,
+        .settings = &NpcSettings_TrainToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_TOAD_WHITE_ANIMS,
@@ -137,33 +137,33 @@ NpcData N(NpcData_TrainToad)[] = {
         .id = NPC_TrainToad_02,
         .pos = { -425.0f, 70.0f, -20.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_TrainToad_02),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_TrainToad_02,
+        .settings = &NpcSettings_TrainToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_CONDUCTOR_ANIMS,
     },
 };
 
-NpcData N(NpcData_Toad) = {
+NpcData NpcData_Toad = {
     .id = NPC_Toad,
     .pos = { -254.0f, 20.0f, 165.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_Toad,
+    .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_IWA_TravelAgent,
 };
 
-NpcData N(NpcData_Toadette)[] = {
+NpcData NpcData_Toadette[] = {
     {
         .id = NPC_Toadette_02,
         .pos = { -562.0f, 0.0f, 384.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette_02,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -173,8 +173,8 @@ NpcData N(NpcData_Toadette)[] = {
         .id = NPC_Toadette_03,
         .pos = { -582.0f, 0.0f, 406.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette_02,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -184,8 +184,8 @@ NpcData N(NpcData_Toadette)[] = {
         .id = NPC_Toadette_04,
         .pos = { -524.0f, 0.0f, 411.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Toadette_02),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette_02,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -193,13 +193,13 @@ NpcData N(NpcData_Toadette)[] = {
     },
 };
 
-NpcData N(NpcData_Dryite)[] = {
+NpcData NpcData_Dryite[] = {
     {
         .id = NPC_Dryite,
         .pos = { -344.0f, 0.0f, 379.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Dryite),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_Dryite,
+        .settings = &NpcSettings_Dryite,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
@@ -209,8 +209,8 @@ NpcData N(NpcData_Dryite)[] = {
         .id = NPC_Toadette_01,
         .pos = { -760.0f, 0.0f, 160.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toadette_01),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette_01,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -218,11 +218,11 @@ NpcData N(NpcData_Dryite)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TrainToad)),
-    NPC_GROUP(N(NpcData_Toad)),
-    NPC_GROUP(N(NpcData_Toadette)),
-    NPC_GROUP(N(NpcData_Dryite)),
-    NPC_GROUP(N(NpcData_Parakarry)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TrainToad),
+    NPC_GROUP(NpcData_Toad),
+    NPC_GROUP(NpcData_Toadette),
+    NPC_GROUP(NpcData_Dryite),
+    NPC_GROUP(NpcData_Parakarry),
     {}
 };

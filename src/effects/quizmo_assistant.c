@@ -32,7 +32,6 @@ EffectInstance* quizmo_assistant_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f3
     bp.init = quizmo_assistant_init;
     bp.update = quizmo_assistant_update;
     bp.renderScene = quizmo_assistant_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_QUIZMO_ASSISTANT;
 

@@ -1,7 +1,7 @@
 #include "mac_05.h"
 #include "world/common/prefab/Whale.h"
 
-API_CALLABLE(N(WaveScaleInterp)) {
+API_CALLABLE(WaveScaleInterp) {
     Bytecode* args = script->ptrReadPos;
     s32 tvar = *args++;
     s32 time = evt_get_variable(script, tvar);
@@ -22,14 +22,14 @@ API_CALLABLE(N(WaveScaleInterp)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateWaves) = {
+EvtScript EVS_AnimateWaves = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVarC, 0)
     Label(0)
         IfGe(LVarC, 60)
             Set(LVarC, 0)
         EndIf
-        Call(N(WaveScaleInterp), LVarC, LVar0, Float(-1.0), Float(1.0), 30, false, 0)
+        Call(WaveScaleInterp, LVarC, LVar0, Float(-1.0), Float(1.0), 30, false, 0)
         Call(ScaleModel, MODEL_kaimen, 1, LVar0, 1)
         Add(LVarC, 1)
         Wait(1)
@@ -38,7 +38,7 @@ EvtScript N(EVS_AnimateWaves) = {
     End
 };
 
-EvtScript N(EVS_AnimateFish) = {
+EvtScript EVS_AnimateFish = {
     Loop(0)
         Call(MakeLerp, 600, -240, 320, EASING_LINEAR)
         Loop(0)
@@ -65,9 +65,9 @@ EvtScript N(EVS_AnimateFish) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_mac_04_1) = EVT_EXIT_WALK(60, mac_05_ENTRY_0, "mac_04", mac_04_ENTRY_1);
+EvtScript EVS_ExitWalk_mac_04_1 = EVT_EXIT_WALK(60, mac_05_ENTRY_0, "mac_04", mac_04_ENTRY_1);
 
-EvtScript N(EVS_ExitWalk_kgr_01_0) = {
+EvtScript EVS_ExitWalk_kgr_01_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, mac_05_ENTRY_3)
     Exec(ExitWalk)
@@ -78,31 +78,31 @@ EvtScript N(EVS_ExitWalk_kgr_01_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_mac_04_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kgr_01_0)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilit9, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_mac_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kgr_01_0), TRIGGER_FLOOR_TOUCH, COLLIDER_deilit9, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mac_05_ENTRY_0)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(mac_05_ENTRY_1)
-            Exec(N(EVS_Scene_ArriveByWhale))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_ArriveByWhale)
+            Exec(EVS_BindExitTriggers)
         CaseEq(mac_05_ENTRY_2)
-            Exec(N(EVS_Scene_FuzzipedeDefeated))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_FuzzipedeDefeated)
+            Exec(EVS_BindExitTriggers)
         CaseEq(mac_05_ENTRY_3)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
@@ -130,7 +130,7 @@ EvtScript N(EVS_EnterMap) = {
             Call(EnablePartnerAI)
             Call(DisablePlayerPhysics, false)
             Call(DisablePlayerInput, false)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             ExecWait(EnterWalk)
             Call(SetNpcPos, NPC_Whale, -220, 10, 372)
             Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, false)
@@ -139,41 +139,41 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
-            Set(LVar0, Ref(N(NpcSetA)))
+            Set(LVar0, Ref(NpcSetA))
         CaseLt(STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
-            Set(LVar0, Ref(N(NpcSetB)))
+            Set(LVar0, Ref(NpcSetB))
         CaseLt(STORY_CH5_RETURNED_TO_TOAD_TOWN)
             Call(GetEntryID, LVar1)
             IfEq(LVar1, mac_05_ENTRY_1)
                 IfEq(GF_MAC01_Defeated_JrTroopa4, false)
-                    Set(LVar0, Ref(N(NpcSetC)))
+                    Set(LVar0, Ref(NpcSetC))
                 Else
-                    Set(LVar0, Ref(N(NpcSetB)))
+                    Set(LVar0, Ref(NpcSetB))
                 EndIf
             Else
-                Set(LVar0, Ref(N(NpcSetA)))
+                Set(LVar0, Ref(NpcSetA))
             EndIf
         CaseLt(STORY_CH6_BEGAN_PEACH_MISSION)
-            Set(LVar0, Ref(N(NpcSetA)))
+            Set(LVar0, Ref(NpcSetA))
         CaseDefault
-            Set(LVar0, Ref(N(NpcSetA)))
+            Set(LVar0, Ref(NpcSetA))
     EndSwitch
     Call(MakeNpcs, false, LVar0)
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupWhale))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupWhale)
     Call(GetEntryID, LVar0)
-    Exec(N(EVS_SetupRooms))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupRooms)
+    Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
-    Exec(N(EVS_AnimateWaves))
+    Exec(EVS_AnimateWaves)
     Call(SetTexPanner, MODEL_kaimen, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
@@ -182,8 +182,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(EVS_UpdateTexturePan)
     EndThread
-    Exec(N(EVS_AnimateFish))
-    Exec(N(EVS_AnimateClub64Sign))
+    Exec(EVS_AnimateFish)
+    Exec(EVS_AnimateClub64Sign)
     Return
     End
 };

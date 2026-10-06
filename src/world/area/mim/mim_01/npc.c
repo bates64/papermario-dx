@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/PiranhaPlant/idle.inc.c"
 
-NpcData N(NpcData_PiranhaPlant)[] = {
+NpcData NpcData_PiranhaPlant[] = {
     {
         .id = NPC_PiranhaPlant,
         .pos = { 135.0f, 0.0f, -300.0f },
@@ -19,7 +19,7 @@ NpcData N(NpcData_PiranhaPlant)[] = {
                 .detectSize = { 400 },
             }
         },
-        .settings = &N(NpcSettings_PiranhaPlant),
+        .settings = &NpcSettings_PiranhaPlant,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = PIRANHA_PLANT_DROPS,
         .animations = PIRANHA_PLANT_ANIMS,
@@ -28,7 +28,7 @@ NpcData N(NpcData_PiranhaPlant)[] = {
     PIRANHA_PLANT_HITBOX(NPC_PiranhaPlant_Hitbox)
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_PiranhaPlant), BTL_MIM_FORMATION_09, BTL_MIM_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_PiranhaPlant, BTL_MIM_FORMATION_09, BTL_MIM_STAGE_00),
     {}
 };

@@ -7,7 +7,7 @@
 
 #include "world/common/ai/States_TackleAI.inc.c"
 
-API_CALLABLE(N(TackleWanderAI_Main)) {
+API_CALLABLE(TackleWanderAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -102,16 +102,16 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
             basic_ai_loiter(script, settings, detect);
             break;
         case AI_STATE_TACKLE_INIT:
-            N(TackleAI_InitTackle)(script, settings, detect);
+            TackleAI_InitTackle(script, settings, detect);
             // fallthrough
         case AI_STATE_PRE_TACKLE:
-            N(TackleAI_PreTackle)(script, settings, detect);
+            TackleAI_PreTackle(script, settings, detect);
             break;
         case AI_STATE_TACKLE:
-            N(TackleAI_Tackle)(script, settings, detect);
+            TackleAI_Tackle(script, settings, detect);
             break;
         case AI_STATE_POST_TACKLE:
-            N(TackleAI_PostTackle)(script, settings, detect);
+            TackleAI_PostTackle(script, settings, detect);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

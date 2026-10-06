@@ -2,26 +2,26 @@
 #include "script_api/battle.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_PlayBeamFX) = {
+EvtScript EVS_PlayBeamFX = {
     Thread
-        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
         Wait(5)
-        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
         IfEq(LVarA, 1)
             Wait(5)
-            PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+            PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100)
         EndIf
     EndThread
     Wait(20)
-    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PALE_WAVE, LVar0, LVar1, LVar2, Float(1.0), 30)
     Return
     End
 };
 
-s32 N(SpiritsFlyDelay)[] = { 35, 0, 5, 10, 15, 20, 25, 30 };
-s32 N(SpiritsFlyAwayDelay)[] = { 35, 0, 5, 10, 15, 20, 25, 30 };
+s32 SpiritsFlyDelay[] = { 35, 0, 5, 10, 15, 20, 25, 30 };
+s32 SpiritsFlyAwayDelay[] = { 35, 0, 5, 10, 15, 20, 25, 30 };
 
-f32 N(SpiritsScatterPos)[] = {
+f32 SpiritsScatterPos[] = {
       89.0f, 180.0f,   0.0f,
      -36.0f, 180.0f,   0.0f,
      204.0f, 180.0f,   0.0f,
@@ -48,12 +48,12 @@ enum {
     PEACH_STAR_BEAM_SPIRITS_SCATTER         = 21,
 };
 
-BSS EffectInstance* N(BeamEffect);
-BSS s32 N(MiscParticlesTimeLeft)[8];
-BSS s32 N(SpiritsMoveTime)[8];
-BSS s32 N(StarBeamStage);
+BSS EffectInstance* BeamEffect;
+BSS s32 MiscParticlesTimeLeft[8];
+BSS s32 SpiritsMoveTime[8];
+BSS s32 StarBeamStage;
 
-API_CALLABLE(N(ProcessPeachStarBeam)) {
+API_CALLABLE(ProcessPeachStarBeam) {
     PeachStarBeamFXData* effectData;
     PeachStarBeamSpirit* spirit;
     Bytecode* args = script->ptrReadPos;
@@ -74,7 +74,7 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
     };
 
     if (isInitialCall) {
-        N(StarBeamStage) = 0;
+        StarBeamStage = 0;
         script->functionTemp[FT_IS_PEACH_BEAM] = evt_get_variable(script, *args++);
         script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_CREATE_EFFECT;
     }
@@ -110,15 +110,15 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
         case PEACH_STAR_BEAM_WAIT:
         case PEACH_STAR_BEAM_FADE_OUT_BEAM:
         case PEACH_STAR_BEAM_START_FLY_AWAY:
-            effectData = N(BeamEffect)->data.peachStarBeam;
+            effectData = BeamEffect->data.peachStarBeam;
             for (i = 0; i < ARRAY_COUNT(effectData->spirits); i++) {
                 if (script->functionTemp[FT_IS_PEACH_BEAM] || i != 0) {
                     spirit = &effectData->spirits[i];
-                    if (N(MiscParticlesTimeLeft)[i] != 0) {
-                        N(MiscParticlesTimeLeft)[i]--;
+                    if (MiscParticlesTimeLeft[i] != 0) {
+                        MiscParticlesTimeLeft[i]--;
                     } else {
-                        N(MiscParticlesTimeLeft)[i] = 20;
-                        if (N(SpiritsFlyDelay)[i] <= 0) {
+                        MiscParticlesTimeLeft[i] = 20;
+                        if (SpiritsFlyDelay[i] <= 0) {
                             fx_misc_particles(4, spirit->lockedPos.x, spirit->lockedPos.y, spirit->lockedPos.z, 20.0f, 20.0f, 1.0f, 10, 20);
                         } else {
                             fx_misc_particles(4, spirit->pos.x, spirit->pos.y, spirit->pos.z, 20.0f, 20.0f, 1.0f, 10, 20);
@@ -128,15 +128,15 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             }
             break;
         case PEACH_STAR_BEAM_SPIRITS_FLY_AWAY:
-            effectData = N(BeamEffect)->data.peachStarBeam;
+            effectData = BeamEffect->data.peachStarBeam;
             for (i = 0; i < ARRAY_COUNT(effectData->spirits); i++) {
                 if (script->functionTemp[FT_IS_PEACH_BEAM] || i != 0) {
                     spirit = &effectData->spirits[i];
-                    if (N(MiscParticlesTimeLeft)[i] != 0) {
-                        N(MiscParticlesTimeLeft)[i]--;
+                    if (MiscParticlesTimeLeft[i] != 0) {
+                        MiscParticlesTimeLeft[i]--;
                     } else {
-                        N(MiscParticlesTimeLeft)[i] = 20;
-                        if (N(SpiritsFlyAwayDelay)[i] <= 0) {
+                        MiscParticlesTimeLeft[i] = 20;
+                        if (SpiritsFlyAwayDelay[i] <= 0) {
                             fx_misc_particles(4, spirit->lockedPos.x, spirit->lockedPos.y, spirit->lockedPos.z, 20.0f, 20.0f, 1.0f, 10, 20);
                         } else {
                             fx_misc_particles(4, spirit->pos.x, spirit->pos.y, spirit->pos.z, 20.0f, 20.0f, 1.0f, 10, 20);
@@ -162,18 +162,18 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             playerState->goalPos.z = currentPosZ;
 
             if (!script->functionTemp[FT_IS_PEACH_BEAM]) {
-                N(BeamEffect) = fx_peach_star_beam(0, currentPosX, currentPosY, currentPosZ, 1.0f, 0);
+                BeamEffect = fx_peach_star_beam(0, currentPosX, currentPosY, currentPosZ, 1.0f, 0);
             } else {
-                N(BeamEffect) = fx_peach_star_beam(1, currentPosX, currentPosY, currentPosZ, 1.0f, 0);
+                BeamEffect = fx_peach_star_beam(1, currentPosX, currentPosY, currentPosZ, 1.0f, 0);
             }
             playerState->dist = 48.0f;
-            N(BeamEffect)->data.peachStarBeam->unk_3C = 0;
-            N(BeamEffect)->data.peachStarBeam->circleRadius = playerState->dist;
-            N(BeamEffect)->data.peachStarBeam->beamAlpha = 0;
-            N(BeamEffect)->data.peachStarBeam->twinkYOffset = 30.0f;
-            N(BeamEffect)->data.peachStarBeam->rotSpeed = 5.0f;
-            for (i = 0; i < ARRAY_COUNT(N(MiscParticlesTimeLeft)); i++) {
-                N(MiscParticlesTimeLeft)[i] = rand_int(20);
+            BeamEffect->data.peachStarBeam->unk_3C = 0;
+            BeamEffect->data.peachStarBeam->circleRadius = playerState->dist;
+            BeamEffect->data.peachStarBeam->beamAlpha = 0;
+            BeamEffect->data.peachStarBeam->twinkYOffset = 30.0f;
+            BeamEffect->data.peachStarBeam->rotSpeed = 5.0f;
+            for (i = 0; i < ARRAY_COUNT(MiscParticlesTimeLeft); i++) {
+                MiscParticlesTimeLeft[i] = rand_int(20);
             }
 
             script->functionTemp[FT_DELAY] = 40;
@@ -186,12 +186,12 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             break;
         case PEACH_STAR_BEAM_SPIRITS_APPEAR:
             playerState->curPos.y += (playerState->goalPos.y - playerState->curPos.y) / 10.0f;
-            N(BeamEffect)->data.peachStarBeam->circleCenter.x = playerState->curPos.x;
-            N(BeamEffect)->data.peachStarBeam->circleCenter.y = playerState->curPos.y;
-            N(BeamEffect)->data.peachStarBeam->circleCenter.z = playerState->curPos.z;
-            N(BeamEffect)->data.peachStarBeam->unk_3C = 0;
-            N(BeamEffect)->data.peachStarBeam->circleRadius = playerState->dist;
-            N(BeamEffect)->data.peachStarBeam->beamAlpha = 0;
+            BeamEffect->data.peachStarBeam->circleCenter.x = playerState->curPos.x;
+            BeamEffect->data.peachStarBeam->circleCenter.y = playerState->curPos.y;
+            BeamEffect->data.peachStarBeam->circleCenter.z = playerState->curPos.z;
+            BeamEffect->data.peachStarBeam->unk_3C = 0;
+            BeamEffect->data.peachStarBeam->circleRadius = playerState->dist;
+            BeamEffect->data.peachStarBeam->beamAlpha = 0;
             if (script->functionTemp[FT_DELAY] == 0) {
                 script->functionTemp[FT_DELAY] = 20;
                 script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_ZOOM_OUT;
@@ -211,13 +211,13 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             break;
         case PEACH_STAR_BEAM_SHRINK_CIRCLE:
             playerState->dist += (24.0f - playerState->dist) * 0.125f;
-            N(BeamEffect)->data.peachStarBeam->circleRadius = playerState->dist;
+            BeamEffect->data.peachStarBeam->circleRadius = playerState->dist;
             if (script->functionTemp[FT_DELAY] == 0) {
                 playerState->goalPos.x = targetPosX;
                 playerState->goalPos.y = targetPosY;
                 playerState->goalPos.z = targetPosZ;
-                for (i = 0; i < ARRAY_COUNT(N(SpiritsMoveTime)); i++) {
-                    N(SpiritsMoveTime)[i] = 30;
+                for (i = 0; i < ARRAY_COUNT(SpiritsMoveTime); i++) {
+                    SpiritsMoveTime[i] = 30;
                 }
 
                 if (!script->functionTemp[FT_IS_PEACH_BEAM]) {
@@ -233,11 +233,11 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
         case PEACH_STAR_BEAM_FLY_TO_TARGET:
             cond = false;
             playerState->dist += (48.0f - playerState->dist) * 0.25f;
-            N(BeamEffect)->data.peachStarBeam->circleRadius = playerState->dist;
+            BeamEffect->data.peachStarBeam->circleRadius = playerState->dist;
             for (i = 0; i < 2; i++) {
                 if (i != 0) {
                     spirit = &effectData->spirits[i];
-                    if (N(SpiritsFlyDelay)[i] < 0) {
+                    if (SpiritsFlyDelay[i] < 0) {
                         currentPosX = playerState->curPos.x;
                         currentPosY = playerState->curPos.y;
                         currentPosZ = playerState->curPos.z;
@@ -251,8 +251,8 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                         playerState->curPos.z += goalPosZ - currentPosZ;
                     } else {
                         cond = true;
-                        if (N(SpiritsFlyDelay)[i] != 0) {
-                            N(SpiritsFlyDelay)[i]--;
+                        if (SpiritsFlyDelay[i] != 0) {
+                            SpiritsFlyDelay[i]--;
                         } else {
                             currentPosX = playerState->curPos.x;
                             currentPosY = playerState->curPos.y;
@@ -261,44 +261,44 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                             goalPosY = playerState->goalPos.y;
                             goalPosZ = playerState->goalPos.z;
                             dist = dist2D(currentPosX, currentPosZ, goalPosX, goalPosZ);
-                            playerState->curPos.x += (goalPosX - currentPosX) / N(SpiritsMoveTime)[i];
-                            playerState->curPos.y += (goalPosY - currentPosY) / N(SpiritsMoveTime)[i];
-                            playerState->curPos.z += (goalPosZ - currentPosZ) / N(SpiritsMoveTime)[i];
-                            if (N(SpiritsMoveTime)[i] == 1) {
-                                N(SpiritsFlyDelay)[i] = -1;
+                            playerState->curPos.x += (goalPosX - currentPosX) / SpiritsMoveTime[i];
+                            playerState->curPos.y += (goalPosY - currentPosY) / SpiritsMoveTime[i];
+                            playerState->curPos.z += (goalPosZ - currentPosZ) / SpiritsMoveTime[i];
+                            if (SpiritsMoveTime[i] == 1) {
+                                SpiritsFlyDelay[i] = -1;
                                 playerState->curPos.x = goalPosX;
                                 playerState->curPos.y = goalPosY;
                                 playerState->curPos.z = goalPosZ;
                             } else {
                                 playerState->curPos.y += dist / 60.0f;
                             }
-                            N(SpiritsMoveTime)[i]--;
+                            SpiritsMoveTime[i]--;
                         }
                     }
                 }
             }
 
-            N(BeamEffect)->data.peachStarBeam->circleCenter.x = playerState->curPos.x;
-            N(BeamEffect)->data.peachStarBeam->circleCenter.y = playerState->curPos.y;
-            N(BeamEffect)->data.peachStarBeam->circleCenter.z = playerState->curPos.z;
-            N(BeamEffect)->data.peachStarBeam->pos.x = playerState->curPos.x;
-            N(BeamEffect)->data.peachStarBeam->pos.y = 0.0f;
-            N(BeamEffect)->data.peachStarBeam->pos.z = playerState->curPos.z;
+            BeamEffect->data.peachStarBeam->circleCenter.x = playerState->curPos.x;
+            BeamEffect->data.peachStarBeam->circleCenter.y = playerState->curPos.y;
+            BeamEffect->data.peachStarBeam->circleCenter.z = playerState->curPos.z;
+            BeamEffect->data.peachStarBeam->pos.x = playerState->curPos.x;
+            BeamEffect->data.peachStarBeam->pos.y = 0.0f;
+            BeamEffect->data.peachStarBeam->pos.z = playerState->curPos.z;
             if (!cond) {
                 playerState->curPos.x = playerState->goalPos.x;
                 playerState->curPos.y = playerState->goalPos.y;
                 playerState->curPos.z = playerState->goalPos.z;
-                N(BeamEffect)->data.peachStarBeam->circleCenter.x = playerState->curPos.x;
-                N(BeamEffect)->data.peachStarBeam->circleCenter.y = playerState->curPos.y;
-                N(BeamEffect)->data.peachStarBeam->circleCenter.z = playerState->curPos.z;
-                N(BeamEffect)->data.peachStarBeam->pos.x = playerState->curPos.x;
-                N(BeamEffect)->data.peachStarBeam->pos.y = 0.0f;
-                N(BeamEffect)->data.peachStarBeam->pos.z = playerState->curPos.z;
-                effectData = N(BeamEffect)->data.peachStarBeam;
+                BeamEffect->data.peachStarBeam->circleCenter.x = playerState->curPos.x;
+                BeamEffect->data.peachStarBeam->circleCenter.y = playerState->curPos.y;
+                BeamEffect->data.peachStarBeam->circleCenter.z = playerState->curPos.z;
+                BeamEffect->data.peachStarBeam->pos.x = playerState->curPos.x;
+                BeamEffect->data.peachStarBeam->pos.y = 0.0f;
+                BeamEffect->data.peachStarBeam->pos.z = playerState->curPos.z;
+                effectData = BeamEffect->data.peachStarBeam;
                 for (i = 0; i < ARRAY_COUNT(effectData->spirits); i++) {
                     if (script->functionTemp[FT_IS_PEACH_BEAM] || i != 0) {
                         spirit = &effectData->spirits[i];
-                        N(SpiritsFlyDelay)[i] = 1;
+                        SpiritsFlyDelay[i] = 1;
                         spirit->flags &= ~2;
                     }
                 }
@@ -312,17 +312,17 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
         case PEACH_STAR_BEAM_MAKE_ADDITIONAL_EFFECTS:
             if (script->functionTemp[FT_DELAY] == 0) {
                 playerState->moveTime = 0;
-                N(BeamEffect)->data.peachStarBeam->unk_3C = 0;
-                N(BeamEffect)->data.peachStarBeam->beamAlpha = 0;
+                BeamEffect->data.peachStarBeam->unk_3C = 0;
+                BeamEffect->data.peachStarBeam->beamAlpha = 0;
                 if (script->functionTemp[FT_IS_PEACH_BEAM]) {
-                    N(BeamEffect)->data.peachStarBeam->primR = 240;
-                    N(BeamEffect)->data.peachStarBeam->primG = 80;
-                    N(BeamEffect)->data.peachStarBeam->primB = 200;
-                    N(BeamEffect)->data.peachStarBeam->envR = 240;
-                    N(BeamEffect)->data.peachStarBeam->envG = 240;
-                    N(BeamEffect)->data.peachStarBeam->envB = 240;
+                    BeamEffect->data.peachStarBeam->primR = 240;
+                    BeamEffect->data.peachStarBeam->primG = 80;
+                    BeamEffect->data.peachStarBeam->primB = 200;
+                    BeamEffect->data.peachStarBeam->envR = 240;
+                    BeamEffect->data.peachStarBeam->envG = 240;
+                    BeamEffect->data.peachStarBeam->envB = 240;
                 }
-                newScript = start_script(&N(EVS_PlayBeamFX), EVT_PRIORITY_A, 0);
+                newScript = start_script(&EVS_PlayBeamFX, EVT_PRIORITY_A, 0);
 
                 newScript->varTable[0] = playerState->curPos.x;
                 newScript->varTable[1] = playerState->curPos.y * 0.5f;
@@ -341,10 +341,10 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             if (playerState->moveTime > 255) {
                 playerState->moveTime = 255;
             }
-            N(BeamEffect)->data.peachStarBeam->unk_3C = playerState->moveTime;
-            N(BeamEffect)->data.peachStarBeam->beamAlpha = playerState->moveTime;
+            BeamEffect->data.peachStarBeam->unk_3C = playerState->moveTime;
+            BeamEffect->data.peachStarBeam->beamAlpha = playerState->moveTime;
             if (script->functionTemp[FT_DELAY] == 0) {
-                N(StarBeamStage) = 1;
+                StarBeamStage = 1;
                 if (!script->functionTemp[FT_IS_PEACH_BEAM] && player->targetListLength == 1) {
                     if (get_actor_part(get_actor(player->targetActorID), player->targetPartID)->eventFlags & ACTOR_EVENT_FLAG_STAR_ROD_ENCHANTED) {
                         script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_IMMUNE;
@@ -373,8 +373,8 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             if (playerState->moveTime < 0) {
                 playerState->moveTime = 0;
             }
-            N(BeamEffect)->data.peachStarBeam->unk_3C = playerState->moveTime;
-            N(BeamEffect)->data.peachStarBeam->beamAlpha = playerState->moveTime;
+            BeamEffect->data.peachStarBeam->unk_3C = playerState->moveTime;
+            BeamEffect->data.peachStarBeam->beamAlpha = playerState->moveTime;
             if (script->functionTemp[FT_DELAY] == 0) {
                 script->functionTemp[FT_DELAY] = 10;
                 script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_START_FLY_AWAY;
@@ -407,20 +407,20 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                 }
             }
             cond = false;
-            effectData = N(BeamEffect)->data.peachStarBeam;
+            effectData = BeamEffect->data.peachStarBeam;
             for (i = 0; i < ARRAY_COUNT(effectData->spirits); i++) {
                 if (script->functionTemp[FT_IS_PEACH_BEAM] || i != 0) {
                     spirit = &effectData->spirits[i];
-                    if (N(SpiritsFlyAwayDelay)[i] >= 0) {
+                    if (SpiritsFlyAwayDelay[i] >= 0) {
                         cond = true;
-                        if (N(SpiritsFlyAwayDelay)[i] != 0) {
-                            N(SpiritsFlyAwayDelay)[i]--;
+                        if (SpiritsFlyAwayDelay[i] != 0) {
+                            SpiritsFlyAwayDelay[i]--;
                         } else {
                             spirit->flags |= 2;
                             currentPosY = spirit->lockedPos.y;
                             spirit->lockedPos.y += (playerState->goalPos.y - currentPosY) / 10.0f;
                             if (fabsf(spirit->lockedPos.y - playerState->goalPos.y) < 1.0) {
-                                N(SpiritsFlyAwayDelay)[i] = -1;
+                                SpiritsFlyAwayDelay[i] = -1;
                             }
                         }
                     }
@@ -428,16 +428,16 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             }
 
             if (!cond) {
-                N(StarBeamStage) = 2;
-                N(BeamEffect)->flags |= FX_INSTANCE_FLAG_DISMISS;
+                StarBeamStage = 2;
+                BeamEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
                 return ApiStatus_DONE2;
             }
             break;
         case PEACH_STAR_BEAM_IMMUNE:
-            N(BeamEffect)->data.peachStarBeam->unk_3C = 0;
-            N(BeamEffect)->data.peachStarBeam->beamAlpha = 0;
-            for (i = 0; i < ARRAY_COUNT(N(SpiritsMoveTime)); i++) {
-                N(SpiritsMoveTime)[i] = 15;
+            BeamEffect->data.peachStarBeam->unk_3C = 0;
+            BeamEffect->data.peachStarBeam->beamAlpha = 0;
+            for (i = 0; i < ARRAY_COUNT(SpiritsMoveTime); i++) {
+                SpiritsMoveTime[i] = 15;
             }
 
             if (!script->functionTemp[FT_IS_PEACH_BEAM]) {
@@ -449,26 +449,26 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
             break;
         case PEACH_STAR_BEAM_SPIRITS_SCATTER:
             cond = false;
-            effectData = N(BeamEffect)->data.peachStarBeam;
+            effectData = BeamEffect->data.peachStarBeam;
             for (i = 0; i < ARRAY_COUNT(effectData->spirits);  i++) {
                 if (script->functionTemp[FT_IS_PEACH_BEAM] || i != 0) {
                     spirit = &effectData->spirits[i];
-                    if (N(SpiritsFlyDelay)[i] < 0) {
+                    if (SpiritsFlyDelay[i] < 0) {
                         currentPosX = spirit->lockedPos.x;
                         currentPosY = spirit->lockedPos.y;
                         currentPosZ = spirit->lockedPos.z;
 
-                        goalPosX = N(SpiritsScatterPos)[3 * i + 0];
-                        goalPosY = N(SpiritsScatterPos)[3 * i + 1];
-                        goalPosZ = N(SpiritsScatterPos)[3 * i + 2];
+                        goalPosX = SpiritsScatterPos[3 * i + 0];
+                        goalPosY = SpiritsScatterPos[3 * i + 1];
+                        goalPosZ = SpiritsScatterPos[3 * i + 2];
 
                         spirit->lockedPos.x += goalPosX - currentPosX;
                         spirit->lockedPos.y += goalPosY - currentPosY;
                         spirit->lockedPos.z += goalPosZ - currentPosZ;
                     } else {
                         cond = true;
-                        if (N(SpiritsFlyDelay)[i] != 0) {
-                            N(SpiritsFlyDelay)[i]--;
+                        if (SpiritsFlyDelay[i] != 0) {
+                            SpiritsFlyDelay[i]--;
                         } else {
                             currentPosX = spirit->lockedPos.x;
                             currentPosY = spirit->lockedPos.y;
@@ -476,30 +476,30 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
 
                             spirit->flags |= 2;
 
-                            goalPosX = N(SpiritsScatterPos)[3 * i + 0];
-                            goalPosY = N(SpiritsScatterPos)[3 * i + 1];
-                            goalPosZ = N(SpiritsScatterPos)[3 * i + 2];
+                            goalPosX = SpiritsScatterPos[3 * i + 0];
+                            goalPosY = SpiritsScatterPos[3 * i + 1];
+                            goalPosZ = SpiritsScatterPos[3 * i + 2];
                             dist = dist2D(currentPosX, currentPosZ, goalPosX, goalPosZ);
-                            spirit->lockedPos.x += (goalPosX - currentPosX) / N(SpiritsMoveTime)[i];
-                            spirit->lockedPos.y += (goalPosY - currentPosY) / N(SpiritsMoveTime)[i];
-                            spirit->lockedPos.z += (goalPosZ - currentPosZ) / N(SpiritsMoveTime)[i];
-                            if (N(SpiritsMoveTime)[i] == 1) {
-                                N(SpiritsFlyDelay)[i] = -1;
+                            spirit->lockedPos.x += (goalPosX - currentPosX) / SpiritsMoveTime[i];
+                            spirit->lockedPos.y += (goalPosY - currentPosY) / SpiritsMoveTime[i];
+                            spirit->lockedPos.z += (goalPosZ - currentPosZ) / SpiritsMoveTime[i];
+                            if (SpiritsMoveTime[i] == 1) {
+                                SpiritsFlyDelay[i] = -1;
                                 spirit->lockedPos.x = goalPosX;
                                 spirit->lockedPos.y = goalPosY;
                                 spirit->lockedPos.z = goalPosZ;
                             } else {
                                 spirit->lockedPos.y += dist / 60.0f;
                             }
-                            N(SpiritsMoveTime)[i]--;
+                            SpiritsMoveTime[i]--;
                         }
                     }
                 }
             }
 
             if (!cond) {
-                N(StarBeamStage) = 2;
-                N(BeamEffect)->flags |= FX_INSTANCE_FLAG_DISMISS;
+                StarBeamStage = 2;
+                BeamEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
                 return ApiStatus_DONE2;
             }
             break;
@@ -507,12 +507,12 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(GetStage)) {
-    script->varTable[0] = N(StarBeamStage);
+API_CALLABLE(GetStage) {
+    script->varTable[0] = StarBeamStage;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(unkStarBeamBgFunc)) {
+API_CALLABLE(unkStarBeamBgFunc) {
     if (isInitialCall) {
         script->functionTemp[0] = 230;
     }

@@ -7,7 +7,7 @@
 #include "world/common/ai/MeleeAttack.inc.c"
 #include "world/common/ai/States_PatrolAI.inc.c"
 
-API_CALLABLE(N(ClubbaPatrolAI_Main)) {
+API_CALLABLE(ClubbaPatrolAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -50,59 +50,59 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
     // begin an attack, if able
     if (script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
         && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
-        && N(MeleeHitbox_CanTargetPlayer)(script)
+        && MeleeHitbox_CanTargetPlayer(script)
     ) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PATROL_INIT:
-            N(PatrolAI_MoveInit)(script, settings, detect);
+            PatrolAI_MoveInit(script, settings, detect);
             // fallthrough
         case AI_STATE_PATROL:
-            N(PatrolAI_Move)(script, settings, detect);
+            PatrolAI_Move(script, settings, detect);
             break;
         case AI_STATE_LOITER_INIT:
-            N(PatrolAI_LoiterInit)(script, settings, detect);
+            PatrolAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(PatrolAI_Loiter)(script, settings, detect);
+            PatrolAI_Loiter(script, settings, detect);
             break;
         case AI_STATE_LOITER_POST:
-            N(PatrolAI_PostLoiter)(script, settings, detect);
+            PatrolAI_PostLoiter(script, settings, detect);
             break;
         case AI_STATE_ALERT_INIT:
-            N(PatrolAI_JumpInit)(script, settings, detect);
+            PatrolAI_JumpInit(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            N(PatrolAI_Jump)(script, settings, detect);
+            PatrolAI_Jump(script, settings, detect);
             break;
         case AI_STATE_CHASE_INIT:
-            N(PatrolAI_ChaseInit)(script, settings, detect);
+            PatrolAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(PatrolAI_Chase)(script, settings, detect);
+            PatrolAI_Chase(script, settings, detect);
             break;
         case AI_STATE_LOSE_PLAYER:
-            N(PatrolAI_LosePlayer)(script, settings, detect);
+            PatrolAI_LosePlayer(script, settings, detect);
             break;
         case AI_STATE_MELEE_ATTACK_INIT:
-            N(MeleeAttacker_Init)(script);
+            MeleeAttacker_Init(script);
             // fallthrough
         case AI_STATE_MELEE_ATTACK_PRE:
-            N(MeleeAttacker_Pre)(script);
+            MeleeAttacker_Pre(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_SWING:
-            N(MeleeAttacker_Swing)(script);
+            MeleeAttacker_Swing(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_POST:
-            N(MeleeAttacker_Post)(script);
+            MeleeAttacker_Post(script);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

@@ -1,13 +1,13 @@
 #include "common.h"
 
-API_CALLABLE(N(GetFloorBelowLog)) {
+API_CALLABLE(GetFloorBelowLog) {
     evt_set_variable(script, *script->ptrReadPos, gCollisionStatus.floorBelow);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_LogBridge) = {
+EvtScript EVS_LogBridge = {
     Loop(0)
-        Call(N(GetFloorBelowLog), LVar0)
+        Call(GetFloorBelowLog, LVar0)
         IfEq(LVar0, LVar4)
             Call(GetPlayerActionState, LVar0)
             IfNe(LVar0, ACTION_STATE_HIT_LAVA)
@@ -62,4 +62,4 @@ EvtScript N(EVS_LogBridge) = {
     Set(LVar7, rotAngleVar) \
     Set(LVar8, rotVelocityVar) \
     Set(LVar9, roofCollider) \
-    Exec(N(EVS_LogBridge))
+    Exec(EVS_LogBridge)

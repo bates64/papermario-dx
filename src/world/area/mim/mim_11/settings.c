@@ -1,6 +1,6 @@
 #include "mim_11.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [mim_11_ENTRY_0]    { -635.0,    0.0,    5.0,   90.0 },
     [mim_11_ENTRY_1]    {  635.0,    0.0,    5.0,  270.0 },
     [mim_11_ENTRY_2]    {  117.0,   37.0, -201.0,  227.0 },
@@ -9,10 +9,10 @@ EntryList N(Entrances) = {
     [mim_11_ENTRY_5]    {  -56.0,    0.0,  -25.0,  227.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "obk_bg",
     .tattle = { MSG_MapTattle_mim_11 },
     .songVariation = 1,

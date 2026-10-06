@@ -28,7 +28,7 @@ enum LakituAiVars {
     AI_VAR_LAKITU_HELD_SPINY    = 4, // npcID of held spiny; temporarily aliases AI_VAR_FLYING_PREV_Y during a throw
 };
 
-s32 N(LakituAI_GetAvailableSpiny)(void) {
+s32 LakituAI_GetAvailableSpiny(void) {
     s32 npcID;
 
     for (npcID = AI_LAKITU_FIRST_SPINY_ID; npcID <= AI_LAKITU_LAST_SPINY_ID; npcID++) {
@@ -40,7 +40,7 @@ s32 N(LakituAI_GetAvailableSpiny)(void) {
     return -1;
 }
 
-void N(LakituAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void LakituAI_Wander(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 bobAmplitude = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_BOB_AMPLITUDE]);
@@ -118,7 +118,7 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     }
 }
 
-void N(LakituAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void LakituAI_Loiter(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 hoverHeight = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_HOVER_HEIGHT]);
@@ -156,7 +156,7 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     }
 }
 
-API_CALLABLE(N(LakituAI_Main)) {
+API_CALLABLE(LakituAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -175,7 +175,7 @@ API_CALLABLE(N(LakituAI_Main)) {
     detect->detectFlags = 0;
 
     if (isInitialCall) {
-        N(FlyingAI_Init)(npc, enemy, script, settings);
+        FlyingAI_Init(npc, enemy, script, settings);
         script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
     npc->verticalRenderOffset = -3;
@@ -189,22 +189,22 @@ API_CALLABLE(N(LakituAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_FLYING_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, settings, detect);
+            FlyingAI_WanderInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_WANDER:
-            N(LakituAI_Wander)(script, settings, detect);
+            LakituAI_Wander(script, settings, detect);
             break;
         case AI_STATE_FLYING_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, settings, detect);
+            FlyingAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_LOITER:
-            N(LakituAI_Loiter)(script, settings, detect);
+            LakituAI_Loiter(script, settings, detect);
             break;
     }
 
     if (script->AI_TEMP_STATE == AI_STATE_FLYING_CHASE_INIT) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-        enemy->varTable[AI_VAR_LAKITU_HELD_SPINY] = N(LakituAI_GetAvailableSpiny)();
+        enemy->varTable[AI_VAR_LAKITU_HELD_SPINY] = LakituAI_GetAvailableSpiny();
         if (enemy->varTable[AI_VAR_LAKITU_HELD_SPINY] >= 0) {
             // found a spiny, reserve it and play lifting animation
             spinyEnemy = get_enemy(enemy->varTable[AI_VAR_LAKITU_HELD_SPINY]);
@@ -218,13 +218,13 @@ API_CALLABLE(N(LakituAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_FLYING_CHASE_INIT:
-            N(FlyingAI_ChaseInit)(script, settings, detect);
+            FlyingAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_CHASE_DELAY:
-            N(FlyingAI_ChaseDelay)(script, settings, detect);
+            FlyingAI_ChaseDelay(script, settings, detect);
             break;
         case AI_STATE_FLYING_CHASE:
-            N(FlyingAI_Chase)(script, settings, detect);
+            FlyingAI_Chase(script, settings, detect);
             break;
     }
 

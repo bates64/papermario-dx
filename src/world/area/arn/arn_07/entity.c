@@ -1,7 +1,7 @@
 #include "arn_07.h"
 #include "entity.h"
 
-EvtScript N(EVS_UnlockDoor) = {
+EvtScript EVS_UnlockDoor = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
@@ -28,16 +28,16 @@ EvtScript N(EVS_UnlockDoor) = {
     End
 };
 
-EvtScript N(EVS_BindLockTrigger) = {
-    BindTrigger(Ref(N(EVS_ExitDoor_arn_08_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+EvtScript EVS_BindLockTrigger = {
+    BindTrigger(Ref(EVS_ExitDoor_arn_08_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
         Call(MakeEntity, Ref(Entity_Padlock), 10, 30, -155, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BindLockTrigger)))
+        Call(AssignScript, Ref(EVS_BindLockTrigger))
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Return

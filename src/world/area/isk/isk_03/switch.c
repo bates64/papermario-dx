@@ -1,12 +1,12 @@
 #include "isk_03.h"
 
-extern EvtScript N(EVS_OnTouch_DrainSwitch);
+extern EvtScript EVS_OnTouch_DrainSwitch;
 
-EvtScript N(EVS_SetupSwitch) = {
+EvtScript EVS_SetupSwitch = {
     Call(ParentColliderToModel, COLLIDER_o1989, MODEL_o1992)
     Call(ParentColliderToModel, COLLIDER_o1990, MODEL_o1992)
     IfEq(AF_ISK03_SandSwitchActivated, false)
-        BindTrigger(Ref(N(EVS_OnTouch_DrainSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o1990, 1, 0)
+        BindTrigger(Ref(EVS_OnTouch_DrainSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o1990, 1, 0)
     Else
         Call(TranslateGroup, MODEL_g319, 0, -14, 0)
         Call(UpdateColliderTransform, COLLIDER_o1989)
@@ -16,7 +16,7 @@ EvtScript N(EVS_SetupSwitch) = {
     End
 };
 
-EvtScript N(EVS_OnTouch_DrainSwitch) = {
+EvtScript EVS_OnTouch_DrainSwitch = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return

@@ -1,12 +1,12 @@
 #include "isk_01.h"
 
-Gfx N(HazePreGfx)[] = {
+Gfx HazePreGfx[] = {
     gsDPSetAlphaDither(G_AD_NOISE),
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_SetupHaze) = {
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(HazePreGfx)), nullptr)
+EvtScript EVS_SetupHaze = {
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(HazePreGfx), nullptr)
     Call(SetModelFlags, MODEL_o99, MODEL_FLAG_USES_CUSTOM_GFX, true)
     Call(SetTexPanner, MODEL_o99, TEX_PANNER_2)
     Thread

@@ -1,11 +1,11 @@
 #include "isk_07.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_OpenSarcophagus1);
-extern EvtScript N(EVS_OpenSarcophagus2);
-extern EvtScript N(EVS_OpenSarcophagus3);
+extern EvtScript EVS_OpenSarcophagus1;
+extern EvtScript EVS_OpenSarcophagus2;
+extern EvtScript EVS_OpenSarcophagus3;
 
-EvtScript N(EVS_SetupSarcophagi) = {
+EvtScript EVS_SetupSarcophagi = {
     IfEq(GF_ISK07_OpenedSarcophagi, false)
         Set(AF_ISK07_OpeningSarcophagus1, false)
         Set(AF_ISK07_OpeningSarcophagus2, false)
@@ -41,19 +41,19 @@ EvtScript N(EVS_SetupSarcophagi) = {
         Wait(1)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Exec(N(EVS_OpenSarcophagus1))
+        Exec(EVS_OpenSarcophagus1)
         Wait(15)
         Call(SetPanTarget, CAM_DEFAULT, 51, -390, 589)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Exec(N(EVS_OpenSarcophagus2))
+        Exec(EVS_OpenSarcophagus2)
         Wait(15)
         Call(SetPanTarget, CAM_DEFAULT, 239, -390, 515)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Exec(N(EVS_OpenSarcophagus3))
+        Exec(EVS_OpenSarcophagus3)
         Wait(15)
         Call(SetPanTarget, CAM_DEFAULT, 517, -390, 292)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Exec(N(EVS_ShutEntryDoor))
+        Exec(EVS_ShutEntryDoor)
         Wait(30)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -86,7 +86,7 @@ EvtScript N(EVS_SetupSarcophagi) = {
     End
 };
 
-EvtScript N(EVS_OpenSarcophagusAnim) = {
+EvtScript EVS_OpenSarcophagusAnim = {
     Call(PlaySoundAtModel, LVar3, SOUND_SARCOPHAGUS_OPEN, SOUND_SPACE_DEFAULT)
     Call(TranslateModel, LVar3, 0, 0, 13)
     Wait(3)
@@ -106,10 +106,10 @@ EvtScript N(EVS_OpenSarcophagusAnim) = {
     End
 };
 
-EvtScript N(EVS_OpenSarcophagus1) = {
+EvtScript EVS_OpenSarcophagus1 = {
     Set(AF_ISK07_OpeningSarcophagus1, true)
     Set(LVar3, MODEL_g323)
-    ExecWait(N(EVS_OpenSarcophagusAnim))
+    ExecWait(EVS_OpenSarcophagusAnim)
     Set(AF_ISK07_OpeningSarcophagus1, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2036, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o2039, COLLIDER_FLAGS_UPPER_MASK)
@@ -117,10 +117,10 @@ EvtScript N(EVS_OpenSarcophagus1) = {
     End
 };
 
-EvtScript N(EVS_OpenSarcophagus2) = {
+EvtScript EVS_OpenSarcophagus2 = {
     Set(AF_ISK07_OpeningSarcophagus2, true)
     Set(LVar3, MODEL_g327)
-    ExecWait(N(EVS_OpenSarcophagusAnim))
+    ExecWait(EVS_OpenSarcophagusAnim)
     Set(AF_ISK07_OpeningSarcophagus2, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2037, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o2040, COLLIDER_FLAGS_UPPER_MASK)
@@ -128,10 +128,10 @@ EvtScript N(EVS_OpenSarcophagus2) = {
     End
 };
 
-EvtScript N(EVS_OpenSarcophagus3) = {
+EvtScript EVS_OpenSarcophagus3 = {
     Set(AF_ISK07_OpeningSarcophagus3, true)
     Set(LVar3, MODEL_g331)
-    ExecWait(N(EVS_OpenSarcophagusAnim))
+    ExecWait(EVS_OpenSarcophagusAnim)
     Set(AF_ISK07_OpeningSarcophagus3, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2038, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o2041, COLLIDER_FLAGS_UPPER_MASK)

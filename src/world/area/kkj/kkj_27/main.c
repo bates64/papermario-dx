@@ -1,6 +1,6 @@
 #include "kkj_27.h"
 
-Gfx N(setup_gfx_candle_lights)[] = {
+Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -19,32 +19,32 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_ExitWalk_kkj_14_2) = EVT_EXIT_WALK(60, kkj_27_ENTRY_0, "kkj_14", kkj_14_ENTRY_2);
+EvtScript EVS_ExitWalk_kkj_14_2 = EVT_EXIT_WALK(60, kkj_27_ENTRY_0, "kkj_14", kkj_14_ENTRY_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kkj_14_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kkj_14_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_27_ENTRY_0)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_27)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Exec(N(EVS_SetupRotatingWall))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupRotatingWall)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Call(SetTexPanner, MODEL_o207, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -54,7 +54,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o207, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
     Call(SetTexPanner, MODEL_o209, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -64,7 +64,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o209, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
     Return
     End

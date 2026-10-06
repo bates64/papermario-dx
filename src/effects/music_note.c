@@ -41,7 +41,6 @@ void music_note_main(s32 type, f32 posX, f32 posY, f32 posZ) {
     s32 numParts = 1;
     s32 randInt;
 
-    bp.unk_00 = 0;
     bp.init = music_note_init;
     bp.update = music_note_update;
     bp.renderScene = music_note_render;

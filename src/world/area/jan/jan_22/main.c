@@ -1,18 +1,18 @@
 #include "jan_22.h"
 
-EvtScript N(EVS_ExitWalk_jan_03_2) = EVT_EXIT_WALK(60, jan_22_ENTRY_0, "jan_03", jan_03_ENTRY_2);
-EvtScript N(EVS_ExitWalk_jan_16_1) = EVT_EXIT_WALK(60, jan_22_ENTRY_1, "jan_16", jan_16_ENTRY_1);
-EvtScript N(EVS_ExitWalk_kzn_01_0) = EVT_EXIT_WALK(60, jan_22_ENTRY_2, "kzn_01", kzn_01_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_03_2 = EVT_EXIT_WALK(60, jan_22_ENTRY_0, "jan_03", jan_03_ENTRY_2);
+EvtScript EVS_ExitWalk_jan_16_1 = EVT_EXIT_WALK(60, jan_22_ENTRY_1, "jan_16", jan_16_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_01_0 = EVT_EXIT_WALK(60, jan_22_ENTRY_2, "kzn_01", kzn_01_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_jan_03_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_jan_16_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kzn_01_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_jan_03_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_jan_16_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kzn_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o170, .pos = {  750.0,    0.0,   50.0 }},
     { .colliderID = COLLIDER_o70,  .pos = {  750.0,    0.0,   50.0 }},
     { .colliderID = COLLIDER_o119, .pos = {  960.0,    0.0,   50.0 }},
@@ -20,7 +20,7 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     IfLt(GB_StoryProgress, STORY_CH5_ZIP_LINE_READY)
         Call(SetGroupVisibility, MODEL_g39, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g52, MODEL_GROUP_HIDDEN)
@@ -31,19 +31,19 @@ EvtScript N(EVS_EnterMap) = {
     EndIf
     IfGe(GB_StoryProgress, STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o149, COLLIDER_FLAGS_UPPER_MASK)
-        ExecWait(N(EVS_SeparateBushesImmediately))
+        ExecWait(EVS_SeparateBushesImmediately)
     EndIf
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_RAPHAEL_MOVED_ROOT)
             Thread
-                Exec(N(EVS_Scene_RaphaelComingThrough))
+                Exec(EVS_Scene_RaphaelComingThrough)
                 Wait(200)
-                Exec(N(EVS_BindExitTriggers))
+                Exec(EVS_BindExitTriggers)
             EndThread
         CaseEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -51,27 +51,27 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o304, COLLIDER_FLAGS_UPPER_MASK)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_MOVED_ROOT)
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
         CaseEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
         CaseDefault
-            Call(MakeNpcs, false, Ref(N(RavenNPCs)))
+            Call(MakeNpcs, false, Ref(RavenNPCs))
     EndSwitch
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupZiplines))
-    Exec(N(EVS_SetupBasketElevator))
-    Exec(N(EVS_SetupTrees))
-    Exec(N(EVS_SetupBushes))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupZiplines)
+    Exec(EVS_SetupBasketElevator)
+    Exec(EVS_SetupTrees)
+    Exec(EVS_SetupBushes)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o294, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
     Call(SetTexPanner, MODEL_o262, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o269, TEX_PANNER_1)
@@ -113,11 +113,11 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
         Wait(65)
     EndIf
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     Return
     End
 };

@@ -19,5 +19,3 @@ enum {
     MF_TreeDrop_Lemon   = MapFlag(10),
     MF_TreeDrop_Lime    = MapFlag(12),
 };
-
-#define NAMESPACE sbk_56

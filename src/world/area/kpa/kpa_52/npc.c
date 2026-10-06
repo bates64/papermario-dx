@@ -3,7 +3,7 @@
 
 #include "world/common/enemy/HammerBros/wander.inc.c"
 
-NpcData N(NpcData_HammerBros_01)[] = {
+NpcData NpcData_HammerBros_01[] = {
     {
         .id = NPC_HammerBros_01,
         .pos = { 190.0f, 0.0f, -27.0f },
@@ -20,7 +20,7 @@ NpcData N(NpcData_HammerBros_01)[] = {
                 .detectSize = { 300 },
             }
         },
-        .settings = &N(NpcSettings_HammerBros_Wander),
+        .settings = &NpcSettings_HammerBros_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = HAMMER_BROS_DROPS,
         .animations = HAMMER_BROS_ANIMS,
@@ -33,7 +33,7 @@ NpcData N(NpcData_HammerBros_01)[] = {
     HAMMER_BROS_HAMMER_HITBOX(NPC_HammerBros_01 + 6),
 };
 
-NpcData N(NpcData_HammerBros_02)[] = {
+NpcData NpcData_HammerBros_02[] = {
     {
         .id = NPC_HammerBros_02,
         .pos = { 190.0f, 120.0f, -145.0f },
@@ -50,7 +50,7 @@ NpcData N(NpcData_HammerBros_02)[] = {
                 .detectSize = { 140, 40 },
             }
         },
-        .settings = &N(NpcSettings_HammerBros_Wander),
+        .settings = &NpcSettings_HammerBros_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = HAMMER_BROS_DROPS,
         .animations = HAMMER_BROS_ANIMS,
@@ -63,8 +63,8 @@ NpcData N(NpcData_HammerBros_02)[] = {
     HAMMER_BROS_HAMMER_HITBOX(NPC_HammerBros_02 + 6),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_HammerBros_01), BTL_KPA_FORMATION_15, BTL_KPA_STAGE_00),
-    NPC_GROUP(N(NpcData_HammerBros_02), BTL_KPA_FORMATION_13, BTL_KPA_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_HammerBros_01, BTL_KPA_FORMATION_15, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_HammerBros_02, BTL_KPA_FORMATION_13, BTL_KPA_STAGE_00),
     {}
 };

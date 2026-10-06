@@ -13,7 +13,7 @@ enum HoppingEnemyType {
     HOPPER_JUNGLE_FUZZY     = 2,
 };
 
-void N(HoppingAI_HopInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_HopInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z;
@@ -45,7 +45,7 @@ void N(HoppingAI_HopInit)(Evt* script, MobileAISettings* settings, EnemyDetectVo
     }
 }
 
-void N(HoppingAI_Hop)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_Hop(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
@@ -111,7 +111,7 @@ void N(HoppingAI_Hop)(Evt* script, MobileAISettings* settings, EnemyDetectVolume
     npc->jumpVel -= npc->jumpScale;
 }
 
-void N(HoppingAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_LoiterInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -121,7 +121,7 @@ void N(HoppingAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDetec
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
-void N(HoppingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_Loiter(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -144,7 +144,7 @@ void N(HoppingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVol
     }
 }
 
-void N(HoppingAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_ChaseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* enemy = get_npc_unsafe(script->owner1.enemy->npcID);
 
     basic_ai_chase_init(script, settings, detect);
@@ -157,7 +157,7 @@ void N(HoppingAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetect
     ai_enemy_play_sound(enemy, SOUND_SEQ_FUZZY_HOP, 0);
 }
 
-void N(HoppingAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_Chase(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ;
@@ -206,7 +206,7 @@ void N(HoppingAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     npc->jumpVel -= npc->jumpScale;
 }
 
-void N(HoppingAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void HoppingAI_LosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->duration--;
@@ -215,7 +215,7 @@ void N(HoppingAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-API_CALLABLE(N(HoppingAI_Main)) {
+API_CALLABLE(HoppingAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -256,28 +256,28 @@ API_CALLABLE(N(HoppingAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_HOP_INIT:
-            N(HoppingAI_HopInit)(script, settings, detect);
+            HoppingAI_HopInit(script, settings, detect);
             // fallthrough
         case AI_STATE_HOP:
-            N(HoppingAI_Hop)(script, settings, detect);
+            HoppingAI_Hop(script, settings, detect);
             break;
         case AI_STATE_LOITER_INIT:
-            N(HoppingAI_LoiterInit)(script, settings, detect);
+            HoppingAI_LoiterInit(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_LOITER) {
                 break;
             }
             // fallthrough
         case AI_STATE_LOITER:
-            N(HoppingAI_Loiter)(script, settings, detect);
+            HoppingAI_Loiter(script, settings, detect);
             break;
         case AI_STATE_CHASE_INIT:
-            N(HoppingAI_ChaseInit)(script, settings, detect);
+            HoppingAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(HoppingAI_Chase)(script, settings, detect);
+            HoppingAI_Chase(script, settings, detect);
             break;
         case AI_STATE_LOSE_PLAYER:
-            N(HoppingAI_LosePlayer)(script, settings, detect);
+            HoppingAI_LosePlayer(script, settings, detect);
             break;
     }
     return ApiStatus_BLOCK;

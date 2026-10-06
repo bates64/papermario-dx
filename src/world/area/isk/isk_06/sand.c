@@ -1,6 +1,6 @@
 #include "isk_06.h"
 
-EvtScript N(EVS_TexPan_DrippingSand) = {
+EvtScript EVS_TexPan_DrippingSand = {
     Call(SetTexPanner, MODEL_o2057, TEX_PANNER_4)
     Set(LVar1, 0)
     Set(LVar2, 0)
@@ -18,7 +18,7 @@ EvtScript N(EVS_TexPan_DrippingSand) = {
     End
 };
 
-EvtScript N(EVS_Camera_LookAtDrain) = {
+EvtScript EVS_Camera_LookAtDrain = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
     Call(UseSettingsFrom, CAM_DEFAULT, 356, -95, -373)
     Call(SetCamDistance, CAM_DEFAULT, 364)
@@ -31,7 +31,7 @@ EvtScript N(EVS_Camera_LookAtDrain) = {
     End
 };
 
-EvtScript N(EVS_Camera_LookBelow) = {
+EvtScript EVS_Camera_LookBelow = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
     Call(SetCamPitch, CAM_DEFAULT, Float(3.4), Float(-5.5))
     Call(SetPanTarget, CAM_DEFAULT, 356, -285, -373)
@@ -39,7 +39,7 @@ EvtScript N(EVS_Camera_LookBelow) = {
     End
 };
 
-EvtScript N(EVS_Camera_Reset) = {
+EvtScript EVS_Camera_Reset = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(UseSettingsFrom, CAM_DEFAULT, 356, -95, -373)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -51,7 +51,7 @@ EvtScript N(EVS_Camera_Reset) = {
     End
 };
 
-EvtScript N(EVS_TexPan_UpperSand) = {
+EvtScript EVS_TexPan_UpperSand = {
     Call(SetTexPanner, MODEL_o1689, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o1690, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o1691, TEX_PANNER_0)
@@ -76,7 +76,7 @@ EvtScript N(EVS_TexPan_UpperSand) = {
     End
 };
 
-EvtScript N(EVS_TexPan_LowerSand) = {
+EvtScript EVS_TexPan_LowerSand = {
     Call(SetTexPanner, MODEL_o1682, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o1681, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_o1675, TEX_PANNER_3)
@@ -115,7 +115,7 @@ EvtScript N(EVS_TexPan_LowerSand) = {
     End
 };
 
-EvtScript N(EVS_RescaleDrainingSand) = {
+EvtScript EVS_RescaleDrainingSand = {
     Call(MakeLerp, 0, 100, 60, EASING_QUADRATIC_IN)
     Label(10)
         Call(UpdateLerp)
@@ -128,7 +128,7 @@ EvtScript N(EVS_RescaleDrainingSand) = {
     End
 };
 
-EvtScript N(EVS_CollapseSandPile) = {
+EvtScript EVS_CollapseSandPile = {
     Call(MakeLerp, 0, 50, 10, EASING_QUADRATIC_OUT)
     Label(10)
         Call(UpdateLerp)
@@ -146,7 +146,7 @@ EvtScript N(EVS_CollapseSandPile) = {
     End
 };
 
-EvtScript N(EVS_DrainUpperSand) = {
+EvtScript EVS_DrainUpperSand = {
     Call(MakeLerp, 0, -100, 60, EASING_QUADRATIC_IN)
     Label(10)
         Call(UpdateLerp)
@@ -179,7 +179,7 @@ EvtScript N(EVS_DrainUpperSand) = {
     End
 };
 
-EvtScript N(EVS_FillLowerSand) = {
+EvtScript EVS_FillLowerSand = {
     Call(MakeTransformGroup, MODEL_g277)
     Call(MakeLerp, -200, 0, 120, EASING_LINEAR)
     Label(10)
@@ -195,7 +195,7 @@ EvtScript N(EVS_FillLowerSand) = {
     End
 };
 
-EvtScript N(EVS_LowerSandColumn) = {
+EvtScript EVS_LowerSandColumn = {
     Call(MakeLerp, 0, -200, 10, EASING_LINEAR)
     Label(10)
         Call(UpdateLerp)
@@ -208,7 +208,7 @@ EvtScript N(EVS_LowerSandColumn) = {
     End
 };
 
-EvtScript N(EVS_Scene_DrainSand) = {
+EvtScript EVS_Scene_DrainSand = {
     Wait(5)
     Call(InterpPlayerYaw, 98, 0)
     Call(EnableModel, MODEL_o1675, true)
@@ -219,22 +219,22 @@ EvtScript N(EVS_Scene_DrainSand) = {
     Call(EnableModel, MODEL_o1680, true)
     Call(EnableModel, MODEL_o1681, true)
     Call(EnableModel, MODEL_o1682, true)
-    Exec(N(EVS_Camera_LookAtDrain))
+    Exec(EVS_Camera_LookAtDrain)
     Wait(30)
-    Exec(N(EVS_TexPan_UpperSand))
-    Exec(N(EVS_RescaleDrainingSand))
-    Exec(N(EVS_DrainUpperSand))
+    Exec(EVS_TexPan_UpperSand)
+    Exec(EVS_RescaleDrainingSand)
+    Exec(EVS_DrainUpperSand)
     Call(PlaySound, SOUND_ISK_DRAINING_SAND)
     Wait(75)
-    Exec(N(EVS_Camera_LookBelow))
+    Exec(EVS_Camera_LookBelow)
     Wait(30)
-    Exec(N(EVS_TexPan_LowerSand))
-    Exec(N(EVS_FillLowerSand))
+    Exec(EVS_TexPan_LowerSand)
+    Exec(EVS_FillLowerSand)
     Call(PlaySound, SOUND_ISK_DRAINING_SAND | SOUND_ID_TRIGGER_CHANGE_SOUND)
     Wait(120)
-    Exec(N(EVS_LowerSandColumn))
+    Exec(EVS_LowerSandColumn)
     Wait(5)
-    Exec(N(EVS_CollapseSandPile))
+    Exec(EVS_CollapseSandPile)
     Call(PlaySound, SOUND_ISK_DRAINING_SAND | SOUND_ID_TRIGGER_CHANGE_SOUND)
     Wait(10)
     Call(EnableModel, MODEL_o1686, false)
@@ -265,7 +265,7 @@ EvtScript N(EVS_Scene_DrainSand) = {
     Call(SetZoneEnabled, ZONE_o2012, false)
     Call(SetZoneEnabled, ZONE_o2016, true)
     Wait(20)
-    Exec(N(EVS_Camera_Reset))
+    Exec(EVS_Camera_Reset)
     Wait(5)
     Call(EnableModel, MODEL_o1681, false)
     Call(DisablePlayerInput, false)
@@ -274,11 +274,11 @@ EvtScript N(EVS_Scene_DrainSand) = {
     End
 };
 
-EvtScript N(EVS_SetupSand) = {
+EvtScript EVS_SetupSand = {
     Set(AF_ISK06_SandSwitchActivated, false)
     Call(MakeTransformGroup, MODEL_g279)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_SECOND_SAND_ROOM)
-        BindTrigger(Ref(N(EVS_Scene_DrainSand)), TRIGGER_AREA_FLAG_SET, AF_ISK06_SandSwitchActivated, 1, 0)
+        BindTrigger(Ref(EVS_Scene_DrainSand), TRIGGER_AREA_FLAG_SET, AF_ISK06_SandSwitchActivated, 1, 0)
         Call(EnableModel, MODEL_o1675, false)
         Call(EnableModel, MODEL_o1676, false)
         Call(EnableModel, MODEL_o1677, false)
@@ -295,7 +295,7 @@ EvtScript N(EVS_SetupSand) = {
         Call(EnableModel, MODEL_o2049, false)
         Call(EnableModel, MODEL_o2050, false)
         Call(EnableModel, MODEL_o2051, false)
-        Exec(N(EVS_TexPan_DrippingSand))
+        Exec(EVS_TexPan_DrippingSand)
     Else
         Call(EnableModel, MODEL_o1686, false)
         Call(EnableModel, MODEL_o1687, false)

@@ -5,7 +5,7 @@
 
 #include "world/common/util/MarioSalute.inc.c"
 
-LetterDelivery N(LetterDelivery_Franky) = {
+LetterDelivery LetterDelivery_Franky = {
     .recipientID = NPC_Franky,
     .recipientTalk = ANIM_Boo_Talk,
     .recipientIdle = ANIM_Boo_Idle,
@@ -22,11 +22,11 @@ enum {
     TRAFFIC_BOO_MOVE    = 1,
 };
 
-s16 N(TrafficBooAlphas)[] = {
+s16 TrafficBooAlphas[] = {
     50, 60, 200, 240
 };
 
-API_CALLABLE(N(UpdateTrafficBooMotion)) {
+API_CALLABLE(UpdateTrafficBooMotion) {
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
     if (isInitialCall) {
@@ -61,14 +61,14 @@ API_CALLABLE(N(UpdateTrafficBooMotion)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(UpdateTrafficBooAlpha)) {
+API_CALLABLE(UpdateTrafficBooAlpha) {
     s32 alpha = script->varTable[0];
     s32 nextChangeTime = script->varTable[1];
     s32 targetAlpha;
 
     if (nextChangeTime == 0) {
         // choose a new target alpha and schedule a time for the next update
-        script->functionTemp[2] = N(TrafficBooAlphas)[rand_int(ARRAY_COUNT(N(TrafficBooAlphas)) - 1)];
+        script->functionTemp[2] = TrafficBooAlphas[rand_int(ARRAY_COUNT(TrafficBooAlphas) - 1)];
         nextChangeTime = rand_int(50) + 30;
     }
     nextChangeTime--;
@@ -92,16 +92,16 @@ API_CALLABLE(N(UpdateTrafficBooAlpha)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_TrafficBoo) = {
-    Call(N(UpdateTrafficBooMotion))
+EvtScript EVS_NpcIdle_TrafficBoo = {
+    Call(UpdateTrafficBooMotion)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAux_TrafficBoo) = {
+EvtScript EVS_NpcAux_TrafficBoo = {
     Set(LVar1, 0)
     Loop(0)
-        Call(N(UpdateTrafficBooAlpha))
+        Call(UpdateTrafficBooAlpha)
         Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
     EndLoop
@@ -109,23 +109,23 @@ EvtScript N(EVS_NpcAux_TrafficBoo) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TrafficBoo1) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrafficBoo)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_TrafficBoo)))
+EvtScript EVS_NpcInit_TrafficBoo1 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_TrafficBoo))
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TrafficBoo2) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TrafficBoo)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_TrafficBoo)))
+EvtScript EVS_NpcInit_TrafficBoo2 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TrafficBoo))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_TrafficBoo))
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_UpstairsBoo) = {
+EvtScript EVS_NpcInteract_UpstairsBoo = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0061)
@@ -138,7 +138,7 @@ EvtScript N(EVS_NpcInteract_UpstairsBoo) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Franky) = {
+EvtScript EVS_NpcInteract_Franky = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0064)
@@ -147,13 +147,13 @@ EvtScript N(EVS_NpcInteract_Franky) = {
         CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0066)
     EndSwitch
-    Set(LVar0, Ref(N(LetterDelivery_Franky)))
+    Set(LVar0, Ref(LetterDelivery_Franky))
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH5_3)
         IfEq(GF_OBK01_Gift_OldPhoto, false)
             Set(GF_OBK01_Gift_OldPhoto, true)
-            ExecWait(N(EVS_MarioSalute))
+            ExecWait(EVS_MarioSalute)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_006B)
             EVT_GIVE_REWARD(ITEM_KOOT_OLD_PHOTO)
         EndIf
@@ -162,8 +162,8 @@ EvtScript N(EVS_NpcInteract_Franky) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_UpstairsBoo) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_UpstairsBoo)))
+EvtScript EVS_NpcInit_UpstairsBoo = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_UpstairsBoo))
     IfLt(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -171,8 +171,8 @@ EvtScript N(EVS_NpcInit_UpstairsBoo) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Franky) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Franky)))
+EvtScript EVS_NpcInit_Franky = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Franky))
     IfLt(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -180,39 +180,39 @@ EvtScript N(EVS_NpcInit_Franky) = {
     End
 };
 
-NpcData N(NpcData_JumpScareBoo) = {
+NpcData NpcData_JumpScareBoo = {
     .id = NPC_JumpScareBoo,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .settings = &N(NpcSettings_Boo),
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = NORMAL_BOO_ANIMS,
 };
 
-NpcData N(NpcData_TrafficBoo1) = {
+NpcData NpcData_TrafficBoo1 = {
     .id = NPC_TrafficBoo1,
     .pos = { 523.0f, -139.0f, 193.0f },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_TrafficBoo1),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_TrafficBoo1,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = NORMAL_BOO_ANIMS,
 };
 
-NpcData N(NpcData_TrafficBoo2) = {
+NpcData NpcData_TrafficBoo2 = {
     .id = NPC_TrafficBoo2,
     .pos = { 473.0f, -122.0f, 247.0f },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_TrafficBoo2),
-    .settings = &N(NpcSettings_Boo),
+    .init = &EVS_NpcInit_TrafficBoo2,
+    .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = NORMAL_BOO_ANIMS,
 };
 
-NpcData N(NpcData_Boos)[] = {
+NpcData NpcData_Boos[] = {
     {
         .id = NPC_UpstairsBoo,
         .pos = { 422.0f, -200.0f, 112.0f },
@@ -229,8 +229,8 @@ NpcData N(NpcData_Boos)[] = {
                 .detectSize = { 30 },
             }
         },
-        .init = &N(EVS_NpcInit_UpstairsBoo),
-        .settings = &N(NpcSettings_Boo_Wander),
+        .init = &EVS_NpcInit_UpstairsBoo,
+        .settings = &NpcSettings_Boo_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
@@ -252,8 +252,8 @@ NpcData N(NpcData_Boos)[] = {
                 .detectSize = { 80 },
             }
         },
-        .init = &N(EVS_NpcInit_Franky),
-        .settings = &N(NpcSettings_Boo_Wander),
+        .init = &EVS_NpcInit_Franky,
+        .settings = &NpcSettings_Boo_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
@@ -261,10 +261,10 @@ NpcData N(NpcData_Boos)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_JumpScareBoo)),
-    NPC_GROUP(N(NpcData_TrafficBoo1)),
-    NPC_GROUP(N(NpcData_TrafficBoo2)),
-    NPC_GROUP(N(NpcData_Boos)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_JumpScareBoo),
+    NPC_GROUP(NpcData_TrafficBoo1),
+    NPC_GROUP(NpcData_TrafficBoo2),
+    NPC_GROUP(NpcData_Boos),
     {}
 };

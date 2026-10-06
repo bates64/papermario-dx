@@ -4,7 +4,7 @@
 #include "world/common/enemy/Magikoopa/wander.inc.c"
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 
-NpcData N(NpcData_Magikoopa_01)[] = {
+NpcData NpcData_Magikoopa_01[] = {
     {
         .id = NPC_Magikoopa_01,
         .pos = { -130.0f, 0.0f, -30.0f },
@@ -21,17 +21,17 @@ NpcData N(NpcData_Magikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa_Wander),
+        .settings = &NpcSettings_Magikoopa_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .limitAnimations = N(LimitAnims_Magikoopa),
+        .limitAnimations = LimitAnims_Magikoopa,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_01 + 1)
 };
 
-NpcData N(NpcData_Magikoopa_02)[] = {
+NpcData NpcData_Magikoopa_02[] = {
     {
         .id = NPC_Magikoopa_02,
         .pos = { 150.0f, 0.0f, -30.0f },
@@ -48,17 +48,17 @@ NpcData N(NpcData_Magikoopa_02)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Magikoopa_Wander),
+        .settings = &NpcSettings_Magikoopa_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MAGIKOOPA_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .limitAnimations = N(LimitAnims_Magikoopa),
+        .limitAnimations = LimitAnims_Magikoopa,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_02 + 1)
 };
 
-NpcData N(NpcData_Koopatrol) = {
+NpcData NpcData_Koopatrol = {
     .id = NPC_Koopatrol,
     .pos = { 0.0f, 0.0f, -30.0f },
     .yaw = 270,
@@ -74,16 +74,16 @@ NpcData N(NpcData_Koopatrol) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Magikoopa_01), BTL_KPA_FORMATION_2C, BTL_KPA_STAGE_00),
-    NPC_GROUP(N(NpcData_Magikoopa_02), BTL_KPA_FORMATION_29, BTL_KPA_STAGE_00),
-    NPC_GROUP(N(NpcData_Koopatrol), BTL_KPA_FORMATION_24, BTL_KPA_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Magikoopa_01, BTL_KPA_FORMATION_2C, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_Magikoopa_02, BTL_KPA_FORMATION_29, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_24, BTL_KPA_STAGE_00),
     {}
 };

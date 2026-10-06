@@ -2,9 +2,9 @@
 
 #include "foliage.h"
 
-FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o182);
+FoliageModelList Bush1_BushModels = FOLIAGE_MODEL_LIST(MODEL_o182);
 
-FoliageDropList N(Bush1_Drops) = {
+FoliageDropList Bush1_Drops = {
     .count = 1,
     .drops = {
         {
@@ -16,37 +16,37 @@ FoliageDropList N(Bush1_Drops) = {
     }
 };
 
-SearchBushConfig N(SearchBush_Bush1) = {
-    .bush = &N(Bush1_BushModels),
-    .drops = &N(Bush1_Drops),
+SearchBushConfig SearchBush_Bush1 = {
+    .bush = &Bush1_BushModels,
+    .drops = &Bush1_Drops,
 };
 
-FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o183);
+FoliageModelList Bush2_BushModels = FOLIAGE_MODEL_LIST(MODEL_o183);
 
-SearchBushConfig N(SearchBush_Bush2) = {
-    .bush = &N(Bush2_BushModels),
+SearchBushConfig SearchBush_Bush2 = {
+    .bush = &Bush2_BushModels,
 };
 
-FoliageModelList N(Bush3_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o184);
+FoliageModelList Bush3_BushModels = FOLIAGE_MODEL_LIST(MODEL_o184);
 
-SearchBushConfig N(SearchBush_Bush3) = {
-    .bush = &N(Bush3_BushModels),
+SearchBushConfig SearchBush_Bush3 = {
+    .bush = &Bush3_BushModels,
 };
 
-FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o185);
+FoliageModelList Bush4_BushModels = FOLIAGE_MODEL_LIST(MODEL_o185);
 
-SearchBushConfig N(SearchBush_Bush4) = {
-    .bush = &N(Bush4_BushModels),
+SearchBushConfig SearchBush_Bush4 = {
+    .bush = &Bush4_BushModels,
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(SearchBush_Bush1)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(SearchBush_Bush1))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o207, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush2)))
+    Set(LVar0, Ref(SearchBush_Bush2))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o208, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush3)))
+    Set(LVar0, Ref(SearchBush_Bush3))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o209, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush4)))
+    Set(LVar0, Ref(SearchBush_Bush4))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o210, 1, 0)
     Return
     End

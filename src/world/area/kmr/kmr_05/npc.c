@@ -4,7 +4,7 @@
 #include "world/common/enemy/Paragoomba/wander.inc.c"
 #include "world/common/enemy/SpikedGoomba/wander.inc.c"
 
-EvtScript N(EVS_GoompaRemark) = {
+EvtScript EVS_GoompaRemark = {
     Call(DisablePlayerInput, true)
     Wait(10 * DT)
     Call(SetPlayerSpeed, Float(3.0 / DT))
@@ -17,7 +17,7 @@ EvtScript N(EVS_GoompaRemark) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_SpikedGoomba) = {
+EvtScript EVS_NpcAux_SpikedGoomba = {
     Label(0)
     Call(TranslateModel, MODEL_usokinoko, -1, 0, 0)
     Wait(1)
@@ -36,7 +36,7 @@ EvtScript N(EVS_NpcAux_SpikedGoomba) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_SpikedGoomba) = {
+EvtScript EVS_NpcIdle_SpikedGoomba = {
     Label(10)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
@@ -55,12 +55,12 @@ EvtScript N(EVS_NpcIdle_SpikedGoomba) = {
     Call(SetNpcSpeed, NPC_SELF, Float(5.0))
     Call(NpcJump0, NPC_SELF, 685, 100, -35, 0)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_SpikedGoomba_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGoomba_Wander))
     Return
     End
 };
 
-NpcData N(NpcData_Goomba_01) = {
+NpcData NpcData_Goomba_01 = {
     .id = NPC_Goomba_01,
     .pos = { 305.0f, 50.0f, -13.0f },
     .yaw = 90,
@@ -76,14 +76,14 @@ NpcData N(NpcData_Goomba_01) = {
             .detectSize = { 120, 130 },
         }
     },
-    .settings = &N(NpcSettings_Goomba_Wander),
+    .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Goomba_02) = {
+NpcData NpcData_Goomba_02 = {
     .id = NPC_Goomba_02,
     .pos = { 700.0f, 210.0f, -165.0f },
     .yaw = 90,
@@ -99,21 +99,21 @@ NpcData N(NpcData_Goomba_02) = {
             .detectSize = { 120, 130 },
         }
     },
-    .settings = &N(NpcSettings_Goomba_Wander),
+    .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-EvtScript N(EVS_NpcInit_SpikedGoomba) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SpikedGoomba)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_SpikedGoomba)))
+EvtScript EVS_NpcInit_SpikedGoomba = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGoomba))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_SpikedGoomba))
     Return
     End
 };
 
-NpcData N(NpcData_SpikedGoomba) = {
+NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
     .pos = { 712.0f, 100.0f, -95.0f },
     .yaw = 270,
@@ -129,15 +129,15 @@ NpcData N(NpcData_SpikedGoomba) = {
             .detectSize = { 165, 150 },
         }
     },
-    .init = &N(EVS_NpcInit_SpikedGoomba),
-    .settings = &N(NpcSettings_SpikedGoomba_Wander),
+    .init = &EVS_NpcInit_SpikedGoomba,
+    .settings = &NpcSettings_SpikedGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPIKED_GOOMBA_DROPS,
     .animations = SPIKED_GOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Paragoomba) = {
+NpcData NpcData_Paragoomba = {
     .id = NPC_Paragoomba,
     .pos = { 960.0f, 210.0f, -20.0f },
     .yaw = 270,
@@ -153,25 +153,25 @@ NpcData N(NpcData_Paragoomba) = {
             .detectSize = { 210, 100 },
         }
     },
-    .settings = &N(NpcSettings_Paragoomba_Wander),
+    .settings = &NpcSettings_Paragoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = PARAGOOMBA_DROPS,
     .animations = PARAGOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(NpcsBefore) = {
-    NPC_GROUP(N(NpcData_Goomba_01), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(N(NpcData_Goomba_02), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_KMR_3_FORMATION_00, BTL_KMR_3_STAGE_03),
-    NPC_GROUP(N(NpcData_Paragoomba), BTL_KMR_3_FORMATION_01, BTL_KMR_3_STAGE_03),
+NpcGroupList NpcsBefore = {
+    NPC_GROUP(NpcData_Goomba_01, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
+    NPC_GROUP(NpcData_Goomba_02, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_KMR_3_FORMATION_00, BTL_KMR_3_STAGE_03),
+    NPC_GROUP(NpcData_Paragoomba, BTL_KMR_3_FORMATION_01, BTL_KMR_3_STAGE_03),
     {}
 };
 
-NpcGroupList N(NpcsAfter) = {
-    NPC_GROUP(N(NpcData_Goomba_01), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(N(NpcData_Goomba_02), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_KMR_1_FORMATION_0A, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(N(NpcData_Paragoomba), BTL_KMR_1_FORMATION_08, BTL_KMR_1_STAGE_03),
+NpcGroupList NpcsAfter = {
+    NPC_GROUP(NpcData_Goomba_01, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
+    NPC_GROUP(NpcData_Goomba_02, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_KMR_1_FORMATION_0A, BTL_KMR_1_STAGE_03),
+    NPC_GROUP(NpcData_Paragoomba, BTL_KMR_1_FORMATION_08, BTL_KMR_1_STAGE_03),
     {}
 };

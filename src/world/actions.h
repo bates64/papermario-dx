@@ -3,14 +3,19 @@
 
 #include "common.h"
 
-typedef struct Action {
-    /* 0x00 */ void (*update)(void);
-    /* 0x04 */ void* dmaStart;
-    /* 0x08 */ void* dmaEnd;
-    /* 0x0C */ s8 flag;
-    /* 0x0D */ PAD(3);
-} Action; // size = 0x10
+typedef void (*ActionUpdate)(void);
+typedef const char* ActionFamily;
+typedef const char* ActionEntry;
 
-extern Action PlayerActionsTable[39];
+typedef struct Action {
+    /* 0x00 */ ActionFamily family;
+    /* 0x04 */ ActionEntry entry;
+    /* 0x08 */ s8 enabledForPeach;
+    /* 0x09 */ PAD(3);
+} Action; // size = 0x0C
+
+extern Action PlayerActionsTable[ACTION_COUNT];
+
+void unload_player_action(void);
 
 #endif

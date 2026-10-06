@@ -5,7 +5,7 @@
 #include "world/common/enemy/HurtPlant/idle.inc.c"
 #include "world/common/enemy/SpearGuy/wander.inc.c"
 
-AnimID N(LimitAnims_JungleFuzzy)[] = {
+AnimID LimitAnims_JungleFuzzy[] = {
     ANIM_Fuzzy_Blue_Idle,
     ANIM_Fuzzy_Blue_Walk,
     ANIM_Fuzzy_Blue_Run,
@@ -13,7 +13,7 @@ AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_JungleFuzzy) = {
+NpcData NpcData_JungleFuzzy = {
     .id = NPC_JungleFuzzy,
     .pos = { 310.0f, 24.0f, 35.0f },
     .yaw = 270,
@@ -29,15 +29,15 @@ NpcData N(NpcData_JungleFuzzy) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_JungleFuzzy_Wander),
+    .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
-    .limitAnimations = N(LimitAnims_JungleFuzzy),
+    .limitAnimations = LimitAnims_JungleFuzzy,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-AnimID N(LimitAnims_SpearGuy_Custom)[] = {
+AnimID LimitAnims_SpearGuy_Custom[] = {
     ANIM_SpearGuy_IdleUp,
     ANIM_SpearGuy_IdleFwd,
     ANIM_SpearGuy_Walk,
@@ -53,7 +53,7 @@ AnimID N(LimitAnims_SpearGuy_Custom)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_SpearGuy)[] = {
+NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
         .pos = { -298.0f, 35.0f, 37.0f },
@@ -70,54 +70,54 @@ NpcData N(NpcData_SpearGuy)[] = {
                 .detectSize = { 150 },
             }
         },
-        .settings = &N(NpcSettings_SpearGuy_Wander),
+        .settings = &NpcSettings_SpearGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .limitAnimations = N(LimitAnims_SpearGuy_Custom),
+        .limitAnimations = LimitAnims_SpearGuy_Custom,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox),
 };
 
-NpcData N(NpcData_HeartPlant) = {
+NpcData NpcData_HeartPlant = {
     .id = NPC_HeartPlant,
     .pos = { 410.0f, 0.0f, -30.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HeartPlant),
+    .settings = &NpcSettings_HeartPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = HEART_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_HurtPlant_01) = {
+NpcData NpcData_HurtPlant_01 = {
     .id = NPC_HurtPlant_01,
     .pos = { 110.0f, 0.0f, 55.0f },
     .yaw = 90,
-    .settings = &N(NpcSettings_HurtPlant),
+    .settings = &NpcSettings_HurtPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_HurtPlant_02) = {
+NpcData NpcData_HurtPlant_02 = {
     .id = NPC_HurtPlant_02,
     .pos = { -430.0f, 0.0f, -80.0f },
     .yaw = 90,
-    .settings = &N(NpcSettings_HurtPlant),
+    .settings = &NpcSettings_HurtPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_JungleFuzzy), BTL_JAN_FORMATION_0D, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_SpearGuy), BTL_JAN_FORMATION_02, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_HeartPlant)),
-    NPC_GROUP(N(NpcData_HurtPlant_01), BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_HurtPlant_02), BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_JungleFuzzy, BTL_JAN_FORMATION_0D, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_02, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HeartPlant),
+    NPC_GROUP(NpcData_HurtPlant_01, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HurtPlant_02, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
     {}
 };

@@ -1,7 +1,7 @@
 #include "tst_03.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_RedBlock), 567, 60, 100, 0, ITEM_NONE, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_HiddenRedBlock), 623, 60, 100, 0, ITEM_NONE, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_InertYellowBlock), 300, 60, -50, 0, MAKE_ENTITY_END)

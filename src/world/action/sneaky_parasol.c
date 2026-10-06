@@ -70,7 +70,7 @@ Npc* parasol_get_npc(void) {
     return npc;
 }
 
-void action_update_parasol(void) {
+export void action_update_parasol(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     TransformationData* transformation = &ParasolTransformation;
     Camera* cam = &gCameras[gCurrentCameraID];

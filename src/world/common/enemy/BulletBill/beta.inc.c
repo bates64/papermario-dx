@@ -2,17 +2,17 @@
 #include "base.h"
 #include "world/ai.h"
 
-EvtScript N(EVS_NpcAI_BulletBill_Beta) = {
+EvtScript EVS_NpcAI_BulletBill_Beta = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_BulletBill_Beta) = {
+EvtScript EVS_NpcCreate_BulletBill_Beta = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BulletBill_Beta) = {
+EvtScript EVS_NpcDefeat_BulletBill_Beta = {
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -27,13 +27,13 @@ EvtScript N(EVS_NpcDefeat_BulletBill_Beta) = {
     End
 };
 
-NpcSettings N(NpcSettings_BulletBill_Beta) = {
+NpcSettings NpcSettings_BulletBill_Beta = {
     .defaultAnim = ANIM_BulletBill_Idle,
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .doAI = &N(EVS_NpcAI_BulletBill_Beta),
-    .onCreate = &N(EVS_NpcCreate_BulletBill_Beta),
+    .doAI = &EVS_NpcAI_BulletBill_Beta,
+    .onCreate = &EVS_NpcCreate_BulletBill_Beta,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_BulletBill_Beta),
+    .onDefeat = &EVS_NpcDefeat_BulletBill_Beta,
 };

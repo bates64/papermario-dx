@@ -3,4 +3,4 @@
 
 #define NpcSettings_HarryT NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_HarryT);
+extern NpcSettings NpcSettings_HarryT;

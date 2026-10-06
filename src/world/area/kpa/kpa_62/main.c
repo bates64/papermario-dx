@@ -1,6 +1,6 @@
 #include "kpa_62.h"
 
-EvtScript N(EVS_OpenAirshipDockDoor) = {
+EvtScript EVS_OpenAirshipDockDoor = {
     Call(PlaySoundAtCollider, COLLIDER_deilitts, SOUND_AIRSHIP_DOCK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(EnableModel, MODEL_o1616, false)
     Call(MakeLerp, 0, -10, 20, EASING_CUBIC_IN)
@@ -25,7 +25,7 @@ EvtScript N(EVS_OpenAirshipDockDoor) = {
     End
 };
 
-EvtScript N(EVS_CloseAirshipDockDoor) = {
+EvtScript EVS_CloseAirshipDockDoor = {
     Call(PlaySoundAtCollider, COLLIDER_deilitts, SOUND_AIRSHIP_DOCK_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 45, 0, 25, EASING_CUBIC_IN)
     Loop(0)
@@ -50,10 +50,10 @@ EvtScript N(EVS_CloseAirshipDockDoor) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_kpa_70_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kpa_62_ENTRY_0, "kpa_70", kpa_70_ENTRY_0,
+EvtScript EVS_ExitDoors_kpa_70_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kpa_62_ENTRY_0, "kpa_70", kpa_70_ENTRY_0,
     COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL);
 
-EvtScript N(EVS_ExitWalk_kpa_1X_Upper) = {
+EvtScript EVS_ExitWalk_kpa_1X_Upper = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_62_ENTRY_1)
     Exec(ExitWalk)
@@ -67,7 +67,7 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Upper) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_kpa_1X_Lower) = {
+EvtScript EVS_ExitWalk_kpa_1X_Lower = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_62_ENTRY_2)
     Exec(ExitWalk)
@@ -81,10 +81,10 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Lower) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kpa_63_0) = {
+EvtScript EVS_ExitDoor_kpa_63_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_OpenAirshipDockDoor))
+    ExecWait(EVS_OpenAirshipDockDoor)
     Wait(15)
     Call(UseExitHeading, 60, kpa_62_ENTRY_3)
     Exec(ExitWalk)
@@ -94,7 +94,7 @@ EvtScript N(EVS_ExitDoor_kpa_63_0) = {
     End
 };
 
-EvtScript N(EVS_EnterFromAirshipDock) = {
+EvtScript EVS_EnterFromAirshipDock = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -30, 21, 590)
@@ -109,7 +109,7 @@ EvtScript N(EVS_EnterFromAirshipDock) = {
     Wait(15)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
     Call(NpcMoveTo, NPC_PARTNER, 65, 600, 0)
-    ExecWait(N(EVS_CloseAirshipDockDoor))
+    ExecWait(EVS_CloseAirshipDockDoor)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -117,15 +117,15 @@ EvtScript N(EVS_EnterFromAirshipDock) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_1X_Upper)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_1X_Lower)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoor_kpa_63_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilitts, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_1X_Upper), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_1X_Lower), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_kpa_63_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilitts, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_DisableLavaCollision) = {
+EvtScript EVS_DisableLavaCollision = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1710, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1508, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1705, COLLIDER_FLAGS_UPPER_MASK)
@@ -133,32 +133,32 @@ EvtScript N(EVS_DisableLavaCollision) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_62_ENTRY_0)
-            ExecWait(N(EVS_DisableLavaCollision))
+            ExecWait(EVS_DisableLavaCollision)
             Set(LVar2, MODEL_o1647)
             Set(LVar3, MODEL_o1646)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kpa_62_ENTRY_1)
-            ExecWait(N(EVS_DisableLavaCollision))
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            ExecWait(EVS_DisableLavaCollision)
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(kpa_62_ENTRY_2)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(kpa_62_ENTRY_3)
-            ExecWait(N(EVS_DisableLavaCollision))
+            ExecWait(EVS_DisableLavaCollision)
             Thread
-                ExecWait(N(EVS_EnterFromAirshipDock))
-                Exec(N(EVS_BindExitTriggers))
+                ExecWait(EVS_EnterFromAirshipDock)
+                Exec(EVS_BindExitTriggers)
             EndThread
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -166,7 +166,7 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Lava) = {
+EvtScript EVS_TexPan_Lava = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
@@ -179,24 +179,24 @@ EvtScript N(EVS_TexPan_Lava) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o1559, .pos = { -455.0,  -15.0,   35.0 }},
     { .colliderID = COLLIDER_o1560, .pos = { -545.0,   10.0,   15.0 }},
     { .colliderID = COLLIDER_o1692, .pos = { -426.0,  -35.0,   70.0 }},
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_BowsersCastle, true)
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupMusic)
     IfEq(GF_KPA16_ShutOffLava, false)
         Call(EnableGroup, MODEL_after, false)
-        Exec(N(EVS_TexPan_Lava))
+        Exec(EVS_TexPan_Lava)
     Else
         Call(EnableGroup, MODEL_before, false)
     EndIf
@@ -208,7 +208,7 @@ EvtScript N(EVS_Main) = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1705, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1706, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+                Call(ResetFromLava, Ref(SafeFloorColliders))
             EndThread
         EndThread
     EndIf

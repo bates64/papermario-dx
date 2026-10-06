@@ -10,5 +10,3 @@
 #include "../kgr.h"
 #include "mapfs/kgr_01_shape.h"
 #include "mapfs/kgr_01_hit.h"
-
-#define NAMESPACE kgr_01

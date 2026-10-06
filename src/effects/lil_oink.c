@@ -56,7 +56,6 @@ EffectInstance* lil_oink_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
     s32 numParts = 1;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = lil_oink_init;
     bp.update = lil_oink_update;
     bp.renderScene = lil_oink_render;

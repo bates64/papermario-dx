@@ -1,33 +1,31 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
-#include "battle/action_cmd/jump.h"
-
-#define NAMESPACE battle_move_power_jump
 
 #include "battle/common/move/JumpSupport.inc.c"
 
-extern EvtScript N(EVS_UseMove_Basic);
-extern EvtScript N(EVS_UseMove_Super);
-extern EvtScript N(EVS_UseMove_Ultra);
+extern EvtScript EVS_UseMove_Basic;
+extern EvtScript EVS_UseMove_Super;
+extern EvtScript EVS_UseMove_Ultra;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(EnablePlayerBlur, ACTOR_BLUR_ENABLE)
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_UseMove_Basic))
+            ExecWait(EVS_UseMove_Basic)
         CaseEq(1)
-            ExecWait(N(EVS_UseMove_Super))
+            ExecWait(EVS_UseMove_Super)
         CaseEq(2)
-            ExecWait(N(EVS_UseMove_Ultra))
+            ExecWait(EVS_UseMove_Ultra)
     EndSwitch
     Call(EnablePlayerBlur, ACTOR_BLUR_DISABLE)
     Return
     End
 };
 
-EvtScript N(EVS_802A26B4) = {
+EvtScript EVS_802A26B4 = {
     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
     ChildThread
         Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
@@ -39,14 +37,14 @@ EvtScript N(EVS_802A26B4) = {
     End
 };
 
-EvtScript N(EVS_UseMove_Basic) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Basic = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
-    ExecWait(N(EVS_802A26B4))
+    ExecWait(EVS_802A26B4)
     Wait(1)
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
@@ -59,22 +57,23 @@ EvtScript N(EVS_UseMove_Basic) = {
     EndSwitch
     Switch(LVar0)
         CaseGt(HIT_RESULT_HIT)
-            ExecWait(N(EVS_JumpSupport_Rebound))
+            ExecWait(EVS_JumpSupport_Rebound)
         CaseDefault
-            ExecWait(N(EVS_JumpSupport_WeakRebound))
+            ExecWait(EVS_JumpSupport_WeakRebound)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Super) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+
+EvtScript EVS_UseMove_Super = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
-    ExecWait(N(EVS_802A26B4))
+    ExecWait(EVS_802A26B4)
     Wait(1)
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
@@ -87,22 +86,22 @@ EvtScript N(EVS_UseMove_Super) = {
     EndSwitch
     Switch(LVar0)
         CaseGt(HIT_RESULT_HIT)
-            ExecWait(N(EVS_JumpSupport_Rebound))
+            ExecWait(EVS_JumpSupport_Rebound)
         CaseDefault
-            ExecWait(N(EVS_JumpSupport_WeakRebound))
+            ExecWait(EVS_JumpSupport_WeakRebound)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Ultra) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Ultra = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
-    ExecWait(N(EVS_802A26B4))
+    ExecWait(EVS_802A26B4)
     Wait(1)
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
@@ -115,10 +114,14 @@ EvtScript N(EVS_UseMove_Ultra) = {
     EndSwitch
     Switch(LVar0)
         CaseGt(HIT_RESULT_HIT)
-            ExecWait(N(EVS_JumpSupport_Rebound))
+            ExecWait(EVS_JumpSupport_Rebound)
         CaseDefault
-            ExecWait(N(EVS_JumpSupport_WeakRebound))
+            ExecWait(EVS_JumpSupport_WeakRebound)
     EndSwitch
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &EVS_UseMove,
+);

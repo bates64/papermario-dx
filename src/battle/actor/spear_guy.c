@@ -5,31 +5,29 @@
 #include "sprite/npc/ShyGuy.h"
 #include "sprite/npc/SpearGuy.h"
 
-#define NAMESPACE A(spear_guy)
+extern s32 ShyGuyAnims[];
 
-extern s32 N(ShyGuyAnims)[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandlePhase;
+extern Formation ForwardSpearFormation;
+extern Formation UpwardSpearFormation;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandlePhase);
-extern Formation N(ForwardSpearFormation);
-extern Formation N(UpwardSpearFormation);
+extern EvtScript EVS_ShyGuy_Init;
+extern EvtScript EVS_ShyGuy_Idle;
+extern EvtScript EVS_ShyGuy_TakeTurn;
+extern EvtScript EVS_ShyGuy_HandleEvent;
 
-extern EvtScript N(EVS_ShyGuy_Init);
-extern EvtScript N(EVS_ShyGuy_Idle);
-extern EvtScript N(EVS_ShyGuy_TakeTurn);
-extern EvtScript N(EVS_ShyGuy_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_SHY_GUY     = 1,
     PRT_SPEAR_GUY   = 2,
     PRT_SPEAR       = 3,
     PRT_GRASS_SKIRT = 4,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_State              = 0,
     AVAL_State_SpearForward = 0,
     AVAL_State_SpearUpward  = 1,
@@ -37,14 +35,14 @@ enum N(ActorVars) {
     AVAR_Generation         = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_STAB        = 3,
     DMG_THROW       = 3,
     DMG_TACKLE      = 2,
     DMG_VAULT       = 3,
 };
 
-s32 N(SpearForwardAnims)[] = {
+s32 SpearForwardAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpearGuy_IdleFwd,
     STATUS_KEY_STONE,     ANIM_SpearGuy_StillFwd,
     STATUS_KEY_SLEEP,     ANIM_SpearGuy_Sleep,
@@ -57,7 +55,7 @@ s32 N(SpearForwardAnims)[] = {
     STATUS_END,
 };
 
-s32 N(SpearUpwardAnims)[] = {
+s32 SpearUpwardAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpearGuy_IdleUp,
     STATUS_KEY_STONE,     ANIM_SpearGuy_Sleep,
     STATUS_KEY_SLEEP,     ANIM_SpearGuy_Sleep,
@@ -70,29 +68,29 @@ s32 N(SpearUpwardAnims)[] = {
     STATUS_END,
 };
 
-s32 N(SpearAnims)[] = {
+s32 SpearAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpearGuy_Spear,
     STATUS_END,
 };
 
-s32 N(GrassSkirtAnims)[] = {
+s32 GrassSkirtAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpearGuy_GrassSkirt,
     STATUS_END,
 };
 
-s32 N(SpearGuyDefense)[] = {
+s32 SpearGuyDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_FIRE,     0,
     ELEMENT_END,
 };
 
-s32 N(ShyGuyDefense)[] = {
+s32 ShyGuyDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_SHOCK,    0,
     ELEMENT_END,
 };
 
-s32 N(SpearGuyStatusTable)[] = {
+s32 SpearGuyStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              70,
@@ -117,7 +115,7 @@ s32 N(SpearGuyStatusTable)[] = {
     STATUS_END,
 };
 
-s32 N(ShyGuyStatusTable)[] = {
+s32 ShyGuyStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              70,
@@ -142,15 +140,15 @@ s32 N(ShyGuyStatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_SPEAR_GUY,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 22 },
         .opacity = 255,
-        .idleAnimations = N(SpearForwardAnims),
-        .defenseTable = N(SpearGuyDefense),
+        .idleAnimations = SpearForwardAnims,
+        .defenseTable = SpearGuyDefense,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_FRONT,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -3, -8 },
@@ -161,8 +159,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(ShyGuyAnims),
-        .defenseTable = N(ShyGuyDefense),
+        .idleAnimations = ShyGuyAnims,
+        .defenseTable = ShyGuyDefense,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -173,8 +171,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(SpearAnims),
-        .defenseTable = N(ShyGuyDefense),
+        .idleAnimations = SpearAnims,
+        .defenseTable = ShyGuyDefense,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -185,23 +183,23 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(GrassSkirtAnims),
-        .defenseTable = N(ShyGuyDefense),
+        .idleAnimations = GrassSkirtAnims,
+        .defenseTable = ShyGuyDefense,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_SPEAR_GUY,
     .level = ACTOR_LEVEL_SPEAR_GUY,
     .maxHP = 7,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(SpearGuyStatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = SpearGuyStatusTable,
     .escapeChance = 50,
     .airLiftChance = 85,
     .hurricaneChance = 80,
@@ -216,37 +214,37 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-EvtScript N(EVS_UpdateSpearStance) = {
+EvtScript EVS_UpdateSpearStance = {
     Switch(LVar0)
         CaseEq(AVAL_State_ShyGuy)
             // do nothing
         CaseEq(AVAL_State_SpearForward)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SpearForward)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearForwardAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(SpearForwardAnims))
             Call(SetPartEventFlags, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT)
         CaseEq(AVAL_State_SpearUpward)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SpearUpward)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearUpwardAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(SpearUpwardAnims))
             Call(SetPartEventFlags, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Init) = {
+EvtScript EVS_Init = {
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     Switch(LVar0)
         CaseEq(AVAL_State_SpearForward)
-            ExecWait(N(EVS_UpdateSpearStance))
+            ExecWait(EVS_UpdateSpearStance)
             Call(SetAnimation, ACTOR_SELF, PRT_SPEAR_GUY, ANIM_SpearGuy_IdleFwd)
         CaseEq(AVAL_State_SpearUpward)
-            ExecWait(N(EVS_UpdateSpearStance))
+            ExecWait(EVS_UpdateSpearStance)
             Call(SetPartEventFlags, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP)
             Call(SetAnimation, ACTOR_SELF, PRT_SPEAR_GUY, ANIM_SpearGuy_IdleUp)
     EndSwitch
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
     Call(SetActorVar, ACTOR_SELF, AVAR_Generation, 0)
     Call(GetEncounterTrigger, LVar0)
     Switch(LVar0)
@@ -255,7 +253,7 @@ EvtScript N(EVS_Init) = {
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_PARTNER)
             Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearUpwardAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(SpearUpwardAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_SPEAR_GUY, ANIM_SpearGuy_IdleUp)
         EndCaseGroup
     EndSwitch
@@ -263,14 +261,14 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Call(BindHandlePhase, ACTOR_SELF, nullptr)
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
     Return
     End
 };
 
-EvtScript N(EVS_SelectAnim) = {
+EvtScript EVS_SelectAnim = {
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVarA)
     IfEq(LVarA, AVAL_State_SpearForward)
         Call(GetStatusFlags, ACTOR_SELF, LVarB)
@@ -283,23 +281,23 @@ EvtScript N(EVS_SelectAnim) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         Switch(LVar0)
             CaseEq(AVAL_State_SpearForward)
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
                 IfFlag(LVar0, STATUS_FLAG_SLEEP | STATUS_FLAG_UNUSED | STATUS_FLAG_DIZZY)
-                    Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearUpwardAnims)))
+                    Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(SpearUpwardAnims))
                     Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
                     Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT, false)
                 Else
-                    Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearForwardAnims)))
+                    Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(SpearForwardAnims))
                     Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
                     Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT, true)
                 EndIf
             CaseEq(AVAL_State_SpearUpward)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearUpwardAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(SpearUpwardAnims))
                 Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
                 Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT, false)
         EndSwitch
@@ -309,7 +307,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     SetConst(LVar0, PRT_SPEAR_GUY)
     SetConst(LVar1, ANIM_SpearGuy_Run)
@@ -325,7 +323,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -335,7 +333,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_Hit)
         EndCaseGroup
         CaseEq(EVENT_BURN_HIT)
@@ -392,32 +390,32 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_SpinSmashHit)
         CaseEq(EVENT_SPIN_SMASH_DEATH)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_SpinSmashHit)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtStill)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_Death)
             Return
         CaseEq(EVENT_SHOCK_HIT)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_ShockHit)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
@@ -432,20 +430,20 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_IdleUp)
             SetConst(LVar2, ANIM_SpearGuy_IdleFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_NoDamageHit)
         EndCaseGroup
         CaseEq(EVENT_DEATH)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtUp)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_Hit)
             Wait(10)
             SetConst(LVar0, PRT_SPEAR_GUY)
             SetConst(LVar1, ANIM_SpearGuy_HurtStill)
             SetConst(LVar2, ANIM_SpearGuy_HurtFwd)
-            ExecWait(N(EVS_SelectAnim))
+            ExecWait(EVS_SelectAnim)
             ExecWait(EVS_Enemy_Death)
             Return
         CaseEq(EVENT_RECOVER_STATUS)
@@ -523,7 +521,7 @@ EvtScript N(EVS_HandleEvent) = {
                         Add(LVar1, 38)
                     EndIf
             EndSwitch
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseDefault
     EndSwitch
@@ -533,7 +531,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_SpearStab) = {
+EvtScript EVS_Attack_SpearStab = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -581,7 +579,7 @@ EvtScript N(EVS_Attack_SpearStab) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_SPEAR_GUY, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_SPEAR_GUY, 0)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -600,7 +598,7 @@ EvtScript N(EVS_Attack_SpearStab) = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Wait(20)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -609,7 +607,7 @@ EvtScript N(EVS_Attack_SpearStab) = {
     End
 };
 
-EvtScript N(EVS_Move_SummonBackup) = {
+EvtScript EVS_Move_SummonBackup = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_ACTOR)
@@ -655,7 +653,7 @@ EvtScript N(EVS_Move_SummonBackup) = {
     Call(RunToGoal, ACTOR_SELF, 0, false)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 30, 0)
+    PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_RECOVER_HEART)
     Call(SetAnimation, ACTOR_SELF, PRT_SPEAR_GUY, ANIM_SpearGuy_PointSpear)
     Wait(20)
@@ -672,7 +670,7 @@ EvtScript N(EVS_Move_SummonBackup) = {
                 Call(GetActorVar, LVar1, AVAR_State, LVar4)
                 IfEq(LVar4, AVAL_State_SpearForward)
                     Call(SetActorVar, LVar1, AVAR_State, AVAL_State_SpearUpward)
-                    Call(SetIdleAnimations, LVar1, PRT_SPEAR_GUY, Ref(N(SpearUpwardAnims)))
+                    Call(SetIdleAnimations, LVar1, PRT_SPEAR_GUY, Ref(SpearUpwardAnims))
                     Call(SetPartEventFlags, LVar1, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP)
                     Call(SetAnimation, LVar1, PRT_SPEAR_GUY, ANIM_SpearGuy_IdleUp)
                 EndIf
@@ -696,9 +694,9 @@ EvtScript N(EVS_Move_SummonBackup) = {
             Goto(1)
         EndIf
     IfEq(LFlag0, false)
-        Call(SummonEnemy, Ref(N(ForwardSpearFormation)), false)
+        Call(SummonEnemy, Ref(ForwardSpearFormation), false)
     Else
-        Call(SummonEnemy, Ref(N(UpwardSpearFormation)), false)
+        Call(SummonEnemy, Ref(UpwardSpearFormation), false)
     EndIf
     Set(LVarB, LVar0)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -724,7 +722,7 @@ EvtScript N(EVS_Move_SummonBackup) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_RECOVER_HEART)
     Call(GetActorPos, LVarB, LVar0, LVar1, LVar2)
     Add(LVar1, 15)
-    PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 30, 0)
+    PlayEffect(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 30)
     Call(SetAnimation, LVarB, PRT_SPEAR_GUY, ANIM_SpearGuy_PointSpear)
     Wait(20)
     IfEq(LFlag0, false)
@@ -749,17 +747,17 @@ EvtScript N(EVS_Move_SummonBackup) = {
     End
 };
 
-Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
+Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
-Formation N(ForwardSpearFormation) = {
-    ACTOR_BY_POS(blueprint, N(SummonPos), 100, AVAL_State_SpearForward),
+Formation ForwardSpearFormation = {
+    ACTOR_BY_POS(blueprint, SummonPos, 100, AVAL_State_SpearForward),
 };
 
-Formation N(UpwardSpearFormation) = {
-    ACTOR_BY_POS(blueprint, N(SummonPos), 100, AVAL_State_SpearUpward),
+Formation UpwardSpearFormation = {
+    ACTOR_BY_POS(blueprint, SummonPos, 100, AVAL_State_SpearUpward),
 };
 
-EvtScript N(EVS_BecomeShyGuy) = {
+EvtScript EVS_BecomeShyGuy = {
     Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_ShyGuy)
     Wait(10)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -788,7 +786,7 @@ EvtScript N(EVS_BecomeShyGuy) = {
     Thread
         Loop(10)
             Call(GetPartOffset, ACTOR_SELF, PRT_GRASS_SKIRT, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SPARKLES, 3, LVar0, LVar1, LVar2, 5, 0)
+            PlayEffect(EFFECT_SPARKLES, 3, LVar0, LVar1, LVar2, 5)
             Wait(3)
         EndLoop
     EndThread
@@ -800,17 +798,17 @@ EvtScript N(EVS_BecomeShyGuy) = {
     Call(SetPartFlags, ACTOR_SELF, PRT_SHY_GUY, ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_PRIMARY_TARGET)
     Call(SetPartFlags, ACTOR_SELF, PRT_SPEAR, ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_DAMAGE_IMMUNE | ACTOR_PART_FLAG_NO_TARGET)
     Call(SetPartFlags, ACTOR_SELF, PRT_GRASS_SKIRT, ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_DAMAGE_IMMUNE | ACTOR_PART_FLAG_NO_TARGET)
-    ExecWait(N(EVS_ShyGuy_Init))
+    ExecWait(EVS_ShyGuy_Init)
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_SHY_GUY)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
-    Call(SetStatusTable, ACTOR_SELF, Ref(N(ShyGuyStatusTable)))
+    Call(SetStatusTable, ACTOR_SELF, Ref(ShyGuyStatusTable))
     Call(HPBarToHome, ACTOR_SELF)
     Call(ResetAllActorSounds, ACTOR_SELF)
     Return
     End
 };
 
-EvtScript N(EVS_Attack_ThrowSpear) = {
+EvtScript EVS_Attack_ThrowSpear = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -890,7 +888,7 @@ EvtScript N(EVS_Attack_ThrowSpear) = {
             Wait(30)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_SPEAR_GUY, 0)
             Wait(10)
-            ExecWait(N(EVS_BecomeShyGuy))
+            ExecWait(EVS_BecomeShyGuy)
             Call(YieldTurn)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -938,7 +936,7 @@ EvtScript N(EVS_Attack_ThrowSpear) = {
     Wait(3)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_SPEAR, ACTOR_PART_FLAG_INVISIBLE, true)
     Wait(20)
-    ExecWait(N(EVS_BecomeShyGuy))
+    ExecWait(EVS_BecomeShyGuy)
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
@@ -950,7 +948,7 @@ EvtScript N(EVS_Attack_ThrowSpear) = {
     End
 };
 
-EvtScript N(EVS_GetAvailableColumn) = {
+EvtScript EVS_GetAvailableColumn = {
     Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
     Label(0)
@@ -992,7 +990,7 @@ EvtScript N(EVS_GetAvailableColumn) = {
     End
 };
 
-EvtScript N(EVS_CountActiveSummoners) = {
+EvtScript EVS_CountActiveSummoners = {
     Set(LVar9, 0)
     Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
@@ -1025,7 +1023,7 @@ EvtScript N(EVS_CountActiveSummoners) = {
     End
 };
 
-EvtScript N(EVS_SwitchSpearStance) = {
+EvtScript EVS_SwitchSpearStance = {
     Call(GetIndexFromHome, ACTOR_SELF, LVarA)
     Set(LFlag0, false)
     Call(CreateHomeTargetList, TARGET_FLAG_GROUND | TARGET_FLAG_PRIMARY_ONLY)
@@ -1044,77 +1042,77 @@ EvtScript N(EVS_SwitchSpearStance) = {
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         IfEq(LVar0, AVAL_State_SpearForward)
             Set(LVar0, AVAL_State_SpearUpward)
-            ExecWait(N(EVS_UpdateSpearStance))
+            ExecWait(EVS_UpdateSpearStance)
         EndIf
     Else
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         IfEq(LVar0, AVAL_State_SpearUpward)
             Set(LVar0, AVAL_State_SpearForward)
-            ExecWait(N(EVS_UpdateSpearStance))
+            ExecWait(EVS_UpdateSpearStance)
         EndIf
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_SpearStab))
-        ExecWait(N(EVS_SwitchSpearStance))
+        ExecWait(EVS_Attack_SpearStab)
+        ExecWait(EVS_SwitchSpearStance)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_Generation, LVar0)
     Switch(LVar0)
         CaseOrEq(0)
         CaseOrEq(1)
-            ExecWait(N(EVS_GetAvailableColumn))
+            ExecWait(EVS_GetAvailableColumn)
             IfEq(LVarA, -1)
-                ExecWait(N(EVS_Attack_SpearStab))
-                ExecWait(N(EVS_SwitchSpearStance))
+                ExecWait(EVS_Attack_SpearStab)
+                ExecWait(EVS_SwitchSpearStance)
                 Return
             EndIf
-            ExecWait(N(EVS_CountActiveSummoners))
+            ExecWait(EVS_CountActiveSummoners)
             Switch(LVar9)
                 CaseEq(1)
                     Call(RandInt, 1000, LVar0)
                     IfLt(LVar0, 300)
-                        ExecWait(N(EVS_Move_SummonBackup))
+                        ExecWait(EVS_Move_SummonBackup)
                         Return
                     EndIf
                 CaseEq(2)
                     Call(RandInt, 1000, LVar0)
                     IfLt(LVar0, 150)
-                        ExecWait(N(EVS_Move_SummonBackup))
+                        ExecWait(EVS_Move_SummonBackup)
                         Return
                     EndIf
                 CaseEq(3)
                     Call(RandInt, 1000, LVar0)
                     IfLt(LVar0, 100)
-                        ExecWait(N(EVS_Move_SummonBackup))
+                        ExecWait(EVS_Move_SummonBackup)
                         Return
                     EndIf
             EndSwitch
-            ExecWait(N(EVS_Attack_SpearStab))
-            ExecWait(N(EVS_SwitchSpearStance))
+            ExecWait(EVS_Attack_SpearStab)
+            ExecWait(EVS_SwitchSpearStance)
         EndCaseGroup
         CaseEq(2)
             Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
             Call(GetTargetListLength, LVar0)
             IfEq(LVar0, 1)
-                ExecWait(N(EVS_Attack_ThrowSpear))
+                ExecWait(EVS_Attack_ThrowSpear)
                 Return
             EndIf
-            ExecWait(N(EVS_Attack_SpearStab))
-            ExecWait(N(EVS_SwitchSpearStance))
+            ExecWait(EVS_Attack_SpearStab)
+            ExecWait(EVS_SwitchSpearStance)
         CaseEq(3)
-            ExecWait(N(EVS_Attack_ThrowSpear))
+            ExecWait(EVS_Attack_ThrowSpear)
     EndSwitch
     Return
     End
 };
 
-s32 N(ShyGuyAnims)[] = {
+s32 ShyGuyAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_ShyGuy_Red_Idle,
     STATUS_KEY_STONE,     ANIM_ShyGuy_Red_Still,
     STATUS_KEY_SLEEP,     ANIM_ShyGuy_Red_Slouch,
@@ -1127,27 +1125,25 @@ s32 N(ShyGuyAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_ShyGuy_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_ShyGuy_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_ShyGuy_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_ShyGuy_HandleEvent)))
+EvtScript EVS_ShyGuy_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_ShyGuy_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_ShyGuy_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_ShyGuy_HandleEvent))
     Return
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-EvtScript N(EVS_ShyGuy_Idle) = {
+EvtScript EVS_ShyGuy_Idle = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfFlag(LVar0, STATUS_FLAG_SLEEP)
             Call(SetTargetOffset, ACTOR_SELF, PRT_SHY_GUY, -4, 14)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_SHY_GUY, 0, 0)
-            Call(N(SetAbsoluteStatusOffsets), -10, 13, 10, 13)
+            Call(SetAbsoluteStatusOffsets, -10, 13, 10, 13)
         Else
             Call(SetTargetOffset, ACTOR_SELF, PRT_SHY_GUY, 0, 24)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_SHY_GUY, -1, -10)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
         EndIf
         Wait(1)
         Goto(0)
@@ -1155,7 +1151,7 @@ EvtScript N(EVS_ShyGuy_Idle) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_ReturnHome) = {
+EvtScript EVS_ShyGuy_ReturnHome = {
     Call(ResetAllActorSounds, ACTOR_SELF)
     SetConst(LVar0, PRT_SHY_GUY)
     SetConst(LVar1, ANIM_ShyGuy_Red_Run)
@@ -1165,7 +1161,7 @@ EvtScript N(EVS_ShyGuy_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_HandleEvent) = {
+EvtScript EVS_ShyGuy_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
@@ -1209,7 +1205,7 @@ EvtScript N(EVS_ShyGuy_HandleEvent) = {
             SetConst(LVar1, ANIM_ShyGuy_Red_Hurt)
             ExecWait(EVS_Enemy_Knockback)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-            ExecWait(N(EVS_ShyGuy_ReturnHome))
+            ExecWait(EVS_ShyGuy_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_SHY_GUY)
             SetConst(LVar1, ANIM_ShyGuy_Red_Hurt)
@@ -1260,7 +1256,7 @@ EvtScript N(EVS_ShyGuy_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Tackle) = {
+EvtScript EVS_Attack_Tackle = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -1348,14 +1344,14 @@ EvtScript N(EVS_Attack_Tackle) = {
     Call(SetAnimation, ACTOR_SELF, PRT_SHY_GUY, ANIM_ShyGuy_Red_Idle)
     Wait(8)
     Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-    ExecWait(N(EVS_ShyGuy_ReturnHome))
+    ExecWait(EVS_ShyGuy_ReturnHome)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Return
     End
 };
 
-EvtScript N(EVS_Attack_Vault) = {
+EvtScript EVS_Attack_Vault = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -1516,12 +1512,12 @@ EvtScript N(EVS_Attack_Vault) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_TakeTurn) = {
+EvtScript EVS_ShyGuy_TakeTurn = {
     Call(RandInt, 1, LVar0)
     IfEq(LVar0, 0)
-        ExecWait(N(EVS_Attack_Tackle))
+        ExecWait(EVS_Attack_Tackle)
     Else
-        ExecWait(N(EVS_Attack_Vault))
+        ExecWait(EVS_Attack_Vault)
     EndIf
     Return
     End

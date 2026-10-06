@@ -1,7 +1,7 @@
 #pragma once
 #include "base.h"
 
-extern MobileAISettings N(AISettings_AmazyDayzee_Wander);
-extern EvtScript N(EVS_NpcAI_AmazyDayzee_Wander);
-extern EvtScript N(EVS_NpcAux_AmazyDayzee_Wander);
-extern NpcSettings N(NpcSettings_AmazyDayzee_Wander);
+extern MobileAISettings AISettings_AmazyDayzee_Wander;
+extern EvtScript EVS_NpcAI_AmazyDayzee_Wander;
+extern EvtScript EVS_NpcAux_AmazyDayzee_Wander;
+extern NpcSettings NpcSettings_AmazyDayzee_Wander;

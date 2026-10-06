@@ -21,7 +21,7 @@ enum SpearGuyLoiterPhase {
     SPEAR_DANCE_PHASE_DONE          = 7,
 };
 
-void N(SpearGuyAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SpearGuyAI_LoiterInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -31,7 +31,7 @@ void N(SpearGuyAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDete
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
-void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void SpearGuyAI_Loiter(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -101,7 +101,7 @@ void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVo
 
 #include "world/common/ai/WanderMeleeAI.inc.c"
 
-API_CALLABLE(N(SpearGuyAI_Main)) {
+API_CALLABLE(SpearGuyAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -145,7 +145,7 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
     // this is probably intentional.
     if ((script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT)
         && (enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE)
-        && N(MeleeHitbox_CanTargetPlayer)(script)
+        && MeleeHitbox_CanTargetPlayer(script)
     ) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
@@ -159,10 +159,10 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
             break;
 
         case AI_STATE_LOITER_INIT:
-            N(SpearGuyAI_LoiterInit)(script, settings, detect);
+            SpearGuyAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(SpearGuyAI_Loiter)(script, settings, detect);
+            SpearGuyAI_Loiter(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:
@@ -184,22 +184,22 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
             break;
 
         case AI_STATE_MELEE_ATTACK_INIT:
-            N(MeleeAttacker_Init)(script);
+            MeleeAttacker_Init(script);
             // fallthrough
         case AI_STATE_MELEE_ATTACK_PRE:
-            N(MeleeAttacker_Pre)(script);
+            MeleeAttacker_Pre(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_SWING:
-            N(MeleeAttacker_Swing)(script);
+            MeleeAttacker_Swing(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_POST:
-            N(MeleeAttacker_Post)(script);
+            MeleeAttacker_Post(script);
             break;
 
         case AI_STATE_SUSPEND:

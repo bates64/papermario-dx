@@ -5,7 +5,7 @@
 #include "world/common/enemy/Bzzap/base.h"
 #include "world/common/enemy/CrazyDayzee/base.h"
 
-EvtScript N(EVS_NpcIdle_Bzzap) = {
+EvtScript EVS_NpcIdle_Bzzap = {
     Set(MV_Bzzap_State, 0)
     Loop(0)
         Switch(MV_Bzzap_State)
@@ -21,7 +21,7 @@ EvtScript N(EVS_NpcIdle_Bzzap) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Bzzap) = {
+EvtScript EVS_NpcDefeat_Bzzap = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -45,14 +45,14 @@ EvtScript N(EVS_NpcDefeat_Bzzap) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bzzap) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Bzzap)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Bzzap)))
+EvtScript EVS_NpcInit_Bzzap = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bzzap))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Bzzap))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Dayzee) = {
+EvtScript EVS_NpcIdle_Dayzee = {
     Set(MV_Dayzee_State, 0)
     Loop(0)
         Switch(MV_Dayzee_State)
@@ -68,7 +68,7 @@ EvtScript N(EVS_NpcIdle_Dayzee) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Dayzee) = {
+EvtScript EVS_NpcDefeat_Dayzee = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -97,38 +97,38 @@ EvtScript N(EVS_NpcDefeat_Dayzee) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Dayzee) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Dayzee)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Dayzee)))
+EvtScript EVS_NpcInit_Dayzee = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Dayzee))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Dayzee))
     Return
     End
 };
 
-NpcData N(NpcData_Bzzap) = {
+NpcData NpcData_Bzzap = {
     .id = NPC_Bzzap,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bzzap),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_Bzzap,
+    .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = BZZAP_ANIMS,
 };
 
-NpcData N(NpcData_Dayzee) = {
+NpcData NpcData_Dayzee = {
     .id = NPC_Dayzee,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Dayzee),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_Dayzee,
+    .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Bzzap), BTL_FLO_FORMATION_17, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Dayzee), BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Bzzap, BTL_FLO_FORMATION_17, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Dayzee, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
     {}
 };

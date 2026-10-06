@@ -288,7 +288,20 @@ def _align(val, alignment):
     return (val + alignment - 1) & ~(alignment - 1)
 
 
-def link_overlay(obj_paths, syms, link_addr):
+def get_loaded_footprint(overlay_data):
+    (
+        _, load_size, _, bss_size, export_count, strtab_size,
+        dtor_count, _, _, _, _, _,
+    ) = struct.unpack_from(">4s11I", overlay_data)
+    return (
+        _align(load_size + bss_size, 8)
+        + export_count * 8
+        + _align(strtab_size, 4)
+        + dtor_count * 4
+    )
+
+
+def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=False):
     """Pure-Python linker: link .o files into an overlay, returning ovl_bytes.
 
     Section layout:
@@ -299,6 +312,7 @@ def link_overlay(obj_paths, syms, link_addr):
       .bss (.bss, .bss.*, .sbss, .sbss.*, COMMON) [NOLOAD]
     """
     # Parse all input ELFs
+    force_exports = set(force_exports)
     elfs = []
     for path in obj_paths:
         with open(path, "rb") as f:
@@ -381,12 +395,9 @@ def link_overlay(obj_paths, syms, link_addr):
     for elf_idx, elf in enumerate(elfs):
         for sym_idx, sym in enumerate(elf.symbols):
             if sym.shndx == SHN_UNDEF:
-                # Undefined: look up in external syms dict
-                if sym.name and sym.name in syms:
-                    resolved_syms[(elf_idx, sym_idx)] = syms[sym.name]
-                elif sym.name:
-                    # Try other ELFs' globals
-                    pass  # resolved in second pass
+                # Defer undefined symbols until all overlay objects have been
+                # scanned. Overlay-local definitions must take precedence over
+                # baseline addresses from symbol_addrs.txt.
                 continue
             if sym.shndx == SHN_ABS:
                 resolved_syms[(elf_idx, sym_idx)] = sym.value
@@ -401,16 +412,29 @@ def link_overlay(obj_paths, syms, link_addr):
             if key in sec_vma_map:
                 addr = sec_vma_map[key] + sym.value
                 resolved_syms[(elf_idx, sym_idx)] = addr
-                if sym.binding == STB_GLOBAL and sym.visibility == STV_DEFAULT:
+                if sym.binding == STB_GLOBAL and (
+                    sym.visibility == STV_DEFAULT or sym.name in force_exports
+                ):
                     if sym.name and not sym.name.startswith("__"):
                         exports.append((addr, sym.name))
 
     # Build global symbol table for cross-object resolution
     global_defined = {}  # name -> addr
+    global_sources = {}  # name -> defining object
+
+    def define_global(name, addr, elf_idx):
+        if name in global_sources:
+            raise ValueError(
+                f"duplicate global symbol '{name}' in "
+                f"{obj_paths[global_sources[name]]} and {obj_paths[elf_idx]}"
+            )
+        global_sources[name] = elf_idx
+        global_defined[name] = addr
+
     for (elf_idx, sym_idx), addr in resolved_syms.items():
         sym = elfs[elf_idx].symbols[sym_idx]
         if sym.binding == STB_GLOBAL and sym.name:
-            global_defined[sym.name] = addr
+            define_global(sym.name, addr, elf_idx)
 
     # Allocate COMMON symbols in bss
     common_addr = bss_start + bss_total
@@ -422,7 +446,7 @@ def link_overlay(obj_paths, syms, link_addr):
             common_addr = _align(common_addr, align)
             resolved_syms[(elf_idx, sym_idx)] = common_addr
             if sym.binding == STB_GLOBAL and sym.name:
-                global_defined[sym.name] = common_addr
+                define_global(sym.name, common_addr, elf_idx)
             common_addr += sym.size
     bss_total = common_addr - bss_start
 
@@ -465,12 +489,21 @@ def link_overlay(obj_paths, syms, link_addr):
                     continue
 
                 if r_type not in SUPPORTED_RELOCS:
+                    if require_resolved:
+                        raise ValueError(
+                            f"unsupported relocation type {r_type} in "
+                            f"{obj_paths[elf_idx]}"
+                        )
                     print(f"warning: unsupported reloc type {r_type}", file=sys.stderr)
                     continue
 
                 if (elf_idx, r_sym) not in resolved_syms:
                     sym = elf.symbols[r_sym] if r_sym < len(elf.symbols) else None
                     sym_name = sym.name if sym else f"sym#{r_sym}"
+                    if require_resolved:
+                        raise ValueError(
+                            f"unresolved symbol '{sym_name}' in {obj_paths[elf_idx]}"
+                        )
                     print(f"warning: unresolved symbol '{sym_name}'", file=sys.stderr)
                     continue
 
@@ -526,6 +559,15 @@ def link_overlay(obj_paths, syms, link_addr):
 
                     pending_hi16 = []
 
+            if pending_hi16:
+                message = (
+                    f"{len(pending_hi16)} orphan HI16 relocation(s) in "
+                    f"{obj_paths[elf_idx]}"
+                )
+                if require_resolved:
+                    raise ValueError(message)
+                print(f"warning: {message}", file=sys.stderr)
+
     # For HI16/LO16 relocs in the .ovl, we need to pair them and store the
     # original address for HI16 entries (matching elf_to_overlay's format).
     r32_relocs = sorted([off for rt, off in reloc_entries if rt == R_MIPS_32])
@@ -567,6 +609,13 @@ def link_overlay(obj_paths, syms, link_addr):
     r26_blob = b"".join(struct.pack(">I", off) for off in r26_relocs)
     hi16_blob = b"".join(struct.pack(">II", off, addr) for off, addr in hi16_entries)
     lo16_blob = b"".join(struct.pack(">I", off) for off in lo16_offsets)
+
+    exported_names = {name for _, name in exports}
+    missing_exports = force_exports - exported_names
+    if missing_exports:
+        raise ValueError(
+            "forced export(s) not found: " + ", ".join(sorted(missing_exports))
+        )
 
     # Build exports
     exports.sort(key=lambda e: e[0])
@@ -840,7 +889,7 @@ def parse_syms(syms_path):
     syms = {}
     with open(syms_path, "r", encoding="utf-8") as f:
         for line in f:
-            line = line.strip().rstrip(";").strip()
+            line = line.split("//", 1)[0].split("#", 1)[0].strip().rstrip(";").strip()
             if line.startswith("PROVIDE(") and line.endswith(")"):
                 line = line[len("PROVIDE("):-1].strip()
             if "=" not in line:
@@ -911,7 +960,17 @@ def write_if_changed(path, data):
 def cmd_gen_syms(args):
     """Subcommand: generate pickled syms from an ELF, and a linker script that
     defines them for linking overlay debug ELFs."""
-    syms = gen_syms_from_elf(args.input)
+    syms = {}
+    for symbol_file in args.symbol_files:
+        syms.update(parse_syms(symbol_file))
+    # Battle areas now relocate independently; their old addresses (and the
+    # removed raw-DMA API) must not silently satisfy an overlay's imports.
+    syms = {
+        name: value for name, value in syms.items()
+        if not name.startswith("b_area_") and name != "LoadBattleSection"
+    }
+    # The newly linked engine always wins over addresses from the baseline.
+    syms.update(gen_syms_from_elf(args.input))
     write_if_changed(args.output, pickle.dumps(syms))
 
     # PROVIDE defines only the symbols an overlay references, so each debug
@@ -1486,9 +1545,27 @@ def cmd_link(args):
     syms = load_syms(args.syms_cache)
     link_addr = int(args.link_addr, 0)
 
-    ovl_bytes, exports, text_size, data_size, bss_size, load_data = link_overlay(
-        args.objects, syms, link_addr,
-    )
+    try:
+        ovl_bytes, exports, text_size, data_size, bss_size, load_data = link_overlay(
+            args.objects,
+            syms,
+            link_addr,
+            force_exports=args.force_export,
+            require_resolved=args.require_resolved,
+        )
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    if args.max_loaded_size is not None:
+        loaded_footprint = get_loaded_footprint(ovl_bytes)
+        if loaded_footprint > args.max_loaded_size:
+            print(
+                f"error: loaded overlay footprint {loaded_footprint:#x} exceeds "
+                f"limit {args.max_loaded_size:#x}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
     with open(args.output, "wb") as f:
         f.write(ovl_bytes)
@@ -1622,7 +1699,6 @@ def cmd_apply_all(args):
         rom_data = bytearray(f.read())
 
     dir_offsets = {}
-
     for entry in entries:
         name = entry["name"]
         type_index = entry["type_index"]
@@ -1668,6 +1744,9 @@ def main():
     p_gen_syms.add_argument("input", help="Input ELF file")
     p_gen_syms.add_argument("output", help="Output .pkl file")
     p_gen_syms.add_argument("script", help="Output linker script defining the symbols")
+    p_gen_syms.add_argument(
+        "symbol_files", nargs="*", help="Baseline linker symbol files"
+    )
     p_gen_syms.set_defaults(func=cmd_gen_syms)
 
     p_convert = subparsers.add_parser("convert", help="Convert ELF to overlay format")
@@ -1679,6 +1758,18 @@ def main():
     p_link.add_argument("syms_cache", help="Pickled syms file (.pkl)")
     p_link.add_argument("output", help="Output .ovl file")
     p_link.add_argument("link_addr", help="Link address (e.g. 0x80240000)")
+    p_link.add_argument(
+        "--force-export", action="append", default=[],
+        help="Export this global even when it has hidden visibility",
+    )
+    p_link.add_argument(
+        "--max-loaded-size", type=lambda value: int(value, 0),
+        help="Fail if text, data, BSS, and persistent metadata exceed this size",
+    )
+    p_link.add_argument(
+        "--require-resolved", action="store_true",
+        help="Fail on unresolved symbols or unsupported/incomplete relocations",
+    )
     p_link.add_argument("objects", nargs="+", help="Input .o files")
     p_link.set_defaults(func=cmd_link)
 

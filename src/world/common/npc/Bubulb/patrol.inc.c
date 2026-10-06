@@ -3,7 +3,7 @@
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-MobileAISettings N(AISettings_Bubulb_Patrol) = {
+MobileAISettings AISettings_Bubulb_Patrol = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -11,15 +11,15 @@ MobileAISettings N(AISettings_Bubulb_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Bubulb_Patrol) = {
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Bubulb_Patrol)))
+EvtScript EVS_NpcAI_Bubulb_Patrol = {
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_Bubulb_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Bubulb_Patrol) = {
+NpcSettings NpcSettings_Bubulb_Patrol = {
     .height = 42,
     .radius = 28,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_Bubulb_Patrol),
+    .doAI = &EVS_NpcAI_Bubulb_Patrol,
 };

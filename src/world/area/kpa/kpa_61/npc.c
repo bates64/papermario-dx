@@ -3,7 +3,7 @@
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 #include "world/common/enemy/FlyingMagikoopa/wander.inc.c"
 
-NpcData N(NpcData_Koopatrol_01) = {
+NpcData NpcData_Koopatrol_01 = {
     .id = NPC_Koopatrol_01,
     .pos = { 300.0f, -160.0f, 140.0f },
     .yaw = 270,
@@ -19,13 +19,13 @@ NpcData N(NpcData_Koopatrol_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcData N(NpcData_Koopatrol_02) = {
+NpcData NpcData_Koopatrol_02 = {
     .id = NPC_Koopatrol_02,
     .pos = { 850.0f, -160.0f, 390.0f },
     .yaw = 270,
@@ -41,13 +41,13 @@ NpcData N(NpcData_Koopatrol_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcData N(NpcData_FlyingMagikoopa_01)[] = {
+NpcData NpcData_FlyingMagikoopa_01[] = {
     {
         .id = NPC_FlyingMagikoopa_01,
         .pos = { 500.0f, 250.0f, -50.0f },
@@ -64,17 +64,17 @@ NpcData N(NpcData_FlyingMagikoopa_01)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
+        .settings = &NpcSettings_FlyingMagikoopa_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
-        .limitAnimations = N(LimitAnims_FlyingMagikoopa),
+        .limitAnimations = LimitAnims_FlyingMagikoopa,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FLYING_MAGIKOOPA_SPELL_HITBOX(NPC_FlyingMagikoopa_01_Spell),
 };
 
-NpcData N(NpcData_FlyingMagikoopa_02)[] = {
+NpcData NpcData_FlyingMagikoopa_02[] = {
     {
         .id = NPC_FlyingMagikoopa_02,
         .pos = { 200.0f, 250.0f, -50.0f },
@@ -91,20 +91,20 @@ NpcData N(NpcData_FlyingMagikoopa_02)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
+        .settings = &NpcSettings_FlyingMagikoopa_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
-        .limitAnimations = N(LimitAnims_FlyingMagikoopa),
+        .limitAnimations = LimitAnims_FlyingMagikoopa,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FLYING_MAGIKOOPA_SPELL_HITBOX(NPC_FlyingMagikoopa_02_Spell),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Koopatrol_01), BTL_KPA_FORMATION_23, BTL_KPA_STAGE_08),
-    NPC_GROUP(N(NpcData_Koopatrol_02), BTL_KPA_FORMATION_21, BTL_KPA_STAGE_08),
-    NPC_GROUP(N(NpcData_FlyingMagikoopa_01), BTL_KPA_FORMATION_35, BTL_KPA_STAGE_08),
-    NPC_GROUP(N(NpcData_FlyingMagikoopa_02), BTL_KPA_FORMATION_33, BTL_KPA_STAGE_08),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Koopatrol_01, BTL_KPA_FORMATION_23, BTL_KPA_STAGE_08),
+    NPC_GROUP(NpcData_Koopatrol_02, BTL_KPA_FORMATION_21, BTL_KPA_STAGE_08),
+    NPC_GROUP(NpcData_FlyingMagikoopa_01, BTL_KPA_FORMATION_35, BTL_KPA_STAGE_08),
+    NPC_GROUP(NpcData_FlyingMagikoopa_02, BTL_KPA_FORMATION_33, BTL_KPA_STAGE_08),
     {}
 };

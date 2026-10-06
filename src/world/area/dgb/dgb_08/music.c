@@ -1,6 +1,6 @@
 #include "dgb_08.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_WOKE_UP)
             Call(SetMusic, 0, SONG_TUBBAS_MANOR, 0, VOL_LEVEL_FULL)

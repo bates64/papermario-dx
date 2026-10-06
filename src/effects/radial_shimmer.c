@@ -42,7 +42,6 @@ EffectInstance* radial_shimmer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 
     bp.init = radial_shimmer_init;
     bp.update = radial_shimmer_update;
     bp.renderScene = radial_shimmer_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_RADIAL_SHIMMER;
 

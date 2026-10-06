@@ -28,7 +28,7 @@ enum CookingResultQuality {
 
 #include "recipes.inc.c"
 
-API_CALLABLE(N(GetCookResultForSingleRecipe)) {
+API_CALLABLE(GetCookResultForSingleRecipe) {
     Bytecode* args = script->ptrReadPos;
     s32 hasCookbook;
     s32 inputItem;
@@ -75,7 +75,7 @@ API_CALLABLE(N(GetCookResultForSingleRecipe)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCookResultForDoubleRecipe)) {
+API_CALLABLE(GetCookResultForDoubleRecipe) {
     Bytecode* args = script->ptrReadPos;
     s32 outVarItemID = *args++;
     s32 outVarQuality = *args++;
@@ -127,7 +127,7 @@ API_CALLABLE(N(GetCookResultForDoubleRecipe)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetRecipeDiscovered)) {
+API_CALLABLE(SetRecipeDiscovered) {
     s32 cookedItems[ARRAY_COUNT(CookableItemIDs)];
     s32 cookedFlags[ARRAY_COUNT(CookableDiscoveredFlags)];
     s32 cookedItemID;
@@ -146,21 +146,21 @@ API_CALLABLE(N(SetRecipeDiscovered)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetItemCount)) {
+API_CALLABLE(GetItemCount) {
     Bytecode args = *script->ptrReadPos;
 
     evt_set_variable(script, args++, get_consumables_count());
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckItemsHasRoom)) {
+API_CALLABLE(CheckItemsHasRoom) {
     Bytecode args = *script->ptrReadPos;
 
     evt_set_variable(script, args++, get_consumables_empty());
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_TayceTCooking) = {
+EvtScript EVS_Scene_TayceTCooking = {
     Call(SetNpcFlagBits, NPC_TayceT, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_TayceT, ANIM_TayceT_Walk)
     Call(NpcMoveTo, NPC_TayceT, -186, -381, 20 * DT)
@@ -181,9 +181,9 @@ EvtScript N(EVS_Scene_TayceTCooking) = {
     End
 };
 
-EvtScript N(EVS_TayceT_FryingPanAndCake) = {
+EvtScript EVS_TayceT_FryingPanAndCake = {
     IfEq(GF_MAC02_TayceT_HoldingCake, true)
-        Call(N(CheckItemsHasRoom), LVar0)
+        Call(CheckItemsHasRoom, LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001A)
             EVT_GIVE_REWARD(ITEM_CAKE)
@@ -203,8 +203,8 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_IdleSad, 0, MSG_MAC_Bridge_0018)
         CaseDefault
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_TalkHappy, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0019)
-            ExecWait(N(EVS_Scene_TayceTCooking))
-            Call(N(CheckItemsHasRoom), LVar0)
+            ExecWait(EVS_Scene_TayceTCooking)
+            Call(CheckItemsHasRoom, LVar0)
             IfNe(LVar0, 0)
                 Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001A)
                 EVT_GIVE_REWARD(ITEM_CAKE)
@@ -219,7 +219,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
     End
 };
 
-EvtScript N(EVS_TayceT_RequestCookbook) = {
+EvtScript EVS_TayceT_RequestCookbook = {
     IfEq(AF_MAC02_ToggleDialogue_TayceT, false)
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001D)
         Set(AF_MAC02_ToggleDialogue_TayceT, true)
@@ -239,7 +239,7 @@ EvtScript N(EVS_TayceT_RequestCookbook) = {
     End
 };
 
-EvtScript N(EVS_TayceT_Cook) = {
+EvtScript EVS_TayceT_Cook = {
     #define LABEL_CHOOSE_FIRST 1
     #define LABEL_CHOOSE_SECOND 2
     #define LABEL_CONFIRM_ONE 5
@@ -260,7 +260,7 @@ EvtScript N(EVS_TayceT_Cook) = {
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0002)
         EndIf
     EndIf
-    Call(N(GetItemCount), LVar0)
+    Call(GetItemCount, LVar0)
     IfLe(LVar0, 0)
         Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0003)
         Goto(LABEL_DONE)
@@ -301,7 +301,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     IfEq(GF_MAC02_TayceT_HasCookbook, false)
         Goto(LABEL_CONFIRM_ONE)
     EndIf
-    Call(N(GetItemCount), LVar0)
+    Call(GetItemCount, LVar0)
     IfLt(LVar0, 2)
         Goto(LABEL_CONFIRM_ONE)
     EndIf
@@ -357,7 +357,7 @@ EvtScript N(EVS_TayceT_Cook) = {
         Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000C)
         Goto(LABEL_DONE)
     EndIf
-    Call(N(GetCookResultForDoubleRecipe), LVar6, LVar7, LVar8, LVar9)
+    Call(GetCookResultForDoubleRecipe, LVar6, LVar7, LVar8, LVar9)
     Call(RemoveItem, LVar8, LVar0)
     Call(RemoveItem, LVar9, LVar0)
     Goto(LABEL_COOK)
@@ -372,13 +372,13 @@ EvtScript N(EVS_TayceT_Cook) = {
         Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000C)
         Goto(LABEL_DONE)
     EndIf
-    Call(N(GetCookResultForSingleRecipe), LVar6, LVar7, LVar8, GF_MAC02_TayceT_HasCookbook)
+    Call(GetCookResultForSingleRecipe, LVar6, LVar7, LVar8, GF_MAC02_TayceT_HasCookbook)
     Call(RemoveItem, LVar8, LVar0)
 
     // the actual cooking animation and reaction message
     Label(LABEL_COOK)
     Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000D)
-    ExecWait(N(EVS_Scene_TayceTCooking))
+    ExecWait(EVS_Scene_TayceTCooking)
     Switch(LVar7)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0012)
@@ -392,7 +392,7 @@ EvtScript N(EVS_TayceT_Cook) = {
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0011)
     EndSwitch
     Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0014)
-    Call(N(SetRecipeDiscovered), LVar6)
+    Call(SetRecipeDiscovered, LVar6)
     EVT_GIVE_REWARD(LVar6)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0015)
 
@@ -403,25 +403,25 @@ EvtScript N(EVS_TayceT_Cook) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_TayceT) = {
+EvtScript EVS_NpcInteract_TayceT = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfLt(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
-            ExecWait(N(EVS_TayceT_FryingPanAndCake))
+            ExecWait(EVS_TayceT_FryingPanAndCake)
             Return
         EndIf
     EndIf
     Call(FindItem, ITEM_COOKBOOK, LVar0)
     IfEq(LVar0, -1)
-        ExecWait(N(EVS_TayceT_Cook))
+        ExecWait(EVS_TayceT_Cook)
     Else
-        ExecWait(N(EVS_TayceT_RequestCookbook))
+        ExecWait(EVS_TayceT_RequestCookbook)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TayceT) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TayceT)))
+EvtScript EVS_NpcInit_TayceT = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TayceT))
     Call(InterpNpcYaw, NPC_SELF, 45, 0)
     Call(SetNpcPos, NPC_SELF, -236, 20, -318)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TayceT_Idle)

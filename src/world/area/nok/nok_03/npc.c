@@ -4,7 +4,7 @@
 #include "world/common/enemy/Fuzzy/idle.inc.c"
 #include "world/common/npc/Koopa/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_FuzzyBoss) = {
+EvtScript EVS_NpcIdle_FuzzyBoss = {
     Thread
         Label(0)
             Call(GetNpcPos, NPC_Fuzzy_03, LVar0, LVar1, LVar2)
@@ -37,7 +37,7 @@ EvtScript N(EVS_NpcIdle_FuzzyBoss) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Fuzzy_01) = {
+EvtScript EVS_NpcIdle_Fuzzy_01 = {
     Wait(5)
     Label(10)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -66,12 +66,12 @@ EvtScript N(EVS_NpcIdle_Fuzzy_01) = {
     Call(SetNpcJumpscale, NPC_SELF, Float(1.8))
     Call(NpcJump0, NPC_SELF, -341, 0, 23, 15)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Fuzzy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Fuzzy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Fuzzy_02) = {
+EvtScript EVS_NpcIdle_Fuzzy_02 = {
     Wait(5)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -84,26 +84,26 @@ EvtScript N(EVS_NpcIdle_Fuzzy_02) = {
     Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 6)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Fuzzy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Fuzzy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy_01) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Fuzzy_01)))
+EvtScript EVS_NpcInit_Fuzzy_01 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy_01))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy_02) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Fuzzy_02)))
+EvtScript EVS_NpcInit_Fuzzy_02 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy_02))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FuzzyBoss) = {
+EvtScript EVS_NpcInit_FuzzyBoss = {
     IfGe(GB_StoryProgress, STORY_CH1_FUZZY_THIEF_RAN_AWAY)
         Call(SetNpcFlagBits, NPC_Fuzzy_03, NPC_FLAG_GRAVITY, false)
         Call(SetNpcFlagBits, NPC_KoopersShell, NPC_FLAG_GRAVITY, false)
@@ -113,19 +113,19 @@ EvtScript N(EVS_NpcInit_FuzzyBoss) = {
         Call(EnableNpcShadow, NPC_KoopersShell, false)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_FuzzyBoss)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_FuzzyBoss))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopersShell) = {
+EvtScript EVS_NpcInit_KoopersShell = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKooper_StillShellAlt)
     Return
     End
 };
 
-NpcData N(NpcData_Fuzzy_01) = {
+NpcData NpcData_Fuzzy_01 = {
     .id = NPC_Fuzzy_01,
     .pos = { -388.0f, 100.0f, -107.0f },
     .yaw = 0,
@@ -141,15 +141,15 @@ NpcData N(NpcData_Fuzzy_01) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_Fuzzy_01),
-    .settings = &N(NpcSettings_Fuzzy_Wander),
+    .init = &EVS_NpcInit_Fuzzy_01,
+    .settings = &NpcSettings_Fuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = FUZZY_DROPS,
     .animations = FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Fuzzy_02) = {
+NpcData NpcData_Fuzzy_02 = {
     .id = NPC_Fuzzy_02,
     .pos = { -76.0f, 118.0f, -43.0f },
     .yaw = 0,
@@ -165,15 +165,15 @@ NpcData N(NpcData_Fuzzy_02) = {
             .detectSize = { 300 },
         }
     },
-    .init = &N(EVS_NpcInit_Fuzzy_02),
-    .settings = &N(NpcSettings_Fuzzy_Wander),
+    .init = &EVS_NpcInit_Fuzzy_02,
+    .settings = &NpcSettings_Fuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = FUZZY_DROPS,
     .animations = FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_FuzzyBoss)[] = {
+NpcData NpcData_FuzzyBoss[] = {
     {
         .id = NPC_Fuzzy_03,
         .pos = { -540.0f, 0.0f, 0.0f },
@@ -190,8 +190,8 @@ NpcData N(NpcData_FuzzyBoss)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_FuzzyBoss),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_FuzzyBoss,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = FUZZY_DROPS,
         .animations = FUZZY_ANIMS,
@@ -200,17 +200,17 @@ NpcData N(NpcData_FuzzyBoss)[] = {
         .id = NPC_KoopersShell,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopersShell),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_KoopersShell,
+        .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = FUZZY_DROPS,
         .animations = KOOPER_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Fuzzy_01), BTL_NOK_FORMATION_16, BTL_NOK_STAGE_01),
-    NPC_GROUP(N(NpcData_Fuzzy_02), BTL_NOK_FORMATION_16, BTL_NOK_STAGE_01),
-    NPC_GROUP(N(NpcData_FuzzyBoss)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Fuzzy_01, BTL_NOK_FORMATION_16, BTL_NOK_STAGE_01),
+    NPC_GROUP(NpcData_Fuzzy_02, BTL_NOK_FORMATION_16, BTL_NOK_STAGE_01),
+    NPC_GROUP(NpcData_FuzzyBoss),
     {}
 };

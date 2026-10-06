@@ -1,8 +1,6 @@
 #include "common.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_jump
-
 extern s32 actionCmdTableJump[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -11,7 +9,7 @@ enum {
     HIDX_RIGHT_ON       = 1,
 };
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     HudElemID hid;
 
@@ -48,7 +46,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -82,7 +80,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -196,14 +194,16 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     hud_element_draw_clipped(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     if (!(gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED)) {
         hud_element_draw_clipped(gActionCommandStatus.hudElemIDs[HIDX_RIGHT_ON]);
     }
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_RIGHT_ON]);
 }
+
+ACTION_COMMAND_ENTRY(ACTION_COMMAND_JUMP);

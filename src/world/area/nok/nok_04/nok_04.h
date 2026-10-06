@@ -41,13 +41,11 @@ enum {
     TREE_3  = 3,
 };
 
-#define NAMESPACE nok_04
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PushPartnerSong;
+extern EvtScript EVS_PopSong;
+extern EvtScript EVS_HitTree;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PushPartnerSong);
-extern EvtScript N(EVS_PopSong);
-extern EvtScript N(EVS_HitTree);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

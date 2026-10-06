@@ -1,15 +1,14 @@
 #include "common.h"
 #include "world/partners.h"
 #include "twink.h"
+#include "sprite/npc/Twink.h"
 
-#define NAMESPACE world_twink
-
-void N(init)(Npc* twink) {
+void init(Npc* twink) {
     twink->collisionHeight = 20;
     twink->collisionDiameter = 20;
 }
 
-API_CALLABLE(N(TakeOut)) {
+API_CALLABLE(TakeOut) {
     Npc* twink = script->owner2.npc;
 
     if (isInitialCall) {
@@ -23,7 +22,7 @@ API_CALLABLE(N(TakeOut)) {
     }
 }
 
-API_CALLABLE(N(Update)) {
+API_CALLABLE(Update) {
     PlayerData* playerData = &gPlayerData;
     Npc* twink = script->owner2.npc;
 
@@ -38,11 +37,11 @@ API_CALLABLE(N(Update)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(UseAbility)) {
+API_CALLABLE(UseAbility) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PutAway)) {
+API_CALLABLE(PutAway) {
     Npc* twink = script->owner2.npc;
 
     if (isInitialCall) {
@@ -57,25 +56,37 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldTwink_TakeOut = {
-    Call(N(TakeOut))
+    Call(TakeOut)
     Return
     End
 };
 
 EvtScript EVS_WorldTwink_Update = {
-    Call(N(Update))
+    Call(Update)
     Return
     End
 };
 
 EvtScript EVS_WorldTwink_UseAbility = {
-    Call(N(UseAbility))
+    Call(UseAbility)
     Return
     End
 };
 
 EvtScript EVS_WorldTwink_PutAway = {
-    Call(N(PutAway))
+    Call(PutAway)
     Return
     End
+};
+
+WORLD_PARTNER_ENTRY = {
+    .isFlying = true,
+    .init = init,
+    .takeOut = &EVS_WorldTwink_TakeOut,
+    .update = &EVS_WorldTwink_Update,
+    .useAbility = &EVS_WorldTwink_UseAbility,
+    .putAway = &EVS_WorldTwink_PutAway,
+    .idle = ANIM_Twink_Idle,
+    .canUseAbility = partner_is_idle,
+    .canPlayerOpenMenus = partner_is_idle,
 };

@@ -387,23 +387,21 @@ void phys_player_land(void) {
     if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
         s32 entityType = get_entity_type(collisionStatus->curFloor);
 
-        if (entityType <= ACTION_STATE_FALLING) {
-            if (entityType >= ACTION_STATE_LANDING_ON_SWITCH) {
-                Entity* entity = get_entity_by_index(collisionStatus->curFloor);
+        if (entityType == ENTITY_TYPE_BLUE_SWITCH || entityType == ENTITY_TYPE_RED_SWITCH) {
+            Entity* entity = get_entity_by_index(collisionStatus->curFloor);
 
-                entity->collisionFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
-                if (playerStatus->actionState != ACTION_STATE_TORNADO_JUMP
-                    && playerStatus->actionState != ACTION_STATE_TORNADO_POUND
-                    && playerStatus->actionState != ACTION_STATE_SPIN_JUMP
-                    && playerStatus->actionState != ACTION_STATE_SPIN_POUND
-                ) {
-                    set_action_state(ACTION_STATE_LANDING_ON_SWITCH);
-                } else {
-                    disable_player_input();
-                    playerStatus->actionSubstate = 11;
-                }
-                return;
+            entity->collisionFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
+            if (playerStatus->actionState != ACTION_STATE_TORNADO_JUMP
+                && playerStatus->actionState != ACTION_STATE_TORNADO_POUND
+                && playerStatus->actionState != ACTION_STATE_SPIN_JUMP
+                && playerStatus->actionState != ACTION_STATE_SPIN_POUND
+            ) {
+                set_action_state(ACTION_STATE_LANDING_ON_SWITCH);
+            } else {
+                disable_player_input();
+                playerStatus->actionSubstate = 11;
             }
+            return;
         }
     }
 

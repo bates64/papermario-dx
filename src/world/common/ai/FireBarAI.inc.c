@@ -3,7 +3,7 @@
 #include "world/ai.h"
 
 // maps using this AI must implement this
-extern EvtScript N(EVS_FireBar_Defeated);
+extern EvtScript EVS_FireBar_Defeated;
 
 enum {
     FIRE_BAR_SLOW_DOWN  = 0,
@@ -11,13 +11,13 @@ enum {
     FIRE_BAR_HIT        = 2,
 };
 
-s32 N(FireBar_Sounds)[] = {
+s32 FireBar_Sounds[] = {
     SOUND_SEQ_FIRE_BAR_0, SOUND_SEQ_FIRE_BAR_1, SOUND_SEQ_FIRE_BAR_2, SOUND_SEQ_FIRE_BAR_3,
     SOUND_SEQ_FIRE_BAR_4, SOUND_SEQ_FIRE_BAR_5, SOUND_SEQ_FIRE_BAR_6, SOUND_SEQ_FIRE_BAR_7,
     SOUND_SEQ_FIRE_BAR_8, SOUND_SEQ_FIRE_BAR_9, SOUND_SEQ_FIRE_BAR_9,
 };
 
-API_CALLABLE(N(FireBarAI_Main)) {
+API_CALLABLE(FireBarAI_Main) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
     Bytecode* args = script->ptrReadPos;
@@ -95,7 +95,7 @@ API_CALLABLE(N(FireBarAI_Main)) {
     clampedYaw = clamp_angle(data->yaw);
     if (clampedYaw != data->yaw) {
         data->yaw = clampedYaw;
-        sfx_play_sound_at_position(N(FireBar_Sounds)[data->soundIndex], SOUND_SPACE_DEFAULT, data->centerPos.x, data->centerPos.y, data->centerPos.z);
+        sfx_play_sound_at_position(FireBar_Sounds[data->soundIndex], SOUND_SPACE_DEFAULT, data->centerPos.x, data->centerPos.y, data->centerPos.z);
     }
     distToPlayer = dist2D(data->centerPos.x, data->centerPos.z, playerStatus->pos.x, playerStatus->pos.z);
     distToNpc = dist2D(data->centerPos.x, data->centerPos.z, npc->pos.x, npc->pos.z)
@@ -144,7 +144,7 @@ API_CALLABLE(N(FireBarAI_Main)) {
     return ApiStatus_BLOCK;
 }
 
-void N(FireBarAI_Callback)(FireBarData* data, s32 mode) {
+void FireBarAI_Callback(FireBarData* data, s32 mode) {
     switch (mode) {
         case FIRE_BAR_SLOW_DOWN:
             if (data->flags & 2) {
@@ -154,7 +154,7 @@ void N(FireBarAI_Callback)(FireBarData* data, s32 mode) {
         case FIRE_BAR_SPEED_UP:
             data->rotRate *= 1.12f;
             if (data->soundIndex == 10) {
-                Evt* script = start_script(&N(EVS_FireBar_Defeated), EVT_PRIORITY_1, 0);
+                Evt* script = start_script(&EVS_FireBar_Defeated, EVT_PRIORITY_1, 0);
                 script->varTable[0] = data->firstNpc;
                 script->varTable[1] = data->npcCount;
                 data->flags |= 2;

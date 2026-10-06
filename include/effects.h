@@ -2613,30 +2613,28 @@ typedef struct WattEffectData {
 } WattEffectData;
 
 typedef struct EffectBlueprint {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 effectID;
-    /* 0x08 */ void (*init)(EffectInstance* effectInst);
-    /* 0x0C */ void (*update)(EffectInstance* effectInst);
-    /* 0x10 */ void (*renderScene)(EffectInstance* effectInst);
-    /* 0x14 */ void (*renderUI)(EffectInstance* effectInst);
-} EffectBlueprint; // size = 0x18
+    /* 0x00 */ s32 effectID;
+    /* 0x04 */ void (*init)(EffectInstance* effectInst);
+    /* 0x08 */ void (*update)(EffectInstance* effectInst);
+    /* 0x0C */ void (*renderScene)(EffectInstance* effectInst);
+    /* 0x10 */ void (*renderUI)(EffectInstance* effectInst);
+} EffectBlueprint; // size = 0x14
 
 typedef struct EffectSharedData {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s32 effectIndex;
-    /* 0x08 */ s32 instanceCounter;
-    /* 0x0C */ s32 freeDelay;
-    /* 0x10 */ void (*update)(EffectInstance* effectInst);
-    /* 0x14 */ void (*renderScene)(EffectInstance* effectInst);
-    /* 0x18 */ void (*renderUI)(EffectInstance* effectInst);
-    /* 0x1C */ s32* graphics;
-} EffectSharedData; // size = 0x20
+    /* 0x08 */ s32 freeDelay;
+    /* 0x0C */ void (*update)(EffectInstance* effectInst);
+    /* 0x10 */ void (*renderScene)(EffectInstance* effectInst);
+    /* 0x14 */ void (*renderUI)(EffectInstance* effectInst);
+    /* 0x18 */ s32* graphics;
+} EffectSharedData; // size = 0x1C
 
 typedef struct EffectTableEntry {
     /* 0x00 */ void* entryPoint;
-    /* 0x04 */ void* dmaStart;
-    /* 0x08 */ void* dmaEnd;
-    /* 0x0C */ void* dmaDest;
+    /* 0x04 */ struct Overlay* overlay;
+    /* 0x08 */ const char* overlayName;
+    /* 0x0C */ const char* entryPointName;
     /* 0x10 */ void* graphicsDmaStart;
     /* 0x14 */ void* graphicsDmaEnd;
 } EffectTableEntry; // size = 0x18
@@ -2653,9 +2651,11 @@ extern "C" {
 
 EffectInstance* create_effect_instance(EffectBlueprint* effectBp);
 void remove_effect(EffectInstance*);
-s32 load_effect(s32 effectIndex);
+void* load_effect(s32 effectIndex);
 
 #include "effects/effect_defs.h"
+
+extern const u8 gEffectArgCounts[EFFECT_COUNT];
 
 #ifdef __cplusplus
 } // extern "C"

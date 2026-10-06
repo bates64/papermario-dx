@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-Vec3f N(TwinkHidePath)[] = {
+Vec3f TwinkHidePath[] = {
     {  440.0,    65.0,    0.0 },
     {  420.0,   120.0,  -20.0 },
     {  400.0,    80.0,  -35.0 },
@@ -10,13 +10,13 @@ Vec3f N(TwinkHidePath)[] = {
     {  375.0,   100.0,  -50.0 },
 };
 
-Vec3f N(TwinkAttackPath)[] = {
+Vec3f TwinkAttackPath[] = {
     {  375.0,   100.0,  -50.0 },
     {  375.0,    80.0,  -50.0 },
     {  390.0,    90.0,   10.0 },
 };
 
-EvtScript N(EVS_GetApproachPeachPos) = {
+EvtScript EVS_GetApproachPeachPos = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -56,7 +56,7 @@ EvtScript N(EVS_GetApproachPeachPos) = {
     End
 };
 
-EvtScript N(EVS_TiePeachUp) = {
+EvtScript EVS_TiePeachUp = {
     Thread
         Call(SetNpcAnimation, NPC_Ch7_Koopatrol_01, ANIM_WorldKoopatrol_Panic)
         Call(GetNpcPos, NPC_Ch7_Koopatrol_01, LVar0, LVar1, LVar2)
@@ -130,7 +130,7 @@ EvtScript N(EVS_TiePeachUp) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach) = {
+EvtScript EVS_PickUpPeach = {
     Thread
         Call(GetNpcPos, NPC_Ch7_Koopatrol_01, LVar0, LVar1, LVar2)
         Call(SetNpcAnimation, NPC_Ch7_Koopatrol_01, ANIM_WorldKoopatrol_Lift)
@@ -160,7 +160,7 @@ EvtScript N(EVS_PickUpPeach) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway) = {
+EvtScript EVS_CarryPeachAway = {
     Call(InterpNpcYaw, NPC_Ch7_Koopatrol_01, 270, 3)
     Wait(10)
     Thread
@@ -189,7 +189,7 @@ EvtScript N(EVS_CarryPeachAway) = {
     End
 };
 
-EvtScript N(EVS_OpenAndCloseDoor_Ch7) = {
+EvtScript EVS_OpenAndCloseDoor_Ch7 = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 120, 14, EASING_LINEAR)
     Loop(0)
@@ -215,7 +215,7 @@ EvtScript N(EVS_OpenAndCloseDoor_Ch7) = {
     End
 };
 
-EvtScript N(EVS_OpenDoor_Ch7) = {
+EvtScript EVS_OpenDoor_Ch7 = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 120, 14, EASING_COS_FAST_OVERSHOOT)
     Loop(0)
@@ -230,7 +230,7 @@ EvtScript N(EVS_OpenDoor_Ch7) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_Door_Ch7) = {
+EvtScript EVS_FocusCam_Door_Ch7 = {
     Call(UseSettingsFrom, CAM_DEFAULT, -340, 0, -30)
     Call(SetPanTarget, CAM_DEFAULT, -340, 0, -30)
     Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
@@ -243,7 +243,7 @@ EvtScript N(EVS_FocusCam_Door_Ch7) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_Bed) = {
+EvtScript EVS_FocusCam_Bed = {
     Call(UseSettingsFrom, CAM_DEFAULT, 380, 30, 10)
     Call(SetPanTarget, CAM_DEFAULT, 380, 30, 10)
     Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
@@ -254,7 +254,7 @@ EvtScript N(EVS_FocusCam_Bed) = {
     End
 };
 
-EvtScript N(EVS_Scene_Chapter7) = {
+EvtScript EVS_Scene_Chapter7 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -265,9 +265,9 @@ EvtScript N(EVS_Scene_Chapter7) = {
     Call(RotateModel, MODEL_o85, 80, 0, 1, 0)
     Call(RotateModel, MODEL_o84, 80, 0, -1, 0)
     Call(RotateModel, MODEL_o86, 80, 0, 1, 0)
-    ExecWait(N(EVS_FocusCam_Door_Ch7))
+    ExecWait(EVS_FocusCam_Door_Ch7)
     Wait(30 * DT)
-    Exec(N(EVS_OpenAndCloseDoor_Ch7))
+    Exec(EVS_OpenAndCloseDoor_Ch7)
     Call(SetNpcAnimation, NPC_Ch7_Bowser, ANIM_WorldBowser_Walk)
     Call(SetNpcPos, NPC_Ch7_Bowser, -470, 0, -30)
     Call(SetNpcSpeed, NPC_Ch7_Bowser, Float(3.0 / DT))
@@ -276,8 +276,8 @@ EvtScript N(EVS_Scene_Chapter7) = {
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Ch7_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_Peach_0161)
     Wait(10 * DT)
-    ExecWait(N(EVS_FocusCam_Bed))
-    Call(LoadPath, 30 / DT, Ref(N(TwinkHidePath)), ARRAY_COUNT(N(TwinkHidePath)), EASING_LINEAR)
+    ExecWait(EVS_FocusCam_Bed)
+    Call(LoadPath, 30 / DT, Ref(TwinkHidePath), ARRAY_COUNT(TwinkHidePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -312,8 +312,8 @@ EvtScript N(EVS_Scene_Chapter7) = {
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_ArmsCrossedTalk, ANIM_Peach2_ArmsCrossedIdle, 5, MSG_Peach_0167)
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
-    ExecWait(N(EVS_FocusCam_Door_Ch7))
-    Exec(N(EVS_OpenDoor_Ch7))
+    ExecWait(EVS_FocusCam_Door_Ch7)
+    Exec(EVS_OpenDoor_Ch7)
     Call(SetNpcAnimation, NPC_Ch7_Kammy, ANIM_WorldKammy_Run)
     Call(SetNpcPos, NPC_Ch7_Kammy, -470, 0, -30)
     Call(SetNpcSpeed, NPC_Ch7_Bowser, Float(5.0 / DT))
@@ -360,10 +360,10 @@ EvtScript N(EVS_Scene_Chapter7) = {
     Call(SetNpcFlagBits, NPC_Ch7_Koopatrol_01, NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_Ch7_Koopatrol_02, NPC_FLAG_GRAVITY, true)
     Wait(10 * DT)
-    ExecWait(N(EVS_GetApproachPeachPos))
-    ExecWait(N(EVS_TiePeachUp))
+    ExecWait(EVS_GetApproachPeachPos)
+    ExecWait(EVS_TiePeachUp)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Angry)
-    Call(LoadPath, 15, Ref(N(TwinkAttackPath)), ARRAY_COUNT(N(TwinkAttackPath)), EASING_LINEAR)
+    Call(LoadPath, 15, Ref(TwinkAttackPath), ARRAY_COUNT(TwinkAttackPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -425,11 +425,11 @@ EvtScript N(EVS_Scene_Chapter7) = {
             Wait(1)
         EndLoop
     EndChildThread
-    ExecWait(N(EVS_PickUpPeach))
+    ExecWait(EVS_PickUpPeach)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach3_TiedSideways, ANIM_Peach3_TiedSideways, 5, MSG_Peach_0173)
-    ExecWait(N(EVS_CarryPeachAway))
+    ExecWait(EVS_CarryPeachAway)
     Wait(30 * DT)
-    ExecWait(N(EVS_EndPeachChapter7))
+    ExecWait(EVS_EndPeachChapter7)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)

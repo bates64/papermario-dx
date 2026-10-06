@@ -1,7 +1,7 @@
 #include "jan_22.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Thread
         Label(0)
             IfLt(GB_StoryProgress, STORY_CH5_ZIP_LINE_READY)

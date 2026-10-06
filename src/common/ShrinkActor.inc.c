@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-API_CALLABLE(N(ShrinkActor)) {
+static API_CALLABLE(ShrinkActor) {
     Bytecode* args = script->ptrReadPos;
     f32 var1 = evt_get_float_variable(script, *args++);
     f32 var2 = evt_get_float_variable(script, *args++);

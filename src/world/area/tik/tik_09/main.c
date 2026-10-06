@@ -2,7 +2,7 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_CloseGates) = {
+EvtScript EVS_CloseGates = {
     Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -29,26 +29,26 @@ EvtScript N(EVS_CloseGates) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_tik_10_0) = EVT_EXIT_WALK(60, tik_09_ENTRY_0, "tik_10", tik_10_ENTRY_0);
-EvtScript N(EVS_ExitWalk_tik_08_0) = EVT_EXIT_WALK(60, tik_09_ENTRY_1, "tik_08", tik_08_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_10_0 = EVT_EXIT_WALK(60, tik_09_ENTRY_0, "tik_10", tik_10_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_08_0 = EVT_EXIT_WALK(60, tik_09_ENTRY_1, "tik_08", tik_08_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_10_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_08_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_tik_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_tik_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(DisablePlayerInput, true)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, tik_09_ENTRY_2)
-        EVT_ENTER_PIPE_VERTICAL(N(EVS_BindExitTriggers))
+        EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         ExecWait(EnterWalk)
         IfEq(GF_TIK09_Defeated_Ambush, false)
-            ExecWait(N(EVS_CloseGates))
+            ExecWait(EVS_CloseGates)
         EndIf
     EndIf
     Call(DisablePlayerInput, false)
@@ -58,18 +58,18 @@ EvtScript N(EVS_EnterMap) = {
 
 #include "../common/Flotsam.inc.c"
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_09)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK09_WATER)
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW2, SOUND_SPACE_WITH_DEPTH, -190, -20, -120)
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW4, SOUND_SPACE_WITH_DEPTH, 50, -20, -120)
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW3, SOUND_SPACE_WITH_DEPTH, 290, -20, -120)
-    Exec(N(EVS_SetupDrips))
+    Exec(EVS_SetupDrips)
     // water surface
     Call(SetTexPanner, MODEL_nagare, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o84, TEX_PANNER_1)
@@ -116,20 +116,20 @@ EvtScript N(EVS_Main) = {
     Call(SetRenderMode, MODEL_nagab, RENDER_MODE_SURFACE_XLU_LAYER2)
     Thread
         Set(LVar2, MODEL_bin)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
         Wait(5)
         Set(LVar2, MODEL_kan1)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
         Wait(5)
         Set(LVar2, MODEL_kan2)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
     EndThread
     Call(TranslateModel, MODEL_ew_kousi, 0, 60, 0)
     Call(TranslateModel, MODEL_ee_kousi, 0, 60, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o58, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o59, COLLIDER_FLAGS_UPPER_MASK)
     Call(ClearAmbientSounds, 250)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

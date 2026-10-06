@@ -1,6 +1,6 @@
 #include "omo_15.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_GENERAL_GUY)
             Call(SetMusic, 0, SONG_GENERAL_GUY_THEME, 0, VOL_LEVEL_FULL)

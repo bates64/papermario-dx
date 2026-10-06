@@ -11,9 +11,7 @@
 #include "mapfs/tik_14_shape.h"
 #include "mapfs/tik_14_hit.h"
 
-#define NAMESPACE tik_14
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupDrips);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupDrips;

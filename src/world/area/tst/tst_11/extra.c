@@ -2,19 +2,19 @@
 #include "entity.h"
 #include "sprite.h"
 
-void N(worker_render_test_reflection_wall)(void);
-void N(appendGfx_test_reflection_wall)(void*);
-void N(worker_render_test_reflection_floor)(void);
-void N(appendGfx_test_reflection_floor)(void*);
-void N(worker_update_test_partner_reflection)(void);
+void worker_render_test_reflection_wall(void);
+void appendGfx_test_reflection_wall(void*);
+void worker_render_test_reflection_floor(void);
+void appendGfx_test_reflection_floor(void*);
+void worker_update_test_partner_reflection(void);
 
 // identical to final version
-API_CALLABLE(N(EnableWallReflectionTest)) {
-    script->array[0] = create_worker_frontUI(nullptr, N(worker_render_test_reflection_wall));
+API_CALLABLE(EnableWallReflectionTest) {
+    script->array[0] = create_worker_frontUI(nullptr, worker_render_test_reflection_wall);
     return ApiStatus_DONE2;
 }
 
-void N(worker_render_test_reflection_wall)(void) {
+void worker_render_test_reflection_wall(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EntityModel* entityModel;
     RenderTask renderTask;
@@ -30,13 +30,13 @@ void N(worker_render_test_reflection_wall)(void) {
 
         renderTaskPtr->renderMode = playerStatus->renderMode;
         renderTaskPtr->appendGfxArg = playerStatus;
-        renderTaskPtr->appendGfx = &N(appendGfx_test_reflection_wall);
+        renderTaskPtr->appendGfx = &appendGfx_test_reflection_wall;
         renderTaskPtr->dist = -screenZ;
         queue_render_task(renderTaskPtr);
     }
 }
 
-void N(appendGfx_test_reflection_wall)(void* data) {
+void appendGfx_test_reflection_wall(void* data) {
     PlayerStatus* playerStatus = data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     Matrix4f main;
@@ -60,12 +60,12 @@ void N(appendGfx_test_reflection_wall)(void* data) {
     spr_draw_player_sprite(PLAYER_SPRITE_AUX1, 0, 0, nullptr, main);
 }
 
-API_CALLABLE(N(EnableFloorReflectionTest)) {
-    script->array[0] = create_worker_frontUI(nullptr, &N(worker_render_test_reflection_floor));
+API_CALLABLE(EnableFloorReflectionTest) {
+    script->array[0] = create_worker_frontUI(nullptr, &worker_render_test_reflection_floor);
     return ApiStatus_DONE2;
 }
 
-void N(worker_render_test_reflection_floor)(void) {
+void worker_render_test_reflection_floor(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EntityModel* entityModel;
     RenderTask renderTask;
@@ -81,13 +81,13 @@ void N(worker_render_test_reflection_floor)(void) {
 
         renderTaskPtr->renderMode = playerStatus->renderMode;
         renderTaskPtr->appendGfxArg = playerStatus;
-        renderTaskPtr->appendGfx = &N(appendGfx_test_reflection_floor);
+        renderTaskPtr->appendGfx = &appendGfx_test_reflection_floor;
         renderTaskPtr->dist = -screenZ;
         queue_render_task(renderTaskPtr);
     }
 }
 
-void N(appendGfx_test_reflection_floor)(void* data) {
+void appendGfx_test_reflection_floor(void* data) {
     PlayerStatus* playerStatus = data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     s32 trueAnimation;
@@ -125,10 +125,10 @@ void N(appendGfx_test_reflection_floor)(void* data) {
     set_player_imgfx_all(trueAnimation, IMGFX_CLEAR, 0, 0, 0, 0, 0);
 }
 
-API_CALLABLE(N(PartnerReflectTest)) {
+API_CALLABLE(PartnerReflectTest) {
     Npc* partner;
 
-    script->array[1] = create_worker_scene(N(worker_update_test_partner_reflection), nullptr);
+    script->array[1] = create_worker_scene(worker_update_test_partner_reflection, nullptr);
     partner = get_npc_safe(NPC_PARTNER);
 
     if (partner == nullptr) {
@@ -139,7 +139,7 @@ API_CALLABLE(N(PartnerReflectTest)) {
     return ApiStatus_DONE2;
 }
 
-void N(worker_update_test_partner_reflection)(void) {
+void worker_update_test_partner_reflection(void) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
 
     if (partner != nullptr) {
@@ -147,11 +147,11 @@ void N(worker_update_test_partner_reflection)(void) {
     }
 }
 
-EvtScript N(EVS_SetupReflections) = {
+EvtScript EVS_SetupReflections = {
     MallocArray(16, LVarA)
-    Call(N(EnableWallReflectionTest))
-    Call(N(EnableFloorReflectionTest))
-    Call(N(PartnerReflectTest))
+    Call(EnableWallReflectionTest)
+    Call(EnableFloorReflectionTest)
+    Call(PartnerReflectTest)
     Return
     End
 };

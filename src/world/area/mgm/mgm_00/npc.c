@@ -4,7 +4,7 @@
 #include "world/common/npc/Toad/patrol.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
-API_CALLABLE(N(GetAvailableGamesCount)) {
+API_CALLABLE(GetAvailableGamesCount) {
     s32 numGames = 0;
 
     if (find_item(ITEM_GOLD_CREDIT) >= 0) {
@@ -17,7 +17,7 @@ API_CALLABLE(N(GetAvailableGamesCount)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_RaisePipe_JumpAttack) = {
+EvtScript EVS_RaisePipe_JumpAttack = {
     Call(UseSettingsFrom, CAM_DEFAULT, -25, 0, -155)
     Call(SetPanTarget, CAM_DEFAULT, -25, 0, -155)
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
@@ -36,13 +36,13 @@ EvtScript N(EVS_RaisePipe_JumpAttack) = {
     Call(TranslateModel, MODEL_o5, 0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o5, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deili2, COLLIDER_FLAGS_UPPER_MASK)
-    BindTrigger(Ref(N(EVS_OnEnterPipe_JumpAttack)), TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
+    BindTrigger(Ref(EVS_OnEnterPipe_JumpAttack), TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_RaisePipe_SmashAttack) = {
+EvtScript EVS_RaisePipe_SmashAttack = {
     Call(UseSettingsFrom, CAM_DEFAULT, 95, 0, -155)
     Call(SetPanTarget, CAM_DEFAULT, 95, 0, -155)
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
@@ -61,13 +61,13 @@ EvtScript N(EVS_RaisePipe_SmashAttack) = {
     Call(TranslateModel, MODEL_o9, 0, 0, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o9, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deili3, COLLIDER_FLAGS_UPPER_MASK)
-    BindTrigger(Ref(N(EVS_OnEnterPipe_SmashAttack)), TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
+    BindTrigger(Ref(EVS_OnEnterPipe_SmashAttack), TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_SetCamera_RaisePipe) = {
+EvtScript EVS_SetCamera_RaisePipe = {
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -81,8 +81,8 @@ EvtScript N(EVS_SetCamera_RaisePipe) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RedToad) = {
-    Call(N(GetAvailableGamesCount))
+EvtScript EVS_NpcInteract_RedToad = {
+    Call(GetAvailableGamesCount)
     Set(LVar6, 0)
     Set(LVar7, 0)
     IfEq(GF_MGM_Unlocked_JumpAttack, false)
@@ -141,45 +141,45 @@ EvtScript N(EVS_NpcInteract_RedToad) = {
         CaseEq(0)
         CaseEq(1)
             Set(GF_MGM_Unlocked_JumpAttack, true)
-            ExecWait(N(EVS_RaisePipe_JumpAttack))
-            ExecWait(N(EVS_SetCamera_RaisePipe))
+            ExecWait(EVS_RaisePipe_JumpAttack)
+            ExecWait(EVS_SetCamera_RaisePipe)
         CaseEq(2)
             Set(GF_MGM_Unlocked_SmashAttack, true)
-            ExecWait(N(EVS_RaisePipe_SmashAttack))
-            ExecWait(N(EVS_SetCamera_RaisePipe))
+            ExecWait(EVS_RaisePipe_SmashAttack)
+            ExecWait(EVS_SetCamera_RaisePipe)
         CaseEq(3)
             Set(GF_MGM_Unlocked_JumpAttack, true)
             Set(GF_MGM_Unlocked_SmashAttack, true)
-            ExecWait(N(EVS_RaisePipe_JumpAttack))
+            ExecWait(EVS_RaisePipe_JumpAttack)
             Wait(10)
-            ExecWait(N(EVS_RaisePipe_SmashAttack))
-            ExecWait(N(EVS_SetCamera_RaisePipe))
+            ExecWait(EVS_RaisePipe_SmashAttack)
+            ExecWait(EVS_SetCamera_RaisePipe)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_RedToad) = {
+EvtScript EVS_NpcInit_RedToad = {
     Call(SetNpcCollisionSize, NPC_SELF, 32, 75)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RedToad)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RedToad))
     Return
     End
 };
 
-NpcData N(NpcData_RedToad) = {
+NpcData NpcData_RedToad = {
     .id = NPC_RedToad,
     .pos = { -213.0f, 12.0f, -180.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_RedToad),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_RedToad,
+    .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_MGM_PlayroomReceptionist,
 };
 
-EvtScript N(EVS_NpcInteract_GreenToad) = {
-    Call(N(GetAvailableGamesCount))
+EvtScript EVS_NpcInteract_GreenToad = {
+    Call(GetAvailableGamesCount)
     Switch(LVar5)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Green_Talk, ANIM_Toad_Green_Idle, 0, MSG_MGM_0025)
@@ -199,14 +199,14 @@ EvtScript N(EVS_NpcInteract_GreenToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GreenToad) = {
+EvtScript EVS_NpcInit_GreenToad = {
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GreenToad)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GreenToad))
     Return
     End
 };
 
-NpcData N(NpcData_GreenToad) = {
+NpcData NpcData_GreenToad = {
     .id = NPC_GreenToad,
     .pos = { -88.0f, 0.0f, -95.0f },
     .yaw = 270,
@@ -224,15 +224,15 @@ NpcData N(NpcData_GreenToad) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_GreenToad),
-    .settings = &N(NpcSettings_Toad_Patrol),
+    .init = &EVS_NpcInit_GreenToad,
+    .settings = &NpcSettings_Toad_Patrol,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_GREEN_ANIMS,
     .tattle = MSG_NpcTattle_MGM_PlayroomCustomer,
 };
 
-EvtScript N(EVS_NpcInteract_BlueToad) = {
+EvtScript EVS_NpcInteract_BlueToad = {
     Call(GetSelfVar, 0, LVar0)
     Switch(LVar0)
         CaseLt(25)
@@ -248,15 +248,15 @@ EvtScript N(EVS_NpcInteract_BlueToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_BlueToad) = {
+EvtScript EVS_NpcInit_BlueToad = {
     Call(RandInt, 100, LVar0)
     Call(SetSelfVar, 0, LVar0)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_BlueToad)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_BlueToad))
     Return
     End
 };
 
-NpcData N(NpcData_BlueToad) = {
+NpcData NpcData_BlueToad = {
     .id = NPC_BlueToad,
     .pos = { 46.0f, 0.0f, -205.0f },
     .yaw = 90,
@@ -274,17 +274,17 @@ NpcData N(NpcData_BlueToad) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_BlueToad),
-    .settings = &N(NpcSettings_Toad_Patrol),
+    .init = &EVS_NpcInit_BlueToad,
+    .settings = &NpcSettings_Toad_Patrol,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_BLUE_ANIMS,
     .tattle = MSG_NpcTattle_MGM_BestPlayroomCustomer,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_RedToad)),
-    NPC_GROUP(N(NpcData_GreenToad)),
-    NPC_GROUP(N(NpcData_BlueToad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_RedToad),
+    NPC_GROUP(NpcData_GreenToad),
+    NPC_GROUP(NpcData_BlueToad),
     {}
 };

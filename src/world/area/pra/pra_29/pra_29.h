@@ -16,9 +16,7 @@ enum {
     MV_UnusedBridgeAlpha    = MapVar(1),
 };
 
-#define NAMESPACE pra_29
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupBridge);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupBridge;
+extern EvtScript EVS_MakeEntities;

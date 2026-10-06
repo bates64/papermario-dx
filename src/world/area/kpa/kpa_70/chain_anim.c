@@ -1,6 +1,6 @@
 #include "kpa_70.h"
 
-AnimScript N(AS_ChainDriveAnim) = {
+AnimScript AS_ChainDriveAnim = {
     as_DisableMirroring
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)

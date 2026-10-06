@@ -25,7 +25,6 @@ void walking_dust_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     s32 numParts = 1;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = walking_dust_init;
     bp.update = walking_dust_update;
     bp.renderScene = walking_dust_render;

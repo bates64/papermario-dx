@@ -21,8 +21,6 @@
 #include "sprite/npc/WorldKooper.h"
 #include "sprite/npc/Koopa.h"
 
-#define NAMESPACE tst_13
-
 enum {
     NPC_00                      = 0,
     NPC_01                      = 1,

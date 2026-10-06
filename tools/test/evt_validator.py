@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SUITE_ROOT = Path(__file__).resolve().with_suffix("")
 PASS_DIR = SUITE_ROOT / "pass"
 FAIL_DIR = SUITE_ROOT / "fail"
+EFFECTS_YAML = ROOT / "src/registry/effects.yaml"
 
 
 def validator_binary() -> str:
@@ -143,7 +144,9 @@ def run_case(
             compile_result.stderr,
         )
 
-    validate_result = run_command([validator, str(object_path)])
+    validate_result = run_command(
+        [validator, "--effects-yaml", str(EFFECTS_YAML), str(object_path)]
+    )
     if should_pass:
         if validate_result.returncode != 0:
             return format_failure(

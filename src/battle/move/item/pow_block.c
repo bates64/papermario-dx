@@ -1,14 +1,11 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "entity.h"
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_pow_block
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(ForceTriggerPOWBlockEntity)) {
+API_CALLABLE(ForceTriggerPOWBlockEntity) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     CollisionStatus* collisionStatus = &gCollisionStatus;
@@ -28,7 +25,7 @@ API_CALLABLE(N(ForceTriggerPOWBlockEntity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DeletePOWBlockEntity)) {
+API_CALLABLE(DeletePOWBlockEntity) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
     entity->flags |= ENTITY_FLAG_PENDING_INSTANCE_DELETE;
@@ -36,7 +33,7 @@ API_CALLABLE(N(DeletePOWBlockEntity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AdjustPOWBlockEntityScale)) {
+API_CALLABLE(AdjustPOWBlockEntityScale) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     Entity* entity = get_entity_by_index(script->varTable[10]);
@@ -53,17 +50,17 @@ API_CALLABLE(N(AdjustPOWBlockEntityScale)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_POW_BLOCK)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Wait(10)
     Call(MakeEntity, Ref(Entity_PowBlock), -40, 60, 0, 0, MAKE_ENTITY_END)
     Set(LVarA, LVar0)
-    Call(N(AdjustPOWBlockEntityScale))
-    PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0, 0)
-    PlayEffect(EFFECT_WALKING_DUST, 2, -30, 65, 20, 0, 0, 0)
-    PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0, 0)
-    PlayEffect(EFFECT_WALKING_DUST, 2, -40, 55, 20, 0, 0, 0)
+    Call(AdjustPOWBlockEntityScale)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -30, 65, 20, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -40, 55, 20, 0, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Wait(20)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -71,11 +68,11 @@ EvtScript N(EVS_UseItem) = {
     Thread
         Wait(15)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HIT_BLOCK)
-        Call(N(ForceTriggerPOWBlockEntity))
-        PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0, 0)
-        PlayEffect(EFFECT_WALKING_DUST, 2, -30, 65, 20, 0, 0, 0)
-        PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0, 0)
-        PlayEffect(EFFECT_WALKING_DUST, 2, -40, 55, 20, 0, 0, 0)
+        Call(ForceTriggerPOWBlockEntity)
+        PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 2, -30, 65, 20, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 2, -40, 60, 20, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 2, -40, 55, 20, 0, 0)
         Call(StartRumble, BTL_RUMBLE_HIT_HEAVY)
         Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.0))
         Call(ShakeCam, CAM_BATTLE, 0, 2, Float(3.0))
@@ -119,13 +116,17 @@ EvtScript N(EVS_UseItem) = {
         IfNe(LVar0, ITER_NO_MORE)
             Goto(0)
         EndIf
-    PlayEffect(EFFECT_WALKING_DUST, 2, -70, 60, 20, 0, 0, 0)
-    PlayEffect(EFFECT_WALKING_DUST, 2, -60, 65, 20, 0, 0, 0)
-    PlayEffect(EFFECT_WALKING_DUST, 2, -70, 60, 20, 0, 0, 0)
-    PlayEffect(EFFECT_WALKING_DUST, 2, -70, 55, 20, 0, 0, 0)
-    Call(N(DeletePOWBlockEntity))
+    PlayEffect(EFFECT_WALKING_DUST, 2, -70, 60, 20, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -60, 65, 20, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -70, 60, 20, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 2, -70, 55, 20, 0, 0)
+    Call(DeletePOWBlockEntity)
     Wait(30)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

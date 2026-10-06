@@ -26,9 +26,7 @@ enum {
     MF_TreeDrop_Letter          = MapFlag(10),
 };
 
-#define NAMESPACE sbk_30
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupFoliage);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupFoliage;
+extern NpcGroupList DefaultNPCs;

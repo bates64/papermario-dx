@@ -5,7 +5,7 @@
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 #include "world/common/enemy/SpyGuy/wander.inc.c"
 
-EvtScript N(EVS_RestrictCamFromBarricade) = {
+EvtScript EVS_RestrictCamFromBarricade = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -20,7 +20,7 @@ EvtScript N(EVS_RestrictCamFromBarricade) = {
     End
 };
 
-EvtScript N(EVS_PlayShyGuyRunSounds) = {
+EvtScript EVS_PlayShyGuyRunSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(8)
@@ -29,7 +29,7 @@ EvtScript N(EVS_PlayShyGuyRunSounds) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
+EvtScript EVS_NpcIdle_ShyGuy_Loner = {
     IfEq(GF_OMO02_ShyGuyFledBehindWall, false)
         Call(DisablePlayerInput, true)
         Wait(30 * DT)
@@ -40,7 +40,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
         Call(SetPanTarget, CAM_DEFAULT, -570, 0, 0)
         Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
+        ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
         Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(6.0 / DT))
         Call(NpcMoveTo, NPC_SELF, -575, 0, 0)
@@ -49,11 +49,11 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
         Call(NpcJump0, NPC_SELF, -460, 0, -20, 40 / DT)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        ExecGetTID(N(EVS_RestrictCamFromBarricade), MV_RestrictCamScript)
+        ExecGetTID(EVS_RestrictCamFromBarricade, MV_RestrictCamScript)
         Set(GF_OMO02_ShyGuyFledBehindWall, true)
         Call(DisablePlayerInput, false)
     Else
-        ExecGetTID(N(EVS_RestrictCamFromBarricade), MV_RestrictCamScript)
+        ExecGetTID(EVS_RestrictCamFromBarricade, MV_RestrictCamScript)
         Call(SetNpcPos, NPC_SELF, -575, 0, -20)
         Label(10)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -69,10 +69,10 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_Loner) = {
+EvtScript EVS_NpcInit_ShyGuy_Loner = {
     IfEq(GF_OMO02_BombedWall, false)
         Call(SetNpcPos, NPC_SELF, -800, 0, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy_Loner)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_Loner))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -80,7 +80,7 @@ EvtScript N(EVS_NpcInit_ShyGuy_Loner) = {
     End
 };
 
-s32 N(CrowdScriptA)[] = {
+s32 CrowdScriptA[] = {
     CS_MOVE(-320,  30)
     CS_MOVE(-234,  23)
     CS_JUMP(-172,   0,  25)
@@ -96,7 +96,7 @@ s32 N(CrowdScriptA)[] = {
     CS_END
 };
 
-s32 N(CrowdScriptB)[] = {
+s32 CrowdScriptB[] = {
     CS_MOVE(-279,   20)
     CS_MOVE(-168,   30)
     CS_MOVE(-106,  -11)
@@ -112,7 +112,7 @@ s32 N(CrowdScriptB)[] = {
     CS_END
 };
 
-s32 N(CrowdScriptC)[] = {
+s32 CrowdScriptC[] = {
     CS_MOVE(-326,  42)
     CS_MOVE(-288,  69)
     CS_MOVE(-256,  84)
@@ -138,7 +138,7 @@ s32 N(CrowdScriptC)[] = {
     CS_END
 };
 
-s32 N(CrowdScriptD)[] = {
+s32 CrowdScriptD[] = {
     CS_MOVE(-309,   9)
     CS_MOVE(-230,  27)
     CS_MOVE(-150,  16)
@@ -150,20 +150,20 @@ s32 N(CrowdScriptD)[] = {
     CS_END
 };
 
-s32* N(CrowdFleeScripts)[] = {
-    N(CrowdScriptA),
-    N(CrowdScriptB),
-    N(CrowdScriptC),
-    N(CrowdScriptD),
-    N(CrowdScriptA),
-    N(CrowdScriptB),
-    N(CrowdScriptA),
-    N(CrowdScriptD),
-    N(CrowdScriptA),
-    N(CrowdScriptB),
+s32* CrowdFleeScripts[] = {
+    CrowdScriptA,
+    CrowdScriptB,
+    CrowdScriptC,
+    CrowdScriptD,
+    CrowdScriptA,
+    CrowdScriptB,
+    CrowdScriptA,
+    CrowdScriptD,
+    CrowdScriptA,
+    CrowdScriptB,
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
+EvtScript EVS_NpcIdle_ShyGuy_Crowd = {
     Call(GetNpcPos, NPC_SELF, LVarA, LVarB, LVarC)
     Label(0)
         Call(GetSelfVar, 0, LVar0)
@@ -222,7 +222,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
             CaseEq(CROWD_STATE_RUN_AWAY)
                 Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_WORLD_COLLISION, true)
                 Call(GetSelfNpcID, LVar0)
-                UseBuf(Ref(N(CrowdFleeScripts)))
+                UseBuf(Ref(CrowdFleeScripts))
                 Loop(LVar0)
                     BufRead1(LVar1)
                 EndLoop
@@ -253,7 +253,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Crowd) = {
     End
 };
 
-Vec3i N(InitialCrowdPositions)[] = {
+Vec3i InitialCrowdPositions[] = {
     { -462, 0, -80 },
     { -447, 0, -40 },
     { -432, 0,   0 },
@@ -266,12 +266,12 @@ Vec3i N(InitialCrowdPositions)[] = {
     { -378, 0,  80 },
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_Crowd) = {
+EvtScript EVS_NpcInit_ShyGuy_Crowd = {
     IfEq(GF_OMO02_BombedWall, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy_Crowd)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy_Crowd))
         Call(GetSelfNpcID, LVar0)
         Sub(LVar0, NPC_ShyGuy_01)
-        UseBuf(Ref(N(InitialCrowdPositions)))
+        UseBuf(Ref(InitialCrowdPositions))
         Loop(LVar0)
             BufRead3(LVar1, LVar2, LVar3)
         EndLoop
@@ -283,24 +283,24 @@ EvtScript N(EVS_NpcInit_ShyGuy_Crowd) = {
     End
 };
 
-NpcData N(NpcData_ShyGuy_Loner) = {
+NpcData NpcData_ShyGuy_Loner = {
     .id = NPC_ShyGuy_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_ShyGuy_Loner),
-    .settings = &N(NpcSettings_ShyGuy),
+    .init = &EVS_NpcInit_ShyGuy_Loner,
+    .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_Crowd)[] = {
+NpcData NpcData_ShyGuy_Crowd[] = {
     {
         .id = NPC_ShyGuy_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -309,8 +309,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -319,8 +319,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -329,8 +329,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -339,8 +339,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_06,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -349,8 +349,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_07,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -359,8 +359,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_08,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -369,8 +369,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_09,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -379,8 +379,8 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_10,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
@@ -389,15 +389,15 @@ NpcData N(NpcData_ShyGuy_Crowd)[] = {
         .id = NPC_ShyGuy_11,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShyGuy_Crowd),
-        .settings = &N(NpcSettings_ShyGuy),
+        .init = &EVS_NpcInit_ShyGuy_Crowd,
+        .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
 };
 
-NpcData N(NpcData_SpyGuy)[] = {
+NpcData NpcData_SpyGuy[] = {
     {
         .id = NPC_SpyGuy,
         .pos = { 200.0f, 0.0f, 30.0f },
@@ -414,7 +414,7 @@ NpcData N(NpcData_SpyGuy)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_SpyGuy_Wander),
+        .settings = &NpcSettings_SpyGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
         .animations = SPY_GUY_ANIMS,
@@ -424,9 +424,9 @@ NpcData N(NpcData_SpyGuy)[] = {
     SPY_GUY_ROCK_HITBOX(NPC_SpyGuy_Rock2),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy_Loner)),
-    NPC_GROUP(N(NpcData_ShyGuy_Crowd)),
-    NPC_GROUP(N(NpcData_SpyGuy), BTL_OMO_FORMATION_1B, BTL_OMO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ShyGuy_Loner),
+    NPC_GROUP(NpcData_ShyGuy_Crowd),
+    NPC_GROUP(NpcData_SpyGuy, BTL_OMO_FORMATION_1B, BTL_OMO_STAGE_00),
     {}
 };

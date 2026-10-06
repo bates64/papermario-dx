@@ -1,25 +1,25 @@
 #include "kkj_16.h"
 #include "sprite/player.h"
 
-Vec3f N(TwinkHide1)[] = {
+Vec3f TwinkHide1[] = {
     { -752.0,    60.0,  -55.0 },
     { -755.0,   120.0,  -60.0 },
     { -770.0,   140.0, -130.0 },
 };
 
-Vec3f N(TwinkFollowPath1)[] = {
+Vec3f TwinkFollowPath1[] = {
     { -770.0,   140.0, -130.0 },
     { -755.0,   135.0,  -90.0 },
     { -670.0,   110.0,  -80.0 },
 };
 
-Vec3f N(TwinkFollowPath2)[] = {
+Vec3f TwinkFollowPath2[] = {
     { -670.0,   110.0,  -80.0 },
     { -630.0,   100.0,  -80.0 },
     { -470.0,    90.0,  -80.0 },
 };
 
-EvtScript N(EVS_GetApproachPeachPos) = {
+EvtScript EVS_GetApproachPeachPos = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, 10)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -58,7 +58,7 @@ EvtScript N(EVS_GetApproachPeachPos) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach) = {
+EvtScript EVS_PickUpPeach = {
     Thread
         Call(GetNpcPos, NPC_HammerBros, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -94,7 +94,7 @@ EvtScript N(EVS_PickUpPeach) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway) = {
+EvtScript EVS_CarryPeachAway = {
     Call(InterpNpcYaw, NPC_Koopatrol_01, 90, 3)
     Wait(10)
     Thread
@@ -131,7 +131,7 @@ EvtScript N(EVS_CarryPeachAway) = {
     End
 };
 
-EvtScript N(EVS_ManageSneakingScenes) = {
+EvtScript EVS_ManageSneakingScenes = {
     IfEq(AF_KKJ16_HeardSneakingAdvice, false)
         Call(DisablePlayerInput, true)
         Call(DisablePartnerAI, true)
@@ -211,7 +211,7 @@ EvtScript N(EVS_ManageSneakingScenes) = {
     Thread
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Cringe)
-        Call(LoadPath, 20 * DT, Ref(N(TwinkHide1)), ARRAY_COUNT(N(TwinkHide1)), EASING_LINEAR)
+        Call(LoadPath, 20 * DT, Ref(TwinkHide1), ARRAY_COUNT(TwinkHide1), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -232,12 +232,12 @@ EvtScript N(EVS_ManageSneakingScenes) = {
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_Talk, ANIM_HammerBros_Idle, 0, MSG_Peach_007B)
     Call(SpeakToPlayer, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_007C)
-    ExecWait(N(EVS_GetApproachPeachPos))
-    ExecWait(N(EVS_PickUpPeach))
-    ExecWait(N(EVS_CarryPeachAway))
+    ExecWait(EVS_GetApproachPeachPos)
+    ExecWait(EVS_PickUpPeach)
+    ExecWait(EVS_CarryPeachAway)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_007D)
     Wait(10 * DT)
-    Call(LoadPath, 40 * DT, Ref(N(TwinkFollowPath1)), ARRAY_COUNT(N(TwinkFollowPath1)), EASING_LINEAR)
+    Call(LoadPath, 40 * DT, Ref(TwinkFollowPath1), ARRAY_COUNT(TwinkFollowPath1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -256,7 +256,7 @@ EvtScript N(EVS_ManageSneakingScenes) = {
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Idle)
     Thread
-        Call(LoadPath, 30 * DT, Ref(N(TwinkFollowPath2)), ARRAY_COUNT(N(TwinkFollowPath2)), EASING_LINEAR)
+        Call(LoadPath, 30 * DT, Ref(TwinkFollowPath2), ARRAY_COUNT(TwinkFollowPath2), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -268,7 +268,7 @@ EvtScript N(EVS_ManageSneakingScenes) = {
     EndThread
     Wait(15 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)
-    ExecWait(N(EVS_EndPeachChapter2))
+    ExecWait(EVS_EndPeachChapter2)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)

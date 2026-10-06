@@ -2,7 +2,7 @@
 
 #define NUM_SECTIONS 6
 
-s32 N(TrackSections)[NUM_SECTIONS] = {
+s32 TrackSections[NUM_SECTIONS] = {
     MODEL_field_a,
     MODEL_field_b,
     MODEL_field_c,
@@ -11,7 +11,7 @@ s32 N(TrackSections)[NUM_SECTIONS] = {
     MODEL_field_f,
 };
 
-s32 N(SectionOffsets)[][NUM_SECTIONS + 1] = {
+s32 SectionOffsets[][NUM_SECTIONS + 1] = {
     { -6000,  -5750,  -5750,  -5750,  -3250,  -3250,  -3250 },
     { -4500,  -4250,  -5750,  -5750,  -3250,  -3250,  -3250 },
     { -4000,  -4250,  -4250,  -5750,  -3250,  -3250,  -3250 },
@@ -28,25 +28,25 @@ s32 N(SectionOffsets)[][NUM_SECTIONS + 1] = {
     {  4500,  -3250,  -3250,  -3250,   1750,   1750,   1750 },
 };
 
-API_CALLABLE(N(GetSectionPosOffsets)) {
+API_CALLABLE(GetSectionPosOffsets) {
     s32 value = script->varTable[0];
     s32 index, i;
 
-    for (i = 0; i < ARRAY_COUNT(N(SectionOffsets)); i++) {
-        if (value < N(SectionOffsets)[i][0]) {
+    for (i = 0; i < ARRAY_COUNT(SectionOffsets); i++) {
+        if (value < SectionOffsets[i][0]) {
             break;
         }
     }
     index = MAX(i - 1, 0);
 
     for (i = 0; i < NUM_SECTIONS; i++) {
-        script->varTable[i + 5] = N(SectionOffsets)[index][i + 1];
+        script->varTable[i + 5] = SectionOffsets[index][i + 1];
     }
 
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateSceneryPos) = {
+EvtScript EVS_UpdateSceneryPos = {
     Call(TranslateGroup, MODEL_mac_side, -5750, 0, 0)
     Call(TranslateGroup, MODEL_turen, -3250, 0, 0)
     Call(TranslateGroup, MODEL_iwa_side, 1750, 0, 0)
@@ -63,7 +63,7 @@ EvtScript N(EVS_UpdateSceneryPos) = {
         Set(LVar0, MV_TrainMoveDist)
         Sub(LVar0, LVar3)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, 0)
-        Call(N(GetSectionPosOffsets))
+        Call(GetSectionPosOffsets)
         Call(TranslateGroup, MODEL_field_a, LVar5, 0, 0)
         Call(TranslateGroup, MODEL_field_b, LVar6, 0, 0)
         Call(TranslateGroup, MODEL_field_c, LVar7, 0, 0)

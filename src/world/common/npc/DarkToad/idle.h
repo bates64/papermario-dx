@@ -3,4 +3,4 @@
 
 #define NpcSettings_DarkToad NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_DarkToad);
+extern NpcSettings NpcSettings_DarkToad;

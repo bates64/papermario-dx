@@ -32,6 +32,12 @@ pub enum ValidateError {
     Validation(String),
 }
 
+pub struct Effect {
+    pub name: String,
+    pub arg_count: usize,
+    pub empty: bool,
+}
+
 impl std::fmt::Display for ValidateError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
@@ -885,7 +891,94 @@ fn validate_function_arg(
     Ok(())
 }
 
-fn validate_script(elf: &Elf32, script: &ScriptSymbol, data: &[u8]) -> VResult<()> {
+fn validate_play_effect(
+    elf: &Elf32,
+    effects: Option<&[Effect]>,
+    script: &ScriptSymbol,
+    op_pos: usize,
+    arg_pos: usize,
+    args: &[i32],
+    opcode: Opcode,
+    line: Option<u16>,
+) -> VResult<()> {
+    let Some(effects) = effects else {
+        return Ok(());
+    };
+    if opcode != Opcode::EVT_OP_CALL || args.is_empty() {
+        return Ok(());
+    }
+
+    let function_offset = script.symbol.value + (arg_pos * BYTECODE_SIZE) as u32;
+    let Some(function_relocation) = elf.relocation_at(script.section_index, function_offset) else {
+        return Ok(());
+    };
+    if function_relocation.r#type != R_MIPS_32
+        || elf.symbol_for_relocation(function_relocation)?.name != "PlayEffect_impl"
+    {
+        return Ok(());
+    }
+
+    if args.len() < 2 {
+        return Err(verr(format!(
+            "{}: PlayEffect has no effect ID",
+            format_script_site(script, op_pos, line)
+        )));
+    }
+
+    let effect_offset = script.symbol.value + ((arg_pos + 1) * BYTECODE_SIZE) as u32;
+    let effect_index = args[1];
+    if elf.relocation_at(script.section_index, effect_offset).is_some()
+        || !is_plain_int_literal(effect_index)
+    {
+        return Err(verr(format!(
+            "{}: PlayEffect effect ID must be a literal EFFECT_* value",
+            format_script_site(script, op_pos, line)
+        )));
+    }
+    let Ok(effect_index) = usize::try_from(effect_index) else {
+        return Err(verr(format!(
+            "{}: PlayEffect has invalid effect ID 0x{:X}",
+            format_script_site(script, op_pos, line),
+            effect_index
+        )));
+    };
+    let Some(effect) = effects.get(effect_index) else {
+        return Err(verr(format!(
+            "{}: PlayEffect has invalid effect ID 0x{:X}",
+            format_script_site(script, op_pos, line),
+            effect_index
+        )));
+    };
+    if effect.empty {
+        return Err(verr(format!(
+            "{}: PlayEffect cannot use empty effect ID 0x{:X}",
+            format_script_site(script, op_pos, line),
+            effect_index
+        )));
+    }
+
+    let actual_arg_count = args.len() - 2;
+    if actual_arg_count != effect.arg_count {
+        let enum_name = if effect.name.to_ascii_uppercase().starts_with("EFFECT_") {
+            effect.name.to_ascii_uppercase()
+        } else {
+            format!("EFFECT_{}", effect.name.to_ascii_uppercase())
+        };
+        return Err(verr(format!(
+            "{}: PlayEffect({enum_name}) has argc {actual_arg_count}, expected {}",
+            format_script_site(script, op_pos, line),
+            effect.arg_count
+        )));
+    }
+    Ok(())
+}
+
+fn validate_script(
+    elf: &Elf32,
+    effects: Option<&[Effect]>,
+    script: &ScriptSymbol,
+    data: &[u8],
+) -> VResult<()> {
     if data.len() % BYTECODE_SIZE != 0 {
         return Err(verr(format!(
             "{}: size 0x{:X} is not word-aligned",
@@ -946,6 +1039,7 @@ fn validate_script(elf: &Elf32, script: &ScriptSymbol, data: &[u8]) -> VResult<(
         validate_lerp_duration(script, op_pos, opcode, &args, ctx.current_line)?;
         validate_mem_type(elf, script, op_pos, arg_pos, &args, opcode, ctx.current_line)?;
         validate_function_arg(elf, script, op_pos, arg_pos, &raw_args, opcode, ctx.current_line)?;
+        validate_play_effect(elf, effects, script, op_pos, arg_pos, &args, opcode, ctx.current_line)?;
         read_pos += argc as usize;
 
         ctx.check_finally_command_allowed(op_pos, opcode)?;
@@ -1056,7 +1150,11 @@ fn is_candidate_symbol(symbol: &Symbol, pattern: &SymbolPattern) -> bool {
     pattern.matches(&symbol.name)
 }
 
-pub fn validate_object(path: &std::path::Path, pattern: &SymbolPattern) -> VResult<usize> {
+pub fn validate_object(
+    path: &std::path::Path,
+    pattern: &SymbolPattern,
+    effects: Option<&[Effect]>,
+) -> VResult<usize> {
     let elf = Elf32::open(path)?;
     let mut checked = 0;
 
@@ -1070,7 +1168,7 @@ pub fn validate_object(path: &std::path::Path, pattern: &SymbolPattern) -> VResu
             section_index: section.index,
             source_path: elf.source_path.clone(),
         };
-        validate_script(&elf, &script, data)?;
+        validate_script(&elf, effects, &script, data)?;
         checked += 1;
     }
 

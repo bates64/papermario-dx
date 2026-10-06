@@ -21,11 +21,9 @@ enum {
     MV_EntityID_Switch          = MapVar(0),
 };
 
-#define NAMESPACE tik_09
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupDrips);
-extern EvtScript N(EVS_SpawnSwitch);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupDrips;
+extern EvtScript EVS_SpawnSwitch;
+extern NpcGroupList DefaultNPCs;

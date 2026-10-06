@@ -29,11 +29,9 @@ enum {
     MV_CakeItemIdx      = MapVar(0),
 };
 
-#define NAMESPACE kkj_18
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_EndPeachChapter4;
+extern EvtScript EVS_ManageGourmetGuyScenes;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_EndPeachChapter4);
-extern EvtScript N(EVS_ManageGourmetGuyScenes);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

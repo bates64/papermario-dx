@@ -16,11 +16,9 @@ enum {
     MF_RedStairsFlipped     = MapFlag(1),
 };
 
-#define NAMESPACE isk_09
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupSwitches);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PlayUpgradeSong);
-extern EvtScript N(EVS_SetupStairs);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupSwitches;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PlayUpgradeSong;
+extern EvtScript EVS_SetupStairs;
+extern EvtScript EVS_MakeEntities;

@@ -1,11 +1,11 @@
 #include "../mac_01.h"
 
-API_CALLABLE(N(CountRowfAvailableBadges)) {
+API_CALLABLE(CountRowfAvailableBadges) {
     s32 flagBase = GF_MAC01_RowfBadge_00;
     s32 count = 0;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(RowfBadgeInventory)); i++) {
+    for (i = 0; i < ARRAY_COUNT(RowfBadgeInventory); i++) {
         if (evt_get_variable(nullptr, flagBase + i) == 0) {
             count++;
         }
@@ -14,7 +14,7 @@ API_CALLABLE(N(CountRowfAvailableBadges)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(RhuffUnravelUpdate)) {
+API_CALLABLE(RhuffUnravelUpdate) {
     s32 rugRotAngle = -evt_get_variable(nullptr, MV_RowfRugRotateAngle);
     s32 rugRippleAmt = evt_get_variable(nullptr, MV_RowfRugRippleAmount);
     Npc* npc = script->varTablePtr[7];
@@ -48,7 +48,7 @@ API_CALLABLE(N(RhuffUnravelUpdate)) {
     return ApiStatus_DONE2;
 }
 
-void N(gfx_build_rowf_rug_with_ripples)(void) {
+void gfx_build_rowf_rug_with_ripples(void) {
     s32 rippleAmt = evt_get_variable(nullptr, MV_RowfRugRippleAmount);
     Vtx* src;
     Vtx* copy;
@@ -83,7 +83,7 @@ void N(gfx_build_rowf_rug_with_ripples)(void) {
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_0));
 }
 
-API_CALLABLE(N(RevealRowfBadges)) {
+API_CALLABLE(RevealRowfBadges) {
     if (!evt_get_variable(nullptr, GF_MAC01_RowfBadgeAvailableA)) {
         clear_item_entity_flags(gGameStatusPtr->shopItemEntities[0].index, ITEM_ENTITY_FLAG_HIDDEN);
     }
@@ -96,7 +96,7 @@ API_CALLABLE(N(RevealRowfBadges)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(HideRowfBadges)) {
+API_CALLABLE(HideRowfBadges) {
     if (!evt_get_variable(nullptr, GF_MAC01_RowfBadgeAvailableA)) {
         set_item_entity_flags(gGameStatusPtr->shopItemEntities[0].index, ITEM_ENTITY_FLAG_HIDDEN);
     }
@@ -109,7 +109,7 @@ API_CALLABLE(N(HideRowfBadges)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_Rowf_A) = {
+EvtScript EVS_NpcInteract_Rowf_A = {
     IfEq(GF_MAC01_Met_Rowf_Early, false)
         Set(GF_MAC01_Met_Rowf_Early, true)
         Set(AF_MAC01_DialogueToggle_Rowf, true)
@@ -126,7 +126,7 @@ EvtScript N(EVS_NpcInteract_Rowf_A) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Rowf_B) = {
+EvtScript EVS_NpcInteract_Rowf_B = {
     Set(LVar0, GF_MAC01_RowfBadgeAvailableA)
     Add(LVar0, GF_MAC01_RowfBadgeAvailableB)
     Add(LVar0, GF_MAC01_RowfBadgeAvailableC)
@@ -134,7 +134,7 @@ EvtScript N(EVS_NpcInteract_Rowf_B) = {
         IfLt(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
             Set(LVar1, MSG_MAC_Plaza_0005)
         Else
-            Call(N(CountRowfAvailableBadges))
+            Call(CountRowfAvailableBadges)
             IfEq(LVar0, 0)
                 Set(LVar1, MSG_MAC_Plaza_0006)
             Else
@@ -154,7 +154,7 @@ EvtScript N(EVS_NpcInteract_Rowf_B) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Rowf_C) = {
+EvtScript EVS_NpcInteract_Rowf_C = {
     IfEq(GF_MAC01_CalculatorReturned, true)
         Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_000A)
         Return
@@ -177,20 +177,20 @@ EvtScript N(EVS_NpcInteract_Rowf_C) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RhuffChapter1) = {
+EvtScript EVS_NpcInteract_RhuffChapter1 = {
     Call(SpeakToPlayer, NPC_Rhuff, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_000C)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Rhuff_B) = {
+EvtScript EVS_NpcInteract_Rhuff_B = {
     Call(SpeakToPlayer, NPC_Rhuff, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_0014)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Rhuff_C) = {
-    Call(N(CountRowfAvailableBadges))
+EvtScript EVS_NpcInteract_Rhuff_C = {
+    Call(CountRowfAvailableBadges)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_Rhuff, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_000F)
     Else
@@ -207,7 +207,7 @@ EvtScript N(EVS_NpcInteract_Rhuff_C) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Rhuff_D) = {
+EvtScript EVS_NpcInteract_Rhuff_D = {
     IfEq(GF_MAC01_CalculatorReturned, true)
         Call(SpeakToPlayer, NPC_Rhuff, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_0012)
     Else
@@ -217,7 +217,7 @@ EvtScript N(EVS_NpcInteract_Rhuff_D) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Rowf) = {
+EvtScript EVS_NpcIdle_Rowf = {
     Call(SetNpcPos, NPC_Rowf, -250, 0, 295)
     Label(0)
     Wait(10)
@@ -317,7 +317,7 @@ EvtScript N(EVS_NpcIdle_Rowf) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Rhuff_C) = {
+EvtScript EVS_NpcIdle_Rhuff_C = {
     Call(SetNpcPos, NPC_SELF, -225, 0, 330)
     Loop(0)
         Wait(1)
@@ -358,14 +358,14 @@ EvtScript N(EVS_NpcIdle_Rhuff_C) = {
     End
 };
 
-EvtScript N(EVS_UpdateRhuffAnims) = {
+EvtScript EVS_UpdateRhuffAnims = {
     Set(LVar0, Float(53.0))
     Set(LVar1, Float(-192.0))
     Set(LVar2, Float(-300.0))
     Set(LVar3, Float(425.0))
     Call(GetNpcPointer, NPC_Rhuff, LVar7)
     Loop(0)
-        Call(N(RhuffUnravelUpdate))
+        Call(RhuffUnravelUpdate)
         Call(SetNpcPos, NPC_Rhuff, LVar4, 0, LVar5)
         Wait(1)
     EndLoop
@@ -373,7 +373,7 @@ EvtScript N(EVS_UpdateRhuffAnims) = {
     End
 };
 
-s32 N(RugUnfurlFrames)[] = {
+s32 RugUnfurlFrames[] = {
     600,   0, 598,   0,
     595,   0, 590,   0,
     583,   0, 574,   0,
@@ -401,7 +401,7 @@ s32 N(RugUnfurlFrames)[] = {
       0,   0,   0,   0,
 };
 
-EvtScript N(EVS_Rhuff_RevealBadges) = {
+EvtScript EVS_Rhuff_RevealBadges = {
     Set(MF_BadgeShopOpen, true)
     Call(SetNpcYaw, NPC_Rowf, 270)
     Thread
@@ -439,9 +439,9 @@ EvtScript N(EVS_Rhuff_RevealBadges) = {
         EndIf
     EndThread
     Call(EnableModel, MODEL_ju_1, true)
-    Call(N(RevealRowfBadges))
+    Call(RevealRowfBadges)
     Call(PlaySoundAtCollider, COLLIDER_o295, SOUND_ROWF_PULL_RUG_OUT, SOUND_SPACE_DEFAULT)
-    UseBuf(Ref(N(RugUnfurlFrames)))
+    UseBuf(Ref(RugUnfurlFrames))
     Loop(50)
         BufRead2(LVar0, MV_RowfRugRippleAmount)
         Call(RotateGroup, MODEL_jutan2, LVar0, 0, 1, 0)
@@ -467,7 +467,7 @@ EvtScript N(EVS_Rhuff_RevealBadges) = {
     End
 };
 
-EvtScript N(EVS_Rhuff_HideBadges) = {
+EvtScript EVS_Rhuff_HideBadges = {
     Set(MF_BadgeShopOpen, false)
     IfEq(GF_MAC01_RowfBadgeAvailableA, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b3, COLLIDER_FLAGS_UPPER_MASK)
@@ -496,7 +496,7 @@ EvtScript N(EVS_Rhuff_HideBadges) = {
             Goto(10)
         EndIf
         Call(EnableModel, MODEL_ju_1, false)
-        Call(N(HideRowfBadges))
+        Call(HideRowfBadges)
     EndThread
     Wait(10)
     Thread
@@ -547,7 +547,7 @@ enum BadgeShopStates {
     BADGE_SHOP_CLOSE_READY        = 0,
 };
 
-EvtScript N(EVS_EnterBadgeShop) = {
+EvtScript EVS_EnterBadgeShop = {
     IfGe(MV_BadgeShopOpenState, BADGE_SHOP_OPENING)
         Return
     EndIf
@@ -556,13 +556,13 @@ EvtScript N(EVS_EnterBadgeShop) = {
     EndIf
     Set(MF_BadgeShopOpen, true)
     Set(MV_BadgeShopOpenState, BADGE_SHOP_OPENING)
-    ExecWait(N(EVS_Rhuff_RevealBadges))
+    ExecWait(EVS_Rhuff_RevealBadges)
     Set(MV_BadgeShopOpenState, BADGE_SHOP_OPEN)
     Return
     End
 };
 
-EvtScript N(EVS_ExitBadgeShop) = {
+EvtScript EVS_ExitBadgeShop = {
     IfEq(MV_BadgeShopOpenState, BADGE_SHOP_OPEN_READY)
         Return
     EndIf
@@ -574,14 +574,14 @@ EvtScript N(EVS_ExitBadgeShop) = {
             Goto(10)
         EndIf
     Set(MV_BadgeShopCloseState, BADGE_SHOP_CLOSING)
-    ExecWait(N(EVS_Rhuff_HideBadges))
+    ExecWait(EVS_Rhuff_HideBadges)
     Set(MV_BadgeShopOpenState, BADGE_SHOP_OPEN_READY)
     Set(MV_BadgeShopCloseState, BADGE_SHOP_CLOSE_READY)
     Return
     End
 };
 
-API_CALLABLE(N(RowfShop_SetBadgePos)) {
+API_CALLABLE(RowfShop_SetBadgePos) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
 
@@ -592,23 +592,23 @@ API_CALLABLE(N(RowfShop_SetBadgePos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInit_Rowf) = {
+EvtScript EVS_NpcInit_Rowf = {
     Set(MV_BadgeShopOpenState, 0)
     Set(MV_BadgeShopCloseState, 0)
     Set(AF_MAC01_BadgeShopAccessible, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_A)))
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Rowf)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_A))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Rowf))
         CaseLt(STORY_CH3_STAR_SPRIT_DEPARTED)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_B)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_B))
             Set(AF_MAC01_BadgeShopAccessible, true)
         CaseDefault
             IfEq(GF_MAC01_CalculatorReturned, true)
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_B)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_B))
                 Set(AF_MAC01_BadgeShopAccessible, true)
             Else
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_C)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_C))
                 Call(SetNpcPos, NPC_Rowf, -250, 0, 295)
             EndIf
     EndSwitch
@@ -623,11 +623,11 @@ EvtScript N(EVS_NpcInit_Rowf) = {
     Call(ScaleGroup, MODEL_jutan2, Float(1.3), 1, Float(1.3))
     Set(MV_RowfRugRotateAngle, 60)
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_ju_1, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(gfx_build_rowf_rug_with_ripples)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(gfx_build_rowf_rug_with_ripples), nullptr)
     Call(SetModelCustomGfx, MODEL_ju_1, CUSTOM_GFX_0, -1)
     IfEq(AF_MAC01_BadgeShopAccessible, true)
-        BindTrigger(Ref(N(EVS_EnterBadgeShop)), TRIGGER_FLOOR_TOUCH, COLLIDER_roten, 1, 0)
-        BindTrigger(Ref(N(EVS_ExitBadgeShop)), TRIGGER_FLOOR_TOUCH, COLLIDER_o444, 1, 0)
+        BindTrigger(Ref(EVS_EnterBadgeShop), TRIGGER_FLOOR_TOUCH, COLLIDER_roten, 1, 0)
+        BindTrigger(Ref(EVS_ExitBadgeShop), TRIGGER_FLOOR_TOUCH, COLLIDER_o444, 1, 0)
         Call(SetNpcJumpscale, NPC_Rowf, 1)
     EndIf
     Thread
@@ -635,19 +635,19 @@ EvtScript N(EVS_NpcInit_Rowf) = {
         Call(SetModelFlags, MODEL_b1, MODEL_FLAG_INACTIVE, false)
         Call(SetModelFlags, MODEL_b2, MODEL_FLAG_INACTIVE, false)
         Call(SetModelFlags, MODEL_b3, MODEL_FLAG_INACTIVE, false)
-        Call(N(HideRowfBadges))
+        Call(HideRowfBadges)
         Label(0)
         IfEq(GF_MAC01_RowfBadgeAvailableA, false)
             Call(GetModelCenter, MODEL_b3)
-            Call(N(RowfShop_SetBadgePos), 0)
+            Call(RowfShop_SetBadgePos, 0)
         EndIf
         IfEq(GF_MAC01_RowfBadgeAvailableB, false)
             Call(GetModelCenter, MODEL_b2)
-            Call(N(RowfShop_SetBadgePos), 1)
+            Call(RowfShop_SetBadgePos, 1)
         EndIf
         IfEq(GF_MAC01_RowfBadgeAvailableC, false)
             Call(GetModelCenter, MODEL_b1)
-            Call(N(RowfShop_SetBadgePos), 2)
+            Call(RowfShop_SetBadgePos, 2)
         EndIf
         Wait(1)
         Goto(0)
@@ -656,38 +656,38 @@ EvtScript N(EVS_NpcInit_Rowf) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Rhuff) = {
+EvtScript EVS_NpcInit_Rhuff = {
     Call(SetNpcScale, NPC_Rhuff, Float(0.75), Float(0.75), Float(0.75))
     Call(SetNpcPos, NPC_Rhuff, -230, 0, 320)
     Call(InterpNpcYaw, NPC_Rhuff, -90, 0)
     Call(SetNpcAnimation, NPC_Rhuff, ANIM_Rowf_Idle)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RhuffChapter1)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RhuffChapter1))
         CaseLt(STORY_CH2_BEGAN_PEACH_MISSION)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rhuff_B)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rhuff_B))
             IfEq(GF_MAC01_Met_Rhuff, false)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Rhuff_C)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Rhuff_C))
             Else
                 Call(SetNpcPos, NPC_SELF, -305, 0, 330)
                 Call(SetNpcYaw, NPC_SELF, 90)
             EndIf
         CaseLt(STORY_CH3_STAR_SPRIT_DEPARTED)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rhuff_C)))
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_UpdateRhuffAnims)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rhuff_C))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_UpdateRhuffAnims))
         CaseDefault
             IfEq(GF_MAC01_CalculatorReturned, true)
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rhuff_C)))
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_UpdateRhuffAnims)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rhuff_C))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_UpdateRhuffAnims))
             Else
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rhuff_D)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rhuff_D))
             EndIf
     EndSwitch
     Return
     End
 };
 
-AnimID N(LimitAnims_Rowf)[] = {
+AnimID LimitAnims_Rowf[] = {
     ANIM_Rowf_Still,
     ANIM_Rowf_Idle,
     ANIM_Rowf_Walk,
@@ -698,45 +698,45 @@ AnimID N(LimitAnims_Rowf)[] = {
     ANIM_LIST_END
 };
 
-NpcSettings N(NpcSettings_Rowf) = {
+NpcSettings NpcSettings_Rowf = {
     .height = 36,
     .radius = 24,
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
-NpcSettings N(NpcSettings_Rhuff) = {
+NpcSettings NpcSettings_Rhuff = {
     .height = 27,
     .radius = 18,
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
-NpcData N(NpcData_RowfAndRhuff)[] = {
+NpcData NpcData_RowfAndRhuff[] = {
     {
         .id = NPC_Rowf,
         .pos = { -213.0f, -54.0f, 256.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Rowf),
-        .settings = &N(NpcSettings_Rowf),
+        .init = &EVS_NpcInit_Rowf,
+        .settings = &NpcSettings_Rowf,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_Rowf_Idle,
         },
-        .limitAnimations = N(LimitAnims_Rowf),
+        .limitAnimations = LimitAnims_Rowf,
         .tattle = MSG_NpcTattle_Rowf,
     },
     {
         .id = NPC_Rhuff,
         .pos = { -250.0f, 0.0f, 263.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Rhuff),
-        .settings = &N(NpcSettings_Rhuff),
+        .init = &EVS_NpcInit_Rhuff,
+        .settings = &NpcSettings_Rhuff,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_Rowf_Idle,
         },
-        .limitAnimations = N(LimitAnims_Rowf),
+        .limitAnimations = LimitAnims_Rowf,
         .tattle = MSG_NpcTattle_Rhuff,
     },
 };

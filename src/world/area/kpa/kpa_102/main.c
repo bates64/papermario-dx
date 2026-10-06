@@ -1,20 +1,20 @@
 #include "kpa_102.h"
 
-EvtScript N(EVS_ExitWalk_kpa_41_2) = EVT_EXIT_WALK(40, kpa_102_ENTRY_0, "kpa_41", kpa_41_ENTRY_2);
-EvtScript N(EVS_ExitDoors_kpa_53_0) = EVT_EXIT_DOUBLE_DOOR(kpa_102_ENTRY_1, "kpa_53", kpa_53_ENTRY_0, COLLIDER_tte, MODEL_o631, MODEL_o632);
+EvtScript EVS_ExitWalk_kpa_41_2 = EVT_EXIT_WALK(40, kpa_102_ENTRY_0, "kpa_41", kpa_41_ENTRY_2);
+EvtScript EVS_ExitDoors_kpa_53_0 = EVT_EXIT_DOUBLE_DOOR(kpa_102_ENTRY_1, "kpa_53", kpa_53_ENTRY_0, COLLIDER_tte, MODEL_o631, MODEL_o632);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_41_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_kpa_53_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_41_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kpa_53_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_102_ENTRY_0)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(kpa_102_ENTRY_1)
@@ -22,19 +22,19 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_o631)
             Set(LVar3, MODEL_o632)
             Exec(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupMusic)
     Call(SetTexPanner, MODEL_o655, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o657, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o663, TEX_PANNER_1)

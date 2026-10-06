@@ -1,7 +1,7 @@
 #pragma once
 #include "wander.h"
 
-MobileAISettings N(AISettings_Duplighost_Wander) = {
+MobileAISettings AISettings_Duplighost_Wander = {
     .moveSpeed = 2.0f,
     .moveTime = 60,
     .waitTime = 15,
@@ -14,17 +14,17 @@ MobileAISettings N(AISettings_Duplighost_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Duplighost_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Duplighost_Wander)))
+EvtScript EVS_NpcAI_Duplighost_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_Duplighost_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Duplighost_Wander) = {
+NpcSettings NpcSettings_Duplighost_Wander = {
     .height = 30,
     .radius = 30,
     .level = ACTOR_LEVEL_DUPLIGHOST,
-    .doAI = &N(EVS_NpcAI_Duplighost_Wander),
+    .doAI = &EVS_NpcAI_Duplighost_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -5,7 +5,7 @@
 #include "world/common/enemy/MontyMole/wall_ambush.inc.c"
 #include "world/common/enemy/Whacka/idle.inc.c"
 
-API_CALLABLE(N(AnimateWhackaDefeat)) {
+API_CALLABLE(AnimateWhackaDefeat) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -36,7 +36,7 @@ API_CALLABLE(N(AnimateWhackaDefeat)) {
     }
 }
 
-NpcData N(NpcData_MontyMole_GroundAmbush)[] = {
+NpcData NpcData_MontyMole_GroundAmbush[] = {
     {
         .id = NPC_MontyMole_01,
         .pos = { 880.0f, 70.0f, 67.0f },
@@ -53,7 +53,7 @@ NpcData N(NpcData_MontyMole_GroundAmbush)[] = {
                 .detectSize = { 120 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_GroundAmbush),
+        .settings = &NpcSettings_MontyMole_GroundAmbush,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -75,14 +75,14 @@ NpcData N(NpcData_MontyMole_GroundAmbush)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_GroundAmbush_Hole),
+        .settings = &NpcSettings_MontyMole_GroundAmbush_Hole,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DISABLE_AI | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
     },
 };
 
-NpcData N(NpcData_MontyMole_WallAmbush)[] = {
+NpcData NpcData_MontyMole_WallAmbush[] = {
     {
         .id = NPC_MontyMole_02,
         .pos = { 1220.0f, -30.0f, 70.0f },
@@ -99,7 +99,7 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
                 .detectSize = { 120 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_WallAmbush),
+        .settings = &NpcSettings_MontyMole_WallAmbush,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -121,14 +121,14 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_WallAmbush_Hole),
+        .settings = &NpcSettings_MontyMole_WallAmbush_Hole,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DISABLE_AI | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
     },
 };
 
-EvtScript N(EVS_NpcInteract_Whacka_01) = {
+EvtScript EVS_NpcInteract_Whacka_01 = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfLt(LVar0, LVar3)
@@ -157,7 +157,7 @@ EvtScript N(EVS_NpcInteract_Whacka_01) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Whacka_01) = {
+EvtScript EVS_NpcIdle_Whacka_01 = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Whacka_Idle)
     Call(GetNpcPos, NPC_SELF, LVarA, LVarB, LVarC)
     Call(SetNpcPos, NPC_Whacka_01, NPC_DISPOSE_LOCATION)
@@ -199,7 +199,7 @@ EvtScript N(EVS_NpcIdle_Whacka_01) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_Whacka_02) = {
+EvtScript EVS_NpcHit_Whacka_02 = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -290,7 +290,7 @@ EvtScript N(EVS_NpcHit_Whacka_02) = {
         Wait(2)
     EndIf
     IfGe(GB_IWA00_Whacka_HitCount, 8)
-        Call(N(AnimateWhackaDefeat))
+        Call(AnimateWhackaDefeat)
     EndIf
     Call(SetNpcPos, NPC_Whacka_01, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Whacka_02, NPC_DISPOSE_LOCATION)
@@ -301,11 +301,11 @@ EvtScript N(EVS_NpcHit_Whacka_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Whacka_01) = {
+EvtScript EVS_NpcInit_Whacka_01 = {
     Call(SetNpcVar, NPC_Whacka_01, 8, 0)
     IfLt(GB_IWA00_Whacka_HitCount, 8)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Whacka_01)))
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Whacka_01)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Whacka_01))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Whacka_01))
         Call(EnableNpcShadow, NPC_SELF, false)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLIP_INSTANTLY, true)
     Else
@@ -315,10 +315,10 @@ EvtScript N(EVS_NpcInit_Whacka_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Whacka_02) = {
+EvtScript EVS_NpcInit_Whacka_02 = {
     IfLt(GB_IWA00_Whacka_HitCount, 8)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Whacka_02)))
+        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Whacka_02))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -326,13 +326,13 @@ EvtScript N(EVS_NpcInit_Whacka_02) = {
     End
 };
 
-NpcData N(NpcData_Whacka)[] = {
+NpcData NpcData_Whacka[] = {
     {
         .id = NPC_Whacka_01,
         .pos = { 725.0f, -30.0f, 225.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Whacka_01),
-        .settings = &N(NpcSettings_Whacka),
+        .init = &EVS_NpcInit_Whacka_01,
+        .settings = &NpcSettings_Whacka,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = WHACKA_ANIMS,
@@ -342,8 +342,8 @@ NpcData N(NpcData_Whacka)[] = {
         .id = NPC_Whacka_02,
         .pos = { 725.0f, -30.0f, 225.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Whacka_02),
-        .settings = &N(NpcSettings_Whacka),
+        .init = &EVS_NpcInit_Whacka_02,
+        .settings = &NpcSettings_Whacka,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = WHACKA_ANIMS,
@@ -351,9 +351,9 @@ NpcData N(NpcData_Whacka)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_MontyMole_GroundAmbush), BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_MontyMole_WallAmbush), BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_Whacka)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_MontyMole_GroundAmbush, BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_MontyMole_WallAmbush, BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_Whacka),
     {}
 };

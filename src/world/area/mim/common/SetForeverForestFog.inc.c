@@ -1,7 +1,7 @@
 #include "common.h"
 #include "npc.h"
 
-API_CALLABLE(N(SetForeverForestFog)) {
+API_CALLABLE(SetForeverForestFog) {
     enable_world_fog();
     set_world_fog_dist(990, 1000);
     set_world_fog_color(0, 0, 0, 255);

@@ -1,16 +1,16 @@
 #include "kzn_10.h"
 
-EvtScript N(EVS_ExitWalk_kzn_09_1) = EVT_EXIT_WALK(60, kzn_10_ENTRY_0, "kzn_09", kzn_09_ENTRY_1);
-EvtScript N(EVS_ExitWalk_kzn_11_0) = EVT_EXIT_WALK(60, kzn_10_ENTRY_1, "kzn_11", kzn_11_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_09_1 = EVT_EXIT_WALK(60, kzn_10_ENTRY_0, "kzn_09", kzn_09_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_11_0 = EVT_EXIT_WALK(60, kzn_10_ENTRY_1, "kzn_11", kzn_11_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_kzn_09_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(N(EVS_ExitWalk_kzn_11_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_kzn_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-API_CALLABLE(N(AwaitCameraFollowEnabled)) {
+API_CALLABLE(AwaitCameraFollowEnabled) {
     if (gPlayerStatus.flags & PS_FLAG_CAMERA_DOESNT_FOLLOW) {
         return ApiStatus_BLOCK;
     } else {
@@ -18,7 +18,7 @@ API_CALLABLE(N(AwaitCameraFollowEnabled)) {
     }
 }
 
-EvtScript N(EVS_StartTexPanners) = {
+EvtScript EVS_StartTexPanners = {
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
     Thread
@@ -32,7 +32,7 @@ EvtScript N(EVS_StartTexPanners) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_10)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
@@ -48,16 +48,16 @@ EvtScript N(EVS_Main) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(2)
-        Call(N(AwaitCameraFollowEnabled))
+        Call(AwaitCameraFollowEnabled)
         Call(PanToTarget, CAM_DEFAULT, 0, false)
     EndThread
-    Set(LVar0, N(EVS_BindExitTriggers))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
     Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
-    Exec(N(EVS_SetupSpinyTromp))
-    Exec(N(EVS_StartTexPanners))
+    Exec(EVS_SetupSpinyTromp)
+    Exec(EVS_StartTexPanners)
     Return
     End
 };

@@ -18,14 +18,12 @@ enum {
     NPC_Koopatrol_02            = 1,
 };
 
-#define NAMESPACE kpa_70
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
-
-extern StaticAnimatorNode* N(ChainDriveSkeleton)[];
-extern AnimScript N(AS_ChainDriveAnim);
+extern StaticAnimatorNode* ChainDriveSkeleton[];
+extern AnimScript AS_ChainDriveAnim;
 
 API_CALLABLE(InitAnimatedModels);
 API_CALLABLE(SetAnimatedModelRenderMode);

@@ -29,7 +29,6 @@ EffectInstance* ice_shard_main(
     bp.init = ice_shard_init;
     bp.update = ice_shard_update;
     bp.renderScene = ice_shard_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_ICE_SHARD;
 

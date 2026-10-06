@@ -5,9 +5,9 @@
 #include "../common/FlowerSpawnRegion.inc.c"
 #include "../common/DroppingVine.inc.c"
 
-s32 N(BlowingBubbles) = false;
+s32 BlowingBubbles = false;
 
-EvtScript N(EVS_BubbleUpdateCamera) = {
+EvtScript EVS_BubbleUpdateCamera = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(MakeLerp, LVar1, 48, 15, EASING_LINEAR)
     Loop(0)
@@ -28,7 +28,7 @@ EvtScript N(EVS_BubbleUpdateCamera) = {
     End
 };
 
-EvtScript N(EVS_TetherParterToPlayer) = {
+EvtScript EVS_TetherParterToPlayer = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -41,7 +41,7 @@ EvtScript N(EVS_TetherParterToPlayer) = {
     End
 };
 
-API_CALLABLE(N(SavePartnerFlags)) {
+API_CALLABLE(SavePartnerFlags) {
     if (gPlayerData.curPartner == PARTNER_NONE) {
         script->varTable[14] = false;
         return ApiStatus_DONE2;
@@ -52,12 +52,12 @@ API_CALLABLE(N(SavePartnerFlags)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(RestorePartnerFlags)) {
+API_CALLABLE(RestorePartnerFlags) {
     get_npc_unsafe(NPC_PARTNER)->flags = evt_get_variable(nullptr, MV_SavedPartnerFlags);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateBubbleSoundPos)) {
+API_CALLABLE(UpdateBubbleSoundPos) {
     Bytecode* args = script->ptrReadPos;
 
     script->functionTemp[0] = evt_get_variable(script, *args++);
@@ -67,7 +67,7 @@ API_CALLABLE(N(UpdateBubbleSoundPos)) {
     return ApiStatus_DONE2;
 }
 
-Vec3f N(BubbleFlightPath)[] = {
+Vec3f BubbleFlightPath[] = {
     {  531.0,    75.0,   81.0 },
     {  481.0,    80.0,   81.0 },
     {  431.0,    75.0,   81.0 },
@@ -83,17 +83,17 @@ Vec3f N(BubbleFlightPath)[] = {
     {  -69.0,    75.0,   81.0 },
 };
 
-EvtScript N(EVS_BubbleFollowPath) = {
+EvtScript EVS_BubbleFollowPath = {
     Wait(20)
     Call(PlaySound, SOUND_LOOP_BUBBLE_DRIFT)
-    Call(LoadPath, 165, Ref(N(BubbleFlightPath)), ARRAY_COUNT(N(BubbleFlightPath)), EASING_COS_IN_OUT)
+    Call(LoadPath, 165, Ref(BubbleFlightPath), ARRAY_COUNT(BubbleFlightPath), EASING_COS_IN_OUT)
     Label(0)
         Call(GetNextPathPos)
         Call(TranslateModel, MODEL_o167, LVar1, LVar2, LVar3)
         Add(LVar2, -27)
         Add(LVar3, -10)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
-        Call(N(UpdateBubbleSoundPos), LVar1, LVar2, LVar3)
+        Call(UpdateBubbleSoundPos, LVar1, LVar2, LVar3)
         Wait(1)
         IfEq(LVar0, 1)
             Goto(0)
@@ -103,7 +103,7 @@ EvtScript N(EVS_BubbleFollowPath) = {
     End
 };
 
-EvtScript N(EVS_RideBigBubble) = {
+EvtScript EVS_RideBigBubble = {
     Call(IsPlayerWithin, 531, 81, 30, LVar0)
     IfEq(LVar0, 0)
         Return
@@ -131,16 +131,16 @@ EvtScript N(EVS_RideBigBubble) = {
         Call(SetNpcJumpscale, NPC_PARTNER, Float(0.2))
         Call(NpcJump0, NPC_PARTNER, 531, 68, LVar2, 10)
     EndThread
-    ExecGetTID(N(EVS_BubbleUpdateCamera), MV_BubbleCamScript)
+    ExecGetTID(EVS_BubbleUpdateCamera, MV_BubbleCamScript)
     Wait(15)
-    Call(N(SavePartnerFlags))
+    Call(SavePartnerFlags)
     IfTrue(LVarE)
-        ExecGetTID(N(EVS_TetherParterToPlayer), LVarE)
+        ExecGetTID(EVS_TetherParterToPlayer, LVarE)
     EndIf
-    ExecWait(N(EVS_BubbleFollowPath))
+    ExecWait(EVS_BubbleFollowPath)
     IfTrue(LVarE)
         KillThread(LVarE)
-        Call(N(RestorePartnerFlags))
+        Call(RestorePartnerFlags)
     EndIf
     Call(GetModelCenter, MODEL_o167)
     PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, 2, 0)
@@ -158,7 +158,7 @@ EvtScript N(EVS_RideBigBubble) = {
     End
 };
 
-EvtScript N(EVS_BlowBigBubble) = {
+EvtScript EVS_BlowBigBubble = {
     Call(PlaySoundAt, SOUND_FLO_BLOW_BUBBLE, SOUND_SPACE_DEFAULT, 591, 55, 121)
     Call(EnableModel, MODEL_o167, true)
     SetF(LVar2, Float(1.0))
@@ -201,9 +201,9 @@ EvtScript N(EVS_BlowBigBubble) = {
     End
 };
 
-f32 N(BubblePhase) = 0.0f;
+f32 BubblePhase = 0.0f;
 
-void N(gfx_build_big_bubble)(void) {
+void gfx_build_big_bubble(void) {
     Matrix4f matrix;
     Vtx* src;
     Vtx* dest;
@@ -211,17 +211,17 @@ void N(gfx_build_big_bubble)(void) {
 
     guMtxIdentF(matrix);
 
-    matrix[0][0] = (sin_rad(N(BubblePhase) / 11.0f) * 0.04) + 0.98;
-    matrix[0][1] = (sin_rad(N(BubblePhase) / 12.0f) * 0.04);
-    matrix[0][2] = (cos_rad(N(BubblePhase) / 13.0f) * 0.04);
+    matrix[0][0] = (sin_rad(BubblePhase / 11.0f) * 0.04) + 0.98;
+    matrix[0][1] = (sin_rad(BubblePhase / 12.0f) * 0.04);
+    matrix[0][2] = (cos_rad(BubblePhase / 13.0f) * 0.04);
 
-    matrix[1][1] = (sin_rad(N(BubblePhase) / 7.0f + 1.0f) * 0.04) + 0.98;
-    matrix[1][0] = (sin_rad(N(BubblePhase) / 14.0f) * 0.04);
-    matrix[1][2] = (cos_rad(N(BubblePhase) / 15.0f) * 0.04);
+    matrix[1][1] = (sin_rad(BubblePhase / 7.0f + 1.0f) * 0.04) + 0.98;
+    matrix[1][0] = (sin_rad(BubblePhase / 14.0f) * 0.04);
+    matrix[1][2] = (cos_rad(BubblePhase / 15.0f) * 0.04);
 
-    matrix[2][2] = (sin_rad(N(BubblePhase) * 0.25f + 2.0f)  * 0.04) + 0.98;
-    matrix[2][0] = (sin_rad(N(BubblePhase) * 0.0625f) * 0.04);
-    matrix[2][1] = (cos_rad(N(BubblePhase) / 17.0f) * 0.04);
+    matrix[2][2] = (sin_rad(BubblePhase * 0.25f + 2.0f)  * 0.04) + 0.98;
+    matrix[2][0] = (sin_rad(BubblePhase * 0.0625f) * 0.04);
+    matrix[2][1] = (cos_rad(BubblePhase / 17.0f) * 0.04);
 
     guMtxF2L(matrix, &gDisplayContext->matrixStack[gMatrixListPos]);
     mdl_get_copied_vertices(VTX_COPY_0, &src, &dest, &copyCount);
@@ -230,12 +230,12 @@ void N(gfx_build_big_bubble)(void) {
               G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_0));
 
-    N(BubblePhase) += 1.0f;
+    BubblePhase += 1.0f;
 }
 
-s32 N(FlowerPhase) = 90;
+s32 FlowerPhase = 90;
 
-void N(gfx_build_bubble_flower)(void) {
+void gfx_build_bubble_flower(void) {
     s32 i;
     Vtx* verts;
     Vtx* copied;
@@ -250,8 +250,8 @@ void N(gfx_build_bubble_flower)(void) {
         Vtx* copy = &copied[i];
 
         if (src->v.ob[0] <= 600) {
-            openedScale = 0.7 + (sin_rad((N(FlowerPhase) / 180.0f) * PI_D) * 0.3);
-            lengthScale = 0.2 - (sin_rad((N(FlowerPhase) / 180.0f) * PI_D) * 0.2);
+            openedScale = 0.7 + (sin_rad((FlowerPhase / 180.0f) * PI_D) * 0.3);
+            lengthScale = 0.2 - (sin_rad((FlowerPhase / 180.0f) * PI_D) * 0.2);
             copy->v.ob[0] = ((src->v.ob[0] - 616) * openedScale) + 616.0f + (lengthScale * -48.0f);
             copy->v.ob[1] = ((src->v.ob[1] -  44) * openedScale) +  44.0f + (lengthScale *  25.0f);
             copy->v.ob[2] = ((src->v.ob[2] - 113) * openedScale) + 113.0f + (lengthScale * -87.0f);
@@ -261,32 +261,32 @@ void N(gfx_build_bubble_flower)(void) {
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_1));
 
     if (evt_get_variable(nullptr, AF_FLO_BlowingBigBubble)) {
-        if (N(FlowerPhase) > 90) {
-            N(FlowerPhase) -= 360;
+        if (FlowerPhase > 90) {
+            FlowerPhase -= 360;
         }
-        if (N(FlowerPhase) >= -90) {
-            N(FlowerPhase) += 5;
+        if (FlowerPhase >= -90) {
+            FlowerPhase += 5;
         } else {
-            N(FlowerPhase) += 20;
+            FlowerPhase += 20;
         }
-        if (N(FlowerPhase) >= 90) {
-            N(FlowerPhase) = 90;
+        if (FlowerPhase >= 90) {
+            FlowerPhase = 90;
         }
     } else {
-        if (N(FlowerPhase) > 140 && N(FlowerPhase) < 260) {
-            N(BlowingBubbles) = true;
+        if (FlowerPhase > 140 && FlowerPhase < 260) {
+            BlowingBubbles = true;
         } else {
-            N(BlowingBubbles) = false;
+            BlowingBubbles = false;
         }
-        N(FlowerPhase) += 5;
+        FlowerPhase += 5;
     }
 
-    if (N(FlowerPhase) >= 360) {
-        N(FlowerPhase) -= 360;
+    if (FlowerPhase >= 360) {
+        FlowerPhase -= 360;
     }
 }
 
-EvtScript N(EVS_ManageBlownBubble) = {
+EvtScript EVS_ManageBlownBubble = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVarF, LVar0)
     Label(0)
@@ -294,7 +294,7 @@ EvtScript N(EVS_ManageBlownBubble) = {
             Wait(10)
             Goto(0)
         EndIf
-        UseBuf(Ref(N(BlowingBubbles)))
+        UseBuf(Ref(BlowingBubbles))
         BufRead1(LVar0)
         IfEq(LVar0, false)
             Call(RandInt, 10, LVar0)
@@ -345,7 +345,7 @@ EvtScript N(EVS_ManageBlownBubble) = {
     End
 };
 
-EvtScript N(EVS_SetupBubbles) = {
+EvtScript EVS_SetupBubbles = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o129, SURFACE_TYPE_FLOWERS)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o155, SURFACE_TYPE_FLOWERS)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o156, SURFACE_TYPE_FLOWERS)
@@ -373,17 +373,17 @@ EvtScript N(EVS_SetupBubbles) = {
     Call(EnableModel, CLONED_MODEL(4), false)
     Call(EnableModel, CLONED_MODEL(5), false)
     Set(LVar0, CLONED_MODEL(1))
-    Exec(N(EVS_ManageBlownBubble))
+    Exec(EVS_ManageBlownBubble)
     Set(LVar0, CLONED_MODEL(2))
-    Exec(N(EVS_ManageBlownBubble))
+    Exec(EVS_ManageBlownBubble)
     Set(LVar0, CLONED_MODEL(3))
-    Exec(N(EVS_ManageBlownBubble))
+    Exec(EVS_ManageBlownBubble)
     Set(LVar0, CLONED_MODEL(4))
-    Exec(N(EVS_ManageBlownBubble))
+    Exec(EVS_ManageBlownBubble)
     Set(LVar0, CLONED_MODEL(5))
-    Exec(N(EVS_ManageBlownBubble))
+    Exec(EVS_ManageBlownBubble)
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o167, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(gfx_build_big_bubble)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(gfx_build_big_bubble), nullptr)
     Call(SetModelCustomGfx, MODEL_o167, CUSTOM_GFX_1, -1)
     Call(SetModelCustomGfx, CLONED_MODEL(1), 1, -1)
     Call(SetModelCustomGfx, CLONED_MODEL(2), 1, -1)
@@ -391,7 +391,7 @@ EvtScript N(EVS_SetupBubbles) = {
     Call(SetModelCustomGfx, CLONED_MODEL(4), 1, -1)
     Call(SetModelCustomGfx, CLONED_MODEL(5), 1, -1)
     Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_o57, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(N(gfx_build_bubble_flower)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(gfx_build_bubble_flower), nullptr)
     Call(SetModelCustomGfx, MODEL_o57, CUSTOM_GFX_2, -1)
     Return
     End

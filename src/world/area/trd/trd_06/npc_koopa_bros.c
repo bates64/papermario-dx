@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/KoopaBros/wander.inc.c"
 
-EvtScript N(EVS_Scene_ImprisonedKoopaBros) = {
+EvtScript EVS_Scene_ImprisonedKoopaBros = {
     Wait(60)
     Call(EnableNpcAI, NPC_KoopaBros_Red, false)
     Call(SpeakToPlayer, NPC_KoopaBros_Red, ANIM_KoopaBros_Red_Dizzy, ANIM_KoopaBros_Red_Dizzy, 0, MSG_CH1_010C)
@@ -17,7 +17,7 @@ EvtScript N(EVS_Scene_ImprisonedKoopaBros) = {
     End
 };
 
-NpcData N(NpcData_KoopaBros)[] = {
+NpcData NpcData_KoopaBros[] = {
     {
         .id = NPC_KoopaBros_Red,
         .pos = { 60.0f, 0.0f, -60.0f },
@@ -34,7 +34,7 @@ NpcData N(NpcData_KoopaBros)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_KoopaBros),
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
@@ -55,7 +55,7 @@ NpcData N(NpcData_KoopaBros)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_KoopaBros),
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
@@ -76,7 +76,7 @@ NpcData N(NpcData_KoopaBros)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_KoopaBros),
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
@@ -97,14 +97,14 @@ NpcData N(NpcData_KoopaBros)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_KoopaBros),
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
     },
 };
 
-NpcGroupList N(NpcGroup_KoopaBros) = {
-    NPC_GROUP(N(NpcData_KoopaBros)),
+NpcGroupList NpcGroup_KoopaBros = {
+    NPC_GROUP(NpcData_KoopaBros),
     {}
 };

@@ -3,7 +3,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetChestPosition)) {
+API_CALLABLE(SetChestPosition) {
     Bytecode* args = script->ptrReadPos;
     s32 entityIndex = evt_get_variable(script, *args++);
     f32 x = evt_get_variable(script, *args++);
@@ -17,7 +17,7 @@ API_CALLABLE(N(SetChestPosition)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetChestPosition)) {
+API_CALLABLE(GetChestPosition) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
 
@@ -27,7 +27,7 @@ API_CALLABLE(N(GetChestPosition)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetPyroclastPos)) {
+API_CALLABLE(SetPyroclastPos) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_float_variable(script, *args++);
     f32 y = evt_get_float_variable(script, *args++);
@@ -40,14 +40,14 @@ API_CALLABLE(N(SetPyroclastPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AllowCameraInterpY)) {
+API_CALLABLE(AllowCameraInterpY) {
     Camera* camera = &gCameras[CAM_DEFAULT];
 
     camera->moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AnimateChestSize)) {
+API_CALLABLE(AnimateChestSize) {
     Entity* entity = get_entity_by_index(script->varTable[0xA]);
 
     if (isInitialCall) {
@@ -72,25 +72,25 @@ API_CALLABLE(N(AnimateChestSize)) {
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     Wait(30)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Panic, 5, MSG_CH5_0117)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     Call(InterpNpcYaw, NPC_SELF, 90, 1)
     Wait(1)
     Call(SetNpcRotationPivot, NPC_SELF, 10)
     Call(SetNpcRotation, NPC_SELF, 0, 0, 180)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
     Return
     End
 };
 
-EvtScript N(EVS_CameraFollowMisstar) = {
+EvtScript EVS_CameraFollowMisstar = {
     Label(0)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
@@ -104,20 +104,20 @@ EvtScript N(EVS_CameraFollowMisstar) = {
     End
 };
 
-Vec3f N(PyroclastPathA)[] = {
+Vec3f PyroclastPathA[] = {
     {  50.0, 2650.0, -20.0 },
     { 150.0, 2850.0, -45.0 },
     { 235.0, 2950.0, -60.0 },
     { 335.0, 3000.0, -75.0 },
 };
 
-Vec3f N(PyroclastPathB)[] = {
+Vec3f PyroclastPathB[] = {
     {  -20.0, 2650.0, -20.0 },
     { -120.0, 2850.0, -40.0 },
     { -220.0, 3000.0, -40.0 },
 };
 
-Vec3f N(PyroclastPathC)[] = {
+Vec3f PyroclastPathC[] = {
     { 10.0, 2650.00,  -20.0 },
     { 20.0, 2800.00,  -60.0 },
     { 30.0, 2880.00, -100.0 },
@@ -125,7 +125,7 @@ Vec3f N(PyroclastPathC)[] = {
     { 50.0, 2940.00, -220.0 },
 };
 
-Vec3f N(PyroclastPathD)[] = {
+Vec3f PyroclastPathD[] = {
     {  -35.0, 2650.0, -20.0 },
     {  -65.0, 2780.0, -30.0 },
     {  -95.0, 2850.0, -40.0 },
@@ -134,13 +134,13 @@ Vec3f N(PyroclastPathD)[] = {
     { -185.0, 2915.0, -70.0 },
 };
 
-s32 N(SoundXPositions)[] = {
+s32 SoundXPositions[] = {
     130, -150, 130, -150,
 };
 
-EvtScript N(EVS_PlayPyroclastSounds) = {
+EvtScript EVS_PlayPyroclastSounds = {
     Add(LVar0, 1)
-    UseBuf(N(SoundXPositions))
+    UseBuf(SoundXPositions)
     Loop(LVar0)
         BufRead1(LVar1)
     EndLoop
@@ -155,28 +155,28 @@ EvtScript N(EVS_PlayPyroclastSounds) = {
     End
 };
 
-EvtScript N(EVS_SpawnPyroclasts) = {
+EvtScript EVS_SpawnPyroclasts = {
     Loop(0)
         Thread
             Call(RandInt, 3, LVar0)
-            Exec(N(EVS_PlayPyroclastSounds))
+            Exec(EVS_PlayPyroclastSounds)
             Switch(LVar0)
                 CaseEq(0)
                     PlayEffect(EFFECT_65, 2, 50, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 15, Ref(N(PyroclastPathA)), ARRAY_COUNT(N(PyroclastPathA)), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 15, Ref(PyroclastPathA), ARRAY_COUNT(PyroclastPathA), EASING_QUADRATIC_OUT)
                 CaseEq(1)
                     PlayEffect(EFFECT_65, 2, -20, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 10, Ref(N(PyroclastPathB)), ARRAY_COUNT(N(PyroclastPathB)), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 10, Ref(PyroclastPathB), ARRAY_COUNT(PyroclastPathB), EASING_QUADRATIC_OUT)
                 CaseEq(2)
                     PlayEffect(EFFECT_65, 2, 10, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 15, Ref(N(PyroclastPathC)), ARRAY_COUNT(N(PyroclastPathC)), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 15, Ref(PyroclastPathC), ARRAY_COUNT(PyroclastPathC), EASING_QUADRATIC_OUT)
                 CaseEq(3)
                     PlayEffect(EFFECT_65, 2, -50, 2650, -20, 1, 0)
                     Set(LVarE, LVarF)
-                    Call(LoadPath, 20, Ref(N(PyroclastPathD)), ARRAY_COUNT(N(PyroclastPathD)), EASING_QUADRATIC_OUT)
+                    Call(LoadPath, 20, Ref(PyroclastPathD), ARRAY_COUNT(PyroclastPathD), EASING_QUADRATIC_OUT)
             EndSwitch
             Call(RandInt, 1, LVar4)
             IfEq(LVar4, 0)
@@ -185,7 +185,7 @@ EvtScript N(EVS_SpawnPyroclasts) = {
             Loop(0)
                 Call(GetNextPathPos)
                 Mul(LVar1, LVar4)
-                Call(N(SetPyroclastPos), LVar1, LVar2, LVar3)
+                Call(SetPyroclastPos, LVar1, LVar2, LVar3)
                 Wait(1)
                 IfEq(LVar0, 0)
                     BreakLoop
@@ -199,14 +199,14 @@ EvtScript N(EVS_SpawnPyroclasts) = {
     End
 };
 
-EvtScript N(EVS_Scene_Misstar) = {
+EvtScript EVS_Scene_Misstar = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(N(AllowCameraInterpY))
-    Exec(N(EVS_CameraFollowMisstar))
+    Call(AllowCameraInterpY)
+    Exec(EVS_CameraFollowMisstar)
     Call(SetSelfVar, 0, 0)
     Thread
         Wait(1)
@@ -240,20 +240,20 @@ EvtScript N(EVS_Scene_Misstar) = {
             Goto(0)
         EndIf
     // make the pyroclasts + sounds
-    Exec(N(EVS_SpawnPyroclasts))
+    Exec(EVS_SpawnPyroclasts)
     Wait(35)
     // make the chest thrown from the volcano
     Call(MakeEntity, Ref(Entity_Chest), 0, 2650, 0, 148, MAKE_ENTITY_END)
     Set(LVarA, LVar0)
     Thread
-        Call(N(AnimateChestSize))
+        Call(AnimateChestSize)
     EndThread
     Set(LVar9, LVarA)
-    Call(N(GetChestPosition), LVar9, LVar2, LVar3, LVar4)
+    Call(GetChestPosition, LVar9, LVar2, LVar3, LVar4)
     Call(MakeLerp, LVar3, 3000, 10, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetChestPosition), LVar9, LVar2, LVar0, LVar4)
+        Call(SetChestPosition, LVar9, LVar2, LVar0, LVar4)
         Add(LVar2, -1)
         Wait(1)
         IfEq(LVar1, 0)
@@ -268,39 +268,39 @@ EvtScript N(EVS_Scene_Misstar) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Misstar) = {
+EvtScript EVS_NpcInit_Misstar = {
     Call(SetNpcPos, NPC_SELF, 0, -100, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMisstar_IdleAngry)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_Misstar)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_Misstar))
     Return
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Misstar) = {
+NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Misstar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Misstar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Misstar),
     {}
 };

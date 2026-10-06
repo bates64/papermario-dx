@@ -18,8 +18,6 @@ enum {
     NPC_Pokey_02                = 1,
 };
 
-#define NAMESPACE sbk_00
-
-extern EvtScript N(EVS_Main);
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_MakeEntities;

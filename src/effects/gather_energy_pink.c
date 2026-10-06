@@ -25,7 +25,6 @@ void gather_energy_pink_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, 
     GatherEnergyPinkFXData* data;
     s32 numParts = 1;
 
-    bp.unk_00 = 0;
     bp.init = gather_energy_pink_init;
     bp.update = gather_energy_pink_update;
     bp.renderScene = gather_energy_pink_render;

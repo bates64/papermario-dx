@@ -39,26 +39,24 @@ enum {
     MF_Bush1_Drop       = MapFlag(13),
 };
 
-#define NAMESPACE nok_01
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PlayRestingSong;
+extern EvtScript EVS_BreakBlock_DropShell;
+extern EvtScript EVS_Scene_RecoverTreeShell;
+extern EvtScript EVS_SetupShop;
+extern EvtScript EVS_SetupRadio;
+extern EvtScript EVS_MakeRooms;
+extern EvtScript EVS_80242C38;
+extern EvtScript EVS_80242DE0;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PlayRestingSong);
-extern EvtScript N(EVS_BreakBlock_DropShell);
-extern EvtScript N(EVS_Scene_RecoverTreeShell);
-extern EvtScript N(EVS_SetupShop);
-extern EvtScript N(EVS_SetupRadio);
-extern EvtScript N(EVS_MakeRooms);
-extern EvtScript N(EVS_80242C38);
-extern EvtScript N(EVS_80242DE0);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
+extern NpcGroupList CrisisNPCs;
+extern NpcGroupList NormalNPCs;
 
-extern NpcGroupList N(CrisisNPCs);
-extern NpcGroupList N(NormalNPCs);
-
-API_CALLABLE(N(InitializeRadio));
-API_CALLABLE(N(SetRadioVolumeMax));
-API_CALLABLE(N(SetRadioVolumeMute));
-API_CALLABLE(N(MuteAllRadioStations));
-API_CALLABLE(N(StopAllRadioStations));
+API_CALLABLE(InitializeRadio);
+API_CALLABLE(SetRadioVolumeMax);
+API_CALLABLE(SetRadioVolumeMute);
+API_CALLABLE(MuteAllRadioStations);
+API_CALLABLE(StopAllRadioStations);

@@ -10,6 +10,3 @@
 #include "../tst.h"
 #include "mapfs/tst_01_shape.h"
 #include "mapfs/tst_01_hit.h"
-
-
-#define NAMESPACE tst_01

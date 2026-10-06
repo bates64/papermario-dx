@@ -1,6 +1,6 @@
 #include "common.h"
 
-API_CALLABLE(N(ActorJumpToPos)) {
+static API_CALLABLE(ActorJumpToPos) {
     Actor* actor = get_actor(script->owner1.actorID);
     Vec3f* temp_f0 = &actor->state.curPos;
 

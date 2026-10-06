@@ -15,5 +15,3 @@ enum {
     NPC_Nomadimouse     = 0,
     NPC_Sack            = 1,
 };
-
-#define NAMESPACE sbk_34

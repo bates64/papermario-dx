@@ -2,8 +2,8 @@
 #include "effects.h"
 #include "script_api/battle.h"
 
-extern EvtScript N(EVS_NpcInit_Moustafa);
-extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
+extern EvtScript EVS_NpcInit_Moustafa;
+extern EvtScript EVS_NpcInit_DisguisedMoustafa;
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
@@ -17,7 +17,7 @@ extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 #include "world/common/prefab/ToadHouse.inc.c"
 #include "world/common/prefab/ToadHouse.data.inc.c"
 
-LetterDelivery N(LetterDelivery_MrE) = {
+LetterDelivery LetterDelivery_MrE = {
     .recipientID = NPC_Dryite_01,
     .recipientTalk = ANIM_Dryite_Blue_Talk,
     .recipientIdle = ANIM_Dryite_Blue_Idle,
@@ -29,7 +29,7 @@ LetterDelivery N(LetterDelivery_MrE) = {
     .reward = ITEM_LETTER_CHAIN_MISS_T,
 };
 
-EvtScript N(EVS_NpcInteract_Archeologist) = {
+EvtScript EVS_NpcInteract_Archeologist = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfEq(GF_SBK30_Kolorado_SharedRumorAboutMoustafa, true)
@@ -54,8 +54,8 @@ EvtScript N(EVS_NpcInteract_Archeologist) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Archeologist) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Archeologist)))
+EvtScript EVS_NpcInit_Archeologist = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Archeologist))
     IfGe(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -63,7 +63,7 @@ EvtScript N(EVS_NpcInit_Archeologist) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_MrE) = {
+EvtScript EVS_NpcInteract_MrE = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfEq(GF_DRO02_Sheek_AskedAboutDesert, false)
@@ -76,19 +76,19 @@ EvtScript N(EVS_NpcInteract_MrE) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0094)
     EndSwitch
-    Set(LVar0, Ref(N(LetterDelivery_MrE)))
+    Set(LVar0, Ref(LetterDelivery_MrE))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_MrE) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_MrE)))
+EvtScript EVS_NpcInit_MrE = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_MrE))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Dryite_02) = {
+EvtScript EVS_NpcInteract_Dryite_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Dryite2, false)
@@ -107,25 +107,25 @@ EvtScript N(EVS_NpcInteract_Dryite_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite_02)))
+EvtScript EVS_NpcInit_Dryite_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Dryite_03) = {
+EvtScript EVS_NpcInteract_Dryite_03 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite_03)))
+EvtScript EVS_NpcInit_Dryite_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Mouser_01) = {
+EvtScript EVS_NpcInteract_Mouser_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Mouser1, false)
@@ -156,13 +156,13 @@ EvtScript N(EVS_NpcInteract_Mouser_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Mouser_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Mouser_01)))
+EvtScript EVS_NpcInit_Mouser_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Mouser_02) = {
+EvtScript EVS_NpcInteract_Mouser_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Mouser2, false)
@@ -181,13 +181,13 @@ EvtScript N(EVS_NpcInteract_Mouser_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Mouser_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Mouser_02)))
+EvtScript EVS_NpcInit_Mouser_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Mouser_03) = {
+EvtScript EVS_NpcIdle_Mouser_03 = {
     Call(InterpNpcYaw, NPC_DisguisedMoustafa, 270, 0)
     Label(10)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Gossip)
@@ -227,8 +227,8 @@ EvtScript N(EVS_NpcIdle_Mouser_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Mouser_03) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Mouser_03)))
+EvtScript EVS_NpcInit_Mouser_03 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Mouser_03))
     IfGe(GB_StoryProgress, STORY_CH2_SPOKE_WITH_SHEEK)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -236,7 +236,7 @@ EvtScript N(EVS_NpcInit_Mouser_03) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     Set(LVar0, MSG_CH2_00D1)
     Set(LVar8, MSG_CH2_00D2)
     Set(LVar1, MSG_CH2_00D3)
@@ -246,13 +246,13 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestMusic))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestMusic)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -179, -198, 0)
     Thread
         Wait(15)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 95, -61)
         Call(SetCamDistance, CAM_DEFAULT, 108)
@@ -275,7 +275,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Wait(20)
     Thread
         Wait(81)
-        Call(N(ToadHouse_CamSetFOV), 0, 25)
+        Call(ToadHouse_CamSetFOV, 0, 25)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
@@ -285,30 +285,30 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
+EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, -187, 0, -240)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -168, -195, 0)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+EvtScript EVS_NpcInit_ToadHouseKeeper = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Merlee) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merlee)))
+EvtScript EVS_NpcInit_Merlee = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merlee))
     Return
     End
 };
 
-NpcData N(PassiveNPCs)[] = {
+NpcData PassiveNPCs[] = {
     {
         .id = NPC_Archeologist,
         .pos = { -320.0f, 0.0f, -14.0f },
@@ -325,8 +325,8 @@ NpcData N(PassiveNPCs)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Archeologist),
-        .settings = &N(NpcSettings_Archeologist_Wander),
+        .init = &EVS_NpcInit_Archeologist,
+        .settings = &NpcSettings_Archeologist_Wander,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = ARCHEOLOGIST_ANIMS,
@@ -348,8 +348,8 @@ NpcData N(PassiveNPCs)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_MrE),
-        .settings = &N(NpcSettings_Dryite_Wander),
+        .init = &EVS_NpcInit_MrE,
+        .settings = &NpcSettings_Dryite_Wander,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_BLUE_ANIMS,
@@ -359,8 +359,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_DisguisedMoustafa,
         .pos = { 245.0f, 0.0f, -35.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_DisguisedMoustafa),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_DisguisedMoustafa,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DISGUISED_MOUSTAFA_ANIMS,
@@ -370,8 +370,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Toad,
         .pos = { -143.0f, 0.0f, -170.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_ToadHouseKeeper),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_ToadHouseKeeper,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -381,8 +381,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Merlee,
         .pos = { -130.0f, 0.0f, -400.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_Merlee),
-        .settings = &N(NpcSettings_Merlee),
+        .init = &EVS_NpcInit_Merlee,
+        .settings = &NpcSettings_Merlee,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MERLEE_ANIMS,
@@ -392,8 +392,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Moustafa,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Moustafa),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_Moustafa,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSTAFA_ANIMS,
@@ -403,8 +403,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Dryite_02,
         .pos = { 25.0f, 0.0f, -38.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Dryite_02),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_Dryite_02,
+        .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
@@ -414,8 +414,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Dryite_03,
         .pos = { -375.0f, 0.0f, -10.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Dryite_03),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_Dryite_03,
+        .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
@@ -425,8 +425,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Mouser_01,
         .pos = { -50.0f, 0.0f, -470.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_Mouser_01),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_Mouser_01,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSER_BLUE_ANIMS,
@@ -436,8 +436,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Mouser_02,
         .pos = { -270.0f, 0.0f, 91.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Mouser_02),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_Mouser_02,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSER_BLUE_ANIMS,
@@ -447,8 +447,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Mouser_03,
         .pos = { 210.0f, 0.0f, -35.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Mouser_03),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_Mouser_03,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSER_PURPLE_ANIMS,
@@ -459,7 +459,7 @@ NpcData N(PassiveNPCs)[] = {
         .yaw = 270,
         .initVarCount = 1,
         .initVar = { .bytes = { 0, QUIZ_AREA_DRO, QUIZ_COUNT_DRO, QUIZ_MAP_DRO_02 } },
-        .settings = &N(NpcSettings_ChuckQuizmo),
+        .settings = &NpcSettings_ChuckQuizmo,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = QUIZMO_ANIMS,
@@ -467,7 +467,7 @@ NpcData N(PassiveNPCs)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(PassiveNPCs)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(PassiveNPCs),
     {},
 };

@@ -90,7 +90,6 @@ EffectInstance* firework_rocket_main(s32 variation, f32 centerX, f32 centerY, f3
     bp.init = firework_rocket_init;
     bp.update = firework_rocket_update;
     bp.renderScene = firework_rocket_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_FIREWORK_ROCKET;
 

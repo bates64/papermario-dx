@@ -1,25 +1,25 @@
 #include "tst_10.h"
 #include "entity.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [tst_10_ENTRY_0]    {    0.0,    0.0, -480.0,  180.0 },
     [tst_10_ENTRY_1]    { -480.0,    0.0,    0.0,   90.0 },
     [tst_10_ENTRY_2]    {    0.0,    0.0,  480.0,    0.0 },
     [tst_10_ENTRY_3]    {  480.0,    0.0,    0.0,  270.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
 };
 
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
-EvtScript N(EVS_ExitWalk_tst_10_2) = {
+EvtScript EVS_ExitWalk_tst_10_2 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_0)
     Exec(ExitWalk)
@@ -30,7 +30,7 @@ EvtScript N(EVS_ExitWalk_tst_10_2) = {
 };
 
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
-EvtScript N(EVS_ExitWalk_tst_10_3) = {
+EvtScript EVS_ExitWalk_tst_10_3 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_1)
     Exec(ExitWalk)
@@ -41,7 +41,7 @@ EvtScript N(EVS_ExitWalk_tst_10_3) = {
 };
 
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
-EvtScript N(EVS_ExitWalk_tst_10_0) = {
+EvtScript EVS_ExitWalk_tst_10_0 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_2)
     Exec(ExitWalk)
@@ -52,7 +52,7 @@ EvtScript N(EVS_ExitWalk_tst_10_0) = {
 };
 
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
-EvtScript N(EVS_ExitWalk_tst_10_1) = {
+EvtScript EVS_ExitWalk_tst_10_1 = {
     Call(DisablePlayerInput, true)
     Call(UseExitHeading, 60, tst_10_ENTRY_3)
     Exec(ExitWalk)
@@ -62,7 +62,7 @@ EvtScript N(EVS_ExitWalk_tst_10_1) = {
     End
 };
 
-EvtScript N(EVS_DisableExitCameraZones) = {
+EvtScript EVS_DisableExitCameraZones = {
     Call(SetZoneEnabled, ZONE_north, false)
     Call(SetZoneEnabled, ZONE_west,  false)
     Call(SetZoneEnabled, ZONE_south, false)
@@ -72,20 +72,20 @@ EvtScript N(EVS_DisableExitCameraZones) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_tst_10_2)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_tst_10_3)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_tst_10_0)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_tst_10_1)), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_tst_10_2), TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_tst_10_3), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_tst_10_0), TRIGGER_FLOOR_TOUCH, COLLIDER_deilis, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_tst_10_1), TRIGGER_FLOOR_TOUCH, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfEq(AF_TST10_DisabledExitCameras, true)
         Call(SetZoneEnabled, ZONE_north, false)
         Call(SetZoneEnabled, ZONE_west,  false)
@@ -94,16 +94,16 @@ EvtScript N(EVS_Main) = {
         Set(AF_TST10_DisabledExitCameras, false)
     Else
         Set(AF_TST10_DisabledExitCameras, true)
-        BindTrigger(Ref(N(EVS_DisableExitCameraZones)), TRIGGER_FLOOR_TOUCH, COLLIDER_change, 1, 0)
+        BindTrigger(Ref(EVS_DisableExitCameraZones), TRIGGER_FLOOR_TOUCH, COLLIDER_change, 1, 0)
     EndIf
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_HeartBlock), -13, 60, -50, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_HiddenPanel), -111, 0, -55, 0, MODEL_o137, MAKE_ENTITY_END)
     Return

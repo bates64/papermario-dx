@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/HammerBros/wander.inc.c"
 
-NpcData N(NpcData_HammerBros)[] = {
+NpcData NpcData_HammerBros[] = {
     {
         .id = NPC_HammerBros,
         .pos = { 100.0f, 0.0f, 120.0f },
@@ -19,7 +19,7 @@ NpcData N(NpcData_HammerBros)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_HammerBros_Wander),
+        .settings = &NpcSettings_HammerBros_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = HAMMER_BROS_DROPS,
         .animations = HAMMER_BROS_ANIMS,
@@ -32,7 +32,7 @@ NpcData N(NpcData_HammerBros)[] = {
     HAMMER_BROS_HAMMER_HITBOX(NPC_HammerBros + 6),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_HammerBros), BTL_KPA_FORMATION_14, BTL_KPA_STAGE_0C),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_HammerBros, BTL_KPA_FORMATION_14, BTL_KPA_STAGE_0C),
     {}
 };

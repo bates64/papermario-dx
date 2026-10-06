@@ -47,7 +47,6 @@ void stars_burst_main(
         bpPtr->init = stars_burst_init;
         bpPtr->update = stars_burst_update;
         bpPtr->renderScene = stars_burst_render;
-        bpPtr->unk_00 = 0;
         bpPtr->renderUI = nullptr;
         bpPtr->effectID = EFFECT_STARS_BURST;
 

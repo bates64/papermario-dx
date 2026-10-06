@@ -46,7 +46,6 @@ EffectInstance* effect_63_main(
     bpPtr->init = effect_63_init;
     bpPtr->update = effect_63_update;
     bpPtr->renderScene = effect_63_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_63;
 

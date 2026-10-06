@@ -1,7 +1,7 @@
 #include "hos_10.h"
 #include "effects.h"
 
-API_CALLABLE(N(NpcOrbitPlayerPos)) {
+API_CALLABLE(NpcOrbitPlayerPos) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Npc* npc;
@@ -57,7 +57,7 @@ API_CALLABLE(N(NpcOrbitPlayerPos)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetHaloPos)) {
+API_CALLABLE(SetHaloPos) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     f32 x, y, z;
@@ -71,7 +71,7 @@ API_CALLABLE(N(SetHaloPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetHaloScale)) {
+API_CALLABLE(SetHaloScale) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -79,7 +79,7 @@ API_CALLABLE(N(SetHaloScale)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetHaloAlpha)) {
+API_CALLABLE(SetHaloAlpha) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -87,12 +87,12 @@ API_CALLABLE(N(SetHaloAlpha)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ClearCurrentPartner)) {
+API_CALLABLE(ClearCurrentPartner) {
     gPlayerData.curPartner = PARTNER_NONE;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FadeScreenToWhite)) {
+API_CALLABLE(FadeScreenToWhite) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -112,7 +112,7 @@ API_CALLABLE(N(FadeScreenToWhite)) {
     return ApiStatus_BLOCK;
 }
 
-Vec3f N(PlayerPath)[] = {
+Vec3f PlayerPath[] = {
     { -130.0,     0.0, 1300.0 },
     {   20.0,  -100.0, 1250.0 },
     {  170.0,    50.0, 1000.0 },
@@ -120,28 +120,28 @@ Vec3f N(PlayerPath)[] = {
     {    0.0,     0.0, -450.0 },
 };
 
-Vec3f N(EldstarPath)[] = {
+Vec3f EldstarPath[] = {
     {    0.0,     0.0, -350.0 },
     { -150.0,    70.0,  500.0 },
     {    0.0,    30.0, 1200.0 },
     {  200.0,    30.0, 1800.0 },
 };
 
-Vec3f N(MisstarPath)[] = {
+Vec3f MisstarPath[] = {
     {    0.0,     0.0, -350.0 },
     { -200.0,  -100.0,  300.0 },
     {  -50.0,   -50.0,  800.0 },
     {   30.0,    80.0, 1900.0 },
 };
 
-Vec3f N(SkolarPath)[] = {
+Vec3f SkolarPath[] = {
     {    0.0,     0.0, -350.0 },
     { -300.0,   -60.0,  300.0 },
     {    0.0,   -20.0, 1000.0 },
     {  -50.0,    40.0, 1800.0 },
 };
 
-Vec3f N(MamarPath)[] = {
+Vec3f MamarPath[] = {
     {    0.0,     0.0, -350.0 },
     { -170.0,   -20.0,  200.0 },
     {  170.0,    60.0,  500.0 },
@@ -149,14 +149,14 @@ Vec3f N(MamarPath)[] = {
     {   50.0,    50.0, 1800.0 },
 };
 
-Vec3f N(KalmarPath)[] = {
+Vec3f KalmarPath[] = {
     {    0.0,     0.0, -350.0 },
     {  300.0,   200.0,  350.0 },
     {  100.0,   120.0, 1000.0 },
     {  -30.0,    10.0, 1800.0 },
 };
 
-Vec3f N(MuskularPath)[] = {
+Vec3f MuskularPath[] = {
     {    0.0,     0.0, -350.0 },
     { -100.0,     0.0,  200.0 },
     {    0.0,  -150.0,  500.0 },
@@ -164,7 +164,7 @@ Vec3f N(MuskularPath)[] = {
     {    0.0,   100.0, 1800.0 },
 };
 
-Vec3f N(KlevarPath)[] = {
+Vec3f KlevarPath[] = {
     {    0.0,     0.0, -350.0 },
     {  200.0,   -60.0,  200.0 },
     {  500.0,  -150.0,  500.0 },
@@ -172,14 +172,14 @@ Vec3f N(KlevarPath)[] = {
     {  -60.0,    75.0, 1800.0 },
 };
 
-Vec3f N(TwinkPath)[] = {
+Vec3f TwinkPath[] = {
     {    0.0,     0.0, -350.0 },
     { -150.0,    70.0,  500.0 },
     {    0.0,    30.0, 1200.0 },
     {   40.0,    30.0, 1600.0 },
 };
 
-EvtScript N(EVS_Scene_CastleDescending) = {
+EvtScript EVS_Scene_CastleDescending = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -195,14 +195,14 @@ EvtScript N(EVS_Scene_CastleDescending) = {
     Call(TranslateGroup, MODEL_castle, 0, -2500, 0)
     Call(ScaleGroup, MODEL_castle, Float(0.4), Float(0.4), Float(0.4))
     PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, Float(7.0), MV_BubbleFXPtr)
-    Call(N(SetHaloAlpha), MV_BubbleFXPtr, 128)
+    Call(SetHaloAlpha, MV_BubbleFXPtr, 128)
     ChildThread
         PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 0, 0, Float(10.0), MV_HaloFXPtr)
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar1, 12)
             Add(LVar2, 60)
-            Call(N(SetHaloPos), MV_HaloFXPtr, LVar0, LVar1, LVar2)
+            Call(SetHaloPos, MV_HaloFXPtr, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop
     EndChildThread
@@ -237,29 +237,29 @@ EvtScript N(EVS_Scene_CastleDescending) = {
         Call(NpcJump0, NPC_Twink, -130, 60, 1300, 250)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Eldstar, 0, 0)
+        Call(NpcOrbitPlayerPos, NPC_Eldstar, 0, 0)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Mamar, 1, 0)
+        Call(NpcOrbitPlayerPos, NPC_Mamar, 1, 0)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Skolar, 2, 0)
+        Call(NpcOrbitPlayerPos, NPC_Skolar, 2, 0)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Muskular, 3, 0)
+        Call(NpcOrbitPlayerPos, NPC_Muskular, 3, 0)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Misstar, 4, 0)
+        Call(NpcOrbitPlayerPos, NPC_Misstar, 4, 0)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Klevar, 5, 0)
+        Call(NpcOrbitPlayerPos, NPC_Klevar, 5, 0)
     EndThread
     Thread
-        Call(N(NpcOrbitPlayerPos), NPC_Kalmar, 6, 0)
+        Call(NpcOrbitPlayerPos, NPC_Kalmar, 6, 0)
     EndThread
     Wait(350)
     Thread
-        Call(LoadPath, 190, Ref(N(PlayerPath)), ARRAY_COUNT(N(PlayerPath)), EASING_LINEAR)
+        Call(LoadPath, 190, Ref(PlayerPath), ARRAY_COUNT(PlayerPath), EASING_LINEAR)
         Label(0)
             Call(GetNextPathPos)
             Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -342,7 +342,7 @@ EvtScript N(EVS_Scene_CastleDescending) = {
         Loop(0)
             Call(UpdateLerp)
             DivF(LVar0, 100)
-            Call(N(SetHaloScale), MV_HaloFXPtr, LVar0)
+            Call(SetHaloScale, MV_HaloFXPtr, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -356,7 +356,7 @@ EvtScript N(EVS_Scene_CastleDescending) = {
     End
 };
 
-EvtScript N(EVS_MakeNpcSparkleTrail) = {
+EvtScript EVS_MakeNpcSparkleTrail = {
     ChildThread
         Loop(30)
             Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
@@ -383,7 +383,7 @@ EvtScript N(EVS_MakeNpcSparkleTrail) = {
     End
 };
 
-EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
+EvtScript EVS_Scene_SpiritsFlyingAway = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -394,7 +394,7 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Call(TranslateGroup, MODEL_castle, 0, -2500, 0)
     Call(ScaleGroup, MODEL_castle, Float(0.4), Float(0.4), Float(0.4))
     PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, Float(7.0), LVarA)
-    Call(N(SetHaloAlpha), LVarA, 128)
+    Call(SetHaloAlpha, LVarA, 128)
     Call(EnableTexPanning, MODEL_k2, true)
     Call(EnableTexPanning, MODEL_k7, true)
     Call(EnableTexPanning, MODEL_k1, true)
@@ -408,8 +408,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
         Set(LVar0, NPC_Eldstar)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(EldstarPath)), ARRAY_COUNT(N(EldstarPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(EldstarPath), ARRAY_COUNT(EldstarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Eldstar, LVar1, LVar2, LVar3)
@@ -422,8 +422,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(50)
         Set(LVar0, NPC_Misstar)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(MisstarPath)), ARRAY_COUNT(N(MisstarPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(MisstarPath), ARRAY_COUNT(MisstarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Misstar, LVar1, LVar2, LVar3)
@@ -436,8 +436,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(100)
         Set(LVar0, NPC_Skolar)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(SkolarPath)), ARRAY_COUNT(N(SkolarPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(SkolarPath), ARRAY_COUNT(SkolarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Skolar, LVar1, LVar2, LVar3)
@@ -450,8 +450,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(150)
         Set(LVar0, NPC_Mamar)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(MamarPath)), ARRAY_COUNT(N(MamarPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(MamarPath), ARRAY_COUNT(MamarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Mamar, LVar1, LVar2, LVar3)
@@ -464,8 +464,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(200)
         Set(LVar0, NPC_Kalmar)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(KalmarPath)), ARRAY_COUNT(N(KalmarPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(KalmarPath), ARRAY_COUNT(KalmarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Kalmar, LVar1, LVar2, LVar3)
@@ -478,8 +478,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(250)
         Set(LVar0, NPC_Muskular)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(MuskularPath)), ARRAY_COUNT(N(MuskularPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(MuskularPath), ARRAY_COUNT(MuskularPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Muskular, LVar1, LVar2, LVar3)
@@ -492,8 +492,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(300)
         Set(LVar0, NPC_Klevar)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(KlevarPath)), ARRAY_COUNT(N(KlevarPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(KlevarPath), ARRAY_COUNT(KlevarPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Klevar, LVar1, LVar2, LVar3)
@@ -506,8 +506,8 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Thread
         Wait(450)
         Set(LVar0, NPC_Twink)
-        Exec(N(EVS_MakeNpcSparkleTrail))
-        Call(LoadPath, 75, Ref(N(TwinkPath)), ARRAY_COUNT(N(TwinkPath)), EASING_LINEAR)
+        Exec(EVS_MakeNpcSparkleTrail)
+        Call(LoadPath, 75, Ref(TwinkPath), ARRAY_COUNT(TwinkPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -546,9 +546,9 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
         Call(FadeOutMusic, 0, 3000)
     EndThread
     Wait(800)
-    Call(N(FadeScreenToWhite))
+    Call(FadeScreenToWhite)
     Wait(90)
-    Call(N(ClearCurrentPartner))
+    Call(ClearCurrentPartner)
     Call(GotoMapSpecial, Ref("kmr_20"), kmr_20_ENTRY_2, TRANSITION_OUTRO_END_SCENE)
     Wait(100)
     Return

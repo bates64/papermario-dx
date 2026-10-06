@@ -1,6 +1,6 @@
 #include "flo_11.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [flo_11_ENTRY_0]    {  470.0,    0.0,  -15.0,  270.0 },
     [flo_11_ENTRY_1]    { -470.0,    0.0,  -15.0,   90.0 },
     [flo_11_ENTRY_2]    {  360.0,   50.0, -237.0,  270.0 },
@@ -11,10 +11,10 @@ EntryList N(Entrances) = {
     [flo_11_ENTRY_7]    { -360.0,   35.0,    0.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "fla_bg",
     .tattle = { MSG_MapTattle_flo_11 },
 };

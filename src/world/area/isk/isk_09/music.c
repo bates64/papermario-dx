@@ -1,6 +1,6 @@
 #include "isk_09.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfEq(GF_ISK09_ThirdWarning, false)
         Thread
             Call(FadeInMusic, 1, SONG_TUTANKOOPA_WARNING, 0, 2000, 0, 127)
@@ -34,7 +34,7 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PlayUpgradeSong) = {
+EvtScript EVS_PlayUpgradeSong = {
     Call(PushSong, SONG_ITEM_UPGRADE, 1)
     Wait(130)
     Call(PopSong)

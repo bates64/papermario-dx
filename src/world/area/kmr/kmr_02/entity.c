@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "effects.h"
 
-API_CALLABLE(N(PlayerHasBadgeEquipped)) {
+API_CALLABLE(PlayerHasBadgeEquipped) {
     PlayerData* playerData = &gPlayerData;
     s32 hasBadgeEquipped = false;
     s32 i;
@@ -18,14 +18,14 @@ API_CALLABLE(N(PlayerHasBadgeEquipped)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GotoMap_tik_01_2) = {
+EvtScript EVS_GotoMap_tik_01_2 = {
     Call(GotoMap, Ref("tik_01"), tik_01_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
-API_CALLABLE(N(AnimateBlockScale)) {
+API_CALLABLE(AnimateBlockScale) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
     if (isInitialCall) {
@@ -45,12 +45,12 @@ API_CALLABLE(N(AnimateBlockScale)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_OnSmash_GateBlock) = {
+EvtScript EVS_OnSmash_GateBlock = {
     Call(DisablePlayerInput, true)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_0066)
     Wait(10 * DT)
-    Call(N(PlayerHasBadgeEquipped))
+    Call(PlayerHasBadgeEquipped)
     IfEq(LVar0, false)
         Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_0067)
         Wait(10 * DT)
@@ -62,7 +62,7 @@ EvtScript N(EVS_OnSmash_GateBlock) = {
     End
 };
 
-EvtScript N(EVS_SummonGateBlock) = {
+EvtScript EVS_SummonGateBlock = {
     Call(PlaySoundAt, SOUND_KAMMY_SUMMON_MAGIC, SOUND_SPACE_DEFAULT, 373, 88, 255)
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 373, 88, 255, 1, 100)
@@ -79,8 +79,8 @@ EvtScript N(EVS_SummonGateBlock) = {
     PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, 326, 150, 261, 1, 60)
     Call(MakeEntity, Ref(Entity_Hammer1Block), 326, 120, 261, 148, MAKE_ENTITY_END)
     Set(LVarA, LVar0)
-    Call(AssignScript, Ref(N(EVS_OnSmash_GateBlock)))
-    Call(N(AnimateBlockScale))
+    Call(AssignScript, Ref(EVS_OnSmash_GateBlock))
+    Call(AnimateBlockScale)
     Set(LVar9, LVarA)
     Call(GetEntityPosition, LVar9, LVar2, LVar3, LVar4)
     Call(MakeLerp, LVar3, 300, 20 * DT, EASING_QUADRATIC_IN)
@@ -117,12 +117,12 @@ EvtScript N(EVS_SummonGateBlock) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_GATE_CRUSHED)
         CaseLt(STORY_CH0_SMASHED_GATE_BLOCK)
             Call(MakeEntity, Ref(Entity_Hammer1BlockWideX), 326, 0, 261, 270, MAKE_ENTITY_END)
-            Call(AssignScript, Ref(N(EVS_OnSmash_GateBlock)))
+            Call(AssignScript, Ref(EVS_OnSmash_GateBlock))
         CaseLt(STORY_CH0_TWINK_GAVE_LUCKY_STAR)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt2, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
@@ -134,7 +134,7 @@ EvtScript N(EVS_MakeEntities) = {
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 0, 0, 355, 0, kmr_02_ENTRY_3, Ref(N(EVS_GotoMap_tik_01_2)), EVT_INDEX_OF_GAME_FLAG(GF_KMR02_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 0, 0, 355, 0, kmr_02_ENTRY_3, Ref(EVS_GotoMap_tik_01_2), EVT_INDEX_OF_GAME_FLAG(GF_KMR02_WarpPipe), MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_SavePoint), 250, 60, 75, -15, MAKE_ENTITY_END)
     IfGe(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Call(MakeItemEntity, ITEM_SHOOTING_STAR, 510, 0, -340, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR02_Item_ShootingStar)

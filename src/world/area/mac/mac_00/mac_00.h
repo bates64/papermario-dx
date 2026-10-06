@@ -64,25 +64,23 @@ enum {
     MF_MusicMixTrigger2       = MapFlag(11),
 };
 
-#define NAMESPACE mac_00
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupMusicTriggers;
+extern EvtScript EVS_SetupShop;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_SetupWaterCustomGfx;
+extern EvtScript EVS_SetupDemo;
+extern EvtScript EVS_Scene_Intro;
+extern EvtScript EVS_Scene_BeginEpilogue;
+extern EvtScript EVS_Scene_ToadTownGreeting;
+extern EvtScript EVS_BlockExitToGoomaRoad;
+extern EvtScript EVS_WaterfrontHouse_DoorLocked;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupMusicTriggers);
-extern EvtScript N(EVS_SetupShop);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_SetupWaterCustomGfx);
-extern EvtScript N(EVS_SetupDemo);
-extern EvtScript N(EVS_Scene_Intro);
-extern EvtScript N(EVS_Scene_BeginEpilogue);
-extern EvtScript N(EVS_Scene_ToadTownGreeting);
-extern EvtScript N(EVS_BlockExitToGoomaRoad);
-extern EvtScript N(EVS_WaterfrontHouse_DoorLocked);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(IntroNPCs);
-extern NpcGroupList N(EpilogueNPCs);
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList IntroNPCs;
+extern NpcGroupList EpilogueNPCs;
+extern NpcGroupList DefaultNPCs;
 
 #include "world/common/npc/Toad/wander.h"
 #include "world/common/npc/Toad/patrol.h"

@@ -1,12 +1,12 @@
 #include "sam_11.h"
 
-EvtScript N(EVS_SetDoorRot_LeftHouse) = {
+EvtScript EVS_SetDoorRot_LeftHouse = {
     Call(RotateModel, MODEL_o541, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_LeftHouse) = {
+EvtScript EVS_SetWallRot_LeftHouse = {
     Call(RotateGroup, MODEL_g_ue, LVar0, 1, 0, 0)
     Call(RotateGroup, MODEL_g_sita, LVar0, 1, 0, 0)
     IfGt(LVar0, 89)
@@ -21,7 +21,7 @@ EvtScript N(EVS_SetWallRot_LeftHouse) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_LeftHouse) = {
+EvtScript EVS_DropDoor_LeftHouse = {
     Call(RotateModel, MODEL_o541, LVar0, 1, 0, 0)
     IfGt(LVar0, 89)
     EndIf
@@ -31,7 +31,7 @@ EvtScript N(EVS_DropDoor_LeftHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_LeftHouse) = {
+EvtScript EVS_RoomListener_LeftHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Set(AF_SAM_Snowing, false)
@@ -79,13 +79,13 @@ EvtScript N(EVS_RoomListener_LeftHouse) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_RightHouse) = {
+EvtScript EVS_SetDoorRot_RightHouse = {
     Call(RotateModel, MODEL_o540, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_RightHouse) = {
+EvtScript EVS_SetWallRot_RightHouse = {
     Call(RotateGroup, MODEL_s_ue, LVar0, 1, 0, 0)
     Call(RotateGroup, MODEL_s_sita, LVar0, 1, 0, 0)
     IfGt(LVar0, 89)
@@ -100,15 +100,15 @@ EvtScript N(EVS_SetWallRot_RightHouse) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_RightHouse) = {
+EvtScript EVS_DropDoor_RightHouse = {
     Call(RotateModel, MODEL_o540, LVar0, 1, 0, 0)
     Return
     End
 };
 
-ITEM_LIST(N(KeyList), ITEM_WAREHOUSE_KEY);
+ITEM_LIST(KeyList, ITEM_WAREHOUSE_KEY);
 
-EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
+EvtScript EVS_UnlockPrompt_LeftHouse = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
@@ -135,7 +135,7 @@ EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_RightHouse) = {
+EvtScript EVS_RoomListener_RightHouse = {
     Switch(LVar0)
         CaseEq(0)
             Set(AF_SAM_Snowing, false)
@@ -148,93 +148,93 @@ EvtScript N(EVS_RoomListener_RightHouse) = {
     End
 };
 
-s32 N(InteriorNPCs_LeftHouse)[] = {
+s32 InteriorNPCs_LeftHouse[] = {
     NPC_Herringway,
     NPC_Unassigned_0B,
     -1
 };
 
-s32 N(InteriorNPCs_RightHouse)[] = {
+s32 InteriorNPCs_RightHouse[] = {
     NPC_Herringway,
     -1
 };
 
-EvtScript N(EVS_SetupLockedHouse) = {
+EvtScript EVS_SetupLockedHouse = {
     // lower right house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_RightHouse)),
-        Ref(N(EVS_SetWallRot_RightHouse)),
-        Ref(N(EVS_DropDoor_RightHouse)),
-        Ref(N(EVS_RoomListener_RightHouse)),
+        Ref(EVS_SetDoorRot_RightHouse),
+        Ref(EVS_SetWallRot_RightHouse),
+        Ref(EVS_DropDoor_RightHouse),
+        Ref(EVS_RoomListener_RightHouse),
         COLLIDER_o540,
         COLLIDER_o591,
         MODEL_sou,
-        Ref(N(InteriorNPCs_RightHouse)))
+        Ref(InteriorNPCs_RightHouse))
     Return
     End
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_g_naiso, MODEL_GROUP_HIDDEN)
     Call(EnableModel, MODEL_gn_dan1, true)
     // lower left house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_LeftHouse)),
-        Ref(N(EVS_SetWallRot_LeftHouse)),
-        Ref(N(EVS_DropDoor_LeftHouse)),
-        Ref(N(EVS_RoomListener_LeftHouse)),
+        Ref(EVS_SetDoorRot_LeftHouse),
+        Ref(EVS_SetWallRot_LeftHouse),
+        Ref(EVS_DropDoor_LeftHouse),
+        Ref(EVS_RoomListener_LeftHouse),
         COLLIDER_o541,
         COLLIDER_o590,
         MODEL_gon,
-        Ref(N(InteriorNPCs_LeftHouse)))
+        Ref(InteriorNPCs_LeftHouse))
     Call(SetGroupVisibility, MODEL_s_naiso, MODEL_GROUP_HIDDEN)
     IfEq(GF_SAM11_UnlockedDoor, true)
-        ExecWait(N(EVS_SetupLockedHouse))
+        ExecWait(EVS_SetupLockedHouse)
     Else
-        BindPadlock(Ref(N(EVS_UnlockPrompt_LeftHouse)), TRIGGER_WALL_PRESS_A,
-            EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
+        BindPadlock(Ref(EVS_UnlockPrompt_LeftHouse), TRIGGER_WALL_PRESS_A,
+            EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_HideRightHouse) = {
+EvtScript EVS_HideRightHouse = {
     Set(LVar0, 0)
-    ExecWait(N(EVS_DropDoor_RightHouse))
+    ExecWait(EVS_DropDoor_RightHouse)
     Set(LVar0, 0)
-    ExecWait(N(EVS_SetWallRot_RightHouse))
+    ExecWait(EVS_SetWallRot_RightHouse)
     Set(LVar0, 0)
-    ExecWait(N(EVS_SetDoorRot_RightHouse))
+    ExecWait(EVS_SetDoorRot_RightHouse)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
-    ExecWait(N(EVS_RoomListener_RightHouse))
+    ExecWait(EVS_RoomListener_RightHouse)
     Return
     End
 };
 
-EvtScript N(EVS_RevealRightHouse) = {
+EvtScript EVS_RevealRightHouse = {
     Set(LVar0, ROOM_UPDATE_ENTER_BEGIN)
-    ExecWait(N(EVS_RoomListener_RightHouse))
+    ExecWait(EVS_RoomListener_RightHouse)
     Set(LVar0, 0)
-    ExecWait(N(EVS_SetDoorRot_RightHouse))
+    ExecWait(EVS_SetDoorRot_RightHouse)
     Set(LVar0, 90)
-    ExecWait(N(EVS_SetWallRot_RightHouse))
+    ExecWait(EVS_SetWallRot_RightHouse)
     Set(LVar0, 90)
-    ExecWait(N(EVS_DropDoor_RightHouse))
+    ExecWait(EVS_DropDoor_RightHouse)
     Return
     End
 };
 
-EvtScript N(EVS_RevealLeftHouse) = {
+EvtScript EVS_RevealLeftHouse = {
     Set(LVar0, ROOM_UPDATE_ENTER_BEGIN)
-    ExecWait(N(EVS_RoomListener_LeftHouse))
+    ExecWait(EVS_RoomListener_LeftHouse)
     Set(LVar0, 0)
-    ExecWait(N(EVS_SetDoorRot_LeftHouse))
+    ExecWait(EVS_SetDoorRot_LeftHouse)
     Set(LVar0, 90)
-    ExecWait(N(EVS_SetWallRot_LeftHouse))
+    ExecWait(EVS_SetWallRot_LeftHouse)
     Set(LVar0, 90)
-    ExecWait(N(EVS_DropDoor_LeftHouse))
+    ExecWait(EVS_DropDoor_LeftHouse)
     Return
     End
 };

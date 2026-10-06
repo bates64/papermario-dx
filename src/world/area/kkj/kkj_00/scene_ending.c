@@ -4,7 +4,7 @@
 #include "world/common/npc/ToadGuard/base.h"
 #include "world/common/npc/ToadMinister/base.h"
 
-API_CALLABLE(N(FadeScreenToWhite)) {
+API_CALLABLE(FadeScreenToWhite) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -24,7 +24,7 @@ API_CALLABLE(N(FadeScreenToWhite)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_OpenAndCloseFrontDoor_Ending) = {
+EvtScript EVS_OpenAndCloseFrontDoor_Ending = {
     Call(PlaySoundAtCollider, COLLIDER_tts, SOUND_LARGE_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -52,7 +52,7 @@ EvtScript N(EVS_OpenAndCloseFrontDoor_Ending) = {
     End
 };
 
-EvtScript N(EVS_OpenAndClosePeachDoor) = {
+EvtScript EVS_OpenAndClosePeachDoor = {
     Call(PlaySoundAtCollider, COLLIDER_ttn, SOUND_LARGE_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -80,14 +80,14 @@ EvtScript N(EVS_OpenAndClosePeachDoor) = {
     End
 };
 
-EvtScript N(EVS_Scene_Ending) = {
+EvtScript EVS_Scene_Ending = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 0, 250)
     Call(SetPanTarget, CAM_DEFAULT, 50, 0, 250)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
-    Exec(N(EVS_OpenAndCloseFrontDoor_Ending))
+    Exec(EVS_OpenAndCloseFrontDoor_Ending)
     Call(func_802D1270, 0, 300, Float(4.0))
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_ToadMinister_Walk)
     Call(NpcMoveTo, NPC_Toad_01, 74, 243, 10)
@@ -104,7 +104,7 @@ EvtScript N(EVS_Scene_Ending) = {
     Call(InterpPlayerYaw, 0, 0)
     Wait(10)
     Call(SetMusic, 0, SONG_PEACH_APPEARS, 0, VOL_LEVEL_FULL)
-    Exec(N(EVS_OpenAndClosePeachDoor))
+    Exec(EVS_OpenAndClosePeachDoor)
     Thread
         Call(SetNpcAnimation, NPC_Peach, ANIM_Peach1_Walk)
         Call(SetNpcSpeed, NPC_Peach, Float(2.0))
@@ -215,7 +215,7 @@ EvtScript N(EVS_Scene_Ending) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(120)
-    Call(N(FadeScreenToWhite))
+    Call(FadeScreenToWhite)
     Wait(60)
     Call(FadeOutMusic, 0, 2000)
     Call(GotoMapSpecial, Ref("end_00"), end_00_ENTRY_0, TRANSITION_OUTRO_END_SCENE)

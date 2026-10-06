@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SpawnIceShards)) {
+API_CALLABLE(SpawnIceShards) {
     EffectInstance* effect;
     f32 posX, posZ;
     f32 velX, velY, velZ;
@@ -33,7 +33,7 @@ API_CALLABLE(N(SpawnIceShards)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetDraggingPlayerPosY)) {
+API_CALLABLE(SetDraggingPlayerPosY) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 x = playerStatus->pos.x;
     f32 y = playerStatus->pos.y + 10.0f;
@@ -47,7 +47,7 @@ API_CALLABLE(N(SetDraggingPlayerPosY)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetBombetteExplodeGround)) {
+API_CALLABLE(GetBombetteExplodeGround) {
     Bytecode* args = script->ptrReadPos;
     Npc* partner = get_npc_safe(NPC_PARTNER);
     s32 colliderID = NO_COLLIDER;
@@ -69,22 +69,22 @@ API_CALLABLE(N(GetBombetteExplodeGround)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(IcebergBobbingOffsets)[] = {
+s32 IcebergBobbingOffsets[] = {
     0,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  1,  1,  1,
     0, -1, -1, -1, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1,
     0x8000,
 };
 
-EvtScript N(EVS_UpdateIceberg) = {
+EvtScript EVS_UpdateIceberg = {
     Call(RandInt, 10, LVar0)
     Wait(LVar0)
-    UseBuf(Ref(N(IcebergBobbingOffsets)))
+    UseBuf(Ref(IcebergBobbingOffsets))
     Loop(0)
         BufRead1(LVar0)
         IfEq(LVar0, 0x8000)
             Call(RandInt, 10, LVar0)
             Wait(LVar0)
-            UseBuf(Ref(N(IcebergBobbingOffsets)))
+            UseBuf(Ref(IcebergBobbingOffsets))
             BufRead1(LVar0)
         EndIf
         Call(TranslateModel, LVarA, 0, LVar0, 0)
@@ -94,24 +94,24 @@ EvtScript N(EVS_UpdateIceberg) = {
     End
 };
 
-EvtScript N(EVS_SetupIcebergs) = {
+EvtScript EVS_SetupIcebergs = {
     Set(LVarA, MODEL_o773)
-    Exec(N(EVS_UpdateIceberg))
+    Exec(EVS_UpdateIceberg)
     Set(LVarA, MODEL_o775)
-    Exec(N(EVS_UpdateIceberg))
+    Exec(EVS_UpdateIceberg)
     Set(LVarA, MODEL_o777)
-    Exec(N(EVS_UpdateIceberg))
+    Exec(EVS_UpdateIceberg)
     Set(LVarA, MODEL_o778)
-    Exec(N(EVS_UpdateIceberg))
+    Exec(EVS_UpdateIceberg)
     Set(LVarA, MODEL_o779)
-    Exec(N(EVS_UpdateIceberg))
+    Exec(EVS_UpdateIceberg)
     Set(LVarA, MODEL_o780)
-    Exec(N(EVS_UpdateIceberg))
+    Exec(EVS_UpdateIceberg)
     Return
     End
 };
 
-EvtScript N(EVS_DamageFrozenPond_Before) = {
+EvtScript EVS_DamageFrozenPond_Before = {
     IfEq(MV_PondDamageInProgress, true)
         Return
     EndIf
@@ -180,7 +180,7 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
                     Call(GetNpcPos, NPC_PenguinPatrol, LVar1, LVar2, LVar3)
                     Call(AddVectorPolar, LVar1, LVar3, Float(20.0), LVar0)
                     Call(SetPlayerPos, LVar1, 0, LVar3)
-                    Call(N(SetDraggingPlayerPosY))
+                    Call(SetDraggingPlayerPosY)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                     Wait(1)
@@ -220,8 +220,8 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
     End
 };
 
-EvtScript N(EVS_BlastPond_Before) = {
-    Call(N(GetBombetteExplodeGround), LVar0)
+EvtScript EVS_BlastPond_Before = {
+    Call(GetBombetteExplodeGround, LVar0)
     IfNe(LVar0, COLLIDER_suimen)
         Return
     EndIf
@@ -238,21 +238,21 @@ EvtScript N(EVS_BlastPond_Before) = {
     IfGe(LVar2, 460)
         Return
     EndIf
-    ExecWait(N(EVS_DamageFrozenPond_Before))
+    ExecWait(EVS_DamageFrozenPond_Before)
     Wait(60)
     Set(MV_PondDamageInProgress, false)
     Return
     End
 };
 
-EvtScript N(EVS_TouchPond_Before) = {
+EvtScript EVS_TouchPond_Before = {
     Call(GetPlayerActionState, LVar0)
     IfNe(LVar0, ACTION_STATE_SPIN_POUND)
         IfNe(LVar0, ACTION_STATE_TORNADO_POUND)
             Return
         EndIf
     EndIf
-    ExecWait(N(EVS_DamageFrozenPond_Before))
+    ExecWait(EVS_DamageFrozenPond_Before)
     Label(0)
         Call(GetPlayerActionState, LVar0)
         Wait(1)
@@ -264,7 +264,7 @@ EvtScript N(EVS_TouchPond_Before) = {
     End
 };
 
-EvtScript N(EVS_DamageFrozenPond_After) = {
+EvtScript EVS_DamageFrozenPond_After = {
     IfEq(MV_PondDamageInProgress, true)
         Return
     EndIf
@@ -322,7 +322,7 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
         EndThread
     EndIf
     Call(PlaySoundAt, SOUND_SAM_POND_SHATTER, SOUND_SPACE_DEFAULT, 0, 60, 220)
-    Call(N(SpawnIceShards))
+    Call(SpawnIceShards)
     Call(EnableModel, MODEL_ice03, false)
     Call(SetGroupVisibility, MODEL_ice04, MODEL_GROUP_VISIBLE)
     Call(EnableGroup, MODEL_sui, true)
@@ -335,7 +335,7 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(EVS_UpdateTexturePan)
     EndThread
-    Exec(N(EVS_LoadPondAnimation))
+    Exec(EVS_LoadPondAnimation)
     Wait(60)
     Call(SetGroupVisibility, MODEL_ice04, MODEL_GROUP_HIDDEN)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ike, COLLIDER_FLAGS_UPPER_MASK)
@@ -351,7 +351,7 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o356, COLLIDER_FLAG_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suimen, SURFACE_TYPE_WATER)
-    Exec(N(EVS_SetupIcebergs))
+    Exec(EVS_SetupIcebergs)
     Set(GB_SAM11_FrozenPondDamage, 4)
     Set(GB_StoryProgress, STORY_CH7_SHATTERED_FROZEN_POND)
     IfEq(LVarA, 1)
@@ -369,8 +369,8 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
     End
 };
 
-EvtScript N(EVS_BlastPond_After) = {
-    Call(N(GetBombetteExplodeGround), LVar0)
+EvtScript EVS_BlastPond_After = {
+    Call(GetBombetteExplodeGround, LVar0)
     IfNe(LVar0, COLLIDER_suimen)
         Return
     EndIf
@@ -387,14 +387,14 @@ EvtScript N(EVS_BlastPond_After) = {
     IfGe(LVar2, 460)
         Return
     EndIf
-    ExecWait(N(EVS_DamageFrozenPond_After))
+    ExecWait(EVS_DamageFrozenPond_After)
     Wait(60)
     Set(MV_PondDamageInProgress, false)
     Return
     End
 };
 
-EvtScript N(EVS_TouchPond_After) = {
+EvtScript EVS_TouchPond_After = {
     IfEq(GB_SAM11_FrozenPondDamage, 4)
         Return
     EndIf
@@ -404,7 +404,7 @@ EvtScript N(EVS_TouchPond_After) = {
             Return
         EndIf
     EndIf
-    ExecWait(N(EVS_DamageFrozenPond_After))
+    ExecWait(EVS_DamageFrozenPond_After)
     Label(0)
         Call(GetPlayerActionState, LVar0)
         Wait(1)
@@ -416,12 +416,12 @@ EvtScript N(EVS_TouchPond_After) = {
     End
 };
 
-BombTrigger N(BombTrigger_Pond) = {
+BombTrigger BombTrigger_Pond = {
     .pos = { 0.0f, -10.0f, 220.0f },
     .diameter = 300
 };
 
-EvtScript N(EVS_SetupPond) = {
+EvtScript EVS_SetupPond = {
     Call(EnableGroup, MODEL_sui, false)
     Call(EnableGroup, MODEL_g279, false)
     Call(EnableModel, MODEL_ice00, false)
@@ -466,7 +466,7 @@ EvtScript N(EVS_SetupPond) = {
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o661, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o662, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o663, COLLIDER_FLAGS_UPPER_MASK)
-                Exec(N(EVS_SetupIcebergs))
+                Exec(EVS_SetupIcebergs)
         EndSwitch
     Else
         Call(EnableGroup, MODEL_sui, true)
@@ -485,14 +485,14 @@ EvtScript N(EVS_SetupPond) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o661, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o662, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o663, COLLIDER_FLAGS_UPPER_MASK)
-        Exec(N(EVS_SetupIcebergs))
+        Exec(EVS_SetupIcebergs)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
-        BindTrigger(Ref(N(EVS_BlastPond_Before)), TRIGGER_POINT_BOMB, Ref(N(BombTrigger_Pond)), 1, 0)
-        BindTrigger(Ref(N(EVS_TouchPond_Before)), TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
+        BindTrigger(Ref(EVS_BlastPond_Before), TRIGGER_POINT_BOMB, Ref(BombTrigger_Pond), 1, 0)
+        BindTrigger(Ref(EVS_TouchPond_Before), TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
     Else
-        BindTrigger(Ref(N(EVS_BlastPond_After)), TRIGGER_POINT_BOMB, Ref(N(BombTrigger_Pond)), 1, 0)
-        BindTrigger(Ref(N(EVS_TouchPond_After)), TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
+        BindTrigger(Ref(EVS_BlastPond_After), TRIGGER_POINT_BOMB, Ref(BombTrigger_Pond), 1, 0)
+        BindTrigger(Ref(EVS_TouchPond_After), TRIGGER_FLOOR_TOUCH, COLLIDER_suimen, 1, 0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH7_SHATTERED_FROZEN_POND)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAGS_UPPER_MASK)

@@ -1,16 +1,16 @@
 #include "kmr_04.h"
 #include "entity.h"
 
-EvtScript N(EVS_OnSmashBlock) = {
+EvtScript EVS_OnSmashBlock = {
     Set(GF_KMR04_Hammer1Block, true)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_KMR04_Hammer1Block, false)
         Call(MakeEntity, Ref(Entity_Hammer1Block), -80, 0, 400, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_OnSmashBlock)))
+        Call(AssignScript, Ref(EVS_OnSmashBlock))
     EndIf
     Call(MakeEntity, Ref(Entity_BrickBlock), -230, 60, -140, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BrickBlock), -440, 60, 20, 0, MAKE_ENTITY_END)

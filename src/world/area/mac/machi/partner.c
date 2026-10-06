@@ -1,7 +1,7 @@
 #include "machi.h"
 #include "sprite/player.h"
 
-Vec3f N(FlightPath)[] = {
+Vec3f FlightPath[] = {
     { -332.0,    10.0,  120.0 },
     { -160.0,    50.0,  300.0 },
     {  -71.0,    60.0,  130.0 },
@@ -18,7 +18,7 @@ Vec3f N(FlightPath)[] = {
     { -332.0,    10.0,  120.0 },
 };
 
-EvtScript N(EVS_ChasePartner) = {
+EvtScript EVS_ChasePartner = {
     Call(SetPlayerAnimation, ANIM_Mario1_Run)
     Label(0)
         Call(GetAngleToNPC, NPC_PARTNER, LVar0)
@@ -32,13 +32,13 @@ EvtScript N(EVS_ChasePartner) = {
     End
 };
 
-EvtScript N(EVS_FlyPartnerAround) = {
+EvtScript EVS_FlyPartnerAround = {
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING, true)
     Call(EnableNpcBlur, NPC_PARTNER, true)
     Label(10)
-        Call(LoadPath, 500, Ref(N(FlightPath)), ARRAY_COUNT(N(FlightPath)), EASING_LINEAR)
+        Call(LoadPath, 500, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
         Label(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)

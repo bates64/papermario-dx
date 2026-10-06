@@ -1,18 +1,16 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
-#include "battle/action_cmd/jump.h"
 #include "effects.h"
 #include "sprite/player.h"
-
-#define NAMESPACE battle_move_jump_charge_1
 
 #include "battle/common/move/JumpSupport.inc.c"
 
 #include "battle/common/IsJumpMaxCharged.inc.c"
 
-BSS b32 N(HasCharged);
+BSS b32 HasCharged;
 
-API_CALLABLE(N(func_802A1108_74D678)) {
+API_CALLABLE(func_802A1108_74D678) {
     Bytecode* args = script->ptrReadPos;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 var1 = evt_get_variable(script, *args++);
@@ -21,9 +19,9 @@ API_CALLABLE(N(func_802A1108_74D678)) {
 
     fx_stat_change(1, var1, var2, var3, 1.0f, 60);
 
-    N(HasCharged) = false;
+    HasCharged = false;
     if (battleStatus->jumpCharge > 0) {
-        N(HasCharged) = true;
+        HasCharged = true;
     }
 
     battleStatus->jumpCharge += 2;
@@ -41,8 +39,8 @@ API_CALLABLE(N(func_802A1108_74D678)) {
 
 #include "battle/common/UnkMoveFunc2.inc.c"
 
-API_CALLABLE(N(GetChargeMessage)) {
-    if (!N(HasCharged)) {
+API_CALLABLE(GetChargeMessage) {
+    if (!HasCharged) {
         script->varTable[0] = BTL_MSG_CHARGE_JUMP;
     } else {
         script->varTable[0] = BTL_MSG_CHARGE_JUMP_MORE;
@@ -51,12 +49,12 @@ API_CALLABLE(N(GetChargeMessage)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UseMove_Unimplemented) = {
+EvtScript EVS_UseMove_Unimplemented = {
     Return
     End
 };
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
     ChildThread
@@ -67,19 +65,19 @@ EvtScript N(EVS_UseMove) = {
     EndChildThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_FightingStance)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(UnkMoveFunc2), LVar0, LVar1, LVar2, Float(1.2))
+    Call(UnkMoveFunc2, LVar0, LVar1, LVar2, Float(1.2))
     Wait(3)
-    Call(N(UnkMoveFunc2), LVar0, LVar1, LVar2, Float(0.8))
+    Call(UnkMoveFunc2, LVar0, LVar1, LVar2, Float(0.8))
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
-    Call(N(IsJumpMaxCharged))
+    Call(IsJumpMaxCharged)
     IfEq(LVar0, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 10)
         Add(LVar1, 25)
         Add(LVar2, 5)
-        Call(N(func_802A1108_74D678), LVar0, LVar1, LVar2)
+        Call(func_802A1108_74D678, LVar0, LVar1, LVar2)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_CHARGE_UP)
         Wait(4)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
@@ -93,7 +91,7 @@ EvtScript N(EVS_UseMove) = {
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Call(UseIdleAnimation, ACTOR_PLAYER, true)
-        Call(N(GetChargeMessage))
+        Call(GetChargeMessage)
         Call(ShowVariableMessageBox, LVar0, 60, 2)
     Else
         Call(ShowMessageBox, BTL_MSG_CANT_CHARGE, 60)
@@ -113,3 +111,8 @@ EvtScript N(EVS_UseMove) = {
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &EVS_UseMove,
+    &EVS_UseMove_Unimplemented,
+);

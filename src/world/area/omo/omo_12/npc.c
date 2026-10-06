@@ -4,7 +4,7 @@
 
 #include "world/common/npc/BigLanternGhost/idle.inc.c"
 
-NpcSettings N(NpcSettings_Watt) = {
+NpcSettings NpcSettings_Watt = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
@@ -18,7 +18,7 @@ NpcSettings N(NpcSettings_Watt) = {
 
 #include "world/common/util/CreateDarkness.inc.c"
 
-API_CALLABLE(N(SetLightOriginAndPower)) {
+API_CALLABLE(SetLightOriginAndPower) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -31,7 +31,7 @@ API_CALLABLE(N(SetLightOriginAndPower)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetLightOff)) {
+API_CALLABLE(SetLightOff) {
     set_screen_overlay_alpha(SCREEN_LAYER_BACK, 0.0f);
     set_screen_overlay_params_back(OVERLAY_WORLD_DARKNESS, 0.0f);
     return ApiStatus_DONE2;
@@ -47,7 +47,7 @@ enum {
     LIGHT_FROM_NO_CHANGE    = 6,
 };
 
-EvtScript N(EVS_ManageLanternLight) = {
+EvtScript EVS_ManageLanternLight = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Label(0)
         Switch(AB_OMO12_LightSource)
@@ -56,24 +56,24 @@ EvtScript N(EVS_ManageLanternLight) = {
                 Call(GetNpcPos, NPC_BigLanternGhost, LVar0, LVar1, LVar2)
                 Set(LVar3, AB_OMO12_LightPowerMod)
                 Add(LVar3, 128)
-                Call(N(SetLightOriginAndPower), LVar0, LVar1, LVar2, LVar3)
+                Call(SetLightOriginAndPower, LVar0, LVar1, LVar2, LVar3)
             CaseEq(LIGHT_FROM_WATT)
                 Call(GetNpcPos, NPC_Watt, LVar0, LVar1, LVar2)
                 Set(LVar3, AB_OMO12_LightPowerMod)
                 Add(LVar3, 128)
-                Call(N(SetLightOriginAndPower), LVar0, LVar1, LVar2, LVar3)
+                Call(SetLightOriginAndPower, LVar0, LVar1, LVar2, LVar3)
             CaseEq(LIGHT_FROM_LANTERN)
                 Call(GetNpcPos, NPC_LaternTop, LVar0, LVar1, LVar2)
                 Set(LVar3, AB_OMO12_LightPowerMod)
                 Add(LVar3, 128)
-                Call(N(SetLightOriginAndPower), LVar0, LVar1, LVar2, LVar3)
+                Call(SetLightOriginAndPower, LVar0, LVar1, LVar2, LVar3)
             CaseEq(LIGHT_FROM_FLICK_OFF)
-                Call(N(SetLightOff))
+                Call(SetLightOff)
                 Set(AB_OMO12_LightSource, LIGHT_FROM_DEFAULT)
             CaseEq(LIGHT_FROM_HIDDEN)
                 Set(LVar3, AB_OMO12_LightPowerMod)
                 Add(LVar3, 128)
-                Call(N(SetLightOriginAndPower), NPC_DISPOSE_LOCATION, LVar3)
+                Call(SetLightOriginAndPower, NPC_DISPOSE_LOCATION, LVar3)
                 Set(AB_OMO12_LightSource, LIGHT_FROM_DEFAULT)
             CaseEq(LIGHT_FROM_NO_CHANGE)
                 Return
@@ -84,24 +84,24 @@ EvtScript N(EVS_ManageLanternLight) = {
     End
 };
 
-EvtScript N(EVS_SetupLightSource) = {
+EvtScript EVS_SetupLightSource = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_LANTERN_GHOST)
             Set(AB_OMO12_LightSource, LIGHT_FROM_HIDDEN)
             Set(AB_OMO12_LightPowerMod, 127)
-            Exec(N(EVS_ManageLanternLight))
+            Exec(EVS_ManageLanternLight)
         CaseLt(STORY_CH4_WATT_JOINED_PARTY)
             Set(AB_OMO12_LightSource, LIGHT_FROM_LANTERN)
             Set(AB_OMO12_LightPowerMod, 102)
-            Exec(N(EVS_ManageLanternLight))
+            Exec(EVS_ManageLanternLight)
         CaseGe(STORY_CH4_WATT_JOINED_PARTY)
-            ExecWait(N(EVS_CreateDarkness))
+            ExecWait(EVS_CreateDarkness)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_EnterScene) = {
+EvtScript EVS_EnterScene = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerPos, 70, 20, 0)
     Call(ShowMessageAtScreenPos, MSG_CH4_004E, 160, 40)
@@ -121,7 +121,7 @@ EvtScript N(EVS_EnterScene) = {
     Call(MakeLerp, 255, 100, 60 * DT, EASING_LINEAR)
     Label(0)
         Call(UpdateLerp)
-        Call(N(SetLightOriginAndPower), LVar2, LVar3, LVar4, LVar0)
+        Call(SetLightOriginAndPower, LVar2, LVar3, LVar4, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
@@ -154,7 +154,7 @@ EvtScript N(EVS_EnterScene) = {
     End
 };
 
-EvtScript N(EVS_UseWattTutorial) = {
+EvtScript EVS_UseWattTutorial = {
     Loop(0)
         Call(GetPartnerInUse, LVar0)
         IfEq(LVar0, PARTNER_WATT)
@@ -171,19 +171,19 @@ EvtScript N(EVS_UseWattTutorial) = {
     End
 };
 
-Vec3f N(WattRightFlightPath)[] = {
+Vec3f WattRightFlightPath[] = {
     {    0.0,     0.0,    0.0 },
     {   25.0,    -5.0,    0.0 },
     {   60.0,    30.0,    0.0 },
 };
 
-Vec3f N(WattLeftFlightPath)[] = {
+Vec3f WattLeftFlightPath[] = {
     {    0.0,     0.0,    0.0 },
     {  -25.0,    -5.0,    0.0 },
     {  -60.0,    30.0,    0.0 },
 };
 
-EvtScript N(EVS_Scene_ReleaseWatt) = {
+EvtScript EVS_Scene_ReleaseWatt = {
     Call(DisablePlayerInput, true)
     Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_LaternTop, LVar0, LVar1, LVar2)
@@ -328,10 +328,10 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(GetNpcPos, NPC_Watt, LVar7, LVar8, LVar9)
     Call(GetAngleToPlayer, NPC_Watt, LVar0)
     IfLt(LVar0, 180)
-        Call(LoadPath, 15 * DT, Ref(N(WattRightFlightPath)), ARRAY_COUNT(N(WattRightFlightPath)), EASING_LINEAR)
+        Call(LoadPath, 15 * DT, Ref(WattRightFlightPath), ARRAY_COUNT(WattRightFlightPath), EASING_LINEAR)
         Set(LVar4, 12)
     Else
-        Call(LoadPath, 15 * DT, Ref(N(WattLeftFlightPath)), ARRAY_COUNT(N(WattLeftFlightPath)), EASING_LINEAR)
+        Call(LoadPath, 15 * DT, Ref(WattLeftFlightPath), ARRAY_COUNT(WattLeftFlightPath), EASING_LINEAR)
         Set(LVar4, -12)
     EndIf
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -360,19 +360,19 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(EndSpeech, NPC_Watt, ANIM_WorldWatt_Talk, ANIM_WorldWatt_Idle, 0)
     Set(AB_OMO12_LightSource, LIGHT_FROM_NO_CHANGE)
     Wait(1)
-    Call(N(ChangeNpcToPartner), NPC_Watt, PARTNER_WATT)
-    Call(N(LoadPartyImage), Ref("party_akari"))
-    Exec(N(EVS_PushPartnerSong))
+    Call(ChangeNpcToPartner, NPC_Watt, PARTNER_WATT)
+    Call(LoadPartyImage, Ref("party_akari"))
+    Exec(EVS_PushPartnerSong)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018E, 160, 40)
-    Exec(N(EVS_PopSong))
+    Exec(EVS_PopSong)
     Wait(10 * DT)
     Thread
         Call(GetNpcPos, NPC_PARTNER, LVar2, LVar3, LVar4)
         Call(MakeLerp, 200, 255, 45 * DT, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(SetLightOriginAndPower), LVar2, LVar3, LVar4, LVar0)
+            Call(SetLightOriginAndPower, LVar2, LVar3, LVar4, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -380,16 +380,16 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         EndLoop
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Add(LVar3, 8)
-        Call(N(SetLightOriginAndPower), LVar2, LVar3, LVar4, LVar0)
+        Call(SetLightOriginAndPower, LVar2, LVar3, LVar4, LVar0)
     EndThread
     Wait(30 * DT)
     Call(CloseMessage)
     Wait(10 * DT)
-    ExecWait(N(EVS_CreateDarkness))
+    ExecWait(EVS_CreateDarkness)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldWatt_Talk, ANIM_WorldWatt_Idle, 0, MSG_CH4_005B)
     Call(EnablePartnerAI)
-    Exec(N(EVS_UseWattTutorial))
+    Exec(EVS_UseWattTutorial)
     Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
     Set(GB_StoryProgress, STORY_CH4_WATT_JOINED_PARTY)
@@ -401,7 +401,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_BigLanternGhost) = {
+EvtScript EVS_NpcIdle_BigLanternGhost = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         Wait(1)
@@ -415,7 +415,7 @@ EvtScript N(EVS_NpcIdle_BigLanternGhost) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BigLanternGhost) = {
+EvtScript EVS_NpcDefeat_BigLanternGhost = {
     Wait(1)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -423,7 +423,7 @@ EvtScript N(EVS_NpcDefeat_BigLanternGhost) = {
             Call(ResetCam, CAM_DEFAULT, Float(90.0))
             Set(AB_OMO12_LightSource, LIGHT_FROM_DEFAULT)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-            Call(N(SetLightOriginAndPower), LVar0, LVar1, LVar2, 100)
+            Call(SetLightOriginAndPower, LVar0, LVar1, LVar2, 100)
             Thread
                 Set(MF_LanternGhost_DoneSpeaking, false)
                 Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Flee, ANIM_BigLanternGhost_Flee, 0, MSG_CH4_0054)
@@ -458,7 +458,7 @@ EvtScript N(EVS_NpcDefeat_BigLanternGhost) = {
                 AddF(LVar1, LVar4)
                 AddF(LVar2, LVar5)
                 AddF(LVar7, LVar6)
-                Call(N(SetLightOriginAndPower), LVar0, LVar1, LVar2, LVar7)
+                Call(SetLightOriginAndPower, LVar0, LVar1, LVar2, LVar7)
                 Wait(1)
             EndLoop
             Set(AB_OMO12_LightSource, LIGHT_FROM_LANTERN)
@@ -475,18 +475,18 @@ EvtScript N(EVS_NpcDefeat_BigLanternGhost) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_BigLanternGhost) = {
+EvtScript EVS_NpcInit_BigLanternGhost = {
     IfGe(GB_StoryProgress, STORY_CH4_DEFEATED_LANTERN_GHOST)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BigLanternGhost)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_BigLanternGhost)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_BigLanternGhost))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_BigLanternGhost))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_LanternTop) = {
+EvtScript EVS_NpcInteract_LanternTop = {
     Thread
         Wait(15)
         Call(SetNpcRotation, NPC_SELF, 0, 0, 10)
@@ -514,7 +514,7 @@ EvtScript N(EVS_NpcInteract_LanternTop) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_LanternTop) = {
+EvtScript EVS_NpcIdle_LanternTop = {
     Label(0)
         Call(GetSelfVar, 0, LVar0)
         Switch(LVar0)
@@ -553,7 +553,7 @@ EvtScript N(EVS_NpcIdle_LanternTop) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_LanternTop) = {
+EvtScript EVS_NpcInit_LanternTop = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_LANTERN_GHOST)
             Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Lantern)
@@ -565,13 +565,13 @@ EvtScript N(EVS_NpcInit_LanternTop) = {
             Call(RemoveNpc, NPC_SELF)
             Return
     EndSwitch
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_LanternTop)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_LanternTop)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_LanternTop))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_LanternTop))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_LanternBottom) = {
+EvtScript EVS_NpcInit_LanternBottom = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_LANTERN_GHOST)
             Call(SetNpcAnimation, NPC_SELF, ANIM_BigLanternGhost_Lantern)
@@ -582,13 +582,13 @@ EvtScript N(EVS_NpcInit_LanternBottom) = {
             Call(RemoveNpc, NPC_SELF)
             Return
     EndSwitch
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_Scene_ReleaseWatt)))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_Scene_ReleaseWatt))
     Call(SetNpcFlagBits, NPC_LaternBottom, NPC_FLAG_INVISIBLE, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Watt) = {
+EvtScript EVS_NpcInit_Watt = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_DEFEATED_LANTERN_GHOST)
         CaseLt(STORY_CH4_WATT_JOINED_PARTY)
@@ -600,7 +600,7 @@ EvtScript N(EVS_NpcInit_Watt) = {
     End
 };
 
-AnimID N(LimitAnims_LanternGhost)[] = {
+AnimID LimitAnims_LanternGhost[] = {
     ANIM_BigLanternGhost_Idle,
     ANIM_BigLanternGhost_Walk,
     ANIM_BigLanternGhost_Run,
@@ -613,69 +613,69 @@ AnimID N(LimitAnims_LanternGhost)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_BigLanternGhost) = {
+NpcData NpcData_BigLanternGhost = {
     .id = NPC_BigLanternGhost,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_BigLanternGhost),
+    .init = &EVS_NpcInit_BigLanternGhost,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BigLanternGhost),
+    .settings = &NpcSettings_BigLanternGhost,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .limitAnimations = N(LimitAnims_LanternGhost),
+    .limitAnimations = LimitAnims_LanternGhost,
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
-NpcData N(NpcData_Watt) = {
+NpcData NpcData_Watt = {
     .id = NPC_Watt,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Watt),
+    .init = &EVS_NpcInit_Watt,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_Watt),
+    .settings = &NpcSettings_Watt,
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = WATT_ANIMS,
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
-NpcData N(NpcData_LanternTop) = {
+NpcData NpcData_LanternTop = {
     .id = NPC_LaternTop,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_LanternTop),
+    .init = &EVS_NpcInit_LanternTop,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_Watt),
+    .settings = &NpcSettings_Watt,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .limitAnimations = N(LimitAnims_LanternGhost),
+    .limitAnimations = LimitAnims_LanternGhost,
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
-NpcData N(NpcData_LanternBottom) = {
+NpcData NpcData_LanternBottom = {
     .id = NPC_LaternBottom,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_LanternBottom),
+    .init = &EVS_NpcInit_LanternBottom,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_Watt),
+    .settings = &NpcSettings_Watt,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .limitAnimations = N(LimitAnims_LanternGhost),
+    .limitAnimations = LimitAnims_LanternGhost,
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BigLanternGhost), BTL_OMO3_FORMATION_00),
-    NPC_GROUP(N(NpcData_Watt)),
-    NPC_GROUP(N(NpcData_LanternTop)),
-    NPC_GROUP(N(NpcData_LanternBottom)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BigLanternGhost, BTL_OMO3_FORMATION_00),
+    NPC_GROUP(NpcData_Watt),
+    NPC_GROUP(NpcData_LanternTop),
+    NPC_GROUP(NpcData_LanternBottom),
     {}
 };

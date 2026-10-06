@@ -3,27 +3,25 @@
 #include "sprite/npc/BonyBeetle.h"
 #include "effects.h"
 
-#define NAMESPACE A(bony_beetle)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandleEvent_SmoothUpright;
+extern EvtScript EVS_HandleEvent_SpikyUpright;
+extern EvtScript EVS_HandleEvent_SmoothToppled;
+extern EvtScript EVS_HandleEvent_SpikyToppled;
+extern EvtScript EVS_TrySwitchingSpikyState;
+extern EvtScript EVS_TryGettingUp_Smooth;
+extern EvtScript EVS_TryGettingUp_Spiky;
+extern EvtScript EVS_Attack_ShellToss;
+extern EvtScript EVS_Attack_SpikeBounce;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandleEvent_SmoothUpright);
-extern EvtScript N(EVS_HandleEvent_SpikyUpright);
-extern EvtScript N(EVS_HandleEvent_SmoothToppled);
-extern EvtScript N(EVS_HandleEvent_SpikyToppled);
-extern EvtScript N(EVS_TrySwitchingSpikyState);
-extern EvtScript N(EVS_TryGettingUp_Smooth);
-extern EvtScript N(EVS_TryGettingUp_Spiky);
-extern EvtScript N(EVS_Attack_ShellToss);
-extern EvtScript N(EVS_Attack_SpikeBounce);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_IN_OnCeiling           = 0,
     AVAR_ShouldTrySwitching     = 1,
     AVAR_State                  = 8,
@@ -34,12 +32,12 @@ enum N(ActorVars) {
     AVAR_ToppleTurns            = 9,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SHELL_TOSS      = 3,
     DMG_SPIKE_BOUNCE    = 5,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BonyBeetle_Idle,
     STATUS_KEY_STONE,     ANIM_BonyBeetle_Still,
     STATUS_KEY_SLEEP,     ANIM_BonyBeetle_Sleep,
@@ -52,7 +50,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(SpikyAnims)[] = {
+s32 SpikyAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BonyBeetle_IdleSpiky,
     STATUS_KEY_STONE,     ANIM_BonyBeetle_StillSpiky,
     STATUS_KEY_SLEEP,     ANIM_BonyBeetle_SleepSpiky,
@@ -65,7 +63,7 @@ s32 N(SpikyAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ToppledAnims)[] = {
+s32 ToppledAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BonyBeetle_IdleTopple,
     STATUS_KEY_STONE,     ANIM_BonyBeetle_StillTopple,
     STATUS_KEY_SLEEP,     ANIM_BonyBeetle_SleepToppled,
@@ -78,7 +76,7 @@ s32 N(ToppledAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ToppledSpikyAnims)[] = {
+s32 ToppledSpikyAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BonyBeetle_IdleSpikyTopple,
     STATUS_KEY_STONE,     ANIM_BonyBeetle_StillSpikyTopple,
     STATUS_KEY_SLEEP,     ANIM_BonyBeetle_SleepToppledSpiky,
@@ -91,17 +89,17 @@ s32 N(ToppledSpikyAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   4,
     ELEMENT_END,
 };
 
-s32 N(ToppledDefenseTable)[] = {
+s32 ToppledDefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              60,
@@ -126,30 +124,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -3, 21 },
         .opacity = 255,
-        .idleAnimations = N(SpikyAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = SpikyAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_FLIPABLE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_BONY_BEETLE,
     .level = ACTOR_LEVEL_BONY_BEETLE,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 50,
     .airLiftChance = 70,
     .hurricaneChance = 60,
@@ -164,18 +162,18 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-EvtScript N(EVS_Init) = {
+EvtScript EVS_Init = {
     Call(GetActorVar, ACTOR_SELF, AVAR_IN_OnCeiling, LVar0)
     Call(GetInstigatorValue, ACTOR_SELF, LVar1)
     IfEq(LVar0, 1)
         IfEq(LVar1, 1)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SpikyUpright)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SpikyAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SpikyAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_IdleSpiky)
         Else
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SmoothUpright)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_Idle)
         EndIf
@@ -183,12 +181,12 @@ EvtScript N(EVS_Init) = {
         Call(RandInt, 1000, LVar0)
         IfLt(LVar0, 500)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SmoothUpright)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_Idle)
         Else
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SpikyUpright)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SpikyAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SpikyAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_IdleSpiky)
         EndIf
@@ -196,39 +194,39 @@ EvtScript N(EVS_Init) = {
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
     Call(HPBarToHome, ACTOR_SELF)
     Call(SetActorVar, ACTOR_SELF, AVAR_ShouldTrySwitching, false)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     Switch(LVar0)
         CaseEq(AVAL_State_SmoothUpright)
-            ExecWait(N(EVS_HandleEvent_SmoothUpright))
+            ExecWait(EVS_HandleEvent_SmoothUpright)
         CaseEq(AVAL_State_SpikyUpright)
-            ExecWait(N(EVS_HandleEvent_SpikyUpright))
+            ExecWait(EVS_HandleEvent_SpikyUpright)
         CaseEq(AVAL_State_SmoothToppled)
-            ExecWait(N(EVS_HandleEvent_SmoothToppled))
+            ExecWait(EVS_HandleEvent_SmoothToppled)
         CaseEq(AVAL_State_SpikyToppled)
-            ExecWait(N(EVS_HandleEvent_SpikyToppled))
+            ExecWait(EVS_HandleEvent_SpikyToppled)
     EndSwitch
     Call(ActorExists, ACTOR_SELF, LVar0)
     IfEq(LVar0, 1)
         Call(GetActorVar, ACTOR_SELF, AVAR_ShouldTrySwitching, LVar0)
         IfEq(LVar0, true)
-            ExecWait(N(EVS_TrySwitchingSpikyState))
+            ExecWait(EVS_TrySwitchingSpikyState)
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldTrySwitching, false)
         EndIf
     EndIf
@@ -238,7 +236,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TrySwitchingSpikyState) = {
+EvtScript EVS_TrySwitchingSpikyState = {
     Call(GetLastDamage, ACTOR_SELF, LVar0)
     IfLe(LVar0, 0)
         Return
@@ -261,14 +259,14 @@ EvtScript N(EVS_TrySwitchingSpikyState) = {
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_ExtendSpikes)
             Wait(25)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SpikyAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SpikyAnims))
         CaseEq(AVAL_State_SpikyUpright)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BONY_BEETLE_RETRACT_SPIKES)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SmoothUpright)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_RetractSpikes)
             Wait(25)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
         CaseEq(AVAL_State_SmoothToppled)
         CaseEq(AVAL_State_SpikyToppled)
     EndSwitch
@@ -276,25 +274,25 @@ EvtScript N(EVS_TrySwitchingSpikyState) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     Switch(LVar0)
         CaseEq(AVAL_State_SmoothUpright)
-            ExecWait(N(EVS_Attack_ShellToss))
+            ExecWait(EVS_Attack_ShellToss)
         CaseEq(AVAL_State_SpikyUpright)
-            ExecWait(N(EVS_Attack_SpikeBounce))
+            ExecWait(EVS_Attack_SpikeBounce)
         CaseEq(AVAL_State_SmoothToppled)
-            ExecWait(N(EVS_TryGettingUp_Smooth))
+            ExecWait(EVS_TryGettingUp_Smooth)
         CaseEq(AVAL_State_SpikyToppled)
-            ExecWait(N(EVS_TryGettingUp_Spiky))
+            ExecWait(EVS_TryGettingUp_Spiky)
     EndSwitch
     Return
     End
 };
 
-s32 N(FlipPosOffsets)[] = { 7, 13, 17, 21, 23, 24, 23, 21, 17, 13, 7, 0, 4, 6, 7, 6, 4, 0, 2, 0 };
+s32 FlipPosOffsets[] = { 7, 13, 17, 21, 23, 24, 23, 21, 17, 13, 7, 0, 4, 6, 7, 6, 4, 0, 2, 0 };
 
-EvtScript N(EVS_HandleEvent_SmoothUpright) = {
+EvtScript EVS_HandleEvent_SmoothUpright = {
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseOrEq(EVENT_HIT_COMBO)
@@ -337,12 +335,12 @@ EvtScript N(EVS_HandleEvent_SmoothUpright) = {
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_FlipOver)
-            UseBuf(N(FlipPosOffsets))
+            UseBuf(FlipPosOffsets)
             Loop(20)
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
@@ -414,7 +412,7 @@ EvtScript N(EVS_HandleEvent_SmoothUpright) = {
     End
 };
 
-EvtScript N(EVS_Attack_ShellToss) = {
+EvtScript EVS_Attack_ShellToss = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -433,11 +431,11 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Wait(10)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHELL_SPIN)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_ShellSpin)
@@ -516,7 +514,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent_SpikyUpright) = {
+EvtScript EVS_HandleEvent_SpikyUpright = {
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseOrEq(EVENT_HIT_COMBO)
@@ -559,12 +557,12 @@ EvtScript N(EVS_HandleEvent_SpikyUpright) = {
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledSpikyAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledSpikyAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_FlipOverSpiky)
-            UseBuf(N(FlipPosOffsets))
+            UseBuf(FlipPosOffsets)
             Loop(20)
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
@@ -614,7 +612,7 @@ EvtScript N(EVS_HandleEvent_SpikyUpright) = {
                 Add(LVar0, -8)
                 Add(LVar1, 26)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseEq(EVENT_SHOCK_DEATH)
             Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
@@ -651,7 +649,7 @@ EvtScript N(EVS_HandleEvent_SpikyUpright) = {
     End
 };
 
-EvtScript N(EVS_Attack_SpikeBounce) = {
+EvtScript EVS_Attack_SpikeBounce = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -671,15 +669,15 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
     Wait(10)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 6, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 6, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 8, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 8, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 10, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 10, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 12, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 32, 12, 0, 10)
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SHELL_SPIN)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_ShellSpinSpiky)
@@ -688,7 +686,7 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
     Thread
         Loop(20)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 0, 0, 0)
+            PlayEffect(EFFECT_WALKING_DUST, 0, LVar0, LVar1, LVar2, 0, 0)
             Wait(1)
         EndLoop
     EndThread
@@ -861,19 +859,17 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 // unused
-EvtScript N(EVS_FallFromCeiling) = {
+EvtScript EVS_FallFromCeiling = {
     Call(HideHealthBar, ACTOR_SELF)
     Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SmoothToppled)
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_IdleTopple)
     Call(SetActorYaw, ACTOR_SELF, 180)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -896,7 +892,7 @@ EvtScript N(EVS_FallFromCeiling) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent_SmoothToppled) = {
+EvtScript EVS_HandleEvent_SmoothToppled = {
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseOrEq(EVENT_HIT_COMBO)
@@ -935,13 +931,13 @@ EvtScript N(EVS_HandleEvent_SmoothToppled) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SmoothToppled)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_HurtToppled)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
-            UseBuf(N(FlipPosOffsets))
+            UseBuf(FlipPosOffsets)
             Loop(20)
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
@@ -990,7 +986,7 @@ EvtScript N(EVS_HandleEvent_SmoothToppled) = {
     End
 };
 
-EvtScript N(EVS_TryGettingUp_Smooth) = {
+EvtScript EVS_TryGettingUp_Smooth = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -1017,8 +1013,8 @@ EvtScript N(EVS_TryGettingUp_Smooth) = {
         Wait(20)
         Call(SetActorYaw, ACTOR_SELF, 0)
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SmoothUpright)
-        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(DefenseTable)))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(DefenseTable))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
     EndIf
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -1028,7 +1024,7 @@ EvtScript N(EVS_TryGettingUp_Smooth) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent_SpikyToppled) = {
+EvtScript EVS_HandleEvent_SpikyToppled = {
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseOrEq(EVENT_HIT_COMBO)
@@ -1067,13 +1063,13 @@ EvtScript N(EVS_HandleEvent_SpikyToppled) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SpikyToppled)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -8)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -3, 21)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledSpikyAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledSpikyAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BonyBeetle_HurtToppledSpiky)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
-            UseBuf(N(FlipPosOffsets))
+            UseBuf(FlipPosOffsets)
             Loop(20)
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
@@ -1123,7 +1119,7 @@ EvtScript N(EVS_HandleEvent_SpikyToppled) = {
     End
 };
 
-EvtScript N(EVS_TryGettingUp_Spiky) = {
+EvtScript EVS_TryGettingUp_Spiky = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -1150,8 +1146,8 @@ EvtScript N(EVS_TryGettingUp_Spiky) = {
         Wait(20)
         Call(SetActorYaw, ACTOR_SELF, 0)
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_SpikyUpright)
-        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(DefenseTable)))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SpikyAnims)))
+        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(DefenseTable))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SpikyAnims))
         Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
     EndIf

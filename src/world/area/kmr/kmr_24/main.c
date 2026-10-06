@@ -2,7 +2,7 @@
 #include "fio.h"
 #include "game_modes.h"
 
-API_CALLABLE(N(ExitGame)) {
+API_CALLABLE(ExitGame) {
     s16 progress;
     s16 result;
 
@@ -23,7 +23,7 @@ API_CALLABLE(N(ExitGame)) {
     }
 }
 
-API_CALLABLE(N(SaveAndContinue)) {
+API_CALLABLE(SaveAndContinue) {
     // push current map
     s16 curArea  = gGameStatusPtr->areaID;
     s16 curMap   = gGameStatusPtr->mapID;
@@ -42,17 +42,17 @@ API_CALLABLE(N(SaveAndContinue)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SaveAndContinue_Prompt) = {
+EvtScript EVS_SaveAndContinue_Prompt = {
     Wait(10)
     Call(ShowMessageAtScreenPos, MSG_Choice_004D, 160, 40)
     Switch(LVar0)
         CaseEq(0)
-            Call(N(SaveAndContinue))
+            Call(SaveAndContinue)
             Wait(10)
         CaseEq(1)
-            Call(N(SaveAndContinue))
+            Call(SaveAndContinue)
             Wait(10)
-            Call(N(ExitGame))
+            Call(ExitGame)
             Wait(100)
         CaseEq(2)
     EndSwitch
@@ -62,7 +62,7 @@ EvtScript N(EVS_SaveAndContinue_Prompt) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
@@ -87,7 +87,7 @@ EvtScript N(EVS_Main) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Wait(1)
-    Exec(N(EVS_SaveAndContinue_Prompt))
+    Exec(EVS_SaveAndContinue_Prompt)
     Return
     End
 };

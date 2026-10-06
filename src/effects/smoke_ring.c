@@ -44,7 +44,6 @@ void smoke_ring_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     bpPtr->init = smoke_ring_init;
     bpPtr->update = smoke_ring_update;
     bpPtr->renderScene = smoke_ring_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_SMOKE_RING;
 

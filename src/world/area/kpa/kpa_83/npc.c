@@ -6,12 +6,12 @@
 #include "world/common/enemy/KoopaBros/idle.inc.c"
 #include "world/common/npc/JrTroopa/idle.inc.c"
 
-API_CALLABLE(N(SetPlayerSpriteFacingAngle)) {
+API_CALLABLE(SetPlayerSpriteFacingAngle) {
     gPlayerStatus.spriteFacingAngle = script->varTable[0];
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_FocusCam_LookAtDoor) = {
+EvtScript EVS_FocusCam_LookAtDoor = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-10.0))
@@ -25,7 +25,7 @@ EvtScript N(EVS_FocusCam_LookAtDoor) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_AfterBattle) = {
+EvtScript EVS_FocusCam_AfterBattle = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-13.0))
@@ -36,7 +36,7 @@ EvtScript N(EVS_FocusCam_AfterBattle) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_InFrontOfDoor) = {
+EvtScript EVS_FocusCam_InFrontOfDoor = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-11.5))
@@ -47,7 +47,7 @@ EvtScript N(EVS_FocusCam_InFrontOfDoor) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_MidRoom) = {
+EvtScript EVS_FocusCam_MidRoom = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-10.0))
@@ -58,7 +58,7 @@ EvtScript N(EVS_FocusCam_MidRoom) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_JrTroopa) = {
+EvtScript EVS_FocusCam_JrTroopa = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-13.0))
@@ -69,7 +69,7 @@ EvtScript N(EVS_FocusCam_JrTroopa) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_Hop) = {
+EvtScript EVS_KoopaBros_Hop = {
     Switch(LVar0)
         CaseEq(NPC_KoopaBrosRed)
             Call(SetNpcJumpscale, NPC_KoopaBrosRed, Float(1.0))
@@ -92,7 +92,7 @@ EvtScript N(EVS_KoopaBros_Hop) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_SpinAround) = {
+EvtScript EVS_KoopaBros_SpinAround = {
     Set(LVarA, LVar0)
     Call(MakeLerp, 0, 11 * 180, 50, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -107,7 +107,7 @@ EvtScript N(EVS_KoopaBros_SpinAround) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_FlingAway) = {
+EvtScript EVS_KoopaBros_FlingAway = {
     Thread
         Call(PlaySoundAtNpc, LVar0, SOUND_HIT_NORMAL, SOUND_SPACE_DEFAULT)
         Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.6))
@@ -142,14 +142,14 @@ EvtScript N(EVS_KoopaBros_FlingAway) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Door) = {
+EvtScript EVS_NpcIdle_Door = {
     Call(DisablePlayerInput, true)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, -150, LVar2, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, false)
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_FocusCam_LookAtDoor))
+    ExecWait(EVS_FocusCam_LookAtDoor)
     Set(MF_DoneIntroMessage, false)
     Thread
         Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -178,7 +178,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Set(LVar4, 0)
     Set(LVar5, 150)
     Set(LVar6, Float(90.0))
-    ExecWait(N(EVS_FocusCam_InFrontOfDoor))
+    ExecWait(EVS_FocusCam_InFrontOfDoor)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
     Thread
         Call(SetNpcPos, NPC_KoopaBrosRed, 220, 180, 160)
@@ -290,7 +290,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Set(LVar4, 0)
     Set(LVar5, 150)
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_FocusCam_MidRoom))
+    ExecWait(EVS_FocusCam_MidRoom)
     Call(SetNpcAnimation, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Idle)
     Call(SetNpcAnimation, NPC_KoopaBrosBlk, ANIM_KoopaBros_Black_Idle)
     Call(SetNpcAnimation, NPC_KoopaBrosYlw, ANIM_KoopaBros_Yellow_Idle)
@@ -303,13 +303,13 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Call(ContinueSpeech, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Talk, ANIM_KoopaBros_Red_Idle, 0, MSG_CH8_0057)
     EndIf
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_FocusCam_LookAtDoor))
+    ExecWait(EVS_FocusCam_LookAtDoor)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0058)
     Set(LVar3, 0)
     Set(LVar4, 0)
     Set(LVar5, 150)
     Set(LVar6, Float(90.0))
-    ExecWait(N(EVS_FocusCam_MidRoom))
+    ExecWait(EVS_FocusCam_MidRoom)
     Call(SpeakToPlayer, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_Talk, ANIM_KoopaBros_Red_Idle, 0, MSG_CH8_0059)
     Call(SetMusic, 0, SONG_JR_TROOPA_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(ShowMessageAtScreenPos, MSG_CH8_005A, 0, 150)
@@ -333,7 +333,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Loop(0)
             Call(UpdateLerp)
             Call(InterpPlayerYaw, LVar0, 0)
-            Call(N(SetPlayerSpriteFacingAngle))
+            Call(SetPlayerSpriteFacingAngle)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -344,45 +344,45 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     EndThread
     Set(LVar0, NPC_KoopaBrosRed)
-    ExecGetTID(N(EVS_KoopaBros_Hop), MV_KoopaBrosRed_HopScript)
+    ExecGetTID(EVS_KoopaBros_Hop, MV_KoopaBrosRed_HopScript)
     Set(LVar0, NPC_KoopaBrosBlk)
-    ExecGetTID(N(EVS_KoopaBros_Hop), MV_KoopaBrosBlk_HopScript)
+    ExecGetTID(EVS_KoopaBros_Hop, MV_KoopaBrosBlk_HopScript)
     Set(LVar0, NPC_KoopaBrosYlw)
-    ExecGetTID(N(EVS_KoopaBros_Hop), MV_KoopaBrosYlw_HopScript)
+    ExecGetTID(EVS_KoopaBros_Hop, MV_KoopaBrosYlw_HopScript)
     Set(LVar0, NPC_KoopaBrosGrn)
-    ExecGetTID(N(EVS_KoopaBros_Hop), MV_KoopaBrosGrn_HopScript)
+    ExecGetTID(EVS_KoopaBros_Hop, MV_KoopaBrosGrn_HopScript)
     Call(NpcMoveTo, NPC_JrTroopa, 22, 140, 0)
     Set(LVar0, NPC_KoopaBrosRed)
-    Exec(N(EVS_KoopaBros_SpinAround))
+    Exec(EVS_KoopaBros_SpinAround)
     Call(NpcMoveTo, NPC_JrTroopa, 50, 140, 0)
     Set(LVar0, NPC_KoopaBrosBlk)
-    Exec(N(EVS_KoopaBros_SpinAround))
+    Exec(EVS_KoopaBros_SpinAround)
     Call(NpcMoveTo, NPC_JrTroopa, 62, 140, 0)
     Set(LVar0, NPC_KoopaBrosYlw)
-    Exec(N(EVS_KoopaBros_SpinAround))
+    Exec(EVS_KoopaBros_SpinAround)
     Call(NpcMoveTo, NPC_JrTroopa, 90, 140, 0)
     Set(LVar0, NPC_KoopaBrosGrn)
-    Exec(N(EVS_KoopaBros_SpinAround))
+    Exec(EVS_KoopaBros_SpinAround)
     Call(NpcMoveTo, NPC_JrTroopa, 100, 140, 0)
     Call(NpcMoveTo, NPC_JrTroopa, 98, 140, 0)
     KillThread(MV_KoopaBrosGrn_HopScript)
     Set(LVar0, NPC_KoopaBrosGrn)
-    Exec(N(EVS_KoopaBros_FlingAway))
+    Exec(EVS_KoopaBros_FlingAway)
     Call(NpcMoveTo, NPC_JrTroopa, 25, 140, 0)
     Call(NpcMoveTo, NPC_JrTroopa, 70, 140, 0)
     KillThread(MV_KoopaBrosYlw_HopScript)
     Set(LVar0, NPC_KoopaBrosYlw)
-    Exec(N(EVS_KoopaBros_FlingAway))
+    Exec(EVS_KoopaBros_FlingAway)
     Call(NpcMoveTo, NPC_JrTroopa, 75, 140, 0)
     Call(NpcMoveTo, NPC_JrTroopa, 30, 140, 0)
     KillThread(MV_KoopaBrosRed_HopScript)
     Set(LVar0, NPC_KoopaBrosRed)
-    Exec(N(EVS_KoopaBros_FlingAway))
+    Exec(EVS_KoopaBros_FlingAway)
     Call(NpcMoveTo, NPC_JrTroopa, 25, 140, 0)
     Call(NpcMoveTo, NPC_JrTroopa, 58, 140, 0)
     KillThread(MV_KoopaBrosBlk_HopScript)
     Set(LVar0, NPC_KoopaBrosBlk)
-    Exec(N(EVS_KoopaBros_FlingAway))
+    Exec(EVS_KoopaBros_FlingAway)
     Call(NpcMoveTo, NPC_JrTroopa, 75, 140, 0)
     Call(InterpNpcYaw, NPC_JrTroopa, 270, 0)
     Wait(5)
@@ -396,13 +396,13 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Set(LVar4, 0)
     Set(LVar5, 150)
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_FocusCam_JrTroopa))
+    ExecWait(EVS_FocusCam_JrTroopa)
     Call(SpeakToPlayer, NPC_JrTroopa, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 0, MSG_CH8_005C)
     Set(LVar3, 0)
     Set(LVar4, 0)
     Set(LVar5, 150)
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_FocusCam_AfterBattle))
+    ExecWait(EVS_FocusCam_AfterBattle)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_ChargeArmsUp)
     Thread
         Wait(5)
@@ -420,7 +420,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Set(LVar4, 0)
         Set(LVar5, 150)
         Set(LVar6, Float(3.0 / DT))
-        ExecWait(N(EVS_FocusCam_AfterBattle))
+        ExecWait(EVS_FocusCam_AfterBattle)
         Call(ShowMessageAtScreenPos, MSG_CH8_0062, 160, 40)
         Set(MV_Sync_AfterBattleCamMovement, 1)
     EndThread
@@ -430,7 +430,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(InterpPlayerYaw, 270, 0)
     Call(NpcMoveTo, NPC_JrTroopa, -200, 140, 0)
     Call(SetNpcPos, NPC_JrTroopa, NPC_DISPOSE_LOCATION)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Loop(0)
         IfEq(MV_Sync_AfterBattleCamMovement, 1)
             BreakLoop
@@ -438,7 +438,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Wait(1)
     EndLoop
     Set(LVar6, Float(3.0 / DT))
-    ExecWait(N(EVS_FocusCam_LookAtDoor))
+    ExecWait(EVS_FocusCam_LookAtDoor)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0063)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_KPA83_BowserDoorState, 1)
@@ -447,7 +447,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Door) = {
+EvtScript EVS_NpcDefeat_Door = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -455,7 +455,7 @@ EvtScript N(EVS_NpcDefeat_Door) = {
             Set(LVar4, 0)
             Set(LVar5, 150)
             Set(LVar6, Float(90.0))
-            ExecWait(N(EVS_FocusCam_JrTroopa))
+            ExecWait(EVS_FocusCam_JrTroopa)
             Call(SetNpcAnimation, NPC_JrTroopa, ANIM_JrTroopa_Dizzy)
             Call(SetNpcPos, NPC_JrTroopa, 100, 0, 140)
             Call(SetNpcPos, NPC_SELF, 184, 20, 150)
@@ -464,10 +464,10 @@ EvtScript N(EVS_NpcDefeat_Door) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Door) = {
+EvtScript EVS_NpcInit_Door = {
     IfEq(GB_KPA83_BowserDoorState, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Door)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Door))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Door))
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
         Call(SetNpcPos, NPC_SELF, 184, 20, 150)
         Call(EnableNpcShadow, NPC_SELF, false)
@@ -476,17 +476,17 @@ EvtScript N(EVS_NpcInit_Door) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaBros) = {
+EvtScript EVS_NpcInit_KoopaBros = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_JrTroopa) = {
+EvtScript EVS_NpcInit_JrTroopa = {
     Return
     End
 };
 
-AnimID N(LimitAnims_KoopaBros)[] = {
+AnimID LimitAnims_KoopaBros[] = {
     ANIM_KoopaBros_Black_Shock,
     ANIM_KoopaBros_Black_Idle,
     ANIM_KoopaBros_Black_IdleCrouch,
@@ -498,57 +498,57 @@ AnimID N(LimitAnims_KoopaBros)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Enemies)[] = {
+NpcData NpcData_Enemies[] = {
     {
         .id = NPC_KoopaBrosBlk,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KoopaBros),
-        .settings = &N(NpcSettings_KoopaBros),
+        .init = &EVS_NpcInit_KoopaBros,
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_KoopaBrosRed,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KoopaBros),
-        .settings = &N(NpcSettings_KoopaBros),
+        .init = &EVS_NpcInit_KoopaBros,
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_KoopaBrosYlw,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KoopaBros),
-        .settings = &N(NpcSettings_KoopaBros),
+        .init = &EVS_NpcInit_KoopaBros,
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_KoopaBrosGrn,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KoopaBros),
-        .settings = &N(NpcSettings_KoopaBros),
+        .init = &EVS_NpcInit_KoopaBros,
+        .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaBros),
+        .limitAnimations = LimitAnims_KoopaBros,
     },
     {
         .id = NPC_JrTroopa,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_JrTroopa),
-        .settings = &N(NpcSettings_JrTroopa),
+        .init = &EVS_NpcInit_JrTroopa,
+        .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
@@ -557,15 +557,15 @@ NpcData N(NpcData_Enemies)[] = {
         .id = NPC_Door,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Door),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Door,
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Enemies), BTL_KMR_3_FORMATION_07),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Enemies, BTL_KMR_3_FORMATION_07),
     {}
 };

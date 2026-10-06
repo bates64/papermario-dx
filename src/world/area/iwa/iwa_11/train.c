@@ -1,20 +1,20 @@
 #include "iwa_11.h"
 
-API_CALLABLE(N(GetSmallWheelsAngle)) {
+API_CALLABLE(GetSmallWheelsAngle) {
     f32 angle = clamp_angle(script->varTable[2] * -2.4f);
 
     evt_set_float_variable(script, LVar0, angle);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetLargeWheelAngle)) {
+API_CALLABLE(GetLargeWheelAngle) {
     f32 angle = clamp_angle(script->varTable[2] * -2.4f * 0.6f);
 
     evt_set_float_variable(script, LVar0, angle);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SpawnSmoke) = {
+EvtScript EVS_SpawnSmoke = {
     Call(PlaySoundAtModel, MODEL_07, SOUND_SEQ_TRAIN_CHUG, SOUND_SPACE_DEFAULT)
     SetF(LVar0, MV_TrainMoveDist)
     IfEq(MF_TrainReverseDir, false)
@@ -41,7 +41,7 @@ EvtScript N(EVS_SpawnSmoke) = {
     End
 };
 
-EvtScript N(EVS_AnimateTrain) = {
+EvtScript EVS_AnimateTrain = {
     Label(0)
         Set(LVar0, MV_TrainMoveDist)
         Call(TranslateModel, MODEL_08, LVar0, 0, 0)
@@ -121,11 +121,11 @@ EvtScript N(EVS_AnimateTrain) = {
             Set(LVar2, 1000)
             Sub(LVar2, MV_TrainMoveDist)
         EndIf
-        Call(N(GetSmallWheelsAngle))
+        Call(GetSmallWheelsAngle)
         Call(RotateModel, MODEL_11, LVar0, 0, 0, 1)
         Call(RotateModel, MODEL_12, LVar0, 0, 0, 1)
         Call(RotateModel, MODEL_13, LVar0, 0, 0, 1)
-        Call(N(GetLargeWheelAngle))
+        Call(GetLargeWheelAngle)
         Call(RotateModel, MODEL_10, LVar0, 0, 0, 1)
         Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
         Call(CosInterpMinMax, LVar2, LVar1, -10, 10, 75, 0, -90)
@@ -144,7 +144,7 @@ EvtScript N(EVS_AnimateTrain) = {
             IfEq(LVarD, 0)
                 Thread
                     Wait(18)
-                    Exec(N(EVS_SpawnSmoke))
+                    Exec(EVS_SpawnSmoke)
                 EndThread
             EndIf
         EndIf
@@ -251,7 +251,7 @@ EvtScript N(EVS_AnimateTrain) = {
     End
 };
 
-EvtScript N(EVS_UpdatePassengerPos) = {
+EvtScript EVS_UpdatePassengerPos = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -284,7 +284,7 @@ EvtScript N(EVS_UpdatePassengerPos) = {
     End
 };
 
-EvtScript N(EVS_FollowTrainCamera) = {
+EvtScript EVS_FollowTrainCamera = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfEq(MF_TrainReverseDir, false)
@@ -309,7 +309,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
     End
 };
 
-EvtScript N(EVS_TravelToToadTown) = {
+EvtScript EVS_TravelToToadTown = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -321,7 +321,7 @@ EvtScript N(EVS_TravelToToadTown) = {
     Call(HidePlayerShadow, true)
     Set(MF_TrainScrolling, true)
     Set(MF_TrainReverseDir, true)
-    Exec(N(EVS_UpdatePassengerPos))
+    Exec(EVS_UpdatePassengerPos)
     Thread
         Call(MakeLerp, 6400, -5600, 1200, EASING_LINEAR)
         Loop(0)
@@ -345,7 +345,7 @@ EvtScript N(EVS_TravelToToadTown) = {
     End
 };
 
-EvtScript N(EVS_TravelToMtRugged) = {
+EvtScript EVS_TravelToMtRugged = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -355,7 +355,7 @@ EvtScript N(EVS_TravelToMtRugged) = {
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Call(EnableNpcShadow, NPC_PARTNER, false)
     Call(HidePlayerShadow, true)
-    Exec(N(EVS_UpdatePassengerPos))
+    Exec(EVS_UpdatePassengerPos)
     Set(MF_TrainScrolling, true)
     Call(MakeLerp, 0, 6350, 600, EASING_LINEAR)
     Loop(0)
@@ -382,7 +382,7 @@ EvtScript N(EVS_TravelToMtRugged) = {
     End
 };
 
-EvtScript N(EVS_InitializeTrainScene) = {
+EvtScript EVS_InitializeTrainScene = {
     Call(EnableModel, MODEL_km, false)
     Call(SetModelFlags, MODEL_km, MODEL_FLAG_BILLBOARD, true)
     Call(CloneModel, MODEL_km, CLONED_MODEL(0))
@@ -398,7 +398,7 @@ EvtScript N(EVS_InitializeTrainScene) = {
     Set(MF_TrainReverseDir, false)
     Set(MV_TrainMoveDist, -6000)
     Set(MV_TrainMoveSpeed, 10)
-    Exec(N(EVS_AnimateTrain))
+    Exec(EVS_AnimateTrain)
     Wait(1)
     Return
     End

@@ -1,7 +1,7 @@
 #include "mim_12.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(InitializeGustyFogProperties)) {
+API_CALLABLE(InitializeGustyFogProperties) {
     enable_world_fog();
     set_world_fog_dist(990, 1000);
     set_world_fog_color(0, 8, 24, 255);
@@ -12,7 +12,7 @@ API_CALLABLE(N(InitializeGustyFogProperties)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitializeForestFogProperties)) {
+API_CALLABLE(InitializeForestFogProperties) {
     enable_world_fog();
     set_world_fog_dist(980, 1000);
     set_world_fog_color(0, 8, 24, 255);
@@ -23,7 +23,7 @@ API_CALLABLE(N(InitializeForestFogProperties)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InterpFogDistance)) {
+API_CALLABLE(InterpFogDistance) {
     Bytecode* args = script->ptrReadPos;
     s32 retVal = ApiStatus_BLOCK;
 
@@ -52,7 +52,7 @@ API_CALLABLE(N(InterpFogDistance)) {
     return retVal;
 }
 
-API_CALLABLE(N(InterpBackgroundDarkness)) {
+API_CALLABLE(InterpBackgroundDarkness) {
     Bytecode* args = script->ptrReadPos;
     s32 retVal = ApiStatus_BLOCK;
 
@@ -80,7 +80,7 @@ API_CALLABLE(N(InterpBackgroundDarkness)) {
     return retVal;
 }
 
-API_CALLABLE(N(InterpSpriteShadingColor)) {
+API_CALLABLE(InterpSpriteShadingColor) {
     SpriteShadingProfile* shadingProfile = gSpriteShadingProfile;
     Bytecode* args = script->ptrReadPos;
 
@@ -109,7 +109,7 @@ API_CALLABLE(N(InterpSpriteShadingColor)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(MoveNpcAlongArc)) {
+API_CALLABLE(MoveNpcAlongArc) {
     Npc* npc = resolve_npc(script, script->varTable[0]);
     f32 angle, sinAngle, cosAngle;
 
@@ -130,37 +130,37 @@ API_CALLABLE(N(MoveNpcAlongArc)) {
     }
 }
 
-EvtScript N(EVS_FadeToForestShading) = {
-    Call(N(InitializeGustyFogProperties))
+EvtScript EVS_FadeToForestShading = {
+    Call(InitializeGustyFogProperties)
     Thread
-        Call(N(InterpFogDistance), 990, 980, 1000, -1)
+        Call(InterpFogDistance, 990, 980, 1000, -1)
     EndThread
     Thread
-        Call(N(InterpBackgroundDarkness), 0, 232, 20)
+        Call(InterpBackgroundDarkness, 0, 232, 20)
     EndThread
     Thread
-        Call(N(InterpSpriteShadingColor), 160, 160, 255)
-    EndThread
-    Return
-    End
-};
-
-EvtScript N(EVS_FadeToGustyShading) = {
-    Call(N(InitializeGustyFogProperties))
-    Thread
-        Call(N(InterpFogDistance), 980, 990, 1000, 1)
-    EndThread
-    Thread
-        Call(N(InterpBackgroundDarkness), 232, 0, -20)
-    EndThread
-    Thread
-        Call(N(InterpSpriteShadingColor), 255, 255, 255)
+        Call(InterpSpriteShadingColor, 160, 160, 255)
     EndThread
     Return
     End
 };
 
-EvtScript N(EVS_OpenGate) = {
+EvtScript EVS_FadeToGustyShading = {
+    Call(InitializeGustyFogProperties)
+    Thread
+        Call(InterpFogDistance, 980, 990, 1000, 1)
+    EndThread
+    Thread
+        Call(InterpBackgroundDarkness, 232, 0, -20)
+    EndThread
+    Thread
+        Call(InterpSpriteShadingColor, 255, 255, 255)
+    EndThread
+    Return
+    End
+};
+
+EvtScript EVS_OpenGate = {
     Call(PlaySoundAtCollider, COLLIDER_o67, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     Set(LVar3, 0)
     Sub(LVar3, LVar2)
@@ -178,7 +178,7 @@ EvtScript N(EVS_OpenGate) = {
     End
 };
 
-EvtScript N(EVS_CloseGate) = {
+EvtScript EVS_CloseGate = {
     Set(LVar3, 0)
     Sub(LVar3, LVar2)
     Call(MakeLerp, 80, 0, 30, EASING_LINEAR)
@@ -196,35 +196,35 @@ EvtScript N(EVS_CloseGate) = {
     End
 };
 
-EvtScript N(EVS_EnterForest) = {
-    Exec(N(EVS_FadeToForestShading))
+EvtScript EVS_EnterForest = {
+    Exec(EVS_FadeToForestShading)
     Set(LVar2, -1)
-    Exec(N(EVS_OpenGate))
+    Exec(EVS_OpenGate)
     Wait(20)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -185, 0, 0)
     Set(LVar2, -1)
-    Exec(N(EVS_CloseGate))
-    ExecWait(N(EVS_StartForestMusic))
+    Exec(EVS_CloseGate)
+    ExecWait(EVS_StartForestMusic)
     Return
     End
 };
 
-EvtScript N(EVS_LeaveForest) = {
-    Exec(N(EVS_FadeToGustyShading))
+EvtScript EVS_LeaveForest = {
+    Exec(EVS_FadeToGustyShading)
     Set(LVar2, 1)
-    Exec(N(EVS_OpenGate))
+    Exec(EVS_OpenGate)
     Wait(20)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -20, 0, 0)
     Set(LVar2, 1)
-    Exec(N(EVS_CloseGate))
-    ExecWait(N(EVS_StartGustyMusic))
+    Exec(EVS_CloseGate)
+    ExecWait(EVS_StartGustyMusic)
     Return
     End
 };
 
-EvtScript N(EVS_CantOpenGateMessage) = {
+EvtScript EVS_CantOpenGateMessage = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_00D9, 160, 40)
     Call(DisablePlayerInput, false)
@@ -232,14 +232,14 @@ EvtScript N(EVS_CantOpenGateMessage) = {
     End
 };
 
-EvtScript N(EVS_UseGate) = {
+EvtScript EVS_UseGate = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
     IfEq(AF_MIM12_BackgroundLitUp, false)
-        ExecWait(N(EVS_LeaveForest))
+        ExecWait(EVS_LeaveForest)
         Set(AF_MIM12_BackgroundLitUp, true)
     Else
-        ExecWait(N(EVS_EnterForest))
+        ExecWait(EVS_EnterForest)
         Set(AF_MIM12_BackgroundLitUp, false)
     EndIf
     Wait(20)
@@ -248,7 +248,7 @@ EvtScript N(EVS_UseGate) = {
     End
 };
 
-EvtScript N(EVS_FlyDownToGate) = {
+EvtScript EVS_FlyDownToGate = {
     Thread
         Call(SetNpcJumpscale, NPC_GateBoo_02, Float(0.0))
         Call(NpcJump1, NPC_GateBoo_02, -66, 13, -15, 20)
@@ -260,7 +260,7 @@ EvtScript N(EVS_FlyDownToGate) = {
     End
 };
 
-EvtScript N(EVS_HaveBoosOpenGate) = {
+EvtScript EVS_HaveBoosOpenGate = {
     Thread
         Call(SetNpcFlagBits, NPC_GateBoo_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Set(LVar0, NPC_GateBoo_02)
@@ -269,7 +269,7 @@ EvtScript N(EVS_HaveBoosOpenGate) = {
         Set(LVar3, 80)
         Set(LVar4, 0)
         Set(LVar5, 30)
-        Call(N(MoveNpcAlongArc))
+        Call(MoveNpcAlongArc)
     EndThread
     Call(SetNpcFlagBits, NPC_GateBoo_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(LVar0, NPC_GateBoo_01)
@@ -278,12 +278,12 @@ EvtScript N(EVS_HaveBoosOpenGate) = {
     Set(LVar3, 40)
     Set(LVar4, 120)
     Set(LVar5, 30)
-    Call(N(MoveNpcAlongArc))
+    Call(MoveNpcAlongArc)
     Return
     End
 };
 
-EvtScript N(EVS_HaveBoosCloseGate) = {
+EvtScript EVS_HaveBoosCloseGate = {
     Thread
         Call(SetNpcFlagBits, NPC_GateBoo_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Set(LVar0, NPC_GateBoo_02)
@@ -292,7 +292,7 @@ EvtScript N(EVS_HaveBoosCloseGate) = {
         Set(LVar3, 0)
         Set(LVar4, 80)
         Set(LVar5, 30)
-        Call(N(MoveNpcAlongArc))
+        Call(MoveNpcAlongArc)
     EndThread
     Call(SetNpcFlagBits, NPC_GateBoo_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(LVar0, NPC_GateBoo_01)
@@ -301,12 +301,12 @@ EvtScript N(EVS_HaveBoosCloseGate) = {
     Set(LVar3, 120)
     Set(LVar4, 40)
     Set(LVar5, 30)
-    Call(N(MoveNpcAlongArc))
+    Call(MoveNpcAlongArc)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_UnlockGate) = {
+EvtScript EVS_Scene_UnlockGate = {
     Call(DisablePlayerInput, true)
     Wait(20 * DT)
     Call(GetCurrentPartnerID, LVar6)
@@ -335,11 +335,11 @@ EvtScript N(EVS_Scene_UnlockGate) = {
         Wait(1)
     EndLoop
     Wait(10 * DT)
-    ExecWait(N(EVS_FlyDownToGate))
-    Exec(N(EVS_FadeToGustyShading))
+    ExecWait(EVS_FlyDownToGate)
+    Exec(EVS_FadeToGustyShading)
     Set(LVar2, 1)
-    Exec(N(EVS_OpenGate))
-    ExecWait(N(EVS_HaveBoosOpenGate))
+    Exec(EVS_OpenGate)
+    ExecWait(EVS_HaveBoosOpenGate)
     Wait(10 * DT)
     Thread
         Call(PlayerMoveTo, 25, 0, 60 * DT)
@@ -352,9 +352,9 @@ EvtScript N(EVS_Scene_UnlockGate) = {
         Wait(60 * DT)
     EndIf
     Set(LVar2, 1)
-    Exec(N(EVS_CloseGate))
-    ExecWait(N(EVS_StartGustyMusic))
-    ExecWait(N(EVS_HaveBoosCloseGate))
+    Exec(EVS_CloseGate)
+    ExecWait(EVS_StartGustyMusic)
+    ExecWait(EVS_HaveBoosCloseGate)
     Wait(10 * DT)
     Call(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_APPEAR_A, SOUND_SPACE_DEFAULT)
     SetF(LVar0, Float(240.0))
@@ -383,18 +383,18 @@ EvtScript N(EVS_Scene_UnlockGate) = {
     Call(PutPartnerAway)
     Call(DisablePlayerInput, false)
     Set(AF_MIM12_BackgroundLitUp, true)
-    BindTrigger(Ref(N(EVS_UseGate)), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
+    BindTrigger(Ref(EVS_UseGate), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetupForestGate) = {
+EvtScript EVS_SetupForestGate = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_BOW_JOINED_PARTY)
-            Call(N(InitializeForestFogProperties))
-            BindTrigger(Ref(N(EVS_CantOpenGateMessage)), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
+            Call(InitializeForestFogProperties)
+            BindTrigger(Ref(EVS_CantOpenGateMessage), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
         CaseLt(STORY_CH3_UNLOCKED_GUSTY_GULCH)
-            Call(N(InitializeForestFogProperties))
+            Call(InitializeForestFogProperties)
             Loop(0)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 IfGe(LVar0, -200)
@@ -402,18 +402,18 @@ EvtScript N(EVS_SetupForestGate) = {
                 EndIf
                 Wait(1)
             EndLoop
-            ExecWait(N(EVS_Scene_UnlockGate))
+            ExecWait(EVS_Scene_UnlockGate)
         CaseGe(STORY_CH3_UNLOCKED_GUSTY_GULCH)
             Call(GetEntryID, LVar0)
             IfEq(LVar0, mim_12_ENTRY_0)
                 Set(AF_MIM12_BackgroundLitUp, false)
-                Call(N(InitializeForestFogProperties))
+                Call(InitializeForestFogProperties)
             Else
                 Set(AF_MIM12_BackgroundLitUp, true)
-                Call(N(InitializeGustyFogProperties))
+                Call(InitializeGustyFogProperties)
                 Call(EnableSpriteShading, false)
             EndIf
-            BindTrigger(Ref(N(EVS_UseGate)), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
+            BindTrigger(Ref(EVS_UseGate), TRIGGER_WALL_PRESS_A, COLLIDER_o67, 1, 0)
     EndSwitch
     Return
     End

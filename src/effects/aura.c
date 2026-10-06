@@ -64,7 +64,6 @@ void aura_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, EffectInstance
     bp.init = aura_init;
     bp.update = aura_update;
     bp.renderScene = aura_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_AURA;
 

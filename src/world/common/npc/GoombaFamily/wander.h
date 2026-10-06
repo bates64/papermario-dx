@@ -1,6 +1,6 @@
 #pragma once
 #include "base.h"
 
-extern MobileAISettings N(AISettings_GoombaFamily_Wander);
-extern EvtScript N(EVS_NpcAI_GoombaFamily_Wander);
-extern NpcSettings N(NpcSettings_GoombaFamily_Wander);
+extern MobileAISettings AISettings_GoombaFamily_Wander;
+extern EvtScript EVS_NpcAI_GoombaFamily_Wander;
+extern NpcSettings NpcSettings_GoombaFamily_Wander;

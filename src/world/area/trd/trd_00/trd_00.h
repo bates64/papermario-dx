@@ -18,5 +18,3 @@ enum {
     NPC_KoopaBros               = 0,
     NPC_Eldstar                 = 1,
 };
-
-#define NAMESPACE trd_00

@@ -19,7 +19,7 @@ typedef struct StickerData {
     /* 0x44 */ s32 duration;
 } StickerData; // size = 0x48
 
-void N(appendGfx_sticker)(void* renderData) {
+void appendGfx_sticker(void* renderData) {
     ImgFXTexture ifxImg;
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
@@ -58,18 +58,18 @@ void N(appendGfx_sticker)(void* renderData) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(worker_render_sticker)(void) {
+void worker_render_sticker(void) {
     RenderTask renderTask;
     RenderTask* renderTaskPtr = &renderTask;
 
     renderTaskPtr->renderMode = RENDER_MODE_ALPHATEST;
     renderTaskPtr->appendGfxArg = 0;
-    renderTaskPtr->appendGfx = &N(appendGfx_sticker);
+    renderTaskPtr->appendGfx = &appendGfx_sticker;
     renderTaskPtr->dist = 0;
     queue_render_task(renderTaskPtr);
 }
 
-API_CALLABLE(N(CreateSticker)) {
+API_CALLABLE(CreateSticker) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
 
@@ -108,14 +108,14 @@ API_CALLABLE(N(CreateSticker)) {
         iconPal);
 
     sticker->imgfxIdx = imgfx_get_free_instances(1);
-    sticker->workerID = create_worker_scene(nullptr, N(worker_render_sticker));
+    sticker->workerID = create_worker_scene(nullptr, worker_render_sticker);
     evt_set_variable(script, MV_StickerData, (s32) sticker);
     evt_set_variable(script, MV_StickerImage, (s32) iconImg);
     evt_set_variable(script, MV_StickerPalette, (s32) iconPal);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStickerPos)) {
+API_CALLABLE(SetStickerPos) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_float_variable(script, *args++);
     f32 y = evt_get_float_variable(script, *args++);
@@ -128,7 +128,7 @@ API_CALLABLE(N(SetStickerPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStickerRotation)) {
+API_CALLABLE(SetStickerRotation) {
     Bytecode* args = script->ptrReadPos;
     f32 pitch = evt_get_float_variable(script, *args++);
     f32 yaw = evt_get_float_variable(script, *args++);
@@ -139,7 +139,7 @@ API_CALLABLE(N(SetStickerRotation)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(JumpStickerTo)) {
+API_CALLABLE(JumpStickerTo) {
     Bytecode* args = script->ptrReadPos;
     StickerData* data = (StickerData*) evt_get_variable(script, MV_StickerData);
     f32 x, y, z, dist;
@@ -190,7 +190,7 @@ API_CALLABLE(N(JumpStickerTo)) {
     }
 }
 
-API_CALLABLE(N(SetStickerGravity)) {
+API_CALLABLE(SetStickerGravity) {
     Bytecode* args = script->ptrReadPos;
     f32 gravity = evt_get_float_variable(script, *args++);
     StickerData* data = (StickerData*) evt_get_variable(script, MV_StickerData);
@@ -199,7 +199,7 @@ API_CALLABLE(N(SetStickerGravity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DeleteSticker)) {
+API_CALLABLE(DeleteSticker) {
     StickerData* data = (StickerData*) evt_get_variable(script, MV_StickerData);
     IMG_PTR img = (IMG_PTR) evt_get_variable(script, MV_StickerImage);
     PAL_PTR pal = (PAL_PTR) evt_get_variable(script, MV_StickerPalette);
@@ -217,7 +217,7 @@ API_CALLABLE(N(DeleteSticker)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_OnInspect_StickerSign) = {
+EvtScript EVS_OnInspect_StickerSign = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(DisablePlayerInput, true)
@@ -230,15 +230,15 @@ EvtScript N(EVS_OnInspect_StickerSign) = {
                 SetF(LVar0, Float(0.0))
                 Loop(18)
                     AddF(LVar0, Float(10.0))
-                    Call(N(SetStickerRotation), 0, LVar0)
+                    Call(SetStickerRotation, 0, LVar0)
                     Wait(1)
                 EndLoop
-                Call(N(SetStickerRotation), 0, 0)
+                Call(SetStickerRotation, 0, 0)
             EndThread
             Thread
-                Call(N(SetStickerGravity), Float(0.6))
-                Call(N(JumpStickerTo), 362, 0, 40, 23)
-                Call(N(DeleteSticker))
+                Call(SetStickerGravity, Float(0.6))
+                Call(JumpStickerTo, 362, 0, 40, 23)
+                Call(DeleteSticker)
                 Call(MakeItemEntity, ITEM_MUSHROOM, 362, 0, 40, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR06_Item_Mushroom)
             EndThread
             Wait(10)
@@ -250,12 +250,12 @@ EvtScript N(EVS_OnInspect_StickerSign) = {
     End
 };
 
-EvtScript N(EVS_SetupStickerSign) = {
+EvtScript EVS_SetupStickerSign = {
     IfEq(GF_KMR06_Item_Mushroom, false)
-        Call(N(CreateSticker), ITEM_MUSHROOM)
-        Call(N(SetStickerPos), 362, 40, -17)
+        Call(CreateSticker, ITEM_MUSHROOM)
+        Call(SetStickerPos, 362, 40, -17)
     EndIf
-    BindTrigger(Ref(N(EVS_OnInspect_StickerSign)), TRIGGER_WALL_PRESS_A, COLLIDER_o852, 1, 0)
+    BindTrigger(Ref(EVS_OnInspect_StickerSign), TRIGGER_WALL_PRESS_A, COLLIDER_o852, 1, 0)
     Return
     End
 };

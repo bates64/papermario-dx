@@ -1,12 +1,12 @@
 #include "kpa_81.h"
 
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     sprintf(wMapShapeName, "kpa_80_shape");
     sprintf(wMapHitName, "kpa_80_hit");
     return false;
 }
 
-s32 N(RightDoorModels)[] = {
+s32 RightDoorModels[] = {
     MODEL_o140,
     MODEL_o142,
     MODEL_o121,
@@ -16,7 +16,7 @@ s32 N(RightDoorModels)[] = {
     -1
 };
 
-s32 N(LeftDoorModels)[] = {
+s32 LeftDoorModels[] = {
     MODEL_o161,
     MODEL_o162,
     MODEL_o119,
@@ -26,15 +26,15 @@ s32 N(LeftDoorModels)[] = {
     -1
 };
 
-EvtScript N(EVS_ExitDoors_kpa_50_1) = EVT_EXIT_DOUBLE_DOOR(kpa_81_ENTRY_0, "kpa_50", kpa_50_ENTRY_1, COLLIDER_deilittw, MODEL_o174, MODEL_o173);
+EvtScript EVS_ExitDoors_kpa_50_1 = EVT_EXIT_DOUBLE_DOOR(kpa_81_ENTRY_0, "kpa_50", kpa_50_ENTRY_1, COLLIDER_deilittw, MODEL_o174, MODEL_o173);
 
-EvtScript N(EVS_ExitDoors_kpa_32_0) = {
+EvtScript EVS_ExitDoors_kpa_32_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, kpa_81_ENTRY_2)
     Set(LVar1, COLLIDER_o166)
-    Set(LVar2, Ref(N(RightDoorModels)))
-    Set(LVar3, Ref(N(LeftDoorModels)))
+    Set(LVar2, Ref(RightDoorModels))
+    Set(LVar3, Ref(LeftDoorModels))
     Exec(BaseExitDoor)
     Wait(17)
     Call(GotoMap, Ref("kpa_32"), kpa_32_ENTRY_0)
@@ -43,19 +43,19 @@ EvtScript N(EVS_ExitDoors_kpa_32_0) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_kpa_04_1) = EVT_EXIT_WALK(60, kpa_81_ENTRY_3, "kpa_04", kpa_04_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_04_1 = EVT_EXIT_WALK(60, kpa_81_ENTRY_3, "kpa_04", kpa_04_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_kpa_50_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_04_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_kpa_50_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_04_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     IfNe(GB_KPA81_BowserDoorState, 0)
-        BindTrigger(Ref(N(EVS_ExitDoors_kpa_32_0)), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoors_kpa_32_0), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_81_ENTRY_0)
@@ -63,22 +63,22 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_o174)
             Set(LVar3, MODEL_o173)
             Exec(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kpa_81_ENTRY_2)
             Set(LVar0, kpa_81_ENTRY_2)
-            Set(LVar2, Ref(N(LeftDoorModels)))
-            Set(LVar3, Ref(N(RightDoorModels)))
+            Set(LVar2, Ref(LeftDoorModels))
+            Set(LVar3, Ref(RightDoorModels))
             ExecWait(BaseEnterDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kpa_81_ENTRY_3)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UnusedMoveStatue) = {
+EvtScript EVS_UnusedMoveStatue = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 0)
         Return
@@ -99,18 +99,18 @@ EvtScript N(EVS_UnusedMoveStatue) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
     IfNe(GB_KPA81_BowserDoorState, 0)
         Call(GetEntryID, LVar0)
         Switch(LVar0)
             CaseEq(kpa_81_ENTRY_0)
-                BindTrigger(Ref(N(EVS_UnusedMoveStatue)), TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
+                BindTrigger(Ref(EVS_UnusedMoveStatue), TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
             CaseEq(kpa_81_ENTRY_2)
-                BindTrigger(Ref(N(EVS_UnusedMoveStatue)), TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
+                BindTrigger(Ref(EVS_UnusedMoveStatue), TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
             CaseEq(kpa_81_ENTRY_3)
         EndSwitch
     EndIf
@@ -143,9 +143,9 @@ EvtScript N(EVS_Main) = {
     Call(EnableModel, MODEL_b5, false)
     Call(EnableModel, MODEL_b6, false)
     Call(EnableModel, MODEL_b7, false)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Return
     End
 };

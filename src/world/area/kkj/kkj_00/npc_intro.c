@@ -1,6 +1,6 @@
 #include "kkj_00.h"
 
-EvtScript N(EVS_NpcIdle_RussT_Intro) = {
+EvtScript EVS_NpcIdle_RussT_Intro = {
     Loop(0)
         Call(GetSelfVar, 1, LVar0)
         IfEq(LVar0, 0)
@@ -20,7 +20,7 @@ EvtScript N(EVS_NpcIdle_RussT_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Toadette_01_Intro) = {
+EvtScript EVS_NpcIdle_Toadette_01_Intro = {
     Loop(0)
         Call(GetSelfVar, 1, LVar0)
         IfEq(LVar0, 0)
@@ -40,7 +40,7 @@ EvtScript N(EVS_NpcIdle_Toadette_01_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Toad_01_Intro) = {
+EvtScript EVS_NpcIdle_Toad_01_Intro = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_00_ENTRY_5)
         Call(WaitForPlayerInputEnabled)
@@ -71,7 +71,7 @@ EvtScript N(EVS_NpcIdle_Toad_01_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Toad_03_Intro) = {
+EvtScript EVS_NpcIdle_Toad_03_Intro = {
     Loop(0)
         Wait(150)
         Loop(2)
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcIdle_Toad_03_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Luigi_Intro) = {
+EvtScript EVS_NpcInteract_Luigi_Intro = {
     Call(EnableNpcAI, NPC_Toad_01, false)
     Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_Idle)
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_Toad_Red_Idle)
@@ -96,7 +96,7 @@ EvtScript N(EVS_NpcInteract_Luigi_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_01_Intro) = {
+EvtScript EVS_NpcInteract_Toad_01_Intro = {
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_Toad_Red_Idle)
     Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_Idle)
     Wait(10)
@@ -105,19 +105,19 @@ EvtScript N(EVS_NpcInteract_Toad_01_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_02_Intro) = {
+EvtScript EVS_NpcInteract_Toad_02_Intro = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 16, MSG_Intro_002A)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_03_Intro) = {
+EvtScript EVS_NpcInteract_Toad_03_Intro = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Yellow_Talk, ANIM_Toad_Yellow_Idle, 0, MSG_Intro_002B)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toadette_01_Intro) = {
+EvtScript EVS_NpcInteract_Toadette_01_Intro = {
     Call(SetNpcAnimation, NPC_Toadette_01, ANIM_Toadette_Pink_Idle)
     Call(SetNpcAnimation, NPC_Toadette_02, ANIM_Toadette_Green_Idle)
     Wait(10)
@@ -126,7 +126,7 @@ EvtScript N(EVS_NpcInteract_Toadette_01_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toadette_02_Intro) = {
+EvtScript EVS_NpcInteract_Toadette_02_Intro = {
     Call(EnableNpcAI, NPC_Toadette_01, false)
     Call(SetNpcAnimation, NPC_Toadette_02, ANIM_Toadette_Green_Idle)
     Call(SetNpcAnimation, NPC_Toadette_01, ANIM_Toadette_Pink_Idle)
@@ -137,7 +137,7 @@ EvtScript N(EVS_NpcInteract_Toadette_02_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RussT_Intro) = {
+EvtScript EVS_NpcInteract_RussT_Intro = {
     Call(SetNpcAnimation, NPC_ShiverToad_01, ANIM_ShiverToad_Green_Idle)
     Call(SetNpcAnimation, NPC_RussT_01, ANIM_RussT_Idle)
     Wait(10)
@@ -146,7 +146,7 @@ EvtScript N(EVS_NpcInteract_RussT_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ShiverToad_Intro) = {
+EvtScript EVS_NpcInteract_ShiverToad_Intro = {
     Call(EnableNpcAI, NPC_RussT_01, false)
     Call(SetNpcAnimation, NPC_RussT_01, ANIM_RussT_Idle)
     Call(SetNpcAnimation, NPC_ShiverToad_01, ANIM_ShiverToad_Green_Idle)
@@ -157,25 +157,25 @@ EvtScript N(EVS_NpcInteract_ShiverToad_Intro) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_01_Intro) = {
+EvtScript EVS_NpcInteract_Penguin_01_Intro = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_Intro_0030)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadGuard_01_Intro) = {
+EvtScript EVS_NpcInteract_ToadGuard_01_Intro = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Red_Talk, ANIM_ToadGuard_Red_Idle, 16, MSG_Intro_002E)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadGuard_02_Intro) = {
+EvtScript EVS_NpcInteract_ToadGuard_02_Intro = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Blue_Talk, ANIM_ToadGuard_Blue_Idle, 16, MSG_Intro_002F)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Luigi_Intro) = {
+EvtScript EVS_NpcInit_Luigi_Intro = {
     Call(SetNpcCollisionSize, NPC_SELF, 46, 26)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_00_ENTRY_5)
@@ -185,87 +185,87 @@ EvtScript N(EVS_NpcInit_Luigi_Intro) = {
         Call(SetNpcPos, NPC_SELF, 20, 0, 320)
         Call(SetNpcYaw, NPC_SELF, 90)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Luigi_Intro)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Luigi_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_01_Intro) = {
+EvtScript EVS_NpcInit_Toad_01_Intro = {
     Call(GetEntryID, LVar0)
     IfNe(LVar0, kkj_00_ENTRY_5)
         Call(SetNpcPos, NPC_SELF, 60, 0, 320)
         Call(SetNpcYaw, NPC_SELF, 270)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_01_Intro)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_01_Intro)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_01_Intro))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_02_Intro) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_02_Intro)))
+EvtScript EVS_NpcInit_Toad_02_Intro = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_03_Intro) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toad_03_Intro)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_03_Intro)))
+EvtScript EVS_NpcInit_Toad_03_Intro = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toad_03_Intro))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_03_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toadette_01_Intro) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Toadette_01_Intro)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette_01_Intro)))
+EvtScript EVS_NpcInit_Toadette_01_Intro = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Toadette_01_Intro))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toadette_02_Intro) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette_02_Intro)))
+EvtScript EVS_NpcInit_Toadette_02_Intro = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_RussT_Intro) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_RussT_Intro)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RussT_Intro)))
+EvtScript EVS_NpcInit_RussT_Intro = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_RussT_Intro))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RussT_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShiverToad_Intro) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShiverToad_Intro)))
+EvtScript EVS_NpcInit_ShiverToad_Intro = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_01_Intro) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_01_Intro)))
+EvtScript EVS_NpcInit_Penguin_01_Intro = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_01_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadGuard_01_Intro) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadGuard_01_Intro)))
+EvtScript EVS_NpcInit_ToadGuard_01_Intro = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_01_Intro))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadGuard_02_Intro) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadGuard_02_Intro)))
+EvtScript EVS_NpcInit_ToadGuard_02_Intro = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard_02_Intro))
     Return
     End
 };
 
-NpcData N(NpcData_Characters_Intro)[] = {
+NpcData NpcData_Characters_Intro[] = {
     {
         .id = NPC_Luigi,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Luigi_Intro),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi_Intro,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -274,8 +274,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_Toad_01,
         .pos = { 182.0f, 0.0f, 320.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Toad_01_Intro),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toad_01_Intro,
+        .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -298,8 +298,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
                 .detectSize = { 200 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_02_Intro),
-        .settings = &N(NpcSettings_Toad_Patrol),
+        .init = &EVS_NpcInit_Toad_02_Intro,
+        .settings = &NpcSettings_Toad_Patrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -308,8 +308,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_Toad_03,
         .pos = { 150.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Toad_03_Intro),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toad_03_Intro,
+        .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -318,8 +318,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_Toadette_01,
         .pos = { -300.0f, 0.0f, 100.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toadette_01_Intro),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette_01_Intro,
+        .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -328,8 +328,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_Toadette_02,
         .pos = { -270.0f, 0.0f, 85.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Toadette_02_Intro),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette_02_Intro,
+        .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -338,8 +338,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_RussT_01,
         .pos = { 300.0f, 0.0f, 150.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_RussT_Intro),
-        .settings = &N(NpcSettings_RussT),
+        .init = &EVS_NpcInit_RussT_Intro,
+        .settings = &NpcSettings_RussT,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RUSS_T_ANIMS,
@@ -348,8 +348,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_ShiverToad_01,
         .pos = { 330.0f, 0.0f, 135.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShiverToad_Intro),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_ShiverToad_Intro,
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_GREEN_ANIMS,
@@ -358,8 +358,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_Penguin_01,
         .pos = { -120.0f, 100.0f, -305.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Penguin_01_Intro),
-        .settings = &N(NpcSettings_Penguin),
+        .init = &EVS_NpcInit_Penguin_01_Intro,
+        .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -368,8 +368,8 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_ToadGuard_01,
         .pos = { 100.0f, 0.0f, 150.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ToadGuard_01_Intro),
-        .settings = &N(NpcSettings_ToadGuard),
+        .init = &EVS_NpcInit_ToadGuard_01_Intro,
+        .settings = &NpcSettings_ToadGuard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
@@ -378,15 +378,15 @@ NpcData N(NpcData_Characters_Intro)[] = {
         .id = NPC_ToadGuard_02,
         .pos = { -50.0f, 100.0f, -365.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ToadGuard_02_Intro),
-        .settings = &N(NpcSettings_ToadGuard),
+        .init = &EVS_NpcInit_ToadGuard_02_Intro,
+        .settings = &NpcSettings_ToadGuard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_BLUE_ANIMS,
     },
 };
 
-NpcGroupList N(IntroNPCs) = {
-    NPC_GROUP(N(NpcData_Characters_Intro)),
+NpcGroupList IntroNPCs = {
+    NPC_GROUP(NpcData_Characters_Intro),
     {}
 };

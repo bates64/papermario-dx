@@ -4,14 +4,14 @@
 #include "ld_addrs.h"
 
 #if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_ScriptSpring_anim_ROM_END;
-extern Addr entity_model_ScriptSpring_anim_ROM_START;
-extern Addr entity_model_ScriptSpring_gfx_ROM_END;
-extern Addr entity_model_ScriptSpring_gfx_ROM_START;
-extern Addr entity_model_SimpleSpring_anim_ROM_END;
-extern Addr entity_model_SimpleSpring_anim_ROM_START;
-extern Addr entity_model_SimpleSpring_gfx_ROM_END;
-extern Addr entity_model_SimpleSpring_gfx_ROM_START;
+extern Addr entity_anim_ScriptSpring_ROM_END;
+extern Addr entity_anim_ScriptSpring_ROM_START;
+extern Addr entity_model_ScriptSpring_ROM_END;
+extern Addr entity_model_ScriptSpring_ROM_START;
+extern Addr entity_anim_SimpleSpring_ROM_END;
+extern Addr entity_anim_SimpleSpring_ROM_START;
+extern Addr entity_model_SimpleSpring_ROM_END;
+extern Addr entity_model_SimpleSpring_ROM_START;
 #endif
 
 extern StaticAnimatorNode* Entity_ScriptSpring_Mesh[];
@@ -93,11 +93,11 @@ EntityScript Entity_SimpleSpring_Script = {
     es_End
 };
 
-DmaEntry Entity_ScriptSpring_dma[] = { ENTITY_ROM(ScriptSpring_gfx), ENTITY_ROM(ScriptSpring_anim) };
+DmaEntry Entity_ScriptSpring_dma[] = { ENTITY_ROM(ScriptSpring), ENTITY_ANIM_ROM(ScriptSpring) };
 
-DmaEntry Entity_SimpleSpring_dma[] = { ENTITY_ROM(SimpleSpring_gfx), ENTITY_ROM(SimpleSpring_anim) };
+DmaEntry Entity_SimpleSpring_dma[] = { ENTITY_ROM(SimpleSpring), ENTITY_ANIM_ROM(SimpleSpring) };
 
-EntityBlueprint Entity_ScriptSpring = {
+ENTITY_IMPLEMENTATION(ScriptSpring) = {
     .flags = ENTITY_FLAG_ALWAYS_FACE_CAMERA | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = 0,
     .animScript = Entity_ScriptSpring_AnimIdle,
@@ -110,7 +110,7 @@ EntityBlueprint Entity_ScriptSpring = {
     .aabbSize = {40, 25, 40}
 };
 
-EntityBlueprint Entity_SimpleSpring = {
+ENTITY_IMPLEMENTATION(SimpleSpring) = {
     .flags = ENTITY_FLAG_ALWAYS_FACE_CAMERA | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(SimpleSpringData),
     .animScript = Entity_SimpleSpring_AnimIdle,

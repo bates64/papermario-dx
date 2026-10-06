@@ -1,13 +1,10 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_volt_shroom
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_71AA2C)) {
+API_CALLABLE(func_802A123C_71AA2C) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -18,10 +15,10 @@ API_CALLABLE(N(func_802A123C_71AA2C)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_VOLT_SHROOM)
-    ExecWait(N(UseItemWithEffect))
-    ExecWait(N(EatItem))
+    ExecWait(UseItemWithEffect)
+    ExecWait(EatItem)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Set(LVar3, 20)
@@ -29,14 +26,18 @@ EvtScript N(EVS_UseItem) = {
     Add(LVar1, LVar3)
     SetF(LVar3, Float(1.0))
     Call(MultiplyByActorScale, LVar3)
-    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, 30, 0)
+    PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, LVar3, 30)
     Call(PlaySound, SOUND_VOLT_SHROOM_APPLY)
     Call(GetItemPower, ITEM_VOLT_SHROOM, LVar0, LVar1)
-    Call(N(func_802A123C_71AA2C))
+    Call(func_802A123C_71AA2C)
     Wait(20)
     Call(ShowMessageBox, BTL_MSG_PLAYER_CHARGED, 60)
     Call(WaitForMessageBoxDone)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

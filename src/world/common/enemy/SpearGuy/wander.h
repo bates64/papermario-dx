@@ -1,9 +1,9 @@
 #pragma once
 #include "base.h"
 
-extern EvtScript N(EVS_NpcDefeat_SpearGuy_Hitbox);
-extern MobileAISettings N(AISettings_SpearGuy_Wander);
-extern EvtScript N(EVS_NpcAI_SpearGuy_Wander);
-extern NpcSettings N(NpcSettings_SpearGuy_Wander);
-extern EvtScript N(EVS_NpcAI_SpearGuy_Hitbox);
-extern NpcSettings N(NpcSettings_SpearGuy_Hitbox);
+extern EvtScript EVS_NpcDefeat_SpearGuy_Hitbox;
+extern MobileAISettings AISettings_SpearGuy_Wander;
+extern EvtScript EVS_NpcAI_SpearGuy_Wander;
+extern NpcSettings NpcSettings_SpearGuy_Wander;
+extern EvtScript EVS_NpcAI_SpearGuy_Hitbox;
+extern NpcSettings NpcSettings_SpearGuy_Hitbox;

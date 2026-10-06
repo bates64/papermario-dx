@@ -17,12 +17,10 @@ enum {
     NPC_Bzzap                   = 2,
 };
 
-#define NAMESPACE flo_25
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_SetupVines;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_SetupVines);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

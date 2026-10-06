@@ -2,9 +2,13 @@
 #include "nu/nusys.h"
 #include "hud_element.h"
 #include "battle/battle.h"
+#include "battle/menu.h"
 #include "script_api/battle.h"
 #include "sprite.h"
 #include "effects.h"
+#include "battle/action_cmd.h"
+#include "battle/partner.h"
+#include "battle/script_module.h"
 #include "battle/states/states.h"
 
 f32 StarPointsIncrementInterp = 0.0f;
@@ -110,6 +114,13 @@ void initialize_battle(void) {
     Camera* tattleCam = &gCameras[CAM_TATTLE];
     HudElemID hid;
     s32 i;
+
+    // The legacy battle segment is DMA-loaded without clearing its BSS. These
+    // overlay handles were added later and must not inherit the prior RAM image.
+    reset_action_command_overlay();
+    reset_battle_script_overlay();
+    reset_battle_partner_overlay();
+    reset_battle_menu_overlay();
 
     gBattleStatus.flags1 = 0;
     gBattleStatus.flags2 = 0;
@@ -277,19 +288,11 @@ void btl_update(void) {
                 btl_state_update_prepare_menu();
                 break;
             case BATTLE_STATE_PLAYER_MENU:
-                btl_state_update_player_menu();
-                break;
             case BATTLE_STATE_PARTNER_MENU:
-                btl_state_update_partner_menu();
-                break;
             case BATTLE_STATE_TWINK_MENU:
-                btl_state_update_twink_menu();
-                break;
             case BATTLE_STATE_PEACH_MENU:
-                btl_state_update_peach_menu();
-                break;
             case BATTLE_STATE_SELECT_TARGET:
-                btl_state_update_select_target();
+                update_battle_menu(gBattleState);
                 break;
             case BATTLE_STATE_PLAYER_MOVE:
                 btl_state_update_player_move();
@@ -479,19 +482,11 @@ void btl_draw_ui(void) {
                 btl_state_draw_prepare_menu();
                 break;
             case BATTLE_STATE_PLAYER_MENU:
-                btl_state_draw_player_menu();
-                break;
             case BATTLE_STATE_PARTNER_MENU:
-                btl_state_draw_partner_menu();
-                break;
             case BATTLE_STATE_TWINK_MENU:
-                btl_state_draw_twink_menu();
-                break;
             case BATTLE_STATE_PEACH_MENU:
-                btl_state_draw_peach_menu();
-                break;
             case BATTLE_STATE_SELECT_TARGET:
-                btl_state_draw_select_target();
+                draw_battle_menu(state);
                 break;
             case BATTLE_STATE_PLAYER_MOVE:
                 btl_state_draw_player_move();

@@ -1,6 +1,6 @@
 #include "kpa_63.h"
 
-API_CALLABLE(N(SetPassengerPos)) {
+API_CALLABLE(SetPassengerPos) {
     Bytecode* args = script->ptrReadPos;
     Npc* partner;
     f32 x, y, z;
@@ -47,18 +47,18 @@ API_CALLABLE(N(SetPassengerPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdatePassengers) = {
+EvtScript EVS_UpdatePassengers = {
     IfEq(MV_PlayerOnBoard, true)
-        Call(N(SetPassengerPos), 0, LVar3, MV_Starship_Yaw)
+        Call(SetPassengerPos, 0, LVar3, MV_Starship_Yaw)
     EndIf
     IfEq(MV_PartnerOnBoard, true)
-        Call(N(SetPassengerPos), 1, LVar3, MV_Starship_Yaw)
+        Call(SetPassengerPos, 1, LVar3, MV_Starship_Yaw)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Starship_Update) = {
+EvtScript EVS_Starship_Update = {
     Label(0)
     Call(MakeLerp, 0, 100, 30, EASING_COS_IN_OUT)
     Loop(0)
@@ -68,7 +68,7 @@ EvtScript N(EVS_Starship_Update) = {
         AddF(LVar3, MV_Starship_PosY)
         Call(TranslateGroup, MODEL_g55, 0, LVar3, 0)
         Call(RotateGroup, MODEL_g55, MV_Starship_Yaw, 0, 1, 0)
-        Exec(N(EVS_UpdatePassengers))
+        Exec(EVS_UpdatePassengers)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -82,7 +82,7 @@ EvtScript N(EVS_Starship_Update) = {
         AddF(LVar3, MV_Starship_PosY)
         Call(TranslateGroup, MODEL_g55, 0, LVar3, 0)
         Call(RotateGroup, MODEL_g55, MV_Starship_Yaw, 0, 1, 0)
-        Exec(N(EVS_UpdatePassengers))
+        Exec(EVS_UpdatePassengers)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -93,7 +93,7 @@ EvtScript N(EVS_Starship_Update) = {
     End
 };
 
-EvtScript N(EVS_Starship_Depart) = {
+EvtScript EVS_Starship_Depart = {
     Call(GetPartnerInUse, LVar9)
     IfNe(LVar9, PARTNER_NONE)
         Return
@@ -163,7 +163,7 @@ EvtScript N(EVS_Starship_Depart) = {
     End
 };
 
-EvtScript N(EVS_Starship_Arrive) = {
+EvtScript EVS_Starship_Arrive = {
     Set(MV_Starship_PosY, -100)
     Set(MV_Starship_Yaw, 180)
     Set(MV_PlayerOnBoard, true)
@@ -180,7 +180,7 @@ EvtScript N(EVS_Starship_Arrive) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(HidePlayerShadow, false)
     Call(EnableNpcShadow, NPC_PARTNER, true)
-    ExecGetTID(N(EVS_UpdatePassengers), LVar9)
+    ExecGetTID(EVS_UpdatePassengers, LVar9)
     Call(PlaySoundAtPlayer, SOUND_STARSHIP_ARRIVE, SOUND_SPACE_DEFAULT)
     Thread
         Call(MakeLerp, -100, 0, 60, EASING_QUADRATIC_OUT)
@@ -236,8 +236,8 @@ EvtScript N(EVS_Starship_Arrive) = {
     End
 };
 
-EvtScript N(EVS_SetupStarship) = {
-    Exec(N(EVS_Starship_Update))
+EvtScript EVS_SetupStarship = {
+    Exec(EVS_Starship_Update)
     Call(ParentColliderToModel, COLLIDER_o400, MODEL_o308)
     Loop(0)
         Call(UpdateColliderTransform, COLLIDER_o400)

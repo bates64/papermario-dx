@@ -1,36 +1,34 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
-#include "battle/action_cmd/jump.h"
 #include "sprite/player.h"
-
-#define NAMESPACE battle_move_shrink_stomp
 
 #include "battle/common/move/JumpSupport.inc.c"
 
-extern EvtScript N(EVS_UseMove_Basic);
-extern EvtScript N(EVS_UseMove_Super);
-extern EvtScript N(EVS_UseMove_Ultra);
+extern EvtScript EVS_UseMove_Basic;
+extern EvtScript EVS_UseMove_Super;
+extern EvtScript EVS_UseMove_Ultra;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_UseMove_Basic))
+            ExecWait(EVS_UseMove_Basic)
         CaseEq(1)
-            ExecWait(N(EVS_UseMove_Super))
+            ExecWait(EVS_UseMove_Super)
         CaseEq(2)
-            ExecWait(N(EVS_UseMove_Ultra))
+            ExecWait(EVS_UseMove_Ultra)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Basic) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Basic = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
     Wait(1)
@@ -46,7 +44,7 @@ EvtScript N(EVS_UseMove_Basic) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_JumpSupport_NoFollowUp))
+            ExecWait(EVS_JumpSupport_NoFollowUp)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -62,9 +60,9 @@ EvtScript N(EVS_UseMove_Basic) = {
     Call(GetJumpActionQuality, LVarF)
     Call(InterruptActionCommand)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
+    Call(InitActionCommand)
     Call(ShowActionHud, false)
-    Call(action_command_jump_start, 24, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 24, AC_DIFFICULTY_3)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_SpinFall)
     Call(PlayerBasicJumpToGoal, 24, PLAYER_BASIC_JUMP_3)
@@ -72,16 +70,17 @@ EvtScript N(EVS_UseMove_Basic) = {
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_ACTOR_JUMPED_1)
     Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, DMG_STATUS_KEY(STATUS_FLAG_SHRINK, 3, 100), 1, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT | BS_FLAGS1_NO_RATING)
     Call(SetActionResult, LVarF)
-    ExecWait(N(EVS_JumpSupport_Rebound))
+    ExecWait(EVS_JumpSupport_Rebound)
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Super) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+
+EvtScript EVS_UseMove_Super = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
     Wait(1)
@@ -97,7 +96,7 @@ EvtScript N(EVS_UseMove_Super) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_JumpSupport_NoFollowUp))
+            ExecWait(EVS_JumpSupport_NoFollowUp)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -113,9 +112,9 @@ EvtScript N(EVS_UseMove_Super) = {
     EndChildThread
     Call(InterruptActionCommand)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
+    Call(InitActionCommand)
     Call(ShowActionHud, false)
-    Call(action_command_jump_start, 37, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 37, AC_DIFFICULTY_3)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(EnablePlayerBlur, ACTOR_BLUR_ENABLE)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Sit, ANIM_Mario1_SpinJump)
@@ -127,16 +126,16 @@ EvtScript N(EVS_UseMove_Super) = {
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_ACTOR_JUMPED_2)
     Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, DMG_STATUS_KEY(STATUS_FLAG_SHRINK, 3, 100), 2, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT | BS_FLAGS1_NO_RATING)
     Call(SetActionResult, LVarF)
-    ExecWait(N(EVS_JumpSupport_Rebound))
+    ExecWait(EVS_JumpSupport_Rebound)
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Ultra) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Ultra = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
     Wait(1)
@@ -152,7 +151,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_JumpSupport_NoFollowUp))
+            ExecWait(EVS_JumpSupport_NoFollowUp)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -168,9 +167,9 @@ EvtScript N(EVS_UseMove_Ultra) = {
     EndChildThread
     Call(InterruptActionCommand)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
+    Call(InitActionCommand)
     Call(ShowActionHud, false)
-    Call(action_command_jump_start, 25, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 25, AC_DIFFICULTY_3)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(EnablePlayerBlur, ACTOR_BLUR_ENABLE)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Jump, ANIM_Mario1_SpinFall)
@@ -180,7 +179,11 @@ EvtScript N(EVS_UseMove_Ultra) = {
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_ACTOR_JUMPED_3)
     Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, DMG_STATUS_KEY(STATUS_FLAG_SHRINK, 3, 100), 3, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT | BS_FLAGS1_NO_RATING)
     Call(SetActionResult, LVarF)
-    ExecWait(N(EVS_JumpSupport_Rebound))
+    ExecWait(EVS_JumpSupport_Rebound)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &EVS_UseMove,
+);

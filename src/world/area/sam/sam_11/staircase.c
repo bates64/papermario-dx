@@ -1,6 +1,6 @@
 #include "sam_11.h"
 
-EvtScript N(EVS_LowerStaircase) = {
+EvtScript EVS_LowerStaircase = {
     Call(EnableModel, MODEL_ana, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ana, COLLIDER_FLAGS_UPPER_MASK)
     Call(TranslateModel, MODEL_o733, 0, 0, 0)
@@ -80,7 +80,7 @@ EvtScript N(EVS_LowerStaircase) = {
     End
 };
 
-EvtScript N(EVS_SetupStaircase) = {
+EvtScript EVS_SetupStaircase = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_SPOKE_WITH_HERRINGWAY)
             Call(TranslateModel, MODEL_o769, 0, 25, 0)

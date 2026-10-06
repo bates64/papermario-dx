@@ -1,7 +1,7 @@
 #include "flo_23.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_BrickBlock), 100, 60, 5, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 100, 145, 0, 0, ITEM_SHOOTING_STAR, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_FLO23_HiddenItem_ShootingStar)

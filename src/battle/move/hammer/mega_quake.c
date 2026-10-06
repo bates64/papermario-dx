@@ -1,8 +1,7 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "effects.h"
 #include "sprite/player.h"
-
-#define NAMESPACE battle_move_mega_quake
 
 #include "battle/common/move/HammerSupport.inc.c"
 
@@ -35,9 +34,9 @@ API_CALLABLE(func_802A10A4_756824) {
     }
 }
 
-extern EvtScript N(EVS_UseMove_Impl);
+extern EvtScript EVS_UseMove_Impl;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
@@ -45,42 +44,42 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 80) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(1)
             Set(LVarD, 80) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(2)
             Set(LVarD, 80) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Impl) = {
+EvtScript EVS_UseMove_Impl = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_Hammer_UseBasicQuake))
+            ExecWait(EVS_Hammer_UseBasicQuake)
         CaseEq(1)
-            ExecWait(N(EVS_Hammer_UseSuperQuake))
+            ExecWait(EVS_Hammer_UseSuperQuake)
         CaseEq(2)
-            ExecWait(N(EVS_Hammer_UseUltraQuake))
+            ExecWait(EVS_Hammer_UseUltraQuake)
     EndSwitch
     Thread
         Wait(8)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 24)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 0, 30, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 0, 30)
         Wait(2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 33, 30, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 33, 30)
         Wait(2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 66, 30, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 60, 8, 66, 30)
     EndThread
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
@@ -100,17 +99,17 @@ EvtScript N(EVS_UseMove_Impl) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
                 Add(LVar0, 24)
                 Add(LVar1, 10)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30)
             EndThread
             Thread
                 Wait(10)
-                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2)
             EndThread
         CaseDefault
             Call(StartRumble, BTL_RUMBLE_PLAYER_MAX)
@@ -128,17 +127,17 @@ EvtScript N(EVS_UseMove_Impl) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
                 Add(LVar0, 24)
                 Add(LVar1, 10)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 0, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 24, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 48, 30)
                 Wait(5)
-                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 72, 8, 72, 30)
             EndThread
             Thread
                 Wait(10)
-                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                PlayEffect(EFFECT_SHOCKWAVE, 1, LVar0, LVar1, LVar2)
             EndThread
     EndSwitch
     Call(GetPlayerActionQuality, LVar0)
@@ -153,7 +152,7 @@ EvtScript N(EVS_UseMove_Impl) = {
             AddF(LVar6, Float(36.0))
             Call(AddVectorPolar, LVar4, LVar5, Float(300.0), LVar6)
             Set(LVarA, LVarF)
-            PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar3, 1, LVar2, LVar4, 1, LVar5, Float(4.0), 30, 0, 0, 0, 0)
+            PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar3, 1, LVar2, LVar4, 1, LVar5, Float(4.0), 30)
             Set(LVarF, LVarA)
         EndLoop
         Wait(10)
@@ -207,8 +206,12 @@ EvtScript N(EVS_UseMove_Impl) = {
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EndThread
     Wait(10)
-    ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+    ExecWait(EVS_HammerSupport_ReturnHome_Quake)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+    &EVS_UseMove,
+);

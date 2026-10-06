@@ -1,6 +1,6 @@
 #include "iwa_11.h"
 
-API_CALLABLE(N(CheckForSkipInput)) {
+API_CALLABLE(CheckForSkipInput) {
     if (gGameStatusPtr->pressedButtons[0] & (BUTTON_A | BUTTON_B)) {
         return ApiStatus_DONE2;
     } else {
@@ -8,12 +8,12 @@ API_CALLABLE(N(CheckForSkipInput)) {
     }
 }
 
-EvtScript N(EVS_MonitorSceneSkip) = {
+EvtScript EVS_MonitorSceneSkip = {
     IfLt(GB_StoryProgress, STORY_CH2_ARRIVED_AT_MT_RUGGED)
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    Call(N(CheckForSkipInput))
+    Call(CheckForSkipInput)
     Switch(LVar0)
         CaseEq(iwa_11_ENTRY_0)
             Call(GotoMap, Ref("iwa_10"), iwa_10_ENTRY_0)
@@ -25,7 +25,7 @@ EvtScript N(EVS_MonitorSceneSkip) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
     Call(SetSpriteShading, SHADING_NONE)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 30, 16, 4096) // uses fov 25 instead of 30
@@ -38,20 +38,20 @@ EvtScript N(EVS_Main) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deiliti, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitm, COLLIDER_FLAGS_UPPER_MASK)
-    ExecWait(N(EVS_InitializeTrainScene))
+    ExecWait(EVS_InitializeTrainScene)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(iwa_11_ENTRY_0)
-            Exec(N(EVS_TravelToMtRugged))
+            Exec(EVS_TravelToMtRugged)
         CaseEq(iwa_11_ENTRY_1)
-            Exec(N(EVS_TravelToToadTown))
+            Exec(EVS_TravelToToadTown)
     EndSwitch
-    Exec(N(EVS_UpdateSceneryPos))
-    Exec(N(EVS_MonitorSceneSkip))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_UpdateSceneryPos)
+    Exec(EVS_MonitorSceneSkip)
+    Exec(EVS_SetupMusic)
     Return
     End
 };

@@ -3,7 +3,7 @@
 
 #include "world/common/npc/Sun/idle.inc.c"
 
-EvtScript N(EVS_Sun_AnimateBobbing) = {
+EvtScript EVS_Sun_AnimateBobbing = {
     IfLt(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Set(LVar3, 7)
         Set(LVar4, 5)
@@ -33,7 +33,7 @@ EvtScript N(EVS_Sun_AnimateBobbing) = {
     End
 };
 
-EvtScript N(EVS_Scene_SunReturns) = {
+EvtScript EVS_Scene_SunReturns = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcPos, NPC_Sun_01, 0, 270, 0)
@@ -52,7 +52,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(6.5))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkJoy, ANIM_Sun_TalkJoy, SPEECH_FLAG_200 | 5, MSG_CH6_00C3)
+    Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkJoy, ANIM_Sun_TalkJoy, SPEECH_FLAG_FIXED_ORIGIN | 5, MSG_CH6_00C3)
     Call(SetNpcAnimation, NPC_Sun_01, ANIM_Sun_TalkJoy)
     Thread
         Call(SetCamDistance, CAM_DEFAULT, 1000)
@@ -71,7 +71,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_Sun_02) = {
+EvtScript EVS_NpcAux_Sun_02 = {
     Call(SetNpcRotationPivot, NPC_Sun_02, 48)
     Loop(0)
         Call(MakeLerp, -30, 30, 20, EASING_SIN_OUT)
@@ -101,7 +101,7 @@ EvtScript N(EVS_NpcAux_Sun_02) = {
     End
 };
 
-EvtScript N(EVS_Sun_DescendFromSky) = {
+EvtScript EVS_Sun_DescendFromSky = {
     Loop(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -117,7 +117,7 @@ EvtScript N(EVS_Sun_DescendFromSky) = {
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
     Sub(LVar1, 400)
     Call(NpcJump0, NPC_Sun_01, LVar0, 275, LVar2, 30)
-    ExecGetTID(N(EVS_Sun_AnimateBobbing), LVar9)
+    ExecGetTID(EVS_Sun_AnimateBobbing, LVar9)
     Loop(0)
         Wait(1)
         IfEq(AF_FLO_MetTheSun, true)
@@ -136,7 +136,7 @@ EvtScript N(EVS_Sun_DescendFromSky) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Sun_01) = {
+EvtScript EVS_NpcInteract_Sun_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_SPOKE_WITH_THE_SUN)
             Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkSad, ANIM_Sun_Idle, 517, MSG_CH6_009A)
@@ -164,24 +164,24 @@ EvtScript N(EVS_NpcInteract_Sun_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sun_01) = {
+EvtScript EVS_NpcInit_Sun_01 = {
     Call(SetNpcCollisionSize, NPC_Sun_01, 64, 40)
     Call(EnableNpcShadow, NPC_Sun_01, false)
     IfLt(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SetNpcPos, NPC_Sun_01, 0, 270, 0)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Sun_01)))
-        Exec(N(EVS_Sun_AnimateBobbing))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Sun_01))
+        Exec(EVS_Sun_AnimateBobbing)
     Else
         Call(SetNpcPos, NPC_Sun_01, 0, 450, 0)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Sun_01)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Sun_01))
         Set(AF_FLO_MetTheSun, false)
-        Exec(N(EVS_Sun_DescendFromSky))
+        Exec(EVS_Sun_DescendFromSky)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Sun_02) = {
+EvtScript EVS_NpcInit_Sun_02 = {
     Call(EnableNpcShadow, NPC_Sun_02, false)
     Call(SetNpcAnimation, NPC_Sun_02, ANIM_Sun_FireIdle)
     Call(SetNpcPaletteSwapMode, NPC_Sun_01, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS)
@@ -192,19 +192,19 @@ EvtScript N(EVS_NpcInit_Sun_02) = {
         Call(SetNpcPos, NPC_Sun_02, 0, 270, -5)
     Else
         Call(SetNpcPos, NPC_Sun_02, 0, 450, -5)
-        Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Sun_02)))
+        Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Sun_02))
     EndIf
     Return
     End
 };
 
-NpcData N(NpcData_Sun)[] = {
+NpcData NpcData_Sun[] = {
     {
         .id = NPC_Sun_01,
         .pos = { 0.0f, 250.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Sun_01),
-        .settings = &N(NpcSettings_Sun),
+        .init = &EVS_NpcInit_Sun_01,
+        .settings = &NpcSettings_Sun,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SUN_ANIMS,
@@ -214,8 +214,8 @@ NpcData N(NpcData_Sun)[] = {
         .id = NPC_Sun_02,
         .pos = { 0.0f, 250.0f, 0.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Sun_02),
-        .settings = &N(NpcSettings_Sun),
+        .init = &EVS_NpcInit_Sun_02,
+        .settings = &NpcSettings_Sun,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_USE_INSPECT_ICON,
         .drops = NO_DROPS,
         .animations = SUN_ANIMS,
@@ -223,7 +223,7 @@ NpcData N(NpcData_Sun)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Sun)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Sun),
     {}
 };

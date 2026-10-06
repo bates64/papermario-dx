@@ -3,7 +3,7 @@
 
 #include "world/common/ai/WanderRangedAI.inc.c"
 
-EvtScript N(EVS_NpcDefeat_HammerBros_Hammer) = {
+EvtScript EVS_NpcDefeat_HammerBros_Hammer = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -20,7 +20,7 @@ EvtScript N(EVS_NpcDefeat_HammerBros_Hammer) = {
     End
 };
 
-MobileAISettings N(AISettings_HammerBros) = {
+MobileAISettings AISettings_HammerBros = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -34,58 +34,58 @@ MobileAISettings N(AISettings_HammerBros) = {
     .chaseOffsetDist = 20.0f,
 };
 
-EvtScript N(EVS_NpcAI_HammerBros) = {
+EvtScript EVS_NpcAI_HammerBros = {
     Call(SetSelfVar, AI_VAR_RANGED_MIN_DIST, 70)
     Call(SetSelfVar, AI_VAR_RANGED_PRE_TIME, 3)
     Call(SetSelfVar, AI_VAR_RANGED_POST_TIME, 3)
     Call(SetSelfVar, AI_VAR_RANGED_AMMO_COUNT, 6)
-    Call(N(RangedAttackAI_Main), Ref(N(AISettings_HammerBros)))
+    Call(RangedAttackAI_Main, Ref(AISettings_HammerBros))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_HammerBros_Wander) = {
+NpcSettings NpcSettings_HammerBros_Wander = {
     .height = 36,
     .radius = 24,
     .level = ACTOR_LEVEL_HAMMER_BROS,
-    .doAI = &N(EVS_NpcAI_HammerBros),
+    .doAI = &EVS_NpcAI_HammerBros,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-MobileAISettings N(AISettings_HammerBros_Hammer) = {
+MobileAISettings AISettings_HammerBros_Hammer = {
     .moveSpeed = 5.4f,
     .alertRadius = 13.0f,
     .alertOffsetDist = 1.4f,
     .playerSearchInterval = -1,
 };
 
-EvtScript N(EVS_NpcAI_HammerBros_Hammer) = {
+EvtScript EVS_NpcAI_HammerBros_Hammer = {
     Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_IDLE)
     Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, AI_MISSILE_FLAG_SPINNING | AI_MISSILE_FLAG_CENTERED)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 20)
-    Call(N(MissileAI_Main), Ref(N(AISettings_HammerBros_Hammer)))
+    Call(MissileAI_Main, Ref(AISettings_HammerBros_Hammer))
     Return
     End
 };
 
-EvtScript N(EVS_NoAI_HammerBros_Hammer) = {
+EvtScript EVS_NoAI_HammerBros_Hammer = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_HammerBros_Hammer) = {
-    Call(N(GetEncounterEnemyIsOwner))
+EvtScript EVS_NpcHit_HammerBros_Hammer = {
+    Call(GetEncounterEnemyIsOwner)
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NoAI_HammerBros_Hammer)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NoAI_HammerBros_Hammer))
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_SPIN)
             Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_REFLECTING)
-            Call(N(MissileAI_Reflect))
+            Call(MissileAI_Reflect)
             IfEq(LVar0, 0)
                 Return
             EndIf
@@ -101,21 +101,21 @@ EvtScript N(EVS_NpcHit_HammerBros_Hammer) = {
         CaseDefault
             Call(SetBattleAsScripted)
     EndSwitch
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_HammerBros_Hammer)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_HammerBros_Hammer))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_HammerBros_Hammer) = {
+NpcSettings NpcSettings_HammerBros_Hammer = {
     .height = 12,
     .radius = 12,
-    .doAI = &N(EVS_NpcAI_HammerBros_Hammer),
-    .onHit = &N(EVS_NpcHit_HammerBros_Hammer),
-    .onDefeat = &N(EVS_NpcDefeat_HammerBros_Hammer),
+    .doAI = &EVS_NpcAI_HammerBros_Hammer,
+    .onHit = &EVS_NpcHit_HammerBros_Hammer,
+    .onDefeat = &EVS_NpcDefeat_HammerBros_Hammer,
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
-AnimID N(LimitAnims_HammerBros_Hammer)[] = {
+AnimID LimitAnims_HammerBros_Hammer[] = {
     ANIM_HammerBros_Hammer,
     ANIM_LIST_END
 };

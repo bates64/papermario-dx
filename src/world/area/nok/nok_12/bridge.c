@@ -1,6 +1,6 @@
 #include "nok_12.h"
 
-EvtScript N(EVS_Scene_BuildBridge) = {
+EvtScript EVS_Scene_BuildBridge = {
     Call(DisablePlayerInput, true)
     Wait(20)
     Call(DisablePlayerPhysics, true)
@@ -98,9 +98,9 @@ EvtScript N(EVS_Scene_BuildBridge) = {
     End
 };
 
-EvtScript N(EVS_SetupBridge) = {
+EvtScript EVS_SetupBridge = {
     IfLt(GB_StoryProgress, STORY_CH1_MADE_FIRST_BRIDGE)
-        BindTrigger(Ref(N(EVS_Scene_BuildBridge)), TRIGGER_AREA_FLAG_SET, AF_NOK12_HitSwitch, 1, 0)
+        BindTrigger(Ref(EVS_Scene_BuildBridge), TRIGGER_AREA_FLAG_SET, AF_NOK12_HitSwitch, 1, 0)
         Call(TranslateGroup, MODEL_hashi, 0, -320, 0)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o204, COLLIDER_FLAGS_UPPER_MASK)
         Return

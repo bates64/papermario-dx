@@ -21,7 +21,6 @@ void windy_leaves_main(s32 type, f32 arg1, f32 arg2, f32 arg3) {
     bp.init = windy_leaves_init;
     bp.update = windy_leaves_update;
     bp.renderScene = windy_leaves_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_WINDY_LEAVES;
 

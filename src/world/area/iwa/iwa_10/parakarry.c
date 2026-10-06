@@ -7,7 +7,7 @@
 #include "world/common/util/LoadPartyImage.inc.c"
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
-EvtScript N(EVS_Scene_MeetParakarry) = {
+EvtScript EVS_Scene_MeetParakarry = {
     Label(0)
     Wait(1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -151,17 +151,17 @@ EvtScript N(EVS_Scene_MeetParakarry) = {
     Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
-    Call(BindNpcAI, NPC_Parakarry, Ref(N(EVS_NpcIdle_Parakarry)))
+    Call(BindNpcAI, NPC_Parakarry, Ref(EVS_NpcIdle_Parakarry))
     Return
     End
 };
 
-ITEM_LIST(N(LetterList),
+ITEM_LIST(LetterList,
     ITEM_LETTER_TO_MERLON,
     ITEM_LETTER_TO_KOLORADO,
     ITEM_LETTER_CHAIN_GOOMPAPA_1);
 
-EvtScript N(EVS_NpcInteract_Parakarry) = {
+EvtScript EVS_NpcInteract_Parakarry = {
     Set(LFlag0, false)
     IfEq(GB_IWA10_ReturnedLetterCount, 2)
         Set(LVar0, 0)
@@ -189,7 +189,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
             Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), Float(0.0), Float(300.0), Float(17.5), Float(-10.0))
         EndIf
     EndIf
-    EVT_CHOOSE_KEY_ITEM_FROM(N(LetterList), NPC_Parakarry)
+    EVT_CHOOSE_KEY_ITEM_FROM(LetterList, NPC_Parakarry)
     Switch(LVar0)
         CaseEq(ITEM_CHOICE_NONE)
             Switch(GB_IWA10_ReturnedLetterCount)
@@ -241,13 +241,13 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
     IfEq(LFlag0, true)
         Call(DisablePartnerAI, false)
         Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001D)
-        Call(N(ChangeNpcToPartner), NPC_Parakarry, PARTNER_PARAKARRY)
+        Call(ChangeNpcToPartner, NPC_Parakarry, PARTNER_PARAKARRY)
         Set(GB_StoryProgress, STORY_CH2_PARAKARRY_JOINED_PARTY)
-        Call(N(LoadPartyImage), Ref("party_pareta"))
-        Exec(N(EVS_PushSong))
+        Call(LoadPartyImage, Ref("party_pareta"))
+        Exec(EVS_PushSong)
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018C, 160, 40)
-        Exec(N(EVS_PopSong))
+        Exec(EVS_PopSong)
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001E)
         Call(AddItem, ITEM_LETTER_TO_MERLON, EVT_IGNORE_ARG)
@@ -261,7 +261,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Parakarry) = {
+EvtScript EVS_NpcIdle_Parakarry = {
     Call(SetNpcSpeed, NPC_SELF, Float(1.0))
     Add(LVar0, -670)
     Add(LVar2, -485)
@@ -287,13 +287,13 @@ EvtScript N(EVS_NpcIdle_Parakarry) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Parakarry) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Parakarry)))
+EvtScript EVS_NpcInit_Parakarry = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Parakarry))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_SPOKE_WITH_PARAKARRY)
             Call(SetNpcPos, NPC_Parakarry, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH2_PARAKARRY_JOINED_PARTY)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Parakarry)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Parakarry))
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -301,12 +301,12 @@ EvtScript N(EVS_NpcInit_Parakarry) = {
     End
 };
 
-NpcData N(NpcData_Parakarry) = {
+NpcData NpcData_Parakarry = {
     .id = NPC_Parakarry,
     .pos = { -610.0f, 230.0f, -485.0f },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Parakarry),
-    .settings = &N(NpcSettings_Parakarry),
+    .init = &EVS_NpcInit_Parakarry,
+    .settings = &NpcSettings_Parakarry,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = PARAKARRY_ANIMS,

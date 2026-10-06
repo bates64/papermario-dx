@@ -4,9 +4,9 @@
 #include "common.h"
 #include "script_api/map.h"
 
-void world_parakarry_init(Npc*);
-void world_parakarry_pre_battle(Npc*);
-void world_parakarry_post_battle(Npc*);
+void init(Npc*);
+void pre_battle(Npc*);
+void post_battle(Npc*);
 
 extern EvtScript EVS_WorldParakarry_TakeOut;
 extern EvtScript EVS_WorldParakarry_Update;

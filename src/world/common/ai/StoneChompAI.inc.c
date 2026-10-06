@@ -4,7 +4,7 @@
 
 #include "world/common/ai/HoppingAI.inc.c"
 
-void N(StoneChompAI_HopInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void StoneChompAI_HopInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     basic_ai_wander_init(script, settings, detect);
@@ -12,7 +12,7 @@ void N(StoneChompAI_HopInit)(Evt* script, MobileAISettings* settings, EnemyDetec
     npc->jumpScale = 1.5f;
 }
 
-void N(StoneChompAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void StoneChompAI_ChaseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     basic_ai_chase_init(script, settings, detect);
@@ -20,7 +20,7 @@ void N(StoneChompAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDet
     npc->jumpScale = 1.5f;
 }
 
-API_CALLABLE(N(StoneChompAI_Main)) {
+API_CALLABLE(StoneChompAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -52,25 +52,25 @@ API_CALLABLE(N(StoneChompAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_HOP_INIT:
-            N(StoneChompAI_HopInit)(script, settings, detect);
+            StoneChompAI_HopInit(script, settings, detect);
             // fallthrough
         case AI_STATE_HOP:
-            N(HoppingAI_Hop)(script, settings, detect);
+            HoppingAI_Hop(script, settings, detect);
             break;
         case AI_STATE_LOITER_INIT:
-            N(HoppingAI_LoiterInit)(script, settings, detect);
+            HoppingAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(HoppingAI_Loiter)(script, settings, detect);
+            HoppingAI_Loiter(script, settings, detect);
             break;
         case AI_STATE_CHASE_INIT:
-            N(StoneChompAI_ChaseInit)(script, settings, detect);
+            StoneChompAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(HoppingAI_Chase)(script, settings, detect);
+            HoppingAI_Chase(script, settings, detect);
             break;
         case AI_STATE_LOSE_PLAYER:
-            N(HoppingAI_LosePlayer)(script, settings, detect);
+            HoppingAI_LosePlayer(script, settings, detect);
             break;
     }
     return ApiStatus_BLOCK;

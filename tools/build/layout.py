@@ -5,6 +5,7 @@ answers the other half: the segments themselves, the order they occupy the
 ROM in, and the VRAM address each one loads at.
 """
 
+from fnmatch import fnmatch
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -52,16 +53,56 @@ class SegmentSpec:
 
 
 class Layout:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, root: Optional[Path] = None):
         cfg = yaml.safe_load(path.read_text())
         subalign = (cfg.get("defaults") or {}).get("subalign")
+        self.sources: Dict = cfg.get("sources") or {}
         self.classes = {
             name: VramClass(name, spec or {})
             for name, spec in (cfg.get("classes") or {}).items()
         }
-        self.segments = [
-            SegmentSpec(spec, self.classes, subalign) for spec in cfg["segments"]
-        ]
+        self.segments = []
+        root = root or path.parents[2]
+        source_families = self.sources.get("each") or {}
+        for spec in cfg["segments"]:
+            directory = spec.get("each")
+            if directory is None:
+                self.segments.append(SegmentSpec(spec, self.classes, subalign))
+                continue
+
+            if directory not in source_families:
+                raise ValueError(
+                    f"segment family is not declared in sources.each: {directory}"
+                )
+            included = spec.get("include") or ["*"]
+            if isinstance(included, str):
+                included = [included]
+            excluded = spec.get("exclude") or []
+            if isinstance(excluded, str):
+                excluded = [excluded]
+            prefix = source_families[directory]
+            matches = [
+                source
+                for source in sorted((root / directory).rglob("*"))
+                if source.is_file()
+                and source.suffix in (".c", ".cpp", ".s")
+                and not source.name.endswith((".inc.c", ".inc.cpp"))
+                and any(fnmatch(source.name, pattern) for pattern in included)
+                and not any(
+                    fnmatch(source.name, pattern) for pattern in excluded
+                )
+            ]
+            if not matches:
+                raise ValueError(f"segment family matched no sources: {directory}")
+
+            template = {
+                key: value
+                for key, value in spec.items()
+                if key not in ("each", "include", "exclude")
+            }
+            for source in matches:
+                expanded = {**template, "name": prefix + source.stem}
+                self.segments.append(SegmentSpec(expanded, self.classes, subalign))
 
         assets = cfg.get("assets") or {}
         self.asset_dirs: Dict[str, str] = assets.get("dirs") or {}
@@ -70,12 +111,20 @@ class Layout:
         self.packed = [Path(p) for p in cfg.get("packed") or []]
         self.charsets: List[str] = cfg.get("charsets") or []
         self.asset_stack: List[str] = cfg.get("asset_stack") or []
-        self.sources: Dict = cfg.get("sources") or {}
         self.cflags: Dict = cfg.get("cflags") or {}
 
     @property
     def follows(self) -> Dict[str, List[str]]:
         return {c.name: c.follows for c in self.classes.values() if c.follows}
+
+    @property
+    def class_vrams(self) -> Dict[str, int]:
+        """Minimum address for each symbolic class."""
+        return {
+            c.name: c.vram
+            for c in self.classes.values()
+            if c.vram is not None
+        }
 
     @property
     def packed_dirs(self) -> set:

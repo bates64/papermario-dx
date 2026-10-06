@@ -1,7 +1,7 @@
 #include "kkj_26.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_WhereIsMario) = {
+EvtScript EVS_Scene_WhereIsMario = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -26,7 +26,7 @@ EvtScript N(EVS_Scene_WhereIsMario) = {
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Talk, ANIM_Peach2_TalkIdle, 5, MSG_Peach_0032)
     Call(FadeOutMusic, 0, 4000)
     Call(ResetCam, CAM_DEFAULT, Float(1.0))
-    ExecWait(N(EVS_GotoMap_hos_00_1))
+    ExecWait(EVS_GotoMap_hos_00_1)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -34,7 +34,7 @@ EvtScript N(EVS_Scene_WhereIsMario) = {
     End
 };
 
-EvtScript N(EVS_Scene_AfterAllSpiritsRescued) = {
+EvtScript EVS_Scene_AfterAllSpiritsRescued = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)

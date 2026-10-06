@@ -1,14 +1,14 @@
 #include "kzn_22.h"
 
-EvtScript N(EVS_ExitWalk_kzn_20_1) = EVT_EXIT_WALK(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_20_1 = EVT_EXIT_WALK(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_kzn_20_1), TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_kzn_20_1, TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_StartTexPanners) = {
+EvtScript EVS_StartTexPanners = {
     // lava surface #1
     Call(SetTexPanner, MODEL_yu, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_yu1, TEX_PANNER_0)
@@ -66,7 +66,7 @@ EvtScript N(EVS_StartTexPanners) = {
     End
 };
 
-EvtScript N(EVS_InterruptPartnersInLava) = {
+EvtScript EVS_InterruptPartnersInLava = {
     Loop(0)
         Loop(0)
             Wait(1)
@@ -87,15 +87,7 @@ EvtScript N(EVS_InterruptPartnersInLava) = {
     End
 };
 
-API_CALLABLE(N(GetPlayerFloorCollider1)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-
-    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
-    return ApiStatus_DONE2;
-}
-
-EvtScript N(EVS_UpdateLavaLevel) = {
+EvtScript EVS_UpdateLavaLevel = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Call(EnableModel, MODEL_yu, false)
     Call(ParentColliderToModel, COLLIDER_o591, MODEL_yu)
@@ -107,9 +99,9 @@ EvtScript N(EVS_UpdateLavaLevel) = {
         Switch(LVarA)
             CaseEq(0)
                 // state 0: wait for player to stand on one of the steps
-                Call(N(GetPlayerFloorCollider1), LVar0)
+                Call(GetPlayerFloorCollider, LVar0)
                 IfEq(LVar0, COLLIDER_o357)
-                    Exec(N(EVS_InterruptPartnersInLava))
+                    Exec(EVS_InterruptPartnersInLava)
                     Call(EnableModel, MODEL_yu, true)
                     Call(EnableModel, MODEL_yu1, false)
                     // start lava flowing toward the left
@@ -142,28 +134,28 @@ EvtScript N(EVS_UpdateLavaLevel) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o582, .pos = { 200.0, 150.0, 180.0 }},
     { .colliderID = COLLIDER_o357, .pos = { 200.0, 150.0, 180.0 }},
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_22)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Set(LVar0, N(EVS_BindExitTriggers))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o591, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
-    Exec(N(EVS_StartTexPanners))
-    Exec(N(EVS_UpdateLavaLevel))
+    Exec(EVS_StartTexPanners)
+    Exec(EVS_UpdateLavaLevel)
     Return
     End
 };

@@ -1,13 +1,13 @@
 #include "kmr_23.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(DrawBackCurtains)) {
+API_CALLABLE(DrawBackCurtains) {
     set_curtain_scale_goal(2.0f);
     set_curtain_draw_callback(nullptr);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GotoNextAfterSceneEnd) = {
+EvtScript EVS_GotoNextAfterSceneEnd = {
     Set(MF_EndChapterSceneDone, false)
         Loop(0)
             IfNe(MF_EndChapterSceneDone, false)
@@ -22,13 +22,13 @@ EvtScript N(EVS_GotoNextAfterSceneEnd) = {
         Call(GotoMapSpecial, Ref("kzn_19"), kzn_19_ENTRY_3, TRANSITION_END_CHAPTER_INTERRUPTED)
     EndIf
     Call(FadeOutMusic, 0, 2000)
-    Call(N(DrawBackCurtains))
+    Call(DrawBackCurtains)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, -2, 0, 0)
@@ -56,24 +56,24 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kmr_23_ENTRY_0)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Eldstar)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Eldstar))
         CaseEq(kmr_23_ENTRY_1)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Mamar)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Mamar))
         CaseEq(kmr_23_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Skolar)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Skolar))
         CaseEq(kmr_23_ENTRY_3)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Muskular)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Muskular))
         CaseEq(kmr_23_ENTRY_4)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Misstar)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Misstar))
         CaseEq(kmr_23_ENTRY_5)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Klevar)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Klevar))
         CaseEq(kmr_23_ENTRY_6)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Kalmar)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Kalmar))
     EndSwitch
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Wait(1)
-    Exec(N(EVS_GotoNextAfterSceneEnd))
+    Exec(EVS_GotoNextAfterSceneEnd)
     Thread
         Call(FadeOutMusic, 0, 150)
         Call(ClearAmbientSounds, 150)

@@ -19,5 +19,3 @@ enum {
     NPC_Pokey_02                = 1,
     NPC_Bandit                  = 2,
 };
-
-#define NAMESPACE sbk_32

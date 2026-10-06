@@ -1,7 +1,7 @@
 #include "dro_01.h"
 #include "sprite/player.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_DR001,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_DR001,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_DR001,
@@ -27,7 +27,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_DR001,
 };
 
-ShopItemData N(ShopInventory)[] = {
+ShopItemData ShopInventory[] = {
     { .itemID = ITEM_THUNDER_BOLT, .price = 5, .descMsg = MSG_ItemShopDesc_ThunderBolt },
     { .itemID = ITEM_DUSTY_HAMMER, .price = 2, .descMsg = MSG_ItemShopDesc_DustyHammer },
     { .itemID = ITEM_HONEY_SYRUP,  .price = 5, .descMsg = MSG_ItemShopDesc_HoneySyrup },
@@ -37,7 +37,7 @@ ShopItemData N(ShopInventory)[] = {
     {},
 };
 
-ShopSellPriceData N(ShopPriceList)[] = {
+ShopSellPriceData ShopPriceList[] = {
     { .itemID = ITEM_SNOWMAN_DOLL,  .sellPrice = 12 },
     { .itemID = ITEM_MELON,         .sellPrice = 10 },
     { .itemID = ITEM_ICED_POTATO,   .sellPrice = 10 },
@@ -48,29 +48,29 @@ ShopSellPriceData N(ShopPriceList)[] = {
     {},
 };
 
-API_CALLABLE(N(HideCoinCounter)) {
+API_CALLABLE(HideCoinCounter) {
     hide_coin_counter_immediately();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_JumpToPlayer) = {
+EvtScript EVS_JumpToPlayer = {
     Call(NpcJump0, NPC_Mouser_ShopOwner, -31, 0, -283, 10)
     Call(NpcJump0, NPC_Mouser_ShopOwner, -30, 0, -283, 8)
     Return
     End
 };
 
-EvtScript N(EVS_JumpAway) = {
+EvtScript EVS_JumpAway = {
     Call(NpcJump0, NPC_Mouser_ShopOwner, 20, 0, -259, 10)
     Call(NpcJump0, NPC_Mouser_ShopOwner, 20, 0, -259, 4)
     Return
     End
 };
 
-EvtScript N(EVS_SecretPurcahseOrder_Moustafa) = {
-    Call(N(HideCoinCounter))
+EvtScript EVS_SecretPurcahseOrder_Moustafa = {
+    Call(HideCoinCounter)
     Call(SetPartnerForcedFollowMode, 1)
-    ExecWait(N(EVS_JumpToPlayer))
+    ExecWait(EVS_JumpToPlayer)
     IfLt(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
         Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0087)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -81,22 +81,22 @@ EvtScript N(EVS_SecretPurcahseOrder_Moustafa) = {
     Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0088)
     Set(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
     Call(SetPartnerForcedFollowMode, 0)
-    ExecWait(N(EVS_JumpAway))
+    ExecWait(EVS_JumpAway)
     Return
     End
 };
 
-EvtScript N(EVS_SecretPurcahseOrder_RedJar) = {
+EvtScript EVS_SecretPurcahseOrder_RedJar = {
     IfEq(GF_DRO01_Gift_RedJar, false)
-        Call(N(HideCoinCounter))
+        Call(HideCoinCounter)
         Call(SetPartnerForcedFollowMode, 1)
-        ExecWait(N(EVS_JumpToPlayer))
+        ExecWait(EVS_JumpToPlayer)
         Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_008D)
         EVT_GIVE_REWARD(ITEM_KOOT_RED_JAR)
         Set(GF_DRO01_Gift_RedJar, true)
         Wait(20)
         Call(SetPartnerForcedFollowMode, 0)
-        ExecWait(N(EVS_JumpAway))
+        ExecWait(EVS_JumpAway)
     EndIf
     Return
     End
@@ -109,7 +109,7 @@ enum {
     SEQ_DRIED_PASTA     = 3,
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -126,7 +126,7 @@ EvtScript N(EVS_OnBuy) = {
                     IfEq(LVar2, SEQ_DUSTY_HAMMER)
                         IfEq(LVar3, SEQ_DRIED_PASTA)
                             IfEq(LVar4, SEQ_DUSTY_HAMMER)
-                                ExecWait(N(EVS_SecretPurcahseOrder_RedJar))
+                                ExecWait(EVS_SecretPurcahseOrder_RedJar)
                                 Set(AB_DRO_SHOP_PREV1, SEQ_NONE)
                             EndIf
                         EndIf
@@ -136,7 +136,7 @@ EvtScript N(EVS_OnBuy) = {
                     Set(AB_DRO_SHOP_PREV1, SEQ_DUSTY_HAMMER)
                     IfEq(LVar2, SEQ_DRIED_SHOOM)
                         IfLt(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
-                            ExecWait(N(EVS_SecretPurcahseOrder_Moustafa))
+                            ExecWait(EVS_SecretPurcahseOrder_Moustafa)
                             Set(AB_DRO_SHOP_PREV1, SEQ_NONE)
                         EndIf
                     EndIf
@@ -151,7 +151,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ShopItemPositions)[] = {
+ShopItemLocation ShopItemPositions[] = {
     { .posModelID = MODEL_o741, .triggerColliderID = COLLIDER_mono1 },
     { .posModelID = MODEL_o740, .triggerColliderID = COLLIDER_mono2 },
     { .posModelID = MODEL_o738, .triggerColliderID = COLLIDER_mono3 },
@@ -160,10 +160,10 @@ ShopItemLocation N(ShopItemPositions)[] = {
     { .posModelID = MODEL_o736, .triggerColliderID = COLLIDER_mono6 },
 };
 
-ShopOwner N(MouserShopOwner) = {
+ShopOwner MouserShopOwner = {
     .npcID = NPC_Mouser_ShopOwner,
     .idleAnim = ANIM_Mouser_Purple_Idle,
     .talkAnim = ANIM_Mouser_Purple_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };

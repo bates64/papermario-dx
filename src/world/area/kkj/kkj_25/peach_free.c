@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SpawnStarsOrbitingKammy1)) {
+API_CALLABLE(SpawnStarsOrbitingKammy1) {
     EffectInstance* effect;
 
     fx_stars_orbiting(0, script->varTable[0], script->varTable[1], script->varTable[2], script->varTable[3], script->varTable[4], &effect);
@@ -11,14 +11,14 @@ API_CALLABLE(N(SpawnStarsOrbitingKammy1)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DismissStarsOrbitingKammy1)) {
+API_CALLABLE(DismissStarsOrbitingKammy1) {
     EffectInstance* effect = (EffectInstance*) script->varTablePtr[0];
 
     effect->data.starsOrbiting->enabled = false;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetEnergyWaveOrigin)) {
+API_CALLABLE(SetEnergyWaveOrigin) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     s32 posX = evt_get_variable(script, *args++);
@@ -32,13 +32,13 @@ API_CALLABLE(N(SetEnergyWaveOrigin)) {
     return ApiStatus_DONE2;
 }
 
-Vec3f N(TwinkArrivePath)[] = {
+Vec3f TwinkArrivePath[] = {
     {  445.0,    60.0,    0.0 },
     {  480.0,    40.0,  -20.0 },
     {  510.0,    25.0,    0.0 },
 };
 
-EvtScript N(EVS_SpawnBowserStarEnergyWaves) = {
+EvtScript EVS_SpawnBowserStarEnergyWaves = {
     Call(GetNpcPos, LVar8, LVar0, LVar1, LVar2)
     Add(LVar1, Float(54.0))
     PlayEffect(EFFECT_ENERGY_IN_OUT, 4, LVar0, LVar1, LVar2, Float(1.5), -1)
@@ -46,13 +46,13 @@ EvtScript N(EVS_SpawnBowserStarEnergyWaves) = {
         Wait(1)
         Call(GetNpcPos, LVar8, LVar0, LVar1, LVar2)
         Add(LVar1, Float(54.0))
-        Call(N(SetEnergyWaveOrigin), LVarF, LVar0, LVar1, LVar2)
+        Call(SetEnergyWaveOrigin, LVarF, LVar0, LVar1, LVar2)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_Scene_PeachBreaksFree) = {
+EvtScript EVS_Scene_PeachBreaksFree = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
@@ -74,7 +74,7 @@ EvtScript N(EVS_Scene_PeachBreaksFree) = {
     Call(SetNpcDecoration, NPC_Bowser_01, 0, NPC_DECORATION_BOWSER_AURA)
     Call(SetNpcDecoration, NPC_Bowser_01, 1, NPC_DECORATION_CHARGED)
     Set(LVar8, NPC_Bowser_01)
-    Exec(N(EVS_SpawnBowserStarEnergyWaves))
+    Exec(EVS_SpawnBowserStarEnergyWaves)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -136,7 +136,7 @@ EvtScript N(EVS_Scene_PeachBreaksFree) = {
         Add(LVar1, 30)
         Set(LVar3, 20)
         Set(LVar4, 3)
-        Call(N(SpawnStarsOrbitingKammy1))
+        Call(SpawnStarsOrbitingKammy1)
         Set(MV_OrbitingEffectAIdx, LVar0)
         Call(PlaySound, SOUND_KNOCKOUT_CHIRPING)
         Wait(5)
@@ -148,7 +148,7 @@ EvtScript N(EVS_Scene_PeachBreaksFree) = {
         Call(InterpNpcYaw, NPC_Twink_01, 90, 0)
     EndThread
     Wait(50)
-    Call(LoadPath, 30, Ref(N(TwinkArrivePath)), ARRAY_COUNT(N(TwinkArrivePath)), EASING_QUADRATIC_IN)
+    Call(LoadPath, 30, Ref(TwinkArrivePath), ARRAY_COUNT(TwinkArrivePath), EASING_QUADRATIC_IN)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Twink_01, LVar1, LVar2, LVar3)
@@ -211,7 +211,7 @@ EvtScript N(EVS_Scene_PeachBreaksFree) = {
     Call(SetNpcAnimation, NPC_Twink_01, ANIM_Twink_Idle)
     Wait(20)
     Set(LVar0, MV_OrbitingEffectAIdx)
-    Call(N(DismissStarsOrbitingKammy1))
+    Call(DismissStarsOrbitingKammy1)
     Call(SetNpcAnimation, NPC_Kammy_02, ANIM_BattleKammy_Idle)
     Wait(5)
     Call(InterpNpcYaw, NPC_Twink_01, 90, 0)

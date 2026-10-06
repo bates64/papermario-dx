@@ -1,7 +1,7 @@
 #include "end_00.h"
 #include "effects.h"
 
-Vec3f N(CrystalsFlyInPath)[] = {
+Vec3f CrystalsFlyInPath[] = {
     { 2050.0,   100.0,    0.0 },
     { 1900.0,    80.0,    0.0 },
     { 1820.0,    70.0,    0.0 },
@@ -9,7 +9,7 @@ Vec3f N(CrystalsFlyInPath)[] = {
     { 1840.0,    50.0,    0.0 },
 };
 
-Vec3f N(CrystalsFlyOutPath)[] = {
+Vec3f CrystalsFlyOutPath[] = {
     { 1840.0,    50.0,    0.0 },
     { 1880.0,    60.0,    0.0 },
     { 1860.0,    70.0,    0.0 },
@@ -17,7 +17,7 @@ Vec3f N(CrystalsFlyOutPath)[] = {
     { 1660.0,   170.0,    0.0 },
 };
 
-EvtScript N(EVS_ParadePhase_CrystalKing) = {
+EvtScript EVS_ParadePhase_CrystalKing = {
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -27,14 +27,14 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     EndLoop
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_Idle)
     Set(LVar0, 77)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarA)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarA)
     Wait(10 * DT)
     Call(InterpNpcYaw, NPC_TrueCrystalKing, 90, 7)
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_LeanForward)
     Call(SetNpcAnimation, NPC_FakeCrystalKing, ANIM_CrystalKing_LeanForward)
     Set(LVar0, 78)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarB)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarB)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_FakeCrystalKing, ANIM_CrystalKing_ExhaleLoop)
     Wait(10 * DT)
@@ -42,7 +42,7 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     Wait(10 * DT)
     KillThread(LVarA)
     Call(GetNpcPos, NPC_TrueCrystalKing, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_TrueCrystalKing, 1800, 0, 0)
     Call(SetNpcYaw, NPC_TrueCrystalKing, 270)
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_Walk)
@@ -52,14 +52,14 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     Call(NpcJump1, NPC_Duplighost1, LVar0, LVar1, LVar2, 20 * DT)
     Call(SetNpcAnimation, NPC_Duplighost1, ANIM_Duplighost_Idle)
     Set(LVar0, 75)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarA)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarA)
     KillThread(LVarB)
     Call(SetNpcAnimation, NPC_FakeCrystalKing, ANIM_CrystalKing_Run)
     Call(GetNpcPos, NPC_FakeCrystalKing, LVar0, LVar1, LVar2)
     Add(LVar0, -80)
     Call(NpcMoveTo, NPC_FakeCrystalKing, LVar0, LVar2, 40 * DT)
     Set(LVar0, 78)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarB)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarB)
     Thread
         Call(SetNpcAnimation, NPC_FakeCrystalKing, ANIM_CrystalKing_LeanForward)
         Wait(60 * DT)
@@ -81,7 +81,7 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     Call(SetNpcAnimation, NPC_FakeCrystalKing, ANIM_CrystalKing_LeanForward)
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_LeanForward)
     Set(LVar0, 77)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarC)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarC)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_ExhaleLoop)
     Wait(10 * DT)
@@ -89,7 +89,7 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     Wait(10 * DT)
     KillThread(LVarB)
     Call(GetNpcPos, NPC_FakeCrystalKing, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_FakeCrystalKing, 0, -500, 0)
     Call(SetNpcPos, NPC_Duplighost2, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_Duplighost2, Float(0.5))
@@ -97,14 +97,14 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     Call(NpcJump1, NPC_Duplighost2, LVar0, LVar1, LVar2, 20 * DT)
     Call(SetNpcAnimation, NPC_Duplighost2, ANIM_Duplighost_Idle)
     Set(LVar0, 76)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarB)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarB)
     KillThread(LVarC)
     Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_Run)
     Call(GetNpcPos, NPC_TrueCrystalKing, LVar0, LVar1, LVar2)
     Add(LVar0, -80)
     Call(NpcMoveTo, NPC_TrueCrystalKing, LVar0, LVar2, 40 * DT)
     Set(LVar0, 77)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarC)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarC)
     Thread
         Loop(6)
             Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_LeanForward)
@@ -128,7 +128,7 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     EndThread
     Wait(60 * DT)
     Thread
-        Call(LoadPath, 50 * DT, Ref(N(CrystalsFlyInPath)), ARRAY_COUNT(N(CrystalsFlyInPath)), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, Ref(CrystalsFlyInPath), ARRAY_COUNT(CrystalsFlyInPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Set(LVar4, LVar1)
@@ -150,7 +150,7 @@ EvtScript N(EVS_ParadePhase_CrystalKing) = {
     KillThread(LVarC)
     Thread
         Call(SetNpcAnimation, NPC_TrueCrystalKing, ANIM_CrystalKing_Hurt)
-        Call(LoadPath, 50 * DT, Ref(N(CrystalsFlyOutPath)), ARRAY_COUNT(N(CrystalsFlyInPath)), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, Ref(CrystalsFlyOutPath), ARRAY_COUNT(CrystalsFlyInPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Set(LVar4, LVar1)

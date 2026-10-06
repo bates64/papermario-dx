@@ -14,7 +14,7 @@ enum {
     ANSWER_WRONG    = 3,
 };
 
-API_CALLABLE(N(AwaitPlayerBuzzIn)) {
+API_CALLABLE(AwaitPlayerBuzzIn) {
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
         script->varTable[0] = 1;
         return ApiStatus_DONE2;
@@ -28,7 +28,7 @@ API_CALLABLE(N(AwaitPlayerBuzzIn)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_GiveItemToKoopatrol) = {
+EvtScript EVS_GiveItemToKoopatrol = {
     Call(SetNpcAnimation, LVar1, ANIM_WorldKoopatrol_GotItem)
     Set(LVarA, LVar0)
     Call(GetNpcPos, LVar1, LVar5, LVar6, LVar7)
@@ -43,7 +43,7 @@ EvtScript N(EVS_GiveItemToKoopatrol) = {
     End
 };
 
-EvtScript N(EVS_SetCam_Contestants) = {
+EvtScript EVS_SetCam_Contestants = {
     Call(UseSettingsFrom, CAM_DEFAULT, -265, 0, -140)
     Call(SetPanTarget, CAM_DEFAULT, -265, 0, -140)
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
@@ -53,7 +53,7 @@ EvtScript N(EVS_SetCam_Contestants) = {
     End
 };
 
-EvtScript N(EVS_UpdateScores) = {
+EvtScript EVS_UpdateScores = {
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
             IfEq(AB_KKJ29_AnswerScore, ANSWER_RIGHT)
@@ -84,9 +84,9 @@ EvtScript N(EVS_UpdateScores) = {
     End
 };
 
-EvtScript N(EVS_WaitForBuzzIn) = {
+EvtScript EVS_WaitForBuzzIn = {
     Call(PlaySound, SOUND_LRAW_QUIZ_TICKING)
-    Call(N(AwaitPlayerBuzzIn))
+    Call(AwaitPlayerBuzzIn)
     IfEq(LVar0, 0) // time's up
         // player took too long, decide who will answer based on score
         IfLe(AB_KKJ29_LeftKoopatrolScore, AB_KKJ29_PeachScore)
@@ -140,12 +140,12 @@ EvtScript N(EVS_WaitForBuzzIn) = {
 // LVar4  choice message
 // LVar5  rival choice selection
 // LVar6  host response to wrong answer
-EvtScript N(Script_DoRound) = {
+EvtScript Script_DoRound = {
     Call(PlaySound, SOUND_QUIZ_NEXT_QUESTION)
     Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_TalkDisarmed, ANIM_HammerBros_IdleDisarmed, 5, LVar1)
     Set(LVar0, LVar2)
     // wait for input
-    ExecWait(N(EVS_WaitForBuzzIn))
+    ExecWait(EVS_WaitForBuzzIn)
     // get an answer
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
@@ -162,24 +162,24 @@ EvtScript N(Script_DoRound) = {
         Call(PlaySound, SOUND_APPROVE)
         Call(PlaySound, SOUND_AUDIENCE_CHEER)
         Set(AB_KKJ29_AnswerScore, ANSWER_RIGHT)
-        ExecWait(N(EVS_UpdateScores))
+        ExecWait(EVS_UpdateScores)
         Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_TalkDisarmed, ANIM_HammerBros_IdleDisarmed, 5, MSG_Peach_0110)
     Else
         Call(PlaySound, SOUND_MENU_ERROR)
         Call(PlaySound, SOUND_AUDIENCE_BOO)
         Set(AB_KKJ29_AnswerScore, ANSWER_WRONG)
-        ExecWait(N(EVS_UpdateScores))
+        ExecWait(EVS_UpdateScores)
         Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_TalkDisarmed, ANIM_HammerBros_IdleDisarmed, 5, LVar6)
     EndIf
     Wait(30 * DT)
     Set(AB_KKJ29_AnswerScore, ANSWER_NONE)
     Wait(10 * DT)
-    ExecWait(N(EVS_SetCam_Contestants))
+    ExecWait(EVS_SetCam_Contestants)
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_Podiums) = {
+EvtScript EVS_TexPan_Podiums = {
     Call(SetTexPanner, MODEL_o19, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o62, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o88, TEX_PANNER_1)
@@ -193,7 +193,7 @@ EvtScript N(EVS_TexPan_Podiums) = {
     End
 };
 
-EvtScript N(EVS_TexPan_VerticalStrips) = {
+EvtScript EVS_TexPan_VerticalStrips = {
     Call(SetTexPanner, MODEL_o22, TEX_PANNER_2)
     Call(EnableTexPanning, MODEL_o22, false)
     Call(SetTexPanner, MODEL_o63, TEX_PANNER_2)
@@ -210,7 +210,7 @@ EvtScript N(EVS_TexPan_VerticalStrips) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Screens) = {
+EvtScript EVS_TexPan_Screens = {
     Call(SetTexPanner, MODEL_o27, TEX_PANNER_3)
     Call(EnableTexPanning, MODEL_o27, false)
     Call(SetTexPanner, MODEL_o64, TEX_PANNER_3)
@@ -227,7 +227,7 @@ EvtScript N(EVS_TexPan_Screens) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Stars) = {
+EvtScript EVS_TexPan_Stars = {
     Call(SetTexPanner, MODEL_o25, TEX_PANNER_4)
     Call(EnableTexPanning, MODEL_o25, false)
     Call(SetTexPanner, MODEL_o65, TEX_PANNER_4)
@@ -244,7 +244,7 @@ EvtScript N(EVS_TexPan_Stars) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FloorTrim) = {
+EvtScript EVS_TexPan_FloorTrim = {
     Call(SetTexPanner, MODEL_o32, TEX_PANNER_5)
     Call(EnableTexPanning, MODEL_o32, false)
     Call(SetTexPanner, MODEL_o69, TEX_PANNER_5)
@@ -261,7 +261,7 @@ EvtScript N(EVS_TexPan_FloorTrim) = {
     End
 };
 
-EvtScript N(EVS_TexPan_StarTrim) = {
+EvtScript EVS_TexPan_StarTrim = {
     Call(SetTexPanner, MODEL_o31, TEX_PANNER_6)
     Call(EnableTexPanning, MODEL_o31, false)
     Call(SetTexPanner, MODEL_o67, TEX_PANNER_6)
@@ -278,7 +278,7 @@ EvtScript N(EVS_TexPan_StarTrim) = {
     End
 };
 
-EvtScript N(EVS_SetNoAnswerEffects) = {
+EvtScript EVS_SetNoAnswerEffects = {
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
             Call(SetNpcAnimation, NPC_Koopatrol_01, ANIM_WorldKoopatrol_IdleForward)
@@ -340,7 +340,7 @@ EvtScript N(EVS_SetNoAnswerEffects) = {
     End
 };
 
-EvtScript N(EVS_SetPendingAnswerEffects) = {
+EvtScript EVS_SetPendingAnswerEffects = {
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
             Set(LVar0, MODEL_o22)
@@ -370,7 +370,7 @@ EvtScript N(EVS_SetPendingAnswerEffects) = {
     End
 };
 
-EvtScript N(EVS_SetRightAnswerEffects) = {
+EvtScript EVS_SetRightAnswerEffects = {
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
             Call(EnableTexPanning, MODEL_o25, true)
@@ -417,7 +417,7 @@ EvtScript N(EVS_SetRightAnswerEffects) = {
     End
 };
 
-EvtScript N(EVS_SetWrongAnswerEffects) = {
+EvtScript EVS_SetWrongAnswerEffects = {
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
             Call(EnableTexPanning, MODEL_o22, false)
@@ -443,7 +443,7 @@ EvtScript N(EVS_SetWrongAnswerEffects) = {
     End
 };
 
-EvtScript N(EVS_InitScoreBar) = {
+EvtScript EVS_InitScoreBar = {
     Set(LVar0, MODEL_o38)
     Loop(10)
         Call(SetModelTexVariant, LVar0, 2)
@@ -463,7 +463,7 @@ EvtScript N(EVS_InitScoreBar) = {
     End
 };
 
-EvtScript N(EVS_UpdateScoreBar) = {
+EvtScript EVS_UpdateScoreBar = {
     Switch(AB_KKJ29_AnsweringContestant)
         CaseEq(CONTESTANT_LEFT)
             Set(LVar0, MODEL_o38)
@@ -493,7 +493,7 @@ EvtScript N(EVS_UpdateScoreBar) = {
     End
 };
 
-EvtScript N(EVS_DoScoreBarCycling) = {
+EvtScript EVS_DoScoreBarCycling = {
     Set(LVar0, 0)
     Set(LVar1, 1)
     Set(LVar2, 2)
@@ -549,18 +549,18 @@ EvtScript N(EVS_DoScoreBarCycling) = {
         Set(LVar1, LVar0)
         Set(LVar0, LVar5)
     EndLoop
-    Exec(N(EVS_UpdateScoreBar))
+    Exec(EVS_UpdateScoreBar)
     Return
     End
 };
 
-EvtScript N(EVS_ManageStageEffects) = {
-    Exec(N(EVS_TexPan_Podiums))
-    Exec(N(EVS_TexPan_VerticalStrips))
-    Exec(N(EVS_TexPan_Screens))
-    Exec(N(EVS_TexPan_Stars))
-    Exec(N(EVS_TexPan_FloorTrim))
-    Exec(N(EVS_TexPan_StarTrim))
+EvtScript EVS_ManageStageEffects = {
+    Exec(EVS_TexPan_Podiums)
+    Exec(EVS_TexPan_VerticalStrips)
+    Exec(EVS_TexPan_Screens)
+    Exec(EVS_TexPan_Stars)
+    Exec(EVS_TexPan_FloorTrim)
+    Exec(EVS_TexPan_StarTrim)
     Call(EnableModel, MODEL_o31, false)
     Call(EnableModel, MODEL_o32, false)
     Call(EnableModel, MODEL_o36, false)
@@ -573,7 +573,7 @@ EvtScript N(EVS_ManageStageEffects) = {
     Call(EnableModel, MODEL_o95, false)
     Call(EnableModel, MODEL_o120, false)
     Call(EnableModel, MODEL_o121, false)
-    Exec(N(EVS_InitScoreBar))
+    Exec(EVS_InitScoreBar)
     Label(0)
         Set(LVar0, AB_KKJ29_AnswerScore)
         Loop(0)
@@ -584,14 +584,14 @@ EvtScript N(EVS_ManageStageEffects) = {
         EndLoop
         Switch(AB_KKJ29_AnswerScore)
             CaseEq(ANSWER_NONE)
-                ExecWait(N(EVS_SetNoAnswerEffects))
+                ExecWait(EVS_SetNoAnswerEffects)
             CaseEq(ANSWER_PENDING)
-                Exec(N(EVS_DoScoreBarCycling))
-                ExecWait(N(EVS_SetPendingAnswerEffects))
+                Exec(EVS_DoScoreBarCycling)
+                ExecWait(EVS_SetPendingAnswerEffects)
             CaseEq(ANSWER_RIGHT)
-                ExecWait(N(EVS_SetRightAnswerEffects))
+                ExecWait(EVS_SetRightAnswerEffects)
             CaseEq(ANSWER_WRONG)
-                ExecWait(N(EVS_SetWrongAnswerEffects))
+                ExecWait(EVS_SetWrongAnswerEffects)
         EndSwitch
         Goto(0)
     Return
@@ -605,7 +605,7 @@ enum {
     OUTCOME_TIE         = 3,
 };
 
-EvtScript N(EVS_DeclareWinner) = {
+EvtScript EVS_DeclareWinner = {
     Set(LVar0, OUTCOME_LEFT_WON)
     Set(LVar1, AB_KKJ29_LeftKoopatrolScore)
     Switch(AB_KKJ29_PeachScore)
@@ -667,7 +667,7 @@ EvtScript N(EVS_DeclareWinner) = {
             Set(LVar0, ITEM_JAMMIN_JELLY)
             Set(LVar1, NPC_Koopatrol_01)
             Set(LVar2, MSG_Peach_011D)
-            ExecWait(N(EVS_GiveItemToKoopatrol))
+            ExecWait(EVS_GiveItemToKoopatrol)
             Wait(10)
         CaseEq(OUTCOME_PEACH_WON)
             Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_TalkDisarmed, ANIM_HammerBros_IdleDisarmed, 0, MSG_Peach_0121)
@@ -688,7 +688,7 @@ EvtScript N(EVS_DeclareWinner) = {
             Set(LVar0, ITEM_JAMMIN_JELLY)
             Set(LVar1, NPC_Koopatrol_02)
             Set(LVar2, MSG_Peach_0120)
-            ExecWait(N(EVS_GiveItemToKoopatrol))
+            ExecWait(EVS_GiveItemToKoopatrol)
             Wait(10)
         CaseEq(OUTCOME_TIE)
             IfEq(AB_KKJ29_PeachScore, 0)
@@ -702,21 +702,21 @@ EvtScript N(EVS_DeclareWinner) = {
     End
 };
 
-Vec3f N(TwinkHidePath)[] = {
+Vec3f TwinkHidePath[] = {
     {  290.0,    25.0,  -30.0 },
     {  310.0,    70.0,  -70.0 },
     {  300.0,    35.0, -110.0 },
     {  290.0,    33.0, -110.0 },
 };
 
-Vec3f N(TwinkFollowPath1)[] = {
+Vec3f TwinkFollowPath1[] = {
     {  290.0,    33.0, -110.0 },
     {  300.0,    35.0, -110.0 },
     {  310.0,    10.0,  -70.0 },
     {  240.0,    25.0,  -30.0 },
 };
 
-Vec3f N(TwinkFollowPath2)[] = {
+Vec3f TwinkFollowPath2[] = {
     {  240.0,    25.0,  -30.0 },
     {  230.0,    20.0,  -30.0 },
     {   40.0,    80.0,  -60.0 },
@@ -725,14 +725,14 @@ Vec3f N(TwinkFollowPath2)[] = {
     { -195.0,    80.0, -100.0 },
 };
 
-Vec3f N(TwinkFlyAwayPath)[] = {
+Vec3f TwinkFlyAwayPath[] = {
     { -175.0,    60.0, -100.0 },
     { -160.0,   130.0, -100.0 },
     { -120.0,   150.0, -100.0 },
     {  -70.0,   200.0, -100.0 },
 };
 
-EvtScript N(EVS_TwinkFollowPath) = {
+EvtScript EVS_TwinkFollowPath = {
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -745,7 +745,7 @@ EvtScript N(EVS_TwinkFollowPath) = {
     End
 };
 
-EvtScript N(EVS_GetApproachPeachPos) = {
+EvtScript EVS_GetApproachPeachPos = {
     Call(SetNpcVar, NPC_HammerBros, 0, 1)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -780,7 +780,7 @@ EvtScript N(EVS_GetApproachPeachPos) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach) = {
+EvtScript EVS_PickUpPeach = {
     Thread
         Call(GetNpcPos, NPC_HammerBros, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -816,7 +816,7 @@ EvtScript N(EVS_PickUpPeach) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway) = {
+EvtScript EVS_CarryPeachAway = {
     Call(InterpNpcYaw, NPC_Koopatrol_01, 90, 3)
     Wait(10)
     Thread
@@ -844,7 +844,7 @@ EvtScript N(EVS_CarryPeachAway) = {
     End
 };
 
-EvtScript N(EVS_OpenDoor) = {
+EvtScript EVS_OpenDoor = {
     Call(PlaySoundAtCollider, COLLIDER_tte, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 120, 10, EASING_LINEAR)
     Loop(0)
@@ -859,7 +859,7 @@ EvtScript N(EVS_OpenDoor) = {
     End
 };
 
-EvtScript N(EVS_CloseDoor) = {
+EvtScript EVS_CloseDoor = {
     Call(MakeLerp, 120, 0, 10, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -874,18 +874,18 @@ EvtScript N(EVS_CloseDoor) = {
     End
 };
 
-EvtScript N(EVS_TwinkHide) = {
+EvtScript EVS_TwinkHide = {
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Cringe)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 10)
-    Call(LoadPath, 20 * DT, Ref(N(TwinkHidePath)), ARRAY_COUNT(N(TwinkHidePath)), EASING_LINEAR)
-    ExecWait(N(EVS_TwinkFollowPath))
+    Call(LoadPath, 20 * DT, Ref(TwinkHidePath), ARRAY_COUNT(TwinkHidePath), EASING_LINEAR)
+    ExecWait(EVS_TwinkFollowPath)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Sad)
     Return
     End
 };
 
-EvtScript N(EVS_PeachSweat) = {
+EvtScript EVS_PeachSweat = {
     Loop(0)
         Call(ShowSweat, 0, 1, -45, EMOTER_PLAYER, 0, 0, 0, 0, 20)
         Wait(20 * DT)
@@ -894,7 +894,7 @@ EvtScript N(EVS_PeachSweat) = {
     End
 };
 
-EvtScript N(EVS_TwinkSweat) = {
+EvtScript EVS_TwinkSweat = {
     Loop(0)
         Call(ShowSweat, NPC_PARTNER, 1, -45, EMOTER_NPC, 0, 0, 0, 0, 20)
         Wait(20 * DT)
@@ -903,15 +903,15 @@ EvtScript N(EVS_TwinkSweat) = {
     End
 };
 
-EvtScript N(EVS_ManageQuizGame) = {
+EvtScript EVS_ManageQuizGame = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(RotateModel, MODEL_o57, 120, 0, 1, 0)
     Call(func_802D1270, 250, -30, Float(2.0 / DT))
-    ExecWait(N(EVS_CloseDoor))
+    ExecWait(EVS_CloseDoor)
     Call(DisablePartnerAI, false)
-    Exec(N(EVS_TwinkHide))
+    Exec(EVS_TwinkHide)
     Thread
         Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
         Wait(60 * DT)
@@ -972,9 +972,9 @@ EvtScript N(EVS_ManageQuizGame) = {
         Call(SetNpcYaw, NPC_HammerBros, 90)
     EndThread
     Wait(60 * DT)
-    Call(LoadPath, 50 * DT, Ref(N(TwinkFollowPath1)), ARRAY_COUNT(N(TwinkFollowPath1)), EASING_LINEAR)
-    ExecWait(N(EVS_TwinkFollowPath))
-    ExecGetTID(N(EVS_TwinkSweat), LVarA)
+    Call(LoadPath, 50 * DT, Ref(TwinkFollowPath1), ARRAY_COUNT(TwinkFollowPath1), EASING_LINEAR)
+    ExecWait(EVS_TwinkFollowPath)
+    ExecGetTID(EVS_TwinkSweat, LVarA)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Shout, ANIM_Twink_Shout, 5, MSG_Peach_00F4)
     KillThread(LVarA)
     Call(UseSettingsFrom, CAM_DEFAULT, -230, 0, -140)
@@ -986,8 +986,8 @@ EvtScript N(EVS_ManageQuizGame) = {
 #endif
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Angry)
-    Call(LoadPath, 100 * DT, Ref(N(TwinkFollowPath2)), ARRAY_COUNT(N(TwinkFollowPath2)), EASING_LINEAR)
-    ExecWait(N(EVS_TwinkFollowPath))
+    Call(LoadPath, 100 * DT, Ref(TwinkFollowPath2), ARRAY_COUNT(TwinkFollowPath2), EASING_LINEAR)
+    ExecWait(EVS_TwinkFollowPath)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Idle)
     Wait(30 * DT)
     Call(SetMusic, 0, SONG_PEACH_QUIZ_INTRO, 0, VOL_LEVEL_FULL)
@@ -1025,7 +1025,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SetMusic, 0, SONG_PEACH_QUIZ_INTRO, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_TalkDisarmed, ANIM_HammerBros_IdleDisarmed, 5, MSG_Peach_00F8)
-    ExecWait(N(EVS_SetCam_Contestants))
+    ExecWait(EVS_SetCam_Contestants)
     Set(AB_KKJ29_LeftKoopatrolScore, 0)
     Set(AB_KKJ29_PeachScore, 0)
     Set(AB_KKJ29_RightKoopatrolScore, 0)
@@ -1036,7 +1036,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_002C)
     Set(LVar5, 1)
     Set(LVar6, MSG_Peach_0111)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 2
     Set(LVar1, MSG_Peach_00FE)
     Set(LVar2, 10 * DT)
@@ -1044,7 +1044,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_002D)
     Set(LVar5, 0)
     Set(LVar6, MSG_Peach_0112)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 3
     Set(LVar1, MSG_Peach_0100)
     Set(LVar2, 60 * DT)
@@ -1052,7 +1052,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_002E)
     Set(LVar5, 2)
     Set(LVar6, MSG_Peach_0113)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 4
     Set(LVar1, MSG_Peach_0102)
     Set(LVar2, 10 * DT)
@@ -1060,7 +1060,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_002F)
     Set(LVar5, 0)
     Set(LVar6, MSG_Peach_0114)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 5
     Set(LVar1, MSG_Peach_0104)
     Set(LVar2, 30 * DT)
@@ -1068,7 +1068,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_0030)
     Set(LVar5, 2)
     Set(LVar6, MSG_Peach_0115)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 6
     Set(LVar1, MSG_Peach_0106)
     Set(LVar2, 20)
@@ -1076,7 +1076,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_0031)
     Set(LVar5, 0)
     Set(LVar6, MSG_Peach_0116)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 7
     Set(LVar1, MSG_Peach_0108)
     Set(LVar2, 30 * DT)
@@ -1084,7 +1084,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_0032)
     Set(LVar5, 1)
     Set(LVar6, MSG_Peach_0117)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 8
     Set(LVar1, MSG_Peach_010A)
     Set(LVar2, 60 * DT)
@@ -1092,7 +1092,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_0033)
     Set(LVar5, 1)
     Set(LVar6, MSG_Peach_0118)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 9
     Set(LVar1, MSG_Peach_010C)
     Set(LVar2, 60 * DT)
@@ -1100,7 +1100,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_0034)
     Set(LVar5, 0)
     Set(LVar6, MSG_Peach_0119)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     // round 10
     Set(LVar1, MSG_Peach_010E)
     Set(LVar2, 30 * DT)
@@ -1108,9 +1108,9 @@ EvtScript N(EVS_ManageQuizGame) = {
     Set(LVar4, MSG_Choice_0035)
     Set(LVar5, 0)
     Set(LVar6, MSG_Peach_011A)
-    ExecWait(N(Script_DoRound))
+    ExecWait(Script_DoRound)
     Call(SetMusic, 0, SONG_PEACH_MISSION, 0, VOL_LEVEL_FULL)
-    ExecWait(N(EVS_DeclareWinner))
+    ExecWait(EVS_DeclareWinner)
     Call(SetPanTarget, CAM_DEFAULT, -230, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-13.0))
@@ -1180,7 +1180,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Call(SetNpcPos, NPC_HammerBros, -350, 0, 0)
     Call(SetNpcPos, NPC_Koopatrol_01, -325, 0, -30)
     Call(SetNpcYaw, NPC_Koopatrol_01, 90)
-    Exec(N(EVS_OpenDoor))
+    Exec(EVS_OpenDoor)
     Call(SetNpcPos, NPC_Bowser, 410, 0, -25)
     Call(SetNpcSpeed, NPC_Bowser, Float(2.0 / DT))
     Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Walk)
@@ -1200,7 +1200,7 @@ EvtScript N(EVS_ManageQuizGame) = {
             EndIf
         EndLoop
         Call(InterpPlayerYaw, 270, 0)
-        ExecGetTID(N(EVS_PeachSweat), LVarA)
+        ExecGetTID(EVS_PeachSweat, LVarA)
         Loop(0)
             Wait(1)
             Call(GetNpcVar, NPC_Bowser, 1, LVar0)
@@ -1225,7 +1225,7 @@ EvtScript N(EVS_ManageQuizGame) = {
             EndIf
         EndLoop
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
-        ExecGetTID(N(EVS_TwinkSweat), LVarA)
+        ExecGetTID(EVS_TwinkSweat, LVarA)
         Loop(0)
             Wait(1)
             Call(GetNpcVar, NPC_Bowser, 1, LVar0)
@@ -1237,8 +1237,8 @@ EvtScript N(EVS_ManageQuizGame) = {
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 5)
-        Call(LoadPath, 50 * DT, Ref(N(TwinkFlyAwayPath)), ARRAY_COUNT(N(TwinkFlyAwayPath)), EASING_LINEAR)
-        ExecWait(N(EVS_TwinkFollowPath))
+        Call(LoadPath, 50 * DT, Ref(TwinkFlyAwayPath), ARRAY_COUNT(TwinkFlyAwayPath), EASING_LINEAR)
+        ExecWait(EVS_TwinkFollowPath)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Idle)
     EndThread
     Thread
@@ -1286,14 +1286,14 @@ EvtScript N(EVS_ManageQuizGame) = {
     Call(SetNpcAnimation, NPC_Bowser, ANIM_WorldBowser_Idle)
     Call(EndSpeech, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 5)
     Call(SpeakToPlayer, NPC_Koopatrol_01, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 5, MSG_Peach_012C)
-    ExecWait(N(EVS_GetApproachPeachPos))
+    ExecWait(EVS_GetApproachPeachPos)
     Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_TalkDisarmed, ANIM_HammerBros_IdleDisarmed, 5, MSG_Peach_012D)
-    ExecWait(N(EVS_PickUpPeach))
+    ExecWait(EVS_PickUpPeach)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_012E)
-    ExecWait(N(EVS_CarryPeachAway))
+    ExecWait(EVS_CarryPeachAway)
     Wait(30 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)
-    ExecWait(N(EVS_EndPeachChapter5))
+    ExecWait(EVS_EndPeachChapter5)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)

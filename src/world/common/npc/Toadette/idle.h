@@ -3,4 +3,4 @@
 
 #define NpcSettings_Toadette NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Toadette);
+extern NpcSettings NpcSettings_Toadette;

@@ -6,32 +6,32 @@
 extern HeapNode heap_spriteHead;
 
 extern b32 SpriteUseGeneralHeap;
-extern ParadeNpcInfo N(ParadeNpcsTable)[];
+extern ParadeNpcInfo ParadeNpcsTable[];
 
-extern EvtScript N(EVS_ParadePhase_Luigi);
-extern EvtScript N(EVS_ParadePhase_Partners);
-extern EvtScript N(EVS_ParadePhase_Toads);
-extern EvtScript N(EVS_ParadePhase_KoopaBros);
-extern EvtScript N(EVS_ParadePhase_Kolorado);
-extern EvtScript N(EVS_ParadePhase_Caravan);
-extern EvtScript N(EVS_ParadePhase_BuzzarNest);
-extern EvtScript N(EVS_ParadePhase_Tutankoopa);
-extern EvtScript N(EVS_ParadePhase_Boos);
-extern EvtScript N(EVS_ParadePhase_GoombaKing);
-extern EvtScript N(EVS_ParadePhase_Yoshis);
-extern EvtScript N(EVS_ParadePhase_HuffNPuff);
-extern EvtScript N(EVS_ParadePhase_CrystalKing);
-extern EvtScript N(EVS_ParadePhase_Bowser);
+extern EvtScript EVS_ParadePhase_Luigi;
+extern EvtScript EVS_ParadePhase_Partners;
+extern EvtScript EVS_ParadePhase_Toads;
+extern EvtScript EVS_ParadePhase_KoopaBros;
+extern EvtScript EVS_ParadePhase_Kolorado;
+extern EvtScript EVS_ParadePhase_Caravan;
+extern EvtScript EVS_ParadePhase_BuzzarNest;
+extern EvtScript EVS_ParadePhase_Tutankoopa;
+extern EvtScript EVS_ParadePhase_Boos;
+extern EvtScript EVS_ParadePhase_GoombaKing;
+extern EvtScript EVS_ParadePhase_Yoshis;
+extern EvtScript EVS_ParadePhase_HuffNPuff;
+extern EvtScript EVS_ParadePhase_CrystalKing;
+extern EvtScript EVS_ParadePhase_Bowser;
 
-extern EvtScript N(EVS_InitCredits);
-extern EvtScript N(EVS_ShowCredits_Title);
-extern EvtScript N(EVS_ShowCredits_Jobs);
-extern EvtScript N(EVS_ShowCredits_Names);
+extern EvtScript EVS_InitCredits;
+extern EvtScript EVS_ShowCredits_Title;
+extern EvtScript EVS_ShowCredits_Jobs;
+extern EvtScript EVS_ShowCredits_Names;
 
-API_CALLABLE(N(CreateParadeNPC)) {
+API_CALLABLE(CreateParadeNPC) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
-    ParadeNpcInfo* npcInfo = &N(ParadeNpcsTable)[npcID];
+    ParadeNpcInfo* npcInfo = &ParadeNpcsTable[npcID];
     NpcBlueprint bp;
     Npc* npc;
 
@@ -52,7 +52,7 @@ API_CALLABLE(N(CreateParadeNPC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ParadeSpriteHeapMalloc)) {
+API_CALLABLE(ParadeSpriteHeapMalloc) {
     Bytecode* args = script->ptrReadPos;
     s32 heapSize = evt_get_variable(script, *args++);
     s32 outVar = *args++;
@@ -61,7 +61,7 @@ API_CALLABLE(N(ParadeSpriteHeapMalloc)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ParadeSpriteHeapFree)) {
+API_CALLABLE(ParadeSpriteHeapFree) {
     Bytecode* args = script->ptrReadPos;
     s32 pointer = *args++;
 
@@ -69,7 +69,7 @@ API_CALLABLE(N(ParadeSpriteHeapFree)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateCameraScroll)) {
+API_CALLABLE(UpdateCameraScroll) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     camera->panActive = true;
@@ -77,7 +77,7 @@ API_CALLABLE(N(UpdateCameraScroll)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetNpcShadowScale)) {
+API_CALLABLE(SetNpcShadowScale) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     f32 newShadowScale = evt_get_float_variable(script, *args++);
@@ -86,7 +86,7 @@ API_CALLABLE(N(SetNpcShadowScale)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AddScrollToNpcPos)) {
+API_CALLABLE(AddScrollToNpcPos) {
     Bytecode* args = script->ptrReadPos;
     Npc** npc = (Npc**)&script->functionTempPtr[1];
 
@@ -99,7 +99,7 @@ API_CALLABLE(N(AddScrollToNpcPos)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_SetupInitialCamera) = {
+EvtScript EVS_SetupInitialCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, PARADE_START, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, PARADE_START, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -108,11 +108,11 @@ EvtScript N(EVS_SetupInitialCamera) = {
     End
 };
 
-EvtScript N(EVS_UpdateScrollPos) = {
+EvtScript EVS_UpdateScrollPos = {
     Call(SetPanTarget, CAM_DEFAULT, Float(PARADE_START), 0, 0)
     SetF(LVar1, Float(0.0))
     Loop(0)
-        Call(N(UpdateCameraScroll))
+        Call(UpdateCameraScroll)
         Call(TranslateGroup, MODEL_bg, LVar1, 0, 0)
         AddF(LVar1, Float(PARADE_SCROLL_RATE / DT))
         Wait(1)
@@ -121,20 +121,20 @@ EvtScript N(EVS_UpdateScrollPos) = {
     End
 };
 
-EvtScript N(EVS_SetNpcShadowScale) = {
-    Call(N(SetNpcShadowScale), LVar0, LVar2)
+EvtScript EVS_SetNpcShadowScale = {
+    Call(SetNpcShadowScale, LVar0, LVar2)
     Call(SetNpcFlagBits, LVar0, NPC_FLAG_DIRTY_SHADOW, true)
     Return
     End
 };
 
-EvtScript N(EVS_OffsetNpcScroll) = {
-    Call(N(AddScrollToNpcPos), LVar0)
+EvtScript EVS_OffsetNpcScroll = {
+    Call(AddScrollToNpcPos, LVar0)
     Return
     End
 };
 
-EvtScript N(EVS_UpdateTexPan_Ground) = {
+EvtScript EVS_UpdateTexPan_Ground = {
     Call(EnableTexPanning, MODEL_j1, true)
     Call(EnableTexPanning, MODEL_j2, true)
     Call(EnableTexPanning, MODEL_j3, true)
@@ -178,7 +178,7 @@ EvtScript N(EVS_UpdateTexPan_Ground) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Clouds) = {
+EvtScript EVS_TexPan_Clouds = {
     Call(EnableTexPanning, MODEL_cloud, true)
     Set(LVar0, 0)
     Loop(0)
@@ -190,7 +190,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Water) = {
+EvtScript EVS_TexPan_Water = {
     Call(EnableTexPanning, MODEL_umi, true)
     Set(LVar0, 0)
     Set(LVar1, 0)
@@ -209,7 +209,7 @@ EvtScript N(EVS_TexPan_Water) = {
     End
 };
 
-AnimID N(LimitAnims_Tutankoopa)[] = {
+AnimID LimitAnims_Tutankoopa[] = {
     ANIM_Tutankoopa_Run,
     ANIM_Tutankoopa_Hurt,
     ANIM_Tutankoopa_LevitateStill,
@@ -218,7 +218,7 @@ AnimID N(LimitAnims_Tutankoopa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Rowf)[] = {
+AnimID LimitAnims_Rowf[] = {
     ANIM_Rowf_PackedStill,
     ANIM_Rowf_PackedIdle,
     ANIM_Rowf_PackedWalk,
@@ -228,7 +228,7 @@ AnimID N(LimitAnims_Rowf)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Moustafa)[] = {
+AnimID LimitAnims_Moustafa[] = {
     ANIM_Moustafa_Run,
     ANIM_Moustafa_Shout,
     ANIM_Moustafa_Talk,
@@ -237,37 +237,37 @@ AnimID N(LimitAnims_Moustafa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Mouser)[] = {
+AnimID LimitAnims_Mouser[] = {
     ANIM_Mouser_Blue_Run,
     ANIM_Mouser_Blue_IdleOnlyBlink,
     ANIM_Mouser_Blue_Whisper,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Buzzar)[] = {
+AnimID LimitAnims_Buzzar[] = {
     ANIM_Buzzar_Roost,
     ANIM_Buzzar_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_GoombaKing)[] = {
+AnimID LimitAnims_GoombaKing[] = {
     ANIM_GoombaKing_Still,
     ANIM_GoombaKing_Dead,
     ANIM_GoombaKing_Angry,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_RaphaelRaven)[] = {
+AnimID LimitAnims_RaphaelRaven[] = {
     ANIM_RaphaelRaven_IdleNoFeet,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_LavaPiranha)[] = {
+AnimID LimitAnims_LavaPiranha[] = {
     ANIM_LavaPiranha_TongueWag,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_HuffNPuff)[] = {
+AnimID LimitAnims_HuffNPuff[] = {
     ANIM_HuffNPuff_IdleBody,
     ANIM_HuffNPuff_IdleFace,
     ANIM_HuffNPuff_IdleArms,
@@ -280,14 +280,14 @@ AnimID N(LimitAnims_HuffNPuff)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_RuffPuff)[] = {
+AnimID LimitAnims_RuffPuff[] = {
     ANIM_RuffPuff_Idle,
     ANIM_RuffPuff_Hurt,
     ANIM_RuffPuff_Blush,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_GourmetGuy)[] = {
+AnimID LimitAnims_GourmetGuy[] = {
     ANIM_GourmetGuy_Walk,
     ANIM_GourmetGuy_Leap,
     ANIM_GourmetGuy_TalkSurprise,
@@ -298,7 +298,7 @@ AnimID N(LimitAnims_GourmetGuy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_MageJrTroopa)[] = {
+AnimID LimitAnims_MageJrTroopa[] = {
     ANIM_MageJrTroopa_Idle,
     ANIM_MageJrTroopa_Run,
     ANIM_MageJrTroopa_RaiseStaff,
@@ -307,7 +307,7 @@ AnimID N(LimitAnims_MageJrTroopa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Kammy)[] = {
+AnimID LimitAnims_Kammy[] = {
     ANIM_WorldKammy_FlySlowSly,
     ANIM_WorldKammy_FlyFast,
     ANIM_WorldKammy_FlyRodTalk,
@@ -317,7 +317,7 @@ AnimID N(LimitAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-ParadeNpcInfo N(ParadeNpcsTable)[] = {
+ParadeNpcInfo ParadeNpcsTable[] = {
     [NPC_Luigi] {
         .initialAnim = ANIM_ParadeLuigi_March,
         .pos = { -2880.0f, 0.0f, 0.0f },
@@ -485,37 +485,37 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Rowf] {
         .initialAnim = ANIM_Rowf_PackedWalk,
-        .animList = N(LimitAnims_Rowf),
+        .animList = LimitAnims_Rowf,
         .pos = { -1775.0f, 0.0f, 2.0f },
         .yaw = 90.0f
     },
     [NPC_Rhuff] {
         .initialAnim = ANIM_Rowf_PackedWalk,
-        .animList = N(LimitAnims_Rowf),
+        .animList = LimitAnims_Rowf,
         .pos = { -1740.0f, 0.0f, 2.0f },
         .yaw = 90.0f
     },
     [NPC_Moustafa] {
         .initialAnim = ANIM_Moustafa_Run,
-        .animList = N(LimitAnims_Moustafa),
+        .animList = LimitAnims_Moustafa,
         .pos = { -1240.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
     [NPC_Mouser1] {
         .initialAnim = ANIM_Mouser_Blue_Run,
-        .animList = N(LimitAnims_Mouser),
+        .animList = LimitAnims_Mouser,
         .pos = { -1210.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
     [NPC_Mouser2] {
         .initialAnim = ANIM_Mouser_Blue_Run,
-        .animList = N(LimitAnims_Mouser),
+        .animList = LimitAnims_Mouser,
         .pos = { -1180.0f, 0.0f, -2.0f },
         .yaw = 270.0f
     },
     [NPC_Tutankoopa1] {
         .initialAnim = ANIM_Tutankoopa_Run,
-        .animList = N(LimitAnims_Tutankoopa),
+        .animList = LimitAnims_Tutankoopa,
         .pos = { -1040.0f, 0.0f, 30.0f },
         .yaw = 270.0f
     },
@@ -526,7 +526,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Buzzar] {
         .initialAnim = ANIM_Buzzar_Roost,
-        .animList = N(LimitAnims_Buzzar),
+        .animList = LimitAnims_Buzzar,
         .pos = { -855.0f, 70.0f, -140.0f },
         .yaw = 270.0f
     },
@@ -552,7 +552,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Tutankoopa2] {
         .initialAnim = ANIM_Tutankoopa_Run,
-        .animList = N(LimitAnims_Tutankoopa),
+        .animList = LimitAnims_Tutankoopa,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
@@ -598,7 +598,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_GoombaKing] {
         .initialAnim = ANIM_GoombaKing_Still,
-        .animList = N(LimitAnims_GoombaKing),
+        .animList = LimitAnims_GoombaKing,
         .pos = { -70.0f, 130.0f, -60.0f },
         .yaw = 270.0f
     },
@@ -639,13 +639,13 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_RaphaelRaven] {
         .initialAnim = ANIM_RaphaelRaven_IdleNoFeet,
-        .animList = N(LimitAnims_RaphaelRaven),
+        .animList = LimitAnims_RaphaelRaven,
         .pos = { 357.0f, -120.0f, -30.0f },
         .yaw = 90.0f
     },
     [NPC_LavaPiranha] {
         .initialAnim = ANIM_LavaPiranha_TongueWag,
-        .animList = N(LimitAnims_LavaPiranha),
+        .animList = LimitAnims_LavaPiranha,
         .pos = { 507.0f, 50.0f, -5.0f },
         .yaw = 90.0f
     },
@@ -676,37 +676,37 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_HuffNPuffBody] {
         .initialAnim = ANIM_HuffNPuff_IdleBody,
-        .animList = N(LimitAnims_HuffNPuff),
+        .animList = LimitAnims_HuffNPuff,
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_HuffNPuffFace] {
         .initialAnim = ANIM_HuffNPuff_IdleFace,
-        .animList = N(LimitAnims_HuffNPuff),
+        .animList = LimitAnims_HuffNPuff,
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_HuffNPuffArms] {
         .initialAnim = ANIM_HuffNPuff_IdleArms,
-        .animList = N(LimitAnims_HuffNPuff),
+        .animList = LimitAnims_HuffNPuff,
         .pos = { 1060.0f, 80.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_RuffPuff1] {
         .initialAnim = ANIM_RuffPuff_Idle,
-        .animList = N(LimitAnims_RuffPuff),
+        .animList = LimitAnims_RuffPuff,
         .pos = { 980.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_RuffPuff2] {
         .initialAnim = ANIM_RuffPuff_Idle,
-        .animList = N(LimitAnims_RuffPuff),
+        .animList = LimitAnims_RuffPuff,
         .pos = { 1140.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_GourmetGuy] {
         .initialAnim = ANIM_GourmetGuy_Walk,
-        .animList = N(LimitAnims_GourmetGuy),
+        .animList = LimitAnims_GourmetGuy,
         .pos = { 1270.0f, 0.0f, -20.0f },
         .yaw = 270.0f
     },
@@ -747,13 +747,13 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Kammy] {
         .initialAnim = ANIM_WorldKammy_FlySlowSly,
-        .animList = N(LimitAnims_Kammy),
+        .animList = LimitAnims_Kammy,
         .pos = { 2160.0f, 60.0f, 0.0f },
         .yaw = 270.0f
     },
     [NPC_JrTroopa] {
         .initialAnim = ANIM_MageJrTroopa_RaiseStaff,
-        .animList = N(LimitAnims_MageJrTroopa),
+        .animList = LimitAnims_MageJrTroopa,
         .pos = { 2060.0f, 0.0f, 0.0f },
         .yaw = 90.0f
     },
@@ -799,16 +799,16 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
 };
 
-EvtScript N(EVS_ManageNpcPool) = {
-    Call(N(CreateParadeNPC), NPC_Luigi)
-    Call(N(ParadeSpriteHeapMalloc), 0x25000, LVar0)
-    Call(N(CreateParadeNPC), NPC_HornPlayer1)
-    Call(N(CreateParadeNPC), NPC_HornPlayer2)
-    Call(N(CreateParadeNPC), NPC_Drummer1)
-    Call(N(CreateParadeNPC), NPC_Drummer2)
-    Call(N(CreateParadeNPC), NPC_StandardBearer1)
-    Call(N(CreateParadeNPC), NPC_StandardBearer2)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+EvtScript EVS_ManageNpcPool = {
+    Call(CreateParadeNPC, NPC_Luigi)
+    Call(ParadeSpriteHeapMalloc, 0x25000, LVar0)
+    Call(CreateParadeNPC, NPC_HornPlayer1)
+    Call(CreateParadeNPC, NPC_HornPlayer2)
+    Call(CreateParadeNPC, NPC_Drummer1)
+    Call(CreateParadeNPC, NPC_Drummer2)
+    Call(CreateParadeNPC, NPC_StandardBearer1)
+    Call(CreateParadeNPC, NPC_StandardBearer2)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -817,14 +817,14 @@ EvtScript N(EVS_ManageNpcPool) = {
         EndIf
     EndLoop
     Call(DeleteNpc, NPC_Luigi)
-    Call(N(CreateParadeNPC), NPC_Goombario)
-    Call(N(CreateParadeNPC), NPC_Kooper)
-    Call(N(CreateParadeNPC), NPC_Bombette)
-    Call(N(CreateParadeNPC), NPC_Parakarry)
-    Call(N(CreateParadeNPC), NPC_Bow)
-    Call(N(CreateParadeNPC), NPC_Watt)
-    Call(N(CreateParadeNPC), NPC_Sushie)
-    Call(N(CreateParadeNPC), NPC_Lakilester)
+    Call(CreateParadeNPC, NPC_Goombario)
+    Call(CreateParadeNPC, NPC_Kooper)
+    Call(CreateParadeNPC, NPC_Bombette)
+    Call(CreateParadeNPC, NPC_Parakarry)
+    Call(CreateParadeNPC, NPC_Bow)
+    Call(CreateParadeNPC, NPC_Watt)
+    Call(CreateParadeNPC, NPC_Sushie)
+    Call(CreateParadeNPC, NPC_Lakilester)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -839,14 +839,14 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_StandardBearer1)
     Call(DeleteNpc, NPC_StandardBearer2)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0x25000, LVar0)
-    Call(N(CreateParadeNPC), NPC_Twirler1)
-    Call(N(CreateParadeNPC), NPC_Twirler2)
-    Call(N(CreateParadeNPC), NPC_Twirler3)
-    Call(N(CreateParadeNPC), NPC_Baton1)
-    Call(N(CreateParadeNPC), NPC_Baton2)
-    Call(N(CreateParadeNPC), NPC_Baton3)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+    Call(ParadeSpriteHeapMalloc, 0x25000, LVar0)
+    Call(CreateParadeNPC, NPC_Twirler1)
+    Call(CreateParadeNPC, NPC_Twirler2)
+    Call(CreateParadeNPC, NPC_Twirler3)
+    Call(CreateParadeNPC, NPC_Baton1)
+    Call(CreateParadeNPC, NPC_Baton2)
+    Call(CreateParadeNPC, NPC_Baton3)
+    Call(ParadeSpriteHeapFree, LVar0)
     Wait(60)
     Loop(0)
         Wait(1)
@@ -864,8 +864,8 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Sushie)
     Call(DeleteNpc, NPC_Lakilester)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_ChuckQuizmo)
-    Call(N(CreateParadeNPC), NPC_VannaT)
+    Call(CreateParadeNPC, NPC_ChuckQuizmo)
+    Call(CreateParadeNPC, NPC_VannaT)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -880,16 +880,16 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Baton2)
     Call(DeleteNpc, NPC_Baton3)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0xB000, LVar0)
-    Call(N(CreateParadeNPC), NPC_KoopaBrosRed)
-    Call(N(CreateParadeNPC), NPC_KoopaBrosBlack)
-    Call(N(CreateParadeNPC), NPC_KoopaBrosYellow)
-    Call(N(CreateParadeNPC), NPC_KoopaBrosGreen)
-    Call(N(CreateParadeNPC), NPC_Bobomb1)
-    Call(N(CreateParadeNPC), NPC_Bobomb2)
-    Call(N(CreateParadeNPC), NPC_Bobomb3)
-    Call(N(CreateParadeNPC), NPC_Bobomb4)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+    Call(ParadeSpriteHeapMalloc, 0xB000, LVar0)
+    Call(CreateParadeNPC, NPC_KoopaBrosRed)
+    Call(CreateParadeNPC, NPC_KoopaBrosBlack)
+    Call(CreateParadeNPC, NPC_KoopaBrosYellow)
+    Call(CreateParadeNPC, NPC_KoopaBrosGreen)
+    Call(CreateParadeNPC, NPC_Bobomb1)
+    Call(CreateParadeNPC, NPC_Bobomb2)
+    Call(CreateParadeNPC, NPC_Bobomb3)
+    Call(CreateParadeNPC, NPC_Bobomb4)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -900,8 +900,8 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_ChuckQuizmo)
     Call(DeleteNpc, NPC_VannaT)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_Kolorado)
-    Call(N(CreateParadeNPC), NPC_KoloradoWife)
+    Call(CreateParadeNPC, NPC_Kolorado)
+    Call(CreateParadeNPC, NPC_KoloradoWife)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -918,16 +918,16 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Bobomb3)
     Call(DeleteNpc, NPC_Bobomb4)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0x19F00, LVar0)
-    Call(N(CreateParadeNPC), NPC_Tutankoopa1)
-    Call(N(CreateParadeNPC), NPC_Rowf)
-    Call(N(CreateParadeNPC), NPC_Rhuff)
-    Call(N(CreateParadeNPC), NPC_Moustafa)
-    Call(N(CreateParadeNPC), NPC_Mouser1)
-    Call(N(CreateParadeNPC), NPC_Mouser2)
-    Call(N(CreateParadeNPC), NPC_ChainChomp1)
-    Call(N(ParadeSpriteHeapMalloc), 0x7000, LVarF)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+    Call(ParadeSpriteHeapMalloc, 0x19F00, LVar0)
+    Call(CreateParadeNPC, NPC_Tutankoopa1)
+    Call(CreateParadeNPC, NPC_Rowf)
+    Call(CreateParadeNPC, NPC_Rhuff)
+    Call(CreateParadeNPC, NPC_Moustafa)
+    Call(CreateParadeNPC, NPC_Mouser1)
+    Call(CreateParadeNPC, NPC_Mouser2)
+    Call(CreateParadeNPC, NPC_ChainChomp1)
+    Call(ParadeSpriteHeapMalloc, 0x7000, LVarF)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -938,10 +938,10 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Kolorado)
     Call(DeleteNpc, NPC_KoloradoWife)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_Buzzar)
-    Call(N(CreateParadeNPC), NPC_VultureChick1)
-    Call(N(CreateParadeNPC), NPC_VultureChick2)
-    Call(N(CreateParadeNPC), NPC_VultureChick3)
+    Call(CreateParadeNPC, NPC_Buzzar)
+    Call(CreateParadeNPC, NPC_VultureChick1)
+    Call(CreateParadeNPC, NPC_VultureChick2)
+    Call(CreateParadeNPC, NPC_VultureChick3)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -956,16 +956,16 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Mouser1)
     Call(DeleteNpc, NPC_Mouser2)
     Call(DeleteNpc, NPC_ChainChomp1)
-    Call(N(ParadeSpriteHeapFree), LVarF)
+    Call(ParadeSpriteHeapFree, LVarF)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0x11F00, LVar0)
-    Call(N(CreateParadeNPC), NPC_Tutankoopa2)
-    Call(N(CreateParadeNPC), NPC_ChainChomp2)
-    Call(N(CreateParadeNPC), NPC_ChainChomp3)
-    Call(N(CreateParadeNPC), NPC_ChainChomp4)
-    Call(N(CreateParadeNPC), NPC_Bootler)
-    Call(N(ParadeSpriteHeapMalloc), 0xA000, LVarF)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+    Call(ParadeSpriteHeapMalloc, 0x11F00, LVar0)
+    Call(CreateParadeNPC, NPC_Tutankoopa2)
+    Call(CreateParadeNPC, NPC_ChainChomp2)
+    Call(CreateParadeNPC, NPC_ChainChomp3)
+    Call(CreateParadeNPC, NPC_ChainChomp4)
+    Call(CreateParadeNPC, NPC_Bootler)
+    Call(ParadeSpriteHeapMalloc, 0xA000, LVarF)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -978,12 +978,12 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_VultureChick2)
     Call(DeleteNpc, NPC_VultureChick3)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_TubbasHeart)
-    Call(N(CreateParadeNPC), NPC_Boo1)
-    Call(N(CreateParadeNPC), NPC_Boo2)
-    Call(N(CreateParadeNPC), NPC_Boo3)
-    Call(N(CreateParadeNPC), NPC_TubbasBody)
-    Call(N(SetNpcShadowScale), NPC_TubbasBody, Float(4.0))
+    Call(CreateParadeNPC, NPC_TubbasHeart)
+    Call(CreateParadeNPC, NPC_Boo1)
+    Call(CreateParadeNPC, NPC_Boo2)
+    Call(CreateParadeNPC, NPC_Boo3)
+    Call(CreateParadeNPC, NPC_TubbasBody)
+    Call(SetNpcShadowScale, NPC_TubbasBody, Float(4.0))
     Call(SetNpcFlagBits, NPC_TubbasBody, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -997,14 +997,14 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_ChainChomp2)
     Call(DeleteNpc, NPC_ChainChomp3)
     Call(DeleteNpc, NPC_ChainChomp4)
-    Call(N(ParadeSpriteHeapFree), LVarF)
+    Call(ParadeSpriteHeapFree, LVarF)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0xF000, LVar0)
-    Call(N(CreateParadeNPC), NPC_GoombaKing)
-    Call(N(CreateParadeNPC), NPC_RedGoombaBros)
-    Call(N(CreateParadeNPC), NPC_BlueGoombaBros)
-    Call(N(ParadeSpriteHeapFree), LVar0)
-    Call(N(SetNpcShadowScale), NPC_GoombaKing, Float(3.0))
+    Call(ParadeSpriteHeapMalloc, 0xF000, LVar0)
+    Call(CreateParadeNPC, NPC_GoombaKing)
+    Call(CreateParadeNPC, NPC_RedGoombaBros)
+    Call(CreateParadeNPC, NPC_BlueGoombaBros)
+    Call(ParadeSpriteHeapFree, LVar0)
+    Call(SetNpcShadowScale, NPC_GoombaKing, Float(3.0))
     Call(SetNpcFlagBits, NPC_GoombaKing, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1019,13 +1019,13 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Boo3)
     Call(DeleteNpc, NPC_TubbasHeart)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_RaphaelRaven)
-    Call(N(CreateParadeNPC), NPC_LavaPiranha)
-    Call(N(CreateParadeNPC), NPC_Yoshi1)
-    Call(N(CreateParadeNPC), NPC_Yoshi2)
-    Call(N(CreateParadeNPC), NPC_Yoshi3)
-    Call(N(CreateParadeNPC), NPC_Yoshi4)
-    Call(N(CreateParadeNPC), NPC_YoshiChief)
+    Call(CreateParadeNPC, NPC_RaphaelRaven)
+    Call(CreateParadeNPC, NPC_LavaPiranha)
+    Call(CreateParadeNPC, NPC_Yoshi1)
+    Call(CreateParadeNPC, NPC_Yoshi2)
+    Call(CreateParadeNPC, NPC_Yoshi3)
+    Call(CreateParadeNPC, NPC_Yoshi4)
+    Call(CreateParadeNPC, NPC_YoshiChief)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1037,13 +1037,13 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_RedGoombaBros)
     Call(DeleteNpc, NPC_BlueGoombaBros)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0x20000, LVar0)
-    Call(N(CreateParadeNPC), NPC_YoshiKidGreen)
-    Call(N(CreateParadeNPC), NPC_YoshiKidBlue)
-    Call(N(CreateParadeNPC), NPC_YoshiKidPurple)
-    Call(N(CreateParadeNPC), NPC_YoshiKidYellow)
-    Call(N(CreateParadeNPC), NPC_YoshiKidRed)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+    Call(ParadeSpriteHeapMalloc, 0x20000, LVar0)
+    Call(CreateParadeNPC, NPC_YoshiKidGreen)
+    Call(CreateParadeNPC, NPC_YoshiKidBlue)
+    Call(CreateParadeNPC, NPC_YoshiKidPurple)
+    Call(CreateParadeNPC, NPC_YoshiKidYellow)
+    Call(CreateParadeNPC, NPC_YoshiKidRed)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1059,15 +1059,15 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_RaphaelRaven)
     Call(DeleteNpc, NPC_LavaPiranha)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_HuffNPuffBody)
-    Call(N(CreateParadeNPC), NPC_HuffNPuffFace)
-    Call(N(CreateParadeNPC), NPC_HuffNPuffArms)
-    Call(N(CreateParadeNPC), NPC_GourmetGuy)
-    Call(N(CreateParadeNPC), NPC_RuffPuff1)
-    Call(N(CreateParadeNPC), NPC_RuffPuff2)
-    Call(N(SetNpcShadowScale), 69, Float(6.0))
+    Call(CreateParadeNPC, NPC_HuffNPuffBody)
+    Call(CreateParadeNPC, NPC_HuffNPuffFace)
+    Call(CreateParadeNPC, NPC_HuffNPuffArms)
+    Call(CreateParadeNPC, NPC_GourmetGuy)
+    Call(CreateParadeNPC, NPC_RuffPuff1)
+    Call(CreateParadeNPC, NPC_RuffPuff2)
+    Call(SetNpcShadowScale, 69, Float(6.0))
     Call(SetNpcFlagBits, NPC_HuffNPuffBody, NPC_FLAG_DIRTY_SHADOW, true)
-    Call(N(SetNpcShadowScale), 74, Float(3.0))
+    Call(SetNpcShadowScale, 74, Float(3.0))
     Call(SetNpcFlagBits, NPC_GourmetGuy, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1082,16 +1082,16 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_YoshiKidYellow)
     Call(DeleteNpc, NPC_YoshiKidRed)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0x2000, LVar0)
-    Call(N(CreateParadeNPC), NPC_TrueCrystalKing)
-    Call(N(CreateParadeNPC), NPC_FakeCrystalKing)
-    Call(N(CreateParadeNPC), NPC_CrystalBit1)
-    Call(N(CreateParadeNPC), NPC_CrystalBit2)
-    Call(N(CreateParadeNPC), NPC_CrystalBit3)
-    Call(N(ParadeSpriteHeapFree), LVar0)
-    Call(N(SetNpcShadowScale), NPC_TrueCrystalKing, Float(2.0))
+    Call(ParadeSpriteHeapMalloc, 0x2000, LVar0)
+    Call(CreateParadeNPC, NPC_TrueCrystalKing)
+    Call(CreateParadeNPC, NPC_FakeCrystalKing)
+    Call(CreateParadeNPC, NPC_CrystalBit1)
+    Call(CreateParadeNPC, NPC_CrystalBit2)
+    Call(CreateParadeNPC, NPC_CrystalBit3)
+    Call(ParadeSpriteHeapFree, LVar0)
+    Call(SetNpcShadowScale, NPC_TrueCrystalKing, Float(2.0))
     Call(SetNpcFlagBits, NPC_TrueCrystalKing, NPC_FLAG_DIRTY_SHADOW, true)
-    Call(N(SetNpcShadowScale), NPC_FakeCrystalKing, Float(2.0))
+    Call(SetNpcShadowScale, NPC_FakeCrystalKing, Float(2.0))
     Call(SetNpcFlagBits, NPC_FakeCrystalKing, NPC_FLAG_DIRTY_SHADOW, true)
     Loop(0)
         Wait(1)
@@ -1107,8 +1107,8 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_RuffPuff1)
     Call(DeleteNpc, NPC_RuffPuff2)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_Duplighost1)
-    Call(N(CreateParadeNPC), NPC_Duplighost2)
+    Call(CreateParadeNPC, NPC_Duplighost1)
+    Call(CreateParadeNPC, NPC_Duplighost2)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1122,8 +1122,8 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_CrystalBit2)
     Call(DeleteNpc, NPC_CrystalBit3)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_JrTroopa)
-    Call(N(CreateParadeNPC), NPC_Kammy)
+    Call(CreateParadeNPC, NPC_JrTroopa)
+    Call(CreateParadeNPC, NPC_Kammy)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1134,17 +1134,17 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Duplighost1)
     Call(DeleteNpc, NPC_Duplighost2)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_Bowser)
-    Call(N(CreateParadeNPC), NPC_BowserPropeller)
-    Call(N(CreateParadeNPC), NPC_HammerBros1)
-    Call(N(CreateParadeNPC), NPC_HammerBros2)
-    Call(N(CreateParadeNPC), NPC_Koopatrol1)
-    Call(N(CreateParadeNPC), NPC_Koopatrol2)
-    Call(N(CreateParadeNPC), NPC_BurntBowser)
-    Call(N(CreateParadeNPC), NPC_BurntBowserPropeller)
-    Call(N(SetNpcShadowScale), NPC_Bowser, Float(3.0))
+    Call(CreateParadeNPC, NPC_Bowser)
+    Call(CreateParadeNPC, NPC_BowserPropeller)
+    Call(CreateParadeNPC, NPC_HammerBros1)
+    Call(CreateParadeNPC, NPC_HammerBros2)
+    Call(CreateParadeNPC, NPC_Koopatrol1)
+    Call(CreateParadeNPC, NPC_Koopatrol2)
+    Call(CreateParadeNPC, NPC_BurntBowser)
+    Call(CreateParadeNPC, NPC_BurntBowserPropeller)
+    Call(SetNpcShadowScale, NPC_Bowser, Float(3.0))
     Call(SetNpcFlagBits, NPC_Bowser, NPC_FLAG_DIRTY_SHADOW, true)
-    Call(N(SetNpcShadowScale), NPC_BurntBowser, Float(3.0))
+    Call(SetNpcShadowScale, NPC_BurntBowser, Float(3.0))
     Call(SetNpcFlagBits, NPC_BurntBowser, NPC_FLAG_DIRTY_SHADOW, true)
     Call(EnableNpcShadow, NPC_BowserPropeller, false)
     Call(EnableNpcShadow, NPC_BurntBowserPropeller, false)
@@ -1152,21 +1152,21 @@ EvtScript N(EVS_ManageNpcPool) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_PlayCredits) = {
+EvtScript EVS_ParadePhase_PlayCredits = {
 #if VERSION_PAL
     Wait(180 * DT)
 #else
     Wait(240)
 #endif
-    Exec(N(EVS_InitCredits))
-    Exec(N(EVS_ShowCredits_Title))
-    Exec(N(EVS_ShowCredits_Jobs))
-    Exec(N(EVS_ShowCredits_Names))
+    Exec(EVS_InitCredits)
+    Exec(EVS_ShowCredits_Title)
+    Exec(EVS_ShowCredits_Jobs)
+    Exec(EVS_ShowCredits_Names)
     Return
     End
 };
 
-EvtScript N(EVS_ManageParade) = {
+EvtScript EVS_ManageParade = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Thread
@@ -1175,11 +1175,11 @@ EvtScript N(EVS_ManageParade) = {
         Wait(1)
         Goto(0)
     EndThread
-    Exec(N(EVS_TexPan_Clouds))
-    Exec(N(EVS_TexPan_Water))
-    Exec(N(EVS_SetupInitialCamera))
-    Exec(N(EVS_ManageNpcPool))
-    ExecGetID(LVarA, N(EVS_ParadePhase_Luigi))
+    Exec(EVS_TexPan_Clouds)
+    Exec(EVS_TexPan_Water)
+    Exec(EVS_SetupInitialCamera)
+    Exec(EVS_ManageNpcPool)
+    ExecGetID(LVarA, EVS_ParadePhase_Luigi)
     Loop(0)
         Wait(1)
         IsScriptRunning(LVarA, LVar0)
@@ -1187,9 +1187,9 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_PlayCredits))
-    Exec(N(EVS_UpdateScrollPos))
-    Exec(N(EVS_UpdateTexPan_Ground))
+    Exec(EVS_ParadePhase_PlayCredits)
+    Exec(EVS_UpdateScrollPos)
+    Exec(EVS_UpdateTexPan_Ground)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1197,7 +1197,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Partners))
+    Exec(EVS_ParadePhase_Partners)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1205,7 +1205,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Toads))
+    Exec(EVS_ParadePhase_Toads)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1213,7 +1213,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_KoopaBros))
+    Exec(EVS_ParadePhase_KoopaBros)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1221,7 +1221,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Kolorado))
+    Exec(EVS_ParadePhase_Kolorado)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1229,7 +1229,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Caravan))
+    Exec(EVS_ParadePhase_Caravan)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1237,7 +1237,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_BuzzarNest))
+    Exec(EVS_ParadePhase_BuzzarNest)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1245,7 +1245,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Tutankoopa))
+    Exec(EVS_ParadePhase_Tutankoopa)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1253,7 +1253,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Boos))
+    Exec(EVS_ParadePhase_Boos)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1261,7 +1261,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_GoombaKing))
+    Exec(EVS_ParadePhase_GoombaKing)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1269,7 +1269,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Yoshis))
+    Exec(EVS_ParadePhase_Yoshis)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1277,7 +1277,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_HuffNPuff))
+    Exec(EVS_ParadePhase_HuffNPuff)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1285,7 +1285,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_CrystalKing))
+    Exec(EVS_ParadePhase_CrystalKing)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1293,7 +1293,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Bowser))
+    Exec(EVS_ParadePhase_Bowser)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)

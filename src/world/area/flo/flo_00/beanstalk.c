@@ -4,7 +4,7 @@
 #define BEANSTALK_BASE_X -83
 #define BEANSTALK_BASE_Z  87
 
-API_CALLABLE(N(GetPlayerAngles)) {
+API_CALLABLE(GetPlayerAngles) {
     Bytecode* args = script->ptrReadPos;
     s32 var1 = *args++;
     s32 var2 = *args++;
@@ -15,7 +15,7 @@ API_CALLABLE(N(GetPlayerAngles)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PlayerRideBeanstalk)) {
+API_CALLABLE(PlayerRideBeanstalk) {
     f32 temp = evt_get_variable(nullptr, script->varTable[2]);
     f32 dist = dist2D(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[9], script->varTable[11]);
     f32 angle = atan2(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[9], script->varTable[11]);
@@ -30,7 +30,7 @@ API_CALLABLE(N(PlayerRideBeanstalk)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PartnerRideBeanstalk)) {
+API_CALLABLE(PartnerRideBeanstalk) {
     Npc* npc = get_npc_by_index(NPC_Dummy_Wisterwood);
     f32 temp = evt_get_variable(nullptr, script->varTable[2]);
     f32 dist = dist2D(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[12], script->varTable[14]);
@@ -46,22 +46,22 @@ API_CALLABLE(N(PartnerRideBeanstalk)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SyncStatusBar)) {
+API_CALLABLE(SyncStatusBar) {
     sync_status_bar();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DisableStatusBar)) {
+API_CALLABLE(DisableStatusBar) {
     increment_status_bar_disabled();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EnableWorldStatusBar)) {
+API_CALLABLE(ShowBeanstalkStatusBar) {
     decrement_status_bar_disabled();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetExteriorVineGrowth) = {
+EvtScript EVS_SetExteriorVineGrowth = {
     SetF(LVar1, LVar0) // input: expect range from -700 (no growth) to 0 (fully grown)
     SubF(LVar1, Float(-700.0))
     DivF(LVar1, Float(100.0))
@@ -183,7 +183,7 @@ EvtScript N(EVS_SetExteriorVineGrowth) = {
     End
 };
 
-EvtScript N(EVS_SetInteriorVineGrowth) = {
+EvtScript EVS_SetInteriorVineGrowth = {
     SetF(LVar1, LVar0) // input: expect range from -700 (no growth) to 0 (fully grown)
     SubF(LVar1, Float(-700.0))
     DivF(LVar1, Float(100.0))
@@ -201,7 +201,7 @@ EvtScript N(EVS_SetInteriorVineGrowth) = {
     End
 };
 
-EvtScript N(EVS_SetSproutGrowth) = {
+EvtScript EVS_SetSproutGrowth = {
     Call(TranslateModel, MODEL_o147, Float(9.5), Float(12.0), Float(15.0))
     Call(TranslateModel, MODEL_o149, Float(-9.5), Float(12.0), Float(15.0))
     Call(TranslateModel, MODEL_o148, Float(0.0), Float(0.0), Float(17.0))
@@ -219,7 +219,7 @@ EvtScript N(EVS_SetSproutGrowth) = {
     End
 };
 
-EvtScript N(EVS_SetBigLeafGrowth) = {
+EvtScript EVS_SetBigLeafGrowth = {
     Call(ScaleModel, MODEL_o142, LVar0, LVar0, LVar0)
     SetF(LVar1, LVar0)
     MulF(LVar1, Float(90.0))
@@ -229,7 +229,7 @@ EvtScript N(EVS_SetBigLeafGrowth) = {
     End
 };
 
-EvtScript N(EVS_SetBigLeafPosition) = {
+EvtScript EVS_SetBigLeafPosition = {
     SetF(LVar1, LVar0)
     MulF(LVar1, Float(-3.0))
     Call(TranslateModel, MODEL_o142, Float(-0.26), LVar0, Float(1.477))
@@ -239,7 +239,7 @@ EvtScript N(EVS_SetBigLeafPosition) = {
     End
 };
 
-EvtScript N(EVS_Exit_Beanstalk) = {
+EvtScript EVS_Exit_Beanstalk = {
     IfEq(AF_FLO_RidingBeanstalk, false)
         Call(DisablePlayerInput, true)
         Call(InterruptUsePartner)
@@ -257,7 +257,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
         Call(SetMusic, 0, SONG_MAGIC_BEANSTALK, BGM_VARIATION_1, VOL_LEVEL_FULL)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(SetPlayerAnimation, ANIM_Mario1_Walk)
-        Call(N(GetPlayerAngles), LVar3, LVar4)
+        Call(GetPlayerAngles, LVar3, LVar4)
         Switch(LVar4)
             CaseLt(90)
                 Set(AF_FLO_BeanstalkFacingRight, false)
@@ -276,12 +276,12 @@ EvtScript N(EVS_Exit_Beanstalk) = {
             Loop(0)
                 Add(LVarF, 1)
                 Call(CosInterpMinMax, LVarF, LVar0, 0, 700, 800, 0, 0)
-                Exec(N(EVS_SetBigLeafPosition))
+                Exec(EVS_SetBigLeafPosition)
                 SetF(LVar2, LVar0)
                 MulF(LVar2, Float(-3.0))
                 SetF(LVar3, LVar0)
-                Call(N(PlayerRideBeanstalk))
-                Call(N(PartnerRideBeanstalk))
+                Call(PlayerRideBeanstalk)
+                Call(PartnerRideBeanstalk)
                 IfEq(LVarF, 350)
                     Set(MV_BeanstalkSceneSync, true)
                 EndIf
@@ -300,7 +300,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
     End
 };
 
-EvtScript N(EVS_Enter_Beanstalk) = {
+EvtScript EVS_Enter_Beanstalk = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
@@ -335,12 +335,12 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Loop(120)
         Add(LVarF, 1)
         Call(CosInterpMinMax, LVarF, LVar0, 70, 0, 120, 0, 0)
-        Exec(N(EVS_SetBigLeafPosition))
+        Exec(EVS_SetBigLeafPosition)
         SetF(LVar2, LVar0)
         MulF(LVar2, Float(-3.0))
         SetF(LVar3, LVar0)
-        Call(N(PlayerRideBeanstalk))
-        Call(N(PartnerRideBeanstalk))
+        Call(PlayerRideBeanstalk)
+        Call(PartnerRideBeanstalk)
         Wait(1)
     EndLoop
     Call(EnablePartnerAI)
@@ -354,20 +354,20 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
     Set(AF_FLO_RidingBeanstalk, false)
     Call(StopSound, SOUND_FLO_RIDE_BEANSTALK_DOWN_LOOP)
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     Call(ResetCam, CAM_DEFAULT, Float(1.0))
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_BeanstalkGrowing) = {
+EvtScript EVS_Scene_BeanstalkGrowing = {
     Call(PlaySoundAtCollider, COLLIDER_o261, SOUND_FLO_BEANSTALK_START_GROWING, SOUND_SPACE_DEFAULT)
     Set(LVarF, 0)
     Loop(100)
         Add(LVarF, 1)
         Call(CosInterpMinMax, LVarF, LVar0, 0, Float(1.0), 100, 0, 0)
-        Exec(N(EVS_SetSproutGrowth))
+        Exec(EVS_SetSproutGrowth)
         Wait(1)
     EndLoop
     Set(MV_BeanstalkSceneSync, false)
@@ -379,11 +379,11 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
             SetF(LVar2, LVar0)
             MulF(LVar2, Float(1.0))
             SetF(LVar0, LVar2)
-            Exec(N(EVS_SetExteriorVineGrowth))
+            Exec(EVS_SetExteriorVineGrowth)
             SetF(LVar2, LVar0)
             MulF(LVar2, Float(1.0))
             SetF(LVar0, LVar2)
-            Exec(N(EVS_SetInteriorVineGrowth))
+            Exec(EVS_SetInteriorVineGrowth)
             Switch(LVarF)
                 CaseEq(200)
                     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
@@ -421,7 +421,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
     End
 };
 
-EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
+EvtScript EVS_Scene_BeanstalkGrewRemark = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 200, 0)
     Call(SetPlayerPos, -60, 0, 30)
@@ -443,7 +443,7 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     Loop(5)
         Add(LVarF, 20)
         Call(CosInterpMinMax, LVarF, LVar0, Float(0.0), Float(1.0), 100, 0, 0)
-        Exec(N(EVS_SetBigLeafGrowth))
+        Exec(EVS_SetBigLeafGrowth)
         Wait(1)
     EndLoop
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o240, COLLIDER_FLAGS_UPPER_MASK)
@@ -454,9 +454,9 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     End
 };
 
-ITEM_LIST(N(BeanstalkIngredients), ITEM_FERTILE_SOIL, ITEM_MAGICAL_BEAN, ITEM_MIRACLE_WATER);
+ITEM_LIST(BeanstalkIngredients, ITEM_FERTILE_SOIL, ITEM_MAGICAL_BEAN, ITEM_MIRACLE_WATER);
 
-EvtScript N(EVS_BeanPatch_ItemPrompt) = {
+EvtScript EVS_BeanPatch_ItemPrompt = {
     Call(DisablePlayerInput, true)
     Call(FacePlayerTowardPoint, -85, 85, 0)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
@@ -552,7 +552,7 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                 Call(SetPlayerAnimation, ANIM_MarioW1_PlaceItem)
                 Wait(5)
                 Call(RemoveKeyItemAt, LVar1)
-                Call(N(SyncStatusBar))
+                Call(SyncStatusBar)
                 Call(MakeItemEntity, ITEM_MIRACLE_WATER, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(MV_ItemEntity_Beanstalk, LVar0)
                 Call(SetPlayerAnimation, ANIM_Mario1_Still)
@@ -575,7 +575,7 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                 Call(SetCamDistance, CAM_DEFAULT, 250)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-                ExecWait(N(EVS_Scene_BeanstalkGrowing))
+                ExecWait(EVS_Scene_BeanstalkGrowing)
         EndSwitch
         IfNe(LVar2, 90)
             Goto(30)
@@ -584,7 +584,7 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
     End
 };
 
-EvtScript N(EVS_BeanPatch_TryInteract) = {
+EvtScript EVS_BeanPatch_TryInteract = {
     Label(0)
     Call(IsPlayerWithin, -85, 85, 20, LVar0)
     IfEq(LVar0, 0)
@@ -600,14 +600,14 @@ EvtScript N(EVS_BeanPatch_TryInteract) = {
             Return
         EndIf
     EndIf
-    Call(N(DisableStatusBar))
-    ExecWait(N(EVS_BeanPatch_ItemPrompt))
-    Call(N(EnableWorldStatusBar))
+    Call(DisableStatusBar)
+    ExecWait(EVS_BeanPatch_ItemPrompt)
+    Call(ShowBeanstalkStatusBar)
     Return
     End
 };
 
-EvtScript N(EVS_SetupBeanPatch) = {
+EvtScript EVS_SetupBeanPatch = {
     IfLt(GB_StoryProgress, STORY_CH6_GREW_MAGIC_BEANSTALK)
         Loop(0)
             Wait(1)
@@ -623,40 +623,40 @@ EvtScript N(EVS_SetupBeanPatch) = {
             EndIf
             Set(MV_ItemEntity_Beanstalk, LVar0)
         EndIf
-        BindPadlock(Ref(N(EVS_BeanPatch_TryInteract)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(BeanstalkIngredients)), 0, 1)
+        BindPadlock(Ref(EVS_BeanPatch_TryInteract), TRIGGER_FORCE_ACTIVATE, 0, Ref(BeanstalkIngredients), 0, 1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_SetupBeanstalk) = {
-    BindTrigger(Ref(N(EVS_Exit_Beanstalk)), TRIGGER_FLOOR_TOUCH, COLLIDER_o240, 1, 0)
+EvtScript EVS_SetupBeanstalk = {
+    BindTrigger(Ref(EVS_Exit_Beanstalk), TRIGGER_FLOOR_TOUCH, COLLIDER_o240, 1, 0)
     Call(EnableGroup, MODEL_ha, true)
     Call(EnableGroup, MODEL_tuta, true)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH6_WISTERWOOD_GAVE_HINT)
             Set(LVar0, -700)
-            Exec(N(EVS_SetExteriorVineGrowth))
-            Exec(N(EVS_SetInteriorVineGrowth))
+            Exec(EVS_SetExteriorVineGrowth)
+            Exec(EVS_SetInteriorVineGrowth)
             Set(LVar0, 0)
-            Exec(N(EVS_SetSproutGrowth))
+            Exec(EVS_SetSproutGrowth)
             Set(LVar0, 0)
-            Exec(N(EVS_SetBigLeafGrowth))
+            Exec(EVS_SetBigLeafGrowth)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o240, COLLIDER_FLAGS_UPPER_MASK)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
         CaseGe(STORY_CH6_GREW_MAGIC_BEANSTALK)
             Set(LVar0, 1)
-            Exec(N(EVS_SetSproutGrowth))
+            Exec(EVS_SetSproutGrowth)
             Set(LVar0, 1)
-            Exec(N(EVS_SetBigLeafGrowth))
+            Exec(EVS_SetBigLeafGrowth)
         CaseDefault
             Set(LVar0, -700)
-            Exec(N(EVS_SetExteriorVineGrowth))
-            Exec(N(EVS_SetInteriorVineGrowth))
+            Exec(EVS_SetExteriorVineGrowth)
+            Exec(EVS_SetInteriorVineGrowth)
             Set(LVar0, 0)
-            Exec(N(EVS_SetSproutGrowth))
+            Exec(EVS_SetSproutGrowth)
             Set(LVar0, 0)
-            Exec(N(EVS_SetBigLeafGrowth))
+            Exec(EVS_SetBigLeafGrowth)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o240, COLLIDER_FLAGS_UPPER_MASK)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch

@@ -2,14 +2,12 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Bzzap.h"
 
-#define NAMESPACE A(bzzap)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_SWARM_1     = 2,
     PRT_SWARM_2     = 3,
@@ -18,12 +16,12 @@ enum N(ActorPartIDs) {
     PRT_SWARM_5     = 6,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_STING       = 6,
     DMG_SWARM       = 1,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Bzzap_Idle,
     STATUS_KEY_STONE,     ANIM_Bzzap_Still,
     STATUS_KEY_SLEEP,     ANIM_Bzzap_Sleep,
@@ -36,12 +34,12 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              60,
@@ -66,15 +64,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -7, 33 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 2, -10 },
@@ -85,8 +83,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -5 },
@@ -97,8 +95,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -5 },
@@ -109,8 +107,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -5 },
@@ -121,8 +119,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -5 },
@@ -133,23 +131,23 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -5 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_BZZAP,
     .level = ACTOR_LEVEL_BZZAP,
     .maxHP = 3,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 40,
     .airLiftChance = 95,
     .hurricaneChance = 95,
@@ -164,9 +162,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-API_CALLABLE(N(AddVecXZ)) {
+API_CALLABLE(AddVecXZ) {
     Bytecode* args = script->ptrReadPos;
     s32 prevX = evt_get_variable(script, *args++);
     s32 prevZ = evt_get_variable(script, *args++);
@@ -181,10 +177,10 @@ API_CALLABLE(N(AddVecXZ)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetPartScale, ACTOR_SELF, PRT_SWARM_1, Float(0.4), Float(0.4), Float(0.4))
     Call(SetPartScale, ACTOR_SELF, PRT_SWARM_2, Float(0.4), Float(0.4), Float(0.4))
     Call(SetPartScale, ACTOR_SELF, PRT_SWARM_3, Float(0.4), Float(0.4), Float(0.4))
@@ -194,17 +190,17 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVarA)
         IfFlag(LVarA, STATUS_FLAG_SLEEP | STATUS_FLAG_DIZZY)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -7, 19)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 2, -6)
-            Call(N(SetAbsoluteStatusOffsets), -20, 20, 10, 27)
+            Call(SetAbsoluteStatusOffsets, -20, 20, 10, 27)
         Else
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -7, 33)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 2, -10)
-            Call(N(SetAbsoluteStatusOffsets), -16, 22, 4, 22)
+            Call(SetAbsoluteStatusOffsets, -16, 22, 4, 22)
         EndIf
         Wait(1)
         Goto(0)
@@ -212,7 +208,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(SetPartRotation, ACTOR_SELF, PRT_MAIN, 0, 0, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Bzzap_FlyFast)
     Call(SetGoalToHome, ACTOR_SELF)
@@ -222,7 +218,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -266,7 +262,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bzzap_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bzzap_Hurt)
@@ -295,7 +291,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(SetActorPos, ACTOR_SELF, 20, 0, 0)
             Call(HPBarToCurrent, ACTOR_SELF)
         CaseEq(EVENT_END_FIRST_STRIKE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_MAIN)
@@ -332,7 +328,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Sting) = {
+EvtScript EVS_Attack_Sting = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -369,7 +365,7 @@ EvtScript N(EVS_Attack_Sting) = {
             Call(YieldTurn)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -397,7 +393,7 @@ EvtScript N(EVS_Attack_Sting) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Wait(20)
             Call(YieldTurn)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -406,7 +402,7 @@ EvtScript N(EVS_Attack_Sting) = {
     End
 };
 
-EvtScript N(EVS_SummonSwarmPart) = {
+EvtScript EVS_SummonSwarmPart = {
     Set(LVar9, LVar0)
     Call(SetPartYaw, ACTOR_SELF, LVar9, 0)
     Call(GetActorPos, ACTOR_SELF, LVarA, LVarB, LVarC)
@@ -426,7 +422,7 @@ EvtScript N(EVS_SummonSwarmPart) = {
     Call(MakeLerp, 90, 450, 50, EASING_LINEAR)
     Label(0)
         Call(UpdateLerp)
-        Call(N(AddVecXZ), LVar3, LVar5, 30, LVar0, LVar6, LVar8)
+        Call(AddVecXZ, LVar3, LVar5, 30, LVar0, LVar6, LVar8)
         Call(SetPartPos, ACTOR_SELF, LVar9, LVar6, LVar7, LVar8)
         IfGt(LVar3, LVar6)
             Call(SetPartYaw, ACTOR_SELF, LVar9, 180)
@@ -457,7 +453,7 @@ EvtScript N(EVS_SummonSwarmPart) = {
     Call(MakeLerp, -90, -720, 100, EASING_LINEAR)
     Label(1)
         Call(UpdateLerp)
-        Call(N(AddVecXZ), LVar3, LVar5, 30, LVar0, LVar6, LVar8)
+        Call(AddVecXZ, LVar3, LVar5, 30, LVar0, LVar6, LVar8)
         Call(SetPartPos, ACTOR_SELF, LVar9, LVar6, LVar7, LVar8)
         IfGt(LVar3, LVar6)
             Call(SetPartYaw, ACTOR_SELF, LVar9, 180)
@@ -472,7 +468,7 @@ EvtScript N(EVS_SummonSwarmPart) = {
     End
 };
 
-EvtScript N(EVS_Attack_CallSwarm) = {
+EvtScript EVS_Attack_CallSwarm = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -492,19 +488,19 @@ EvtScript N(EVS_Attack_CallSwarm) = {
     Call(SetActorYaw, ACTOR_SELF, 0)
     Call(PlaySound, SOUND_MINI_BZZAP_BUZZ)
     Set(LVar0, PRT_SWARM_1)
-    ExecGetID(LVarA, N(EVS_SummonSwarmPart))
+    ExecGetID(LVarA, EVS_SummonSwarmPart)
     Wait(11)
     Set(LVar0, PRT_SWARM_2)
-    Exec(N(EVS_SummonSwarmPart))
+    Exec(EVS_SummonSwarmPart)
     Wait(11)
     Set(LVar0, PRT_SWARM_3)
-    Exec(N(EVS_SummonSwarmPart))
+    Exec(EVS_SummonSwarmPart)
     Wait(11)
     Set(LVar0, PRT_SWARM_4)
-    Exec(N(EVS_SummonSwarmPart))
+    Exec(EVS_SummonSwarmPart)
     Wait(11)
     Set(LVar0, PRT_SWARM_5)
-    Exec(N(EVS_SummonSwarmPart))
+    Exec(EVS_SummonSwarmPart)
     Label(0)
         IsScriptRunning(LVarA, LVar0)
         Wait(1)
@@ -736,17 +732,17 @@ EvtScript N(EVS_Attack_CallSwarm) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Sting))
+        ExecWait(EVS_Attack_Sting)
         Return
     EndIf
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 500)
-        ExecWait(N(EVS_Attack_Sting))
+        ExecWait(EVS_Attack_Sting)
     Else
-        ExecWait(N(EVS_Attack_CallSwarm))
+        ExecWait(EVS_Attack_CallSwarm)
     EndIf
     Return
     End

@@ -1,7 +1,7 @@
 #include "kzn_08.h"
 
 // modified DarkRoomUpdate
-API_CALLABLE(N(UpdateLavaRoomDarkness)) {
+API_CALLABLE(UpdateLavaRoomDarkness) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
     u8 primR, primG, primB, primA;
@@ -62,9 +62,9 @@ API_CALLABLE(N(UpdateLavaRoomDarkness)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_UpdateLavaRoomDarkness) = {
+EvtScript EVS_UpdateLavaRoomDarkness = {
     Thread
-        Call(N(UpdateLavaRoomDarkness))
+        Call(UpdateLavaRoomDarkness)
     EndThread
     Return
     End

@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Merlee);
+extern NpcSettings NpcSettings_Merlee;

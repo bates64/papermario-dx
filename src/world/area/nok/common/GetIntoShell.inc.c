@@ -1,6 +1,6 @@
 #include "common.h"
 
-EvtScript N(EVS_GetIntoShell) = {
+EvtScript EVS_GetIntoShell = {
     Call(GetNpcYaw, LVar4, LVar1)
     Set(LVar2, 30)
     IfGt(LVar1, 151)

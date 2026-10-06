@@ -16,7 +16,5 @@ enum {
     MV_ScreenShakeTID   = MapVar(10),
 };
 
-#define NAMESPACE kzn_10
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupSpinyTromp);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupSpinyTromp;

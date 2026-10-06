@@ -1,6 +1,6 @@
 #include "isk_11.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfEq(GF_ISK11_FourthWarning, false)
         Thread
             Call(FadeInMusic, 1, SONG_TUTANKOOPA_WARNING, 0, 2000, 0, 127)

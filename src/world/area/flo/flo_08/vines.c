@@ -2,7 +2,7 @@
 
 #include "../common/DroppingVine.inc.c"
 
-EvtScript N(EVS_SetupVines) = {
+EvtScript EVS_SetupVines = {
     EVT_DROPPING_VINE(ITEM_NONE, MODEL_o78, MODEL_o79, MODEL_o80, MODEL_o81)
     EVT_DROPPING_VINE(ITEM_NONE, MODEL_o82, MODEL_o83, MODEL_o84, MODEL_o85)
     EVT_DROPPING_VINE(ITEM_NONE, MODEL_o88, MODEL_o89, MODEL_o90, MODEL_o91)

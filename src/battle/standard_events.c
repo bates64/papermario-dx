@@ -428,7 +428,7 @@ EvtScript EVS_Partner_Drop = {
         Wait(8)
     Label(10)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2)
+    PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0)
     Return
     End
 };
@@ -1201,7 +1201,7 @@ EvtScript EVS_Enemy_FanSmack_Impl = {
         Sub(LVar1, LVar7)
     EndIf
     Sub(LVar1, 3)
-    PlayEffect(EFFECT_WHIRLWIND, 0, LVar0, LVar1, LVar2, LVar3)
+    PlayEffect(EFFECT_WHIRLWIND, 0, LVar0, LVar1, LVar2, LVar3, 0)
     Call(GetDamageSource, LVar0)
     Switch(LVar0)
         CaseOrEq(DMG_SRC_NEXT_FAN_SMACK_LEFT)

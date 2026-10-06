@@ -3,7 +3,7 @@
 #include "world/common/enemy/Clubba/hitbox.inc.c"
 #include "world/common/ai/ClubbaNappingAI.inc.c"
 
-MobileAISettings N(AISettings_Clubba_Napping) = {
+MobileAISettings AISettings_Clubba_Napping = {
     .moveSpeed = 1.0f,
     .moveTime = 120,
     .waitTime = 30,
@@ -18,21 +18,21 @@ MobileAISettings N(AISettings_Clubba_Napping) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Clubba_Napping) = {
+EvtScript EVS_NpcAI_Clubba_Napping = {
     Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 10)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 14)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 18)
-    Call(N(ClubbaNappingAI_Main), Ref(N(AISettings_Clubba_Napping)))
+    Call(ClubbaNappingAI_Main, Ref(AISettings_Clubba_Napping))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Clubba_Napping) = {
+NpcSettings NpcSettings_Clubba_Napping = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_CLUBBA,
-    .doAI = &N(EVS_NpcAI_Clubba_Napping),
+    .doAI = &EVS_NpcAI_Clubba_Napping,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

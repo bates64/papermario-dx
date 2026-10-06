@@ -40,7 +40,6 @@ EffectInstance* disable_x_main(s32 type, f32 x, f32 y, f32 z, s32 arg4) {
     s32 numParts = 2;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = disable_x_init;
     bp.update = disable_x_update;
     bp.renderScene = disable_x_render;

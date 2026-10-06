@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [mac_04_ENTRY_0]    {  610.0,    0.0,    0.0,  280.0 },
     [mac_04_ENTRY_1]    { -420.0,    0.0,  430.0,   35.0 },
     [mac_04_ENTRY_2]    { -490.0,   20.0, -150.0,  180.0 },
@@ -9,15 +9,15 @@ EntryList N(Entrances) = {
     [mac_04_ENTRY_5]    { -420.0,   20.0,  235.0,  270.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
     .tattle = { MSG_MapTattle_mac_04 },
 };
 
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     if (gGameStatusPtr->entryID == mac_04_ENTRY_4) {
         sprintf(wMapBgName, "hos_bg");
     }

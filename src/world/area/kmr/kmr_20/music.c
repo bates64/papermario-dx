@@ -1,11 +1,11 @@
 #include "kmr_20.h"
 
-API_CALLABLE(N(FadeOutAmbientSounds)){
+API_CALLABLE(FadeOutAmbientSounds){
     snd_ambient_stop_slow(0, 500);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(FadeOutMusic, 0, 500)
@@ -28,14 +28,14 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PlayRestingSong) = {
+EvtScript EVS_PlayRestingSong = {
     Call(SetMusic, 0, SONG_TAKING_REST, 0, VOL_LEVEL_FULL)
     Return
     End
 };
 
-EvtScript N(EVS_FadeOutAmbientSounds) = {
-    Call(N(FadeOutAmbientSounds))
+EvtScript EVS_FadeOutAmbientSounds = {
+    Call(FadeOutAmbientSounds)
     Return
     End
 };

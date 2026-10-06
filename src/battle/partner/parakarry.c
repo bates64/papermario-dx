@@ -1,13 +1,9 @@
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "hud_element.h"
 #include "effects.h"
-#include "battle/action_cmd/jump.h"
-#include "battle/action_cmd/air_lift.h"
-#include "battle/action_cmd/air_raid.h"
 #include "sprite/npc/BattleParakarry.h"
-
-#define NAMESPACE battle_partner_parakarry
 
 extern HudScript HES_AimMarkerA;
 extern HudScript HES_AimMarkerB;
@@ -24,20 +20,20 @@ extern HudScript HES_AimShimmerE;
 extern HudScript HES_AimShimmerF;
 extern HudScript HES_AimTarget;
 
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandlePhase);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Init);
-extern EvtScript N(firstStrike);
-extern EvtScript N(EVS_ExecuteAction);
-extern EvtScript N(EVS_Celebrate);
-extern EvtScript N(runAway);
-extern EvtScript N(runAwayFail);
-extern EvtScript N(skyDive);
-extern EvtScript N(shellShot);
-extern EvtScript N(airLift);
-extern EvtScript N(airRaid);
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandlePhase;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Init;
+extern EvtScript firstStrike;
+extern EvtScript EVS_ExecuteAction;
+extern EvtScript EVS_Celebrate;
+extern EvtScript runAway;
+extern EvtScript runAwayFail;
+extern EvtScript skyDive;
+extern EvtScript shellShot;
+extern EvtScript airLift;
+extern EvtScript airRaid;
 
 static EffectInstance* airRaidEffect;
 static s32 hudMarkers[7];
@@ -49,12 +45,12 @@ static s32 hudStick;
 static s32 hudStickPosX;
 static s32 hudStickPosY;
 
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
     PRT_2               = 2,
 };
 
-API_CALLABLE(N(ShellShotActionCommand)) {
+API_CALLABLE(ShellShotActionCommand) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* parakarry = battleStatus->partnerActor;
     ActorState* state = &parakarry->state;
@@ -347,7 +343,7 @@ API_CALLABLE(N(ShellShotActionCommand)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(GetShellShotDamage)) {
+API_CALLABLE(GetShellShotDamage) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 damage = 0;
 
@@ -367,7 +363,7 @@ API_CALLABLE(N(GetShellShotDamage)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AirLiftChance)) {
+API_CALLABLE(AirLiftChance) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partnerActor = battleStatus->partnerActor;
     Actor* targetActor = get_actor(partnerActor->targetActorID);
@@ -404,7 +400,7 @@ API_CALLABLE(N(AirLiftChance)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CarryAway)) {
+API_CALLABLE(CarryAway) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* parakarry = battleStatus->partnerActor;
     ActorState* actorState = &parakarry->state;
@@ -459,7 +455,7 @@ API_CALLABLE(N(CarryAway)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FlyAround)) {
+API_CALLABLE(FlyAround) {
     Actor* partner = gBattleStatus.partnerActor;
     ActorState* state = &partner->state;
 
@@ -606,13 +602,13 @@ API_CALLABLE(N(FlyAround)) {
     }
 }
 
-API_CALLABLE(N(GetAirRaidDamage)) {
+API_CALLABLE(GetAirRaidDamage) {
     script->varTable[15] = ((script->varTable[0] * 100) / 2499) + 2;
 
     return ApiStatus_DONE2;
 }
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BattleParakarry_Walk,
     STATUS_KEY_STONE,     ANIM_BattleParakarry_Still,
     STATUS_KEY_SLEEP,     ANIM_BattleParakarry_Pray,
@@ -623,12 +619,12 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,            100,
     STATUS_KEY_DEFAULT,           100,
     STATUS_KEY_SLEEP,             100,
@@ -653,30 +649,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = 0,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 11, 28 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_GROUNDABLE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-ActorBlueprint NAMESPACE = {
+ActorBlueprint blueprint = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_PARAKARRY,
     .level = ACTOR_LEVEL_PARAKARRY,
     .maxHP = 99,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 0,
     .airLiftChance = 0,
     .hurricaneChance = 0,
@@ -691,21 +687,21 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 30 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_PARTNER, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_PARTNER, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_PARTNER, Ref(N(EVS_HandleEvent)))
-    Call(BindHandlePhase, ACTOR_PARTNER, Ref(N(EVS_HandlePhase)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_PARTNER, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_PARTNER, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_PARTNER, Ref(EVS_HandleEvent))
+    Call(BindHandlePhase, ACTOR_PARTNER, Ref(EVS_HandlePhase))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(InterruptActionCommand)
     Call(GetLastEvent, ACTOR_PARTNER, LVar0)
@@ -776,25 +772,25 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_FIRST_STRIKE)
-            ExecWait(N(firstStrike))
+            ExecWait(firstStrike)
         CaseEq(PHASE_EXECUTE_ACTION)
-            ExecWait(N(EVS_ExecuteAction))
+            ExecWait(EVS_ExecuteAction)
         CaseEq(PHASE_CELEBRATE)
-            ExecWait(N(EVS_Celebrate))
+            ExecWait(EVS_Celebrate)
         CaseEq(PHASE_RUN_AWAY_START)
-            ExecWait(N(runAway))
+            ExecWait(runAway)
         CaseEq(PHASE_RUN_AWAY_FAIL)
-            ExecWait(N(runAwayFail))
+            ExecWait(runAwayFail)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Celebrate) = {
+EvtScript EVS_Celebrate = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_BattleParakarry_Celebrate)
     SetConst(LVar2, ANIM_BattleParakarry_Walk)
@@ -804,7 +800,7 @@ EvtScript N(EVS_Celebrate) = {
     End
 };
 
-EvtScript N(EVS_ExecuteAction) = {
+EvtScript EVS_ExecuteAction = {
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar0)
@@ -819,35 +815,35 @@ EvtScript N(EVS_ExecuteAction) = {
             Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
             Set(LVarE, 1)
             Set(LVarF, 2)
-            ExecWait(N(skyDive))
+            ExecWait(skyDive)
         CaseEq(MOVE_SKY_DIVE2)
             Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
             Set(LVarE, 2)
             Set(LVarF, 3)
-            ExecWait(N(skyDive))
+            ExecWait(skyDive)
         CaseEq(MOVE_SKY_DIVE3)
             Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
             Set(LVarE, 4)
             Set(LVarF, 5)
-            ExecWait(N(skyDive))
+            ExecWait(skyDive)
         CaseEq(MOVE_SHELL_SHOT)
             Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
-            ExecWait(N(shellShot))
+            ExecWait(shellShot)
         CaseEq(MOVE_AIR_LIFT)
-            ExecWait(N(airLift))
+            ExecWait(airLift)
         CaseEq(MOVE_AIR_RAID)
-            ExecWait(N(airRaid))
+            ExecWait(airRaid)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(firstStrike) = {
+EvtScript firstStrike = {
     Return
     End
 };
 
-EvtScript N(runAway) = {
+EvtScript runAway = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_BattleParakarry_Run)
     ExecWait(EVS_Partner_RunAway)
@@ -855,7 +851,7 @@ EvtScript N(runAway) = {
     End
 };
 
-EvtScript N(runAwayFail) = {
+EvtScript runAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
@@ -868,12 +864,12 @@ EvtScript N(runAwayFail) = {
     End
 };
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome_Success) = {
+EvtScript EVS_ReturnHome_Success = {
     Call(PartnerYieldTurn)
     Call(UseBattleCamPreset, BTL_CAM_RETURN_HOME)
     Call(SetAnimation, ACTOR_PARTNER, -1, LVarA)
@@ -898,7 +894,7 @@ EvtScript N(EVS_ReturnHome_Success) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome_Miss) = {
+EvtScript EVS_ReturnHome_Miss = {
     Call(PartnerYieldTurn)
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_MISTAKE)
     Call(SetAnimation, ACTOR_PARTNER, -1, LVarA)
@@ -923,14 +919,14 @@ EvtScript N(EVS_ReturnHome_Miss) = {
     End
 };
 
-s32 N(actionCommandTable)[] = { 7, 6, 5, 4, 3, 2, 1, 0 };
+s32 actionCommandTable[] = { 7, 6, 5, 4, 3, 2, 1, 0 };
 
-EvtScript N(skyDive) = {
+EvtScript skyDive = {
     Call(EnableIdleScript, ACTOR_PARTNER, IDLE_SCRIPT_DISABLE)
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
-    Call(action_command_jump_init)
-    Call(SetActionDifficultyTable, Ref(N(actionCommandTable)))
+    Call(InitActionCommand)
+    Call(SetActionDifficultyTable, Ref(actionCommandTable))
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(InitTargetIterator)
@@ -941,7 +937,7 @@ EvtScript N(skyDive) = {
     Call(FlyToGoal, ACTOR_PARTNER, 0, -10, EASING_COS_IN_OUT)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_Still)
     Wait(3)
-    Call(action_command_jump_start, 32, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 32, AC_DIFFICULTY_3)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_PARAKARRY_PREDIVE)
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_FlyFast)
@@ -994,12 +990,12 @@ EvtScript N(skyDive) = {
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             SetConst(LVarA, ANIM_BattleParakarry_Think)
-            ExecWait(N(EVS_ReturnHome_Miss))
+            ExecWait(EVS_ReturnHome_Miss)
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
             SetConst(LVarA, ANIM_BattleParakarry_Dive)
-            ExecWait(N(EVS_ReturnHome_Success))
+            ExecWait(EVS_ReturnHome_Success)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_PARTNER, IDLE_SCRIPT_ENABLE)
@@ -1008,13 +1004,13 @@ EvtScript N(skyDive) = {
     End
 };
 
-EvtScript N(shellShot) = {
+EvtScript shellShot = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_EnterShell)
     Wait(15)
     Call(InitTargetIterator)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_ShellFly)
-    Call(N(ShellShotActionCommand))
+    Call(ShellShotActionCommand)
     Call(StopSound, SOUND_AIM_SHELL_SHOT)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_PARAKARRY_SHELL_SHOT)
     Call(GetActionProgress, LVar0)
@@ -1059,7 +1055,7 @@ EvtScript N(shellShot) = {
             Call(FlyToGoal, ACTOR_PARTNER, 7, 0, EASING_LINEAR)
             Call(EnableActorBlur, ACTOR_PARTNER, ACTOR_BLUR_DISABLE)
     EndSwitch
-    Call(N(GetShellShotDamage))
+    Call(GetShellShotDamage)
     Switch(LVar0)
         CaseGt(0)
             Call(PartnerDamageEnemy, LVar0, 0, SUPPRESS_EVENTS_KOOPER_DAMAGE, 0, LVarF, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT)
@@ -1077,23 +1073,23 @@ EvtScript N(shellShot) = {
             Else
                 SetConst(LVarA, ANIM_BattleParakarry_Think)
             EndIf
-            ExecWait(N(EVS_ReturnHome_Miss))
+            ExecWait(EVS_ReturnHome_Miss)
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
             SetConst(LVarA, ANIM_BattleParakarry_ShellFly)
-            ExecWait(N(EVS_ReturnHome_Success))
+            ExecWait(EVS_ReturnHome_Success)
         EndCaseGroup
     EndSwitch
     Return
     End
 };
 
-EvtScript N(airLift) = {
+EvtScript airLift = {
     Call(InitTargetIterator)
-    Call(N(AirLiftChance))
+    Call(AirLiftChance)
     Call(LoadActionCommand, ACTION_COMMAND_AIR_LIFT)
-    Call(action_command_air_lift_init, LVar0)
+    Call(InitActionCommand, LVar0)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(SetActionHudPrepareTime, 0)
     Call(InitTargetIterator)
@@ -1141,9 +1137,9 @@ EvtScript N(airLift) = {
     EndIf
     Wait(3)
     Call(PartnerTestEnemy, LVar0, DAMAGE_TYPE_AIR_LIFT, SUPPRESS_EVENT_SPIKY_FRONT, 0, 0, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_TRIGGER_EVENTS)
-    Call(N(AirLiftChance))
+    Call(AirLiftChance)
     IfNe(LVar0, -1)
-        Call(action_command_air_lift_start, 0, 87 * DT, AC_DIFFICULTY_3, 0)
+        Call(StartActionCommand, 0, 87 * DT, AC_DIFFICULTY_3, 0)
         Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
         ChildThread
             Wait(1)
@@ -1174,7 +1170,7 @@ EvtScript N(airLift) = {
             Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
             Call(GetOwnerTarget, LVar0, LVar1)
             Call(DispatchEvent, LVar0, EVENT_BLOW_AWAY)
-            Call(N(CarryAway), LVar0)
+            Call(CarryAway, LVar0)
             Wait(30)
             Call(GetOwnerTarget, LVar0, LVar1)
             Call(SetBattleFlagBits, BS_FLAGS1_STAR_POINTS_DROPPED, true)
@@ -1202,9 +1198,9 @@ EvtScript N(airLift) = {
     End
 };
 
-EvtScript N(airRaid) = {
+EvtScript airRaid = {
     Call(LoadActionCommand, ACTION_COMMAND_AIR_RAID)
-    Call(action_command_air_raid_init)
+    Call(InitActionCommand)
     Call(SetupMashMeter, 4, 25, 50, 75, 100, 0)
     Call(SetActionHudPrepareTime, 0)
     Call(UseBattleCamPreset, BTL_CAM_ACTOR)
@@ -1216,7 +1212,7 @@ EvtScript N(airRaid) = {
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_Run)
     Call(FlyToGoal, ACTOR_PARTNER, 15, -2, EASING_LINEAR)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_Idle)
-    Call(action_command_air_raid_start, 0, 90 * DT, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 90 * DT, AC_DIFFICULTY_3)
     Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     Wait(2)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_PreDive)
@@ -1234,23 +1230,23 @@ EvtScript N(airRaid) = {
         Loop(5)
             Wait(18)
             Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 10, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 10)
         EndLoop
     EndChildThread
     ChildThread
         Loop(5)
             Wait(18)
             Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SPARKLES, 1, LVar0, LVar1, LVar2, 40, 0)
+            PlayEffect(EFFECT_SPARKLES, 1, LVar0, LVar1, LVar2, 40)
         EndLoop
     EndChildThread
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleParakarry_ShellFlyFastest)
-    Call(N(FlyAround))
+    Call(FlyAround)
     Call(EnableActorBlur, ACTOR_PARTNER, ACTOR_BLUR_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(MoveBattleCamOver, 20)
     Call(GetActionProgress, LVar0)
-    Call(N(GetAirRaidDamage))
+    Call(GetAirRaidDamage)
     Call(InitTargetIterator)
     Label(10)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -1295,3 +1291,5 @@ EvtScript N(airRaid) = {
     Return
     End
 };
+
+BATTLE_PARTNER_ENTRY(PARTNER_PARAKARRY, 30);

@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "entity.h"
 
-EvtScript N(EVS_OnHitInertBlock) = {
+EvtScript EVS_OnHitInertBlock = {
     Add(MV_BlockHitCounter, 1)
     Switch(MV_BlockHitCounter)
         CaseEq(1)
@@ -34,9 +34,9 @@ EvtScript N(EVS_OnHitInertBlock) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_InertYellowBlock), -130, 0, -200, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_OnHitInertBlock)))
+    Call(AssignScript, Ref(EVS_OnHitInertBlock))
     IfEq(GF_SBK20_ItemBlock_Mushroom, true)
         Call(MakeEntity, Ref(Entity_YellowBlock), -80, 60, -200, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
         Call(AssignBlockFlag, GF_SBK20_ItemBlock_Mushroom)

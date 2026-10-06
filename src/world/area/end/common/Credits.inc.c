@@ -8,13 +8,13 @@
 #define CREDITS_MESSAGE_BUFFER_COUNT (23)
 #endif
 
-BSS CreditsData N(CreditsData);
-BSS CreditsData* N(CreditsDataPtr);
+BSS CreditsData creditsData;
+BSS CreditsData* CreditsDataPtr;
 #if !VERSION_IQUE
-BSS s32 N(BSS_PAD_1)[2];
+BSS s32 BSS_PAD_1[2];
 #endif
-BSS u8 N(CreditsMessageBuffers)[CREDITS_MESSAGE_BUFFER_COUNT][256];
-BSS Mtx N(CreditsProjMatrices)[2];
+BSS u8 CreditsMessageBuffers[CREDITS_MESSAGE_BUFFER_COUNT][256];
+BSS Mtx CreditsProjMatrices[2];
 
 enum {
     CREDITS_LINE_FLAG_1          = 1,
@@ -27,7 +27,7 @@ enum {
     CREDITS_LINE_VANISHING       = 2
 };
 
-CreditsPairOffset N(Font4Patterns)[] = {
+CreditsPairOffset Font4Patterns[] = {
     { .firstChar = 0x02, .secondChar = 0x07, .offset = 1 },
     { .firstChar = 0x02, .secondChar = 0x0A, .offset = 1 },
     { .firstChar = 0x03, .secondChar = 0x04, .offset = 1 },
@@ -56,7 +56,7 @@ CreditsPairOffset N(Font4Patterns)[] = {
     {}
 };
 
-CreditsPairOffset N(Font3Patterns)[] = {
+CreditsPairOffset Font3Patterns[] = {
     { .firstChar = 0x00, .secondChar = 0x02, .offset = 1 },
     { .firstChar = 0x00, .secondChar = 0x06, .offset = 1 },
     { .firstChar = 0x00, .secondChar = 0x0E, .offset = 1 },
@@ -93,17 +93,17 @@ CreditsPairOffset N(Font3Patterns)[] = {
     {}
 };
 
-Vp N(CreditsViewport) = {
+Vp CreditsViewport = {
     .vp = {
         .vscale = { 640, 480, 511, 0 },
         .vtrans = { 640, 480, 511, 0 }
     }
 };
 
-s32 N(CreditsBufferIndex) = 0;
+s32 CreditsBufferIndex = 0;
 
 // unused
-void N(CharAnim_FadeIn_0)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeIn_0(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -137,7 +137,7 @@ void N(CharAnim_FadeIn_0)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeIn_1)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeIn_1(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -180,7 +180,7 @@ void N(CharAnim_FadeIn_1)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeIn_2)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeIn_2(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -224,7 +224,7 @@ void N(CharAnim_FadeIn_2)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeIn_3)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeIn_3(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -268,7 +268,7 @@ void N(CharAnim_FadeIn_3)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeIn_4)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeIn_4(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -321,7 +321,7 @@ void N(CharAnim_FadeIn_4)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeIn_5)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeIn_5(CreditsLine* line, CreditsChar* chr) {
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
     f32 posX = chr->posX;
@@ -337,7 +337,7 @@ void N(CharAnim_FadeIn_5)(CreditsLine* line, CreditsChar* chr) {
 }
 
 // unused
-void N(CharAnim_HoldClearImgFX)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_HoldClearImgFX(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -364,7 +364,7 @@ void N(CharAnim_HoldClearImgFX)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_Hold)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_Hold(CreditsLine* line, CreditsChar* chr) {
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
     f32 posX = chr->posX;
@@ -377,7 +377,7 @@ void N(CharAnim_Hold)(CreditsLine* line, CreditsChar* chr) {
 }
 
 // unused
-void N(CharAnim_FadeOut_0)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeOut_0(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -409,7 +409,7 @@ void N(CharAnim_FadeOut_0)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeOut_1)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeOut_1(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -444,7 +444,7 @@ void N(CharAnim_FadeOut_1)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeOut_2)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeOut_2(CreditsLine* line, CreditsChar* chr) {
     ImgFXTexture ifxImg;
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
@@ -479,7 +479,7 @@ void N(CharAnim_FadeOut_2)(CreditsLine* line, CreditsChar* chr) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void N(CharAnim_FadeOut_3)(CreditsLine* line, CreditsChar* chr) {
+void CharAnim_FadeOut_3(CreditsLine* line, CreditsChar* chr) {
     MesasgeFontGlyphData glyph;
     MesasgeFontGlyphData* glyphPtr = &glyph;
     f32 posX = chr->posX;
@@ -492,7 +492,7 @@ void N(CharAnim_FadeOut_3)(CreditsLine* line, CreditsChar* chr) {
         10, 20, SCREEN_WIDTH - 20, SCREEN_HEIGHT - 40, alpha);
 }
 
-void N(credits_update_line)(CreditsLine* line) {
+void credits_update_line(CreditsLine* line) {
     CreditsChar creditsChar;
     CreditsChar* curChar = &creditsChar;
     CreditsPairOffset* curPattern;
@@ -545,9 +545,9 @@ void N(credits_update_line)(CreditsLine* line) {
             default:
                 msgWidth += msg_get_print_char_width(curMsgChar, curChar->font, curChar->variation, 1.0f, 0, 1) - 1;
                 if (curChar->font == MSG_FONT_TITLE || curChar->font == MSG_FONT_SUBTITLE) {
-                    curPattern = N(Font3Patterns);
+                    curPattern = Font3Patterns;
                     if (curChar->font == MSG_FONT_SUBTITLE) {
-                        curPattern = N(Font4Patterns);
+                        curPattern = Font4Patterns;
                     }
 
                     i = 0;
@@ -620,22 +620,22 @@ void N(credits_update_line)(CreditsLine* line) {
                                 }
                                 switch (line->appearMode) {
                                     case 0:
-                                        N(CharAnim_FadeIn_5)(line, curChar);
+                                        CharAnim_FadeIn_5(line, curChar);
                                         break;
                                     case 1:
-                                        N(CharAnim_FadeIn_1)(line, curChar);
+                                        CharAnim_FadeIn_1(line, curChar);
                                         break;
                                     case 2:
-                                        N(CharAnim_FadeIn_2)(line, curChar);
+                                        CharAnim_FadeIn_2(line, curChar);
                                         break;
                                     case 3:
-                                        N(CharAnim_FadeIn_3)(line, curChar);
+                                        CharAnim_FadeIn_3(line, curChar);
                                         break;
                                     case 4:
-                                        N(CharAnim_FadeIn_4)(line, curChar);
+                                        CharAnim_FadeIn_4(line, curChar);
                                         break;
                                     case 5:
-                                        N(CharAnim_FadeIn_5)(line, curChar);
+                                        CharAnim_FadeIn_5(line, curChar);
                                         break;
                                 }
                             }
@@ -647,7 +647,7 @@ void N(credits_update_line)(CreditsLine* line) {
                                     doneCurrentState = true;
                                 }
                             }
-                            N(CharAnim_Hold)(line, curChar);
+                            CharAnim_Hold(line, curChar);
                             break;
 
                         case CREDITS_LINE_VANISHING:
@@ -664,16 +664,16 @@ void N(credits_update_line)(CreditsLine* line) {
 
                             switch (line->vanishMode) {
                                 case 0:
-                                    N(CharAnim_FadeOut_3)(line, curChar);
+                                    CharAnim_FadeOut_3(line, curChar);
                                     break;
                                 case 1:
-                                    N(CharAnim_FadeOut_1)(line, curChar);
+                                    CharAnim_FadeOut_1(line, curChar);
                                     break;
                                 case 2:
-                                    N(CharAnim_FadeOut_2)(line, curChar);
+                                    CharAnim_FadeOut_2(line, curChar);
                                     break;
                                 case 3:
-                                    N(CharAnim_FadeOut_3)(line, curChar);
+                                    CharAnim_FadeOut_3(line, curChar);
                                     break;
                             }
                             break;
@@ -683,9 +683,9 @@ void N(credits_update_line)(CreditsLine* line) {
 
                 posX += msg_get_print_char_width(curMsgChar, curChar->font, curChar->variation, 1.0f, 0, 1) - 1;
                 if (curChar->font == MSG_FONT_TITLE || curChar->font == MSG_FONT_SUBTITLE) {
-                    curPattern = N(Font3Patterns);
+                    curPattern = Font3Patterns;
                     if (curChar->font == MSG_FONT_SUBTITLE) {
-                        curPattern = N(Font4Patterns);
+                        curPattern = Font4Patterns;
                     }
 
                     i = 0;
@@ -723,12 +723,12 @@ void N(credits_update_line)(CreditsLine* line) {
     line->time++;
 }
 
-void N(worker_draw_credits)(void) {
-    Mtx* projMtx = &N(CreditsProjMatrices)[gCurrentDisplayContextIndex];
-    CreditsData* data = N(CreditsDataPtr);
+void worker_draw_credits(void) {
+    Mtx* projMtx = &CreditsProjMatrices[gCurrentDisplayContextIndex];
+    CreditsData* data = CreditsDataPtr;
     s32 i;
 
-    gSPViewport(gMainGfxPos++, &N(CreditsViewport));
+    gSPViewport(gMainGfxPos++, &CreditsViewport);
     guOrtho(projMtx, 0.0f, 320.0f, -240.0f, 0.0f, -100.0f, 100.0f, 1.0f);
     gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(projMtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gDPPipeSync(gMainGfxPos++);
@@ -737,34 +737,34 @@ void N(worker_draw_credits)(void) {
 
     for (i = 0; i < ARRAY_COUNT(data->lines); i++) {
         if (data->lines[i].flags & CREDITS_LINE_FLAG_1) {
-            N(credits_update_line)(&data->lines[i]);
+            credits_update_line(&data->lines[i]);
         }
     }
 }
 
-void N(credits_load_message)(CreditsEntry* entry) {
+void credits_load_message(CreditsEntry* entry) {
     CreditsLine* line;
     s32 maxLineChars;
     s32 numSpaces;
     s32 i = 0;
 
     while (true) {
-        if (!(N(CreditsDataPtr)->lines[i].flags & CREDITS_LINE_FLAG_1)) {
+        if (!(CreditsDataPtr->lines[i].flags & CREDITS_LINE_FLAG_1)) {
             break;
         }
-        if (++i == ARRAY_COUNT(N(CreditsDataPtr)->lines)) {
+        if (++i == ARRAY_COUNT(CreditsDataPtr->lines)) {
             return;
         }
     }
 
-    line = &N(CreditsDataPtr)->lines[i];
+    line = &CreditsDataPtr->lines[i];
     if (entry->msgID != nullptr) {
         if (entry->msgID >= 0) {
-            dma_load_msg(entry->msgID, N(CreditsMessageBuffers)[N(CreditsBufferIndex)]);
-            line->message = N(CreditsMessageBuffers)[N(CreditsBufferIndex)];
-            N(CreditsBufferIndex)++;
-            if (N(CreditsBufferIndex) >= ARRAY_COUNT(N(CreditsMessageBuffers))) {
-                N(CreditsBufferIndex) = 0;
+            dma_load_msg(entry->msgID, CreditsMessageBuffers[CreditsBufferIndex]);
+            line->message = CreditsMessageBuffers[CreditsBufferIndex];
+            CreditsBufferIndex++;
+            if (CreditsBufferIndex >= ARRAY_COUNT(CreditsMessageBuffers)) {
+                CreditsBufferIndex = 0;
             }
         } else {
             line->message = (u8*) entry->msgID;
@@ -791,24 +791,24 @@ void N(credits_load_message)(CreditsEntry* entry) {
     }
 }
 
-void N(init_credits)(void) {
+void init_credits(void) {
     s32 i;
 
-    N(CreditsDataPtr) = &N(CreditsData);
-    N(CreditsData).workerID = create_worker_frontUI(nullptr, N(worker_draw_credits));
+    CreditsDataPtr = &creditsData;
+    creditsData.workerID = create_worker_frontUI(nullptr, worker_draw_credits);
 
-    for (i = 0; i < ARRAY_COUNT(N(CreditsData).lines); i++) {
-        N(CreditsData).lines[i].flags = 0;
+    for (i = 0; i < ARRAY_COUNT(creditsData.lines); i++) {
+        creditsData.lines[i].flags = 0;
     }
 }
 
-API_CALLABLE(N(InitCredits)) {
-    N(init_credits)();
+API_CALLABLE(InitCredits) {
+    init_credits();
     load_font(1);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ShowCreditList)) {
+API_CALLABLE(ShowCreditList) {
     CreditsEntry* creditList = (CreditsEntry*) evt_get_variable(script, *script->ptrReadPos);
 
     if (isInitialCall) {
@@ -821,7 +821,7 @@ API_CALLABLE(N(ShowCreditList)) {
         case 0:
             while (true) {
                 if (creditList[script->varTable[2]].msgID != 0) {
-                    N(credits_load_message)(&creditList[script->varTable[2]]);
+                    credits_load_message(&creditList[script->varTable[2]]);
                 }
                 script->varTable[1] = creditList[script->varTable[2]].next;
                 script->varTable[2]++;

@@ -1,8 +1,6 @@
 #include "common.h"
 #include "effects_internal.h"
 
-#define NAMESPACE star_spirit_energy
-
 extern Gfx D_09004E00_412090[];
 extern Gfx D_09005168_4123F8[];
 extern Gfx D_090051C8_412458[];
@@ -100,7 +98,6 @@ EffectInstance* star_spirits_energy_main(s32 type, f32 x, f32 y, f32 z, f32 scal
     bp.init = star_spirits_energy_init;
     bp.update = star_spirits_energy_update;
     bp.renderScene = star_spirits_energy_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STAR_SPIRITS_ENERGY;
 

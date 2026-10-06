@@ -31,7 +31,7 @@ enum RockingChairState {
     CHAIR_STATE_PLAYER_NOT_TOUCHING = 2
 };
 
-API_CALLABLE(N(UpdateRockingChair)) {
+API_CALLABLE(UpdateRockingChair) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     Bytecode* args = script->ptrReadPos;

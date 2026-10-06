@@ -1,19 +1,19 @@
 #include "kzn_02.h"
 
-EvtScript N(EVS_ExitWalk_kzn_01_1) = EVT_EXIT_WALK(60, kzn_02_ENTRY_0, "kzn_01", kzn_01_ENTRY_1);
-EvtScript N(EVS_ExitWalk_kzn_03_0) = EVT_EXIT_WALK(60, kzn_02_ENTRY_1, "kzn_03", kzn_03_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_01_1 = EVT_EXIT_WALK(60, kzn_02_ENTRY_0, "kzn_01", kzn_01_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_03_0 = EVT_EXIT_WALK(60, kzn_02_ENTRY_1, "kzn_03", kzn_03_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_kzn_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(N(EVS_ExitWalk_kzn_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_kzn_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     IfNe(LVar0, kzn_02_ENTRY_2)
-        Set(LVar0, N(EVS_BindExitTriggers))
+        Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
     EndIf
@@ -21,7 +21,7 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_StartTexPanners) = {
+EvtScript EVS_StartTexPanners = {
     // lava surfaces
     Call(SetTexPanner, MODEL_yougan1_1, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_yougan1_2, TEX_PANNER_2)
@@ -72,7 +72,7 @@ EvtScript N(EVS_StartTexPanners) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o80, .pos = { -790.0, 20.0,  0.0 }},
     { .colliderID = COLLIDER_o81, .pos = { -790.0, 20.0,  0.0 }},
     { .colliderID = COLLIDER_o58, .pos = { -250.0, 20.0,  0.0 }},
@@ -84,11 +84,11 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_02)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o112, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o217, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o218, SURFACE_TYPE_LAVA)
@@ -99,16 +99,16 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_pp1, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_pp2, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
-    Exec(N(EVS_StartTexPanners))
-    ExecWait(N(EVS_InitializePlatforms))
+    Exec(EVS_StartTexPanners)
+    ExecWait(EVS_InitializePlatforms)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
-        ExecWait(N(EVS_PlayDemoScene))
+        ExecWait(EVS_PlayDemoScene)
         Return
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)

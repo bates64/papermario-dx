@@ -44,7 +44,6 @@ EffectInstance* energy_in_out_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     bp.init = energy_in_out_init;
     bp.update = energy_in_out_update;
     bp.renderScene = energy_in_out_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_ENERGY_IN_OUT;
 

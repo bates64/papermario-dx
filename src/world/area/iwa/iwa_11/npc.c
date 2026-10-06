@@ -4,7 +4,7 @@
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/Dryite/idle.inc.c"
 
-EvtScript N(EVS_NpcInit_TrainToad) = {
+EvtScript EVS_NpcInit_TrainToad = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, iwa_11_ENTRY_0)
@@ -18,18 +18,18 @@ EvtScript N(EVS_NpcInit_TrainToad) = {
     End
 };
 
-NpcData N(NpcData_TrainToad) = {
+NpcData NpcData_TrainToad = {
     .id = NPC_TrainToad,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_TrainToad),
-    .settings = &N(NpcSettings_TrainToad),
+    .init = &EVS_NpcInit_TrainToad,
+    .settings = &NpcSettings_TrainToad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TRAIN_CONDUCTOR_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TrainToad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TrainToad),
     {}
 };

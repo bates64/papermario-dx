@@ -1,6 +1,6 @@
 #include "pra_32.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfEq(GB_StoryProgress, STORY_CH7_DEFEATED_CRYSTAL_KING)
         Call(FadeOutMusic, 0, 500)
     Else

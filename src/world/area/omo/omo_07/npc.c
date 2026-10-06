@@ -6,7 +6,7 @@
 #include "world/common/enemy/ShyGuy/patrol.inc.c"
 #include "world/common/enemy/SkyGuy/wander.inc.c"
 
-NpcSettings N(NpcSettings_Fuzzy) = {
+NpcSettings NpcSettings_Fuzzy = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
@@ -33,7 +33,7 @@ enum {
     SHYGUY_STATE_FORCE_RECYCLE  = 11, // unused, recycles NPC immediately
 };
 
-API_CALLABLE(N(SetShyGuyPoolState)) {
+API_CALLABLE(SetShyGuyPoolState) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID;
     s32 value;
@@ -45,7 +45,7 @@ API_CALLABLE(N(SetShyGuyPoolState)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Push_SecretDoor) = {
+EvtScript EVS_Push_SecretDoor = {
     IfEq(AF_OMO07_DoorOpening, true)
         Return
     EndIf
@@ -96,9 +96,9 @@ EvtScript N(EVS_Push_SecretDoor) = {
     End
 };
 
-EvtScript N(EVS_SetupShyGuyPool) = {
+EvtScript EVS_SetupShyGuyPool = {
     Call(ParentColliderToModel, COLLIDER_tt1, MODEL_k)
-    BindTrigger(Ref(N(EVS_Push_SecretDoor)), TRIGGER_WALL_PUSH, COLLIDER_tt1, 1, 0)
+    BindTrigger(Ref(EVS_Push_SecretDoor), TRIGGER_WALL_PUSH, COLLIDER_tt1, 1, 0)
     Set(AF_OMO07_NpcPool0, false)
     Set(AF_OMO07_NpcPool1, false)
     Set(AF_OMO07_NpcPool2, false)
@@ -139,7 +139,7 @@ EvtScript N(EVS_SetupShyGuyPool) = {
         IfGt(LVar0, 600)
             Goto(1)
         EndIf
-        Call(N(SetShyGuyPoolState), LVar4, true)
+        Call(SetShyGuyPoolState, LVar4, true)
         Call(SetNpcVar, LVar4, SHYGUY_VAR_STATE, SHYGUY_STATE_RUN_TO_DOOR)
         Wait(1)
         Label(2)
@@ -153,7 +153,7 @@ EvtScript N(EVS_SetupShyGuyPool) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy) = {
+EvtScript EVS_NpcAI_ShyGuy = {
     Label(0)
         Call(GetSelfVar, SHYGUY_VAR_STATE, LVar0)
         Switch(LVar0)
@@ -216,13 +216,13 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
                 EndIf
             CaseEq(SHYGUY_STATE_ACTIVE)
                 Wait(1)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_Patrol)))
+                Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Patrol))
                 Wait(10)
             CaseEq(SHYGUY_STATE_RECYCLE)
                 Call(DisablePlayerInput, true)
                 Loop(30)
                     Call(GetSelfNpcID, LVar0)
-                    Call(N(SetShyGuyPoolState), LVar0, false)
+                    Call(SetShyGuyPoolState, LVar0, false)
                     Wait(1)
                 EndLoop
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -230,7 +230,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
                 Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_FREE)
             CaseEq(SHYGUY_STATE_FORCE_RECYCLE)
                 Call(GetSelfNpcID, LVar0)
-                Call(N(SetShyGuyPoolState), LVar0, false)
+                Call(SetShyGuyPoolState, LVar0, false)
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
                 Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_FREE)
         EndSwitch
@@ -240,7 +240,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_ShyGuy) = {
+EvtScript EVS_NpcDefeat_ShyGuy = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -250,7 +250,7 @@ EvtScript N(EVS_NpcDefeat_ShyGuy) = {
             Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_RECYCLE)
             Wait(1)
             Call(SetSelfVar, SHYGUY_VAR_STATE, SHYGUY_STATE_RECYCLE)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy)))
+            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy))
             Call(DoNpcDefeat)
             Wait(1)
         CaseEq(OUTCOME_PLAYER_LOST)
@@ -262,14 +262,14 @@ EvtScript N(EVS_NpcDefeat_ShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy)))
+EvtScript EVS_NpcInit_ShyGuy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_ShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Fuzzy) = {
+EvtScript EVS_NpcIdle_Fuzzy = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 990)
@@ -295,7 +295,7 @@ EvtScript N(EVS_NpcIdle_Fuzzy) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Fuzzy) = {
+EvtScript EVS_NpcDefeat_Fuzzy = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -308,10 +308,10 @@ EvtScript N(EVS_NpcDefeat_Fuzzy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy) = {
+EvtScript EVS_NpcInit_Fuzzy = {
     IfEq(GB_OMO_PeachChoice2, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Fuzzy)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Fuzzy)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Fuzzy))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -319,10 +319,10 @@ EvtScript N(EVS_NpcInit_Fuzzy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_HammerBros) = {
+EvtScript EVS_NpcInit_HammerBros = {
     IfEq(GB_OMO_PeachChoice2, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Fuzzy)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Fuzzy)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Fuzzy))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Fuzzy))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -330,13 +330,13 @@ EvtScript N(EVS_NpcInit_HammerBros) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kammy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kammy)))
+EvtScript EVS_NpcInit_Kammy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kammy))
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy) = {
+NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -358,14 +358,14 @@ NpcData N(NpcData_ShyGuy) = {
             .detectSize = { 100 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Patrol),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_ShyGuy_Patrol,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_02) = {
+NpcData NpcData_ShyGuy_02 = {
     .id = NPC_ShyGuy_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -387,14 +387,14 @@ NpcData N(NpcData_ShyGuy_02) = {
             .detectSize = { 100 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Patrol),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_ShyGuy_Patrol,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_03) = {
+NpcData NpcData_ShyGuy_03 = {
     .id = NPC_ShyGuy_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -416,14 +416,14 @@ NpcData N(NpcData_ShyGuy_03) = {
             .detectSize = { 100 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Patrol),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_ShyGuy_Patrol,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_04) = {
+NpcData NpcData_ShyGuy_04 = {
     .id = NPC_ShyGuy_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -445,36 +445,36 @@ NpcData N(NpcData_ShyGuy_04) = {
             .detectSize = { 100 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Patrol),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_ShyGuy_Patrol,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_Fuzzy) = {
+NpcData NpcData_Fuzzy = {
     .id = NPC_Fuzzy,
     .pos = { 1050.0f, 0.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Fuzzy),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy,
+    .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
 };
 
-NpcData N(NpcData_HammerBros) = {
+NpcData NpcData_HammerBros = {
     .id = NPC_HammerBros,
     .pos = { 1050.0f, 0.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_HammerBros),
-    .settings = &N(NpcSettings_HammerBros),
+    .init = &EVS_NpcInit_HammerBros,
+    .settings = &NpcSettings_HammerBros,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = HAMMER_BROS_ANIMS,
 };
 
-NpcData N(NpcData_SkyGuy_01) = {
+NpcData NpcData_SkyGuy_01 = {
     .id = NPC_SkyGuy_01,
     .pos = { -650.0f, 140.0f, -105.0f },
     .yaw = 270,
@@ -490,14 +490,14 @@ NpcData N(NpcData_SkyGuy_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy_Wander),
+    .settings = &NpcSettings_SkyGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_SkyGuy_02) = {
+NpcData NpcData_SkyGuy_02 = {
     .id = NPC_SkyGuy_02,
     .pos = { -550.0f, 60.0f, 70.0f },
     .yaw = 270,
@@ -513,14 +513,14 @@ NpcData N(NpcData_SkyGuy_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy_Wander),
+    .settings = &NpcSettings_SkyGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-AnimID N(LimitAnims_Kammy)[] = {
+AnimID LimitAnims_Kammy[] = {
     ANIM_WorldKammy_FlyRodTalk,
     ANIM_WorldKammy_FlyRodCast,
     ANIM_WorldKammy_FlyBrake,
@@ -530,53 +530,53 @@ AnimID N(LimitAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Kammy) = {
+NpcData NpcData_Kammy = {
     .id = NPC_Kammy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kammy),
-    .settings = &N(NpcSettings_Kammy_Flying),
+    .init = &EVS_NpcInit_Kammy,
+    .settings = &NpcSettings_Kammy_Flying,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .limitAnimations = N(LimitAnims_Kammy),
+    .limitAnimations = LimitAnims_Kammy,
 };
 
-NpcGroupList N(FuzzyAmbushNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_SkyGuy_01), BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SkyGuy_02), BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_Fuzzy), BTL_OMO3_FORMATION_05, BTL_OMO3_STAGE_05),
+NpcGroupList FuzzyAmbushNPCs = {
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_SkyGuy_01, BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SkyGuy_02, BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_Fuzzy, BTL_OMO3_FORMATION_05, BTL_OMO3_STAGE_05),
     {}
 };
 
-NpcGroupList N(HammerBrosAmbushNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_SkyGuy_01), BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SkyGuy_02), BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_HammerBros), BTL_OMO3_FORMATION_07, BTL_OMO3_STAGE_05),
+NpcGroupList HammerBrosAmbushNPCs = {
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_SkyGuy_01, BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SkyGuy_02, BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_HammerBros, BTL_OMO3_FORMATION_07, BTL_OMO3_STAGE_05),
     {}
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
-    NPC_GROUP(N(NpcData_SkyGuy_01), BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SkyGuy_02), BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_01),
+    NPC_GROUP(NpcData_SkyGuy_01, BTL_OMO_FORMATION_14, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SkyGuy_02, BTL_OMO_FORMATION_12, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(KammySceneNPCs) = {
-    NPC_GROUP(N(NpcData_Kammy)),
-    NPC_GROUP(N(NpcData_Fuzzy), BTL_OMO3_FORMATION_05, BTL_OMO3_STAGE_05),
-    NPC_GROUP(N(NpcData_HammerBros), BTL_OMO3_FORMATION_07, BTL_OMO3_STAGE_05),
+NpcGroupList KammySceneNPCs = {
+    NPC_GROUP(NpcData_Kammy),
+    NPC_GROUP(NpcData_Fuzzy, BTL_OMO3_FORMATION_05, BTL_OMO3_STAGE_05),
+    NPC_GROUP(NpcData_HammerBros, BTL_OMO3_FORMATION_07, BTL_OMO3_STAGE_05),
     {}
 };

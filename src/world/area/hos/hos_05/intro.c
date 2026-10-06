@@ -12,7 +12,7 @@ enum {
     STORY_PAGE_SHRINE_INT   = 4,
 };
 
-s32 N(CardIndexForSpirit)[] = {
+s32 CardIndexForSpirit[] = {
     [NPC_Eldstar]   1,
     [NPC_Mamar]     7,
     [NPC_Skolar]    3,
@@ -50,11 +50,11 @@ typedef struct StoryGraphicData {
     /* 0x5E */ PAD(2);
 } StoryGraphicData; // size = 0x60
 
-s32 N(CardRingCaptureCount) = 0;
+s32 CardRingCaptureCount = 0;
 
-s32 N(CardRingGatherCount) = 0;
+s32 CardRingGatherCount = 0;
 
-CameraControlSettings N(IntroCamSettings0) = {
+CameraControlSettings IntroCamSettings0 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 130.4,
     .boomPitch = 12.4,
@@ -63,7 +63,7 @@ CameraControlSettings N(IntroCamSettings0) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings1) = {
+CameraControlSettings IntroCamSettings1 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 130.4,
     .boomPitch = 12.4,
@@ -72,7 +72,7 @@ CameraControlSettings N(IntroCamSettings1) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings2) = {
+CameraControlSettings IntroCamSettings2 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 400.0,
     .boomPitch = 2.7,
@@ -81,7 +81,7 @@ CameraControlSettings N(IntroCamSettings2) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings3) = {
+CameraControlSettings IntroCamSettings3 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 274.4,
     .boomPitch = -9.3,
@@ -90,7 +90,7 @@ CameraControlSettings N(IntroCamSettings3) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings4) = {
+CameraControlSettings IntroCamSettings4 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 274.4,
     .boomPitch = -9.3,
@@ -99,7 +99,7 @@ CameraControlSettings N(IntroCamSettings4) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings5) = {
+CameraControlSettings IntroCamSettings5 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 243.3,
     .boomPitch = 16.0,
@@ -108,7 +108,7 @@ CameraControlSettings N(IntroCamSettings5) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings6) = {
+CameraControlSettings IntroCamSettings6 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 192.5,
     .boomPitch = 12.4,
@@ -117,7 +117,7 @@ CameraControlSettings N(IntroCamSettings6) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings7) = {
+CameraControlSettings IntroCamSettings7 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 467.0,
     .boomPitch = 21.0,
@@ -126,7 +126,7 @@ CameraControlSettings N(IntroCamSettings7) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings8) = {
+CameraControlSettings IntroCamSettings8 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 121.6,
     .boomPitch = 0.0,
@@ -135,7 +135,7 @@ CameraControlSettings N(IntroCamSettings8) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings9) = {
+CameraControlSettings IntroCamSettings9 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 474.7,
     .boomPitch = 0.0,
@@ -144,7 +144,7 @@ CameraControlSettings N(IntroCamSettings9) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings10) = {
+CameraControlSettings IntroCamSettings10 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 225.7,
     .boomPitch = 9.7,
@@ -153,7 +153,7 @@ CameraControlSettings N(IntroCamSettings10) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings11) = {
+CameraControlSettings IntroCamSettings11 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 130.0,
     .boomPitch = 9.8,
@@ -162,7 +162,7 @@ CameraControlSettings N(IntroCamSettings11) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings12) = {
+CameraControlSettings IntroCamSettings12 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 270.0,
     .boomPitch = 9.8,
@@ -171,7 +171,7 @@ CameraControlSettings N(IntroCamSettings12) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings13) = {
+CameraControlSettings IntroCamSettings13 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 246.1,
     .boomPitch = -1.3,
@@ -180,7 +180,7 @@ CameraControlSettings N(IntroCamSettings13) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings14) = {
+CameraControlSettings IntroCamSettings14 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 180.0,
     .boomPitch = -1.3,
@@ -189,7 +189,7 @@ CameraControlSettings N(IntroCamSettings14) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings15) = {
+CameraControlSettings IntroCamSettings15 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 90.0,
     .boomPitch = 5.4,
@@ -198,7 +198,7 @@ CameraControlSettings N(IntroCamSettings15) = {
     .flag = false,
 };
 
-CameraControlSettings N(IntroCamSettings16) = {
+CameraControlSettings IntroCamSettings16 = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 445.8,
     .boomPitch = 5.4,
@@ -207,7 +207,7 @@ CameraControlSettings N(IntroCamSettings16) = {
     .flag = false,
 };
 
-API_CALLABLE(N(SetWorldFogParams)) {
+API_CALLABLE(SetWorldFogParams) {
     Bytecode* args = script->ptrReadPos;
     s32 primR = evt_get_variable(script, *args++);
     s32 primG = evt_get_variable(script, *args++);
@@ -223,7 +223,7 @@ API_CALLABLE(N(SetWorldFogParams)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetWorldColorParams)) {
+static API_CALLABLE(SetWorldColorParams) {
     Bytecode* args;
     static u8 oldPrimR, oldPrimG, oldPrimB;
     static u8 oldEnvR, oldEnvG, oldEnvB;
@@ -266,20 +266,20 @@ API_CALLABLE(N(SetWorldColorParams)) {
     return ApiStatus_BLOCK;
 }
 
-void N(adjust_cam_vfov)(s32 camID, f32 fov) {
+void adjust_cam_vfov(s32 camID, f32 fov) {
     gCameras[camID].vfov = fov * 1.1;
 }
 
-API_CALLABLE(N(AdjustCamVfov)) {
+API_CALLABLE(AdjustCamVfov) {
     Bytecode* args = script->ptrReadPos;
     s32 camID = evt_get_variable(script, *args++);
     f32 fov = evt_get_float_variable(script, *args++);
 
-    N(adjust_cam_vfov)(camID, fov);
+    adjust_cam_vfov(camID, fov);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ResumeIntro)) {
+API_CALLABLE(ResumeIntro) {
     if (gGameStatus.introPart > INTRO_PART_NONE && gGameStatus.introPart < INTRO_PART_5) {
         gGameStatus.introPart++;
         state_init_intro();
@@ -287,13 +287,13 @@ API_CALLABLE(N(ResumeIntro)) {
     return ApiStatus_DONE1;
 }
 
-API_CALLABLE(N(InitWorldTintMode)) {
+API_CALLABLE(InitWorldTintMode) {
     mdl_set_all_tint_type(ENV_TINT_REMAP);
     return ApiStatus_DONE2;
 }
 
 // adjusts properties of EmitterVolume:GoldShimmer2 effect
-API_CALLABLE(N(SetStarSpiritSparkleTrailPos)) {
+API_CALLABLE(SetStarSpiritSparkleTrailPos) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     s32 subtype = evt_get_variable(script, *args++);
@@ -307,25 +307,25 @@ API_CALLABLE(N(SetStarSpiritSparkleTrailPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(StartCardRingCapture)) {
+API_CALLABLE(StartCardRingCapture) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
 
-    effect->data.somethingRotating[N(CardRingCaptureCount) + 1].state = CARD_RING_STATE_CAPTURE_INIT;
-    N(CardRingCaptureCount)++;
+    effect->data.somethingRotating[CardRingCaptureCount + 1].state = CARD_RING_STATE_CAPTURE_INIT;
+    CardRingCaptureCount++;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(StartCardRingGather)) {
+API_CALLABLE(StartCardRingGather) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
 
-    effect->data.somethingRotating[N(CardRingGatherCount) + 1].state = CARD_RING_STATE_GATHER_INIT;
-    N(CardRingGatherCount)++;
+    effect->data.somethingRotating[CardRingGatherCount + 1].state = CARD_RING_STATE_GATHER_INIT;
+    CardRingGatherCount++;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetLightRayPos)) {
+API_CALLABLE(SetLightRayPos) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(16));
 
@@ -337,35 +337,35 @@ API_CALLABLE(N(SetLightRayPos)) {
 
 #include "../common/IntroMathUtil.inc.c"
 
-f32 N(StoryCameraAngle) = 240.0;
+f32 StoryCameraAngle = 240.0;
 
-u16* N(ColorBufPtr) = nullptr;
+u16* ColorBufPtr = nullptr;
 
 f32 IntroCamStateA_BoomLength = 130.4;
 f32 IntroCamStateA_BoomPitch = 12.4;
 f32 IntroCamStateA_ViewPitch = -16.8;
 f32 IntroCamStateA_Vfov = 62.0;
 
-API_CALLABLE(N(InitializeStoryCamera)) {
+API_CALLABLE(InitializeStoryCamera) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    if (nuGfxCfb_ptr == N(ColorBufPtr)) {
+    if (nuGfxCfb_ptr == ColorBufPtr) {
         return ApiStatus_BLOCK;
     }
-    N(ColorBufPtr) = nuGfxCfb_ptr;
-    N(lerp_value_with_max_step)(250.0f, 0.0f, N(StoryCameraAngle), 0.5f, &N(StoryCameraAngle));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_SIN_OUT_DELAYED,
-        130.4f, N(IntroCamSettings2).boomLength, 0.0f,
+    ColorBufPtr = nuGfxCfb_ptr;
+    lerp_value_with_max_step(250.0f, 0.0f, StoryCameraAngle, 0.5f, &StoryCameraAngle);
+    interp_value_with_easing(INTRO_MATH_EASING_SIN_OUT_DELAYED,
+        130.4f, IntroCamSettings2.boomLength, 0.0f,
         470.0f, &IntroCamStateA_BoomLength);
-    N(lerp_value_with_max_step)(12.4f, N(IntroCamSettings2).boomPitch, IntroCamStateA_BoomPitch, 0.05f, &IntroCamStateA_BoomPitch);
-    N(lerp_value_with_max_step)(-16.8f, N(IntroCamSettings2).viewPitch, IntroCamStateA_ViewPitch, 0.05f, &IntroCamStateA_ViewPitch);
-    N(lerp_value_with_max_step)(62.0f, 49.0f, IntroCamStateA_Vfov, 0.1f, &IntroCamStateA_Vfov);
-    N(adjust_cam_vfov)(CAM_DEFAULT, IntroCamStateA_Vfov);
+    lerp_value_with_max_step(12.4f, IntroCamSettings2.boomPitch, IntroCamStateA_BoomPitch, 0.05f, &IntroCamStateA_BoomPitch);
+    lerp_value_with_max_step(-16.8f, IntroCamSettings2.viewPitch, IntroCamStateA_ViewPitch, 0.05f, &IntroCamStateA_ViewPitch);
+    lerp_value_with_max_step(62.0f, 49.0f, IntroCamStateA_Vfov, 0.1f, &IntroCamStateA_Vfov);
+    adjust_cam_vfov(CAM_DEFAULT, IntroCamStateA_Vfov);
     camera->overrideSettings.boomLength = IntroCamStateA_BoomLength;
     camera->overrideSettings.boomPitch = IntroCamStateA_BoomPitch;
     camera->overrideSettings.viewPitch = IntroCamStateA_ViewPitch;
-    camera->overrideSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
-    camera->overrideSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
+    camera->overrideSettings.points.two.Bx = sin_deg(StoryCameraAngle) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(StoryCameraAngle) * -500.0f;
     camera->panActive = true;
     return ApiStatus_DONE2;
 }
@@ -375,58 +375,58 @@ f32 IntroCamStateB_BoomPitch = 12.4;
 f32 IntroCamStateB_ViewPitch = -16.8;
 f32 IntroCamStateB_Vfov = 62.0;
 
-s32 N(UnusedEndDelayTime) = 0;
-s32 N(UnusedLerpTime) = 0;
+s32 UnusedEndDelayTime = 0;
+s32 UnusedLerpTime = 0;
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(UnusedInitializeStoryCamera)) {
+API_CALLABLE(UnusedInitializeStoryCamera) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    if (nuGfxCfb_ptr == N(ColorBufPtr)) {
+    if (nuGfxCfb_ptr == ColorBufPtr) {
         return ApiStatus_BLOCK;
     }
-    N(ColorBufPtr) = nuGfxCfb_ptr;
-    N(lerp_value_with_max_step)(250.0f, 0.0f, N(StoryCameraAngle), 0.5f, &N(StoryCameraAngle));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, N(IntroCamSettings2).boomLength, N(UnusedLerpTime), 470.0f, &IntroCamStateB_BoomLength);
-    N(lerp_value_with_max_step)(12.4f, N(IntroCamSettings2).boomPitch, IntroCamStateB_BoomPitch, 0.05f, &IntroCamStateB_BoomPitch);
-    N(lerp_value_with_max_step)(-16.8f, N(IntroCamSettings2).viewPitch, IntroCamStateB_ViewPitch, 0.05f, &IntroCamStateB_ViewPitch);
-    N(lerp_value_with_max_step)(62.0f, 49.0f, IntroCamStateB_Vfov, 0.1f, &IntroCamStateB_Vfov);
-    N(adjust_cam_vfov)(CAM_DEFAULT, IntroCamStateB_Vfov);
+    ColorBufPtr = nuGfxCfb_ptr;
+    lerp_value_with_max_step(250.0f, 0.0f, StoryCameraAngle, 0.5f, &StoryCameraAngle);
+    interp_value_with_easing(INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, IntroCamSettings2.boomLength, UnusedLerpTime, 470.0f, &IntroCamStateB_BoomLength);
+    lerp_value_with_max_step(12.4f, IntroCamSettings2.boomPitch, IntroCamStateB_BoomPitch, 0.05f, &IntroCamStateB_BoomPitch);
+    lerp_value_with_max_step(-16.8f, IntroCamSettings2.viewPitch, IntroCamStateB_ViewPitch, 0.05f, &IntroCamStateB_ViewPitch);
+    lerp_value_with_max_step(62.0f, 49.0f, IntroCamStateB_Vfov, 0.1f, &IntroCamStateB_Vfov);
+    adjust_cam_vfov(CAM_DEFAULT, IntroCamStateB_Vfov);
     camera->overrideSettings.boomLength = IntroCamStateB_BoomLength;
     camera->overrideSettings.boomPitch = IntroCamStateB_BoomPitch;
     camera->overrideSettings.viewPitch = IntroCamStateB_ViewPitch;
-    camera->overrideSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
-    camera->overrideSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
+    camera->overrideSettings.points.two.Bx = sin_deg(StoryCameraAngle) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(StoryCameraAngle) * -500.0f;
     camera->panActive = true;
-    N(UnusedLerpTime)++;
-    if (N(StoryCameraAngle) == 0.0f) {
-        N(UnusedEndDelayTime)++;
+    UnusedLerpTime++;
+    if (StoryCameraAngle == 0.0f) {
+        UnusedEndDelayTime++;
     }
 
-    if (N(UnusedEndDelayTime) <= 30) {
+    if (UnusedEndDelayTime <= 30) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-s32 N(StoryCameraShake1Angle) = 0;
-f32 N(StoryCameraShake1Scale) = 1.0;
+s32 StoryCameraShake1Angle = 0;
+f32 StoryCameraShake1Scale = 1.0;
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(StoryCameraShake1)) {
+API_CALLABLE(StoryCameraShake1) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (isInitialCall) {
         camera->flags |= CAMERA_FLAG_SHAKING;
     }
     guTranslateF(camera->mtxViewShaking,
-        N(StoryCameraShake1Scale) * sin_deg(N(StoryCameraShake1Angle) * 486),
-        N(StoryCameraShake1Scale) * cos_deg(N(StoryCameraShake1Angle) * 254),
+        StoryCameraShake1Scale * sin_deg(StoryCameraShake1Angle * 486),
+        StoryCameraShake1Scale * cos_deg(StoryCameraShake1Angle * 254),
         0.0f
     );
-    N(StoryCameraShake1Angle)++;
-    N(StoryCameraShake1Scale) += (12.0f - N(StoryCameraShake1Scale)) * 0.2;
-    if (N(StoryCameraShake1Angle) > 20) {
+    StoryCameraShake1Angle++;
+    StoryCameraShake1Scale += (12.0f - StoryCameraShake1Scale) * 0.2;
+    if (StoryCameraShake1Angle > 20) {
         guTranslateF(camera->mtxViewShaking, 0.0f, 0.0f, 0.0f);
         camera->flags &= ~CAMERA_FLAG_SHAKING;
         return ApiStatus_DONE1;
@@ -434,11 +434,11 @@ API_CALLABLE(N(StoryCameraShake1)) {
     return ApiStatus_BLOCK;
 }
 
-s32 N(StoryCameraShake2Angle) = 0;
-f32 N(StoryCameraShake2Scale) = 12.0;
+s32 StoryCameraShake2Angle = 0;
+f32 StoryCameraShake2Scale = 12.0;
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(StoryCameraShake2)) {
+API_CALLABLE(StoryCameraShake2) {
     Camera* camera = &gCameras[gCurrentCameraID];
     Matrix4f sp18;
     f32 x, y;
@@ -446,37 +446,37 @@ API_CALLABLE(N(StoryCameraShake2)) {
     if (isInitialCall) {
         camera->flags |= CAMERA_FLAG_SHAKING;
     }
-    x = N(StoryCameraShake2Scale) * sin_deg(N(StoryCameraShake2Angle) * 486);
-    y = N(StoryCameraShake2Scale) * cos_deg(N(StoryCameraShake2Angle) * 254);
+    x = StoryCameraShake2Scale * sin_deg(StoryCameraShake2Angle * 486);
+    y = StoryCameraShake2Scale * cos_deg(StoryCameraShake2Angle * 254);
     guTranslateF(camera->mtxViewShaking, x, y, 0.0f);
     guTranslateF(camera->mtxViewShaking, x, y, 0.0f);
     guRotateF(sp18, 20.0f, 0.0f, 0.0f, 1.0f);
     guMtxCatF(sp18, camera->mtxViewShaking, camera->mtxViewShaking);
     camera->panActive = true;
-    if (N(StoryCameraShake2Angle) >= 10) {
+    if (StoryCameraShake2Angle >= 10) {
         guRotateF(camera->mtxViewShaking, 20.0f, 0.0f, 0.0f, 1.0f);
         return ApiStatus_DONE1;
     }
-    N(StoryCameraShake2Angle)++;
+    StoryCameraShake2Angle++;
     return ApiStatus_BLOCK;
 }
 
-s32 N(UnusedBowserLeapTime) = 0;
+s32 UnusedBowserLeapTime = 0;
 
-s16 N(UnusedBowserHoverOffsets)[] = {
+s16 UnusedBowserHoverOffsets[] = {
     -3, -2, -1,  0,  1,  2,  3,  4,
      3,  2,  1,  0, -1, -2, -3, -4,
 };
 
-s16 N(UnusedBowserLeapPath)[] = {
+s16 UnusedBowserLeapPath[] = {
     360, 345, 330, 315, 300, 285, 270, 255,
     240, 225, 215, 203, 191, 180, 170, 161, 153, 146, 140, 135
 };
 
-BSS f32 N(UnusedBowserLeapBaseY);
+BSS f32 UnusedBowserLeapBaseY;
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(UnusedBowserLeapDown)) {
+API_CALLABLE(UnusedBowserLeapDown) {
     Npc* bowserMain = resolve_npc(script, NPC_Bowser_Body);
     Npc* bowserProp = resolve_npc(script, NPC_Bowser_Prop);
 
@@ -491,34 +491,34 @@ API_CALLABLE(N(UnusedBowserLeapDown)) {
         bowserProp->colliderPos.x = bowserProp->pos.x;
         bowserMain->colliderPos.z = bowserMain->pos.z;
         bowserProp->colliderPos.z = bowserProp->pos.z;
-        N(UnusedBowserLeapBaseY) = 400.0f;
+        UnusedBowserLeapBaseY = 400.0f;
     }
-    if (N(UnusedBowserLeapTime) < 20) {
-        bowserMain->pos.y = N(UnusedBowserLeapPath)[N(UnusedBowserLeapTime)];
+    if (UnusedBowserLeapTime < 20) {
+        bowserMain->pos.y = UnusedBowserLeapPath[UnusedBowserLeapTime];
     } else {
-        bowserMain->pos.y += N(UnusedBowserHoverOffsets)[((N(UnusedBowserLeapTime) - 20) & 30) / 2] * 0.1f;
+        bowserMain->pos.y += UnusedBowserHoverOffsets[((UnusedBowserLeapTime - 20) & 30) / 2] * 0.1f;
     }
     bowserProp->pos.y = bowserMain->pos.y;
     bowserMain->colliderPos.y = bowserMain->pos.y;
     bowserProp->colliderPos.y = bowserProp->pos.y;
 
-    N(UnusedBowserLeapTime)++;
-    if (N(UnusedBowserLeapTime) < 2000) {
+    UnusedBowserLeapTime++;
+    if (UnusedBowserLeapTime < 2000) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-s32 N(BowserHoverTime) = 0;
+s32 BowserHoverTime = 0;
 
-s16 N(BowserHoverOffsets)[] = {
+s16 BowserHoverOffsets[] = {
     -3, -2, -1,  0,  1,  2,  3,  4,
      3,  2,  1,  0, -1, -2, -3, -4,
 };
 
-BSS f32 N(BowserHoverBaseY);
+BSS f32 BowserHoverBaseY;
 
-API_CALLABLE(N(AddBowserHoverOffset)) {
+API_CALLABLE(AddBowserHoverOffset) {
     Npc* bowserMain = resolve_npc(script, NPC_Bowser_Body);
     Npc* bowserProp = resolve_npc(script, NPC_Bowser_Prop);
 
@@ -533,36 +533,36 @@ API_CALLABLE(N(AddBowserHoverOffset)) {
         bowserProp->colliderPos.x = bowserProp->pos.x;
         bowserMain->colliderPos.z = bowserMain->pos.z;
         bowserProp->colliderPos.z = bowserProp->pos.z;
-        N(BowserHoverBaseY) = 135.0f;
+        BowserHoverBaseY = 135.0f;
     }
-    bowserMain->pos.y += N(BowserHoverOffsets)[((u32) (N(BowserHoverTime) - 20) & 30) / 2] * 0.1f;
+    bowserMain->pos.y += BowserHoverOffsets[((u32) (BowserHoverTime - 20) & 30) / 2] * 0.1f;
     bowserProp->pos.y = bowserMain->pos.y;
     bowserMain->colliderPos.y = bowserMain->pos.y;
     bowserProp->colliderPos.y = bowserProp->pos.y;
-    N(BowserHoverTime)++;
-    if (N(BowserHoverTime) < 2000) {
+    BowserHoverTime++;
+    if (BowserHoverTime < 2000) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-f32 N(UnusedStoryCameraZoomAmt) = 30.0;
+f32 UnusedStoryCameraZoomAmt = 30.0;
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(UnusedStoryCameraZoom)) {
+API_CALLABLE(UnusedStoryCameraZoom) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(lerp_value_with_max_step)(30.0f, 15.0f, N(UnusedStoryCameraZoomAmt), 1.0f, &N(UnusedStoryCameraZoomAmt));
-    N(adjust_cam_vfov)(CAM_DEFAULT, N(UnusedStoryCameraZoomAmt));
+    lerp_value_with_max_step(30.0f, 15.0f, UnusedStoryCameraZoomAmt, 1.0f, &UnusedStoryCameraZoomAmt);
+    adjust_cam_vfov(CAM_DEFAULT, UnusedStoryCameraZoomAmt);
     camera->panActive = true;
-    if (N(UnusedStoryCameraZoomAmt) == 15.0f) {
+    if (UnusedStoryCameraZoomAmt == 15.0f) {
         return ApiStatus_DONE1;
     }
     return ApiStatus_BLOCK;
 }
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(StoryCameraShakeEnd)) {
+API_CALLABLE(StoryCameraShakeEnd) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (isInitialCall) {
@@ -572,14 +572,14 @@ API_CALLABLE(N(StoryCameraShakeEnd)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(UnusedKammyMoveTime) = 0;
+s32 UnusedKammyMoveTime = 0;
 
-s16 N(UnusedKammyHoverOffset)[] = {
+s16 UnusedKammyHoverOffset[] = {
     -3, -2, -1,  0,  1,  2,  3,  4,
      3,  2,  1,  0, -1, -2, -3, -4,
 };
 
-Vec2s N(UnusedKammyMovePath)[] = {
+Vec2s UnusedKammyMovePath[] = {
     { 100, 240 },
     {  99, 230 },
     {  98, 220 },
@@ -622,10 +622,10 @@ Vec2s N(UnusedKammyMovePath)[] = {
     {   0, 135 },
 };
 
-BSS f32 N(UnusedKammyMoveBaseY); // unused
+BSS f32 UnusedKammyMoveBaseY; // unused
 
 // probably for unused 'breaking ceiling' part of the scene
-API_CALLABLE(N(UnusedKammyMoveFunc)) {
+API_CALLABLE(UnusedKammyMoveFunc) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
 
     if (isInitialCall) {
@@ -635,40 +635,40 @@ API_CALLABLE(N(UnusedKammyMoveFunc)) {
         kammy->colliderPos.x = kammy->pos.x;
         kammy->colliderPos.z = kammy->pos.z;
     }
-    if (N(UnusedKammyMoveTime) == 30) {
+    if (UnusedKammyMoveTime == 30) {
         kammy->yaw = 90.0f;
     }
-    if (N(UnusedKammyMoveTime) < 40) {
-        kammy->pos.x = N(UnusedKammyMovePath)[N(UnusedKammyMoveTime)].x - 145;
-        kammy->pos.y = (((N(UnusedKammyMovePath)[N(UnusedKammyMoveTime)].y - 135) * 200) / 225) + 147;
-        if (N(UnusedKammyMoveTime) < 20) {
-            kammy->pos.z = 114.0f - (N(UnusedKammyMoveTime) * 30.0f) / 20.0f;
+    if (UnusedKammyMoveTime < 40) {
+        kammy->pos.x = UnusedKammyMovePath[UnusedKammyMoveTime].x - 145;
+        kammy->pos.y = (((UnusedKammyMovePath[UnusedKammyMoveTime].y - 135) * 200) / 225) + 147;
+        if (UnusedKammyMoveTime < 20) {
+            kammy->pos.z = 114.0f - (UnusedKammyMoveTime * 30.0f) / 20.0f;
         } else {
             kammy->pos.z = 84.0f;
         }
         kammy->colliderPos.x = kammy->pos.x;
         kammy->colliderPos.z = kammy->pos.z;
     } else {
-        kammy->pos.y += N(UnusedKammyHoverOffset)[((N(UnusedKammyMoveTime) - 40) & 30) / 2] * 0.1f;
+        kammy->pos.y += UnusedKammyHoverOffset[((UnusedKammyMoveTime - 40) & 30) / 2] * 0.1f;
     }
     kammy->colliderPos.y = kammy->pos.y;
-    N(UnusedKammyMoveTime)++;
-    if (N(UnusedKammyMoveTime) < 2000) {
+    UnusedKammyMoveTime++;
+    if (UnusedKammyMoveTime < 2000) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-s32 N(KammyHoverTime) = 0;
+s32 KammyHoverTime = 0;
 
-s16 N(KammyHoverOffsets)[] = {
+s16 KammyHoverOffsets[] = {
     -3, -2, -1,  0,  1,  2,  3,  4,
      3,  2,  1,  0, -1, -2, -3, -4,
 };
 
-BSS f32 N(KammyHoverBaseY); // unused
+BSS f32 KammyHoverBaseY; // unused
 
-API_CALLABLE(N(AddKammyHoverOffset)) {
+API_CALLABLE(AddKammyHoverOffset) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
 
     if (isInitialCall) {
@@ -679,26 +679,26 @@ API_CALLABLE(N(AddKammyHoverOffset)) {
         kammy->yaw = 90.0f;
         kammy->pos.y = 147.0f;
     }
-    kammy->pos.y += N(KammyHoverOffsets)[((N(KammyHoverTime) - 40) & 30) / 2] * 0.1f;
+    kammy->pos.y += KammyHoverOffsets[((KammyHoverTime - 40) & 30) / 2] * 0.1f;
     kammy->colliderPos.y = kammy->pos.y;
 
-    N(KammyHoverTime)++;
-    if (N(KammyHoverTime) < 2000) {
+    KammyHoverTime++;
+    if (KammyHoverTime < 2000) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-f32 N(BoomLengthInhale) = 121.6;
-s32 N(CamMoveInhaleTime) = 0;
+f32 BoomLengthInhale = 121.6;
+s32 CamMoveInhaleTime = 0;
 
-API_CALLABLE(N(CamPushIn_BowserInhale)) {
+API_CALLABLE(CamPushIn_BowserInhale) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(interp_value_with_easing)(INTRO_MATH_EASING_LINEAR, 121.6f, 90.0f, N(CamMoveInhaleTime), 40.0f, &N(BoomLengthInhale));
+    interp_value_with_easing(INTRO_MATH_EASING_LINEAR, 121.6f, 90.0f, CamMoveInhaleTime, 40.0f, &BoomLengthInhale);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(BoomLengthInhale);
-    if (N(CamMoveInhaleTime) % 5 == 0 && N(BoomLengthInhale) != 90.0f) {
+    camera->overrideSettings.boomLength = BoomLengthInhale;
+    if (CamMoveInhaleTime % 5 == 0 && BoomLengthInhale != 90.0f) {
         f32 temp_f4 = resolve_npc(script, NPC_Bowser_Body)->pos.y - 150.0f;
 
         fx_fire_breath(
@@ -711,44 +711,44 @@ API_CALLABLE(N(CamPushIn_BowserInhale)) {
         );
     }
 
-    N(CamMoveInhaleTime)++;
-    if (N(CamMoveInhaleTime) <= (s32)(40 * DT)) {
+    CamMoveInhaleTime++;
+    if (CamMoveInhaleTime <= (s32)(40 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-f32 N(BoomLengthExhale) = 90.0;
-s32 N(CamMoveExhaleTime) = 0;
+f32 BoomLengthExhale = 90.0;
+s32 CamMoveExhaleTime = 0;
 
-API_CALLABLE(N(CamPullBack_BowserExhale)) {
+API_CALLABLE(CamPullBack_BowserExhale) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(interp_value_with_easing)(INTRO_MATH_EASING_4, 90.0f, 474.7f, N(CamMoveExhaleTime), 20.0f, &N(BoomLengthExhale));
+    interp_value_with_easing(INTRO_MATH_EASING_4, 90.0f, 474.7f, CamMoveExhaleTime, 20.0f, &BoomLengthExhale);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(BoomLengthExhale);
-    N(CamMoveExhaleTime)++;
-    if (N(CamMoveExhaleTime) < (s32)(21 * DT)) {
+    camera->overrideSettings.boomLength = BoomLengthExhale;
+    CamMoveExhaleTime++;
+    if (CamMoveExhaleTime < (s32)(21 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-s32 N(FlyToStarRodTime) = 0;
+s32 FlyToStarRodTime = 0;
 
-BSS f32 N(FlyToStarRodStartX);
-BSS f32 N(FlyToStarRodStartZ);
+BSS f32 FlyToStarRodStartX;
+BSS f32 FlyToStarRodStartZ;
 
-API_CALLABLE(N(BowserFlyToStarRod)) {
+API_CALLABLE(BowserFlyToStarRod) {
     Npc* bowserMain = resolve_npc(script, NPC_Bowser_Body);
     Npc* bowserProp = resolve_npc(script, NPC_Bowser_Prop);
 
     if (isInitialCall) {
-        N(FlyToStarRodStartX) = bowserMain->pos.x;
-        N(FlyToStarRodStartZ) = bowserMain->pos.z;
+        FlyToStarRodStartX = bowserMain->pos.x;
+        FlyToStarRodStartZ = bowserMain->pos.z;
     }
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, N(FlyToStarRodStartX), 0.0f, N(FlyToStarRodTime), 40.0f, &bowserMain->pos.x);
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, N(FlyToStarRodStartZ), 0.0f, N(FlyToStarRodTime), 40.0f, &bowserMain->pos.z);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToStarRodStartX, 0.0f, FlyToStarRodTime, 40.0f, &bowserMain->pos.x);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToStarRodStartZ, 0.0f, FlyToStarRodTime, 40.0f, &bowserMain->pos.z);
     bowserProp->pos.x = bowserMain->pos.x;
     bowserProp->pos.z = bowserMain->pos.z;
     bowserMain->colliderPos.x = bowserMain->pos.x;
@@ -756,40 +756,40 @@ API_CALLABLE(N(BowserFlyToStarRod)) {
     bowserProp->colliderPos.x = bowserProp->pos.x;
     bowserProp->colliderPos.z = bowserProp->pos.z;
 
-    N(FlyToStarRodTime)++;
-    if (N(FlyToStarRodTime) <= (s32)(40 * DT)) {
+    FlyToStarRodTime++;
+    if (FlyToStarRodTime <= (s32)(40 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-s32 N(HoldStarRodTime) = 0;
+s32 HoldStarRodTime = 0;
 
-BSS f32 N(HoldStarRodFov);
-BSS f32 N(HoldStarRodBoomLength);
-BSS f32 N(HoldStarRodCamX);
-BSS f32 N(HoldStarRodCamY);
-BSS f32 N(HoldStarRodCamZ);
+BSS f32 HoldStarRodFov;
+BSS f32 HoldStarRodBoomLength;
+BSS f32 HoldStarRodCamX;
+BSS f32 HoldStarRodCamY;
+BSS f32 HoldStarRodCamZ;
 
-BSS f32 N(FlyToBowserStartX);
-BSS f32 N(FlyToBowserStartZ);
+BSS f32 FlyToBowserStartX;
+BSS f32 FlyToBowserStartZ;
 
-BSS f32 N(KammyCarryStartX);
-BSS f32 N(KammyCarryStartY);
-BSS f32 N(KammyCarryStartZ);
-BSS f32 N(CardRingCarryStartX);
-BSS f32 N(CardRingCarryStartY);
-BSS f32 N(CardRingCarryStartZ);
+BSS f32 KammyCarryStartX;
+BSS f32 KammyCarryStartY;
+BSS f32 KammyCarryStartZ;
+BSS f32 CardRingCarryStartX;
+BSS f32 CardRingCarryStartY;
+BSS f32 CardRingCarryStartZ;
 
-BSS f32 N(CapturedSpiritStartX)[7];
-BSS f32 N(CapturedSpiritStartY)[7];
-BSS f32 N(CapturedSpiritStartZ)[7];
+BSS f32 CapturedSpiritStartX[7];
+BSS f32 CapturedSpiritStartY[7];
+BSS f32 CapturedSpiritStartZ[7];
 
-BSS f32 N(AnimBowser_FlyOff_InitialY);
-BSS f32 N(AnimKammy_FlyOff_InitialY);
+BSS f32 AnimBowser_FlyOff_InitialY;
+BSS f32 AnimKammy_FlyOff_InitialY;
 
 // Shared array for EVS_Intro_Main and children, needs enough room for every ArrayVar they will use
-BSS s32 N(ScratchSpace)[30];
+BSS s32 ScratchSpace[30];
 
 typedef struct SpiritCapturePath {
     /* 0x00 */ Vec3f startPoint;
@@ -798,96 +798,96 @@ typedef struct SpiritCapturePath {
     /* 0x24 */ PAD(4);
 } SpiritCapturePath; // size = 0x28
 
-BSS SpiritCapturePath N(SpiritCapturePaths)[7];
+BSS SpiritCapturePath SpiritCapturePaths[7];
 
-BSS StoryGraphicData N(StoryGraphics);
+BSS StoryGraphicData StoryGraphics;
 
-API_CALLABLE(N(CamPullBack_BowserHoldingStarRod)) {
+API_CALLABLE(CamPullBack_BowserHoldingStarRod) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(interp_value_with_easing)(INTRO_MATH_EASING_4,  35.0f,  35.0f, N(HoldStarRodTime), 80.0f, &N(HoldStarRodFov));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_4, 130.0f, 270.0f, N(HoldStarRodTime), 80.0f, &N(HoldStarRodBoomLength));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_4,  30.0f,   0.0f, N(HoldStarRodTime), 80.0f, &N(HoldStarRodCamX));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_4, 232.0f, 177.0f, N(HoldStarRodTime), 80.0f, &N(HoldStarRodCamY));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_4,   0.0f,   0.0f, N(HoldStarRodTime), 80.0f, &N(HoldStarRodCamZ));
-    N(adjust_cam_vfov)(CAM_DEFAULT, N(HoldStarRodFov));
+    interp_value_with_easing(INTRO_MATH_EASING_4,  35.0f,  35.0f, HoldStarRodTime, 80.0f, &HoldStarRodFov);
+    interp_value_with_easing(INTRO_MATH_EASING_4, 130.0f, 270.0f, HoldStarRodTime, 80.0f, &HoldStarRodBoomLength);
+    interp_value_with_easing(INTRO_MATH_EASING_4,  30.0f,   0.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamX);
+    interp_value_with_easing(INTRO_MATH_EASING_4, 232.0f, 177.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamY);
+    interp_value_with_easing(INTRO_MATH_EASING_4,   0.0f,   0.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamZ);
+    adjust_cam_vfov(CAM_DEFAULT, HoldStarRodFov);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(HoldStarRodBoomLength);
-    camera->movePos.x = N(HoldStarRodCamX);
-    camera->movePos.y = N(HoldStarRodCamY);
-    camera->movePos.z = N(HoldStarRodCamZ);
+    camera->overrideSettings.boomLength = HoldStarRodBoomLength;
+    camera->movePos.x = HoldStarRodCamX;
+    camera->movePos.y = HoldStarRodCamY;
+    camera->movePos.z = HoldStarRodCamZ;
 
-    N(HoldStarRodTime)++;
-    if (N(HoldStarRodTime) <= (s32)(90 * DT)) {
+    HoldStarRodTime++;
+    if (HoldStarRodTime <= (s32)(90 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-f32 N(PanAcrossRoomCamX) = 40.0;
-f32 N(PanAcrossRoomCamZ) = -40.0;
-f32 N(PanAcrossRoomAngle) = 45.0;
-s32 N(PanAcrossRoomTime) = 0;
+f32 PanAcrossRoomCamX = 40.0;
+f32 PanAcrossRoomCamZ = -40.0;
+f32 PanAcrossRoomAngle = 45.0;
+s32 PanAcrossRoomTime = 0;
 
 // pan across the room
-API_CALLABLE(N(CamPanAcrossRoom)) {
+API_CALLABLE(CamPanAcrossRoom) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(interp_value_with_easing)(INTRO_MATH_EASING_LINEAR, 40.0f, -130.0f, N(PanAcrossRoomTime), 170.0f, &N(PanAcrossRoomCamX));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_LINEAR, -40.0f, 130.0f, N(PanAcrossRoomTime), 170.0f, &N(PanAcrossRoomCamZ));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, 45.0f, 25.0f, N(PanAcrossRoomTime), 170.0f, &N(PanAcrossRoomAngle));
+    interp_value_with_easing(INTRO_MATH_EASING_LINEAR, 40.0f, -130.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomCamX);
+    interp_value_with_easing(INTRO_MATH_EASING_LINEAR, -40.0f, 130.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomCamZ);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 45.0f, 25.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomAngle);
     camera->panActive = true;
-    camera->movePos.x = N(PanAcrossRoomCamX);
-    camera->movePos.z = N(PanAcrossRoomCamZ);
-    camera->overrideSettings.points.two.Bx = sin_deg(N(PanAcrossRoomAngle)) * 500.0f;
-    camera->overrideSettings.points.two.Bz = cos_deg(N(PanAcrossRoomAngle)) * 500.0f;
+    camera->movePos.x = PanAcrossRoomCamX;
+    camera->movePos.z = PanAcrossRoomCamZ;
+    camera->overrideSettings.points.two.Bx = sin_deg(PanAcrossRoomAngle) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(PanAcrossRoomAngle) * 500.0f;
 
-    N(PanAcrossRoomTime)++;
-    if (N(PanAcrossRoomTime) == (s32)(170 * DT)) {
+    PanAcrossRoomTime++;
+    if (PanAcrossRoomTime == (s32)(170 * DT)) {
         return ApiStatus_DONE1;
     }
     return ApiStatus_BLOCK;
 }
 
-f32 N(OrbitKammyFov) = 50.0;
-f32 N(OrbitKammyBoomLength) = 246.1;
-f32 N(OrbitKammyCamY) = 200.0;
-f32 N(OrbitKammyAngle) = 25.0;
-s32 N(OrbitKammyTime) = 0;
+f32 OrbitKammyFov = 50.0;
+f32 OrbitKammyBoomLength = 246.1;
+f32 OrbitKammyCamY = 200.0;
+f32 OrbitKammyAngle = 25.0;
+s32 OrbitKammyTime = 0;
 
-API_CALLABLE(N(CamMove_OrbitKammy)) {
+API_CALLABLE(CamMove_OrbitKammy) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT,  25.0f, 200.0f, N(OrbitKammyTime), 120.0f, &N(OrbitKammyAngle));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT,  50.0f,  35.0f, N(OrbitKammyTime), 30.0f, &N(OrbitKammyFov));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, 246.1f, 180.0f, N(OrbitKammyTime), 30.0f, &N(OrbitKammyBoomLength));
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, 200.0f, 220.0f, N(OrbitKammyTime), 30.0f, &N(OrbitKammyCamY));
-    camera->overrideSettings.points.two.Bx = sin_deg(N(OrbitKammyAngle)) * 500.0f;
-    camera->overrideSettings.points.two.Bz = cos_deg(N(OrbitKammyAngle)) * 500.0f;
-    N(adjust_cam_vfov)(CAM_DEFAULT, N(OrbitKammyFov));
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,  25.0f, 200.0f, OrbitKammyTime, 120.0f, &OrbitKammyAngle);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,  50.0f,  35.0f, OrbitKammyTime, 30.0f, &OrbitKammyFov);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 246.1f, 180.0f, OrbitKammyTime, 30.0f, &OrbitKammyBoomLength);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 200.0f, 220.0f, OrbitKammyTime, 30.0f, &OrbitKammyCamY);
+    camera->overrideSettings.points.two.Bx = sin_deg(OrbitKammyAngle) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(OrbitKammyAngle) * 500.0f;
+    adjust_cam_vfov(CAM_DEFAULT, OrbitKammyFov);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(OrbitKammyBoomLength);
-    camera->movePos.y = N(OrbitKammyCamY);
+    camera->overrideSettings.boomLength = OrbitKammyBoomLength;
+    camera->movePos.y = OrbitKammyCamY;
 
-    N(OrbitKammyTime)++;
-    if (N(OrbitKammyTime) <= (s32)(120 * DT)) {
+    OrbitKammyTime++;
+    if (OrbitKammyTime <= (s32)(120 * DT)) {
         return ApiStatus_BLOCK;
     } else {
         return ApiStatus_DONE1;
     }
 }
 
-API_CALLABLE(N(BuildSpiritCapturePath)) {
+API_CALLABLE(BuildSpiritCapturePath) {
     Bytecode* args = script->ptrReadPos;
     s32 spiritNpcID = evt_get_variable(script, *args++);
     f32 arcHeight = evt_get_float_variable(script, *args++);
     f32 midpointBias = evt_get_float_variable(script, *args++);
 
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
-    SpiritCapturePath* path = &N(SpiritCapturePaths)[spiritNpcID];
+    SpiritCapturePath* path = &SpiritCapturePaths[spiritNpcID];
     s32 numPoints = 3;
     s32 pathTime = 30;
-    s32 cardIndex = N(CardIndexForSpirit)[spiritNpcID];
+    s32 cardIndex = CardIndexForSpirit[spiritNpcID];
 
     s32 time = effect->data.somethingRotating->lifetime;
     f32 roll = (time + 30) * 4.0f + cardIndex * CARD_RING_ANGLE_SPACING;
@@ -922,20 +922,20 @@ API_CALLABLE(N(BuildSpiritCapturePath)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateWorldFogParams) = {
+EvtScript EVS_UpdateWorldFogParams = {
     Set(LVar0, 120)
     Set(LVar1, 895)
     Loop(10)
         Add(LVar0, -12)
         Add(LVar1, 10)
-        Call(N(SetWorldFogParams), 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
+        Call(SetWorldFogParams, 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
         Wait(1)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_CaptureSpirits) = {
+EvtScript EVS_CaptureSpirits = {
     Call(DismissEffect, ArrayVar(6))
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
@@ -945,20 +945,20 @@ EvtScript N(EVS_CaptureSpirits) = {
         Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(13), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Klevar, 80, Float(0.5))
+        Call(BuildSpiritCapturePath, NPC_Klevar, 80, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(6)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Klevar, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(13), ArrayVar(24), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(13), ArrayVar(24), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Klevar, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(6)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Panic)
         Call(SetNpcImgFXParams, NPC_Klevar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Klevar, NPC_FLAG_INVISIBLE, true)
@@ -974,20 +974,20 @@ EvtScript N(EVS_CaptureSpirits) = {
         Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(10), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Skolar, 30, Float(0.5))
+        Call(BuildSpiritCapturePath, NPC_Skolar, 30, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(3)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Skolar, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(10), ArrayVar(21), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(10), ArrayVar(21), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Skolar, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(3)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_IdleSad)
         Call(SetNpcImgFXParams, NPC_Skolar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Skolar, NPC_FLAG_INVISIBLE, true)
@@ -1003,20 +1003,20 @@ EvtScript N(EVS_CaptureSpirits) = {
         Call(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(11), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Muskular, -80, Float(0.3))
+        Call(BuildSpiritCapturePath, NPC_Muskular, -80, Float(0.3))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(4)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Muskular, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(11), ArrayVar(22), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(11), ArrayVar(22), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Muskular, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(4)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Panic)
         Call(SetNpcImgFXParams, NPC_Muskular, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Muskular, NPC_FLAG_INVISIBLE, true)
@@ -1032,20 +1032,20 @@ EvtScript N(EVS_CaptureSpirits) = {
         Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(14), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Kalmar, 120, Float(0.5))
+        Call(BuildSpiritCapturePath, NPC_Kalmar, 120, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(7)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Kalmar, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(14), ArrayVar(25), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(14), ArrayVar(25), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Kalmar, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(7)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Panic)
         Call(SetNpcImgFXParams, NPC_Kalmar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Kalmar, NPC_FLAG_INVISIBLE, true)
@@ -1061,20 +1061,20 @@ EvtScript N(EVS_CaptureSpirits) = {
         Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(12), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Misstar, 120, Float(0.5))
+        Call(BuildSpiritCapturePath, NPC_Misstar, 120, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(5)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Misstar, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(12), ArrayVar(23), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(12), ArrayVar(23), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Misstar, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(5)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Panic)
         Call(SetNpcImgFXParams, NPC_Misstar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Misstar, NPC_FLAG_INVISIBLE, true)
@@ -1090,20 +1090,20 @@ EvtScript N(EVS_CaptureSpirits) = {
         Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(9), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Mamar, -60, Float(0.5))
+        Call(BuildSpiritCapturePath, NPC_Mamar, -60, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(2)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Mamar, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(9), ArrayVar(20), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(9), ArrayVar(20), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Mamar, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(2)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Panic)
         Call(SetNpcImgFXParams, NPC_Mamar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Mamar, NPC_FLAG_INVISIBLE, true)
@@ -1114,51 +1114,51 @@ EvtScript N(EVS_CaptureSpirits) = {
     End
 };
 
-f32 N(FinalCamMoveBoomLength) = 130.0;
+f32 FinalCamMoveBoomLength = 130.0;
 
-API_CALLABLE(N(CamPullBack_Final)) {
+API_CALLABLE(CamPullBack_Final) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    N(lerp_value_with_max_step)(N(IntroCamSettings15).boomLength, N(IntroCamSettings16).boomLength,
-        N(FinalCamMoveBoomLength), 1.0f, &N(FinalCamMoveBoomLength));
+    lerp_value_with_max_step(IntroCamSettings15.boomLength, IntroCamSettings16.boomLength,
+        FinalCamMoveBoomLength, 1.0f, &FinalCamMoveBoomLength);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(FinalCamMoveBoomLength);
-    if (N(FinalCamMoveBoomLength) == 700.0f) {
+    camera->overrideSettings.boomLength = FinalCamMoveBoomLength;
+    if (FinalCamMoveBoomLength == 700.0f) {
         return ApiStatus_DONE1;
     }
     return ApiStatus_BLOCK;
 }
 
-s32 N(FlyToBowserTime) = 0;
+s32 FlyToBowserTime = 0;
 
-API_CALLABLE(N(KammyFlyToBowser)) {
+API_CALLABLE(KammyFlyToBowser) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
 
     if (isInitialCall) {
-        N(FlyToBowserStartX) = kammy->pos.x;
-        N(FlyToBowserStartZ) = kammy->pos.z;
+        FlyToBowserStartX = kammy->pos.x;
+        FlyToBowserStartZ = kammy->pos.z;
     }
 
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, N(FlyToBowserStartX), -95.0f, N(FlyToBowserTime), 40.0f, &kammy->pos.x);
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, N(FlyToBowserStartZ), 20.0f, N(FlyToBowserTime), 40.0f, &kammy->pos.z);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToBowserStartX, -95.0f, FlyToBowserTime, 40.0f, &kammy->pos.x);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToBowserStartZ, 20.0f, FlyToBowserTime, 40.0f, &kammy->pos.z);
     kammy->colliderPos.x = kammy->pos.x;
     kammy->colliderPos.z = kammy->pos.z;
 
-    N(FlyToBowserTime)++;
-    if (N(FlyToBowserTime) <= (s32)(40 * DT)) {
+    FlyToBowserTime++;
+    if (FlyToBowserTime <= (s32)(40 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-void N(appendGfx_image_strips)(
+void appendGfx_image_strips(
     s32 baseX, s32 baseY,
     IMG_PTR img, PAL_PTR pal,
     s32 alpha, s32 width, s32 height, s32 lineHeight
 );
 
 // when the spirits leap back in shock, their radial position is multiplied by these; xz by the first, y by the second
-s32 N(StarSpiritLeapBackScalars)[] = {
+s32 StarSpiritLeapBackScalars[] = {
     Float(0.93),  Float(0.9),
     Float(0.938), Float(0.91),
     Float(0.955), Float(0.93),
@@ -1171,9 +1171,9 @@ s32 N(StarSpiritLeapBackScalars)[] = {
     Float(1.0),   Float(1.0),
 };
 
-StoryGraphicData* N(StoryGraphicsPtr) = &N(StoryGraphics);
+StoryGraphicData* StoryGraphicsPtr = &StoryGraphics;
 
-Gfx N(gfx_setup_story_viewport)[] = {
+Gfx gfx_setup_story_viewport[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -1193,20 +1193,20 @@ Gfx N(gfx_setup_story_viewport)[] = {
     gsSPEndDisplayList(),
 };
 
-void N(draw_foreground_bowser_silhouette)(void) {
-    s32 x = N(StoryGraphicsPtr)->silhouettePosX << 0x10;
-    s32 y = N(StoryGraphicsPtr)->silhouettePosY << 0x10;
+void draw_foreground_bowser_silhouette(void) {
+    s32 x = StoryGraphicsPtr->silhouettePosX << 0x10;
+    s32 y = StoryGraphicsPtr->silhouettePosY << 0x10;
 
-    if (N(StoryGraphicsPtr)->workerID != 0) {
-        N(appendGfx_image_strips)(
+    if (StoryGraphicsPtr->workerID != 0) {
+        appendGfx_image_strips(
             x >> 0x10, y >> 0x10,
-            N(StoryGraphicsPtr)->imgBowser, N(StoryGraphicsPtr)->palBowser,
+            StoryGraphicsPtr->imgBowser, StoryGraphicsPtr->palBowser,
             255, 128, 128, 16
         );
     }
 }
 
-void N(appendGfx_image_strips)(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 alpha, s32 width, s32 height, s32 lineHeight) {
+void appendGfx_image_strips(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 alpha, s32 width, s32 height, s32 lineHeight) {
     u8 overlayType;
     f32 overlayAlphaBack;
     f32 overlayAlphaFront;
@@ -1217,7 +1217,7 @@ void N(appendGfx_image_strips)(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gSPDisplayList(gMainGfxPos++, N(gfx_setup_story_viewport));
+    gSPDisplayList(gMainGfxPos++, gfx_setup_story_viewport);
 
     if (pal != nullptr) {
         gDPLoadTLUT_pal256(gMainGfxPos++, pal);
@@ -1249,15 +1249,15 @@ void N(appendGfx_image_strips)(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s
     gDPPipeSync(gMainGfxPos++);
 }
 
-void N(draw_background_tape)(void) {
-    N(appendGfx_image_strips)(
-        N(StoryGraphicsPtr)->tapePosX, N(StoryGraphicsPtr)->tapePosY,
-        N(StoryGraphicsPtr)->imgTape, nullptr,
-        N(StoryGraphicsPtr)->tapeAlpha, 128, 128, 32
+void draw_background_tape(void) {
+    appendGfx_image_strips(
+        StoryGraphicsPtr->tapePosX, StoryGraphicsPtr->tapePosY,
+        StoryGraphicsPtr->imgTape, nullptr,
+        StoryGraphicsPtr->tapeAlpha, 128, 128, 32
     );
 }
 
-void N(appendGfx_image_ci)(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal) {
+void appendGfx_image_ci(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal) {
     s32 i;
     s32 m = 1;
 
@@ -1280,21 +1280,21 @@ void N(appendGfx_image_ci)(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-void N(worker_draw_story_graphics)(void) {
+void worker_draw_story_graphics(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 vpX = camera->viewportStartX;
     s32 vpY = camera->viewportStartY;
     u8 overlayType;
     f32 overlayAlpha;
 
-    N(draw_background_tape)();
+    draw_background_tape();
 
-    gSPDisplayList(gMainGfxPos++, N(gfx_setup_story_viewport));
+    gSPDisplayList(gMainGfxPos++, gfx_setup_story_viewport);
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, nuGfxCfb_ptr);
 
-    if (N(StoryGraphicsPtr)->storyPageAlpha < 255) {
+    if (StoryGraphicsPtr->storyPageAlpha < 255) {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
-        gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(StoryGraphicsPtr)->storyPageAlpha);
+        gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, StoryGraphicsPtr->storyPageAlpha);
     }
 
     // use an overlay set between the world and storybook geometry to tint those elements
@@ -1305,31 +1305,31 @@ void N(worker_draw_story_graphics)(void) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 208, 208, 208, (s32) overlayAlpha);
     }
 
-    if (N(StoryGraphicsPtr)->flipOrder) {
-        N(appendGfx_image_ci)(
-            vpX + N(StoryGraphicsPtr)->frontImgPosX,
-            vpY + N(StoryGraphicsPtr)->frontImgPosY,
-            N(StoryGraphicsPtr)->imgFront,
-            N(StoryGraphicsPtr)->palFront
+    if (StoryGraphicsPtr->flipOrder) {
+        appendGfx_image_ci(
+            vpX + StoryGraphicsPtr->frontImgPosX,
+            vpY + StoryGraphicsPtr->frontImgPosY,
+            StoryGraphicsPtr->imgFront,
+            StoryGraphicsPtr->palFront
         );
-        N(appendGfx_image_ci)(
-            vpX + N(StoryGraphicsPtr)->backImgPosX,
-            vpY + N(StoryGraphicsPtr)->backImgPosY,
-            N(StoryGraphicsPtr)->imgBack,
-            N(StoryGraphicsPtr)->palBack
+        appendGfx_image_ci(
+            vpX + StoryGraphicsPtr->backImgPosX,
+            vpY + StoryGraphicsPtr->backImgPosY,
+            StoryGraphicsPtr->imgBack,
+            StoryGraphicsPtr->palBack
         );
     } else {
-        N(appendGfx_image_ci)(
-            vpX + N(StoryGraphicsPtr)->backImgPosX,
-            vpY + N(StoryGraphicsPtr)->backImgPosY,
-            N(StoryGraphicsPtr)->imgBack,
-            N(StoryGraphicsPtr)->palBack
+        appendGfx_image_ci(
+            vpX + StoryGraphicsPtr->backImgPosX,
+            vpY + StoryGraphicsPtr->backImgPosY,
+            StoryGraphicsPtr->imgBack,
+            StoryGraphicsPtr->palBack
         );
-        N(appendGfx_image_ci)(
-            vpX + N(StoryGraphicsPtr)->frontImgPosX,
-            vpY + N(StoryGraphicsPtr)->frontImgPosY,
-            N(StoryGraphicsPtr)->imgFront,
-            N(StoryGraphicsPtr)->palFront
+        appendGfx_image_ci(
+            vpX + StoryGraphicsPtr->frontImgPosX,
+            vpY + StoryGraphicsPtr->frontImgPosY,
+            StoryGraphicsPtr->imgFront,
+            StoryGraphicsPtr->palFront
         );
     }
 }
@@ -1339,12 +1339,12 @@ void N(worker_draw_story_graphics)(void) {
 #define BOWSER_IMG_SIZE (128 * 128 * G_IM_SIZ_8b_BYTES)
 #define PAL_256_SIZE (256 * 2)
 
-void N(load_story_image)(s32 loadBackImage, s32 imageIdx) {
+void load_story_image(s32 loadBackImage, s32 imageIdx) {
     s32 i;
 
     imageIdx--;
     if (imageIdx < 0) {
-        u16* pal = N(StoryGraphicsPtr)->palFront;
+        u16* pal = StoryGraphicsPtr->palFront;
 
         // overwrite palette to fill entire frame with subtle off-white coloring
         for (i = 0; i < 256; i++) {
@@ -1357,60 +1357,60 @@ void N(load_story_image)(s32 loadBackImage, s32 imageIdx) {
         dma_copy(
             title_bg_1_ROM_START + imageIdx * (STORY_IMG_SIZE + PAL_256_SIZE),
             title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE),
-            N(StoryGraphicsPtr)->imgFront
+            StoryGraphicsPtr->imgFront
         );
     } else {
         dma_copy(
             title_bg_1_ROM_START + imageIdx * (STORY_IMG_SIZE + PAL_256_SIZE),
             title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE),
-            N(StoryGraphicsPtr)->imgBack
+            StoryGraphicsPtr->imgBack
         );
     }
 }
 
-API_CALLABLE(N(InitializeStoryGraphicsData)) {
+API_CALLABLE(InitializeStoryGraphicsData) {
     u8* dmaEnd;
     u8* dmaStart;
     u8* pos;
 
-    N(StoryGraphicsPtr)->workerID = create_worker_frontUI(nullptr, N(worker_draw_story_graphics));
-    N(StoryGraphicsPtr)->imgFront = pos = mdl_get_next_texture_address(
+    StoryGraphicsPtr->workerID = create_worker_frontUI(nullptr, worker_draw_story_graphics);
+    StoryGraphicsPtr->imgFront = pos = mdl_get_next_texture_address(
         (STORY_IMG_SIZE + PAL_256_SIZE) +
         (STORY_IMG_SIZE + PAL_256_SIZE) +
         TAPE_IMG_SIZE +
         (BOWSER_IMG_SIZE + PAL_256_SIZE));
     pos += STORY_IMG_SIZE;
-    N(StoryGraphicsPtr)->palFront = (u16*) pos;
+    StoryGraphicsPtr->palFront = (u16*) pos;
     pos += PAL_256_SIZE;
-    N(StoryGraphicsPtr)->imgBack = pos;
+    StoryGraphicsPtr->imgBack = pos;
     pos += STORY_IMG_SIZE;
-    N(StoryGraphicsPtr)->palBack = (u16*) pos;
+    StoryGraphicsPtr->palBack = (u16*) pos;
     pos += PAL_256_SIZE;
-    N(StoryGraphicsPtr)->imgTape = pos;
+    StoryGraphicsPtr->imgTape = pos;
     pos += TAPE_IMG_SIZE;
-    N(StoryGraphicsPtr)->imgBowser = pos;
+    StoryGraphicsPtr->imgBowser = pos;
     pos += BOWSER_IMG_SIZE;
-    N(StoryGraphicsPtr)->palBowser = (u16*) pos;
-    N(StoryGraphicsPtr)->frontImgPosX = 0;
-    N(StoryGraphicsPtr)->frontImgPosY = 0;
-    N(StoryGraphicsPtr)->backImgPosX = 0;
-    N(StoryGraphicsPtr)->backImgPosY = 0;
-    N(StoryGraphicsPtr)->silhouettePosX = 0;
-    N(StoryGraphicsPtr)->silhouettePosY = 240;
-    N(StoryGraphicsPtr)->tapePosX = 111;
-    N(StoryGraphicsPtr)->tapePosY = 54;
+    StoryGraphicsPtr->palBowser = (u16*) pos;
+    StoryGraphicsPtr->frontImgPosX = 0;
+    StoryGraphicsPtr->frontImgPosY = 0;
+    StoryGraphicsPtr->backImgPosX = 0;
+    StoryGraphicsPtr->backImgPosY = 0;
+    StoryGraphicsPtr->silhouettePosX = 0;
+    StoryGraphicsPtr->silhouettePosY = 240;
+    StoryGraphicsPtr->tapePosX = 111;
+    StoryGraphicsPtr->tapePosY = 54;
 
-    N(load_story_image)(false, STORY_PAGE_BLANK);
-    N(load_story_image)(true, STORY_PAGE_STARRY_SKY);
+    load_story_image(false, STORY_PAGE_BLANK);
+    load_story_image(true, STORY_PAGE_STARRY_SKY);
 
     // load the tape and bowser silhouette images
     dmaStart = title_tape_ROM_START;
     dmaEnd = title_tape_ROM_START + TAPE_IMG_SIZE + BOWSER_IMG_SIZE + PAL_256_SIZE;
 
-    dma_copy(dmaStart, dmaEnd, N(StoryGraphicsPtr)->imgTape);
-    N(StoryGraphicsPtr)->flipOrder = 0;
-    N(StoryGraphicsPtr)->storyPageAlpha = 255;
-    N(StoryGraphicsPtr)->tapeAlpha = 0;
+    dma_copy(dmaStart, dmaEnd, StoryGraphicsPtr->imgTape);
+    StoryGraphicsPtr->flipOrder = 0;
+    StoryGraphicsPtr->storyPageAlpha = 255;
+    StoryGraphicsPtr->tapeAlpha = 0;
     return ApiStatus_DONE2;
 }
 
@@ -1424,12 +1424,12 @@ enum {
     STORY_PAGE_STATE_DONE           = 6,
 };
 
-s32 N(StoryPageState) = STORY_PAGE_STATE_BEGIN;
-s32 N(CurrentStoryPageIdx) = 0;
-s32 N(CurrentStoryPageTime)= 0;
-u32 N(BowserSilhouetteTime) = 0;
+s32 StoryPageState = STORY_PAGE_STATE_BEGIN;
+s32 CurrentStoryPageIdx = 0;
+s32 CurrentStoryPageTime= 0;
+u32 BowserSilhouetteTime = 0;
 
-s32 N(StoryPageDuration)[] = {
+s32 StoryPageDuration[] = {
     [STORY_PAGE_BLANK]          222 * DT,
     [STORY_PAGE_STARRY_SKY]     338 * DT,
     [STORY_PAGE_SHRINE_EXT]     338 * DT,
@@ -1437,7 +1437,7 @@ s32 N(StoryPageDuration)[] = {
     [STORY_PAGE_SHRINE_INT]     622 * DT,
 };
 
-s32 N(NextPageAnimOffsetsX)[] = {
+s32 NextPageAnimOffsetsX[] = {
 #if VERSION_PAL
     0, 0, 0, -1, -3, -7, -12, -18, -28, -43, -60, -80, -100, -120, -140, -160, -180, -200, -220, -515, -270,
 #else
@@ -1447,7 +1447,7 @@ s32 N(NextPageAnimOffsetsX)[] = {
 #endif
 };
 
-u8 N(BowserSilhouetteShakeY)[] = {
+u8 BowserSilhouetteShakeY[] = {
 #if VERSION_PAL
     240, 240, 240, 240, 210, 185, 174, 168,
     170, 170, 170, 170, 170, 167, 165, 163,
@@ -1527,11 +1527,11 @@ u8 N(BowserSilhouetteShakeY)[] = {
 #endif
 };
 
-u16 N(BowserSilhouetteLeapX)[] = {
+u16 BowserSilhouetteLeapX[] = {
     100, 110, 121, 136, 155, 175, 195, 214, 232, 249, 265, 280, 294, 307, 319
 };
 
-u16 N(BowserSilhouetteLeapY)[] = {
+u16 BowserSilhouetteLeapY[] = {
     3, 2, -6, -21, -40, -63, -90, -120, -160, -200, -240, -280, -320
 };
 
@@ -1541,99 +1541,99 @@ u16 N(BowserSilhouetteLeapY)[] = {
 #define BOWSER_APPEARS_TIME (268)
 #endif
 
-API_CALLABLE(N(AnimateStorybookPages)) {
-    switch (N(StoryPageState)) {
+API_CALLABLE(AnimateStorybookPages) {
+    switch (StoryPageState) {
         case STORY_PAGE_STATE_BEGIN:
-            N(StoryPageState)++;
-            N(CurrentStoryPageTime) = N(StoryPageDuration)[N(CurrentStoryPageIdx)];
+            StoryPageState++;
+            CurrentStoryPageTime = StoryPageDuration[CurrentStoryPageIdx];
             break;
         case STORY_PAGE_STATE_WAIT:
-            if (N(CurrentStoryPageTime) != 0) {
-                N(CurrentStoryPageTime)--;
+            if (CurrentStoryPageTime != 0) {
+                CurrentStoryPageTime--;
             } else {
-                N(CurrentStoryPageTime) = ARRAY_COUNT(N(NextPageAnimOffsetsX));
-                N(StoryPageState)++;
+                CurrentStoryPageTime = ARRAY_COUNT(NextPageAnimOffsetsX);
+                StoryPageState++;
                 sfx_play_sound(SOUND_INTRO_NEXT_PAGE);
             }
             break;
         case STORY_PAGE_STATE_NEXT:
-            if (N(CurrentStoryPageTime) != 0) {
-                N(CurrentStoryPageTime)--;
-                if (!N(StoryGraphicsPtr)->flipOrder) {
-                    N(StoryGraphicsPtr)->frontImgPosX = N(NextPageAnimOffsetsX)[ARRAY_COUNT(N(NextPageAnimOffsetsX)) - 1 - N(CurrentStoryPageTime)];
-                    N(StoryGraphicsPtr)->frontImgPosY = 0;
+            if (CurrentStoryPageTime != 0) {
+                CurrentStoryPageTime--;
+                if (!StoryGraphicsPtr->flipOrder) {
+                    StoryGraphicsPtr->frontImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->frontImgPosY = 0;
                 } else {
-                    N(StoryGraphicsPtr)->backImgPosX = N(NextPageAnimOffsetsX)[ARRAY_COUNT(N(NextPageAnimOffsetsX)) - 1 - N(CurrentStoryPageTime)];
-                    N(StoryGraphicsPtr)->backImgPosY = 0;
+                    StoryGraphicsPtr->backImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->backImgPosY = 0;
                 }
             } else {
-                N(CurrentStoryPageIdx)++;
-                if (N(CurrentStoryPageIdx) + 1 < STORY_PAGE_SHRINE_INT + 1) {
-                    N(load_story_image)(N(StoryGraphicsPtr)->flipOrder, N(CurrentStoryPageIdx) + 1);
-                    N(StoryPageState) = STORY_PAGE_STATE_BEGIN;
-                    N(StoryGraphicsPtr)->frontImgPosX = 0;
-                    N(StoryGraphicsPtr)->frontImgPosY = 0;
-                    N(StoryGraphicsPtr)->backImgPosX = 0;
-                    N(StoryGraphicsPtr)->backImgPosY = 0;
-                    N(StoryGraphicsPtr)->flipOrder = N(StoryGraphicsPtr)->flipOrder ^ 1;
+                CurrentStoryPageIdx++;
+                if (CurrentStoryPageIdx + 1 < STORY_PAGE_SHRINE_INT + 1) {
+                    load_story_image(StoryGraphicsPtr->flipOrder, CurrentStoryPageIdx + 1);
+                    StoryPageState = STORY_PAGE_STATE_BEGIN;
+                    StoryGraphicsPtr->frontImgPosX = 0;
+                    StoryGraphicsPtr->frontImgPosY = 0;
+                    StoryGraphicsPtr->backImgPosX = 0;
+                    StoryGraphicsPtr->backImgPosY = 0;
+                    StoryGraphicsPtr->flipOrder = StoryGraphicsPtr->flipOrder ^ 1;
                 } else {
-                    if (!N(StoryGraphicsPtr)->flipOrder) {
-                        N(StoryGraphicsPtr)->backImgPosX = 0;
-                        N(StoryGraphicsPtr)->backImgPosY = 0;
+                    if (!StoryGraphicsPtr->flipOrder) {
+                        StoryGraphicsPtr->backImgPosX = 0;
+                        StoryGraphicsPtr->backImgPosY = 0;
                     } else {
-                        N(StoryGraphicsPtr)->frontImgPosX = 0;
-                        N(StoryGraphicsPtr)->frontImgPosY = 0;
+                        StoryGraphicsPtr->frontImgPosX = 0;
+                        StoryGraphicsPtr->frontImgPosY = 0;
                     }
                     gCameras[CAM_DEFAULT].flags &= ~CAMERA_FLAG_DISABLED;
-                    N(StoryPageState)++;
+                    StoryPageState++;
                 }
             }
             break;
         case STORY_PAGE_STATE_BOWSER_BEGIN:
-            N(BowserSilhouetteTime) = 0;
-            N(StoryPageState)++;
-            N(CurrentStoryPageTime) = N(StoryPageDuration)[N(CurrentStoryPageIdx)];
+            BowserSilhouetteTime = 0;
+            StoryPageState++;
+            CurrentStoryPageTime = StoryPageDuration[CurrentStoryPageIdx];
             break;
         case STORY_PAGE_STATE_BOWSER_ANIM:
-            if (N(CurrentStoryPageTime) != 0) {
-                if (N(CurrentStoryPageTime) < N(StoryPageDuration)[N(CurrentStoryPageIdx)] - BOWSER_APPEARS_TIME) {
-                    u32 timeLeft = N(BowserSilhouetteTime) - ARRAY_COUNT(N(BowserSilhouetteShakeY));
+            if (CurrentStoryPageTime != 0) {
+                if (CurrentStoryPageTime < StoryPageDuration[CurrentStoryPageIdx] - BOWSER_APPEARS_TIME) {
+                    u32 timeLeft = BowserSilhouetteTime - ARRAY_COUNT(BowserSilhouetteShakeY);
 
-                    if (N(BowserSilhouetteTime) < ARRAY_COUNT(N(BowserSilhouetteShakeY))) {
-                        N(StoryGraphicsPtr)->silhouettePosX = N(BowserSilhouetteLeapX)[0];
-                        N(StoryGraphicsPtr)->silhouettePosY = N(BowserSilhouetteShakeY)[N(BowserSilhouetteTime)];
+                    if (BowserSilhouetteTime < ARRAY_COUNT(BowserSilhouetteShakeY)) {
+                        StoryGraphicsPtr->silhouettePosX = BowserSilhouetteLeapX[0];
+                        StoryGraphicsPtr->silhouettePosY = BowserSilhouetteShakeY[BowserSilhouetteTime];
                     } else {
-                        if (timeLeft < ARRAY_COUNT(N(BowserSilhouetteLeapX))) {
-                            N(StoryGraphicsPtr)->silhouettePosX = N(BowserSilhouetteLeapX)[timeLeft];
-                            if (timeLeft < ARRAY_COUNT(N(BowserSilhouetteLeapY))) {
-                                N(StoryGraphicsPtr)->silhouettePosY =
-                                    N(BowserSilhouetteShakeY)[ARRAY_COUNT(N(BowserSilhouetteShakeY)) - 1]
-                                    + N(BowserSilhouetteLeapY)[timeLeft];
+                        if (timeLeft < ARRAY_COUNT(BowserSilhouetteLeapX)) {
+                            StoryGraphicsPtr->silhouettePosX = BowserSilhouetteLeapX[timeLeft];
+                            if (timeLeft < ARRAY_COUNT(BowserSilhouetteLeapY)) {
+                                StoryGraphicsPtr->silhouettePosY =
+                                    BowserSilhouetteShakeY[ARRAY_COUNT(BowserSilhouetteShakeY) - 1]
+                                    + BowserSilhouetteLeapY[timeLeft];
                             }
                         }
                     }
-                    N(BowserSilhouetteTime)++;
+                    BowserSilhouetteTime++;
                 }
-                N(CurrentStoryPageTime)--;
+                CurrentStoryPageTime--;
             } else {
-                N(CurrentStoryPageTime) = ARRAY_COUNT(N(NextPageAnimOffsetsX));
-                N(StoryPageState)++;
-                N(StoryGraphicsPtr)->tapeAlpha = 255;
+                CurrentStoryPageTime = ARRAY_COUNT(NextPageAnimOffsetsX);
+                StoryPageState++;
+                StoryGraphicsPtr->tapeAlpha = 255;
                 sfx_play_sound(SOUND_INTRO_NEXT_PAGE);
             }
             break;
         case STORY_PAGE_STATE_BOWSER_NEXT:
-            if (N(CurrentStoryPageTime) != 0) {
-                N(CurrentStoryPageTime)--;
-                if (!N(StoryGraphicsPtr)->flipOrder) {
-                    N(StoryGraphicsPtr)->backImgPosX = N(NextPageAnimOffsetsX)[ARRAY_COUNT(N(NextPageAnimOffsetsX)) - 1 - N(CurrentStoryPageTime)];
-                    N(StoryGraphicsPtr)->backImgPosY = 0;
+            if (CurrentStoryPageTime != 0) {
+                CurrentStoryPageTime--;
+                if (!StoryGraphicsPtr->flipOrder) {
+                    StoryGraphicsPtr->backImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->backImgPosY = 0;
                 } else {
-                    N(StoryGraphicsPtr)->frontImgPosX = N(NextPageAnimOffsetsX)[ARRAY_COUNT(N(NextPageAnimOffsetsX)) - 1 - N(CurrentStoryPageTime)];
-                    N(StoryGraphicsPtr)->frontImgPosY = 0;
+                    StoryGraphicsPtr->frontImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->frontImgPosY = 0;
                 }
             } else {
-                N(StoryPageState)++;
+                StoryPageState++;
             }
             break;
         case STORY_PAGE_STATE_DONE:
@@ -1643,22 +1643,22 @@ API_CALLABLE(N(AnimateStorybookPages)) {
     return ApiStatus_BLOCK;
 }
 
-s32 N(FadeAwayTapeTime) = 30;
+s32 FadeAwayTapeTime = 30;
 
-API_CALLABLE(N(FadeAwayTapeGraphic)) {
-    if (N(FadeAwayTapeTime) != 0) {
-        N(FadeAwayTapeTime)--;
-        N(StoryGraphicsPtr)->tapeAlpha = (N(FadeAwayTapeTime) * 255) / 30;
+API_CALLABLE(FadeAwayTapeGraphic) {
+    if (FadeAwayTapeTime != 0) {
+        FadeAwayTapeTime--;
+        StoryGraphicsPtr->tapeAlpha = (FadeAwayTapeTime * 255) / 30;
         return ApiStatus_BLOCK;
     } else {
-        N(StoryGraphicsPtr)->tapeAlpha = 0;
-        free_worker(N(StoryGraphicsPtr)->workerID);
-        N(StoryGraphicsPtr)->workerID = 0;
+        StoryGraphicsPtr->tapeAlpha = 0;
+        free_worker(StoryGraphicsPtr->workerID);
+        StoryGraphicsPtr->workerID = 0;
         return ApiStatus_DONE1;
     }
 }
 
-API_CALLABLE(N(ForceStarRodAlwaysFaceCamera)) {
+API_CALLABLE(ForceStarRodAlwaysFaceCamera) {
     Npc* npc = resolve_npc(script, NPC_StarRod);
 
     npc->yaw = npc->renderYaw = 180.0f - gCameras[gCurrentCameraID].curYaw;
@@ -1667,7 +1667,7 @@ API_CALLABLE(N(ForceStarRodAlwaysFaceCamera)) {
 
 // While Kammy flies back to Bowser, keep the captured spirits and the card ring locked to her movement.
 // Their initial positions are saved once, then Kammy's displacement is added each frame.
-API_CALLABLE(N(UpdateCapturedSpiritsWithKammy)) {
+API_CALLABLE(UpdateCapturedSpiritsWithKammy) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
     Npc* spirit;
@@ -1678,31 +1678,31 @@ API_CALLABLE(N(UpdateCapturedSpiritsWithKammy)) {
     s32 i;
 
     if (isInitialCall) {
-        N(KammyCarryStartX) = kammy->pos.x;
-        N(KammyCarryStartY) = kammy->pos.y;
-        N(KammyCarryStartZ) = kammy->pos.z;
+        KammyCarryStartX = kammy->pos.x;
+        KammyCarryStartY = kammy->pos.y;
+        KammyCarryStartZ = kammy->pos.z;
 
-        for (i = NPC_Eldstar; i < ARRAY_COUNT(N(CapturedSpiritStartX)); i++) {
+        for (i = NPC_Eldstar; i < ARRAY_COUNT(CapturedSpiritStartX); i++) {
             spirit = resolve_npc(script, i);
 
-            N(CapturedSpiritStartX)[i] = spirit->pos.x;
-            N(CapturedSpiritStartY)[i] = spirit->pos.y;
-            N(CapturedSpiritStartZ)[i] = spirit->pos.z;
+            CapturedSpiritStartX[i] = spirit->pos.x;
+            CapturedSpiritStartY[i] = spirit->pos.y;
+            CapturedSpiritStartZ[i] = spirit->pos.z;
         }
-        N(CardRingCarryStartX) = effect->data.somethingRotating->pos.x;
-        N(CardRingCarryStartY) = effect->data.somethingRotating->pos.y;
-        N(CardRingCarryStartZ) = effect->data.somethingRotating->pos.z;
+        CardRingCarryStartX = effect->data.somethingRotating->pos.x;
+        CardRingCarryStartY = effect->data.somethingRotating->pos.y;
+        CardRingCarryStartZ = effect->data.somethingRotating->pos.z;
     }
 
-    deltaX = kammy->pos.x - N(KammyCarryStartX);
-    deltaY = kammy->pos.y - N(KammyCarryStartY);
-    deltaZ = kammy->pos.z - N(KammyCarryStartZ);
+    deltaX = kammy->pos.x - KammyCarryStartX;
+    deltaY = kammy->pos.y - KammyCarryStartY;
+    deltaZ = kammy->pos.z - KammyCarryStartZ;
 
     i = 0;
-    startZ = N(CapturedSpiritStartZ);
-    startY = N(CapturedSpiritStartY);
-    startX = N(CapturedSpiritStartX);
-    for (; i < ARRAY_COUNT(N(CapturedSpiritStartX)); ) {
+    startZ = CapturedSpiritStartZ;
+    startY = CapturedSpiritStartY;
+    startX = CapturedSpiritStartX;
+    for (; i < ARRAY_COUNT(CapturedSpiritStartX); ) {
         spirit = resolve_npc(script, i);
         i++;
         spirit->pos.x = *startX++ + deltaX;
@@ -1714,28 +1714,28 @@ API_CALLABLE(N(UpdateCapturedSpiritsWithKammy)) {
         spirit->colliderPos.z = spirit->pos.z;
     }
 
-    effect->data.somethingRotating->pos.x = N(CardRingCarryStartX) + deltaX;
-    effect->data.somethingRotating->pos.y = N(CardRingCarryStartY) + deltaY;
-    effect->data.somethingRotating->pos.z = N(CardRingCarryStartZ) + deltaZ;
+    effect->data.somethingRotating->pos.x = CardRingCarryStartX + deltaX;
+    effect->data.somethingRotating->pos.y = CardRingCarryStartY + deltaY;
+    effect->data.somethingRotating->pos.z = CardRingCarryStartZ + deltaZ;
     return ApiStatus_BLOCK;
 }
 
-extern EvtScript N(EVS_Scene_IntroStory);
+extern EvtScript EVS_Scene_IntroStory;
 
-EvtScript N(EVS_Intro_Main) = {
-    UseArray(Ref(N(ScratchSpace)))
+EvtScript EVS_Intro_Main = {
+    UseArray(Ref(ScratchSpace))
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
-    Call(N(InitWorldTintMode))
-    Call(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 0)
+    Call(SetWorldFogParams, 0, 0, 0, 0, 0, 0, 0, 995, 1000)
+    Call(InitWorldTintMode)
+    Call(SetWorldColorParams, 255, 255, 255, 0, 0, 0, 0)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
-    Call(N(AdjustCamVfov), 0, 62)
+    Call(AdjustCamVfov, 0, 62)
     Call(SetPanTarget, CAM_DEFAULT, 0, 157, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings1)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings1))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(N(InitializeStoryGraphicsData))
+    Call(InitializeStoryGraphicsData)
     Thread
         Wait(2)
         Call(SetCamEnabled, CAM_DEFAULT, false)
@@ -1745,62 +1745,62 @@ EvtScript N(EVS_Intro_Main) = {
     Call(EnableGroup, MODEL_g271, false)
     Call(EnableGroup, MODEL_g272, false)
     Call(EnableGroup, MODEL_g273, false)
-    Call(N(InitializeStoryCamera))
+    Call(InitializeStoryCamera)
     Call(EnableGroup, MODEL_g277, false)
     Call(EnableModel, MODEL_o8, false)
-    Exec(N(EVS_Scene_IntroStory))
+    Exec(EVS_Scene_IntroStory)
     Return
     End
 };
 
-f32 N(AnimBowser_FlyOff_Time) = 0.0;
+f32 AnimBowser_FlyOff_Time = 0.0;
 
-API_CALLABLE(N(AnimBowser_FlyOff)) {
+API_CALLABLE(AnimBowser_FlyOff) {
     Npc* bowserMain = resolve_npc(script, NPC_Bowser_Body);
     Npc* bowserProp = resolve_npc(script, NPC_Bowser_Prop);
 
     if (isInitialCall) {
-        N(AnimBowser_FlyOff_InitialY) = bowserMain->pos.y;
+        AnimBowser_FlyOff_InitialY = bowserMain->pos.y;
     }
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT,
-        N(AnimBowser_FlyOff_InitialY),
-        N(AnimBowser_FlyOff_InitialY) + 500.0f,
-        N(AnimBowser_FlyOff_Time),
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,
+        AnimBowser_FlyOff_InitialY,
+        AnimBowser_FlyOff_InitialY + 500.0f,
+        AnimBowser_FlyOff_Time,
         40.0f, &bowserMain->pos.y);
     bowserProp->pos.y = bowserMain->pos.y;
     bowserMain->colliderPos.y = bowserMain->pos.y;
     bowserProp->colliderPos.y = bowserProp->pos.y;
-    N(AnimBowser_FlyOff_Time)++;
-    if (N(AnimBowser_FlyOff_Time) > (int)(40 * DT)) {
+    AnimBowser_FlyOff_Time++;
+    if (AnimBowser_FlyOff_Time > (int)(40 * DT)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;
     }
 }
 
-f32 N(AnimKammy_FlyOff_Time) = 0.0;
+f32 AnimKammy_FlyOff_Time = 0.0;
 
-API_CALLABLE(N(AnimKammy_FlyOff)) {
+API_CALLABLE(AnimKammy_FlyOff) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
 
     if (isInitialCall) {
-        N(AnimKammy_FlyOff_InitialY) = kammy->pos.y;
+        AnimKammy_FlyOff_InitialY = kammy->pos.y;
     }
-    N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT,
-        N(AnimKammy_FlyOff_InitialY),
-        N(AnimKammy_FlyOff_InitialY) + 500.0f,
-        N(AnimKammy_FlyOff_Time),
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,
+        AnimKammy_FlyOff_InitialY,
+        AnimKammy_FlyOff_InitialY + 500.0f,
+        AnimKammy_FlyOff_Time,
         40.0f, &kammy->pos.y);
     kammy->colliderPos.y = kammy->pos.y;
-    N(AnimKammy_FlyOff_Time)++;
-    if (N(AnimKammy_FlyOff_Time) > (int)(40 * DT)) {
+    AnimKammy_FlyOff_Time++;
+    if (AnimKammy_FlyOff_Time > (int)(40 * DT)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;
     }
 }
 
-API_CALLABLE(N(FadeOutStorybookTint)) {
+API_CALLABLE(FadeOutStorybookTint) {
     if (isInitialCall) {
         script->functionTemp[0] = 0;
         set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, 255.0f);
@@ -1818,7 +1818,7 @@ API_CALLABLE(N(FadeOutStorybookTint)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_Scene_IntroStory) = {
+EvtScript EVS_Scene_IntroStory = {
     Call(SetNpcPaletteSwapMode, NPC_StarRod, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
     Call(SetNpcPaletteSwapLower, NPC_StarRod, 0, 1, 20, 5)
     Call(SetNpcPaletteSwapMode, NPC_Eldstar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
@@ -1850,7 +1850,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(EnableNpcShadow, NPC_Kalmar, false)
     Call(EnableNpcShadow, NPC_Kammy, false)
     Thread
-        Call(N(ForceStarRodAlwaysFaceCamera))
+        Call(ForceStarRodAlwaysFaceCamera)
     EndThread
     Call(InterpNpcYaw, NPC_Bowser_Body, 90, 0)
     Call(InterpNpcYaw, NPC_Bowser_Prop, 90, 0)
@@ -1860,12 +1860,12 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(InterpNpcYaw, NPC_Kammy, 45, 0)
     Call(SetNpcPos, NPC_Kammy, -145, 147, 84)
     Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Still)
-    Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
-    Call(N(SetWorldColorParams), 130, 130, 130, 0, 0, 0, 15)
-    Call(N(AdjustCamVfov), 0, 35)
+    Call(SetWorldFogParams, 0, 0, 0, 0, 0, 0, 0, 995, 1000)
+    Call(SetWorldColorParams, 130, 130, 130, 0, 0, 0, 15)
+    Call(AdjustCamVfov, 0, 35)
     Call(SetPanTarget, CAM_DEFAULT, -145, 147, 84)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings6)))
-    Call(N(AnimateStorybookPages))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings6))
+    Call(AnimateStorybookPages)
     Wait(50 * DT)
     Call(SetNpcImgFXParams, NPC_Bowser_Body, IMGFX_SET_TINT, 0, 0, 0, 0)
     Call(SetNpcImgFXParams, NPC_Bowser_Prop, IMGFX_SET_TINT, 0, 0, 0, 0)
@@ -1895,26 +1895,26 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Call(InterpNpcYaw, NPC_Bowser_Body, 90, 0)
     EndThread
     Thread
-        Call(N(SetWorldColorParams), 117, 28, 42, 0, 0, 0, 15)
+        Call(SetWorldColorParams, 117, 28, 42, 0, 0, 0, 15)
     EndThread
     PlayEffect(EFFECT_LIGHTNING, 1, 0, 20, 0, 0, 0)
     Set(ArrayVar(17), LVarF)
     Thread
-        Call(N(FadeAwayTapeGraphic))
+        Call(FadeAwayTapeGraphic)
     EndThread
     Wait(16 * DT)
     Thread
-        Call(N(FadeOutStorybookTint))
+        Call(FadeOutStorybookTint)
     EndThread
     Loop(2)
-        Call(N(SetWorldColorParams), 117, 28, 42, 165, 96, 152, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 127, 0, 0, 0, 975, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 165, 96, 152, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 127, 0, 0, 0, 975, 1000)
         Wait(1)
-        Call(N(SetWorldColorParams), 117, 28, 42, 64, 34, 58, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 127, 0, 0, 0, 995, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 64, 34, 58, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 127, 0, 0, 0, 995, 1000)
         Wait(1)
-        Call(N(SetWorldColorParams), 117, 28, 42, 0, 0, 0, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 0, 0, 0, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 0, 0, 0, 0, 995, 1000)
         Wait(5)
     EndLoop
     Wait(30 * DT)
@@ -1949,15 +1949,15 @@ EvtScript N(EVS_Scene_IntroStory) = {
         PlayEffect(EFFECT_LIGHT_RAYS, 1, 0, 200, 0, Float(1.0), ArrayVar(16))
     EndThread
     Thread
-        Call(N(AddBowserHoverOffset))
+        Call(AddBowserHoverOffset)
     EndThread
     Thread
-        Call(N(AddKammyHoverOffset))
+        Call(AddKammyHoverOffset)
     EndThread
     Wait(50 * DT)
-    Call(N(AdjustCamVfov), 0, 40)
+    Call(AdjustCamVfov, 0, 40)
     Call(SetPanTarget, CAM_DEFAULT, 0, 157, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings7)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings7))
     Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_IdleSad)
     Call(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Panic)
     Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Panic)
@@ -2022,55 +2022,55 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Loop(10)
         Add(LVar0, -12)
         Add(LVar1, 10)
-        Call(N(SetWorldFogParams), 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
+        Call(SetWorldFogParams, 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
         Wait(1)
     EndLoop
     Loop(2)
-        Call(N(SetWorldColorParams), 117, 28, 42, 165, 96, 152, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 127, 0, 0, 0, 975, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 165, 96, 152, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 127, 0, 0, 0, 975, 1000)
         Wait(1)
-        Call(N(SetWorldColorParams), 117, 28, 42, 105, 60, 102, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 127, 0, 0, 0, 975, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 105, 60, 102, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 127, 0, 0, 0, 975, 1000)
         Wait(1)
-        Call(N(SetWorldColorParams), 117, 28, 42, 64, 34, 58, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 127, 0, 0, 0, 995, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 64, 34, 58, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 127, 0, 0, 0, 995, 1000)
         Wait(1)
-        Call(N(SetWorldColorParams), 117, 28, 42, 34, 14, 28, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 127, 0, 0, 0, 995, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 34, 14, 28, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 127, 0, 0, 0, 995, 1000)
         Wait(1)
-        Call(N(SetWorldColorParams), 117, 28, 42, 0, 0, 0, 0)
-        Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
+        Call(SetWorldColorParams, 117, 28, 42, 0, 0, 0, 0)
+        Call(SetWorldFogParams, 0, 0, 0, 0, 0, 0, 0, 995, 1000)
         Wait(5)
     EndLoop
     Wait(27 * DT)
     Call(DismissEffect, ArrayVar(17))
-    Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
-    Call(N(AdjustCamVfov), 0, 25)
+    Call(SetWorldFogParams, 0, 0, 0, 0, 0, 0, 0, 995, 1000)
+    Call(AdjustCamVfov, 0, 25)
     Call(SetPanTarget, CAM_DEFAULT, -38, 210, 85)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings8)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings8))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarCloseMouth)
     Call(SetNpcPos, NPC_Bowser_Body, -30, 150, 162)
     Call(SetNpcPos, NPC_Bowser_Prop, -30, 150, 162)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyChuckle)
     Thread
-        Call(N(SetWorldColorParams), 23, 10, 10, 0, 0, 0, 15)
+        Call(SetWorldColorParams, 23, 10, 10, 0, 0, 0, 15)
         Wait(28)
-        Call(N(SetWorldColorParams), 102, 45, 0, 114, 0, 0, 3)
-        Call(N(SetWorldColorParams), 102, 45, 0, 0, 0, 0, 13)
-        Call(N(SetWorldColorParams), 180, 180, 180, 0, 0, 0, 20)
+        Call(SetWorldColorParams, 102, 45, 0, 114, 0, 0, 3)
+        Call(SetWorldColorParams, 102, 45, 0, 0, 0, 0, 13)
+        Call(SetWorldColorParams, 180, 180, 180, 0, 0, 0, 20)
     EndThread
     Thread
         Set(LVar0, 995)
         Loop(30)
             Sub(LVar0, 10)
-            Call(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, LVar0, 1000)
+            Call(SetWorldFogParams, 0, 0, 0, 0, 0, 0, 0, LVar0, 1000)
             Wait(1)
         EndLoop
         Wait(10)
         Set(LVar0, 875)
         Loop(60)
             Add(LVar0, 2)
-            Call(N(SetWorldFogParams), 0, 0, 0, 0, 255, 0, 0, LVar0, 1000)
+            Call(SetWorldFogParams, 0, 0, 0, 0, 255, 0, 0, LVar0, 1000)
             Wait(1)
         EndLoop
     EndThread
@@ -2080,11 +2080,11 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Set(LVar3, -28)
     Set(LVar4, 209)
     Set(LVar5, 153)
-    Call(N(CamPushIn_BowserInhale))
+    Call(CamPushIn_BowserInhale)
     PlayEffect(EFFECT_FIRE_BREATH, 0, -30, 210, 142, 0, 180, 0, 5, 2, 30)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarFireBreath)
     Thread
-        Call(N(CamPullBack_BowserExhale))
+        Call(CamPullBack_BowserExhale)
     EndThread
     Wait(20 * DT)
     PlayEffect(EFFECT_SHIMMER_BURST, 0, 0, 180, 0, Float(0.703125), 30)
@@ -2093,24 +2093,24 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Call(RemoveEffect, ArrayVar(15))
     EndThread
     Wait(20 * DT)
-    Call(N(AdjustCamVfov), 0, 25)
+    Call(AdjustCamVfov, 0, 25)
     Call(SetPanTarget, CAM_DEFAULT, -38, 210, 85)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings9)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings9))
     Wait(20 * DT)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarOpenMouth)
     Thread
-        Call(N(BowserFlyToStarRod))
+        Call(BowserFlyToStarRod)
     EndThread
     Wait(25 * DT)
-    Call(N(AdjustCamVfov), 0, 35)
+    Call(AdjustCamVfov, 0, 35)
     Call(SetPanTarget, CAM_DEFAULT, -240, 200, 113)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings10)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings10))
     Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_IdleSad)
     Call(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Panic)
     Call(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
     Thread
         Wait(5)
-        UseBuf(Ref(N(StarSpiritLeapBackScalars)))
+        UseBuf(Ref(StarSpiritLeapBackScalars))
         Loop(10)
             FBufRead2(LVarA, LVarB)
             SetF(LVar3, LVar0)
@@ -2126,7 +2126,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
     Thread
         Wait(9)
-        UseBuf(Ref(N(StarSpiritLeapBackScalars)))
+        UseBuf(Ref(StarSpiritLeapBackScalars))
         Loop(10)
             FBufRead2(LVarA, LVarB)
             SetF(LVar3, LVar0)
@@ -2150,41 +2150,41 @@ EvtScript N(EVS_Scene_IntroStory) = {
     MulF(LVar2, Float(0.9))
     Call(SetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
     Wait(35 * DT)
-    Call(N(AdjustCamVfov), 0, 35)
+    Call(AdjustCamVfov, 0, 35)
     Call(SetPanTarget, CAM_DEFAULT, 30, 232, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings11)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings11))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarBrandish)
     Call(SetNpcPos, NPC_Bowser_Body, 0, 170, 0)
     Call(SetNpcPos, NPC_Bowser_Prop, 0, 170, 0)
     Call(SetNpcPos, NPC_StarRod, NPC_DISPOSE_LOCATION)
     Thread
-        Call(N(SetWorldColorParams), 20, 20, 20, 0, 0, 0, 15)
+        Call(SetWorldColorParams, 20, 20, 20, 0, 0, 0, 15)
     EndThread
     Set(LVar0, 21)
     Set(LVar1, 260)
     Set(LVar2, -21)
-    Call(N(SetLightRayPos))
+    Call(SetLightRayPos)
     Wait(35 * DT)
     Thread
         Wait(70 * DT)
         Set(LVar0, 0)
         Loop(10)
             Add(LVar0, 12)
-            Call(N(SetWorldFogParams), 0, 0, 0, LVar0, 255, 0, 0, 995, 1000)
+            Call(SetWorldFogParams, 0, 0, 0, LVar0, 255, 0, 0, 995, 1000)
             Wait(1)
         EndLoop
     EndThread
     Thread
         Wait(92 * DT)
-        Call(N(SetWorldColorParams), 106, 94, 110, 216, 195, 131, 8)
-        Call(N(SetWorldColorParams), 100, 105, 107, 159, 118, 50, 20)
-        Call(N(SetWorldColorParams), 122, 180, 110, 0, 0, 0, 15)
-        Call(N(SetWorldColorParams), 128, 128, 128, 255, 255, 200, 60)
+        Call(SetWorldColorParams, 106, 94, 110, 216, 195, 131, 8)
+        Call(SetWorldColorParams, 100, 105, 107, 159, 118, 50, 20)
+        Call(SetWorldColorParams, 122, 180, 110, 0, 0, 0, 15)
+        Call(SetWorldColorParams, 128, 128, 128, 255, 255, 200, 60)
     EndThread
-    Call(N(CamPullBack_BowserHoldingStarRod))
-    Call(N(AdjustCamVfov), 0, 35)
+    Call(CamPullBack_BowserHoldingStarRod)
+    Call(AdjustCamVfov, 0, 35)
     Call(SetPanTarget, CAM_DEFAULT, 0, 177, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings12)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings12))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarStarRod)
     PlayEffect(EFFECT_LIGHT_RAYS, 2, 20, 265, -21, Float(1.0), ArrayVar(18))
     PlayEffect(EFFECT_BULB_GLOW, 2, 20, 265, -21, Float(1.0), ArrayVar(19))
@@ -2193,13 +2193,13 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Loop(20)
         Add(LVar0, -6)
         Add(LVar1, 5)
-        Call(N(SetWorldFogParams), 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
+        Call(SetWorldFogParams, 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
         Wait(1)
     EndLoop
     Wait(5)
-    Call(N(AdjustCamVfov), 0, 40)
+    Call(AdjustCamVfov, 0, 40)
     Call(SetPanTarget, CAM_DEFAULT, 0, 157, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings7)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings7))
     Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Panic)
     Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Panic)
     Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_IdleSad)
@@ -2218,12 +2218,12 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Loop(40)
         Add(LVar0, -3)
         AddF(LVar1, Float(2.5))
-        Call(N(SetWorldFogParams), 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
+        Call(SetWorldFogParams, 0, 0, 0, LVar0, 255, 255, 255, LVar1, 1000)
         Wait(1)
     EndLoop
-    Call(N(AdjustCamVfov), 0, 35)
+    Call(AdjustCamVfov, 0, 35)
     Call(SetPanTarget, CAM_DEFAULT, 70, 200, -239)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings5)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings5))
     Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Hurt)
     Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Hurt)
     Call(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_Hurt)
@@ -2245,9 +2245,9 @@ EvtScript N(EVS_Scene_IntroStory) = {
     PlayEffect(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(6))
     Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(7))
-    Call(N(SetWorldColorParams), 110, 110, 110, 255, 255, 255, 0)
+    Call(SetWorldColorParams, 110, 110, 110, 255, 255, 255, 0)
     Thread
-        Call(N(SetWorldColorParams), 230, 230, 230, 0, 0, 0, 30)
+        Call(SetWorldColorParams, 230, 230, 230, 0, 0, 0, 30)
     EndThread
     Thread
         Wait(28)
@@ -2272,7 +2272,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Set(LVar2, 130)
     AddF(LVar1, Float(-30.0))
     Call(SetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
-    Exec(N(EVS_UpdateWorldFogParams))
+    Exec(EVS_UpdateWorldFogParams)
     Call(DismissEffect, ArrayVar(1))
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
@@ -2282,29 +2282,29 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_MISC_PARTICLES, 3, LVar0, LVar1, LVar2, 16, 16, 2, 20, 0)
         Set(ArrayVar(8), LVarF)
-        Call(N(BuildSpiritCapturePath), NPC_Eldstar, 30, Float(0.5))
+        Call(BuildSpiritCapturePath, NPC_Eldstar, 30, Float(0.5))
         Call(LoadPath, LVar0, LVar1, LVar2, EASING_LINEAR)
         SetF(LVar4, Float(1.0))
         Label(1)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Eldstar, LVar1, LVar2, LVar3)
-            Call(N(SetStarSpiritSparkleTrailPos), ArrayVar(8), ArrayVar(19), LVar1, LVar2, LVar3)
+            Call(SetStarSpiritSparkleTrailPos, ArrayVar(8), ArrayVar(19), LVar1, LVar2, LVar3)
             AddF(LVar4, Float(-0.03125))
             Call(SetNpcScale, NPC_Eldstar, LVar4, LVar4, LVar4)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(1)
             EndIf
-        Call(N(StartCardRingCapture))
+        Call(StartCardRingCapture)
         Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Panic)
         Call(SetNpcImgFXParams, NPC_Eldstar, IMGFX_CLEAR, 0, 0, 0, 0)
         Call(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_INVISIBLE, true)
         Call(DismissEffect, ArrayVar(8))
     EndThread
     Wait(15 * DT)
-    Call(N(AdjustCamVfov), 0, 50)
+    Call(AdjustCamVfov, 0, 50)
     Call(SetPanTarget, CAM_DEFAULT, 40, 200, -40)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings13)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings13))
     Call(RemoveEffect, ArrayVar(16))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarIdle)
     Thread
@@ -2312,8 +2312,8 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Call(NpcFaceNpc, NPC_Bowser_Body, NPC_Eldstar, 0)
     EndThread
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyLaugh)
-    Exec(N(EVS_CaptureSpirits))
-    Call(N(CamPanAcrossRoom))
+    Exec(EVS_CaptureSpirits)
+    Call(CamPanAcrossRoom)
     Wait(15 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyStill)
     Thread
@@ -2324,29 +2324,29 @@ EvtScript N(EVS_Scene_IntroStory) = {
         Wait(40)
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyStill)
     EndThread
-    Call(N(CamMove_OrbitKammy))
-    Call(N(AdjustCamVfov), 0, 50)
+    Call(CamMove_OrbitKammy)
+    Call(AdjustCamVfov, 0, 50)
     Call(SetPanTarget, CAM_DEFAULT, 0, 200, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings15)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(IntroCamSettings15))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarLaugh)
     Thread
-        Call(N(CamPullBack_Final))
+        Call(CamPullBack_Final)
     EndThread
     Wait(20 * DT)
     Thread
-        Call(N(UpdateCapturedSpiritsWithKammy))
+        Call(UpdateCapturedSpiritsWithKammy)
     EndThread
     Wait(1)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlySlow)
-    Call(N(KammyFlyToBowser))
+    Call(KammyFlyToBowser)
     Thread
-        Call(N(StartCardRingGather))
-        Call(N(StartCardRingGather))
-        Call(N(StartCardRingGather))
-        Call(N(StartCardRingGather))
-        Call(N(StartCardRingGather))
-        Call(N(StartCardRingGather))
-        Call(N(StartCardRingGather))
+        Call(StartCardRingGather)
+        Call(StartCardRingGather)
+        Call(StartCardRingGather)
+        Call(StartCardRingGather)
+        Call(StartCardRingGather)
+        Call(StartCardRingGather)
+        Call(StartCardRingGather)
     EndThread
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyTalk)
     Wait(15 * DT)
@@ -2361,12 +2361,12 @@ EvtScript N(EVS_Scene_IntroStory) = {
     Call(SetNpcJumpscale, NPC_Kalmar, Float(0.0))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarStill)
     Thread
-        Call(N(AnimBowser_FlyOff))
+        Call(AnimBowser_FlyOff)
     EndThread
     Wait(10 * DT)
-    Call(N(AnimKammy_FlyOff))
+    Call(AnimKammy_FlyOff)
     Wait(20 * DT)
-    Call(N(ResumeIntro))
+    Call(ResumeIntro)
     Return
     End
 };

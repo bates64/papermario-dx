@@ -26,7 +26,7 @@
 #include "npc/toad_4.inc.c"
 #include "npc/bubulb.inc.c"
 
-AnimID N(LimitAnims_TayceT)[] = {
+AnimID LimitAnims_TayceT[] = {
     ANIM_TayceT_Still,
     ANIM_TayceT_Idle,
     ANIM_TayceT_Walk,
@@ -39,7 +39,7 @@ AnimID N(LimitAnims_TayceT)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Bubulb)[] = {
+AnimID LimitAnims_Bubulb[] = {
     ANIM_Bubulb_Pink_Still,
     ANIM_Bubulb_Pink_BuriedStill,
     ANIM_Bubulb_Pink_Idle,
@@ -49,25 +49,25 @@ AnimID N(LimitAnims_Bubulb)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_TayceT)[] = {
+NpcData NpcData_TayceT[] = {
     {
         .id = NPC_TayceT,
         .pos = { -217.0f, 20.0f, -434.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TayceT),
-        .settings = &N(NpcSettings_TayceT),
+        .init = &EVS_NpcInit_TayceT,
+        .settings = &NpcSettings_TayceT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TAYCE_T_ANIMS,
-        .limitAnimations = N(LimitAnims_TayceT),
+        .limitAnimations = LimitAnims_TayceT,
         .tattle = MSG_NpcTattle_TayceT,
     },
     {
         .id = NPC_FiceT,
         .pos = { 389.0f, 0.0f, -90.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FiceT),
-        .settings = &N(NpcSettings_FiceT),
+        .init = &EVS_NpcInit_FiceT,
+        .settings = &NpcSettings_FiceT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = FICE_T_ANIMS,
@@ -77,12 +77,12 @@ NpcData N(NpcData_TayceT)[] = {
         .id = NPC_Bubulb,
         .pos = { 150.0f, 20.0f, 500.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Bubulb),
-        .settings = &N(NpcSettings_Bubulb),
+        .init = &EVS_NpcInit_Bubulb,
+        .settings = &NpcSettings_Bubulb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BUBULB_PINK_ANIMS,
-        .limitAnimations = N(LimitAnims_Bubulb),
+        .limitAnimations = LimitAnims_Bubulb,
         .tattle = MSG_NpcTattle_MAC_Bubulb_Revealed,
     },
     {
@@ -101,8 +101,8 @@ NpcData N(NpcData_TayceT)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad_Wander),
+        .init = &EVS_NpcInit_Toad_01,
+        .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -112,8 +112,8 @@ NpcData N(NpcData_TayceT)[] = {
         .id = NPC_CookingApprentice,
         .pos = { -26.0f, 0.0f, -220.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_CookingApprentice),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_CookingApprentice,
+        .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -123,8 +123,8 @@ NpcData N(NpcData_TayceT)[] = {
         .id = NPC_Toad_02,
         .pos = { -350.0f, 20.0f, -140.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_02,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -146,8 +146,8 @@ NpcData N(NpcData_TayceT)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_ToadKid),
-        .settings = &N(NpcSettings_ToadKid_Wander),
+        .init = &EVS_NpcInit_ToadKid,
+        .settings = &NpcSettings_ToadKid_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_KID_YELLOW_ANIMS,
@@ -169,8 +169,8 @@ NpcData N(NpcData_TayceT)[] = {
                 .detectSize = { 10 },
             }
         },
-        .init = &N(EVS_NpcInit_Toad_03),
-        .settings = &N(NpcSettings_Toad_Wander),
+        .init = &EVS_NpcInit_Toad_03,
+        .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -180,8 +180,8 @@ NpcData N(NpcData_TayceT)[] = {
         .id = NPC_Toad_04,
         .pos = { -80.0f, 0.0f, 300.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_04,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -189,18 +189,18 @@ NpcData N(NpcData_TayceT)[] = {
     },
 };
 
-NpcData N(NpcData_Bootler) = {
+NpcData NpcData_Bootler = {
     .id = NPC_Bootler,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bootler),
-    .settings = &N(NpcSettings_Bootler),
+    .init = &EVS_NpcInit_Bootler,
+    .settings = &NpcSettings_Bootler,
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = BOOTLER_ANIMS,
 };
 
-AnimID N(LimitAnims_ShyGuy)[] = {
+AnimID LimitAnims_ShyGuy[] = {
     ANIM_ShyGuy_Red_Still,
     ANIM_ShyGuy_Red_Idle,
     ANIM_ShyGuy_Red_Walk,
@@ -211,31 +211,31 @@ AnimID N(LimitAnims_ShyGuy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_ShyGuy) = {
+NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_Toad,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
-    .limitAnimations = N(LimitAnims_ShyGuy),
+    .limitAnimations = LimitAnims_ShyGuy,
 };
 
-NpcGroupList N(NpcGroup4) = {
-    NPC_GROUP(N(NpcData_TayceT)),
+NpcGroupList NpcGroup4 = {
+    NPC_GROUP(NpcData_TayceT),
     {}
 };
 
-NpcGroupList N(NpcGroup1) = {
-    NPC_GROUP(N(NpcData_TayceT)),
-    NPC_GROUP(N(NpcData_Bootler)),
+NpcGroupList NpcGroup1 = {
+    NPC_GROUP(NpcData_TayceT),
+    NPC_GROUP(NpcData_Bootler),
     {}
 };
 
-NpcGroupList N(NpcGroup3) = {
-    NPC_GROUP(N(NpcData_ShyGuy)),
-    NPC_GROUP(N(NpcData_TayceT)),
+NpcGroupList NpcGroup3 = {
+    NPC_GROUP(NpcData_ShyGuy),
+    NPC_GROUP(NpcData_TayceT),
     {}
 };

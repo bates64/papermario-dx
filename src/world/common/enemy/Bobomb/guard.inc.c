@@ -3,7 +3,7 @@
 
 #include "world/common/ai/GuardAI.inc.c"
 
-GuardAISettings N(AISettings_Bobomb_Guard) = {
+GuardAISettings AISettings_Bobomb_Guard = {
     .alertRadius = 110.0f,
     .alertOffsetDist = 65.0f,
     .playerSearchInterval = 8,
@@ -14,17 +14,17 @@ GuardAISettings N(AISettings_Bobomb_Guard) = {
     .chaseOffsetDist = 65.0f,
 };
 
-EvtScript N(EVS_NpcAI_Bobomb_Guard) = {
-    Call(N(GuardAI_Main), Ref(N(AISettings_Bobomb_Guard)))
+EvtScript EVS_NpcAI_Bobomb_Guard = {
+    Call(GuardAI_Main, Ref(AISettings_Bobomb_Guard))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Bobomb_Guard) = {
+NpcSettings NpcSettings_Bobomb_Guard = {
     .height = 23,
     .radius = 20,
     .level = ACTOR_LEVEL_BOB_OMB,
-    .doAI = &N(EVS_NpcAI_Bobomb_Guard),
+    .doAI = &EVS_NpcAI_Bobomb_Guard,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Fuzzy/wander.inc.c"
 
-NpcData N(NpcData_Fuzzy) = {
+NpcData NpcData_Fuzzy = {
     .id = NPC_UnusedFuzzy,
     .pos = { 175.0f, 0.0f, -270.0f },
     .yaw = 180,
@@ -18,11 +18,11 @@ NpcData N(NpcData_Fuzzy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Fuzzy_Wander),
+    .settings = &NpcSettings_Fuzzy_Wander,
     .drops = FUZZY_DROPS,
     .animations = FUZZY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
+NpcGroupList DefaultNPCs = {
     {}
 };

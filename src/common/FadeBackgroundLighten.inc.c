@@ -2,7 +2,7 @@
 #include "model.h"
 #include "map.h"
 
-API_CALLABLE(N(FadeBackgroundLighten)) {
+static API_CALLABLE(LightenBackground) {
     if (isInitialCall) {
         script->functionTemp[0] = 20;
     }

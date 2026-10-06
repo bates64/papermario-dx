@@ -1,6 +1,6 @@
 #include "common.h"
 
-API_CALLABLE(N(ItemEntityJumpToPos)) {
+static API_CALLABLE(ItemEntityJumpToPos) {
     struct {
         /* 0x00 */ Vec3f pos;
         /* 0x0C */ f32 moveAngle;

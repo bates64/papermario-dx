@@ -3,7 +3,7 @@
 #include "world/common/enemy/Gulpit/wander.inc.c"
 #include "world/common/enemy/FrostPiranha/idle.inc.c"
 
-NpcData N(NpcData_Gulpit)[] = {
+NpcData NpcData_Gulpit[] = {
     {
         .id = NPC_Gulpit,
         .pos = { -500.0f, -150.0f, -75.0f },
@@ -20,7 +20,7 @@ NpcData N(NpcData_Gulpit)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Gulpit_Wander),
+        .settings = &NpcSettings_Gulpit_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
@@ -29,7 +29,7 @@ NpcData N(NpcData_Gulpit)[] = {
     GULPIT_HITBOX(NPC_Gulpit_Hitbox),
 };
 
-NpcData N(NpcData_FrostPiranha_01)[] = {
+NpcData NpcData_FrostPiranha_01[] = {
     {
         .id = NPC_FrostPiranha_01,
         .pos = { 250.0f, 120.0f, -75.0f },
@@ -46,7 +46,7 @@ NpcData N(NpcData_FrostPiranha_01)[] = {
                 .detectSize = { 260, 65 },
             }
         },
-        .settings = &N(NpcSettings_FrostPiranha),
+        .settings = &NpcSettings_FrostPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = FROST_PIRANHA_DROPS,
         .animations = FROST_PIRANHA_ANIMS,
@@ -55,7 +55,7 @@ NpcData N(NpcData_FrostPiranha_01)[] = {
     FROST_PIRANHA_HITBOX(NPC_FrostPiranha_01_Hitbox),
 };
 
-NpcData N(NpcData_FrostPiranha_02)[] = {
+NpcData NpcData_FrostPiranha_02[] = {
     {
         .id = NPC_FrostPiranha_02,
         .pos = { 400.0f, 120.0f, -75.0f },
@@ -72,7 +72,7 @@ NpcData N(NpcData_FrostPiranha_02)[] = {
                 .detectSize = { 260, 65 },
             }
         },
-        .settings = &N(NpcSettings_FrostPiranha),
+        .settings = &NpcSettings_FrostPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = FROST_PIRANHA_DROPS,
         .animations = FROST_PIRANHA_ANIMS,
@@ -81,9 +81,9 @@ NpcData N(NpcData_FrostPiranha_02)[] = {
     FROST_PIRANHA_HITBOX(NPC_FrostPiranha_02_Hitbox),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Gulpit), BTL_SAM_FORMATION_03, BTL_SAM_STAGE_02),
-    NPC_GROUP(N(NpcData_FrostPiranha_01), BTL_SAM_FORMATION_09, BTL_SAM_STAGE_02),
-    NPC_GROUP(N(NpcData_FrostPiranha_02), BTL_SAM_FORMATION_07, BTL_SAM_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Gulpit, BTL_SAM_FORMATION_03, BTL_SAM_STAGE_02),
+    NPC_GROUP(NpcData_FrostPiranha_01, BTL_SAM_FORMATION_09, BTL_SAM_STAGE_02),
+    NPC_GROUP(NpcData_FrostPiranha_02, BTL_SAM_FORMATION_07, BTL_SAM_STAGE_02),
     {}
 };

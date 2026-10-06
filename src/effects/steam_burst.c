@@ -29,7 +29,6 @@ void steam_burst_main(
     bp.init = steam_burst_init;
     bp.update = steam_burst_update;
     bp.renderScene = steam_burst_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STEAM_BURST;
 

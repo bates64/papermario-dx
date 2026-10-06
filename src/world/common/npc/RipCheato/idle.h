@@ -3,4 +3,4 @@
 
 #define NpcSettings_RipCheato NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_RipCheato);
+extern NpcSettings NpcSettings_RipCheato;

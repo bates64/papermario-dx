@@ -2,7 +2,7 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-API_CALLABLE(N(SetupFog)) {
+API_CALLABLE(SetupFog) {
     enable_world_fog();
     set_world_fog_dist(960, 1000);
     set_world_fog_color(32, 30, 28, 255);
@@ -17,7 +17,7 @@ API_CALLABLE(N(SetupFog)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateMansionRevealCamera)) {
+API_CALLABLE(UpdateMansionRevealCamera) {
     Camera* cam = &gCameras[gCurrentCameraID];
     s32 retVal = ApiStatus_BLOCK;
 
@@ -47,7 +47,7 @@ API_CALLABLE(N(UpdateMansionRevealCamera)) {
     return retVal;
 }
 
-API_CALLABLE(N(OrbitMansionRevealCamera)) {
+API_CALLABLE(OrbitMansionRevealCamera) {
     Camera* cam = &gCameras[CAM_DEFAULT];
     f32 angle1, angle2, moveAngle;
 
@@ -70,7 +70,7 @@ API_CALLABLE(N(OrbitMansionRevealCamera)) {
     }
 }
 
-EvtScript N(EVS_Scene_ReachedMansion) = {
+EvtScript EVS_Scene_ReachedMansion = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, -800, 0, 0)
@@ -84,10 +84,10 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 75, 0, 309)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(UpdateMansionRevealCamera))
+    Call(UpdateMansionRevealCamera)
     Wait(30)
     ChildThread
-        Call(N(OrbitMansionRevealCamera))
+        Call(OrbitMansionRevealCamera)
         Wait(90)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Loop(0)
@@ -129,7 +129,7 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
 };
 
 // interesting broken, unused snippet for starting next peach sequence
-EvtScript N(EVS_ExitWarp_osr_03_4) = {
+EvtScript EVS_ExitWarp_osr_03_4 = {
     Call(FadeOutMusic, 0, 1500)
     Call(GotoMapSpecial, Ref("osr_03"), osr_03_ENTRY_4, 0xB)
     Wait(100)
@@ -137,7 +137,7 @@ EvtScript N(EVS_ExitWarp_osr_03_4) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_mim_07_3) = {
+EvtScript EVS_ExitWalk_mim_07_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, mim_11_ENTRY_0)
     Exec(ExitWalk)
@@ -148,25 +148,25 @@ EvtScript N(EVS_ExitWalk_mim_07_3) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_mim_12_0) = EVT_EXIT_WALK(60, mim_11_ENTRY_1, "mim_12", mim_12_ENTRY_0);
+EvtScript EVS_ExitWalk_mim_12_0 = EVT_EXIT_WALK(60, mim_11_ENTRY_1, "mim_12", mim_12_ENTRY_0);
 
-EvtScript N(EVS_ExitWalk_obk_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(mim_11_ENTRY_2, "obk_01", obk_01_ENTRY_0,
+EvtScript EVS_ExitWalk_obk_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(mim_11_ENTRY_2, "obk_01", obk_01_ENTRY_0,
     COLLIDER_ttd, MODEL_doa, MODEL_o166, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_mim_07_3)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_mim_12_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_obk_01_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttd, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_mim_07_3), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_mim_12_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_obk_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttd, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Set(AF_MIM11_MansionGateOpen, true)
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -175,27 +175,27 @@ EvtScript N(EVS_EnterMap) = {
             Set(AF_MIM11_MansionGateOpen, false)
             IfLt(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
-                ExecWait(N(EVS_Scene_ReachedMansion))
+                ExecWait(EVS_Scene_ReachedMansion)
                 Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                 Call(PanToTarget, CAM_DEFAULT, 0, false)
-                Exec(N(EVS_BindExitTriggers))
+                Exec(EVS_BindExitTriggers)
             Else
-                Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+                Set(LVar0, Ref(EVS_BindExitTriggers))
                 Exec(EnterWalk)
             EndIf
         CaseEq(mim_11_ENTRY_1)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(mim_11_ENTRY_2)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_doa)
             Set(LVar3, MODEL_o166)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(mim_11_ENTRY_3)
             IfEq(GF_MIM11_WarpPipe, false)
                 Call(DisablePlayerInput, true)
@@ -213,31 +213,31 @@ EvtScript N(EVS_EnterMap) = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-            ExecWait(N(EVS_Pipe_EnterVertical))
+            Set(LVarA, Ref(EVS_BindExitTriggers))
+            ExecWait(EVS_Pipe_EnterVertical)
         CaseEq(mim_11_ENTRY_4)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(mim_11_ENTRY_5)
             Call(InterpPlayerYaw, 227, 0)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Set(GF_MAP_BoosMansion, true)
     Call(SetSpriteShading, SHADING_MIM_11)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(EnableGroup, MODEL_g62, false)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMansionGate))
-    Exec(N(EVS_SetupFoliage))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
-    Call(N(SetupFog))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMansionGate)
+    Exec(EVS_SetupFoliage)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
+    Call(SetupFog)
     Return
     End
 };

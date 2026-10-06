@@ -85,7 +85,6 @@ EffectInstance* cold_breath_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 sca
     bp.init = cold_breath_init;
     bp.update = cold_breath_update;
     bp.renderScene = cold_breath_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_COLD_BREATH;
 

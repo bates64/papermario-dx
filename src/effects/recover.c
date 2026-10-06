@@ -52,7 +52,6 @@ EffectInstance* recover_main(s32 type, f32 posX, f32 posY, f32 posZ, s32 duratio
     bp.update = recover_update;
     bp.renderScene = recover_render;
     bp.renderUI = func_E008042C;
-    bp.unk_00 = 0;
     bp.effectID = EFFECT_RECOVER;
 
     effect = create_effect_instance(&bp);

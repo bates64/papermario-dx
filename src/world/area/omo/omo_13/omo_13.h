@@ -20,10 +20,8 @@ enum {
     NPC_GrooveGuy   = 2,
 };
 
-#define NAMESPACE omo_13
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupGizmos);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupGizmos;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

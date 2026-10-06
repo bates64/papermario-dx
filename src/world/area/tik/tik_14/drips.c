@@ -2,7 +2,7 @@
 
 #include "../common/DripVolumes.inc.c"
 
-DripVolumeList N(DripVolumes) = {
+DripVolumeList DripVolumes = {
     .count = 1,
     .volumes = {
         {
@@ -16,10 +16,10 @@ DripVolumeList N(DripVolumes) = {
     }
 };
 
-EvtScript N(EVS_SetupDrips) = {
-    Set(LVar0, Ref(N(DripVolumes)))
+EvtScript EVS_SetupDrips = {
+    Set(LVar0, Ref(DripVolumes))
     Set(LVar1, MODEL_sizuku)
-    Exec(N(EVS_CreateDripVolumes))
+    Exec(EVS_CreateDripVolumes)
     Return
     End
 };

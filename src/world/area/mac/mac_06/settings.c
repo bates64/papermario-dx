@@ -1,12 +1,12 @@
 #include "mac_06.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [mac_06_ENTRY_0]    {    0.0,    0.0,  100.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
 };

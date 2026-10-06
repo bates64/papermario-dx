@@ -103,7 +103,6 @@ void light_rays_main(
     bpPtr->init = light_rays_init;
     bpPtr->update = light_rays_update;
     bpPtr->renderScene = light_rays_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_LIGHT_RAYS;
 

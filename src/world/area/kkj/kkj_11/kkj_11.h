@@ -23,23 +23,21 @@ enum {
     MV_EntityID_Padlock     = MapVar(0),
 };
 
-#define NAMESPACE kkj_11
-
 #include "sprite/player.h"
 
 #include "world/common/enemy/Koopatrol/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_PlayDemoScene);
-extern EvtScript N(EVS_FirstTimeEnterHall);
-extern EvtScript N(EVS_ExitDoors_kkj_10_1);
-extern EvtScript N(EVS_ExitDoors_kkj_12_0);
-extern EvtScript N(EVS_ExitDoor_kkj_14_0);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_PlayDemoScene;
+extern EvtScript EVS_FirstTimeEnterHall;
+extern EvtScript EVS_ExitDoors_kkj_10_1;
+extern EvtScript EVS_ExitDoors_kkj_12_0;
+extern EvtScript EVS_ExitDoor_kkj_14_0;
+extern EvtScript EVS_MakeEntities;
 
-extern NpcGroupList N(EarlyNPCs);
-extern NpcGroupList N(LaterNPCs);
+extern NpcGroupList EarlyNPCs;
+extern NpcGroupList LaterNPCs;
 
-API_CALLABLE(N(CheckPlayerInSight));
-API_CALLABLE(N(GetApproachPeachPos));
-API_CALLABLE(N(UpdateSearchlight));
+API_CALLABLE(CheckPlayerInSight);
+API_CALLABLE(GetApproachPeachPos);
+API_CALLABLE(UpdateSearchlight);

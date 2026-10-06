@@ -11,20 +11,20 @@
 #include "credits_names.inc.c"
 #endif
 
-EvtScript N(EVS_InitCredits) = {
-    Call(N(InitCredits))
+EvtScript EVS_InitCredits = {
+    Call(InitCredits)
     Return
     End
 };
 
-EvtScript N(EVS_ShowCredits_Jobs) = {
-    Call(N(ShowCreditList), Ref(N(Credits_Jobs)))
+EvtScript EVS_ShowCredits_Jobs = {
+    Call(ShowCreditList, Ref(Credits_Jobs))
     Return
     End
 };
 
-EvtScript N(EVS_ShowCredits_Names) = {
-    Call(N(ShowCreditList), Ref(N(Credits_Names)))
+EvtScript EVS_ShowCredits_Names = {
+    Call(ShowCreditList, Ref(Credits_Names))
     Return
     End
 };

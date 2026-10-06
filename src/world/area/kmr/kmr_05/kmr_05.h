@@ -27,12 +27,10 @@ enum {
     MF_Tree1CoinDropped     = MapFlag(10),
 };
 
-#define NAMESPACE kmr_05
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_GoompaRemark);
-extern NpcGroupList N(NpcsBefore);
-extern NpcGroupList N(NpcsAfter);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_GoompaRemark;
+extern NpcGroupList NpcsBefore;
+extern NpcGroupList NpcsAfter;

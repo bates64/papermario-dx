@@ -3,7 +3,7 @@
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
 
-EvtScript N(EVS_ExitDoors_pra_04_2) = {
+EvtScript EVS_ExitDoors_pra_04_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_10_ENTRY_0)
@@ -20,7 +20,7 @@ EvtScript N(EVS_ExitDoors_pra_04_2) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_pra_12_0) = {
+EvtScript EVS_ExitDoors_pra_12_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_10_ENTRY_1)
@@ -37,14 +37,14 @@ EvtScript N(EVS_ExitDoors_pra_12_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_04_2)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_12_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_pra_04_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_12_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_10_ENTRY_0)
@@ -60,21 +60,21 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar5, MODEL_o1022)
             ExecWait(EnterSplitDoubleDoor)
     EndSwitch
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Exec(EVS_SetupMusic)
     Set(LVar0, REFLECTION_FLOOR_ONLY)
     Set(LVar1, GF_PRA_BrokeIllusion)
-    Exec(N(EVS_SetupReflections))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupReflections)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

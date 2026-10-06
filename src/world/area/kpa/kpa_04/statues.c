@@ -2,14 +2,14 @@
 
 #include "world/common/util/PushObjectSupport.inc.c"
 
-EvtScript N(EVS_PushStatue_Impl) = {
+EvtScript EVS_PushStatue_Impl = {
     Loop(20)
         Call(GetPartnerInUse, LVarA)
         IfNe(LVarA, 0)
             Set(LVar9, 0)
             Return
         EndIf
-        Call(N(IsPlayerPushingCollider), COLLIDER_o160)
+        Call(IsPlayerPushingCollider, COLLIDER_o160)
         IfEq(LVar0, 0)
             Set(LVar9, 0)
             Return
@@ -52,7 +52,7 @@ EvtScript N(EVS_PushStatue_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UpdatePlayerPushPosition))
+            Call(UpdatePlayerPushPosition)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -76,7 +76,7 @@ EvtScript N(EVS_PushStatue_Impl) = {
     End
 };
 
-EvtScript N(EVS_PushStatue_FromRight) = {
+EvtScript EVS_PushStatue_FromRight = {
     IfNe(GB_KPA04_StatuePosition, 0)
         Return
     EndIf
@@ -93,11 +93,11 @@ EvtScript N(EVS_PushStatue_FromRight) = {
     IfGe(LVar0, 0)
         Set(LVar9, 1)
         Set(LVarB, -50)
-        ExecWait(N(EVS_PushStatue_Impl))
+        ExecWait(EVS_PushStatue_Impl)
     Else
         Set(LVar9, 2)
         Set(LVarB, 50)
-        ExecWait(N(EVS_PushStatue_Impl))
+        ExecWait(EVS_PushStatue_Impl)
     EndIf
     Set(GB_KPA04_StatuePosition, LVar9)
     IfNe(GB_KPA04_StatuePosition, 0)
@@ -109,11 +109,11 @@ EvtScript N(EVS_PushStatue_FromRight) = {
     End
 };
 
-EvtScript N(EVS_SetupStatues) = {
+EvtScript EVS_SetupStatues = {
     Call(ParentColliderToModel, COLLIDER_o160, MODEL_o103)
     Switch(GB_KPA04_StatuePosition)
         CaseEq(0)
-            BindTrigger(Ref(N(EVS_PushStatue_FromRight)), TRIGGER_WALL_PUSH, COLLIDER_o160, 1, 0)
+            BindTrigger(Ref(EVS_PushStatue_FromRight), TRIGGER_WALL_PUSH, COLLIDER_o160, 1, 0)
             Call(EnableGroup, MODEL_g22, false)
         CaseEq(1)
             Call(TranslateGroup, MODEL_g20, -50, 0, 0)

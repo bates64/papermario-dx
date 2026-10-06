@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-API_CALLABLE(N(IsPartnerBow)) {
+API_CALLABLE(IsPartnerBow) {
     if (gPartnerStatus.actingPartner == PARTNER_BOW) {
         script->varTable[0] = true;
     } else {
@@ -11,7 +11,7 @@ API_CALLABLE(N(IsPartnerBow)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ShyGuy_PlayFootstepSounds) = {
+EvtScript EVS_ShyGuy_PlayFootstepSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, LVar0, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -20,7 +20,7 @@ EvtScript N(EVS_ShyGuy_PlayFootstepSounds) = {
     End
 };
 
-EvtScript N(EVS_SuspiciousGuy_OpenDoor) = {
+EvtScript EVS_SuspiciousGuy_OpenDoor = {
     Call(PlaySoundAtCollider, COLLIDER_deilit_hu, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Set(LVar0, 0)
     Loop(20)
@@ -34,7 +34,7 @@ EvtScript N(EVS_SuspiciousGuy_OpenDoor) = {
     End
 };
 
-EvtScript N(EVS_SuspiciousGuy_CloseDoor) = {
+EvtScript EVS_SuspiciousGuy_CloseDoor = {
     Set(LVar0, 90)
     Loop(20)
         Add(LVar0, -3)
@@ -48,7 +48,7 @@ EvtScript N(EVS_SuspiciousGuy_CloseDoor) = {
     End
 };
 
-EvtScript N(EVS_OpenSecretDoor) = {
+EvtScript EVS_OpenSecretDoor = {
     Call(PlaySoundAtCollider, COLLIDER_deilit_hk, SOUND_OMO_SECRET_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Set(LVar0, 0)
     Loop(36)
@@ -66,7 +66,7 @@ EvtScript N(EVS_OpenSecretDoor) = {
     End
 };
 
-EvtScript N(EVS_SuspiciousGuy_RevealSecretRoom) = {
+EvtScript EVS_SuspiciousGuy_RevealSecretRoom = {
     Wait(20 * DT)
     Call(SetNpcFlagBits, NPC_ShyGuy_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Excited, ANIM_ShyGuy_Pink_Idle, 5, MSG_MAC_Housing_00B3)
@@ -91,19 +91,19 @@ EvtScript N(EVS_SuspiciousGuy_RevealSecretRoom) = {
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Jump)
     Wait(4 * DT)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_FallingKick)
-    Exec(N(EVS_OpenSecretDoor))
+    Exec(EVS_OpenSecretDoor)
     Call(SetNpcJumpscale, NPC_ShyGuy_01, Float(0.5))
     Call(NpcJump0, NPC_ShyGuy_01, -440, 20, -75, 20 * DT)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Still)
     IfLt(GB_StoryProgress, STORY_CH4_FOUND_HIDDEN_DOOR)
         Set(GB_StoryProgress, STORY_CH4_FOUND_HIDDEN_DOOR)
-        ExecWait(N(EVS_MakeHiddenRoom))
+        ExecWait(EVS_MakeHiddenRoom)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_SuspiciousGuy_RunAway) = {
+EvtScript EVS_SuspiciousGuy_RunAway = {
     Call(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     Call(ShowEmote, NPC_ShyGuy_01, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
@@ -116,17 +116,17 @@ EvtScript N(EVS_SuspiciousGuy_RunAway) = {
     Wait(4 * DT)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Dash)
     Wait(4 * DT)
-    ExecWait(N(EVS_SuspiciousGuy_OpenDoor))
+    ExecWait(EVS_SuspiciousGuy_OpenDoor)
     Set(LVar0, NPC_ShyGuy_01)
-    ExecGetTID(N(EVS_ShyGuy_PlayFootstepSounds), LVarA)
+    ExecGetTID(EVS_ShyGuy_PlayFootstepSounds, LVarA)
     Call(NpcMoveTo, NPC_ShyGuy_01, -501, 223, 15 * DT)
     KillThread(LVarA)
-    ExecWait(N(EVS_SuspiciousGuy_CloseDoor))
+    ExecWait(EVS_SuspiciousGuy_CloseDoor)
     Return
     End
 };
 
-EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
+EvtScript EVS_HiddenRoom_WaitForOuttaSight = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     IfNe(GB_StoryProgress, STORY_CH4_MET_WITH_TWINK)
         Return
@@ -141,7 +141,7 @@ EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
     Set(LVar7, 0)
     // wait for player to use bow within 100 <= z <= 200
     Loop(0)
-        Call(N(IsPartnerBow))
+        Call(IsPartnerBow)
         IfTrue(LVar0)
             Set(LVar7, 1)
             BreakLoop
@@ -157,20 +157,20 @@ EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_SuspiciousGuy_OpenDoor))
+    ExecWait(EVS_SuspiciousGuy_OpenDoor)
     Call(SetNpcPos, NPC_ShyGuy_01, -501, 20, 223)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Walk)
     Call(NpcMoveTo, NPC_ShyGuy_01, -506, 168, 15)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Still)
-    ExecWait(N(EVS_SuspiciousGuy_CloseDoor))
+    ExecWait(EVS_SuspiciousGuy_CloseDoor)
     IfEq(LVar7, 1)
-        ExecWait(N(EVS_SuspiciousGuy_RevealSecretRoom))
+        ExecWait(EVS_SuspiciousGuy_RevealSecretRoom)
     Else
-        ExecWait(N(EVS_SuspiciousGuy_RunAway))
+        ExecWait(EVS_SuspiciousGuy_RunAway)
         Call(GetPlayerFloorCollider, LVar0)
         Thread
             Wait(10 * DT)
-            Exec(N(EVS_HiddenRoom_WaitForOuttaSight))
+            Exec(EVS_HiddenRoom_WaitForOuttaSight)
         EndThread
     EndIf
     Call(SetNpcPos, NPC_ShyGuy_01, NPC_DISPOSE_LOCATION)
@@ -179,7 +179,7 @@ EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
     End
 };
 
-EvtScript N(EVS_ShyGuy_StealStoreroomKey) = {
+EvtScript EVS_ShyGuy_StealStoreroomKey = {
     Call(GetNpcPos, NPC_ShyGuy_02, LVar2, LVar3, LVar4)
     Add(LVar3, 20)
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_STOREROOM_KEY, VIS_GROUP_1), LVar2, LVar3, LVar4, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -196,7 +196,7 @@ EvtScript N(EVS_ShyGuy_StealStoreroomKey) = {
     End
 };
 
-EvtScript N(EVS_OnEnterShop) = {
+EvtScript EVS_OnEnterShop = {
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Return
     EndIf
@@ -240,9 +240,9 @@ EvtScript N(EVS_OnEnterShop) = {
         EndLoop
         Call(PlaySoundAtCollider, COLLIDER_deilit_mu, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
-    Exec(N(EVS_ShyGuy_StealStoreroomKey))
+    Exec(EVS_ShyGuy_StealStoreroomKey)
     Set(LVar0, NPC_ShyGuy_02)
-    ExecGetTID(N(EVS_ShyGuy_PlayFootstepSounds), LVarA)
+    ExecGetTID(EVS_ShyGuy_PlayFootstepSounds, LVarA)
     Call(NpcMoveTo, NPC_ShyGuy_02, 254, -66, 30)
     KillThread(LVarA)
     Call(SetNpcPos, NPC_ShyGuy_02, NPC_DISPOSE_LOCATION)
@@ -251,7 +251,7 @@ EvtScript N(EVS_OnEnterShop) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_02) = {
+EvtScript EVS_NpcInit_ShyGuy_02 = {
     Return
     End
 };

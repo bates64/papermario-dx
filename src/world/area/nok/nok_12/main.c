@@ -1,6 +1,6 @@
 #include "nok_12.h"
 
-API_CALLABLE(N(UpdateEnounterStages)) {
+API_CALLABLE(UpdateEnounterStages) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     Bytecode* args = script->ptrReadPos;
@@ -25,13 +25,13 @@ API_CALLABLE(N(UpdateEnounterStages)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitWalk_nok_11_1) = EVT_EXIT_WALK(60, nok_12_ENTRY_0, "nok_11", nok_11_ENTRY_1);
-EvtScript N(EVS_ExitWalk_nok_13_0) = EVT_EXIT_WALK(60, nok_12_ENTRY_1, "nok_13", nok_13_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_11_1 = EVT_EXIT_WALK(60, nok_12_ENTRY_0, "nok_11", nok_11_ENTRY_1);
+EvtScript EVS_ExitWalk_nok_13_0 = EVT_EXIT_WALK(60, nok_12_ENTRY_1, "nok_13", nok_13_ENTRY_0);
 
-EvtScript N(EVS_UpdateEnounterStages) = {
+EvtScript EVS_UpdateEnounterStages = {
     Label(0)
         IfGe(GB_StoryProgress, STORY_CH1_MADE_FIRST_BRIDGE)
-            Call(N(UpdateEnounterStages), -380, -170, -100, 999, BTL_NOK_STAGE_00, BTL_NOK_STAGE_02)
+            Call(UpdateEnounterStages, -380, -170, -100, 999, BTL_NOK_STAGE_00, BTL_NOK_STAGE_02)
         EndIf
         Wait(1)
         Goto(0)
@@ -39,7 +39,7 @@ EvtScript N(EVS_UpdateEnounterStages) = {
     End
 };
 
-EvtScript N(EVS_SetupTexPan) = {
+EvtScript EVS_SetupTexPan = {
     // flowers
     Call(SetTexPanner, MODEL_hana1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana2, TEX_PANNER_0)
@@ -82,51 +82,51 @@ EvtScript N(EVS_SetupTexPan) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_11_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_13_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_nok_11_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_13_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+EvtScript EVS_EnterMap = {
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
     Set(AF_NOK12_HitSwitch, false)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetDemoState, LVar0)
     IfEq(LVar0, DEMO_STATE_NONE)
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(DefaultNPCs))
     Else
         Call(GetEntryID, LVar0)
         IfEq(LVar0, nok_12_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(DemoNPCs)))
+            Call(MakeNpcs, false, Ref(DemoNPCs))
         EndIf
     EndIf
-    ExecWait(N(EVS_MakeEntities))
-    ExecWait(N(EVS_SetupFoliage))
-    Exec(N(EVS_SetupTexPan))
-    Exec(N(EVS_SetupBridge))
+    ExecWait(EVS_MakeEntities)
+    ExecWait(EVS_SetupFoliage)
+    Exec(EVS_SetupTexPan)
+    Exec(EVS_SetupBridge)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, nok_12_ENTRY_2)
-            ExecWait(N(EVS_PlayDemoScene1))
+            ExecWait(EVS_PlayDemoScene1)
         Else
-            ExecWait(N(EVS_PlayDemoScene2))
+            ExecWait(EVS_PlayDemoScene2)
         EndIf
         Return
     EndIf
-    Exec(N(EVS_UpdateEnounterStages))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_UpdateEnounterStages)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
     Set(GF_MAC01_RowfBadgesChosen, false)
     Return

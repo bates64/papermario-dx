@@ -1,8 +1,7 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/player.h"
-
-#define NAMESPACE battle_move_focus
 
 #include "battle/common/move/StarPowerSupport.inc.c"
 
@@ -12,7 +11,7 @@ enum {
     RESTORE_NOW_FULL        = 2,
 };
 
-API_CALLABLE(N(RestoreStarPowerFromPlayer)) {
+API_CALLABLE(RestoreStarPowerFromPlayer) {
     PlayerData* playerData = &gPlayerData;
     s32 deepFocusSP;
     s32 superFocusSP;
@@ -36,7 +35,7 @@ API_CALLABLE(N(RestoreStarPowerFromPlayer)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(RestoreStarPowerFromPartner)) {
+API_CALLABLE(RestoreStarPowerFromPartner) {
     PlayerData* playerData = &gPlayerData;
 
     script->varTable[0] = RESTORE_NOT_FULL;
@@ -55,15 +54,15 @@ API_CALLABLE(N(RestoreStarPowerFromPartner)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     Call(EnableBattleStatusBar, true)
     Call(GetOwnerID, LVarA)
     IfEq(LVarA, ACTOR_PLAYER)
         Call(PlaySound, SOUND_STAR_POWER_RECOVERY)
-        Call(N(RestoreStarPowerFromPlayer))
+        Call(RestoreStarPowerFromPlayer)
         Wait(30)
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Switch(LVar0)
             CaseEq(RESTORE_NOT_FULL)
@@ -82,9 +81,9 @@ EvtScript N(EVS_UsePower) = {
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Else
         Call(PlaySound, SOUND_STAR_POWER_RECOVERY)
-        Call(N(RestoreStarPowerFromPartner))
+        Call(RestoreStarPowerFromPartner)
         Wait(30)
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Switch(LVar0)
             CaseEq(RESTORE_NOT_FULL)
@@ -98,10 +97,14 @@ EvtScript N(EVS_UsePower) = {
         Call(PartnerYieldTurn)
         Call(SetGoalToHome, ACTOR_PARTNER)
         Call(SetActorSpeed, ACTOR_PARTNER, Float(8.0))
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_RETURN)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_RETURN)
         Call(RunToGoal, ACTOR_PARTNER, 0)
-        Call(N(SetPartnerWishAnim), PARTNER_WISH_ANIM_IDLE)
+        Call(SetPartnerWishAnim, PARTNER_WISH_ANIM_IDLE)
     EndIf
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
+    &EVS_UsePower,
+);

@@ -1,6 +1,6 @@
 #include "kpa_63.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetLoadType, LVar0)
     IfEq(LVar0, 1)
         Call(SetMusic, 0, SONG_BOWSERS_CASTLE, 0, VOL_LEVEL_FULL)

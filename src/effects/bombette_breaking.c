@@ -58,7 +58,6 @@ EffectInstance* bombette_breaking_main(s32 type, s32 modelID, s32 treeIndex, f32
     f30 = (s32)sizeY % 16;
     f40 = (s32)sizeZ % 16;
 
-    bp.unk_00 = 0;
     bp.init = bombette_breaking_init;
     bp.update = bombette_breaking_update;
     bp.renderScene = bombette_breaking_render;

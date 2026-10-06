@@ -1,11 +1,11 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "battle/battle.h"
-#include "battle/battle_tables.h"
 #include "hud_element.h"
 #include "sprite.h"
 #include "game_modes.h"
 #include "battle/states/states.h"
+#include "dx/overlay.h"
 
 BSS StageListRow* gCurrentStagePtr;
 BSS s32 gBattleState;
@@ -19,87 +19,82 @@ BSS s32 gCurrentStageID;
 BSS Battle* gOverrideBattlePtr;
 BSS Battle* gCurrentBattlePtr;
 
-// standard battle area table entry
+// Kept in resident code: the battle segment's BSS is not cleared on DMA load.
+static Overlay* LoadedBattleStageOverlay;
+static Overlay* LoadedBattleAreaOverlay;
+static const BattleArea* LoadedBattleArea;
+
+Stage* load_battle_stage(const char* overlayName) {
+    Stage* stage;
+
+    ASSERT_MSG(overlayName != nullptr, "Battle has no stage overlay");
+    ASSERT_MSG(LoadedBattleStageOverlay == nullptr, "Previous battle stage was not unloaded");
+    LoadedBattleStageOverlay = ovl_load(overlayName, OVL_STAGE);
+    stage = ovl_import(LoadedBattleStageOverlay, BATTLE_STAGE_EXPORT_NAME);
+    ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, BATTLE_STAGE_EXPORT_NAME);
+    gBattleStatus.curStage = stage;
+    return stage;
+}
+
+void unload_battle_stage(void) {
+    // Stages can also own model graphics callbacks, not just scripts and actors.
+    // Callers wait until the renderer has switched away from battle models.
+    gBattleStatus.curStage = nullptr;
+    ovl_unload(LoadedBattleStageOverlay);
+    LoadedBattleStageOverlay = nullptr;
+}
+
+// Keep IDs and debug names resident; the tables and actors live in the overlay.
 #define BTL_AREA(id, debugName) { \
     .name = debugName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
-    .battles = &b_area_##id##_Formations, \
-    .stages = &b_area_##id##_Stages, \
-} \
-
-// extended battle area with a dmaTable, used by kzn2 for lava piranha animations
-#define BTL_AREA_DMA(id, jpName) { \
-    .name = jpName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
-    .battles = &b_area_##id##_Formations, \
-    .stages = &b_area_##id##_Stages, \
-    .dmaTable = b_area_##id##_dmaTable, \
-} \
-
-// auxiliary battle area for omo which contains only additional enemy data
-#define BTL_AREA_AUX(id, jpName) { \
-    .name = jpName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
-} \
+    .overlay = #id, \
+}
 
 /// When updating this, make sure you also update:
 /// - the length of gBattleAreas in battle.h
 /// - BattleAreaIDs in battle_names.h
 /// - FormationNames in battle_names.h
-/// - battle_tables.h
-BattleArea gBattleAreas[] = {
-    [BTL_AREA_KMR_1]    BTL_AREA(kmr_part_1, "KMR Part 1"),
-    [BTL_AREA_KMR_2]    BTL_AREA(kmr_part_2, "エリア ＫＭＲ その２"),
-    [BTL_AREA_KMR_3]    BTL_AREA(kmr_part_3, "エリア ＫＭＲ その３"),
-    [BTL_AREA_MAC]      BTL_AREA(mac, "エリア ＭＡＣ"),
-    [BTL_AREA_HOS]      BTL_AREA(hos, "エリア ＨＯＳ"),
-    [BTL_AREA_NOK]      BTL_AREA(nok, "エリア ＮＯＫ"),
-    [BTL_AREA_TRD_1]    BTL_AREA(trd_part_1, "エリア ＴＲＤ その１"),
-    [BTL_AREA_TRD_2]    BTL_AREA(trd_part_2, "エリア ＴＲＤ その２"),
-    [BTL_AREA_TRD_3]    BTL_AREA(trd_part_3, "エリア ＴＲＤ その３"),
-    [BTL_AREA_IWA]      BTL_AREA(iwa, "エリア ＩＷＡ"),
-    [BTL_AREA_SBK]      BTL_AREA(sbk, "エリア ＳＢＫ"),
-    [BTL_AREA_ISK_1]    BTL_AREA(isk_part_1, "エリア ＩＳＫ その１"),
-    [BTL_AREA_ISK_2]    BTL_AREA(isk_part_2, "エリア ＩＳＫ その２"),
-    [BTL_AREA_MIM]      BTL_AREA(mim, "エリア ＭＩＭ"),
-    [BTL_AREA_ARN]      BTL_AREA(arn, "エリア ＡＲＮ"),
-    [BTL_AREA_DGB]      BTL_AREA(dgb, "エリア ＤＧＢ"),
-    [BTL_AREA_OMO]      BTL_AREA(omo, "エリア ＯＭＯ"),
-    [BTL_AREA_OMO2]     BTL_AREA(omo2, "エリア ＯＭＯ２"),
-    [BTL_AREA_OMO3]     BTL_AREA(omo3, "エリア ＯＭＯ３"),
-    [BTL_AREA_KGR]      BTL_AREA(kgr, "エリア ＫＧＲ"),
-    [BTL_AREA_JAN]      BTL_AREA(jan, "エリア ＪＡＮ"),
-    [BTL_AREA_JAN2]     BTL_AREA(jan2, "エリア ＪＡＮ２"),
-    [BTL_AREA_KZN]      BTL_AREA(kzn, "エリア ＫＺＮ"),
-    [BTL_AREA_KZN2]     BTL_AREA_DMA(kzn2, "エリア ＫＺＮ２"),
-    [BTL_AREA_FLO]      BTL_AREA(flo, "エリア ＦＬＯ"),
-    [BTL_AREA_FLO2]     BTL_AREA(flo2, "エリア ＦＬＯ２"),
-    [BTL_AREA_TIK]      BTL_AREA(tik, "エリア ＴＩＫ"),
-    [BTL_AREA_TIK2]     BTL_AREA(tik2, "エリア ＴＩＫ２"),
-    [BTL_AREA_TIK3]     BTL_AREA(tik3, "エリア ＴＩＫ３"),
-    [BTL_AREA_SAM]      BTL_AREA(sam, "エリア ＳＡＭ"),
-    [BTL_AREA_SAM2]     BTL_AREA(sam2, "エリア ＳＡＭ２"),
-    [BTL_AREA_PRA]      BTL_AREA(pra, "エリア ＰＲＡ"),
-    [BTL_AREA_PRA2]     BTL_AREA(pra2, "エリア ＰＲＡ２"),
-    [BTL_AREA_PRA3]     BTL_AREA(pra3, "エリア ＰＲＡ３"),
-    [BTL_AREA_KPA]      BTL_AREA(kpa, "エリア ＫＰＡ"),
-    [BTL_AREA_KPA2]     BTL_AREA(kpa2, "エリア ＫＰＡ２"),
-    [BTL_AREA_KPA3]     BTL_AREA(kpa3, "エリア ＫＰＡ３"),
-    [BTL_AREA_KPA4]     BTL_AREA(kpa4, "エリア ＫＰＡ４"),
-    [BTL_AREA_KKJ]      BTL_AREA(kkj, "エリア ＫＫＪ"),
-    [BTL_AREA_DIG]      BTL_AREA(dig, "エリア ＤＩＧ"),
-    [BTL_AREA_OMO2_1]   BTL_AREA_AUX(omo2_1, "エリア ＯＭＯ２＿１"),
-    [BTL_AREA_OMO2_2]   BTL_AREA_AUX(omo2_2, "エリア ＯＭＯ２＿２"),
-    [BTL_AREA_OMO2_3]   BTL_AREA_AUX(omo2_3, "エリア ＯＭＯ２＿３"),
-    [BTL_AREA_OMO2_4]   BTL_AREA_AUX(omo2_4, "エリア ＯＭＯ２＿４"),
-    [BTL_AREA_OMO2_5]   BTL_AREA_AUX(omo2_5, "エリア ＯＭＯ２＿５"),
-    [BTL_AREA_OMO2_6]   BTL_AREA_AUX(omo2_6, "エリア ＯＭＯ２＿６"),
+const BattleAreaInfo gBattleAreas[] = {
+    [BTL_AREA_KMR_1] BTL_AREA(kmr_part_1, "KMR Part 1"),
+    [BTL_AREA_KMR_2] BTL_AREA(kmr_part_2, "KMR Part 2"),
+    [BTL_AREA_KMR_3] BTL_AREA(kmr_part_3, "KMR Part 3"),
+    [BTL_AREA_MAC]   BTL_AREA(mac, "MAC"),
+    [BTL_AREA_HOS]   BTL_AREA(hos, "HOS"),
+    [BTL_AREA_NOK]   BTL_AREA(nok, "NOK"),
+    [BTL_AREA_TRD_1] BTL_AREA(trd_part_1, "TRD Part 1"),
+    [BTL_AREA_TRD_2] BTL_AREA(trd_part_2, "TRD Part 2"),
+    [BTL_AREA_TRD_3] BTL_AREA(trd_part_3, "TRD Part 3"),
+    [BTL_AREA_IWA]   BTL_AREA(iwa, "IWA"),
+    [BTL_AREA_SBK]   BTL_AREA(sbk, "SBK"),
+    [BTL_AREA_ISK_1] BTL_AREA(isk_part_1, "ISK Part 1"),
+    [BTL_AREA_ISK_2] BTL_AREA(isk_part_2, "ISK Part 2"),
+    [BTL_AREA_MIM]   BTL_AREA(mim, "MIM"),
+    [BTL_AREA_ARN]   BTL_AREA(arn, "ARN"),
+    [BTL_AREA_DGB]   BTL_AREA(dgb, "DGB"),
+    [BTL_AREA_OMO]   BTL_AREA(omo, "OMO"),
+    [BTL_AREA_OMO2]  BTL_AREA(omo2, "OMO2"),
+    [BTL_AREA_OMO3]  BTL_AREA(omo3, "OMO3"),
+    [BTL_AREA_KGR]   BTL_AREA(kgr, "KGR"),
+    [BTL_AREA_JAN]   BTL_AREA(jan, "JAN"),
+    [BTL_AREA_JAN2]  BTL_AREA(jan2, "JAN2"),
+    [BTL_AREA_KZN]   BTL_AREA(kzn, "KZN"),
+    [BTL_AREA_KZN2]  BTL_AREA(kzn2, "KZN2"),
+    [BTL_AREA_FLO]   BTL_AREA(flo, "FLO"),
+    [BTL_AREA_FLO2]  BTL_AREA(flo2, "FLO2"),
+    [BTL_AREA_TIK]   BTL_AREA(tik, "TIK"),
+    [BTL_AREA_TIK2]  BTL_AREA(tik2, "TIK2"),
+    [BTL_AREA_TIK3]  BTL_AREA(tik3, "TIK3"),
+    [BTL_AREA_SAM]   BTL_AREA(sam, "SAM"),
+    [BTL_AREA_SAM2]  BTL_AREA(sam2, "SAM2"),
+    [BTL_AREA_PRA]   BTL_AREA(pra, "PRA"),
+    [BTL_AREA_PRA2]  BTL_AREA(pra2, "PRA2"),
+    [BTL_AREA_PRA3]  BTL_AREA(pra3, "PRA3"),
+    [BTL_AREA_KPA]   BTL_AREA(kpa, "KPA"),
+    [BTL_AREA_KPA2]  BTL_AREA(kpa2, "KPA2"),
+    [BTL_AREA_KPA3]  BTL_AREA(kpa3, "KPA3"),
+    [BTL_AREA_KPA4]  BTL_AREA(kpa4, "KPA4"),
+    [BTL_AREA_KKJ]   BTL_AREA(kkj, "KKJ"),
+    [BTL_AREA_DIG]   BTL_AREA(dig, "DIG"),
 };
 
 void reset_battle_status(void) {
@@ -115,21 +110,45 @@ void reset_battle_status(void) {
 }
 
 void load_battle_section(void) {
-    BattleArea* battleArea = &gBattleAreas[UNPACK_BTL_AREA(gCurrentBattleID)];
+    s32 areaID = UNPACK_BTL_AREA(gCurrentBattleID);
     s32 battleIdx = UNPACK_BTL_INDEX(gCurrentBattleID);
+    const BattleArea* battleArea;
+    const char* overlayName;
 
-    dma_copy(battleArea->dmaStart, battleArea->dmaEnd, battleArea->dmaDest);
+    ASSERT_MSG((u32)areaID < ARRAY_COUNT(gBattleAreas), "Invalid battle area %ld", areaID);
+    ASSERT_MSG(LoadedBattleAreaOverlay == nullptr, "Previous battle area was not unloaded");
+    overlayName = gBattleAreas[areaID].overlay;
+    LoadedBattleAreaOverlay = ovl_load(overlayName, OVL_BATTLE_AREA);
+    battleArea = ovl_import(LoadedBattleAreaOverlay, BATTLE_AREA_EXPORT_NAME);
+    ASSERT_MSG(battleArea != nullptr, "Area overlay '%s' has no %s export", overlayName, BATTLE_AREA_EXPORT_NAME);
+    LoadedBattleArea = battleArea;
+
+    ASSERT_MSG((u32)battleIdx < battleArea->battleCount, "Invalid battle %ld in %s", battleIdx, overlayName);
 
     gCurrentBattlePtr = &(*battleArea->battles)[battleIdx];
 
     if (gCurrentStageID < 0) {
         gCurrentStagePtr = nullptr;
     } else {
+        ASSERT_MSG(gCurrentStageID < battleArea->stageCount, "Invalid stage %ld in %s", gCurrentStageID, overlayName);
         gCurrentStagePtr = &(*battleArea->stages)[gCurrentStageID];
     }
 
     btl_set_state(BATTLE_STATE_START);
     gLastDrawBattleState = BATTLE_STATE_NONE;
+}
+
+const BattleArea* get_loaded_battle_area(void) {
+    return LoadedBattleArea;
+}
+
+void unload_battle_area(void) {
+    gCurrentBattlePtr = nullptr;
+    gCurrentStagePtr = nullptr;
+    gOverrideBattlePtr = nullptr;
+    LoadedBattleArea = nullptr;
+    ovl_unload(LoadedBattleAreaOverlay);
+    LoadedBattleAreaOverlay = nullptr;
 }
 
 void load_battle(s32 battleID) {

@@ -5,7 +5,7 @@
 #define SUPER_BLOCK_GAMEFLAG GF_JAN08_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(250, 60, 300, 0)
     Call(MakeItemEntity, ITEM_COIN, 75, -60, 90, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN08_Item_CoinA)
     Call(MakeItemEntity, ITEM_COIN, 100, -60, 90, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN08_Item_CoinB)

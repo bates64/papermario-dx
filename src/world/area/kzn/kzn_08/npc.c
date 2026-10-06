@@ -3,7 +3,7 @@
 #include "world/common/enemy/LavaBubble/wander.inc.c"
 #include "world/common/enemy/PutridPiranha/idle.inc.c"
 
-NpcData N(NpcData_PutridPiranha)[] = {
+NpcData NpcData_PutridPiranha[] = {
     {
         .id = NPC_PutridPiranha,
         .pos = { 80.0f, 0.0f, 135.0f },
@@ -20,7 +20,7 @@ NpcData N(NpcData_PutridPiranha)[] = {
                 .detectSize = { 130, 60 },
             }
         },
-        .settings = &N(NpcSettings_PutridPiranha),
+        .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = PUTRID_PIRANHA_DROPS,
         .animations = PUTRID_PIRANHA_ANIMS,
@@ -29,7 +29,7 @@ NpcData N(NpcData_PutridPiranha)[] = {
     PUTRID_PIRANHA_HITBOX(NPC_Piranha_Hitbox),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_PutridPiranha), BTL_KZN_FORMATION_11, BTL_KZN_STAGE_04),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_PutridPiranha, BTL_KZN_FORMATION_11, BTL_KZN_STAGE_04),
     {}
 };

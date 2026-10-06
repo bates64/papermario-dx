@@ -25,12 +25,10 @@ enum {
     MV_Distortion_Platform_04   = MapVar(15),
 };
 
-#define NAMESPACE flo_19
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupClouds);
-extern EvtScript N(EVS_SetupBeanstalk);
-extern EvtScript N(EVS_Scene_BeanstalkGrowing);
-extern EvtScript N(EVS_Enter_Beanstalk);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupClouds;
+extern EvtScript EVS_SetupBeanstalk;
+extern EvtScript EVS_Scene_BeanstalkGrowing;
+extern EvtScript EVS_Enter_Beanstalk;

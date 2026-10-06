@@ -11,15 +11,15 @@
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_02
 #include "world/common/enemy/Sentinel/wander.inc.c"
 
-NpcSettings N(NpcSettings_LastClubba) = {
+NpcSettings NpcSettings_LastClubba = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
 };
 
-extern EvtScript N(EVS_NpcAI_Tubba);
+extern EvtScript EVS_NpcAI_Tubba;
 
-EvtScript N(EVS_NpcIdle_Tubba) = {
+EvtScript EVS_NpcIdle_Tubba = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGe(LVar0, -350)
@@ -59,12 +59,12 @@ EvtScript N(EVS_NpcIdle_Tubba) = {
         Call(PlaySoundAtCollider, COLLIDER_deilittne, SOUND_CREAKY_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
     Call(NpcMoveTo, NPC_SELF, -500, 80, 10)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Tubba)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Tubba))
     Return
     End
 };
 
-API_CALLABLE(N(SetTubbaPatrolTerritory)) {
+API_CALLABLE(SetTubbaPatrolTerritory) {
     if (get_enemy_safe(NPC_Tubba)) {
         Enemy* enemy = get_enemy(NPC_Tubba);
         enemy->territory->patrol.numPoints = 2;
@@ -80,7 +80,7 @@ API_CALLABLE(N(SetTubbaPatrolTerritory)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetTubbaPatrolMode)) {
+API_CALLABLE(SetTubbaPatrolMode) {
     if (get_enemy_safe(NPC_Tubba)) {
         Enemy* enemy = get_enemy(NPC_Tubba);
         enemy->aiFlags |= AI_FLAG_CAN_RESUME_PATROL;
@@ -90,21 +90,21 @@ API_CALLABLE(N(SetTubbaPatrolMode)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetPatrolAfterWaiting) = {
+EvtScript EVS_SetPatrolAfterWaiting = {
     Label(10)
     Call(GetNpcPos, NPC_Tubba, LVar0, LVar1, LVar2)
     IfGt(LVar1, 0)
         Wait(1)
         Goto(10)
     EndIf
-    Call(N(SetTubbaPatrolTerritory))
+    Call(SetTubbaPatrolTerritory)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Tubba) = {
-    Call(N(SetTubbaPatrolMode))
-    Exec(N(EVS_SetPatrolAfterWaiting))
+EvtScript EVS_NpcAI_Tubba = {
+    Call(SetTubbaPatrolMode)
+    Exec(EVS_SetPatrolAfterWaiting)
     Thread
         Loop(0)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_PARAM_QUIET)
@@ -115,27 +115,27 @@ EvtScript N(EVS_NpcAI_Tubba) = {
             Wait(8)
         EndLoop
     EndThread
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Tubba_Patrol)))
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba_Patrol))
     Return
     End
 };
 
-API_CALLABLE(N(PostBattleHideWorld)) {
+API_CALLABLE(PostBattleHideWorld) {
     increment_status_bar_disabled();
     set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
     return ApiStatus_DONE2;
 }
 
 // failsafe if the player somehow defeats Tubba
-EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(PostBattleHideWorld))
+EvtScript EVS_NpcDefeat_Tubba = {
+    Call(PostBattleHideWorld)
     Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba) = {
+EvtScript EVS_NpcInit_Tubba = {
     IfLt(GB_StoryProgress, STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
@@ -147,7 +147,7 @@ EvtScript N(EVS_NpcInit_Tubba) = {
         Return
     EndIf
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Tubba)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(dgb_08_ENTRY_0)
@@ -156,21 +156,21 @@ EvtScript N(EVS_NpcInit_Tubba) = {
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
             Else
                 Call(SetNpcPos, NPC_SELF, -130, 0, 200)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Tubba)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba))
             EndIf
         CaseEq(dgb_08_ENTRY_1)
             IfNe(GB_ARN_Tubba_MapID, 8)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Tubba)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba))
             Else
                 Call(SetNpcPos, NPC_SELF, -130, 210, 80)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Tubba)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba))
             EndIf
     EndSwitch
     Return
     End
 };
 
-NpcData N(NpcData_Tubba) = {
+NpcData NpcData_Tubba = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -196,15 +196,15 @@ NpcData N(NpcData_Tubba) = {
             .detectSize = { 1450, 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Tubba),
-    .settings = &N(NpcSettings_TubbaBlubba),
+    .init = &EVS_NpcInit_Tubba,
+    .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Clubba_01)[] = {
+NpcData NpcData_Clubba_01[] = {
     {
         .id = NPC_Clubba_01,
         .pos = { -250.0f, 0.0f, 135.0f },
@@ -221,17 +221,17 @@ NpcData N(NpcData_Clubba_01)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Wander),
+        .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .limitAnimations = N(LimitAnims_Clubba),
+        .limitAnimations = LimitAnims_Clubba,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_01_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_02)[] = {
+NpcData NpcData_Clubba_02[] = {
     {
         .id = NPC_Clubba_02,
         .pos = { 220.0f, 0.0f, 155.0f },
@@ -248,17 +248,17 @@ NpcData N(NpcData_Clubba_02)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Wander),
+        .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .limitAnimations = N(LimitAnims_Clubba),
+        .limitAnimations = LimitAnims_Clubba,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_02_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_03)[] = {
+NpcData NpcData_Clubba_03[] = {
     {
         .id = NPC_Clubba_03,
         .pos = { 825.0f, 100.0f, 200.0f },
@@ -275,17 +275,17 @@ NpcData N(NpcData_Clubba_03)[] = {
                 .detectSize = { 150 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Wander),
+        .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .limitAnimations = N(LimitAnims_Clubba),
+        .limitAnimations = LimitAnims_Clubba,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_03_Hitbox),
 };
 
-NpcData N(NpcData_Sentinel_01) = {
+NpcData NpcData_Sentinel_01 = {
     .id = NPC_Sentinel_01,
     .pos = { 75.0f, 310.0f, 85.0f },
     .yaw = 90,
@@ -301,13 +301,13 @@ NpcData N(NpcData_Sentinel_01) = {
             .detectSize = { 250, 55 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-NpcData N(NpcData_Sentinel_02) = {
+NpcData NpcData_Sentinel_02 = {
     .id = NPC_Sentinel_02,
     .pos = { -451.0f, 310.0f, 81.0f },
     .yaw = 90,
@@ -323,23 +323,23 @@ NpcData N(NpcData_Sentinel_02) = {
             .detectSize = { 250, 145 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-API_CALLABLE(N(PlayAlertSound)) {
+API_CALLABLE(PlayAlertSound) {
     ai_enemy_play_sound(get_npc_unsafe(script->owner1.enemy->npcID), SOUND_SNORE_INHALE_A, 0);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_LastClubba) = {
+EvtScript EVS_NpcIdle_LastClubba = {
     Label(0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Sleep)
         Wait(30)
         Loop(15)
-            Call(N(PlayAlertSound))
+            Call(PlayAlertSound)
             Wait(60)
         EndLoop
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Hurt)
@@ -347,7 +347,7 @@ EvtScript N(EVS_NpcIdle_LastClubba) = {
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Sleep)
         Wait(30)
         Loop(5)
-            Call(N(PlayAlertSound))
+            Call(PlayAlertSound)
             Wait(60)
         EndLoop
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Hurt)
@@ -357,7 +357,7 @@ EvtScript N(EVS_NpcIdle_LastClubba) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_LastClubba) = {
+EvtScript EVS_NpcInteract_LastClubba = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_WakeUp)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SNAP_AWAKE_A, SOUND_SPACE_DEFAULT)
     Wait(10)
@@ -385,16 +385,16 @@ EvtScript N(EVS_NpcInteract_LastClubba) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_LastClubba) = {
+EvtScript EVS_NpcInit_LastClubba = {
     Call(SetNpcCollisionSize, NPC_SELF, 36, 30)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Sleep)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_LastClubba)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_LastClubba)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_LastClubba))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_LastClubba))
     Return
     End
 };
 
-NpcData N(NpcData_LastClubba) = {
+NpcData NpcData_LastClubba = {
     .id = NPC_Clubba_Last,
     .pos = { 426.0f, 0.0f, 38.0f },
     .yaw = 270,
@@ -410,8 +410,8 @@ NpcData N(NpcData_LastClubba) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_LastClubba),
-    .settings = &N(NpcSettings_LastClubba),
+    .init = &EVS_NpcInit_LastClubba,
+    .settings = &NpcSettings_LastClubba,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = CLUBBA_ANIMS,
@@ -419,19 +419,19 @@ NpcData N(NpcData_LastClubba) = {
     .tattle = MSG_NpcTattle_LastClubba,
 };
 
-EvtScript N(EVS_NpcIdle_Clubba_Unused) = {
+EvtScript EVS_NpcIdle_Clubba_Unused = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_Unused) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Clubba_Unused)))
+EvtScript EVS_NpcInit_Clubba_Unused = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_Unused))
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Return
     End
 };
 
-NpcData N(NpcData_Clubba_Unused) = {
+NpcData NpcData_Clubba_Unused = {
     .id = NPC_Clubba_Unused,
     .pos = { -250.0f, 0.0f, 135.0f },
     .yaw = 90,
@@ -447,31 +447,31 @@ NpcData N(NpcData_Clubba_Unused) = {
             .detectSize = { 250 },
         }
     },
-    .init = &N(EVS_NpcInit_Clubba_Unused),
-    .settings = &N(NpcSettings_Clubba_Wander),
+    .init = &EVS_NpcInit_Clubba_Unused,
+    .settings = &NpcSettings_Clubba_Wander,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = CLUBBA_DROPS,
     .animations = CLUBBA_ANIMS,
-    .limitAnimations = N(LimitAnims_Clubba),
+    .limitAnimations = LimitAnims_Clubba,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(BeforeNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba_Unused), BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_01), BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_02), BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_03), BTL_DGB_FORMATION_03, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Sentinel_01)),
-    NPC_GROUP(N(NpcData_Sentinel_02)),
+NpcGroupList BeforeNPCs = {
+    NPC_GROUP(NpcData_Clubba_Unused, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_01, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_02, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_03, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Sentinel_01),
+    NPC_GROUP(NpcData_Sentinel_02),
     {}
 };
 
-NpcGroupList N(TubbaNPCs) = {
-    NPC_GROUP(N(NpcData_Tubba), BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+NpcGroupList TubbaNPCs = {
+    NPC_GROUP(NpcData_Tubba, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
     {}
 };
 
-NpcGroupList N(AfterNPCs) = {
-    NPC_GROUP(N(NpcData_LastClubba)),
+NpcGroupList AfterNPCs = {
+    NPC_GROUP(NpcData_LastClubba),
     {}
 };

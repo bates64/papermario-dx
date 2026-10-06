@@ -2,7 +2,7 @@
 
 #include "../common/RestoreFromPeachState.inc.c"
 
-Gfx N(setup_gfx_candle_lights)[] = {
+Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -21,9 +21,9 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_EndPeachChapter4) = {
+EvtScript EVS_EndPeachChapter4 = {
     Set(LVar0, GB_KKJ_LastPartner)
-    Call(N(RestoreFromPeachState))
+    Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("mac_04"), mac_04_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
@@ -31,7 +31,7 @@ EvtScript N(EVS_EndPeachChapter4) = {
     End
 };
 
-EvtScript N(EVS_UpdateClockPendulum) = {
+EvtScript EVS_UpdateClockPendulum = {
     Loop(0)
         Call(MakeLerp, -8, 8, 30, EASING_LINEAR)
         Loop(0)
@@ -56,7 +56,7 @@ EvtScript N(EVS_UpdateClockPendulum) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_0) = {
+EvtScript EVS_ExitDoor_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, kkj_18_ENTRY_0)
@@ -75,7 +75,7 @@ EvtScript N(EVS_ExitDoor_0) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(DisablePlayerInput, true)
     IfNe(AF_KKJ_FinishedBakingCake, false)
         Call(SetPlayerPos, -227, 0, -35)
@@ -99,19 +99,19 @@ EvtScript N(EVS_EnterMap) = {
     Set(LVar3, DOOR_SWING_OUT)
     ExecWait(EnterSingleDoor)
     Call(DisablePlayerInput, false)
-    BindTrigger(Ref(N(EVS_ExitDoor_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndIf
-    Exec(N(EVS_UpdateClockPendulum))
+    Exec(EVS_UpdateClockPendulum)
     Call(SetTexPanner, MODEL_o56, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -121,10 +121,10 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o56, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
-    Exec(N(EVS_SetupMusic))
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

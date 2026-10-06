@@ -6,7 +6,6 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Twink.h"
 #include "sprite/npc/BattleMerlee.h"
-#include "battle/action_cmd/flee.h"
 #include "battle/battle.h"
 #include "sprite/player.h"
 
@@ -183,6 +182,21 @@ API_CALLABLE(GiveRefund) {
     if (player_team_is_ability_active(player, ABILITY_REFUND) && sellValue > 0) {
         s32 i;
         s32 iconPosX, iconPosY, iconPosZ;
+        HudScriptPtr icon = HES_Refund;
+
+#if VERSION_PAL
+        switch (gCurrentLanguage) {
+            case LANGUAGE_DE:
+                icon = HES_Refund_de;
+                break;
+            case LANGUAGE_FR:
+                icon = HES_Refund_fr;
+                break;
+            case LANGUAGE_ES:
+                icon = HES_Refund_es;
+                break;
+        }
+#endif
 
         // 75% of the item's sell value, rounded up
         sellValue = (sellValue * 75 + 99) / 100;
@@ -202,7 +216,7 @@ API_CALLABLE(GiveRefund) {
         posY = player->curPos.y;
         posZ = player->curPos.z;
         get_screen_coords(gCurrentCameraID, posX, posY, posZ, &iconPosX, &iconPosY, &iconPosZ);
-        HID_Refund = hud_element_create(HES_Refund);
+        HID_Refund = hud_element_create(icon);
         hud_element_set_render_pos(HID_Refund, iconPosX + 36, iconPosY - 63);
     }
 
@@ -525,6 +539,53 @@ API_CALLABLE(SpawnRecoverFlowerFX) {
     s32 var4 = evt_get_variable(script, *args++);
 
     fx_recover(1, var1, var2, var3, var4);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetSelectedMoveID) {
+    evt_set_variable(script, *script->ptrReadPos, gBattleStatus.selectedMoveID);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetJumpHammerCharge) {
+    Bytecode* args = script->ptrReadPos;
+
+    evt_set_variable(script, *args++, gBattleStatus.jumpCharge);
+    evt_set_variable(script, *args++, gBattleStatus.hammerCharge);
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetPlayerHpPercent) {
+    evt_set_variable(script, *script->ptrReadPos, (gPlayerData.curHP * 100) / gPlayerData.curMaxHP);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(AddHP) {
+    PlayerData* playerData = &gPlayerData;
+    s32 amt = evt_get_variable(script, *script->ptrReadPos);
+    s32 newHP = playerData->curHP + amt;
+
+    if (newHP > playerData->curMaxHP) {
+        newHP = playerData->curMaxHP;
+    }
+
+    playerData->curHP = newHP;
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(AddFP) {
+    PlayerData* playerData = &gPlayerData;
+    s32 amt = evt_get_variable(script, *script->ptrReadPos);
+    s32 newFP = playerData->curFP + amt;
+
+    if (newFP > playerData->curMaxFP) {
+        newFP = playerData->curMaxFP;
+    }
+
+    playerData->curFP = newFP;
+
     return ApiStatus_DONE2;
 }
 
@@ -1168,7 +1229,7 @@ EvtScript EVS_RunAwayStart = {
     Call(ShowActionHud, 1)
     Call(GetActorVar, ACTOR_SELF, 0, LVar0)
     Call(LoadActionCommand, ACTION_COMMAND_FLEE)
-    Call(action_command_flee_init, LVar0)
+    Call(InitActionCommand, LVar0)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(func_80260E38)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hustled)
@@ -1185,7 +1246,7 @@ EvtScript EVS_RunAwayStart = {
     Wait(1)
     Call(SetActorYaw, ACTOR_PLAYER, 180)
     Wait(5)
-    Call(action_command_flee_start, 0, 60, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 60, AC_DIFFICULTY_3)
     Call(func_80260E5C)
     Wait(5)
     Call(AddActorPos, ACTOR_PLAYER, 2, 0, 0)
@@ -1479,7 +1540,7 @@ EvtScript EVS_UseLifeShroom = {
     EndIf
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LIFE_SHROOM_CHIME)
     Add(LVar4, 15)
-    PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar3, LVar4, LVar5, Float(1.0))
+    PlayEffect(EFFECT_ENERGY_IN_OUT, 3, LVar3, LVar4, LVar5, Float(1.0), 0)
     Set(LVar0, LVarF)
     Loop(4)
         Call(SetItemFlags, LVarA, 64, 1)

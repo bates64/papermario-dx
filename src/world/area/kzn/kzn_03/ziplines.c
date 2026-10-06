@@ -2,7 +2,7 @@
 #include "kzn_03.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(Zipline_AdjustMoveDownSound)) {
+API_CALLABLE(Zipline_AdjustMoveDownSound) {
     Bytecode* args = script->ptrReadPos;
 
     if (*args++ != 0) {
@@ -14,7 +14,7 @@ API_CALLABLE(N(Zipline_AdjustMoveDownSound)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Zipline_AdjustMoveUpSound)) {
+API_CALLABLE(Zipline_AdjustMoveUpSound) {
     Bytecode* args = script->ptrReadPos;
 
     if (*args++ != 0) {
@@ -26,7 +26,7 @@ API_CALLABLE(N(Zipline_AdjustMoveUpSound)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Zipline_UpdatePlayerPos)) {
+API_CALLABLE(Zipline_UpdatePlayerPos) {
     Bytecode* args = script->ptrReadPos;
     s32 temp_v0 = evt_get_variable(script, *args++);
     f32* array = *(f32**) script->array;
@@ -50,22 +50,22 @@ API_CALLABLE(N(Zipline_UpdatePlayerPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Zipline_CheckInputForJumpOff)) {
+API_CALLABLE(Zipline_CheckInputForJumpOff) {
     script->varTable[8] = gGameStatusPtr->pressedButtons[0] & BUTTON_A;
     return ApiStatus_DONE2;
 }
 
-Vec3f N(Zipline_Endpoints1)[] = {
+Vec3f Zipline_Endpoints1[] = {
     { -327.5, 1008.7, -55.0 },
     {  233.9,  914.0, -55.0 },
 };
 
-Vec3f N(Zipline_Endpoints2)[] = {
+Vec3f Zipline_Endpoints2[] = {
     {  297.0, 608.0, 255.0 },
     { -362.0, 267.0, 255.0 },
 };
 
-EvtScript N(EVS_Zipline_TetherCameraToPlayer) = {
+EvtScript EVS_Zipline_TetherCameraToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -75,7 +75,7 @@ EvtScript N(EVS_Zipline_TetherCameraToPlayer) = {
     End
 };
 
-EvtScript N(EVS_RideZipline) = {
+EvtScript EVS_RideZipline = {
     Call(GetPartnerInUse, LVar9)
     IfEq(LVar9, PARTNER_KOOPER)
         Return
@@ -88,7 +88,7 @@ EvtScript N(EVS_RideZipline) = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    ExecGetTID(N(EVS_Zipline_TetherCameraToPlayer), LVar9)
+    ExecGetTID(EVS_Zipline_TetherCameraToPlayer, LVar9)
     Thread
         Wait(7)
         Call(DisablePartnerAI, false)
@@ -116,7 +116,7 @@ EvtScript N(EVS_RideZipline) = {
         Set(AB_KZN_LastZiplineNpc1, ArrayVar(6))
         Loop(0)
             Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
-            Call(N(Zipline_AdjustMoveDownSound), MF_RidingZipline1, LVar1, LVar2, LVar3)
+            Call(Zipline_AdjustMoveDownSound, MF_RidingZipline1, LVar1, LVar2, LVar3)
             IfNe(AB_KZN_LastZiplineNpc1, LVar0)
                 BreakLoop
             EndIf
@@ -126,11 +126,11 @@ EvtScript N(EVS_RideZipline) = {
     Call(MakeLerp, 0, 1000, 70, EASING_QUADRATIC_IN)
     Label(0)
         Call(UpdateLerp)
-        Call(N(Zipline_UpdatePlayerPos), 0)
+        Call(Zipline_UpdatePlayerPos, 0)
         Call(TranslateModel, ArrayVar(1), LVar5, LVar6, LVar7)
         Call(TranslateModel, ArrayVar(2), LVar5, LVar6, LVar7)
         Wait(1)
-        Call(N(Zipline_CheckInputForJumpOff))
+        Call(Zipline_CheckInputForJumpOff)
         IfEq(LVar8, BUTTON_A)
             Goto(10)
         EndIf
@@ -155,7 +155,7 @@ EvtScript N(EVS_RideZipline) = {
         Set(AB_KZN_LastZiplineNpc2, ArrayVar(6))
         Loop(0)
             Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
-            Call(N(Zipline_AdjustMoveUpSound), MF_RidingZipline2, LVar1, LVar2, LVar3)
+            Call(Zipline_AdjustMoveUpSound, MF_RidingZipline2, LVar1, LVar2, LVar3)
             IfNe(AB_KZN_LastZiplineNpc2, LVar0)
                 BreakLoop
             EndIf
@@ -167,7 +167,7 @@ EvtScript N(EVS_RideZipline) = {
     Call(MakeLerp, LVar0, 0, LVar2, EASING_LINEAR)
     Label(1)
         Call(UpdateLerp)
-        Call(N(Zipline_UpdatePlayerPos), 1)
+        Call(Zipline_UpdatePlayerPos, 1)
         Call(TranslateModel, ArrayVar(1), LVar5, LVar6, LVar7)
         Call(TranslateModel, ArrayVar(2), LVar5, LVar6, LVar7)
         Wait(1)
@@ -180,29 +180,29 @@ EvtScript N(EVS_RideZipline) = {
     End
 };
 
-EvtScript N(EVS_SetupZiplines) = {
+EvtScript EVS_SetupZiplines = {
     MallocArray(7, LVar0)
     UseArray(LVar0)
-    Set(ArrayVar(0), Ref(N(Zipline_Endpoints1)))
+    Set(ArrayVar(0), Ref(Zipline_Endpoints1))
     Set(ArrayVar(1), MODEL_kassya_koma)
     Set(ArrayVar(2), MODEL_kassya_himo)
     Set(ArrayVar(3), -327)
     Set(ArrayVar(4), 895)
     Set(ArrayVar(5), -46)
     Set(ArrayVar(6), NPC_ZiplineDummy1)
-    BindTrigger(Ref(N(EVS_RideZipline)), TRIGGER_FLOOR_PRESS_A, COLLIDER_ropeway1, 1, 0)
-    Exec(N(EVS_SyncZiplineDummyNPC1))
+    BindTrigger(Ref(EVS_RideZipline), TRIGGER_FLOOR_PRESS_A, COLLIDER_ropeway1, 1, 0)
+    Exec(EVS_SyncZiplineDummyNPC1)
     MallocArray(7, LVar0)
     UseArray(LVar0)
-    Set(ArrayVar(0), Ref(N(Zipline_Endpoints2)))
+    Set(ArrayVar(0), Ref(Zipline_Endpoints2))
     Set(ArrayVar(1), MODEL_kssya2_koma)
     Set(ArrayVar(2), MODEL_kassya2_himo)
     Set(ArrayVar(3), 298)
     Set(ArrayVar(4), 495)
     Set(ArrayVar(5), 265)
     Set(ArrayVar(6), NPC_ZiplineDummy2)
-    BindTrigger(Ref(N(EVS_RideZipline)), TRIGGER_FLOOR_PRESS_A, COLLIDER_ropeway2, 1, 0)
-    Exec(N(EVS_SyncZiplineDummyNPC2))
+    BindTrigger(Ref(EVS_RideZipline), TRIGGER_FLOOR_PRESS_A, COLLIDER_ropeway2, 1, 0)
+    Exec(EVS_SyncZiplineDummyNPC2)
     Return
     End
 };

@@ -9,17 +9,17 @@ typedef struct LilOinkReward {
     /* 0x08 */ s32 chance;
 } LilOinkReward; // size = 0x0C
 
-API_CALLABLE(N(GetPlayerCoins)) {
+API_CALLABLE(GetPlayerCoins) {
     script->varTable[0] = gPlayerData.coins;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DismissCoinCounter)) {
+API_CALLABLE(DismissCoinCounter) {
     hide_coin_counter_immediately();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetRollingCapsulePosition)) {
+API_CALLABLE(GetRollingCapsulePosition) {
     //  f32 angle = clamp_angle(EVT_FIXED_TO_FLOAT(script->varTable[2])); ? TODO
     f32 angle = script->varTable[2] + EVT_FIXED_OFFSET;
 
@@ -30,7 +30,7 @@ API_CALLABLE(N(GetRollingCapsulePosition)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(LoadLilOinks)) {
+API_CALLABLE(LoadLilOinks) {
     s32 varBase = GB_MAC03_LilOink_00;
     s32 numPigs = evt_get_variable(nullptr, GB_MAC03_LilOinkCount);
     EffectInstance* effect = fx_lil_oink(0, 0.0f, 0.0f, 0.0f, 0.0f, 0);
@@ -51,7 +51,7 @@ API_CALLABLE(N(LoadLilOinks)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreateLilOink)) {
+API_CALLABLE(CreateLilOink) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 i = evt_get_variable(script, *args++);
@@ -76,7 +76,7 @@ API_CALLABLE(N(CreateLilOink)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetLilOinkPosition)) {
+API_CALLABLE(SetLilOinkPosition) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 i = evt_get_variable(script, *args++);
@@ -92,7 +92,7 @@ API_CALLABLE(N(SetLilOinkPosition)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetLilOinkPosition)) {
+API_CALLABLE(GetLilOinkPosition) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 i = evt_get_variable(script, *args++);
@@ -108,7 +108,7 @@ API_CALLABLE(N(GetLilOinkPosition)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(HideLilOink)) {
+API_CALLABLE(HideLilOink) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 i = evt_get_variable(script, *args++);
@@ -117,7 +117,7 @@ API_CALLABLE(N(HideLilOink)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetLilOinkAnim)) {
+API_CALLABLE(SetLilOinkAnim) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     Bytecode* args = script->ptrReadPos;
     s32 i = evt_get_variable(script, *args++);
@@ -128,7 +128,7 @@ API_CALLABLE(N(SetLilOinkAnim)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PopLilOinkList)) {
+API_CALLABLE(PopLilOinkList) {
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, MV_LilOinkEffect);
     s32 i;
 
@@ -155,7 +155,7 @@ API_CALLABLE(N(PopLilOinkList)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TurnCrank) = {
+EvtScript EVS_TurnCrank = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Return
@@ -173,7 +173,7 @@ EvtScript N(EVS_TurnCrank) = {
     IfNe(GB_MAC03_LilOinkCapsuleState, 0)
         Return
     EndIf
-    Call(N(GetPlayerCoins))
+    Call(GetPlayerCoins)
     IfLt(LVar0, LIL_OINK_COIN_COST)
         Call(PlaySound, SOUND_MENU_ERROR)
         Return
@@ -184,7 +184,7 @@ EvtScript N(EVS_TurnCrank) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(AddCoin, -LIL_OINK_COIN_COST)
     Wait(20)
-    Call(N(DismissCoinCounter))
+    Call(DismissCoinCounter)
     Set(MF_CanUseOinkMachine, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 138, 25, -406)
     Call(SetPanTarget, CAM_DEFAULT, 138, 25, -406)
@@ -251,7 +251,7 @@ EvtScript N(EVS_TurnCrank) = {
         Call(UpdateLerp)
         SetF(LVar2, LVar0)
         DivF(LVar2, 10)
-        Call(N(GetRollingCapsulePosition))
+        Call(GetRollingCapsulePosition)
         Call(SetNpcPos, NPC_Capsule, LVar2, LVar3, LVar4)
         Wait(1)
         IfEq(LVar1, 0)
@@ -284,7 +284,7 @@ EvtScript N(EVS_TurnCrank) = {
     End
 };
 
-EvtScript N(EVS_LilOinkExplanation) = {
+EvtScript EVS_LilOinkExplanation = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetNpcSpeed, NPC_Toad_03, Float(4.0))
     Call(SetNpcAnimation, NPC_Toad_03, ANIM_Toad_Red_Run)
@@ -308,10 +308,10 @@ EvtScript N(EVS_LilOinkExplanation) = {
     End
 };
 
-EvtScript N(EVS_UseMachinePrompt) = {
+EvtScript EVS_UseMachinePrompt = {
     Call(DisablePlayerInput, true)
     IfEq(MF_HeardOinkExplanation, false)
-        Exec(N(EVS_LilOinkExplanation))
+        Exec(EVS_LilOinkExplanation)
         Call(GetPartnerInUse, LVar0)
         IfNe(LVar0, PARTNER_NONE)
             Call(InterruptUsePartner)
@@ -334,16 +334,16 @@ EvtScript N(EVS_UseMachinePrompt) = {
         IfEq(LVar0, COLLIDER_step)
             Goto(0)
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, NO_COLLIDER)
             Goto(0)
         EndIf
-    Call(N(DismissCoinCounter))
+    Call(DismissCoinCounter)
     Set(MF_CanUseOinkMachine, false)
     Return
     End
 };
 
-LilOinkReward N(LilOinkPrizes)[] = {
+LilOinkReward LilOinkPrizes[] = {
     [LIL_OINK_TYPE_BLACK]       { .itemID = ITEM_DRIED_SHROOM,  .quantity = 1, .chance = 100 },
     [LIL_OINK_TYPE_WHITE]       { .itemID = ITEM_SUPER_SHROOM,  .quantity = 1, .chance = 100 },
     [LIL_OINK_TYPE_PINK]        { .itemID = ITEM_FIRE_FLOWER,   .quantity = 1, .chance = 100 },
@@ -360,13 +360,13 @@ LilOinkReward N(LilOinkPrizes)[] = {
 #endif
 };
 
-API_CALLABLE(N(GetLilOinkPrize)) {
+API_CALLABLE(GetLilOinkPrize) {
     Bytecode* args = script->ptrReadPos;
     s32 oinkType = evt_get_variable(script, GB_MAC03_LilOink_00);
     s32 itemID = *args++;
     s32 quantity = *args++;
     s32 chance = *args++;
-    LilOinkReward* reward = &N(LilOinkPrizes)[oinkType];
+    LilOinkReward* reward = &LilOinkPrizes[oinkType];
 
     evt_set_variable(script, itemID, reward->itemID);
     evt_set_variable(script, quantity, reward->quantity);
@@ -374,8 +374,8 @@ API_CALLABLE(N(GetLilOinkPrize)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SpawnLilOinkPrize) = {
-    Call(N(GetLilOinkPrize), LVar4, LVar5, LVar6)
+EvtScript EVS_SpawnLilOinkPrize = {
+    Call(GetLilOinkPrize, LVar4, LVar5, LVar6)
     Call(RandInt, 100, LVar7)
     IfGt(LVar7, LVar6)
         Return
@@ -389,7 +389,7 @@ EvtScript N(EVS_SpawnLilOinkPrize) = {
     End
 };
 
-EvtScript N(EVS_OpenCapsule) = {
+EvtScript EVS_OpenCapsule = {
     Call(GetPlayerFloorCollider, LVar0)
     IfNe(LVar0, COLLIDER_hummer)
         Return
@@ -411,7 +411,7 @@ EvtScript N(EVS_OpenCapsule) = {
     EndLoop
     Call(GetNpcPos, NPC_Capsule, LVar0, LVar1, LVar2)
     Sub(LVar1, 10)
-    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
+    PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
     Call(EnableModel, MODEL_capsule, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_capsule, COLLIDER_FLAGS_UPPER_MASK)
     Set(GB_MAC03_LilOinkCapsuleState, 2)
@@ -442,7 +442,7 @@ EvtScript N(EVS_OpenCapsule) = {
             Set(LVar3, LIL_OINK_TYPE_PIKACHU)
     EndSwitch
     Call(PlaySoundAtNpc, NPC_Capsule, SOUND_TORNADO_JUMP, SOUND_SPACE_DEFAULT)
-    Call(N(CreateLilOink), 10, LVar3, LVar0, LVar1, LVar2, 90)
+    Call(CreateLilOink, 10, LVar3, LVar0, LVar1, LVar2, 90)
     Wait(10)
     IfGe(GB_MAC03_LilOinkCount, 10)
         Set(LVarA, LVar3)
@@ -456,7 +456,7 @@ EvtScript N(EVS_OpenCapsule) = {
         Call(NpcFaceNpc, NPC_LilOink_01, NPC_Capsule, 0)
         Wait(10)
         Call(NpcJump0, NPC_LilOink_01, LVar0, LVar1, LVar2, 15)
-        Exec(N(EVS_SpawnLilOinkPrize))
+        Exec(EVS_SpawnLilOinkPrize)
         Call(PlaySoundAtNpc, NPC_LilOink_01, SOUND_PLAYER_RUN_AWAY, SOUND_SPACE_DEFAULT)
         Call(SetNpcSpeed, NPC_LilOink_01, 4)
         Call(NpcMoveTo, NPC_LilOink_01, 580, -170, 0)
@@ -464,12 +464,12 @@ EvtScript N(EVS_OpenCapsule) = {
         Call(EnableNpcShadow, NPC_LilOink_01, false)
         Call(SetNpcSpeed, NPC_LilOink_01, 1)
         Call(EnableNpcAI, NPC_LilOink_01, true)
-        Call(N(PopLilOinkList))
+        Call(PopLilOinkList)
         Set(LVar0, 0)
         Set(LVar1, NPC_LilOink_01)
         Set(LVar6, GB_MAC03_LilOinkCount)
         Loop(LVar6)
-            Call(N(GetLilOinkPosition), LVar0, LVar2, LVar3, LVar4, LVar5)
+            Call(GetLilOinkPosition, LVar0, LVar2, LVar3, LVar4, LVar5)
             Call(SetNpcPos, LVar1, LVar2, LVar3, LVar4)
             Call(SetNpcYaw, LVar1, LVar5)
             Add(LVar0, 1)
@@ -483,21 +483,21 @@ EvtScript N(EVS_OpenCapsule) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
-    Call(N(SetLilOinkAnim), 10, LIL_OINK_ANIM_2)
+    Call(SetLilOinkAnim, 10, LIL_OINK_ANIM_2)
     Call(SetNpcJumpscale, NPC_Capsule, Float(1.0))
     Call(NpcJump0, NPC_Capsule, 330, 20, -220, 20)
     Call(SetNpcSpeed, NPC_Capsule, Float(4.0))
     Call(NpcMoveTo, NPC_Capsule, 360, -180, 0)
     Set(GB_MAC03_LilOinkCapsuleState, 0)
     Call(EnableNpcShadow, NPC_Capsule, false)
-    Call(N(GetLilOinkPosition), 10, LVar0, LVar1, LVar2, LVar4)
-    Call(N(HideLilOink), 10)
+    Call(GetLilOinkPosition, 10, LVar0, LVar1, LVar2, LVar4)
+    Call(HideLilOink, 10)
     Set(LVar5, NPC_LilOink_01)
     Add(LVar5, GB_MAC03_LilOinkCount)
     Call(SetNpcPos, LVar5, LVar0, LVar1, LVar2)
     Call(SetNpcYaw, LVar5, LVar4)
     Call(EnableNpcShadow, LVar5, true)
-    Call(N(CreateLilOink), GB_MAC03_LilOinkCount, LVar3, LVar0, LVar1, LVar2, LVar4)
+    Call(CreateLilOink, GB_MAC03_LilOinkCount, LVar3, LVar0, LVar1, LVar2, LVar4)
     Add(GB_MAC03_LilOinkCount, 1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -510,7 +510,7 @@ EvtScript N(EVS_OpenCapsule) = {
     End
 };
 
-EvtScript N(EVS_LilOinkFlee) = {
+EvtScript EVS_LilOinkFlee = {
     Set(LVar1, NPC_LilOink_01)
     Add(LVar1, LVar0)
     Call(EnableNpcAI, LVar1, false)
@@ -525,13 +525,13 @@ EvtScript N(EVS_LilOinkFlee) = {
     Call(EnableNpcShadow, LVar1, false)
     Call(SetNpcSpeed, LVar1, 1)
     Call(EnableNpcAI, LVar1, true)
-    Call(N(HideLilOink), LVar0)
+    Call(HideLilOink, LVar0)
     Sub(GB_MAC03_LilOinkCount, 1)
     Return
     End
 };
 
-EvtScript N(EVS_EnterPen) = {
+EvtScript EVS_EnterPen = {
     Call(DisablePlayerInput, true)
     Call(SetPartnerForcedFollowMode, 1)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -571,7 +571,7 @@ EvtScript N(EVS_EnterPen) = {
     Set(LVar6, GB_MAC03_LilOinkCount)
     Loop(LVar6)
         Add(LVar0, -1)
-        Exec(N(EVS_LilOinkFlee))
+        Exec(EVS_LilOinkFlee)
         Wait(5)
     EndLoop
     Loop(0)
@@ -586,7 +586,7 @@ EvtScript N(EVS_EnterPen) = {
     End
 };
 
-EvtScript N(EVS_ExitPen) = {
+EvtScript EVS_ExitPen = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(DisablePlayerInput, true)
     Call(SetPartnerForcedFollowMode, 1)
@@ -619,7 +619,7 @@ EvtScript N(EVS_ExitPen) = {
     End
 };
 
-EvtScript N(EVS_SyncLilOinkNpcPositions) = {
+EvtScript EVS_SyncLilOinkNpcPositions = {
     Loop(0)
         IfNe(GB_MAC03_LilOinkCount, 0)
             Set(LVar0, 0)
@@ -628,7 +628,7 @@ EvtScript N(EVS_SyncLilOinkNpcPositions) = {
             Loop(LVar6)
                 Call(GetNpcPos, LVar1, LVar2, LVar3, LVar4)
                 Call(GetNpcYaw, LVar1, LVar5)
-                Call(N(SetLilOinkPosition), LVar0, LVar2, LVar3, LVar4, LVar5)
+                Call(SetLilOinkPosition, LVar0, LVar2, LVar3, LVar4, LVar5)
                 Add(LVar0, 1)
                 Add(LVar1, 1)
             EndLoop
@@ -639,7 +639,7 @@ EvtScript N(EVS_SyncLilOinkNpcPositions) = {
     End
 };
 
-EvtScript N(EVS_InitializeLilOinks) = {
+EvtScript EVS_InitializeLilOinks = {
     IfEq(GB_MAC03_LilOinkCapsuleState, 1)
         Call(SetNpcPos, NPC_Capsule, 277, Float(63.0), -273)
     Else
@@ -653,25 +653,25 @@ EvtScript N(EVS_InitializeLilOinks) = {
     Else
         Set(MF_HeardOinkExplanation, true)
     EndIf
-    Call(N(LoadLilOinks))
+    Call(LoadLilOinks)
     IfNe(GB_MAC03_LilOinkCount, 0)
         Set(LVar0, 0)
         Set(LVar1, NPC_LilOink_01)
         Set(LVar6, GB_MAC03_LilOinkCount)
         Loop(LVar6)
-            Call(N(GetLilOinkPosition), LVar0, LVar2, LVar3, LVar4, LVar5)
+            Call(GetLilOinkPosition, LVar0, LVar2, LVar3, LVar4, LVar5)
             Call(SetNpcPos, LVar1, LVar2, LVar3, LVar4)
             Call(SetNpcYaw, LVar1, LVar5)
             Add(LVar0, 1)
             Add(LVar1, 1)
         EndLoop
     EndIf
-    Exec(N(EVS_SyncLilOinkNpcPositions))
-    BindTrigger(Ref(N(EVS_UseMachinePrompt)), TRIGGER_FLOOR_TOUCH, COLLIDER_step, 1, 0)
-    BindTrigger(Ref(N(EVS_TurnCrank)), TRIGGER_CEILING_TOUCH, COLLIDER_jump, 1, 0)
-    BindTrigger(Ref(N(EVS_OpenCapsule)), TRIGGER_WALL_HAMMER, COLLIDER_capsule, 1, 0)
-    BindTrigger(Ref(N(EVS_EnterPen)), TRIGGER_WALL_PRESS_A, COLLIDER_deili, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitPen)), TRIGGER_WALL_PRESS_A, COLLIDER_deiliu, 1, 0)
+    Exec(EVS_SyncLilOinkNpcPositions)
+    BindTrigger(Ref(EVS_UseMachinePrompt), TRIGGER_FLOOR_TOUCH, COLLIDER_step, 1, 0)
+    BindTrigger(Ref(EVS_TurnCrank), TRIGGER_CEILING_TOUCH, COLLIDER_jump, 1, 0)
+    BindTrigger(Ref(EVS_OpenCapsule), TRIGGER_WALL_HAMMER, COLLIDER_capsule, 1, 0)
+    BindTrigger(Ref(EVS_EnterPen), TRIGGER_WALL_PRESS_A, COLLIDER_deili, 1, 0)
+    BindTrigger(Ref(EVS_ExitPen), TRIGGER_WALL_PRESS_A, COLLIDER_deiliu, 1, 0)
     Return
     End
 };

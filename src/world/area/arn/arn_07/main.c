@@ -3,9 +3,9 @@
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
 
-ITEM_LIST(N(KeyList), ITEM_MYSTICAL_KEY);
+ITEM_LIST(KeyList, ITEM_MYSTICAL_KEY);
 
-EvtScript N(EVS_SpawnStarCard) = {
+EvtScript EVS_SpawnStarCard = {
     Call(FadeOutMusic, 0, 1000)
     Set(LVar0, 0)
     IfEq(LVar0, 0)
@@ -15,14 +15,14 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
+        Call(InitSpiritCardSpawn, MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
         Thread
-            Call(N(UpdateSpiritCardSpawn))
+            Call(UpdateSpiritCardSpawn)
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(AwaitSpiritOrbBurst))
+            Call(AwaitSpiritOrbBurst)
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
@@ -35,7 +35,7 @@ EvtScript N(EVS_SpawnStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -43,7 +43,7 @@ EvtScript N(EVS_SpawnStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 145, 0, 0)
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -52,13 +52,13 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
-        Call(N(SpawnExistingSpiritCard), 2, 145, 30, 0, 0)
+        Call(SpawnExistingSpiritCard, 2, 145, 30, 0, 0)
         Thread
-            Call(N(UpdateExistingSpiritCard))
+            Call(UpdateExistingSpiritCard)
         EndThread
         Wait(1)
     EndIf
-    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
+    Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
@@ -68,7 +68,7 @@ EvtScript N(EVS_SpawnStarCard) = {
     End
 };
 
-EvtScript N(EVS_RespawnStarCard) = {
+EvtScript EVS_RespawnStarCard = {
     Set(LVar0, 1)
     IfEq(LVar0, 0)
         Call(DisablePlayerInput, true)
@@ -77,14 +77,14 @@ EvtScript N(EVS_RespawnStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 145, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
+        Call(InitSpiritCardSpawn, MV_SpiritCardData, 2, 50, 100, 31, -6, 145, 65, 0, 30, 0)
         Thread
-            Call(N(UpdateSpiritCardSpawn))
+            Call(UpdateSpiritCardSpawn)
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(AwaitSpiritOrbBurst))
+            Call(AwaitSpiritOrbBurst)
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
@@ -97,7 +97,7 @@ EvtScript N(EVS_RespawnStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EndThread
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -105,7 +105,7 @@ EvtScript N(EVS_RespawnStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 145, 0, 0)
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -114,13 +114,13 @@ EvtScript N(EVS_RespawnStarCard) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     Else
-        Call(N(SpawnExistingSpiritCard), 2, 145, 30, 0, 0)
+        Call(SpawnExistingSpiritCard, 2, 145, 30, 0, 0)
         Thread
-            Call(N(UpdateExistingSpiritCard))
+            Call(UpdateExistingSpiritCard)
         EndThread
         Wait(1)
     EndIf
-    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
+    Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
@@ -130,13 +130,13 @@ EvtScript N(EVS_RespawnStarCard) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_arn_08_0) = EVT_EXIT_SINGLE_DOOR(arn_07_ENTRY_0, "arn_08", arn_08_ENTRY_0,
+EvtScript EVS_ExitDoor_arn_08_0 = EVT_EXIT_SINGLE_DOOR(arn_07_ENTRY_0, "arn_08", arn_08_ENTRY_0,
     COLLIDER_tt3, MODEL_o39, DOOR_SWING_OUT);
 
-EvtScript N(EVS_ExitWalk_arn_03_0) = EVT_EXIT_WALK(60, arn_07_ENTRY_1, "arn_03", arn_03_ENTRY_0);
-EvtScript N(EVS_ExitWalk_mim_12_1) = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12", mim_12_ENTRY_1);
+EvtScript EVS_ExitWalk_arn_03_0 = EVT_EXIT_WALK(60, arn_07_ENTRY_1, "arn_03", arn_03_ENTRY_0);
+EvtScript EVS_ExitWalk_mim_12_1 = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12", mim_12_ENTRY_1);
 
-EvtScript N(EVS_Scene_TubbaReunion) = {
+EvtScript EVS_Scene_TubbaReunion = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -28, 0, -333)
@@ -273,73 +273,73 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_arn_03_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_mim_12_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_arn_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_mim_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-        BindPadlock(Ref(N(EVS_UnlockDoor)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
+        BindPadlock(Ref(EVS_UnlockDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
     Else
-        BindTrigger(Ref(N(EVS_ExitDoor_arn_08_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoor_arn_08_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(arn_07_ENTRY_0)
             IfEq(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WINDY_MILL)
-                ExecWait(N(EVS_Scene_TubbaReunion))
-                Exec(N(EVS_BindExitTriggers))
+                ExecWait(EVS_Scene_TubbaReunion)
+                Exec(EVS_BindExitTriggers)
             Else
                 Set(LVar2, MODEL_o39)
                 Set(LVar3, DOOR_SWING_OUT)
                 ExecWait(EnterSingleDoor)
-                Exec(N(EVS_BindExitTriggers))
+                Exec(EVS_BindExitTriggers)
             EndIf
         CaseEq(arn_07_ENTRY_1)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(arn_07_ENTRY_2)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(arn_07_ENTRY_3)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
             Wait(1)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_GUSTY_GULCH)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_GustyGulch, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(BossNPCs)))
+            Call(MakeNpcs, false, Ref(BossNPCs))
         CaseEq(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(SpiritNPCs)))
+            Call(MakeNpcs, false, Ref(SpiritNPCs))
         CaseDefault
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndSwitch
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfEq(GB_StoryProgress, STORY_CH3_DEFEATED_TUBBA_BLUBBA)
-        Exec(N(EVS_RespawnStarCard))
+        Exec(EVS_RespawnStarCard)
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, arn_07_ENTRY_3)
         Wait(65)
     EndIf
-    Exec(N(EVS_SetupWindmill))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupWindmill)
+    Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.3))
     Return

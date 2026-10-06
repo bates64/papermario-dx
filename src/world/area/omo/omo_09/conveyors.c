@@ -1,20 +1,20 @@
 #include "omo_09.h"
 
-s32 N(ConveyorColliders)[4] = {
+s32 ConveyorColliders[4] = {
     COLLIDER_o904,
     COLLIDER_o906,
     COLLIDER_o907,
     COLLIDER_o911
 };
 
-VecXZf N(ConveyorPushVels)[4] = {
+VecXZf ConveyorPushVels[4] = {
     { -3.9,  0.0 },
     {  3.9,  0.0 },
     {  0.0,  3.9 },
     {  0.0, -3.9 },
 };
 
-s32 N(ShouldPauseConveyor)(void) {
+s32 ShouldPauseConveyor(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
@@ -31,14 +31,14 @@ s32 N(ShouldPauseConveyor)(void) {
     return false;
 }
 
-API_CALLABLE(N(WaitWhileConveyorPaused)) {
-    if (!N(ShouldPauseConveyor)()) {
+API_CALLABLE(WaitWhileConveyorPaused) {
+    if (!ShouldPauseConveyor()) {
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AddConveyorPush)) {
+API_CALLABLE(AddConveyorPush) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* partner = get_npc_unsafe(NPC_PARTNER);
     PartnerStatus* partnerStatus = &gPartnerStatus;
@@ -50,7 +50,7 @@ API_CALLABLE(N(AddConveyorPush)) {
     u32 i;
 
     script->varTable[0] = 0;
-    if (N(ShouldPauseConveyor)()) {
+    if (ShouldPauseConveyor()) {
         return ApiStatus_DONE2;
     }
 
@@ -65,10 +65,10 @@ API_CALLABLE(N(AddConveyorPush)) {
                 &hitRx, &hitRz, &hitDirX, &hitDirZ
             );
 
-            for (i = 0; i < ARRAY_COUNT(N(ConveyorColliders)); i++) {
-                if (hit == N(ConveyorColliders)[i]) {
-                    playerStatus->pushVel.x = N(ConveyorPushVels)[i].x;
-                    playerStatus->pushVel.z = N(ConveyorPushVels)[i].z;
+            for (i = 0; i < ARRAY_COUNT(ConveyorColliders); i++) {
+                if (hit == ConveyorColliders[i]) {
+                    playerStatus->pushVel.x = ConveyorPushVels[i].x;
+                    playerStatus->pushVel.z = ConveyorPushVels[i].z;
                 }
             }
             script->varTable[0] = 1;
@@ -79,20 +79,20 @@ API_CALLABLE(N(AddConveyorPush)) {
     if (partnerStatus->actingPartner != PARTNER_LAKILESTER ||
         partnerStatus->partnerActionState == PARTNER_ACTION_NONE)
     {
-        for (i = 0; i < ARRAY_COUNT(N(ConveyorColliders)); i++) {
-            if (gCollisionStatus.curFloor == N(ConveyorColliders)[i] ||
-                gCollisionStatus.lastTouchedFloor == N(ConveyorColliders)[i])
+        for (i = 0; i < ARRAY_COUNT(ConveyorColliders); i++) {
+            if (gCollisionStatus.curFloor == ConveyorColliders[i] ||
+                gCollisionStatus.lastTouchedFloor == ConveyorColliders[i])
             {
-                playerStatus->pushVel.x = N(ConveyorPushVels)[i].x;
-                playerStatus->pushVel.z = N(ConveyorPushVels)[i].z;
+                playerStatus->pushVel.x = ConveyorPushVels[i].x;
+                playerStatus->pushVel.z = ConveyorPushVels[i].z;
             }
 
-            if (partner->curFloor == N(ConveyorColliders)[i] &&
+            if (partner->curFloor == ConveyorColliders[i] &&
                 ((partnerStatus->actingPartner != PARTNER_KOOPER) ||
                  (partnerStatus->partnerActionState == PARTNER_ACTION_NONE)))
             {
-                partner->pos.x += N(ConveyorPushVels)[i].x;
-                partner->pos.z += N(ConveyorPushVels)[i].z;
+                partner->pos.x += ConveyorPushVels[i].x;
+                partner->pos.z += ConveyorPushVels[i].z;
                 partner_clear_player_tracking(partner);
             }
         }
@@ -101,7 +101,7 @@ API_CALLABLE(N(AddConveyorPush)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupConveyors) = {
+EvtScript EVS_SetupConveyors = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(EnableTexPanning, MODEL_1, true)
     Call(EnableTexPanning, MODEL_3, true)
@@ -110,7 +110,7 @@ EvtScript N(EVS_SetupConveyors) = {
     Thread
         Set(LVar0, 0)
         Label(0)
-            Call(N(WaitWhileConveyorPaused))
+            Call(WaitWhileConveyorPaused)
             Add(LVar1, -1280)
             Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, 0, LVar1)
             Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_MAIN, 0, LVar1)
@@ -121,7 +121,7 @@ EvtScript N(EVS_SetupConveyors) = {
     EndThread
     Thread
         Label(10)
-            Call(N(AddConveyorPush))
+            Call(AddConveyorPush)
             Wait(1)
             Goto(10)
     EndThread

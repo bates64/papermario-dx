@@ -1,7 +1,7 @@
 #include "kkj_14.h"
 #include "sprite/player.h"
 
-Vec3f N(TwinkEmergePath)[] = {
+Vec3f TwinkEmergePath[] = {
     {  110.0,     0.0, -190.0 },
     {  160.0,    70.0, -150.0 },
     {  100.0,    40.0,  -60.0 },
@@ -10,7 +10,7 @@ Vec3f N(TwinkEmergePath)[] = {
     {    0.0,    20.0,   30.0 },
 };
 
-EvtScript N(EVS_OpenAndCloseDoor_Ch2) = {
+EvtScript EVS_OpenAndCloseDoor_Ch2 = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 120, 14, EASING_LINEAR)
     Loop(0)
@@ -36,7 +36,7 @@ EvtScript N(EVS_OpenAndCloseDoor_Ch2) = {
     End
 };
 
-EvtScript N(EVS_OpenDoor_Ch2) = {
+EvtScript EVS_OpenDoor_Ch2 = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 120, 14, EASING_COS_FAST_OVERSHOOT)
     Loop(0)
@@ -51,7 +51,7 @@ EvtScript N(EVS_OpenDoor_Ch2) = {
     End
 };
 
-EvtScript N(EVS_CloseDoor_Ch2) = {
+EvtScript EVS_CloseDoor_Ch2 = {
     Call(MakeLerp, 120, 0, 8, EASING_COS_FAST_OVERSHOOT)
     Loop(0)
         Call(UpdateLerp)
@@ -66,7 +66,7 @@ EvtScript N(EVS_CloseDoor_Ch2) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_Door_Ch2) = {
+EvtScript EVS_FocusCam_Door_Ch2 = {
     Call(UseSettingsFrom, CAM_DEFAULT, -330, 0, -30)
     Call(SetPanTarget, CAM_DEFAULT, -330, 0, -30)
     Call(SetCamDistance, CAM_DEFAULT, Float(325.0))
@@ -78,15 +78,15 @@ EvtScript N(EVS_FocusCam_Door_Ch2) = {
     End
 };
 
-EvtScript N(EVS_Scene_Chapter2) = {
+EvtScript EVS_Scene_Chapter2 = {
     Call(DisablePlayerInput, true)
     Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
     Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 110, 0, -190)
     Call(SetNpcYaw, NPC_PARTNER, 270)
     Call(InterpPlayerYaw, 270, 0)
-    ExecWait(N(EVS_FocusCam_Door_Ch2))
-    Exec(N(EVS_OpenAndCloseDoor_Ch2))
+    ExecWait(EVS_FocusCam_Door_Ch2)
+    Exec(EVS_OpenAndCloseDoor_Ch2)
     Wait(10 * DT)
     Call(SetNpcPos, NPC_Bowser, -470, 0, -30)
     Call(SetNpcVar, NPC_Bowser, 0, 1)
@@ -123,9 +123,9 @@ EvtScript N(EVS_Scene_Chapter2) = {
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
     Call(InterpPlayerYaw, 270, 0)
     Call(InterpNpcYaw, NPC_Bowser, 270, 0)
-    ExecWait(N(EVS_FocusCam_Door_Ch2))
+    ExecWait(EVS_FocusCam_Door_Ch2)
     Wait(5 * DT)
-    Exec(N(EVS_OpenDoor_Ch2))
+    Exec(EVS_OpenDoor_Ch2)
     Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(SetNpcPos, NPC_Kammy, -470, 0, -30)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Run)
@@ -192,7 +192,7 @@ EvtScript N(EVS_Scene_Chapter2) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_CloseDoor_Ch2))
+    Exec(EVS_CloseDoor_Ch2)
     Wait(30 * DT)
     Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, 0, VOL_LEVEL_FULL)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -209,7 +209,7 @@ EvtScript N(EVS_Scene_Chapter2) = {
         EndLoop
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
-    Call(LoadPath, 80 * DT, Ref(N(TwinkEmergePath)), ARRAY_COUNT(N(TwinkEmergePath)), EASING_LINEAR)
+    Call(LoadPath, 80 * DT, Ref(TwinkEmergePath), ARRAY_COUNT(TwinkEmergePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -230,7 +230,7 @@ EvtScript N(EVS_Scene_Chapter2) = {
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach3_InformalTalk, ANIM_Peach1_Idle, 5, MSG_Peach_0068)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0069)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach3_InformalTalk, ANIM_Peach1_Idle, 5, MSG_Peach_006A)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

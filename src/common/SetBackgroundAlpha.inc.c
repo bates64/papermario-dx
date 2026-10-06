@@ -1,7 +1,7 @@
 #include "common.h"
 #include "model.h"
 
-API_CALLABLE(N(SetBackgroundAlpha)) {
+static API_CALLABLE(SetBackgroundAlpha) {
     Bytecode* args = script->ptrReadPos;
 
     mdl_set_shroud_tint_params(0, 0, 0, evt_get_variable(script, *args++));

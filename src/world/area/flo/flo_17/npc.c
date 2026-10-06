@@ -6,7 +6,7 @@
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_04
 #include "world/common/enemy/Lakitu/spiny_spawner.inc.c"
 
-NpcData N(NpcData_Lakitu_01) = {
+NpcData NpcData_Lakitu_01 = {
     .id = NPC_Lakitu_01,
     .pos = { -185.0f, 90.0f, 10.0f },
     .yaw = 270,
@@ -22,14 +22,14 @@ NpcData N(NpcData_Lakitu_01) = {
             .detectSize = { 85, 120 },
         }
     },
-    .settings = &N(NpcSettings_Lakitu_SpinySpawner),
+    .settings = &NpcSettings_Lakitu_SpinySpawner,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAKITU_DROPS,
     .animations = LAKITU_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Lakitu_02) = {
+NpcData NpcData_Lakitu_02 = {
     .id = NPC_Lakitu_02,
     .pos = { 200.0f, 90.0f, -25.0f },
     .yaw = 90,
@@ -45,14 +45,14 @@ NpcData N(NpcData_Lakitu_02) = {
             .detectSize = { 85, 120 },
         }
     },
-    .settings = &N(NpcSettings_Lakitu_SpinySpawner),
+    .settings = &NpcSettings_Lakitu_SpinySpawner,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAKITU_DROPS,
     .animations = LAKITU_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_01) = {
+NpcData NpcData_Spiny_01 = {
     .id = NPC_Spiny_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -68,14 +68,14 @@ NpcData N(NpcData_Spiny_01) = {
             .detectSize = { 0 },
         }
     },
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_02) = {
+NpcData NpcData_Spiny_02 = {
     .id = NPC_Spiny_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -91,14 +91,14 @@ NpcData N(NpcData_Spiny_02) = {
             .detectSize = { 0 },
         }
     },
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_03) = {
+NpcData NpcData_Spiny_03 = {
     .id = NPC_Spiny_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -114,14 +114,14 @@ NpcData N(NpcData_Spiny_03) = {
             .detectSize = { 0 },
         }
     },
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_04) = {
+NpcData NpcData_Spiny_04 = {
     .id = NPC_Spiny_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -137,19 +137,19 @@ NpcData N(NpcData_Spiny_04) = {
             .detectSize = { 0 },
         }
     },
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Lakitu_01), BTL_FLO_FORMATION_09, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Lakitu_02), BTL_FLO_FORMATION_0A, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_01), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_02), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_03), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_04), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Lakitu_01, BTL_FLO_FORMATION_09, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Lakitu_02, BTL_FLO_FORMATION_0A, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_01, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_02, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_03, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_04, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
     {}
 };

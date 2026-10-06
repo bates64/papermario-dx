@@ -1,6 +1,6 @@
 #include "omo_02.h"
 
-EvtScript N(EVS_Gizmos_Wheels) = {
+EvtScript EVS_Gizmos_Wheels = {
     Label(0)
         Call(MakeLerp, 0, -360, 100, EASING_LINEAR)
         Label(1)
@@ -21,7 +21,7 @@ EvtScript N(EVS_Gizmos_Wheels) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Shutters) = {
+EvtScript EVS_Gizmos_Shutters = {
     Label(0)
         Call(MakeLerp, 0, 160, 60, EASING_COS_IN_OUT)
         Label(1)
@@ -54,32 +54,32 @@ EvtScript N(EVS_Gizmos_Shutters) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Empty1) = {
+EvtScript EVS_Gizmos_Empty1 = {
     Return
     End
 };
 
-EvtScript N(EVS_Gizmos_Empty2) = {
+EvtScript EVS_Gizmos_Empty2 = {
     Return
     End
 };
 
-s32 N(RockingHorseModels)[] = {
+s32 RockingHorseModels[] = {
     MODEL_o568,
     MODEL_o569,
 };
 
 #include "../common/RockingHorse.inc.c"
 
-EvtScript N(EVS_SetupGizmos) = {
-    Exec(N(EVS_Gizmos_Wheels))
-    Exec(N(EVS_Gizmos_Shutters))
-    Exec(N(EVS_Gizmos_Empty1))
-    Exec(N(EVS_Gizmos_Empty2))
+EvtScript EVS_SetupGizmos = {
+    Exec(EVS_Gizmos_Wheels)
+    Exec(EVS_Gizmos_Shutters)
+    Exec(EVS_Gizmos_Empty1)
+    Exec(EVS_Gizmos_Empty2)
     Set(LVarA, -706)
     Set(LVarB, 0)
     Set(LVarC, 102)
-    Exec(N(EVS_Gizmos_RockingHorses))
+    Exec(EVS_Gizmos_RockingHorses)
     Wait(1)
     Return
     End

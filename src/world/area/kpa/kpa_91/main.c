@@ -1,14 +1,14 @@
 #include "kpa_91.h"
 
-EvtScript N(EVS_ExitWalk_kpa_90_1) = EVT_EXIT_WALK(60, kpa_91_ENTRY_0, "kpa_90", kpa_90_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_90_1 = EVT_EXIT_WALK(60, kpa_91_ENTRY_0, "kpa_90", kpa_90_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_90_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_90_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_OpenCellDoor) = {
+EvtScript EVS_OpenCellDoor = {
     Call(DisablePlayerInput, true)
     Call(PlayerMoveTo, -30, 15, 20)
     Call(InterpPlayerYaw, 90, 2)
@@ -30,19 +30,19 @@ EvtScript N(EVS_OpenCellDoor) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Set(AB_KPA91_DialogueState_Toad2, 0)
     Set(AB_KPA91_DialogueState_Dryite, 0)
     Set(AB_KPA91_DialogueState_ToadGuard, 0)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o297, COLLIDER_FLAGS_UPPER_MASK)
     Return
     End

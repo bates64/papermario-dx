@@ -1,7 +1,7 @@
 #include "arn_11.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_SetupCamera) = {
+EvtScript EVS_SetupCamera = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(UseSettingsFrom, CAM_DEFAULT, 60, 30, 0)
@@ -14,7 +14,7 @@ EvtScript N(EVS_SetupCamera) = {
     End
 };
 
-EvtScript N(EVS_Scene_MeetHeart) = {
+EvtScript EVS_Scene_MeetHeart = {
     Call(DisablePlayerInput, true)
     Wait(30 * DT)
     Call(SetPlayerSpeed, Float(3.0 / DT))
@@ -51,25 +51,25 @@ EvtScript N(EVS_Scene_MeetHeart) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_arn_13_1) = EVT_EXIT_SINGLE_DOOR(arn_11_ENTRY_0, "arn_13", arn_13_ENTRY_1,
+EvtScript EVS_ExitDoor_arn_13_1 = EVT_EXIT_SINGLE_DOOR(arn_11_ENTRY_0, "arn_13", arn_13_ENTRY_1,
     COLLIDER_ttw, MODEL_o37, DOOR_SWING_IN);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoor_arn_13_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoor_arn_13_1), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(DisablePlayerInput, true)
     Set(LVar2, MODEL_o37)
     Set(LVar3, DOOR_SWING_IN)
     ExecWait(EnterSingleDoor)
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     IfLt(GB_StoryProgress, STORY_CH3_HEART_FLED_FIRST_TUNNEL)
         Wait(10)
-        Exec(N(EVS_SetupCamera))
-        Exec(N(EVS_Scene_MeetHeart))
+        Exec(EVS_SetupCamera)
+        Exec(EVS_Scene_MeetHeart)
         Wait(1)
     EndIf
     Call(DisablePlayerInput, false)
@@ -77,13 +77,13 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_WINDY_MILL)
     Call(SetSpriteShading, SHADING_ARN_11)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

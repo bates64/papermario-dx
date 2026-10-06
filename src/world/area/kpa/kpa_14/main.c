@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(GetActingPartner)) {
+API_CALLABLE(GetActingPartner) {
     if (gPartnerStatus.partnerActionState != 0) {
         script->varTable[9] = gPartnerStatus.actingPartner;
     } else {
@@ -11,9 +11,9 @@ API_CALLABLE(N(GetActingPartner)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitWalk_kpa_13_1) = EVT_EXIT_WALK(60, kpa_14_ENTRY_0, "kpa_13", kpa_13_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_13_1 = EVT_EXIT_WALK(60, kpa_14_ENTRY_0, "kpa_13", kpa_13_ENTRY_1);
 
-EvtScript N(EVS_ExitDoor_kpa_01_0) = {
+EvtScript EVS_ExitDoor_kpa_01_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, kpa_14_ENTRY_1)
@@ -32,20 +32,20 @@ EvtScript N(EVS_ExitDoor_kpa_01_0) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_kpa_16_0) = EVT_EXIT_WALK(60, kpa_14_ENTRY_2, "kpa_16", kpa_16_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_16_0 = EVT_EXIT_WALK(60, kpa_14_ENTRY_2, "kpa_16", kpa_16_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_13_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_16_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_13_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_16_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_14_ENTRY_0)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         CaseEq(kpa_14_ENTRY_1)
@@ -54,9 +54,9 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_o1035)
             Set(LVar3, DOOR_SWING_OUT)
             Exec(EnterSingleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kpa_14_ENTRY_2)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
     EndSwitch
@@ -64,7 +64,7 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Lava) = {
+EvtScript EVS_TexPan_Lava = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP(-1000,    0,-2000,    0)
@@ -89,7 +89,7 @@ EvtScript N(EVS_TexPan_Lava) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o202, .pos = {  110.0,   30.0, -135.0 }},
     { .colliderID = COLLIDER_o201, .pos = {  345.0,   30.0, -135.0 }},
     { .colliderID = COLLIDER_o196, .pos = {  550.0,   30.0, -135.0 }},
@@ -101,19 +101,19 @@ LavaReset N(SafeFloorColliders)[] = {
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_Touch_LeftOfLavaFall) = {
+EvtScript EVS_Touch_LeftOfLavaFall = {
     Set(MV_LastFloorBeforeLavaFall, COLLIDER_o195)
     Return
     End
 };
 
-EvtScript N(EVS_Touch_RightOfLavaFall) = {
+EvtScript EVS_Touch_RightOfLavaFall = {
     Set(MV_LastFloorBeforeLavaFall, COLLIDER_o198)
     Return
     End
 };
 
-EvtScript N(EVS_MakeSmokeEffects) = {
+EvtScript EVS_MakeSmokeEffects = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, 1, 10)
@@ -123,11 +123,11 @@ EvtScript N(EVS_MakeSmokeEffects) = {
     End
 };
 
-EvtScript N(EVS_SetupLavaFall) = {
+EvtScript EVS_SetupLavaFall = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Loop(0)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o854, COLLIDER_FLAGS_UPPER_MASK)
-        Call(N(GetActingPartner))
+        Call(GetActingPartner)
         Switch(LVar9)
             CaseEq(8)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o854, COLLIDER_FLAGS_UPPER_MASK)
@@ -141,7 +141,7 @@ EvtScript N(EVS_SetupLavaFall) = {
                             Call(DisablePlayerPhysics, true)
                             Set(MV_TakingLavaFallDamage, true)
                             Call(SetPlayerActionState, ACTION_STATE_LAND)
-                            ExecGetTID(N(EVS_MakeSmokeEffects), LVar9)
+                            ExecGetTID(EVS_MakeSmokeEffects, LVar9)
                             IfEq(MV_LastFloorBeforeLavaFall, COLLIDER_o195)
                                 Set(LVar5, 1045)
                             Else
@@ -209,21 +209,21 @@ EvtScript N(EVS_SetupLavaFall) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfEq(GF_KPA16_ShutOffLava, false)
         Call(EnableGroup, MODEL_after, false)
-        Exec(N(EVS_TexPan_Lava))
+        Exec(EVS_TexPan_Lava)
     Else
         Call(EnableGroup, MODEL_before, false)
     EndIf
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupMusic)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Exec(N(EVS_SetupPlatforms))
+        Exec(EVS_SetupPlatforms)
     EndIf
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread
@@ -247,11 +247,11 @@ EvtScript N(EVS_Main) = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o858, SURFACE_TYPE_LAVA)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilin, SURFACE_TYPE_LAVA)
             Thread
-                Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+                Call(ResetFromLava, Ref(SafeFloorColliders))
             EndThread
-            BindTrigger(Ref(N(EVS_Touch_LeftOfLavaFall)), TRIGGER_FLOOR_TOUCH, COLLIDER_o195, 1, 0)
-            BindTrigger(Ref(N(EVS_Touch_RightOfLavaFall)), TRIGGER_FLOOR_TOUCH, COLLIDER_o198, 1, 0)
-            Exec(N(EVS_SetupLavaFall))
+            BindTrigger(Ref(EVS_Touch_LeftOfLavaFall), TRIGGER_FLOOR_TOUCH, COLLIDER_o195, 1, 0)
+            BindTrigger(Ref(EVS_Touch_RightOfLavaFall), TRIGGER_FLOOR_TOUCH, COLLIDER_o198, 1, 0)
+            Exec(EVS_SetupLavaFall)
         EndThread
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o854, COLLIDER_FLAGS_UPPER_MASK)

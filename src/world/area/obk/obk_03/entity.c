@@ -2,10 +2,10 @@
 #include "entity.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_HitSwitch_Second);
-extern EvtScript N(EVS_HitSwitch_Third);
+extern EvtScript EVS_HitSwitch_Second;
+extern EvtScript EVS_HitSwitch_Third;
 
-EvtScript N(EVS_SecondSwitch_Drop) = {
+EvtScript EVS_SecondSwitch_Drop = {
     Call(DisablePlayerInput, true)
     Thread
         Wait(10)
@@ -30,7 +30,7 @@ EvtScript N(EVS_SecondSwitch_Drop) = {
     End
 };
 
-EvtScript N(EVS_ThirdSwitch_Drop) = {
+EvtScript EVS_ThirdSwitch_Drop = {
     Call(DisablePlayerInput, true)
     Thread
         Wait(10)
@@ -56,7 +56,7 @@ EvtScript N(EVS_ThirdSwitch_Drop) = {
 };
 
 // if the player is under the switch as it falls, jump out of the way
-EvtScript N(EVS_SecondSwitch_JumpToSafety) = {
+EvtScript EVS_SecondSwitch_JumpToSafety = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLe(LVar0, 340)
         Return
@@ -84,7 +84,7 @@ EvtScript N(EVS_SecondSwitch_JumpToSafety) = {
 };
 
 // if the player is under the switch as it falls, jump out of the way
-EvtScript N(EVS_ThirdSwitch_JumpToSafety) = {
+EvtScript EVS_ThirdSwitch_JumpToSafety = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLe(LVar0, 394)
         Return
@@ -111,11 +111,11 @@ EvtScript N(EVS_ThirdSwitch_JumpToSafety) = {
     End
 };
 
-EvtScript N(EVS_HitSwitch_First) = {
+EvtScript EVS_HitSwitch_First = {
     Call(MakeEntity, Ref(Entity_BlueSwitch), 360, -210, -100, 0, MAKE_ENTITY_END)
     Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_OBK03_HitSecondSwitch))
-    Call(AssignScript, Ref(N(EVS_HitSwitch_Second)))
-    Exec(N(EVS_SecondSwitch_JumpToSafety))
+    Call(AssignScript, Ref(EVS_HitSwitch_Second))
+    Exec(EVS_SecondSwitch_JumpToSafety)
     Set(LVar2, 360)
     Set(LVar3, 0)
     Set(LVar4, -100)
@@ -123,16 +123,16 @@ EvtScript N(EVS_HitSwitch_First) = {
     Set(LVar6, 20 * DT)
     Set(LVar7, LVar0)
     Set(LVar8, 5)
-    ExecWait(N(EVS_SecondSwitch_Drop))
+    ExecWait(EVS_SecondSwitch_Drop)
     Return
     End
 };
 
-EvtScript N(EVS_HitSwitch_Second) = {
+EvtScript EVS_HitSwitch_Second = {
     Call(MakeEntity, Ref(Entity_HugeBlueSwitch), 440, -210, -100, 0, MAKE_ENTITY_END)
     Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_OBK03_HitThirdSwitch))
-    Call(AssignScript, Ref(N(EVS_HitSwitch_Third)))
-    Exec(N(EVS_ThirdSwitch_JumpToSafety))
+    Call(AssignScript, Ref(EVS_HitSwitch_Third))
+    Exec(EVS_ThirdSwitch_JumpToSafety)
     Set(LVar2, 440)
     Set(LVar3, 0)
     Set(LVar4, -100)
@@ -140,25 +140,25 @@ EvtScript N(EVS_HitSwitch_Second) = {
     Set(LVar6, 20 * DT)
     Set(LVar7, LVar0)
     Set(LVar8, 30)
-    ExecWait(N(EVS_ThirdSwitch_Drop))
+    ExecWait(EVS_ThirdSwitch_Drop)
     Return
     End
 };
 
-EvtScript N(EVS_HitSwitch_Third) = {
+EvtScript EVS_HitSwitch_Third = {
     IfLt(GB_StoryProgress, STORY_CH3_HIT_HUGE_BLUE_SWITCH)
-        Exec(N(EVS_Scene_DropSteps))
+        Exec(EVS_Scene_DropSteps)
         Set(GB_StoryProgress, STORY_CH3_HIT_HUGE_BLUE_SWITCH)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH3_HIT_HUGE_BLUE_SWITCH)
         Call(MakeEntity, Ref(Entity_BlueSwitch), 300, -210, -100, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_OBK03_HitFirstSwitch))
-        Call(AssignScript, Ref(N(EVS_HitSwitch_First)))
+        Call(AssignScript, Ref(EVS_HitSwitch_First))
     EndIf
     Call(MakeEntity, Ref(Entity_WoodenCrate), -130, 0, -50, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
     Call(AssignCrateFlag, GF_OBK03_Crate_SuperShroom)

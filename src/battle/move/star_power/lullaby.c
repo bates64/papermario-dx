@@ -1,13 +1,12 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleMamar.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_lullaby
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-API_CALLABLE(N(SpawnMusicNotesFX)) {
+API_CALLABLE(SpawnMusicNotesFX) {
     s32 x, y;
 
     if (isInitialCall) {
@@ -34,16 +33,16 @@ API_CALLABLE(N(SpawnMusicNotesFX)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleMamar_Idle)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleMamar_Shout)
     Wait(16)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Wait(15)
     Call(PlaySound, SOUND_LULLABY)
-    Call(N(SpawnMusicNotesFX))
+    Call(SpawnMusicNotesFX)
     Wait(30)
     Call(InitTargetIterator)
     Label(0)
@@ -61,8 +60,12 @@ EvtScript N(EVS_UsePower) = {
         EndIf
     Wait(5)
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_SpiritDeparts))
-    ExecWait(N(EVS_StarPower_EndWish))
+    ExecWait(EVS_StarPower_SpiritDeparts)
+    ExecWait(EVS_StarPower_EndWish)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
+    &EVS_UsePower,
+);

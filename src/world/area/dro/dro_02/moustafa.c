@@ -1,7 +1,7 @@
 #include "dro_02.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_PartyFaceMoustafa ) = {
+EvtScript EVS_PartyFaceMoustafa = {
     Loop(0)
         Call(PlayerFaceNpc, NPC_Moustafa, false)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Moustafa, 0)
@@ -11,7 +11,7 @@ EvtScript N(EVS_PartyFaceMoustafa ) = {
     End
 };
 
-EvtScript N(EVS_Moustafa_SetCamBetween) = {
+EvtScript EVS_Moustafa_SetCamBetween = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 275)
@@ -31,7 +31,7 @@ EvtScript N(EVS_Moustafa_SetCamBetween) = {
     End
 };
 
-EvtScript N(EVS_Moustafa_ResetCam) = {
+EvtScript EVS_Moustafa_ResetCam = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
@@ -39,7 +39,7 @@ EvtScript N(EVS_Moustafa_ResetCam) = {
     End
 };
 
-EvtScript N(EVS_Moustafa_Unveiling) = {
+EvtScript EVS_Moustafa_Unveiling = {
     Call(SetNpcYaw, NPC_Moustafa, 270)
     Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -48,7 +48,7 @@ EvtScript N(EVS_Moustafa_Unveiling) = {
     Call(SetNpcAnimation, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_ThrownCloak)
     Call(SetNpcAnimation, NPC_Moustafa, ANIM_Moustafa_Toss)
     Call(SetNpcPos, NPC_Moustafa, -335, 163, -260)
-    Exec(N(EVS_PlayMoustafaMusic))
+    Exec(EVS_PlayMoustafaMusic)
     Call(MakeLerp, 0, 80, 30 * DT, EASING_CUBIC_OUT)
     Label(10)
     Call(UpdateLerp)
@@ -71,7 +71,7 @@ EvtScript N(EVS_Moustafa_Unveiling) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_DisguisedMoustafa) = {
+EvtScript EVS_NpcIdle_DisguisedMoustafa = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_BOUGHT_SECRET_ITEMS)
         CaseLt(STORY_CH2_GOT_PULSE_STONE)
@@ -84,7 +84,7 @@ EvtScript N(EVS_NpcIdle_DisguisedMoustafa) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Moustafa) = {
+EvtScript EVS_NpcInteract_Moustafa = {
     IfEq(GF_DRO02_Moustafa_UnusedDialogOverride, true)
         Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00CF)
         Return
@@ -97,7 +97,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Call(ShowChoice, MSG_Choice_0019)
             IfEq(LVar0, 1)
                 Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00B6)
-                Exec(N(EVS_Moustafa_ResetCam))
+                Exec(EVS_Moustafa_ResetCam)
                 Return
             Else
                 Call(EndSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0)
@@ -107,11 +107,11 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Switch(LVar0)
                 CaseEq(ITEM_CHOICE_NONE)
                     Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00B8)
-                    Exec(N(EVS_Moustafa_ResetCam))
+                    Exec(EVS_Moustafa_ResetCam)
                     Return
                 CaseEq(ITEM_CHOICE_CANCELED)
                     Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00B7)
-                    Exec(N(EVS_Moustafa_ResetCam))
+                    Exec(EVS_Moustafa_ResetCam)
                     Return
             EndSwitch
             Set(LVarA, LVar0)
@@ -144,18 +144,18 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
                 CaseEq(0)
                     Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00BC)
                 CaseEq(1)
-                    ExecWait(N(EVS_Moustafa_SetCamBetween))
+                    ExecWait(EVS_Moustafa_SetCamBetween)
                     Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00BD)
                     Set(GF_DRO02_Sheek_AskedAboutDesert, true)
                 CaseEq(2)
-                    ExecWait(N(EVS_Moustafa_SetCamBetween))
+                    ExecWait(EVS_Moustafa_SetCamBetween)
                     Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00BE)
                     Set(GF_DRO02_Sheek_AskedAboutRuins, true)
                 CaseEq(3)
-                    ExecWait(N(EVS_Moustafa_SetCamBetween))
+                    ExecWait(EVS_Moustafa_SetCamBetween)
                     Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00BF)
                 CaseEq(4)
-                    ExecWait(N(EVS_Moustafa_SetCamBetween))
+                    ExecWait(EVS_Moustafa_SetCamBetween)
                     Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C1)
                     Set(GF_DRO02_Sheek_AskedAboutMoustafa, true)
                     Set(LVarB, 1)
@@ -182,7 +182,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
                     EndThread
                 EndIf
             EndIf
-            Exec(N(EVS_Moustafa_ResetCam))
+            Exec(EVS_Moustafa_ResetCam)
         CaseLt(STORY_CH2_GOT_PULSE_STONE)
             Thread
                 Wait(10 * DT)
@@ -193,19 +193,19 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Call(PlayerMoveTo, -391, -260, 0)
             Call(InterpPlayerYaw, 90, 3)
             Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-            ExecGetTID(N(EVS_PartyFaceMoustafa ), LVarA)
+            ExecGetTID(EVS_PartyFaceMoustafa, LVarA)
             Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(FadeOutMusic, 0, 500)
             IfEq(GF_DRO02_Sheek_AskedAboutMoustafa, true)
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C3)
-                ExecWait(N(EVS_Moustafa_Unveiling))
+                ExecWait(EVS_Moustafa_Unveiling)
                 Call(SetPartnerForcedFollowMode, 0)
                 Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
                 Call(NpcJump0, NPC_Moustafa, -425, 140, -206, 20 * DT)
                 Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C4)
             Else
                 Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C5)
-                ExecWait(N(EVS_Moustafa_Unveiling))
+                ExecWait(EVS_Moustafa_Unveiling)
                 Call(SetPartnerForcedFollowMode, 0)
                 Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
                 Call(NpcJump0, NPC_Moustafa, -425, 140, -206, 20 * DT)
@@ -222,7 +222,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Set(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
             Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00CA)
             KillThread(LVarA)
-            Exec(N(EVS_SetupMusic))
+            Exec(EVS_SetupMusic)
         CaseGe(STORY_CH2_GOT_PULSE_STONE)
             Switch(GB_StoryProgress)
                 CaseLt(STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
@@ -249,7 +249,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_DisguisedMoustafa) = {
+EvtScript EVS_NpcInit_DisguisedMoustafa = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(dro_02_ENTRY_2)
@@ -260,15 +260,15 @@ EvtScript N(EVS_NpcInit_DisguisedMoustafa) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_DisguisedMoustafa_GrabCloak)
         EndCaseGroup
         CaseDefault
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_DisguisedMoustafa)))
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Moustafa)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_DisguisedMoustafa))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Moustafa))
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Moustafa) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Moustafa)))
+EvtScript EVS_NpcInit_Moustafa = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Moustafa))
     Return
     End
 };

@@ -8,9 +8,28 @@ extern "C" {
 
 typedef struct Overlay Overlay;
 
+#define EFFECT_OVERLAY_SLOT_COUNT 16
+#define EFFECT_OVERLAY_SLOT_SIZE 0x1000
+
+#define MAP_OVERLAY_SLOT_SIZE 0x27FF0
+#define BATTLE_PARTNER_OVERLAY_SLOT_SIZE 0x5000
+#define ACTION_COMMAND_OVERLAY_SLOT_SIZE 0x3000
+#define BATTLE_SCRIPT_OVERLAY_SLOT_SIZE 0x4000
+#define BATTLE_MENU_OVERLAY_SLOT_SIZE 0x10000
+
 typedef enum {
-    OVL_ACTOR, ///< `battle/actor/*`
-    OVL_MAP,   ///< `world/area_*/*/` -- only one loaded at a time
+    OVL_EFFECT,         ///< `effects/*` -- loaded into a fixed-size slot pool
+    OVL_MAP,            ///< `world/area/*/*` -- only one loaded at a time
+    OVL_ACTION,         ///< `world/action/*` -- only one loaded at a time
+    OVL_PARTNER,        ///< `world/partner/*`
+    OVL_BATTLE_AREA,    ///< `battle/area/*` -- tables and bundled actors, retained through battle teardown
+    OVL_STAGE,          ///< `battle/stage/*` -- retained through battle teardown
+    OVL_ACTOR,          ///< `battle/actor/*`
+    OVL_BATTLE_PARTNER, ///< `battle/partner/*` -- only one loaded at a time
+    OVL_ACTION_CMD,     ///< `battle/action_cmd/*` -- only one loaded at a time
+    OVL_BATTLE_SCRIPT,  ///< `battle/move/*` -- only one loaded at a time
+    OVL_BATTLE_MENU,    ///< battle menu implementation
+    OVL_ENTITY,         ///< `entity/*` -- retained for the current map
     OVL_NUM_TYPES,
 } OverlayType;
 
@@ -31,8 +50,18 @@ void ovl_unload(Overlay* ovl);
 /// Unload all overlays of a given type.
 void ovl_unload_type(OverlayType type);
 
+/// Restore a fixed overlay whose RAM image was overwritten externally.
+///
+/// This reloads the overlay into its existing address without invoking the
+/// overwritten image's destructors or changing its descriptor identity.
+void ovl_restore_type(OverlayType type);
+
 /// Look up an exported symbol by name. Returns nullptr if not found.
 void* ovl_import(const Overlay* ovl, const char* name);
+
+/// Look up a declared symbol using its C name and function/data type.
+#define OVL_IMPORT_SYMBOL(overlay, symbol) \
+    ((__typeof__(&(symbol)))ovl_import((overlay), #symbol))
 
 /// Searches all loaded overlays for the symbol nearest to `addr`.
 /// Returns an empty string (not NULL) if the address is in an overlay but has

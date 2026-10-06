@@ -1,7 +1,7 @@
 #include "arn_04.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_YellowBlock), 450, 285, 120, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_ARN04_ItemBlock_SuperShroom)
     Call(MakeEntity, Ref(Entity_YellowBlock), 720, 333, 75, 0, ITEM_COIN, MAKE_ENTITY_END)

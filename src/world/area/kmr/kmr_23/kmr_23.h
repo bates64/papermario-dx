@@ -33,13 +33,11 @@ enum {
     MF_SpiritReleased       = MapFlag(11),
 };
 
-#define NAMESPACE kmr_23
-
-extern EvtScript N(EVS_Main);
-extern NpcGroupList N(NpcGroup_Eldstar);
-extern NpcGroupList N(NpcGroup_Mamar);
-extern NpcGroupList N(NpcGroup_Skolar);
-extern NpcGroupList N(NpcGroup_Muskular);
-extern NpcGroupList N(NpcGroup_Misstar);
-extern NpcGroupList N(NpcGroup_Klevar);
-extern NpcGroupList N(NpcGroup_Kalmar);
+extern EvtScript EVS_Main;
+extern NpcGroupList NpcGroup_Eldstar;
+extern NpcGroupList NpcGroup_Mamar;
+extern NpcGroupList NpcGroup_Skolar;
+extern NpcGroupList NpcGroup_Muskular;
+extern NpcGroupList NpcGroup_Misstar;
+extern NpcGroupList NpcGroup_Klevar;
+extern NpcGroupList NpcGroup_Kalmar;

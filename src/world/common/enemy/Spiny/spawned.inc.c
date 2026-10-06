@@ -3,7 +3,7 @@
 
 #include "world/common/ai/SpinyAI.inc.c"
 
-MobileAISettings N(AISettings_SpawnedSpiny) = {
+MobileAISettings AISettings_SpawnedSpiny = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 50,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_SpawnedSpiny) = {
     .loiterMode = 3,
 };
 
-EvtScript N(EVS_NpcAI_SpawnedSpiny) = {
+EvtScript EVS_NpcAI_SpawnedSpiny = {
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 3)
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 18)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 3)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPINY)
-    Call(N(SpinyAI_Main), Ref(N(AISettings_SpawnedSpiny)))
+    Call(SpinyAI_Main, Ref(AISettings_SpawnedSpiny))
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_SpawnedSpiny) = {
+EvtScript EVS_NpcDefeat_SpawnedSpiny = {
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -43,11 +43,11 @@ EvtScript N(EVS_NpcDefeat_SpawnedSpiny) = {
     End
 };
 
-NpcSettings N(NpcSettings_SpawnedSpiny) = {
+NpcSettings NpcSettings_SpawnedSpiny = {
     .height = 21,
     .radius = 22,
     .level = ACTOR_LEVEL_SPINY,
-    .doAI = &N(EVS_NpcAI_SpawnedSpiny),
+    .doAI = &EVS_NpcAI_SpawnedSpiny,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_SpawnedSpiny),
+    .onDefeat = &EVS_NpcDefeat_SpawnedSpiny,
 };

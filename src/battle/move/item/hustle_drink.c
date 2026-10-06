@@ -1,13 +1,10 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_hustle_drink
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_72619C)) {
+API_CALLABLE(func_802A123C_72619C) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -33,7 +30,7 @@ API_CALLABLE(N(func_802A123C_72619C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A12C4_726224)) {
+API_CALLABLE(func_802A12C4_726224) {
     gBattleStatus.hustleTurns = 2;
 
     return ApiStatus_DONE2;
@@ -41,16 +38,16 @@ API_CALLABLE(N(func_802A12C4_726224)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_HUSTLE_DRINK)
-    ExecWait(N(UseItemWithEffect))
-    ExecWait(N(DrinkItem))
+    ExecWait(UseItemWithEffect)
+    ExecWait(DrinkItem)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Squish)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, 5)
-    Call(N(func_802A12C4_726224))
-    Call(N(func_802A123C_72619C))
+    Call(func_802A12C4_726224)
+    Call(func_802A123C_72619C)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     Call(UseBattleCamPreset, BTL_CAM_ACTOR_CLOSE)
@@ -107,8 +104,8 @@ EvtScript N(EVS_UseItem) = {
     EndThread
     Loop(10)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HUSTLE_WHISTLE)
-        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 0, LVar0, LVar1, LVar2, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0)
         Wait(4)
     EndLoop
     Wait(10)
@@ -116,7 +113,11 @@ EvtScript N(EVS_UseItem) = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
     Wait(20)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

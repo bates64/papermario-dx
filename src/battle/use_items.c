@@ -1,39 +1,10 @@
 #include "common.h"
-#include "ld_addrs.h"
 #include "battle/battle.h"
-
-extern EvtScript battle_item_food_EVS_UseItem;
-extern EvtScript battle_item_mushroom_EVS_UseItem;
-extern EvtScript battle_item_fire_flower_EVS_UseItem;
-extern EvtScript battle_item_dusty_hammer_EVS_UseItem;
-extern EvtScript battle_item_pow_block_EVS_UseItem;
-extern EvtScript battle_item_pebble_EVS_UseItem;
-extern EvtScript battle_item_volt_shroom_EVS_UseItem;
-extern EvtScript battle_item_thunder_rage_EVS_UseItem;
-extern EvtScript battle_item_snowman_doll_EVS_UseItem;
-extern EvtScript battle_item_shooting_star_EVS_UseItem;
-extern EvtScript battle_item_sleepy_sheep_EVS_UseItem;
-extern EvtScript battle_item_stone_cap_EVS_UseItem;
-extern EvtScript battle_item_tasty_tonic_EVS_UseItem;
-extern EvtScript battle_item_thunder_bolt_EVS_UseItem;
-extern EvtScript battle_item_super_soda_EVS_UseItem;
-extern EvtScript battle_item_hustle_drink_EVS_UseItem;
-extern EvtScript battle_item_stop_watch_EVS_UseItem;
-extern EvtScript battle_item_dizzy_dial_EVS_UseItem;
-extern EvtScript battle_item_please_come_back_EVS_UseItem;
-extern EvtScript battle_item_egg_missile_EVS_UseItem;
-extern EvtScript battle_item_insecticide_herb_EVS_UseItem;
-extern EvtScript battle_item_fright_jar_EVS_UseItem;
-extern EvtScript battle_item_mystery_EVS_UseItem;
-extern EvtScript battle_item_repel_gel_EVS_UseItem;
-extern EvtScript battle_item_life_shroom_EVS_UseItem;
-extern EvtScript battle_item_coconut_EVS_UseItem;
-extern EvtScript battle_item_electro_pop_EVS_UseItem;
-extern EvtScript battle_item_strange_cake_EVS_UseItem;
+#include "battle/script_module.h"
 
 #define GENERIC_FOOD_ITEM -1
 
-// items in this list must correspond with BattleMoveEntry in gBattleItemTable
+// Items in this list must correspond with entries in gBattleItemTable.
 s32 ItemKeys[] = {
     GENERIC_FOOD_ITEM,
     ITEM_MUSHROOM,
@@ -70,39 +41,41 @@ s32 ItemKeys[] = {
     ITEM_NONE
 };
 
-BattleMoveEntry gBattleItemTable[] = {
-    BTL_ITEM(food),
-    BTL_ITEM(mushroom),
-    BTL_ITEM(fire_flower),
-    BTL_ITEM(dusty_hammer),
-    BTL_ITEM(pow_block),
-    BTL_ITEM(pebble),
-    BTL_ITEM(volt_shroom),
-    BTL_ITEM(thunder_rage),
-    BTL_ITEM(snowman_doll),
-    BTL_ITEM(mushroom),
-    BTL_ITEM(shooting_star),
-    BTL_ITEM(sleepy_sheep),
-    BTL_ITEM(stone_cap),
-    BTL_ITEM(tasty_tonic),
-    BTL_ITEM(thunder_bolt),
-    BTL_ITEM(mushroom),
-    BTL_ITEM(mushroom),
-    BTL_ITEM(super_soda),
-    BTL_ITEM(hustle_drink),
-    BTL_ITEM(stop_watch),
-    BTL_ITEM(dizzy_dial),
-    BTL_ITEM(please_come_back),
-    BTL_ITEM(egg_missile),
-    BTL_ITEM(insecticide_herb),
-    BTL_ITEM(fright_jar),
-    BTL_ITEM(mystery),
-    BTL_ITEM(repel_gel),
-    BTL_ITEM(life_shroom),
-    BTL_ITEM(coconut),
-    BTL_ITEM(electro_pop),
-    BTL_ITEM(strange_cake),
-    BTL_ITEM(strange_cake),
+#define ITEM_SCRIPT(name) { name, BATTLE_SCRIPT_KIND_ITEM, 0 }
+
+static const BattleScriptRef gBattleItemTable[] = {
+    ITEM_SCRIPT("food"),
+    ITEM_SCRIPT("mushroom"),
+    ITEM_SCRIPT("fire_flower"),
+    ITEM_SCRIPT("dusty_hammer"),
+    ITEM_SCRIPT("pow_block"),
+    ITEM_SCRIPT("pebble"),
+    ITEM_SCRIPT("volt_shroom"),
+    ITEM_SCRIPT("thunder_rage"),
+    ITEM_SCRIPT("snowman_doll"),
+    ITEM_SCRIPT("mushroom"),
+    ITEM_SCRIPT("shooting_star"),
+    ITEM_SCRIPT("sleepy_sheep"),
+    ITEM_SCRIPT("stone_cap"),
+    ITEM_SCRIPT("tasty_tonic"),
+    ITEM_SCRIPT("thunder_bolt"),
+    ITEM_SCRIPT("mushroom"),
+    ITEM_SCRIPT("mushroom"),
+    ITEM_SCRIPT("super_soda"),
+    ITEM_SCRIPT("hustle_drink"),
+    ITEM_SCRIPT("stop_watch"),
+    ITEM_SCRIPT("dizzy_dial"),
+    ITEM_SCRIPT("please_come_back"),
+    ITEM_SCRIPT("egg_missile"),
+    ITEM_SCRIPT("insecticide_herb"),
+    ITEM_SCRIPT("fright_jar"),
+    ITEM_SCRIPT("mystery"),
+    ITEM_SCRIPT("repel_gel"),
+    ITEM_SCRIPT("life_shroom"),
+    ITEM_SCRIPT("coconut"),
+    ITEM_SCRIPT("electro_pop"),
+    ITEM_SCRIPT("strange_cake"),
+    ITEM_SCRIPT("strange_cake"),
 };
 
 // Offsets into gBattleItemTable?
@@ -154,9 +127,7 @@ API_CALLABLE(LoadItemScript) {
         }
     }
 
-    dma_copy(gBattleItemTable[i].romStart, gBattleItemTable[i].romEnd, gBattleItemTable[i].vramStart);
-
-    script->varTablePtr[0] = gBattleItemTable[i].mainScript;
+    script->varTablePtr[0] = load_battle_script(&gBattleItemTable[i]);
     script->varTable[1] = false;
 
     return ApiStatus_DONE2;
@@ -194,8 +165,7 @@ API_CALLABLE(LoadMysteryItemScript) {
         }
     }
 
-    dma_copy(gBattleItemTable[i].romStart, gBattleItemTable[i].romEnd, gBattleItemTable[i].vramStart);
-    script->varTablePtr[0] = gBattleItemTable[i].mainScript;
+    script->varTablePtr[0] = load_battle_script(&gBattleItemTable[i]);
     script->varTable[1] = true;
     return ApiStatus_DONE2;
 }

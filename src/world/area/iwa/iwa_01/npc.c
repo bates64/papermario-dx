@@ -5,7 +5,7 @@
 #include "world/common/enemy/MontyMole/wall_ambush.inc.c"
 #include "world/common/enemy/Cleft/wander.inc.c"
 
-NpcData N(NpcData_MontyMole_WallAmbush)[] = {
+NpcData NpcData_MontyMole_WallAmbush[] = {
     {
         .id = NPC_MontyMole_01,
         .pos = { 340.0f, 70.0f, 101.0f },
@@ -22,7 +22,7 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
                 .detectSize = { 145, 300 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_WallAmbush),
+        .settings = &NpcSettings_MontyMole_WallAmbush,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -44,7 +44,7 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_WallAmbush_Hole),
+        .settings = &NpcSettings_MontyMole_WallAmbush_Hole,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DISABLE_AI | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -52,7 +52,7 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
     },
 };
 
-NpcData N(NpcData_MontyMole_StoneThrower_01)[] = {
+NpcData NpcData_MontyMole_StoneThrower_01[] = {
     {
         .id = NPC_MontyMole_02,
         .pos = { -250.0f, 10.0f, 260.0f },
@@ -69,7 +69,7 @@ NpcData N(NpcData_MontyMole_StoneThrower_01)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_StoneThrower),
+        .settings = &NpcSettings_MontyMole_StoneThrower,
         .flags = ENEMY_FLAG_FLYING,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_THROWER_ANIMS,
@@ -78,7 +78,7 @@ NpcData N(NpcData_MontyMole_StoneThrower_01)[] = {
     MONTY_MOLE_STONE_HITBOX(NPC_MontyMole_02_Stone)
 };
 
-NpcData N(NpcData_MontyMole_StoneThrower_02)[] = {
+NpcData NpcData_MontyMole_StoneThrower_02[] = {
     {
         .id = NPC_MontyMole_03,
         .pos = { -175.0f, 10.0f, 240.0f },
@@ -95,7 +95,7 @@ NpcData N(NpcData_MontyMole_StoneThrower_02)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_StoneThrower),
+        .settings = &NpcSettings_MontyMole_StoneThrower,
         .flags = ENEMY_FLAG_FLYING,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_THROWER_ANIMS,
@@ -104,7 +104,7 @@ NpcData N(NpcData_MontyMole_StoneThrower_02)[] = {
     MONTY_MOLE_STONE_HITBOX(NPC_MontyMole_03_Stone)
 };
 
-NpcData N(NpcData_MontyMole_StoneThrower_03)[] = {
+NpcData NpcData_MontyMole_StoneThrower_03[] = {
     {
         .id = NPC_MontyMole_04,
         .pos = { -55.0f, 10.0f, 180.0f },
@@ -121,7 +121,7 @@ NpcData N(NpcData_MontyMole_StoneThrower_03)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_StoneThrower),
+        .settings = &NpcSettings_MontyMole_StoneThrower,
         .flags = ENEMY_FLAG_FLYING,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_THROWER_ANIMS,
@@ -130,7 +130,7 @@ NpcData N(NpcData_MontyMole_StoneThrower_03)[] = {
     MONTY_MOLE_STONE_HITBOX(NPC_MontyMole_04_Stone)
 };
 
-NpcData N(NpcData_Cleft) = {
+NpcData NpcData_Cleft = {
     .id = NPC_Cleft,
     .pos = { -657.0f, 163.0f, 155.0f },
     .yaw = 0,
@@ -146,18 +146,18 @@ NpcData N(NpcData_Cleft) = {
             .detectSize = { 125 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_MontyMole_WallAmbush), BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_MontyMole_StoneThrower_01), BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_MontyMole_StoneThrower_02), BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_MontyMole_StoneThrower_03), BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_Cleft), BTL_IWA_FORMATION_04, BTL_IWA_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_MontyMole_WallAmbush, BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_MontyMole_StoneThrower_01, BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_MontyMole_StoneThrower_02, BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_MontyMole_StoneThrower_03, BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_Cleft, BTL_IWA_FORMATION_04, BTL_IWA_STAGE_01),
     {}
 };

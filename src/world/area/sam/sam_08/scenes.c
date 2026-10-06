@@ -1,7 +1,7 @@
 #include "sam_08.h"
 #include "effects.h"
 
-API_CALLABLE(N(PlayBigSmokePuff)) {
+API_CALLABLE(PlayBigSmokePuff) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -12,7 +12,7 @@ API_CALLABLE(N(PlayBigSmokePuff)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AdjustFightingSoundsPos)) {
+API_CALLABLE(AdjustFightingSoundsPos) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -24,7 +24,7 @@ API_CALLABLE(N(AdjustFightingSoundsPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(StartFightingRumble)) {
+API_CALLABLE(StartFightingRumble) {
     Bytecode* args = script->ptrReadPos;
     s32 rumbleFreq = evt_get_variable(script, *args++);
     s32 rumbleTime = evt_get_variable(script, *args++);
@@ -34,21 +34,21 @@ API_CALLABLE(N(StartFightingRumble)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TwoKoopersFightingFX) = {
+EvtScript EVS_TwoKoopersFightingFX = {
     Call(PlaySoundAtNpc, NPC_Kooper_01A, SOUND_LOOP_FIGHTING, SOUND_SPACE_DEFAULT)
     Loop(0)
-        Call(N(StartFightingRumble), 80, 10)
+        Call(StartFightingRumble, 80, 10)
         Call(GetNpcPos, NPC_Kooper_01A, LVar0, LVar1, LVar2)
         Add(LVar2, 3)
-        Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
-        Call(N(AdjustFightingSoundsPos), LVar0, LVar1, LVar2)
+        Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
+        Call(AdjustFightingSoundsPos, LVar0, LVar1, LVar2)
         Wait(6 * DT)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_Scene_ImposterAppears) = {
+EvtScript EVS_Scene_ImposterAppears = {
     Call(DisablePlayerInput, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o47, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o47, COLLIDER_FLAG_IGNORE_SHELL)
@@ -203,7 +203,7 @@ EvtScript N(EVS_Scene_ImposterAppears) = {
     End
 };
 
-EvtScript N(EVS_Scene_HitTrueKooper) = {
+EvtScript EVS_Scene_HitTrueKooper = {
     Call(DisablePlayerInput, true)
     Call(SetNpcAnimation, NPC_Kooper_01A, ANIM_WorldKooper_Hurt)
     Wait(20 * DT)
@@ -296,7 +296,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    ExecGetTID(N(EVS_TwoKoopersFightingFX), MV_KoopersFightingScript)
+    ExecGetTID(EVS_TwoKoopersFightingFX, MV_KoopersFightingScript)
     Thread
         Call(SetPlayerSpeed, Float(3.0 / DT))
         Call(PlayerMoveTo, LVar6, LVar8, 0)
@@ -313,7 +313,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
         Call(InterpNpcYaw, NPC_Kooper_02A, LVar0, 0)
         Call(GetNpcPos, NPC_Kooper_01A, LVar0, LVar1, LVar2)
         Add(LVar2, 3)
-        Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+        Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
         Wait(5 * DT)
     EndLoop
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -337,7 +337,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
         Call(InterpNpcYaw, NPC_Kooper_02A, LVar0, 0)
         Call(GetNpcPos, NPC_Kooper_01A, LVar0, LVar1, LVar2)
         Add(LVar2, 3)
-        Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+        Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
         Wait(5 * DT)
     EndLoop
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -361,7 +361,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
         Call(InterpNpcYaw, NPC_Kooper_02A, LVar0, 0)
         Call(GetNpcPos, NPC_Kooper_01A, LVar0, LVar1, LVar2)
         Add(LVar2, 3)
-        Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+        Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
         Wait(4 * DT)
     EndLoop
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -384,7 +384,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
         Call(InterpNpcYaw, NPC_Kooper_02A, LVar0, 0)
         Call(GetNpcPos, NPC_Kooper_01A, LVar0, LVar1, LVar2)
         Add(LVar2, 3)
-        Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+        Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
         Wait(6 * DT)
     EndLoop
     Call(StopSound, SOUND_LOOP_FIGHTING)
@@ -510,7 +510,7 @@ EvtScript N(EVS_Scene_HitTrueKooper) = {
     End
 };
 
-EvtScript N(EVS_Scene_HitFakeKooper) = {
+EvtScript EVS_Scene_HitFakeKooper = {
     Call(DisablePlayerInput, true)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -525,7 +525,7 @@ EvtScript N(EVS_Scene_HitFakeKooper) = {
     Loop(10)
         Call(GetNpcPos, NPC_Kooper_02A, LVar0, LVar1, LVar2)
         Add(LVar2, 3)
-        Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+        Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
         Wait(5 * DT)
     EndLoop
     Call(PlaySoundAtNpc, NPC_Kooper_02A, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
@@ -583,13 +583,13 @@ EvtScript N(EVS_Scene_HitFakeKooper) = {
     End
 };
 
-EvtScript N(EVS_SetupBridge) = {
+EvtScript EVS_SetupBridge = {
     Call(ParentColliderToModel, COLLIDER_m1_kabe, MODEL_m1_kabe)
     IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
         Call(TranslateGroup, MODEL_move1, 0, -120, 0)
         Call(UpdateColliderTransform, COLLIDER_m1_kabe)
         Call(EnableModel, MODEL_m1_kabe, false)
-        BindTrigger(Ref(N(EVS_Scene_ImposterAppears)), TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, 1, 0)
+        BindTrigger(Ref(EVS_Scene_ImposterAppears), TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, 1, 0)
     EndIf
     Return
     End

@@ -34,6 +34,7 @@
 //! - literal Lerp durations less than zero;
 //! - memory access types that are not supported literal EVT_MEM_* values;
 //! - Eval/Invoke/IfEval function operands that are not relocation-backed function addresses.
+//! - PlayEffect calls whose argument counts do not match effects.yaml.
 
 mod elf;
 mod opcode;
@@ -45,11 +46,12 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use pattern::SymbolPattern;
-use validate::ValidateError;
+use validate::{Effect, ValidateError};
 
 struct Args {
     objects: Vec<PathBuf>,
     out: Option<PathBuf>,
+    effects_yaml: Option<PathBuf>,
     symbol_pattern: String,
 }
 
@@ -57,6 +59,7 @@ fn parse_args() -> Result<Args, String> {
     let mut objects = Vec::new();
     let mut object_lists = Vec::new();
     let mut out = None;
+    let mut effects_yaml = None;
     let mut symbol_pattern = "(^|_)EVS_".to_string();
 
     let mut it = std::env::args().skip(1);
@@ -69,6 +72,10 @@ fn parse_args() -> Result<Args, String> {
             "--out" => {
                 let path = it.next().ok_or("--out requires a value")?;
                 out = Some(PathBuf::from(path));
+            }
+            "--effects-yaml" => {
+                let path = it.next().ok_or("--effects-yaml requires a value")?;
+                effects_yaml = Some(PathBuf::from(path));
             }
             "--symbol-regex" => {
                 symbol_pattern = it.next().ok_or("--symbol-regex requires a value")?;
@@ -87,7 +94,46 @@ fn parse_args() -> Result<Args, String> {
         }
     }
 
-    Ok(Args { objects, out, symbol_pattern })
+    Ok(Args { objects, out, effects_yaml, symbol_pattern })
+}
+
+fn read_effects(path: &Path) -> Result<Vec<Effect>, String> {
+    let text = std::fs::read_to_string(path).map_err(|e| format!("{}: {e}", path.display()))?;
+    let mut effects = Vec::new();
+
+    for line in text.lines() {
+        let trimmed = line.trim();
+        if let Some(item) = trimmed.strip_prefix("- ") {
+            if item == "{}" {
+                effects.push(Effect {
+                    name: format!("{:02X}", effects.len()),
+                    arg_count: 0,
+                    empty: true,
+                });
+            } else if let Some(name) = item.strip_prefix("name:") {
+                effects.push(Effect {
+                    name: name.trim().trim_matches(['\'', '"']).to_string(),
+                    arg_count: 0,
+                    empty: false,
+                });
+            } else {
+                return Err(format!(
+                    "{}: unsupported effect entry: {trimmed}",
+                    path.display()
+                ));
+            }
+        } else if let Some(args) = trimmed.strip_prefix("args:") {
+            let Some(effect) = effects.last_mut() else {
+                return Err(format!("{}: args appears before an effect", path.display()));
+            };
+            effect.arg_count = args.split(',').filter(|arg| !arg.trim().is_empty()).count();
+        }
+    }
+
+    if effects.is_empty() {
+        return Err(format!("{}: no effects found", path.display()));
+    }
+    Ok(effects)
 }
 
 fn stderr_supports_color() -> bool {
@@ -146,9 +192,19 @@ fn run() -> Result<(), (ValidateError, Option<PathBuf>, Vec<PathBuf>)> {
         return Err((ValidateError::Validation("no object files provided".to_string()), None, args.objects));
     }
 
+    let effects = match &args.effects_yaml {
+        Some(path) => match read_effects(path) {
+            Ok(effects) => Some(effects),
+            Err(msg) => {
+                return Err((ValidateError::Validation(msg), None, args.objects));
+            }
+        },
+        None => None,
+    };
+
     let mut checked = 0usize;
     for object in &args.objects {
-        match validate::validate_object(object, &pattern) {
+        match validate::validate_object(object, &pattern, effects.as_deref()) {
             Ok(n) => checked += n,
             Err(e) => return Err((e, Some(object.clone()), args.objects.clone())),
         }

@@ -18,7 +18,6 @@ void snowflake_main(f32 x, f32 y, f32 z, s32 arg3) {
     s32 numParts = 1;
     f32 phi_f4;
 
-    bp.unk_00 = 0;
     bp.init = snowflake_init;
     bp.update = snowflake_update;
     bp.renderScene = snowflake_render;

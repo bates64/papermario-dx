@@ -1,7 +1,7 @@
 #include "mac_01.h"
 
 
-MusicProximityTrigger N(MusicMixTrigger1) = {
+MusicProximityTrigger MusicMixTrigger1 = {
     .pos = { -190.0f, -210.0f },
     .innerDist = 100.0f,
     .outerDist = 120.0f,
@@ -9,7 +9,7 @@ MusicProximityTrigger N(MusicMixTrigger1) = {
     .manualActivationFlag = MF_MusicMixTrigger1,
 };
 
-MusicProximityTrigger N(MusicMixTrigger2) = {
+MusicProximityTrigger MusicMixTrigger2 = {
     .pos = { -150.0f, 330.0f },
     .innerDist = 110.0f,
     .outerDist = 130.0f,
@@ -17,7 +17,7 @@ MusicProximityTrigger N(MusicMixTrigger2) = {
     .manualActivationFlag = MF_MusicMixTrigger2,
 };
 
-MusicProximityTrigger N(MusicMixTrigger3) = {
+MusicProximityTrigger MusicMixTrigger3 = {
     .pos = { 266.0f, 370.0f },
     .innerDist = 200.0f,
     .outerDist = 220.0f,
@@ -25,19 +25,19 @@ MusicProximityTrigger N(MusicMixTrigger3) = {
     .manualActivationFlag = MF_MusicMixTrigger3,
 };
 
-EvtScript N(EVS_SetupMusicMix) = {
+EvtScript EVS_SetupMusicMix = {
     Call(SetMusic, 0, SONG_TOAD_TOWN, 0, VOL_LEVEL_FULL)
     Call(EnableMusicProximityMix, 0)
     IfEq(MF_SetupMusicMixes, false)
         Set(MF_SetupMusicMixes, true)
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger1)))
+            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger1))
         EndThread
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger2)))
+            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger2))
         EndThread
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger3)))
+            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger3))
         EndThread
     EndIf
     Return

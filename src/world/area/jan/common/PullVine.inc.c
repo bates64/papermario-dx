@@ -1,7 +1,7 @@
 #include "common.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(PullVine_WaitForPlayerGrab)) {
+API_CALLABLE(PullVine_WaitForPlayerGrab) {
     Bytecode* args = script->ptrReadPos;
     f32 modelX, modelY, modelZ;
     f32 dx, dy, dz;
@@ -23,7 +23,7 @@ API_CALLABLE(N(PullVine_WaitForPlayerGrab)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PullVine_UpdatePosition)) {
+API_CALLABLE(PullVine_UpdatePosition) {
     Bytecode* args = script->ptrReadPos;
     f32 x1 = evt_get_float_variable(script, *args++);
     f32 x2 = evt_get_float_variable(script, *args++);
@@ -42,7 +42,7 @@ API_CALLABLE(N(PullVine_UpdatePosition)) {
 // LVar5  drop delay
 // LVar4  callback script
 
-EvtScript N(EVS_PullVine_Manage) = {
+EvtScript EVS_PullVine_Manage = {
     Call(GetModelCenter, LVarE)
     Set(LVar6, LVar0)
     Set(LVar7, LVar1)
@@ -50,7 +50,7 @@ EvtScript N(EVS_PullVine_Manage) = {
     Add(LVar7, -20)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(N(PullVine_WaitForPlayerGrab), LVar6, LVar7, LVar8, 20)
+        Call(PullVine_WaitForPlayerGrab, LVar6, LVar7, LVar8, 20)
         Call(GetPlayerActionState, LVar1)
         IfNe(LVar1, ACTION_STATE_JUMP)
             Set(LVar0, 0)
@@ -107,7 +107,7 @@ EvtScript N(EVS_PullVine_Manage) = {
             Wait(1)
             Call(SetPlayerAnimation, ANIM_MarioW2_HoldOnto)
             Loop(50)
-                Call(N(PullVine_UpdatePosition), LVar0, Float(-15.0), LVar2)
+                Call(PullVine_UpdatePosition, LVar0, Float(-15.0), LVar2)
                 AddF(LVar1, LVar2)
                 MulF(LVar1, Float(0.93))
                 AddF(LVar0, LVar1)
@@ -165,7 +165,7 @@ EvtScript N(EVS_PullVine_Manage) = {
                 SetF(LVar0, Float(-15.0))
                 SetF(LVar1, Float(0.0))
                 Loop(100)
-                    Call(N(PullVine_UpdatePosition), LVar0, Float(20.0), LVar2)
+                    Call(PullVine_UpdatePosition, LVar0, Float(20.0), LVar2)
                     AddF(LVar1, LVar2)
                     MulF(LVar1, Float(0.93))
                     AddF(LVar0, LVar1)

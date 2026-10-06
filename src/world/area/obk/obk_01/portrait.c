@@ -2,7 +2,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetPortraitItemAlpha)) {
+API_CALLABLE(SetPortraitItemAlpha) {
     ItemEntity* item = get_item_entity(script->varTable[0]);
 
     set_item_entity_flags(script->varTable[0], ITEM_ENTITY_FLAG_TRANSPARENT);
@@ -10,7 +10,7 @@ API_CALLABLE(N(SetPortraitItemAlpha)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateSpeakingPortrait) = {
+EvtScript EVS_AnimateSpeakingPortrait = {
     // hide empty frames
     Call(EnableModel, MODEL_n1, false)
     Call(EnableModel, MODEL_n2, false)
@@ -35,7 +35,7 @@ EvtScript N(EVS_AnimateSpeakingPortrait) = {
     End
 };
 
-EvtScript N(EVS_Interact_LowerPortrait) = {
+EvtScript EVS_Interact_LowerPortrait = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_GOT_BOO_PORTRAIT)
@@ -56,7 +56,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Add(LVar1, 40)
                     Call(MakeItemEntity, ITEM_BOO_PORTRAIT, LVar0, LVar1, LVar2, ITEM_SPAWN_MODE_DECORATION, 0)
-                    Call(N(SetPortraitItemAlpha))
+                    Call(SetPortraitItemAlpha)
                     Set(LVarA, LVar0)
                     Wait(30 * DT)
                     Call(GetPlayerPos, LVar3, LVar4, LVar5)
@@ -87,11 +87,11 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
                     Call(RemoveItemEntity, LVarA)
                     IfEq(GF_OBK01_Met_Portrait, true)
                         Set(LVar0, 25)
-                        Exec(N(EVS_AnimateSpeakingPortrait))
+                        Exec(EVS_AnimateSpeakingPortrait)
                         Call(ShowMessageAtScreenPos, MSG_CH3_002D, 160, 40)
                     Else
                         Set(LVar0, 35)
-                        Exec(N(EVS_AnimateSpeakingPortrait))
+                        Exec(EVS_AnimateSpeakingPortrait)
                         Call(ShowMessageAtScreenPos, MSG_CH3_002E, 160, 40)
                     EndIf
                     Set(GB_StoryProgress, STORY_CH3_RESTORED_BOO_PORTRAIT)
@@ -125,7 +125,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
             IfEq(GF_OBK01_Portrait_Farewell, false)
                 Wait(10 * DT)
                 Set(LVar0, 5)
-                Exec(N(EVS_AnimateSpeakingPortrait))
+                Exec(EVS_AnimateSpeakingPortrait)
                 Call(ShowMessageAtScreenPos, MSG_CH3_002F, 160, 40)
                 Set(GF_OBK01_Portrait_Farewell, true)
             EndIf
@@ -138,7 +138,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
     End
 };
 
-EvtScript N(EVS_Interact_UpperPortrait) = {
+EvtScript EVS_Interact_UpperPortrait = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -173,7 +173,7 @@ EvtScript N(EVS_Interact_UpperPortrait) = {
     End
 };
 
-EvtScript N(EVS_PortraitFrame_ShakeWhenNear) = {
+EvtScript EVS_PortraitFrame_ShakeWhenNear = {
     Loop(0)
         IfEq(AF_OBK01_IsPlayerNearPortrait, true)
             IfNe(AF_OBK01_WasPlayerNearPortrait, AF_OBK01_IsPlayerNearPortrait)
@@ -196,7 +196,7 @@ EvtScript N(EVS_PortraitFrame_ShakeWhenNear) = {
     End
 };
 
-EvtScript N(EVS_PortraitFrame_MonitorPlayerPos) = {
+EvtScript EVS_PortraitFrame_MonitorPlayerPos = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Set(AF_OBK01_IsPlayerNearPortrait, false)
@@ -215,13 +215,13 @@ EvtScript N(EVS_PortraitFrame_MonitorPlayerPos) = {
     End
 };
 
-ITEM_LIST(N(ItemList_BooPortrait), ITEM_BOO_PORTRAIT);
+ITEM_LIST(ItemList_BooPortrait, ITEM_BOO_PORTRAIT);
 
-EvtScript N(EVS_SetupPortrait) = {
-    BindPadlock(Ref(N(EVS_Interact_LowerPortrait)), TRIGGER_WALL_PRESS_A, COLLIDER_aa1, Ref(N(ItemList_BooPortrait)), 0, 1)
-    BindTrigger(Ref(N(EVS_Interact_UpperPortrait)), TRIGGER_WALL_PRESS_A, COLLIDER_aa2, 1, 0)
-    Exec(N(EVS_PortraitFrame_MonitorPlayerPos))
-    Exec(N(EVS_PortraitFrame_ShakeWhenNear))
+EvtScript EVS_SetupPortrait = {
+    BindPadlock(Ref(EVS_Interact_LowerPortrait), TRIGGER_WALL_PRESS_A, COLLIDER_aa1, Ref(ItemList_BooPortrait), 0, 1)
+    BindTrigger(Ref(EVS_Interact_UpperPortrait), TRIGGER_WALL_PRESS_A, COLLIDER_aa2, 1, 0)
+    Exec(EVS_PortraitFrame_MonitorPlayerPos)
+    Exec(EVS_PortraitFrame_ShakeWhenNear)
     IfLt(GB_StoryProgress, STORY_CH3_RESTORED_BOO_PORTRAIT)
         Call(EnableModel, MODEL_n1, true)
         Call(EnableModel, MODEL_u1, false)

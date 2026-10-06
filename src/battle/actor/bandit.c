@@ -4,32 +4,30 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Bandit.h"
 
-#define NAMESPACE A(bandit)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_Init_Coin;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_Init_Coin);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
+BSS s32 DropCoinScript[1];
 
-BSS s32 N(DropCoinScript)[1];
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
     PRT_COIN            = 2,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_HasCoin        = 0, // has stolen coins
     AVAR_NumCoins       = 1, // number of coins stolen
     AVAR_Coin_NumCoins  = 1, // number of coins stolen also stored in coin actor
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_TACKLE          = 2,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Bandit_Idle,
     STATUS_KEY_STONE,     ANIM_Bandit_Still,
     STATUS_KEY_SLEEP,     ANIM_Bandit_Sleep,
@@ -42,7 +40,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(HoldingAnims)[] = {
+s32 HoldingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Bandit_IdleHolding,
     STATUS_KEY_STONE,     ANIM_Bandit_StillHolding,
     STATUS_KEY_SLEEP,     ANIM_Bandit_Sleep,
@@ -55,17 +53,17 @@ s32 N(HoldingAnims)[] = {
     STATUS_END,
 };
 
-s32 N(CoinAnims)[] = {
+s32 CoinAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Bandit_Coin,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              70,
@@ -90,15 +88,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 28 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -12 },
@@ -109,38 +107,38 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 30, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(CoinAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = CoinAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-ActorPartBlueprint N(CoinParts)[] = {
+ActorPartBlueprint CoinParts[] = {
     {
         .flags = ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_COIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(CoinAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = CoinAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_BANDIT,
     .level = ACTOR_LEVEL_BANDIT,
     .maxHP = 5,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 40,
     .airLiftChance = 90,
     .hurricaneChance = 90,
@@ -155,15 +153,15 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 25 },
 };
 
-ActorBlueprint N(coin) = {
+ActorBlueprint coin = {
     .flags = ACTOR_FLAG_NO_ATTACK | ACTOR_FLAG_NO_DMG_APPLY,
     .type = ACTOR_TYPE_BANDIT,
     .level = ACTOR_LEVEL_BANDIT,
     .maxHP = 5,
-    .partCount = ARRAY_COUNT(N(CoinParts)),
-    .partsData = N(CoinParts),
-    .initScript = &N(EVS_Init_Coin),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(CoinParts),
+    .partsData = CoinParts,
+    .initScript = &EVS_Init_Coin,
+    .statusTable = StatusTable,
     .escapeChance = 40,
     .airLiftChance = 90,
     .hurricaneChance = 90,
@@ -178,49 +176,49 @@ ActorBlueprint N(coin) = {
     .statusTextOffset = { 10, 25 },
 };
 
-Vec3i N(CoinPos) = { NPC_DISPOSE_LOCATION };
+Vec3i CoinPos = { NPC_DISPOSE_LOCATION };
 
-Formation N(CoinFormation) = {
-    ACTOR_BY_POS(N(coin), N(CoinPos), 0),
+Formation CoinFormation = {
+    ACTOR_BY_POS(coin, CoinPos, 0),
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_HasCoin, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Dummy) = {
+EvtScript EVS_Dummy = {
     Return
     End
 };
 
-EvtScript N(EVS_Init_Coin) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_Dummy)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Dummy)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_Dummy)))
+EvtScript EVS_Init_Coin = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_Dummy))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Dummy))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Dummy))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_DropCoin) = {
+EvtScript EVS_DropCoin = {
     Call(GetActorVar, ACTOR_SELF, AVAR_HasCoin, LVar0)
     Switch(LVar0)
         CaseEq(false)
             // do nothing
         CaseEq(true)
             Call(SetActorVar, ACTOR_SELF, AVAR_HasCoin, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
             Call(SetPartFlagBits, ACTOR_SELF, PRT_COIN, ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION, false)
-            Call(SummonEnemy, Ref(N(CoinFormation)), false)
+            Call(SummonEnemy, Ref(CoinFormation), false)
             Set(LVarA, LVar0)
             Call(GetPartOffset, ACTOR_SELF, PRT_COIN, LVar1, LVar2, LVar3)
             Call(SetActorPos, LVarA, LVar1, LVar2, LVar3)
@@ -301,7 +299,7 @@ EvtScript N(EVS_DropCoin) = {
             Call(SetGoalToTarget, LVarA)
             Call(JumpToGoal, LVarA, 15, false, false, false)
             Call(GetGoalPos, LVarA, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_SMALL_GOLD_SPARKLE, 0, LVar0, LVar1, LVar2, Float(1.0), 0, 0)
+            PlayEffect(EFFECT_SMALL_GOLD_SPARKLE, 0, LVar0, LVar1, LVar2, Float(1.0), 0)
             Call(PlaySoundAtActor, LVarA, SOUND_COIN_PICKUP)
             Call(GetActorVar, LVarA, AVAR_Coin_NumCoins, LVar0)
             Call(AddCoin, LVar0)
@@ -311,14 +309,14 @@ EvtScript N(EVS_DropCoin) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
-    UseArray(Ref(N(DropCoinScript)))
+EvtScript EVS_HandleEvent = {
+    UseArray(Ref(DropCoinScript))
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseEq(EVENT_HIT_COMBO)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_Hit)
@@ -331,7 +329,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
         CaseOrEq(EVENT_HIT)
         CaseOrEq(EVENT_SPIN_SMASH_LAUNCH_HIT)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_Hit)
@@ -344,7 +342,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
         EndCaseGroup
         CaseEq(EVENT_BURN_HIT)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_BurnHurt)
             SetConst(LVar2, ANIM_Bandit_BurnStill)
@@ -357,7 +355,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Wait(1)
             EndLoop
         CaseEq(EVENT_BURN_DEATH)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_BurnHurt)
             SetConst(LVar2, ANIM_Bandit_BurnStill)
@@ -374,7 +372,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
             Return
         CaseEq(EVENT_SPIN_SMASH_HIT)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_SpinSmashHit)
@@ -386,7 +384,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Wait(1)
             EndLoop
         CaseEq(EVENT_SPIN_SMASH_DEATH)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_SpinSmashHit)
@@ -436,7 +434,7 @@ EvtScript N(EVS_HandleEvent) = {
         EndCaseGroup
         CaseOrEq(EVENT_DEATH)
         CaseOrEq(EVENT_SPIN_SMASH_LAUNCH_DEATH)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_Hit)
@@ -458,7 +456,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_Bandit_Idle)
             ExecWait(EVS_Enemy_Recover)
         CaseEq(EVENT_SCARE_AWAY)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Run)
             SetConst(LVar2, ANIM_Bandit_Hurt)
@@ -472,7 +470,7 @@ EvtScript N(EVS_HandleEvent) = {
             EndLoop
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
-            ExecGetID(ArrayVar(0), N(EVS_DropCoin))
+            ExecGetID(ArrayVar(0), EVS_DropCoin)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Bandit_Hurt)
             ExecWait(EVS_Enemy_AirLift)
@@ -498,7 +496,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -684,7 +682,7 @@ EvtScript N(EVS_TakeTurn) = {
                     Call(SetActorJumpGravity, ACTOR_SELF, Float(1.8))
                     Call(SetGoalPos, ACTOR_SELF, LVarA, LVarB, LVarC)
                     Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
-                    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HoldingAnims)))
+                    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HoldingAnims))
                     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Bandit_LookUp)
                     Call(SetActorVar, ACTOR_SELF, AVAR_HasCoin, 1)
                     Wait(7)

@@ -1,6 +1,6 @@
 #include "flo_19.h"
 
-API_CALLABLE(N(CosInterpAbsMinMax)) {
+API_CALLABLE(CosInterpAbsMinMax) {
     Bytecode* args = script->ptrReadPos;
     s32 outVarTime = *args++;
     s32 time = evt_get_variable(script, outVarTime);
@@ -24,7 +24,7 @@ API_CALLABLE(N(CosInterpAbsMinMax)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimatePlatforms) = {
+EvtScript EVS_AnimatePlatforms = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Set(LVarF, 0)
     Label(0)
@@ -34,22 +34,22 @@ EvtScript N(EVS_AnimatePlatforms) = {
         AddF(LVar1, MV_Distortion_Platform_01)
         Call(TranslateGroup, MODEL_g17, LVar0, LVar1, LVar2)
         SetF(LVar0, Float(-79.86))
-        Call(N(CosInterpAbsMinMax), LVarF, LVar1, Float(5.0), Float(136.765), 300, 0, 0)
+        Call(CosInterpAbsMinMax, LVarF, LVar1, Float(5.0), Float(136.765), 300, 0, 0)
         SetF(LVar2, Float(-200.0))
         AddF(LVar1, MV_Distortion_Platform_02)
         Call(TranslateGroup, MODEL_g21, LVar0, LVar1, LVar2)
         SetF(LVar0, Float(-364.265625))
-        Call(N(CosInterpAbsMinMax), LVarF, LVar1, Float(5.0), Float(106.765), 300, 0, 0)
+        Call(CosInterpAbsMinMax, LVarF, LVar1, Float(5.0), Float(106.765), 300, 0, 0)
         SetF(LVar2, Float(10.0))
         AddF(LVar1, MV_Distortion_Platform_03)
         Call(TranslateGroup, MODEL_g22, LVar0, LVar1, LVar2)
         SetF(LVar0, Float(295.734))
-        Call(N(CosInterpAbsMinMax), LVarF, LVar1, Float(65.0), Float(86.984), 200, 0, 0)
+        Call(CosInterpAbsMinMax, LVarF, LVar1, Float(65.0), Float(86.984), 200, 0, 0)
         SetF(LVar2, Float(-80.0))
         AddF(LVar1, MV_Distortion_Platform_04)
         Call(TranslateGroup, MODEL_g23, LVar0, LVar1, LVar2)
-        Call(N(CosInterpAbsMinMax), LVarF, LVar2, Float(0.968), Float(1.031), 15, 0, 0)
-        Call(N(CosInterpAbsMinMax), LVarF, LVar3, Float(1.031), Float(0.968), 15, 0, 0)
+        Call(CosInterpAbsMinMax, LVarF, LVar2, Float(0.968), Float(1.031), 15, 0, 0)
+        Call(CosInterpAbsMinMax, LVarF, LVar3, Float(1.031), Float(0.968), 15, 0, 0)
         SetF(LVar0, MV_Distortion_Platform_01)
         SetF(LVar1, MV_Distortion_Platform_01)
         MulF(LVar0, Float(-0.02))
@@ -112,7 +112,7 @@ EvtScript N(EVS_AnimatePlatforms) = {
     End
 };
 
-EvtScript N(EVS_AddPlayerWeight_Platform_01) = {
+EvtScript EVS_AddPlayerWeight_Platform_01 = {
     Thread
         AddF(MV_Distortion_Platform_01, Float(-1.5))
         Wait(1)
@@ -122,7 +122,7 @@ EvtScript N(EVS_AddPlayerWeight_Platform_01) = {
     End
 };
 
-EvtScript N(EVS_AddPlayerWeight_Platform_02) = {
+EvtScript EVS_AddPlayerWeight_Platform_02 = {
     Thread
         AddF(MV_Distortion_Platform_02, Float(-1.5))
         Wait(1)
@@ -132,7 +132,7 @@ EvtScript N(EVS_AddPlayerWeight_Platform_02) = {
     End
 };
 
-EvtScript N(EVS_AddPlayerWeight_Platform_03) = {
+EvtScript EVS_AddPlayerWeight_Platform_03 = {
     Thread
         AddF(MV_Distortion_Platform_03, Float(-1.5))
         Wait(1)
@@ -142,7 +142,7 @@ EvtScript N(EVS_AddPlayerWeight_Platform_03) = {
     End
 };
 
-EvtScript N(EVS_AddPlayerWeight_Platform_04) = {
+EvtScript EVS_AddPlayerWeight_Platform_04 = {
     Thread
         AddF(MV_Distortion_Platform_04, Float(-1.5))
         Wait(1)
@@ -152,7 +152,7 @@ EvtScript N(EVS_AddPlayerWeight_Platform_04) = {
     End
 };
 
-EvtScript N(EVS_SetupClouds) = {
+EvtScript EVS_SetupClouds = {
     Call(ParentColliderToModel, COLLIDER_o77, MODEL_g17)
     Call(ParentColliderToModel, COLLIDER_o78, MODEL_g21)
     Call(ParentColliderToModel, COLLIDER_o76, MODEL_g22)
@@ -161,16 +161,16 @@ EvtScript N(EVS_SetupClouds) = {
     Call(SetModelFlags, MODEL_g21, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_g22, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_g23, MODEL_FLAG_BILLBOARD, true)
-    Exec(N(EVS_AnimatePlatforms))
-    BindTrigger(Ref(N(EVS_AddPlayerWeight_Platform_01)), TRIGGER_FLOOR_TOUCH, COLLIDER_o77, 1, 0)
-    BindTrigger(Ref(N(EVS_AddPlayerWeight_Platform_02)), TRIGGER_FLOOR_TOUCH, COLLIDER_o78, 1, 0)
-    BindTrigger(Ref(N(EVS_AddPlayerWeight_Platform_03)), TRIGGER_FLOOR_TOUCH, COLLIDER_o76, 1, 0)
-    BindTrigger(Ref(N(EVS_AddPlayerWeight_Platform_04)), TRIGGER_FLOOR_TOUCH, COLLIDER_o79, 1, 0)
+    Exec(EVS_AnimatePlatforms)
+    BindTrigger(Ref(EVS_AddPlayerWeight_Platform_01), TRIGGER_FLOOR_TOUCH, COLLIDER_o77, 1, 0)
+    BindTrigger(Ref(EVS_AddPlayerWeight_Platform_02), TRIGGER_FLOOR_TOUCH, COLLIDER_o78, 1, 0)
+    BindTrigger(Ref(EVS_AddPlayerWeight_Platform_03), TRIGGER_FLOOR_TOUCH, COLLIDER_o76, 1, 0)
+    BindTrigger(Ref(EVS_AddPlayerWeight_Platform_04), TRIGGER_FLOOR_TOUCH, COLLIDER_o79, 1, 0)
     Thread
         Set(LVarF, 0)
         Label(0)
-            Call(N(CosInterpAbsMinMax), LVarF, LVar0, Float(0.968), Float(1.031), 15, 0, 0)
-            Call(N(CosInterpAbsMinMax), LVarF, LVar1, Float(1.031), Float(0.968), 15, 0, 0)
+            Call(CosInterpAbsMinMax, LVarF, LVar0, Float(0.968), Float(1.031), 15, 0, 0)
+            Call(CosInterpAbsMinMax, LVarF, LVar1, Float(1.031), Float(0.968), 15, 0, 0)
             Call(ScaleModel, MODEL_o73, LVar1, LVar0, 1)
             Call(ScaleModel, MODEL_o74, LVar1, LVar0, 1)
             Call(ScaleModel, MODEL_o75, LVar0, LVar1, 1)

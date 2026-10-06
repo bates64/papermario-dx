@@ -2,7 +2,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(RemoveOutsideShroud)) {
+API_CALLABLE(RemoveOutsideShroud) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_NONE, true);
     mdl_set_shroud_tint_params(0, 0, 0, 0);
 
@@ -13,7 +13,7 @@ API_CALLABLE(N(RemoveOutsideShroud)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FadeToBlack)) {
+API_CALLABLE(FadeToBlack) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -33,7 +33,7 @@ API_CALLABLE(N(FadeToBlack)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FadeFromBlack)) {
+API_CALLABLE(FadeFromBlack) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -48,17 +48,17 @@ API_CALLABLE(N(FadeFromBlack)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetAmbienceVolumeHalf_Epilogue)) {
+API_CALLABLE(SetAmbienceVolumeHalf_Epilogue) {
     snd_ambient_set_volume(0, 1000, 63);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetAmbienceVolumeFull_Epilogue)) {
+API_CALLABLE(SetAmbienceVolumeFull_Epilogue) {
     snd_ambient_set_volume(0, 1000, 127);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Luigi_PlayWalkSounds_Epilogue) = {
+EvtScript EVS_Luigi_PlayWalkSounds_Epilogue = {
     Call(GetNpcAnimation, NPC_Luigi_1, LVar0)
     Switch(LVar0)
         CaseOrEq(ANIM_Luigi_Walk)
@@ -85,7 +85,7 @@ EvtScript N(EVS_Luigi_PlayWalkSounds_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_OpenFrontDoor) = {
+EvtScript EVS_OpenFrontDoor = {
     Call(PlaySoundAtCollider, COLLIDER_o246, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 90, 10, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -100,7 +100,7 @@ EvtScript N(EVS_OpenFrontDoor) = {
     End
 };
 
-EvtScript N(EVS_CloseFrontDoor) = {
+EvtScript EVS_CloseFrontDoor = {
     Call(MakeLerp, 90, 0, 10, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
@@ -115,25 +115,25 @@ EvtScript N(EVS_CloseFrontDoor) = {
     End
 };
 
-EvtScript N(EVS_OpenAndCloseDoor_Epilogue) = {
+EvtScript EVS_OpenAndCloseDoor_Epilogue = {
     Call(EnableGroup, MODEL_g72, true)
-    ExecWait(N(EVS_OpenFrontDoor))
+    ExecWait(EVS_OpenFrontDoor)
     Wait(30)
-    ExecWait(N(EVS_CloseFrontDoor))
+    ExecWait(EVS_CloseFrontDoor)
     Call(EnableGroup, MODEL_g72, true)
     Return
     End
 };
 
-EvtScript N(EVS_Player_EnterPipe_Epilogue) = {
+EvtScript EVS_Player_EnterPipe_Epilogue = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(PlayerMoveTo, LVar1, LVar3, 3)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtPlayer, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -153,15 +153,15 @@ EvtScript N(EVS_Player_EnterPipe_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_Luigi_EnterPipe_Epilogue) = {
+EvtScript EVS_Luigi_EnterPipe_Epilogue = {
     Call(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_FLYING, true)
     Call(EnableNpcShadow, NPC_Luigi_1, false)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(NpcMoveTo, NPC_Luigi_1, LVar1, LVar3, 3)
     Set(LVar0, 4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(SetNpcPos, NPC_Luigi_1, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtNpc, NPC_Luigi_1, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -183,9 +183,9 @@ EvtScript N(EVS_Luigi_EnterPipe_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_Scene_BeginEpilogue) = {
+EvtScript EVS_Scene_BeginEpilogue = {
     Call(DisablePlayerInput, true)
-    Call(N(SetAmbienceVolumeHalf_Epilogue))
+    Call(SetAmbienceVolumeHalf_Epilogue)
     Call(SetPlayerAnimation, ANIM_MarioW2_SitIdle)
     Call(SetPlayerPos, 95, 44, -40)
     Call(UseSettingsFrom, CAM_DEFAULT, 150, 44, -40)
@@ -205,9 +205,9 @@ EvtScript N(EVS_Scene_BeginEpilogue) = {
     End
 };
 
-EvtScript N(EVS_Scene_EpilogueGetLetter) = {
+EvtScript EVS_Scene_EpilogueGetLetter = {
     Call(DisablePlayerInput, true)
-    Call(N(SetAmbienceVolumeHalf_Epilogue))
+    Call(SetAmbienceVolumeHalf_Epilogue)
     Call(SetPlayerPos, 95, 44, -40)
     Call(SetPlayerAnimation, ANIM_MarioW2_SitIdle)
     Call(UseSettingsFrom, CAM_DEFAULT, 150, 44, -40)
@@ -238,37 +238,37 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     Call(PlaySoundAtNpc, NPC_Luigi_1, SOUND_LAND_SOFTLY, SOUND_SPACE_DEFAULT)
     Wait(10)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Walk)
-    ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Epilogue), LVarA)
+    ExecGetTID(EVS_Luigi_PlayWalkSounds_Epilogue, LVarA)
     Call(NpcMoveTo, NPC_Luigi_1, 240, -20, 30)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_WalkBack)
     Call(NpcMoveTo, NPC_Luigi_1, 240, -80, 30)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Idle)
     KillThread(LVarA)
     Wait(10)
-    Exec(N(EVS_OpenFrontDoor))
+    Exec(EVS_OpenFrontDoor)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Walk)
-    ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Epilogue), LVarA)
+    ExecGetTID(EVS_Luigi_PlayWalkSounds_Epilogue, LVarA)
     Call(NpcMoveTo, NPC_Luigi_1, 300, -80, 30)
-    ExecWait(N(EVS_CloseFrontDoor))
+    ExecWait(EVS_CloseFrontDoor)
     KillThread(LVarA)
     Wait(90)
     Call(SetNpcYaw, NPC_Luigi_1, 270)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_WalkLetter)
-    ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Epilogue), LVarA)
-    Exec(N(EVS_OpenFrontDoor))
+    ExecGetTID(EVS_Luigi_PlayWalkSounds_Epilogue, LVarA)
+    Exec(EVS_OpenFrontDoor)
     Call(NpcMoveTo, NPC_Luigi_1, 240, -80, 30)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_IdleLetter)
     KillThread(LVarA)
-    ExecWait(N(EVS_CloseFrontDoor))
+    ExecWait(EVS_CloseFrontDoor)
     Wait(10)
     Call(SpeakToPlayer, NPC_Luigi_1, ANIM_Luigi_TalkLetter, ANIM_Luigi_IdleLetter, 0, MSG_Outro_0022)
     Wait(30)
-    Call(N(FadeToBlack))
+    Call(FadeToBlack)
     Call(EnableGroup, MODEL_g20, false)
     Call(EnableGroup, MODEL_g21, false)
     Call(EnableGroup, MODEL_g49, false)
     Call(EnableModel, MODEL_g56, false)
-    Call(N(RemoveOutsideShroud))
+    Call(RemoveOutsideShroud)
     Call(RotateGroup, MODEL_g60, 0, 1, 0, 0)
     Call(RotateGroup, MODEL_g34, 0, -1, 0, 0)
     Call(EnableGroup, MODEL_g60, true)
@@ -281,16 +281,16 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Idle)
     Call(SetNpcPos, NPC_Luigi_1, 200, 30, -75)
     Wait(30)
-    Call(N(FadeFromBlack))
-    Call(N(SetAmbienceVolumeFull_Epilogue))
+    Call(FadeFromBlack)
+    Call(SetAmbienceVolumeFull_Epilogue)
     Wait(30)
     Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, 0, VOL_LEVEL_FULL)
-    Exec(N(EVS_OpenAndCloseDoor_Epilogue))
+    Exec(EVS_OpenAndCloseDoor_Epilogue)
     Thread
         Wait(10)
         Call(SetNpcSpeed, NPC_Luigi_1, Float(3.0))
         Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Run)
-        ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Epilogue), LVarA)
+        ExecGetTID(EVS_Luigi_PlayWalkSounds_Epilogue, LVarA)
         Call(NpcMoveTo, NPC_Luigi_1, 320, -70, 0)
         Call(NpcMoveTo, NPC_Luigi_1, 460, -70, 0)
         Call(NpcMoveTo, NPC_Luigi_1, 570, -170, 0)
@@ -303,7 +303,7 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     Call(func_802D1270, 570, -170, Float(3.0))
     Call(SetPlayerJumpscale, Float(1.0))
     Call(PlayerJump, 594, 30, -216, 15)
-    ExecWait(N(EVS_Player_EnterPipe_Epilogue))
+    ExecWait(EVS_Player_EnterPipe_Epilogue)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_JumpStance)
     Wait(10)
     Thread
@@ -316,8 +316,8 @@ EvtScript N(EVS_Scene_EpilogueGetLetter) = {
     EndThread
     Call(SetNpcJumpscale, NPC_Luigi_1, Float(1.0))
     Call(NpcJump0, NPC_Luigi_1, 594, 30, -216, 15)
-    ExecWait(N(EVS_Luigi_EnterPipe_Epilogue))
-    Exec(N(EVS_FadeOutAmbientSounds))
+    ExecWait(EVS_Luigi_EnterPipe_Epilogue)
+    Exec(EVS_FadeOutAmbientSounds)
     Call(GotoMap, Ref("mac_00"), mac_00_ENTRY_7)
     Wait(100)
     Call(DisablePlayerInput, false)

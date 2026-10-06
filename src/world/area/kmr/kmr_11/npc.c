@@ -3,17 +3,17 @@
 
 #include "world/common/enemy/GoombaBros/guard.inc.c"
 
-EvtScript N(EVS_NpcIdle_GoombaBros_01) = {
+EvtScript EVS_NpcIdle_GoombaBros_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_GoombaBros_02) = {
+EvtScript EVS_NpcIdle_GoombaBros_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_GoombaKing) = {
+EvtScript EVS_NpcIdle_GoombaKing = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR11_GoombaBrosFledToCastle, true)
@@ -63,9 +63,9 @@ EvtScript N(EVS_NpcIdle_GoombaKing) = {
     End
 };
 
-EvtScript N(EVS_Scene_BossDefeated) = {
+EvtScript EVS_Scene_BossDefeated = {
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_CANT_SKIP_WIN_DELAY, true)
-    Call(N(SetupFog))
+    Call(SetupFog)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -73,7 +73,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(N(SetCameraVFov), 25)
+    Call(SetCameraVFov, 25)
     Call(SpeakToPlayer, NPC_GoombaKing, ANIM_GoombaKing_Walk, ANIM_GoombaKing_Idle, 0, MSG_CH0_00D1)
     Call(SetNpcSpeed, NPC_BlueGoombaBro, Float(6.0 / DT))
     Call(SetNpcSpeed, NPC_RedGoombaBro, Float(6.0 / DT))
@@ -116,7 +116,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(PlaySoundAtCollider, COLLIDER_tt, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(2.0))
     Set(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_KING)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), 0, Float(250.0), Float(15.0), Float(-7.5))
     Wait(10 * DT)
     Call(DisablePartnerAI, false)
@@ -135,11 +135,11 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_GoombaKing) = {
+EvtScript EVS_NpcDefeat_GoombaKing = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            ExecWait(N(EVS_Scene_BossDefeated))
+            ExecWait(EVS_Scene_BossDefeated)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetPlayerSpeed, Float(6.0))
@@ -150,7 +150,7 @@ EvtScript N(EVS_NpcDefeat_GoombaKing) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_GoombaBros_01) = {
+EvtScript EVS_NpcDefeat_GoombaBros_01 = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -161,7 +161,7 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_GoombaBros_02) = {
+EvtScript EVS_NpcDefeat_GoombaBros_02 = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -172,7 +172,7 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_Kammy) = {
+EvtScript EVS_NpcCreate_Kammy = {
     IfGe(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -180,7 +180,7 @@ EvtScript N(EVS_NpcCreate_Kammy) = {
     End
 };
 
-API_CALLABLE(N(GetKammyBroomEmitterPos)) {
+API_CALLABLE(GetKammyBroomEmitterPos) {
     Npc* npc = get_npc_unsafe(NPC_Kammy);
 
     script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
@@ -189,7 +189,7 @@ API_CALLABLE(N(GetKammyBroomEmitterPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAux_Kammy) = {
+EvtScript EVS_NpcAux_Kammy = {
     Label(1)
         // wait to be activated
         Call(GetSelfVar, 0, LVar0)
@@ -199,7 +199,7 @@ EvtScript N(EVS_NpcAux_Kammy) = {
         EndIf
     Call(GetNpcPos, NPC_Kammy, LVar6, LVar7, LVar8)
     Label(0)
-        Call(N(GetKammyBroomEmitterPos))
+        Call(GetKammyBroomEmitterPos)
         Call(GetNpcPos, NPC_Kammy, LVar9, LVarA, LVarB)
         EVT_VEC3I_VSET(LVar3, LVar9)
         EVT_VEC3I_VSUB(LVar3, LVar6)
@@ -218,15 +218,15 @@ EvtScript N(EVS_NpcAux_Kammy) = {
     End
 };
 
-s32 N(KammyFloatingOffsets)[] = {
+s32 KammyFloatingOffsets[] = {
      1,  2,  3,  2,  1,
     -1, -2, -3, -2, -1,
 };
 
-EvtScript N(EVS_NpcAI_Kammy) = {
+EvtScript EVS_NpcAI_Kammy = {
     Label(0)
-        UseBuf(Ref(N(KammyFloatingOffsets)))
-        Loop(ARRAY_COUNT(N(KammyFloatingOffsets)))
+        UseBuf(Ref(KammyFloatingOffsets))
+        Loop(ARRAY_COUNT(KammyFloatingOffsets))
             BufRead1(LVar1)
             Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
             Add(LVar3, LVar1)
@@ -238,9 +238,9 @@ EvtScript N(EVS_NpcAI_Kammy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GoombaBros_01) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaBros_01)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaBros_01)))
+EvtScript EVS_NpcInit_GoombaBros_01 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaBros_01))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaBros_01))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR11_GoombaBrosFledToCastle, true)
@@ -254,9 +254,9 @@ EvtScript N(EVS_NpcInit_GoombaBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GoombaBros_02) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaBros_02)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaBros_02)))
+EvtScript EVS_NpcInit_GoombaBros_02 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaBros_02))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaBros_02))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR11_GoombaBrosFledToCastle, true)
@@ -270,9 +270,9 @@ EvtScript N(EVS_NpcInit_GoombaBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GoombaKing) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaKing)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaKing)))
+EvtScript EVS_NpcInit_GoombaKing = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaKing))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaKing))
     Call(SetNpcCollisionSize, NPC_SELF, 70, 50)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
@@ -288,17 +288,17 @@ EvtScript N(EVS_NpcInit_GoombaKing) = {
     End
 };
 
-NpcSettings N(NpcSettings_Kammy) = {
+NpcSettings NpcSettings_Kammy = {
     .defaultAnim = ANIM_WorldKammy_FlyIdle,
     .height = 24,
     .radius = 24,
-    .doAux = &N(EVS_NpcAux_Kammy),
-    .doAI = &N(EVS_NpcAI_Kammy),
-    .onCreate = &N(EVS_NpcCreate_Kammy),
+    .doAux = &EVS_NpcAux_Kammy,
+    .doAI = &EVS_NpcAI_Kammy,
+    .onCreate = &EVS_NpcCreate_Kammy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
 };
 
-NpcData N(NpcData_Enemies)[] = {
+NpcData NpcData_Enemies[] = {
     {
         .id = NPC_BlueGoombaBro,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -315,8 +315,8 @@ NpcData N(NpcData_Enemies)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_GoombaBros_01),
-        .settings = &N(NpcSettings_GoombaBros_Guard),
+        .init = &EVS_NpcInit_GoombaBros_01,
+        .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = GOOMBA_BROS_BLUE_ANIMS,
@@ -337,8 +337,8 @@ NpcData N(NpcData_Enemies)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_GoombaBros_02),
-        .settings = &N(NpcSettings_GoombaBros_Guard),
+        .init = &EVS_NpcInit_GoombaBros_02,
+        .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = GOOMBA_BROS_RED_ANIMS,
@@ -359,8 +359,8 @@ NpcData N(NpcData_Enemies)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_GoombaKing),
-        .settings = &N(NpcSettings_GoombaBros_Guard),
+        .init = &EVS_NpcInit_GoombaKing,
+        .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = {
@@ -384,21 +384,21 @@ NpcData N(NpcData_Enemies)[] = {
     },
 };
 
-NpcData N(NpcData_Kammy) = {
+NpcData NpcData_Kammy = {
     .id = NPC_Kammy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 100,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_Kammy),
+    .settings = &NpcSettings_Kammy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .animations = {
         .idle = ANIM_WorldKammy_FlyIdle,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Enemies), BTL_KMR_2_FORMATION_01),
-    NPC_GROUP(N(NpcData_Kammy)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Enemies, BTL_KMR_2_FORMATION_01),
+    NPC_GROUP(NpcData_Kammy),
     {}
 };

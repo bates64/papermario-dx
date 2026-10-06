@@ -71,7 +71,11 @@ def _section(out: List[str], name: str, kind: str,
     )
 
 
-def _class_vram(segments: List[Segment], follows: Dict[str, List[str]]):
+def _class_vram(
+    segments: List[Segment],
+    follows: Dict[str, List[str]],
+    class_vrams: Dict[str, int],
+):
     """Where to define each vram class's CLASS_VRAM symbol.
 
     A class that follows others starts above all of their segments, which the
@@ -87,18 +91,27 @@ def _class_vram(segments: List[Segment], follows: Dict[str, List[str]]):
         inputs = [s for cls in followed for s in members.get(cls, [])]
         if not inputs:
             continue
-        lines = [f"    {name}_CLASS_VRAM = {inputs[0]}_VRAM_END;"]
+        floor = class_vrams.get(name)
+        if floor is None:
+            lines = [f"    {name}_CLASS_VRAM = {inputs[0]}_VRAM_END;"]
+            inputs = inputs[1:]
+        else:
+            lines = [f"    {name}_CLASS_VRAM = 0x{floor:X};"]
         lines += [
             f"    {name}_CLASS_VRAM = MAX({name}_CLASS_VRAM, {s}_VRAM_END);"
-            for s in inputs[1:]
+            for s in inputs
         ]
         emit.setdefault(max(inputs, key=position.get), []).extend(lines + [""])
     return emit
 
 
-def write_script(path: Path, segments: List[Segment],
-                 follows: Optional[Dict[str, List[str]]] = None) -> None:
-    class_vram = _class_vram(segments, follows or {})
+def write_script(
+    path: Path,
+    segments: List[Segment],
+    follows: Optional[Dict[str, List[str]]] = None,
+    class_vrams: Optional[Dict[str, int]] = None,
+) -> None:
+    class_vram = _class_vram(segments, follows or {}, class_vrams or {})
     out = ["SECTIONS", "{", "    __romPos = 0;", ""]
     for seg in segments:
         name = seg.name

@@ -17,9 +17,7 @@ enum {
     NPC_Clubba          = 2,
 };
 
-#define NAMESPACE kkj_12
+extern EvtScript EVS_Main;
+extern EvtScript EVS_ExitDoors_kkj_13_0;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_ExitDoors_kkj_13_0);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

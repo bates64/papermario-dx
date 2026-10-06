@@ -27,7 +27,6 @@ void stars_spread_main(
     bp.init = stars_spread_init;
     bp.update = stars_spread_update;
     bp.renderScene = stars_spread_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STARS_SPREAD;
 

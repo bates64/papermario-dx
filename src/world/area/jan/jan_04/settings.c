@@ -1,6 +1,6 @@
 #include "jan_04.h"
 
-s32 N(get_tattle)(void) {
+s32 get_tattle(void) {
     if (evt_get_variable(nullptr, GB_StoryProgress) < STORY_CH5_SUSHIE_JOINED_PARTY) {
         return MSG_MapTattle_jan_04_before;
     } else {
@@ -8,7 +8,7 @@ s32 N(get_tattle)(void) {
     }
 }
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [jan_04_ENTRY_0]    { -483.0,    0.0,    0.0,   90.0 },
     [jan_04_ENTRY_1]    {    0.0, -100.0,    0.0,   90.0 },
     [jan_04_ENTRY_2]    {    0.0, -100.0,    0.0,   90.0 },
@@ -16,10 +16,10 @@ EntryList N(Entrances) = {
     [jan_04_ENTRY_4]    { -110.0,  -15.0,  204.0,  270.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "yos_bg",
-    .tattle = { .get = &N(get_tattle) },
+    .tattle = { .get = &get_tattle },
 };

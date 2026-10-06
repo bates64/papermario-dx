@@ -1,6 +1,6 @@
 #include "hos_20.h"
 
-EvtScript N(EVS_TexPan_MotionLines) = {
+EvtScript EVS_TexPan_MotionLines = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_20_ENTRY_2)
@@ -45,18 +45,18 @@ EvtScript N(EVS_TexPan_MotionLines) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Exec(N(EVS_TexPan_MotionLines))
+    Exec(EVS_TexPan_MotionLines)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_20_ENTRY_0)
-            Exec(N(EVS_Starship_Flight1))
+            Exec(EVS_Starship_Flight1)
         CaseEq(hos_20_ENTRY_1)
-            Exec(N(EVS_Starship_Flight2))
+            Exec(EVS_Starship_Flight2)
         CaseEq(hos_20_ENTRY_2)
-            Exec(N(EVS_Starship_Return))
+            Exec(EVS_Starship_Return)
     EndSwitch
     Return
     End

@@ -25,7 +25,6 @@ EffectInstance* fire_breath_main(
     EffectInstance* effect;
     s32 numParts = 1;
 
-    bp.unk_00 = 0;
     bp.init = fire_breath_init;
     bp.update = fire_breath_update;
     bp.renderScene = fire_breath_render;

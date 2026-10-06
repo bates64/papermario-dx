@@ -5,7 +5,7 @@
 
 extern IconHudScriptPair gItemHudScripts[];
 
-s32 N(ChestItems)[] = {
+s32 ChestItems[] = {
     ITEM_POWER_RUSH,
     ITEM_SHOOTING_STAR,
     ITEM_DEEP_FOCUS_A,
@@ -14,7 +14,7 @@ s32 N(ChestItems)[] = {
 };
 
 // this file is mostly the same as in hos_06
-API_CALLABLE(N(ChestItemPrompt)) {
+API_CALLABLE(ChestItemPrompt) {
     PopupMenu *menu;
     s32 menuIdx;
     s32 selectIdx;
@@ -40,12 +40,12 @@ API_CALLABLE(N(ChestItemPrompt)) {
         }
 
         menuIdx = 0;
-        for (i = 0; i < ARRAY_COUNT(N(ChestItems)); i++) {
+        for (i = 0; i < ARRAY_COUNT(ChestItems); i++) {
             // meaning of 'can use' and 'used before' depends on type of chest interaction
             canUseItem = evt_get_variable(nullptr, script->varTable[1] + i);
             itemUsedBefore = evt_get_variable(nullptr, script->varTable[2] + i);
             if (canUseItem && !itemUsedBefore) {
-                ItemData* item = &gItemTable[N(ChestItems)[i]];
+                ItemData* item = &gItemTable[ChestItems[i]];
                 IconHudScriptPair* itemHudScripts = &gItemHudScripts[item->hudElemID];
                 menu->ptrIcon[menuIdx] = itemHudScripts->enabled;
                 menu->userIndex[menuIdx] = i;
@@ -87,7 +87,7 @@ API_CALLABLE(N(ChestItemPrompt)) {
         script->varTable[0] = -1;
     } else {
         selectIdx = menu->userIndex[script->functionTemp[1] - 1];
-        script->varTable[0] = N(ChestItems)[selectIdx];
+        script->varTable[0] = ChestItems[selectIdx];
         if (script->varTable[10] == 0) {
             evt_set_variable(nullptr, script->varTable[2] + selectIdx, 1);
         }
@@ -98,12 +98,12 @@ API_CALLABLE(N(ChestItemPrompt)) {
 }
 
 // assumes itemID on LVar0, sets GF_KKJ_Retrieved_* based on item list position
-API_CALLABLE(N(SetItemRetrieved)) {
+API_CALLABLE(SetItemRetrieved) {
     s32 found = false;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(ChestItems)); i++) {
-        s32 listItemID = N(ChestItems)[i];
+    for (i = 0; i < ARRAY_COUNT(ChestItems); i++) {
+        s32 listItemID = ChestItems[i];
 
         if (script->varTable[0] == listItemID) {
             found = true;
@@ -118,12 +118,12 @@ API_CALLABLE(N(SetItemRetrieved)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetItemEmptyCount)) {
+API_CALLABLE(GetItemEmptyCount) {
     script->varTable[1] = get_consumables_empty();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_OpenChest) = {
+EvtScript EVS_OpenChest = {
     Call(PlaySoundAtCollider, COLLIDER_o89, SOUND_OPEN_MAGIC_CHEST, 0)
     Call(MakeLerp, 0, 80, 20, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -138,7 +138,7 @@ EvtScript N(EVS_OpenChest) = {
     End
 };
 
-EvtScript N(EVS_CloseChest) = {
+EvtScript EVS_CloseChest = {
     Call(MakeLerp, 80, 0, 20, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -153,7 +153,7 @@ EvtScript N(EVS_CloseChest) = {
     End
 };
 
-EvtScript N(EVS_FindMagicChest) = {
+EvtScript EVS_FindMagicChest = {
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_018E)
     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
     Wait(10)
@@ -170,9 +170,9 @@ EvtScript N(EVS_FindMagicChest) = {
     End
 };
 
-EvtScript N(EVS_UseMagicChest_Peach) = {
+EvtScript EVS_UseMagicChest_Peach = {
     Set(LVar0, 0)
-    Call(N(ChestItemPrompt))
+    Call(ChestItemPrompt)
     Switch(LVar0)
         CaseEq(-1)
         CaseEq(0)
@@ -190,21 +190,21 @@ EvtScript N(EVS_UseMagicChest_Peach) = {
         CaseDefault
             Wait(10)
             Set(LVar9, LVar0)
-            ExecWait(N(EVS_OpenChest))
+            ExecWait(EVS_OpenChest)
             Call(GetItemName, LVar9, LVar9)
             Call(SetMessageText, LVar9, 0)
             Call(ShowMessageAtScreenPos, MSG_Peach_0198, 160, 40)
             Wait(10)
-            ExecWait(N(EVS_CloseChest))
+            ExecWait(EVS_CloseChest)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMagicChest_Mario) = {
-    ExecWait(N(EVS_OpenChest))
+EvtScript EVS_UseMagicChest_Mario = {
+    ExecWait(EVS_OpenChest)
     Set(LVar0, 1)
-    Call(N(ChestItemPrompt))
+    Call(ChestItemPrompt)
     Switch(LVar0)
         CaseEq(-1)
         CaseEq(ITEM_NONE)
@@ -217,35 +217,35 @@ EvtScript N(EVS_UseMagicChest_Mario) = {
             Call(ShowGotItem, LVar0, false, 0)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Call(AddItem, LVar0, LVar1)
-            Call(N(SetItemRetrieved))
+            Call(SetItemRetrieved)
         EndCaseGroup
         CaseDefault
-            Call(N(GetItemEmptyCount))
+            Call(GetItemEmptyCount)
             IfLe(LVar1, 0)
                 Call(ShowMessageAtScreenPos, MSG_Menus_00D5, 160, 40)
             Else
                 Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_NO_ANIMS)
                 Call(AddItem, LVar0, LVar1)
-                Call(N(SetItemRetrieved))
+                Call(SetItemRetrieved)
             EndIf
     EndSwitch
-    ExecWait(N(EVS_CloseChest))
+    ExecWait(EVS_CloseChest)
     Return
     End
 };
 
-EvtScript N(EVS_Interact_MagicChest) = {
+EvtScript EVS_Interact_MagicChest = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, true)
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
         IfEq(GF_KKJ17_FoundMagicChest, false)
-            ExecWait(N(EVS_FindMagicChest))
+            ExecWait(EVS_FindMagicChest)
             Set(GF_KKJ17_FoundMagicChest, true)
         Else
-            ExecWait(N(EVS_UseMagicChest_Peach))
+            ExecWait(EVS_UseMagicChest_Peach)
         EndIf
     Else
-        ExecWait(N(EVS_UseMagicChest_Mario))
+        ExecWait(EVS_UseMagicChest_Mario)
     EndIf
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -253,8 +253,8 @@ EvtScript N(EVS_Interact_MagicChest) = {
     End
 };
 
-EvtScript N(EVS_SetupMagicChest) = {
-    BindTrigger(Ref(N(EVS_Interact_MagicChest)), TRIGGER_WALL_PRESS_A, COLLIDER_o89, 1, 0)
+EvtScript EVS_SetupMagicChest = {
+    BindTrigger(Ref(EVS_Interact_MagicChest), TRIGGER_WALL_PRESS_A, COLLIDER_o89, 1, 0)
     Return
     End
 };

@@ -1,18 +1,18 @@
 #include "trd_07.h"
 
-extern EvtScript N(EVS_RestoreMagicDoors);
+extern EvtScript EVS_RestoreMagicDoors;
 
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
 #include "world/common/enemy/Paratroopa/wander.inc.c"
 
-EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
+EvtScript EVS_NpcDefeat_KoopaTroopa = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(GetRemainingEnemyCount, LVar0)
             IfEq(LVar0, 1)
                 Set(GF_TRD07_Defeated_DungeonAmbush, true)
-                Exec(N(EVS_RestoreMagicDoors))
+                Exec(EVS_RestoreMagicDoors)
             EndIf
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -25,9 +25,9 @@ EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa) = {
+EvtScript EVS_NpcInit_KoopaTroopa = {
     Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KoopaTroopa)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KoopaTroopa))
     IfEq(GF_TRD07_Defeated_DungeonAmbush, true)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -35,7 +35,7 @@ EvtScript N(EVS_NpcInit_KoopaTroopa) = {
     End
 };
 
-NpcData N(NpcData_KoopaTroopa) = {
+NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
     .pos = { -75.0f, 0.0f, -30.0f },
     .yaw = 90,
@@ -51,14 +51,14 @@ NpcData N(NpcData_KoopaTroopa) = {
             .detectSize = { 1000 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa),
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa,
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = KOOPA_TROOPA_TRD_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
 };
 
-NpcData N(NpcData_ParaTroopa_01) = {
+NpcData NpcData_ParaTroopa_01 = {
     .id = NPC_ParaTroopa_01,
     .pos = { 0.0f, 50.0f, 30.0f },
     .yaw = 270,
@@ -74,14 +74,14 @@ NpcData N(NpcData_ParaTroopa_01) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa),
-    .settings = &N(NpcSettings_ParaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa,
+    .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
 };
 
-NpcData N(NpcData_ParaTroopa_02) = {
+NpcData NpcData_ParaTroopa_02 = {
     .id = NPC_ParaTroopa_02,
     .pos = { 75.0f, 50.0f, -30.0f },
     .yaw = 270,
@@ -97,16 +97,16 @@ NpcData N(NpcData_ParaTroopa_02) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa),
-    .settings = &N(NpcSettings_ParaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa,
+    .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa), BTL_TRD_1_FORMATION_01, BTL_TRD_1_STAGE_03),
-    NPC_GROUP(N(NpcData_ParaTroopa_01), BTL_TRD_1_FORMATION_08, BTL_TRD_1_STAGE_03),
-    NPC_GROUP(N(NpcData_ParaTroopa_02), BTL_TRD_1_FORMATION_0A, BTL_TRD_1_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa, BTL_TRD_1_FORMATION_01, BTL_TRD_1_STAGE_03),
+    NPC_GROUP(NpcData_ParaTroopa_01, BTL_TRD_1_FORMATION_08, BTL_TRD_1_STAGE_03),
+    NPC_GROUP(NpcData_ParaTroopa_02, BTL_TRD_1_FORMATION_0A, BTL_TRD_1_STAGE_03),
     {}
 };

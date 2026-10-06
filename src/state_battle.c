@@ -7,6 +7,7 @@
 #include "model.h"
 #include "game_modes.h"
 #include "dx/overlay.h"
+#include "world/actions.h"
 
 extern u16 gFrameBuf0[];
 extern u16 gFrameBuf1[];
@@ -89,6 +90,7 @@ void state_step_battle(void) {
         clear_npcs();
         clear_entity_data(true);
         clear_trigger_data();
+        unload_player_action();
         DMA_COPY_SEGMENT(battle);
         initialize_battle();
         btl_save_world_cameras();
@@ -159,6 +161,8 @@ void state_step_end_battle(void) {
             init_trigger_list();
 
             ovl_unload_type(OVL_ACTOR);
+            unload_battle_stage();
+            unload_battle_area();
             remove_all_effects();
 
             if (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED) {
@@ -176,6 +180,8 @@ void state_step_end_battle(void) {
                 general_heap_free(mapShape);
                 initialize_collision();
                 restore_map_collision_data();
+
+                ovl_restore_type(OVL_MAP);
 
                 if (mapSettings->bgName != nullptr) {
                     load_map_bg(wMapBgName);

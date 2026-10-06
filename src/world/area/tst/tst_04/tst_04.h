@@ -16,5 +16,3 @@
 enum {
     NPC_Goompa              = 0,
 };
-
-#define NAMESPACE tst_04

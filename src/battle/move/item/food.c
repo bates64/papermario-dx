@@ -1,16 +1,13 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "entity.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_food
-
 extern EntityModelScript EMS_StarIcon;
 
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_73330C)) {
+API_CALLABLE(func_802A123C_73330C) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -24,7 +21,7 @@ API_CALLABLE(N(func_802A123C_73330C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A12EC_7333BC)) {
+API_CALLABLE(func_802A12EC_7333BC) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
     Bytecode* args = script->ptrReadPos;
@@ -48,34 +45,7 @@ API_CALLABLE(N(func_802A12EC_7333BC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnHeartRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(0, a, b, c, d);
-
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SpawnFlowerRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(1, a, b, c, d);
-
-    return ApiStatus_DONE2;
-}
-
-#include "common/AddHP.inc.c"
-#include "common/AddFP.inc.c"
-
-API_CALLABLE(N(GetFoodParameters)) {
+API_CALLABLE(GetFoodParameters) {
     Bytecode* args = script->ptrReadPos;
     s32 itemIdx = evt_get_variable(script, *args++);
     ItemData* item = &gItemTable[itemIdx];
@@ -101,7 +71,7 @@ API_CALLABLE(N(GetFoodParameters)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseOnPartner) = {
+EvtScript EVS_UseOnPartner = {
     Call(SetActorYaw, ACTOR_PLAYER, 30)
     Wait(1)
     Call(SetActorYaw, ACTOR_PLAYER, 60)
@@ -115,7 +85,7 @@ EvtScript N(EVS_UseOnPartner) = {
     Call(SetActorYaw, ACTOR_PLAYER, 180)
     Wait(10)
     Set(LVar1, LVarF)
-    ExecWait(N(UseItem))
+    ExecWait(UseItem)
     Set(LVarE, LVarA)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Thread
@@ -136,7 +106,7 @@ EvtScript N(EVS_UseOnPartner) = {
         Set(LVarE, LVar0)
         Loop(25)
             Call(GetVirtualEntityPosition, LVarA, LVar0, LVar1, LVar2)
-            Call(N(func_802A123C_73330C), LVar0, LVar1, LVar2)
+            Call(func_802A123C_73330C, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop
         Call(RemoveItemEntity, LVarE)
@@ -157,7 +127,7 @@ EvtScript N(EVS_UseOnPartner) = {
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LVarB)
     IfGt(LVarB, 0)
-        Call(N(func_802A12EC_7333BC), LVarB)
+        Call(func_802A12EC_7333BC, LVarB)
     EndIf
     Wait(30)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -179,7 +149,7 @@ EvtScript N(EVS_UseOnPartner) = {
     End
 };
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     #define LV_ItemID LVarA
     #define LV_HPAmt LVarB
     #define LV_FPAmt LVarC
@@ -190,19 +160,19 @@ EvtScript N(EVS_UseItem) = {
     Set(LV_NoRefund, LVar1)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Set(LV_ItemID, LVar1)
-    Call(N(GetFoodParameters), LV_ItemID)
+    Call(GetFoodParameters, LV_ItemID)
     Call(InitTargetIterator)
     Call(GetOwnerTarget, LVar0, LVar1)
     IfEq(LVar0, ACTOR_PARTNER)
-        ExecWait(N(EVS_UseOnPartner))
+        ExecWait(EVS_UseOnPartner)
         Return
     EndIf
     Set(LVar1, LV_NoRefund)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     IfEq(LV_IsDrink, false)
-        ExecWait(N(EatItem))
+        ExecWait(EatItem)
     Else
-        ExecWait(N(DrinkItem))
+        ExecWait(DrinkItem)
     EndIf
     IfEq(LV_IsHarmful, true)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_StickOutTongue)
@@ -211,28 +181,28 @@ EvtScript N(EVS_UseItem) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 0)
         Add(LVar1, 35)
-        Call(N(SpawnHeartRecoveryFX), LVar0, LVar1, LVar2, LV_HPAmt)
+        Call(SpawnRecoverHeartFX, LVar0, LVar1, LVar2, LV_HPAmt)
     EndIf
     IfLt(LV_HPAmt, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 0)
         Add(LVar1, 35)
-        Call(N(SpawnHeartRecoveryFX), LVar0, LVar1, LVar2, LV_HPAmt)
+        Call(SpawnRecoverHeartFX, LVar0, LVar1, LVar2, LV_HPAmt)
     EndIf
     IfGt(LV_FPAmt, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 20)
         Add(LVar1, 25)
-        Call(N(SpawnFlowerRecoveryFX), LVar0, LVar1, LVar2, LV_FPAmt)
+        Call(SpawnRecoverFlowerFX, LVar0, LVar1, LVar2, LV_FPAmt)
     EndIf
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LV_HPAmt)
     IfNe(LV_HPAmt, 0)
-        Call(N(AddHP), LV_HPAmt)
+        Call(AddHP, LV_HPAmt)
     EndIf
     IfNe(LV_FPAmt, 0)
-        Call(N(AddFP), LV_FPAmt)
+        Call(AddFP, LV_FPAmt)
     EndIf
     IfEq(LV_IsHarmful, false)
         Wait(10)
@@ -245,7 +215,11 @@ EvtScript N(EVS_UseItem) = {
     Call(ShowRecoveryShimmer, LVar0, LVar1, LVar2, LV_HPAmt)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Wait(20)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

@@ -20,22 +20,22 @@ enum {
     BAKE_STEP_DONE                  = 6,
 };
 
-BSS s32 N(MixingGameInputs);
-BSS s32 N(MixingAnimState);
-BSS s32 N(MixingGameUnused);
-BSS s32 N(MixingGameTimeLeft);
-BSS s32 N(MixingGameMashIntervals)[6];
-BSS s32 N(MixingGameMashSegments);
-BSS s32 N(MixingGameUIRenderer);
-BSS u32 N(MixingGameState);
-BSS s32 N(MixingGameUIBaseX);
-BSS s32 N(MixingGameUIBaseY);
-BSS s32 N(MixingGameHudElems)[4];
-BSS s32 N(MixingGameInputBuffer)[10];
-BSS s32 N(MixingGameInputBufferPos);
+BSS s32 MixingGameInputs;
+BSS s32 MixingAnimState;
+BSS s32 MixingGameUnused;
+BSS s32 MixingGameTimeLeft;
+BSS s32 MixingGameMashIntervals[6];
+BSS s32 MixingGameMashSegments;
+BSS s32 MixingGameUIRenderer;
+BSS u32 MixingGameState;
+BSS s32 MixingGameUIBaseX;
+BSS s32 MixingGameUIBaseY;
+BSS s32 MixingGameHudElems[4];
+BSS s32 MixingGameInputBuffer[10];
+BSS s32 MixingGameInputBufferPos;
 
-void N(worker_draw_mixing_game_ui)(void) {
-    hud_element_draw_clipped(N(MixingGameHudElems)[0]);
+void worker_draw_mixing_game_ui(void) {
+    hud_element_draw_clipped(MixingGameHudElems[0]);
 }
 
 enum MixingGameStates {
@@ -53,129 +53,129 @@ enum MixingAnimStates {
 };
 
 // basically the typical mash meter with the gauge removed
-API_CALLABLE(N(RunMixingMinigame)) {
+API_CALLABLE(RunMixingMinigame) {
     Bytecode* args = script->ptrReadPos;
     HudElemID hid;
     s32 maxMashAmount;
     s32 i;
 
     if (isInitialCall) {
-        N(MixingGameState) = MIXING_STATE_INIT;
+        MixingGameState = MIXING_STATE_INIT;
     }
 
-    switch (N(MixingGameState)) {
+    switch (MixingGameState) {
         case MIXING_STATE_INIT:
-            N(MixingGameTimeLeft) = evt_get_variable(script, *args++);
-            N(MixingGameUIRenderer) = create_worker_frontUI(nullptr, N(worker_draw_mixing_game_ui));
-            N(MixingGameInputs) = 0;
-            N(MixingGameUnused) = 0;
-            for (i = 0; i < ARRAY_COUNT(N(MixingGameInputBuffer)); i++) {
-                N(MixingGameInputBuffer)[i] = 0;
+            MixingGameTimeLeft = evt_get_variable(script, *args++);
+            MixingGameUIRenderer = create_worker_frontUI(nullptr, worker_draw_mixing_game_ui);
+            MixingGameInputs = 0;
+            MixingGameUnused = 0;
+            for (i = 0; i < ARRAY_COUNT(MixingGameInputBuffer); i++) {
+                MixingGameInputBuffer[i] = 0;
             }
-            N(MixingGameInputBufferPos) = 0;
-            N(MixingGameMashIntervals)[0] = 0;
-            N(MixingGameMashIntervals)[1] = 12;
-            N(MixingGameMashIntervals)[2] = 24;
-            N(MixingGameMashIntervals)[3] = 36;
-            N(MixingGameMashIntervals)[4] = 48;
-            N(MixingGameMashIntervals)[5] = 60;
-            N(MixingGameMashSegments) = 5;
+            MixingGameInputBufferPos = 0;
+            MixingGameMashIntervals[0] = 0;
+            MixingGameMashIntervals[1] = 12;
+            MixingGameMashIntervals[2] = 24;
+            MixingGameMashIntervals[3] = 36;
+            MixingGameMashIntervals[4] = 48;
+            MixingGameMashIntervals[5] = 60;
+            MixingGameMashSegments = 5;
 
-            N(MixingGameUIBaseX) = -48;
-            N(MixingGameUIBaseY) = 64;
+            MixingGameUIBaseX = -48;
+            MixingGameUIBaseY = 64;
 
             hid = hud_element_create(HES_AButton);
-            N(MixingGameHudElems)[0] = hid;
-            hud_element_set_render_pos(hid, N(MixingGameUIBaseX), N(MixingGameUIBaseY));
+            MixingGameHudElems[0] = hid;
+            hud_element_set_render_pos(hid, MixingGameUIBaseX, MixingGameUIBaseY);
             hud_element_set_render_depth(hid, 0);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
             hid = hud_element_create(HES_BlueMeter);
-            N(MixingGameHudElems)[1] = hid;
-            hud_element_set_render_pos(hid, N(MixingGameUIBaseX), N(MixingGameUIBaseY) + 28);
+            MixingGameHudElems[1] = hid;
+            hud_element_set_render_pos(hid, MixingGameUIBaseX, MixingGameUIBaseY + 28);
             hud_element_set_render_depth(hid, 0);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
-            hid = N(MixingGameHudElems)[0];
+            hid = MixingGameHudElems[0];
             hud_element_set_alpha(hid, 255);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
 
-            hid = N(MixingGameHudElems)[1];
+            hid = MixingGameHudElems[1];
             hud_element_set_alpha(hid, 255);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
 
-            N(MixingGameState) = MIXING_STATE_APPEAR;
+            MixingGameState = MIXING_STATE_APPEAR;
             script->functionTemp[0] = 10;
             break;
         case MIXING_STATE_APPEAR:
-            N(MixingGameUIBaseX) += 20;
-            if (N(MixingGameUIBaseX) > 50) {
-                N(MixingGameUIBaseX) = 50;
+            MixingGameUIBaseX += 20;
+            if (MixingGameUIBaseX > 50) {
+                MixingGameUIBaseX = 50;
             }
-            hud_element_set_render_pos(N(MixingGameHudElems)[0], N(MixingGameUIBaseX), N(MixingGameUIBaseY));
-            hud_element_set_render_pos(N(MixingGameHudElems)[1], N(MixingGameUIBaseX), N(MixingGameUIBaseY) + 28);
+            hud_element_set_render_pos(MixingGameHudElems[0], MixingGameUIBaseX, MixingGameUIBaseY);
+            hud_element_set_render_pos(MixingGameHudElems[1], MixingGameUIBaseX, MixingGameUIBaseY + 28);
             if (script->functionTemp[0] != 0) {
                 script->functionTemp[0]--;
             } else {
-                N(MixingGameState) = MIXING_STATE_BEGIN;
+                MixingGameState = MIXING_STATE_BEGIN;
             }
             break;
         case MIXING_STATE_BEGIN:
-            hud_element_set_script(N(MixingGameHudElems)[0], HES_MashAButton);
-            N(MixingGameInputs) = 0;
-            N(MixingAnimState) = MIXING_ANIM_INIT;
-            N(MixingGameState) = MIXING_STATE_MASHING;
+            hud_element_set_script(MixingGameHudElems[0], HES_MashAButton);
+            MixingGameInputs = 0;
+            MixingAnimState = MIXING_ANIM_INIT;
+            MixingGameState = MIXING_STATE_MASHING;
             // fallthrough
         case MIXING_STATE_MASHING:
-            maxMashAmount = N(MixingGameMashIntervals)[N(MixingGameMashSegments)];
+            maxMashAmount = MixingGameMashIntervals[MixingGameMashSegments];
             if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
-                N(MixingGameInputs)++;
+                MixingGameInputs++;
             }
-            if (N(MixingGameInputs) > maxMashAmount) {
-                N(MixingGameInputs) = maxMashAmount;
+            if (MixingGameInputs > maxMashAmount) {
+                MixingGameInputs = maxMashAmount;
             }
-            if (N(MixingAnimState) == MIXING_ANIM_IDLE) {
-                N(MixingAnimState) = MIXING_ANIM_NEXT;
+            if (MixingAnimState == MIXING_ANIM_IDLE) {
+                MixingAnimState = MIXING_ANIM_NEXT;
             }
-            for (i = 0; i < ARRAY_COUNT(N(MixingGameInputBuffer)); i++) {
-                if (N(MixingGameInputBuffer)[i] != 0) {
+            for (i = 0; i < ARRAY_COUNT(MixingGameInputBuffer); i++) {
+                if (MixingGameInputBuffer[i] != 0) {
                     break;
                 }
             }
-            if (i >= ARRAY_COUNT(N(MixingGameInputBuffer))) {
-                N(MixingAnimState) = MIXING_ANIM_IDLE;
-            } else if (N(MixingAnimState) != MIXING_ANIM_NEXT) {
-                N(MixingAnimState) = MIXING_ANIM_IDLE;
+            if (i >= ARRAY_COUNT(MixingGameInputBuffer)) {
+                MixingAnimState = MIXING_ANIM_IDLE;
+            } else if (MixingAnimState != MIXING_ANIM_NEXT) {
+                MixingAnimState = MIXING_ANIM_IDLE;
             }
-            N(MixingGameTimeLeft)--;
-            if (N(MixingGameTimeLeft) == 0) {
-                N(MixingGameTimeLeft) = 5;
-                N(MixingGameState) = MIXING_STATE_END;
+            MixingGameTimeLeft--;
+            if (MixingGameTimeLeft == 0) {
+                MixingGameTimeLeft = 5;
+                MixingGameState = MIXING_STATE_END;
             }
             break;
         case MIXING_STATE_END:
-            if (N(MixingGameTimeLeft) != 0) {
-                N(MixingGameTimeLeft)--;
+            if (MixingGameTimeLeft != 0) {
+                MixingGameTimeLeft--;
                 break;
             }
-            script->varTable[0] = N(MixingGameInputs);
-            hud_element_free(N(MixingGameHudElems)[0]);
-            hud_element_free(N(MixingGameHudElems)[1]);
-            free_worker(N(MixingGameUIRenderer));
+            script->varTable[0] = MixingGameInputs;
+            hud_element_free(MixingGameHudElems[0]);
+            hud_element_free(MixingGameHudElems[1]);
+            free_worker(MixingGameUIRenderer);
             return ApiStatus_DONE2;
     }
 
-    N(MixingGameInputBuffer)[N(MixingGameInputBufferPos)++] = gGameStatusPtr->pressedButtons[0] & BUTTON_A;
+    MixingGameInputBuffer[MixingGameInputBufferPos++] = gGameStatusPtr->pressedButtons[0] & BUTTON_A;
 
-    if (N(MixingGameInputBufferPos) >= ARRAY_COUNT(N(MixingGameInputBuffer))) {
-        N(MixingGameInputBufferPos) = 0;
+    if (MixingGameInputBufferPos >= ARRAY_COUNT(MixingGameInputBuffer)) {
+        MixingGameInputBufferPos = 0;
     }
 
-    evt_set_variable(script, AB_KKJ19_BakeStepProgress, N(MixingAnimState));
+    evt_set_variable(script, AB_KKJ19_BakeStepProgress, MixingAnimState);
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AwaitPlayerPressATimer)) {
+API_CALLABLE(AwaitPlayerPressATimer) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -189,7 +189,7 @@ API_CALLABLE(N(AwaitPlayerPressATimer)) {
     return ApiStatus_BLOCK;
 }
 
-s32 N(BakingIngredientsList)[] = {
+s32 BakingIngredientsList[] = {
     ITEM_BAKING_SUGAR,
     ITEM_BAKING_SALT,
     ITEM_BAKING_EGG,
@@ -202,7 +202,7 @@ s32 N(BakingIngredientsList)[] = {
     ITEM_BAKING_MILK,
 };
 
-API_CALLABLE(N(SetHeldBakingItem)) {
+API_CALLABLE(SetHeldBakingItem) {
     Bytecode* args = script->ptrReadPos;
 
     gPlayerStatus.peachItemHeld = evt_get_variable(script, *args++);
@@ -211,7 +211,7 @@ API_CALLABLE(N(SetHeldBakingItem)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FadeScreenToBlack)) {
+API_CALLABLE(FadeScreenToBlack) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -231,7 +231,7 @@ API_CALLABLE(N(FadeScreenToBlack)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FadeScreenFromBlack)) {
+API_CALLABLE(FadeScreenFromBlack) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -246,7 +246,7 @@ API_CALLABLE(N(FadeScreenFromBlack)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_SetCookwareOnTable) = {
+EvtScript EVS_SetCookwareOnTable = {
     Switch(AB_KKJ_CompletedBakeStep)
         CaseEq(CAKE_TYPE_NONE)
             Call(MakeItemEntity, ITEM_CAKE_BOWL, 287, 16, -40, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -283,7 +283,7 @@ EvtScript N(EVS_SetCookwareOnTable) = {
     End
 };
 
-EvtScript N(EVS_UpdatePeachMixingAnimations) = {
+EvtScript EVS_UpdatePeachMixingAnimations = {
     Call(SetPlayerAnimation, ANIM_Peach2_Mixing1)
     Set(LVar0, 0)
     Loop(0)
@@ -320,18 +320,18 @@ EvtScript N(EVS_UpdatePeachMixingAnimations) = {
     End
 };
 
-EvtScript N(EVS_ReturnHeldIngredient) = {
+EvtScript EVS_ReturnHeldIngredient = {
     IfNe(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
         Call(RemoveItem, AB_KKJ19_HeldIngredient)
         Set(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
-        Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+        Call(SetHeldBakingItem, PEACH_BAKING_NONE)
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_TakeIngredient) = {
+EvtScript EVS_TakeIngredient = {
     IfEq(AB_KKJ19_CurrentBakeStep, BAKE_STEP_DONE)
         Return
     EndIf
@@ -393,7 +393,7 @@ EvtScript N(EVS_TakeIngredient) = {
             CaseEq(COLLIDER_o110)
                 Set(LVar0, PEACH_BAKING_MILK)
         EndSwitch
-        Call(N(SetHeldBakingItem), LVar0)
+        Call(SetHeldBakingItem, LVar0)
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
         Set(AB_KKJ19_HeldIngredient, LVarB)
         Call(AddItem, LVarB, EVT_IGNORE_ARG)
@@ -410,7 +410,7 @@ EvtScript N(EVS_TakeIngredient) = {
             Call(ShowMessageAtScreenPos, MSG_Peach_00E9, 160, 40)
             Call(ShowChoice, MSG_Choice_002B)
             IfEq(LVar0, 0)
-                ExecWait(N(EVS_ReturnHeldIngredient))
+                ExecWait(EVS_ReturnHeldIngredient)
                 Call(GetPlayerFloorCollider, LVar0)
                 Switch(LVar0)
                     CaseEq(COLLIDER_o101)
@@ -434,7 +434,7 @@ EvtScript N(EVS_TakeIngredient) = {
                     CaseEq(COLLIDER_o110)
                         Set(LVar0, PEACH_BAKING_MILK)
                 EndSwitch
-                Call(N(SetHeldBakingItem), LVar0)
+                Call(SetHeldBakingItem, LVar0)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
                 Set(AB_KKJ19_HeldIngredient, LVarB)
                 Call(AddItem, LVarB, EVT_IGNORE_ARG)
@@ -449,7 +449,7 @@ EvtScript N(EVS_TakeIngredient) = {
             Call(ShowMessageAtScreenPos, MSG_Peach_00E6, 160, 40)
             Call(ShowChoice, MSG_Choice_002B)
             IfEq(LVar0, 0)
-                ExecWait(N(EVS_ReturnHeldIngredient))
+                ExecWait(EVS_ReturnHeldIngredient)
                 Call(SwitchMessage, MSG_Peach_00E8)
             Else
                 Call(CloseMessage)
@@ -463,7 +463,7 @@ EvtScript N(EVS_TakeIngredient) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_AddIngredient) = {
+EvtScript EVS_ItemPrompt_AddIngredient = {
     IfEq(AB_KKJ19_CurrentBakeStep, BAKE_STEP_DONE)
         Return
     EndIf
@@ -483,7 +483,7 @@ EvtScript N(EVS_ItemPrompt_AddIngredient) = {
     EndSwitch
     Call(RemoveKeyItemAt, LVar1)
     Set(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+    Call(SetHeldBakingItem, PEACH_BAKING_NONE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Switch(AB_KKJ19_CurrentBakeStep)
         CaseEq(BAKE_STEP_ADD_SUGAR_AND_EGGS)
@@ -553,23 +553,23 @@ EvtScript N(EVS_ItemPrompt_AddIngredient) = {
     End
 };
 
-EvtScript N(EVS_BindInteractTriggers) = {
-    BindPadlock(Ref(N(EVS_ItemPrompt_AddIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o118, Ref(N(BakingIngredientsList)), 0, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o101, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o102, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o103, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o105, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o106, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o107, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o108, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o114, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o109, 1, 0)
-    BindTrigger(Ref(N(EVS_TakeIngredient)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o110, 1, 0)
+EvtScript EVS_BindInteractTriggers = {
+    BindPadlock(Ref(EVS_ItemPrompt_AddIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o118, Ref(BakingIngredientsList), 0, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o101, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o102, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o103, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o105, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o106, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o107, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o108, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o114, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o109, 1, 0)
+    BindTrigger(Ref(EVS_TakeIngredient), TRIGGER_FLOOR_PRESS_A, COLLIDER_o110, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_OpenOverDoor) = {
+EvtScript EVS_OpenOverDoor = {
     Call(MakeLerp, 0, 90, 10, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -583,7 +583,7 @@ EvtScript N(EVS_OpenOverDoor) = {
     End
 };
 
-EvtScript N(EVS_CloseOverDoor) = {
+EvtScript EVS_CloseOverDoor = {
     Call(MakeLerp, 90, 0, 10, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -597,7 +597,7 @@ EvtScript N(EVS_CloseOverDoor) = {
     End
 };
 
-EvtScript N(EVS_PickupFinalCake) = {
+EvtScript EVS_PickupFinalCake = {
     IfEq(AF_KKJ19_AddedBerries, false)
         Set(LVar0, PEACH_BAKING_CAKE_WITH_ICING)
     Else
@@ -608,7 +608,7 @@ EvtScript N(EVS_PickupFinalCake) = {
         EndIf
     EndIf
     Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
-    Call(N(SetHeldBakingItem), LVar0)
+    Call(SetHeldBakingItem, LVar0)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Set(AF_KKJ_FinishedBakingCake, true)
     Unbind
@@ -616,13 +616,13 @@ EvtScript N(EVS_PickupFinalCake) = {
     End
 };
 
-EvtScript N(EVS_BindCakePickup) = {
-    BindTrigger(Ref(N(EVS_PickupFinalCake)), TRIGGER_WALL_PRESS_A, COLLIDER_o189, 1, 0)
+EvtScript EVS_BindCakePickup = {
+    BindTrigger(Ref(EVS_PickupFinalCake), TRIGGER_WALL_PRESS_A, COLLIDER_o189, 1, 0)
     Return
     End
 };
 
-Vec3f N(FetchBookPath)[] = {
+Vec3f FetchBookPath[] = {
     {  440.0,    25.0,  -30.0 },
     {  480.0,    60.0,  -60.0 },
     {  550.0,    50.0,  -90.0 },
@@ -630,7 +630,7 @@ Vec3f N(FetchBookPath)[] = {
     {  630.0,   100.0, -124.0 },
 };
 
-EvtScript N(EVS_FocusCam_Twink) = {
+EvtScript EVS_FocusCam_Twink = {
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -643,7 +643,7 @@ EvtScript N(EVS_FocusCam_Twink) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_PeachAndTwink) = {
+EvtScript EVS_FocusCam_PeachAndTwink = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_PARTNER, LVar3, LVar4, LVar5)
     // get average position of peach and twink
@@ -661,7 +661,7 @@ EvtScript N(EVS_FocusCam_PeachAndTwink) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_Oven) = {
+EvtScript EVS_FocusCam_Oven = {
     Call(UseSettingsFrom, CAM_DEFAULT, 130, 0, -100)
     Call(SetPanTarget, CAM_DEFAULT, 130, 0, -100)
     Call(SetCamDistance, CAM_DEFAULT, 250)
@@ -673,7 +673,7 @@ EvtScript N(EVS_FocusCam_Oven) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_Table) = {
+EvtScript EVS_FocusCam_Table = {
     Call(UseSettingsFrom, CAM_DEFAULT, 330, 0, -80)
     Call(SetPanTarget, CAM_DEFAULT, 330, 0, -80)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
@@ -684,7 +684,7 @@ EvtScript N(EVS_FocusCam_Table) = {
     End
 };
 
-EvtScript N(EVS_Twink_FlyToPlayer) = {
+EvtScript EVS_Twink_FlyToPlayer = {
     Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, true)
     Call(SetNpcVar, NPC_Twink, 1, 0)
     Call(GetNpcPos, NPC_PARTNER, LVar3, LVar1, LVar2)
@@ -701,7 +701,7 @@ EvtScript N(EVS_Twink_FlyToPlayer) = {
     End
 };
 
-EvtScript N(EVS_Twink_FlyToHighPos) = {
+EvtScript EVS_Twink_FlyToHighPos = {
     Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))
     Call(NpcFlyTo, NPC_PARTNER, 390, 50, -70, 0, -5, EASING_LINEAR)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 5)
@@ -709,7 +709,7 @@ EvtScript N(EVS_Twink_FlyToHighPos) = {
     End
 };
 
-EvtScript N(EVS_ExitDoorWithCake) = {
+EvtScript EVS_ExitDoorWithCake = {
     IfEq(AF_KKJ_FinishedBakingCake, false)
         Call(DisablePlayerInput, true)
         IfEq(AB_KKJ19_CurrentBakeStep, CAKE_TYPE_DONE)
@@ -757,7 +757,7 @@ enum {
     LBL_START_OVER                  = 99,
 };
 
-EvtScript N(EVS_EnterKitchen_FirstTime) = {
+EvtScript EVS_EnterKitchen_FirstTime = {
     Set(LVar0, kkj_19_ENTRY_0)
     Set(LVar2, MODEL_o95)
     Set(LVar3, DOOR_SWING_IN)
@@ -793,7 +793,7 @@ EvtScript N(EVS_EnterKitchen_FirstTime) = {
     EndThread
     Call(InterpNpcYaw, NPC_PARTNER, 90, 5)
     Wait(10 * DT)
-    Call(LoadPath, 60 * DT, Ref(N(FetchBookPath)), ARRAY_COUNT(N(FetchBookPath)), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, Ref(FetchBookPath), ARRAY_COUNT(FetchBookPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -840,7 +840,7 @@ EvtScript N(EVS_EnterKitchen_FirstTime) = {
     End
 };
 
-EvtScript N(EVS_EnterKitchen_TryAgain) = {
+EvtScript EVS_EnterKitchen_TryAgain = {
     Call(EnableModel, MODEL_o128, false)
     Call(SetPlayerAnimation, ANIM_Peach2_ArmsCrossedIdle)
     Call(SetPlayerPos, 400, 0, -30)
@@ -861,19 +861,19 @@ EvtScript N(EVS_EnterKitchen_TryAgain) = {
     End
 };
 
-EvtScript N(EVS_ManageBaking) = {
+EvtScript EVS_ManageBaking = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(EnableModel, MODEL_o46, false)
     Call(EnableModel, MODEL_o50, false)
-    ExecWait(N(EVS_SetCookwareOnTable))
-    BindTrigger(Ref(N(EVS_ExitDoorWithCake)), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
-    Exec(N(EVS_BindInteractTriggers))
+    ExecWait(EVS_SetCookwareOnTable)
+    BindTrigger(Ref(EVS_ExitDoorWithCake), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    Exec(EVS_BindInteractTriggers)
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_NONE)
-        ExecWait(N(EVS_EnterKitchen_FirstTime))
+        ExecWait(EVS_EnterKitchen_FirstTime)
     Else
-        ExecWait(N(EVS_EnterKitchen_TryAgain))
+        ExecWait(EVS_EnterKitchen_TryAgain)
     EndIf
 
     // start of cooking process
@@ -885,9 +885,9 @@ EvtScript N(EVS_ManageBaking) = {
     Call(SetNpcVar, NPC_Twink, 1, 0)
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_READY_TO_MIX)
         // resume mixing
-        ExecWait(N(EVS_FocusCam_Twink))
+        ExecWait(EVS_FocusCam_Twink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00C5)
-        ExecWait(N(EVS_FocusCam_Table))
+        ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00C6)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
@@ -895,14 +895,14 @@ EvtScript N(EVS_ManageBaking) = {
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
         Wait(20 * DT)
-        Exec(N(EVS_Twink_FlyToHighPos))
+        Exec(EVS_Twink_FlyToHighPos)
         Goto(LBL_MIX_RESUME)
     EndIf
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_MIXED)
         // resume adding flour & butter
-        ExecWait(N(EVS_FocusCam_Twink))
+        ExecWait(EVS_FocusCam_Twink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00C7)
-        ExecWait(N(EVS_FocusCam_Table))
+        ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00C8)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
@@ -914,9 +914,9 @@ EvtScript N(EVS_ManageBaking) = {
     EndIf
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_READY_TO_BAKE)
         // resume baking
-        ExecWait(N(EVS_FocusCam_Twink))
+        ExecWait(EVS_FocusCam_Twink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00C9)
-        ExecWait(N(EVS_FocusCam_Table))
+        ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00CA)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
@@ -924,7 +924,7 @@ EvtScript N(EVS_ManageBaking) = {
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
         Wait(20 * DT)
-        Exec(N(EVS_Twink_FlyToHighPos))
+        Exec(EVS_Twink_FlyToHighPos)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(func_802D1270, LVar0, -74, Float(2.0 / DT))
         Call(func_802D1270, 287, -74, Float(2.0 / DT))
@@ -932,9 +932,9 @@ EvtScript N(EVS_ManageBaking) = {
     EndIf
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_BAKED)
         // resume decorating
-        ExecWait(N(EVS_FocusCam_Twink))
+        ExecWait(EVS_FocusCam_Twink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00CB)
-        ExecWait(N(EVS_FocusCam_Table))
+        ExecWait(EVS_FocusCam_Table)
         Call(InterpPlayerYaw, 270, 5)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00CC)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
@@ -943,7 +943,7 @@ EvtScript N(EVS_ManageBaking) = {
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
         Wait(20)
         Thread
-            ExecWait(N(EVS_Twink_FlyToHighPos))
+            ExecWait(EVS_Twink_FlyToHighPos)
             Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, false)
             Call(SetNpcVar, NPC_Twink, 1, 1)
         EndThread
@@ -959,14 +959,14 @@ EvtScript N(EVS_ManageBaking) = {
     Set(AF_KKJ19_AddedSugar, false)
     Set(AF_KKJ19_AddedEgg, false)
     Set(AF_KKJ19_AddedNothingWrong, true)
-    ExecWait(N(EVS_FocusCam_Twink))
+    ExecWait(EVS_FocusCam_Twink)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00D1)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_CloseBook)
     Wait(10)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
     Set(LVarA, 1)
     Thread
-        ExecWait(N(EVS_Twink_FlyToHighPos))
+        ExecWait(EVS_Twink_FlyToHighPos)
         Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, false)
         Call(SetNpcVar, NPC_Twink, 1, 1)
     EndThread
@@ -987,8 +987,8 @@ EvtScript N(EVS_ManageBaking) = {
             EndIf
         EndLoop
         Call(DisablePlayerInput, true)
-        ExecWait(N(EVS_Twink_FlyToPlayer))
-        ExecWait(N(EVS_FocusCam_PeachAndTwink))
+        ExecWait(EVS_Twink_FlyToPlayer)
+        ExecWait(EVS_FocusCam_PeachAndTwink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00D2)
         Call(ShowChoice, MSG_Choice_0029)
         IfEq(LVar0, 0)
@@ -1008,7 +1008,7 @@ EvtScript N(EVS_ManageBaking) = {
     IfEq(LVar0, 2)
         Goto(LBL_START_OVER)
     EndIf
-    ExecWait(N(EVS_ReturnHeldIngredient))
+    ExecWait(EVS_ReturnHeldIngredient)
     Set(LVar0, 0)
     Add(LVar0, AF_KKJ19_AddedSugar)
     Add(LVar0, AF_KKJ19_AddedEgg)
@@ -1022,7 +1022,7 @@ EvtScript N(EVS_ManageBaking) = {
 
     // step 2: mix the ingredients
     Label(LBL_MIX_FIRST)
-    ExecWait(N(EVS_FocusCam_Twink))
+    ExecWait(EVS_FocusCam_Twink)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_OpenBook)
     Wait(10)
     Call(ContinueSpeech, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00D4)
@@ -1030,7 +1030,7 @@ EvtScript N(EVS_ManageBaking) = {
     Wait(10)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
     Call(ResetCam, CAM_DEFAULT, Float(2.0))
-    Exec(N(EVS_Twink_FlyToHighPos))
+    Exec(EVS_Twink_FlyToHighPos)
     // resume failed step from here
     Label(LBL_MIX_RESUME)
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_MIXING)
@@ -1044,14 +1044,14 @@ EvtScript N(EVS_ManageBaking) = {
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Peach_00D5)
     Call(RemoveItemEntity, AB_KKJ19_CookwareItemIdx)
-    ExecGetTID(N(EVS_UpdatePeachMixingAnimations), LVarA)
+    ExecGetTID(EVS_UpdatePeachMixingAnimations, LVarA)
     Wait(10 * DT)
     Call(SetMusic, 0, SONG_STIRRING_CAKE, 0, VOL_LEVEL_FULL)
     Call(PlaySound, SOUND_GENERAL_WHISTLE)
     Thread
         Call(AdjustCam, CAM_DEFAULT, Float(0.2 / DT), 0, 250, Float(17.0), Float(-7.0))
     EndThread
-    Call(N(RunMixingMinigame), MIXING_TIME_IN_FRAMES)
+    Call(RunMixingMinigame, MIXING_TIME_IN_FRAMES)
     Call(PlaySound, SOUND_GENERAL_WHISTLE)
     Call(FadeOutMusic, 0, 500)
     KillThread(LVarA)
@@ -1064,8 +1064,8 @@ EvtScript N(EVS_ManageBaking) = {
     EndThread
     Call(NpcFlyTo, NPC_PARTNER, 337, 35, -74, 30 * DT, -5, EASING_LINEAR)
     Wait(10 * DT)
-    Exec(N(EVS_SetupMusic))
-    ExecWait(N(EVS_FocusCam_PeachAndTwink))
+    Exec(EVS_SetupMusic)
+    ExecWait(EVS_FocusCam_PeachAndTwink)
     Thread
         Call(SetPlayerAnimation, ANIM_Peach2_ForwardIdle)
         Call(MakeItemEntity, ITEM_CAKE_MIXED, 287, 16, -40, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -1090,7 +1090,7 @@ EvtScript N(EVS_ManageBaking) = {
 
     // step 3: add flour and butter
     Label(LBL_ADD_FLOUR_BUTTER_FIRST)
-    ExecWait(N(EVS_FocusCam_Twink))
+    ExecWait(EVS_FocusCam_Twink)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_OpenBook)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 5, MSG_Peach_00D8)
@@ -1107,7 +1107,7 @@ EvtScript N(EVS_ManageBaking) = {
     Set(AF_KKJ19_AddedNothingWrong, true)
     Set(LVarA, 1)
     Thread
-        ExecWait(N(EVS_Twink_FlyToHighPos))
+        ExecWait(EVS_Twink_FlyToHighPos)
         Call(SetEnemyFlagBits, NPC_Twink, ENEMY_FLAG_CANT_INTERACT, false)
         Call(SetNpcVar, NPC_Twink, 1, 1)
     EndThread
@@ -1128,8 +1128,8 @@ EvtScript N(EVS_ManageBaking) = {
             EndIf
         EndLoop
         Call(DisablePlayerInput, true)
-        ExecWait(N(EVS_Twink_FlyToPlayer))
-        ExecWait(N(EVS_FocusCam_PeachAndTwink))
+        ExecWait(EVS_Twink_FlyToPlayer)
+        ExecWait(EVS_FocusCam_PeachAndTwink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00D9)
         Call(ShowChoice, MSG_Choice_0029)
         IfEq(LVar0, 0)
@@ -1151,7 +1151,7 @@ EvtScript N(EVS_ManageBaking) = {
         IfEq(LVar0, 2)
             Goto(LBL_START_OVER)
         EndIf
-    ExecWait(N(EVS_ReturnHeldIngredient))
+    ExecWait(EVS_ReturnHeldIngredient)
     Set(LVar0, 0)
     Add(LVar0, AF_KKJ19_AddedFlour)
     Add(LVar0, AF_KKJ19_AddedButter)
@@ -1165,10 +1165,10 @@ EvtScript N(EVS_ManageBaking) = {
 
     // step 4: baking
     Label(LBL_BAKE_FIRST)
-    ExecWait(N(EVS_FocusCam_Twink))
+    ExecWait(EVS_FocusCam_Twink)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Peach_00DB)
     Call(ResetCam, CAM_DEFAULT, Float(2.0 / DT))
-    Exec(N(EVS_Twink_FlyToHighPos))
+    Exec(EVS_Twink_FlyToHighPos)
     // resume failed step from here
     Label(LBL_BAKE_RESUME)
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_BAKING)
@@ -1182,7 +1182,7 @@ EvtScript N(EVS_ManageBaking) = {
     Call(RemoveItemEntity, AB_KKJ19_CookwareItemIdx)
     Call(SetPlayerAnimation, ANIM_Peach2_MixingFull)
     Wait(40 * DT)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_CAKE_MIXED)
+    Call(SetHeldBakingItem, PEACH_BAKING_CAKE_MIXED)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Wait(10 * DT)
     Thread
@@ -1202,12 +1202,12 @@ EvtScript N(EVS_ManageBaking) = {
     Call(MakeItemEntity, ITEM_CAKE_BATTER, 230, 16, 0, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(AB_KKJ19_CakeItemIdx, LVar0)
     Wait(10 * DT)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+    Call(SetHeldBakingItem, PEACH_BAKING_NONE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(MakeItemEntity, ITEM_CAKE_BOWL, 250, 16, 0, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(AB_KKJ19_CookwareItemIdx, LVar0)
     Wait(40 * DT)
-    ExecWait(N(EVS_FocusCam_Twink))
+    ExecWait(EVS_FocusCam_Twink)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_OpenBook)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00DC)
@@ -1218,10 +1218,10 @@ EvtScript N(EVS_ManageBaking) = {
     Call(InterpPlayerYaw, 315, 0)
     Wait(10)
     Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_CAKE_BATTER)
+    Call(SetHeldBakingItem, PEACH_BAKING_CAKE_BATTER)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Wait(10)
-    Exec(N(EVS_FocusCam_Oven))
+    Exec(EVS_FocusCam_Oven)
     Thread
         Call(NpcFlyTo, NPC_PARTNER, 190, 60, -100, 50 * DT, -5, EASING_LINEAR)
     EndThread
@@ -1233,9 +1233,9 @@ EvtScript N(EVS_ManageBaking) = {
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00DD)
     Call(InterpPlayerYaw, 315, 5)
     Wait(10 * DT)
-    Call(N(AwaitPlayerPressATimer))
-    ExecWait(N(EVS_OpenOverDoor))
-    Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+    Call(AwaitPlayerPressATimer)
+    ExecWait(EVS_OpenOverDoor)
+    Call(SetHeldBakingItem, PEACH_BAKING_NONE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(MakeItemEntity, ITEM_CAKE_BATTER, 100, 5, -135, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(AB_KKJ19_CakeItemIdx, LVar0)
@@ -1245,13 +1245,13 @@ EvtScript N(EVS_ManageBaking) = {
         Call(SetItemPos, AB_KKJ19_CakeItemIdx, 100, 5, LVar0)
         Wait(1)
     EndLoop
-    ExecWait(N(EVS_CloseOverDoor))
+    ExecWait(EVS_CloseOverDoor)
     Wait(10 * DT)
     Call(PlaySoundAt, SOUND_START_OVEN_TIMER, SOUND_SPACE_DEFAULT, 100, 22, -178)
     Wait(20 * DT)
     Call(FadeOutMusic, 0, 500)
     Call(PlaySoundAt, SOUND_OVEN_TIMER_TICKING, SOUND_SPACE_DEFAULT, 100, 22, -178)
-    Call(N(AwaitPlayerPressATimer))
+    Call(AwaitPlayerPressATimer)
     Call(StopSound, SOUND_OVEN_TIMER_TICKING)
     Call(PlaySoundAt, SOUND_DING, SOUND_SPACE_DEFAULT, 100, 22, -178)
     Wait(10 * DT)
@@ -1262,8 +1262,8 @@ EvtScript N(EVS_ManageBaking) = {
     IfGt(LVar0, BAKING_TIME_MAX_FRAMES)
         Set(AF_KKJ19_FailedBakingTask, true)
     EndIf
-    Exec(N(EVS_SetupMusic))
-    ExecWait(N(EVS_OpenOverDoor))
+    Exec(EVS_SetupMusic)
+    ExecWait(EVS_OpenOverDoor)
     Set(LVar0, -165)
     Loop(30)
         Wait(1)
@@ -1271,12 +1271,12 @@ EvtScript N(EVS_ManageBaking) = {
         Call(SetItemPos, AB_KKJ19_CakeItemIdx, 100, 5, LVar0)
     EndLoop
     Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_CAKE_BATTER)
+    Call(SetHeldBakingItem, PEACH_BAKING_CAKE_BATTER)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    ExecWait(N(EVS_CloseOverDoor))
+    ExecWait(EVS_CloseOverDoor)
     Wait(10 * DT)
     Call(InterpPlayerYaw, 90, 5)
-    ExecWait(N(EVS_FocusCam_PeachAndTwink))
+    ExecWait(EVS_FocusCam_PeachAndTwink)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00DE)
     Call(ShowChoice, MSG_Choice_002B)
     IfNe(LVar0, 0)
@@ -1290,9 +1290,9 @@ EvtScript N(EVS_ManageBaking) = {
     Call(UseSettingsFrom, CAM_DEFAULT, 287, 0, -74)
     Call(SetPanTarget, CAM_DEFAULT, 287, 0, -74)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
-    Exec(N(EVS_Twink_FlyToHighPos))
+    Exec(EVS_Twink_FlyToHighPos)
     Call(PlayerMoveTo, 287, -74, 100)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+    Call(SetHeldBakingItem, PEACH_BAKING_NONE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(MakeItemEntity, ITEM_CAKE_BATTER, 287, 16, -40, ITEM_SPAWN_MODE_DECORATION, 0)
     Wait(30 * DT)
@@ -1306,7 +1306,7 @@ EvtScript N(EVS_ManageBaking) = {
 
     // step 5: decorating
     Label(LBL_DECORATE_FIRST)
-    ExecWait(N(EVS_FocusCam_Twink))
+    ExecWait(EVS_FocusCam_Twink)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_OpenBook)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ReadBook, ANIM_Twink_IdleBook, 0, MSG_Peach_00E1)
@@ -1338,8 +1338,8 @@ EvtScript N(EVS_ManageBaking) = {
             EndIf
         EndLoop
         Call(DisablePlayerInput, true)
-        ExecWait(N(EVS_Twink_FlyToPlayer))
-        ExecWait(N(EVS_FocusCam_PeachAndTwink))
+        ExecWait(EVS_Twink_FlyToPlayer)
+        ExecWait(EVS_FocusCam_PeachAndTwink)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00E2)
         Call(ShowChoice, MSG_Choice_0029)
         IfEq(LVar0, 0)
@@ -1362,7 +1362,7 @@ EvtScript N(EVS_ManageBaking) = {
             // chose 'start over'
             Goto(LBL_START_OVER)
         EndIf
-    ExecWait(N(EVS_ReturnHeldIngredient))
+    ExecWait(EVS_ReturnHeldIngredient)
     IfEq(AF_KKJ19_AddedBerries, false)
         Set(AF_KKJ19_FailedBakingTask, true)
     EndIf
@@ -1378,7 +1378,7 @@ EvtScript N(EVS_ManageBaking) = {
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_DONE)
     Set(AF_KKJ19_CanTakeIngredients, false)
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
-    Exec(N(EVS_BindCakePickup))
+    Exec(EVS_BindCakePickup)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return
@@ -1386,15 +1386,15 @@ EvtScript N(EVS_ManageBaking) = {
     // starting over
     Label(LBL_START_OVER)
     Call(ContinueSpeech, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Peach_00CD)
-    Call(N(FadeScreenToBlack))
-    ExecWait(N(EVS_ReturnHeldIngredient))
-    Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+    Call(FadeScreenToBlack)
+    ExecWait(EVS_ReturnHeldIngredient)
+    Call(SetHeldBakingItem, PEACH_BAKING_NONE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(RemoveItemEntity, AB_KKJ19_CookwareItemIdx)
     IfNe(AB_KKJ19_CurrentBakeStep, BAKE_STEP_BAKING)
         Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
     EndIf
-    ExecWait(N(EVS_SetCookwareOnTable))
+    ExecWait(EVS_SetCookwareOnTable)
     Call(SetNpcPos, NPC_PARTNER, 440, 25, -30)
     Call(SetNpcYaw, NPC_PARTNER, 270)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
@@ -1402,7 +1402,7 @@ EvtScript N(EVS_ManageBaking) = {
     Call(InterpPlayerYaw, 90, 0)
     Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 350, Float(17.0), Float(-7.0))
     Wait(10 * DT)
-    Call(N(FadeScreenFromBlack))
+    Call(FadeScreenFromBlack)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_00CE)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_ArmsCrossedTalk, ANIM_Peach2_ArmsCrossedIdle, 5, MSG_Peach_00CF)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)

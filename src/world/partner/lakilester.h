@@ -4,12 +4,11 @@
 #include "common.h"
 #include "script_api/map.h"
 
-void world_lakilester_init(Npc*);
-void world_lakilester_pre_battle(Npc*);
-void world_lakilester_post_battle(Npc*);
+void init(Npc*);
+void pre_battle(Npc*);
+void post_battle(Npc*);
 
-void world_lakilester_sync_player_position(void);
-s32 world_lakilester_can_dismount(void);
+void sync_player_position(void);
 
 extern EvtScript EVS_WorldLakilester_TakeOut;
 extern EvtScript EVS_WorldLakilester_Update;

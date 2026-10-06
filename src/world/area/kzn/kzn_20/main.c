@@ -1,17 +1,17 @@
 #include "kzn_20.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitWalk_kzn_19_2) = EVT_EXIT_WALK(60, kzn_20_ENTRY_0, "kzn_19", kzn_19_ENTRY_2);
-EvtScript N(EVS_ExitWalk_kzn_22_0) = EVT_EXIT_WALK(60, kzn_20_ENTRY_1, "kzn_22", kzn_22_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_19_2 = EVT_EXIT_WALK(60, kzn_20_ENTRY_0, "kzn_19", kzn_19_ENTRY_2);
+EvtScript EVS_ExitWalk_kzn_22_0 = EVT_EXIT_WALK(60, kzn_20_ENTRY_1, "kzn_22", kzn_22_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_kzn_19_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(N(EVS_ExitWalk_kzn_22_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_kzn_19_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(EVS_ExitWalk_kzn_22_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_UpdateTexPan_Lava) = {
+EvtScript EVS_UpdateTexPan_Lava = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_yu, TEX_PANNER_1)
     Thread
@@ -25,13 +25,13 @@ EvtScript N(EVS_UpdateTexPan_Lava) = {
     End
 };
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o919, .pos = { -30.0, 125.0, -15.0 }},
     { .colliderID = COLLIDER_o870, .pos = {  30.0, 150.0,   0.0 }},
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_DetermineLavaLevel) = {
+EvtScript EVS_DetermineLavaLevel = {
     Loop(0)
         IfGe(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
             Label(1)
@@ -53,7 +53,7 @@ EvtScript N(EVS_DetermineLavaLevel) = {
     End
 };
 
-EvtScript N(EVS_InterruptPartnersInLava) = {
+EvtScript EVS_InterruptPartnersInLava = {
     Loop(0)
         Loop(0)
             Wait(1)
@@ -74,7 +74,7 @@ EvtScript N(EVS_InterruptPartnersInLava) = {
     End
 };
 
-EvtScript N(EVS_UpdateLavaWaves) = {
+EvtScript EVS_UpdateLavaWaves = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Call(EnableModel, MODEL_yu, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_yu, COLLIDER_FLAGS_UPPER_MASK)
@@ -88,7 +88,7 @@ EvtScript N(EVS_UpdateLavaWaves) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS,  COLLIDER_yu, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yu, SURFACE_TYPE_LAVA)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
         SetF(MV_LavaPosOffset, 35)
@@ -99,8 +99,8 @@ EvtScript N(EVS_UpdateLavaWaves) = {
         SetF(MV_WaveScaleOffset, Float(1.0))
         SetF(MV_PosScaleCoeff, Float(-1.0))
     EndIf
-    Exec(N(EVS_DetermineLavaLevel))
-    Exec(N(EVS_InterruptPartnersInLava))
+    Exec(EVS_DetermineLavaLevel)
+    Exec(EVS_InterruptPartnersInLava)
     Loop(0)
         Call(MakeLerp, 0, 260, 30, EASING_COS_IN)
         Loop(0)
@@ -145,12 +145,12 @@ EvtScript N(EVS_UpdateLavaWaves) = {
     End
 };
 
-BombTrigger N(WeakWallBombTrigger) = {
+BombTrigger WeakWallBombTrigger = {
     .pos = { 175.0, 150.0, 15.0 },
     .diameter = 0.0
 };
 
-EvtScript N(EVS_OnBreakWall) = {
+EvtScript EVS_OnBreakWall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 2, 2, 1, 10, 30)
     Call(EnableGroup, MODEL_bom_mae, false)
     Call(EnableGroup, MODEL_bom_ato, true)
@@ -161,25 +161,25 @@ EvtScript N(EVS_OnBreakWall) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_20)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    Set(LVar0, N(EVS_BindExitTriggers))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Set(LVar0, EVS_BindExitTriggers)
     Exec(EnterWalk)
     Wait(1)
-    Exec(N(EVS_ShakingWorld))
+    Exec(EVS_ShakingWorld)
     IfLt(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
         Call(EnableGroup, MODEL_bom_ato, false)
-        BindTrigger(N(EVS_OnBreakWall), TRIGGER_POINT_BOMB, Ref(N(WeakWallBombTrigger)), 1, 0)
+        BindTrigger(EVS_OnBreakWall, TRIGGER_POINT_BOMB, Ref(WeakWallBombTrigger), 1, 0)
     Else
         Call(EnableGroup, MODEL_bom_mae, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_UpdateLavaWaves))
-    Exec(N(EVS_UpdateTexPan_Lava))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_UpdateLavaWaves)
+    Exec(EVS_UpdateTexPan_Lava)
     Return
     End
 };

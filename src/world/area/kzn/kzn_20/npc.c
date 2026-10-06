@@ -19,7 +19,7 @@ enum {
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -31,7 +31,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_SpawnFallingDust) = {
+EvtScript EVS_SpawnFallingDust = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Loop(0)
         Call(RandInt, 100, LVar0)
@@ -46,10 +46,10 @@ EvtScript N(EVS_SpawnFallingDust) = {
     End
 };
 
-EvtScript N(EVS_ShakingWorld) = {
+EvtScript EVS_ShakingWorld = {
     SetGroup(EVT_GROUP_PASSIVE_NPC)
     IfGe(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
-        Exec(N(EVS_SpawnFallingDust))
+        Exec(EVS_SpawnFallingDust)
     Else
         Loop(0)
             Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.5))
@@ -57,7 +57,7 @@ EvtScript N(EVS_ShakingWorld) = {
                 BreakLoop
             EndIf
         EndLoop
-        Exec(N(EVS_SpawnFallingDust))
+        Exec(EVS_SpawnFallingDust)
         Call(MakeLerp, 20, 250, 5, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -84,7 +84,7 @@ EvtScript N(EVS_ShakingWorld) = {
     End
 };
 
-s32 N(Kolorado_Wander1)[] = {
+s32 Kolorado_Wander1[] = {
     // speed, moveToX, moveToZ, loiter time
     2,  -75, 195, 35,
     2,  -60, 175, 25,
@@ -93,7 +93,7 @@ s32 N(Kolorado_Wander1)[] = {
     -1,
 };
 
-s32 N(Kolorado_Wander2)[] = {
+s32 Kolorado_Wander2[] = {
     // speed, moveToX, moveToZ, loiter time
     1,  -25, 195, 20,
     2,  -75, 195, 35,
@@ -102,14 +102,14 @@ s32 N(Kolorado_Wander2)[] = {
     -1,
 };
 
-EvtScript N(EVS_Kolorado_CalmIdle) = {
+EvtScript EVS_Kolorado_CalmIdle = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Label(0)
     Call(RandInt, 1, LVar1)
     IfEq(LVar1, 0)
-        UseBuf(N(Kolorado_Wander1))
+        UseBuf(Kolorado_Wander1)
     Else
-        UseBuf(N(Kolorado_Wander2))
+        UseBuf(Kolorado_Wander2)
     EndIf
     Label(10)
         BufRead3(LVar1, LVar2, LVar3)
@@ -139,7 +139,7 @@ EvtScript N(EVS_Kolorado_CalmIdle) = {
     End
 };
 
-EvtScript N(EVS_KoloradoBurned_PlayerReaction) = {
+EvtScript EVS_KoloradoBurned_PlayerReaction = {
     Call(GetPlayerPos, LVar0, LVar3, LVar2)
     Add(LVar3, 30)
     Loop(0)
@@ -162,13 +162,13 @@ EvtScript N(EVS_KoloradoBurned_PlayerReaction) = {
     End
 };
 
-API_CALLABLE(N(FadeOutAmbientSounds)) {
+API_CALLABLE(FadeOutAmbientSounds) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
-    ExecGetTID(N(EVS_Kolorado_CalmIdle), LVar9)
+EvtScript EVS_NpcIdle_Kolorado = {
+    ExecGetTID(EVS_Kolorado_CalmIdle, LVar9)
     // wait for scene to begin
     Label(0)
         Wait(1)
@@ -260,8 +260,8 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_SELF, 35, 50, 120, 10)
             CaseEq(SCENE_STATE_KOLORADO_WARNED)
-                Call(N(FadeOutAmbientSounds))
-                Exec(N(EVS_KoloradoBurned_PlayerReaction))
+                Call(FadeOutAmbientSounds)
+                Exec(EVS_KoloradoBurned_PlayerReaction)
                 Thread
                     Call(PlayerFaceNpc, NPC_SELF, false)
                     Call(ShowMessageAtScreenPos, MSG_CH5_010F, 160, 40)
@@ -314,27 +314,27 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     IfLt(LVar1, 100)
         Call(EnableNpcAI, NPC_SELF, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0108)
-        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+        Set(LVar0, Ref(LetterDelivery_Kolorado))
         ExecWait(EVS_TryLetterDelivery)
         Call(EnableNpcAI, NPC_SELF, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_0113)
-        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+        Set(LVar0, Ref(LetterDelivery_Kolorado))
         ExecWait(EVS_TryLetterDelivery)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -342,7 +342,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-Vec3f N(FlightPath1)[] = {
+Vec3f FlightPath1[] = {
     { -120.0,  70.0, 45.0 },
     {  -75.0,  80.0, 90.0 },
     {  -10.0, 115.0, 90.0 },
@@ -351,7 +351,7 @@ Vec3f N(FlightPath1)[] = {
     {  100.0, 160.0,  0.0 },
 };
 
-Vec3f N(FlightPath2)[] = {
+Vec3f FlightPath2[] = {
     { 145.0, 195.0, -10.0 },
     { 100.0, 190.0, -90.0 },
     {  80.0, 180.0, -60.0 },
@@ -361,21 +361,13 @@ Vec3f N(FlightPath2)[] = {
     { 270.0, 175.0, -30.0 },
 };
 
-API_CALLABLE(GetPlayerFloorCollider) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-
-    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
-    return ApiStatus_DONE2;
-}
-
-EvtScript N(EVS_Scene_Misstar) = {
+EvtScript EVS_Scene_Misstar = {
     IfEq(AF_KZN20_MisstarFlightDone, false)
         Call(SetNpcPos, NPC_SELF, -120, 70, 45)
         Wait(30)
         Set(AF_KZN20_MisstarFlightDone, true)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
-        Call(LoadPath, 60, Ref(N(FlightPath1)), ARRAY_COUNT(N(FlightPath1)), EASING_LINEAR)
+        Call(LoadPath, 60, Ref(FlightPath1), ARRAY_COUNT(FlightPath1), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
@@ -495,7 +487,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldMisstar_Panic, ANIM_WorldMisstar_IdleAngry, 0, MSG_CH5_0115)
     Wait(5)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
-    Call(LoadPath, 30, Ref(N(FlightPath2)), ARRAY_COUNT(N(FlightPath2)), EASING_LINEAR)
+    Call(LoadPath, 30, Ref(FlightPath2), ARRAY_COUNT(FlightPath2), EASING_LINEAR)
     Label(91)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
@@ -509,17 +501,17 @@ EvtScript N(EVS_Scene_Misstar) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Misstar) = {
+EvtScript EVS_NpcInteract_Misstar = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldMisstar_TalkAngry, ANIM_WorldMisstar_IdleAngry, 0, MSG_CH5_0114)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Misstar) = {
+EvtScript EVS_NpcInit_Misstar = {
     IfEq(GB_StoryProgress, STORY_CH5_MT_LAVA_LAVA_ERUPTING)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMisstar_IdleAngry)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_Misstar)))
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Misstar)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_Misstar))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Misstar))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -527,32 +519,32 @@ EvtScript N(EVS_NpcInit_Misstar) = {
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { -65.0f, 0.0f, 190.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Misstar) = {
+NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
     .pos = { 100.0f, 160.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Misstar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Misstar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
     .tattle = MSG_NpcTattle_Misstar,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Misstar),
     {}
 };

@@ -2,20 +2,20 @@
 #include "nu/nusys.h"
 #include "model.h"
 
-s32 N(ReflectionWavePhase) = {
+s32 ReflectionWavePhase = {
     0
 };
 
 /// Reflects the framebuffer above the waterline into the given screen region.
 /// The reflection is drawn in horizontal strips which fade out and ripple with distance from the waterline.
-void N(draw_wavy_water_reflection)(s32 left, s32 top, s32 right, s32 bottom) {
+void draw_wavy_water_reflection(s32 left, s32 top, s32 right, s32 bottom) {
     s32 i;
     s32 numStrips;
     s32 remainder;
     u16* framebuffer;
     s32 alpha;
 
-    N(ReflectionWavePhase) += 5;
+    ReflectionWavePhase += 5;
 
     if (left >= right || top >= bottom) {
         return;
@@ -71,7 +71,7 @@ void N(draw_wavy_water_reflection)(s32 left, s32 top, s32 right, s32 bottom) {
                             G_TX_WRAP, G_TX_WRAP, 9, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gMainGfxPos++, left * 4, (top + i * 6) * 4, right * 4, (top + i * 6 + 6) * 4,
                                 G_TX_RENDERTILE, left * 32, (top - i * 6) * 32, 1024,
-                                (s32)(sin_deg(N(ReflectionWavePhase) + i * 30) * 500.0f) - 500);
+                                (s32)(sin_deg(ReflectionWavePhase + i * 30) * 500.0f) - 500);
         }
     }
 
@@ -94,7 +94,7 @@ void N(draw_wavy_water_reflection)(s32 left, s32 top, s32 right, s32 bottom) {
 }
 
 /// Projects the water-edge model onto the screen and masks a wavy reflection to its shape.
-void N(build_gfx_water_reflection)(void) {
+void build_gfx_water_reflection(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
     Model* waterEdge = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o40));
     ModelBoundingBox* bounds = (ModelBoundingBox*) waterEdge->modelNode->propertyList;
@@ -252,7 +252,7 @@ void N(build_gfx_water_reflection)(void) {
         gDPPipeSync(gMainGfxPos++);
 
         // draw the reflection over the model's screen bounds
-        N(draw_wavy_water_reflection)(minScreenX, minScreenY, maxScreenX, maxScreenY);
+        draw_wavy_water_reflection(minScreenX, minScreenY, maxScreenX, maxScreenY);
 
         gDPPipeSync(gMainGfxPos++);
         gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
@@ -260,9 +260,9 @@ void N(build_gfx_water_reflection)(void) {
     }
 }
 
-EvtScript N(EVS_SetupWaterEffect) = {
+EvtScript EVS_SetupWaterEffect = {
     // assumed method to get these working, doesn't seem to work though?
-    //Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_water_reflection)), nullptr)
+    //Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(build_gfx_water_reflection), nullptr)
     //Call(SetModelCustomGfx, MODEL_o40, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Return
     End

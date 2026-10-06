@@ -75,7 +75,6 @@ EffectInstance* water_block_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s32 du
     bpPtr->init = water_block_init;
     bpPtr->update = &water_block_update;
     bpPtr->renderScene = water_block_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_WATER_BLOCK;
 
@@ -112,8 +111,6 @@ EffectInstance* water_block_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s32 du
 void water_block_init(EffectInstance* effect) {
 }
 
-EFFECT_DEF_WATER_SPLASH(water_splash_main);
-
 void water_block_update(EffectInstance* effect) {
     WaterBlockFXData *data;
     f32 temp_f20;
@@ -146,9 +143,8 @@ void water_block_update(EffectInstance* effect) {
     timeLeft = data->timeLeft;
     if (timeLeft < 0) {
         if (type == FX_WATER_BLOCK_DESTROY) {
-            load_effect(EFFECT_WATER_SPLASH);
-            water_splash_main(0, data->pos.x, data->pos.y + 24.0f, data->pos.z, 2.0f, 30);
-            water_splash_main(1, data->pos.x, data->pos.y + 24.0f, data->pos.z, 2.0f, 30);
+            fx_water_splash(0, data->pos.x, data->pos.y + 24.0f, data->pos.z, 2.0f, 30);
+            fx_water_splash(1, data->pos.x, data->pos.y + 24.0f, data->pos.z, 2.0f, 30);
         }
         remove_effect(effect);
         return;

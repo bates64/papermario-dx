@@ -43,7 +43,6 @@ EffectInstance* embers_main(
     bp.init = embers_init;
     bp.update = embers_update;
     bp.renderScene = embers_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_EMBERS;
 

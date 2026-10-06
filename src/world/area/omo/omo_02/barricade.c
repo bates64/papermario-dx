@@ -2,13 +2,13 @@
 #include "model.h"
 #include "effects.h"
 
-s32 N(BarricadeModels)[] = {
+s32 BarricadeModels[] = {
     MODEL_t2, MODEL_t3, MODEL_t4, MODEL_t5,
     MODEL_t2_2, MODEL_t2_3, MODEL_t2_4, MODEL_t2_5,
     MODEL_t3_1, MODEL_t3_3, MODEL_t3_4, MODEL_t3_5,
 };
 
-s32 N(BarricadeColliders)[] = {
+s32 BarricadeColliders[] = {
     COLLIDER_t2, COLLIDER_t3, COLLIDER_t4, COLLIDER_t5,
     COLLIDER_t2_2, COLLIDER_t2_3, COLLIDER_t2_4, COLLIDER_t2_5,
     COLLIDER_t3_1, COLLIDER_t3_3, COLLIDER_t3_4, COLLIDER_t3_5,
@@ -37,7 +37,7 @@ enum {
 
 // iterate through the display list, checking each vertex's distance from (0,0,0) and return the minimum distance
 // this creates a spherical collision volume for the flying debris
-void N(DetermineSphericalSize)(Gfx* displayList, s32* outDist) {
+void DetermineSphericalSize(Gfx* displayList, s32* outDist) {
     Gfx* dlist = displayList;
     u8 cmd;
 
@@ -47,7 +47,7 @@ void N(DetermineSphericalSize)(Gfx* displayList, s32* outDist) {
 
         cmd = w0 >> 0x18;
         if (cmd == G_DL) {
-            N(DetermineSphericalSize)((Gfx*) w1, outDist);
+            DetermineSphericalSize((Gfx*) w1, outDist);
         }
         if (cmd == G_VTX) {
             s32 numVertices = (w0 >> 0xC) & 0xFF;
@@ -74,7 +74,7 @@ void N(DetermineSphericalSize)(Gfx* displayList, s32* outDist) {
     } while (cmd != G_ENDDL);
 }
 
-API_CALLABLE(N(AnimateBarricadeParts)) {
+API_CALLABLE(AnimateBarricadeParts) {
     Matrix4f mtxTransform, mtxRotX, mtxRotY, mtxRotZ;
     BarricadePart* part;
     Model* model;
@@ -82,13 +82,13 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
     s32 j, k;
 
     if (isInitialCall) {
-        script->functionTempPtr[0] = heap_malloc(sizeof(*part) * ARRAY_COUNT(N(BarricadeModels)));
+        script->functionTempPtr[0] = heap_malloc(sizeof(*part) * ARRAY_COUNT(BarricadeModels));
         script->functionTemp[1] = 0;
 
         part = (BarricadePart*) script->functionTempPtr[0];
-        for (i = 0; i < ARRAY_COUNT(N(BarricadeModels)); i++, part++) {
-            part->modelID = N(BarricadeModels)[i];
-            part->colliderID = N(BarricadeColliders)[i];
+        for (i = 0; i < ARRAY_COUNT(BarricadeModels); i++, part++) {
+            part->modelID = BarricadeModels[i];
+            part->colliderID = BarricadeColliders[i];
             model = get_model_from_list_index(get_model_list_index_from_tree_index(part->modelID));
             part->state = BARRICADE_STATE_FLYING;
             part->pos.x = model->center.x;
@@ -106,7 +106,7 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
             part->verticalVel = (rand_int(40) + 100.0f) / 10.0f;
             part->planarVel = (rand_int(30) + 60.0f) / 10.0f;
             part->velocityAngle = ((rand_int(100) % 2) * 180.0f) + 90.0f;
-            N(DetermineSphericalSize)(model->modelNode->displayData->displayList, &part->radius);
+            DetermineSphericalSize(model->modelNode->displayData->displayList, &part->radius);
 
             for (j = 0; j < 4; j++) {
                 for (k = 0; k < 4; k++) {
@@ -117,7 +117,7 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
     }
 
     part = script->functionTempPtr[0];
-    for (i = 0; i < ARRAY_COUNT(N(BarricadeModels)); i++, part++) {
+    for (i = 0; i < ARRAY_COUNT(BarricadeModels); i++, part++) {
         model = get_model_from_list_index(get_model_list_index_from_tree_index(part->modelID));
         switch (part->state) {
             case BARRICADE_STATE_FLYING:
@@ -170,39 +170,39 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
         guMtxCatF(model->userTransformMtx, mtxTransform, model->userTransformMtx);
     }
 
-    if ((u32) script->functionTemp[1] >= ARRAY_COUNT(N(BarricadeModels))) {
+    if ((u32) script->functionTemp[1] >= ARRAY_COUNT(BarricadeModels)) {
         heap_free(script->functionTempPtr[0]);
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
 }
 
-BombTrigger N(BombPos_Barricade) = {
+BombTrigger BombPos_Barricade = {
     .pos = { -520.0f, 0.0f, 0.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_Scene_BreakBarricade) = {
+EvtScript EVS_Scene_BreakBarricade = {
     Call(DisablePlayerInput, true)
     Call(EnableGroup, MODEL_hibi, false)
     Thread
-        Call(N(AnimateBarricadeParts))
+        Call(AnimateBarricadeParts)
         Loop(10)
-            UseBuf(Ref(N(BarricadeModels)))
-            Loop(ARRAY_COUNT(N(BarricadeModels)))
+            UseBuf(Ref(BarricadeModels))
+            Loop(ARRAY_COUNT(BarricadeModels))
                 BufRead1(LVar0)
                 Call(EnableModel, LVar0, true)
             EndLoop
             Wait(2)
-            UseBuf(Ref(N(BarricadeModels)))
-            Loop(ARRAY_COUNT(N(BarricadeModels)))
+            UseBuf(Ref(BarricadeModels))
+            Loop(ARRAY_COUNT(BarricadeModels))
                 BufRead1(LVar0)
                 Call(EnableModel, LVar0, false)
             EndLoop
             Wait(2)
         EndLoop
-        UseBuf(Ref(N(BarricadeColliders)))
-        Loop(ARRAY_COUNT(N(BarricadeColliders)))
+        UseBuf(Ref(BarricadeColliders))
+        Loop(ARRAY_COUNT(BarricadeColliders))
             BufRead1(LVar0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar0, COLLIDER_FLAGS_UPPER_MASK)
         EndLoop
@@ -420,7 +420,7 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
     End
 };
 
-EvtScript N(EVS_SetupBarricade) = {
+EvtScript EVS_SetupBarricade = {
     Call(ParentColliderToModel, COLLIDER_t1, MODEL_t1)
     Call(ParentColliderToModel, COLLIDER_t2, MODEL_t2)
     Call(ParentColliderToModel, COLLIDER_t3, MODEL_t3)
@@ -437,16 +437,16 @@ EvtScript N(EVS_SetupBarricade) = {
     Call(ParentColliderToModel, COLLIDER_t3_4, MODEL_t3_4)
     Call(ParentColliderToModel, COLLIDER_t3_5, MODEL_t3_5)
     IfEq(GF_OMO02_BombedWall, false)
-        BindTrigger(Ref(N(EVS_Scene_BreakBarricade)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Barricade)), 1, 0)
+        BindTrigger(Ref(EVS_Scene_BreakBarricade), TRIGGER_POINT_BOMB, Ref(BombPos_Barricade), 1, 0)
     Else
         Call(EnableGroup, MODEL_hibi, false)
-        UseBuf(Ref(N(BarricadeModels)))
-        Loop(ARRAY_COUNT(N(BarricadeModels)))
+        UseBuf(Ref(BarricadeModels))
+        Loop(ARRAY_COUNT(BarricadeModels))
             BufRead1(LVar0)
             Call(EnableModel, LVar0, false)
         EndLoop
-        UseBuf(Ref(N(BarricadeColliders)))
-        Loop(ARRAY_COUNT(N(BarricadeColliders)))
+        UseBuf(Ref(BarricadeColliders))
+        Loop(ARRAY_COUNT(BarricadeColliders))
             BufRead1(LVar0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar0, COLLIDER_FLAGS_UPPER_MASK)
         EndLoop

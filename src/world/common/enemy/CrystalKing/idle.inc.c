@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_CrystalKing) = {
+NpcSettings NpcSettings_CrystalKing = {
     .height = 50,
     .radius = 55,
     .level = ACTOR_LEVEL_NONE,

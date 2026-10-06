@@ -3,7 +3,7 @@
 
 #include "world/common/ai/AvoidPlayerAI.inc.c"
 
-MobileAISettings N(AISettings_AmazyDayzee_Wander) = {
+MobileAISettings AISettings_AmazyDayzee_Wander = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -18,13 +18,13 @@ MobileAISettings N(AISettings_AmazyDayzee_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_AmazyDayzee_Wander) = {
-    Call(N(AvoidPlayerAI_Main), Ref(N(AISettings_AmazyDayzee_Wander)))
+EvtScript EVS_NpcAI_AmazyDayzee_Wander = {
+    Call(AvoidPlayerAI_Main, Ref(AISettings_AmazyDayzee_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcAux_AmazyDayzee_Wander) = {
+EvtScript EVS_NpcAux_AmazyDayzee_Wander = {
     Label(0)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 30)
@@ -36,12 +36,12 @@ EvtScript N(EVS_NpcAux_AmazyDayzee_Wander) = {
     End
 };
 
-NpcSettings N(NpcSettings_AmazyDayzee_Wander) = {
+NpcSettings NpcSettings_AmazyDayzee_Wander = {
     .height = 30,
     .radius = 24,
     .level = ACTOR_LEVEL_AMAZY_DAYZEE,
-    .doAux = &N(EVS_NpcAux_AmazyDayzee_Wander),
-    .doAI = &N(EVS_NpcAI_AmazyDayzee_Wander),
+    .doAux = &EVS_NpcAux_AmazyDayzee_Wander,
+    .doAI = &EVS_NpcAI_AmazyDayzee_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

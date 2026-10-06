@@ -1,7 +1,7 @@
 #pragma once
 #include "wander.h"
 
-MobileAISettings N(AISettings_CrazyDayzee_Wander) = {
+MobileAISettings AISettings_CrazyDayzee_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 500,
     .waitTime = 10,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_CrazyDayzee_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_CrazyDayzee_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_CrazyDayzee_Wander)))
+EvtScript EVS_NpcAI_CrazyDayzee_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_CrazyDayzee_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_CrazyDayzee_Wander) = {
+NpcSettings NpcSettings_CrazyDayzee_Wander = {
     .height = 30,
     .radius = 24,
     .level = ACTOR_LEVEL_CRAZEE_DAYZEE,
-    .doAI = &N(EVS_NpcAI_CrazyDayzee_Wander),
+    .doAI = &EVS_NpcAI_CrazyDayzee_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

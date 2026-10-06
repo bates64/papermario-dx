@@ -3,7 +3,7 @@
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript N(EVS_Wisterwood_Exit) = {
+EvtScript EVS_Wisterwood_Exit = {
     Call(DisablePlayerInput, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlayerMoveTo, 30, -170, 10)
@@ -40,7 +40,7 @@ EvtScript N(EVS_Wisterwood_Exit) = {
     End
 };
 
-EvtScript N(EVS_Wisterwood_Enter) = {
+EvtScript EVS_Wisterwood_Enter = {
     Call(DisablePlayerInput, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
     Call(InterpPlayerYaw, 180, 0)
@@ -73,29 +73,29 @@ EvtScript N(EVS_Wisterwood_Enter) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_flo_14_0) = EVT_EXIT_WALK(60, flo_00_ENTRY_1, "flo_14", flo_14_ENTRY_0);
-EvtScript N(EVS_ExitWalk_flo_23_0) = EVT_EXIT_WALK(60, flo_00_ENTRY_2, "flo_23", flo_23_ENTRY_0);
-EvtScript N(EVS_ExitWalk_flo_25_0) = EVT_EXIT_WALK(60, flo_00_ENTRY_3, "flo_25", flo_25_ENTRY_0);
-EvtScript N(EVS_ExitWalk_flo_16_0) = EVT_EXIT_WALK(60, flo_00_ENTRY_4, "flo_16", flo_16_ENTRY_0);
-EvtScript N(EVS_ExitWalk_flo_09_0) = EVT_EXIT_WALK(60, flo_00_ENTRY_5, "flo_09", flo_09_ENTRY_0);
-EvtScript N(EVS_ExitWalk_flo_08_0) = EVT_EXIT_WALK(60, flo_00_ENTRY_6, "flo_08", flo_08_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_14_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_1, "flo_14", flo_14_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_23_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_2, "flo_23", flo_23_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_25_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_3, "flo_25", flo_25_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_16_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_4, "flo_16", flo_16_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_09_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_5, "flo_09", flo_09_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_08_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_6, "flo_08", flo_08_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_14_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_23_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_25_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_16_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_09_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_08_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_flo_14_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_flo_23_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_flo_25_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_flo_16_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_flo_09_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_flo_08_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
     Else
         Call(GetEntryID, LVar0)
         IfNe(LVar0, flo_00_ENTRY_8)
@@ -104,38 +104,38 @@ EvtScript N(EVS_EnterMap) = {
         Switch(LVar0)
             CaseEq(flo_00_ENTRY_0)
                 Thread
-                    ExecWait(N(EVS_Wisterwood_Enter))
-                    Exec(N(EVS_BindExitTriggers))
+                    ExecWait(EVS_Wisterwood_Enter)
+                    Exec(EVS_BindExitTriggers)
                 EndThread
             CaseRange(flo_00_ENTRY_1, flo_00_ENTRY_6)
-                Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+                Set(LVar0, Ref(EVS_BindExitTriggers))
                 Exec(EnterWalk)
             CaseEq(flo_00_ENTRY_7)
                 Thread
-                    ExecWait(N(EVS_Scene_BeanstalkGrewRemark))
-                    Exec(N(EVS_BindExitTriggers))
+                    ExecWait(EVS_Scene_BeanstalkGrewRemark)
+                    Exec(EVS_BindExitTriggers)
                 EndThread
             CaseEq(flo_00_ENTRY_8)
                 Thread
-                    ExecWait(N(EVS_Enter_Beanstalk))
-                    Exec(N(EVS_BindExitTriggers))
+                    ExecWait(EVS_Enter_Beanstalk)
+                    Exec(EVS_BindExitTriggers)
                 EndThread
             CaseEq(flo_00_ENTRY_9)
-                Exec(N(EVS_Scene_SunReturns))
-                Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+                Exec(EVS_Scene_SunReturns)
+                Set(LVar0, Ref(EVS_BindExitTriggers))
                 Exec(EnterWalk)
             CaseEq(flo_00_ENTRY_A)
-                Exec(N(EVS_BindExitTriggers))
+                Exec(EVS_BindExitTriggers)
             CaseEq(flo_00_ENTRY_B)
-                Exec(N(EVS_Scene_Epilogue))
+                Exec(EVS_Scene_Epilogue)
         EndSwitch
     EndIf
-    BindTrigger(Ref(N(EVS_Interact_Wisterwood)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
+    BindTrigger(Ref(EVS_Interact_Wisterwood), TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -146,14 +146,14 @@ EvtScript N(EVS_Main) = {
     Set(GF_MAC01_RowfBadgesChosen, false)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_00_ENTRY_B)
-        Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
+        Call(MakeNpcs, false, Ref(EpilogueNPCs))
     Else
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndIf
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(ParentColliderToModel, COLLIDER_o240, MODEL_o142)
-    Exec(N(EVS_SetupBeanstalk))
-    Exec(N(EVS_SetupBeanPatch))
+    Exec(EVS_SetupBeanstalk)
+    Exec(EVS_SetupBeanPatch)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o129, SURFACE_TYPE_FLOWERS)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o363, SURFACE_TYPE_FLOWERS)
     EVT_FLOWER_SPAWN_REGION(  150, -270,  410,  170,  0)
@@ -164,7 +164,7 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitsw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitnw, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(GetLoadType, LVar1)
     IfNe(LVar1, LOAD_FROM_FILE_SELECT)
         Call(GetEntryID, LVar0)
@@ -172,7 +172,7 @@ EvtScript N(EVS_Main) = {
             Wait(65)
         EndIf
     EndIf
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     EndIf

@@ -1,6 +1,6 @@
 #include "mac_03.h"
 
-EvtScript N(EVS_OpenCrossingGates) = {
+EvtScript EVS_OpenCrossingGates = {
     Set(LVarF, 0)
     Loop(40)
         Add(LVarF, 1)
@@ -20,7 +20,7 @@ EvtScript N(EVS_OpenCrossingGates) = {
     End
 };
 
-EvtScript N(EVS_CloseCrossingGates) = {
+EvtScript EVS_CloseCrossingGates = {
     Set(LVarF, 0)
     Loop(40)
         Add(LVarF, 1)
@@ -40,7 +40,7 @@ EvtScript N(EVS_CloseCrossingGates) = {
     End
 };
 
-EvtScript N(EVS_SpawnSmoke) = {
+EvtScript EVS_SpawnSmoke = {
     Call(PlaySoundAtModel, MODEL_07, SOUND_SEQ_TRAIN_CHUG, SOUND_SPACE_DEFAULT)
     SetF(LVar0, MV_TrainMoveDist)
     IfEq(MF_TrainReverseDir, false)
@@ -67,7 +67,7 @@ EvtScript N(EVS_SpawnSmoke) = {
     End
 };
 
-EvtScript N(EVS_AnimateTrain) = {
+EvtScript EVS_AnimateTrain = {
     Label(0)
         Set(LVar0, MV_TrainMoveDist)
         Call(TranslateModel, MODEL_08, LVar0, 0, 0)
@@ -172,7 +172,7 @@ EvtScript N(EVS_AnimateTrain) = {
             IfEq(LVarD, 0)
                 Thread
                     Wait(18)
-                    Exec(N(EVS_SpawnSmoke))
+                    Exec(EVS_SpawnSmoke)
                 EndThread
             EndIf
         EndIf
@@ -247,20 +247,20 @@ EvtScript N(EVS_AnimateTrain) = {
             IfLt(MV_TrainMoveDist, 600)
                 IfEq(LFlag0, false)
                     Set(LFlag0, true)
-                    Exec(N(EVS_OpenCrossingGates))
+                    Exec(EVS_OpenCrossingGates)
                 EndIf
             EndIf
         EndIf
         IfLe(MV_TrainMoveDist, 100)
             IfEq(LFlag0, true)
                 Set(LFlag0, false)
-                Exec(N(EVS_CloseCrossingGates))
+                Exec(EVS_CloseCrossingGates)
             EndIf
         EndIf
         IfGe(MV_TrainMoveDist, 600)
             IfEq(LFlag0, true)
                 Set(LFlag0, false)
-                Exec(N(EVS_CloseCrossingGates))
+                Exec(EVS_CloseCrossingGates)
             EndIf
         EndIf
         IfEq(MF_TrainMoving, true)
@@ -303,7 +303,7 @@ EvtScript N(EVS_AnimateTrain) = {
     End
 };
 
-EvtScript N(EVS_UpdatePassengerPos) = {
+EvtScript EVS_UpdatePassengerPos = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -338,7 +338,7 @@ EvtScript N(EVS_UpdatePassengerPos) = {
     End
 };
 
-EvtScript N(EVS_FollowTrainCamera) = {
+EvtScript EVS_FollowTrainCamera = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfEq(MF_TrainReverseDir, false)
@@ -363,7 +363,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
     End
 };
 
-EvtScript N(EVS_ArriveFromMtRugged) = {
+EvtScript EVS_ArriveFromMtRugged = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -380,8 +380,8 @@ EvtScript N(EVS_ArriveFromMtRugged) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_humikiri, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_fumikiri, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    ExecGetTID(N(EVS_FollowTrainCamera), LVar9)
-    ExecGetTID(N(EVS_UpdatePassengerPos), LVarE)
+    ExecGetTID(EVS_FollowTrainCamera, LVar9)
+    ExecGetTID(EVS_UpdatePassengerPos, LVarE)
     Set(MF_TrainMoving, true)
     Set(MV_TrainMoveDist, 1200)
     Set(MV_TrainMoveSpeed, 0)
@@ -459,7 +459,7 @@ EvtScript N(EVS_ArriveFromMtRugged) = {
     End
 };
 
-EvtScript N(EVS_DepartForMtRugged) = {
+EvtScript EVS_DepartForMtRugged = {
     IfEq(GF_MAC03_BombedRock, false)
         Return
     EndIf
@@ -527,7 +527,7 @@ EvtScript N(EVS_DepartForMtRugged) = {
     Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
-    Exec(N(EVS_UpdatePassengerPos))
+    Exec(EVS_UpdatePassengerPos)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(240.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(-100.0), Float(-50.0))
@@ -553,7 +553,7 @@ EvtScript N(EVS_DepartForMtRugged) = {
     EndThread
     Wait(40)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    ExecGetTID(N(EVS_FollowTrainCamera), LVar9)
+    ExecGetTID(EVS_FollowTrainCamera, LVar9)
     Wait(170)
     Wait(100)
     Call(GotoMap, Ref("iwa_11"), iwa_11_ENTRY_0)
@@ -561,7 +561,7 @@ EvtScript N(EVS_DepartForMtRugged) = {
     End
 };
 
-EvtScript N(EVS_InitializeTrainScene) = {
+EvtScript EVS_InitializeTrainScene = {
     Call(SetModelFlags, MODEL_km, MODEL_FLAG_BILLBOARD, true)
     Call(EnableModel, MODEL_km, false)
     Call(CloneModel, MODEL_km, CLONED_MODEL(0))
@@ -574,7 +574,7 @@ EvtScript N(EVS_InitializeTrainScene) = {
     Call(CloneModel, MODEL_km, CLONED_MODEL(7))
     Call(CloneModel, MODEL_km, CLONED_MODEL(8))
     Call(CloneModel, MODEL_km, CLONED_MODEL(9))
-    Exec(N(EVS_AnimateTrain))
+    Exec(EVS_AnimateTrain)
     Wait(1)
     Return
     End

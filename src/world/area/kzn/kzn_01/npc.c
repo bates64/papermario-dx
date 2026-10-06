@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/PutridPiranhaSentinel/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_PutridPiranha) = {
+EvtScript EVS_NpcIdle_PutridPiranha = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 225)
@@ -35,9 +35,9 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_PutridPiranha) = {
+EvtScript EVS_NpcInit_PutridPiranha = {
     IfEq(GF_KZN01_IntruderAlert, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_PutridPiranha)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PutridPiranha))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -45,18 +45,18 @@ EvtScript N(EVS_NpcInit_PutridPiranha) = {
     End
 };
 
-NpcData N(NpcPutridPiranha) = {
+NpcData NpcPutridPiranha = {
     .id = NPC_PutridPiranha,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_PutridPiranha),
-    .settings = &N(NpcSettings_PutridPiranhaSentinel),
+    .init = &EVS_NpcInit_PutridPiranha,
+    .settings = &NpcSettings_PutridPiranhaSentinel,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = PIRANHA_SENTINEL_DROPS,
     .animations = PIRANHA_SENTINEL_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcPutridPiranha)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcPutridPiranha),
     {}
 };

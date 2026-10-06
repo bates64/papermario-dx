@@ -29,7 +29,6 @@ EffectInstance* throw_spiny_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
     bp.init = throw_spiny_init;
     bp.update = throw_spiny_update;
     bp.renderScene = throw_spiny_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_THROW_SPINY;
 

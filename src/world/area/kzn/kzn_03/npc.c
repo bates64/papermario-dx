@@ -5,7 +5,7 @@
 #include "world/common/npc/Dummy/idle.inc.c"
 #include "world/common/npc/Kolorado/idle.inc.c"
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -17,7 +17,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     Call(SetNpcSpeed, NPC_SELF, Float(2.0))
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
     Call(GetNpcPos, NPC_SELF, LVar4, LVar5, LVar6)
@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
         IfEq(GF_KZN03_SpokeWithKolorado, false)
@@ -107,22 +107,22 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
         Wait(18)
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    Set(LVar0, Ref(LetterDelivery_Kolorado))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_SMASHED_ULTRA_BLOCK)
             IfEq(GF_KZN06_Visited, true)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
                 Return
             EndIf
         CaseEq(STORY_CH5_SMASHED_ULTRA_BLOCK)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
             Return
     EndSwitch
     Call(RemoveNpc, NPC_SELF)
@@ -130,7 +130,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_SyncZiplineDummyNPC1) = {
+EvtScript EVS_SyncZiplineDummyNPC1 = {
     Loop(0)
         Call(GetModelCenter, MODEL_kassya_koma)
         Call(SetNpcPos, NPC_ZiplineDummy1, LVar0, LVar1, LVar2)
@@ -140,7 +140,7 @@ EvtScript N(EVS_SyncZiplineDummyNPC1) = {
     End
 };
 
-EvtScript N(EVS_SyncZiplineDummyNPC2) = {
+EvtScript EVS_SyncZiplineDummyNPC2 = {
     Loop(0)
         Call(GetModelCenter, MODEL_kssya2_koma)
         Call(SetNpcPos, NPC_ZiplineDummy2, LVar0, LVar1, LVar2)
@@ -150,20 +150,20 @@ EvtScript N(EVS_SyncZiplineDummyNPC2) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ZiplineDummy) = {
+EvtScript EVS_NpcInit_ZiplineDummy = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(SetNpcScale, NPC_SELF, Float(0.3), 1, Float(0.3))
     Return
     End
 };
 
-NpcData N(NpcData_PassiveNPCs)[] = {
+NpcData NpcData_PassiveNPCs[] = {
     {
         .id = NPC_Kolorado,
         .pos = { 392.0f, 470.0f, 218.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Kolorado),
-        .settings = &N(NpcSettings_Kolorado),
+        .init = &EVS_NpcInit_Kolorado,
+        .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -173,8 +173,8 @@ NpcData N(NpcData_PassiveNPCs)[] = {
         .id = NPC_ZiplineDummy1,
         .pos = { 392.0f, 470.0f, 218.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_ZiplineDummy),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_ZiplineDummy,
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -184,8 +184,8 @@ NpcData N(NpcData_PassiveNPCs)[] = {
         .id = NPC_ZiplineDummy2,
         .pos = { 392.0f, 470.0f, 218.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_ZiplineDummy),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_ZiplineDummy,
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -193,7 +193,7 @@ NpcData N(NpcData_PassiveNPCs)[] = {
     },
 };
 
-NpcData N(NpcData_SpikeTop_01) = {
+NpcData NpcData_SpikeTop_01 = {
     .id = NPC_SpikeTop_01,
     .pos = { 140.0f, 670.0f, -20.0f },
     .yaw = 90,
@@ -209,14 +209,14 @@ NpcData N(NpcData_SpikeTop_01) = {
             .detectSize = { 240, 115 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop_Wander),
+    .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_SpikeTop_02) = {
+NpcData NpcData_SpikeTop_02 = {
     .id = NPC_SpikeTop_02,
     .pos = { -200.0f, 670.0f, -35.0f },
     .yaw = 270,
@@ -232,14 +232,14 @@ NpcData N(NpcData_SpikeTop_02) = {
             .detectSize = { 240, 115 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop_Wander),
+    .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_SpikeTop_03) = {
+NpcData NpcData_SpikeTop_03 = {
     .id = NPC_SpikeTop_03,
     .pos = { 30.0f, 20.0f, 320.0f },
     .yaw = 270,
@@ -255,14 +255,14 @@ NpcData N(NpcData_SpikeTop_03) = {
             .detectSize = { 180, 95 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop_Wander),
+    .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_PutridPiranha)[] = {
+NpcData NpcData_PutridPiranha[] = {
     {
         .id = NPC_Piranha,
         .pos = { 260.0f, 20.0f, 255.0f },
@@ -279,7 +279,7 @@ NpcData N(NpcData_PutridPiranha)[] = {
                 .detectSize = { 100, 50 },
             }
         },
-        .settings = &N(NpcSettings_PutridPiranha),
+        .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = PUTRID_PIRANHA_DROPS,
         .animations = PUTRID_PIRANHA_ANIMS,
@@ -288,11 +288,11 @@ NpcData N(NpcData_PutridPiranha)[] = {
     PUTRID_PIRANHA_HITBOX(NPC_Piranha_Hitbox),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_PassiveNPCs)),
-    NPC_GROUP(N(NpcData_SpikeTop_01), BTL_KZN_FORMATION_08, BTL_KZN_STAGE_01),
-    NPC_GROUP(N(NpcData_SpikeTop_02), BTL_KZN_FORMATION_09, BTL_KZN_STAGE_01),
-    NPC_GROUP(N(NpcData_SpikeTop_03), BTL_KZN_FORMATION_0A, BTL_KZN_STAGE_01),
-    NPC_GROUP(N(NpcData_PutridPiranha), BTL_KZN_FORMATION_13, BTL_KZN_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_PassiveNPCs),
+    NPC_GROUP(NpcData_SpikeTop_01, BTL_KZN_FORMATION_08, BTL_KZN_STAGE_01),
+    NPC_GROUP(NpcData_SpikeTop_02, BTL_KZN_FORMATION_09, BTL_KZN_STAGE_01),
+    NPC_GROUP(NpcData_SpikeTop_03, BTL_KZN_FORMATION_0A, BTL_KZN_STAGE_01),
+    NPC_GROUP(NpcData_PutridPiranha, BTL_KZN_FORMATION_13, BTL_KZN_STAGE_01),
     {}
 };

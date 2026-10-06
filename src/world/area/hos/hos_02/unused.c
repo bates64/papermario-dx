@@ -1,11 +1,11 @@
 #include "hos_02.h"
 
-API_CALLABLE(N(FetchEntryID)) {
+API_CALLABLE(FetchEntryID) {
     script->varTable[0] = gGameStatusPtr->entryID;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupUnused) = {
+EvtScript EVS_SetupUnused = {
     Return
     End
 };

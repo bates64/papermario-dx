@@ -1,16 +1,13 @@
 #include "common.h"
+#include "battle/script_module.h"
 #include "script_api/battle.h"
 #include "effects.h"
 #include "entity.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_super_soda
-
 extern EntityModelScript EMS_StarIcon;
 
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_724F1C)) {
+API_CALLABLE(func_802A123C_724F1C) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -24,7 +21,7 @@ API_CALLABLE(N(func_802A123C_724F1C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A12EC_724FCC)) {
+API_CALLABLE(func_802A12EC_724FCC) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
     Bytecode* args = script->ptrReadPos;
@@ -48,7 +45,7 @@ API_CALLABLE(N(func_802A12EC_724FCC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A1378_725058)) {
+API_CALLABLE(func_802A1378_725058) {
     s32 actorId = evt_get_variable(script, *script->ptrReadPos);
     Actor* actor = get_actor(actorId);
     s32 actorClass = actor->actorID & ACTOR_CLASS_MASK;
@@ -79,22 +76,9 @@ API_CALLABLE(N(func_802A1378_725058)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnFlowerRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(1, a, b, c, d);
-    return ApiStatus_DONE2;
-}
-
-#include "common/AddFP.inc.c"
-
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseOnPartner) = {
+EvtScript EVS_UseOnPartner = {
     Call(SetActorYaw, ACTOR_PLAYER, 30)
     Wait(1)
     Call(SetActorYaw, ACTOR_PLAYER, 60)
@@ -108,7 +92,7 @@ EvtScript N(EVS_UseOnPartner) = {
     Call(SetActorYaw, ACTOR_PLAYER, 180)
     Wait(10)
     Set(LVar1, LVarF)
-    ExecWait(N(UseItem))
+    ExecWait(UseItem)
     Set(LVarE, LVarA)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Thread
@@ -129,7 +113,7 @@ EvtScript N(EVS_UseOnPartner) = {
         Set(LVarE, LVar0)
         Loop(25)
             Call(GetVirtualEntityPosition, LVarA, LVar0, LVar1, LVar2)
-            Call(N(func_802A123C_724F1C), LVar0, LVar1, LVar2)
+            Call(func_802A123C_724F1C, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop
         Call(RemoveItemEntity, LVarE)
@@ -150,7 +134,7 @@ EvtScript N(EVS_UseOnPartner) = {
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LVarB)
     IfGt(LVarB, 0)
-        Call(N(func_802A12EC_724FCC), LVarB)
+        Call(func_802A12EC_724FCC, LVarB)
     EndIf
     Wait(30)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -172,9 +156,9 @@ EvtScript N(EVS_UseOnPartner) = {
     End
 };
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_SUPER_SODA)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Call(InitTargetIterator)
     Call(GetOwnerTarget, LVar0, LVar1)
     IfEq(LVar0, ACTOR_PLAYER)
@@ -184,8 +168,8 @@ EvtScript N(EVS_UseItem) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 0)
         Add(LVar1, 35)
-        Call(N(SpawnFlowerRecoveryFX), LVar0, LVar1, LVar2, 5)
-        Call(N(AddFP), 5)
+        Call(SpawnRecoverFlowerFX, LVar0, LVar1, LVar2, 5)
+        Call(AddFP, 5)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 25)
         Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, 5)
@@ -198,15 +182,19 @@ EvtScript N(EVS_UseItem) = {
         Call(ShowRecoveryShimmer, LVar0, LVar1, LVar2, 5)
         Call(InitTargetIterator)
         Call(GetOwnerTarget, LVar0, LVar1)
-        Call(N(func_802A1378_725058), 0)
+        Call(func_802A1378_725058, 0)
         Wait(20)
     Else
         Set(LVarB, 0)
         Set(LVarC, 0)
         Set(LVarF, 0)
-        ExecWait(N(EVS_UseOnPartner))
+        ExecWait(EVS_UseOnPartner)
     EndIf
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
+
+BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
+    &EVS_UseItem,
+);

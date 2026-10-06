@@ -8,7 +8,7 @@
 #include "world/common/enemy/HurtPlant/idle.inc.c"
 #include "world/common/enemy/SpearGuy/wander.inc.c"
 
-EvtScript N(EVS_YoshiKid_CryForHelp) = {
+EvtScript EVS_YoshiKid_CryForHelp = {
     Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
@@ -21,7 +21,7 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_YoshiKid) = {
+EvtScript EVS_NpcIdle_YoshiKid = {
     Call(SetSelfVar, 0, 0)
     Label(0)
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
@@ -33,7 +33,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
             EndIf
             Call(DisablePlayerInput, true)
             Call(ShowMessageAtScreenPos, MSG_CH5_00AF, 160, 40)
-            Exec(N(EVS_YoshiKid_CryForHelp))
+            Exec(EVS_YoshiKid_CryForHelp)
             Call(DisablePlayerInput, false)
             Set(LVar0, 1)
         EndIf
@@ -81,7 +81,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Set(GB_StoryProgress, STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
         Call(SetPlayerAnimation, ANIM_Mario1_ThumbsUp)
         Wait(120)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Else
         Wait(40)
@@ -93,7 +93,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid) = {
+EvtScript EVS_NpcInit_YoshiKid = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN08_SavedYoshi, false)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -101,7 +101,7 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Red_Cry)
             Call(SetNpcYaw, NPC_SELF, 90)
             Call(SetNpcPos, NPC_SELF, -391, 0, -164)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid))
             Return
         EndIf
     EndIf
@@ -110,14 +110,14 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_MBush_01) = {
+EvtScript EVS_NpcInit_MBush_01 = {
     Call(SetNpcCollisionSize, NPC_SELF, 60, 30)
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_MBush)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_MBush))
     Return
     End
 };
 
-NpcData N(NpcData_SpearGuy)[] = {
+NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
         .pos = { 255.0f, 15.0f, -65.0f },
@@ -135,91 +135,91 @@ NpcData N(NpcData_SpearGuy)[] = {
             }
         },
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
-        .settings = &N(NpcSettings_SpearGuy_Wander),
+        .settings = &NpcSettings_SpearGuy_Wander,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .limitAnimations = N(LimitAnims_SpearGuy),
+        .limitAnimations = LimitAnims_SpearGuy,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
 };
 
-NpcData N(NpcData_HurtPlant) = {
+NpcData NpcData_HurtPlant = {
     .id = NPC_HurtPlant,
     .pos = { 400.0f, 0.0f, 235.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HurtPlant),
+    .settings = &NpcSettings_HurtPlant,
     .flags = HURT_PLANT_FLAGS,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
-    .limitAnimations = N(LimitAnims_HurtPlant),
+    .limitAnimations = LimitAnims_HurtPlant,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_MBush_01) = {
+NpcData NpcData_MBush_01 = {
     .id = NPC_MBush_01,
     .pos = { -407.0f, 0.0f, -42.0f },
     .yaw = 90,
-    .settings = &N(NpcSettings_MBush),
+    .settings = &NpcSettings_MBush,
     .flags = MBUSH_FLAGS,
     .drops = MBUSH_DROPS,
     .animations = MBUSH_ANIMS,
     .tattle = MSG_NpcTattle_MBush,
-    .init = &N(EVS_NpcInit_MBush_01),
+    .init = &EVS_NpcInit_MBush_01,
 };
 
-NpcData N(NpcData_MBush_02) = {
+NpcData NpcData_MBush_02 = {
     .id = NPC_MBush_02,
     .pos = { -120.0f, 0.0f, -395.0f },
     .yaw = 90,
-    .settings = &N(NpcSettings_MBush),
+    .settings = &NpcSettings_MBush,
     .flags = MBUSH_FLAGS,
     .drops = MBUSH_DROPS,
     .animations = MBUSH_ANIMS,
     .tattle = MSG_NpcTattle_MBush,
 };
 
-NpcData N(NpcData_HeartPlant_01) = {
+NpcData NpcData_HeartPlant_01 = {
     .id = NPC_HeartPlant_01,
     .pos = { -219.0f, 0.0f, 420.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HeartPlant),
+    .settings = &NpcSettings_HeartPlant,
     .flags = HEART_PLANT_FLAGS,
     .drops = NO_DROPS,
     .animations = HEART_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_HeartPlant_02) = {
+NpcData NpcData_HeartPlant_02 = {
     .id = NPC_HeartPlant_02,
     .pos = { -157.0f, 0.0f, 452.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HeartPlant),
+    .settings = &NpcSettings_HeartPlant,
     .flags = HEART_PLANT_FLAGS,
     .drops = NO_DROPS,
     .animations = HEART_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_YoshiKid) = {
+NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
     .pos = { -450.0f, 0.0f, -290.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_YoshiKid),
-    .settings = &N(NpcSettings_YoshiKid),
+    .init = &EVS_NpcInit_YoshiKid,
+    .settings = &NpcSettings_YoshiKid,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = YOSHI_KID_RED_ANIMS,
     .tattle = MSG_NpcTattle_RedYoshiKid,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_SpearGuy), BTL_JAN_FORMATION_01, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_HurtPlant), BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_MBush_01), BTL_JAN_FORMATION_10, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_MBush_02), BTL_JAN_FORMATION_0E, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_HeartPlant_01)),
-    NPC_GROUP(N(NpcData_HeartPlant_02)),
-    NPC_GROUP(N(NpcData_YoshiKid)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_01, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HurtPlant, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_MBush_01, BTL_JAN_FORMATION_10, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_MBush_02, BTL_JAN_FORMATION_0E, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HeartPlant_01),
+    NPC_GROUP(NpcData_HeartPlant_02),
+    NPC_GROUP(NpcData_YoshiKid),
     {}
 };

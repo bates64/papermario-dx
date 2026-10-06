@@ -4,9 +4,9 @@
 #define TONGUE_COPY_MODEL_ID 10000
 
 // tongue wiggle rate
-u16 N(TongueWiggleTime) = 0;
+u16 TongueWiggleTime = 0;
 
-void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
+void add_tongue_deformation(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
     PlayerStatus* player = &gPlayerStatus;
     Vtx_t* vs;
     Vtx_t* vd;
@@ -56,26 +56,26 @@ void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
 }
 
 // conforms to ModelCustomGfxBuilderFunc
-void N(make_tongue_gfx)(s32 index) {
+void make_tongue_gfx(s32 index) {
     Vtx* vtxSrc;
     Vtx* vtxCopy;
     s32 numCopied;
 
     mdl_get_copied_vertices(VTX_COPY_1, &vtxSrc, &vtxCopy, &numCopied);
-    N(add_tongue_deformation)(vtxSrc, vtxCopy, numCopied, N(TongueWiggleTime));
+    add_tongue_deformation(vtxSrc, vtxCopy, numCopied, TongueWiggleTime);
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_1));
 
-    N(TongueWiggleTime) += TONGUE_WIGGLE_RATE;
+    TongueWiggleTime += TONGUE_WIGGLE_RATE;
 }
 
 // stores the effective height offset of the tongue at a point given by Var0/Var1/Var2
 // in Var0. this value is the offset from a neutral position used for collision,
 // ignoring minor undulations and deformation imposed by the player.
-API_CALLABLE(N(GetEffectiveTongueOffset)) {
+API_CALLABLE(GetEffectiveTongueOffset) {
     f32 amplitude = 2.0f * sin_rad(
         (f32)script->varTable[0] * 0.06 +
         (f32)script->varTable[2] * 0.03f +
-        (f32)N(TongueWiggleTime) * 0.01f);
+        (f32)TongueWiggleTime * 0.01f);
 
     f32 percent = 200.0f - (f32)script->varTable[0];
     if (percent < 0.0f){
@@ -89,10 +89,10 @@ API_CALLABLE(N(GetEffectiveTongueOffset)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_WiggleTongue) = {
+EvtScript EVS_WiggleTongue = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(N(GetEffectiveTongueOffset))
+        Call(GetEffectiveTongueOffset)
         Call(TranslateModel, TONGUE_COPY_MODEL_ID, 0, LVar0, 0)
         Call(UpdateColliderTransform, COLLIDER_sita)
         Wait(1)
@@ -101,13 +101,13 @@ EvtScript N(EVS_WiggleTongue) = {
     End
 };
 
-EvtScript N(EVS_StartTongueWiggle) = {
+EvtScript EVS_StartTongueWiggle = {
     Call(CloneModel, MODEL_sita, TONGUE_COPY_MODEL_ID)
     Call(ParentColliderToModel, COLLIDER_sita, TONGUE_COPY_MODEL_ID)
     Call(EnableModel, TONGUE_COPY_MODEL_ID, false)
-    Exec(N(EVS_WiggleTongue))
+    Exec(EVS_WiggleTongue)
     Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_sita, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(make_tongue_gfx)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(make_tongue_gfx), nullptr)
     Call(SetModelCustomGfx, MODEL_sita, CUSTOM_GFX_1, -1)
     Call(HidePlayerShadow, true)
     Return

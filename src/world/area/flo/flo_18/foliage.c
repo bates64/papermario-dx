@@ -2,7 +2,7 @@
 
 #include "foliage.h"
 
-EvtScript N(EVS_SetupFoliage) = {
+EvtScript EVS_SetupFoliage = {
     Return
     End
 };

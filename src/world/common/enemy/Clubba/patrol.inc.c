@@ -3,7 +3,7 @@
 #include "world/common/enemy/Clubba/hitbox.inc.c"
 #include "world/common/ai/ClubbaPatrolAI.inc.c"
 
-MobileAISettings N(AISettings_Clubba_Patrol) = {
+MobileAISettings AISettings_Clubba_Patrol = {
     .moveSpeed = 1.5f,
     .moveTime = 20,
     .waitTime = 30,
@@ -18,21 +18,21 @@ MobileAISettings N(AISettings_Clubba_Patrol) = {
     .loiterMode = 3,
 };
 
-EvtScript N(EVS_NpcAI_Clubba_Patrol) = {
+EvtScript EVS_NpcAI_Clubba_Patrol = {
     Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 8)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 12)
-    Call(N(ClubbaPatrolAI_Main), Ref(N(AISettings_Clubba_Patrol)))
+    Call(ClubbaPatrolAI_Main, Ref(AISettings_Clubba_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Clubba_Patrol) = {
+NpcSettings NpcSettings_Clubba_Patrol = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_CLUBBA,
-    .doAI = &N(EVS_NpcAI_Clubba_Patrol),
+    .doAI = &EVS_NpcAI_Clubba_Patrol,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

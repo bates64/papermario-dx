@@ -3,41 +3,41 @@
 
 #include "world/common/npc/Penguin/base.h"
 
-NpcSettings N(NpcSettings_Snowman) = {
+NpcSettings NpcSettings_Snowman = {
     .height = 60,
     .radius = 40,
     .level = ACTOR_LEVEL_NONE,
 };
 
-ITEM_LIST(N(BucketList), ITEM_SNOWMAN_BUCKET);
+ITEM_LIST(BucketList, ITEM_SNOWMAN_BUCKET);
 
-ITEM_LIST(N(ScarfList), ITEM_SNOWMAN_SCARF);
+ITEM_LIST(ScarfList, ITEM_SNOWMAN_SCARF);
 
-EvtScript N(EVS_NpcInteract_Snowman_01) = {
+EvtScript EVS_NpcInteract_Snowman_01 = {
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Snowman_02) = {
+EvtScript EVS_NpcInteract_Snowman_02 = {
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Snowman_04) = {
+EvtScript EVS_NpcInteract_Snowman_04 = {
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Snowman_05) = {
+EvtScript EVS_NpcInteract_Snowman_05 = {
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
     Return
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Scarf) = {
+EvtScript EVS_ItemPrompt_Scarf = {
     Call(DisablePlayerInput, true)
     Call(FindItem, ITEM_SNOWMAN_SCARF, LVar0)
     IfNe(LVar0, -1)
@@ -59,7 +59,7 @@ EvtScript N(EVS_ItemPrompt_Scarf) = {
                     Wait(20)
                     Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                     Set(LVar0, 0)
-                    ExecWait(N(EVS_Scene_SnowmenSpeak))
+                    ExecWait(EVS_Scene_SnowmenSpeak)
                 EndIf
         EndSwitch
     Else
@@ -71,13 +71,13 @@ EvtScript N(EVS_ItemPrompt_Scarf) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Snowman_03) = {
-    BindPadlock(Ref(N(EVS_ItemPrompt_Scarf)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ScarfList)), 0, 1)
+EvtScript EVS_NpcInteract_Snowman_03 = {
+    BindPadlock(Ref(EVS_ItemPrompt_Scarf), TRIGGER_FORCE_ACTIVATE, 0, Ref(ScarfList), 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_ItemPrompt_Bucket) = {
+EvtScript EVS_ItemPrompt_Bucket = {
     Call(DisablePlayerInput, true)
     Call(FindItem, ITEM_SNOWMAN_BUCKET, LVar0)
     IfNe(LVar0, -1)
@@ -99,7 +99,7 @@ EvtScript N(EVS_ItemPrompt_Bucket) = {
                     Wait(20)
                     Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                     Set(LVar0, 1)
-                    ExecWait(N(EVS_Scene_SnowmenSpeak))
+                    ExecWait(EVS_Scene_SnowmenSpeak)
                 EndIf
         EndSwitch
     Else
@@ -111,110 +111,110 @@ EvtScript N(EVS_ItemPrompt_Bucket) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Snowman_06) = {
-    BindPadlock(Ref(N(EVS_ItemPrompt_Bucket)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(BucketList)), 0, 1)
+EvtScript EVS_NpcInteract_Snowman_06 = {
+    BindPadlock(Ref(EVS_ItemPrompt_Bucket), TRIGGER_FORCE_ACTIVATE, 0, Ref(BucketList), 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Snowman_01) = {
+EvtScript EVS_NpcIdle_Snowman_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Snowman_02) = {
+EvtScript EVS_NpcIdle_Snowman_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Snowman_03) = {
+EvtScript EVS_NpcIdle_Snowman_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Snowman_04) = {
+EvtScript EVS_NpcIdle_Snowman_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Snowman_05) = {
+EvtScript EVS_NpcIdle_Snowman_05 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Snowman_06) = {
+EvtScript EVS_NpcIdle_Snowman_06 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Snowman_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_01)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_01)))
+EvtScript EVS_NpcInit_Snowman_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_01))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_01))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Snowman_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_02)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_02)))
+EvtScript EVS_NpcInit_Snowman_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_02))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_02))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Snowman_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_03)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_03)))
+EvtScript EVS_NpcInit_Snowman_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_03))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_03))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Snowman_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_04)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_04)))
+EvtScript EVS_NpcInit_Snowman_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_04))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_04))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Snowman_05) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_05)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_05)))
+EvtScript EVS_NpcInit_Snowman_05 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_05))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_05))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Snowman_06) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_06)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_06)))
+EvtScript EVS_NpcInit_Snowman_06 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Snowman_06))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Snowman_06))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Dummy) = {
+EvtScript EVS_NpcInit_Dummy = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-NpcData N(NpcData_Snowmen)[] = {
+NpcData NpcData_Snowmen[] = {
     {
         .id = NPC_Snowman_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Snowman_01),
-        .settings = &N(NpcSettings_Snowman),
+        .init = &EVS_NpcInit_Snowman_01,
+        .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -224,8 +224,8 @@ NpcData N(NpcData_Snowmen)[] = {
         .id = NPC_Snowman_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Snowman_02),
-        .settings = &N(NpcSettings_Snowman),
+        .init = &EVS_NpcInit_Snowman_02,
+        .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -235,8 +235,8 @@ NpcData N(NpcData_Snowmen)[] = {
         .id = NPC_Snowman_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Snowman_03),
-        .settings = &N(NpcSettings_Snowman),
+        .init = &EVS_NpcInit_Snowman_03,
+        .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -246,8 +246,8 @@ NpcData N(NpcData_Snowmen)[] = {
         .id = NPC_Snowman_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Snowman_04),
-        .settings = &N(NpcSettings_Snowman),
+        .init = &EVS_NpcInit_Snowman_04,
+        .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -257,8 +257,8 @@ NpcData N(NpcData_Snowmen)[] = {
         .id = NPC_Snowman_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Snowman_05),
-        .settings = &N(NpcSettings_Snowman),
+        .init = &EVS_NpcInit_Snowman_05,
+        .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -268,8 +268,8 @@ NpcData N(NpcData_Snowmen)[] = {
         .id = NPC_Snowman_06,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Snowman_06),
-        .settings = &N(NpcSettings_Snowman),
+        .init = &EVS_NpcInit_Snowman_06,
+        .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -277,19 +277,19 @@ NpcData N(NpcData_Snowmen)[] = {
     },
 };
 
-NpcData N(NpcData_Dummy) = {
+NpcData NpcData_Dummy = {
     .id = NPC_LetterDummy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Dummy),
-    .settings = &N(NpcSettings_Snowman),
+    .init = &EVS_NpcInit_Dummy,
+    .settings = &NpcSettings_Snowman,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = PENGUIN_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Snowmen)),
-    NPC_GROUP(N(NpcData_Dummy)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Snowmen),
+    NPC_GROUP(NpcData_Dummy),
     {}
 };

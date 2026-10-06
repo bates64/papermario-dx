@@ -1,17 +1,17 @@
 #include "kkj_14.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetPeachDepressed)) {
+API_CALLABLE(SetPeachDepressed) {
     gGameStatusPtr->peachFlags |= PEACH_FLAG_DEPRESSED;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ClearPeachDepressed)) {
+API_CALLABLE(ClearPeachDepressed) {
     gGameStatusPtr->peachFlags &= ~PEACH_FLAG_DEPRESSED;
     return ApiStatus_DONE2;
 }
 
-Vec3f N(TwinkEnterPath)[] = {
+Vec3f TwinkEnterPath[] = {
     {  520.0,    70.0,  -62.0 },
     {  400.0,    57.0,   47.0 },
     {  300.0,    50.0,   40.0 },
@@ -19,7 +19,7 @@ Vec3f N(TwinkEnterPath)[] = {
     {  320.0,    65.0,    0.0 },
 };
 
-Vec3f N(TwinkExitPath)[] = {
+Vec3f TwinkExitPath[] = {
     {  352.0,    50.0,   -2.0 },
     {  300.0,    85.0,    0.0 },
     {  350.0,   120.0,    0.0 },
@@ -27,7 +27,7 @@ Vec3f N(TwinkExitPath)[] = {
     {  430.0,    90.0,  -15.0 },
 };
 
-EvtScript N(EVS_OpenDoor_Ch0) = {
+EvtScript EVS_OpenDoor_Ch0 = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 120, 14, EASING_COS_FAST_OVERSHOOT)
     Loop(0)
@@ -42,7 +42,7 @@ EvtScript N(EVS_OpenDoor_Ch0) = {
     End
 };
 
-EvtScript N(EVS_CloseDoor_Ch0) = {
+EvtScript EVS_CloseDoor_Ch0 = {
     Call(MakeLerp, 120, 0, 8, EASING_COS_FAST_OVERSHOOT)
     Loop(0)
         Call(UpdateLerp)
@@ -57,7 +57,7 @@ EvtScript N(EVS_CloseDoor_Ch0) = {
     End
 };
 
-EvtScript N(EVS_TwinkTappingOnGlassDoor) = {
+EvtScript EVS_TwinkTappingOnGlassDoor = {
     Loop(0)
         Call(NpcFlyTo, NPC_PARTNER, 520, 70, -60, 30 * DT, -10, EASING_LINEAR)
         Call(NpcFlyTo, NPC_PARTNER, 520, 70, -61, 10 * DT, -5, EASING_LINEAR)
@@ -69,9 +69,9 @@ EvtScript N(EVS_TwinkTappingOnGlassDoor) = {
     End
 };
 
-EvtScript N(EVS_Scene_Chapter0) = {
+EvtScript EVS_Scene_Chapter0 = {
     Call(DisablePlayerInput, true)
-    Call(N(SetPeachDepressed))
+    Call(SetPeachDepressed)
     Call(SetPlayerAnimation, ANIM_Peach2_SadStill)
     Call(InterpPlayerYaw, 270, 0)
     Call(DisablePartnerAI, false)
@@ -96,7 +96,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(PlayerMoveTo, 20, 30, 30 * DT)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_SadTalk, ANIM_Peach2_SadStill, 5, MSG_Peach_0019)
     Wait(30 * DT)
-    Call(N(ClearPeachDepressed))
+    Call(ClearPeachDepressed)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
     Call(PlaySoundAtPlayer, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     Call(ShowEmote, 0, EMOTE_EXCLAMATION, -45, 30, EMOTER_PLAYER, 0, 0, 0, 0)
@@ -109,7 +109,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(SetCamPosA, CAM_DEFAULT, -330, 32)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(3 * DT)
-    Exec(N(EVS_OpenDoor_Ch0))
+    Exec(EVS_OpenDoor_Ch0)
     Wait(10 * DT)
     Call(SetNpcVar, NPC_Bowser, 0, 1)
     Thread
@@ -208,7 +208,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Talk, ANIM_Peach2_TalkIdle, 5, MSG_Peach_0021)
     Set(AF_KKJ14_TwinkFlightSync, false)
-    ExecGetTID(N(EVS_TwinkTappingOnGlassDoor), LVarA)
+    ExecGetTID(EVS_TwinkTappingOnGlassDoor, LVarA)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 413, 0, -66)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
@@ -242,7 +242,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     EndLoop
     Call(SetMusic, 0, SONG_TWINK_THEME, 0, VOL_LEVEL_FULL)
     Thread
-        Call(LoadPath, 100 * DT, Ref(N(TwinkEnterPath)), ARRAY_COUNT(N(TwinkEnterPath)), EASING_LINEAR)
+        Call(LoadPath, 100 * DT, Ref(TwinkEnterPath), ARRAY_COUNT(TwinkEnterPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -435,7 +435,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
         EndLoop
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
-    Call(LoadPath, 60 * DT, Ref(N(TwinkExitPath)), ARRAY_COUNT(N(TwinkExitPath)), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, Ref(TwinkExitPath), ARRAY_COUNT(TwinkExitPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)

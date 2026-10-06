@@ -35,7 +35,7 @@ static s32 get_entity_below_spinning_flower(void) {
     return player_raycast_below_cam_relative(&gPlayerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ);
 }
 
-void action_update_use_spinning_flower(void) {
+export void action_update_use_spinning_flower(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Entity* entityByIndex;
     s32 entityID;

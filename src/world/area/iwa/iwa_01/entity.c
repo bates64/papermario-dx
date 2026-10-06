@@ -1,7 +1,7 @@
 #include "iwa_01.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_SavePoint), -650, 123, 375, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_ArrowSign), -503, 63, 225, 0, 90, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_ArrowSign), 825, 170, 115, 0, 90, MAKE_ENTITY_END)

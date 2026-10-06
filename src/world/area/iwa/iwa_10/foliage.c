@@ -2,9 +2,9 @@
 
 #include "foliage.h"
 
-FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_k4);
+FoliageModelList Bush1_BushModels = FOLIAGE_MODEL_LIST(MODEL_k4);
 
-FoliageDropList N(Bush1_Drops) = {
+FoliageDropList Bush1_Drops = {
     .count = 1,
     .drops = {
         {
@@ -17,22 +17,22 @@ FoliageDropList N(Bush1_Drops) = {
     }
 };
 
-FoliageVectorList N(Bush1_Effects) = {
+FoliageVectorList Bush1_Effects = {
     .count = 1,
     .vectors = {
         { -839.0f, 15.0f, 521.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush1) = {
-    .bush = &N(Bush1_BushModels),
-    .drops = &N(Bush1_Drops),
-    .vectors = &N(Bush1_Effects),
+SearchBushConfig SearchBush_Bush1 = {
+    .bush = &Bush1_BushModels,
+    .drops = &Bush1_Drops,
+    .vectors = &Bush1_Effects,
 };
 
-FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_k5);
+FoliageModelList Bush2_BushModels = FOLIAGE_MODEL_LIST(MODEL_k5);
 
-FoliageDropList N(Bush2_Drops) = {
+FoliageDropList Bush2_Drops = {
     .count = 1,
     .drops = {
         {
@@ -45,22 +45,22 @@ FoliageDropList N(Bush2_Drops) = {
     }
 };
 
-FoliageVectorList N(Bush2_Effects) = {
+FoliageVectorList Bush2_Effects = {
     .count = 1,
     .vectors = {
         { -691.0f, 22.0f, 384.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush2) = {
-    .bush = &N(Bush2_BushModels),
-    .drops = &N(Bush2_Drops),
-    .vectors = &N(Bush2_Effects),
+SearchBushConfig SearchBush_Bush2 = {
+    .bush = &Bush2_BushModels,
+    .drops = &Bush2_Drops,
+    .vectors = &Bush2_Effects,
 };
 
-FoliageModelList N(Bush3_BushModels) = FOLIAGE_MODEL_LIST(MODEL_k6);
+FoliageModelList Bush3_BushModels = FOLIAGE_MODEL_LIST(MODEL_k6);
 
-FoliageDropList N(Bush3_Drops) = {
+FoliageDropList Bush3_Drops = {
     .count = 1,
     .drops = {
         {
@@ -73,22 +73,22 @@ FoliageDropList N(Bush3_Drops) = {
     }
 };
 
-FoliageVectorList N(Bush3_Effects) = {
+FoliageVectorList Bush3_Effects = {
     .count = 1,
     .vectors = {
         { -932.0f, 21.0f, 405.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush3) = {
-    .bush = &N(Bush3_BushModels),
-    .drops = &N(Bush3_Drops),
-    .vectors = &N(Bush3_Effects),
+SearchBushConfig SearchBush_Bush3 = {
+    .bush = &Bush3_BushModels,
+    .drops = &Bush3_Drops,
+    .vectors = &Bush3_Effects,
 };
 
-FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_k7);
+FoliageModelList Bush4_BushModels = FOLIAGE_MODEL_LIST(MODEL_k7);
 
-FoliageDropList N(Bush4_Drops) = {
+FoliageDropList Bush4_Drops = {
     .count = 1,
     .drops = {
         {
@@ -100,27 +100,27 @@ FoliageDropList N(Bush4_Drops) = {
     }
 };
 
-FoliageVectorList N(Bush4_Effects) = {
+FoliageVectorList Bush4_Effects = {
     .count = 1,
     .vectors = {
         { -800.0f, 23.0f, 280.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush4) = {
-    .bush = &N(Bush4_BushModels),
-    .drops = &N(Bush4_Drops),
-    .vectors = &N(Bush4_Effects),
+SearchBushConfig SearchBush_Bush4 = {
+    .bush = &Bush4_BushModels,
+    .drops = &Bush4_Drops,
+    .vectors = &Bush4_Effects,
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(SearchBush_Bush1)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(SearchBush_Bush1))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_k4, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush2)))
+    Set(LVar0, Ref(SearchBush_Bush2))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_k5, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush3)))
+    Set(LVar0, Ref(SearchBush_Bush3))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_k6, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush4)))
+    Set(LVar0, Ref(SearchBush_Bush4))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_k7, 1, 0)
     Return
     End

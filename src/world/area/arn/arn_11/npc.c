@@ -2,7 +2,7 @@
 
 #include "world/common/npc/TubbasHeart/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_TubbasHeart) = {
+EvtScript EVS_NpcIdle_TubbasHeart = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         IfNe(LVar0, 0)
@@ -26,7 +26,7 @@ EvtScript N(EVS_NpcIdle_TubbasHeart) = {
     End
 };
 
-EvtScript N(EVS_Heart_OpenDoor) = {
+EvtScript EVS_Heart_OpenDoor = {
     Wait(15)
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 80, 10, EASING_LINEAR)
@@ -42,7 +42,7 @@ EvtScript N(EVS_Heart_OpenDoor) = {
     End
 };
 
-EvtScript N(EVS_Heart_CloseDoor) = {
+EvtScript EVS_Heart_CloseDoor = {
     Call(MakeLerp, 80, 0, 10, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -59,7 +59,7 @@ EvtScript N(EVS_Heart_CloseDoor) = {
 
 #define SUBLIST_DONE -10000
 
-Vec3i N(HeartJumpPath)[] = {
+Vec3i HeartJumpPath[] = {
     {    100,    30,    70 },
     {     25,    30,    80 },
     { SUBLIST_DONE, 0, 0 },
@@ -69,7 +69,7 @@ Vec3i N(HeartJumpPath)[] = {
     { SUBLIST_DONE, 0, 0 },
 };
 
-EvtScript N(EVS_Scene_HeartEscape) = {
+EvtScript EVS_Scene_HeartEscape = {
     Thread
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -101,7 +101,7 @@ EvtScript N(EVS_Scene_HeartEscape) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(PlayerFaceNpc, NPC_TubbasHeart, true)
-    UseBuf(Ref(N(HeartJumpPath)))
+    UseBuf(Ref(HeartJumpPath))
     Loop(0)
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, SUBLIST_DONE)
@@ -111,7 +111,7 @@ EvtScript N(EVS_Scene_HeartEscape) = {
         Call(NpcJump0, NPC_TubbasHeart, LVar0, LVar1, LVar2, 12 * DT)
         Wait(1)
     EndLoop
-    Exec(N(EVS_Heart_OpenDoor))
+    Exec(EVS_Heart_OpenDoor)
     Loop(0)
         BufRead3(LVar0, LVar1, LVar2)
         IfEq(LVar0, SUBLIST_DONE)
@@ -121,7 +121,7 @@ EvtScript N(EVS_Scene_HeartEscape) = {
         Call(NpcJump0, NPC_TubbasHeart, LVar0, LVar1, LVar2, 12 * DT)
         Wait(1)
     EndLoop
-    Exec(N(EVS_Heart_CloseDoor))
+    Exec(EVS_Heart_CloseDoor)
     Wait(30 * DT)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -137,30 +137,30 @@ EvtScript N(EVS_Scene_HeartEscape) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TubbasHeart) = {
+EvtScript EVS_NpcInit_TubbasHeart = {
     IfGe(GB_StoryProgress, STORY_CH3_HEART_FLED_FIRST_TUNNEL)
         Call(RemoveNpc, NPC_SELF)
     Else
         Call(SetSelfVar, 0, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TubbasHeart)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_Scene_HeartEscape)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_HeartEscape))
     EndIf
     Return
     End
 };
 
-NpcData N(NpcData_TubbasHeart) = {
+NpcData NpcData_TubbasHeart = {
     .id = NPC_TubbasHeart,
     .pos = { 119.0f, 60.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_TubbasHeart),
-    .settings = &N(NpcSettings_TubbasHeart),
+    .init = &EVS_NpcInit_TubbasHeart,
+    .settings = &NpcSettings_TubbasHeart,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = TUBBAS_HEART_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TubbasHeart), BTL_ARN_FORMATION_0F),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TubbasHeart, BTL_ARN_FORMATION_0F),
     {}
 };

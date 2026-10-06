@@ -1,6 +1,6 @@
 #include "common.h"
 
-API_CALLABLE(N(CanPlayerLoseAction)) {
+static API_CALLABLE(CanPlayerLoseAction) {
     Bytecode* args = script->ptrReadPos;
 
     if (get_actor(script->owner1.actorID)->debuff != STATUS_KEY_SHRINK) {

@@ -1,6 +1,6 @@
 #include "mim_11.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_ARRIVED_AT_BOOS_MANSION)
             Call(SetMusic, 0, SONG_BOOS_MANSION, BGM_VARIATION_1, VOL_LEVEL_FULL)

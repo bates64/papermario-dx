@@ -3,7 +3,7 @@
 #include "world/common/enemy/HammerBros/wander.inc.c"
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 
-NpcData N(NpcData_Koopatrol_01) = {
+NpcData NpcData_Koopatrol_01 = {
     .id = NPC_Koopatrol_01,
     .pos = { -251.0f, 0.0f, -30.0f },
     .yaw = 270,
@@ -19,13 +19,13 @@ NpcData N(NpcData_Koopatrol_01) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcData N(NpcData_Koopatrol_02) = {
+NpcData NpcData_Koopatrol_02 = {
     .id = NPC_Koopatrol_02,
     .pos = { 100.0f, 0.0f, -30.0f },
     .yaw = 270,
@@ -41,13 +41,13 @@ NpcData N(NpcData_Koopatrol_02) = {
             .detectSize = { 300 },
         }
     },
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcData N(NpcData_HammerBros_01)[] = {
+NpcData NpcData_HammerBros_01[] = {
     {
         .id = NPC_HammerBros,
         .pos = { 450.0f, 0.0f, -30.0f },
@@ -64,7 +64,7 @@ NpcData N(NpcData_HammerBros_01)[] = {
                 .detectSize = { 300 },
             }
         },
-        .settings = &N(NpcSettings_HammerBros_Wander),
+        .settings = &NpcSettings_HammerBros_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = HAMMER_BROS_DROPS,
         .animations = HAMMER_BROS_ANIMS,
@@ -77,9 +77,9 @@ NpcData N(NpcData_HammerBros_01)[] = {
     HAMMER_BROS_HAMMER_HITBOX(NPC_HammerBros + 6),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Koopatrol_01), BTL_KPA_FORMATION_18, BTL_KPA_STAGE_00),
-    NPC_GROUP(N(NpcData_Koopatrol_02), BTL_KPA_FORMATION_1A, BTL_KPA_STAGE_00),
-    NPC_GROUP(N(NpcData_HammerBros_01), BTL_KPA_FORMATION_0F, BTL_KPA_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Koopatrol_01, BTL_KPA_FORMATION_18, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_Koopatrol_02, BTL_KPA_FORMATION_1A, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_HammerBros_01, BTL_KPA_FORMATION_0F, BTL_KPA_STAGE_00),
     {}
 };

@@ -2,42 +2,42 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-s32 N(CloneSet1)[] = {
+s32 CloneSet1[] = {
     CLONED_MODEL(0), CLONED_MODEL(1), CLONED_MODEL(2), CLONED_MODEL(3)
 };
 
-s32 N(CloneSet2)[] = {
+s32 CloneSet2[] = {
     CLONED_MODEL(4), CLONED_MODEL(5), CLONED_MODEL(6), CLONED_MODEL(7)
 };
 
-s32 N(CloneSet3)[] = {
+s32 CloneSet3[] = {
     CLONED_MODEL(8), CLONED_MODEL(9), CLONED_MODEL(10), CLONED_MODEL(11)
 };
 
-s32 N(CloneSet4)[] = {
+s32 CloneSet4[] = {
     CLONED_MODEL(12), CLONED_MODEL(13), CLONED_MODEL(14), CLONED_MODEL(15)
 };
 
-s32 N(CloneSet5)[] = {
+s32 CloneSet5[] = {
     CLONED_MODEL(16), CLONED_MODEL(17), CLONED_MODEL(18), CLONED_MODEL(19)
 };
 
-s32 N(OriginalModels)[] = {
+s32 OriginalModels[] = {
     MODEL_d_me, MODEL_body, MODEL_baketu, MODEL_mafu
 };
 
-s32* N(SnowmanModelSets)[] = {
-    N(CloneSet1),
-    N(CloneSet2),
-    N(CloneSet3),
-    N(CloneSet4),
-    N(CloneSet5),
-    N(OriginalModels),
+s32* SnowmanModelSets[] = {
+    CloneSet1,
+    CloneSet2,
+    CloneSet3,
+    CloneSet4,
+    CloneSet5,
+    OriginalModels,
 };
 
-EvtScript N(EVS_SetSnowmanPosition) = {
+EvtScript EVS_SetSnowmanPosition = {
     Call(SetNpcPos, LVar0, LVar1, LVar2, LVar3)
-    UseBuf(Ref(N(SnowmanModelSets)))
+    UseBuf(Ref(SnowmanModelSets))
     Add(LVar0, 1)
     Loop(LVar0)
         BufRead1(LVar4)
@@ -55,10 +55,10 @@ EvtScript N(EVS_SetSnowmanPosition) = {
     End
 };
 
-EvtScript N(EVS_SnowmanJump) = {
+EvtScript EVS_SnowmanJump = {
     Thread
         Set(LVarA, LVar0)
-        UseBuf(Ref(N(SnowmanModelSets)))
+        UseBuf(Ref(SnowmanModelSets))
         Add(LVarA, 1)
         Loop(LVarA)
             BufRead1(LVarB)
@@ -82,7 +82,7 @@ EvtScript N(EVS_SnowmanJump) = {
     End
 };
 
-EvtScript N(EVS_SnowmanMove) = {
+EvtScript EVS_SnowmanMove = {
     Call(GetNpcPos, LVar0, LVar5, LVar6, LVar7)
     SetF(LVar8, LVar1)
     SetF(LVar9, LVar2)
@@ -102,14 +102,14 @@ EvtScript N(EVS_SnowmanMove) = {
         SetF(LVar2, LVar6)
         SetF(LVar3, LVar7)
         Set(LVar4, 20)
-        ExecWait(N(EVS_SnowmanJump))
+        ExecWait(EVS_SnowmanJump)
         Call(PlaySoundAtNpc, LVar0, SOUND_SAM_SNOWMAN_JUMP, SOUND_SPACE_DEFAULT)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_Scene_SnowmenSpeak) = {
+EvtScript EVS_Scene_SnowmenSpeak = {
     Wait(20 * DT)
     IfEq(LVar0, 0)
         Call(GetNpcPos, NPC_Snowman_03, LVar0, LVar1, LVar2)
@@ -207,38 +207,38 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
     SetF(LVar2, Float(0.0))
     SetF(LVar3, Float(-180.0))
     SetF(LVar4, Float(5.0))
-    Exec(N(EVS_SnowmanMove))
+    Exec(EVS_SnowmanMove)
     Set(LVar0, NPC_Snowman_02)
     SetF(LVar1, Float(-125.0))
     SetF(LVar2, Float(0.0))
     SetF(LVar3, Float(-220.0))
     SetF(LVar4, Float(5.0))
-    Exec(N(EVS_SnowmanMove))
+    Exec(EVS_SnowmanMove)
     Set(LVar0, NPC_Snowman_03)
     SetF(LVar1, Float(-75.0))
     SetF(LVar2, Float(0.0))
     SetF(LVar3, Float(-260.0))
     SetF(LVar4, Float(5.0))
-    Exec(N(EVS_SnowmanMove))
+    Exec(EVS_SnowmanMove)
     Set(LVar0, NPC_Snowman_04)
     SetF(LVar1, Float(75.0))
     SetF(LVar2, Float(0.0))
     SetF(LVar3, Float(-260.0))
     SetF(LVar4, Float(5.0))
-    Exec(N(EVS_SnowmanMove))
+    Exec(EVS_SnowmanMove)
     Set(LVar0, NPC_Snowman_05)
     SetF(LVar1, Float(125.0))
     SetF(LVar2, Float(0.0))
     SetF(LVar3, Float(-220.0))
     SetF(LVar4, Float(5.0))
-    Exec(N(EVS_SnowmanMove))
+    Exec(EVS_SnowmanMove)
     Wait(1)
     Set(LVar0, NPC_Snowman_06)
     SetF(LVar1, Float(175.0))
     SetF(LVar2, Float(0.0))
     SetF(LVar3, Float(-180.0))
     SetF(LVar4, Float(5.0))
-    ExecWait(N(EVS_SnowmanMove))
+    ExecWait(EVS_SnowmanMove)
     Wait(80 * DT)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 200, Float(1.0))
@@ -329,7 +329,7 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
     End
 };
 
-EvtScript N(EVS_SetupSnowmen) = {
+EvtScript EVS_SetupSnowmen = {
     Call(CloneModel, MODEL_d_me,    CLONED_MODEL(0))
     Call(CloneModel, MODEL_body,    CLONED_MODEL(1))
     Call(CloneModel, MODEL_baketu,  CLONED_MODEL(2))
@@ -367,64 +367,64 @@ EvtScript N(EVS_SetupSnowmen) = {
         Set(LVar1, -150)
         Set(LVar2, 0)
         Set(LVar3, -270)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_02)
         Set(LVar1, -90)
         Set(LVar2, 0)
         Set(LVar3, -270)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_03)
         Set(LVar1, -30)
         Set(LVar2, 0)
         Set(LVar3, -270)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_04)
         Set(LVar1, 30)
         Set(LVar2, 0)
         Set(LVar3, -270)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_05)
         Set(LVar1, 90)
         Set(LVar2, 0)
         Set(LVar3, -270)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_06)
         Set(LVar1, 150)
         Set(LVar2, 0)
         Set(LVar3, -270)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o103, COLLIDER_FLAGS_UPPER_MASK)
     Else
         Set(LVar0, NPC_Snowman_01)
         Set(LVar1, -175)
         Set(LVar2, 0)
         Set(LVar3, -180)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_02)
         Set(LVar1, -125)
         Set(LVar2, 0)
         Set(LVar3, -220)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0,  NPC_Snowman_03)
         Set(LVar1, -75)
         Set(LVar2, 0)
         Set(LVar3, -260)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_04)
         Set(LVar1, 75)
         Set(LVar2, 0)
         Set(LVar3, -260)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_05)
         Set(LVar1, 125)
         Set(LVar2, 0)
         Set(LVar3, -220)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Set(LVar0, NPC_Snowman_06)
         Set(LVar1, 175)
         Set(LVar2, 0)
         Set(LVar3, -180)
-        ExecWait(N(EVS_SetSnowmanPosition))
+        ExecWait(EVS_SetSnowmanPosition)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o106, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o118, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o119, COLLIDER_FLAGS_UPPER_MASK)

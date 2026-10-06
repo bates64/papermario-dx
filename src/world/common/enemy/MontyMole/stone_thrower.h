@@ -1,20 +1,20 @@
 #pragma once
 #include "base.h"
 
-extern EvtScript N(EVS_NpcDefeat_MontyMole_Stone);
-extern MobileAISettings N(AISettings_MontyMole_StoneThrower);
-extern EvtScript N(EVS_NpcAI_MontyMole_StoneThrower);
-extern NpcSettings N(NpcSettings_MontyMole_StoneThrower);
-extern MobileAISettings N(AISettings_MontyMole_Stone);
-extern EvtScript N(EVS_NpcAI_MontyMole_Stone);
-extern EvtScript N(EVS_NpcHit_MontyMole_Stone_DoNothing);
-extern EvtScript N(EVS_NpcHit_MontyMole_Stone);
-extern NpcSettings N(NpcSettings_MontyMole_Stone);
+extern EvtScript EVS_NpcDefeat_MontyMole_Stone;
+extern MobileAISettings AISettings_MontyMole_StoneThrower;
+extern EvtScript EVS_NpcAI_MontyMole_StoneThrower;
+extern NpcSettings NpcSettings_MontyMole_StoneThrower;
+extern MobileAISettings AISettings_MontyMole_Stone;
+extern EvtScript EVS_NpcAI_MontyMole_Stone;
+extern EvtScript EVS_NpcHit_MontyMole_Stone_DoNothing;
+extern EvtScript EVS_NpcHit_MontyMole_Stone;
+extern NpcSettings NpcSettings_MontyMole_Stone;
 
 #define MONTY_MOLE_STONE_HITBOX(npcID) \
 { \
     .id = npcID, \
-    .settings = &N(NpcSettings_MontyMole_Stone), \
+    .settings = &NpcSettings_MontyMole_Stone, \
     .pos = { NPC_DISPOSE_LOCATION }, \
     .yaw = 90, \
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \

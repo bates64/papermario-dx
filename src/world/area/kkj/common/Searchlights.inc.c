@@ -8,7 +8,7 @@
 /// @param forwardExtent
 /// @param centerOffset
 /// @param lateralExtent
-API_CALLABLE(N(CheckPlayerInSight)) {
+API_CALLABLE(CheckPlayerInSight) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -67,7 +67,7 @@ API_CALLABLE(N(CheckPlayerInSight)) {
     return ApiStatus_DONE2;
 }
 
-void N(set_spotlight_pos_scale)(s32 modelID, f32 x, f32 y, f32 z, f32 scale) {
+void set_spotlight_pos_scale(s32 modelID, f32 x, f32 y, f32 z, f32 scale) {
     Matrix4f mtxTemp;
     Model* model = get_model_from_list_index(get_model_list_index_from_tree_index(modelID));
 
@@ -91,7 +91,7 @@ enum SearchlightResultFlags {
 /// @param extraSpotlightRadius
 /// @param spotlightModel
 /// @param lightSourceIdx
-API_CALLABLE(N(UpdateSearchlight)) {
+API_CALLABLE(UpdateSearchlight) {
     SpriteShadingLightSource* lightSource;
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
@@ -129,7 +129,7 @@ API_CALLABLE(N(UpdateSearchlight)) {
         outVal |= SEARCHLIGHT_FLAG_IN_PRIMARY;
     }
 
-    N(set_spotlight_pos_scale)(spotlightModel, x, npc->pos.y, z, (2.0 * spotlightRadius / 100.0) + 0.3);
+    set_spotlight_pos_scale(spotlightModel, x, npc->pos.y, z, (2.0 * spotlightRadius / 100.0) + 0.3);
 
     // check if player is inside the second spotlight
     x = npc->pos.x;

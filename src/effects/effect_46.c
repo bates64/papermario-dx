@@ -31,7 +31,6 @@ EffectInstance* effect_46_main(s32 type, PlayerStatus* player, f32 scale, s32 du
     bp.init = effect_46_init;
     bp.update = effect_46_update;
     bp.renderScene = effect_46_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_46;
 

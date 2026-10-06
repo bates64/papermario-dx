@@ -1,7 +1,7 @@
 #include "mac_06.h"
 #include "effects.h"
 
-API_CALLABLE(N(GetWaveAmplitude)) {
+API_CALLABLE(GetWaveAmplitude) {
     Bytecode* args = script->ptrReadPos;
     s32 timeVar = *args++;
     s32 time = evt_get_variable(script, timeVar);
@@ -26,14 +26,14 @@ API_CALLABLE(N(GetWaveAmplitude)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateWaves) = {
+EvtScript EVS_AnimateWaves = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVarC, 0)
     Label(0)
         IfGe(LVarC, 60)
             Set(LVarC, 0)
         EndIf
-        Call(N(GetWaveAmplitude), LVarC, LVar0, Float(-1.0), Float(1.0), 30, 0, 0)
+        Call(GetWaveAmplitude, LVarC, LVar0, Float(-1.0), Float(1.0), 30, 0, 0)
         Call(ScaleGroup, MODEL_g34, 1, LVar0, 1)
         Add(LVarC, 1)
         Wait(1)
@@ -42,16 +42,16 @@ EvtScript N(EVS_AnimateWaves) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_FlyingGull))
-    Exec(N(EVS_SetupWhale))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Exec(EVS_FlyingGull)
+    Exec(EVS_SetupWhale)
     Call(SetMusic, 0, SONG_RIDING_THE_WHALE, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_BEACH)
-    Exec(N(EVS_AnimateWaves))
+    Exec(EVS_AnimateWaves)
     Call(SetTexPanner, MODEL_o214, TEX_PANNER_1)
     Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(GetEntryID, LVar0)

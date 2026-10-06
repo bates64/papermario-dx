@@ -4,7 +4,7 @@
 #include "world/common/enemy/Paratroopa/wander.inc.c"
 #include "world/common/enemy/SpikedGoomba/wander.inc.c"
 
-NpcData N(NpcData_KoopaTroopa) = {
+NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
     .pos = { -450.0f, 0.0f, -45.0f },
     .yaw = 270,
@@ -20,14 +20,14 @@ NpcData N(NpcData_KoopaTroopa) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_ParaTroopa) = {
+NpcData NpcData_ParaTroopa = {
     .id = NPC_ParaTroopa,
     .pos = { -150.0f, 50.0f, -70.0f },
     .yaw = 270,
@@ -43,15 +43,15 @@ NpcData N(NpcData_ParaTroopa) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ParaTroopa_Wander),
+    .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa), BTL_NOK_FORMATION_0D, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_ParaTroopa), BTL_NOK_FORMATION_14, BTL_NOK_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa, BTL_NOK_FORMATION_0D, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_ParaTroopa, BTL_NOK_FORMATION_14, BTL_NOK_STAGE_00),
     {}
 };

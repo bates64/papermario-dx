@@ -3,7 +3,7 @@
 
 #include "world/common/npc/Lily/idle.inc.c"
 
-EvtScript N(EVS_Scene_SunReturns) = {
+EvtScript EVS_Scene_SunReturns = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcPos, NPC_Lily, 60, 0, 55)
@@ -23,9 +23,9 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-ITEM_LIST(N(KeyList), ITEM_WATER_STONE);
+ITEM_LIST(KeyList, ITEM_WATER_STONE);
 
-EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
+EvtScript EVS_OnInteract_WaterStoneSocket = {
     IfEq(GF_FLO10_ShowedLilyTheWaterStone, true)
         Call(GetPartnerInUse, LVarA)
         IfNe(LVarA, 0)
@@ -57,7 +57,7 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
                 Set(LVarA, LVar0)
                 Call(CloseChoicePopup)
                 Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-                ExecWait(N(EVS_Scene_ReleaseFountain))
+                ExecWait(EVS_Scene_ReleaseFountain)
         EndSwitch
         Call(DisablePlayerInput, false)
         Call(AwaitPlayerLeave, 0, 0, 19)
@@ -66,13 +66,13 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
     End
 };
 
-EvtScript N(EVS_SetupWaterStoneSocket) = {
-    BindPadlock(Ref(N(EVS_OnInteract_WaterStoneSocket)), TRIGGER_FLOOR_TOUCH, COLLIDER_o83, Ref(N(KeyList)), 0, 1)
+EvtScript EVS_SetupWaterStoneSocket = {
+    BindPadlock(Ref(EVS_OnInteract_WaterStoneSocket), TRIGGER_FLOOR_TOUCH, COLLIDER_o83, Ref(KeyList), 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_MovePlayerToTalk) = {
+EvtScript EVS_MovePlayerToTalk = {
     Wait(10 * DT)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
@@ -103,11 +103,11 @@ EvtScript N(EVS_MovePlayerToTalk) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Lily) = {
-    ExecWait(N(EVS_PushFlowerSong))
+EvtScript EVS_NpcInteract_Lily = {
+    ExecWait(EVS_PushFlowerSong)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
-            Exec(N(EVS_MovePlayerToTalk))
+            Exec(EVS_MovePlayerToTalk)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -121,7 +121,7 @@ EvtScript N(EVS_NpcInteract_Lily) = {
             Call(EndSpeech, NPC_SELF, ANIM_Lily_DreadLoop, ANIM_Lily_Dread, 5)
         CaseLt(STORY_CH6_GOT_WATER_STONE)
             IfEq(GF_FLO10_LilyRequestedWaterStone, false)
-                Exec(N(EVS_MovePlayerToTalk))
+                Exec(EVS_MovePlayerToTalk)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -173,13 +173,13 @@ EvtScript N(EVS_NpcInteract_Lily) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_Talk, ANIM_Lily_Idle, 0, MSG_CH6_0087)
     EndSwitch
     Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
-    ExecWait(N(EVS_PopSong))
+    ExecWait(EVS_PopSong)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Lily) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lily)))
+EvtScript EVS_NpcInit_Lily = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lily))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_WATER_STONE)
             IfEq(GF_FLO10_LilyRequestedWaterStone, false)
@@ -196,19 +196,19 @@ EvtScript N(EVS_NpcInit_Lily) = {
     End
 };
 
-NpcData N(NpcData_Lily) = {
+NpcData NpcData_Lily = {
     .id = NPC_Lily,
     .pos = { 80.0f, -60.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Lily),
-    .settings = &N(NpcSettings_Lily),
+    .init = &EVS_NpcInit_Lily,
+    .settings = &NpcSettings_Lily,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = LILY_ANIMS,
     .tattle = MSG_NpcTattle_Lily,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Lily)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Lily),
     {}
 };

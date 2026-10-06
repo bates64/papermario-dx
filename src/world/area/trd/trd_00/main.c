@@ -1,28 +1,28 @@
 #include "trd_00.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
 
-EvtScript N(EVS_ExitWalk_nok_15_1) = EVT_EXIT_WALK(60, trd_00_ENTRY_0, "nok_15", nok_15_ENTRY_1);
-EvtScript N(EVS_ExitDoors_trd_01_0) = EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_1, "trd_01", trd_01_ENTRY_0, COLLIDER_tt2, MODEL_o62, MODEL_doa);
-EvtScript N(EVS_ExitDoors_trd_05_1) = EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_2, "trd_05", trd_05_ENTRY_1, COLLIDER_tt3, MODEL_o70, MODEL_o69);
-EvtScript N(EVS_ExitWalk_trd_05_2) = EVT_EXIT_WALK(60, trd_00_ENTRY_3, "trd_05", trd_05_ENTRY_2);
-EvtScript N(EVS_ExitWalk_nok_15_2) = EVT_EXIT_WALK(60, trd_00_ENTRY_4, "nok_15", nok_15_ENTRY_2);
+EvtScript EVS_ExitWalk_nok_15_1 = EVT_EXIT_WALK(60, trd_00_ENTRY_0, "nok_15", nok_15_ENTRY_1);
+EvtScript EVS_ExitDoors_trd_01_0 = EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_1, "trd_01", trd_01_ENTRY_0, COLLIDER_tt2, MODEL_o62, MODEL_doa);
+EvtScript EVS_ExitDoors_trd_05_1 = EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_2, "trd_05", trd_05_ENTRY_1, COLLIDER_tt3, MODEL_o70, MODEL_o69);
+EvtScript EVS_ExitWalk_trd_05_2 = EVT_EXIT_WALK(60, trd_00_ENTRY_3, "trd_05", trd_05_ENTRY_2);
+EvtScript EVS_ExitWalk_nok_15_2 = EVT_EXIT_WALK(60, trd_00_ENTRY_4, "nok_15", nok_15_ENTRY_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_15_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_01_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_05_1)), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_trd_05_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_15_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilit, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_nok_15_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_trd_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_trd_05_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt3, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_trd_05_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili5, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_15_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilit, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_ArriveAtFortress) = {
+EvtScript EVS_Scene_ArriveAtFortress = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos,NPC_DISPOSE_LOCATION)
@@ -56,13 +56,13 @@ EvtScript N(EVS_Scene_ArriveAtFortress) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -70,42 +70,42 @@ EvtScript N(EVS_EnterMap) = {
         CaseEq(trd_00_ENTRY_0)
             IfLt(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)
                 Set(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)
-                ExecWait(N(EVS_Scene_ArriveAtFortress))
-                Exec(N(EVS_BindExitTriggers))
+                ExecWait(EVS_Scene_ArriveAtFortress)
+                Exec(EVS_BindExitTriggers)
             Else
-                Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+                Set(LVar0, Ref(EVS_BindExitTriggers))
                 Exec(EnterWalk)
             EndIf
         CaseEq(trd_00_ENTRY_1)
             Set(LVar2, MODEL_o62)
             Set(LVar3, MODEL_doa)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(trd_00_ENTRY_2)
             Set(LVar2, MODEL_o70)
             Set(LVar3, MODEL_o69)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(trd_00_ENTRY_3)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(trd_00_ENTRY_4)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(trd_00_ENTRY_5)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
     EndSwitch
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_KoopaBrosFortress, true)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(trd_00_ENTRY_0)
@@ -114,8 +114,8 @@ EvtScript N(EVS_Main) = {
         CaseOrEq(trd_00_ENTRY_4)
     EndCaseGroup
     EndSwitch
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     Wait(1)
     IfEq(GF_TRD05_BombedWall, false)
         Call(SetGroupVisibility, MODEL_g21, MODEL_GROUP_HIDDEN)
@@ -123,7 +123,7 @@ EvtScript N(EVS_Main) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt5, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_HIDDEN)
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, trd_00_ENTRY_5)
         Wait(65)

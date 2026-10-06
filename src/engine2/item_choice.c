@@ -334,7 +334,7 @@ static EvtScript EVS_LetterDelivery_ItemPrompt = {
     End
 };
 
-static EvtScript N(EVS_ShowLetterChoice) = {
+static EvtScript EVS_ShowLetterChoice = {
     Set(LVar0, LVarB)
     Set(LVar1, LVar2)
     Call(BuildKeyItemChoiceList, LVar0)
@@ -365,7 +365,7 @@ static EvtScript EVS_DoLetterDelivery = {
             Call(NpcJump1, NPC_PARTNER, LVarD, LVar0, LVarF, 10)
             Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, LVar2, LVar7)
             Call(EnablePartnerAI)
-            ExecWait(N(EVS_ShowLetterChoice))
+            ExecWait(EVS_ShowLetterChoice)
             Switch(LVar0)
                 CaseEq(ITEM_CHOICE_CANCELED)
                     Call(DisablePartnerAI, false)

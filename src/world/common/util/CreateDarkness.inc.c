@@ -1,6 +1,6 @@
 #include "common.h"
 
-API_CALLABLE(N(DarkRoomUpdate)) {
+API_CALLABLE(DarkRoomUpdate) {
     if (isInitialCall) {
         script->functionTemp[0] = 255;
         script->functionTemp[1] = false;
@@ -41,9 +41,9 @@ API_CALLABLE(N(DarkRoomUpdate)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_CreateDarkness) = {
+EvtScript EVS_CreateDarkness = {
     Thread
-        Call(N(DarkRoomUpdate))
+        Call(DarkRoomUpdate)
     EndThread
     Return
     End

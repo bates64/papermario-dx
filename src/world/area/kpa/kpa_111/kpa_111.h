@@ -25,10 +25,8 @@ enum {
     NPC_DryBones_02_Hitbox3     = 7,
 };
 
-#define NAMESPACE kpa_111
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupStatues);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupStatues;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

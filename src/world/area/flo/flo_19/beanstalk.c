@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(GetPlayerAngles)) {
+API_CALLABLE(GetPlayerAngles) {
     Bytecode* args = script->ptrReadPos;
     s32 var1 = *args++;
     s32 var2 = *args++;
@@ -13,7 +13,7 @@ API_CALLABLE(N(GetPlayerAngles)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PlayerRideBeanstalk)) {
+API_CALLABLE(PlayerRideBeanstalk) {
     f32 temp = evt_get_variable(nullptr, script->varTable[2]);
     f32 dist = dist2D(0.0f, 0.0f, script->varTable[9], script->varTable[11]);
     f32 angle = atan2(0.0f, 0.0f, script->varTable[9], script->varTable[11]);
@@ -28,7 +28,7 @@ API_CALLABLE(N(PlayerRideBeanstalk)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PartnerRideBeanstalk)) {
+API_CALLABLE(PartnerRideBeanstalk) {
     Npc* npc = get_npc_by_index(NPC_Dummy_Partner);
     f32 temp = evt_get_variable(nullptr, script->varTable[2]);
     f32 dist = dist2D(0.0f, 0.0f, script->varTable[12], script->varTable[14]);
@@ -44,44 +44,44 @@ API_CALLABLE(N(PartnerRideBeanstalk)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetScreenFadeAmount)) {
+API_CALLABLE(SetScreenFadeAmount) {
     set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, script->varTable[0]);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_FadeOutToBlack) = {
+EvtScript EVS_FadeOutToBlack = {
     Set(LVar0, 0)
     Label(10)
-        Call(N(SetScreenFadeAmount))
+        Call(SetScreenFadeAmount)
         Add(LVar0, 25)
         Wait(1)
         IfLt(LVar0, 255)
             Goto(10)
         EndIf
     Set(LVar0, 255)
-    Call(N(SetScreenFadeAmount))
+    Call(SetScreenFadeAmount)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_FadeInFromBlack) = {
+EvtScript EVS_FadeInFromBlack = {
     Set(LVar0, 255)
     Label(10)
-        Call(N(SetScreenFadeAmount))
+        Call(SetScreenFadeAmount)
         Sub(LVar0, 25)
         Wait(1)
         IfGt(LVar0, 0)
             Goto(10)
         EndIf
     Set(LVar0, 0)
-    Call(N(SetScreenFadeAmount))
+    Call(SetScreenFadeAmount)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_SetExteriorVineGrowth) = {
+EvtScript EVS_SetExteriorVineGrowth = {
     Call(TranslateGroup, MODEL_g83, 0, LVar0, 0)
     Call(TranslateGroup, MODEL_ha, 0, LVar0, 0)
     SetF(LVar1, LVar0)
@@ -92,7 +92,7 @@ EvtScript N(EVS_SetExteriorVineGrowth) = {
     End
 };
 
-EvtScript N(EVS_SetInteriorVineGrowth) = {
+EvtScript EVS_SetInteriorVineGrowth = {
     Call(TranslateGroup, MODEL_g84, 0, LVar0, 0)
     SetF(LVar1, LVar0)
     MulF(LVar1, Float(-12.0))
@@ -101,7 +101,7 @@ EvtScript N(EVS_SetInteriorVineGrowth) = {
     End
 };
 
-EvtScript N(EVS_Enter_Beanstalk) = {
+EvtScript EVS_Enter_Beanstalk = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePartnerAI, false)
@@ -149,7 +149,7 @@ EvtScript N(EVS_Enter_Beanstalk) = {
         Set(AF_FLO_BeanstalkFadedOut, false)
         Call(SetPlayerAnimation, ANIM_Mario1_Walk)
         Wait(200)
-        ExecWait(N(EVS_FadeOutToBlack))
+        ExecWait(EVS_FadeOutToBlack)
         Set(AF_FLO_BeanstalkFadedOut, true)
         Wait(10)
         Call(EnableGroup, MODEL_g16, true)
@@ -166,7 +166,7 @@ EvtScript N(EVS_Enter_Beanstalk) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        ExecWait(N(EVS_FadeInFromBlack))
+        ExecWait(EVS_FadeInFromBlack)
         Wait(20)
         Set(AF_FLO_BeanstalkFadedOut, false)
     EndThread
@@ -182,8 +182,8 @@ EvtScript N(EVS_Enter_Beanstalk) = {
         SetF(LVar2, LVar0)
         MulF(LVar2, Float(-3.0))
         SetF(LVar3, LVar0)
-        Call(N(PlayerRideBeanstalk))
-        Call(N(PartnerRideBeanstalk))
+        Call(PlayerRideBeanstalk)
+        Call(PartnerRideBeanstalk)
         Label(11)
             Wait(1)
             IfEq(AF_FLO_BeanstalkFadedOut, true)
@@ -201,14 +201,14 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Wait(5)
     Set(AF_FLO_RidingBeanstalk, false)
     Call(StopSound, SOUND_FLO_RIDE_BEANSTALK_UP_LOOP)
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     Call(ResetCam, CAM_DEFAULT, Float(1.0))
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_Exit_Beanstalk) = {
+EvtScript EVS_Exit_Beanstalk = {
     IfEq(AF_FLO_RidingBeanstalk, false)
         Call(DisablePlayerInput, true)
         Call(InterruptUsePartner)
@@ -230,7 +230,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
         Call(SetMusic, 0, SONG_MAGIC_BEANSTALK, BGM_VARIATION_1, VOL_LEVEL_FULL)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(SetPlayerAnimation, ANIM_Mario1_Walk)
-        Call(N(GetPlayerAngles), LVar3, LVar4)
+        Call(GetPlayerAngles, LVar3, LVar4)
         Switch(LVar4)
             CaseLt(90)
                 Set(AF_FLO_BeanstalkFacingRight, false)
@@ -249,7 +249,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
             Wait(120)
             Set(AF_FLO_BeanstalkFadedOut, true)
             Wait(20)
-            ExecWait(N(EVS_FadeOutToBlack))
+            ExecWait(EVS_FadeOutToBlack)
             Wait(10)
             Call(EnableGroup, MODEL_g16, false)
             Call(EnableGroup, MODEL_g2, false)
@@ -267,7 +267,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
             Set(AF_FLO_BeanstalkFadedOut, false)
-            ExecWait(N(EVS_FadeInFromBlack))
+            ExecWait(EVS_FadeInFromBlack)
         EndThread
         Thread
             Set(LVarF, 0)
@@ -282,8 +282,8 @@ EvtScript N(EVS_Exit_Beanstalk) = {
                 SetF(LVar2, LVar0)
                 MulF(LVar2, Float(-3.0))
                 SetF(LVar3, LVar0)
-                Call(N(PlayerRideBeanstalk))
-                Call(N(PartnerRideBeanstalk))
+                Call(PlayerRideBeanstalk)
+                Call(PartnerRideBeanstalk)
                 IfEq(LVarF, 300)
                     Set(MV_BeanstalkSceneSync, true)
                 EndIf
@@ -306,7 +306,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
     End
 };
 
-EvtScript N(EVS_Scene_BeanstalkGrowing) = {
+EvtScript EVS_Scene_BeanstalkGrowing = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -370,11 +370,11 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
         SetF(LVar2, LVar0)
         MulF(LVar2, Float(1.0))
         SetF(LVar0, LVar2)
-        Exec(N(EVS_SetExteriorVineGrowth))
+        Exec(EVS_SetExteriorVineGrowth)
         SetF(LVar2, LVar0)
         MulF(LVar2, Float(1.0))
         SetF(LVar0, LVar2)
-        Exec(N(EVS_SetInteriorVineGrowth))
+        Exec(EVS_SetInteriorVineGrowth)
         Wait(1)
     EndLoop
     Wait(15)
@@ -384,8 +384,8 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
     End
 };
 
-EvtScript N(EVS_SetupBeanstalk) = {
-    BindTrigger(Ref(N(EVS_Exit_Beanstalk)), TRIGGER_FLOOR_TOUCH, COLLIDER_o117, 1, 0)
+EvtScript EVS_SetupBeanstalk = {
+    BindTrigger(Ref(EVS_Exit_Beanstalk), TRIGGER_FLOOR_TOUCH, COLLIDER_o117, 1, 0)
     Return
     End
 };

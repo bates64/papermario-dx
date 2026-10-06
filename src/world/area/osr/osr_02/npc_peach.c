@@ -3,7 +3,7 @@
 
 #include "world/common/enemy/Clubba/idle.inc.c"
 
-AnimID N(LimitAnims_Clubba)[] = {
+AnimID LimitAnims_Clubba[] = {
     ANIM_WorldClubba_Still,
     ANIM_WorldClubba_Idle,
     ANIM_WorldClubba_Walk,
@@ -16,7 +16,7 @@ AnimID N(LimitAnims_Clubba)[] = {
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_NpcInteract_Clubba) = {
+EvtScript EVS_NpcInteract_Clubba = {
     Call(DisablePlayerInput, true)
     Call(CancelMessage)
     Wait(10)
@@ -40,7 +40,7 @@ EvtScript N(EVS_NpcInteract_Clubba) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Clubba) = {
+EvtScript EVS_NpcIdle_Clubba = {
     Call(SetSelfVar, 0, 0)
     Call(GetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
     Loop(0)
@@ -62,29 +62,29 @@ EvtScript N(EVS_NpcIdle_Clubba) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba) = {
+EvtScript EVS_NpcInit_Clubba = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Sleep)
     Call(SetNpcPos, NPC_SELF, -40, 20, -170)
     Call(SetNpcYaw, NPC_SELF, 200)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Clubba)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Clubba)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba))
     Return
     End
 };
 
-NpcData N(NpcData_Clubba) = {
+NpcData NpcData_Clubba = {
     .id = NPC_Clubba,
     .pos = { -70.0f, 0.0f, -100.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Clubba),
-    .settings = &N(NpcSettings_Clubba),
+    .init = &EVS_NpcInit_Clubba,
+    .settings = &NpcSettings_Clubba,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = CLUBBA_ANIMS,
-    .limitAnimations = N(LimitAnims_Clubba),
+    .limitAnimations = LimitAnims_Clubba,
 };
 
-NpcGroupList N(PeachNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba)),
+NpcGroupList PeachNPCs = {
+    NPC_GROUP(NpcData_Clubba),
     {}
 };

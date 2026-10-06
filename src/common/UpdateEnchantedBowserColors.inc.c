@@ -7,7 +7,7 @@
 #define BOWSER_FLAG_TOCHECK ACTOR_EVENT_FLAG_STAR_ROD_ENCHANTED
 #endif
 
-API_CALLABLE(N(UpdateEnchantedBowserColors)) {
+static API_CALLABLE(UpdateEnchantedBowserColors) {
     #define RGBA_BUF_SIZE 20
     Actor* actor = get_actor(script->owner1.actorID);
     ActorPart* part;

@@ -3,4 +3,4 @@
 
 #define NpcSettings_TheMaster NpcSettings_Dummy
 
-extern NpcSettings N(NpcSettings_TheMaster);
+extern NpcSettings NpcSettings_TheMaster;

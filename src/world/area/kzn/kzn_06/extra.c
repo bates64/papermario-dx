@@ -3,7 +3,7 @@
 
 #include "../common/LavaGlowLighting.inc.c"
 
-API_CALLABLE(N(AdjustFog)) {
+API_CALLABLE(AdjustFog) {
     Bytecode* args = script->ptrReadPos;
     ModelIDList* modelIDs;
     ModelIDList* iterList;
@@ -56,21 +56,21 @@ API_CALLABLE(N(AdjustFog)) {
     }
 }
 
-API_CALLABLE(N(FadeOutAmbientSounds)) {
+API_CALLABLE(FadeOutAmbientSounds) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
 
-ModelIDList N(LavaModels) = {
+ModelIDList LavaModels = {
     .count = 1,
     .list = { MODEL_g41 }
 };
 
-EvtScript N(EVS_LowerMainLavaLevel) = {
+EvtScript EVS_LowerMainLavaLevel = {
     Call(DisablePlayerInput, true)
     Wait(3)
     Call(DisablePlayerPhysics, true)
-    Call(N(FadeOutAmbientSounds))
+    Call(FadeOutAmbientSounds)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, -20)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -119,7 +119,7 @@ EvtScript N(EVS_LowerMainLavaLevel) = {
     End
 };
 
-EvtScript N(EVS_MonitorPushBlockPuzzle) = {
+EvtScript EVS_MonitorPushBlockPuzzle = {
     // wait for grid pos (11,0) to be occupied
     Label(10)
     Call(GetPushBlock, 0, 11, 0, LVar2)
@@ -140,17 +140,17 @@ EvtScript N(EVS_MonitorPushBlockPuzzle) = {
             Wait(2)
         EndLoop
     EndThread
-    ExecWait(N(EVS_LowerMainLavaLevel))
+    ExecWait(EVS_LowerMainLavaLevel)
     Set(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupLavaPuzzle) = {
+EvtScript EVS_SetupLavaPuzzle = {
     IfLt(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
         Call(EnableGroup, MODEL_i_off, false)
-        Exec(N(EVS_MonitorPushBlockPuzzle))
+        Exec(EVS_MonitorPushBlockPuzzle)
         SetF(MV_GlowIntensity, Float(1.0))
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_yougan1, COLLIDER_FLAGS_UPPER_MASK)
@@ -163,10 +163,10 @@ EvtScript N(EVS_SetupLavaPuzzle) = {
     EndIf
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
-        Call(N(ApplyLavaGlowLighting), LAVA_GLOW_MODE_1, nullptr)
+        Call(ApplyLavaGlowLighting, LAVA_GLOW_MODE_1, nullptr)
     EndThread
     Thread
-        Call(N(ClearLavaGlowLighting), Ref(N(LavaModels)))
+        Call(ClearLavaGlowLighting, Ref(LavaModels))
     EndThread
     Return
     End

@@ -1,7 +1,7 @@
 #include "mac_00.h"
 #include "model.h"
 
-void N(gfx_build_water)(void) {
+void gfx_build_water(void) {
     Model* model;
 
     gDPSetDepthSource(gMainGfxPos++, G_ZS_PRIM);
@@ -23,9 +23,9 @@ void N(gfx_build_water)(void) {
     mdl_draw_hidden_panel_surface(&gMainGfxPos, MODEL_water);
 }
 
-EvtScript N(EVS_SetupWaterCustomGfx) = {
+EvtScript EVS_SetupWaterCustomGfx = {
     Wait(1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(gfx_build_water)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(gfx_build_water), nullptr)
     Call(SetModelCustomGfx, MODEL_water, CUSTOM_GFX_0, -1)
     Return
     End

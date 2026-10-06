@@ -95,7 +95,6 @@ EffectInstance* something_rotating_main(
     bp.init = something_rotating_init;
     bp.update = something_rotating_update;
     bp.renderScene = something_rotating_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SOMETHING_ROTATING;
 

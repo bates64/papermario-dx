@@ -7,7 +7,7 @@
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
 #include "world/common/enemy/Sentinel/wander.inc.c"
 
-NpcData N(NpcData_Clubba_Wander)[] = {
+NpcData NpcData_Clubba_Wander[] = {
     {
         .id = NPC_Clubba_Wander,
         .pos = { -350.0f, 0.0f, 180.0f },
@@ -24,17 +24,17 @@ NpcData N(NpcData_Clubba_Wander)[] = {
                 .detectSize = { 600, 250 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Wander),
+        .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .limitAnimations = N(LimitAnims_Clubba),
+        .limitAnimations = LimitAnims_Clubba,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Wander_Hitbox),
 };
 
-EvtScript N(EVS_NpcInit_Clubba_Napping) = {
+EvtScript EVS_NpcInit_Clubba_Napping = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, dgb_09_ENTRY_3)
         Call(SetNpcPos, NPC_SELF, 240, 0, 88)
@@ -44,7 +44,7 @@ EvtScript N(EVS_NpcInit_Clubba_Napping) = {
     End
 };
 
-NpcData N(NpcData_Clubba_Napping)[] = {
+NpcData NpcData_Clubba_Napping[] = {
     {
         .id = NPC_Clubba_Napping,
         .pos = { 310.0f, 0.0f, 88.0f },
@@ -61,18 +61,18 @@ NpcData N(NpcData_Clubba_Napping)[] = {
                 .detectSize = { 600, 250 },
             }
         },
-        .init = &N(EVS_NpcInit_Clubba_Napping),
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .init = &EVS_NpcInit_Clubba_Napping,
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .limitAnimations = N(LimitAnims_Clubba),
+        .limitAnimations = LimitAnims_Clubba,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Napping_Hitbox),
 };
 
-NpcData N(NpcData_Sentinel) = {
+NpcData NpcData_Sentinel = {
     .id = NPC_Sentinel,
     .pos = { -20.0f, 100.0f, 180.0f },
     .yaw = 90,
@@ -88,15 +88,15 @@ NpcData N(NpcData_Sentinel) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Sentinel_Wander),
+    .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba_Wander), BTL_DGB_FORMATION_03, BTL_DGB_STAGE_00),
-    NPC_GROUP(N(NpcData_Clubba_Napping), BTL_DGB_FORMATION_01, BTL_DGB_STAGE_00),
-    NPC_GROUP(N(NpcData_Sentinel)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Clubba_Wander, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Clubba_Napping, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Sentinel),
     {}
 };

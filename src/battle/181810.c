@@ -311,12 +311,12 @@ API_CALLABLE(OverrideBattleDmaDest) {
 
 API_CALLABLE(LoadBattleDmaData) {
     s32 dmaIndex = evt_get_variable(script, *script->ptrReadPos);
-    BattleArea* battleArea = &gBattleAreas[UNPACK_BTL_AREA(gCurrentBattleID)];
-    DmaTable* dmaEntry = &battleArea->dmaTable[dmaIndex];
+    const BattleArea* battleArea = get_loaded_battle_area();
+    DmaTable* dmaEntry;
 
-    if (dmaEntry == nullptr) {
-        return ApiStatus_DONE2;
-    }
+    ASSERT_MSG(battleArea != nullptr && battleArea->dmaTable != nullptr, "Battle area has no animation DMA table");
+    ASSERT_MSG((u32)dmaIndex < battleArea->dmaCount, "Invalid battle animation %ld", dmaIndex);
+    dmaEntry = &battleArea->dmaTable[dmaIndex];
 
     if (gBattleDmaDest == nullptr) {
         dma_copy(dmaEntry->start, dmaEntry->end, dmaEntry->dest);

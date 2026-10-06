@@ -2,23 +2,21 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Cleft.h"
 
-#define NAMESPACE A(hyper_cleft)
+extern s32 UprightAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_TakeTurn_Unused;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandlePhase;
+extern EvtScript EVS_TryGettingUp;
+extern EvtScript EVS_Attack_Tackle;
 
-extern s32 N(UprightAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_TakeTurn_Unused);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandlePhase);
-extern EvtScript N(EVS_TryGettingUp);
-extern EvtScript N(EVS_Attack_Tackle);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN    = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_State                  = 0,
     AVAL_State_Normal           = 0,
     AVAL_State_Toppled          = 1,
@@ -28,24 +26,24 @@ enum N(ActorVars) {
     AVAR_NotFirstTurn           = 2,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_TACKLE      = 3,
     DMG_CHARGED     = 8,
 };
 
-s32 N(UprightDefenseTable)[] = {
+s32 UprightDefenseTable[] = {
     ELEMENT_NORMAL,   3,
     ELEMENT_FIRE,    99,
     ELEMENT_END,
 };
 
-s32 N(ToppledDefenseTable)[] = {
+s32 ToppledDefenseTable[] = {
     ELEMENT_NORMAL,   1,
     ELEMENT_FIRE,    99,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              40,
@@ -70,30 +68,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 22 },
         .opacity = 255,
-        .idleAnimations = N(UprightAnims),
-        .defenseTable = N(UprightDefenseTable),
+        .idleAnimations = UprightAnims,
+        .defenseTable = UprightDefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_HYPER_CLEFT,
     .level = ACTOR_LEVEL_HYPER_CLEFT,
     .maxHP = 4,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 70,
     .airLiftChance = 30,
     .hurricaneChance = 30,
@@ -108,7 +106,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(HyperAnims)[] = {
+s32 HyperAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Cleft_Hyper_Party,
     STATUS_KEY_STONE,     ANIM_Cleft_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Cleft_Hyper_Sleep,
@@ -121,18 +119,18 @@ s32 N(HyperAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
+EvtScript EVS_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
     Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
     Call(SetActorVar, ACTOR_SELF, AVAR_NotFirstTurn, false)
     Return
     End
 };
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_PLAYER_BEGIN)
@@ -145,9 +143,8 @@ EvtScript N(EVS_HandlePhase) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
-EvtScript N(EVS_Move_Charge) = {
+EvtScript EVS_Move_Charge = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -160,7 +157,7 @@ EvtScript N(EVS_Move_Charge) = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_POWER_UP)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
-        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
+        PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Party)
         Wait(30)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -169,17 +166,17 @@ EvtScript N(EVS_Move_Charge) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-        Call(N(StartRumbleWithParams), 200, 10)
+        Call(StartRumbleWithParams, 200, 10)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.5))
         EndThread
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HYPER_CLEFT_LAND)
-        PlayEffect(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
         EndThread
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Charged)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
         Call(EnableActorGlow, ACTOR_SELF, true)
         Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, true)
         Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -224,7 +221,7 @@ EvtScript N(EVS_Move_Charge) = {
             Thread
                 Loop(30)
                     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-                    PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0, 0)
+                    PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
                     Wait(1)
                 EndLoop
             EndThread
@@ -247,7 +244,7 @@ EvtScript N(EVS_Move_Charge) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Idle)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
@@ -256,7 +253,7 @@ EvtScript N(EVS_Move_Charge) = {
     Thread
         Loop(25)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0, 0)
+            PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             Wait(1)
         EndLoop
     EndThread
@@ -306,7 +303,7 @@ EvtScript N(EVS_Move_Charge) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Idle)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -315,21 +312,21 @@ EvtScript N(EVS_Move_Charge) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-        ExecWait(N(EVS_Attack_Tackle))
+        ExecWait(EVS_Attack_Tackle)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     IfEq(LVar0, AVAL_State_Toppled)
-        ExecWait(N(EVS_TryGettingUp))
+        ExecWait(EVS_TryGettingUp)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     IfEq(LVar0, AVAL_State_Charged)
-        ExecWait(N(EVS_Move_Charge))
+        ExecWait(EVS_Move_Charge)
         Return
     EndIf
     Call(GetBattleVar, BTL_VAR_HyperSync, LVar0)
@@ -340,26 +337,26 @@ EvtScript N(EVS_TakeTurn) = {
                 Call(RandInt, 1000, LVar0)
                 IfLt(LVar0, 750)
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Active)
-                    ExecWait(N(EVS_Move_Charge))
+                    ExecWait(EVS_Move_Charge)
                 Else
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-                    ExecWait(N(EVS_Attack_Tackle))
+                    ExecWait(EVS_Attack_Tackle)
                 EndIf
             Else
                 Call(RandInt, 1000, LVar0)
                 IfLt(LVar0, 500)
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Active)
-                    ExecWait(N(EVS_Move_Charge))
+                    ExecWait(EVS_Move_Charge)
                 Else
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-                    ExecWait(N(EVS_Attack_Tackle))
+                    ExecWait(EVS_Attack_Tackle)
                 EndIf
             EndIf
         CaseEq(BTL_VAL_HyperSync_Done)
-            ExecWait(N(EVS_Attack_Tackle))
+            ExecWait(EVS_Attack_Tackle)
             Return
         CaseEq(BTL_VAL_HyperSync_Active)
-            ExecWait(N(EVS_Move_Charge))
+            ExecWait(EVS_Move_Charge)
             Return
     EndSwitch
     Return
@@ -368,7 +365,7 @@ EvtScript N(EVS_TakeTurn) = {
 
 // everything below this point is copied from the basic Cleft actor
 
-s32 N(UprightAnims)[] = {
+s32 UprightAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Cleft_Hyper_Idle,
     STATUS_KEY_STONE,     ANIM_Cleft_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Cleft_Hyper_Sleep,
@@ -381,7 +378,7 @@ s32 N(UprightAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ToppledAnims)[] = {
+s32 ToppledAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Cleft_Hyper_ToppleIdle,
     STATUS_KEY_STONE,     ANIM_Cleft_Hyper_ToppleStill,
     STATUS_KEY_SLEEP,     ANIM_Cleft_Hyper_ToppleSleep,
@@ -394,23 +391,23 @@ s32 N(ToppledAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init_Unused) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn_Unused)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init_Unused = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn_Unused))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
 #include "common/SetSpinSmashable.inc.c"
 
-EvtScript N(EVS_FlipOver) = {
+EvtScript EVS_FlipOver = {
     Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Toppled)
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 2)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Run)
@@ -428,21 +425,21 @@ EvtScript N(EVS_FlipOver) = {
     Sub(LVar1, 6)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
-    Call(N(StartRumbleWithParams), 200, 10)
+    Call(StartRumbleWithParams, 200, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
     EndThread
-    PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 40, 8, Float(0.0), 20, 0)
+    PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, LVar1, LVar2, 40, 8, Float(0.0), 20)
     Call(SetActorPos, ACTOR_SELF, LVar0, 0, LVar2)
     Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
     Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_ToppleKick)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
-    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
+    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 15)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -7)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
-    Call(N(SetSpinSmashable), false)
+    Call(SetSpinSmashable, false)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
     Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
     Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
@@ -452,7 +449,7 @@ EvtScript N(EVS_FlipOver) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -462,7 +459,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetLastElement, LVar0)
             Switch(LVar0)
                 CaseFlag(DAMAGE_TYPE_BLAST)
-                    ExecWait(N(EVS_FlipOver))
+                    ExecWait(EVS_FlipOver)
                 CaseDefault
                     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
                     IfEq(LVar0, AVAL_State_Toppled)
@@ -478,7 +475,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetLastElement, LVar0)
             Switch(LVar0)
                 CaseFlag(DAMAGE_TYPE_BLAST)
-                    ExecWait(N(EVS_FlipOver))
+                    ExecWait(EVS_FlipOver)
                 CaseDefault
                     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION, true)
                     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
@@ -548,7 +545,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(EnableActorGlow, ACTOR_SELF, false)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Cleft_Hyper_Hurt)
             ExecWait(EVS_Enemy_ShockHit)
@@ -567,7 +564,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(EnableActorGlow, ACTOR_SELF, false)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Cleft_Hyper_Hurt)
             ExecWait(EVS_Enemy_ShockHit)
@@ -583,7 +580,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Call(EnableActorGlow, ACTOR_SELF, false)
                 Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
             EndIf
             Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
             IfEq(LVar0, AVAL_State_Toppled)
@@ -608,7 +605,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Add(LVar0, -8)
                 Add(LVar1, 27)
             EndIf
-            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20, 0)
+            PlayEffect(EFFECT_LENS_FLARE, 0, LVar0, LVar1, LVar2, 20)
             Wait(20)
         CaseOrEq(EVENT_ZERO_DAMAGE)
         CaseOrEq(EVENT_IMMUNE)
@@ -685,7 +682,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TryGettingUp) = {
+EvtScript EVS_TryGettingUp = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
@@ -715,7 +712,7 @@ EvtScript N(EVS_TryGettingUp) = {
         Call(SetActorJumpGravity, ACTOR_SELF, Float(1.3))
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
-        Call(N(StartRumbleWithParams), 200, 10)
+        Call(StartRumbleWithParams, 200, 10)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
         EndThread
@@ -724,13 +721,13 @@ EvtScript N(EVS_TryGettingUp) = {
         Call(SetActorPos, ACTOR_SELF, LVar0, 0, LVar2)
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Idle)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
-        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(UprightDefenseTable)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
+        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(UprightDefenseTable))
         Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 22)
         Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -10)
         Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
         Wait(1)
-        Call(N(SetSpinSmashable), true)
+        Call(SetSpinSmashable, true)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
     EndIf
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -739,7 +736,7 @@ EvtScript N(EVS_TryGettingUp) = {
     End
 };
 
-EvtScript N(EVS_Attack_Tackle) = {
+EvtScript EVS_Attack_Tackle = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -750,11 +747,11 @@ EvtScript N(EVS_Attack_Tackle) = {
     Call(MoveBattleCamOver, 30)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(10)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
         Wait(5)
-        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10, 0)
+        PlayEffect(EFFECT_SMOKE_IMPACT, 1, LVar0, LVar1, LVar2, 32, 4, 0, 10)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Hyper_Crouch)
     Wait(10)
@@ -847,12 +844,12 @@ EvtScript N(EVS_Attack_Tackle) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn_Unused) = {
+EvtScript EVS_TakeTurn_Unused = {
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     IfEq(LVar0, AVAL_State_Toppled)
-        ExecWait(N(EVS_TryGettingUp))
+        ExecWait(EVS_TryGettingUp)
     Else
-        ExecWait(N(EVS_Attack_Tackle))
+        ExecWait(EVS_Attack_Tackle)
     EndIf
     Return
     End

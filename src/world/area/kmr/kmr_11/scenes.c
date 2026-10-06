@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(MakeLensFlare)) {
+API_CALLABLE(MakeLensFlare) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_float_variable(script, *args++);
     f32 y = evt_get_float_variable(script, *args++);
@@ -13,14 +13,14 @@ API_CALLABLE(N(MakeLensFlare)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetCameraVFov)) {
+API_CALLABLE(SetCameraVFov) {
     Bytecode* args = script->ptrReadPos;
 
     gCameras[CAM_DEFAULT].vfov = evt_get_float_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GoombaKingBlastoff) = {
+EvtScript EVS_GoombaKingBlastoff = {
     Wait(10)
     Thread
         Call(MakeLerp, 100, 10, 150, EASING_LINEAR)
@@ -36,14 +36,14 @@ EvtScript N(EVS_GoombaKingBlastoff) = {
     Call(SetNpcJumpscale, NPC_GoombaKing, Float(0.3))
     Call(NpcJump0, NPC_GoombaKing, -1600, 1000, -1600, 150)
     Call(PlaySoundAt, SOUND_LARGE_LENS_FLARE, SOUND_SPACE_DEFAULT, -1600, 1000, -1600)
-    Call(N(MakeLensFlare), -1600, 1000, -1600, 40)
+    Call(MakeLensFlare, -1600, 1000, -1600, 40)
     Call(SetNpcPos, NPC_GoombaKing, NPC_DISPOSE_LOCATION)
     Call(RemoveNpc, NPC_GoombaKing)
     Return
     End
 };
 
-EvtScript N(EVS_FocusCam_FortressExterior) = {
+EvtScript EVS_FocusCam_FortressExterior = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, -7, 0)
@@ -55,7 +55,7 @@ EvtScript N(EVS_FocusCam_FortressExterior) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_BesidePlayer) = {
+EvtScript EVS_FocusCam_BesidePlayer = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, -15, 25)
@@ -67,7 +67,7 @@ EvtScript N(EVS_FocusCam_BesidePlayer) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_Battlement) = {
+EvtScript EVS_FocusCam_Battlement = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, -7, 2)
@@ -79,7 +79,7 @@ EvtScript N(EVS_FocusCam_Battlement) = {
     End
 };
 
-EvtScript N(EVS_RandomQuaking) = {
+EvtScript EVS_RandomQuaking = {
     Call(PlaySound, SOUND_KMR_TOWER_COLLAPSE_RUMBLE_LOOP)
     Label(0)
         Call(RandInt, 10, LVar0)
@@ -91,13 +91,13 @@ EvtScript N(EVS_RandomQuaking) = {
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust1) = {
+EvtScript EVS_FortressCollapse_MakeDust1 = {
     PlayEffect(EFFECT_DUST, 0, -273, 345, -44, 70)
     Return
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust2) = {
+EvtScript EVS_FortressCollapse_MakeDust2 = {
     PlayEffect(EFFECT_LANDING_DUST, 4, -253, 8, 118, 0)
     PlayEffect(EFFECT_LANDING_DUST, 4, -253, 18, 138, 0)
     PlayEffect(EFFECT_LANDING_DUST, 4, -253, 18, 98, 0)
@@ -106,31 +106,31 @@ EvtScript N(EVS_FortressCollapse_MakeDust2) = {
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust3) = {
+EvtScript EVS_FortressCollapse_MakeDust3 = {
     PlayEffect(EFFECT_LANDING_DUST, 1, -346, 147, -21, 0)
     Return
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust4) = {
+EvtScript EVS_FortressCollapse_MakeDust4 = {
     PlayEffect(EFFECT_LANDING_DUST, 1, -336, 147, -21, 0)
     Return
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust5) = {
+EvtScript EVS_FortressCollapse_MakeDust5 = {
     PlayEffect(EFFECT_LANDING_DUST, 1, -249, 147, -64, 0)
     Return
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust6) = {
+EvtScript EVS_FortressCollapse_MakeDust6 = {
     PlayEffect(EFFECT_LANDING_DUST, 1, -239, 147, -64, 0)
     Return
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust7) = {
+EvtScript EVS_FortressCollapse_MakeDust7 = {
     PlayEffect(EFFECT_LANDING_DUST, 4, -158, -10, -175, 0)
     PlayEffect(EFFECT_LANDING_DUST, 4, -158, 0, -155, 0)
     PlayEffect(EFFECT_LANDING_DUST, 4, -158, 0, -195, 0)
@@ -139,7 +139,7 @@ EvtScript N(EVS_FortressCollapse_MakeDust7) = {
     End
 };
 
-EvtScript N(EVS_FortressCollapse_MakeDust8) = {
+EvtScript EVS_FortressCollapse_MakeDust8 = {
     PlayEffect(EFFECT_LANDING_DUST, 4, 263, -10, -264, 0)
     PlayEffect(EFFECT_LANDING_DUST, 4, 263, 0, -244, 0)
     PlayEffect(EFFECT_LANDING_DUST, 4, 263, 0, -284, 0)
@@ -148,33 +148,33 @@ EvtScript N(EVS_FortressCollapse_MakeDust8) = {
     End
 };
 
-EvtScript N(EVS_FortressCollapse_PlayFX) = {
+EvtScript EVS_FortressCollapse_PlayFX = {
     Call(PlaySound, SOUND_KMR_TOWER_RUMBLE)
-    Exec(N(EVS_FortressCollapse_MakeDust1))
+    Exec(EVS_FortressCollapse_MakeDust1)
     Wait(97)
     Call(PlaySound, SOUND_DISTANT_THUD)
-    Exec(N(EVS_FortressCollapse_MakeDust2))
+    Exec(EVS_FortressCollapse_MakeDust2)
     Wait(95)
     Call(PlaySound, SOUND_KMR_TOWER_COLLAPSE_THUD)
-    Exec(N(EVS_FortressCollapse_MakeDust3))
-    Exec(N(EVS_FortressCollapse_MakeDust4))
+    Exec(EVS_FortressCollapse_MakeDust3)
+    Exec(EVS_FortressCollapse_MakeDust4)
     Wait(34)
     Call(PlaySound, SOUND_KMR_TOWER_COLLAPSE_THUD)
-    Exec(N(EVS_FortressCollapse_MakeDust5))
-    Exec(N(EVS_FortressCollapse_MakeDust6))
+    Exec(EVS_FortressCollapse_MakeDust5)
+    Exec(EVS_FortressCollapse_MakeDust6)
     Wait(40)
     Call(PlaySound, SOUND_KMR_TOWER_COLLAPSE_UNFOLD)
     Wait(160)
     Call(PlaySound, SOUND_BOING)
     Wait(40)
     Call(PlaySound, SOUND_DISTANT_THUD)
-    Exec(N(EVS_FortressCollapse_MakeDust7))
-    Exec(N(EVS_FortressCollapse_MakeDust8))
+    Exec(EVS_FortressCollapse_MakeDust7)
+    Exec(EVS_FortressCollapse_MakeDust8)
     Return
     End
 };
 
-EvtScript N(EVS_FortressCollapse_PlayerReactions) = {
+EvtScript EVS_FortressCollapse_PlayerReactions = {
     Call(DisablePartnerAI, false)
     Wait(37)
     Call(SetPlayerAnimation, ANIM_MarioW2_FlailArms)
@@ -199,7 +199,7 @@ EvtScript N(EVS_FortressCollapse_PlayerReactions) = {
     End
 };
 
-EvtScript N(EVS_Scene_SelfDestruct) = {
+EvtScript EVS_Scene_SelfDestruct = {
     Call(DisablePlayerInput, true)
     Wait(15)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, false)
@@ -227,7 +227,7 @@ EvtScript N(EVS_Scene_SelfDestruct) = {
     Set(GB_StoryProgress, STORY_CH0_HIT_GATEHOUSE_SWITCH)
     Call(EnableModel, MODEL_eye_mask, true)
     Wait(1)
-    ExecGetTID(N(EVS_RandomQuaking), LVarA)
+    ExecGetTID(EVS_RandomQuaking, LVarA)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.7))
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -100, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -261,16 +261,16 @@ EvtScript N(EVS_Scene_SelfDestruct) = {
         Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.2))
         Call(PlaySound, SOUND_KMR_TOWER_COLLAPSE_RUMBLE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
     EndThread
-    Exec(N(EVS_PlayFortressAnimation))
-    Exec(N(EVS_FortressCollapse_PlayFX))
-    Exec(N(EVS_FortressCollapse_PlayerReactions))
+    Exec(EVS_PlayFortressAnimation)
+    Exec(EVS_FortressCollapse_PlayFX)
+    Exec(EVS_FortressCollapse_PlayerReactions)
     Wait(380)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -150, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20)
-    Exec(N(EVS_GoombaKingBlastoff))
-    Exec(N(EVS_PlayBridgeAnimation))
+    Exec(EVS_GoombaKingBlastoff)
+    Exec(EVS_PlayBridgeAnimation)
     Wait(150)
     Wait(50)
     Call(EnableModel, MODEL_o416, false)
@@ -280,7 +280,7 @@ EvtScript N(EVS_Scene_SelfDestruct) = {
     Call(DeleteAnimatedModel, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(DisablePartnerAI, false)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(0.8))
     Loop(2)
@@ -300,7 +300,7 @@ EvtScript N(EVS_Scene_SelfDestruct) = {
     End
 };
 
-EvtScript N(EVS_BouncePlayerAndPartner) = {
+EvtScript EVS_BouncePlayerAndPartner = {
     Thread
         Call(SetPlayerJumpscale, Float(2.0))
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -313,9 +313,9 @@ EvtScript N(EVS_BouncePlayerAndPartner) = {
     End
 };
 
-EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
+EvtScript EVS_Scene_MeetGoombaKing_Impl = {
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_FocusCam_FortressExterior))
+    ExecWait(EVS_FocusCam_FortressExterior)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.3 / DT))
     Call(PanToTarget, CAM_DEFAULT, Float(0.5), true)
     Wait(170 * DT)
@@ -377,7 +377,7 @@ EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
     PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.2))
     Set(LVar3, 2)
-    Exec(N(EVS_BouncePlayerAndPartner))
+    Exec(EVS_BouncePlayerAndPartner)
     Wait(60 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
@@ -385,7 +385,7 @@ EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
     PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.6))
     Set(LVar3, 4)
-    Exec(N(EVS_BouncePlayerAndPartner))
+    Exec(EVS_BouncePlayerAndPartner)
     Wait(60 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
@@ -393,7 +393,7 @@ EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
     PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
     Set(LVar3, 6)
-    Exec(N(EVS_BouncePlayerAndPartner))
+    Exec(EVS_BouncePlayerAndPartner)
     Wait(60 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
@@ -401,7 +401,7 @@ EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
     PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.5))
     Set(LVar3, 8)
-    Exec(N(EVS_BouncePlayerAndPartner))
+    Exec(EVS_BouncePlayerAndPartner)
     Wait(28 * DT)
     Call(SetMusic, 0, SONG_GOOMBA_KING_THEME, 0, VOL_LEVEL_FULL)
     Wait(32 * DT)
@@ -429,21 +429,21 @@ EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
         PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
         Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
     EndThread
-    ExecWait(N(EVS_FocusCam_Battlement))
+    ExecWait(EVS_FocusCam_Battlement)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(55 * DT)
     Call(SpeakToPlayer, NPC_GoombaKing, ANIM_GoombaKing_Idle, ANIM_GoombaKing_Idle, 0, MSG_CH0_00C6)
     Call(SpeakToPlayer, NPC_RedGoombaBro, ANIM_GoombaBros_Red_Walk, ANIM_GoombaBros_Red_Idle, 0, MSG_CH0_00C7)
     Call(SpeakToPlayer, NPC_BlueGoombaBro, ANIM_GoombaBros_Blue_Walk, ANIM_GoombaBros_Blue_Idle, 0, MSG_CH0_00C8)
-    ExecWait(N(EVS_FocusCam_BesidePlayer))
+    ExecWait(EVS_FocusCam_BesidePlayer)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(DisablePartnerAI, false)
     Wait(5 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH0_00C9)
     Call(DisablePartnerAI, false)
-    ExecWait(N(EVS_FocusCam_Battlement))
+    ExecWait(EVS_FocusCam_Battlement)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(5 * DT)
@@ -455,12 +455,12 @@ EvtScript N(EVS_Scene_MeetGoombaKing_Impl) = {
     End
 };
 
-EvtScript N(EVS_Scene_MeetGoombaKing) = {
-    Call(N(SetCameraVFov), 32)
+EvtScript EVS_Scene_MeetGoombaKing = {
+    Call(SetCameraVFov, 32)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Exec(N(EVS_Scene_MeetGoombaKing_Impl))
+    Exec(EVS_Scene_MeetGoombaKing_Impl)
     Return
     End
 };

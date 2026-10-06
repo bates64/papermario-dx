@@ -2,7 +2,7 @@
 #include "map.h"
 #include "hud_element.h"
 
-API_CALLABLE(N(RemoveChillOut)) {
+static API_CALLABLE(RemoveChillOut) {
     Actor* actor = get_actor(script->owner1.actorID);
     HudElemID hid = actor->hudElementDataIndex;
 

@@ -47,23 +47,21 @@ enum {
     MF_DivaSongPlaying          = MapFlag(10),
 };
 
-#define NAMESPACE mac_05
+extern EvtScript EVS_Main;
+extern EvtScript EVS_Scene_ArriveByWhale;
+extern EvtScript EVS_Scene_FuzzipedeDefeated;
+extern EvtScript EVS_SetupWhale;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_AnimateClub64Sign;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_Scene_ArriveByWhale);
-extern EvtScript N(EVS_Scene_FuzzipedeDefeated);
-extern EvtScript N(EVS_SetupWhale);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_AnimateClub64Sign);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_80244298;
+extern EvtScript EVS_802442C4;
+extern EvtScript EVS_802442E8;
+extern EvtScript EVS_80244314;
+extern EvtScript EVS_80244340;
 
-extern EvtScript N(EVS_80244298);
-extern EvtScript N(EVS_802442C4);
-extern EvtScript N(EVS_802442E8);
-extern EvtScript N(EVS_80244314);
-extern EvtScript N(EVS_80244340);
-
-extern NpcGroupList N(NpcSetA);
-extern NpcGroupList N(NpcSetB);
-extern NpcGroupList N(NpcSetC);
+extern NpcGroupList NpcSetA;
+extern NpcGroupList NpcSetB;
+extern NpcGroupList NpcSetC;

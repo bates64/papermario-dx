@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetLightningBoltPurple)) {
+API_CALLABLE(SetLightningBoltPurple) {
     EffectInstance* effect = (EffectInstance*)script->varTable[15];
 
     effect->data.lightningBolt->outerColor.r = 85;
@@ -21,7 +21,7 @@ enum {
     BRIDGE_STATE_FALLING    = 11,
 };
 
-API_CALLABLE(N(SpawnLensFlare)) {
+API_CALLABLE(SpawnLensFlare) {
     Bytecode* args = script->ptrReadPos;
     f32 posX = evt_get_float_variable(script, *args++);
     f32 posY = evt_get_float_variable(script, *args++);
@@ -32,15 +32,15 @@ API_CALLABLE(N(SpawnLensFlare)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ArenaEyesFlash) = {
+EvtScript EVS_ArenaEyesFlash = {
     Call(PlaySoundAt, SOUND_KKJ_ARENA_LENS_FLARE, SOUND_SPACE_DEFAULT, 300, -70, 280)
-    Call(N(SpawnLensFlare), 225, -70, 280, 240)
-    Call(N(SpawnLensFlare), 380, -70, 280, 240)
+    Call(SpawnLensFlare, 225, -70, 280, 240)
+    Call(SpawnLensFlare, 380, -70, 280, 240)
     Return
     End
 };
 
-EvtScript N(EVS_BowserActivatesSwitch) = {
+EvtScript EVS_BowserActivatesSwitch = {
     Thread
         Wait(20)
         Call(GetEntityPosition, MV_EntityID_Switch, LVar7, LVar8, LVar9)
@@ -81,7 +81,7 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
     End
 };
 
-s32 N(BridgeModels)[] = {
+s32 BridgeModels[] = {
     MODEL_g49,
     MODEL_g48,
     MODEL_g47,
@@ -100,7 +100,7 @@ s32 N(BridgeModels)[] = {
     MODEL_g34,
 };
 
-EvtScript N(EVS_Scene_BowserTrapsMario) = {
+EvtScript EVS_Scene_BowserTrapsMario = {
     Label(0)
         Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o128)
@@ -153,7 +153,7 @@ EvtScript N(EVS_Scene_BowserTrapsMario) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
     Call(SpeakToPlayer, NPC_Bowser_01, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_CH8_007D)
-    ExecWait(N(EVS_BowserActivatesSwitch))
+    ExecWait(EVS_BowserActivatesSwitch)
     Call(UseSettingsFrom, CAM_DEFAULT, -150, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -150, 0, 100)
     Call(SetCamDistance, CAM_DEFAULT, 250)
@@ -167,11 +167,11 @@ EvtScript N(EVS_Scene_BowserTrapsMario) = {
     End
 };
 
-EvtScript N(EVS_WaveBridgeModels) = {
-    UseBuf(Ref(N(BridgeModels)))
+EvtScript EVS_WaveBridgeModels = {
+    UseBuf(Ref(BridgeModels))
     SetF(LVar1, Float(1.0))
     Set(LVar2, 1)
-    Loop(ARRAY_COUNT(N(BridgeModels)))
+    Loop(ARRAY_COUNT(BridgeModels))
         BufRead1(LVar3)
         SetF(LVar0, 0)
         Thread
@@ -208,19 +208,19 @@ EvtScript N(EVS_WaveBridgeModels) = {
     End
 };
 
-EvtScript N(EVS_AnimateBridgeCollapsing) = {
+EvtScript EVS_AnimateBridgeCollapsing = {
     Loop(4)
-        Exec(N(EVS_WaveBridgeModels))
+        Exec(EVS_WaveBridgeModels)
         Wait(25)
     EndLoop
     Thread
         Wait(15)
         Set(MV_BridgeCollapseState, BRIDGE_STATE_FALLING)
     EndThread
-    UseBuf(Ref(N(BridgeModels)))
+    UseBuf(Ref(BridgeModels))
     Set(LVar2, 35)
     Set(LVar5, -15)
-    Loop(ARRAY_COUNT(N(BridgeModels)))
+    Loop(ARRAY_COUNT(BridgeModels))
         Call(PlaySoundAt, SOUND_SEQ_FINALE_BRIDGE_COLLAPSE, SOUND_SPACE_DEFAULT, LVar5, 0, 0)
         Add(LVar5, -30)
         BufRead1(LVar3)
@@ -255,21 +255,21 @@ EvtScript N(EVS_AnimateBridgeCollapsing) = {
     End
 };
 
-Vec3i N(PowerUpBoltOrigins1)[] = {
+Vec3i PowerUpBoltOrigins1[] = {
     { 230, 160,   0 },
     { 350, 160,  90 },
     { 420, 160,  10 },
     { 280, 160, -10 },
 };
 
-Vec3i N(PowerUpBoltOrigins2)[] = {
+Vec3i PowerUpBoltOrigins2[] = {
     { 330, 160,  50 },
     { 360, 160, -50 },
     { 370, 160,  50 },
     { 330, 160, -50 },
 };
 
-EvtScript N(EVS_Scene_ActivateMachine) = {
+EvtScript EVS_Scene_ActivateMachine = {
     Set(AF_KKJ25_ActivatedArenaSwitch, false)
     Wait(10)
     Call(UseSettingsFrom, CAM_DEFAULT, -150, 0, 0)
@@ -287,7 +287,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
         Call(SetPlayerAnimation, ANIM_MarioW2_Shocked)
     EndThread
     Set(MV_BridgeCollapseState, BRIDGE_STATE_SHAKING)
-    ExecWait(N(EVS_AnimateBridgeCollapsing))
+    ExecWait(EVS_AnimateBridgeCollapsing)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetPlayerPos, 100, 0, 0)
     Call(PartnerIsFlying, LVar0)
@@ -354,7 +354,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
     Call(SetCamProperties, CAM_DEFAULT, Float(4.0), 300, 0, 0, 1100, Float(7.0), Float(0.0))
     Wait(20)
     Call(SetMusic, 0, SONG_BOWSER_BATTLE, 0, VOL_LEVEL_FULL)
-    Exec(N(EVS_ArenaEyesFlash))
+    Exec(EVS_ArenaEyesFlash)
     Wait(30)
     Set(MV_ArenaState, ARENA_STATE_ACTIVATING)
     Loop(0)
@@ -374,16 +374,16 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
     Call(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_Shock)
     Call(GetNpcPos, NPC_Bowser_01, LVar3, LVar4, LVar5)
     Thread
-        UseBuf(Ref(N(PowerUpBoltOrigins1)))
-        Loop(ARRAY_COUNT(N(PowerUpBoltOrigins1)))
+        UseBuf(Ref(PowerUpBoltOrigins1))
+        Loop(ARRAY_COUNT(PowerUpBoltOrigins1))
             BufRead3(LVar0, LVar1, LVar2)
             PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 8)
             Wait(8)
         EndLoop
     EndThread
     Thread
-        UseBuf(Ref(N(PowerUpBoltOrigins2)))
-        Loop(ARRAY_COUNT(N(PowerUpBoltOrigins2)))
+        UseBuf(Ref(PowerUpBoltOrigins2))
+        Loop(ARRAY_COUNT(PowerUpBoltOrigins2))
             BufRead3(LVar0, LVar1, LVar2)
             PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 8)
             Wait(12)
@@ -431,7 +431,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
     End
 };
 
-Vec3i N(CirculatingBoltPositions)[] = {
+Vec3i CirculatingBoltPositions[] = {
     { Float(625.825), Float(-9.194), Float(-91.893)  }, { Float(609.671), Float(-9.194), Float(136.274)  },
     { Float(609.671), Float(-9.194), Float(136.274)  }, { Float(450.634), Float(-9.194), Float(300.677)  },
     { Float(450.634), Float(-9.194), Float(300.677)  }, { Float(223.128), Float(-9.194), Float(324.39)   },
@@ -443,7 +443,7 @@ Vec3i N(CirculatingBoltPositions)[] = {
     { Float(491.536), Float(-9.194), Float(-277.063) }, { Float(625.825), Float(-9.194), Float(-91.893)  },
 };
 
-Vec3i N(RandomBoltPositions)[] = {
+Vec3i RandomBoltPositions[] = {
     { 180, 300, -200 }, { 250, 0, -150 },
     { 270, 300, -200 }, { 200, 0, -150 },
     { 350, 300, -240 }, { 500, 0, -160 },
@@ -454,7 +454,7 @@ Vec3i N(RandomBoltPositions)[] = {
     { 215, 300,  -50 }, { 130, 0,  -50 },
 };
 
-EvtScript N(EVS_ManageArenaEffects) = {
+EvtScript EVS_ManageArenaEffects = {
     ChildThread
         Set(LVar2, 0)
         Set(LVar3, 0)
@@ -499,19 +499,19 @@ EvtScript N(EVS_ManageArenaEffects) = {
     Wait(45)
     ChildThread
         Loop(0)
-            UseBuf(Ref(N(CirculatingBoltPositions)))
-            Loop(ARRAY_COUNT(N(CirculatingBoltPositions)) / 2)
+            UseBuf(Ref(CirculatingBoltPositions))
+            Loop(ARRAY_COUNT(CirculatingBoltPositions) / 2)
                 BufRead3(LVar0, LVar1, LVar2)
                 BufRead3(LVar3, LVar4, LVar5)
                 PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 5)
-                Call(N(SetLightningBoltPurple))
+                Call(SetLightningBoltPurple)
                 Wait(5)
             EndLoop
         EndLoop
     EndChildThread
     ChildThread
         Loop(0)
-            UseBuf(Ref(N(RandomBoltPositions)))
+            UseBuf(Ref(RandomBoltPositions))
             Call(RandInt, 7, LVar6)
             Add(LVar6, 1)
             Loop(LVar6)
@@ -520,11 +520,11 @@ EvtScript N(EVS_ManageArenaEffects) = {
             EndLoop
             IfNe(MV_ArenaState, ARENA_STATE_OVERLOADING)
                 PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 10)
-                Call(N(SetLightningBoltPurple))
+                Call(SetLightningBoltPurple)
                 Wait(30)
             Else
                 PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 1, 5)
-                Call(N(SetLightningBoltPurple))
+                Call(SetLightningBoltPurple)
                 Wait(15)
             EndIf
         EndLoop

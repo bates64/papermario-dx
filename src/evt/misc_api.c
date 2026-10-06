@@ -2,6 +2,15 @@
 #include "functions.h"
 #include "game_modes.h"
 
+API_CALLABLE(StartRumbleWithParams) {
+    Bytecode* args = script->ptrReadPos;
+    s32 frequency = evt_get_variable(script, *args++);
+    s32 duration = evt_get_variable(script, *args++);
+
+    start_rumble(frequency, duration);
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(GetAngleBetweenNPCs) {
     Bytecode* args = script->ptrReadPos;
 

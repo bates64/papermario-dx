@@ -19,7 +19,7 @@ enum {
 
 static s32 get_collider_below_tornado_jump(void);
 
-void action_update_tornado_jump(void) {
+export void action_update_tornado_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     f32 cameraRelativeYaw;

@@ -19,7 +19,7 @@ typedef struct PostOfficeEntry {
     MSG_Document_Letter_##name##_Desc, \
     MSG_Document_Letter_##name##_Body
 
-PostOfficeEntry N(PostOfficeLetters)[] = {
+PostOfficeEntry PostOfficeLetters[] = {
     { PARTNER_GOOMBARIO,  ITEM_LETTER_TO_KOLORADO, LETTER_MESSAGES(Goombario2) },
     { PARTNER_GOOMBARIO,  ITEM_LETTER_TO_KOLORADO, LETTER_MESSAGES(Goombario1) },
     { PARTNER_GOOMBARIO,  ITEM_LETTER_TO_KOLORADO, LETTER_MESSAGES(Goombario3) },
@@ -47,12 +47,12 @@ enum HasLetterResult {
     HAS_LETTER_UNREAD   = 1,
 };
 
-API_CALLABLE(N(CheckForUnreadLetters)) {
+API_CALLABLE(CheckForUnreadLetters) {
     s32 result = HAS_LETTER_NONE;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
-        if (gPlayerData.partners[N(PostOfficeLetters)[i].partnerID].enabled
+    for (i = 0; i < ARRAY_COUNT(PostOfficeLetters); i++) {
+        if (gPlayerData.partners[PostOfficeLetters[i].partnerID].enabled
             && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
         ) {
             if (!evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i)) {
@@ -75,12 +75,12 @@ enum PartnerLetterStatus {
     PARTNER_LETTER_UNREAD   = 2,
 };
 
-s32 N(get_partner_letter_status)(s32 partner) {
+s32 get_partner_letter_status(s32 partner) {
     s32 ret = PARTNER_LETTER_NONE;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
-        if (N(PostOfficeLetters)[i].partnerID == partner
+    for (i = 0; i < ARRAY_COUNT(PostOfficeLetters); i++) {
+        if (PostOfficeLetters[i].partnerID == partner
             && evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i)
         ) {
             if (ret == PARTNER_LETTER_NONE) {
@@ -97,12 +97,12 @@ s32 N(get_partner_letter_status)(s32 partner) {
     return ret;
 }
 
-API_CALLABLE(N(ResetLetterMenuSelection)) {
+API_CALLABLE(ResetLetterMenuSelection) {
     LetterSelectIdx = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ShowLetterPartnerMenu)) {
+API_CALLABLE(ShowLetterPartnerMenu) {
     PopupMenu* menu = &LetterSelectMenu;
     PlayerData* playerData = &gPlayerData;
     s32 partnerID;
@@ -116,7 +116,7 @@ API_CALLABLE(N(ShowLetterPartnerMenu)) {
         for (i = 1; i < ARRAY_COUNT(PartnerIDFromMenuIndex); i++) {
             partnerID = PartnerIDFromMenuIndex[i];
             if (playerData->partners[partnerID].enabled && partnerID != PARTNER_GOOMPA) {
-                hasLetterStatus = N(get_partner_letter_status)(partnerID);
+                hasLetterStatus = get_partner_letter_status(partnerID);
                 if (hasLetterStatus != PARTNER_LETTER_NONE) {
                     menu->ptrIcon[numEntries] = wPartnerHudScripts[partnerID].enabled;
                     menu->userIndex[numEntries] = partnerID;
@@ -166,7 +166,7 @@ API_CALLABLE(N(ShowLetterPartnerMenu)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ShowLetterListMenu)) {
+API_CALLABLE(ShowLetterListMenu) {
     PopupMenu* menu = &LetterSelectMenu;
     IconHudScriptPair* scriptPair;
     s32 letterIdx;
@@ -178,14 +178,14 @@ API_CALLABLE(N(ShowLetterListMenu)) {
     if (isInitialCall) {
         numEntries = 0;
 
-        for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
+        for (i = 0; i < ARRAY_COUNT(PostOfficeLetters); i++) {
             isUnlocked = evt_get_variable(nullptr, GF_MAC01_UnlockedLetter_00 + i);
             hasRead = evt_get_variable(nullptr, GF_MAC01_ReadLetter_00 + i);
-            if (isUnlocked && script->varTable[10] == N(PostOfficeLetters)[i].partnerID) {
+            if (isUnlocked && script->varTable[10] == PostOfficeLetters[i].partnerID) {
                 scriptPair = &gItemHudScripts[gItemTable[84].hudElemID];
                 menu->userIndex[numEntries] = i;
-                menu->nameMsg[numEntries] = N(PostOfficeLetters)[i].letterFromMessage;
-                menu->descMsg[numEntries] = N(PostOfficeLetters)[i].letterDescMessage;
+                menu->nameMsg[numEntries] = PostOfficeLetters[i].letterFromMessage;
+                menu->descMsg[numEntries] = PostOfficeLetters[i].letterDescMessage;
                 menu->value[numEntries] = 0;
                 if (hasRead) {
                     menu->ptrIcon[numEntries] = scriptPair->disabled;
@@ -227,12 +227,12 @@ API_CALLABLE(N(ShowLetterListMenu)) {
     }
     letterIdx = menu->userIndex[script->functionTemp[1] - 1];
     script->varTable[1] = letterIdx;
-    script->varTable[0] = N(PostOfficeLetters)[letterIdx].letterBodyMessage;
+    script->varTable[0] = PostOfficeLetters[letterIdx].letterBodyMessage;
     evt_set_variable(nullptr, GF_MAC01_ReadLetter_00 + letterIdx, 1);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetLetterPartnerOut)) {
+API_CALLABLE(GetLetterPartnerOut) {
     if (gPlayerData.curPartner == script->varTable[10]) {
         script->varTable[1] = 0;
         return ApiStatus_DONE2;
@@ -242,7 +242,7 @@ API_CALLABLE(N(GetLetterPartnerOut)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ItemPrompt_Mailbag) = {
+EvtScript EVS_ItemPrompt_Mailbag = {
     Call(FindItem, ITEM_MAILBAG, LVar0)
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0060)
@@ -264,16 +264,16 @@ EvtScript N(EVS_ItemPrompt_Mailbag) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Postmaster) = {
+EvtScript EVS_NpcInteract_Postmaster = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfEq(GF_MAC01_MailbagReturned, false)
-            ExecWait(N(EVS_ItemPrompt_Mailbag))
+            ExecWait(EVS_ItemPrompt_Mailbag)
             Return
         EndIf
     EndIf
     IfEq(GF_MAC01_Met_Postmaster, false)
         Set(GF_MAC01_Met_Postmaster, true)
-        Call(N(CheckForUnreadLetters))
+        Call(CheckForUnreadLetters)
         Switch(LVar0)
             CaseEq(HAS_LETTER_NONE)
                 Return
@@ -281,7 +281,7 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0055)
         EndSwitch
     Else
-        Call(N(CheckForUnreadLetters))
+        Call(CheckForUnreadLetters)
         Switch(LVar0)
             CaseEq(HAS_LETTER_NONE)
                 Return
@@ -291,9 +291,9 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0056)
         EndSwitch
     EndIf
-    Call(N(ResetLetterMenuSelection))
+    Call(ResetLetterMenuSelection)
     Label(0)
-        Call(N(ShowLetterPartnerMenu))
+        Call(ShowLetterPartnerMenu)
         Wait(5)
         IfEq(LVar1, -1)
             Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0059)
@@ -306,12 +306,12 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
             EndIf
         EndIf
         Set(LVarA, LVar1)
-        Call(N(ShowLetterListMenu))
+        Call(ShowLetterListMenu)
         Wait(5)
         IfEq(LVar1, -1)
             Goto(0)
         EndIf
-        Call(N(GetLetterPartnerOut))
+        Call(GetLetterPartnerOut)
         IfEq(LVar1, 1)
             Wait(30)
             Call(InterpNpcYaw, NPC_PARTNER, 90, 1)
@@ -339,19 +339,19 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Postmaster_Epilogue) = {
+EvtScript EVS_NpcInteract_Postmaster_Epilogue = {
     Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_Outro_0043)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Postmaster) = {
+EvtScript EVS_NpcInit_Postmaster = {
     Call(SetNpcCollisionSize, NPC_SELF, 36, 42)
     Switch(GB_StoryProgress)
         CaseGe(STORY_EPILOGUE)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Postmaster_Epilogue)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Postmaster_Epilogue))
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Postmaster)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Postmaster))
     EndSwitch
     IfGe(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         Set(GF_MAC01_UnlockedLetter_01, true)
@@ -412,28 +412,28 @@ EvtScript N(EVS_NpcInit_Postmaster) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Parakarry) = {
+EvtScript EVS_NpcInteract_Parakarry = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_MAC_Plaza_0064)
     Return
     End
 };
 
-AnimID N(LimitAnims_Parakarry)[] = {
+AnimID LimitAnims_Parakarry[] = {
     ANIM_WorldParakarry_Still,
     ANIM_WorldParakarry_Idle,
     ANIM_WorldParakarry_Talk,
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_NpcInit_Parakarry) = {
+EvtScript EVS_NpcInit_Parakarry = {
     Call(SetNpcCollisionSize, NPC_SELF, 37, 26)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Parakarry)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Parakarry))
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldParakarry_Idle)
     Return
     End
 };
 
-EvtScript N(EVS_CarryItem_PostOfficeShyGuy) = {
+EvtScript EVS_CarryItem_PostOfficeShyGuy = {
     Call(GetNpcPos, NPC_PostOfficeShyGuy, LVar2, LVar3, LVar4)
     Add(LVar3, 20)
     Call(MakeItemEntity, ITEM_MAILBAG, LVar2, LVar3, LVar4, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -450,17 +450,17 @@ EvtScript N(EVS_CarryItem_PostOfficeShyGuy) = {
     End
 };
 
-EvtScript N(EVS_PostOfficeShyGuy_Escape) = {
+EvtScript EVS_PostOfficeShyGuy_Escape = {
     Call(SetNpcPos, NPC_PostOfficeShyGuy, 357, 20, -440)
     Call(SetNpcAnimation, NPC_PostOfficeShyGuy, ANIM_ShyGuy_Red_Dash)
-    Exec(N(EVS_CarryItem_PostOfficeShyGuy))
+    Exec(EVS_CarryItem_PostOfficeShyGuy)
     Call(DisablePlayerInput, true)
     Wait(60)
     Call(PlaySoundAtNpc, NPC_PostOfficeShyGuy, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_PostOfficeShyGuy, 247, 20, -440, 20)
     Set(LVar0, 6)
     Call(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
+    ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, 180, -410, 20)
     Call(NpcMoveTo, NPC_PostOfficeShyGuy, 150, -333, 8)
     KillThread(LVarA)
@@ -471,7 +471,7 @@ EvtScript N(EVS_PostOfficeShyGuy_Escape) = {
     End
 };
 
-EvtScript N(EVS_Scene_MailbagTheft) = {
+EvtScript EVS_Scene_MailbagTheft = {
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Return
     EndIf
@@ -483,7 +483,7 @@ EvtScript N(EVS_Scene_MailbagTheft) = {
     EndIf
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_IdleAlt, 0, MSG_MAC_Plaza_005F)
-    Exec(N(EVS_PostOfficeShyGuy_Escape))
+    Exec(EVS_PostOfficeShyGuy_Escape)
     Call(DisablePlayerInput, false)
     Return
     End

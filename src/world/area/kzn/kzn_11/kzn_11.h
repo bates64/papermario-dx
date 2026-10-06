@@ -28,9 +28,7 @@ enum {
     NPC_Bubble_02               = 101,
 };
 
-#define NAMESPACE kzn_11
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_UpdateLeftPlatform);
-extern EvtScript N(EVS_UpdateRightPlatform);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_UpdateLeftPlatform;
+extern EvtScript EVS_UpdateRightPlatform;
+extern NpcGroupList DefaultNPCs;

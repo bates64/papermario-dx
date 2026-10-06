@@ -2,12 +2,12 @@
 #include "ld_addrs.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(LoadSmashBridgesGraphics)) {
+API_CALLABLE(LoadSmashBridgesGraphics) {
     DMA_COPY_SEGMENT(dgb_01_smash_bridges);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_TubbaSmashBridges) = {
+EvtScript EVS_Scene_TubbaSmashBridges = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, 100)
@@ -16,7 +16,7 @@ EvtScript N(EVS_Scene_TubbaSmashBridges) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    Call(N(LoadSmashBridgesGraphics))
+    Call(LoadSmashBridgesGraphics)
     Call(InitAnimatedModels)
     Wait(1)
     Call(InterruptUsePartner)
@@ -71,8 +71,8 @@ EvtScript N(EVS_Scene_TubbaSmashBridges) = {
     Wait(1)
     Call(EnablePartnerAI)
     Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(1.0))
-    Call(LoadAnimatedModel, 0, Ref(N(SmashBridgesSkeleton)))
-    Call(PlayModelAnimation, 0, Ref(N(AS_SmashBridges)))
+    Call(LoadAnimatedModel, 0, Ref(SmashBridgesSkeleton))
+    Call(PlayModelAnimation, 0, Ref(AS_SmashBridges))
     Call(SetAnimatedModelRootPosition, 0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, 0, RENDER_MODE_SURFACE_OPA)
     Thread
@@ -172,12 +172,12 @@ EvtScript N(EVS_Scene_TubbaSmashBridges) = {
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, 470, 0, 0)
     Call(DisablePlayerInput, false)
-    Exec(N(EVS_ExitDoors_dgb_08_1))
+    Exec(EVS_ExitDoors_dgb_08_1)
     Return
     End
 };
 
-EvtScript N(EVS_SetupBridges) = {
+EvtScript EVS_SetupBridges = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_WOKE_UP)
             Call(SetGroupVisibility, MODEL_g240, MODEL_GROUP_HIDDEN)
@@ -185,7 +185,7 @@ EvtScript N(EVS_SetupBridges) = {
         CaseEq(STORY_CH3_TUBBA_WOKE_UP)
             Call(SetGroupVisibility, MODEL_g240, MODEL_GROUP_HIDDEN)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_after, COLLIDER_FLAGS_UPPER_MASK)
-            Exec(N(EVS_Scene_TubbaSmashBridges))
+            Exec(EVS_Scene_TubbaSmashBridges)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SetGroupVisibility, MODEL_g340, MODEL_GROUP_HIDDEN)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_before, COLLIDER_FLAGS_UPPER_MASK)

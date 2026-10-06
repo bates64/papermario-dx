@@ -39,16 +39,14 @@ enum {
     MV_SpiritCardData       = MapVar(1),
 };
 
-#define NAMESPACE arn_07
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_UnlockDoor;
+extern EvtScript EVS_SetupWindmill;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript(EVS_SpawnStarCard);
+extern EvtScript(EVS_ExitDoor_arn_08_0);
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_UnlockDoor);
-extern EvtScript N(EVS_SetupWindmill);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript(N(EVS_SpawnStarCard));
-extern EvtScript(N(EVS_ExitDoor_arn_08_0));
-
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(BossNPCs);
-extern NpcGroupList N(SpiritNPCs);
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList BossNPCs;
+extern NpcGroupList SpiritNPCs;

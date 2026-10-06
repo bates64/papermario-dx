@@ -5,7 +5,7 @@
 
 #include "world/common/npc/Kolorado/idle.inc.c"
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -17,7 +17,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     Call(DisablePlayerInput, true)
     Loop(0)
         Wait(1)
@@ -57,7 +57,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Wait(5)
     Call(InterpNpcYaw, NPC_SELF, 90, 1)
     Wait(10)
-    Exec(N(EVS_KoloradoSinkingPlatform))
+    Exec(EVS_KoloradoSinkingPlatform)
     Set(LVar0, 2)
     Loop(3)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Panic)
@@ -126,7 +126,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Thread
         Wait(20)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -137,21 +137,21 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 7)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(CloseMessage)
-    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    Set(LVar0, Ref(LetterDelivery_Kolorado))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_KOLORADO_FELL_IN_LAVA)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
         CaseLt(STORY_CH5_LAVA_STREAM_BLOCKED)
             IfEq(GF_KZN06_Visited, false)
                 Call(SetNpcPos, NPC_SELF, -760, 20, -40)
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
             Else
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             EndIf
@@ -162,19 +162,19 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { -740.0f, 20.0f, 0.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_LavaBubble) = {
+NpcData NpcData_LavaBubble = {
     .id = NPC_LavaBubble,
     .pos = { 250.0f, 50.0f, 0.0f },
     .yaw = 90,
@@ -190,15 +190,15 @@ NpcData N(NpcData_LavaBubble) = {
             .detectSize = { 70, 200 },
         }
     },
-    .settings = &N(NpcSettings_LavaBubble_Wander),
+    .settings = &NpcSettings_LavaBubble_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_LavaBubble), BTL_KZN_FORMATION_00, BTL_KZN_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_LavaBubble, BTL_KZN_FORMATION_00, BTL_KZN_STAGE_02),
     {}
 };

@@ -1,8 +1,8 @@
 #include "jan_23.h"
 
-EvtScript N(EVS_ExitWalk_jan_19_1) = EVT_EXIT_WALK(60, jan_23_ENTRY_0, "jan_19", jan_19_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_19_1 = EVT_EXIT_WALK(60, jan_23_ENTRY_0, "jan_19", jan_19_ENTRY_1);
 
-EvtScript N(EVS_ExitFall_jan_16_4) = {
+EvtScript EVS_ExitFall_jan_16_4 = {
     Loop(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -86,22 +86,22 @@ EvtScript N(EVS_ExitFall_jan_16_4) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_jan_19_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    Exec(N(EVS_ExitFall_jan_16_4))
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_jan_19_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    Exec(EVS_ExitFall_jan_16_4)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     Return
     End
 };

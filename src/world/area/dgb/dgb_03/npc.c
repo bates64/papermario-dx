@@ -4,7 +4,7 @@
 #include "world/common/enemy/Clubba/patrol.inc.c"
 #include "world/common/enemy/Clubba/napping.inc.c"
 
-EvtScript N(EVS_NpcInit_Clubba_Napping) = {
+EvtScript EVS_NpcInit_Clubba_Napping = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, dgb_03_ENTRY_3)
         Call(SetNpcPos, NPC_SELF, -330, 210, -20)
@@ -13,7 +13,7 @@ EvtScript N(EVS_NpcInit_Clubba_Napping) = {
     End
 };
 
-NpcData N(NpcData_Clubba_Wander)[] = {
+NpcData NpcData_Clubba_Wander[] = {
     {
         .id = NPC_Clubba_Wander,
         .pos = { 180.0f, 0.0f, -122.0f },
@@ -30,7 +30,7 @@ NpcData N(NpcData_Clubba_Wander)[] = {
                 .detectSize = { 355, 255 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Wander),
+        .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -39,7 +39,7 @@ NpcData N(NpcData_Clubba_Wander)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_Wander_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_Patrol)[] = {
+NpcData NpcData_Clubba_Patrol[] = {
     {
         .id = NPC_Clubba_Patrol,
         .pos = { -272.0f, 0.0f, -135.0f },
@@ -58,7 +58,7 @@ NpcData N(NpcData_Clubba_Patrol)[] = {
                 .detectSize = { 355, 255 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Patrol),
+        .settings = &NpcSettings_Clubba_Patrol,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -67,7 +67,7 @@ NpcData N(NpcData_Clubba_Patrol)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_Patrol_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_Napping)[] = {
+NpcData NpcData_Clubba_Napping[] = {
     {
         .id = NPC_Clubba_Napping,
         .pos = { -326.0f, 210.0f, 80.0f },
@@ -84,8 +84,8 @@ NpcData N(NpcData_Clubba_Napping)[] = {
                 .detectSize = { 355, 255 },
             }
         },
-        .init = &N(EVS_NpcInit_Clubba_Napping),
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .init = &EVS_NpcInit_Clubba_Napping,
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -94,9 +94,9 @@ NpcData N(NpcData_Clubba_Napping)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_Napping_Hitbox),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba_Wander), BTL_DGB_FORMATION_01, BTL_DGB_STAGE_01),
-    NPC_GROUP(N(NpcData_Clubba_Patrol), BTL_DGB_FORMATION_01, BTL_DGB_STAGE_01),
-    NPC_GROUP(N(NpcData_Clubba_Napping), BTL_DGB_FORMATION_03, BTL_DGB_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Clubba_Wander, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_01),
+    NPC_GROUP(NpcData_Clubba_Patrol, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_01),
+    NPC_GROUP(NpcData_Clubba_Napping, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_00),
     {}
 };

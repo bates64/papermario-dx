@@ -6,7 +6,7 @@ extern AnimScript Entity_ScriptSpring_AnimLaunch;
 
 #include "world/common/npc/TubbasHeart/idle.inc.c"
 
-API_CALLABLE(N(PlaySpringAnimation)) {
+API_CALLABLE(PlaySpringAnimation) {
     Entity* entity = get_entity_by_index(0);
 
     if (entity == nullptr) {
@@ -17,14 +17,14 @@ API_CALLABLE(N(PlaySpringAnimation)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_TubbasHeart) = {
+EvtScript EVS_NpcIdle_TubbasHeart = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, 0, 25, -10, 6 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SPRING, SOUND_SPACE_DEFAULT)
-    Call(N(PlaySpringAnimation))
+    Call(PlaySpringAnimation)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TubbasHeart_JumpSad)
     Call(SetNpcJumpscale, NPC_SELF, Float(2.5))
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
@@ -35,28 +35,28 @@ EvtScript N(EVS_NpcIdle_TubbasHeart) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TubbasHeart) = {
+EvtScript EVS_NpcInit_TubbasHeart = {
     IfNe(GB_StoryProgress, STORY_CH3_HEART_FLED_SECOND_TUNNEL)
         Call(RemoveNpc, NPC_SELF)
     Else
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TubbasHeart)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TubbasHeart))
     EndIf
     Return
     End
 };
 
-NpcData N(NpcData_TubbasHeart) = {
+NpcData NpcData_TubbasHeart = {
     .id = NPC_TubbasHeart,
     .pos = { 0.0f, 25.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_TubbasHeart),
-    .settings = &N(NpcSettings_TubbasHeart),
+    .init = &EVS_NpcInit_TubbasHeart,
+    .settings = &NpcSettings_TubbasHeart,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
     .drops = NO_DROPS,
     .animations = TUBBAS_HEART_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TubbasHeart)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TubbasHeart),
     {}
 };

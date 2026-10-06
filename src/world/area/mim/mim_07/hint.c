@@ -1,6 +1,6 @@
 #include "mim_07.h"
 
-API_CALLABLE(N(ResetForeverForestFog)) {
+API_CALLABLE(ResetForeverForestFog) {
     enable_world_fog();
     set_world_fog_dist(990, 1000);
     set_world_fog_color(0, 0, 0, 255);
@@ -20,55 +20,55 @@ enum {
     EVIL_ROCK_FADE_OUT  = 4,
 };
 
-s32 N(EvilRockState) = EVIL_ROCK_HIDDEN;
-s32 N(EvilRockVisibleTime) = 0;
-s32 N(EvilRockAlpha) = 0;
+s32 EvilRockState = EVIL_ROCK_HIDDEN;
+s32 EvilRockVisibleTime = 0;
+s32 EvilRockAlpha = 0;
 
-void N(gfx_build_evil_rock_face)(s32 index) {
-    switch (N(EvilRockState)) {
+void gfx_build_evil_rock_face(s32 index) {
+    switch (EvilRockState) {
         case EVIL_ROCK_BEGIN:
-            N(EvilRockAlpha) = 0;
-            N(EvilRockState) = EVIL_ROCK_FADE_IN;
+            EvilRockAlpha = 0;
+            EvilRockState = EVIL_ROCK_FADE_IN;
             break;
         case EVIL_ROCK_FADE_IN:
-            N(EvilRockAlpha) += 10;
-            if (N(EvilRockAlpha) > 255) {
-                N(EvilRockAlpha) = 255;
-                N(EvilRockVisibleTime) = 50;
-                N(EvilRockState) = EVIL_ROCK_VISIBLE;
+            EvilRockAlpha += 10;
+            if (EvilRockAlpha > 255) {
+                EvilRockAlpha = 255;
+                EvilRockVisibleTime = 50;
+                EvilRockState = EVIL_ROCK_VISIBLE;
             }
             break;
         case EVIL_ROCK_VISIBLE:
-            N(EvilRockVisibleTime)--;
-            if (N(EvilRockVisibleTime) < 0) {
-                N(EvilRockVisibleTime) = 0;
-                N(EvilRockState) = EVIL_ROCK_FADE_OUT;
+            EvilRockVisibleTime--;
+            if (EvilRockVisibleTime < 0) {
+                EvilRockVisibleTime = 0;
+                EvilRockState = EVIL_ROCK_FADE_OUT;
             }
             break;
         case EVIL_ROCK_FADE_OUT:
-            N(EvilRockAlpha) -= 7;
-            if (N(EvilRockAlpha) < 0) {
-                N(EvilRockAlpha) = 0;
-                N(EvilRockState) = EVIL_ROCK_HIDDEN;
+            EvilRockAlpha -= 7;
+            if (EvilRockAlpha < 0) {
+                EvilRockAlpha = 0;
+                EvilRockState = EVIL_ROCK_HIDDEN;
             }
             break;
     }
 
     gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(EvilRockAlpha));
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, EvilRockAlpha);
     gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_06);
     gDPSetRenderMode(gMainGfxPos++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_XLU_DECAL2);
 }
 
-API_CALLABLE(N(TryEvilRockLaugh)) {
-    if (N(EvilRockState) == EVIL_ROCK_HIDDEN) {
-        N(EvilRockState) = EVIL_ROCK_BEGIN;
+API_CALLABLE(TryEvilRockLaugh) {
+    if (EvilRockState == EVIL_ROCK_HIDDEN) {
+        EvilRockState = EVIL_ROCK_BEGIN;
         script->varTable[0] = 1;
     }
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ManageEvilRock) = {
+EvtScript EVS_ManageEvilRock = {
     Label(0)
         Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0, -0x8000)
         Wait(3)
@@ -79,12 +79,12 @@ EvtScript N(EVS_ManageEvilRock) = {
     End
 };
 
-EvtScript N(EVS_OnInspectEvilRock) = {
+EvtScript EVS_OnInspectEvilRock = {
     Set(LVar0, 0)
-    Call(N(TryEvilRockLaugh))
+    Call(TryEvilRockLaugh)
     IfEq(LVar0, 1)
         Wait(10)
-        ExecGetTID(N(EVS_ManageEvilRock), LVar9)
+        ExecGetTID(EVS_ManageEvilRock, LVar9)
         Call(PlaySoundAt, SOUND_ROCK_LAUGHTER, SOUND_SPACE_DEFAULT, -34, 0, -300)
         Loop(18)
             Call(TranslateModel, MODEL_o289, Float(1.0), 0, Float(1.0))
@@ -110,11 +110,11 @@ EvtScript N(EVS_OnInspectEvilRock) = {
     End
 };
 
-EvtScript N(EVS_SetupExitHint) = {
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(gfx_build_evil_rock_face)), nullptr)
+EvtScript EVS_SetupExitHint = {
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(gfx_build_evil_rock_face), nullptr)
     Call(SetModelCustomGfx, MODEL_o440, CUSTOM_GFX_1, -1)
     Call(SetModelFlags, MODEL_o440, MODEL_FLAG_USES_CUSTOM_GFX, true)
-    BindTrigger(Ref(N(EVS_OnInspectEvilRock)), TRIGGER_WALL_PRESS_A, COLLIDER_o491, 1, 0)
+    BindTrigger(Ref(EVS_OnInspectEvilRock), TRIGGER_WALL_PRESS_A, COLLIDER_o491, 1, 0)
     Call(SetTexPanner, MODEL_o440, TEX_PANNER_0)
     Return
     End

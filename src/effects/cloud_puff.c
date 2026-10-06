@@ -17,7 +17,6 @@ void cloud_puff_main(f32 x, f32 y, f32 z, f32 angle) {
     s32 numParts = 8;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = cloud_puff_init;
     bp.update = cloud_puff_update;
     bp.renderScene = cloud_puff_render;

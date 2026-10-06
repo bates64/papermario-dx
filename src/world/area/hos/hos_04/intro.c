@@ -4,7 +4,7 @@
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/Twink/idle.inc.c"
 
-Vec3f N(TwinkFlightPath)[] = {
+Vec3f TwinkFlightPath[] = {
     { -669.0,    98.0,  -34.0 },
     { -669.0,    68.0,  -34.0 },
     { -644.0,    14.0,  -23.0 },
@@ -15,7 +15,7 @@ Vec3f N(TwinkFlightPath)[] = {
     {  305.0,   101.0,    0.0 },
 };
 
-CameraControlSettings N(CamSettings_PreHeist) = {
+CameraControlSettings CamSettings_PreHeist = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 700,
     .boomPitch = -0.9,
@@ -24,7 +24,7 @@ CameraControlSettings N(CamSettings_PreHeist) = {
     .flag = false,
 };
 
-CameraControlSettings N(CamSettings_PostHeist) = {
+CameraControlSettings CamSettings_PostHeist = {
     .type = CAM_CONTROL_FIXED_ORIENTATION,
     .boomLength = 665,
     .boomPitch = -0.9,
@@ -33,7 +33,7 @@ CameraControlSettings N(CamSettings_PostHeist) = {
     .flag = false,
 };
 
-API_CALLABLE(N(SetCamVfov)) {
+API_CALLABLE(SetCamVfov) {
     Bytecode* args = script->ptrReadPos;
     s32 cameraID = evt_get_variable(script, *args++);
 
@@ -41,7 +41,7 @@ API_CALLABLE(N(SetCamVfov)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ResumeIntroState)) {
+API_CALLABLE(ResumeIntroState) {
     if (gGameStatusPtr->introPart > INTRO_PART_NONE && gGameStatusPtr->introPart < INTRO_PART_5) {
         gGameStatusPtr->introPart++;
         state_init_intro();
@@ -49,73 +49,73 @@ API_CALLABLE(N(ResumeIntroState)) {
     return ApiStatus_DONE1;
 }
 
-API_CALLABLE(N(BlockForever)) {
+API_CALLABLE(BlockForever) {
     return ApiStatus_BLOCK;
 }
 
 #include "../common/IntroMathUtil.inc.c"
 
-f32 N(TargetBoomLengthPre) = 700;
-u16* N(ColorBufferPtr) = nullptr;
+f32 TargetBoomLengthPre = 700;
+u16* ColorBufferPtr = nullptr;
 
-API_CALLABLE(N(AnimateBoomLengthPreHeist)) {
+API_CALLABLE(AnimateBoomLengthPreHeist) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    if (nuGfxCfb_ptr == N(ColorBufferPtr)) {
+    if (nuGfxCfb_ptr == ColorBufferPtr) {
         return ApiStatus_BLOCK;
     }
 
-    N(ColorBufferPtr) = nuGfxCfb_ptr;
-    N(lerp_value_with_max_step)(700.0f, 300.0f, N(TargetBoomLengthPre), 1.2f, &N(TargetBoomLengthPre));
+    ColorBufferPtr = nuGfxCfb_ptr;
+    lerp_value_with_max_step(700.0f, 300.0f, TargetBoomLengthPre, 1.2f, &TargetBoomLengthPre);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(TargetBoomLengthPre);
+    camera->overrideSettings.boomLength = TargetBoomLengthPre;
     return ApiStatus_BLOCK;
 }
 
-s32 N(TargetBoomLengthPost) = 0;
-BSS f32 N(CurrentBoomLengthPost);
+s32 TargetBoomLengthPost = 0;
+BSS f32 CurrentBoomLengthPost;
 
-API_CALLABLE(N(AnimateBoomLengthPostHeist)) {
+API_CALLABLE(AnimateBoomLengthPostHeist) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (isInitialCall) {
-        N(CurrentBoomLengthPost) = N(CamSettings_PostHeist).boomLength;
+        CurrentBoomLengthPost = CamSettings_PostHeist.boomLength;
     }
-    N(interp_value_with_easing)(INTRO_MATH_EASING_SIN_OUT, N(CamSettings_PostHeist).boomLength, 700.0f,
-        N(TargetBoomLengthPost), 70.0f, &N(CurrentBoomLengthPost));
+    interp_value_with_easing(INTRO_MATH_EASING_SIN_OUT, CamSettings_PostHeist.boomLength, 700.0f,
+        TargetBoomLengthPost, 70.0f, &CurrentBoomLengthPost);
     camera->panActive = true;
-    camera->overrideSettings.boomLength = N(CurrentBoomLengthPost);
-    N(TargetBoomLengthPost)++;
-    if (N(TargetBoomLengthPost) < (s32)(70 * DT)) {
+    camera->overrideSettings.boomLength = CurrentBoomLengthPost;
+    TargetBoomLengthPost++;
+    if (TargetBoomLengthPost < (s32)(70 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
-s32 N(TargetViewPitch) = 0;
-BSS f32 N(CurrentViewPitch);
+s32 TargetViewPitch = 0;
+BSS f32 CurrentViewPitch;
 
-API_CALLABLE(N(AnimateViewPitchPostHeist)) {
+API_CALLABLE(AnimateViewPitchPostHeist) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (isInitialCall) {
-        N(CurrentViewPitch) = N(CamSettings_PostHeist).viewPitch;
+        CurrentViewPitch = CamSettings_PostHeist.viewPitch;
     }
-    N(interp_value_with_easing)(INTRO_MATH_EASING_5, N(CamSettings_PostHeist).viewPitch, -80.0f,
-        N(TargetViewPitch), 200.0f, &N(CurrentViewPitch));
+    interp_value_with_easing(INTRO_MATH_EASING_5, CamSettings_PostHeist.viewPitch, -80.0f,
+        TargetViewPitch, 200.0f, &CurrentViewPitch);
     camera->panActive = true;
-    camera->overrideSettings.viewPitch = N(CurrentViewPitch);
-    N(TargetViewPitch)++;
-    if (N(TargetViewPitch) == (s32)(200 * DT)) {
+    camera->overrideSettings.viewPitch = CurrentViewPitch;
+    TargetViewPitch++;
+    if (TargetViewPitch == (s32)(200 * DT)) {
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_ControlTwink) = {
+EvtScript EVS_ControlTwink = {
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Back)
     Call(SetNpcYaw, NPC_Twink, 180)
-    Call(N(AnimateBoomLengthPostHeist))
+    Call(AnimateBoomLengthPostHeist)
 #if VERSION_JP
     Wait(30 * DT)
 #else
@@ -133,9 +133,9 @@ EvtScript N(EVS_ControlTwink) = {
     EndThread
     Thread
         Wait(100 * DT)
-        Call(N(AnimateViewPitchPostHeist))
+        Call(AnimateViewPitchPostHeist)
     EndThread
-    Call(LoadPath, 200 * DT, Ref(N(TwinkFlightPath)), ARRAY_COUNT(N(TwinkFlightPath)), EASING_LINEAR)
+    Call(LoadPath, 200 * DT, Ref(TwinkFlightPath), ARRAY_COUNT(TwinkFlightPath), EASING_LINEAR)
     Label(0)
     Call(GetNextPathPos)
     Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -146,68 +146,68 @@ EvtScript N(EVS_ControlTwink) = {
     Call(SetNpcPos, NPC_Twink, NPC_DISPOSE_LOCATION)
     Thread
         Wait(85 * DT)
-        Call(N(BlockForever))
+        Call(BlockForever)
     EndThread
     Wait(120 * DT)
-    Call(N(ResumeIntroState))
+    Call(ResumeIntroState)
     Return
     End
 };
 
-EvtScript N(EVS_Intro_PostHeist) = {
+EvtScript EVS_Intro_PostHeist = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
-    Call(N(SetCamVfov), CAM_DEFAULT, 75)
+    Call(SetCamVfov, CAM_DEFAULT, 75)
     Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(CamSettings_PostHeist)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(CamSettings_PostHeist))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Thread
-        Exec(N(EVS_ControlTwink))
+        Exec(EVS_ControlTwink)
     EndThread
     Return
     End
 };
 
 // establishing shot of the star shrine; camera slowly moves along the path toward it
-EvtScript N(EVS_Intro_PreHeist_Unused) = {
+EvtScript EVS_Intro_PreHeist_Unused = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
-    Call(N(SetCamVfov), CAM_DEFAULT, 75)
+    Call(SetCamVfov, CAM_DEFAULT, 75)
     Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
-    Call(LoadSettings, CAM_DEFAULT, Ref(N(CamSettings_PreHeist)))
+    Call(LoadSettings, CAM_DEFAULT, Ref(CamSettings_PreHeist))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Thread
-        Call(N(AnimateBoomLengthPreHeist))
+        Call(AnimateBoomLengthPreHeist)
     EndThread
     Thread
         Wait(300)
-        Call(N(ResumeIntroState))
+        Call(ResumeIntroState)
     EndThread
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Twink) = {
+EvtScript EVS_NpcInit_Twink = {
     Return
     End
 };
 
-NpcData N(NpcData_Twink) = {
+NpcData NpcData_Twink = {
     .id = NPC_Twink,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Twink),
-    .settings = &N(NpcSettings_Twink),
+    .init = &EVS_NpcInit_Twink,
+    .settings = &NpcSettings_Twink,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Twink)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Twink),
     {}
 };

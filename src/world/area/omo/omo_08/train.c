@@ -15,11 +15,11 @@
 
 #include "../common/TrainStation.inc.c"
 
-Vec2i N(ConductorPos) = {
+Vec2i ConductorPos = {
     -145, -110
 };
 
-TrainPath N(TrainPath_DepartRight)[] = {
+TrainPath TrainPath_DepartRight[] = {
     TRAIN_PATH_BEGIN(-131.227, -210.271, 105.004),
     TRAIN_PATH_POINT(0.0, -175.0),
     TRAIN_PATH_POINT(262.5, -245.336),
@@ -27,7 +27,7 @@ TrainPath N(TrainPath_DepartRight)[] = {
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_DepartLeft)[] = {
+TrainPath TrainPath_DepartLeft[] = {
     TRAIN_PATH_BEGIN(-131.227, -210.271, 285.004),
     TRAIN_PATH_POINT(-262.5, -245.336),
     TRAIN_PATH_POINT(-353.418, -353.688),
@@ -35,7 +35,7 @@ TrainPath N(TrainPath_DepartLeft)[] = {
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_ArriveRight)[] = {
+TrainPath TrainPath_ArriveRight[] = {
     TRAIN_PATH_BEGIN(414.885, -426.942, 219.92),
     TRAIN_PATH_POINT(353.553, -353.553),
     TRAIN_PATH_POINT(262.5, -245.336),
@@ -44,7 +44,7 @@ TrainPath N(TrainPath_ArriveRight)[] = {
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_PassthroughRight)[] = {
+TrainPath TrainPath_PassthroughRight[] = {
     TRAIN_PATH_BEGIN(414.885, -426.942, 219.92),
     TRAIN_PATH_POINT(353.553, -353.553),
     TRAIN_PATH_POINT(262.5, -245.336),
@@ -55,7 +55,7 @@ TrainPath N(TrainPath_PassthroughRight)[] = {
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_ArriveLeft)[] = {
+TrainPath TrainPath_ArriveLeft[] = {
     TRAIN_PATH_BEGIN(-414.885, -426.942, 140.075),
     TRAIN_PATH_POINT(-353.418, -353.688),
     TRAIN_PATH_POINT(-262.5, -245.336),
@@ -63,7 +63,7 @@ TrainPath N(TrainPath_ArriveLeft)[] = {
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_PassthroughLeft)[] = {
+TrainPath TrainPath_PassthroughLeft[] = {
     TRAIN_PATH_BEGIN(-414.885, -426.942, 140.075),
     TRAIN_PATH_POINT(-353.418, -353.688),
     TRAIN_PATH_POINT(-262.5, -245.336),
@@ -73,19 +73,19 @@ TrainPath N(TrainPath_PassthroughLeft)[] = {
     TRAIN_PATH_END
 };
 
-s32 N(LeftStations)[] = {
+s32 LeftStations[] = {
     OMO_STATION_PINK,
     OMO_STATION_BLUE,
     OMO_STATION_RED,
 };
 
-s32 N(RightStations)[] = {
+s32 RightStations[] = {
     OMO_STATION_RED,
     OMO_STATION_BLUE,
     OMO_STATION_PINK,
 };
 
-EvtScript N(EVS_Conductor_ChooseRoute) = {
+EvtScript EVS_Conductor_ChooseRoute = {
     IfEq(MF_EitherSwitchPressed, false)
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0006)
     Else
@@ -95,13 +95,13 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                 Call(ShowChoice, MSG_Choice_0040)
                 IfNe(LVar0, 2)
                     Call(CloseMessage)
-                    UseBuf(Ref(N(LeftStations)))
+                    UseBuf(Ref(LeftStations))
                     Add(LVar0, 1)
                     Loop(LVar0)
                         BufRead1(LVar1)
                     EndLoop
                     Set(AB_OMO_TrainDest, LVar1)
-                    ExecWait(N(EVS_Train_DepartLeft))
+                    ExecWait(EVS_Train_DepartLeft)
                 Else
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
                 EndIf
@@ -109,13 +109,13 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                 Call(ShowChoice, MSG_Choice_0041)
                 IfNe(LVar0, 3)
                     Call(CloseMessage)
-                    UseBuf(Ref(N(LeftStations)))
+                    UseBuf(Ref(LeftStations))
                     Add(LVar0, 1)
                     Loop(LVar0)
                         BufRead1(LVar1)
                     EndLoop
                     Set(AB_OMO_TrainDest, LVar1)
-                    ExecWait(N(EVS_Train_DepartLeft))
+                    ExecWait(EVS_Train_DepartLeft)
                 Else
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
                 EndIf
@@ -129,13 +129,13 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                     Call(ShowChoice, MSG_Choice_003F)
                     IfNe(LVar0, 3)
                         Call(CloseMessage)
-                        UseBuf(Ref(N(RightStations)))
+                        UseBuf(Ref(RightStations))
                         Add(LVar0, 1)
                         Loop(LVar0)
                             BufRead1(LVar1)
                         EndLoop
                         Set(AB_OMO_TrainDest, LVar1)
-                        ExecWait(N(EVS_Train_DepartRight))
+                        ExecWait(EVS_Train_DepartRight)
                     Else
                         Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
                     EndIf
@@ -146,7 +146,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
     End
 };
 
-TrainPath N(TrainPath_Idle)[] = {
+TrainPath TrainPath_Idle[] = {
     TRAIN_PATH_BEGIN(-131.227, -210.271, 105.004),
     TRAIN_PATH_END
 };

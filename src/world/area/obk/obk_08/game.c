@@ -1,6 +1,6 @@
 #include "obk_08.h"
 
-API_CALLABLE(N(UpdateLeaderOrbitPos)) {
+API_CALLABLE(UpdateLeaderOrbitPos) {
     Npc* leaderBoo = get_npc_unsafe(NPC_LeaderBoo);
     Npc* hiddenBoo = get_npc_unsafe(NPC_HiddenBoo);
 
@@ -11,12 +11,12 @@ API_CALLABLE(N(UpdateLeaderOrbitPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AdvanceLeaderThrowYaw)) {
+API_CALLABLE(AdvanceLeaderThrowYaw) {
     script->varTable[0] = clamp_angle(script->varTable[0] - 2);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FindThrowTargetAtYaw)) {
+API_CALLABLE(FindThrowTargetAtYaw) {
     Npc* npc1 = get_npc_unsafe(NPC_KeepAwayBoo1);
     Npc* npc2 = get_npc_unsafe(NPC_KeepAwayBoo2);
     Npc* npc3 = get_npc_unsafe(NPC_KeepAwayBoo3);
@@ -68,7 +68,7 @@ API_CALLABLE(N(FindThrowTargetAtYaw)) {
 }
 
 // find a position outside the keep away ring for the player
-API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
+API_CALLABLE(GetPlayerPosOutsideKeepAwayRing) {
     f32 dist = dist2D(gPlayerStatus.pos.x, gPlayerStatus.pos.z, 0.0f, 0.0f);
     f32 posX, posY, posZ, yaw;
 
@@ -91,7 +91,7 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_DetermineCarrierNPC) = {
+EvtScript EVS_DetermineCarrierNPC = {
     Switch(MV_ThrowTargetNpc)
         CaseEq(NPC_HiddenBoo)
             Set(MV_ItemCarrierNpc, NPC_HiddenBoo)
@@ -116,7 +116,7 @@ EvtScript N(EVS_DetermineCarrierNPC) = {
     End
 };
 
-EvtScript N(EVS_TetherItemToNpcWithOffset) = {
+EvtScript EVS_TetherItemToNpcWithOffset = {
     Loop(0)
         Call(GetNpcPos, LVar0, LVar6, LVar7, LVar8)
         Add(LVar6, LVar3)
@@ -129,7 +129,7 @@ EvtScript N(EVS_TetherItemToNpcWithOffset) = {
     End
 };
 
-EvtScript N(EVS_BooSpookAndVanish) = {
+EvtScript EVS_BooSpookAndVanish = {
     Call(SetNpcFlagBits, LVarA, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, false)
     Call(NpcFacePlayer, LVarA, 0)
     Wait(5)
@@ -148,7 +148,7 @@ EvtScript N(EVS_BooSpookAndVanish) = {
     End
 };
 
-EvtScript N(EVS_Scene_BoosUnleashed) = {
+EvtScript EVS_Scene_BoosUnleashed = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
     Call(SetMusic, 0, SONG_BOO_MINIGAME, 0, VOL_LEVEL_FULL)
@@ -197,7 +197,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         Wait(10)
         Set(LVar0, 270)
         Set(MV_LeaderBooThrowYaw, LVar0)
-        Call(N(UpdateLeaderOrbitPos))
+        Call(UpdateLeaderOrbitPos)
         Call(MakeLerp, 0, 255, 30, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -238,8 +238,8 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         Set(LVarB, LVar0)
         Set(LVar0, MV_LeaderBooThrowYaw)
         Loop(0)
-            Call(N(UpdateLeaderOrbitPos))
-            Call(N(AdvanceLeaderThrowYaw))
+            Call(UpdateLeaderOrbitPos)
+            Call(AdvanceLeaderThrowYaw)
             Wait(1)
             Add(LVarA, -2)
             IfLe(LVarA, 0)
@@ -247,9 +247,9 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EndIf
         EndLoop
         Loop(0)
-            Call(N(UpdateLeaderOrbitPos))
-            Call(N(AdvanceLeaderThrowYaw))
-            Call(N(FindThrowTargetAtYaw))
+            Call(UpdateLeaderOrbitPos)
+            Call(AdvanceLeaderThrowYaw)
+            Call(FindThrowTargetAtYaw)
             Wait(1)
             IfEq(LVar1, true)
                 BreakLoop
@@ -273,8 +273,8 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetItemPos, MV_KeepAwayItem, NPC_DISPOSE_LOCATION)
         EndThread
         Loop(0)
-            Call(N(UpdateLeaderOrbitPos))
-            Call(N(AdvanceLeaderThrowYaw))
+            Call(UpdateLeaderOrbitPos)
+            Call(AdvanceLeaderThrowYaw)
             Wait(1)
             Add(LVarB, -2)
             IfLe(LVarB, 0)
@@ -294,13 +294,13 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EndLoop
         Set(MV_KeepAwayRingPaused, true)
         Call(DisablePlayerInput, true)
-        ExecWait(N(EVS_DetermineCarrierNPC))
+        ExecWait(EVS_DetermineCarrierNPC)
         IfEq(MV_KeepAwayResult, KEEP_AWAY_RIGHT)
             Call(GetNpcPos, MV_ItemCarrierNpc, LVar3, LVar4, LVar5)
             Call(SetNpcPos, NPC_DummyBoo, LVar3, LVar4, LVar5)
             Set(LVar0, NPC_DummyBoo)
             EVT_VEC3I_SET(LVar3, 0, 0, -20)
-            Exec(N(EVS_TetherItemToNpcWithOffset))
+            Exec(EVS_TetherItemToNpcWithOffset)
             Call(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
             Call(SetNpcJumpscale, NPC_DummyBoo, Float(2.0))
             Call(NpcJump0, NPC_DummyBoo, 0, 0, 0, 20)
@@ -321,7 +321,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
                 Call(NpcJump1, NPC_LeaderBoo, 0, 45, 0, 20)
                 Call(InterpNpcYaw, NPC_LeaderBoo, 90, 0)
             EndThread
-            Call(N(GetPlayerPosOutsideKeepAwayRing))
+            Call(GetPlayerPosOutsideKeepAwayRing)
             Call(SetPlayerSpeed, Float(4.0))
             Call(PlayerMoveTo, LVar0, LVar2, 0)
             Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
@@ -336,23 +336,23 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
                 Call(PlaySound, SOUND_BOO_SPOOK)
             EndThread
             Set(LVarA, NPC_KeepAwayBoo1)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo2)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo3)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo4)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo5)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo6)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo7)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_KeepAwayBoo8)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Set(LVarA, NPC_LeaderBoo)
-            Exec(N(EVS_BooSpookAndVanish))
+            Exec(EVS_BooSpookAndVanish)
             Wait(60)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -415,14 +415,14 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
             Set(MV_KeepAwayResult, KEEP_AWAY_WAITING)
             Set(MV_KeepAwayRingPaused, false)
-            Call(N(GetPlayerPosOutsideKeepAwayRing))
+            Call(GetPlayerPosOutsideKeepAwayRing)
             Call(SetPlayerSpeed, Float(4.0))
             Call(PlayerMoveTo, LVar0, LVar2, 0)
             Goto(50)
         EndIf
     Set(GB_StoryProgress, STORY_CH3_GOT_RECORD)
-    Exec(N(EVS_BindCabinetTriggers))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_BindCabinetTriggers)
+    Exec(EVS_SetupMusic)
     Call(DisablePlayerInput, false)
     Return
     End

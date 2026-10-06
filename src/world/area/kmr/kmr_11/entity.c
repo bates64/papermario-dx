@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "effects.h"
 
-API_CALLABLE(N(SetBlueSwitchPosition)) {
+API_CALLABLE(SetBlueSwitchPosition) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
     entity->pos.x = script->varTable[0];
@@ -12,7 +12,7 @@ API_CALLABLE(N(SetBlueSwitchPosition)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_OverhearEnemies) = {
+EvtScript EVS_Scene_OverhearEnemies = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_GoombaKing, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_RedGoombaBro, LVar0, LVar1, LVar2)
@@ -30,25 +30,25 @@ EvtScript N(EVS_Scene_OverhearEnemies) = {
 };
 
 // NPC_BlueGoombaBro is reused here to do the blue switch jumping
-EvtScript N(EVS_TetherSwitchToBlueGoomba) = {
+EvtScript EVS_TetherSwitchToBlueGoomba = {
     Label(10)
         Call(GetNpcPos, NPC_BlueGoombaBro, LVar0, LVar1, LVar2)
         Set(LVarA, MV_SwitchEntityID)
-        Call(N(SetBlueSwitchPosition))
+        Call(SetBlueSwitchPosition)
         Wait(1)
         Goto(10)
     Return
     End
 };
 
-EvtScript N(EVS_Interact_SwitchBush) = {
+EvtScript EVS_Interact_SwitchBush = {
     IfGe(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
         Return
     EndIf
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_BlueGoombaBro, -377, -8, 81)
     Call(SetNpcFlagBits, NPC_BlueGoombaBro, NPC_FLAG_HAS_NO_SPRITE, true)
-    ExecGetTID(N(EVS_TetherSwitchToBlueGoomba), LVarB)
+    ExecGetTID(EVS_TetherSwitchToBlueGoomba, LVarB)
     Call(SetNpcJumpscale, NPC_BlueGoombaBro, Float(2.0))
     Call(NpcJump0, NPC_BlueGoombaBro, -445, 0, 92, 15 * DT)
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, -469, 1, 92)
@@ -62,7 +62,7 @@ EvtScript N(EVS_Interact_SwitchBush) = {
     End
 };
 
-EvtScript N(EVS_OnBreak_SpecialBrick) = {
+EvtScript EVS_OnBreak_SpecialBrick = {
     Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
     Call(PlaySoundAt, SOUND_SPAWN_BLOCK, SOUND_SPACE_DEFAULT, 665, 35, 70)
     PlayEffect(EFFECT_SPARKLES, 0, 665, 48, 70, 10)
@@ -72,25 +72,25 @@ EvtScript N(EVS_OnBreak_SpecialBrick) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfLe(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
         IfEq(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
             Call(MakeEntity, Ref(Entity_BlueSwitch), -469, 0, 153, 0, MAKE_ENTITY_END)
             Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR11_Switch_SelfDestruct))
             Set(MV_SwitchEntityID, LVar0)
-            BindTrigger(Ref(N(EVS_Scene_SelfDestruct)), TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
-            BindTrigger(Ref(N(EVS_Scene_OverhearEnemies)), TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
+            BindTrigger(Ref(EVS_Scene_SelfDestruct), TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
+            BindTrigger(Ref(EVS_Scene_OverhearEnemies), TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
         Else
             Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
             Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR11_Switch_SelfDestruct))
             Set(MV_SwitchEntityID, LVar0)
-            BindTrigger(Ref(N(EVS_Scene_SelfDestruct)), TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
-            BindTrigger(Ref(N(EVS_Scene_OverhearEnemies)), TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
+            BindTrigger(Ref(EVS_Scene_SelfDestruct), TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
+            BindTrigger(Ref(EVS_Scene_OverhearEnemies), TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
         EndIf
     EndIf
     Call(MakeEntity, Ref(Entity_BrickBlock), 625, -25, 110, 45, MAKE_ENTITY_END)
     IfEq(GF_KMR11_ItemBlock_SuperShroom, false)
-        Call(AssignScript, Ref(N(EVS_OnBreak_SpecialBrick)))
+        Call(AssignScript, Ref(EVS_OnBreak_SpecialBrick))
     Else
         Call(MakeEntity, Ref(Entity_YellowBlock), 665, 35, 70, 45, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
         Call(AssignBlockFlag, GF_KMR11_ItemBlock_SuperShroom)

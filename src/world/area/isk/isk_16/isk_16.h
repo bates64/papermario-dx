@@ -24,12 +24,10 @@ enum {
     MV_SpiritCardData       = MapVar(1),
 };
 
-#define NAMESPACE isk_16
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupFlames);
-extern EvtScript N(EVS_SpawnStarCard);
-extern EvtScript N(EVS_Scene_TutankoopaDefeated);
-extern EvtScript N(EVS_Scene_TutankoopaAppears);
-extern EvtScript N(EVS_BindExitTriggers);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupFlames;
+extern EvtScript EVS_SpawnStarCard;
+extern EvtScript EVS_Scene_TutankoopaDefeated;
+extern EvtScript EVS_Scene_TutankoopaAppears;
+extern EvtScript EVS_BindExitTriggers;
+extern NpcGroupList DefaultNPCs;

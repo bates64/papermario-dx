@@ -1,6 +1,6 @@
 #include "nok_01.h"
 
-EvtScript N(EVS_NpcInteract_Koover_Normal) = {
+EvtScript EVS_NpcInteract_Koover_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0003)
@@ -19,17 +19,17 @@ EvtScript N(EVS_NpcInteract_Koover_Normal) = {
         CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0008)
     EndSwitch
-    Set(LVar0, Ref(N(LetterDelivery_Koover1)))
+    Set(LVar0, Ref(LetterDelivery_Koover1))
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
-    Set(LVar0, Ref(N(LetterDelivery_Koover2)))
+    Set(LVar0, Ref(LetterDelivery_Koover2))
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_02_Normal) = {
+EvtScript EVS_NpcInteract_Koopa_02_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0014)
@@ -50,12 +50,12 @@ EvtScript N(EVS_NpcInteract_Koopa_02_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopa_03_Normal) = {
+EvtScript EVS_NpcIdle_Koopa_03_Normal = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_03_Normal) = {
+EvtScript EVS_NpcInteract_Koopa_03_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_001C)
@@ -76,7 +76,7 @@ EvtScript N(EVS_NpcInteract_Koopa_03_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_01_Normal) = {
+EvtScript EVS_NpcInteract_Bobomb_01_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             IfEq(AF_NOK01_ToggleDialogue_Bobomb1, false)
@@ -100,13 +100,13 @@ EvtScript N(EVS_NpcInteract_Bobomb_01_Normal) = {
             Wait(3)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-            Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+            Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
+EvtScript EVS_NpcInteract_Bobomb_02_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             IfEq(AF_NOK01_ToggleDialogue_Bobomb2, false)
@@ -134,7 +134,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
                 Wait(3)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-                Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+                Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
                 Wait(30)
                 Call(PutPartnerAway)
             Else
@@ -146,7 +146,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
                 Wait(3)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-                Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+                Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
             EndIf
         CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(NpcFacePlayer, NPC_SELF, 0)
@@ -157,7 +157,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
             Wait(3)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-            Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+            Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
         CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(NpcFacePlayer, NPC_SELF, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, MSG_CH1_004D)
@@ -167,13 +167,13 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Normal) = {
             Wait(3)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-            Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+            Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
+EvtScript EVS_NpcInteract_Bobomb_03_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
             IfEq(AF_NOK01_RecievedBobombSalute, false)
@@ -193,7 +193,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
                     Wait(3)
                     Call(GetNpcPos, NPC_Bobomb_02, LVar0, LVar1, LVar2)
                     Call(PlaySoundAtNpc, NPC_Bobomb_02, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-                    Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+                    Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
                 EndThread
                 Wait(20)
                 Thread
@@ -204,7 +204,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
                     Wait(3)
                     Call(GetNpcPos, NPC_Bobomb_01, LVar0, LVar1, LVar2)
                     Call(PlaySoundAtNpc, NPC_Bobomb_01, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-                    Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+                    Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
                 EndThread
                 Wait(20)
                 Thread
@@ -215,7 +215,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
                     Wait(3)
                     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                     Call(PlaySoundAtNpc, NPC_SELF, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-                    Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+                    Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
                 EndThread
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, MSG_CH1_0051)
@@ -229,42 +229,42 @@ EvtScript N(EVS_NpcInteract_Bobomb_03_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koover_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koover_Normal)))
+EvtScript EVS_NpcInit_Koover_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koover_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_02_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_02_Normal)))
+EvtScript EVS_NpcInit_Koopa_02_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_03_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_03_Normal)))
+EvtScript EVS_NpcInit_Koopa_03_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_03_Normal))
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopa_03_Normal)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_03_Normal))
         Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Still)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_01_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_01_Normal)))
+EvtScript EVS_NpcInit_Bobomb_01_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_02_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_02_Normal)))
+EvtScript EVS_NpcInit_Bobomb_02_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_03_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_03_Normal)))
+EvtScript EVS_NpcInit_Bobomb_03_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03_Normal))
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
         Call(RemoveNpc, NPC_SELF)
     EndIf

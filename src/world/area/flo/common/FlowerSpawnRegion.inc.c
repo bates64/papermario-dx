@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-EvtScript N(EVS_FlowerSpawnRegion) = {
+EvtScript EVS_FlowerSpawnRegion = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     // save input args
     Set(LVarA, LVar0) // minX
@@ -32,7 +32,7 @@ EvtScript N(EVS_FlowerSpawnRegion) = {
         Add(LVar0, LVarA)
         Add(LVar1, LVarB)
         Add(LVar2, LVarE)
-        PlayEffect(EFFECT_FLOATING_FLOWER, LVar0, LVar2, LVar1, LVar3, 0)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, LVar0, LVar2, LVar1, LVar3)
     EndLoop
     Wait(LVarF)
     // spawn flowers over time
@@ -41,7 +41,7 @@ EvtScript N(EVS_FlowerSpawnRegion) = {
         Call(RandInt, LVarD, LVar1)
         Add(LVar0, LVarA)
         Add(LVar1, LVarB)
-        PlayEffect(EFFECT_FLOATING_FLOWER, LVar0, LVarE, LVar1, 200, 0)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, LVar0, LVarE, LVar1, 200)
         Wait(LVarF)
         Goto(0)
     Return
@@ -54,4 +54,4 @@ EvtScript N(EVS_FlowerSpawnRegion) = {
     Set(LVar2, maxX) \
     Set(LVar3, maxZ) \
     Set(LVar4, posY) \
-    Exec(N(EVS_FlowerSpawnRegion))
+    Exec(EVS_FlowerSpawnRegion)

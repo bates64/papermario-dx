@@ -3,7 +3,7 @@
 
 #include "world/common/ai/SpearGuyAI.inc.c"
 
-AnimID N(LimitAnims_SpearGuy)[] = {
+AnimID LimitAnims_SpearGuy[] = {
     ANIM_SpearGuy_Still,
     ANIM_SpearGuy_IdleUp,
     ANIM_SpearGuy_Walk,
@@ -16,12 +16,12 @@ AnimID N(LimitAnims_SpearGuy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_SpearGuy_Hitbox)[] = {
+AnimID LimitAnims_SpearGuy_Hitbox[] = {
     ANIM_SpearGuy_Still,
     ANIM_LIST_END,
 };
 
-EvtScript N(EVS_NpcDefeat_SpearGuy_Hitbox) = {
+EvtScript EVS_NpcDefeat_SpearGuy_Hitbox = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -37,7 +37,7 @@ EvtScript N(EVS_NpcDefeat_SpearGuy_Hitbox) = {
     End
 };
 
-MobileAISettings N(AISettings_SpearGuy_Wander) = {
+MobileAISettings AISettings_SpearGuy_Wander = {
     .moveSpeed = 1.7f,
     .moveTime = 100,
     .waitTime = 1,
@@ -51,26 +51,26 @@ MobileAISettings N(AISettings_SpearGuy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_SpearGuy_Wander) = {
+EvtScript EVS_NpcAI_SpearGuy_Wander = {
     Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 12)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 9)
-    Call(N(SpearGuyAI_Main), Ref(N(AISettings_SpearGuy_Wander)))
+    Call(SpearGuyAI_Main, Ref(AISettings_SpearGuy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_SpearGuy_Wander) = {
+NpcSettings NpcSettings_SpearGuy_Wander = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SPEAR_GUY,
-    .doAI = &N(EVS_NpcAI_SpearGuy_Wander),
+    .doAI = &EVS_NpcAI_SpearGuy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-EvtScript N(EVS_NpcAI_SpearGuy_Hitbox) = {
+EvtScript EVS_NpcAI_SpearGuy_Hitbox = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 4)
     Call(SetSelfVar, AI_VAR_HITBOX_DIST, 22)
@@ -78,16 +78,16 @@ EvtScript N(EVS_NpcAI_SpearGuy_Hitbox) = {
     Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_ANGLE, 28)
     Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 1)
     Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_NONE)
-    Call(N(MeleeHitbox_Main))
+    Call(MeleeHitbox_Main)
     Return
     End
 };
 
-NpcSettings N(NpcSettings_SpearGuy_Hitbox) = {
+NpcSettings NpcSettings_SpearGuy_Hitbox = {
     .height = 8,
     .radius = 20,
     .level = ACTOR_LEVEL_SPEAR_GUY,
-    .doAI = &N(EVS_NpcAI_SpearGuy_Hitbox),
-    .onDefeat = &N(EVS_NpcDefeat_SpearGuy_Hitbox),
+    .doAI = &EVS_NpcAI_SpearGuy_Hitbox,
+    .onDefeat = &EVS_NpcDefeat_SpearGuy_Hitbox,
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

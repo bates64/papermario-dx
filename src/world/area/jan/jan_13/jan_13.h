@@ -19,9 +19,7 @@ enum {
     MF_GeyserSoundPlaying   = MapFlag(10),
 };
 
-#define NAMESPACE jan_13
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupPuzzle);
-extern EvtScript N(EVS_SetupTrees);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupPuzzle;
+extern EvtScript EVS_SetupTrees;
+extern EvtScript EVS_MakeEntities;

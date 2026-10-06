@@ -1,8 +1,6 @@
 #include "common.h"
 #include "include_asset.h"
 
-#define NAMESPACE speech_bubble
-
 enum {
     SPEECH_BUBBLE_APPEAR    = 0,
     SPEECH_BUBBLE_HOLD      = 1,
@@ -117,7 +115,7 @@ void interact_speech_update(void) {
                 yaw -= 360.0f;
             }
             SpeechBubblePtr->yaw = yaw;
-            brightness = N(GetIconBrightnessForAngle)(yaw);
+            brightness = GetIconBrightnessForAngle(yaw);
             break;
         case SPEECH_BUBBLE_VANISH:
             yaw = SpeechBubblePtr->yaw;
@@ -133,7 +131,7 @@ void interact_speech_update(void) {
                 playerStatus->animFlags &= ~PA_FLAG_SPEECH_PROMPT_AVAILABLE;
                 return;
             }
-            brightness = N(GetIconBrightnessForAngle)(yaw);
+            brightness = GetIconBrightnessForAngle(yaw);
             break;
     }
 

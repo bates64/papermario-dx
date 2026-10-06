@@ -5,7 +5,7 @@
 #include "world/common/enemy/Paratroopa/wander.inc.c"
 #include "world/common/enemy/KoopaTroopa/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
+EvtScript EVS_NpcIdle_KoopaTroopa_01 = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(AwaitPlayerApproach, -650, -35, 100)
     Call(PlaySoundAt, SOUND_SEARCH_BUSH, SOUND_SPACE_DEFAULT, -650, 75, -120)
@@ -33,26 +33,26 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
     Call(NpcJump0, NPC_SELF, -650, 75, -30, 20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_KoopaTroopa_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa_01) = {
+EvtScript EVS_NpcInit_KoopaTroopa_01 = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcPos, NPC_SELF, -650, 75, -150)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa_01)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa_02) = {
+EvtScript EVS_NpcInit_KoopaTroopa_02 = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Return
     End
 };
 
-NpcData N(NpcData_KoopaTroopa_01) = {
+NpcData NpcData_KoopaTroopa_01 = {
     .id = NPC_KoopaTroopa_01,
     .pos = { -667.0f, 75.0f, -50.0f },
     .yaw = 270,
@@ -68,14 +68,14 @@ NpcData N(NpcData_KoopaTroopa_01) = {
             .detectSize = { 500 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa_01),
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa_01,
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
 };
 
-NpcData N(NpcData_ParaTroopa) = {
+NpcData NpcData_ParaTroopa = {
     .id = NPC_ParaTroopa,
     .pos = { 184.0f, 50.0f, -100.0f },
     .yaw = 270,
@@ -91,13 +91,13 @@ NpcData N(NpcData_ParaTroopa) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ParaTroopa_Wander),
+    .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
 };
 
-NpcData N(NpcData_SpikedGoomba) = {
+NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
     .pos = { -257.0f, 0.0f, -47.0f },
     .yaw = 90,
@@ -113,27 +113,27 @@ NpcData N(NpcData_SpikedGoomba) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SpikedGoomba_Wander),
+    .settings = &NpcSettings_SpikedGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKED_GOOMBA_DROPS,
     .animations = SPIKED_GOOMBA_ANIMS,
 };
 
-NpcData N(NpcData_KoopaTroopa_02) = {
+NpcData NpcData_KoopaTroopa_02 = {
     .id = NPC_KoopaTroopa_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_KoopaTroopa_02),
-    .settings = &N(NpcSettings_KoopaTroopa),
+    .init = &EVS_NpcInit_KoopaTroopa_02,
+    .settings = &NpcSettings_KoopaTroopa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa_01), BTL_NOK_FORMATION_0B, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_ParaTroopa), BTL_NOK_FORMATION_11, BTL_NOK_STAGE_02),
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_NOK_FORMATION_06, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_KoopaTroopa_02), BTL_NOK_FORMATION_0C, BTL_NOK_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_NOK_FORMATION_0B, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_ParaTroopa, BTL_NOK_FORMATION_11, BTL_NOK_STAGE_02),
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_NOK_FORMATION_06, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_NOK_FORMATION_0C, BTL_NOK_STAGE_00),
     {}
 };

@@ -32,7 +32,6 @@ EffectInstance* fright_jar_main(
     bp.init = fright_jar_init;
     bp.update = fright_jar_update;
     bp.renderScene = fright_jar_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_FRIGHT_JAR;
 

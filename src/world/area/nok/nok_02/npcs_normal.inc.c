@@ -1,6 +1,6 @@
 #include "nok_02.h"
 
-API_CALLABLE(N(DoCircleSprint)) {
+API_CALLABLE(DoCircleSprint) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc;
     f32 yaw;
@@ -32,7 +32,7 @@ API_CALLABLE(N(DoCircleSprint)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcInteract_Koopa_01_Normal) = {
+EvtScript EVS_NpcInteract_Koopa_01_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0057)
@@ -49,13 +49,13 @@ EvtScript N(EVS_NpcInteract_Koopa_01_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_01_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_01_Normal)))
+EvtScript EVS_NpcInit_Koopa_01_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_01_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_02_Normal) = {
+EvtScript EVS_NpcInteract_Koopa_02_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_005F)
@@ -72,18 +72,18 @@ EvtScript N(EVS_NpcInteract_Koopa_02_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_02_Normal) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_02_Normal)))
+EvtScript EVS_NpcInit_Koopa_02_Normal = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_Koopa_03_CircleSprint) = {
+EvtScript EVS_Koopa_03_CircleSprint = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Run)
     Call(EnableNpcBlur, NPC_Koopa_03, true)
     Call(GetNpcPointer, NPC_Koopa_03, LVarF)
-    Call(N(DoCircleSprint), LVarF, -150, 15)
+    Call(DoCircleSprint, LVarF, -150, 15)
     Call(EnableNpcBlur, NPC_Koopa_03, false)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Idle)
@@ -93,11 +93,11 @@ EvtScript N(EVS_Koopa_03_CircleSprint) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_03_Normal) = {
+EvtScript EVS_NpcInteract_Koopa_03_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0064)
-            ExecWait(N(EVS_Koopa_03_CircleSprint))
+            ExecWait(EVS_Koopa_03_CircleSprint)
             Call(ContinueSpeech, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0065)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0066)
@@ -112,13 +112,13 @@ EvtScript N(EVS_NpcInteract_Koopa_03_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_03_Normal)))
+EvtScript EVS_NpcInit_Koopa_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_03_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_04_Normal) = {
+EvtScript EVS_NpcInteract_Koopa_04_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_006A)
@@ -135,13 +135,13 @@ EvtScript N(EVS_NpcInteract_Koopa_04_Normal) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_04_Normal)))
+EvtScript EVS_NpcInit_Koopa_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_04_Normal))
     Return
     End
 };
 
-EvtScript N(EVS_Dueling_Bobombs) = {
+EvtScript EVS_Dueling_Bobombs = {
     Label(10)
         IfEq(AF_NOK02_InsideKoopersHouse, false)
             Wait(1)
@@ -157,7 +157,7 @@ EvtScript N(EVS_Dueling_Bobombs) = {
         Wait(3)
         Call(GetNpcPos, NPC_Bobomb_02, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_Bobomb_02, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-        Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+        Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
         Wait(30)
         Label(20)
             IfEq(AF_NOK02_InsideKoopersHouse, false)
@@ -174,14 +174,14 @@ EvtScript N(EVS_Dueling_Bobombs) = {
         Wait(3)
         Call(GetNpcPos, NPC_Bobomb_01, LVar0, LVar1, LVar2)
         Call(PlaySoundAtNpc, NPC_Bobomb_01, SOUND_BOMBETTE_BLAST_LV1, SOUND_SPACE_DEFAULT)
-        Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
+        Call(SpawnExplosionEffect, LVar0, LVar1, LVar2)
         Wait(30)
         Goto(10)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_ConfrontBobombs) = {
+EvtScript EVS_Scene_ConfrontBobombs = {
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH5_2)
         Call(GetCurrentPartnerID, LVar0)
         IfEq(LVar0, PARTNER_BOMBETTE)
@@ -230,7 +230,7 @@ EvtScript N(EVS_Scene_ConfrontBobombs) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_01) = {
+EvtScript EVS_NpcInteract_Bobomb_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
             IfEq(AF_NOK02_DeclinedBobombInvite, false)
@@ -252,7 +252,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_01) = {
             EndIf
         CaseGe(STORY_CH4_STAR_SPRIT_DEPARTED)
             IfEq(GF_NOK02_ConfrontedBobombs, false)
-                ExecWait(N(EVS_Scene_ConfrontBobombs))
+                ExecWait(EVS_Scene_ConfrontBobombs)
             Else
                 Set(AF_NOK02_PauseBobombFight, true)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_007F)
@@ -262,13 +262,13 @@ EvtScript N(EVS_NpcInteract_Bobomb_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_02) = {
+EvtScript EVS_NpcInteract_Bobomb_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0083)
         CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
             IfEq(GF_NOK02_ConfrontedBobombs, false)
-                ExecWait(N(EVS_Scene_ConfrontBobombs))
+                ExecWait(EVS_Scene_ConfrontBobombs)
             Else
                 Set(AF_NOK02_PauseBobombFight, true)
                 Call(SpeakToNpc, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_0080)
@@ -280,7 +280,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_03) = {
+EvtScript EVS_NpcInteract_Bobomb_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0085)
@@ -297,8 +297,8 @@ EvtScript N(EVS_NpcInteract_Bobomb_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_01)))
+EvtScript EVS_NpcInit_Bobomb_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01))
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -306,8 +306,8 @@ EvtScript N(EVS_NpcInit_Bobomb_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_02)))
+EvtScript EVS_NpcInit_Bobomb_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -315,15 +315,15 @@ EvtScript N(EVS_NpcInit_Bobomb_02) = {
             IfEq(GF_NOK02_ConfrontedBobombs, true)
                 Return
             EndIf
-            Exec(N(EVS_Dueling_Bobombs))
+            Exec(EVS_Dueling_Bobombs)
             Set(AF_NOK02_PauseBobombFight, false)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_03)))
+EvtScript EVS_NpcInit_Bobomb_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03))
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -331,7 +331,7 @@ EvtScript N(EVS_NpcInit_Bobomb_03) = {
     End
 };
 
-EvtScript N(EVS_ArtifactReward_Kolorado) = {
+EvtScript EVS_ArtifactReward_Kolorado = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009F)
     EVT_GIVE_REWARD(ITEM_STAR_PIECE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_00A0)
@@ -340,7 +340,7 @@ EvtScript N(EVS_ArtifactReward_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
+EvtScript EVS_ArtifactPrompt_Kolorado = {
     IfEq(GF_SBK_GaveArtifactToKolorado, true)
         Return
     EndIf
@@ -363,14 +363,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
-            ExecWait(N(EVS_ArtifactReward_Kolorado))
+            ExecWait(EVS_ArtifactReward_Kolorado)
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009D)
             EVT_CHOOSE_KEY_ITEM_ONLY(ITEM_ARTIFACT, NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
-                    ExecWait(N(EVS_ArtifactReward_Kolorado))
+                    ExecWait(EVS_ArtifactReward_Kolorado)
                 CaseDefault
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009E)
             EndSwitch
@@ -379,7 +379,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_0093)
     Call(NpcFaceNpc, NPC_KoloradoWife, NPC_SELF, 0)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 5, MSG_CH1_0094)
@@ -389,15 +389,15 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(NpcFacePlayer, NPC_SELF, 0)
     Wait(15)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_0096)
-    ExecWait(N(EVS_ArtifactPrompt_Kolorado))
-    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    ExecWait(EVS_ArtifactPrompt_Kolorado)
+    Set(LVar0, Ref(LetterDelivery_Kolorado))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+EvtScript EVS_NpcInit_Kolorado = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
         Return
     EndIf

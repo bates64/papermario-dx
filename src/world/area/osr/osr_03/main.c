@@ -1,6 +1,6 @@
 #include "osr_03.h"
 
-EvtScript N(EVS_HideGroundModels) = {
+EvtScript EVS_HideGroundModels = {
     Call(EnableGroup, MODEL_hiru, false)
     Call(EnableGroup, MODEL_niwa, false)
     Call(EnableGroup, MODEL_jimidori, false)
@@ -13,45 +13,45 @@ EvtScript N(EVS_HideGroundModels) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
+EvtScript EVS_BindExitTriggers = {
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_03_ENTRY_1)
-            Exec(N(MV_Scene_CastleAscending))
+            Exec(MV_Scene_CastleAscending)
         CaseEq(osr_03_ENTRY_2)
-            Exec(N(MV_Scene_PlayerTossedOut))
+            Exec(MV_Scene_PlayerTossedOut)
         CaseEq(osr_03_ENTRY_3)
-            Exec(N(EVS_HideGroundModels))
-            Exec(N(EVS_Scene_Starship))
+            Exec(EVS_HideGroundModels)
+            Exec(EVS_Scene_Starship)
         CaseEq(osr_03_ENTRY_4)
             Wait(15)
-            Exec(N(EVS_Scene_BeginInterlude))
+            Exec(EVS_Scene_BeginInterlude)
         CaseEq(osr_03_ENTRY_5)
-            Exec(N(EVS_HideGroundModels))
-            Exec(N(EVS_Scene_CastleDestruction))
+            Exec(EVS_HideGroundModels)
+            Exec(EVS_Scene_CastleDestruction)
         CaseEq(osr_03_ENTRY_6)
-            Exec(N(EVS_Scene_UnusedTossOut))
+            Exec(EVS_Scene_UnusedTossOut)
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_NONE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_03_ENTRY_4)
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
         CaseDefault
     EndSwitch
     Switch(GB_StoryProgress)
@@ -79,7 +79,7 @@ EvtScript N(EVS_Main) = {
                 Call(SetMusic, 0, SONG_BOWSERS_CASTLE_FALLS, 0, VOL_LEVEL_FULL)
             EndIf
     EndSwitch
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, osr_03_ENTRY_4)
         Wait(15)

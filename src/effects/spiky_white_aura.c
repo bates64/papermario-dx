@@ -77,7 +77,6 @@ void spiky_white_aura_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
             bpPtr->init = spiky_white_aura_init;
             bpPtr->update = spiky_white_aura_update;
             bpPtr->renderScene = spiky_white_aura_render;
-            bpPtr->unk_00 = 0;
             bpPtr->renderUI = nullptr;
             bpPtr->effectID = EFFECT_SPIKY_WHITE_AURA;
 

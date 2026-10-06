@@ -4,7 +4,7 @@
 #include "world/common/enemy/JungleFuzzy/wander.inc.c"
 #include "world/common/npc/YoshiKid/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
+EvtScript EVS_NpcIdle_JungleFuzzy = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Label(0)
         Call(GetSelfVar, 7, LVar0)
@@ -20,22 +20,22 @@ EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
     Wait(20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_JungleFuzzy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_JungleFuzzy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_JungleFuzzy) = {
+EvtScript EVS_NpcInit_JungleFuzzy = {
     Call(SetSelfVar, 7, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JungleFuzzy)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JungleFuzzy))
     Return
     End
 };
 
-EvtScript N(EVS_YoshiKid_CryForHelp) = {
+EvtScript EVS_YoshiKid_CryForHelp = {
     Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
@@ -48,7 +48,7 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_YoshiKid) = {
+EvtScript EVS_NpcInteract_YoshiKid = {
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, 350, Float(17.0), Float(-7.0))
     Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
@@ -78,7 +78,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid) = {
         Set(GB_StoryProgress, STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
         Call(SetPlayerAnimation, ANIM_Mario1_ThumbsUp)
         Wait(120)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Else
         Wait(30)
@@ -89,14 +89,14 @@ EvtScript N(EVS_NpcInteract_YoshiKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid) = {
+EvtScript EVS_NpcInit_YoshiKid = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
-        Exec(N(EVS_YoshiKid_CryForHelp))
+        Exec(EVS_YoshiKid_CryForHelp)
         IfEq(GF_JAN10_SavedYoshi, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Blue_Cry)
             Call(SetNpcYaw, NPC_SELF, 90)
             Call(SetNpcPos, NPC_SELF, -450, 0, 70)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_YoshiKid)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid))
             Return
         EndIf
     EndIf
@@ -105,19 +105,19 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
     End
 };
 
-NpcData N(NpcData_YoshiKid) = {
+NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
     .pos = { -260.0f, 0.0f, -220.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_YoshiKid),
-    .settings = &N(NpcSettings_YoshiKid),
+    .init = &EVS_NpcInit_YoshiKid,
+    .settings = &NpcSettings_YoshiKid,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = YOSHI_KID_BLUE_ANIMS,
     .tattle = MSG_NpcTattle_BlueYoshiKid,
 };
 
-NpcData N(NpcData_JungleFuzzy) = {
+NpcData NpcData_JungleFuzzy = {
     .id = NPC_JungleFuzzy,
     .pos = { 0.0f, 0.0f, 0.0f },
     .yaw = 270,
@@ -133,15 +133,15 @@ NpcData N(NpcData_JungleFuzzy) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_JungleFuzzy),
-    .settings = &N(NpcSettings_JungleFuzzy_Wander),
+    .init = &EVS_NpcInit_JungleFuzzy,
+    .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_YoshiKid)),
-    NPC_GROUP(N(NpcData_JungleFuzzy), BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_YoshiKid),
+    NPC_GROUP(NpcData_JungleFuzzy, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_03),
     {}
 };

@@ -6,13 +6,13 @@
 #include "world/common/enemy/Bombette/base.h"
 #include "world/common/enemy/KoopaTroopa/base.h"
 
-extern EvtScript N(EVS_PushSong);
-extern EvtScript N(EVS_PopSong);
+extern EvtScript EVS_PushSong;
+extern EvtScript EVS_PopSong;
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/LoadPartyImage.inc.c"
 
-NpcSettings N(NpcSettings_KoopaTroopa) = {
+NpcSettings NpcSettings_KoopaTroopa = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
@@ -20,7 +20,7 @@ NpcSettings N(NpcSettings_KoopaTroopa) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-EvtScript N(EVS_Bombette_DemonstrateAbility) = {
+EvtScript EVS_Bombette_DemonstrateAbility = {
     Call(SetPanTarget, CAM_DEFAULT, 96, 0, 129)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.6 / DT))
     Call(DisablePlayerInput, true)
@@ -44,7 +44,7 @@ EvtScript N(EVS_Bombette_DemonstrateAbility) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bombette) = {
+EvtScript EVS_NpcInteract_Bombette = {
     Thread
         Call(AdjustCam, CAM_DEFAULT, Float(5.0 / DT), 0, Float(300.0), Float(18.0), Float(-7.0))
     EndThread
@@ -93,13 +93,13 @@ EvtScript N(EVS_NpcInteract_Bombette) = {
         Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 15 * DT)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(ContinueSpeech, NPC_SELF, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DE)
-        Call(N(ChangeNpcToPartner), NPC_Bombette, PARTNER_BOMBETTE)
+        Call(ChangeNpcToPartner, NPC_Bombette, PARTNER_BOMBETTE)
         Set(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
-        Call(N(LoadPartyImage), Ref("party_pinki"))
-        Exec(N(EVS_PushSong))
+        Call(LoadPartyImage, Ref("party_pinki"))
+        Exec(EVS_PushSong)
         Wait(15 * DT)
         Call(ShowMessageAtScreenPos, MSG_Menus_018B, 160, 40)
-        Exec(N(EVS_PopSong))
+        Exec(EVS_PopSong)
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00DF)
         Wait(1)
@@ -111,24 +111,24 @@ EvtScript N(EVS_NpcInteract_Bombette) = {
         Call(ShowEmote, NPC_PARTNER, EMOTE_EXCLAMATION, -45, 30, EMOTER_NPC, 0, 0, 0, 0)
         Wait(40 * DT)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00E0)
-        ExecWait(N(EVS_Bombette_DemonstrateAbility))
+        ExecWait(EVS_Bombette_DemonstrateAbility)
     EndIf
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bombette) = {
+EvtScript EVS_NpcInit_Bombette = {
     IfGe(GB_StoryProgress, STORY_CH1_BOMBETTE_JOINED_PARTY)
         Call(RemoveNpc, NPC_SELF)
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bombette)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bombette))
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
+EvtScript EVS_NpcIdle_KoopaTroopa = {
     Label(0)
     Call(GetSelfVar, 0, LVar0)
     Wait(1)
@@ -217,7 +217,7 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
+EvtScript EVS_NpcDefeat_KoopaTroopa = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -253,9 +253,9 @@ EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KoopaTroopa)))
+EvtScript EVS_NpcInit_KoopaTroopa = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KoopaTroopa))
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_DUNGEON_GUARDS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -263,7 +263,7 @@ EvtScript N(EVS_NpcInit_KoopaTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_Jailer) = {
+EvtScript EVS_NpcInit_Bobomb_Jailer = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_DUNGEON_GUARDS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -271,7 +271,7 @@ EvtScript N(EVS_NpcInit_Bobomb_Jailer) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_01) = {
+EvtScript EVS_NpcInteract_Bobomb_01 = {
     IfEq(GF_TRD06_BombedWall, false)
         IfEq(AF_TRD_MetPrisoner1, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, MSG_CH1_00E4)
@@ -287,7 +287,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_02) = {
+EvtScript EVS_NpcInteract_Bobomb_02 = {
     IfEq(GF_TRD06_BombedWall, false)
         IfEq(AF_TRD_MetPrisoner2, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_00E7)
@@ -303,7 +303,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_03) = {
+EvtScript EVS_NpcInteract_Bobomb_03 = {
     IfEq(GF_TRD06_BombedWall, false)
         IfEq(AF_TRD_MetPrisoner3, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_00EA)
@@ -319,7 +319,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_04) = {
+EvtScript EVS_NpcInteract_Bobomb_04 = {
     IfEq(GF_TRD06_BombedWall, false)
         IfEq(AF_TRD_MetPrisoner4, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_00ED)
@@ -335,49 +335,49 @@ EvtScript N(EVS_NpcInteract_Bobomb_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_01)))
+EvtScript EVS_NpcInit_Bobomb_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_02)))
+EvtScript EVS_NpcInit_Bobomb_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_03)))
+EvtScript EVS_NpcInit_Bobomb_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_04)))
+EvtScript EVS_NpcInit_Bobomb_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_04))
     Return
     End
 };
 
-NpcData N(NpcData_Bombette) = {
+NpcData NpcData_Bombette = {
     .id = NPC_Bombette,
     .pos = { 0.0f, 0.0f, 0.0f },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bombette),
-    .settings = &N(NpcSettings_Bobomb),
+    .init = &EVS_NpcInit_Bombette,
+    .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = BOMBETTE_ANIMS,
     .tattle = MSG_NpcTattle_TRD_Bombette,
 };
 
-NpcData N(NpcData_Jailers)[] = {
+NpcData NpcData_Jailers[] = {
     {
         .id = NPC_Jailer_KoopaTroopa,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopaTroopa),
-        .settings = &N(NpcSettings_KoopaTroopa),
+        .init = &EVS_NpcInit_KoopaTroopa,
+        .settings = &NpcSettings_KoopaTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = {
             .dropFlags = NPC_DROP_FLAG_80,
@@ -395,8 +395,8 @@ NpcData N(NpcData_Jailers)[] = {
         .id = NPC_Jailer_Bobomb_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bobomb_Jailer),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_Jailer,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = BOBOMB_ANIMS,
@@ -405,21 +405,21 @@ NpcData N(NpcData_Jailers)[] = {
         .id = NPC_Jailer_Bobomb_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bobomb_Jailer),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_Jailer,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = BOBOMB_ANIMS,
     },
 };
 
-NpcData N(NpcData_Inmates)[] = {
+NpcData NpcData_Inmates[] = {
     {
         .id = NPC_Bobomb_01,
         .pos = { 25.0f, 0.0f, 127.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Bobomb_01),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_01,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = BOBOMB_DROPS,
         .animations = BOBOMB_RED_ANIMS,
@@ -429,8 +429,8 @@ NpcData N(NpcData_Inmates)[] = {
         .id = NPC_Bobomb_02,
         .pos = { -30.0f, 0.0f, 130.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Bobomb_02),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_02,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = BOBOMB_DROPS,
         .animations = BOBOMB_BLUE_ANIMS,
@@ -440,8 +440,8 @@ NpcData N(NpcData_Inmates)[] = {
         .id = NPC_Bobomb_03,
         .pos = { -140.0f, 0.0f, -90.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Bobomb_03),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_03,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = BOBOMB_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -451,8 +451,8 @@ NpcData N(NpcData_Inmates)[] = {
         .id = NPC_Bobomb_04,
         .pos = { -75.0f, 0.0f, -80.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Bobomb_04),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_04,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = BOBOMB_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -460,9 +460,9 @@ NpcData N(NpcData_Inmates)[] = {
     },
 };
 
-NpcGroupList N(NpcGroup_Prisoners) = {
-    NPC_GROUP(N(NpcData_Bombette)),
-    NPC_GROUP(N(NpcData_Inmates)),
-    NPC_GROUP(N(NpcData_Jailers), BTL_TRD_1_FORMATION_04, BTL_TRD_1_STAGE_0B),
+NpcGroupList NpcGroup_Prisoners = {
+    NPC_GROUP(NpcData_Bombette),
+    NPC_GROUP(NpcData_Inmates),
+    NPC_GROUP(NpcData_Jailers, BTL_TRD_1_FORMATION_04, BTL_TRD_1_STAGE_0B),
     {}
 };

@@ -1,6 +1,6 @@
 #include "nok_02.h"
 
-API_CALLABLE(N(SpawnExplosionEffect)) {
+API_CALLABLE(SpawnExplosionEffect) {
     Bytecode* args = script->ptrReadPos;
     f32 posY;
     f32 posX;
@@ -15,7 +15,7 @@ API_CALLABLE(N(SpawnExplosionEffect)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
+API_CALLABLE(IsPlayerOrKoopaNearby) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Npc* fuzzyNpc = (Npc*) evt_get_variable(script, *args++);
@@ -48,7 +48,7 @@ API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ChooseSafeJumpLocation)) {
+API_CALLABLE(ChooseSafeJumpLocation) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 randRange = 10000;
@@ -96,7 +96,7 @@ API_CALLABLE(N(ChooseSafeJumpLocation)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ChooseLocationNotNearPlayer)) {
+API_CALLABLE(ChooseLocationNotNearPlayer) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 randRange = 10000;
@@ -139,7 +139,7 @@ API_CALLABLE(N(ChooseLocationNotNearPlayer)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_Koopa_02_Crisis) = {
+EvtScript EVS_NpcInteract_Koopa_02_Crisis = {
     IfEq(GF_NOK02_RecoveredShellB, true)
         Call(SpeakToPlayer, NPC_Koopa_02, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_005F)
         Return
@@ -154,16 +154,16 @@ EvtScript N(EVS_NpcInteract_Koopa_02_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopa_02_Crisis) = {
+EvtScript EVS_NpcIdle_Koopa_02_Crisis = {
     IfEq(GF_NOK02_RecoveredShellB, true)
         Return
     EndIf
-    ExecWait(N(EVS_NpcAI_Koopa_Wander))
+    ExecWait(EVS_NpcAI_Koopa_Wander)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_01_Crisis) = {
+EvtScript EVS_NpcInteract_Koopa_01_Crisis = {
     IfEq(GF_NOK02_RecoveredShellA, true)
         Call(SpeakToPlayer, NPC_Koopa_01, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0057)
         Return
@@ -181,7 +181,7 @@ EvtScript N(EVS_NpcInteract_Koopa_01_Crisis) = {
     End
 };
 
-EvtScript N(EVS_TetherShellToFuzzy) = {
+EvtScript EVS_TetherShellToFuzzy = {
     Label(0)
         Call(GetNpcPos, NPC_FuzzyThief, LVar0, LVar1, LVar2)
         Add(LVar2, 1)
@@ -192,21 +192,21 @@ EvtScript N(EVS_TetherShellToFuzzy) = {
     End
 };
 
-EvtScript N(EVS_FuzzyThief_AvoidCapture) = {
+EvtScript EVS_FuzzyThief_AvoidCapture = {
     Call(GetNpcPointer, NPC_FuzzyThief, LVarF)
     Call(GetNpcPointer, NPC_Koopa_01, LVarE)
     Set(LVar2, 0)
     Label(0)
-        Call(N(IsPlayerOrKoopaNearby), LVarF, LVarE)
+        Call(IsPlayerOrKoopaNearby, LVarF, LVarE)
         Set(MV_IsPlayerNearbyThief, LVar0)
         IfNe(LVar0, 0)
             Label(1)
-            Call(N(ChooseSafeJumpLocation), LVarF, LVarE)
+            Call(ChooseSafeJumpLocation, LVarF, LVarE)
             Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_FuzzyThief, LVarA, 0, LVarB, LVarC)
             Call(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-            Call(N(IsPlayerOrKoopaNearby), LVarF, LVarE)
+            Call(IsPlayerOrKoopaNearby, LVarF, LVarE)
             Set(MV_IsPlayerNearbyThief, LVar0)
             IfNe(LVar0, 0)
                 Goto(1)
@@ -218,7 +218,7 @@ EvtScript N(EVS_FuzzyThief_AvoidCapture) = {
     End
 };
 
-EvtScript N(EVS_Koopa_01_ChaseThief) = {
+EvtScript EVS_Koopa_01_ChaseThief = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Label(0)
         Call(GetNpcPos, NPC_KoopaShell_01, LVar0, LVar1, LVar2)
@@ -235,7 +235,7 @@ EvtScript N(EVS_Koopa_01_ChaseThief) = {
     End
 };
 
-EvtScript N(EVS_Koopa_01_FaceShell) = {
+EvtScript EVS_Koopa_01_FaceShell = {
     Label(0)
         Call(NpcFaceNpc, NPC_Koopa_01, NPC_KoopaShell_01, 0)
         Wait(5)
@@ -244,7 +244,7 @@ EvtScript N(EVS_Koopa_01_FaceShell) = {
     End
 };
 
-API_CALLABLE(N(IsPlayerSneaking)) {
+API_CALLABLE(IsPlayerSneaking) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->curSpeed >= 4.0f) {
@@ -267,12 +267,12 @@ API_CALLABLE(N(IsPlayerSneaking)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Koopa_01_CoordinateWithPlayer) = {
+EvtScript EVS_Koopa_01_CoordinateWithPlayer = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Set(LVar3, 0) // player trying to catch thief
     Set(LVar4, 0) // prev state of LVar3
     Loop(0)
-        Call(N(IsPlayerSneaking))
+        Call(IsPlayerSneaking)
         Call(IsPlayerWithin, -150, 250, 150, LVar1)
         IfEq(LVar1, true)
             IfEq(LVar0, 1)
@@ -287,7 +287,7 @@ EvtScript N(EVS_Koopa_01_CoordinateWithPlayer) = {
         IfNe(LVar3, LVar4)
             IfEq(LVar3, 0)
                 // player stopping sneaking near thief, resume koopa panic
-                ExecGetID(MV_KoopaChaseThiefScript, N(EVS_Koopa_01_ChaseThief))
+                ExecGetID(MV_KoopaChaseThiefScript, EVS_Koopa_01_ChaseThief)
             Else
                 // player started sneaking near thief, stop koopa interference
                 IfNe(MV_KoopaChaseThiefScript, -1)
@@ -303,24 +303,24 @@ EvtScript N(EVS_Koopa_01_CoordinateWithPlayer) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
+EvtScript EVS_NpcIdle_Koopa_01_Crisis = {
     IfEq(GF_NOK02_RecoveredShellA, true)
         Call(SetNpcPos, NPC_FuzzyThief, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_KoopaShell_01, NPC_DISPOSE_LOCATION)
         Call(SetNpcSpeed, NPC_Koopa_01, Float(3.0))
         Label(5)
             Call(GetNpcPointer, NPC_Koopa_01, LVarF)
-            Call(N(ChooseLocationNotNearPlayer), LVarF)
+            Call(ChooseLocationNotNearPlayer, LVarF)
             Call(SetNpcAnimation, NPC_Koopa_01, ANIM_Koopa_Run)
             Call(NpcMoveTo, NPC_Koopa_01, LVarA, LVarB, 0)
             Call(SetNpcAnimation, NPC_Koopa_01, ANIM_Koopa_Talk)
             Wait(10)
             Goto(5)
     EndIf
-    ExecGetID(LVar9, N(EVS_TetherShellToFuzzy))
-    ExecGetID(LVar8, N(EVS_FuzzyThief_AvoidCapture))
-    ExecGetID(MV_KoopaChaseThiefScript, N(EVS_Koopa_01_ChaseThief))
-    ExecGetID(MV_KoopaChaseMonitorScript, N(EVS_Koopa_01_CoordinateWithPlayer))
+    ExecGetID(LVar9, EVS_TetherShellToFuzzy)
+    ExecGetID(LVar8, EVS_FuzzyThief_AvoidCapture)
+    ExecGetID(MV_KoopaChaseThiefScript, EVS_Koopa_01_ChaseThief)
+    ExecGetID(MV_KoopaChaseMonitorScript, EVS_Koopa_01_CoordinateWithPlayer)
     Label(10)
     IfEq(GF_NOK02_RecoveredShellA, false)
         Wait(1)
@@ -403,7 +403,7 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
         Add(LVar1, 20)
         Set(LVar3, NPC_KoopaShell_01)
         Set(LVar4, NPC_Koopa_01)
-        Exec(N(EVS_GetIntoShell))
+        Exec(EVS_GetIntoShell)
         Call(InterpNpcYaw, LVar3, 60, 0)
         Call(NpcJump0, NPC_KoopaShell_01, LVar0, LVar1, LVar2, 30)
         Call(SetNpcPos, NPC_KoopaShell_01, NPC_DISPOSE_LOCATION)
@@ -421,14 +421,14 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
         EndThread
         Wait(30)
         Call(DisablePlayerInput, false)
-        Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcIdle_Koopa_01_Crisis)))
+        Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcIdle_Koopa_01_Crisis))
         Return
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Fuzzy_Thief) = {
+EvtScript EVS_NpcHit_Fuzzy_Thief = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -442,9 +442,9 @@ EvtScript N(EVS_NpcHit_Fuzzy_Thief) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_01_Crisis) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopa_01_Crisis)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_01_Crisis)))
+EvtScript EVS_NpcInit_Koopa_01_Crisis = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_01_Crisis))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_01_Crisis))
     IfEq(GF_NOK02_RecoveredShellA, true)
         Return
     EndIf
@@ -454,8 +454,8 @@ EvtScript N(EVS_NpcInit_Koopa_01_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy_Thief) = {
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Fuzzy_Thief)))
+EvtScript EVS_NpcInit_Fuzzy_Thief = {
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Fuzzy_Thief))
     IfEq(GF_NOK02_RecoveredShellA, true)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -463,16 +463,16 @@ EvtScript N(EVS_NpcInit_Fuzzy_Thief) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaShell_01_Crisis) = {
+EvtScript EVS_NpcInit_KoopaShell_01_Crisis = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Shell)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_02_Crisis) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopa_02_Crisis)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_02_Crisis)))
+EvtScript EVS_NpcInit_Koopa_02_Crisis = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_02_Crisis))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Crisis))
     IfEq(GF_NOK02_RecoveredShellB, false)
         Call(SetNpcPos, NPC_KoopaShell_02, 150, 106, 250)
         Return
@@ -482,30 +482,30 @@ EvtScript N(EVS_NpcInit_Koopa_02_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaShell_02_Crisis) = {
+EvtScript EVS_NpcInit_KoopaShell_02_Crisis = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Shell)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kooper) = {
+EvtScript EVS_NpcInit_Kooper = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_PROMISED_TO_HELP_KOOPER)
             Call(SetNpcPos, NPC_Kooper, NPC_DISPOSE_LOCATION)
         CaseGe(STORY_CH1_KOOPER_JOINED_PARTY)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kooper)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kooper))
             Call(SetNpcPos, NPC_Kooper, NPC_DISPOSE_LOCATION)
             Return
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kooper)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kooper))
     EndSwitch
     Call(SetNpcSprite, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FuzzyBoss) = {
+EvtScript EVS_NpcInit_FuzzyBoss = {
     IfGe(GB_StoryProgress, STORY_CH1_FUZZY_THIEF_LEFT_TOWN)
         Call(SetNpcPos, NPC_FuzzyBoss, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
@@ -514,7 +514,7 @@ EvtScript N(EVS_NpcInit_FuzzyBoss) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopersShell) = {
+EvtScript EVS_NpcInit_KoopersShell = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKooper_StillShellAlt)
     Return

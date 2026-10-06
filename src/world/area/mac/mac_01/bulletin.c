@@ -1,6 +1,6 @@
 #include "mac_01.h"
 
-EvtScript N(EVS_UpdateBulletinKootFavor) = {
+EvtScript EVS_UpdateBulletinKootFavor = {
     IfNe(GB_KootFavor_Current, KOOT_FAVOR_CH4_2)
         Return
     EndIf
@@ -29,7 +29,7 @@ typedef struct BulletinBoardEntry {
     /* 0x08 */ s32 requiredProgress;
 } BulletinBoardEntry; // size = 0xC
 
-BulletinBoardEntry N(BulletinBoardData)[] = {
+BulletinBoardEntry BulletinBoardData[] = {
     { MSG_NewsBoard_0000, MSG_GossipBoard_0000, STORY_INTRO },
     { MSG_NewsBoard_0001, MSG_GossipBoard_0001, STORY_CH0_MET_STAR_SPIRITS },
     { MSG_NewsBoard_0002, MSG_GossipBoard_0002, STORY_CH1_ARRIVED_AT_KOOPA_VILLAGE },
@@ -62,22 +62,22 @@ BulletinBoardEntry N(BulletinBoardData)[] = {
     { MSG_NewsBoard_0019, MSG_GossipBoard_0019, STORY_EPILOGUE },
 };
 
-API_CALLABLE(N(GetBulletinMessages)) {
+API_CALLABLE(GetBulletinMessages) {
     s32 idx = evt_get_variable(script, GB_MAC02_CurrentBulletin);
 
-    script->varTable[0] = N(BulletinBoardData)[idx].newsMessage;
-    script->varTable[1] = N(BulletinBoardData)[idx].gossipMessage;
+    script->varTable[0] = BulletinBoardData[idx].newsMessage;
+    script->varTable[1] = BulletinBoardData[idx].gossipMessage;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SelectBulletinMessages)) {
+API_CALLABLE(SelectBulletinMessages) {
     s32 storyProgress = evt_get_variable(script, GB_StoryProgress);
     BulletinBoardEntry* entry;
     s32 i;
 
-    entry = &N(BulletinBoardData)[ARRAY_COUNT(N(BulletinBoardData)) - 1];
+    entry = &BulletinBoardData[ARRAY_COUNT(BulletinBoardData) - 1];
 
-    for (i = ARRAY_COUNT(N(BulletinBoardData)) - 1; i >= 0; i--, entry--) {
+    for (i = ARRAY_COUNT(BulletinBoardData) - 1; i >= 0; i--, entry--) {
         if (storyProgress >= entry->requiredProgress) {
             break;
         }
@@ -86,33 +86,33 @@ API_CALLABLE(N(SelectBulletinMessages)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ReadBulletin_News) = {
-    Call(N(SelectBulletinMessages))
+EvtScript EVS_ReadBulletin_News = {
+    Call(SelectBulletinMessages)
     Call(DisablePlayerInput, true)
-    Call(N(GetBulletinMessages))
+    Call(GetBulletinMessages)
     Call(ShowMessageAtScreenPos, LVar0, 160, 40)
     Set(LVar0, 0)
-    ExecWait(N(EVS_UpdateBulletinKootFavor))
+    ExecWait(EVS_UpdateBulletinKootFavor)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_ReadBulletin_Gossip) = {
-    Call(N(SelectBulletinMessages))
+EvtScript EVS_ReadBulletin_Gossip = {
+    Call(SelectBulletinMessages)
     Call(DisablePlayerInput, true)
-    Call(N(GetBulletinMessages))
+    Call(GetBulletinMessages)
     Call(ShowMessageAtScreenPos, LVar1, 160, 40)
     Set(LVar0, 1)
-    ExecWait(N(EVS_UpdateBulletinKootFavor))
+    ExecWait(EVS_UpdateBulletinKootFavor)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupBulletinBoard) = {
-    BindTrigger(Ref(N(EVS_ReadBulletin_News)), TRIGGER_WALL_PRESS_A, COLLIDER_syoumen, 1, 0)
-    BindTrigger(Ref(N(EVS_ReadBulletin_Gossip)), TRIGGER_WALL_PRESS_A, COLLIDER_yoko_ushiro, 1, 0)
+EvtScript EVS_SetupBulletinBoard = {
+    BindTrigger(Ref(EVS_ReadBulletin_News), TRIGGER_WALL_PRESS_A, COLLIDER_syoumen, 1, 0)
+    BindTrigger(Ref(EVS_ReadBulletin_Gossip), TRIGGER_WALL_PRESS_A, COLLIDER_yoko_ushiro, 1, 0)
     Return
     End
 };

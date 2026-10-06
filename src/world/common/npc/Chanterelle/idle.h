@@ -3,4 +3,4 @@
 
 #define NpcSettings_Chanterelle NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Chanterelle);
+extern NpcSettings NpcSettings_Chanterelle;

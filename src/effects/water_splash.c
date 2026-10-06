@@ -40,7 +40,6 @@ EffectInstance* water_splash_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 ar
     bpPtr->init = water_splash_init;
     bpPtr->update = water_splash_update;
     bpPtr->renderScene = water_splash_render;
-    bpPtr->unk_00 = 0;
     bpPtr->renderUI = nullptr;
     bpPtr->effectID = EFFECT_WATER_SPLASH;
     effect = create_effect_instance(bpPtr);

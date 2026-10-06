@@ -5,7 +5,7 @@
 #define SUPER_BLOCK_GAMEFLAG GF_SAM08_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(-800, 210, -130, 0)
     Call(MakeItemEntity, ITEM_PEBBLE, -770, -240, 30, ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS_NEVER_VANISH, 0)
     IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)

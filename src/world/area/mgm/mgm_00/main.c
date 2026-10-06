@@ -1,69 +1,69 @@
 #include "mgm_00.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Return
     End
 };
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_GotoMap_ToadTown) = {
+EvtScript EVS_GotoMap_ToadTown = {
     Call(GotoMap, Ref("mac_03"), mac_03_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_OnEnterPipe_ToadTown) = {
+EvtScript EVS_OnEnterPipe_ToadTown = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(LVarA, mgm_00_ENTRY_0)
     Set(LVarB, COLLIDER_deili1)
-    Set(LVarC, Ref(N(EVS_GotoMap_ToadTown)))
-    ExecWait(N(EVS_Pipe_ExitHorizontal))
+    Set(LVarC, Ref(EVS_GotoMap_ToadTown))
+    ExecWait(EVS_Pipe_ExitHorizontal)
     Return
     End
 };
 
-EvtScript N(EVS_GotoMap_JumpAttack) = {
+EvtScript EVS_GotoMap_JumpAttack = {
     Call(GotoMap, Ref("mgm_01"), mgm_01_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_OnEnterPipe_JumpAttack) = EVT_EXIT_PIPE_VERTICAL(
-    mgm_00_ENTRY_1, COLLIDER_deili2, N(EVS_GotoMap_JumpAttack));
+EvtScript EVS_OnEnterPipe_JumpAttack = EVT_EXIT_PIPE_VERTICAL(
+    mgm_00_ENTRY_1, COLLIDER_deili2, EVS_GotoMap_JumpAttack);
 
-EvtScript N(EVS_GotoMap_SmashAttack) = {
+EvtScript EVS_GotoMap_SmashAttack = {
     Call(GotoMap, Ref("mgm_02"), mgm_02_ENTRY_0)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_OnEnterPipe_SmashAttack) = {
+EvtScript EVS_OnEnterPipe_SmashAttack = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(LVarA, mgm_00_ENTRY_2)
     Set(LVarB, COLLIDER_deili3)
-    Set(LVarC, Ref(N(EVS_GotoMap_SmashAttack)))
-    ExecWait(N(EVS_Pipe_ExitVertical))
+    Set(LVarC, Ref(EVS_GotoMap_SmashAttack))
+    ExecWait(EVS_Pipe_ExitVertical)
     Return
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_OnEnterPipe_ToadTown)), TRIGGER_WALL_PUSH, COLLIDER_deili1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_OnEnterPipe_ToadTown), TRIGGER_WALL_PUSH, COLLIDER_deili1, 1, 0)
     IfEq(GF_MGM_Unlocked_JumpAttack, true)
-        BindTrigger(Ref(N(EVS_OnEnterPipe_JumpAttack)), TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
+        BindTrigger(Ref(EVS_OnEnterPipe_JumpAttack), TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
     EndIf
     IfEq(GF_MGM_Unlocked_SmashAttack, true)
-        BindTrigger(Ref(N(EVS_OnEnterPipe_SmashAttack)), TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
+        BindTrigger(Ref(EVS_OnEnterPipe_SmashAttack), TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     IfEq(GF_MGM_Unlocked_JumpAttack, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o5, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deili2, COLLIDER_FLAGS_UPPER_MASK)
@@ -77,27 +77,27 @@ EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mgm_00_ENTRY_0)
-            Set(LVarA, Ref(N(EVS_BindExitTriggers)))
+            Set(LVarA, Ref(EVS_BindExitTriggers))
             Set(LVarB, 1)
-            Exec(N(EVS_Pipe_EnterHorizontal))
+            Exec(EVS_Pipe_EnterHorizontal)
         CaseEq(mgm_00_ENTRY_1)
-            Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-            Exec(N(EVS_Pipe_EnterVertical))
+            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Exec(EVS_Pipe_EnterVertical)
         CaseEq(mgm_00_ENTRY_2)
-            Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-            Exec(N(EVS_Pipe_EnterVertical))
+            Set(LVarA, Ref(EVS_BindExitTriggers))
+            Exec(EVS_Pipe_EnterVertical)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    ExecWait(N(EVS_SetupScoreboard))
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_SetupMusic))
-    Exec(N(EVS_BindInteractTriggers))
-    Exec(N(EVS_EnterMap))
+    ExecWait(EVS_SetupScoreboard)
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_SetupMusic)
+    Exec(EVS_BindInteractTriggers)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

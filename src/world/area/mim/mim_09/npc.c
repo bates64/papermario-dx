@@ -3,7 +3,7 @@
 #include "world/common/npc/Oaklie/idle.inc.c"
 #include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-NpcData N(NpcData_Fuzzy) = {
+NpcData NpcData_Fuzzy = {
     .id = NPC_Fuzzy,
     .pos = { 270.0f, 0.0f, 200.0f },
     .yaw = 0,
@@ -19,14 +19,14 @@ NpcData N(NpcData_Fuzzy) = {
             .detectSize = { 400 },
         }
     },
-    .settings = &N(NpcSettings_ForestFuzzy_Wander),
+    .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = FOREST_FUZZY_DROPS,
     .animations = FOREST_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Fuzzy), BTL_MIM_FORMATION_05, BTL_MIM_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Fuzzy, BTL_MIM_FORMATION_05, BTL_MIM_STAGE_00),
     {}
 };

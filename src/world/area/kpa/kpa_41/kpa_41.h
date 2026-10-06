@@ -11,7 +11,5 @@
 #include "mapfs/kpa_41_shape.h"
 #include "mapfs/kpa_41_hit.h"
 
-#define NAMESPACE kpa_41
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;

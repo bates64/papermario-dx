@@ -7,6 +7,7 @@ import json
 from struct import unpack, unpack_from
 from copy import deepcopy
 import argparse
+import re
 from pathlib import Path
 
 import disasm_script
@@ -95,13 +96,15 @@ def get_function_list(area_name, map_name, rom_offset):
 def get_include_list(area_name, map_name):
     include_path = Path(__file__).parent.parent / "src" / "world" / "common"
     includes = set()
-    for file in include_path.iterdir():
+    for file in include_path.rglob("*.inc.c"):
         if file.is_file() and ".inc.c" in file.parts[-1]:
             with open(file, "r", encoding="utf8") as f:
                 for line in f:
-                    if (line.startswith("void N(") or line.startswith("ApiStatus N(")) and "{" in line:
-                        func_name = line.split("N(", 1)[1].split(")", 1)[0]
-                        includes.add(func_name)
+                    match = re.match(
+                        r"(?:static\s+)?(?:API_CALLABLE\((\w+)\)|(?:void|ApiStatus)\s+(\w+)\s*\().*\{", line
+                    )
+                    if match:
+                        includes.add(match[1] or match[2])
     return includes
 
 
@@ -156,8 +159,21 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
     def transform_symbol_name(symbol):
         if namespace and symbol.startswith(namespace + "_"):
-            return "N(" + symbol[len(namespace) + 1 :] + ")"
+            return symbol[len(namespace) + 1 :]
         return symbol
+
+    # Explicit types replace the old symbol-name wrapper as the indication that
+    # a reference belongs to this overlay, rather than to the engine.
+    symbol_types = {}
+    for entry in midx:
+        kind = entry["type"]
+        if kind.startswith("Script"):
+            kind = "EvtScript"
+        elif kind.startswith("Function"):
+            kind = "ApiStatus"
+        else:
+            kind = {"NpcGroup": "NpcData", "AISettings": "MobileAISettings"}.get(kind, kind)
+        symbol_types[entry["vaddr"]] = kind
 
     while len(midx) > 0:
         struct = midx.pop(0)
@@ -177,7 +193,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
         # format struct
         if struct["type"].startswith("Script"):
             if struct["type"] == "Script_Main":
-                name = "N(main)"
+                name = "EVS_Main"
                 INCLUDES_NEEDED["forward"].append(f"EvtScript " + name + ";")
                 main_script_name = name
 
@@ -195,10 +211,11 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
                 INCLUDED,
                 transform_symbol_name=transform_symbol_name,
                 use_script_lib=False,
+                symbol_types=symbol_types,
             ).disassemble()
 
             if "EVS_ShakeTree" in name or "EVS_SearchBush" in name:
-                symbol_map[struct["vaddr"]][0][1] = name.split("_", 1)[0] + ")"
+                symbol_map[struct["vaddr"]][0][1] = name.split("_", 1)[0]
                 if not treePrint:
                     out += f"=======================================\n"
                     out += f"==========BELOW foliage.inc.c==========\n"
@@ -607,7 +624,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
                 out += f"    {disasm_script.CONSTANTS['ItemIDs'][item]},\n"
             out += f"}};\n"
         elif struct["type"] == "TreeDropList":
-            new_name = "N(" + name.split("_", 1)[1][:-1].lower() + "_Drops)"
+            new_name = name.split("_", 1)[1].lower() + "_Drops"
             symbol_map[struct["vaddr"]][0][1] = new_name
 
             out += f"FoliageDropList {new_name} = {{\n"
@@ -653,9 +670,9 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             name_parts = name.split("_")
             if isModelList:
-                new_name = "N(" + name_parts[1].lower() + "_" + name_parts[2]
+                new_name = name_parts[1].lower() + "_" + name_parts[2]
             else:
-                new_name = "N(" + name_parts[1][:-1].lower() + "_Vectors)"
+                new_name = name_parts[1].lower() + "_Vectors"
             symbol_map[struct["vaddr"]][0][1] = new_name
 
             if isModelList:
@@ -705,46 +722,46 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
             out += f"}};\n"
 
         elif struct["type"] == "SearchBushEvent":
-            new_name = "N(" + name.split("_", 1)[1].lower()
+            new_name = name.split("_", 1)[1].lower()
             symbol_map[struct["vaddr"]][0][1] = new_name
 
-            num = int(new_name.split("bush", 1)[1][:-1])
+            num = int(new_name.split("bush", 1)[1])
             out += f"SearchBushConfig {new_name} = {{\n"
 
             data = bytes.read(struct["length"])
             entry = unpack_from(">4I", data, 0)
 
             if entry[0] != 0:
-                out += f"{INDENT}.bush = &N(bush{num}_Bush),\n"
+                out += f"{INDENT}.bush = &bush{num}_Bush,\n"
             if entry[1] != 0:
-                out += f"{INDENT}.drops = &N(bush{num}_Drops),\n"
+                out += f"{INDENT}.drops = &bush{num}_Drops,\n"
             if entry[2] != 0:
-                out += f"{INDENT}.vectors = &N(bush{num}_Vectors),\n"
+                out += f"{INDENT}.vectors = &bush{num}_Vectors,\n"
             if entry[3] != 0:
-                out += f"{INDENT}.callback = &N(bush{num}_Callback),\n"
+                out += f"{INDENT}.callback = &bush{num}_Callback,\n"
 
             out += f"}};\n"
 
         elif struct["type"] == "ShakeTreeEvent":
-            new_name = "N(" + name.split("_", 1)[1].lower()
+            new_name = name.split("_", 1)[1].lower()
             symbol_map[struct["vaddr"]][0][1] = new_name
 
-            num = int(new_name.split("tree", 1)[1][:-1])
+            num = int(new_name.split("tree", 1)[1])
             out += f"ShakeTreeConfig {new_name} = {{\n"
 
             data = bytes.read(struct["length"])
             entry = unpack_from(">5I", data, 0)
 
             if entry[0] != 0:
-                out += f"{INDENT}.leaves = &N(tree{num}_Leaves),\n"
+                out += f"{INDENT}.leaves = &tree{num}_Leaves,\n"
             if entry[1] != 0:
-                out += f"{INDENT}.trunk = &N(tree{num}_Trunk),\n"
+                out += f"{INDENT}.trunk = &tree{num}_Trunk,\n"
             if entry[2] != 0:
-                out += f"{INDENT}.drops = &N(tree{num}_Drops),\n"
+                out += f"{INDENT}.drops = &tree{num}_Drops,\n"
             if entry[3] != 0:
-                out += f"{INDENT}.vectors = &N(tree{num}_Vectors),\n"
+                out += f"{INDENT}.vectors = &tree{num}_Vectors,\n"
             if entry[4] != 0:
-                out += f"{INDENT}.callback = &N(tree{num}_Callback),\n"
+                out += f"{INDENT}.callback = &tree{num}_Callback,\n"
 
             out += f"}};\n"
 
@@ -757,12 +774,12 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
             out += f" {entry[0]:.01f}f, {entry[1]:.01f}f, {entry[2]:.01f}f, {entry[3]:.01f}f }};\n"
 
         elif struct["type"] == "Header":
-            out += f"MapSettings N(settings) = {{\n"
+            out += f"export MapSettings settings = {{\n"
 
             bytes.read(0x10)
 
             main, entry_list, entry_count = unpack(">IIi", bytes.read(4 * 3))
-            out += f"    .main = &N(main),\n"
+            out += f"    .main = &EVS_Main,\n"
             out += f"    .entryList = &{entry_list_name},\n"
             out += f"    .entryCount = ENTRY_COUNT({entry_list_name}),\n"
 
@@ -785,8 +802,8 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
             bytes.read(struct["length"])
             out += f"s32 {name}();\n"
         elif struct["type"] == "FloatTable":
-            vram = int(name.split("_", 1)[1][:-1], 16)
-            name = f"N(D_{vram:X}_{(vram - 0x80240000) + romstart:X})"
+            vram = int(name.split("_", 1)[1], 16)
+            name = f"D_{vram:X}_{(vram - 0x80240000) + romstart:X}"
             struct["name"] = name
             out += f"f32 {name}[] = {{"
             for i in range(0, struct["length"], 4):
@@ -852,17 +869,22 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             num_bytes_remaining = struct["length"]
             while num_bytes_remaining > 0:
-                name, formation_length, ptr, stage_ptr, zero = unpack(">IIIII", bytes.read(4 * 5))
+                name, formation_length, ptr, stage_ptr, script_ptr = unpack(">IIIII", bytes.read(4 * 5))
                 num_bytes_remaining -= 4 * 5
 
                 if name == 0:
                     out += "    {},\n"
                 else:
-                    out += "    BATTLE("
-                    out += f"{symbol_map[name][0][1]}, "
-                    out += f"{symbol_map[ptr][0][1]}, "
-                    out += f"&{symbol_map[stage_ptr][0][1]}"
-                    out += "),\n"
+                    formation = symbol_map[ptr][0][1]
+                    debug_name = symbol_map[name][0][1]
+                    stage = symbol_map[stage_ptr][0][1]
+                    if not stage.startswith('"'):
+                        stage = json.dumps(stage)
+                    if script_ptr:
+                        script = symbol_map[script_ptr][0][1]
+                        out += f"    BATTLE_WITH_SCRIPT({formation}, {stage}, {script}, {debug_name}),\n"
+                    else:
+                        out += f"    BATTLE({formation}, {stage}, {debug_name}),\n"
 
             out += f"}};\n"
         elif struct["type"] == "StageTable":
@@ -960,8 +982,8 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
                 out += INDENT + INDENT + f".posOffset = {{ {d[2]}, {d[3]}, {d[4]} }},\n"
                 out += INDENT + INDENT + f".targetOffset = {{ {d[5]}, {d[6]} }},\n"
                 out += INDENT + INDENT + f".opacity = {d[7]},\n"
-                out += INDENT + INDENT + f".idleAnimations = N(IdleAnimations_{d[8]:08X}),\n"
-                out += INDENT + INDENT + f".defenseTable = N(DefenseTable_{d[9]:08X}),\n"
+                out += INDENT + INDENT + f".idleAnimations = IdleAnimations_{d[8]:08X},\n"
+                out += INDENT + INDENT + f".defenseTable = DefenseTable_{d[9]:08X},\n"
                 out += INDENT + INDENT + f".eventFlags = {read_flags(d[10], 'ActorEventFlags')},\n"
                 out += INDENT + INDENT + f".elementImmunityFlags = {read_flags(d[11], 'ElementImmunityFlags')},\n"
                 out += INDENT + INDENT + f".unk_1C = {d[12]},\n"
@@ -970,7 +992,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             out += f"}};\n"
         elif struct["type"] == "Actor":
-            out += f"ActorBlueprint NAMESPACE = {{\n"
+            out += f"ACTOR_BLUEPRINT() = {{\n"
 
             d = unpack(">IxBBBhxxIIIBBBBBBBBbbbbbbbb", bytes.read(struct["length"]))
 
@@ -999,7 +1021,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             pass
         elif struct["type"] == "Stage":
-            out += f"Stage NAMESPACE = {{\n"
+            out += f"BATTLE_STAGE_ENTRY = {{\n"
 
             (
                 texture,
@@ -1046,9 +1068,9 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             out += f"}};\n"
         else:  # unknown type of struct
-            if struct["name"].startswith("N(unk_802"):
-                vram = int(name.split("_", 1)[1][:-1], 16)
-                name = f"N(D_{vram:X}_{(vram - 0x80240000) + romstart:X})"
+            if struct["name"].startswith("unk_802"):
+                vram = int(name.split("_", 1)[1], 16)
+                name = f"D_{vram:X}_{(vram - 0x80240000) + romstart:X}"
                 struct["name"] = name
 
             if struct["type"] == "Padding":
@@ -1088,7 +1110,7 @@ def parse_midx(file, prefix="", vram=0x80240000):
 
             structs.append(
                 {
-                    "name": "N(" + prefix + name_struct(s[0]) + ")",
+                    "name": prefix + name_struct(s[0]),
                     "type": s[1],
                     "start": int(s[2], 16),
                     "vaddr": int(s[3], 16),
@@ -1163,7 +1185,7 @@ def name_struct(s):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Converts split data to C using a Star Rod idx file")
     parser.add_argument("idxfile", help="Input .*idx file from Star Rod dump")
-    parser.add_argument("namespace", nargs="?", help="Value of NAMESPACE macro")
+    parser.add_argument("namespace", nargs="?", help="Legacy symbol prefix to strip from overlay-local names")
     parser.add_argument("--comments", action="store_true", help="Write offset/vaddr comments")
 
     args = parser.parse_args()
@@ -1243,9 +1265,6 @@ if __name__ == "__main__":
 
             name = struct["name"]
 
-            if name.startswith("N("):
-                name = name[2:-1]
-
             if struct["vaddr"] in function_replacements:
                 name = function_replacements[struct["vaddr"]]
 
@@ -1254,14 +1273,15 @@ if __name__ == "__main__":
             elif name.startswith("script_"):
                 name = name.split("script_", 1)[1]
             elif "_Main_" in name:
-                name = "main"
+                name = "EVS_Main"
             elif "ASCII" in name:
                 name = name.replace("ASCII", "ascii")
 
             if name not in INCLUDED["includes"]:
                 name = name[0].lower() + name[1:]
 
-            name = "N(" + name + ")"
+            if struct["type"] == "Script_Main":
+                name = "EVS_Main"
             struct["name"] = name
 
             # decode rodata stuff so it can be written inline instead of by pointer (which wouldn't match)

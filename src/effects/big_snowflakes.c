@@ -20,7 +20,6 @@ void big_snowflakes_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     s32 numParts = 9;
     s32 i;
 
-    bp.unk_00 = 0;
     bp.init = big_snowflakes_init;
     bp.update = big_snowflakes_update;
     bp.renderScene = big_snowflakes_render;

@@ -8,7 +8,7 @@ extern AnimScript Entity_SimpleSpring_AnimLaunch;
 #include "world/common/npc/Luigi/idle.inc.c"
 #include "world/common/enemy/ShyGuy/idle.inc.c"
 
-API_CALLABLE(N(PlaySpringLaunchAnimation)) {
+API_CALLABLE(PlaySpringLaunchAnimation) {
     Entity* entity = get_entity_by_index(0);
 
     if (entity == nullptr) {
@@ -21,7 +21,7 @@ API_CALLABLE(N(PlaySpringLaunchAnimation)) {
 
 #include "world/common/util/MarioSalute.inc.c"
 
-EvtScript N(EVS_KootFavorCheck_Luigi) = {
+EvtScript EVS_KootFavorCheck_Luigi = {
     IfNe(GB_KootFavor_Current, KOOT_FAVOR_CH3_1)
         Return
     EndIf
@@ -29,7 +29,7 @@ EvtScript N(EVS_KootFavorCheck_Luigi) = {
         Return
     EndIf
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
-    ExecWait(N(EVS_MarioSalute))
+    ExecWait(EVS_MarioSalute)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH0_0103)
     Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
     Wait(40)
@@ -62,7 +62,7 @@ EvtScript N(EVS_KootFavorCheck_Luigi) = {
     End
 };
 
-EvtScript N(EVS_Scene_LuigiWaitingAround) = {
+EvtScript EVS_Scene_LuigiWaitingAround = {
     Call(DisablePlayerInput, true)
     Call(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_IdleSit)
     Call(SetNpcPos, NPC_Luigi_1, 379, 20, -60)
@@ -215,7 +215,7 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_Luigi_WhistleAtopObstacle) = {
+EvtScript EVS_NpcAux_Luigi_WhistleAtopObstacle = {
     Label(20)
         Call(GetNpcVar, NPC_SELF, 0, LVar0)
         IfEq(LVar0, 1)
@@ -243,7 +243,7 @@ EvtScript N(EVS_NpcAux_Luigi_WhistleAtopObstacle) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Luigi_InBasement) = {
+EvtScript EVS_NpcIdle_Luigi_InBasement = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
     Label(10)
         Wait(1)
@@ -283,7 +283,7 @@ EvtScript N(EVS_NpcIdle_Luigi_InBasement) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Luigi_InBedroom) = {
+EvtScript EVS_NpcIdle_Luigi_InBedroom = {
     Label(10)
         IfEq(MF_HouseInteriorVisible, 1)
             Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_INVISIBLE, false)
@@ -296,7 +296,7 @@ EvtScript N(EVS_NpcIdle_Luigi_InBedroom) = {
     End
 };
 
-EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
+EvtScript EVS_Scene_CaughtLuigiInBasement = {
     Set(GF_KMR20_CaughtLuigiInBasement, true)
     Set(AF_KMR20_DiaryBlockedByLuigi, true)
     Call(SetNpcAnimation, NPC_Luigi_0, ANIM_Luigi_Idle)
@@ -362,10 +362,10 @@ EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
     Call(NpcMoveTo, NPC_Luigi_0, -130, -17, 15)
     Call(NpcJump0, NPC_Luigi_0, -145, -54, -45, 10)
     Call(PlaySoundAtNpc, NPC_Luigi_0, SOUND_SPRING, SOUND_SPACE_DEFAULT)
-    Call(N(PlaySpringLaunchAnimation))
+    Call(PlaySpringLaunchAnimation)
     Thread
         Wait(3)
-        Exec(N(EVS_SecretPanel_Flip))
+        Exec(EVS_SecretPanel_Flip)
     EndThread
     Call(NpcJump0, NPC_Luigi_0, -145, 30, -45, 20)
     Thread
@@ -388,7 +388,7 @@ EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Luigi_ReadingMail) = {
+EvtScript EVS_NpcIdle_Luigi_ReadingMail = {
     Label(10)
     IfEq(MF_HouseInteriorVisible, false)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
@@ -422,7 +422,7 @@ EvtScript N(EVS_NpcIdle_Luigi_ReadingMail) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Luigi) = {
+EvtScript EVS_NpcIdle_Luigi = {
     Call(SetNpcSpeed, NPC_SELF, Float(3.0))
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Run)
     Call(SetSelfVar, 0, 0)
@@ -459,7 +459,7 @@ EvtScript N(EVS_NpcIdle_Luigi) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Luigi) = {
+EvtScript EVS_NpcInteract_Luigi = {
     IfEq(MF_LuigiWaiting, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH0_00E5)
     Else
@@ -488,7 +488,7 @@ EvtScript N(EVS_NpcInteract_Luigi) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 16, MSG_CH0_00F3)
         EndSwitch
     EndIf
-    ExecWait(N(EVS_KootFavorCheck_Luigi))
+    ExecWait(EVS_KootFavorCheck_Luigi)
     IfNe(MF_LuigiWaiting, true)
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
@@ -500,28 +500,28 @@ EvtScript N(EVS_NpcInteract_Luigi) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Luigi_0) = {
+EvtScript EVS_NpcInit_Luigi_0 = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
     Call(SetNpcCollisionSize, NPC_SELF, 45, 24)
     IfEq(MF_LuigiWaiting, true)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Luigi)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Luigi))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, -145, 30, -50)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Luigi_InBedroom)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Luigi_InBedroom))
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             IfEq(GF_KMR20_CaughtLuigiInBasement, false)
                 Call(SetNpcPos, NPC_SELF, -83, -80, -54)
                 Call(InterpNpcYaw, NPC_SELF, 90, 0)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Luigi_InBasement)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Luigi_InBasement))
                 Set(MF_LuigiInBasement, true)
             Else
                 Call(SetNpcPos, NPC_Luigi_0, 48, 30, -5)
@@ -534,7 +534,7 @@ EvtScript N(EVS_NpcInit_Luigi_0) = {
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_ReadLetter)
                 Call(SetNpcPos, NPC_SELF, -102, 30, -85)
                 Call(InterpNpcYaw, NPC_SELF, 270, 0)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Luigi_ReadingMail)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Luigi_ReadingMail))
             Else
                 Call(SetNpcPos, NPC_SELF, 42, 30, -6)
                 Call(InterpNpcYaw, NPC_SELF, 90, 0)
@@ -550,11 +550,11 @@ EvtScript N(EVS_NpcInit_Luigi_0) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Luigi_1) = {
+EvtScript EVS_NpcInit_Luigi_1 = {
     Call(SetNpcVar, NPC_SELF, 0, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
     Call(SetNpcCollisionSize, NPC_SELF, 45, 24)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Luigi)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Luigi))
     IfEq(MF_LuigiWaiting, true)
         Return
     EndIf
@@ -568,24 +568,24 @@ EvtScript N(EVS_NpcInit_Luigi_1) = {
             Call(SetNpcPos, NPC_SELF, 300, 50, 150)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_IdleSit)
-            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Luigi_WhistleAtopObstacle)))
+            Call(SetNpcAux, NPC_SELF, Ref(EVS_NpcAux_Luigi_WhistleAtopObstacle))
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, 560, 0, -75)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Luigi)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Luigi))
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
             Call(SetNpcPos, NPC_SELF, 300, 50, 150)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_IdleSit)
-            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Luigi_WhistleAtopObstacle)))
+            Call(SetNpcAux, NPC_SELF, Ref(EVS_NpcAux_Luigi_WhistleAtopObstacle))
         CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, 300, 115, 150)
             Call(InterpNpcYaw, NPC_SELF, 90, 0)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_IdleSit)
-            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Luigi_WhistleAtopObstacle)))
+            Call(SetNpcAux, NPC_SELF, Ref(EVS_NpcAux_Luigi_WhistleAtopObstacle))
         CaseLt(STORY_EPILOGUE)
             Call(SetNpcPos, NPC_SELF, 306, 30, -145)
             Call(InterpNpcYaw, NPC_SELF, 39, 0)
@@ -595,31 +595,31 @@ EvtScript N(EVS_NpcInit_Luigi_1) = {
     End
 };
 
-NpcData N(NpcData_Luigi_0) = {
+NpcData NpcData_Luigi_0 = {
     .id = NPC_Luigi_0,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Luigi_0),
-    .settings = &N(NpcSettings_Luigi),
+    .init = &EVS_NpcInit_Luigi_0,
+    .settings = &NpcSettings_Luigi,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = LUIGI_ANIMS,
     .tattle = MSG_NpcTattle_Luigi,
 };
 
-NpcData N(NpcData_Luigi_1) = {
+NpcData NpcData_Luigi_1 = {
     .id = NPC_Luigi_1,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Luigi_1),
-    .settings = &N(NpcSettings_Luigi),
+    .init = &EVS_NpcInit_Luigi_1,
+    .settings = &NpcSettings_Luigi,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = LUIGI_ANIMS,
     .tattle = MSG_NpcTattle_Luigi,
 };
 
-EvtScript N(EVS_NpcIdle_ShyGuy) = {
+EvtScript EVS_NpcIdle_ShyGuy = {
     Call(SetNpcPos, NPC_SELF, 500, 0, -195)
     Call(InterpNpcYaw, NPC_SELF, 270, 1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Run)
@@ -656,7 +656,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy) = {
+EvtScript EVS_NpcAI_ShyGuy = {
     Call(DisablePlayerInput, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Hurt)
     Wait(10)
@@ -684,18 +684,18 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_ShyGuy) = {
+EvtScript EVS_NpcHit_ShyGuy = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     Set(GF_KMR20_ChasedOffShyGuy, true)
     Call(SetNpcVar, NPC_Luigi_1, 0, 1)
     Wait(2)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy) = {
+EvtScript EVS_NpcInit_ShyGuy = {
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Return
@@ -708,26 +708,26 @@ EvtScript N(EVS_NpcInit_ShyGuy) = {
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_ShyGuy)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShyGuy))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_ShyGuy))
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy) = {
+NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_ShyGuy),
-    .settings = &N(NpcSettings_ShyGuy),
+    .init = &EVS_NpcInit_ShyGuy,
+    .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Luigi_0)),
-    NPC_GROUP(N(NpcData_Luigi_1)),
-    NPC_GROUP(N(NpcData_ShyGuy)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Luigi_0),
+    NPC_GROUP(NpcData_Luigi_1),
+    NPC_GROUP(NpcData_ShyGuy),
     {}
 };

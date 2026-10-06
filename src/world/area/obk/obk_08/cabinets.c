@@ -13,7 +13,7 @@
 
 #include "world/common/util/KnockDownPlayer.inc.c"
 
-API_CALLABLE(N(DamagePlayer1HP)) {
+API_CALLABLE(DamagePlayer1HP) {
     if (gPlayerData.curHP <= 1) {
         return ApiStatus_DONE2;
     }
@@ -21,7 +21,7 @@ API_CALLABLE(N(DamagePlayer1HP)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GetPartnerInUseAnims) = {
+EvtScript EVS_GetPartnerInUseAnims = {
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -53,15 +53,15 @@ EvtScript N(EVS_GetPartnerInUseAnims) = {
     End
 };
 
-EvtScript N(EVS_CrushPlayer) = {
+EvtScript EVS_CrushPlayer = {
     Thread
         Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-        ExecWait(N(EVS_GetPartnerInUseAnims))
+        ExecWait(EVS_GetPartnerInUseAnims)
         Call(SetNpcAnimation, NPC_PARTNER, LVarA)
         Call(NpcMoveTo, NPC_PARTNER, -93, LVar2, 15)
-        ExecWait(N(EVS_GetPartnerInUseAnims))
+        ExecWait(EVS_GetPartnerInUseAnims)
         Call(SetNpcAnimation, NPC_PARTNER, LVarB)
         Wait(15)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -72,40 +72,40 @@ EvtScript N(EVS_CrushPlayer) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
     Wait(13)
     Call(GetPlayerPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
-    Call(N(KnockdownCreate), SPR_Mario1, SPR_IMG_Mario1_25)
-    Call(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
+    Call(KnockdownCreate, SPR_Mario1, SPR_IMG_Mario1_25)
+    Call(KnockdownSetPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     Wait(1)
     Call(SetPlayerPos, 0, 1000, 0) // unusual dispose location
     Call(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
     Label(0)
     Call(UpdateLerp)
-    Call(N(KnockdownSetRot), LVar0, 0, 0)
+    Call(KnockdownSetRot, LVar0, 0, 0)
     Wait(1)
     IfEq(LVar1, 1)
         Goto(0)
     EndIf
     Add(MV_KnockdownPosY, 3)
-    Call(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
-    Call(N(DamagePlayer1HP))
+    Call(KnockdownSetPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
+    Call(DamagePlayer1HP)
     Return
     End
 };
 
-EvtScript N(EVS_RestorePlayer) = {
+EvtScript EVS_RestorePlayer = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(InterpPlayerYaw, 270, 0)
     Wait(15)
     Sub(MV_KnockdownPosY, 3)
-    Call(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
+    Call(KnockdownSetPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     Call(MakeLerp, 90, 0, 15, EASING_QUADRATIC_OUT)
     Label(1)
     Call(UpdateLerp)
-    Call(N(KnockdownSetRot), LVar0, 0, 0)
+    Call(KnockdownSetRot, LVar0, 0, 0)
     Wait(1)
     IfEq(LVar1, 1)
         Goto(1)
     EndIf
-    Call(N(KnockdownDestroy))
+    Call(KnockdownDestroy)
     Call(SetPlayerPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     Wait(10)
     Call(SetPlayerAnimation, ANIM_MarioW3_ShakeHeadHard)
@@ -117,7 +117,7 @@ EvtScript N(EVS_RestorePlayer) = {
     End
 };
 
-Vec2i N(DustEmitters_FarCabinet)[] = {
+Vec2i DustEmitters_FarCabinet[] = {
     { -220, -140 },
     { -220, -115 },
     { -220,  -90 },
@@ -136,7 +136,7 @@ Vec2i N(DustEmitters_FarCabinet)[] = {
     { -195,  -40 },
 };
 
-Vec2i N(DustEmitters_NearCabinet)[] = {
+Vec2i DustEmitters_NearCabinet[] = {
     { -220,  60 },
     { -220,  85 },
     { -220, 110 },
@@ -155,7 +155,7 @@ Vec2i N(DustEmitters_NearCabinet)[] = {
     { -195, 160 },
 };
 
-EvtScript N(EVS_MiddleCabinet_OpenDoors) = {
+EvtScript EVS_MiddleCabinet_OpenDoors = {
     Call(PlaySoundAtCollider, COLLIDER_tansu2, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 120, 15, EASING_QUARTIC_IN)
     Loop(0)
@@ -171,7 +171,7 @@ EvtScript N(EVS_MiddleCabinet_OpenDoors) = {
     End
 };
 
-EvtScript N(EVS_MiddleCabinet_CloseDoors) = {
+EvtScript EVS_MiddleCabinet_CloseDoors = {
     Call(MakeLerp, 120, 0, 15, EASING_QUARTIC_IN)
     Loop(0)
         Call(UpdateLerp)
@@ -187,29 +187,29 @@ EvtScript N(EVS_MiddleCabinet_CloseDoors) = {
     End
 };
 
-EvtScript N(EVS_Interact_MiddleCabinet) = {
+EvtScript EVS_Interact_MiddleCabinet = {
     IfLt(GB_StoryProgress, STORY_CH3_GOT_RECORD)
         Call(DeleteTrigger, MV_Trigger_NearCabinet)
         Call(DeleteTrigger, MV_Trigger_MidCabinet)
         Call(DeleteTrigger, MV_Trigger_FarCabinet)
-        Exec(N(EVS_Scene_BoosUnleashed))
-        ExecWait(N(EVS_MiddleCabinet_OpenDoors))
+        Exec(EVS_Scene_BoosUnleashed)
+        ExecWait(EVS_MiddleCabinet_OpenDoors)
         Set(AF_OBK08_KeepAwayStarted, true)
         Wait(50)
-        ExecWait(N(EVS_MiddleCabinet_CloseDoors))
+        ExecWait(EVS_MiddleCabinet_CloseDoors)
     Else
         Call(DisablePlayerInput, true)
         Call(InterruptUsePartner)
-        ExecWait(N(EVS_MiddleCabinet_OpenDoors))
+        ExecWait(EVS_MiddleCabinet_OpenDoors)
         Wait(20)
-        ExecWait(N(EVS_MiddleCabinet_CloseDoors))
+        ExecWait(EVS_MiddleCabinet_CloseDoors)
         Call(DisablePlayerInput, false)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Interact_NearCabinet) = {
+EvtScript EVS_Interact_NearCabinet = {
     Label(3)
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
@@ -227,7 +227,7 @@ EvtScript N(EVS_Interact_NearCabinet) = {
         Call(RotateModel, MODEL_tansu1, 0, 1, 0, 0)
         Wait(1)
     EndLoop
-    Exec(N(EVS_CrushPlayer))
+    Exec(EVS_CrushPlayer)
     Call(MakeLerp, 0, -90, 30, EASING_QUARTIC_IN)
     Label(10)
     Call(UpdateLerp)
@@ -242,7 +242,7 @@ EvtScript N(EVS_Interact_NearCabinet) = {
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.5))
     EndThread
-    UseBuf(Ref(N(DustEmitters_NearCabinet)))
+    UseBuf(Ref(DustEmitters_NearCabinet))
     Loop(16)
         BufRead2(LVar0, LVar1)
         PlayEffect(EFFECT_LANDING_DUST, 2, LVar0, 0, LVar1, 0)
@@ -258,13 +258,13 @@ EvtScript N(EVS_Interact_NearCabinet) = {
     IfEq(LVar1, 1)
         Goto(15)
     EndIf
-    ExecWait(N(EVS_RestorePlayer))
+    ExecWait(EVS_RestorePlayer)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_Interact_FarCabinet) = {
+EvtScript EVS_Interact_FarCabinet = {
     Label(5)
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
@@ -282,7 +282,7 @@ EvtScript N(EVS_Interact_FarCabinet) = {
         Call(RotateModel, MODEL_tansu3, 0, 1, 0, 0)
         Wait(1)
     EndLoop
-    Exec(N(EVS_CrushPlayer))
+    Exec(EVS_CrushPlayer)
     Call(MakeLerp, 0, -90, 30, EASING_QUARTIC_IN)
     Label(20)
     Call(UpdateLerp)
@@ -297,7 +297,7 @@ EvtScript N(EVS_Interact_FarCabinet) = {
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.5))
     EndThread
-    UseBuf(Ref(N(DustEmitters_FarCabinet)))
+    UseBuf(Ref(DustEmitters_FarCabinet))
     Loop(16)
         BufRead2(LVar0, LVar1)
         PlayEffect(EFFECT_LANDING_DUST, 2, LVar0, 0, LVar1, 0)
@@ -313,28 +313,28 @@ EvtScript N(EVS_Interact_FarCabinet) = {
     IfEq(LVar1, 1)
         Goto(25)
     EndIf
-    ExecWait(N(EVS_RestorePlayer))
+    ExecWait(EVS_RestorePlayer)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupCabinets) = {
+EvtScript EVS_SetupCabinets = {
     Call(ParentColliderToModel, COLLIDER_tansu1, MODEL_tansu1)
     Call(ParentColliderToModel, COLLIDER_o372, MODEL_tansu1)
     Call(ParentColliderToModel, COLLIDER_tansu3, MODEL_tansu3)
     Call(ParentColliderToModel, COLLIDER_o373, MODEL_tansu3)
-    BindTrigger(Ref(N(EVS_Interact_NearCabinet)), TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
-    BindTrigger(Ref(N(EVS_Interact_MiddleCabinet)), TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
-    BindTrigger(Ref(N(EVS_Interact_FarCabinet)), TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
+    BindTrigger(Ref(EVS_Interact_NearCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
+    BindTrigger(Ref(EVS_Interact_MiddleCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
+    BindTrigger(Ref(EVS_Interact_FarCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
     Return
     End
 };
 
-EvtScript N(EVS_BindCabinetTriggers) = {
-    BindTrigger(Ref(N(EVS_Interact_NearCabinet)), TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
-    BindTrigger(Ref(N(EVS_Interact_MiddleCabinet)), TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
-    BindTrigger(Ref(N(EVS_Interact_FarCabinet)), TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
+EvtScript EVS_BindCabinetTriggers = {
+    BindTrigger(Ref(EVS_Interact_NearCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu1, 1, MV_Trigger_NearCabinet)
+    BindTrigger(Ref(EVS_Interact_MiddleCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu2, 1, MV_Trigger_MidCabinet)
+    BindTrigger(Ref(EVS_Interact_FarCabinet), TRIGGER_WALL_PRESS_A, COLLIDER_tansu3, 1, MV_Trigger_FarCabinet)
     Return
     End
 };

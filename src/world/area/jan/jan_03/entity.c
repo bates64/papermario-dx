@@ -2,14 +2,14 @@
 #include "entity.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_GotoMap_tik_08_4) = {
+EvtScript EVS_GotoMap_tik_08_4 = {
     Call(GotoMap, Ref("tik_08"), tik_08_ENTRY_4)
     Wait(100)
     Return
     End
 };
 
-API_CALLABLE(N(GiveInitialSpringBoost)) {
+API_CALLABLE(GiveInitialSpringBoost) {
     f32 x = gPlayerStatus.curSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
     f32 z = gPlayerStatus.curSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
 
@@ -18,7 +18,7 @@ API_CALLABLE(N(GiveInitialSpringBoost)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -28,15 +28,15 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseSpring) = {
-    Call(N(GiveInitialSpringBoost))
+EvtScript EVS_UseSpring = {
+    Call(GiveInitialSpringBoost)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
-    ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCamToPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.1))
     Call(PlayerJump, -556, 300, -195, 15)
     Call(DisablePlayerPhysics, false)
@@ -51,7 +51,7 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_JAN03_WarpPipe, false)
         IfEq(GF_TIK08_WarpPipe, true)
             Call(GetEntryID, LVar0)
@@ -60,10 +60,10 @@ EvtScript N(EVS_MakeEntities) = {
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), -540, 0, 195, 30, jan_03_ENTRY_3, Ref(N(EVS_GotoMap_tik_08_4)), EVT_INDEX_OF_GAME_FLAG(GF_JAN03_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_BlueWarpPipe), -540, 0, 195, 30, jan_03_ENTRY_3, Ref(EVS_GotoMap_tik_08_4), EVT_INDEX_OF_GAME_FLAG(GF_JAN03_WarpPipe), MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_SavePoint), 100, 60, -25, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_ScriptSpring), -556, 0, -195, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Return
     End
 };

@@ -1,7 +1,7 @@
 #include "arn_08.h"
 
 // equivalent to EVT_EXIT_SPLIT_SINGLE_DOOR but with a call to ClearDefeatedEnemies
-EvtScript N(EVS_ExitDoor_arn_07_0) = {
+EvtScript EVS_ExitDoor_arn_07_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(ClearDefeatedEnemies)
@@ -18,17 +18,17 @@ EvtScript N(EVS_ExitDoor_arn_07_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoor_arn_07_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoor_arn_07_0), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -39,7 +39,7 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSplitSingleDoor)
             Set(AF_ARN_UsingWellSpring, false)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(arn_08_ENTRY_1)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
@@ -84,13 +84,13 @@ EvtScript N(EVS_EnterMap) = {
             Call(SetPlayerJumpscale, Float(2.0))
             Call(PlayerJump, -10, 0, 75, 18)
             Call(DisablePlayerInput, false)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_WINDY_MILL)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -100,17 +100,17 @@ EvtScript N(EVS_Main) = {
         Set(GF_ARN12_Defeated_Goomba, false)
         Set(GF_ARN13_Defeated_Goomba, false)
     EndIf
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_AnimateGears))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_AnimateGears)
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
-        ExecWait(N(EVS_PlayDemoScene))
+        ExecWait(EVS_PlayDemoScene)
         Return
     EndIf
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupHole))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupHole)
+    Exec(EVS_SetupMusic)
     Return
     End
 };

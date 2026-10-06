@@ -39,7 +39,7 @@
 #define HAMMER_BROS_HAMMER_HITBOX(npcID) \
 { \
     .id = npcID, \
-    .settings = &N(NpcSettings_HammerBros_Hammer), \
+    .settings = &NpcSettings_HammerBros_Hammer, \
     .pos = { NPC_DISPOSE_LOCATION }, \
     .yaw = 90, \
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \
@@ -74,5 +74,5 @@
         .anim_E = ANIM_HammerBros_Hammer, \
         .anim_F = ANIM_HammerBros_Hammer, \
     }, \
-    .limitAnimations = N(LimitAnims_HammerBros_Hammer), \
+    .limitAnimations = LimitAnims_HammerBros_Hammer, \
 }

@@ -54,7 +54,6 @@ void flower_splash_main(f32 posX, f32 posY, f32 posZ, f32 angle) {
     bp.init = flower_splash_init;
     bp.update = flower_splash_update;
     bp.renderScene = flower_splash_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_FLOWER_SPLASH;
 

@@ -20,10 +20,8 @@ enum {
     MV_PlatformShadowsArray     = MapVar(0),
 };
 
-#define NAMESPACE tik_04
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupDrips);
-extern EvtScript N(EVS_SetupPlatforms);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupDrips;
+extern EvtScript EVS_SetupPlatforms;
+extern NpcGroupList DefaultNPCs;

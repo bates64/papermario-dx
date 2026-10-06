@@ -2,7 +2,7 @@
 #include "npc.h"
 #include "model.h"
 
-API_CALLABLE(N(CheckDripCollisionWithNPC)) {
+API_CALLABLE(CheckDripCollisionWithNPC) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 treeIndex = evt_get_variable(script, *args++);
@@ -49,7 +49,7 @@ API_CALLABLE(N(CheckDripCollisionWithNPC)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateDripSplash) = {
+EvtScript EVS_UpdateDripSplash = {
     Set(LVar1, ArrayVar(5))
     Add(LVar1, 1)
     Set(LVar2, ArrayVar(0))
@@ -118,7 +118,7 @@ EvtScript N(EVS_UpdateDripSplash) = {
     End
 };
 
-EvtScript N(EVS_UpdateDripVolume) = {
+EvtScript EVS_UpdateDripVolume = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     UseArray(LVarA)
     Set(LVar5, ArrayVar(5))
@@ -137,7 +137,7 @@ EvtScript N(EVS_UpdateDripVolume) = {
         Call(UpdateLerp)
         Call(TranslateModel, ArrayVar(5), ArrayVar(0), LVar0, ArrayVar(1))
         Wait(1)
-        Call(N(CheckDripCollisionWithNPC), ArrayVar(5))
+        Call(CheckDripCollisionWithNPC, ArrayVar(5))
         IfEq(LVar2, 1)
             Goto(10)
         EndIf
@@ -147,13 +147,13 @@ EvtScript N(EVS_UpdateDripVolume) = {
         Label(10)
         Call(EnableModel, ArrayVar(5), false)
         Call(PlaySound, SOUND_DRIP)
-        ExecWait(N(EVS_UpdateDripSplash))
+        ExecWait(EVS_UpdateDripSplash)
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_CreateDripVolumes) = {
+EvtScript EVS_CreateDripVolumes = {
     Set(LVarF, LVar1)
     UseBuf(LVar0)
     Set(LVar0, CLONED_MODEL(0))
@@ -178,7 +178,7 @@ EvtScript N(EVS_CreateDripVolumes) = {
             Set(ArrayVar(4), LVar8)
             Set(ArrayVar(5), LVar0)
             Set(ArrayVar(6), LVarF)
-            Exec(N(EVS_UpdateDripVolume))
+            Exec(EVS_UpdateDripVolume)
             Add(LVar0, 5)
         EndLoop
     EndLoop

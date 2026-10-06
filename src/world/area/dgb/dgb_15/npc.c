@@ -4,9 +4,9 @@
 #include "world/common/enemy/Clubba/wander.inc.c"
 #include "world/common/enemy/TubbaBlubba/idle.inc.c"
 
-extern EvtScript N(EVS_NpcAI_Tubba);
+extern EvtScript EVS_NpcAI_Tubba;
 
-EvtScript N(EVS_WaitForCloseCall) = {
+EvtScript EVS_WaitForCloseCall = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(GetNpcPos, NPC_Tubba, LVar1, LVar2, LVar3)
@@ -22,7 +22,7 @@ EvtScript N(EVS_WaitForCloseCall) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Tubba) = {
+EvtScript EVS_NpcIdle_Tubba = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGe(LVar0, -1150)
@@ -58,12 +58,12 @@ EvtScript N(EVS_NpcIdle_Tubba) = {
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
     EndThread
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Tubba)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Tubba))
     Return
     End
 };
 
-EvtScript N(EVS_PlayFootstepFX) = {
+EvtScript EVS_PlayFootstepFX = {
     Call(GetNpcPos, NPC_SELF, LVar6, LVar7, LVar8)
     Loop(0)
         Wait(1)
@@ -101,7 +101,7 @@ EvtScript N(EVS_PlayFootstepFX) = {
     End
 };
 
-MobileAISettings N(AISettings_Tubba) = {
+MobileAISettings AISettings_Tubba = {
     .moveSpeed = 3.0f,
     .moveTime = 30,
     .waitTime = 30,
@@ -118,49 +118,49 @@ MobileAISettings N(AISettings_Tubba) = {
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-EvtScript N(EVS_NpcAI_Tubba) = {
-    Exec(N(EVS_WaitForCloseCall))
+EvtScript EVS_NpcAI_Tubba = {
+    Exec(EVS_WaitForCloseCall)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Run)
-    Exec(N(EVS_PlayFootstepFX))
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Tubba)))
+    Exec(EVS_PlayFootstepFX)
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba))
     Return
     End
 };
 
-API_CALLABLE(N(PostBattleHideWorld)) {
+API_CALLABLE(PostBattleHideWorld) {
     increment_status_bar_disabled();
     set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
     return ApiStatus_DONE2;
 }
 
 // failsafe if the player somehow defeats Tubba
-EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(PostBattleHideWorld))
+EvtScript EVS_NpcDefeat_Tubba = {
+    Call(PostBattleHideWorld)
     Call(GotoMap, Ref("dgb_14"), dgb_14_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba) = {
+EvtScript EVS_NpcInit_Tubba = {
     IfNe(GB_StoryProgress, STORY_CH3_ARRIVED_AT_TUBBAS_MANOR)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
     IfNe(GB_ARN_Tubba_MapID, 15)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Tubba)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba))
     Else
         Call(SetNpcPos, NPC_SELF, -310, 0, 180)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Tubba)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba))
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Tubba)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
     Return
     End
 };
 
-NpcData N(NpcData_Tubba) = {
+NpcData NpcData_Tubba = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -183,15 +183,15 @@ NpcData N(NpcData_Tubba) = {
             .detectSize = { 1000, 250 },
         }
     },
-    .init = &N(EVS_NpcInit_Tubba),
-    .settings = &N(NpcSettings_TubbaBlubba),
+    .init = &EVS_NpcInit_Tubba,
+    .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Tubba), BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Tubba, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
     {}
 };

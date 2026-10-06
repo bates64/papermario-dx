@@ -68,32 +68,32 @@ typedef struct JumpGameData {
 extern s32 MessagePlural;
 extern s32 MessageSingular;
 
-extern s8 N(BlockPosX)[NUM_BLOCKS];
-extern s8 N(BlockPosY)[NUM_BLOCKS];
-extern s8 N(BlockPosZ)[NUM_BLOCKS];
+extern s8 BlockPosX[NUM_BLOCKS];
+extern s8 BlockPosY[NUM_BLOCKS];
+extern s8 BlockPosZ[NUM_BLOCKS];
 
-extern f32 N(TallyPosX)[NUM_BLOCKS];
-extern f32 N(TallyPosY)[NUM_BLOCKS];
+extern f32 TallyPosX[NUM_BLOCKS];
+extern f32 TallyPosY[NUM_BLOCKS];
 
-extern s32 N(PanelModelIDs)[NUM_BLOCKS];
-extern JumpGamePanelType N(PanelTypes)[NUM_BLOCKS];
-extern JumpGamePanelType N(InitialConfigurations)[4][NUM_BLOCKS];
+extern s32 PanelModelIDs[NUM_BLOCKS];
+extern JumpGamePanelType PanelTypes[NUM_BLOCKS];
+extern JumpGamePanelType InitialConfigurations[4][NUM_BLOCKS];
 
-extern EvtScript N(EVS_OnBreakBlock_0);
-extern EvtScript N(EVS_OnBreakBlock_1);
-extern EvtScript N(EVS_OnBreakBlock_2);
-extern EvtScript N(EVS_OnBreakBlock_3);
-extern EvtScript N(EVS_OnBreakBlock_4);
-extern EvtScript N(EVS_OnBreakBlock_5);
-extern EvtScript N(EVS_OnBreakBlock_6);
-extern EvtScript N(EVS_OnBreakBlock_7);
-extern EvtScript N(EVS_OnBreakBlock_8);
-extern EvtScript N(EVS_OnBreakBlock_9);
-extern EvtScript N(EVS_OnBreakBlock_10);
+extern EvtScript EVS_OnBreakBlock_0;
+extern EvtScript EVS_OnBreakBlock_1;
+extern EvtScript EVS_OnBreakBlock_2;
+extern EvtScript EVS_OnBreakBlock_3;
+extern EvtScript EVS_OnBreakBlock_4;
+extern EvtScript EVS_OnBreakBlock_5;
+extern EvtScript EVS_OnBreakBlock_6;
+extern EvtScript EVS_OnBreakBlock_7;
+extern EvtScript EVS_OnBreakBlock_8;
+extern EvtScript EVS_OnBreakBlock_9;
+extern EvtScript EVS_OnBreakBlock_10;
 
-extern EvtScript N(EVS_InitializePanels);
+extern EvtScript EVS_InitializePanels;
 
-void N(appendGfx_score_display) (void* renderData) {
+void appendGfx_score_display (void* renderData) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     JumpGameData* data = (JumpGameData*)scorekeeper->varTable[JUMP_DATA_VAR_IDX];
     HudElemID hid;
@@ -148,30 +148,30 @@ void N(appendGfx_score_display) (void* renderData) {
     }
 }
 
-void N(worker_render_score)(void) {
+void worker_render_score(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
-    task.appendGfx = &mgm_01_appendGfx_score_display;
+    task.appendGfx = &appendGfx_score_display;
     task.dist = 0;
 
     queue_render_task(&task);
 }
 
-API_CALLABLE(N(DisableMenus)) {
+API_CALLABLE(DisableMenus) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_MENUS;
     status_bar_ignore_changes();
     close_status_bar();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EnableMenus)) {
+API_CALLABLE(EnableMenus) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_MENUS;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetPanelInfo)) {
+API_CALLABLE(GetPanelInfo) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -184,7 +184,7 @@ API_CALLABLE(N(GetPanelInfo)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetPanelState)) {
+API_CALLABLE(SetPanelState) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -195,7 +195,7 @@ API_CALLABLE(N(SetPanelState)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitPanelEmergeFromBlock)) {
+API_CALLABLE(InitPanelEmergeFromBlock) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -206,9 +206,9 @@ API_CALLABLE(N(InitPanelEmergeFromBlock)) {
 
     blockPosIndex = data->panels[index].blockPosIndex;
 
-    data->panels[index].curPos.x = N(BlockPosX)[blockPosIndex];
-    data->panels[index].curPos.y = N(BlockPosY)[blockPosIndex] + 15.0;
-    data->panels[index].curPos.z = N(BlockPosZ)[blockPosIndex] + 12;
+    data->panels[index].curPos.x = BlockPosX[blockPosIndex];
+    data->panels[index].curPos.y = BlockPosY[blockPosIndex] + 15.0;
+    data->panels[index].curPos.z = BlockPosZ[blockPosIndex] + 12;
 
     data->panels[index].startPos.x = data->panels[index].curPos.x;
     data->panels[index].startPos.y = data->panels[index].curPos.y;
@@ -227,7 +227,7 @@ API_CALLABLE(N(InitPanelEmergeFromBlock)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatePanelEmergeFromBlock)) {
+API_CALLABLE(UpdatePanelEmergeFromBlock) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -259,7 +259,7 @@ API_CALLABLE(N(UpdatePanelEmergeFromBlock)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitPanelHoldAboveBlock)) {
+API_CALLABLE(InitPanelHoldAboveBlock) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -270,7 +270,7 @@ API_CALLABLE(N(InitPanelHoldAboveBlock)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatetPanelHoldAboveBlock)) {
+API_CALLABLE(UpdatetPanelHoldAboveBlock) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -285,7 +285,7 @@ API_CALLABLE(N(UpdatetPanelHoldAboveBlock)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitPanelMoveToTally)) {
+API_CALLABLE(InitPanelMoveToTally) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -300,8 +300,8 @@ API_CALLABLE(N(InitPanelMoveToTally)) {
     data->panels[index].startScale = data->panels[index].curScale;
 
     if (data->panels[index].type != PANEL_BOWSER) {
-        data->panels[index].endPos.x = N(TallyPosX)[data->panels[index].tallyPosIndex];
-        data->panels[index].endPos.y = N(TallyPosY)[data->panels[index].tallyPosIndex];
+        data->panels[index].endPos.x = TallyPosX[data->panels[index].tallyPosIndex];
+        data->panels[index].endPos.y = TallyPosY[data->panels[index].tallyPosIndex];
         data->panels[index].endPos.z = 110.0f;
         data->panels[index].endAngle = 360.0f;
         data->panels[index].endScale = 1.0f;
@@ -325,7 +325,7 @@ API_CALLABLE(N(InitPanelMoveToTally)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatePanelMoveToTally)) {
+API_CALLABLE(UpdatePanelMoveToTally) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -361,7 +361,7 @@ API_CALLABLE(N(UpdatePanelMoveToTally)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EndPanelAnimation)) {
+API_CALLABLE(EndPanelAnimation) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -371,7 +371,7 @@ API_CALLABLE(N(EndPanelAnimation)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateRecords)) {
+API_CALLABLE(UpdateRecords) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     PlayerData* player = &gPlayerData;
 
@@ -387,7 +387,7 @@ API_CALLABLE(N(UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GiveCoinWinnings)) {
+API_CALLABLE(GiveCoinWinnings) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
@@ -420,7 +420,7 @@ API_CALLABLE(N(GiveCoinWinnings)) {
     }
 }
 
-API_CALLABLE(N(DoubleScore)) {
+API_CALLABLE(DoubleScore) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 score = 2 * data->curScore;
     data->curScore = score;
@@ -429,7 +429,7 @@ API_CALLABLE(N(DoubleScore)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EndBowserPanelAnimation)) {
+API_CALLABLE(EndBowserPanelAnimation) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 i;
 
@@ -438,8 +438,8 @@ API_CALLABLE(N(EndBowserPanelAnimation)) {
             break;
     }
 
-    data->panels[i].curPos.x = N(TallyPosX)[data->panels[i].tallyPosIndex];
-    data->panels[i].curPos.y = N(TallyPosY)[data->panels[i].tallyPosIndex];
+    data->panels[i].curPos.x = TallyPosX[data->panels[i].tallyPosIndex];
+    data->panels[i].curPos.y = TallyPosY[data->panels[i].tallyPosIndex];
     data->panels[i].curPos.z = 110.0f;
 
     evt_set_variable(script, LVar1, data->panels[i].modelID);
@@ -450,7 +450,7 @@ API_CALLABLE(N(EndBowserPanelAnimation)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetPanelPos)) {
+API_CALLABLE(GetPanelPos) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
@@ -464,13 +464,13 @@ API_CALLABLE(N(GetPanelPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroyBlockEntities)) {
+API_CALLABLE(DestroyBlockEntities) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(data->panels); i++) {
         if (data->panels[i].entityIndex >= 0) {
-            fx_walking_dust(1, N(BlockPosX)[i], N(BlockPosY)[i] + 13, N(BlockPosZ)[i] + 5, 0, 0);
+            fx_walking_dust(1, BlockPosX[i], BlockPosY[i] + 13, BlockPosZ[i] + 5, 0, 0);
             delete_entity(data->panels[i].entityIndex);
         }
     }
@@ -480,7 +480,7 @@ API_CALLABLE(N(DestroyBlockEntities)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(OnBreakBlock)) {
+API_CALLABLE(OnBreakBlock) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     JumpGameData* data = (JumpGameData*)scorekeeper->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
@@ -518,7 +518,7 @@ API_CALLABLE(N(OnBreakBlock)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreateBlockEntities)) {
+API_CALLABLE(CreateBlockEntities) {
     JumpGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[JUMP_DATA_VAR_IDX];
     s32 entityIndex;
     s32 initialConfiguration;
@@ -528,16 +528,16 @@ API_CALLABLE(N(CreateBlockEntities)) {
     s32 i;
 
     EvtScript* scriptArray[] = {
-        &N(EVS_OnBreakBlock_0), &N(EVS_OnBreakBlock_1), &N(EVS_OnBreakBlock_2), &N(EVS_OnBreakBlock_3),
-        &N(EVS_OnBreakBlock_4), &N(EVS_OnBreakBlock_5), &N(EVS_OnBreakBlock_6), &N(EVS_OnBreakBlock_7),
-        &N(EVS_OnBreakBlock_8), &N(EVS_OnBreakBlock_9), &N(EVS_OnBreakBlock_10)
+        &EVS_OnBreakBlock_0, &EVS_OnBreakBlock_1, &EVS_OnBreakBlock_2, &EVS_OnBreakBlock_3,
+        &EVS_OnBreakBlock_4, &EVS_OnBreakBlock_5, &EVS_OnBreakBlock_6, &EVS_OnBreakBlock_7,
+        &EVS_OnBreakBlock_8, &EVS_OnBreakBlock_9, &EVS_OnBreakBlock_10
     };
 
     if (isInitialCall) {
         // choose one of four initial configurations at random
-        initialConfiguration = rand_int(1000) % ARRAY_COUNT(N(InitialConfigurations));
+        initialConfiguration = rand_int(1000) % ARRAY_COUNT(InitialConfigurations);
         for (i = 0; i < NUM_BLOCKS; i++) {
-            data->type[i] = N(InitialConfigurations)[initialConfiguration][i];
+            data->type[i] = InitialConfigurations[initialConfiguration][i];
         }
 
         // randomly swap 1000 pairs
@@ -560,16 +560,16 @@ API_CALLABLE(N(CreateBlockEntities)) {
     if (script->functionTemp[0] <= 0) {
         curBlockIdx = script->functionTemp[1];
         entityIndex = create_entity(&Entity_BrickBlock,
-            N(BlockPosX)[curBlockIdx],
-            N(BlockPosY)[curBlockIdx],
-            N(BlockPosZ)[curBlockIdx],
+            BlockPosX[curBlockIdx],
+            BlockPosY[curBlockIdx],
+            BlockPosZ[curBlockIdx],
             0, 0, 0, 0, MAKE_ENTITY_END);
         data->panels[curBlockIdx].entityIndex = entityIndex;
         get_entity_by_index(entityIndex)->script.source = scriptArray[curBlockIdx];
         fx_sparkles(FX_SPARKLES_3,
-            N(BlockPosX)[curBlockIdx],
-            N(BlockPosY)[curBlockIdx] + 13,
-            N(BlockPosZ)[curBlockIdx] + 5,
+            BlockPosX[curBlockIdx],
+            BlockPosY[curBlockIdx] + 13,
+            BlockPosZ[curBlockIdx] + 5,
             23.0f);
         sfx_play_sound(SOUND_HEART_PICKUP);
         script->functionTemp[0] = 3;
@@ -583,7 +583,7 @@ API_CALLABLE(N(CreateBlockEntities)) {
     }
 }
 
-API_CALLABLE(N(TakeCoinCost)) {
+API_CALLABLE(TakeCoinCost) {
     PlayerData* playerData = &gPlayerData;
 
     if (isInitialCall) {
@@ -602,7 +602,7 @@ API_CALLABLE(N(TakeCoinCost)) {
     }
 }
 
-API_CALLABLE(N(InitializePanels)) {
+API_CALLABLE(InitializePanels) {
     JumpGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[JUMP_DATA_VAR_IDX];
     s32 i;
 
@@ -611,21 +611,21 @@ API_CALLABLE(N(InitializePanels)) {
 
     for (i = 0; i < ARRAY_COUNT(data->panels); i++) {
         data->panels[i].state = PANEL_STATE_INIT;
-        data->panels[i].modelID = N(PanelModelIDs)[i];
-        data->panels[i].type = N(PanelTypes)[i];
+        data->panels[i].modelID = PanelModelIDs[i];
+        data->panels[i].type = PanelTypes[i];
         data->panels[i].tallyPosIndex = -1;
     }
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreateMinigame)) {
+API_CALLABLE(CreateMinigame) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     JumpGameData* data = general_heap_malloc(sizeof(*data));
     HudElemID hid;
 
     scorekeeper->varTablePtr[JUMP_DATA_VAR_IDX] = data;
-    data->workerID = create_worker_scene(nullptr, &mgm_01_worker_render_score);
+    data->workerID = create_worker_scene(nullptr, &worker_render_score);
 
     hid = hud_element_create(HES_StatusCoin);
     data->hudElemID = hid;
@@ -640,7 +640,7 @@ API_CALLABLE(N(CreateMinigame)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroyMinigame)) {
+API_CALLABLE(DestroyMinigame) {
     JumpGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[JUMP_DATA_VAR_IDX];
 
     free_worker(data->workerID);
@@ -649,12 +649,12 @@ API_CALLABLE(N(DestroyMinigame)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCoinCount)) {
+API_CALLABLE(GetCoinCount) {
     evt_set_variable(script, LVarA, gPlayerData.coins);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetMsgVars_BlocksRemaining)) {
+API_CALLABLE(SetMsgVars_BlocksRemaining) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     s32 remaining = (scorekeeper->varTable[TOTAL_BLOCKS_VAR_IDX] - scorekeeper->varTable[BROKEN_BLOCKS_VAR_IDX]) + 1;
 
@@ -668,100 +668,100 @@ API_CALLABLE(N(SetMsgVars_BlocksRemaining)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(HideCoinCounter)) {
+API_CALLABLE(HideCoinCounter) {
     hide_coin_counter_immediately();
     return ApiStatus_DONE2;
 }
 
 #include "world/common/npc/Toad/idle.inc.c"
 
-s8 N(BlockPosX)[NUM_BLOCKS] = {
+s8 BlockPosX[NUM_BLOCKS] = {
     -125, -100, -75, -50, -25, 0, 25, 50, 75, 100, 125
 };
 
-s8 N(BlockPosY)[NUM_BLOCKS] = {
+s8 BlockPosY[NUM_BLOCKS] = {
     56, 60, 56, 60, 56, 60, 56, 60, 56, 60, 56
 };
 
-s8 N(BlockPosZ)[NUM_BLOCKS] = {
+s8 BlockPosZ[NUM_BLOCKS] = {
     30, -30, 30, -30, 30, -30, 30, -30, 30, -30, 30
 };
 
-f32 N(TallyPosX)[NUM_BLOCKS] = {
+f32 TallyPosX[NUM_BLOCKS] = {
     -105.0, -80.0, -55.0, -30.0, -5.0, -105.0, -80.0, -55.0,
     -30.0, -5.0, 20.0
 };
 
-f32 N(TallyPosY)[NUM_BLOCKS] = {
+f32 TallyPosY[NUM_BLOCKS] = {
     157.0, 157.0, 157.0, 157.0, 157.0, 133.0, 133.0, 133.0,
     133.0, 133.0, 133.0,
 };
 
-s32 N(PanelModelIDs)[NUM_BLOCKS] = {
+s32 PanelModelIDs[NUM_BLOCKS] = {
     19, 17, 15, 13, 22, 24, 26, 29,
     31, 34, 36
 };
 
-JumpGamePanelType N(PanelTypes)[NUM_BLOCKS] = {
+JumpGamePanelType PanelTypes[NUM_BLOCKS] = {
     PANEL_1_COIN, PANEL_1_COIN, PANEL_1_COIN, PANEL_1_COIN,
     PANEL_5_COINS, PANEL_5_COINS, PANEL_5_COINS,
     PANEL_TIMES_5, PANEL_TIMES_5,
     PANEL_BOWSER, PANEL_BOWSER
 };
 
-JumpGamePanelType N(InitialConfigurations)[4][NUM_BLOCKS] = {
+JumpGamePanelType InitialConfigurations[4][NUM_BLOCKS] = {
     { 0, 2, 0, 1, 3, 1, 0, 1, 0, 3, 2 },
     { 3, 0, 1, 2, 0, 2, 0, 1, 1, 3, 0 },
     { 1, 3, 0, 0, 1, 2, 3, 0, 1, 2, 0 },
     { 0, 0, 2, 1, 3, 3, 1, 1, 2, 0, 0 },
 };
 
-EvtScript N(EVS_ManageMinigame) = {
+EvtScript EVS_ManageMinigame = {
     Label(0)
         Set(LVarA, 0)
         Set(LVarB, 0)
         Call(GetNpcVar, NPC_Toad, 4, LVarC)
         Loop(11)
-            Call(N(GetPanelInfo), LVarA)
+            Call(GetPanelInfo, LVarA)
             Switch(LVar0)
                 CaseEq(0)
                     Call(EnableModel, LVar1, false)
-                    Call(N(SetPanelState), LVarA, 1)
+                    Call(SetPanelState, LVarA, 1)
                 CaseEq(2)
                     Call(DisablePlayerInput, true)
-                    Call(N(InitPanelEmergeFromBlock), LVarA)
+                    Call(InitPanelEmergeFromBlock, LVarA)
                     Call(EnableModel, LVar1, true)
-                    Call(N(SetPanelState), LVarA, 3)
+                    Call(SetPanelState, LVarA, 3)
                 CaseEq(4)
                     IfNe(LVar2, 3)
                         IfLt(LVar3, LVarC)
                             Call(DisablePlayerInput, false)
                         EndIf
                     EndIf
-                    Call(N(InitPanelHoldAboveBlock), LVarA)
-                    Call(N(SetPanelState), LVarA, 5)
+                    Call(InitPanelHoldAboveBlock, LVarA)
+                    Call(SetPanelState, LVarA, 5)
                 CaseEq(6)
-                    Call(N(InitPanelMoveToTally), LVarA)
-                    Call(N(SetPanelState), LVarA, 7)
+                    Call(InitPanelMoveToTally, LVarA)
+                    Call(SetPanelState, LVarA, 7)
                 CaseEq(8)
-                    Call(N(EndPanelAnimation), LVarA)
-                    Call(N(SetPanelState), LVarA, 9)
+                    Call(EndPanelAnimation, LVarA)
+                    Call(SetPanelState, LVarA, 9)
             EndSwitch
             Switch(LVar0)
                 CaseEq(3)
-                    Call(N(UpdatePanelEmergeFromBlock), LVarA)
+                    Call(UpdatePanelEmergeFromBlock, LVarA)
                     IfEq(LVar3, 1)
-                        Call(N(SetPanelState), LVarA, 4)
+                        Call(SetPanelState, LVarA, 4)
                     EndIf
                 CaseEq(5)
-                    Call(N(UpdatetPanelHoldAboveBlock), LVarA)
+                    Call(UpdatetPanelHoldAboveBlock, LVarA)
                     IfEq(LVar3, 1)
-                        Call(N(SetPanelState), LVarA, 6)
+                        Call(SetPanelState, LVarA, 6)
                     EndIf
                 CaseEq(7)
-                    Call(N(UpdatePanelMoveToTally), LVarA)
+                    Call(UpdatePanelMoveToTally, LVarA)
                     IfEq(LVar3, 1)
-                        Call(N(SetPanelState), LVarA, 8)
+                        Call(SetPanelState, LVarA, 8)
                     EndIf
                 CaseEq(9)
                     IfEq(LVar2, 3)
@@ -773,7 +773,7 @@ EvtScript N(EVS_ManageMinigame) = {
                     EndIf
             EndSwitch
             IfGe(LVar0, 2)
-                Call(N(GetPanelPos), LVarA)
+                Call(GetPanelPos, LVarA)
                 Call(TranslateModel, LVar1, LVar5, LVar6, LVar7)
                 Call(RotateModel, LVar1, LVar8, Float(0.0), Float(1.0), Float(0.0))
                 Call(ScaleModel, LVar1, LVar9, LVar9, Float(1.0))
@@ -786,7 +786,7 @@ EvtScript N(EVS_ManageMinigame) = {
         Wait(1)
         Goto(0)
     Label(99)
-    Call(N(EnableMenus))
+    Call(EnableMenus)
     Thread
         Wait(15)
         Call(PopSong)
@@ -797,37 +797,37 @@ EvtScript N(EVS_ManageMinigame) = {
             Wait(10)
             Call(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV2, 0)
             Wait(10)
-            Call(N(EndBowserPanelAnimation))
+            Call(EndBowserPanelAnimation)
             Call(TranslateModel, LVar1, LVar5, LVar6, LVar7)
             Wait(15)
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0034)
         CaseEq(2)
             Switch(LVarC)
                 CaseEq(4)
-                    Call(N(UpdateRecords))
+                    Call(UpdateRecords)
                     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0035)
                 CaseEq(6)
-                    Call(N(UpdateRecords))
+                    Call(UpdateRecords)
                     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0036)
                 CaseEq(8)
                     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0037)
-                    Call(N(DoubleScore))
+                    Call(DoubleScore)
                     Call(PlaySoundWithVolume, SOUND_LUCKY, 0)
                     Wait(30)
-                    Call(N(UpdateRecords))
+                    Call(UpdateRecords)
                     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0038)
             EndSwitch
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinWinnings))
+            Call(GiveCoinWinnings)
             Wait(15)
             Call(ShowCoinCounter, false)
             Wait(5)
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003A)
     EndSwitch
     Wait(10)
-    Call(N(DestroyBlockEntities))
-    Exec(N(EVS_InitializePanels))
+    Call(DestroyBlockEntities)
+    Exec(EVS_InitializePanels)
     Wait(1)
     Call(DisablePlayerInput, false)
     Goto(0)
@@ -835,94 +835,94 @@ EvtScript N(EVS_ManageMinigame) = {
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_0) = {
-    Call(N(OnBreakBlock), 0)
+EvtScript EVS_OnBreakBlock_0 = {
+    Call(OnBreakBlock, 0)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_1) = {
-    Call(N(OnBreakBlock), 1)
+EvtScript EVS_OnBreakBlock_1 = {
+    Call(OnBreakBlock, 1)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_2) = {
-    Call(N(OnBreakBlock), 2)
+EvtScript EVS_OnBreakBlock_2 = {
+    Call(OnBreakBlock, 2)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_3) = {
-    Call(N(OnBreakBlock), 3)
+EvtScript EVS_OnBreakBlock_3 = {
+    Call(OnBreakBlock, 3)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_4) = {
-    Call(N(OnBreakBlock), 4)
+EvtScript EVS_OnBreakBlock_4 = {
+    Call(OnBreakBlock, 4)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_5) = {
-    Call(N(OnBreakBlock), 5)
+EvtScript EVS_OnBreakBlock_5 = {
+    Call(OnBreakBlock, 5)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_6) = {
-    Call(N(OnBreakBlock), 6)
+EvtScript EVS_OnBreakBlock_6 = {
+    Call(OnBreakBlock, 6)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_7) = {
-    Call(N(OnBreakBlock), 7)
+EvtScript EVS_OnBreakBlock_7 = {
+    Call(OnBreakBlock, 7)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_8) = {
-    Call(N(OnBreakBlock), 8)
+EvtScript EVS_OnBreakBlock_8 = {
+    Call(OnBreakBlock, 8)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_9) = {
-    Call(N(OnBreakBlock), 9)
+EvtScript EVS_OnBreakBlock_9 = {
+    Call(OnBreakBlock, 9)
     Return
     End
 };
 
-EvtScript N(EVS_OnBreakBlock_10) = {
-    Call(N(OnBreakBlock), 10)
+EvtScript EVS_OnBreakBlock_10 = {
+    Call(OnBreakBlock, 10)
     Return
     End
 };
 
-EvtScript N(EVS_InitializePanels) = {
+EvtScript EVS_InitializePanels = {
     Call(SetNpcVar, NPC_Toad, 2, -1)
-    Call(N(InitializePanels))
+    Call(InitializePanels)
     Return
     End
 };
 
-EvtScript N(EVS_802424A4) = {
-    Call(N(CreateMinigame))
-    Exec(N(EVS_InitializePanels))
-    Exec(N(EVS_ManageMinigame))
+EvtScript EVS_802424A4 = {
+    Call(CreateMinigame)
+    Exec(EVS_InitializePanels)
+    Exec(EVS_ManageMinigame)
     Return
     End
 };
 
-EvtScript N(EVS_DestroyMinigame) = {
-    Call(N(DestroyMinigame))
+EvtScript EVS_DestroyMinigame = {
+    Call(DestroyMinigame)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad) = {
+EvtScript EVS_NpcInteract_Toad = {
     Call(GetSelfVar, 1, LVar0)
     IfEq(LVar0, 0)
         Call(SetSelfVar, 1, 1)
@@ -930,29 +930,29 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     Call(GetSelfVar, 2, LVar0)
     IfEq(LVar0, -1)
         IfEq(GF_MGM_Met_JumpAttack, false)
-            Call(N(SetMsgImgs_Panels))
+            Call(SetMsgImgs_Panels)
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_002D)
             Set(GF_MGM_Met_JumpAttack, true)
         Else
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_002E)
         EndIf
         Call(ShowCoinCounter, true)
-        Call(N(GetCoinCount))
+        Call(GetCoinCount)
         IfLt(LVarA, 10)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0039)
-            Call(N(HideCoinCounter))
+            Call(HideCoinCounter)
             Wait(12)
-            Exec(N(EVS_DestroyMinigame))
+            Exec(EVS_DestroyMinigame)
             Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_1)
             Wait(100)
             Return
         EndIf
         Call(ShowChoice, MSG_Choice_004E)
         IfEq(LVar0, 3)
-            Call(N(HideCoinCounter))
+            Call(HideCoinCounter)
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0032)
-            Exec(N(EVS_DestroyMinigame))
+            Exec(EVS_DestroyMinigame)
             Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_1)
             Wait(100)
             Return
@@ -963,7 +963,7 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Call(SetSelfVar, 6, LVar1)
         EndIf
         Thread
-            Call(N(TakeCoinCost))
+            Call(TakeCoinCost)
         EndThread
         Switch(LVar0)
             CaseEq(0)
@@ -977,21 +977,21 @@ EvtScript N(EVS_NpcInteract_Toad) = {
                 Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0031)
             CaseEq(3)
         EndSwitch
-        Call(N(HideCoinCounter))
+        Call(HideCoinCounter)
         Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
         Wait(5)
-        Call(N(CreateBlockEntities))
+        Call(CreateBlockEntities)
         Wait(10)
         Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
         Call(PushSong, SONG_PLAYROOM, 0)
         Wait(10)
         Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
-        Call(N(DisableMenus))
+        Call(DisableMenus)
         Call(SetNpcVar, NPC_Toad, 3, -1)
         Call(SetNpcVar, NPC_Toad, 2, 0)
         Wait(1)
     Else
-        Call(N(SetMsgVars_BlocksRemaining))
+        Call(SetMsgVars_BlocksRemaining)
 #if VERSION_PAL
         IfEq(LocalVar(13), 1)
             Call(SpeakToPlayer, 0, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_PAL_MGM_0036)
@@ -1006,30 +1006,30 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad) = {
+EvtScript EVS_NpcInit_Toad = {
     Call(SetNpcPos, NPC_SELF, 75, -1, 100)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Call(SetNpcVar, NPC_Toad, 2, -1)
     Call(SetNpcVar, NPC_Toad, 1, 0)
     Call(SetNpcVar, NPC_Toad, 6, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
     Return
     End
 };
 
-NpcData N(NpcData_Toad) = {
+NpcData NpcData_Toad = {
     .id = NPC_Toad,
     .pos = { 0.0f, 0.0f, -20.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_Toad,
+    .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_MGM_JumpAttackGuide,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Toad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Toad),
     {}
 };

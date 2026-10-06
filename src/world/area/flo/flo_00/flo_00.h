@@ -33,20 +33,18 @@ enum {
     MV_ItemEntity_Beanstalk     = MapVar(11),
 };
 
-#define NAMESPACE flo_00
+extern EvtScript EVS_Main;
+extern EvtScript EVS_Scene_Epilogue;
+extern EvtScript EVS_Interact_Wisterwood;
+extern EvtScript EVS_Wisterwood_Exit;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_Scene_Epilogue);
-extern EvtScript N(EVS_Interact_Wisterwood);
-extern EvtScript N(EVS_Wisterwood_Exit);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Scene_SunReturns;
+extern EvtScript EVS_SetupBeanPatch;
+extern EvtScript EVS_SetupBeanstalk;
+extern EvtScript EVS_Enter_Beanstalk;
+extern EvtScript EVS_Scene_BeanstalkGrewRemark;
 
-extern EvtScript N(EVS_Scene_SunReturns);
-extern EvtScript N(EVS_SetupBeanPatch);
-extern EvtScript N(EVS_SetupBeanstalk);
-extern EvtScript N(EVS_Enter_Beanstalk);
-extern EvtScript N(EVS_Scene_BeanstalkGrewRemark);
-
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(EpilogueNPCs);
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList EpilogueNPCs;

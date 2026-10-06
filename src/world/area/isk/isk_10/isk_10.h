@@ -16,8 +16,6 @@ enum {
     MV_LastFloorLevel   = MapVar(9),
 };
 
-#define NAMESPACE isk_10
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupBombableWall);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupBombableWall;
+extern EvtScript EVS_MakeEntities;

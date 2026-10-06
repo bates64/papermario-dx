@@ -3,4 +3,4 @@
 
 #define NpcSettings_Fishmael NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Fishmael);
+extern NpcSettings NpcSettings_Fishmael;

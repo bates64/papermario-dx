@@ -5,7 +5,7 @@
 #include "world/common/enemy/CrystalKing/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-EvtScript N(EVS_AnimateCam_CrystalKing) = {
+EvtScript EVS_AnimateCam_CrystalKing = {
     Set(MV_CamDistance, 400)
     Thread
         Call(MakeLerp, 400, 300, 200 * DT, EASING_LINEAR)
@@ -39,7 +39,7 @@ EvtScript N(EVS_AnimateCam_CrystalKing) = {
     End
 };
 
-EvtScript N(EVS_Scene_CrystalKingAppears) = {
+EvtScript EVS_Scene_CrystalKingAppears = {
     Call(EnableNpcShadow, NPC_CrystalKing_01, false)
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -103,7 +103,7 @@ EvtScript N(EVS_Scene_CrystalKingAppears) = {
     EndIf
     Call(EnableNpcShadow, NPC_CrystalKing_01, true)
     Wait(30 * DT)
-    ExecWait(N(EVS_AnimateCam_CrystalKing))
+    ExecWait(EVS_AnimateCam_CrystalKing)
     Wait(20 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_CrystalKing_01, LVar3, LVar4, LVar5)
@@ -127,7 +127,7 @@ EvtScript N(EVS_Scene_CrystalKingAppears) = {
     End
 };
 
-EvtScript N(EVS_Scene_BossDefeated) = {
+EvtScript EVS_Scene_BossDefeated = {
     Thread
         Wait(2)
         Call(FadeOutMusic, 0, 500)
@@ -205,19 +205,19 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Wait(25)
     Call(DisablePlayerInput, false)
     Call(EnablePartnerAI)
-    Exec(N(EVS_SpawnStarCard))
+    Exec(EVS_SpawnStarCard)
     Set(GB_StoryProgress, STORY_CH7_DEFEATED_CRYSTAL_KING)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_CrystalKing) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_Scene_BossDefeated)))
+EvtScript EVS_NpcInit_CrystalKing = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_BossDefeated))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_DEFEATED_CRYSTAL_KING)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_CrystalKingAppears)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_CrystalKingAppears))
         CaseEq(STORY_CH7_DEFEATED_CRYSTAL_KING)
-            Exec(N(EVS_RespawnStarCard))
+            Exec(EVS_RespawnStarCard)
         CaseGt(STORY_CH7_DEFEATED_CRYSTAL_KING)
     EndSwitch
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
@@ -227,23 +227,23 @@ EvtScript N(EVS_NpcInit_CrystalKing) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_CrystalKing_Aux) = {
+EvtScript EVS_NpcInit_CrystalKing_Aux = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kalmar) = {
+EvtScript EVS_NpcInit_Kalmar = {
     Return
     End
 };
 
-NpcData N(NpcData_CrystalKing_01)[] = {
+NpcData NpcData_CrystalKing_01[] = {
     {
         .id = NPC_CrystalKing_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_CrystalKing_Aux),
-        .settings = &N(NpcSettings_CrystalKing),
+        .init = &EVS_NpcInit_CrystalKing_Aux,
+        .settings = &NpcSettings_CrystalKing,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = CRYSTAL_KING_ANIMS,
@@ -252,7 +252,7 @@ NpcData N(NpcData_CrystalKing_01)[] = {
         .id = NPC_CrystalKing_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_CrystalKing),
+        .settings = &NpcSettings_CrystalKing,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = CRYSTAL_KING_ANIMS,
@@ -261,8 +261,8 @@ NpcData N(NpcData_CrystalKing_01)[] = {
         .id = NPC_Kalmar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Kalmar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Kalmar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
@@ -271,16 +271,16 @@ NpcData N(NpcData_CrystalKing_01)[] = {
         .id = NPC_CrystalKing_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_CrystalKing),
-        .settings = &N(NpcSettings_CrystalKing),
+        .init = &EVS_NpcInit_CrystalKing,
+        .settings = &NpcSettings_CrystalKing,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = CRYSTAL_KING_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_CrystalKing_01), BTL_PRA2_FORMATION_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_CrystalKing_01, BTL_PRA2_FORMATION_00),
     {}
 };
 

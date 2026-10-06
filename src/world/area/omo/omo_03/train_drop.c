@@ -1,24 +1,24 @@
 #include "omo_03.h"
 
-Vec3f N(FallPath)[] = {
+Vec3f FallPath[] = {
     { -170.0,   400.0, -196.0 },
     { -100.0,   225.0, -196.0 },
     {  -70.0,    45.0, -193.0 },
 };
 
-Vec3f N(FirstBouncePath)[] = {
+Vec3f FirstBouncePath[] = {
     {  -70.0,     0.0, -193.0 },
     {   -7.0,   100.0, -191.0 },
     {   54.0,    20.0, -189.0 },
 };
 
-Vec3f N(SecondBouncePath)[] = {
+Vec3f SecondBouncePath[] = {
     {   54.0,     0.0, -189.0 },
     {   92.0,    55.0, -199.0 },
     {  131.0,     0.0, -210.0 },
 };
 
-EvtScript N(EVS_Scene_TrainDropped) = {
+EvtScript EVS_Scene_TrainDropped = {
     Call(DisablePlayerInput, true)
     Call(SetCamProperties, CAM_DEFAULT, Float(90.0), 82, 24, 12, 580, Float(16.5), Float(-8.5))
     Call(TranslateGroup, MODEL_po, -170, 400, -196)
@@ -35,7 +35,7 @@ EvtScript N(EVS_Scene_TrainDropped) = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 30, Ref(N(FallPath)), ARRAY_COUNT(N(FallPath)), EASING_LINEAR)
+    Call(LoadPath, 30, Ref(FallPath), ARRAY_COUNT(FallPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(TranslateGroup, MODEL_po, LVar1, LVar2, LVar3)
@@ -72,7 +72,7 @@ EvtScript N(EVS_Scene_TrainDropped) = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 20, Ref(N(FirstBouncePath)), ARRAY_COUNT(N(FirstBouncePath)), EASING_LINEAR)
+    Call(LoadPath, 20, Ref(FirstBouncePath), ARRAY_COUNT(FirstBouncePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(TranslateGroup, MODEL_po, LVar1, LVar2, LVar3)
@@ -105,7 +105,7 @@ EvtScript N(EVS_Scene_TrainDropped) = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 15, Ref(N(SecondBouncePath)), ARRAY_COUNT(N(SecondBouncePath)), EASING_LINEAR)
+    Call(LoadPath, 15, Ref(SecondBouncePath), ARRAY_COUNT(SecondBouncePath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(TranslateGroup, MODEL_po, LVar1, LVar2, LVar3)

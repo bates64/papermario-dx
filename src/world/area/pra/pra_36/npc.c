@@ -2,13 +2,13 @@
 
 #include "world/common/enemy/Duplighost/wander.inc.c"
 
-EvtScript N(EVS_NpcInit_Duplighost) = {
+EvtScript EVS_NpcInit_Duplighost = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Return
     End
 };
 
-NpcData N(NpcData_Duplighost) = {
+NpcData NpcData_Duplighost = {
     .id = NPC_Duplighost,
     .pos = { 250.0f, 0.0f, 75.0f },
     .yaw = 90,
@@ -24,15 +24,15 @@ NpcData N(NpcData_Duplighost) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Duplighost),
-    .settings = &N(NpcSettings_Duplighost_Wander),
+    .init = &EVS_NpcInit_Duplighost,
+    .settings = &NpcSettings_Duplighost_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = DUPLIGHOST_DROPS,
     .animations = DUPLIGHOST_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Duplighost), BTL_PRA3_FORMATION_0A, BTL_PRA3_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Duplighost, BTL_PRA3_FORMATION_0A, BTL_PRA3_STAGE_00),
     {}
 };

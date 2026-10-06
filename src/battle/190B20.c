@@ -2,6 +2,7 @@
 #include "nu/nusys.h"
 #include "effects.h"
 #include "battle/battle.h"
+#include "battle/partner.h"
 #include "script_api/battle.h"
 #include "model.h"
 #include "sprite.h"
@@ -49,8 +50,6 @@ extern s32 bMarioDefenseTable[];
 extern s32 bPlayerStatusTable[];
 extern ActorBlueprint bPlayerActorBlueprint;
 extern ActorPartBlueprint bMarioParts[];
-
-extern PartnerDMAData bPartnerDmaTable[];
 
 s32 get_npc_anim_for_status(s32*, s32);
 
@@ -1141,7 +1140,7 @@ void load_partner_actor(void) {
     Evt* takeTurnScript;
     s32 partCount;
     s32 currentPartner;
-    PartnerDMAData* partnerData;
+    const BattlePartner* partnerData;
     f32 x;
     f32 y;
     f32 z;
@@ -1150,15 +1149,14 @@ void load_partner_actor(void) {
     s32 i2;
 
     currentPartner = playerData->curPartner;
-    battleStatus->partnerActor = nullptr;
+    ASSERT_MSG(battleStatus->partnerActor == nullptr,
+               "Cannot load partner %d while the previous partner actor is alive",
+               (int)currentPartner);
 
     if (currentPartner != PARTNER_NONE) {
-        partnerData = &bPartnerDmaTable[currentPartner];
-        actorBP = partnerData->actorBlueprint;
+        partnerData = load_battle_partner(currentPartner);
+        actorBP = partnerData->blueprint;
 
-        ASSERT(actorBP != nullptr);
-
-        nuPiReadRom(partnerData->dmaStart, partnerData->dmaDest, partnerData->dmaEnd - partnerData->dmaStart);
         if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
             x = -95.0f;
             y = partnerData->posY;
@@ -1180,6 +1178,7 @@ void load_partner_actor(void) {
         partnerActor->footStepCounter = 0;
         partnerActor->deletePending = false;
         partnerActor->actorBlueprint = actorBP;
+        partnerActor->overlay = get_battle_partner_overlay();
         partnerActor->actorType = actorBP->type;
         partnerActor->flags = actorBP->flags;
         partnerActor->homePos.x = partnerActor->curPos.x = x;
@@ -1383,6 +1382,8 @@ void load_partner_actor(void) {
 
         assign_bound_script(&partnerActor->scripts.takeTurn, takeTurnScript);
         takeTurnScript->owner1.actorID = ACTOR_PARTNER;
+    } else {
+        unload_battle_partner();
     }
 }
 
@@ -1408,12 +1409,16 @@ Actor* create_actor(Formation formation) {
     }
 
     Overlay* ovl = nullptr;
-    if (formation->actor != nullptr) {
-        formationActor = formation->actor;
-    } else if (formation->overlay != nullptr) {
+    if (formation->overlay != nullptr) {
+        const char* blueprintName = formation->blueprint;
+        if (blueprintName == nullptr) {
+            blueprintName = ACTOR_BLUEPRINT_EXPORT_NAME;
+        }
         ovl = ovl_load(formation->overlay, OVL_ACTOR);
-        formationActor = ovl_import(ovl, "blueprint");
-        ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export 'blueprint'", formation->overlay);
+        formationActor = ovl_import(ovl, blueprintName);
+        ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export '%s'", formation->overlay, blueprintName);
+    } else if (formation->actor != nullptr) {
+        formationActor = formation->actor;
     } else {
         PANIC();
     }
@@ -2756,72 +2761,70 @@ void show_foreground_models(void) {
     }
 }
 
-#include "common/StartRumbleWithParams.inc.c"
-
 EvtScript EVS_BattleRumble_Long = {
-    Call(N(StartRumbleWithParams), 256, 30)
-    Call(N(StartRumbleWithParams), 200, 15)
-    Call(N(StartRumbleWithParams), 50, 15)
+    Call(StartRumbleWithParams, 256, 30)
+    Call(StartRumbleWithParams, 200, 15)
+    Call(StartRumbleWithParams, 50, 15)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitMin = {
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitLight = {
-    Call(N(StartRumbleWithParams), 150, 20)
+    Call(StartRumbleWithParams, 150, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitHeavy = {
-    Call(N(StartRumbleWithParams), 200, 30)
+    Call(StartRumbleWithParams, 200, 30)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitExtreme = {
-    Call(N(StartRumbleWithParams), 256, 40)
+    Call(StartRumbleWithParams, 256, 40)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitMax = {
-    Call(N(StartRumbleWithParams), 256, 60)
+    Call(StartRumbleWithParams, 256, 60)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerMin = {
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerLight = {
-    Call(N(StartRumbleWithParams), 150, 20)
+    Call(StartRumbleWithParams, 150, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerHeavy = {
-    Call(N(StartRumbleWithParams), 200, 30)
+    Call(StartRumbleWithParams, 200, 30)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerExtreme = {
-    Call(N(StartRumbleWithParams), 256, 40)
+    Call(StartRumbleWithParams, 256, 40)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerMax = {
-    Call(N(StartRumbleWithParams), 256, 60)
+    Call(StartRumbleWithParams, 256, 60)
     Return
     End
 };

@@ -1176,7 +1176,7 @@ enum SoundIDs {
     SOUND_FRIGHT_JAR                            = 0x00000367,
     SOUND_MYSTERY_REEL                          = 0x00000368,
     SOUND_HUSTLE_WHISTLE                        = 0x00000369,
-    SOUND_SMALL_GLASS_BREAK                     = 0x00000369, // #unused
+    SOUND_SMALL_GLASS_BREAK                     = 0x0000036A, // #unused
     SOUND_CRYSTAL_KING_DISAPPEAR                = 0x0000036B,
     SOUND_LRAW_SHY_GUY_CROWD_1                  = 0x0000036C,
     SOUND_LRAW_SHY_GUY_CROWD_2                  = 0x0000036D,
@@ -1957,16 +1957,16 @@ enum NpcPaletteAdjustments {
 };
 
 enum SpeechFlags {
-    SPEECH_FLAG_10              = 0x010,
-    SPEECH_FLAG_HAS_OFFSET      = 0x100,
-    SPEECH_FLAG_200             = 0x200,
+    SPEECH_FLAG_RESTORE_SPEAKER_YAW = 0x010,
+    SPEECH_FLAG_HAS_OFFSET          = 0x100,
+    SPEECH_FLAG_FIXED_ORIGIN        = 0x200,
     // different facing orientations for speaker and listener
-    SPEECH_ORIENTATION_MASK     = 0xF,
-    SPEECH_FACE_SPEAKER_ONLY    = 4,
-    SPEECH_FACE_AWAY_FROM       = 3,
-    SPEECH_FACE_LIKE_SPEAKER    = 2,
-    SPEECH_FACE_LIKE_LISTENER   = 1,
-    SPEECH_FACE_EACH_OTHER      = 0,
+    SPEECH_ORIENTATION_MASK         = 0xF,
+    SPEECH_FACE_SPEAKER_ONLY        = 4,
+    SPEECH_FACE_AWAY_FROM           = 3,
+    SPEECH_FACE_LIKE_SPEAKER        = 2,
+    SPEECH_FACE_LIKE_LISTENER       = 1,
+    SPEECH_FACE_EACH_OTHER          = 0,
 };
 
 typedef enum HitResult {
@@ -2406,49 +2406,7 @@ enum LightSourceFlags {
     LIGHT_SOURCE_QUADRATIC_FALLOFF  = 8,
 };
 
-enum ActionStates {
-    ACTION_STATE_IDLE                           = 0x00000000,
-    ACTION_STATE_WALK                           = 0x00000001,
-    ACTION_STATE_RUN                            = 0x00000002,
-    // all states above are considered locomotion states
-    ACTION_STATE_JUMP                           = 0x00000003,
-    ACTION_STATE_BOUNCE                         = 0x00000004,  ///< Used with Kooper
-    ACTION_STATE_HOP                            = 0x00000005,  ///< Released A before apex of jump
-    ACTION_STATE_LAUNCH                         = 0x00000006,  ///< Shy Guy Toybox jack-in-the-boxes
-    ACTION_STATE_LANDING_ON_SWITCH              = 0x00000007,  ///< Small red/blue ! switches
-    ACTION_STATE_FALLING                        = 0x00000008,
-    ACTION_STATE_STEP_DOWN                      = 0x00000009,
-    ACTION_STATE_LAND                           = 0x0000000A,
-    ACTION_STATE_STEP_DOWN_LAND                 = 0x0000000B,
-    // Following action states prohibit movement (see set_action_state())
-    ACTION_STATE_TALK                           = 0x0000000C,  ///< Reading signs doesn't count
-    ACTION_STATE_SPIN_JUMP                      = 0x0000000D,
-    ACTION_STATE_SPIN_POUND                     = 0x0000000E,
-    ACTION_STATE_TORNADO_JUMP                   = 0x0000000F,
-    ACTION_STATE_TORNADO_POUND                  = 0x00000010,
-    ACTION_STATE_SLIDING                        = 0x00000011,
-    ACTION_STATE_HAMMER                         = 0x00000012,
-    ACTION_STATE_13                             = 0x00000013,
-    ACTION_STATE_PUSHING_BLOCK                  = 0x00000014,
-    ACTION_STATE_HIT_FIRE                       = 0x00000015,  ///< Causes Mario to fly up and take damage. Used for fire bars.
-    ACTION_STATE_KNOCKBACK                      = 0x00000016,  // some kind of knockback, does no damage
-    ACTION_STATE_HIT_LAVA                       = 0x00000017,
-    ACTION_STATE_STEP_UP_PEACH                  = 0x00000018,
-    ACTION_STATE_USE_SNEAKY_PARASOL             = 0x00000019,
-    ACTION_STATE_SPIN                           = 0x0000001A,
-    ACTION_STATE_ENEMY_FIRST_STRIKE             = 0x0000001B,
-    ACTION_STATE_RAISE_ARMS                     = 0x0000001C,
-    ACTION_STATE_USE_SPINNING_FLOWER            = 0x0000001D,
-    ACTION_STATE_USE_MUNCHLESIA                 = 0x0000001E,  ///< Set by the jan_09 squishy flower entity; throws the player in the air.
-    ACTION_STATE_USE_TWEESTER                   = 0x0000001F,
-    ACTION_STATE_BOUNCE_OFF_SWITCH              = 0x00000020,  ///< Small red/blue ! switches
-    ACTION_STATE_RIDE                           = 0x00000021,
-    ACTION_STATE_STEP_UP                        = 0x00000022,
-    ACTION_STATE_23                             = 0x00000023,
-    ACTION_STATE_24                             = 0x00000024,
-    ACTION_STATE_INVALID_25                     = 0x00000025,
-    ACTION_STATE_USE_SPRING                     = 0x00000026,
-};
+#include "action_state_enum.h"
 
 enum JumpSubstate {
     JUMP_SUBSTATE_0                 = 0,

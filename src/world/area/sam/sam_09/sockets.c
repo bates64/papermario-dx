@@ -3,7 +3,7 @@
 #include "vars_access.h"
 #include "inventory.h"
 
-API_CALLABLE(N(GetItemIDFromItemEntity)) {
+API_CALLABLE(GetItemIDFromItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemEntityIdx = evt_get_variable(script, *args++);
 
@@ -11,7 +11,7 @@ API_CALLABLE(N(GetItemIDFromItemEntity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SerializeItemIDs)) {
+API_CALLABLE(SerializeItemIDs) {
     s32 itemID;
 
     itemID = evt_get_variable(script, MV_Socket1_ItemID);
@@ -26,7 +26,7 @@ API_CALLABLE(N(SerializeItemIDs)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DeserializeItemIDs)) {
+API_CALLABLE(DeserializeItemIDs) {
     s32 itemID;
 
     itemID = get_global_short(GB_SAM09_ItemSocket1_LowerByte);
@@ -41,7 +41,7 @@ API_CALLABLE(N(DeserializeItemIDs)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreateConsumableItemList)) {
+API_CALLABLE(CreateConsumableItemList) {
     s32 itemID;
     s32* array;
     s32 count = 0;
@@ -69,7 +69,7 @@ API_CALLABLE(N(CreateConsumableItemList)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_PlaceItemInSocket) = {
+EvtScript EVS_PlaceItemInSocket = {
     Call(PlaySoundAtCollider, LVar4, SOUND_SAM_RAISE_BARRIER, 0)
     Call(MakeLerp, 0, 130, 30 * DT, EASING_LINEAR)
     Label(0)
@@ -84,7 +84,7 @@ EvtScript N(EVS_PlaceItemInSocket) = {
     End
 };
 
-EvtScript N(EVS_TakeItemFromSocket) = {
+EvtScript EVS_TakeItemFromSocket = {
     Call(PlaySoundAtCollider, LVar4, SOUND_SAM_LOWER_BARRIER, 0)
     Call(MakeLerp, 130, 0, 30 * DT, EASING_CUBIC_IN)
     Label(0)
@@ -109,7 +109,7 @@ EvtScript N(EVS_TakeItemFromSocket) = {
     End
 };
 
-EvtScript N(EVS_UseSocket1) = {
+EvtScript EVS_UseSocket1 = {
     IfEq(MV_Socket1_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
@@ -121,17 +121,17 @@ EvtScript N(EVS_UseSocket1) = {
             Return
         EndIf
         Set(MV_Socket1_ItemID, LVar0)
-        Call(N(SerializeItemIDs))
+        Call(SerializeItemIDs)
         Call(RemoveItem, LVar0, LVar2)
         Call(MakeItemEntity, LVar0, -385, 30, -50, ITEM_SPAWN_MODE_DECORATION, 0)
         Set(MV_Socket1_ItemEntityID, LVar0)
         Set(LVar2, MODEL_m1_kabe)
         Set(LVar4, COLLIDER_o55)
-        ExecWait(N(EVS_PlaceItemInSocket))
+        ExecWait(EVS_PlaceItemInSocket)
         Return
     Else
         Set(LVar0, MV_Socket1_ItemEntityID)
-        Call(N(GetItemIDFromItemEntity), LVar0)
+        Call(GetItemIDFromItemEntity, LVar0)
         Call(GetItemName, LVar0, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_PickUpPrompt, 160, 40)
@@ -143,14 +143,14 @@ EvtScript N(EVS_UseSocket1) = {
                 Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_CantCarryMore, 160, 40)
                 Return
             EndIf
-            Call(N(GetItemIDFromItemEntity), MV_Socket1_ItemEntityID)
+            Call(GetItemIDFromItemEntity, MV_Socket1_ItemEntityID)
             Call(RemoveItemEntity, MV_Socket1_ItemEntityID)
             Set(MV_Socket1_ItemID, -1)
-            Call(N(SerializeItemIDs))
+            Call(SerializeItemIDs)
             Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_UNIQUE)
             Set(LVar2, MODEL_m1_kabe)
             Set(LVar4, COLLIDER_o55)
-            ExecWait(N(EVS_TakeItemFromSocket))
+            ExecWait(EVS_TakeItemFromSocket)
             Return
         EndIf
     EndIf
@@ -158,7 +158,7 @@ EvtScript N(EVS_UseSocket1) = {
     End
 };
 
-EvtScript N(EVS_UseSocket2) = {
+EvtScript EVS_UseSocket2 = {
     IfEq(MV_Socket2_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
@@ -170,17 +170,17 @@ EvtScript N(EVS_UseSocket2) = {
             Return
         EndIf
         Set(MV_Socket2_ItemID, LVar0)
-        Call(N(SerializeItemIDs))
+        Call(SerializeItemIDs)
         Call(RemoveItem, LVar0, LVar2)
         Call(MakeItemEntity, LVar0, -35, 30, -50, ITEM_SPAWN_MODE_DECORATION, 0)
         Set(MV_Socket2_ItemEntityID, LVar0)
         Set(LVar2, MODEL_m2_kabe)
         Set(LVar4, COLLIDER_o54)
-        ExecWait(N(EVS_PlaceItemInSocket))
+        ExecWait(EVS_PlaceItemInSocket)
         Return
     Else
         Set(LVar0, MV_Socket2_ItemEntityID)
-        Call(N(GetItemIDFromItemEntity), LVar0)
+        Call(GetItemIDFromItemEntity, LVar0)
         Call(GetItemName, LVar0, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_PickUpPrompt, 160, 40)
@@ -192,14 +192,14 @@ EvtScript N(EVS_UseSocket2) = {
                 Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_CantCarryMore, 160, 40)
                 Return
             EndIf
-            Call(N(GetItemIDFromItemEntity), MV_Socket2_ItemEntityID)
+            Call(GetItemIDFromItemEntity, MV_Socket2_ItemEntityID)
             Call(RemoveItemEntity, MV_Socket2_ItemEntityID)
             Set(MV_Socket2_ItemID, -1)
-            Call(N(SerializeItemIDs))
+            Call(SerializeItemIDs)
             Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_UNIQUE)
             Set(LVar2, MODEL_m2_kabe)
             Set(LVar4, COLLIDER_o54)
-            ExecWait(N(EVS_TakeItemFromSocket))
+            ExecWait(EVS_TakeItemFromSocket)
             Return
         EndIf
     EndIf
@@ -207,7 +207,7 @@ EvtScript N(EVS_UseSocket2) = {
     End
 };
 
-EvtScript N(EVS_UseSocket3) = {
+EvtScript EVS_UseSocket3 = {
     IfEq(MV_Socket3_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
@@ -219,17 +219,17 @@ EvtScript N(EVS_UseSocket3) = {
             Return
         EndIf
         Set(MV_Socket3_ItemID, LVar0)
-        Call(N(SerializeItemIDs))
+        Call(SerializeItemIDs)
         Call(RemoveItem, LVar0, LVar2)
         Call(MakeItemEntity, LVar0, 265, 30, -50, ITEM_SPAWN_MODE_DECORATION, 0)
         Set(MV_Socket3_ItemEntityID, LVar0)
         Set(LVar2, MODEL_m3_kabe)
         Set(LVar4, COLLIDER_o53)
-        ExecWait(N(EVS_PlaceItemInSocket))
+        ExecWait(EVS_PlaceItemInSocket)
         Return
     Else
         Set(LVar0, MV_Socket3_ItemEntityID)
-        Call(N(GetItemIDFromItemEntity), LVar0)
+        Call(GetItemIDFromItemEntity, LVar0)
         Call(GetItemName, LVar0, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_PickUpPrompt, 160, 40)
@@ -241,14 +241,14 @@ EvtScript N(EVS_UseSocket3) = {
                 Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_CantCarryMore, 160, 40)
                 Return
             EndIf
-            Call(N(GetItemIDFromItemEntity), MV_Socket3_ItemEntityID)
+            Call(GetItemIDFromItemEntity, MV_Socket3_ItemEntityID)
             Call(RemoveItemEntity, MV_Socket3_ItemEntityID)
             Set(MV_Socket3_ItemID, -1)
-            Call(N(SerializeItemIDs))
+            Call(SerializeItemIDs)
             Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_UNIQUE)
             Set(LVar2, MODEL_m3_kabe)
             Set(LVar4, COLLIDER_o53)
-            ExecWait(N(EVS_TakeItemFromSocket))
+            ExecWait(EVS_TakeItemFromSocket)
             Return
         EndIf
     EndIf
@@ -256,7 +256,7 @@ EvtScript N(EVS_UseSocket3) = {
     End
 };
 
-EvtScript N(EVS_Interact_ItemSockets) = {
+EvtScript EVS_Interact_ItemSockets = {
     Call(DisablePlayerInput, true)
     Label(0)
         Call(GetPlayerActionState, LVar0)
@@ -267,18 +267,18 @@ EvtScript N(EVS_Interact_ItemSockets) = {
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
     Switch(LVar1)
         CaseLt(-150)
-            ExecWait(N(EVS_UseSocket1))
+            ExecWait(EVS_UseSocket1)
         CaseLt(100)
-            ExecWait(N(EVS_UseSocket2))
+            ExecWait(EVS_UseSocket2)
         CaseDefault
-            ExecWait(N(EVS_UseSocket3))
+            ExecWait(EVS_UseSocket3)
     EndSwitch
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupSockets) = {
+EvtScript EVS_SetupSockets = {
     Call(ParentColliderToModel, COLLIDER_o55, MODEL_m1_kabe)
     Call(ParentColliderToModel, COLLIDER_o54, MODEL_m2_kabe)
     Call(ParentColliderToModel, COLLIDER_o53, MODEL_m3_kabe)
@@ -287,9 +287,9 @@ EvtScript N(EVS_SetupSockets) = {
         Set(MV_Socket1_ItemID, ITEM_SHOOTING_STAR)
         Set(MV_Socket2_ItemID, ITEM_SNOWMAN_DOLL)
         Set(MV_Socket3_ItemID, ITEM_THUNDER_RAGE)
-        Call(N(SerializeItemIDs))
+        Call(SerializeItemIDs)
     EndIf
-    Call(N(DeserializeItemIDs))
+    Call(DeserializeItemIDs)
     IfNe(MV_Socket1_ItemID, -1)
         Call(TranslateModel, MODEL_m1_kabe, 0, 130, 0)
         Call(UpdateColliderTransform, COLLIDER_o55)
@@ -308,8 +308,8 @@ EvtScript N(EVS_SetupSockets) = {
         Call(MakeItemEntity, MV_Socket3_ItemID, 265, 30, -50, ITEM_SPAWN_MODE_DECORATION, 0)
         Set(MV_Socket3_ItemEntityID, LVar0)
     EndIf
-    Call(N(CreateConsumableItemList))
-    BindPadlock(Ref(N(EVS_Interact_ItemSockets)), TRIGGER_WALL_PRESS_A, COLLIDER_hako, LVar0, 0, 1)
+    Call(CreateConsumableItemList)
+    BindPadlock(Ref(EVS_Interact_ItemSockets), TRIGGER_WALL_PRESS_A, COLLIDER_hako, LVar0, 0, 1)
     Return
     End
 };

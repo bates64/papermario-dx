@@ -1,15 +1,15 @@
 #include "dro_02.h"
 
 
-EvtScript N(EVS_ExitWalk_dro_01_1) = EVT_EXIT_WALK(60, dro_02_ENTRY_0, "dro_01", dro_01_ENTRY_1);
+EvtScript EVS_ExitWalk_dro_01_1 = EVT_EXIT_WALK(60, dro_02_ENTRY_0, "dro_01", dro_01_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_dro_01_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_dro_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_OnReadPoster) = {
+EvtScript EVS_OnReadPoster = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_017C, 160, 40)
     Call(DisablePlayerInput, false)
@@ -17,7 +17,7 @@ EvtScript N(EVS_OnReadPoster) = {
     End
 };
 
-EvtScript N(EVS_EnterScene) = {
+EvtScript EVS_EnterScene = {
     Call(PlaySound, SOUND_LOOP_SBK_RUINS_RISING_DISTANT)
     Call(UseSettingsFrom, CAM_DEFAULT, 190, 0, -37)
     Call(SetPanTarget, CAM_DEFAULT, 190, 0, -37)
@@ -46,23 +46,23 @@ EvtScript N(EVS_EnterScene) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_OUTPOST)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     Call(InitVirtualEntityList)
-    ExecWait(N(EVS_MakeEntities))
-    ExecWait(N(EVS_SetupRooms))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    ExecWait(EVS_SetupRooms)
+    Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(dro_02_ENTRY_2)
         CaseOrEq(dro_02_ENTRY_3)
-            ExecWait(N(EVS_EnterScene))
+            ExecWait(EVS_EnterScene)
         EndCaseGroup
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Wait(1)
@@ -75,7 +75,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Set(MF_SheekTauntPending, false)
-    BindTrigger(Ref(N(EVS_OnReadPoster)), TRIGGER_WALL_PRESS_A, COLLIDER_poster, 1, 0)
+    BindTrigger(Ref(EVS_OnReadPoster), TRIGGER_WALL_PRESS_A, COLLIDER_poster, 1, 0)
     Thread
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)

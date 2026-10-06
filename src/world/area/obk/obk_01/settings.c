@@ -1,6 +1,6 @@
 #include "obk_01.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [obk_01_ENTRY_0]    {  460.0, -420.0,  630.0,    0.0 },
     [obk_01_ENTRY_1]    {  250.0, -420.0,   15.0,  180.0 },
     [obk_01_ENTRY_2]    {  610.0, -420.0,   15.0,  180.0 },
@@ -10,10 +10,10 @@ EntryList N(Entrances) = {
     [obk_01_ENTRY_6]    {  630.0,    0.0,   15.0,  180.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .tattle = { MSG_MapTattle_obk_01 },
     .songVariation = 1,
     .sfxReverb = 2,

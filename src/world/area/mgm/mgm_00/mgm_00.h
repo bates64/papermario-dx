@@ -23,13 +23,11 @@ enum {
     MV_RecordDisplayData        = MapVar(10),
 };
 
-#define NAMESPACE mgm_00
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupScoreboard);
-extern EvtScript N(EVS_BindInteractTriggers);
-extern EvtScript N(EVS_OnEnterPipe_JumpAttack);
-extern EvtScript N(EVS_OnEnterPipe_SmashAttack);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupScoreboard;
+extern EvtScript EVS_BindInteractTriggers;
+extern EvtScript EVS_OnEnterPipe_JumpAttack;
+extern EvtScript EVS_OnEnterPipe_SmashAttack;
+extern NpcGroupList DefaultNPCs;
 
 void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);

@@ -1,6 +1,6 @@
 #include "flo_03.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_03_ENTRY_2)
         Call(SetMusic, 0, SONG_SUNSHINE_RETURNS, 0, VOL_LEVEL_FULL)
@@ -22,7 +22,7 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PushFlowerSong) = {
+EvtScript EVS_PushFlowerSong = {
     IfGe(GB_StoryProgress, STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
         IfEq(GF_FLO03_DefeatedAll_MontyMoles, true)
             Call(PushSong, SONG_FLOWER_NPC_THEME, 0)
@@ -32,7 +32,7 @@ EvtScript N(EVS_PushFlowerSong) = {
     End
 };
 
-EvtScript N(EVS_PopSong) = {
+EvtScript EVS_PopSong = {
     IfGe(GB_StoryProgress, STORY_CH6_ASKED_TO_DEFEAT_MONTY_MOLES)
         IfEq(GF_FLO03_DefeatedAll_MontyMoles, true)
             Call(FadeOutMusic, 0, 250)

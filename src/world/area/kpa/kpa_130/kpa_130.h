@@ -45,8 +45,6 @@ enum {
     NPC_BombshellBill_20        = 69,
 };
 
-#define NAMESPACE kpa_130
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

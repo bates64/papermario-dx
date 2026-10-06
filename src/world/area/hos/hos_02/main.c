@@ -1,7 +1,7 @@
 #include "hos_02.h"
 #include "world/surfaces.h"
 
-EvtScript N(EVS_ExitStarWarp) = {
+EvtScript EVS_ExitStarWarp = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(GetPartnerInUse, LVar0)
@@ -18,26 +18,26 @@ EvtScript N(EVS_ExitStarWarp) = {
     EndIf
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
-    ExecWait(N(EVS_DescendStarWarp))
+    ExecWait(EVS_DescendStarWarp)
     Call(GotoMap, Ref("hos_01"), hos_01_ENTRY_1)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_ExitWalk_hos_03_0) = EVT_EXIT_WALK(60, hos_02_ENTRY_1, "hos_03", hos_03_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_03_0 = EVT_EXIT_WALK(60, hos_02_ENTRY_1, "hos_03", hos_03_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
+EvtScript EVS_BindExitTriggers = {
     Call(GetEntryID, LVar0)
     IfNe(LVar0, hos_02_ENTRY_0)
-        BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+        BindTrigger(Ref(EVS_ExitStarWarp), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     EndIf
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_03_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_hos_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterStarWarp) = {
+EvtScript EVS_EnterStarWarp = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -80,7 +80,7 @@ EvtScript N(EVS_EnterStarWarp) = {
             Goto(10)
         EndIf
     Call(SetNpcRotation, NPC_PARTNER, 0, 0, 0)
-    Call(N(SetStarWarpIdleParams), MV_StarWarpEffect)
+    Call(SetStarWarpIdleParams, MV_StarWarpEffect)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
@@ -88,33 +88,33 @@ EvtScript N(EVS_EnterStarWarp) = {
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_3, VOL_LEVEL_FULL)
     Call(DisablePlayerInput, false)
     Call(AwaitPlayerLeave, -1105, 225, 40)
-    BindTrigger(Ref(N(EVS_ExitStarWarp)), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitStarWarp), TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_STAR_WAY)
     Call(SetSpriteShading, SHADING_NONE)
     Call(SetSurfaceWalkEffect, SURFACE_WALK_FX_SPARKLE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_StarWay, true)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_02_ENTRY_0)
             Thread
-                ExecWait(N(EVS_EnterStarWarp))
-                Exec(N(EVS_BindExitTriggers))
+                ExecWait(EVS_EnterStarWarp)
+                Exec(EVS_BindExitTriggers)
             EndThread
         CaseEq(hos_02_ENTRY_1)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
-    Exec(N(EVS_SetupModelFX))
-    Exec(N(EVS_SetupUnused))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupModelFX)
+    Exec(EVS_SetupUnused)
+    Exec(EVS_SetupMusic)
     Return
     End
 };

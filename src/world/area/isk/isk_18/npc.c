@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/SpikeTop/wander.inc.c"
 
-NpcData N(NpcData_BuzzyBeetle_01) = {
+NpcData NpcData_BuzzyBeetle_01 = {
     .id = NPC_BuzzyBeetle_01,
     .pos = { -372.0f, -700.0f, 439.0f },
     .yaw = 0,
@@ -20,13 +20,13 @@ NpcData N(NpcData_BuzzyBeetle_01) = {
     },
     .initVarCount = 1,
     .initVar = { .value = BTL_ISK_1_FORMATION_0E },
-    .settings = &N(NpcSettings_BuzzyBeetle_Ceiling),
+    .settings = &NpcSettings_BuzzyBeetle_Ceiling,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = ISK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,
 };
 
-NpcData N(NpcData_BuzzyBeetle_02) = {
+NpcData NpcData_BuzzyBeetle_02 = {
     .id = NPC_BuzzyBeetle_02,
     .pos = { -58.0f, -700.0f, 591.0f },
     .yaw = 0,
@@ -44,13 +44,13 @@ NpcData N(NpcData_BuzzyBeetle_02) = {
     },
     .initVarCount = 1,
     .initVar = { .value = BTL_ISK_1_FORMATION_0B },
-    .settings = &N(NpcSettings_BuzzyBeetle_Ceiling),
+    .settings = &NpcSettings_BuzzyBeetle_Ceiling,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = ISK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,
 };
 
-NpcData N(NpcData_BuzzyBeetle_03) = {
+NpcData NpcData_BuzzyBeetle_03 = {
     .id = NPC_BuzzyBeetle_03,
     .pos = { 292.0f, -780.0f, 488.0f },
     .yaw = 0,
@@ -66,15 +66,15 @@ NpcData N(NpcData_BuzzyBeetle_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_BuzzyBeetle_Wander),
+    .settings = &NpcSettings_BuzzyBeetle_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = ISK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BuzzyBeetle_01), BTL_ISK_1_FORMATION_0F, BTL_ISK_1_STAGE_08),
-    NPC_GROUP(N(NpcData_BuzzyBeetle_02), BTL_ISK_1_FORMATION_13, BTL_ISK_1_STAGE_08),
-    NPC_GROUP(N(NpcData_BuzzyBeetle_03), BTL_ISK_1_FORMATION_0C, BTL_ISK_1_STAGE_08),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BuzzyBeetle_01, BTL_ISK_1_FORMATION_0F, BTL_ISK_1_STAGE_08),
+    NPC_GROUP(NpcData_BuzzyBeetle_02, BTL_ISK_1_FORMATION_13, BTL_ISK_1_STAGE_08),
+    NPC_GROUP(NpcData_BuzzyBeetle_03, BTL_ISK_1_FORMATION_0C, BTL_ISK_1_STAGE_08),
     {}
 };

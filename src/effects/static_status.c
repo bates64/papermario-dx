@@ -55,7 +55,6 @@ EffectInstance* static_status_main(
     bp.init = static_status_init;
     bp.update = static_status_update;
     bp.renderScene = static_status_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STATIC_STATUS;
 

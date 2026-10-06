@@ -62,22 +62,20 @@ enum {
     MF_Bush1_Drop       = MapFlag(10),
 };
 
-#define NAMESPACE nok_02
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Scene_Epilogue;
+extern EvtScript EVS_BreakBlock_DropShell;
+extern EvtScript EVS_Scene_MeetKooper;
+extern EvtScript EVS_FuzzyBoss_PlayerEntersKoopersHouse;
+extern EvtScript EVS_SetupKootFavors;
+extern EvtScript EVS_NpcInteract_KoopaKoot;
+extern EvtScript EVS_Setup_Bookshelf;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_SetupDemo;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Scene_Epilogue);
-extern EvtScript N(EVS_BreakBlock_DropShell);
-extern EvtScript N(EVS_Scene_MeetKooper);
-extern EvtScript N(EVS_FuzzyBoss_PlayerEntersKoopersHouse);
-extern EvtScript N(EVS_SetupKootFavors);
-extern EvtScript N(EVS_NpcInteract_KoopaKoot);
-extern EvtScript N(EVS_Setup_Bookshelf);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_SetupDemo);
-
-extern NpcGroupList N(EpilogueNPCs);
-extern NpcGroupList N(CrisisNPCs);
-extern NpcGroupList N(NormalNPCs);
+extern NpcGroupList EpilogueNPCs;
+extern NpcGroupList CrisisNPCs;
+extern NpcGroupList NormalNPCs;

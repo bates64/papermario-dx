@@ -27,7 +27,6 @@ void smoke_burst_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, s32 time
     effectBp.init = smoke_burst_init;
     effectBp.update = smoke_burst_update;
     effectBp.renderScene = smoke_burst_render;
-    effectBp.unk_00 = 0;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_SMOKE_BURST;
 

@@ -1,12 +1,12 @@
 #include "nok_13.h"
 
-EvtScript N(EVS_ExitWalk_nok_12_1) = EVT_EXIT_WALK(60, nok_13_ENTRY_0, "nok_12", nok_12_ENTRY_1);
+EvtScript EVS_ExitWalk_nok_12_1 = EVT_EXIT_WALK(60, nok_13_ENTRY_0, "nok_12", nok_12_ENTRY_1);
 
-EvtScript N(EVS_ExitWalk_nok_01_0) = EVT_EXIT_WALK(60, nok_13_ENTRY_1, "nok_01", nok_01_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_01_0 = EVT_EXIT_WALK(60, nok_13_ENTRY_1, "nok_01", nok_01_ENTRY_0);
 
-EvtScript N(EVS_ExitWalk_nok_14_0) = EVT_EXIT_WALK(60, nok_13_ENTRY_2, "nok_14", nok_14_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_14_0 = EVT_EXIT_WALK(60, nok_13_ENTRY_2, "nok_14", nok_14_ENTRY_0);
 
-EvtScript N(EVS_SetupTexPan) = {
+EvtScript EVS_SetupTexPan = {
     // flowers
     Call(SetTexPanner, MODEL_hana1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana2, TEX_PANNER_0)
@@ -40,24 +40,24 @@ EvtScript N(EVS_SetupTexPan) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_12_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_01_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_14_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_nok_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_14_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupTexPan))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_SetupMusicalHill))
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupTexPan)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_SetupMusicalHill)
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Return

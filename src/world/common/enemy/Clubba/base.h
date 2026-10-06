@@ -38,11 +38,11 @@
 #define CLUBBA_MACE_HITBOX(npcID) \
 { \
     .id = npcID, \
-    .settings = &N(NpcSettings_Clubba_Hitbox), \
+    .settings = &NpcSettings_Clubba_Hitbox, \
     .pos = { NPC_DISPOSE_LOCATION }, \
     .yaw = 0, \
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \
     .drops = NO_DROPS, \
     .animations = CLUBBA_ANIMS, \
-    .limitAnimations = N(LimitAnims_Clubba_Hitbox), \
+    .limitAnimations = LimitAnims_Clubba_Hitbox, \
 }

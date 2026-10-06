@@ -3,7 +3,7 @@
 
 #include "world/common/ai/StoneChompAI.inc.c"
 
-API_CALLABLE(N(StoneChompFXA)) {
+API_CALLABLE(StoneChompFXA) {
     NpcBlueprint bp;
     NpcBlueprint* bpPtr = &bp;
     NpcChompBlur* blurData;
@@ -36,7 +36,7 @@ API_CALLABLE(N(StoneChompFXA)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(StoneChompFXB)) {
+API_CALLABLE(StoneChompFXB) {
     NpcChompBlur* blurData;
     Npc* ownerNpc;
     Npc* childNpc;
@@ -112,7 +112,7 @@ API_CALLABLE(N(StoneChompFXB)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(StoneChompFXC)) {
+API_CALLABLE(StoneChompFXC) {
     NpcChompBlur* blurData = get_npc_safe(script->owner2.npcID)->userData.chomp;
     s32 i;
 
@@ -123,13 +123,13 @@ API_CALLABLE(N(StoneChompFXC)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcCreate_StoneChomp) = {
-    Call(N(StoneChompFXA))
+EvtScript EVS_NpcCreate_StoneChomp = {
+    Call(StoneChompFXA)
     Return
     End
 };
 
-MobileAISettings N(AISettings_StoneChomp_Wander) = {
+MobileAISettings AISettings_StoneChomp_Wander = {
     .moveSpeed = 2.0f,
     .moveTime = 30,
     .waitTime = 30,
@@ -142,19 +142,19 @@ MobileAISettings N(AISettings_StoneChomp_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_StoneChomp_Wander) = {
+EvtScript EVS_NpcAI_StoneChomp_Wander = {
     ChildThread
         Loop(0)
-            Call(N(StoneChompFXB))
+            Call(StoneChompFXB)
             Wait(1)
         EndLoop
     EndChildThread
-    Call(N(StoneChompAI_Main), Ref(N(AISettings_StoneChomp_Wander)))
+    Call(StoneChompAI_Main, Ref(AISettings_StoneChomp_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_StoneChomp) = {
+EvtScript EVS_NpcHit_StoneChomp = {
     Call(SetBattleMusic, SONG_SPECIAL_BATTLE)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
@@ -183,11 +183,11 @@ EvtScript N(EVS_NpcHit_StoneChomp) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_StoneChomp) = {
+EvtScript EVS_NpcDefeat_StoneChomp = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(N(StoneChompFXC))
+            Call(StoneChompFXC)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -196,12 +196,12 @@ EvtScript N(EVS_NpcDefeat_StoneChomp) = {
     End
 };
 
-NpcSettings N(NpcSettings_StoneChomp_Wander) = {
+NpcSettings NpcSettings_StoneChomp_Wander = {
     .height = 32,
     .radius = 32,
     .level = ACTOR_LEVEL_STONE_CHOMP,
-    .doAI = &N(EVS_NpcAI_StoneChomp_Wander),
-    .onCreate = &N(EVS_NpcCreate_StoneChomp),
-    .onHit = &N(EVS_NpcHit_StoneChomp),
-    .onDefeat = &N(EVS_NpcDefeat_StoneChomp),
+    .doAI = &EVS_NpcAI_StoneChomp_Wander,
+    .onCreate = &EVS_NpcCreate_StoneChomp,
+    .onHit = &EVS_NpcHit_StoneChomp,
+    .onDefeat = &EVS_NpcDefeat_StoneChomp,
 };

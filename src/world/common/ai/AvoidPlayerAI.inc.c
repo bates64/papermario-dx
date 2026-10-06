@@ -7,7 +7,7 @@ enum AvoidAiAnims {
     AI_ANIM_AVOID_SEE_PLAYER    = 8,
 };
 
-void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void AvoidPlayerAI_ChaseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -113,7 +113,7 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDe
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
 
-void N(AvoidPlayerAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void AvoidPlayerAI_Chase(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -139,7 +139,7 @@ void N(AvoidPlayerAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(AvoidPlayerAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void AvoidPlayerAI_LosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -149,7 +149,7 @@ void N(AvoidPlayerAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyD
     }
 }
 
-API_CALLABLE(N(AvoidPlayerAI_Main)) {
+API_CALLABLE(AvoidPlayerAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -210,14 +210,14 @@ API_CALLABLE(N(AvoidPlayerAI_Main)) {
             break;
 
         case AI_STATE_CHASE_INIT:
-            N(AvoidPlayerAI_ChaseInit)(script, settings, detect);
+            AvoidPlayerAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(AvoidPlayerAI_Chase)(script, settings, detect);
+            AvoidPlayerAI_Chase(script, settings, detect);
             break;
 
         case AI_STATE_LOSE_PLAYER:
-            N(AvoidPlayerAI_LosePlayer)(script, settings, detect);
+            AvoidPlayerAI_LosePlayer(script, settings, detect);
             break;
 
         case AI_STATE_SUSPEND:

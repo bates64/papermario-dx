@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Bobomb);
+extern NpcSettings NpcSettings_Bobomb;

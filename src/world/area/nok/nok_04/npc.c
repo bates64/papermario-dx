@@ -30,16 +30,16 @@ typedef struct FuzzyThread {
 
 #include "../common/GetIntoShell.inc.c"
 
-FuzzyThread N(ThreadData) = {};
+FuzzyThread ThreadData = {};
 
-s32 N(TreeHidingSpotPositions)[] = {
+s32 TreeHidingSpotPositions[] = {
     -82, 101, 130,
     38, 164, 130,
     158, 135, 157,
     281, 156, 202,
 };
 
-EvtScript N(EVS_AnimBranch_JumpTo) = {
+EvtScript EVS_AnimBranch_JumpTo = {
     Set(LVar2, LVar0)
     Set(LVar3, LVar1)
     Set(LVar4, 600)
@@ -68,7 +68,7 @@ EvtScript N(EVS_AnimBranch_JumpTo) = {
     End
 };
 
-EvtScript N(EVS_AnimBranch_Hit) = {
+EvtScript EVS_AnimBranch_Hit = {
     Set(LVar2, LVar0)
     Set(LVar3, LVar1)
     Set(LVar4, 600)
@@ -87,18 +87,18 @@ EvtScript N(EVS_AnimBranch_Hit) = {
     End
 };
 
-EvtScript N(EVS_MoveCam_TrackBoss) = {
+EvtScript EVS_MoveCam_TrackBoss = {
     Call(InterpCamTargetPos, 0, 1, LVarA, LVarB, LVarC, LVarD)
     Return
     End
 };
 
-Vtx N(ThreadSegmentVertices)[] = {
+Vtx ThreadSegmentVertices[] = {
     {{{  -2,   0,     0 }, 0, {     0,     0 }, { 255, 255, 255, 255 }}},
     {{{   1,   0,     0 }, 0, {   512,     0 }, { 255, 255, 255, 255 }}},
 };
 
-Gfx N(ThreadGfx)[] = {
+Gfx ThreadGfx[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -110,90 +110,90 @@ Gfx N(ThreadGfx)[] = {
     gsSPEndDisplayList(),
 };
 
-API_CALLABLE(N(SetThreadAnchorPos)) {
+API_CALLABLE(SetThreadAnchorPos) {
     Bytecode* args = script->ptrReadPos;
     s32 temp_s2 = evt_get_variable(script, *args++);
     s32 temp_s0_3 = evt_get_variable(script, *args++);
     f32 temp_f6 = evt_get_variable(script, *args++);
 
-    N(ThreadData).anchorPos.x = temp_s2;
-    N(ThreadData).anchorPos.y = temp_s0_3 + 4.0f;
-    N(ThreadData).anchorPos.z = temp_f6;
+    ThreadData.anchorPos.x = temp_s2;
+    ThreadData.anchorPos.y = temp_s0_3 + 4.0f;
+    ThreadData.anchorPos.z = temp_f6;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetThreadTargetLengthAngle)) {
+API_CALLABLE(SetThreadTargetLengthAngle) {
     Bytecode* args = script->ptrReadPos;
     s32 goal = evt_get_variable(script, *args++);
     s32 temp_s0_3 = evt_get_variable(script, *args++);
     s32 duration = evt_get_variable(script, *args++);
 
-    FuzzyThread* thread = &N(ThreadData); //needed to match
-    N(ThreadData).targetAngle = temp_s0_3 / NUM_THREAD_SEGMENTS;
-    N(ThreadData).targetLength = (f32)goal / NUM_THREAD_SEGMENTS;
-    N(ThreadData).duration = duration;
-    N(ThreadData).time = 0.0f;
+    FuzzyThread* thread = &ThreadData; //needed to match
+    ThreadData.targetAngle = temp_s0_3 / NUM_THREAD_SEGMENTS;
+    ThreadData.targetLength = (f32)goal / NUM_THREAD_SEGMENTS;
+    ThreadData.duration = duration;
+    ThreadData.time = 0.0f;
 
-    if (0.0f < N(ThreadData).duration) {
-        N(ThreadData).lengthStep = (N(ThreadData).targetLength - N(ThreadData).curLength) / N(ThreadData).duration;
-        N(ThreadData).angleStep = (N(ThreadData).targetAngle - N(ThreadData).curAngle) / N(ThreadData).duration;
+    if (0.0f < ThreadData.duration) {
+        ThreadData.lengthStep = (ThreadData.targetLength - ThreadData.curLength) / ThreadData.duration;
+        ThreadData.angleStep = (ThreadData.targetAngle - ThreadData.curAngle) / ThreadData.duration;
     }
 
-    if (N(ThreadData).duration < 0.0f) {
-        N(ThreadData).curLength = N(ThreadData).targetLength;
-        N(ThreadData).curAngle = N(ThreadData).targetAngle;
-        N(ThreadData).duration = 0.0f;
+    if (ThreadData.duration < 0.0f) {
+        ThreadData.curLength = ThreadData.targetLength;
+        ThreadData.curAngle = ThreadData.targetAngle;
+        ThreadData.duration = 0.0f;
     }
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitThreadData)) {
-    N(ThreadData).anchorPos.x = 0;
-    N(ThreadData).anchorPos.y = 0;
-    N(ThreadData).anchorPos.z = 0;
-    N(ThreadData).curLength = 0;
-    N(ThreadData).targetLength = 0;
-    N(ThreadData).overshootVel = 0;
-    N(ThreadData).targetAngle = 0;
-    N(ThreadData).curAngle = 0;
-    N(ThreadData).overshootAngleVel = 0;
-    N(ThreadData).frontNpc = nullptr;
-    N(ThreadData).backNpc = nullptr;
-    N(ThreadData).time = 0;
-    N(ThreadData).duration = 0;
-    N(ThreadData).lengthStep = 0;
-    N(ThreadData).angleStep = 0;
+API_CALLABLE(InitThreadData) {
+    ThreadData.anchorPos.x = 0;
+    ThreadData.anchorPos.y = 0;
+    ThreadData.anchorPos.z = 0;
+    ThreadData.curLength = 0;
+    ThreadData.targetLength = 0;
+    ThreadData.overshootVel = 0;
+    ThreadData.targetAngle = 0;
+    ThreadData.curAngle = 0;
+    ThreadData.overshootAngleVel = 0;
+    ThreadData.frontNpc = nullptr;
+    ThreadData.backNpc = nullptr;
+    ThreadData.time = 0;
+    ThreadData.duration = 0;
+    ThreadData.lengthStep = 0;
+    ThreadData.angleStep = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AttachThreadFrontNpc)) {
+API_CALLABLE(AttachThreadFrontNpc) {
     Bytecode* args = script->ptrReadPos;
-    N(ThreadData).frontNpc = (Npc*) evt_get_variable(script, *args++);
+    ThreadData.frontNpc = (Npc*) evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AttachThreadBackNpc)) {
+API_CALLABLE(AttachThreadBackNpc) {
     Bytecode* args = script->ptrReadPos;
-    N(ThreadData).backNpc = (Npc*) evt_get_variable(script, *args++);
+    ThreadData.backNpc = (Npc*) evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetTreeHidingSpotPos)) {
+API_CALLABLE(GetTreeHidingSpotPos) {
     Bytecode *args = script->ptrReadPos;
     s32 treeIdx = evt_get_variable(script, *args++) * 3;
     s32 outVarX = *args++;
     s32 outVarY = *args++;
     s32 outVarZ = *args++;
 
-    evt_set_variable(script, outVarX, N(TreeHidingSpotPositions)[treeIdx + 0]);
-    evt_set_variable(script, outVarY, N(TreeHidingSpotPositions)[treeIdx + 1]);
-    evt_set_variable(script, outVarZ, N(TreeHidingSpotPositions)[treeIdx + 2]);
+    evt_set_variable(script, outVarX, TreeHidingSpotPositions[treeIdx + 0]);
+    evt_set_variable(script, outVarY, TreeHidingSpotPositions[treeIdx + 1]);
+    evt_set_variable(script, outVarZ, TreeHidingSpotPositions[treeIdx + 2]);
     return ApiStatus_DONE2;
 }
 
 // get pattern from counter: 0, 1, 2, 3, 2, 1, (begin repeat) 0, 1, 2, 3, ...
-API_CALLABLE(N(EVS_ConvertTreeIndex)) {
+API_CALLABLE(EVS_ConvertTreeIndex) {
     Bytecode* args = script->ptrReadPos;
     s32 treeIdx = evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
@@ -210,7 +210,7 @@ API_CALLABLE(N(EVS_ConvertTreeIndex)) {
 }
 
 // args: tree index, animation type (0 = jump to, 1 = hit)
-API_CALLABLE(N(AnimateTreeBranch)) {
+API_CALLABLE(AnimateTreeBranch) {
     Bytecode* args = script->ptrReadPos;
     s32 treeIdx = evt_get_variable(script, *args++);
     s32 temp_s2 = evt_get_variable(script, *args++);
@@ -228,14 +228,14 @@ API_CALLABLE(N(AnimateTreeBranch)) {
         kill_script_by_ID(script->varTable[treeIdx + 6]);
     }
 
-    animSrc = &N(EVS_AnimBranch_JumpTo);
+    animSrc = &EVS_AnimBranch_JumpTo;
 
     switch (temp_s2) {
         case 0:
-            animSrc = &N(EVS_AnimBranch_JumpTo);
+            animSrc = &EVS_AnimBranch_JumpTo;
             break;
         case 1:
-            animSrc = &N(EVS_AnimBranch_Hit);
+            animSrc = &EVS_AnimBranch_Hit;
             break;
     }
 
@@ -260,89 +260,89 @@ API_CALLABLE(N(AnimateTreeBranch)) {
     return ApiStatus_DONE2;
 }
 
-void N(build_gfx_thread)(void) {
-    f32 x = N(ThreadData).anchorPos.x;
-    f32 y = N(ThreadData).anchorPos.y;
-    f32 z = N(ThreadData).anchorPos.z;
+void build_gfx_thread(void) {
+    f32 x = ThreadData.anchorPos.x;
+    f32 y = ThreadData.anchorPos.y;
+    f32 z = ThreadData.anchorPos.z;
     s32 i;
     f32 segAngle, segLength, fs3;
 
-    N(ThreadData).overshootVel += 0.2;
-    if (N(ThreadData).duration != 0.0f) {
+    ThreadData.overshootVel += 0.2;
+    if (ThreadData.duration != 0.0f) {
         // thread extension/retraction
-        N(ThreadData).curLength += N(ThreadData).lengthStep;
-        if (N(ThreadData).curLength > N(ThreadData).targetLength) {
-            N(ThreadData).overshootVel += (N(ThreadData).targetLength - N(ThreadData).curLength) * 0.5f;
+        ThreadData.curLength += ThreadData.lengthStep;
+        if (ThreadData.curLength > ThreadData.targetLength) {
+            ThreadData.overshootVel += (ThreadData.targetLength - ThreadData.curLength) * 0.5f;
         }
-        N(ThreadData).time += 1.0f;
-        N(ThreadData).overshootAngleVel = (N(ThreadData).overshootAngleVel + (N(ThreadData).targetAngle - N(ThreadData).curAngle) / 10.0f) * 0.92;
-        N(ThreadData).curAngle += N(ThreadData).angleStep;
-        if (N(ThreadData).duration <= N(ThreadData).time) {
-            N(ThreadData).duration = 0.0f;
+        ThreadData.time += 1.0f;
+        ThreadData.overshootAngleVel = (ThreadData.overshootAngleVel + (ThreadData.targetAngle - ThreadData.curAngle) / 10.0f) * 0.92;
+        ThreadData.curAngle += ThreadData.angleStep;
+        if (ThreadData.duration <= ThreadData.time) {
+            ThreadData.duration = 0.0f;
         }
     } else {
         // thread overshoot
-        N(ThreadData).curLength += N(ThreadData).overshootVel;
-        if (N(ThreadData).targetLength < N(ThreadData).curLength) {
-            N(ThreadData).overshootVel += (N(ThreadData).targetLength - N(ThreadData).curLength) * 0.5f;
+        ThreadData.curLength += ThreadData.overshootVel;
+        if (ThreadData.targetLength < ThreadData.curLength) {
+            ThreadData.overshootVel += (ThreadData.targetLength - ThreadData.curLength) * 0.5f;
         }
-        N(ThreadData).overshootAngleVel = (N(ThreadData).overshootAngleVel + (N(ThreadData).targetAngle - N(ThreadData).curAngle) / 10.0f) * 0.92;
-        N(ThreadData).curAngle += N(ThreadData).overshootAngleVel;
+        ThreadData.overshootAngleVel = (ThreadData.overshootAngleVel + (ThreadData.targetAngle - ThreadData.curAngle) / 10.0f) * 0.92;
+        ThreadData.curAngle += ThreadData.overshootAngleVel;
     }
-    N(ThreadData).overshootVel *= 0.5;
+    ThreadData.overshootVel *= 0.5;
 
-    gSPDisplayList(gMainGfxPos++, N(ThreadGfx));
-    guTranslate(&gDisplayContext->matrixStack[gMatrixListPos], N(ThreadData).anchorPos.x, N(ThreadData).anchorPos.y, N(ThreadData).anchorPos.z);
+    gSPDisplayList(gMainGfxPos++, ThreadGfx);
+    guTranslate(&gDisplayContext->matrixStack[gMatrixListPos], ThreadData.anchorPos.x, ThreadData.anchorPos.y, ThreadData.anchorPos.z);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    segAngle = N(ThreadData).curAngle;
-    segLength = -N(ThreadData).curLength;
-    x += -segLength * sin_rad(N(ThreadData).curAngle * 0 / 180.0f * PI);
-    y +=  segLength * cos_rad(N(ThreadData).curAngle * 0 / 180.0f * PI);
+    segAngle = ThreadData.curAngle;
+    segLength = -ThreadData.curLength;
+    x += -segLength * sin_rad(ThreadData.curAngle * 0 / 180.0f * PI);
+    y +=  segLength * cos_rad(ThreadData.curAngle * 0 / 180.0f * PI);
 
     guPosition(&gDisplayContext->matrixStack[gMatrixListPos], 0.0f, 0.0f, segAngle, 1.0f, 0.0f, segLength, 0.0f);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
     for (i = 1; i < NUM_THREAD_SEGMENTS; i++) {
-        segAngle = N(ThreadData).curAngle;
-        segLength = -N(ThreadData).curLength;
-        x += -segLength * sin_rad(N(ThreadData).curAngle * i / 180.0f * PI);
-        y +=  segLength * cos_rad(N(ThreadData).curAngle * i / 180.0f * PI);
-        gSPVertex(gMainGfxPos++, N(ThreadSegmentVertices), 2, 0);
+        segAngle = ThreadData.curAngle;
+        segLength = -ThreadData.curLength;
+        x += -segLength * sin_rad(ThreadData.curAngle * i / 180.0f * PI);
+        y +=  segLength * cos_rad(ThreadData.curAngle * i / 180.0f * PI);
+        gSPVertex(gMainGfxPos++, ThreadSegmentVertices, 2, 0);
         guPosition(&gDisplayContext->matrixStack[gMatrixListPos], 0.0f, 0.0f, segAngle, 1.0f, 0.0f, segLength, 0.0f);
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-        gSPVertex(gMainGfxPos++, N(ThreadSegmentVertices), 2, 2);
+        gSPVertex(gMainGfxPos++, ThreadSegmentVertices, 2, 2);
         gSP2Triangles(gMainGfxPos++, 0, 2, 1, 0, 2, 3, 1, 0);
     }
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     gDPPipeSync(gMainGfxPos++);
 
-    N(ThreadData).endPoint.x = x;
-    N(ThreadData).endPoint.y = y;
-    N(ThreadData).endPoint.z = z;
+    ThreadData.endPoint.x = x;
+    ThreadData.endPoint.y = y;
+    ThreadData.endPoint.z = z;
 
-    if (N(ThreadData).frontNpc != nullptr) {
-        N(ThreadData).frontNpc->pos.x = x;
-        N(ThreadData).frontNpc->pos.y = y - 4.0f;
-        N(ThreadData).frontNpc->pos.z = z + 6.0f;
+    if (ThreadData.frontNpc != nullptr) {
+        ThreadData.frontNpc->pos.x = x;
+        ThreadData.frontNpc->pos.y = y - 4.0f;
+        ThreadData.frontNpc->pos.z = z + 6.0f;
     }
 
-    if (N(ThreadData).backNpc != nullptr) {
-        N(ThreadData).backNpc->pos.x = x;
-        N(ThreadData).backNpc->pos.y = y - 4.0f;
-        N(ThreadData).backNpc->pos.z = z + 3.0f;
+    if (ThreadData.backNpc != nullptr) {
+        ThreadData.backNpc->pos.x = x;
+        ThreadData.backNpc->pos.y = y - 4.0f;
+        ThreadData.backNpc->pos.z = z + 3.0f;
     }
 }
 
-EvtScript N(EVS_BossJumpTo) = {
+EvtScript EVS_BossJumpTo = {
     Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarB, LVarC, LVarD)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_ShuffleFuzzyPositions) = {
+EvtScript EVS_Scene_ShuffleFuzzyPositions = {
     Call(PlayerFaceNpc, NPC_BossFuzzy, false)
     Call(ShowMessageAtScreenPos, MSG_CH1_00BE, 160, 40)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -385,7 +385,7 @@ EvtScript N(EVS_Scene_ShuffleFuzzyPositions) = {
     // the shuffle
     Loop(LVarE)
         Set(LVarA, MV_CorrectTreeIndex)
-        Call(N(EVS_ConvertTreeIndex), LVarF, MV_CorrectTreeIndex)
+        Call(EVS_ConvertTreeIndex, LVarF, MV_CorrectTreeIndex)
         Switch(LVarF)
             CaseEq(0)
                 Set(LVarB, TREE_2)
@@ -456,14 +456,14 @@ EvtScript N(EVS_Scene_ShuffleFuzzyPositions) = {
         Call(SetNpcAnimation, NPC_Fuzzy_03, LVar0)
         Call(PlaySound, SOUND_SEQ_FUZZY_HOP)
         Thread
-            Call(N(GetTreeHidingSpotPos), MV_CorrectTreeIndex, LVar0, LVar1, LVar2)
+            Call(GetTreeHidingSpotPos, MV_CorrectTreeIndex, LVar0, LVar1, LVar2)
             Call(NpcJump0, NPC_BossFuzzy, LVar0, LVar1, LVar2, LVarD)
         EndThread
         IfNe(MV_CorrectTreeIndex, LVarA)
             Thread
-                Call(N(GetTreeHidingSpotPos), MV_CorrectTreeIndex, LVar0, LVar1, LVar2)
+                Call(GetTreeHidingSpotPos, MV_CorrectTreeIndex, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_Fuzzy_01, LVar0, LVar1, LVar2)
-                Call(N(GetTreeHidingSpotPos), LVarA, LVar0, LVar1, LVar2)
+                Call(GetTreeHidingSpotPos, LVarA, LVar0, LVar1, LVar2)
                 Call(NpcJump0, NPC_Fuzzy_01, LVar0, LVar1, LVar2, LVarD)
             EndThread
             Set(LFlag0, false)
@@ -474,28 +474,28 @@ EvtScript N(EVS_Scene_ShuffleFuzzyPositions) = {
             EndIf
             IfEq(LFlag0, false)
                 Thread
-                    Call(N(GetTreeHidingSpotPos), LVarB, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarB, LVar0, LVar1, LVar2)
                     Call(SetNpcPos, NPC_Fuzzy_02, LVar0, LVar1, LVar2)
-                    Call(N(GetTreeHidingSpotPos), LVarC, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarC, LVar0, LVar1, LVar2)
                     Call(NpcJump0, NPC_Fuzzy_02, LVar0, LVar1, LVar2, LVarD)
                 EndThread
                 Thread
-                    Call(N(GetTreeHidingSpotPos), LVarC, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarC, LVar0, LVar1, LVar2)
                     Call(SetNpcPos, NPC_Fuzzy_03, LVar0, LVar1, LVar2)
-                    Call(N(GetTreeHidingSpotPos), LVarB, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarB, LVar0, LVar1, LVar2)
                     Call(NpcJump0, NPC_Fuzzy_03, LVar0, LVar1, LVar2, LVarD)
                 EndThread
             Else
                 Thread
-                    Call(N(GetTreeHidingSpotPos), LVarB, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarB, LVar0, LVar1, LVar2)
                     Call(SetNpcPos, NPC_Fuzzy_02, LVar0, LVar1, LVar2)
-                    Call(N(GetTreeHidingSpotPos), LVarB, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarB, LVar0, LVar1, LVar2)
                     Call(NpcJump0, NPC_Fuzzy_02, LVar0, LVar1, LVar2, LVarD)
                 EndThread
                 Thread
-                    Call(N(GetTreeHidingSpotPos), LVarC, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarC, LVar0, LVar1, LVar2)
                     Call(SetNpcPos, NPC_Fuzzy_03, LVar0, LVar1, LVar2)
-                    Call(N(GetTreeHidingSpotPos), LVarC, LVar0, LVar1, LVar2)
+                    Call(GetTreeHidingSpotPos, LVarC, LVar0, LVar1, LVar2)
                     Call(NpcJump0, NPC_Fuzzy_03, LVar0, LVar1, LVar2, LVarD)
                 EndThread
             EndIf
@@ -503,37 +503,37 @@ EvtScript N(EVS_Scene_ShuffleFuzzyPositions) = {
             Thread
                 Add(LVarA, 1)
                 Mod(LVarA, 4)
-                Call(N(GetTreeHidingSpotPos), LVarA, LVar0, LVar1, LVar2)
+                Call(GetTreeHidingSpotPos, LVarA, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_Fuzzy_01, LVar0, LVar1, LVar2)
                 Call(NpcJump0, NPC_Fuzzy_01, LVar0, LVar1, LVar2, LVarD)
             EndThread
             Thread
                 Add(LVarA, 2)
                 Mod(LVarA, 4)
-                Call(N(GetTreeHidingSpotPos), LVarA, LVar0, LVar1, LVar2)
+                Call(GetTreeHidingSpotPos, LVarA, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_Fuzzy_02, LVar0, LVar1, LVar2)
                 Call(NpcJump0, NPC_Fuzzy_02, LVar0, LVar1, LVar2, LVarD)
             EndThread
             Thread
                 Add(LVarA, 3)
                 Mod(LVarA, 4)
-                Call(N(GetTreeHidingSpotPos), LVarA, LVar0, LVar1, LVar2)
+                Call(GetTreeHidingSpotPos, LVarA, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_Fuzzy_03, LVar0, LVar1, LVar2)
                 Call(NpcJump0, NPC_Fuzzy_03, LVar0, LVar1, LVar2, LVarD)
             EndThread
         EndIf
         Wait(2)
-        Call(N(GetTreeHidingSpotPos), MV_CorrectTreeIndex, LVar0, LVar1, LVar2)
+        Call(GetTreeHidingSpotPos, MV_CorrectTreeIndex, LVar0, LVar1, LVar2)
         Add(LVar2, 2)
         Call(NpcJump0, NPC_KoopersShell, LVar0, LVar1, LVar2, LVarD)
         Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Still)
         Call(SetNpcAnimation, NPC_Fuzzy_01, ANIM_Fuzzy_Still)
         Call(SetNpcAnimation, NPC_Fuzzy_02, ANIM_Fuzzy_Still)
         Call(SetNpcAnimation, NPC_Fuzzy_03, ANIM_Fuzzy_Still)
-        Call(N(AnimateTreeBranch), TREE_0, 0)
-        Call(N(AnimateTreeBranch), TREE_1, 0)
-        Call(N(AnimateTreeBranch), TREE_2, 0)
-        Call(N(AnimateTreeBranch), TREE_3, 0)
+        Call(AnimateTreeBranch, TREE_0, 0)
+        Call(AnimateTreeBranch, TREE_1, 0)
+        Call(AnimateTreeBranch, TREE_2, 0)
+        Call(AnimateTreeBranch, TREE_3, 0)
         Call(PlaySound, SOUND_SHAKE_TREE_LEAVES)
     EndLoop
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -551,7 +551,7 @@ EvtScript N(EVS_Scene_ShuffleFuzzyPositions) = {
     End
 };
 
-EvtScript N(EVS_FuzzyBoss_TauntFromTree) = {
+EvtScript EVS_FuzzyBoss_TauntFromTree = {
     Set(AF_NOK04_PlayingGame, true)
     IfEq(LFlag0, false)
         Call(DisablePlayerInput, true)
@@ -560,16 +560,16 @@ EvtScript N(EVS_FuzzyBoss_TauntFromTree) = {
             Call(DisablePlayerPhysics, true)
         EndThread
     EndIf
-    Call(N(AnimateTreeBranch), 2, 0)
+    Call(AnimateTreeBranch, 2, 0)
     Call(PlaySound, SOUND_SHAKE_TREE_LEAVES)
     Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
-    Call(N(GetTreeHidingSpotPos), 2, LVar0, LVar1, LVar2)
-    Call(N(SetThreadAnchorPos), LVar0, LVar1, LVar2)
-    Call(N(SetThreadTargetLengthAngle), 50, 0, 0)
+    Call(GetTreeHidingSpotPos, 2, LVar0, LVar1, LVar2)
+    Call(SetThreadAnchorPos, LVar0, LVar1, LVar2)
+    Call(SetThreadTargetLengthAngle, 50, 0, 0)
     Call(GetNpcPointer, NPC_BossFuzzy, LVar0)
     Call(GetNpcPointer, NPC_KoopersShell, LVar1)
-    Call(N(AttachThreadBackNpc), LVar0)
-    Call(N(AttachThreadFrontNpc), LVar1)
+    Call(AttachThreadBackNpc, LVar0)
+    Call(AttachThreadFrontNpc, LVar1)
     Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, true)
     IfLt(GB_StoryProgress, STORY_CH1_FUZZY_THIEF_HID_IN_TREE)
         Set(LVar0, MSG_CH1_00BC)
@@ -579,17 +579,17 @@ EvtScript N(EVS_FuzzyBoss_TauntFromTree) = {
     EndIf
     Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, LVar0)
     Call(SetMusic, 0, SONG_PLAYROOM, 0, VOL_LEVEL_FULL)
-    Call(N(SetThreadTargetLengthAngle), 0, 0, 30 * DT)
+    Call(SetThreadTargetLengthAngle, 0, 0, 30 * DT)
     Wait(30 * DT)
     Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, false)
-    Call(N(AttachThreadFrontNpc), nullptr)
-    Call(N(AttachThreadBackNpc), nullptr)
-    Exec(N(EVS_Scene_ShuffleFuzzyPositions))
+    Call(AttachThreadFrontNpc, nullptr)
+    Call(AttachThreadBackNpc, nullptr)
+    Exec(EVS_Scene_ShuffleFuzzyPositions)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_HideInTree) = {
+EvtScript EVS_Scene_HideInTree = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_FUZZY_THIEF_HID_IN_TREE)
             Label(0)
@@ -599,7 +599,7 @@ EvtScript N(EVS_Scene_HideInTree) = {
                     Goto(0)
                 EndIf
             Set(LFlag0, false)
-            Exec(N(EVS_FuzzyBoss_TauntFromTree))
+            Exec(EVS_FuzzyBoss_TauntFromTree)
             Return
         CaseGe(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SetNpcPos, NPC_BossFuzzy, NPC_DISPOSE_LOCATION)
@@ -626,58 +626,58 @@ EvtScript N(EVS_Scene_HideInTree) = {
         Set(LVarB, 0)
         Set(LVarC, 227)
         Set(LVarD, 80 * DT)
-        Exec(N(EVS_MoveCam_TrackBoss))
+        Exec(EVS_MoveCam_TrackBoss)
     EndThread
     Set(LVarA, -260)
     Set(LVarB, 0)
     Set(LVarC, 290)
     Set(LVarD, 20 * DT)
-    Exec(N(EVS_BossJumpTo))
+    Exec(EVS_BossJumpTo)
     Wait(1)
     Call(NpcJump0, NPC_KoopersShell, LVarA, 0, 293, LVarD)
     Set(LVarA, -180)
     Set(LVarB, 0)
     Set(LVarC, 245)
     Set(LVarD, 15 * DT)
-    Exec(N(EVS_BossJumpTo))
+    Exec(EVS_BossJumpTo)
     Wait(1)
     Call(NpcJump0, NPC_KoopersShell, LVarA, LVarB, 248, LVarD)
     Set(LVarA, -100)
     Set(LVarB, 0)
     Set(LVarC, 235)
     Set(LVarD, 15 * DT)
-    Exec(N(EVS_BossJumpTo))
+    Exec(EVS_BossJumpTo)
     Wait(1)
     Call(NpcJump0, NPC_KoopersShell, LVarA, LVarB, 238, LVarD)
     Set(LVarA, 85)
     Set(LVarB, 0)
     Set(LVarC, 217)
     Set(LVarD, 30 * DT)
-    Exec(N(EVS_BossJumpTo))
+    Exec(EVS_BossJumpTo)
     Wait(1)
     Call(NpcJump0, NPC_KoopersShell, LVarA, LVarB, 220, LVarD)
-    Call(N(GetTreeHidingSpotPos), 2, LVar0, LVar1, LVar2)
+    Call(GetTreeHidingSpotPos, 2, LVar0, LVar1, LVar2)
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
     Set(LVarC, LVar3)
     Set(LVarD, 30 * DT)
-    Exec(N(EVS_BossJumpTo))
+    Exec(EVS_BossJumpTo)
     Wait(1)
     Add(LVarC, 3)
     Call(NpcJump0, NPC_KoopersShell, LVarA, LVarB, LVarC, LVarD)
     Call(EnableNpcShadow, NPC_BossFuzzy, false)
     Call(EnableNpcShadow, NPC_KoopersShell, false)
-    Call(N(AnimateTreeBranch), 2, 0)
+    Call(AnimateTreeBranch, 2, 0)
     Call(PlaySound, SOUND_SHAKE_TREE_LEAVES)
     Call(SetPlayerPos, -152, 0, 235)
     Call(PlayerMoveTo, 58, 227, 60 * DT)
     Set(LFlag0, true)
-    Exec(N(EVS_FuzzyBoss_TauntFromTree))
+    Exec(EVS_FuzzyBoss_TauntFromTree)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_WaitForWrongAnswer) = {
+EvtScript EVS_NpcIdle_WaitForWrongAnswer = {
     Label(0)
         IfEq(MV_WrongAnswerBattle, 1)
             Call(StartBossBattle, SONG_SPECIAL_BATTLE)
@@ -693,7 +693,7 @@ EvtScript N(EVS_NpcIdle_WaitForWrongAnswer) = {
     End
 };
 
-EvtScript N(EVS_Unused_RandomlyReveal) = {
+EvtScript EVS_Unused_RandomlyReveal = {
     Call(RandInt, 399, LVar4)
     Div(LVar4, 100)
     Label(0)
@@ -710,7 +710,7 @@ EvtScript N(EVS_Unused_RandomlyReveal) = {
         IfGt(LVar4, 3)
             Set(LVar4, 2)
         EndIf
-        Call(N(GetTreeHidingSpotPos), LVar4, LVar0, LVar1, LVar2)
+        Call(GetTreeHidingSpotPos, LVar4, LVar0, LVar1, LVar2)
         Call(RandInt, 10, LVar3)
         Add(LVar3, 20)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
@@ -720,27 +720,27 @@ EvtScript N(EVS_Unused_RandomlyReveal) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_WrongFuzzy) = {
-    Call(N(InitThreadData))
+EvtScript EVS_NpcDefeat_WrongFuzzy = {
+    Call(InitThreadData)
     Call(SetNpcAnimation, NPC_AmbushFuzzy, ANIM_Fuzzy_Talk)
-    Call(N(GetTreeHidingSpotPos), MV_LastWrongTreeIndex, LVar0, LVar1, LVar2)
-    Call(N(SetThreadAnchorPos), LVar0, LVar1, LVar2)
+    Call(GetTreeHidingSpotPos, MV_LastWrongTreeIndex, LVar0, LVar1, LVar2)
+    Call(SetThreadAnchorPos, LVar0, LVar1, LVar2)
     Sub(LVar1, 50)
     Call(GetNpcPointer, NPC_AmbushFuzzy, LVar3)
-    Call(N(AttachThreadFrontNpc), LVar3)
-    Call(N(AttachThreadBackNpc), nullptr)
-    Call(N(SetThreadTargetLengthAngle), LVar1, 0, -1)
+    Call(AttachThreadFrontNpc, LVar3)
+    Call(AttachThreadBackNpc, nullptr)
+    Call(SetThreadTargetLengthAngle, LVar1, 0, -1)
     Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, true)
-    Call(N(SetThreadTargetLengthAngle), 0, 0, 30)
+    Call(SetThreadTargetLengthAngle, 0, 0, 30)
     Wait(30)
-    Call(N(AttachThreadFrontNpc), nullptr)
+    Call(AttachThreadFrontNpc, nullptr)
     Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, false)
     Set(MV_WrongAnswerBattle, 0)
     Return
     End
 };
 
-EvtScript N(EVS_MoveShellUp) = {
+EvtScript EVS_MoveShellUp = {
     Set(LVar3, LVar0)
     Call(MakeLerp, LVarB, LVarD, 30, EASING_QUARTIC_IN)
     Label(0)
@@ -754,7 +754,7 @@ EvtScript N(EVS_MoveShellUp) = {
     End
 };
 
-EvtScript N(EVS_MoveShellDown) = {
+EvtScript EVS_MoveShellDown = {
     Set(LVar3, LVar0)
     Call(MakeLerp, LVarB, LVarD, 30, EASING_QUARTIC_IN)
     Label(0)
@@ -768,7 +768,7 @@ EvtScript N(EVS_MoveShellDown) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_DoNothing) = {
+EvtScript EVS_NpcAI_BossFuzzyWait = {
     Label(10)
         Wait(1)
         Goto(10)
@@ -776,7 +776,7 @@ EvtScript N(EVS_NpcAI_DoNothing) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_StartBossBattle) = {
+EvtScript EVS_NpcAI_StartBossBattle = {
     IfEq(AF_NOK04_BattleStarted, false)
         Call(StartBossBattle, SONG_SPECIAL_BATTLE)
         Set(AF_NOK04_BattleStarted, true)
@@ -788,7 +788,7 @@ EvtScript N(EVS_NpcAI_StartBossBattle) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_FuzzyBoss) = {
+EvtScript EVS_NpcDefeat_FuzzyBoss = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -799,7 +799,7 @@ EvtScript N(EVS_NpcDefeat_FuzzyBoss) = {
                     Wait(1)
                     Goto(10)
                 EndIf
-            Call(BindNpcAI, NPC_BossFuzzy, Ref(N(EVS_NpcAI_DoNothing)))
+            Call(BindNpcAI, NPC_BossFuzzy, Ref(EVS_NpcAI_BossFuzzyWait))
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(DisablePlayerInput, false)
@@ -808,26 +808,26 @@ EvtScript N(EVS_NpcDefeat_FuzzyBoss) = {
     End
 };
 
-s32 N(ShellChoiceDone) = false;
+s32 ShellChoiceDone = false;
 
-API_CALLABLE(N(AwaitShellChoice)) {
+API_CALLABLE(AwaitShellChoice) {
     if (isInitialCall) {
-        N(ShellChoiceDone) = false;
+        ShellChoiceDone = false;
     }
 
-    if (N(ShellChoiceDone)) {
+    if (ShellChoiceDone) {
         return ApiStatus_DONE2;
     } else {
         return ApiStatus_BLOCK;
     }
 }
 
-API_CALLABLE(N(SetShellChosen)) {
-    N(ShellChoiceDone) = true;
+API_CALLABLE(SetShellChosen) {
+    ShellChoiceDone = true;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ShellPrompt) = {
+EvtScript EVS_ShellPrompt = {
     Set(LFlagA, false)
     Call(DisablePlayerInput, true)
     Label(0)
@@ -843,23 +843,23 @@ EvtScript N(EVS_ShellPrompt) = {
             Goto(0)
         EndIf
     Call(RemoveKeyItemAt, LVar1)
-    Call(N(SetShellChosen))
+    Call(SetShellChosen)
     Call(DisablePlayerInput, false)
     Unbind
     Return
     End
 };
 
-ITEM_LIST(N(ShellList), ITEM_KOOPER_SHELL);
+ITEM_LIST(ShellList, ITEM_KOOPER_SHELL);
 
-EvtScript N(EVS_ChooseShell) = {
-    BindPadlock(Ref(N(EVS_ShellPrompt)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ShellList)), 0, 1)
-    Call(N(AwaitShellChoice))
+EvtScript EVS_ChooseShell = {
+    BindPadlock(Ref(EVS_ShellPrompt), TRIGGER_FORCE_ACTIVATE, 0, Ref(ShellList), 0, 1)
+    Call(AwaitShellChoice)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_KooperArrives) = {
+EvtScript EVS_Scene_KooperArrives = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar0, -104)
@@ -898,7 +898,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)
     Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Kooper, MSG_CH1_00C4)
     Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)
-    ExecWait(N(EVS_ChooseShell))
+    ExecWait(EVS_ChooseShell)
     Call(PlayerMoveTo, -207, 268, 7)
     Call(PlayerFaceNpc, NPC_Kooper, false)
     Call(SetPlayerAnimation, ANIM_MarioW1_TakeItem)
@@ -933,7 +933,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     Add(LVar1, 20)
     Set(LVar3, 1)
     Set(LVar4, 6)
-    Exec(N(EVS_GetIntoShell))
+    Exec(EVS_GetIntoShell)
     Call(InterpNpcYaw, LVar3, 60, 0)
     Call(NpcJump0, NPC_KoopersShell, LVar0, LVar1, LVar2, 30 * DT)
     Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
@@ -980,12 +980,12 @@ EvtScript N(EVS_Scene_KooperArrives) = {
             Call(EndSpeech, NPC_Kooper, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0)
             Set(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         EndIf
-    Call(N(ChangeNpcToPartner), NPC_Kooper, PARTNER_KOOPER)
-    Call(N(LoadPartyImage), Ref("party_kameki"))
-    Exec(N(EVS_PushPartnerSong))
+    Call(ChangeNpcToPartner, NPC_Kooper, PARTNER_KOOPER)
+    Call(LoadPartyImage, Ref("party_kameki"))
+    Exec(EVS_PushPartnerSong)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018A, 160, 40)
-    Exec(N(EVS_PopSong))
+    Exec(EVS_PopSong)
     Wait(10 * DT)
     Call(EnablePartnerAI)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -1031,8 +1031,8 @@ EvtScript N(EVS_Scene_KooperArrives) = {
         EndIf
     Thread
         Wait(27 * DT)
-        Call(BindNpcDefeat, NPC_BossFuzzy, Ref(N(EVS_NpcDefeat_FuzzyBoss)))
-        Call(BindNpcAI, NPC_BossFuzzy, Ref(N(EVS_NpcAI_StartBossBattle)))
+        Call(BindNpcDefeat, NPC_BossFuzzy, Ref(EVS_NpcDefeat_FuzzyBoss))
+        Call(BindNpcAI, NPC_BossFuzzy, Ref(EVS_NpcAI_StartBossBattle))
     EndThread
     Thread
         Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
@@ -1213,9 +1213,9 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     End
 };
 
-EvtScript N(EVS_HitTree_Correct) = {
+EvtScript EVS_HitTree_Correct = {
     Thread
-        Call(N(GetTreeHidingSpotPos), LVar0, LVar0, LVar1, LVar2)
+        Call(GetTreeHidingSpotPos, LVar0, LVar0, LVar1, LVar2)
         Call(GetPlayerPos, LVarA, LVarB, LVarC)
         Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
         Add(LVarA, LVar0)
@@ -1227,7 +1227,7 @@ EvtScript N(EVS_HitTree_Correct) = {
         Call(SetCamSpeed, CAM_DEFAULT, 3)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(N(GetTreeHidingSpotPos), LVar0, LVar0, LVar1, LVar2)
+    Call(GetTreeHidingSpotPos, LVar0, LVar0, LVar1, LVar2)
     Call(GetNpcPointer, NPC_BossFuzzy, LVarE)
     Call(GetNpcPointer, NPC_KoopersShell, LVarF)
     Set(LVarA, LVar0)
@@ -1237,21 +1237,21 @@ EvtScript N(EVS_HitTree_Correct) = {
         CaseEq(0)
             Set(LVar4, LVarC)
             Sub(LVar4, 4)
-            Call(N(SetThreadAnchorPos), LVarA, LVarB, LVar4)
+            Call(SetThreadAnchorPos, LVarA, LVarB, LVar4)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, true)
             Set(LVar3, LVarB)
             Div(LVar3, 2)
             Set(LVarD, LVarB)
             Sub(LVarD, LVar3)
-            Exec(N(EVS_MoveShellDown))
+            Exec(EVS_MoveShellDown)
             Wait(1)
             Wait(30)
-            Call(N(AttachThreadFrontNpc), nullptr)
-            Call(N(AttachThreadBackNpc), nullptr)
-            Call(N(SetThreadTargetLengthAngle), 0, 0, -1)
-            Call(N(SetThreadTargetLengthAngle), LVar3, 0, -1)
+            Call(AttachThreadFrontNpc, nullptr)
+            Call(AttachThreadBackNpc, nullptr)
+            Call(SetThreadTargetLengthAngle, 0, 0, -1)
+            Call(SetThreadTargetLengthAngle, LVar3, 0, -1)
             Wait(1)
-            Call(N(AttachThreadFrontNpc), LVarF)
+            Call(AttachThreadFrontNpc, LVarF)
             Wait(20)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Hurt)
             Call(PlayerFaceNpc, NPC_BossFuzzy, false)
@@ -1261,35 +1261,35 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Confused)
             Set(LVar9, LVarC)
             Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00BF)
-            Call(N(SetThreadTargetLengthAngle), 0, 0, 30)
+            Call(SetThreadTargetLengthAngle, 0, 0, 30)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
             Set(LVarC, LVar9)
             Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarB, LVarC, 30)
-            Call(N(AttachThreadFrontNpc), nullptr)
+            Call(AttachThreadFrontNpc, nullptr)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, false)
             Add(MV_CorrectCount, 1)
-            Exec(N(EVS_Scene_ShuffleFuzzyPositions))
+            Exec(EVS_Scene_ShuffleFuzzyPositions)
             Return
         CaseEq(1)
             Set(LVar4, LVarC)
             Sub(LVar4, 4)
-            Call(N(SetThreadAnchorPos), LVarA, LVarB, LVar4)
+            Call(SetThreadAnchorPos, LVarA, LVarB, LVar4)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, true)
             Set(LVar3, LVarB)
             Mul(LVar3, 2)
             Div(LVar3, 3)
             Set(LVarD, LVarB)
             Sub(LVarD, LVar3)
-            Exec(N(EVS_MoveShellUp))
+            Exec(EVS_MoveShellUp)
             Wait(1)
             Wait(30)
-            Call(N(AttachThreadFrontNpc), nullptr)
-            Call(N(AttachThreadBackNpc), nullptr)
-            Call(N(SetThreadTargetLengthAngle), 0, 0, -1)
-            Call(N(SetThreadTargetLengthAngle), LVar3, 0, -1)
+            Call(AttachThreadFrontNpc, nullptr)
+            Call(AttachThreadBackNpc, nullptr)
+            Call(SetThreadTargetLengthAngle, 0, 0, -1)
+            Call(SetThreadTargetLengthAngle, LVar3, 0, -1)
             Wait(1)
-            Call(N(AttachThreadFrontNpc), LVarF)
+            Call(AttachThreadFrontNpc, LVarF)
             Wait(20)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Hurt)
             Call(PlayerFaceNpc, NPC_BossFuzzy, false)
@@ -1299,32 +1299,32 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Confused)
             Set(LVar9, LVarC)
             Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C0)
-            Call(N(SetThreadTargetLengthAngle), 0, 0, 30)
+            Call(SetThreadTargetLengthAngle, 0, 0, 30)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
             Set(LVarC, LVar9)
             Call(PlaySoundAtNpc, NPC_BossFuzzy, SOUND_SEQ_FUZZY_HOP, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_BossFuzzy, LVarA, LVarB, LVarC, 30)
-            Call(N(AttachThreadFrontNpc), nullptr)
+            Call(AttachThreadFrontNpc, nullptr)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, false)
             Add(MV_CorrectCount, 1)
-            Exec(N(EVS_Scene_ShuffleFuzzyPositions))
+            Exec(EVS_Scene_ShuffleFuzzyPositions)
             Return
         CaseEq(2)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Hurt)
             Call(PlayerFaceNpc, NPC_BossFuzzy, false)
-            Call(N(SetThreadAnchorPos), LVarA, LVarB, LVarC)
-            Call(N(SetThreadTargetLengthAngle), 0, 0, -1)
+            Call(SetThreadAnchorPos, LVarA, LVarB, LVarC)
+            Call(SetThreadTargetLengthAngle, 0, 0, -1)
             Set(LVar0, LVarB)
             Sub(LVar0, 50)
-            Call(N(SetThreadTargetLengthAngle), LVar0, 0, 0)
-            Call(N(AttachThreadFrontNpc), LVarF)
-            Call(N(AttachThreadBackNpc), LVarE)
+            Call(SetThreadTargetLengthAngle, LVar0, 0, 0)
+            Call(AttachThreadFrontNpc, LVarF)
+            Call(AttachThreadBackNpc, LVarE)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, true)
             Wait(20)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Confused)
             Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C1)
             Wait(10 * DT)
-            Call(N(AttachThreadFrontNpc), nullptr)
+            Call(AttachThreadFrontNpc, nullptr)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar1, 40)
             Call(SetNpcJumpscale, NPC_KoopersShell, Float(0.6))
@@ -1348,17 +1348,17 @@ EvtScript N(EVS_HitTree_Correct) = {
             Wait(10 * DT)
             Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Shout, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C2)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Talk)
-            Call(N(SetThreadTargetLengthAngle), 0, 0, 20 * DT)
+            Call(SetThreadTargetLengthAngle, 0, 0, 20 * DT)
             Wait(20 * DT)
             Call(SetModelFlags, MODEL_o177, MODEL_FLAG_USES_CUSTOM_GFX, false)
-            Call(N(AttachThreadBackNpc), 0)
+            Call(AttachThreadBackNpc, 0)
             Call(SetNpcPos, NPC_BossFuzzy, NPC_DISPOSE_LOCATION)
             Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
             Call(SetMusic, 0, SONG_KOOPA_VILLAGE, 0, VOL_LEVEL_FULL)
             Call(DisablePlayerPhysics, false)
             Call(DisablePlayerInput, false)
             Set(AF_NOK04_PlayingGame, false)
-            Exec(N(EVS_Scene_KooperArrives))
+            Exec(EVS_Scene_KooperArrives)
     EndSwitch
     Call(PanToTarget, CAM_DEFAULT, 0, false)
 #if VERSION_PAL
@@ -1370,9 +1370,9 @@ EvtScript N(EVS_HitTree_Correct) = {
     End
 };
 
-EvtScript N(EVS_HitTree_Wrong) = {
+EvtScript EVS_HitTree_Wrong = {
     Thread
-        Call(N(GetTreeHidingSpotPos), LVar0, LVar0, LVar1, LVar2)
+        Call(GetTreeHidingSpotPos, LVar0, LVar0, LVar1, LVar2)
         Call(GetPlayerPos, LVarA, LVarB, LVarC)
         Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
         Add(LVarA, LVar0)
@@ -1386,7 +1386,7 @@ EvtScript N(EVS_HitTree_Wrong) = {
     EndThread
     Wait(15)
     Set(MV_LastWrongTreeIndex, LVar0)
-    Call(N(GetTreeHidingSpotPos), MV_LastWrongTreeIndex, LVar0, LVar1, LVar2)
+    Call(GetTreeHidingSpotPos, MV_LastWrongTreeIndex, LVar0, LVar1, LVar2)
     Call(GetNpcPointer, NPC_KoopersShell, LVarF)
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
@@ -1418,13 +1418,13 @@ EvtScript N(EVS_HitTree_Wrong) = {
             Goto(0)
         EndIf
     Wait(20)
-    Exec(N(EVS_Scene_ShuffleFuzzyPositions))
+    Exec(EVS_Scene_ShuffleFuzzyPositions)
     Return
     End
 };
 
-EvtScript N(EVS_HitTree) = {
-    Call(N(AnimateTreeBranch), LVar0, 1)
+EvtScript EVS_HitTree = {
+    Call(AnimateTreeBranch, LVar0, 1)
     Call(PlaySound, SOUND_SHAKE_TREE_LEAVES)
     IfEq(AF_NOK04_PlayingGame, false)
         Return
@@ -1439,25 +1439,25 @@ EvtScript N(EVS_HitTree) = {
             Wait(15)
             Call(PlaySound, SOUND_APPROVE)
         EndThread
-        ExecWait(N(EVS_HitTree_Correct))
+        ExecWait(EVS_HitTree_Correct)
     Else
         Thread
             Wait(15)
             Call(PlaySound, SOUND_MENU_ERROR)
         EndThread
-        ExecWait(N(EVS_HitTree_Wrong))
+        ExecWait(EVS_HitTree_Wrong)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kooper) = {
+EvtScript EVS_NpcInteract_Kooper = {
     Return
     End
 };
 
-EvtScript N(EVS_SetupMinigame) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_HideInTree)))
+EvtScript EVS_SetupMinigame = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_HideInTree))
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SetNpcPos, NPC_BossFuzzy, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
@@ -1466,8 +1466,8 @@ EvtScript N(EVS_SetupMinigame) = {
     Set(MV_CorrectCount, 0)
     Set(MV_CorrectTreeIndex, 2)
     Set(MV_LastCorrectTreeIndex, 2)
-    Call(N(InitThreadData))
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, nullptr, Ref(N(build_gfx_thread)))
+    Call(InitThreadData)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, nullptr, Ref(build_gfx_thread))
     Call(SetNpcPos, NPC_BossFuzzy, -293, 0, 319)
     Call(SetNpcPos, NPC_KoopersShell, -293, 0, 322)
     Call(EnableNpcShadow, NPC_AmbushFuzzy, false)
@@ -1476,7 +1476,7 @@ EvtScript N(EVS_SetupMinigame) = {
     Call(EnableNpcShadow, NPC_Fuzzy_03, false)
     Call(SetModelFlags, MODEL_o177, MODEL_FLAG_DO_BOUNDS_CULLING, false)
     IfGe(GB_StoryProgress, STORY_CH1_FUZZY_THIEF_HID_IN_TREE)
-        Call(N(GetTreeHidingSpotPos), LVar4, LVar0, LVar1, LVar2)
+        Call(GetTreeHidingSpotPos, LVar4, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_BossFuzzy, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_KoopersShell, LVar0, LVar1, LVar2)
         Call(EnableNpcShadow, NPC_BossFuzzy, false)
@@ -1487,28 +1487,28 @@ EvtScript N(EVS_SetupMinigame) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopersShell) = {
+EvtScript EVS_NpcInit_KoopersShell = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKooper_StillShellAlt)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_WrongFuzzy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_WaitForWrongAnswer)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_WrongFuzzy)))
+EvtScript EVS_NpcInit_WrongFuzzy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_WaitForWrongAnswer))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_WrongFuzzy))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy_Aux) = {
+EvtScript EVS_NpcInit_Fuzzy_Aux = {
     Call(BindNpcIdle, NPC_SELF, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kooper) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kooper)))
+EvtScript EVS_NpcInit_Kooper = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kooper))
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
             Call(InterpNpcYaw, NPC_Kooper, 225, 0)
@@ -1521,13 +1521,13 @@ EvtScript N(EVS_NpcInit_Kooper) = {
     End
 };
 
-NpcData N(NpcData_Minigame)[] = {
+NpcData NpcData_Minigame[] = {
     {
         .id = NPC_KoopersShell,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopersShell),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_KoopersShell,
+        .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
@@ -1548,8 +1548,8 @@ NpcData N(NpcData_Minigame)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_WrongFuzzy),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_WrongFuzzy,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = FUZZY_ANIMS,
@@ -1570,8 +1570,8 @@ NpcData N(NpcData_Minigame)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Fuzzy_Aux),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_Fuzzy_Aux,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = FUZZY_ANIMS,
@@ -1592,8 +1592,8 @@ NpcData N(NpcData_Minigame)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Fuzzy_Aux),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_Fuzzy_Aux,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = FUZZY_ANIMS,
@@ -1614,8 +1614,8 @@ NpcData N(NpcData_Minigame)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Fuzzy_Aux),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_Fuzzy_Aux,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = FUZZY_ANIMS,
@@ -1624,15 +1624,15 @@ NpcData N(NpcData_Minigame)[] = {
         .id = NPC_Kooper,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Kooper),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_Kooper,
+        .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
     },
 };
 
-NpcData N(NpcData_Miniboss) = {
+NpcData NpcData_Miniboss = {
     .id = NPC_BossFuzzy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -1648,15 +1648,15 @@ NpcData N(NpcData_Miniboss) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_SetupMinigame),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_SetupMinigame,
+    .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Minigame), BTL_NOK_FORMATION_16, BTL_NOK_STAGE_03),
-    NPC_GROUP(N(NpcData_Miniboss), BTL_NOK_FORMATION_17, BTL_NOK_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Minigame, BTL_NOK_FORMATION_16, BTL_NOK_STAGE_03),
+    NPC_GROUP(NpcData_Miniboss, BTL_NOK_FORMATION_17, BTL_NOK_STAGE_03),
     {}
 };

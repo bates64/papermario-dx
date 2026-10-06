@@ -1,13 +1,13 @@
 #include "kgr_02.h"
 
-API_CALLABLE(N(HasBombetteExploded)) {
+API_CALLABLE(HasBombetteExploded) {
     if (gCollisionStatus.bombetteExploded >= 0) {
         script->varTable[1] = true;
     }
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_MonitorFriendlyFire) = {
+EvtScript EVS_MonitorFriendlyFire = {
     Set(LVar1, 0)
     Loop(0)
         Call(GetPlayerActionState, LVar0)
@@ -18,7 +18,7 @@ EvtScript N(EVS_MonitorFriendlyFire) = {
             CaseEq(ACTION_STATE_SPIN_POUND)
                 Set(LVar1, true)
         EndSwitch
-        Call(N(HasBombetteExploded))
+        Call(HasBombetteExploded)
         IfNe(LVar1, 0)
             Call(DisablePlayerInput, true)
             Call(ShowMessageAtScreenPos, MSG_MAC_Port_009A, 160, 40)

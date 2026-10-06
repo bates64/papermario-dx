@@ -2,14 +2,12 @@
 #include "script_api/battle.h"
 #include "sprite/npc/HammerBros.h"
 
-#define NAMESPACE A(hammer_bro)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_HAMMER_1    = 2,
     PRT_HAMMER_2    = 3,
@@ -18,16 +16,16 @@ enum N(ActorPartIDs) {
     PRT_HAMMER_5    = 6,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Unused     = 8, // possibly a topple state that was never implemented
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_HAMMER_THROW    = 5,
     DMG_HAMMER_SURGE    = 2,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_HammerBros_Idle,
     STATUS_KEY_STONE,     ANIM_HammerBros_Still,
     STATUS_KEY_SLEEP,     ANIM_HammerBros_Sleep,
@@ -40,17 +38,17 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(HammerAnims)[] = {
+s32 HammerAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_HammerBros_Hammer,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   1,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              50,
@@ -75,15 +73,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -3, 35 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -3, -10 },
@@ -94,8 +92,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(HammerAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = HammerAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -106,8 +104,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(HammerAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = HammerAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -118,8 +116,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(HammerAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = HammerAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -130,8 +128,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(HammerAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = HammerAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -142,23 +140,23 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(HammerAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = HammerAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_HAMMER_BROS,
     .level = ACTOR_LEVEL_HAMMER_BROS,
     .maxHP = 12,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 30,
     .airLiftChance = 75,
     .hurricaneChance = 60,
@@ -173,16 +171,16 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 35 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Unused, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         Switch(LVar0)
@@ -206,7 +204,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -302,7 +300,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_HammerThrow) = {
+EvtScript EVS_Attack_HammerThrow = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -418,7 +416,7 @@ EvtScript N(EVS_Attack_HammerThrow) = {
     End
 };
 
-EvtScript N(EVS_HammerSurge_Miss) = {
+EvtScript EVS_HammerSurge_Miss = {
     Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Idle)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Throw)
@@ -447,7 +445,7 @@ EvtScript N(EVS_HammerSurge_Miss) = {
     End
 };
 
-EvtScript N(EVS_HammerSurge_Hit) = {
+EvtScript EVS_HammerSurge_Hit = {
     Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(2.0))
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Idle)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Throw)
@@ -471,7 +469,7 @@ EvtScript N(EVS_HammerSurge_Hit) = {
     End
 };
 
-EvtScript N(EVS_Attack_HammerSurge) = {
+EvtScript EVS_Attack_HammerSurge = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -517,19 +515,19 @@ EvtScript N(EVS_Attack_HammerSurge) = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Set(LVar0, PRT_HAMMER_1)
-            Exec(N(EVS_HammerSurge_Miss))
+            Exec(EVS_HammerSurge_Miss)
             Wait(5)
             Set(LVar0, PRT_HAMMER_2)
-            Exec(N(EVS_HammerSurge_Miss))
+            Exec(EVS_HammerSurge_Miss)
             Wait(5)
             Set(LVar0, PRT_HAMMER_3)
-            Exec(N(EVS_HammerSurge_Miss))
+            Exec(EVS_HammerSurge_Miss)
             Wait(5)
             Set(LVar0, PRT_HAMMER_4)
-            Exec(N(EVS_HammerSurge_Miss))
+            Exec(EVS_HammerSurge_Miss)
             Wait(5)
             Set(LVar0, PRT_HAMMER_5)
-            Exec(N(EVS_HammerSurge_Miss))
+            Exec(EVS_HammerSurge_Miss)
             Wait(5)
             Wait(20)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HammerBros_Idle)
@@ -548,19 +546,19 @@ EvtScript N(EVS_Attack_HammerSurge) = {
     EndSwitch
     Thread
         Set(LVar0, PRT_HAMMER_1)
-        Exec(N(EVS_HammerSurge_Hit))
+        Exec(EVS_HammerSurge_Hit)
         Wait(5)
         Set(LVar0, PRT_HAMMER_2)
-        Exec(N(EVS_HammerSurge_Hit))
+        Exec(EVS_HammerSurge_Hit)
         Wait(5)
         Set(LVar0, PRT_HAMMER_3)
-        Exec(N(EVS_HammerSurge_Hit))
+        Exec(EVS_HammerSurge_Hit)
         Wait(5)
         Set(LVar0, PRT_HAMMER_4)
-        Exec(N(EVS_HammerSurge_Hit))
+        Exec(EVS_HammerSurge_Hit)
         Wait(5)
         Set(LVar0, PRT_HAMMER_5)
-        Exec(N(EVS_HammerSurge_Hit))
+        Exec(EVS_HammerSurge_Hit)
     EndThread
     Wait(21)
     Wait(2)
@@ -591,15 +589,15 @@ EvtScript N(EVS_Attack_HammerSurge) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetActorHP, ACTOR_SELF, LVar0)
     Call(GetEnemyMaxHP, ACTOR_SELF, LVar1)
     MulF(LVar0, Float(100.0))
     DivF(LVar0, LVar1)
     IfGt(LVar0, 34)
-        ExecWait(N(EVS_Attack_HammerThrow))
+        ExecWait(EVS_Attack_HammerThrow)
     Else
-        ExecWait(N(EVS_Attack_HammerSurge))
+        ExecWait(EVS_Attack_HammerSurge)
     EndIf
     Return
     End

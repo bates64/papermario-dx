@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EvtScript N(EVS_Scene_WishingToadKid) = {
+EvtScript EVS_Scene_WishingToadKid = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -21,20 +21,20 @@ EvtScript N(EVS_Scene_WishingToadKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_WishingToadKid) = {
+EvtScript EVS_NpcInit_WishingToadKid = {
     Call(SetNpcPos, NPC_SELF, -100, 0, 200)
     Call(SetNpcYaw, NPC_SELF, 90)
     Return
     End
 };
 
-NpcData N(NpcData_WishSceneToads)[] = {
+NpcData NpcData_WishSceneToads[] = {
     {
         .id = NPC_WishingToadKid,
         .pos = { 350.0f, 0.0f, -20.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_WishingToadKid),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_WishingToadKid,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_KID_RED_ANIMS,
@@ -43,7 +43,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .id = NPC_GossipTrio1,
         .pos = { -245.0f, 20.0f, 100.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
@@ -53,7 +53,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .id = NPC_GossipTrio2,
         .pos = { -25.0f, 0.0f, 170.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -63,7 +63,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
         .id = NPC_GossipTrio3,
         .pos = { -100.0f, 0.0f, 305.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -71,7 +71,7 @@ NpcData N(NpcData_WishSceneToads)[] = {
     },
 };
 
-NpcGroupList N(WishSceneNPCs) = {
-    NPC_GROUP(N(NpcData_WishSceneToads)),
+NpcGroupList WishSceneNPCs = {
+    NPC_GROUP(NpcData_WishSceneToads),
     {}
 };

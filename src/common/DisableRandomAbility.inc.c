@@ -1,30 +1,30 @@
 #include "common.h"
 
-s32 N(hammer_icons)[] = {
+static s32 hammer_icons[] = {
     ITEM_MENU_HAMMER1,
     ITEM_MENU_HAMMER2,
     ITEM_MENU_HAMMER3,
 };
 
-s32 N(hammer_text)[] = {
+static s32 hammer_text[] = {
     BTL_MSG_HAMMER_DISABLED_1,
     BTL_MSG_HAMMER_DISABLED_2,
     BTL_MSG_HAMMER_DISABLED_3,
 };
 
-s32 N(jump_icons)[] = {
+static s32 jump_icons[] = {
     ITEM_MENU_BOOTS1,
     ITEM_MENU_BOOTS2,
     ITEM_MENU_BOOTS3,
 };
 
-s32 N(jump_text)[] = {
+static s32 jump_text[] = {
     BTL_MSG_JUMP_DISABLED_1,
     BTL_MSG_JUMP_DISABLED_2,
     BTL_MSG_JUMP_DISABLED_3,
 };
 
-API_CALLABLE(N(DisableRandomAbility)) {
+static API_CALLABLE(DisableRandomAbility) {
     Bytecode* args = script->ptrReadPos;
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
@@ -48,14 +48,14 @@ API_CALLABLE(N(DisableRandomAbility)) {
     switch (temp[rand_int(i - 1)]) {
         case 0:
             battleStatus->hammerLossTurns = turnsLost;
-            evt_set_variable(script, *args++, N(hammer_icons)[playerData->hammerLevel]);
-            evt_set_variable(script, *args++, N(hammer_text)[playerData->hammerLevel]);
+            evt_set_variable(script, *args++, hammer_icons[playerData->hammerLevel]);
+            evt_set_variable(script, *args++, hammer_text[playerData->hammerLevel]);
             break;
 
         case 1:
             battleStatus->jumpLossTurns = turnsLost;
-            evt_set_variable(script, *args++, N(jump_icons)[playerData->bootsLevel]);
-            evt_set_variable(script, *args++, N(jump_text)[playerData->bootsLevel]);
+            evt_set_variable(script, *args++, jump_icons[playerData->bootsLevel]);
+            evt_set_variable(script, *args++, jump_text[playerData->bootsLevel]);
             break;
 
         case 2:

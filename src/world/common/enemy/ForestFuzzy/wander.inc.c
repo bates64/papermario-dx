@@ -3,7 +3,7 @@
 
 #include "world/common/ai/HoppingAI.inc.c"
 
-MobileAISettings N(AISettings_ForestFuzzy_Wander) = {
+MobileAISettings AISettings_ForestFuzzy_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 30,
     .waitTime = 10,
@@ -16,19 +16,19 @@ MobileAISettings N(AISettings_ForestFuzzy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ForestFuzzy_Wander) = {
+EvtScript EVS_NpcAI_ForestFuzzy_Wander = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Call(SetSelfVar, AI_VAR_HOPPER, HOPPER_FOREST_FUZZY)
-    Call(N(HoppingAI_Main), Ref(N(AISettings_ForestFuzzy_Wander)))
+    Call(HoppingAI_Main, Ref(AISettings_ForestFuzzy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ForestFuzzy_Wander) = {
+NpcSettings NpcSettings_ForestFuzzy_Wander = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_FOREST_FUZZY,
-    .doAI = &N(EVS_NpcAI_ForestFuzzy_Wander),
+    .doAI = &EVS_NpcAI_ForestFuzzy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -61,7 +61,7 @@ typedef struct StarSpiritData {
     /* 0x54 */ EffectInstance* cardEffect;
 } StarSpiritData; // size = 0x58
 
-API_CALLABLE(N(AwaitSpiritOrbBurst)) {
+API_CALLABLE(AwaitSpiritOrbBurst) {
     StarSpiritData* ptr = script->varTablePtr[0];
 
     sfx_adjust_env_sound_pos(SOUND_LRAW_STAR_ORB_RISING, SOUND_SPACE_DEFAULT, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -73,7 +73,7 @@ API_CALLABLE(N(AwaitSpiritOrbBurst)) {
     }
 }
 
-API_CALLABLE(N(InitSpiritCardSpawn)) {
+API_CALLABLE(InitSpiritCardSpawn) {
     StarSpiritData* ptr = heap_malloc(sizeof(*ptr));
     Bytecode* args = script->ptrReadPos;
 
@@ -101,7 +101,7 @@ API_CALLABLE(N(InitSpiritCardSpawn)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateSpiritCardSpawn)) {
+API_CALLABLE(UpdateSpiritCardSpawn) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     StarSpiritData* ptr = script->varTablePtr[0];
 
@@ -196,7 +196,7 @@ API_CALLABLE(N(UpdateSpiritCardSpawn)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AwaitSpiritCardProgress)) {
+API_CALLABLE(AwaitSpiritCardProgress) {
     Bytecode* args = script->ptrReadPos;
     s32 awaitValue = evt_get_variable(script, *args++);
     StarSpiritData* ptr = script->varTablePtr[0];
@@ -208,7 +208,7 @@ API_CALLABLE(N(AwaitSpiritCardProgress)) {
     }
 }
 
-API_CALLABLE(N(SpawnExistingSpiritCard)) {
+API_CALLABLE(SpawnExistingSpiritCard) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall) {
@@ -229,7 +229,7 @@ API_CALLABLE(N(SpawnExistingSpiritCard)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateExistingSpiritCard)) {
+API_CALLABLE(UpdateExistingSpiritCard) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     StarSpiritData* ptr = script->varTablePtr[0];
 

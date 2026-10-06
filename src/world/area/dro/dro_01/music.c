@@ -1,6 +1,6 @@
 #include "dro_01.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(dro_01_ENTRY_3)

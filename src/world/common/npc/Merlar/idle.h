@@ -1,7 +1,7 @@
 #pragma once
 #include "base.h"
 
-extern EvtScript N(EVS_NpcCreate_Merlar_Idle);
-extern NpcSettings N(NpcSettings_Merlar);
-extern EvtScript N(EVS_NpcAux_Merlar_Idle);
-extern EvtScript N(EVS_NpcIdle_Merlar_Idle);
+extern EvtScript EVS_NpcCreate_Merlar_Idle;
+extern NpcSettings NpcSettings_Merlar;
+extern EvtScript EVS_NpcAux_Merlar_Idle;
+extern EvtScript EVS_NpcIdle_Merlar_Idle;

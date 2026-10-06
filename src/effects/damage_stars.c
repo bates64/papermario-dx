@@ -83,7 +83,6 @@ void damage_stars_main(s32 type, f32 x, f32 y, f32 z, f32 rotAxisX, f32 rotAxisY
         rotAxisY *= 8.0f;
         rotAxisZ *= 8.0f;
 
-        bpPtr->unk_00 = 0;
         bpPtr->init = damage_stars_init;
         bpPtr->update = damage_stars_update;
         bpPtr->renderScene = damage_stars_render;

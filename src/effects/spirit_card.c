@@ -26,9 +26,6 @@ void spirit_card_update(EffectInstance* effect);
 void spirit_card_render(EffectInstance* effect);
 void spirit_card_appendGfx(void* effect);
 
-EFFECT_DEF_RING_BLAST(ring_blast_main);
-EFFECT_DEF_MISC_PARTICLES(misc_particles_main);
-
 EffectInstance* spirit_card_main(
     s32 arg0,
     f32 arg1,
@@ -45,7 +42,6 @@ EffectInstance* spirit_card_main(
     bp.init = spirit_card_init;
     bp.update = spirit_card_update;
     bp.renderScene = spirit_card_render;
-    bp.unk_00 = 0;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_SPIRIT_CARD;
 
@@ -70,13 +66,12 @@ EffectInstance* spirit_card_main(
     data->unk_20 = 30.0f;
 
     if (arg0 == 0) {
-        load_effect(EFFECT_RING_BLAST);
-        ring_blast_main(1, data->pos.x, data->pos.y, data->pos.z, 3.0f, 30);
+        fx_ring_blast(1, data->pos.x, data->pos.y, data->pos.z, 3.0f, 30);
     }
 
     if (arg0 < 2) {
-        load_effect(EFFECT_MISC_PARTICLES);
-        data->child = misc_particles_main(3, arg1, arg2 - arg4 * 30.0f, arg3, arg4 * 30.0f, arg4 * 50.0f, 1.0f, 16, 0);
+        data->child = fx_misc_particles(3, arg1, arg2 - arg4 * 30.0f, arg3, arg4 * 30.0f,
+                                        arg4 * 50.0f, 1.0f, 16, 0);
     } else {
         data->child = nullptr;
     }

@@ -4,17 +4,17 @@
 
 #include "world/common/npc/HarryT/base.h"
 
-void N(worker_render_shrunk_player)(void);
-void N(appendGfx_shrunk_player)(void*);
+void worker_render_shrunk_player(void);
+void appendGfx_shrunk_player(void*);
 
-API_CALLABLE(N(CreateShrinkingWorker)) {
+API_CALLABLE(CreateShrinkingWorker) {
     gPlayerStatus.animFlags |= PA_FLAG_INVISIBLE;
-    evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_scene(nullptr, N(worker_render_shrunk_player)));
+    evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_scene(nullptr, worker_render_shrunk_player));
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroyShrinkingWorker)) {
+API_CALLABLE(DestroyShrinkingWorker) {
     s32 index = evt_get_variable(script, MV_DrawShinkingPlayerWorker);
     gPlayerStatus.animFlags &= ~PA_FLAG_INVISIBLE;
     free_worker(index);
@@ -22,7 +22,7 @@ API_CALLABLE(N(DestroyShrinkingWorker)) {
     return ApiStatus_DONE2;
 }
 
-void N(worker_render_shrunk_player)(void) {
+void worker_render_shrunk_player(void) {
     RenderTask renderTask;
     s32 screenX, screenY, screenZ;
 
@@ -31,14 +31,14 @@ void N(worker_render_shrunk_player)(void) {
         &screenX, &screenY, &screenZ);
 
     renderTask.appendGfxArg = &gPlayerStatus;
-    renderTask.appendGfx = N(appendGfx_shrunk_player);
+    renderTask.appendGfx = appendGfx_shrunk_player;
     renderTask.renderMode = gPlayerStatus.renderMode;
     renderTask.dist = screenZ;
 
     queue_render_task(&renderTask);
 }
 
-void N(appendGfx_shrunk_player)(void* data) {
+void appendGfx_shrunk_player(void* data) {
     PlayerStatus* playerStatus = data;
     f32 shrinkScale = evt_get_float_variable(nullptr, MV_PlayerShrinkScale);
     Matrix4f transformMtx;
@@ -53,10 +53,10 @@ void N(appendGfx_shrunk_player)(void* data) {
     spr_draw_player_sprite(PLAYER_SPRITE_MAIN, 0, 0, nullptr, transformMtx);
 }
 
-EvtScript N(EVS_ShrinkPlayer) = {
+EvtScript EVS_ShrinkPlayer = {
     SetF(MV_PlayerShrinkScale, Float(1.0))
     Call(SetPlayerFlagBits, PS_FLAG_TIME_STOPPED, true)
-    Call(N(CreateShrinkingWorker))
+    Call(CreateShrinkingWorker)
     Thread
         Wait(8)
         Call(MakeLerp, 100, 20, 20, EASING_QUADRATIC_IN)
@@ -74,10 +74,10 @@ EvtScript N(EVS_ShrinkPlayer) = {
     End
 };
 
-EvtScript N(EVS_UnshrinkPlayer) = {
+EvtScript EVS_UnshrinkPlayer = {
     SetF(MV_PlayerShrinkScale, Float(0.2))
     Call(SetPlayerFlagBits, PS_FLAG_TIME_STOPPED, true)
-    Call(N(CreateShrinkingWorker))
+    Call(CreateShrinkingWorker)
     Thread
         Call(MakeLerp, 20, 100, 40, EASING_QUADRATIC_OUT)
         Loop(0)
@@ -94,14 +94,14 @@ EvtScript N(EVS_UnshrinkPlayer) = {
     End
 };
 
-EvtScript N(EVS_FinishUnshrinking) = {
+EvtScript EVS_FinishUnshrinking = {
     Call(SetPlayerFlagBits, PS_FLAG_TIME_STOPPED, false)
-    Call(N(DestroyShrinkingWorker))
+    Call(DestroyShrinkingWorker)
     Return
     End
 };
 
-EvtScript N(EVS_FocusCameraOnPlayer) = {
+EvtScript EVS_FocusCameraOnPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -111,13 +111,13 @@ EvtScript N(EVS_FocusCameraOnPlayer) = {
     End
 };
 
-EvtScript N(EVS_EnterToybox) = {
+EvtScript EVS_EnterToybox = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    ExecWait(N(EVS_ShrinkPlayer))
+    ExecWait(EVS_ShrinkPlayer)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    ExecGetTID(N(EVS_FocusCameraOnPlayer), LVarA)
+    ExecGetTID(EVS_FocusCameraOnPlayer, LVarA)
     Thread
         Call(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_OMO_TOYBOX_LID, SOUND_SPACE_DEFAULT)
         Call(MakeLerp, 0, -90, 10, EASING_LINEAR)
@@ -153,11 +153,11 @@ EvtScript N(EVS_EnterToybox) = {
     End
 };
 
-EvtScript N(EVS_ExitToybox) = {
+EvtScript EVS_ExitToybox = {
     Set(AF_MAC_ExitingToybox, true)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    ExecWait(N(EVS_UnshrinkPlayer))
+    ExecWait(EVS_UnshrinkPlayer)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     Thread
@@ -176,11 +176,11 @@ EvtScript N(EVS_ExitToybox) = {
         EndLoop
         Call(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_OMO_TOYBOX_LID, SOUND_SPACE_DEFAULT)
     EndThread
-    ExecGetTID(N(EVS_FocusCameraOnPlayer), LVarA)
+    ExecGetTID(EVS_FocusCameraOnPlayer, LVarA)
     Call(PlaySoundAtPlayer, SOUND_TRANSPORTER_OUT, SOUND_SPACE_DEFAULT)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, -480, 45, -90, 25)
-    ExecWait(N(EVS_FinishUnshrinking))
+    ExecWait(EVS_FinishUnshrinking)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -189,12 +189,12 @@ EvtScript N(EVS_ExitToybox) = {
     End
 };
 
-EvtScript N(EVS_BounceOffSpring) = {
+EvtScript EVS_BounceOffSpring = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    ExecGetTID(N(EVS_FocusCameraOnPlayer), LVarA)
+    ExecGetTID(EVS_FocusCameraOnPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, -430, 20, -45, 15)
     Set(AF_MAC_ExitingToybox, false)
@@ -206,25 +206,25 @@ EvtScript N(EVS_BounceOffSpring) = {
     End
 };
 
-EvtScript N(EVS_UseSpring_Toybox) = {
+EvtScript EVS_UseSpring_Toybox = {
     IfEq(AF_MAC_ExitingToybox, false)
-        Exec(N(EVS_EnterToybox))
+        Exec(EVS_EnterToybox)
     Else
-        Exec(N(EVS_BounceOffSpring))
+        Exec(EVS_BounceOffSpring)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_UnlockStoreroom) = {
-    ExecWait(N(EVS_MakeStoreroom))
+EvtScript EVS_UnlockStoreroom = {
+    ExecWait(EVS_MakeStoreroom)
     Return
     End
 };
 
-ITEM_LIST(N(StoreroomKeyList), ITEM_STOREROOM_KEY);
+ITEM_LIST(StoreroomKeyList, ITEM_STOREROOM_KEY);
 
-EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
+EvtScript EVS_ItemPrompt_StoreroomKey = {
     Call(ShowKeyChoicePopup)
     IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
@@ -258,13 +258,13 @@ EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
     End
 };
 
-EvtScript N(EVS_ForceStoreroomUnlock) = {
+EvtScript EVS_ForceStoreroomUnlock = {
     Call(SetEntityUsed, MV_StoreroomLockEntityID)
     Return
     End
 };
 
-EvtScript N(EVS_OnInspect_StreetSign) = {
+EvtScript EVS_OnInspect_StreetSign = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_0173, 160, 40)
     Call(DisablePlayerInput, false)
@@ -272,13 +272,13 @@ EvtScript N(EVS_OnInspect_StreetSign) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
         Call(MakeEntity, Ref(Entity_Padlock), 155, 48, -480, 90, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_UnlockStoreroom)))
+        Call(AssignScript, Ref(EVS_UnlockStoreroom))
         Set(MV_StoreroomLockEntityID, LVar0)
         Call(SetEntityCullMode, 3)
-        BindPadlock(Ref(N(EVS_ItemPrompt_StoreroomKey)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(StoreroomKeyList)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_StoreroomKey), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(StoreroomKeyList), 0, 1)
     EndIf
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_TOY_TRAIN, VIS_GROUP_2), 50, 40, -430, ITEM_SPAWN_MODE_KEY, GF_MAC04_Item_ToyTrain)
     Thread
@@ -296,9 +296,9 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_VOLT_SHROOM, VIS_GROUP_2), 50, 40, -370, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_VoltShroom)
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_DIZZY_DIAL, VIS_GROUP_2), 50, 40, -490, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_DizzyDial)
     Call(MakeEntity, Ref(Entity_ScriptSpring), -480, 20, -90, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring_Toybox)))
+    Call(AssignScript, Ref(EVS_UseSpring_Toybox))
     Call(SetEntityCullMode, 2)
-    BindTrigger(Ref(N(EVS_OnInspect_StreetSign)), TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
+    BindTrigger(Ref(EVS_OnInspect_StreetSign), TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     Return
     End
 };

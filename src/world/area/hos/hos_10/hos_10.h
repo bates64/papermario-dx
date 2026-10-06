@@ -28,8 +28,6 @@ enum {
     MV_HaloFXPtr    = MapVar(1),
 };
 
-#define NAMESPACE hos_10
-
 #include "sprite/player.h"
 
 #include "world/common/npc/Dummy/idle.h"
@@ -37,15 +35,15 @@ enum {
 #include "world/common/npc/Twink/idle.h"
 #include "world/common/npc/StarSpirit/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Scene_CastleDescending);
-extern EvtScript N(EVS_Scene_SpiritsFlyingAway);
-extern EvtScript N(EVS_Scene_RisingAboveClouds);
-extern EvtScript N(EVS_Scene_UnusedWhiteScreen);
-extern EvtScript N(EVS_Scene_PreTitle);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Scene_CastleDescending;
+extern EvtScript EVS_Scene_SpiritsFlyingAway;
+extern EvtScript EVS_Scene_RisingAboveClouds;
+extern EvtScript EVS_Scene_UnusedWhiteScreen;
+extern EvtScript EVS_Scene_PreTitle;
 #if VERSION_JP
-extern EvtScript N(EVS_SetupNarrator);
+extern EvtScript EVS_SetupNarrator;
 #endif
-extern NpcGroupList N(NpcGroup_Descent);
-extern NpcGroupList N(NpcGroup_FlyAway);
+extern NpcGroupList NpcGroup_Descent;
+extern NpcGroupList NpcGroup_FlyAway;
