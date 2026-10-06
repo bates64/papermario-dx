@@ -280,10 +280,12 @@ BSS u8 Vine2Base[0x3000] ALIGNED(8);
 BSS u8 Vine1Base[0x3000] ALIGNED(8);
 BSS u8 Vine0Base[0x4000] ALIGNED(8);
 
-static const struct {
+typedef struct VineBuffer {
     u8* data;
     u32 capacity;
-} VineBuffers[NUM_VINES] = {
+} VineBuffer;
+
+static const VineBuffer VineBuffers[NUM_VINES] = {
     [VINE_0] = { Vine0Base, sizeof(Vine0Base) },
     [VINE_1] = { Vine1Base, sizeof(Vine1Base) },
     [VINE_2] = { Vine2Base, sizeof(Vine2Base) },
@@ -292,10 +294,12 @@ static const struct {
 
 #define VINE_ANIM_ENTRY(name) { world_model_anim_kzn_##name##_ROM_START, world_model_anim_kzn_##name##_ROM_END }
 
-static const struct {
+typedef struct VineAnim {
     u8* start;
     u8* end;
-} VineAnims[] = {
+} VineAnim;
+
+static const VineAnim VineAnims[] = {
     [VINE_ANIM_BOSS_IDLE]                   VINE_ANIM_ENTRY(00),
     [VINE_ANIM_BOSS_TWITCH]                 VINE_ANIM_ENTRY(01),
     [VINE_ANIM_BOSS_ATTACK]                 VINE_ANIM_ENTRY(02),
