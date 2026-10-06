@@ -79,8 +79,8 @@ NpcData NpcData_Fuzzy = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_PiranhaPlant_01, BTL_MIM_FORMATION_0D, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_PiranhaPlant_02, BTL_MIM_FORMATION_0E, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_Fuzzy, BTL_MIM_FORMATION_07, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_PiranhaPlant_01, "mim:piranha_plant_2_forest_fuzzy_1", "mim_01"),
+    NPC_GROUP(NpcData_PiranhaPlant_02, "mim:piranha_plant_1_forest_fuzzy_2", "mim_01"),
+    NPC_GROUP(NpcData_Fuzzy, "mim:forest_fuzzy_1_mixed_07", "mim_01"),
     {}
 };

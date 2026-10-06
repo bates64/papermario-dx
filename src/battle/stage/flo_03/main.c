@@ -185,7 +185,7 @@ s32 ForegroundVineModels[] = {
     STAGE_MODEL_LIST_END
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "flo_tex",
     .shape = "flo_bt03_shape",
     .hit = "flo_bt03_hit",

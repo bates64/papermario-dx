@@ -26,6 +26,6 @@ NpcData NpcData_BuzzyBeetle = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BuzzyBeetle, BTL_TIK_FORMATION_15, BTL_TIK_STAGE_01),
+    NPC_GROUP(NpcData_BuzzyBeetle, "tik:buzzy_beetle_1_spiked_gloomba_1_buzzy_beetle_1", "tik_02"),
     {}
 };

@@ -991,7 +991,7 @@ EvtScript EVS_WorldSushie_EnterMap = {
     End
 };
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = false,
     .init = init,
     .takeOut = &EVS_WorldSushie_TakeOut,

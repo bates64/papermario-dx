@@ -272,4 +272,4 @@ void update(void) {
 
 #include "common/MashCommandFree.inc.c"
 
-ACTION_COMMAND_ENTRY(ACTION_COMMAND_FIRE_SHELL);
+OVL_DEF_ACTION_CMD(ACTION_COMMAND_FIRE_SHELL);

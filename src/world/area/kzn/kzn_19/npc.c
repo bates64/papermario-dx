@@ -692,7 +692,7 @@ NpcData NpcData_LavaPiranha[] = {
 
 NpcGroupList BossNPCs = {
     NPC_GROUP(NpcData_Kolorado),
-    NPC_GROUP(NpcData_LavaPiranha, BTL_KZN2_FORMATION_00, BTL_KZN2_STAGE_06),
+    NPC_GROUP(NpcData_LavaPiranha, "kzn2:lava_piranha", "kzn_05"),
     {}
 };
 

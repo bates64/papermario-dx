@@ -216,9 +216,9 @@ NpcData NpcData_ShyGuy_04 = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Toads),
-    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
-    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
-    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
-    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
+    NPC_GROUP(NpcData_ShyGuy_01, "omo3:shy_guy_1", "omo_05b"),
+    NPC_GROUP(NpcData_ShyGuy_02, "omo3:shy_guy_1", "omo_05b"),
+    NPC_GROUP(NpcData_ShyGuy_03, "omo3:shy_guy_1", "omo_05b"),
+    NPC_GROUP(NpcData_ShyGuy_04, "omo3:shy_guy_1", "omo_05b"),
     {}
 };

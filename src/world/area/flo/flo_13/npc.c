@@ -814,15 +814,15 @@ NpcData NpcData_Spiny_06 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Lakitu_01, BTL_FLO_FORMATION_06, BTL_FLO_STAGE_04),
-    NPC_GROUP(NpcData_Lakitu_02, BTL_FLO_FORMATION_04, BTL_FLO_STAGE_04),
-    NPC_GROUP(NpcData_Spiny_01, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Spiny_02, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Spiny_03, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Spiny_04, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Spiny_05, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Spiny_06, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(NpcData_Lakilester, BTL_FLO2_FORMATION_05, BTL_FLO2_STAGE_01),
+    NPC_GROUP(NpcData_Lakitu_01, "flo:lakitu_1_spiny_1", "flo_02b"),
+    NPC_GROUP(NpcData_Lakitu_02, "flo:lakitu_1_bzzap_1_lakitu_1_bzzap_1", "flo_02b"),
+    NPC_GROUP(NpcData_Spiny_01, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Spiny_02, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Spiny_03, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Spiny_04, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Spiny_05, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Spiny_06, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Lakilester, "flo2:lakilester", "flo_01b"),
     NPC_GROUP(NpcData_Lakilulu),
     NPC_GROUP(NpcData_Lakilulu_Spiny),
     {}

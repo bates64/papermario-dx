@@ -192,6 +192,6 @@ NpcData NpcData_Tubba = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Tubba, BTL_DGB_FORMATION_04, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Tubba, "dgb:tubba_blubba", "dgb_01"),
     {}
 };

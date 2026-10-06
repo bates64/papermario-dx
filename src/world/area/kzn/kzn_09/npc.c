@@ -302,7 +302,7 @@ NpcData NpcData_PutridPiranha[] = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_PassiveNPCs),
-    NPC_GROUP(NpcData_SpikeTop, BTL_KZN_FORMATION_0B, BTL_KZN_STAGE_01),
-    NPC_GROUP(NpcData_PutridPiranha, BTL_KZN_FORMATION_0F, BTL_KZN_STAGE_01),
+    NPC_GROUP(NpcData_SpikeTop, "kzn:spike_top_1_putrid_piranha_1", "kzn_01b"),
+    NPC_GROUP(NpcData_PutridPiranha, "kzn:putrid_piranha_2", "kzn_01b"),
     {}
 };

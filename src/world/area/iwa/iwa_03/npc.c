@@ -120,9 +120,9 @@ NpcData NpcData_MontyMole[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Cleft_01, BTL_IWA_FORMATION_03, BTL_IWA_STAGE_00),
-    NPC_GROUP(NpcData_Cleft_02, BTL_IWA_FORMATION_00, BTL_IWA_STAGE_00),
-    NPC_GROUP(NpcData_Cleft_03, BTL_IWA_FORMATION_01, BTL_IWA_STAGE_00),
-    NPC_GROUP(NpcData_MontyMole, BTL_IWA_FORMATION_09, BTL_IWA_STAGE_00),
+    NPC_GROUP(NpcData_Cleft_01, "iwa:cleft_1_monty_mole_1", "iwa_01"),
+    NPC_GROUP(NpcData_Cleft_02, "iwa:cleft_1", "iwa_01"),
+    NPC_GROUP(NpcData_Cleft_03, "iwa:cleft_2", "iwa_01"),
+    NPC_GROUP(NpcData_MontyMole, "iwa:monty_mole_1_cleft_1", "iwa_01"),
     {}
 };

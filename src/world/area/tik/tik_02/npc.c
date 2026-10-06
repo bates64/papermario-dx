@@ -117,6 +117,6 @@ NpcData NpcData_Blooper = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Blooper, BTL_TIK2_FORMATION_00, BTL_TIK2_STAGE_00),
+    NPC_GROUP(NpcData_Blooper, "tik2:blooper", "tik_01"),
     {}
 };

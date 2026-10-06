@@ -67,7 +67,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_FOREST_FUZZY,
     .level = ACTOR_LEVEL_FOREST_FUZZY,
@@ -670,5 +670,5 @@ EvtScript EVS_TakeTurn = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation CloneFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 0),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 0),
 };

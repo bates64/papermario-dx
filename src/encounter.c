@@ -1174,16 +1174,20 @@ void update_encounters_pre_battle(void) {
     PlayerData* playerData = &gPlayerData;
     Encounter* encounter;
     Enemy* enemy;
+    b32 restarting = gEncounterSubState == ENCOUNTER_SUBSTATE_PRE_BATTLE_RESTART;
     s32 i;
     s32 j;
 
     switch (gEncounterSubState) {
         case ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT:
-            currentEncounter->fadeOutAmount = 0;
-            currentEncounter->substateDelay = 1;
+        case ENCOUNTER_SUBSTATE_PRE_BATTLE_RESTART:
+            currentEncounter->fadeOutAmount = restarting ? 255 : 0;
+            currentEncounter->substateDelay = restarting ? 0 : 1;
             currentEncounter->fadeOutAccel = 1;
             currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_LOADING;
-            HasPreBattleSongPushed = false;
+            if (!restarting) {
+                HasPreBattleSongPushed = false;
+            }
             SkipPartnerPostBattleCleanup = false;
             suspend_all_group(EVT_GROUP_FLAG_BATTLE);
 
@@ -1282,10 +1286,15 @@ void update_encounters_pre_battle(void) {
             } else {
                 bgm_set_battle_song(currentEncounter->songID, FIRST_STRIKE_NONE);
             }
-            bgm_push_battle_song();
-            HasPreBattleSongPushed = true;
+            if (!HasPreBattleSongPushed) {
+                bgm_push_battle_song();
+                HasPreBattleSongPushed = true;
+            } else if (!(gOverrideFlags & GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)) {
+                bgm_set_song(0, gMusicControlData[0].battleSongID, gMusicControlData[0].battleVariation,
+                    500, VOL_LEVEL_FULL);
+            }
 
-            currentEncounter->battleStartCountdown = 10;
+            currentEncounter->battleStartCountdown = restarting ? 0 : 10;
             gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_LOAD;
             // fallthrough
         case ENCOUNTER_SUBSTATE_PRE_BATTLE_LOAD:
@@ -1328,8 +1337,7 @@ void update_encounters_pre_battle(void) {
             sfx_stop_sound(SOUND_SPIN_ATTACK);
             sfx_stop_sound(SOUND_SPEEDY_SPIN_ATTACK);
             set_battle_formation(nullptr);
-            set_battle_stage(encounter->stage);
-            load_battle(encounter->battle);
+            load_battle(encounter->battle, encounter->stage);
             currentEncounter->unk_07 = 1;
             currentEncounter->battleTransitionState = BATTLE_TRANSITION_STATE_STARTED;
             currentEncounter->hasMerleeCoinBonus = false;
@@ -2382,7 +2390,7 @@ void create_encounters(void) {
                 ASSERT(encounter != nullptr);
                 encounter->count = groupNpcCount;
                 encounter->battle = groupList->battle;
-                encounter->stage = groupList->stage - 1;
+                encounter->stage = groupList->stage;
                 encounter->encounterID = totalNpcCount;
                 for (i = 0; i < groupNpcCount; i++) {
                     if (get_defeated(mapID, encounter->encounterID + i)) {

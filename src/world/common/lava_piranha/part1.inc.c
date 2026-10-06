@@ -6,10 +6,10 @@ enum {
     NUM_VINES   = 4
 };
 
-extern Addr D_80200000;
-extern Addr D_80204000;
-extern Addr D_80207000;
-extern Addr D_8020A000;
+extern u8 D_80200000[0x4000];
+extern u8 D_80204000[0x3000];
+extern u8 D_80207000[0x3000];
+extern u8 D_8020A000[0x6000];
 #define VINE_0_BASE (s32) &D_80200000
 #define VINE_1_BASE (s32) &D_80204000
 #define VINE_2_BASE (s32) &D_80207000

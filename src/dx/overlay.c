@@ -348,6 +348,31 @@ static void free_storage(Overlay* ovl) {
     }
 }
 
+s32 ovl_get_count(OverlayType type) {
+    ALIGNED(8) u32 header[2];
+    u32 address;
+
+    ASSERT((u32)type < OVL_NUM_TYPES);
+    address = ovlDirectoryRomAddr[type];
+    if (address == 0) return 0;
+    dma_copy((u8*)address, (u8*)(address + sizeof(header)), header);
+    return header[1];
+}
+
+b32 ovl_get_name(OverlayType type, s32 index, char name[OVL_NAME_MAX]) {
+    ALIGNED(8) OverlayDirectoryEntry entry;
+    s32 count = ovl_get_count(type);
+    u32 address;
+
+    name[0] = '\0';
+    if (index < 0 || index >= count) return false;
+    address = ovlDirectoryRomAddr[type] + 8 + index * sizeof(entry);
+    dma_copy((u8*)address, (u8*)(address + sizeof(entry)), &entry);
+    memcpy(name, entry.name, OVL_NAME_MAX);
+    name[OVL_NAME_MAX - 1] = '\0';
+    return true;
+}
+
 static b32 find_in_directory(OverlayType type, const char* name, OverlayDirectoryEntry* out) {
     u32 dirAddr = ovlDirectoryRomAddr[type];
     if (dirAddr == 0) return false;

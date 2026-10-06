@@ -134,7 +134,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_TARGET_ONLY | ACTOR_FLAG_NO_DMG_POPUP,
     .type = ACTOR_TYPE_GOOMNUT_TREE,
     .level = ACTOR_LEVEL_GOOMNUT_TREE,

@@ -30,9 +30,9 @@ b32 dx_debug_should_hide_models();
 b32 dx_debug_is_cheat_enabled(DebugCheat cheat);
 
 void dx_debug_set_map_info(const char* mapName, s32 entryID);
-void dx_debug_set_battle_info(s32 battleID, const char* stageName);
+void dx_debug_set_battle_info(const char* battle, const char* stageName);
 
-void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage);
+void dx_debug_begin_battle_with_ref(const char* battle, const char* stage);
 
 void dx_debug_evt_force_detach(Evt* evt);
 void dx_debug_evt_reset();

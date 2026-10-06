@@ -184,7 +184,7 @@ ActorPartBlueprint FlyingParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_MAGIKOOPA,
     .level = ACTOR_LEVEL_MAGIKOOPA,
@@ -207,7 +207,7 @@ ACTOR_BLUEPRINT() = {
     .statusTextOffset = { 10, 32 },
 };
 
-ACTOR_BLUEPRINT(flying) = {
+OVL_DEF_ACTOR(flying) = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_FLYING_MAGIKOOPA,
     .level = ACTOR_LEVEL_FLYING_MAGIKOOPA,
@@ -1413,11 +1413,11 @@ ActorBlueprint clone_flying = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation CloneFormation = {
-    ACTOR_BY_POS(clone, SummonPos, 0),
+    RAW_ACTOR_BY_POS(clone, SummonPos, 0),
 };
 
 Formation FlyingCloneFormation = {
-    ACTOR_BY_POS(clone_flying, SummonPos, 0),
+    RAW_ACTOR_BY_POS(clone_flying, SummonPos, 0),
 };
 
 EvtScript EVS_Move_MakeClone = {

@@ -32,9 +32,6 @@ void state_init_battle(void) {
 }
 
 void state_step_battle(void) {
-    u32 currentBattleArea;
-    u32 currentBattleIndex;
-
     if (BattleTransitionDelay == 5) {
         if (nuGfxCfb[1] != nuGfxCfb_ptr) {
             return;
@@ -65,11 +62,8 @@ void state_step_battle(void) {
 
         sfx_clear_env_sounds(0);
 
-        currentBattleArea = UNPACK_BTL_AREA(gCurrentBattleID);
-        currentBattleIndex = UNPACK_BTL_INDEX(gCurrentBattleID);
-
         if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH ||
-            (currentBattleArea == BTL_AREA_KKJ && currentBattleIndex == 0)) {
+            strcmp(gCurrentBattleName, "kkj:kammy_koopa") == 0) {
             gGameStatusPtr->peachFlags |= PEACH_FLAG_IS_PEACH;
             spr_init_sprites(PLAYER_SPRITES_PEACH_BATTLE);
         } else {

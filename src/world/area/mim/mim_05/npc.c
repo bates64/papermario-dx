@@ -55,7 +55,7 @@ NpcData NpcData_PiranhaPlant_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_PiranhaPlant_01, BTL_MIM_FORMATION_0B, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_PiranhaPlant_02, BTL_MIM_FORMATION_0A, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_PiranhaPlant_01, "mim:piranha_plant_4", "mim_01"),
+    NPC_GROUP(NpcData_PiranhaPlant_02, "mim:piranha_plant_3", "mim_01"),
     {}
 };

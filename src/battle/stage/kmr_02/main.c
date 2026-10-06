@@ -12,7 +12,7 @@ EvtScript EVS_PostBattle = {
     End
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "kmr_tex",
     .shape = "kmr_bt02_shape", //@bug does not exist
     .bg = "kmr_bg",

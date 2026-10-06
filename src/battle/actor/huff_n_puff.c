@@ -443,7 +443,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_FLYING | ACTOR_FLAG_HALF_HEIGHT,
     .type = ACTOR_TYPE_HUFF_N_PUFF,
     .level = ACTOR_LEVEL_HUFF_N_PUFF,

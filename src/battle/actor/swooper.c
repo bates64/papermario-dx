@@ -66,7 +66,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_UPSIDE_DOWN,
     .type = ACTOR_TYPE_SWOOPER,
     .level = ACTOR_LEVEL_SWOOPER,

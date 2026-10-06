@@ -3,7 +3,6 @@
 #include "script_api/battle.h"
 
 extern ShapeFile gMapShapeData;
-extern StageListRow* gCurrentStagePtr;
 extern s32 bActorsIgnoreDuringCount[];
 
 extern EvtScript EVS_OnBattleInit;
@@ -69,9 +68,9 @@ void btl_state_update_normal_start(void) {
     stage = battleStatus->curStage;
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
-            stage = load_battle_stage(gCurrentStagePtr == nullptr ? battle->stage : gCurrentStagePtr->stage);
+            stage = load_battle_stage(gCurrentStageName[0] == '\0' ? battle->stage : gCurrentStageName);
             #if DX_DEBUG_MENU
-            dx_debug_set_battle_info(gCurrentBattleID << 16 | (gCurrentStageID & 0xFFFF), stage->shape);
+            dx_debug_set_battle_info(gCurrentBattleName, stage->shape);
             #endif
 
             BattleEnemiesCreated = battle->formationSize;

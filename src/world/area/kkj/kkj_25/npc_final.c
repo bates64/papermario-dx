@@ -163,9 +163,9 @@ NpcData NpcData_StarRod_Npc3 = {
 };
 
 NpcGroupList FinaleNpcs = {
-    NPC_GROUP(NpcData_Bowser_Npc3, BTL_KPA2_FORMATION_03),
+    NPC_GROUP(NpcData_Bowser_Npc3, "kpa2:bowser_final_1"),
     NPC_GROUP(NpcData_Peach_Npc3),
-    NPC_GROUP(NpcData_Kammy_Npc3, BTL_KKJ_FORMATION_00),
+    NPC_GROUP(NpcData_Kammy_Npc3, "kkj:kammy_koopa"),
     NPC_GROUP(NpcData_Twink_Npc3),
     NPC_GROUP(NpcData_StarRod_Npc3),
     {}

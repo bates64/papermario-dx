@@ -114,10 +114,10 @@ NpcData NpcData_HurtPlant_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_JungleFuzzy, BTL_JAN_FORMATION_0D, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_02, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_JungleFuzzy, "jan:jungle_fuzzy_1_spear_guy_1_jungle_fuzzy_1", "jan_01"),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_1_jungle_fuzzy_1", "jan_01"),
     NPC_GROUP(NpcData_HeartPlant),
-    NPC_GROUP(NpcData_HurtPlant_01, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_HurtPlant_02, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HurtPlant_01, "jan:hurt_plant_2", "jan_01"),
+    NPC_GROUP(NpcData_HurtPlant_02, "jan:hurt_plant_2", "jan_01"),
     {}
 };

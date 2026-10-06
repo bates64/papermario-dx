@@ -88,7 +88,7 @@ NpcData NpcData_Bubulb = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Fuzzy, BTL_MIM_FORMATION_04, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_Fuzzy, "mim:forest_fuzzy_2_piranha_plant_1", "mim_01"),
     NPC_GROUP(NpcData_Bubulb),
     {}
 };

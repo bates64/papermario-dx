@@ -9,7 +9,7 @@ typedef struct BattlePartner {
 } BattlePartner; // size = 0x0C
 
 #define BATTLE_PARTNER_EXPORT_NAME "gBattlePartner"
-#define BATTLE_PARTNER_ENTRY(partnerID, partnerPosY) \
+#define OVL_DEF_BATTLE_PARTNER(partnerID, partnerPosY) \
     export const BattlePartner gBattlePartner = { \
         .id = (partnerID), \
         .posY = (partnerPosY), \

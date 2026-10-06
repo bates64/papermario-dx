@@ -765,7 +765,7 @@ void post_battle(Npc* npc) {
     }
 }
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = false,
     .init = init,
     .takeOut = &EVS_WorldKooper_TakeOut,

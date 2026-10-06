@@ -771,7 +771,7 @@ NpcData NpcData_Skolar = {
 };
 
 NpcGroupList BossNPCs = {
-    NPC_GROUP(NpcData_Tubba, BTL_ARN_FORMATION_10, BTL_ARN_STAGE_01),
+    NPC_GROUP(NpcData_Tubba, "arn:tubba_blubba", "arn_02"),
     NPC_GROUP(NpcData_Boos),
     NPC_GROUP(NpcData_Bow),
     NPC_GROUP(NpcData_Bootler),
@@ -779,9 +779,9 @@ NpcGroupList BossNPCs = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_HyperParagoomba_01, BTL_ARN_FORMATION_06, BTL_ARN_STAGE_01),
-    NPC_GROUP(NpcData_HyperParagoomba_02, BTL_ARN_FORMATION_07, BTL_ARN_STAGE_01),
-    NPC_GROUP(NpcData_HyperParagoomba_03, BTL_ARN_FORMATION_08, BTL_ARN_STAGE_01),
+    NPC_GROUP(NpcData_HyperParagoomba_01, "arn:hyper_paragoomba_1", "arn_02"),
+    NPC_GROUP(NpcData_HyperParagoomba_02, "arn:hyper_paragoomba_2", "arn_02"),
+    NPC_GROUP(NpcData_HyperParagoomba_03, "arn:hyper_paragoomba_3", "arn_02"),
     {}
 };
 

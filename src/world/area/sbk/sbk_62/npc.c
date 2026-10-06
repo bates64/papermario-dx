@@ -72,8 +72,8 @@ NpcData NpcData_Pokey_03 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Pokey_01, BTL_SBK_FORMATION_01, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_02, BTL_SBK_FORMATION_01, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_03, BTL_SBK_FORMATION_02, BTL_SBK_STAGE_00),
+    NPC_GROUP(NpcData_Pokey_01, "sbk:pokey_2", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_02, "sbk:pokey_2", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_03, "sbk:pokey_3", "sbk_02"),
     {}
 };

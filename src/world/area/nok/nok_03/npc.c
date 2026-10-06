@@ -209,8 +209,8 @@ NpcData NpcData_FuzzyBoss[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Fuzzy_01, BTL_NOK_FORMATION_16, BTL_NOK_STAGE_01),
-    NPC_GROUP(NpcData_Fuzzy_02, BTL_NOK_FORMATION_16, BTL_NOK_STAGE_01),
+    NPC_GROUP(NpcData_Fuzzy_01, "nok:fuzzy_2", "nok_02"),
+    NPC_GROUP(NpcData_Fuzzy_02, "nok:fuzzy_2", "nok_02"),
     NPC_GROUP(NpcData_FuzzyBoss),
     {}
 };

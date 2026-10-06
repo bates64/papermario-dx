@@ -392,6 +392,6 @@ NpcData NpcData_Lakitus[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Lakitus, BTL_FLO_FORMATION_07, BTL_FLO_STAGE_08),
+    NPC_GROUP(NpcData_Lakitus, "flo:lakitu_2_spiny_2", "flo_05"),
     {}
 };

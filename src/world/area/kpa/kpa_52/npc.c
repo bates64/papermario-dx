@@ -64,7 +64,7 @@ NpcData NpcData_HammerBros_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_HammerBros_01, BTL_KPA_FORMATION_15, BTL_KPA_STAGE_00),
-    NPC_GROUP(NpcData_HammerBros_02, BTL_KPA_FORMATION_13, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_HammerBros_01, "kpa:hammer_bro_2_flying_magikoopa_1", "kpa_01"),
+    NPC_GROUP(NpcData_HammerBros_02, "kpa:hammer_bro_1_koopatrol_2", "kpa_01"),
     {}
 };

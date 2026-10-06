@@ -11,7 +11,7 @@ void state_init_world(void) {
 
 #ifdef DX_QUICK_LAUNCH_BATTLE
     if (gGameStatus.loadType == LOAD_FROM_FILE_SELECT) {
-        dx_debug_begin_battle_with_IDs(DX_QUICK_LAUNCH_BATTLE);
+        dx_debug_begin_battle_with_ref(DX_QUICK_LAUNCH_BATTLE);
     }
 #endif
 }

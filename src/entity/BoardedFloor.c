@@ -241,7 +241,7 @@ EntityModelScript Entity_BoardedFloor_Script = {
     es_End
 };
 
-ENTITY_IMPLEMENTATION(BoardedFloor) = {
+OVL_DEF_ENTITY(BoardedFloor) = {
     .flags = 0,
     .typeDataSize = sizeof(BoardedFloorData),
     .renderCommandList = Entity_BoardedFloor_RenderScript,

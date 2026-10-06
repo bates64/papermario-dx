@@ -141,11 +141,11 @@ NpcData NpcData_Bandit_06 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Bandit_01, BTL_SBK_FORMATION_09, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Bandit_02, BTL_SBK_FORMATION_0B, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Bandit_03, BTL_SBK_FORMATION_0C, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Bandit_04, BTL_SBK_FORMATION_0A, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Bandit_05, BTL_SBK_FORMATION_0A, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Bandit_06, BTL_SBK_FORMATION_0A, BTL_SBK_STAGE_00),
+    NPC_GROUP(NpcData_Bandit_01, "sbk:bandit_1", "sbk_02"),
+    NPC_GROUP(NpcData_Bandit_02, "sbk:bandit_3", "sbk_02"),
+    NPC_GROUP(NpcData_Bandit_03, "sbk:bandit_4", "sbk_02"),
+    NPC_GROUP(NpcData_Bandit_04, "sbk:bandit_2", "sbk_02"),
+    NPC_GROUP(NpcData_Bandit_05, "sbk:bandit_2", "sbk_02"),
+    NPC_GROUP(NpcData_Bandit_06, "sbk:bandit_2", "sbk_02"),
     {}
 };

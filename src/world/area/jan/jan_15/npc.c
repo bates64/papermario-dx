@@ -228,7 +228,7 @@ NpcData NpcData_HeartPlant_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Piranhas, BTL_JAN2_FORMATION_03, BTL_JAN2_STAGE_04),
+    NPC_GROUP(NpcData_Piranhas, "jan2:putrid_piranha_3_white_magikoopa_1", "jan_03"),
     NPC_GROUP(NpcData_HeartPlant_01),
     NPC_GROUP(NpcData_HeartPlant_02),
     {}

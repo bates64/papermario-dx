@@ -154,10 +154,10 @@ NpcData NpcData_Cleft = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_MontyMole_WallAmbush, BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
-    NPC_GROUP(NpcData_MontyMole_StoneThrower_01, BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
-    NPC_GROUP(NpcData_MontyMole_StoneThrower_02, BTL_IWA_FORMATION_06, BTL_IWA_STAGE_01),
-    NPC_GROUP(NpcData_MontyMole_StoneThrower_03, BTL_IWA_FORMATION_07, BTL_IWA_STAGE_01),
-    NPC_GROUP(NpcData_Cleft, BTL_IWA_FORMATION_04, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_MontyMole_WallAmbush, "iwa:monty_mole_2", "iwa_01b"),
+    NPC_GROUP(NpcData_MontyMole_StoneThrower_01, "iwa:monty_mole_3", "iwa_01b"),
+    NPC_GROUP(NpcData_MontyMole_StoneThrower_02, "iwa:monty_mole_2", "iwa_01b"),
+    NPC_GROUP(NpcData_MontyMole_StoneThrower_03, "iwa:monty_mole_3", "iwa_01b"),
+    NPC_GROUP(NpcData_Cleft, "iwa:cleft_1_monty_mole_2", "iwa_01b"),
     {}
 };

@@ -25,6 +25,6 @@ NpcData NpcData_BonyBeetle = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BonyBeetle, BTL_KPA_FORMATION_06, BTL_KPA_STAGE_0C),
+    NPC_GROUP(NpcData_BonyBeetle, "kpa:bony_beetle_1_dry_bones_1_bony_beetle_1_magikoopa_1", "kpa_13"),
     {}
 };

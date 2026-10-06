@@ -429,16 +429,16 @@ NpcData NpcData_FrostPiranha_02[] = {
 };
 
 NpcGroupList BeforeNPCs = {
-    NPC_GROUP(NpcData_Monstar, BTL_SAM2_FORMATION_00, BTL_SAM2_STAGE_05),
-    NPC_GROUP(NpcData_StarKids, BTL_SAM2_FORMATION_00, BTL_SAM2_STAGE_05),
-    NPC_GROUP(NpcData_FrostPiranha_01, BTL_SAM_FORMATION_06, BTL_SAM_STAGE_05),
-    NPC_GROUP(NpcData_FrostPiranha_02, BTL_SAM_FORMATION_0A, BTL_SAM_STAGE_05),
+    NPC_GROUP(NpcData_Monstar, "sam2:monstar", "sam_03"),
+    NPC_GROUP(NpcData_StarKids, "sam2:monstar", "sam_03"),
+    NPC_GROUP(NpcData_FrostPiranha_01, "sam:frost_piranha_2", "sam_03"),
+    NPC_GROUP(NpcData_FrostPiranha_02, "sam:frost_piranha_1_gulpit_1_frost_piranha_1_gulpit_1", "sam_03"),
     {}
 };
 
 NpcGroupList AfterNPCs = {
-    NPC_GROUP(NpcData_FrostPiranha_01, BTL_SAM_FORMATION_06, BTL_SAM_STAGE_05),
-    NPC_GROUP(NpcData_FrostPiranha_02, BTL_SAM_FORMATION_0A, BTL_SAM_STAGE_05),
-    NPC_GROUP(NpcData_Gulpit, BTL_SAM_FORMATION_01, BTL_SAM_STAGE_05),
+    NPC_GROUP(NpcData_FrostPiranha_01, "sam:frost_piranha_2", "sam_03"),
+    NPC_GROUP(NpcData_FrostPiranha_02, "sam:frost_piranha_1_gulpit_1_frost_piranha_1_gulpit_1", "sam_03"),
+    NPC_GROUP(NpcData_Gulpit, "sam:gulpit_2", "sam_03"),
     {}
 };

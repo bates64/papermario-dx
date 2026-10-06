@@ -32,7 +32,7 @@ EntityScript Entity_Signpost_Script = {
 
 EntityModelScript Entity_Signpost_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Signpost_Render, RENDER_MODE_SURFACE_OPA);
 
-ENTITY_IMPLEMENTATION(Signpost) = {
+OVL_DEF_ENTITY(Signpost) = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(SignpostData),
     .renderCommandList = Entity_Signpost_RenderScript,

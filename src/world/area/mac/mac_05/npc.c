@@ -2332,7 +2332,7 @@ NpcGroupList NpcSetB = {
 };
 
 NpcGroupList NpcSetC = {
-    NPC_GROUP(NpcData_JrTroopa, BTL_KMR_3_FORMATION_05),
+    NPC_GROUP(NpcData_JrTroopa, "kmr_part_3:jr_troopa_5"),
     NPC_GROUP(NpcData_Kolorado),
     NPC_GROUP(NpcData_Fishmael),
     NPC_GROUP(NpcData_Bartender),

@@ -64,12 +64,12 @@ static Vec3i pos_rocks_8[] = {
     { -28, 0, -46 },
 };
 
-static Formation Formation_01 = {
+static Formation duplighost_2 = {
     OVL_ACTOR_BY_IDX("duplighost", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("duplighost", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_02 = {
+static Formation gulpit_2 = {
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_B, 20),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_C, 19),
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_1[0], 9),
@@ -79,7 +79,7 @@ static Formation Formation_02 = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_1[4], 5, 1),
 };
 
-static Formation Formation_03 = {
+static Formation gulpit_3 = {
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_A, 20),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_B, 19),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_C, 18),
@@ -90,7 +90,7 @@ static Formation Formation_03 = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_2[4], 5, 1),
 };
 
-static Formation Formation_04 = {
+static Formation gulpit_2_frost_piranha_1 = {
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_A, 20),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_B, 19),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_C, 18),
@@ -101,7 +101,7 @@ static Formation Formation_04 = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_3[4], 5, 1),
 };
 
-static Formation Formation_05 = {
+static Formation gulpit_1_frost_piranha_1_gulpit_1 = {
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_A, 20),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 19),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_C, 18),
@@ -112,7 +112,7 @@ static Formation Formation_05 = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_4[4], 5, 1),
 };
 
-static Formation Formation_06 = {
+static Formation gulpit_1_frost_piranha_1_gulpit_1_frost_piranha_1 = {
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_A, 20),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 19),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_C, 18),
@@ -124,19 +124,19 @@ static Formation Formation_06 = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_5[4], 5, 1),
 };
 
-static Formation Formation_07 = {
+static Formation frost_piranha_2 = {
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_08 = {
+static Formation frost_piranha_4 = {
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_09 = {
+static Formation frost_piranha_2_gulpit_1 = {
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_C, 9),
@@ -147,7 +147,7 @@ static Formation Formation_09 = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_6[4], 5, 1),
 };
 
-static Formation Formation_0A = {
+static Formation frost_piranha_1_gulpit_1_frost_piranha_1 = {
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_C, 8),
@@ -158,7 +158,7 @@ static Formation Formation_0A = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_7[4], 5, 1),
 };
 
-static Formation Formation_0B = {
+static Formation frost_piranha_1_gulpit_1_frost_piranha_1_gulpit_1 = {
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("gulpit", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_C, 8),
@@ -170,19 +170,19 @@ static Formation Formation_0B = {
     OVL_ACTOR_BY_POS("gulpit_rocks", pos_rocks_8[4], 5, 1),
 };
 
-static Formation Formation_0C = {
+static Formation white_clubba_2 = {
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_C, 9),
 };
 
-static Formation Formation_0D = {
+static Formation white_clubba_1_mixed_0c = {
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_0E = {
+static Formation white_clubba_1_mixed_0d = {
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("frost_piranha", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_C, 8),
@@ -190,36 +190,20 @@ static Formation Formation_0E = {
 };
 
 static BattleList Formations = {
-    BATTLE(Formation_01, "sam_01", "Duplighost x2"),
-    BATTLE(Formation_02, "sam_01", "Gulpit x2"),
-    BATTLE(Formation_03, "sam_01", "Gulpit x3"),
-    BATTLE(Formation_04, "sam_01", "Gulpit x2, Frost Piranha"),
-    BATTLE(Formation_05, "sam_01", "Gulpit, Frost Piranha, Gulpit"),
-    BATTLE(Formation_06, "sam_01", "Gulpit, Frost Piranha, Gulpit, Frost Piranha"),
-    BATTLE(Formation_07, "sam_01", "Frost Piranha x2"),
-    BATTLE(Formation_08, "sam_01", "Frost Piranha x4"),
-    BATTLE(Formation_09, "sam_01", "Frost Piranha x2, Gulpit"),
-    BATTLE(Formation_0A, "sam_01", "Frost Piranha, Gulpit, Frost Piranha"),
-    BATTLE(Formation_0B, "sam_01", "Frost Piranha, Gulpit, Frost Piranha, Gulpit"),
-    BATTLE(Formation_0C, "sam_01", "White Clubba x2"),
-    BATTLE(Formation_0D, "sam_01", "White Clubba, Frost Piranha, White Clubba, Frost Piranha"),
-    BATTLE(Formation_0E, "sam_01", "White Clubba, Frost Piranha, White Clubba, Gray Magikoopa"),
-    {},
+    BATTLE(duplighost_2, "sam_01"),
+    BATTLE(gulpit_2, "sam_01"),
+    BATTLE(gulpit_3, "sam_01"),
+    BATTLE(gulpit_2_frost_piranha_1, "sam_01"),
+    BATTLE(gulpit_1_frost_piranha_1_gulpit_1, "sam_01"),
+    BATTLE(gulpit_1_frost_piranha_1_gulpit_1_frost_piranha_1, "sam_01"),
+    BATTLE(frost_piranha_2, "sam_01"),
+    BATTLE(frost_piranha_4, "sam_01"),
+    BATTLE(frost_piranha_2_gulpit_1, "sam_01"),
+    BATTLE(frost_piranha_1_gulpit_1_frost_piranha_1, "sam_01"),
+    BATTLE(frost_piranha_1_gulpit_1_frost_piranha_1_gulpit_1, "sam_01"),
+    BATTLE(white_clubba_2, "sam_01"),
+    BATTLE(white_clubba_1_mixed_0c, "sam_01"),
+    BATTLE(white_clubba_1_mixed_0d, "sam_01"),
 };
 
-static StageList Stages = {
-    STAGE("sam_01", "sam_01"),
-    STAGE("sam_02", "sam_02"),
-    STAGE("sam_02b", "sam_02b"),
-    STAGE("sam_02c", "sam_02c"),
-    STAGE("sam_02d", "sam_02d"),
-    STAGE("sam_03", "sam_03"),
-    {},
-};
-
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .stages = &Stages,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

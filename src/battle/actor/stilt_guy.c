@@ -229,7 +229,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_STILT_GUY,
     .level = ACTOR_LEVEL_STILT_GUY,

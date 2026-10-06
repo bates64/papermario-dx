@@ -211,7 +211,7 @@ NpcData NpcData_Fuzzy_02 = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Oaklie),
-    NPC_GROUP(NpcData_Fuzzy_01, BTL_MIM_FORMATION_00, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_Fuzzy_02, BTL_MIM_FORMATION_01, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_Fuzzy_01, "mim:forest_fuzzy_2", "mim_01"),
+    NPC_GROUP(NpcData_Fuzzy_02, "mim:forest_fuzzy_3", "mim_01"),
     {}
 };

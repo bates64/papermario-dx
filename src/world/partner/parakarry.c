@@ -677,7 +677,7 @@ void post_battle(Npc* parakarry) {
     }
 }
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = true,
     .init = init,
     .takeOut = &EVS_WorldParakarry_TakeOut,

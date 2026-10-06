@@ -363,7 +363,7 @@ EntityModelScript ERS_AltHiddenPanel = {
     ems_End
 };
 
-ENTITY_IMPLEMENTATION(HiddenPanel) = {
+OVL_DEF_ENTITY(HiddenPanel) = {
     .flags = ENTITY_FLAG_HIDDEN,
     .typeDataSize = sizeof(HiddenPanelData),
     .renderCommandList = ERS_HiddenPanel,

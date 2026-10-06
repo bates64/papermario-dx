@@ -78,7 +78,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_FROST_PIRANHA,
     .level = ACTOR_LEVEL_FROST_PIRANHA,

@@ -22,6 +22,6 @@ NpcData NpcData_Merlar = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Merlar, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Merlar),
     {}
 };

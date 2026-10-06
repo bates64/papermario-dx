@@ -558,6 +558,6 @@ NpcData NpcData_GeneralGuy[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_GeneralGuy, BTL_OMO2_FORMATION_00),
+    NPC_GROUP(NpcData_GeneralGuy, "omo2:general_guy"),
     {}
 };

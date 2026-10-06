@@ -5,7 +5,7 @@ EntryList Entrances = {
     [kkj_24_ENTRY_1]    {  145.0,  420.0,  -20.0,  270.0 },
 };
 
-export MapSettings settings = {
+OVL_DEF_MAP() = {
     .main = &EVS_Main,
     .entryList = &Entrances,
     .entryCount = ENTRY_COUNT(Entrances),

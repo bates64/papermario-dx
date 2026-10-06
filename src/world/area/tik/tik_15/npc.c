@@ -127,6 +127,6 @@ NpcData NpcData_RipCheato = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_RipCheato, BTL_KMR_1_FORMATION_06),
+    NPC_GROUP(NpcData_RipCheato, "kmr_part_1:goomba_1_paragoomba_1_goomba_1_paragoomba_1"),
     {}
 };

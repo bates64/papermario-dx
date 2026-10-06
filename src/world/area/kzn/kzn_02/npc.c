@@ -199,6 +199,6 @@ NpcData NpcData_LavaBubble = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Kolorado),
-    NPC_GROUP(NpcData_LavaBubble, BTL_KZN_FORMATION_00, BTL_KZN_STAGE_02),
+    NPC_GROUP(NpcData_LavaBubble, "kzn:lava_bubble_2", "kzn_02"),
     {}
 };

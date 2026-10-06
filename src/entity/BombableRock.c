@@ -247,7 +247,7 @@ EntityScript Entity_BombableRock_Script = {
     es_End
 };
 
-ENTITY_IMPLEMENTATION(BombableRock) = {
+OVL_DEF_ENTITY(BombableRock) = {
     .flags = 0,
     .typeDataSize = sizeof(BombableRockData),
     .renderCommandList = Entity_BombableRock_RenderScript,
@@ -260,7 +260,7 @@ ENTITY_IMPLEMENTATION(BombableRock) = {
     .aabbSize = { 50, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(BombableRockWide) = {
+OVL_DEF_ENTITY(BombableRockWide) = {
     .flags = 0,
     .typeDataSize = sizeof(BombableRockData),
     .renderCommandList = Entity_BombableRock_RenderScript,

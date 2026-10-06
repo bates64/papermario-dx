@@ -333,4 +333,4 @@ void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_100_PCT]);
 }
 
-ACTION_COMMAND_ENTRY(ACTION_COMMAND_HURRICANE);
+OVL_DEF_ACTION_CMD(ACTION_COMMAND_HURRICANE);

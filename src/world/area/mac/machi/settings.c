@@ -20,7 +20,7 @@ EntryList Entrances = {
     [machi_ENTRY_10]    {   30.0,   35.0, -200.0,  180.0 },
 };
 
-export MapSettings settings = {
+OVL_DEF_MAP() = {
     .main = &EVS_Main,
     .entryList = &Entrances,
     .entryCount = ENTRY_COUNT(Entrances),

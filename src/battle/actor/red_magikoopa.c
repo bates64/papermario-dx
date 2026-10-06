@@ -144,7 +144,7 @@ ActorPartBlueprint FlyingParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_RED_MAGIKOOPA,
     .level = ACTOR_LEVEL_RED_MAGIKOOPA,
@@ -167,7 +167,7 @@ ACTOR_BLUEPRINT() = {
     .statusTextOffset = { 10, 32 },
 };
 
-ACTOR_BLUEPRINT(flying) = {
+OVL_DEF_ACTOR(flying) = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_FLYING_RED_MAGIKOOPA,
     .level = ACTOR_LEVEL_FLYING_RED_MAGIKOOPA,

@@ -280,7 +280,6 @@ NpcData NpcData_CrystalKing_01[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_CrystalKing_01, BTL_PRA2_FORMATION_00),
+    NPC_GROUP(NpcData_CrystalKing_01, "pra2:crystal_king"),
     {}
 };
-

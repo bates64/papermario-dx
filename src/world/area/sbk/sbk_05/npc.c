@@ -233,15 +233,15 @@ NpcData NpcData_Pokey_10 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Pokey_01, BTL_SBK_FORMATION_00, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_02, BTL_SBK_FORMATION_00, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_03, BTL_SBK_FORMATION_00, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_04, BTL_SBK_FORMATION_02, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_05, BTL_SBK_FORMATION_02, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_06, BTL_SBK_FORMATION_03, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_07, BTL_SBK_FORMATION_01, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_08, BTL_SBK_FORMATION_01, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_09, BTL_SBK_FORMATION_01, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey_10, BTL_SBK_FORMATION_01, BTL_SBK_STAGE_00),
+    NPC_GROUP(NpcData_Pokey_01, "sbk:pokey_1", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_02, "sbk:pokey_1", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_03, "sbk:pokey_1", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_04, "sbk:pokey_3", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_05, "sbk:pokey_3", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_06, "sbk:pokey_4", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_07, "sbk:pokey_2", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_08, "sbk:pokey_2", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_09, "sbk:pokey_2", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey_10, "sbk:pokey_2", "sbk_02"),
     {}
 };

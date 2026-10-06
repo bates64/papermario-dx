@@ -5799,6 +5799,7 @@ enum EncounterPreBattleSubStates {
     ENCOUNTER_SUBSTATE_PRE_BATTLE_LOAD                  = 1,
     ENCOUNTER_SUBSTATE_PRE_BATTLE_AUTO_WIN              = 2,
     ENCOUNTER_SUBSTATE_PRE_BATTLE_SKIP                  = 3,
+    ENCOUNTER_SUBSTATE_PRE_BATTLE_RESTART               = 4,
 };
 
 enum EncounterConversationSubStates {

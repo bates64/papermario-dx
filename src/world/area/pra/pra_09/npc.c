@@ -39,19 +39,19 @@ API_CALLABLE(ChooseImposterBattleFormation) {
     switch (unmaskedCount) {
         case 1:
             encounter = currentEncounter->encounterList[enemy->encounterIndex];
-            encounter->battle = BTL_PRA3_FORMATION_01;
+            encounter->battle = "pra3:duplighost_1";
             break;
         case 2:
             encounter = currentEncounter->encounterList[enemy->encounterIndex];
-            encounter->battle = BTL_PRA3_FORMATION_02;
+            encounter->battle = "pra3:duplighost_2";
             break;
         case 3:
             encounter = currentEncounter->encounterList[enemy->encounterIndex];
-            encounter->battle = BTL_PRA3_FORMATION_03;
+            encounter->battle = "pra3:duplighost_3";
             break;
         case 4:
             encounter = currentEncounter->encounterList[enemy->encounterIndex];
-            encounter->battle = BTL_PRA3_FORMATION_04;
+            encounter->battle = "pra3:duplighost_4";
             break;
     }
     return ApiStatus_DONE2;
@@ -1055,8 +1055,8 @@ NpcData NpcData_TargetBombettes[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_InteractableBombettes, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_00),
-    NPC_GROUP(NpcData_Duplighosts, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_00),
-    NPC_GROUP(NpcData_TargetBombettes, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_00),
+    NPC_GROUP(NpcData_InteractableBombettes, "pra3:duplighost_1", "pra_01"),
+    NPC_GROUP(NpcData_Duplighosts, "pra3:duplighost_1", "pra_01"),
+    NPC_GROUP(NpcData_TargetBombettes, "pra3:duplighost_1", "pra_01"),
     {}
 };

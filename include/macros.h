@@ -158,9 +158,6 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define BATTLE_NPC_ID_BIT 0x800
 #define BATTLE_ENTITY_ID_BIT 0x800
 
-#define UNPACK_BTL_AREA(battleID) (((battleID) >> 8) & 0xFF)
-#define UNPACK_BTL_INDEX(battleID) ((battleID) & 0xFF)
-
 #define COLLISION_WITH_NPC_BIT 0x2000
 #define COLLISION_WITH_ENTITY_BIT 0x4000
 

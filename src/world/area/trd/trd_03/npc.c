@@ -255,9 +255,9 @@ NpcData NpcData_KoopaTroopa_03 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaBros, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_01),
-    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_01),
-    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_TRD_1_FORMATION_04, BTL_TRD_1_STAGE_01),
-    NPC_GROUP(NpcData_KoopaTroopa_03, BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_01),
+    NPC_GROUP(NpcData_KoopaBros),
+    NPC_GROUP(NpcData_KoopaTroopa_01, "trd_part_1:koopa_troopa_1_bob_omb_1", "trd_01"),
+    NPC_GROUP(NpcData_KoopaTroopa_02, "trd_part_1:koopa_troopa_1_bob_omb_2", "trd_01"),
+    NPC_GROUP(NpcData_KoopaTroopa_03, "trd_part_1:koopa_troopa_1_bob_omb_1", "trd_01"),
     {}
 };

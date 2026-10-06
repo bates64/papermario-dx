@@ -161,8 +161,8 @@ NpcData NpcData_Wishing[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Twink, BTL_HOS_FORMATION_00),
-    NPC_GROUP(NpcData_FlyingMagikoopa, BTL_HOS_FORMATION_03),
+    NPC_GROUP(NpcData_Twink, "hos:action_command_tutorial"),
+    NPC_GROUP(NpcData_FlyingMagikoopa, "hos:magikoopa_miniboss"),
     {}
 };
 

@@ -97,7 +97,7 @@ typedef struct ActionCommandInterface {
 void reset_action_command_overlay(void);
 
 #define ACTION_COMMAND_EXPORT_NAME "gActionCommand"
-#define ACTION_COMMAND_ENTRY(commandID) \
+#define OVL_DEF_ACTION_CMD(commandID) \
     export const ActionCommandInterface gActionCommand = { \
         .id = (commandID), \
         .init = init, \

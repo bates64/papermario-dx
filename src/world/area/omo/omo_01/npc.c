@@ -242,10 +242,10 @@ NpcData NpcData_ShyGuy_05 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO_FORMATION_00, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO_FORMATION_02, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO_FORMATION_02, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO_FORMATION_01, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_ShyGuy_05, BTL_OMO_FORMATION_05, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy_01, "omo:red_shy_guy_2", "omo_01"),
+    NPC_GROUP(NpcData_ShyGuy_02, "omo:yellow_shy_guy_2", "omo_01"),
+    NPC_GROUP(NpcData_ShyGuy_03, "omo:yellow_shy_guy_2", "omo_01"),
+    NPC_GROUP(NpcData_ShyGuy_04, "omo:blue_shy_guy_2", "omo_01"),
+    NPC_GROUP(NpcData_ShyGuy_05, "omo:green_shy_guy_2", "omo_01"),
     {}
 };

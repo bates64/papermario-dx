@@ -8,7 +8,7 @@ EntryList Entrances = {
     [nok_15_ENTRY_4]    { -138.0,  260.0, -638.0,  320.0 },
 };
 
-export MapSettings settings = {
+OVL_DEF_MAP() = {
     .main = &EVS_Main,
     .entryList = &Entrances,
     .entryCount = ENTRY_COUNT(Entrances),

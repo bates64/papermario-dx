@@ -75,7 +75,7 @@ EvtScript EVS_WorldGoombaria_PutAway = {
     End
 };
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = false,
     .init = init,
     .takeOut = &EVS_WorldGoombaria_TakeOut,

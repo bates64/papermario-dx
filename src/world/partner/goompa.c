@@ -160,7 +160,7 @@ EvtScript EVS_WorldGoompa_PutAway = {
     End
 };
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = false,
     .init = init,
     .takeOut = &EVS_WorldGoompa_TakeOut,

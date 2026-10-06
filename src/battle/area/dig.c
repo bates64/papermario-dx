@@ -162,57 +162,42 @@ static EvtScript EVS_Demo05 = {
     End
 };
 
-static Formation Formation_00 = {
+static Formation demo_01 = {
     OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_01 = {
+static Formation demo_02 = {
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 9),
     OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_D, 8),
 };
 
-static Formation Formation_02 = {
+static Formation demo_03 = {
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 9),
     OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_D, 8),
 };
 
-static Formation Formation_03 = {
+static Formation demo_04 = {
     OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_C, 8),
     OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_D, 7),
 };
 
-static Formation Formation_04 = {
+static Formation demo_05 = {
     OVL_ACTOR_BY_IDX("tubba_blubba_dig", BTL_POS_GROUND_C, 10),
 };
 
 static BattleList Formations = {
-    BATTLE_WITH_SCRIPT(Formation_00, "nok_04", EVS_Demo01, "Demo 01"),
-    BATTLE_WITH_SCRIPT(Formation_01, "iwa_01b", EVS_Demo02, "Demo 02"),
-    BATTLE_WITH_SCRIPT(Formation_02, "sbk_02", EVS_Demo03, "Demo 03"),
-    BATTLE_WITH_SCRIPT(Formation_03, "omo_04", EVS_Demo04, "Demo 04"),
-    BATTLE_WITH_SCRIPT(Formation_04, "dgb_05", EVS_Demo05, "Demo 05"),
-    {},
+    BATTLE_WITH_SCRIPT(demo_01, "nok_04", EVS_Demo01),
+    BATTLE_WITH_SCRIPT(demo_02, "iwa_01b", EVS_Demo02),
+    BATTLE_WITH_SCRIPT(demo_03, "sbk_02", EVS_Demo03),
+    BATTLE_WITH_SCRIPT(demo_04, "omo_04", EVS_Demo04),
+    BATTLE_WITH_SCRIPT(demo_05, "dgb_05", EVS_Demo05),
 };
 
-static StageList Stages = {
-    STAGE("dig_01", "nok_04"),
-    STAGE("dig_02", "iwa_01b"),
-    STAGE("dig_03", "sbk_02"),
-    STAGE("dig_04", "omo_04"),
-    STAGE("dig_05", "dgb_05"),
-    {},
-};
-
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .stages = &Stages,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

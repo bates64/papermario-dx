@@ -57,7 +57,7 @@ NpcData NpcData_Gulpit_02[] = {
 };
 
 NpcGroupList AfterNPCs = {
-    NPC_GROUP(NpcData_Gulpit_01, BTL_SAM_FORMATION_01, BTL_SAM_STAGE_00),
-    NPC_GROUP(NpcData_Gulpit_02, BTL_SAM_FORMATION_02, BTL_SAM_STAGE_00),
+    NPC_GROUP(NpcData_Gulpit_01, "sam:gulpit_2", "sam_01"),
+    NPC_GROUP(NpcData_Gulpit_02, "sam:gulpit_3", "sam_01"),
     {}
 };

@@ -279,7 +279,7 @@ EntityScript Entity_WoodenCrate_Script = {
     es_End
 };
 
-ENTITY_IMPLEMENTATION(WoodenCrate) = {
+OVL_DEF_ENTITY(WoodenCrate) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(WoodenCrateData),
     .renderCommandList = Entity_WoodenCrate_RenderScript,

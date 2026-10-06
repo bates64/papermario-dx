@@ -7,7 +7,7 @@ EntryList Entrances = {
     [kpa_41_ENTRY_3]    { -340.0,  119.0, -230.0,   90.0 },
 };
 
-export MapSettings settings = {
+OVL_DEF_MAP() = {
     .main = &EVS_Main,
     .entryList = &Entrances,
     .entryCount = ENTRY_COUNT(Entrances),

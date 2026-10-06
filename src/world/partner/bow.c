@@ -432,7 +432,7 @@ void pre_battle(Npc* bow) {
     }
 }
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = true,
     .init = init,
     .takeOut = &EVS_WorldBow_TakeOut,

@@ -377,6 +377,6 @@ NpcData NpcData_KoopaBros_01[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaBros_01, BTL_TRD_2_FORMATION_00),
+    NPC_GROUP(NpcData_KoopaBros_01, "trd_part_2:koopa_bros"),
     {}
 };

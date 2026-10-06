@@ -812,23 +812,23 @@ NpcData NpcData_ChuckQuizmo = {
 };
 
 NpcGroupList BeforeNPCs = {
-    NPC_GROUP(NpcData_MayorPenguin, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Penguin_05, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Penguin_09, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_MayorPenguin),
+    NPC_GROUP(NpcData_Penguin_05),
+    NPC_GROUP(NpcData_Penguin_09),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
 NpcGroupList MysteryNPCs = {
-    NPC_GROUP(NpcData_MayorPenguin, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Penguin_05, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_Penguin_09, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_MayorPenguin),
+    NPC_GROUP(NpcData_Penguin_05),
+    NPC_GROUP(NpcData_Penguin_09),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
 NpcGroupList AfterNPCs = {
-    NPC_GROUP(NpcData_MayorPenguin, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_MayorPenguin),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };

@@ -82,7 +82,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_UPSIDE_DOWN,
     .type = ACTOR_TYPE_BUZZY_BEETLE,
     .level = ACTOR_LEVEL_BUZZY_BEETLE,
