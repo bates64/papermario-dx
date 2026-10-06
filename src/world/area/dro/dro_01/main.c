@@ -3,7 +3,7 @@
 #include "world/common/entity/Pipe.inc.c"
 
 
-EvtScript N(EVS_ExitWalk_sbk_36_1) = {
+EvtScript EVS_ExitWalk_sbk_36_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(GF_DRO01_HeardHintAboutSpinningRoof, 0)
     Call(UseExitHeading, 60, 0)
@@ -14,16 +14,16 @@ EvtScript N(EVS_ExitWalk_sbk_36_1) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_dro_02_0) = EVT_EXIT_WALK(60, dro_01_ENTRY_1, "dro_02", dro_02_ENTRY_0);
+EvtScript EVS_ExitWalk_dro_02_0 = EVT_EXIT_WALK(60, dro_01_ENTRY_1, "dro_02", dro_02_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(N(EVS_ExitWalk_sbk_36_1), TRIGGER_FLOOR_ABOVE, 1, 1, 0)
-    BindTrigger(N(EVS_ExitWalk_dro_02_0), TRIGGER_FLOOR_ABOVE, 5, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(EVS_ExitWalk_sbk_36_1, TRIGGER_FLOOR_ABOVE, 1, 1, 0)
+    BindTrigger(EVS_ExitWalk_dro_02_0, TRIGGER_FLOOR_ABOVE, 5, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_RuinsRising) = {
+EvtScript EVS_Scene_RuinsRising = {
     Call(PlaySound, SOUND_LOOP_SBK_RUINS_RISING_DISTANT)
     Call(UseSettingsFrom, CAM_DEFAULT, 175, 0, -201)
     Call(SetPanTarget, CAM_DEFAULT, 175, 0, -201)
@@ -50,11 +50,11 @@ EvtScript N(EVS_Scene_RuinsRising) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -76,17 +76,17 @@ EvtScript N(EVS_EnterMap) = {
                 Call(DisablePlayerPhysics, false)
                 Call(DisablePlayerInput, false)
             EndIf
-            Set(LVarA, Ref(N(EVS_BindExitTriggers)))
-            ExecWait(N(EVS_Pipe_EnterVertical))
+            Set(LVarA, Ref(EVS_BindExitTriggers))
+            ExecWait(EVS_Pipe_EnterVertical)
         CaseOrEq(dro_01_ENTRY_3)
         CaseOrEq(dro_01_ENTRY_4)
-            ExecWait(N(EVS_Scene_RuinsRising))
+            ExecWait(EVS_Scene_RuinsRising)
         EndCaseGroup
         CaseEq(dro_01_ENTRY_A)
             Exec(EnterPostPipe)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Wait(1)
@@ -94,7 +94,7 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_OUTPOST)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -104,20 +104,20 @@ EvtScript N(EVS_Main) = {
     EndIf
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH2_STAR_SPRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(Chapter3NPCs)))
+            Call(MakeNpcs, false, Ref(Chapter3NPCs))
         CaseDefault
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndSwitch
     Call(InitVirtualEntityList)
-    ExecWait(N(EVS_MakeEntities))
-    Call(MakeShop, Ref(N(ShopItemPositions)), Ref(N(ShopInventory)), Ref(N(ShopPriceList)), 0)
-    Call(MakeShopOwner, Ref(N(MouserShopOwner)))
-    ExecWait(N(EVS_SetupRooms))
-    Exec(N(EVS_ShopSignSwing))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    ExecWait(EVS_MakeEntities)
+    Call(MakeShop, Ref(ShopItemPositions), Ref(ShopInventory), Ref(ShopPriceList), 0)
+    Call(MakeShopOwner, Ref(MouserShopOwner))
+    ExecWait(EVS_SetupRooms)
+    Exec(EVS_ShopSignSwing)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
-    Exec(N(EVS_SetupFoliage))
+    Exec(EVS_SetupFoliage)
     Return
     End
 };

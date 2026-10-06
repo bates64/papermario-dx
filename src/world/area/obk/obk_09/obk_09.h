@@ -21,13 +21,11 @@ enum {
     NPC_Skolar                  = 2,
 };
 
-#define NAMESPACE obk_09
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PlayNewPartnerSong);
-extern EvtScript N(EVS_ResetMusic);
-extern EvtScript N(EVS_Scene_Epilogue);
-extern EvtScript N(EVS_Scene_MeetBow);
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(EpilogueNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PlayNewPartnerSong;
+extern EvtScript EVS_ResetMusic;
+extern EvtScript EVS_Scene_Epilogue;
+extern EvtScript EVS_Scene_MeetBow;
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList EpilogueNPCs;

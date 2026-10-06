@@ -14,7 +14,7 @@ typedef struct SplashState {
     /* 0x1C */ Vec3f vel;
 } SplashState; // size = 0x28
 
-void N(gfx_build_splashes)(s32 index) {
+void gfx_build_splashes(s32 index) {
     s32 i;
     s32 alpha;
     SplashState* splash = (SplashState*)evt_get_variable(nullptr, MV_SplashState);
@@ -61,7 +61,7 @@ void N(gfx_build_splashes)(s32 index) {
                    splash->scale,
                    splash->pos.x, splash->pos.y, splash->pos.z);
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-        gSPDisplayList(gMainGfxPos++, N(splash_gfx));
+        gSPDisplayList(gMainGfxPos++, iwa_01_splash_gfx);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
 
@@ -69,7 +69,7 @@ void N(gfx_build_splashes)(s32 index) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-API_CALLABLE(N(InitSplashes)) {
+API_CALLABLE(InitSplashes) {
     SplashState* splash = heap_malloc(NUM_SPLASHES * sizeof(*splash));
     s32 i;
 
@@ -94,9 +94,9 @@ API_CALLABLE(N(InitSplashes)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_MakeSplashes) = {
-    Call(N(InitSplashes))
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, 0, Ref(N(gfx_build_splashes)))
+EvtScript EVS_MakeSplashes = {
+    Call(InitSplashes)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, 0, Ref(gfx_build_splashes))
     Call(SetModelCustomGfx, MODEL_dummy_sprash2, CUSTOM_GFX_0, -1)
     Return
     End

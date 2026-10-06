@@ -1,15 +1,12 @@
 #include "common.h"
 #include "battle/script_module.h"
 #include "script_api/battle.h"
-#include "battle/action_cmd/jump.h"
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_d_down_jump
-
 #include "battle/common/move/JumpSupport.inc.c"
 
-API_CALLABLE(N(SpawnImpactFX)) {
+API_CALLABLE(SpawnImpactFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -24,36 +21,36 @@ API_CALLABLE(N(SpawnImpactFX)) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript N(EVS_UseMove_Basic);
-extern EvtScript N(EVS_UseMove_Super);
-extern EvtScript N(EVS_UseMove_Ultra);
+extern EvtScript EVS_UseMove_Basic;
+extern EvtScript EVS_UseMove_Super;
+extern EvtScript EVS_UseMove_Ultra;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(SetDamageSource, DMG_SRC_D_DOWN_JUMP)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_UseMove_Basic))
+            ExecWait(EVS_UseMove_Basic)
         CaseEq(1)
-            ExecWait(N(EVS_UseMove_Super))
+            ExecWait(EVS_UseMove_Super)
         CaseEq(2)
-            ExecWait(N(EVS_UseMove_Ultra))
+            ExecWait(EVS_UseMove_Ultra)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Basic) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Basic = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
     Call(GetPlayerActionQuality, LVarA)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpawnImpactFX), LVar0, LVar1, LVar2)
+    Call(SpawnImpactFX, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_D_DOWN_HIT_1)
     Wait(1)
     Call(GetPlayerActionQuality, LVar0)
@@ -69,7 +66,7 @@ EvtScript N(EVS_UseMove_Basic) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_JumpSupport_NoFollowUp))
+            ExecWait(EVS_JumpSupport_NoFollowUp)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -92,27 +89,27 @@ EvtScript N(EVS_UseMove_Basic) = {
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_SpinFall)
     Call(PlayerBasicJumpToGoal, 24, PLAYER_BASIC_JUMP_3)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpawnImpactFX), LVar0, LVar1, LVar2)
+    Call(SpawnImpactFX, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_D_DOWN_HIT_1)
     Wait(1)
     Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_1, SOUND_NONE)
     Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP | DAMAGE_TYPE_IGNORE_DEFENSE, 0, 0, 1, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT | BS_FLAGS1_NO_RATING)
     Call(SetActionResult, LVarF)
-    ExecWait(N(EVS_JumpSupport_Rebound))
+    ExecWait(EVS_JumpSupport_Rebound)
     Return
     End
 };
 
 
-EvtScript N(EVS_UseMove_Super) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Super = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpawnImpactFX), LVar0, LVar1, LVar2)
+    Call(SpawnImpactFX, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_D_DOWN_HIT_2)
     Wait(1)
     Call(GetPlayerActionQuality, LVar0)
@@ -127,7 +124,7 @@ EvtScript N(EVS_UseMove_Super) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_JumpSupport_NoFollowUp))
+            ExecWait(EVS_JumpSupport_NoFollowUp)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -154,26 +151,26 @@ EvtScript N(EVS_UseMove_Super) = {
     Call(PlayerSuperJumpToGoal, 3, PLAYER_SUPER_JUMP_5)
     Call(EnablePlayerBlur, ACTOR_BLUR_DISABLE)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpawnImpactFX), LVar0, LVar1, LVar2)
+    Call(SpawnImpactFX, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_D_DOWN_HIT_2)
     Wait(1)
     Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_2, SOUND_NONE)
     Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP | DAMAGE_TYPE_IGNORE_DEFENSE, 0, 0, 2, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT | BS_FLAGS1_NO_RATING)
     Call(SetActionResult, LVarF)
-    ExecWait(N(EVS_JumpSupport_Rebound))
+    ExecWait(EVS_JumpSupport_Rebound)
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Ultra) = {
-    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
+EvtScript EVS_UseMove_Ultra = {
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_JumpSupport_Miss))
+        ExecWait(EVS_JumpSupport_Miss)
         Return
     EndIf
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpawnImpactFX), LVar0, LVar1, LVar2)
+    Call(SpawnImpactFX, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_D_DOWN_HIT_3)
     Wait(1)
     Call(GetPlayerActionQuality, LVar0)
@@ -188,7 +185,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_JumpSupport_NoFollowUp))
+            ExecWait(EVS_JumpSupport_NoFollowUp)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -213,17 +210,17 @@ EvtScript N(EVS_UseMove_Ultra) = {
     Call(PlayerUltraJumpToGoal, 25, PLAYER_ULTRA_JUMP_4)
     Call(EnablePlayerBlur, ACTOR_BLUR_DISABLE)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpawnImpactFX), LVar0, LVar1, LVar2)
+    Call(SpawnImpactFX, LVar0, LVar1, LVar2)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_D_DOWN_HIT_3)
     Wait(1)
     Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_3, SOUND_NONE)
     Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP | DAMAGE_TYPE_IGNORE_DEFENSE, 0, 0, 3, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT | BS_FLAGS1_NO_RATING)
     Call(SetActionResult, LVarF)
-    ExecWait(N(EVS_JumpSupport_Rebound))
+    ExecWait(EVS_JumpSupport_Rebound)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
-    &N(EVS_UseMove),
+    &EVS_UseMove,
 );

@@ -2,12 +2,12 @@
 
 #include "../common/RestoreFromPeachState.inc.c"
 
-API_CALLABLE(N(EnableParasol)) {
+API_CALLABLE(EnableParasol) {
     gGameStatusPtr->peachFlags |= PEACH_FLAG_HAS_PARASOL;
     return ApiStatus_DONE2;
 }
 
-Gfx N(setup_gfx_candle_lights)[] = {
+Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -26,9 +26,9 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_EndPeachChapter7) = {
+EvtScript EVS_EndPeachChapter7 = {
     Set(LVar0, GB_KKJ_LastPartner)
-    Call(N(RestoreFromPeachState))
+    Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("pra_01"), pra_01_ENTRY_4, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
@@ -36,7 +36,7 @@ EvtScript N(EVS_EndPeachChapter7) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_GrandHall) = {
+EvtScript EVS_ExitDoor_GrandHall = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(AF_KKJ14_CaughtUsingDoor, true)
@@ -57,7 +57,7 @@ EvtScript N(EVS_ExitDoor_GrandHall) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_Balcony) = {
+EvtScript EVS_ExitDoors_Balcony = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(AF_KKJ14_CaughtUsingDoor, false)
@@ -76,7 +76,7 @@ EvtScript N(EVS_ExitDoors_Balcony) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_SecretPassage) = {
+EvtScript EVS_ExitWalk_SecretPassage = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(AF_KKJ14_CaughtUsingDoor, false)
     Call(UseExitHeading, 60, kkj_14_ENTRY_2)
@@ -91,7 +91,7 @@ EvtScript N(EVS_ExitWalk_SecretPassage) = {
     End
 };
 
-EvtScript N(EVS_ShowMessage_CantOpen) = {
+EvtScript EVS_ShowMessage_CantOpen = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_DoesntOpen, 160, 40)
     Call(DisablePlayerInput, false)
@@ -99,19 +99,19 @@ EvtScript N(EVS_ShowMessage_CantOpen) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
+EvtScript EVS_BindExitTriggers = {
     IfEq(GB_StoryProgress, STORY_INTRO)
-        BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+        BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Else
-        BindTrigger(Ref(N(EVS_ExitDoors_Balcony)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-        BindTrigger(Ref(N(EVS_ExitWalk_SecretPassage)), TRIGGER_FLOOR_ABOVE, COLLIDER_o119, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoors_Balcony), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+        BindTrigger(Ref(EVS_ExitWalk_SecretPassage), TRIGGER_FLOOR_ABOVE, COLLIDER_o119, 1, 0)
     EndIf
-    BindTrigger(Ref(N(EVS_ExitDoor_GrandHall)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_GrandHall), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_14_ENTRY_0)
@@ -119,7 +119,7 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_o4)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_1)
             Call(UseDoorSounds, DOOR_SOUNDS_DOOR)
             Set(LVar2, MODEL_o83)
@@ -127,41 +127,41 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar4, MODEL_o84)
             Set(LVar5, MODEL_o86)
             ExecWait(EnterSplitDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_2)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(kkj_14_ENTRY_3)
-            Exec(N(EVS_Scene_Chapter0))
+            Exec(EVS_Scene_Chapter0)
         CaseEq(kkj_14_ENTRY_4)
-            Exec(N(EVS_Scene_Chapter1))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_Chapter1)
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_5)
-            Exec(N(EVS_Scene_Chapter2))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_Chapter2)
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_6)
-            Exec(N(EVS_Scene_Chapter3))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_Chapter3)
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_7)
-            Exec(N(EVS_Scene_Chapter4))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_Chapter4)
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_8)
-            Exec(N(EVS_Scene_Chapter5))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_Chapter5)
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_9)
-            Exec(N(EVS_Scene_Chapter6))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_Chapter6)
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_14_ENTRY_A)
-            Exec(N(EVS_Scene_Chapter7))
+            Exec(EVS_Scene_Chapter7)
         CaseEq(kkj_14_ENTRY_B)
-            Exec(N(EVS_Scene_TossedBackInRoom))
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_Scene_TossedBackInRoom)
+            Exec(EVS_BindExitTriggers)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
@@ -176,7 +176,7 @@ EvtScript N(EVS_Main) = {
                 Set(GB_StoryProgress, STORY_CH0_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, false)
-                Call(MakeNpcs, false, Ref(N(Chapter0NPCs)))
+                Call(MakeNpcs, false, Ref(Chapter0NPCs))
             CaseEq(kkj_14_ENTRY_4)
                 Set(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
@@ -186,7 +186,7 @@ EvtScript N(EVS_Main) = {
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, false)
                 Set(AF_KKJ_PeachSawGrandHall, false)
-                Call(MakeNpcs, false, Ref(N(Chapter2NPCs)))
+                Call(MakeNpcs, false, Ref(Chapter2NPCs))
             CaseEq(kkj_14_ENTRY_6)
                 Set(GB_StoryProgress, STORY_CH3_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
@@ -200,23 +200,23 @@ EvtScript N(EVS_Main) = {
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, true)
             CaseEq(kkj_14_ENTRY_9)
-                Call(N(EnableParasol))
+                Call(EnableParasol)
                 Set(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, true)
             CaseEq(kkj_14_ENTRY_A)
-                Call(MakeNpcs, false, Ref(N(Chapter7NPCs)))
+                Call(MakeNpcs, false, Ref(Chapter7NPCs))
             CaseEq(kkj_14_ENTRY_B)
                 Add(GB_KKJ_CaughtCount, 1)
-                Call(MakeNpcs, false, Ref(N(TossBackNPCs)))
+                Call(MakeNpcs, false, Ref(TossBackNPCs))
         EndSwitch
     EndIf
-    Exec(N(EVS_SetupInteractables))
+    Exec(EVS_SetupInteractables)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, kkj_14_ENTRY_5)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(SetTexPanner, MODEL_o154, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -226,7 +226,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o154, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
     Return
     End
 };

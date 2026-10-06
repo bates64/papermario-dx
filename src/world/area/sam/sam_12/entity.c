@@ -2,7 +2,7 @@
 #include "sam_12.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_GOT_STAR_STONE)
             Call(MakeItemEntity, ITEM_STAR_STONE, 230, 0, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM12_Item_StarStone)

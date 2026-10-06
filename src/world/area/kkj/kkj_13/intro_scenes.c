@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(UpdatePropellerSoundPos_Intro)) {
+API_CALLABLE(UpdatePropellerSoundPos_Intro) {
     Npc* npc = get_npc_safe(NPC_Bowser_Prop);
     f32 x = npc->pos.x;
     f32 y = npc->pos.y;
@@ -15,10 +15,10 @@ API_CALLABLE(N(UpdatePropellerSoundPos_Intro)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdatePropellerSounds_Intro) = {
+EvtScript EVS_UpdatePropellerSounds_Intro = {
     Call(PlaySoundAtNpc, NPC_Bowser_Prop, SOUND_LOOP_BOWSER_PROPELLER, SOUND_SPACE_DEFAULT)
     Loop(0)
-        Call(N(UpdatePropellerSoundPos_Intro))
+        Call(UpdatePropellerSoundPos_Intro)
         IfLt(LVar0, 0)
             BreakLoop
         EndIf
@@ -29,7 +29,7 @@ EvtScript N(EVS_UpdatePropellerSounds_Intro) = {
     End
 };
 
-API_CALLABLE(N(ScreenWhiteFlashOn)) {
+API_CALLABLE(ScreenWhiteFlashOn) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -50,7 +50,7 @@ API_CALLABLE(N(ScreenWhiteFlashOn)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(ScreenWhiteFlashOff)) {
+API_CALLABLE(ScreenWhiteFlashOff) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -76,7 +76,7 @@ typedef struct GlassShardPosition {
     /* 0x02 */ s16 angle;
 } GlassShardPosition; // size = 0x4
 
-GlassShardPosition N(GlassPositions)[] = {
+GlassShardPosition GlassPositions[] = {
     { .radius =  5, .angle =   0 },
     { .radius =  5, .angle =  90 },
     { .radius =  5, .angle = 180 },
@@ -107,7 +107,7 @@ GlassShardPosition N(GlassPositions)[] = {
     { .radius = 30, .angle = 345 },
 };
 
-API_CALLABLE(N(ShatterWindow)) {
+API_CALLABLE(ShatterWindow) {
     EffectInstance* effect;
     f32 radius;
     f32 x, y;
@@ -116,11 +116,11 @@ API_CALLABLE(N(ShatterWindow)) {
     f32 posY;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(GlassPositions)); i++) {
+    for (i = 0; i < ARRAY_COUNT(GlassPositions); i++) {
         type = (i & 1) + 2;
-        radius = N(GlassPositions)[i].radius;
-        x = (radius * cos_deg(N(GlassPositions)[i].angle)) * 1.3;
-        y = (radius * sin_deg(N(GlassPositions)[i].angle)) * 1.5;
+        radius = GlassPositions[i].radius;
+        x = (radius * cos_deg(GlassPositions[i].angle)) * 1.3;
+        y = (radius * sin_deg(GlassPositions[i].angle)) * 1.5;
         posX = x + 600.0f;
         posY = y + 100.0f;
         x *= 0.1;
@@ -139,14 +139,14 @@ API_CALLABLE(N(ShatterWindow)) {
     return ApiStatus_DONE2;
 }
 
-Vec3f N(FlyThroughWindowPath)[] = {
+Vec3f FlyThroughWindowPath[] = {
     {  450.0,   150.0, -300.0 },
     {  550.0,   105.0, -180.0 },
     {  650.0,    60.0,  -75.0 },
     {  850.0,    90.0,    0.0 },
 };
 
-Vec3f N(PlayerThrownPath)[] = {
+Vec3f PlayerThrownPath[] = {
     {  660.0,     0.0,   15.0 },
     {  634.0,    60.0,  -83.0 },
     {  608.0,    80.0, -150.0 },
@@ -155,7 +155,7 @@ Vec3f N(PlayerThrownPath)[] = {
     {  530.0,   -60.0, -398.0 },
 };
 
-EvtScript N(EVS_FocusCam_Everyone) = {
+EvtScript EVS_FocusCam_Everyone = {
     Call(UseSettingsFrom, CAM_DEFAULT, 720, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 720, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, LVar0)
@@ -165,7 +165,7 @@ EvtScript N(EVS_FocusCam_Everyone) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_OnPeach) = {
+EvtScript EVS_FocusCam_OnPeach = {
     Call(GetNpcPos, NPC_Peach, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -177,7 +177,7 @@ EvtScript N(EVS_FocusCam_OnPeach) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_OnBowser) = {
+EvtScript EVS_FocusCam_OnBowser = {
     Call(GetNpcPos, NPC_Bowser_Body, LVar1, LVar2, LVar3)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar1, LVar2, LVar3)
     Call(SetPanTarget, CAM_DEFAULT, LVar1, LVar2, LVar3)
@@ -190,7 +190,7 @@ EvtScript N(EVS_FocusCam_OnBowser) = {
     End
 };
 
-EvtScript N(EVS_Scene_BowserAttacks) = {
+EvtScript EVS_Scene_BowserAttacks = {
     Call(SetMusic, 0, SONG_BOWSER_ATTACKS, 0, VOL_LEVEL_FULL)
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_Peach, 680, 0, -15)
@@ -270,8 +270,8 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
         Call(SetNpcAnimation, NPC_Bowser_Prop, ANIM_WorldBowser_ClownCarPropeller)
         Call(SetNpcYaw, NPC_Bowser_Body, 90)
         Call(SetNpcYaw, NPC_Bowser_Prop, 90)
-        Exec(N(EVS_UpdatePropellerSounds_Intro))
-        Call(LoadPath, 50 * DT, Ref(N(FlyThroughWindowPath)), ARRAY_COUNT(N(FlyThroughWindowPath)), EASING_LINEAR)
+        Exec(EVS_UpdatePropellerSounds_Intro)
+        Call(LoadPath, 50 * DT, Ref(FlyThroughWindowPath), ARRAY_COUNT(FlyThroughWindowPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Bowser_Body, LVar1, LVar2, LVar3)
@@ -289,7 +289,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlySlow)
         Call(SetNpcYaw, NPC_Kammy, 90)
         Wait(10 * DT)
-        Call(LoadPath, 50 * DT, Ref(N(FlyThroughWindowPath)), ARRAY_COUNT(N(FlyThroughWindowPath)), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, Ref(FlyThroughWindowPath), ARRAY_COUNT(FlyThroughWindowPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Kammy, LVar1, LVar2, LVar3)
@@ -304,16 +304,16 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     EndThread
     Thread
         Wait(20 * DT)
-        Call(N(ScreenWhiteFlashOn))
+        Call(ScreenWhiteFlashOn)
         Call(EnableGroup, MODEL_g133, false)
         Call(EnableGroup, MODEL_g147, false)
         Call(EnableGroup, MODEL_g152, true)
         Call(EnableGroup, MODEL_g154, true)
         Call(PlaySoundAt, SOUND_GLASS_SHATTER, SOUND_SPACE_DEFAULT, 600, 60, -150)
         PlayEffect(EFFECT_SPARKLES, 0, 600, 60, -150, 120)
-        Call(N(ShatterWindow))
+        Call(ShatterWindow)
         Wait(1)
-        Call(N(ScreenWhiteFlashOff))
+        Call(ScreenWhiteFlashOff)
     EndThread
     Thread
         Wait(20 * DT)
@@ -354,7 +354,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SpeakToNpc, NPC_Peach, ANIM_Peach2_Shout, ANIM_Peach2_EndShout, 0, NPC_Bowser_Body, MSG_Intro_0051)
     Set(LVar0, Float(1.0))
-    ExecWait(N(EVS_FocusCam_OnBowser))
+    ExecWait(EVS_FocusCam_OnBowser)
     Call(SpeakToNpc, NPC_Bowser_Body, ANIM_WorldBowser_TalkEyesClosed, ANIM_WorldBowser_Idle, 0, NPC_Peach, MSG_Intro_0052)
     Thread
         Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_Walk)
@@ -368,7 +368,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     EndThread
     Wait(5 * DT)
     Set(LVar0, Float(90.0))
-    ExecWait(N(EVS_FocusCam_Everyone))
+    ExecWait(EVS_FocusCam_Everyone)
     Wait(5 * DT)
     Call(PlayerMoveTo, 660, 0, 15 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
@@ -379,10 +379,10 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_RearUpLaugh)
     Call(SpeakToPlayer, NPC_Bowser_Body, ANIM_WorldBowser_RearUpLaugh, ANIM_WorldBowser_RearUpLaugh, 0, MSG_Intro_0055)
     Set(LVar0, Float(90.0))
-    ExecWait(N(EVS_FocusCam_OnBowser))
+    ExecWait(EVS_FocusCam_OnBowser)
     Call(SpeakToPlayer, NPC_Bowser_Body, ANIM_WorldBowser_RearUpTalk, ANIM_WorldBowser_RearUpTalk, 0, MSG_Intro_0056)
     Set(LVar0, Float(5.0))
-    ExecWait(N(EVS_FocusCam_Everyone))
+    ExecWait(EVS_FocusCam_Everyone)
     Call(SetNpcVar, NPC_Bowser_Body, 0, 0)
     Wait(5)
     Call(PlayerMoveTo, 695, 0, 10)
@@ -402,7 +402,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     Call(SetPlayerAnimation, ANIM_Mario1_FallDown)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach2_GaspStill)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_RearUpLaugh)
-    ExecWait(N(EVS_FocusCam_OnPeach))
+    ExecWait(EVS_FocusCam_OnPeach)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Peach, ANIM_Peach2_GaspStill, ANIM_Peach2_GaspStill, 5, MSG_Intro_005D)
     Wait(10 * DT)
@@ -425,7 +425,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     Call(SpeakToNpc, NPC_Bowser_Body, ANIM_WorldBowser_BrandishTalk, ANIM_WorldBowser_BrandishIdle, 0, NPC_Kammy, MSG_Intro_0060)
     Wait(10 * DT)
     Set(LVar0, Float(90.0))
-    ExecWait(N(EVS_FocusCam_Everyone))
+    ExecWait(EVS_FocusCam_Everyone)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_Idle)
     Call(InterpNpcYaw, NPC_Bowser_Body, 270, 10)
     Wait(20 * DT)
@@ -446,7 +446,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     Thread
         Call(PlaySoundAtPlayer, SOUND_TOSS_PLAYER, SOUND_SPACE_DEFAULT)
         Call(SetPlayerAnimation, ANIM_Mario1_Hurt)
-        Call(LoadPath, 30 * DT, Ref(N(PlayerThrownPath)), ARRAY_COUNT(N(PlayerThrownPath)), EASING_LINEAR)
+        Call(LoadPath, 30 * DT, Ref(PlayerThrownPath), ARRAY_COUNT(PlayerThrownPath), EASING_LINEAR)
         Set(LVar4, 0)
         Loop(0)
             Call(GetNextPathPos)
@@ -468,7 +468,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     End
 };
 
-EvtScript N(EVS_Scene_PeachCaptured) = {
+EvtScript EVS_Scene_PeachCaptured = {
     Call(FadeOutMusic, 0, 500)
     Call(DisablePlayerInput, true)
     Call(SetNpcAnimation, NPC_Peach, SPRITE_ID_BACK_FACING | ANIM_Peach1_Idle)
@@ -479,7 +479,7 @@ EvtScript N(EVS_Scene_PeachCaptured) = {
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
     Call(SetNpcPos, NPC_Kammy, 820, 0, 0)
     Set(LVar0, Float(90.0))
-    ExecWait(N(EVS_FocusCam_Everyone))
+    ExecWait(EVS_FocusCam_Everyone)
     Call(SetNpcSpeed, NPC_Peach, Float(3.0 / DT))
     Call(NpcMoveTo, NPC_Peach, 570, -130, 0)
     Call(SpeakToPlayer, NPC_Peach, SPRITE_ID_BACK_FACING | ANIM_Peach1_Idle, SPRITE_ID_BACK_FACING | ANIM_Peach1_Idle, 5, MSG_Intro_0062)

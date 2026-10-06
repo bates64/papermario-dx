@@ -1,9 +1,9 @@
 #include "dgb_06.h"
 
-EvtScript N(EVS_ExitDoor_dgb_04_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_06_ENTRY_0, "dgb_04", dgb_04_ENTRY_1,
+EvtScript EVS_ExitDoor_dgb_04_1 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_06_ENTRY_0, "dgb_04", dgb_04_ENTRY_1,
     COLLIDER_deilittw, MODEL_o161, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -16,20 +16,20 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_DGB_06)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
     IfEq(GF_DGB05_BoardedFloor, false)
         Call(EnableGroup, MODEL_g52, false)
     Else
         Call(EnableGroup, MODEL_g53, false)
     EndIf
-    BindTrigger(Ref(N(EVS_ExitDoor_dgb_04_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    BindTrigger(Ref(EVS_ExitDoor_dgb_04_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Return
     End
 };

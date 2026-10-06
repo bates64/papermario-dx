@@ -1,6 +1,6 @@
 #include "mim_05.h"
 
-EvtScript N(EVS_FlickerTexPanner) = {
+EvtScript EVS_FlickerTexPanner = {
     UseArray(LVar0)
     Switch(LVar1)
         CaseEq(TEX_PANNER_0)
@@ -38,36 +38,36 @@ EvtScript N(EVS_FlickerTexPanner) = {
     End
 };
 
-EvtScript N(EVS_AnimateMushroomSet) = {
+EvtScript EVS_AnimateMushroomSet = {
     Call(PlaySoundAt, SOUND_MIM_MUSHROOM_GLOW, SOUND_SPACE_DEFAULT, -300, 0, -10)
-    Exec(N(EVS_FlickerTexPanner))
+    Exec(EVS_FlickerTexPanner)
     Wait(30)
     Loop(4)
-        Exec(N(EVS_FlickerTexPanner))
+        Exec(EVS_FlickerTexPanner)
         Wait(3)
-        Exec(N(EVS_FlickerTexPanner))
+        Exec(EVS_FlickerTexPanner)
         Wait(3)
     EndLoop
-    Exec(N(EVS_FlickerTexPanner))
+    Exec(EVS_FlickerTexPanner)
     Return
     End
 };
 
-EvtScript N(EVS_InspectMushrooms_West) = {
+EvtScript EVS_InspectMushrooms_West = {
     Set(LVar1, TEX_PANNER_2)
-    Exec(N(EVS_AnimateMushroomSet))
+    Exec(EVS_AnimateMushroomSet)
     Wait(10)
     Set(LVar1, TEX_PANNER_4)
-    Exec(N(EVS_AnimateMushroomSet))
+    Exec(EVS_AnimateMushroomSet)
     Wait(10)
     Set(LVar1, TEX_PANNER_5)
-    Exec(N(EVS_AnimateMushroomSet))
+    Exec(EVS_AnimateMushroomSet)
     Wait(10)
     Return
     End
 };
 
-EvtScript N(EVS_InspectMushrooms_South) = {
+EvtScript EVS_InspectMushrooms_South = {
     Call(PlaySoundAt, SOUND_MIM_MUSHROOM_GLOW, SOUND_SPACE_DEFAULT, -20, 0, 300)
     Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0, -0x8000)
     Wait(20)
@@ -76,7 +76,7 @@ EvtScript N(EVS_InspectMushrooms_South) = {
     End
 };
 
-EvtScript N(EVS_InspectMushrooms_North) = {
+EvtScript EVS_InspectMushrooms_North = {
     Call(PlaySoundAt, SOUND_MIM_MUSHROOM_GLOW, SOUND_SPACE_DEFAULT, 20, 0, -300)
     Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, 0, -0x8000)
     Wait(20)
@@ -85,7 +85,7 @@ EvtScript N(EVS_InspectMushrooms_North) = {
     End
 };
 
-EvtScript N(EVS_InspectMushrooms_East) = {
+EvtScript EVS_InspectMushrooms_East = {
     Call(PlaySoundAt, SOUND_MIM_MUSHROOM_GLOW, SOUND_SPACE_DEFAULT, 300, 0, 10)
     Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_MAIN, 0, -0x8000)
     Wait(50)
@@ -94,7 +94,7 @@ EvtScript N(EVS_InspectMushrooms_East) = {
     End
 };
 
-EvtScript N(EVS_SetupExitHint) = {
+EvtScript EVS_SetupExitHint = {
     Call(SetTexPanner, MODEL_o402, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o510, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o511, TEX_PANNER_0)
@@ -119,10 +119,10 @@ EvtScript N(EVS_SetupExitHint) = {
     Set(ArrayVar(2), 0)
     Set(ArrayVar(4), 0)
     Set(ArrayVar(5), 0)
-    BindTrigger(Ref(N(EVS_InspectMushrooms_South)), TRIGGER_WALL_PRESS_A, COLLIDER_o402, 1, 0)
-    BindTrigger(Ref(N(EVS_InspectMushrooms_North)), TRIGGER_WALL_PRESS_A, COLLIDER_o403, 1, 0)
-    BindTrigger(Ref(N(EVS_InspectMushrooms_West)),  TRIGGER_WALL_PRESS_A, COLLIDER_o405, 1, 0)
-    BindTrigger(Ref(N(EVS_InspectMushrooms_East)),  TRIGGER_WALL_PRESS_A, COLLIDER_o404, 1, 0)
+    BindTrigger(Ref(EVS_InspectMushrooms_South), TRIGGER_WALL_PRESS_A, COLLIDER_o402, 1, 0)
+    BindTrigger(Ref(EVS_InspectMushrooms_North), TRIGGER_WALL_PRESS_A, COLLIDER_o403, 1, 0)
+    BindTrigger(Ref(EVS_InspectMushrooms_West),  TRIGGER_WALL_PRESS_A, COLLIDER_o405, 1, 0)
+    BindTrigger(Ref(EVS_InspectMushrooms_East),  TRIGGER_WALL_PRESS_A, COLLIDER_o404, 1, 0)
     Return
     End
 };

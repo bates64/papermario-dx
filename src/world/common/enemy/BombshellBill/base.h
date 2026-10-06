@@ -67,7 +67,7 @@
 #define BOMBSHELL_BILL_NPC(npcID) \
 { \
     .id = npcID, \
-    .settings = &N(NpcSettings_BombshellBill), \
+    .settings = &NpcSettings_BombshellBill, \
     .pos = { NPC_DISPOSE_LOCATION }, \
     .yaw = 0, \
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, \

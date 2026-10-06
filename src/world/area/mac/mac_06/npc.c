@@ -22,12 +22,12 @@ enum WhaleSpoutState {
     SPOUT_STATE_FALLING     = 12,
 };
 
-s32 N(SpoutState) = SPOUT_STATE_READY;
-f32 N(SpoutHeight) = 0.0f;
-f32 N(SpoutVelocity) = 0.0f;
-s32 N(SpoutInputWindow) = 0;
+s32 SpoutState = SPOUT_STATE_READY;
+f32 SpoutHeight = 0.0f;
+f32 SpoutVelocity = 0.0f;
+s32 SpoutInputWindow = 0;
 
-API_CALLABLE(N(UpdateWhaleRiderPosition)) {
+API_CALLABLE(UpdateWhaleRiderPosition) {
     Bytecode* args = script->ptrReadPos;
     Npc* whale = get_npc_safe(NPC_Whale);
     Npc* kolorado;
@@ -59,7 +59,7 @@ API_CALLABLE(N(UpdateWhaleRiderPosition)) {
     switch (script->functionTemp[0]) {
         case WHALE_RIDER_PLAYER:
             gPlayerStatus.pos.x = x;
-            gPlayerStatus.pos.y = y + N(SpoutHeight);
+            gPlayerStatus.pos.y = y + SpoutHeight;
             gPlayerStatus.pos.z = z;
             whale->colliderPos.x = whale->pos.x;
             whale->colliderPos.y = whale->pos.y;
@@ -95,58 +95,58 @@ API_CALLABLE(N(UpdateWhaleRiderPosition)) {
 }
 
 // player can press A while riding the whale to make it spout water and toss Mario upward
-API_CALLABLE(N(ManageWhaleSpoutPrompt)) {
+API_CALLABLE(ManageWhaleSpoutPrompt) {
     u32 buttons = gGameStatusPtr->pressedButtons[0];
     Npc* whaleNpc = get_npc_safe(NPC_Whale);
 
-    switch (N(SpoutState)) {
+    switch (SpoutState) {
         case SPOUT_STATE_READY:
             if (buttons & BUTTON_A) {
-                N(SpoutState) = SPOUT_STATE_BEGIN;
+                SpoutState = SPOUT_STATE_BEGIN;
                 break;
             }
-            if (N(SpoutInputWindow) >= 150) {
+            if (SpoutInputWindow >= 150) {
                 return ApiStatus_DONE2;
             }
-            N(SpoutInputWindow)++;
+            SpoutInputWindow++;
             break;
 
         case SPOUT_STATE_BEGIN:
             whaleNpc->curAnim = XNIM_Whale_Spout;
-            N(SpoutHeight) = 0.0f;
-            N(SpoutVelocity) = 5.0f;
-            N(SpoutState) = SPOUT_STATE_RISING;
+            SpoutHeight = 0.0f;
+            SpoutVelocity = 5.0f;
+            SpoutState = SPOUT_STATE_RISING;
             break;
 
         case SPOUT_STATE_RISING:
-            N(SpoutHeight) += N(SpoutVelocity);
-            if (N(SpoutHeight) < 70.0f) {
-                if (N(SpoutVelocity) < 4.0f) {
-                    N(SpoutVelocity) = 4.0f;
+            SpoutHeight += SpoutVelocity;
+            if (SpoutHeight < 70.0f) {
+                if (SpoutVelocity < 4.0f) {
+                    SpoutVelocity = 4.0f;
                 }
-                N(SpoutVelocity) += 1.0f;
+                SpoutVelocity += 1.0f;
             } else {
-                N(SpoutVelocity) -= 2.0f;
+                SpoutVelocity -= 2.0f;
             }
             if (whaleNpc->curAnim == XNIM_Whale_Swim) {
-                N(SpoutVelocity) = 4.0f;
-                N(SpoutState) = SPOUT_STATE_FALLING;
+                SpoutVelocity = 4.0f;
+                SpoutState = SPOUT_STATE_FALLING;
             }
             break;
 
         case SPOUT_STATE_FALLING:
-            N(SpoutHeight) -= N(SpoutVelocity);
-            if (N(SpoutHeight) < 0.0f) {
-                N(SpoutHeight) = 0.0f;
+            SpoutHeight -= SpoutVelocity;
+            if (SpoutHeight < 0.0f) {
+                SpoutHeight = 0.0f;
                 return ApiStatus_DONE2;
             }
-            N(SpoutVelocity) += 1.0f;
+            SpoutVelocity += 1.0f;
             break;
     }
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AwaitSkipScenePrompt)) {
+API_CALLABLE(AwaitSkipScenePrompt) {
     if(gGameStatusPtr->pressedButtons[0] & BUTTON_B) {
         return ApiStatus_DONE2;
     } else {
@@ -154,13 +154,13 @@ API_CALLABLE(N(AwaitSkipScenePrompt)) {
     }
 }
 
-EvtScript N(EVS_NpcIdle_Whale) = {
+EvtScript EVS_NpcIdle_Whale = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_06_ENTRY_0)
         Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
         Call(NpcFlyTo, NPC_Whale, 50, LVar1, 500, 120, 0, EASING_SIN_OUT)
         Thread
-            Call(N(ManageWhaleSpoutPrompt))
+            Call(ManageWhaleSpoutPrompt)
         EndThread
         Wait(150)
         Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
@@ -183,7 +183,7 @@ EvtScript N(EVS_NpcIdle_Whale) = {
         EndIf
         Call(NpcFlyTo, NPC_Whale, -70, LVar1, 500, 120, 0, EASING_SIN_OUT)
         Thread
-            Call(N(ManageWhaleSpoutPrompt))
+            Call(ManageWhaleSpoutPrompt)
         EndThread
         Wait(150)
         Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
@@ -194,7 +194,7 @@ EvtScript N(EVS_NpcIdle_Whale) = {
     End
 };
 
-API_CALLABLE(N(UpdateGullYawInterp)) {
+API_CALLABLE(UpdateGullYawInterp) {
     f32 x1 = evt_get_float_variable(script, LVar1);
     f32 y1 = evt_get_float_variable(script, LVar3);
     f32 x2 = evt_get_float_variable(script, LVar4);
@@ -237,7 +237,7 @@ API_CALLABLE(N(UpdateGullYawInterp)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MakeJrTroopaBubbles)) {
+API_CALLABLE(MakeJrTroopaBubbles) {
     Npc* jrTroopa = get_npc_safe(NPC_JrTroopa);
     f32 x = jrTroopa->pos.x + 10.0f;
     f32 y = jrTroopa->pos.y;
@@ -250,7 +250,7 @@ API_CALLABLE(N(MakeJrTroopaBubbles)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInit_Whale) = {
+EvtScript EVS_NpcInit_Whale = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_NO_SPRITE, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Call(GetEntryID, LVar0)
@@ -267,7 +267,7 @@ EvtScript N(EVS_NpcInit_Whale) = {
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
         Call(SetNpcPos, NPC_SELF, 300, 0, 500)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Whale)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Whale))
     Call(SetNpcAnimation, NPC_SELF, XNIM_Whale_Swim)
     Call(DisablePlayerPhysics, true)
     Call(DisablePlayerInput, true)
@@ -276,17 +276,17 @@ EvtScript N(EVS_NpcInit_Whale) = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Thread
-        Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_PLAYER)
+        Call(UpdateWhaleRiderPosition, WHALE_RIDER_PLAYER)
     EndThread
     Thread
-        Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_PARTNER)
+        Call(UpdateWhaleRiderPosition, WHALE_RIDER_PARTNER)
     EndThread
     Thread
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
-                Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_KOLORADO)
+                Call(UpdateWhaleRiderPosition, WHALE_RIDER_KOLORADO)
             CaseEq(STORY_CH5_TRADED_VASE_FOR_SEED)
-                Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_KOLORADO)
+                Call(UpdateWhaleRiderPosition, WHALE_RIDER_KOLORADO)
         EndSwitch
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
@@ -298,7 +298,7 @@ EvtScript N(EVS_NpcInit_Whale) = {
         EndIf
     EndIf
     Thread
-        Call(N(AwaitSkipScenePrompt))
+        Call(AwaitSkipScenePrompt)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, mac_06_ENTRY_0)
             Call(GotoMap, Ref("jan_00"), jan_00_ENTRY_0)
@@ -310,12 +310,12 @@ EvtScript N(EVS_NpcInit_Whale) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     Return
     End
 };
 
-Vec3f N(FlightPath)[] = {
+Vec3f FlightPath[] = {
     { -332.0,    50.0,  120.0 },
     { -160.0,    70.0,  300.0 },
     {  -71.0,    80.0,  130.0 },
@@ -332,21 +332,21 @@ Vec3f N(FlightPath)[] = {
     { -332.0,    50.0,  120.0 },
 };
 
-EvtScript N(EVS_FlyingGull) = {
+EvtScript EVS_FlyingGull = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(CloneModel, MODEL_hontai, CLONED_MODEL_GULL)
     Set(LFlag0, true)
     Set(LFlag1, false)
     SetF(LVar7, 0)
     Label(10)
-        Call(LoadPath, 500, Ref(N(FlightPath)), ARRAY_COUNT(N(FlightPath)), EASING_LINEAR)
+        Call(LoadPath, 500, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
         Label(0)
             Call(GetNextPathPos)
             Call(TranslateModel, MODEL_hontai, LVar1, LVar2, LVar3)
             SetF(LVar8, LVar2)
             MulF(LVar8, -1)
             Call(TranslateModel, CLONED_MODEL_GULL, LVar1, LVar8, LVar3)
-            Call(N(UpdateGullYawInterp))
+            Call(UpdateGullYawInterp)
             Call(RotateModel, MODEL_hontai, LVar7, 0, 1, 0)
             Call(RotateModel, CLONED_MODEL_GULL, LVar7, 0, 1, 0)
             Call(RotateModel, CLONED_MODEL_GULL, 180, 0, 0, 1)
@@ -361,7 +361,7 @@ EvtScript N(EVS_FlyingGull) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_JrTroopa) = {
+EvtScript EVS_NpcIdle_JrTroopa = {
     Call(SetSelfVar, 0, 0)
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
@@ -378,7 +378,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Wait(5)
     ChildThread
         Loop(0)
-            Call(N(MakeJrTroopaBubbles))
+            Call(MakeJrTroopaBubbles)
             Wait(5)
         EndLoop
     EndChildThread
@@ -390,10 +390,10 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_JrTroopa) = {
+EvtScript EVS_NpcInit_JrTroopa = {
     IfGe(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_MAC01_Defeated_JrTroopa4, false)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa))
             Return
         EndIf
     EndIf
@@ -402,51 +402,51 @@ EvtScript N(EVS_NpcInit_JrTroopa) = {
     End
 };
 
-NpcData N(NpcData_Whale) = {
+NpcData NpcData_Whale = {
     .id = NPC_Whale,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Whale),
-    .settings = &N(NpcSettings_Whale),
+    .init = &EVS_NpcInit_Whale,
+    .settings = &NpcSettings_Whale,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = WHALE_ANIMS,
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = COMMON_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
 };
 
-AnimID N(LimitAnims_JrTroopa)[] = {
+AnimID LimitAnims_JrTroopa[] = {
     ANIM_JrTroopa_Still,
     ANIM_JrTroopa_Idle,
     ANIM_JrTroopa_ChargeTripped,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_JrTroopa) = {
+NpcData NpcData_JrTroopa = {
     .id = NPC_JrTroopa,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_JrTroopa),
-    .settings = &N(NpcSettings_JrTroopa),
+    .init = &EVS_NpcInit_JrTroopa,
+    .settings = &NpcSettings_JrTroopa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = JR_TROOPA_ANIMS,
-    .limitAnimations = N(LimitAnims_JrTroopa),
+    .limitAnimations = LimitAnims_JrTroopa,
     .tattle = MSG_NpcTattle_JrTroopa,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_JrTroopa)),
-    NPC_GROUP(N(NpcData_Whale)),
-    NPC_GROUP(N(NpcData_Kolorado)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_JrTroopa),
+    NPC_GROUP(NpcData_Whale),
+    NPC_GROUP(NpcData_Kolorado),
     {}
 };

@@ -16,9 +16,7 @@ enum {
     MV_Starship_Yaw     = MapVar(11),
 };
 
-#define NAMESPACE hos_20
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_Starship_Flight1);
-extern EvtScript N(EVS_Starship_Flight2);
-extern EvtScript N(EVS_Starship_Return);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_Starship_Flight1;
+extern EvtScript EVS_Starship_Flight2;
+extern EvtScript EVS_Starship_Return;

@@ -15,15 +15,15 @@ typedef struct FallingSprite {
     /* 0x3C */ f32 height;
 } FallingSprite; // size = 0x40
 
-BSS FallingSprite N(Falling);
+BSS FallingSprite Falling;
 
-void N(worker_draw_falling_sprite)(void) {
+void worker_draw_falling_sprite(void) {
     ImgFXTexture ifxImg;
     SpriteRasterInfo rasterInfo;
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
     u32 animFrame;
-    FallingSprite* falling = &N(Falling);
+    FallingSprite* falling = &Falling;
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
@@ -78,8 +78,8 @@ void N(worker_draw_falling_sprite)(void) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-API_CALLABLE(N(InitializeFallingSprite)) {
-    FallingSprite* falling = &N(Falling);
+API_CALLABLE(InitializeFallingSprite) {
+    FallingSprite* falling = &Falling;
     falling->animationEnabled = false;
     falling->rasterID = 0;
     falling->playerSpriteID = 1;
@@ -96,22 +96,22 @@ API_CALLABLE(N(InitializeFallingSprite)) {
     falling->scale.z = SPRITE_WORLD_SCALE_F;
 
     falling->imgfxIdx = imgfx_get_free_instances(1);
-    falling->workerID = create_worker_scene(nullptr, &N(worker_draw_falling_sprite));
+    falling->workerID = create_worker_scene(nullptr, &worker_draw_falling_sprite);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DeleteFallingSprite)) {
-    imgfx_release_instance(N(Falling).imgfxIdx);
-    free_worker(N(Falling).workerID);
+API_CALLABLE(DeleteFallingSprite) {
+    imgfx_release_instance(Falling.imgfxIdx);
+    free_worker(Falling.workerID);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetFallingSpritePos)) {
+API_CALLABLE(SetFallingSpritePos) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    FallingSprite* falling = &N(Falling);
+    FallingSprite* falling = &Falling;
 
     falling->pos.x = x;
     falling->pos.y = y + (falling->height * SPRITE_WORLD_SCALE_D * 0.5);
@@ -119,13 +119,13 @@ API_CALLABLE(N(SetFallingSpritePos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetFallingSpriteRot)) {
+API_CALLABLE(SetFallingSpriteRot) {
     Bytecode* args = script->ptrReadPos;
     s32 add = evt_get_variable(script, *args++);
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    FallingSprite* falling = &N(Falling);
+    FallingSprite* falling = &Falling;
 
     if (!add) {
         falling->rot.x = x;
@@ -139,34 +139,34 @@ API_CALLABLE(N(SetFallingSpriteRot)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EnableFallingAnimation)) {
-    N(Falling).animationEnabled = true;
+API_CALLABLE(EnableFallingAnimation) {
+    Falling.animationEnabled = true;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitializeFallingPartner)) {
+API_CALLABLE(InitializeFallingPartner) {
     f32 partnerCollisionHeight = get_npc_unsafe(NPC_PARTNER)->collisionHeight;
 
     script->varTable[0] = ((partnerCollisionHeight * 2) / 3.0f) + 145.0f;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitializeGetUp)) {
-    FallingSprite* falling = &N(Falling);
+API_CALLABLE(InitializeGetUp) {
+    FallingSprite* falling = &Falling;
 
     falling->playerSpriteID = SPR_Mario1;
     falling->rasterID = 0;
     return ApiStatus_DONE2;
 }
 
-Vec3f N(FallPath)[] = {
+Vec3f FallPath[] = {
     {  0.0,         0.0,      0.0 },
     {  8.600760,  -48.39987, -1.993566 },
     { 24.998905,  -96.99983, -1.994021 },
     { 51.399390, -143.39980,  1.006466 },
 };
 
-EvtScript N(EVS_PlayerFalling) = {
+EvtScript EVS_PlayerFalling = {
     Call(SetPlayerPos, 0, 130, 0)
     Thread
         Wait(5)
@@ -176,7 +176,7 @@ EvtScript N(EVS_PlayerFalling) = {
         Call(MakeLerp, 180, 210, 25, EASING_QUADRATIC_IN)
         Label(10)
         Call(UpdateLerp)
-        Call(N(SetFallingSpriteRot), 0, Float(0.0), Float(0.0), LVar0)
+        Call(SetFallingSpriteRot, 0, Float(0.0), Float(0.0), LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
@@ -184,13 +184,13 @@ EvtScript N(EVS_PlayerFalling) = {
     EndThread
     Wait(1)
     Call(GetPlayerPos, LVar4, LVar5, LVar6)
-    Call(LoadPath, 30, Ref(N(FallPath)), ARRAY_COUNT(N(FallPath)), EASING_QUADRATIC_IN)
+    Call(LoadPath, 30, Ref(FallPath), ARRAY_COUNT(FallPath), EASING_QUADRATIC_IN)
     Label(0)
     Call(GetNextPathPos)
     AddF(LVar1, LVar4)
     AddF(LVar2, LVar5)
     AddF(LVar3, LVar6)
-    Call(N(SetFallingSpritePos), LVar1, LVar2, LVar3)
+    Call(SetFallingSpritePos, LVar1, LVar2, LVar3)
     Wait(1)
     IfEq(LVar0, 1)
         Goto(0)
@@ -202,8 +202,8 @@ EvtScript N(EVS_PlayerFalling) = {
     End
 };
 
-EvtScript N(EVS_PartnerFalling) = {
-    Call(N(InitializeFallingPartner))
+EvtScript EVS_PartnerFalling = {
+    Call(InitializeFallingPartner)
     Call(SetNpcPos, NPC_PARTNER, 0, LVar0, 0)
     Thread
         Wait(5)
@@ -221,7 +221,7 @@ EvtScript N(EVS_PartnerFalling) = {
     EndThread
     Wait(1)
     Call(GetNpcPos, NPC_PARTNER, LVar4, LVar5, LVar6)
-    Call(LoadPath, 30, Ref(N(FallPath)), ARRAY_COUNT(N(FallPath)), EASING_QUADRATIC_IN)
+    Call(LoadPath, 30, Ref(FallPath), ARRAY_COUNT(FallPath), EASING_QUADRATIC_IN)
     Label(0)
     Call(GetNextPathPos)
     AddF(LVar1, LVar4)
@@ -239,7 +239,7 @@ EvtScript N(EVS_PartnerFalling) = {
     End
 };
 
-EvtScript N(EVS_Scene_FallIntoCell) = {
+EvtScript EVS_Scene_FallIntoCell = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -256,20 +256,20 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(SetNpcPos, NPC_PARTNER, 0, 300, 0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
     Wait(30)
-    Call(N(InitializeFallingSprite))
-    ExecWait(N(EVS_PlayerFalling))
+    Call(InitializeFallingSprite)
+    ExecWait(EVS_PlayerFalling)
     Call(InterpNpcYaw, NPC_Bombette, 90, 0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE | NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    ExecWait(N(EVS_PartnerFalling))
+    ExecWait(EVS_PartnerFalling)
     Call(InterpNpcYaw, NPC_Bombette, 270, 0)
     Wait(20)
     Call(InterpNpcYaw, NPC_Bombette, 90, 0)
     Call(SpeakToPlayer, NPC_Bombette, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00D8)
-    Call(N(EnableFallingAnimation))
+    Call(EnableFallingAnimation)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Call(N(DeleteFallingSprite))
+    Call(DeleteFallingSprite)
     Thread
         Call(SetNpcRotation, NPC_PARTNER, 0, 0, 0)
         Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))

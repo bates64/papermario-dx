@@ -1,12 +1,12 @@
 #include "dgb_09.h"
 #include "effects.h"
 
-BombTrigger N(BombPos_Wall) = {
+BombTrigger BombPos_Wall = {
     .pos = { 300.0f, 0.0f, 88.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_BlastWall) = {
+EvtScript EVS_BlastWall = {
     Wait(2)
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 1, 25, 3, 1, 10, 30)
     Loop(10)
@@ -24,9 +24,9 @@ EvtScript N(EVS_BlastWall) = {
     End
 };
 
-EvtScript N(EVS_SetupBreakable) = {
+EvtScript EVS_SetupBreakable = {
     IfEq(GF_DGB09_BombedWall, false)
-        BindTrigger(Ref(N(EVS_BlastWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
+        BindTrigger(Ref(EVS_BlastWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
         Call(EnableModel, MODEL_g29, false)
     Else
         Call(EnableModel, MODEL_g28, false)

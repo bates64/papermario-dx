@@ -39,11 +39,11 @@
 #define GULPIT_HITBOX(npcID) \
 { \
     .id = npcID, \
-    .settings = &N(NpcSettings_Gulpit_Hitbox), \
+    .settings = &NpcSettings_Gulpit_Hitbox, \
     .pos = { NPC_DISPOSE_LOCATION }, \
     .yaw = 0, \
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \
     .drops = NO_DROPS, \
     .animations = GULPIT_ANIMS, \
-    .limitAnimations = N(LimitAnims_Gulpit_Hitbox), \
+    .limitAnimations = LimitAnims_Gulpit_Hitbox, \
 }

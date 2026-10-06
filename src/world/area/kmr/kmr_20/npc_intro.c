@@ -2,7 +2,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(HideWorldOutsideMariosHouse)) {
+API_CALLABLE(HideWorldOutsideMariosHouse) {
     mdl_group_set_custom_gfx(MODEL_g62, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
 
@@ -13,12 +13,12 @@ API_CALLABLE(N(HideWorldOutsideMariosHouse)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetAmbienceVolumeHalf_Intro)) {
+API_CALLABLE(SetAmbienceVolumeHalf_Intro) {
     snd_ambient_set_volume(0, 1000, 63);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Luigi_PlayWalkSounds_Intro) = {
+EvtScript EVS_Luigi_PlayWalkSounds_Intro = {
     Call(GetNpcAnimation, NPC_Scene_Luigi, LVar0)
     Switch(LVar0)
         CaseOrEq(ANIM_Luigi_Walk)
@@ -45,15 +45,15 @@ EvtScript N(EVS_Luigi_PlayWalkSounds_Intro) = {
     End
 };
 
-EvtScript N(EVS_Player_EnterPipe_Intro) = {
+EvtScript EVS_Player_EnterPipe_Intro = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(PlayerMoveTo, LVar1, LVar3, 3)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtPlayer, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -73,15 +73,15 @@ EvtScript N(EVS_Player_EnterPipe_Intro) = {
     End
 };
 
-EvtScript N(EVS_Luigi_EnterPipe_Intro) = {
+EvtScript EVS_Luigi_EnterPipe_Intro = {
     Call(SetNpcFlagBits, NPC_Scene_Luigi, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_Scene_Luigi, NPC_FLAG_FLYING, true)
     Call(EnableNpcShadow, NPC_Scene_Luigi, false)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(NpcMoveTo, NPC_Scene_Luigi, LVar1, LVar3, 3)
     Set(LVar0, kmr_20_ENTRY_4)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(SetNpcPos, NPC_Scene_Luigi, LVar1, LVar2, LVar3)
     Wait(2)
     Call(PlaySoundAtNpc, NPC_Scene_Luigi, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
@@ -103,7 +103,7 @@ EvtScript N(EVS_Luigi_EnterPipe_Intro) = {
     End
 };
 
-EvtScript N(EVS_TetherCamToLuigi) = {
+EvtScript EVS_TetherCamToLuigi = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetNpcVar, NPC_Scene_Luigi, 0, 1)
     Loop(0)
@@ -120,7 +120,7 @@ EvtScript N(EVS_TetherCamToLuigi) = {
     End
 };
 
-EvtScript N(EVS_OpenAndCloseDoor_Intro_Impl) = {
+EvtScript EVS_OpenAndCloseDoor_Intro_Impl = {
     Call(PlaySoundAtCollider, COLLIDER_o246, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -146,15 +146,15 @@ EvtScript N(EVS_OpenAndCloseDoor_Intro_Impl) = {
     End
 };
 
-EvtScript N(EVS_OpenAndCloseDoor_Intro) = {
+EvtScript EVS_OpenAndCloseDoor_Intro = {
     Call(EnableGroup, MODEL_g72, true)
-    ExecWait(N(EVS_OpenAndCloseDoor_Intro_Impl))
+    ExecWait(EVS_OpenAndCloseDoor_Intro_Impl)
     Call(EnableGroup, MODEL_g72, false)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_BeginGame) = {
+EvtScript EVS_Scene_BeginGame = {
     Call(DisablePlayerInput, true)
     Thread
         Wait(5 * DT)
@@ -258,10 +258,10 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Wait(10 * DT)
     Call(NpcFlyTo, NPC_Scene_Parakarry, 360, 260, 60, 60 * DT, -10, EASING_LINEAR)
     Wait(30 * DT)
-    Exec(N(EVS_OpenAndCloseDoor_Intro))
+    Exec(EVS_OpenAndCloseDoor_Intro)
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_Run)
-    ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Intro), LVarA)
+    ExecGetTID(EVS_Luigi_PlayWalkSounds_Intro, LVarA)
     Call(SetNpcSpeed, NPC_Scene_Luigi, Float(4.0 / DT))
     Call(NpcMoveTo, NPC_Scene_Luigi, 450, -80, 0)
     Call(NpcMoveTo, NPC_Scene_Luigi, 430, -165, 0)
@@ -295,7 +295,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Wait(40 * DT)
     Call(InterpNpcYaw, NPC_Scene_Luigi, 270, 5)
     Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_RunLetter)
-    ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Intro), LVarA)
+    ExecGetTID(EVS_Luigi_PlayWalkSounds_Intro, LVarA)
     Call(NpcMoveTo, NPC_Scene_Luigi, 450, -80, 0)
     Call(NpcMoveTo, NPC_Scene_Luigi, 290, -70, 0)
     KillThread(LVarA)
@@ -303,7 +303,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Call(EnableGroup, MODEL_g21, true)
     Call(EnableGroup, MODEL_g49, true)
     Call(EnableModel, MODEL_g56, true)
-    Call(N(HideWorldOutsideMariosHouse))
+    Call(HideWorldOutsideMariosHouse)
     Call(RotateGroup, MODEL_g60, 90, 1, 0, 0)
     Call(RotateGroup, MODEL_g34, 90, -1, 0, 0)
     Call(EnableGroup, MODEL_g60, false)
@@ -312,21 +312,21 @@ EvtScript N(EVS_Scene_BeginGame) = {
     Call(SetPanTarget, CAM_DEFAULT, 250, 30, -80)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(SetAmbienceVolumeHalf_Intro))
-    Exec(N(EVS_OpenAndCloseDoor_Intro_Impl))
+    Call(SetAmbienceVolumeHalf_Intro)
+    Exec(EVS_OpenAndCloseDoor_Intro_Impl)
     Wait(10)
     Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_WalkLetter)
-    ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Intro), LVarA)
+    ExecGetTID(EVS_Luigi_PlayWalkSounds_Intro, LVarA)
     Call(SetNpcSpeed, NPC_Scene_Luigi, Float(2.0 / DT))
     Call(NpcMoveTo, NPC_Scene_Luigi, 240, -80, 0)
     Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_IdleLetter)
     KillThread(LVarA)
     Call(SpeakToPlayer, NPC_Scene_Luigi, ANIM_Luigi_TalkLetter, ANIM_Luigi_IdleLetter, 0, MSG_Intro_001F)
     Wait(10 * DT)
-    Exec(N(EVS_TetherCamToLuigi))
+    Exec(EVS_TetherCamToLuigi)
     Thread
         Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_WalkLetter)
-        ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Intro), LVarA)
+        ExecGetTID(EVS_Luigi_PlayWalkSounds_Intro, LVarA)
         Call(NpcMoveTo, NPC_Scene_Luigi, 230, -130, 0)
         Call(NpcMoveTo, NPC_Scene_Luigi, 110, -110, 0)
         Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_IdleLetter)
@@ -355,7 +355,7 @@ EvtScript N(EVS_Scene_BeginGame) = {
     End
 };
 
-EvtScript N(EVS_Scene_SettingOff) = {
+EvtScript EVS_Scene_SettingOff = {
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_Scene_Luigi, 220, 30, -70)
     Call(SetNpcYaw, NPC_Scene_Luigi, 90)
@@ -365,12 +365,12 @@ EvtScript N(EVS_Scene_SettingOff) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(60 * DT)
     Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_FULL)
-    Exec(N(EVS_OpenAndCloseDoor_Intro))
+    Exec(EVS_OpenAndCloseDoor_Intro)
     Thread
         Wait(10 * DT)
         Call(SetNpcSpeed, NPC_Scene_Luigi, Float(3.0 / DT))
         Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_Run)
-        ExecGetTID(N(EVS_Luigi_PlayWalkSounds_Intro), LVarA)
+        ExecGetTID(EVS_Luigi_PlayWalkSounds_Intro, LVarA)
         Call(NpcMoveTo, NPC_Scene_Luigi, 320, -70, 0)
         Call(NpcMoveTo, NPC_Scene_Luigi, 460, -70, 0)
         Call(NpcMoveTo, NPC_Scene_Luigi, 570, -170, 0)
@@ -383,7 +383,7 @@ EvtScript N(EVS_Scene_SettingOff) = {
     Call(func_802D1270, 570, -170, Float(3.0 / DT))
     Call(SetPlayerJumpscale, Float(1.0))
     Call(PlayerJump, 594, 30, -216, 15 * DT)
-    ExecWait(N(EVS_Player_EnterPipe_Intro))
+    ExecWait(EVS_Player_EnterPipe_Intro)
     Call(SetNpcAnimation, NPC_Scene_Luigi, ANIM_Luigi_JumpStance)
     Wait(10 * DT)
     Thread
@@ -396,8 +396,8 @@ EvtScript N(EVS_Scene_SettingOff) = {
     EndThread
     Call(SetNpcJumpscale, NPC_Scene_Luigi, Float(1.0))
     Call(NpcJump0, NPC_Scene_Luigi, 594, 30, -216, 15 * DT)
-    ExecWait(N(EVS_Luigi_EnterPipe_Intro))
-    Exec(N(EVS_FadeOutAmbientSounds))
+    ExecWait(EVS_Luigi_EnterPipe_Intro)
+    Exec(EVS_FadeOutAmbientSounds)
     Call(GotoMap, Ref("mac_00"), mac_00_ENTRY_5)
     Wait(100)
     Call(DisablePlayerInput, false)

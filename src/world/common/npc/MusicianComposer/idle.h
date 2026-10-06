@@ -3,4 +3,4 @@
 
 #define NpcSettings_MusicianComposer NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_MusicianComposer);
+extern NpcSettings NpcSettings_MusicianComposer;

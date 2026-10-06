@@ -3,20 +3,20 @@
 
 #include "world/common/entity/Chest.inc.c"
 
-EvtScript N(EVS_OpenChest_BooWeight) = {
+EvtScript EVS_OpenChest_BooWeight = {
     Set(LVarA, ITEM_BOO_WEIGHT)
     Set(GB_StoryProgress, STORY_CH3_GOT_WEIGHT)
     Set(GF_OBK07_Chest_Weight, true)
-    ExecWait(N(EVS_Chest_GetItem))
-    ExecWait(N(EVS_Scene_PlayerGotChestItem))
+    ExecWait(EVS_Chest_GetItem)
+    ExecWait(EVS_Scene_PlayerGotChestItem)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Chest), 170, 0, -160, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OBK07_Chest_Weight)
-    Call(AssignScript, Ref(N(EVS_OpenChest_BooWeight)))
+    Call(AssignScript, Ref(EVS_OpenChest_BooWeight))
     Return
     End
 };

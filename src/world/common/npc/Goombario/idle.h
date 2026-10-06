@@ -3,4 +3,4 @@
 
 #define NpcSettings_Goombario NpcSettings_GoombaFamily
 
-extern NpcSettings N(NpcSettings_Goombario);
+extern NpcSettings NpcSettings_Goombario;

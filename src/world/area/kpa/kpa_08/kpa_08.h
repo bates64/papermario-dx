@@ -18,9 +18,7 @@ enum {
     NPC_Magikoopa_Spell     = 1,
 };
 
-#define NAMESPACE kpa_08
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

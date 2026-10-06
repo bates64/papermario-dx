@@ -1,6 +1,6 @@
 #include "../mim.h"
 
-EvtScript N(EVS_UseGate) = {
+EvtScript EVS_UseGate = {
     Thread
         Call(PlaySoundAtCollider, LVar9, SOUND_FOREST_GATE_OPEN, SOUND_SPACE_DEFAULT)
         Wait(19)
@@ -27,7 +27,7 @@ EvtScript N(EVS_UseGate) = {
                 Call(PlayerMoveTo, LVar0, LVar2, 15)
             EndThread
             Set(LVar1, 1)
-            Exec(N(EVS_SetGateCameraZones))
+            Exec(EVS_SetGateCameraZones)
             Call(MakeLerp, 90, 360, 30, EASING_LINEAR)
             Label(20)
                 Call(UpdateLerp)
@@ -37,7 +37,7 @@ EvtScript N(EVS_UseGate) = {
                 IfEq(LVar1, 1)
                     Goto(20)
                 EndIf
-            Exec(N(EVS_ResetGates))
+            Exec(EVS_ResetGates)
             Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
             Set(GF_MIM_ChoosingPath, true)
         CaseEq(MIM_USEGATE_INNER)
@@ -60,7 +60,7 @@ EvtScript N(EVS_UseGate) = {
                 Call(PlayerMoveTo, LVar0, LVar2, 15)
             EndThread
             Set(LVar1, 2)
-            Exec(N(EVS_SetGateCameraZones))
+            Exec(EVS_SetGateCameraZones)
             Call(MakeLerp, 270, -10, 30, EASING_LINEAR)
             Label(40)
                 Call(UpdateLerp)
@@ -91,7 +91,7 @@ EvtScript N(EVS_UseGate) = {
                 Call(PlayerMoveTo, LVar0, LVar2, 15)
             EndThread
             Set(LVar1, 1)
-            Exec(N(EVS_SetGateCameraZones))
+            Exec(EVS_SetGateCameraZones)
             Call(MakeLerp, 90, 360, 30, EASING_LINEAR)
             Label(60)
                 Call(UpdateLerp)
@@ -101,7 +101,7 @@ EvtScript N(EVS_UseGate) = {
                 IfEq(LVar1, 1)
                     Goto(60)
                 EndIf
-            Exec(N(EVS_ResetGates))
+            Exec(EVS_ResetGates)
             Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
     EndSwitch
     Return

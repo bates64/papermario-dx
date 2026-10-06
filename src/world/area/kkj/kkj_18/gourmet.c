@@ -1,7 +1,7 @@
 #include "kkj_18.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetHeldBakingItem)) {
+API_CALLABLE(SetHeldBakingItem) {
     Bytecode* args = script->ptrReadPos;
 
     // bizarre use of evt_get_float_variable here
@@ -11,7 +11,7 @@ API_CALLABLE(N(SetHeldBakingItem)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpinCameraAround)) {
+API_CALLABLE(SpinCameraAround) {
     Camera* camera = &gCameras[CAM_DEFAULT];
 
     if (isInitialCall) {
@@ -29,7 +29,7 @@ API_CALLABLE(N(SpinCameraAround)) {
     }
 }
 
-Vec3f N(TwinkDepartPath)[] = {
+Vec3f TwinkDepartPath[] = {
     {  -23.0,    30.0,   36.0 },
     {   16.0,    62.0,  -10.0 },
     {   64.0,    55.0,    5.0 },
@@ -37,7 +37,7 @@ Vec3f N(TwinkDepartPath)[] = {
     {  160.0,    60.0,  -25.0 },
 };
 
-EvtScript N(EVS_GetApproachPeachPos) = {
+EvtScript EVS_GetApproachPeachPos = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 16)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -84,7 +84,7 @@ EvtScript N(EVS_GetApproachPeachPos) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach) = {
+EvtScript EVS_PickUpPeach = {
     Thread
         Call(GetNpcPos, NPC_Koopatrol_01, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -120,7 +120,7 @@ EvtScript N(EVS_PickUpPeach) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway) = {
+EvtScript EVS_CarryPeachAway = {
     Call(InterpNpcYaw, NPC_Koopatrol_01, 270, 3)
     Wait(10)
     Thread
@@ -162,7 +162,7 @@ EvtScript N(EVS_CarryPeachAway) = {
     End
 };
 
-EvtScript N(EVS_OpenAndCloseWindow) = {
+EvtScript EVS_OpenAndCloseWindow = {
     Call(PlaySoundAt, SOUND_WINDOW_OPEN_A, SOUND_SPACE_DEFAULT, 190, 78, -20)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -190,7 +190,7 @@ EvtScript N(EVS_OpenAndCloseWindow) = {
     End
 };
 
-EvtScript N(EVS_DropFork) = {
+EvtScript EVS_DropFork = {
     Call(SetNpcFlagBits, NPC_GourmetGuy_Fork, NPC_FLAG_INVISIBLE, false)
     Call(GetNpcPos, NPC_GourmetGuy_Fork, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_GourmetGuy_Fork, Float(0.05))
@@ -211,7 +211,7 @@ EvtScript N(EVS_DropFork) = {
     End
 };
 
-EvtScript N(EVS_DropKnife) = {
+EvtScript EVS_DropKnife = {
     Call(SetNpcFlagBits, NPC_GourmetGuy_Knife, NPC_FLAG_INVISIBLE, false)
     Call(GetNpcPos, NPC_GourmetGuy_Knife, LVar0, LVar1, LVar2)
     Call(SetNpcRotation, NPC_GourmetGuy_Knife, 0, 0, -25)
@@ -233,12 +233,12 @@ EvtScript N(EVS_DropKnife) = {
     End
 };
 
-EvtScript N(EVS_GourmetGuy_LovesCake) = {
+EvtScript EVS_GourmetGuy_LovesCake = {
     Thread
         Call(ShowMessageAtScreenPos, MSG_Peach_00AB, 160, 40)
     EndThread
-    Exec(N(EVS_DropFork))
-    Exec(N(EVS_DropKnife))
+    Exec(EVS_DropFork)
+    Exec(EVS_DropKnife)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Surprise)
     Wait(1)
     Call(UseSettingsFrom, CAM_DEFAULT, 90, 65, 10)
@@ -275,9 +275,9 @@ EvtScript N(EVS_GourmetGuy_LovesCake) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndLoop
-    Call(N(SpinCameraAround))
-    Call(N(SpinCameraAround))
-    Call(N(SpinCameraAround))
+    Call(SpinCameraAround)
+    Call(SpinCameraAround)
+    Call(SpinCameraAround)
     Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 0, 10)
     Call(UseSettingsFrom, CAM_DEFAULT, 120, 0, 10)
     Call(SetPanTarget, CAM_DEFAULT, 120, 0, 10)
@@ -287,7 +287,7 @@ EvtScript N(EVS_GourmetGuy_LovesCake) = {
     End
 };
 
-EvtScript N(EVS_GourmetGuy_RunAround) = {
+EvtScript EVS_GourmetGuy_RunAround = {
     Call(PlaySoundAtNpc, NPC_GourmetGuy, SOUND_GOURMET_GUY_RUN, SOUND_SPACE_DEFAULT)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Leap)
     Call(SetNpcJumpscale, NPC_GourmetGuy, Float(0.001953125))
@@ -334,7 +334,7 @@ EvtScript N(EVS_GourmetGuy_RunAround) = {
     End
 };
 
-EvtScript N(EVS_RejectCake) = {
+EvtScript EVS_RejectCake = {
     Call(PlaySoundAtNpc, NPC_GourmetGuy, SOUND_SPIT_OUT, SOUND_SPACE_DEFAULT)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_SpitOut)
     Call(MakeItemEntity, MV_CakeItemIdx, 105, 30, 20, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -403,7 +403,7 @@ EvtScript N(EVS_RejectCake) = {
     End
 };
 
-EvtScript N(EVS_SweatyPeach) = {
+EvtScript EVS_SweatyPeach = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Wait(10)
     Call(InterpPlayerYaw, 90, 5)
@@ -418,7 +418,7 @@ EvtScript N(EVS_SweatyPeach) = {
     End
 };
 
-EvtScript N(EVS_Scene_GiveKitchenKey) = {
+EvtScript EVS_Scene_GiveKitchenKey = {
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_GourmetGuy, ANIM_GourmetGuy_Talk, ANIM_GourmetGuy_Idle, 0, MSG_Peach_009A)
     Wait(10 * DT)
@@ -458,7 +458,7 @@ EvtScript N(EVS_Scene_GiveKitchenKey) = {
     End
 };
 
-EvtScript N(EVS_Scene_JudgeCake) = {
+EvtScript EVS_Scene_JudgeCake = {
     Call(DisablePlayerInput, true)
     IfEq(AF_KKJ19_AddedBerries, false)
         Set(MV_CakeItemIdx, ITEM_CAKE_WITH_ICING)
@@ -490,7 +490,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Call(MakeItemEntity, MV_CakeItemIdx, 25, 25, -20, ITEM_SPAWN_MODE_DECORATION, 0)
     Call(SetNpcVar, NPC_GourmetGuy, 7, LVar0)
     Set(AF_KKJ_FinishedBakingCake, false)
-    Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
+    Call(SetHeldBakingItem, PEACH_BAKING_NONE)
     Thread
         Call(DisablePartnerAI, false)
         Call(NpcFlyTo, NPC_PARTNER, -23, 30, 36, 5 * DT, 0, EASING_LINEAR)
@@ -518,16 +518,16 @@ EvtScript N(EVS_Scene_JudgeCake) = {
         Call(PlaySoundAtNpc, NPC_GourmetGuy, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
     EndLoop
     IfNe(AB_KKJ_CompletedBakeStep, CAKE_TYPE_DONE)
-        ExecWait(N(EVS_RejectCake))
+        ExecWait(EVS_RejectCake)
         Call(EnablePartnerAI)
         Call(DisablePlayerPhysics, false)
         Call(DisablePlayerInput, false)
         Return
     EndIf
     Call(SetEnemyFlagBits, NPC_GourmetGuy, ENEMY_FLAG_CANT_INTERACT, true)
-    ExecWait(N(EVS_GourmetGuy_LovesCake))
+    ExecWait(EVS_GourmetGuy_LovesCake)
     Call(SetNpcVar, NPC_GourmetGuy, 0, 1)
-    Exec(N(EVS_GourmetGuy_RunAround))
+    Exec(EVS_GourmetGuy_RunAround)
     Loop(0)
         Call(PlayerFaceNpc, NPC_GourmetGuy, false)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_GourmetGuy, 0)
@@ -537,7 +537,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Idle)
     Call(InterpNpcYaw, NPC_GourmetGuy, 270, 5)
     Call(SpeakToPlayer, NPC_GourmetGuy, ANIM_GourmetGuy_Talk, ANIM_GourmetGuy_Idle, 0, MSG_Peach_00AC)
@@ -571,7 +571,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Call(SetPanTarget, CAM_DEFAULT, 150, 0, 10)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.2 / DT))
-    Call(LoadPath, 60 * DT, Ref(N(TwinkDepartPath)), ARRAY_COUNT(N(TwinkDepartPath)), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, Ref(TwinkDepartPath), ARRAY_COUNT(TwinkDepartPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -582,7 +582,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     EndLoop
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 16, MSG_Peach_00B2)
-    Exec(N(EVS_OpenAndCloseWindow))
+    Exec(EVS_OpenAndCloseWindow)
     Wait(14 * DT)
     Call(NpcFlyTo, NPC_PARTNER, 250, 70, -25, 30 * DT, 0, EASING_LINEAR)
     Wait(30 * DT)
@@ -622,22 +622,22 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Call(NpcMoveTo, NPC_Kammy, -120, 80, 0)
     Call(NpcMoveTo, NPC_Kammy, -70, 80, 0)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
-    ExecGetTID(N(EVS_SweatyPeach), LVarA)
+    ExecGetTID(EVS_SweatyPeach, LVarA)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 0, MSG_Peach_00B4)
     Call(EndSpeech, NPC_Kammy, ANIM_WorldKammy_Shout, ANIM_WorldKammy_Shout, 5)
     Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Shout, ANIM_WorldKammy_Idle, 0, NPC_Koopatrol_01, MSG_Peach_00B5)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, true)
-    ExecWait(N(EVS_GetApproachPeachPos))
-    ExecWait(N(EVS_PickUpPeach))
+    ExecWait(EVS_GetApproachPeachPos)
+    ExecWait(EVS_PickUpPeach)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_00B6)
     Thread
         Wait(30)
         Call(InterpNpcYaw, NPC_Kammy, 270, 5)
     EndThread
-    ExecWait(N(EVS_CarryPeachAway))
+    ExecWait(EVS_CarryPeachAway)
     Call(FadeOutMusic, 0, 1000 * DT)
-    ExecWait(N(EVS_EndPeachChapter4))
+    ExecWait(EVS_EndPeachChapter4)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -645,13 +645,13 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     End
 };
 
-EvtScript N(EVS_ManageGourmetGuyScenes) = {
+EvtScript EVS_ManageGourmetGuyScenes = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     IfEq(GF_KKJ18_GourmetGuy_GaveKey, false)
-        ExecWait(N(EVS_Scene_GiveKitchenKey))
+        ExecWait(EVS_Scene_GiveKitchenKey)
     EndIf
     IfEq(AF_KKJ_FinishedBakingCake, true)
-        ExecWait(N(EVS_Scene_JudgeCake))
+        ExecWait(EVS_Scene_JudgeCake)
     EndIf
     Return
     End

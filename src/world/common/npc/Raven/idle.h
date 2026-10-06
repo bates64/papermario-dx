@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Raven);
+extern NpcSettings NpcSettings_Raven;

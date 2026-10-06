@@ -62,17 +62,15 @@ enum {
     MV_BossDefeated             = MapVar(10),
 };
 
-#define NAMESPACE kmr_22
-
-extern EvtScript N(EVS_Main);
-extern NpcGroupList N(NpcGroup_Chapter1);
-extern NpcGroupList N(NpcGroup_Chapter2);
-extern NpcGroupList N(NpcGroup_Chapter3);
-extern NpcGroupList N(NpcGroup_Chapter4);
-extern NpcGroupList N(NpcGroup_Chapter5);
-extern NpcGroupList N(NpcGroup_Chapter6);
-extern NpcGroupList N(NpcGroup_Chapter7);
-extern NpcGroupList N(NpcGroup_Chapter8);
+extern EvtScript EVS_Main;
+extern NpcGroupList NpcGroup_Chapter1;
+extern NpcGroupList NpcGroup_Chapter2;
+extern NpcGroupList NpcGroup_Chapter3;
+extern NpcGroupList NpcGroup_Chapter4;
+extern NpcGroupList NpcGroup_Chapter5;
+extern NpcGroupList NpcGroup_Chapter6;
+extern NpcGroupList NpcGroup_Chapter7;
+extern NpcGroupList NpcGroup_Chapter8;
 
 extern API_CALLABLE(SetAnimatorFlags);
 extern API_CALLABLE(GetAnimatedPositionByTreeIndex);

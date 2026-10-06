@@ -1,6 +1,6 @@
 #include "common.h"
 
-EvtScript N(EVS_SetGateCameraZones) = {
+EvtScript EVS_SetGateCameraZones = {
     Switch(LVar1)
         CaseEq(0)
             Call(SetZoneEnabled, ZONE_north, true)
@@ -40,7 +40,7 @@ EvtScript N(EVS_SetGateCameraZones) = {
     End
 };
 
-EvtScript N(EVS_InitializeGates) = {
+EvtScript EVS_InitializeGates = {
     Call(ParentColliderToModel, COLLIDER_monn, MODEL_n1)
     Call(RotateGroup, MODEL_monn, LVar2, 0, 1, 0)
     Call(UpdateColliderTransform, COLLIDER_monn)
@@ -57,7 +57,7 @@ EvtScript N(EVS_InitializeGates) = {
     End
 };
 
-EvtScript N(EVS_ResetGates) = {
+EvtScript EVS_ResetGates = {
     Call(RotateGroup, MODEL_monn, 0, 0, 1, 0)
     Call(UpdateColliderTransform, COLLIDER_monn)
     Call(RotateGroup, MODEL_mons, 0, 0, 1, 0)

@@ -1,13 +1,13 @@
 #include "../kmr_22.h"
 
-EvtScript N(EVS_NpcInit_Klevar) = {
+EvtScript EVS_NpcInit_Klevar = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKlevar_Still)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_TINT, 0, 0, 0, 128)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_HuffNPuff_Body) = {
+EvtScript EVS_NpcInit_HuffNPuff_Body = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_InhaleBody)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcPos, NPC_SELF, 40, 45, 1)
@@ -15,7 +15,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Body) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_HuffNPuff_Face) = {
+EvtScript EVS_NpcInit_HuffNPuff_Face = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_InhaleFace)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcPos, NPC_SELF, 40, 45, 1)
@@ -23,7 +23,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Face) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_HuffNPuff_Arms) = {
+EvtScript EVS_NpcInit_HuffNPuff_Arms = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_InhaleArms)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcPos, NPC_SELF, 40, 45, 1)
@@ -31,7 +31,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Arms) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_RuffPuff_01) = {
+EvtScript EVS_NpcInit_RuffPuff_01 = {
     Call(SetNpcAnimation, NPC_RuffPuff_01, ANIM_RuffPuff_Idle)
     Call(SetNpcImgFXParams, NPC_RuffPuff_01, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcPos, NPC_RuffPuff_01, 120, -1, -51)

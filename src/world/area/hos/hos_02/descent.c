@@ -1,8 +1,8 @@
 #include "hos_02.h"
 
-EvtScript N(EVS_DescendStarWarp) = {
+EvtScript EVS_DescendStarWarp = {
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_2, VOL_LEVEL_FULL)
-    Call(N(SetStarWarpTravelParams), MV_StarWarpEffect)
+    Call(SetStarWarpTravelParams, MV_StarWarpEffect)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -1105, 230, 0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)

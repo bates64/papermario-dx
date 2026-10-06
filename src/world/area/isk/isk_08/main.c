@@ -1,6 +1,6 @@
 #include "isk_08.h"
 
-s32 N(adjust_cam_on_landing)(void) {
+s32 adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
     if (gPlayerStatus.pos.y > -390.0f) {
@@ -12,33 +12,33 @@ s32 N(adjust_cam_on_landing)(void) {
     return ret;
 }
 
-API_CALLABLE(N(SetupLandingCamAdjust)) {
-    phys_set_landing_adjust_cam_check(N(adjust_cam_on_landing));
+API_CALLABLE(SetupLandingCamAdjust) {
+    phys_set_landing_adjust_cam_check(adjust_cam_on_landing);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitWalk_isk_09_0) = EVT_EXIT_WALK(40, isk_08_ENTRY_0, "isk_09", isk_09_ENTRY_0);
-EvtScript N(EVS_ExitWalk_isk_10_0) = EVT_EXIT_WALK(40, isk_08_ENTRY_1, "isk_10", isk_10_ENTRY_0);
-EvtScript N(EVS_ExitWalk_isk_07_0) = EVT_EXIT_WALK(40, isk_08_ENTRY_2, "isk_07", isk_07_ENTRY_0);
-EvtScript N(EVS_ExitWalk_isk_11_0) = EVT_EXIT_WALK(40, isk_08_ENTRY_3, "isk_11", isk_11_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_09_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_0, "isk_09", isk_09_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_10_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_1, "isk_10", isk_10_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_07_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_2, "isk_07", isk_07_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_11_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_3, "isk_11", isk_11_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_isk_09_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_isk_10_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_isk_07_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_isk_11_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_isk_09_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_isk_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_isk_07_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_isk_11_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_08)
-    Call(N(SetupLandingCamAdjust))
+    Call(SetupLandingCamAdjust)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_SetupFlames))
-    ExecWait(N(EVS_SetupBombableWall))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_SetupFlames)
+    ExecWait(EVS_SetupBombableWall)
 #if VERSION_PAL
     Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
 #else
@@ -51,7 +51,7 @@ EvtScript N(EVS_Main) = {
             Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
     EndSwitch
 #endif
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Return
     End

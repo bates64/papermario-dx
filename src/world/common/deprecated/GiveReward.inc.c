@@ -3,13 +3,13 @@
 
 #include "common.h"
 
-EvtScript N(GiveItemReward) = {
+EvtScript GiveItemReward = {
     Call(ShowGotItem, LVar0, true, 0)
     Return
     End
 };
 
-EvtScript N(GiveCoinReward) = {
+EvtScript GiveCoinReward = {
     Call(ShowGotItem, LVar0, true, ITEM_PICKUP_FLAG_1_COIN)
     Return
     End
@@ -17,12 +17,12 @@ EvtScript N(GiveCoinReward) = {
 
 #define EVT_GIVE_REWARD(itemID) \
     Set(LVar0, itemID) \
-    ExecWait(N(GiveItemReward)) \
+    ExecWait(GiveItemReward) \
     Call(AddItem, itemID, LVar1)
 
 #define EVT_GIVE_STAR_PIECE() \
     Set(LVar0, ITEM_STAR_PIECE) \
-    ExecWait(N(GiveItemReward)) \
+    ExecWait(GiveItemReward) \
     Call(AddStarPieces, 1)
 
 #endif

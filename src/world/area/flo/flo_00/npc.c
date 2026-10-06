@@ -8,7 +8,7 @@
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/Lakilulu/idle.inc.c"
 
-API_CALLABLE(N(UpgradeStarPowerCh6)) {
+API_CALLABLE(UpgradeStarPowerCh6) {
     set_max_star_power(6);
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
@@ -16,7 +16,7 @@ API_CALLABLE(N(UpgradeStarPowerCh6)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_SunReturns) = {
+EvtScript EVS_Scene_SunReturns = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 0, -200)
@@ -37,7 +37,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-EvtScript N(EVS_Wisterwood_Introduction) = {
+EvtScript EVS_Wisterwood_Introduction = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, -170)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, -170)
@@ -103,7 +103,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     End
 };
 
-EvtScript N(EVS_Interact_Wisterwood) = {
+EvtScript EVS_Interact_Wisterwood = {
     Call(DisablePlayerInput, true)
     Wait(2)
     Call(GetPlayerActionState, LVar3)
@@ -151,7 +151,7 @@ EvtScript N(EVS_Interact_Wisterwood) = {
                 EndSwitch
             CaseEq(1)
                 Call(CloseMessage)
-                Exec(N(EVS_Wisterwood_Exit))
+                Exec(EVS_Wisterwood_Exit)
                 Return
             CaseEq(2)
                 Call(CloseMessage)
@@ -165,7 +165,7 @@ EvtScript N(EVS_Interact_Wisterwood) = {
                 Call(SwitchMessage, MSG_CH6_0015)
             CaseEq(1)
                 Call(CloseMessage)
-                Exec(N(EVS_Wisterwood_Exit))
+                Exec(EVS_Wisterwood_Exit)
                 Return
             CaseEq(2)
                 Call(CloseMessage)
@@ -176,7 +176,7 @@ EvtScript N(EVS_Interact_Wisterwood) = {
     End
 };
 
-EvtScript N(EVS_Wisterwood_Farewell) = {
+EvtScript EVS_Wisterwood_Farewell = {
     Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 600, Float(21.0), Float(-12.0))
     Wait(20 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_000B, 0, 50, -200)
@@ -192,7 +192,7 @@ EvtScript N(EVS_Wisterwood_Farewell) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Wisterwood) = {
+EvtScript EVS_NpcInit_Wisterwood = {
     Call(EnableGroup, MODEL_ha, false)
     Call(EnableGroup, MODEL_tuta, false)
     Call(EnableGroup, MODEL_g54, false)
@@ -200,13 +200,13 @@ EvtScript N(EVS_NpcInit_Wisterwood) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     IfLt(GB_StoryProgress, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
-        Exec(N(EVS_Wisterwood_Introduction))
+        Exec(EVS_Wisterwood_Introduction)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bubulb1) = {
+EvtScript EVS_NpcInteract_Bubulb1 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_Talk, ANIM_Bubulb_Pink_Idle, 0, MSG_CH6_0016)
@@ -232,7 +232,7 @@ EvtScript N(EVS_NpcInteract_Bubulb1) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bubulb2) = {
+EvtScript EVS_NpcInteract_Bubulb2 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_001D)
@@ -258,7 +258,7 @@ EvtScript N(EVS_NpcInteract_Bubulb2) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bubulb_03) = {
+EvtScript EVS_NpcInteract_Bubulb_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_Talk, ANIM_Bubulb_Green_Idle, 0, MSG_CH6_0024)
@@ -284,7 +284,7 @@ EvtScript N(EVS_NpcInteract_Bubulb_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bubulb_04) = {
+EvtScript EVS_NpcInteract_Bubulb_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_Talk, ANIM_Bubulb_Yellow_Idle, 0, MSG_CH6_002B)
@@ -310,35 +310,35 @@ EvtScript N(EVS_NpcInteract_Bubulb_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb_01) = {
+EvtScript EVS_NpcInit_Bubulb_01 = {
     Set(AF_FLO00_ToggleDialogue_PinkBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb1)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb1))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb_02) = {
+EvtScript EVS_NpcInit_Bubulb_02 = {
     Set(AF_FLO00_ToggleDialogue_PurpleBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb2)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb2))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb_03) = {
+EvtScript EVS_NpcInit_Bubulb_03 = {
     Set(AF_FLO00_ToggleDialogue_GreenBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb_03)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb_04) = {
+EvtScript EVS_NpcInit_Bubulb_04 = {
     Set(AF_FLO00_ToggleDialogue_YellowBubulb, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb_04)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb_04))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Tolielup) = {
+EvtScript EVS_NpcInteract_Tolielup = {
     IfEq(GF_FLO00_Met_Tolielup, false)
         Call(AdjustCam, CAM_DEFAULT, Float(4.0), -30, 300, Float(20.0), Float(-9.5))
         Set(GF_FLO00_Met_Tolielup, true)
@@ -408,14 +408,14 @@ EvtScript N(EVS_NpcInteract_Tolielup) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Tolielup) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Tolielup)))
+EvtScript EVS_NpcInit_Tolielup = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Tolielup))
     Call(SetNpcCollisionSize, NPC_SELF, 65, 50)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Klevar) = {
+EvtScript EVS_NpcIdle_Klevar = {
     Loop(0)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -434,7 +434,7 @@ EvtScript N(EVS_NpcIdle_Klevar) = {
     End
 };
 
-EvtScript N(EVS_Scene_RescuedKlevar) = {
+EvtScript EVS_Scene_RescuedKlevar = {
     Call(DisablePartnerAI, false)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -496,7 +496,7 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Idle)
     Call(EnableNpcAI, NPC_Klevar, true)
-    Call(N(UpgradeStarPowerCh6))
+    Call(UpgradeStarPowerCh6)
     Call(ShowMessageAtScreenPos, MSG_Menus_0196, 160, 40)
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
@@ -561,20 +561,20 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Wait(110 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Set(GB_StoryProgress, STORY_CH6_STAR_SPRIT_DEPARTED)
-    ExecWait(N(EVS_Wisterwood_Farewell))
+    ExecWait(EVS_Wisterwood_Farewell)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Klevar) = {
+EvtScript EVS_NpcInit_Klevar = {
     Call(GetLoadType, LVar1)
     IfNe(LVar1, 1)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, flo_00_ENTRY_A)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Klevar)))
-            Exec(N(EVS_Scene_RescuedKlevar))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Klevar))
+            Exec(EVS_Scene_RescuedKlevar)
         Else
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         EndIf
@@ -583,7 +583,7 @@ EvtScript N(EVS_NpcInit_Klevar) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Lakilulu) = {
+EvtScript EVS_NpcInteract_Lakilulu = {
     IfLe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SpeakToPlayer, NPC_Lakilulu, ANIM_Lakilulu_Talk, ANIM_Lakilulu_Idle, 0, MSG_CH6_0032)
     Else
@@ -604,9 +604,9 @@ EvtScript N(EVS_NpcInteract_Lakilulu) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakilulu) = {
+EvtScript EVS_NpcInit_Lakilulu = {
     IfGe(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lakilulu)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakilulu))
         Call(SetNpcCollisionSize, NPC_SELF, 36, 28)
         Call(SetNpcPos, NPC_SELF, -200, 15, -300)
     Else
@@ -616,18 +616,18 @@ EvtScript N(EVS_NpcInit_Lakilulu) = {
     End
 };
 
-NpcData N(NpcData_Wisterwood) = {
+NpcData NpcData_Wisterwood = {
     .id = NPC_Dummy_Wisterwood,
     .pos = { -72.0f, 60.0f, -100.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Wisterwood),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_Wisterwood,
+    .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = BUBULB_PINK_ANIMS,
 };
 
-NpcData N(NpcData_Bubulbs)[] = {
+NpcData NpcData_Bubulbs[] = {
     {
         .id = NPC_Bubulb_01,
         .pos = { -59.0f, 0.0f, -40.0f },
@@ -646,8 +646,8 @@ NpcData N(NpcData_Bubulbs)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bubulb_01),
-        .settings = &N(NpcSettings_Bubulb_Patrol),
+        .init = &EVS_NpcInit_Bubulb_01,
+        .settings = &NpcSettings_Bubulb_Patrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BUBULB_PINK_ANIMS,
@@ -671,8 +671,8 @@ NpcData N(NpcData_Bubulbs)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bubulb_02),
-        .settings = &N(NpcSettings_Bubulb_Patrol),
+        .init = &EVS_NpcInit_Bubulb_02,
+        .settings = &NpcSettings_Bubulb_Patrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BUBULB_PURPLE_ANIMS,
@@ -696,8 +696,8 @@ NpcData N(NpcData_Bubulbs)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bubulb_03),
-        .settings = &N(NpcSettings_Bubulb_Patrol),
+        .init = &EVS_NpcInit_Bubulb_03,
+        .settings = &NpcSettings_Bubulb_Patrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BUBULB_GREEN_ANIMS,
@@ -721,8 +721,8 @@ NpcData N(NpcData_Bubulbs)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Bubulb_04),
-        .settings = &N(NpcSettings_Bubulb_Patrol),
+        .init = &EVS_NpcInit_Bubulb_04,
+        .settings = &NpcSettings_Bubulb_Patrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BUBULB_YELLOW_ANIMS,
@@ -730,46 +730,46 @@ NpcData N(NpcData_Bubulbs)[] = {
     },
 };
 
-NpcData N(NpcData_Tolielup) = {
+NpcData NpcData_Tolielup = {
     .id = NPC_Tolielup,
     .pos = { -400.0f, 0.0f, 190.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Tolielup),
-    .settings = &N(NpcSettings_Tolielup),
+    .init = &EVS_NpcInit_Tolielup,
+    .settings = &NpcSettings_Tolielup,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TOLIELUP_ANIMS,
     .tattle = MSG_NpcTattle_Tolielup,
 };
 
-NpcData N(NpcData_Klevar) = {
+NpcData NpcData_Klevar = {
     .id = NPC_Klevar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Klevar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Klevar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = KLEVAR_ANIMS,
 };
 
-NpcData N(NpcData_Lakilulu) = {
+NpcData NpcData_Lakilulu = {
     .id = NPC_Lakilulu,
     .pos = { 198.0f, 0.0f, 363.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Lakilulu),
-    .settings = &N(NpcSettings_Lakilulu),
+    .init = &EVS_NpcInit_Lakilulu,
+    .settings = &NpcSettings_Lakilulu,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = LAKILULU_ANIMS,
     .tattle = MSG_NpcTattle_Lakilulu,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Wisterwood)),
-    NPC_GROUP(N(NpcData_Bubulbs)),
-    NPC_GROUP(N(NpcData_Tolielup)),
-    NPC_GROUP(N(NpcData_Klevar)),
-    NPC_GROUP(N(NpcData_Lakilulu)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Wisterwood),
+    NPC_GROUP(NpcData_Bubulbs),
+    NPC_GROUP(NpcData_Tolielup),
+    NPC_GROUP(NpcData_Klevar),
+    NPC_GROUP(NpcData_Lakilulu),
     {}
 };

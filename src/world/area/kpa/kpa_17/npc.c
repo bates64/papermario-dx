@@ -6,7 +6,7 @@
 #include "world/common/npc/ToadGuard/idle.inc.c"
 #include "world/common/npc/ToadMinister/idle.inc.c"
 
-EvtScript N(EVS_Scene_FallIntoCell) = {
+EvtScript EVS_Scene_FallIntoCell = {
     Call(UseSettingsFrom, CAM_DEFAULT, 1042, 30, -496)
     Call(SetPanTarget, CAM_DEFAULT, 1042, 30, -496)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -64,7 +64,7 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     End
 };
 
-EvtScript N(EVS_BlastWall) = {
+EvtScript EVS_BlastWall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 8, 8, 1, 10, 30)
     Call(EnableModel, MODEL_g296, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitte, COLLIDER_FLAGS_UPPER_MASK)
@@ -83,7 +83,7 @@ EvtScript N(EVS_BlastWall) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_01) = {
+EvtScript EVS_NpcInteract_Toad_01 = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
             Switch(AB_KPA17_DialogueState_Toad1)
@@ -101,7 +101,7 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_02) = {
+EvtScript EVS_NpcInteract_Toad_02 = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
             Switch(AB_KPA17_DialogueState_Toad2)
@@ -119,7 +119,7 @@ EvtScript N(EVS_NpcInteract_Toad_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadGuard) = {
+EvtScript EVS_NpcInteract_ToadGuard = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
             Switch(AB_KPA17_DialogueState_ToadGuard)
@@ -137,7 +137,7 @@ EvtScript N(EVS_NpcInteract_ToadGuard) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadMinister) = {
+EvtScript EVS_NpcInteract_ToadMinister = {
     Switch(GF_KPA17_BombedWall)
         CaseEq(0)
             Switch(AB_KPA17_DialogueState_ToadMinister)
@@ -158,45 +158,45 @@ EvtScript N(EVS_NpcInteract_ToadMinister) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_01)))
+EvtScript EVS_NpcInit_Toad_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
     Call(SetNpcPos, NPC_SELF, 813, 30, -394)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_02)))
+EvtScript EVS_NpcInit_Toad_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
     Call(SetNpcPos, NPC_SELF, 870, 30, -465)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadGuard) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadGuard)))
+EvtScript EVS_NpcInit_ToadGuard = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard))
     Call(SetNpcPos, NPC_SELF, 930, 30, -400)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadMinister) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadMinister)))
+EvtScript EVS_NpcInit_ToadMinister = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadMinister))
     Call(SetNpcPos, NPC_SELF, 1100, 30, -450)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
     Return
     End
 };
 
-NpcData N(NpcData_Prisoners)[] = {
+NpcData NpcData_Prisoners[] = {
     {
         .id = NPC_Toad_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_01,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -206,8 +206,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .id = NPC_Toad_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_02,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -217,8 +217,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .id = NPC_ToadGuard,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_ToadGuard),
-        .settings = &N(NpcSettings_ToadGuard),
+        .init = &EVS_NpcInit_ToadGuard,
+        .settings = &NpcSettings_ToadGuard,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
@@ -228,8 +228,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .id = NPC_ToadMinister,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_ToadMinister),
-        .settings = &N(NpcSettings_ToadMinister),
+        .init = &EVS_NpcInit_ToadMinister,
+        .settings = &NpcSettings_ToadMinister,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_MINISTER_ANIMS,
@@ -237,7 +237,7 @@ NpcData N(NpcData_Prisoners)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Prisoners)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Prisoners),
     {}
 };

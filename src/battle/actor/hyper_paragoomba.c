@@ -3,58 +3,56 @@
 #include "sprite/npc/Goomba.h"
 #include "sprite/npc/Paragoomba.h"
 
-#define NAMESPACE A(hyper_paragoomba)
+extern s32 FlyingAnims[];
+extern s32 LeftWingAnims[];
+extern s32 RightWingAnims[];
+extern s32 DownedAnims[];
 
-extern s32 N(FlyingAnims)[];
-extern s32 N(LeftWingAnims)[];
-extern s32 N(RightWingAnims)[];
-extern s32 N(DownedAnims)[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandlePhase;
+extern EvtScript EVS_Flying_HandlePhase;
+extern EvtScript EVS_Flying_TakeTurn;
+extern EvtScript EVS_Attack_SkyDive;
+extern EvtScript EVS_ReturnHome;
+extern EvtScript EVS_KnockDown;
+extern EvtScript EVS_KnockDown_Init;
+extern EvtScript EVS_Downed_Idle;
+extern EvtScript EVS_Downed_HandleEvent;
+extern EvtScript EVS_Downed_TakeTurn;
+extern EvtScript EVS_Attack_Headbonk;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandlePhase);
-extern EvtScript N(EVS_Flying_HandlePhase);
-extern EvtScript N(EVS_Flying_TakeTurn);
-extern EvtScript N(EVS_Attack_SkyDive);
-extern EvtScript N(EVS_ReturnHome);
-extern EvtScript N(EVS_KnockDown);
-extern EvtScript N(EVS_KnockDown_Init);
-extern EvtScript N(EVS_Downed_Idle);
-extern EvtScript N(EVS_Downed_HandleEvent);
-extern EvtScript N(EVS_Downed_TakeTurn);
-extern EvtScript N(EVS_Attack_Headbonk);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1, // body after being downed
     PRT_FLYING          = 2, // body while flying
     PRT_DUMMY_WING_L    = 3, // temporary wing while being downed
     PRT_DUMMY_WING_R    = 4, // temporary wing while being downed
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_IsCharged      = 0,
     AVAR_NotFirstTurn   = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SKY_DIVE        = 1,
     DMG_CHARGED_DIVE    = 8,
     DMG_HEADBONK        = 1,
     DMG_CHARGED_BONK    = 8,
 };
 
-s32 N(DownedDefense)[] = {
+s32 DownedDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(FlyingDefense)[] = {
+s32 FlyingDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(DownedStatusTable)[] = {
+s32 DownedStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              80,
@@ -79,7 +77,7 @@ s32 N(DownedStatusTable)[] = {
     STATUS_END,
 };
 
-s32 N(FlyingStatusTable)[] = {
+s32 FlyingStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              80,
@@ -104,15 +102,15 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 22 },
         .opacity = 255,
-        .idleAnimations = N(DownedAnims),
-        .defenseTable = N(DownedDefense),
+        .idleAnimations = DownedAnims,
+        .defenseTable = DownedDefense,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -123,8 +121,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(FlyingAnims),
-        .defenseTable = N(FlyingDefense),
+        .idleAnimations = FlyingAnims,
+        .defenseTable = FlyingDefense,
         .eventFlags = ACTOR_EVENT_FLAG_GROUNDABLE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -135,8 +133,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -16, 24 },
         .opacity = 255,
-        .idleAnimations = N(LeftWingAnims),
-        .defenseTable = N(DownedDefense),
+        .idleAnimations = LeftWingAnims,
+        .defenseTable = DownedDefense,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -147,8 +145,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -16, 24 },
         .opacity = 255,
-        .idleAnimations = N(RightWingAnims),
-        .defenseTable = N(DownedDefense),
+        .idleAnimations = RightWingAnims,
+        .defenseTable = DownedDefense,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -160,10 +158,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_HYPER_PARAGOOMBA,
     .level = ACTOR_LEVEL_HYPER_PARAGOOMBA,
     .maxHP = 7,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(FlyingStatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = FlyingStatusTable,
     .escapeChance = 50,
     .airLiftChance = 95,
     .hurricaneChance = 95,
@@ -178,7 +176,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(ChargedFlyingAnims)[] = {
+s32 ChargedFlyingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Paragoomba_Hyper_Miss,
     STATUS_KEY_STONE,     ANIM_Paragoomba_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Paragoomba_Hyper_Sleep,
@@ -191,18 +189,18 @@ s32 N(ChargedFlyingAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_Flying_HandlePhase)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_Flying_TakeTurn)))
+EvtScript EVS_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_Flying_HandlePhase))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_Flying_TakeTurn))
     Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_NotFirstTurn, false)
     Return
     End
 };
 
-EvtScript N(EVS_Flying_HandlePhase) = {
+EvtScript EVS_Flying_HandlePhase = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_PLAYER_BEGIN)
@@ -215,7 +213,7 @@ EvtScript N(EVS_Flying_HandlePhase) = {
     End
 };
 
-EvtScript N(EVS_Attack_ChargedDive) = {
+EvtScript EVS_Attack_ChargedDive = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -238,7 +236,7 @@ EvtScript N(EVS_Attack_ChargedDive) = {
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 20, false, false, false)
         Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, true)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(ChargedFlyingAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(ChargedFlyingAnims))
         Call(EnableActorGlow, ACTOR_SELF, true)
         Call(SetPartEventBits, ACTOR_SELF, PRT_FLYING, ACTOR_EVENT_FLAG_ATTACK_CHARGED, true)
         Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -328,7 +326,7 @@ EvtScript N(EVS_Attack_ChargedDive) = {
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_Paragoomba_Hyper_Idle)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_FLYING, 0)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
@@ -373,10 +371,10 @@ EvtScript N(EVS_Attack_ChargedDive) = {
             Call(SetPartEventBits, ACTOR_SELF, PRT_FLYING, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_Paragoomba_Hyper_Run)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -385,16 +383,16 @@ EvtScript N(EVS_Attack_ChargedDive) = {
     End
 };
 
-EvtScript N(EVS_Flying_TakeTurn) = {
+EvtScript EVS_Flying_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-        ExecWait(N(EVS_Attack_SkyDive))
+        ExecWait(EVS_Attack_SkyDive)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_IsCharged, LVar0)
     IfEq(LVar0, 1)
-        ExecWait(N(EVS_Attack_ChargedDive))
+        ExecWait(EVS_Attack_ChargedDive)
         Return
     EndIf
     Call(GetBattleVar, BTL_VAR_HyperSync, LVar0)
@@ -405,31 +403,31 @@ EvtScript N(EVS_Flying_TakeTurn) = {
                 Call(RandInt, 1000, LVar0)
                 IfLt(LVar0, 750)
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Active)
-                    ExecWait(N(EVS_Attack_ChargedDive))
+                    ExecWait(EVS_Attack_ChargedDive)
                 Else
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-                    ExecWait(N(EVS_Attack_SkyDive))
+                    ExecWait(EVS_Attack_SkyDive)
                 EndIf
             Else
                 Call(RandInt, 1000, LVar0)
                 IfLt(LVar0, 500)
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Active)
-                    ExecWait(N(EVS_Attack_ChargedDive))
+                    ExecWait(EVS_Attack_ChargedDive)
                 Else
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-                    ExecWait(N(EVS_Attack_SkyDive))
+                    ExecWait(EVS_Attack_SkyDive)
                 EndIf
             EndIf
         CaseEq(1)
-            ExecWait(N(EVS_Attack_SkyDive))
+            ExecWait(EVS_Attack_SkyDive)
         CaseEq(2)
-            ExecWait(N(EVS_Attack_ChargedDive))
+            ExecWait(EVS_Attack_ChargedDive)
     EndSwitch
     Return
     End
 };
 
-s32 N(FlyingAnims)[] = {
+s32 FlyingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Paragoomba_Hyper_Idle,
     STATUS_KEY_STONE,     ANIM_Paragoomba_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Paragoomba_Hyper_Sleep,
@@ -442,7 +440,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_END,
 };
 
-s32 N(FlyingShuffleAnims)[] = {
+s32 FlyingShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Paragoomba_Hyper_Run,
     STATUS_KEY_STONE,     ANIM_Paragoomba_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Paragoomba_Hyper_Sleep,
@@ -455,25 +453,25 @@ s32 N(FlyingShuffleAnims)[] = {
     STATUS_END,
 };
 
-s32 N(LeftWingAnims)[] = {
+s32 LeftWingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Paragoomba_Hyper_LWingStill,
     STATUS_END,
 };
 
-s32 N(RightWingAnims)[] = {
+s32 RightWingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Paragoomba_Hyper_RWingStill,
     STATUS_END,
 };
 
-EvtScript N(EVS_Flying_Init_Unused) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_Attack_SkyDive)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Flying_Init_Unused = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_Attack_SkyDive))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(10)
         Call(RandInt, 80, LVar0)
         Add(LVar0, 80)
@@ -489,7 +487,7 @@ EvtScript N(EVS_Idle) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(0.6))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleFlyToGoal, ACTOR_SELF, 0, -5, EASING_LINEAR)
         Loop(20)
@@ -506,7 +504,7 @@ EvtScript N(EVS_Idle) = {
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(0.6))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleFlyToGoal, ACTOR_SELF, 0, -5, EASING_LINEAR)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
         Loop(40)
             Label(2)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
@@ -521,7 +519,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(ResetAllActorSounds, ACTOR_SELF)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
@@ -531,7 +529,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -545,7 +543,7 @@ EvtScript N(EVS_HandleEvent) = {
             IfEq(LVar0, PHASE_FIRST_STRIKE)
                 Call(GetEncounterTrigger, LVar0)
                 IfEq(LVar0, ENCOUNTER_TRIGGER_HAMMER)
-                    ExecWait(N(EVS_KnockDown))
+                    ExecWait(EVS_KnockDown)
                 EndIf
             EndIf
         EndCaseGroup
@@ -567,20 +565,20 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_Paragoomba_Hyper_Hurt)
             ExecWait(EVS_Enemy_Hit)
-            ExecWait(N(EVS_KnockDown))
+            ExecWait(EVS_KnockDown)
         CaseEq(EVENT_15)
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_Paragoomba_Hyper_BurnHurt)
             SetConst(LVar2, ANIM_Paragoomba_Hyper_BurnStill)
             ExecWait(EVS_Enemy_BurnHit)
-            ExecWait(N(EVS_KnockDown))
+            ExecWait(EVS_KnockDown)
         CaseEq(EVENT_SHOCK_HIT)
             Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
             Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
             Call(EnableActorGlow, ACTOR_SELF, false)
             Call(SetPartEventBits, ACTOR_SELF, PRT_FLYING, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_Paragoomba_Hyper_Electrocute)
             ExecWait(EVS_Enemy_ShockHit)
@@ -588,14 +586,14 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_Paragoomba_Hyper_Hurt)
             ExecWait(EVS_Enemy_Knockback)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_Paragoomba_Hyper_Dizzy)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
             Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
             Call(EnableActorGlow, ACTOR_SELF, false)
             Call(SetPartEventBits, ACTOR_SELF, PRT_FLYING, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_Paragoomba_Hyper_Electrocute)
             ExecWait(EVS_Enemy_ShockHit)
@@ -611,7 +609,7 @@ EvtScript N(EVS_HandleEvent) = {
                 Call(EnableActorGlow, ACTOR_SELF, false)
                 Call(SetPartEventBits, ACTOR_SELF, PRT_FLYING, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
                 Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
             EndIf
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_Paragoomba_Hyper_Idle)
@@ -637,7 +635,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(HPBarToCurrent, ACTOR_SELF)
         CaseEq(EVENT_END_FIRST_STRIKE)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_Paragoomba_Hyper_Run)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_FLYING)
@@ -667,7 +665,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_SkyDive) = {
+EvtScript EVS_Attack_SkyDive = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -727,7 +725,7 @@ EvtScript N(EVS_Attack_SkyDive) = {
             Call(YieldTurn)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_Paragoomba_Hyper_Run)
             Call(SetActorYaw, ACTOR_SELF, 180)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_FLYING, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -770,7 +768,7 @@ EvtScript N(EVS_Attack_SkyDive) = {
             Wait(5)
             Call(YieldTurn)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_Paragoomba_Hyper_Run)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -779,9 +777,8 @@ EvtScript N(EVS_Attack_SkyDive) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
-EvtScript N(EVS_KnockDown) = {
+EvtScript EVS_KnockDown = {
     Call(HideHealthBar, ACTOR_SELF)
     Call(SetPartFlags, ACTOR_SELF, PRT_FLYING, ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_NO_TARGET)
     Call(SetPartFlags, ACTOR_SELF, PRT_DUMMY_WING_L, ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_NO_TARGET | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)
@@ -804,7 +801,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-    Call(N(StartRumbleWithParams), 100, 10)
+    Call(StartRumbleWithParams, 100, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.3))
     EndThread
@@ -838,9 +835,9 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetHomePos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Hyper_Idle)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING, false)
-    Call(SetStatusTable, ACTOR_SELF, Ref(N(DownedStatusTable)))
+    Call(SetStatusTable, ACTOR_SELF, Ref(DownedStatusTable))
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_HYPER_GOOMBA)
-    ExecWait(N(EVS_KnockDown_Init))
+    ExecWait(EVS_KnockDown_Init)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(HPBarToHome, ACTOR_SELF)
     Call(ResetAllActorSounds, ACTOR_SELF)
@@ -848,7 +845,7 @@ EvtScript N(EVS_KnockDown) = {
     End
 };
 
-s32 N(DownedChargedAnims)[] = {
+s32 DownedChargedAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goomba_Hyper_Sleep,
     STATUS_KEY_STONE,     ANIM_Goomba_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Goomba_Hyper_Sleep,
@@ -861,22 +858,22 @@ s32 N(DownedChargedAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Downed_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Downed_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_Downed_HandleEvent)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_Downed_TakeTurn)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
+EvtScript EVS_Downed_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Downed_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Downed_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_Downed_TakeTurn))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
     Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_NotFirstTurn, false)
     Return
     End
 };
 
-EvtScript N(EVS_KnockDown_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Downed_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_Downed_HandleEvent)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_Downed_TakeTurn)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
+EvtScript EVS_KnockDown_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Downed_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Downed_HandleEvent))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_Downed_TakeTurn))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
     Call(GetActorVar, ACTOR_SELF, AVAR_IsCharged, LVar0)
     Switch(LVar0)
         CaseEq(0)
@@ -894,7 +891,7 @@ EvtScript N(EVS_KnockDown_Init) = {
 
 // everything below is copied from Hyper Goomba actor
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_PLAYER_BEGIN)
@@ -907,7 +904,7 @@ EvtScript N(EVS_HandlePhase) = {
     End
 };
 
-EvtScript N(EVS_Downed_Move_Charge) = {
+EvtScript EVS_Downed_Move_Charge = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -931,12 +928,12 @@ EvtScript N(EVS_Downed_Move_Charge) = {
         Call(SetGoalPos, ACTOR_SELF, LVar0, 0, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_GOOMBA_STEP)
-        Call(N(StartRumbleWithParams), 128, 10)
+        Call(StartRumbleWithParams, 128, 10)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.5))
         EndThread
         Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, 1)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedChargedAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedChargedAnims))
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Hyper_Idle)
         Call(EnableActorGlow, ACTOR_SELF, true)
         Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, true)
@@ -1003,7 +1000,7 @@ EvtScript N(EVS_Downed_Move_Charge) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Hyper_Idle)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, 0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
@@ -1058,7 +1055,7 @@ EvtScript N(EVS_Downed_Move_Charge) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Hyper_Idle)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, 0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -1067,16 +1064,16 @@ EvtScript N(EVS_Downed_Move_Charge) = {
     End
 };
 
-EvtScript N(EVS_Downed_TakeTurn) = {
+EvtScript EVS_Downed_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-        ExecWait(N(EVS_Attack_Headbonk))
+        ExecWait(EVS_Attack_Headbonk)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_IsCharged, LVar0)
     IfEq(LVar0, 1)
-        ExecWait(N(EVS_Downed_Move_Charge))
+        ExecWait(EVS_Downed_Move_Charge)
         Return
     EndIf
     Call(GetBattleVar, BTL_VAR_HyperSync, LVar0)
@@ -1087,31 +1084,31 @@ EvtScript N(EVS_Downed_TakeTurn) = {
                 Call(RandInt, 1000, LVar0)
                 IfLt(LVar0, 750)
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Active)
-                    ExecWait(N(EVS_Downed_Move_Charge))
+                    ExecWait(EVS_Downed_Move_Charge)
                 Else
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-                    ExecWait(N(EVS_Attack_Headbonk))
+                    ExecWait(EVS_Attack_Headbonk)
                 EndIf
             Else
                 Call(RandInt, 1000, LVar0)
                 IfLt(LVar0, 500)
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Active)
-                    ExecWait(N(EVS_Downed_Move_Charge))
+                    ExecWait(EVS_Downed_Move_Charge)
                 Else
                     Call(SetBattleVar, BTL_VAR_HyperSync, BTL_VAL_HyperSync_Done)
-                    ExecWait(N(EVS_Attack_Headbonk))
+                    ExecWait(EVS_Attack_Headbonk)
                 EndIf
             EndIf
         CaseEq(1)
-            ExecWait(N(EVS_Attack_Headbonk))
+            ExecWait(EVS_Attack_Headbonk)
         CaseEq(2)
-            ExecWait(N(EVS_Downed_Move_Charge))
+            ExecWait(EVS_Downed_Move_Charge)
     EndSwitch
     Return
     End
 };
 
-s32 N(DownedAnims)[] = {
+s32 DownedAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goomba_Hyper_Idle,
     STATUS_KEY_STONE,     ANIM_Goomba_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Goomba_Hyper_Sleep,
@@ -1124,7 +1121,7 @@ s32 N(DownedAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DownedShuffleAnims)[] = {
+s32 DownedShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goomba_Hyper_Run,
     STATUS_KEY_STONE,     ANIM_Goomba_Hyper_Still,
     STATUS_KEY_SLEEP,     ANIM_Goomba_Hyper_Sleep,
@@ -1137,15 +1134,15 @@ s32 N(DownedShuffleAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Downed_Init_Unused) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_Attack_Headbonk)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Downed_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_Downed_HandleEvent)))
+EvtScript EVS_Downed_Init_Unused = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_Attack_Headbonk))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Downed_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_Downed_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Downed_Idle) = {
+EvtScript EVS_Downed_Idle = {
     Label(10)
     Call(RandInt, 80, LVar0)
     Add(LVar0, 80)
@@ -1161,10 +1158,10 @@ EvtScript N(EVS_Downed_Idle) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 5)
     Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedShuffleAnims)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedShuffleAnims))
     Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(IdleRunToGoal, ACTOR_SELF, 0)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
     Loop(20)
         Label(1)
         Call(GetStatusFlags, ACTOR_SELF, LVar1)
@@ -1177,10 +1174,10 @@ EvtScript N(EVS_Downed_Idle) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Sub(LVar0, 5)
     Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedShuffleAnims)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedShuffleAnims))
     Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(IdleRunToGoal, ACTOR_SELF, 0)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
     Loop(80)
         Label(2)
         Call(GetStatusFlags, ACTOR_SELF, LVar1)
@@ -1195,7 +1192,7 @@ EvtScript N(EVS_Downed_Idle) = {
     End
 };
 
-EvtScript N(EVS_Downed_HandleEvent) = {
+EvtScript EVS_Downed_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
@@ -1239,7 +1236,7 @@ EvtScript N(EVS_Downed_HandleEvent) = {
             Call(EnableActorGlow, ACTOR_SELF, false)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, 0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Goomba_Hyper_Electrocute)
             ExecWait(EVS_Enemy_ShockHit)
@@ -1263,7 +1260,7 @@ EvtScript N(EVS_Downed_HandleEvent) = {
             Call(EnableActorGlow, ACTOR_SELF, false)
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, 0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Goomba_Hyper_Electrocute)
             ExecWait(EVS_Enemy_ShockHit)
@@ -1279,7 +1276,7 @@ EvtScript N(EVS_Downed_HandleEvent) = {
                 Call(EnableActorGlow, ACTOR_SELF, false)
                 Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ATTACK_CHARGED, false)
                 Call(SetActorVar, ACTOR_SELF, AVAR_IsCharged, 0)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DownedAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DownedAnims))
             EndIf
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Goomba_Hyper_Idle)
@@ -1336,7 +1333,7 @@ EvtScript N(EVS_Downed_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Headbonk) = {
+EvtScript EVS_Attack_Headbonk = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)

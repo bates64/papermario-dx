@@ -15,91 +15,91 @@ typedef struct IntroMessage {
     /* 04 */ s32 duration;
 } IntroMessage; // size: 0x8
 
-u32 N(IntroMessageState) = 0; // mode
-s32 N(IntroMessageAlpha) = 0; // alpha related
-IntroMessage* N(CurMessageList) = nullptr;
+u32 IntroMessageState = 0; // mode
+s32 IntroMessageAlpha = 0; // alpha related
+IntroMessage* CurMessageList = nullptr;
 
-void N(UpdateIntroMessages)(IntroMessage** introMessageLists) {
+void UpdateIntroMessages(IntroMessage** introMessageLists) {
     u8 type;
     f32 zoom1;
     f32 zoom2;
     s32 messageID;
     s32 opacity;
     s32 yOffset;
-    static s32 N(IntroMessageDelay);
+    static s32 IntroMessageDelay;
 
-    if (N(CurMessageList) == nullptr) {
-        N(CurMessageList) = introMessageLists[IntroMessageIdx];
+    if (CurMessageList == nullptr) {
+        CurMessageList = introMessageLists[IntroMessageIdx];
     }
 
-    switch (N(IntroMessageState)) {
+    switch (IntroMessageState) {
         case INTRO_MSG_STATE_APPEAR:
-            if (N(CurMessageList)->messageID == INTRO_MSG_BLANK) {
-                N(IntroMessageState) = INTRO_MSG_STATE_BLANK;
-                N(IntroMessageDelay) = N(CurMessageList)->duration;
+            if (CurMessageList->messageID == INTRO_MSG_BLANK) {
+                IntroMessageState = INTRO_MSG_STATE_BLANK;
+                IntroMessageDelay = CurMessageList->duration;
             } else {
-                N(IntroMessageAlpha) += 10;
-                if (N(IntroMessageAlpha) > 255) {
-                    N(IntroMessageAlpha) = 255;
-                    N(IntroMessageState) = INTRO_MSG_STATE_SHOWING;
-                    N(IntroMessageDelay) = N(CurMessageList)->duration;
+                IntroMessageAlpha += 10;
+                if (IntroMessageAlpha > 255) {
+                    IntroMessageAlpha = 255;
+                    IntroMessageState = INTRO_MSG_STATE_SHOWING;
+                    IntroMessageDelay = CurMessageList->duration;
                 }
             }
             break;
         case INTRO_MSG_STATE_SHOWING:
-            if (N(IntroMessageDelay) == 0) {
-                N(IntroMessageState) = INTRO_MSG_STATE_VANISH;
+            if (IntroMessageDelay == 0) {
+                IntroMessageState = INTRO_MSG_STATE_VANISH;
             } else {
-                N(IntroMessageDelay)--;
+                IntroMessageDelay--;
             }
             break;
         case INTRO_MSG_STATE_VANISH:
-            N(IntroMessageAlpha) -= 10;
-            if (N(IntroMessageAlpha) < 0) {
-                N(IntroMessageAlpha) = 0;
-                N(CurMessageList)++;
-                if (N(CurMessageList)->messageID == MSG_NONE) {
-                    N(IntroMessageState) = INTRO_MSG_STATE_DONE;
+            IntroMessageAlpha -= 10;
+            if (IntroMessageAlpha < 0) {
+                IntroMessageAlpha = 0;
+                CurMessageList++;
+                if (CurMessageList->messageID == MSG_NONE) {
+                    IntroMessageState = INTRO_MSG_STATE_DONE;
                 } else {
-                    N(IntroMessageState) = INTRO_MSG_STATE_APPEAR;
+                    IntroMessageState = INTRO_MSG_STATE_APPEAR;
                 }
             }
             break;
         case INTRO_MSG_STATE_DONE:
             break;
         case INTRO_MSG_STATE_BLANK:
-            if (N(IntroMessageDelay) != 0) {
-                N(IntroMessageDelay)--;
+            if (IntroMessageDelay != 0) {
+                IntroMessageDelay--;
                 break;
             }
-            N(CurMessageList)++;
-            if (N(CurMessageList)->messageID == MSG_NONE) {
-                N(IntroMessageState) = INTRO_MSG_STATE_DONE;
+            CurMessageList++;
+            if (CurMessageList->messageID == MSG_NONE) {
+                IntroMessageState = INTRO_MSG_STATE_DONE;
             } else {
-                N(IntroMessageState) = INTRO_MSG_STATE_APPEAR;
+                IntroMessageState = INTRO_MSG_STATE_APPEAR;
             }
             break;
     }
     get_screen_overlay_params(SCREEN_LAYER_BACK, &type, &zoom1);
     get_screen_overlay_params(SCREEN_LAYER_FRONT, &type, &zoom2);
-    opacity = ((N(IntroMessageAlpha) * (255.0f - zoom1) * (255.0f - zoom2)) / 255.0f) / 255.0f;
+    opacity = ((IntroMessageAlpha * (255.0f - zoom1) * (255.0f - zoom2)) / 255.0f) / 255.0f;
     if (opacity > 0) {
-        messageID = N(CurMessageList)->messageID;
+        messageID = CurMessageList->messageID;
         if (messageID != 0) {
 #if VERSION_JP
-            draw_msg(N(CurMessageList)->messageID, 0, 200, opacity, -1, 0);
+            draw_msg(CurMessageList->messageID, 0, 200, opacity, -1, 0);
 #else
             yOffset = 0;
             if (get_msg_lines(messageID) >= 2) {
                 yOffset = -7;
             }
-            draw_msg(N(CurMessageList)->messageID, 0, yOffset + 196, opacity, -1, 0);
+            draw_msg(CurMessageList->messageID, 0, yOffset + 196, opacity, -1, 0);
 #endif
         }
     }
 }
 
-API_CALLABLE(N(SetCurtainCallback)) {
+API_CALLABLE(SetCurtainCallback) {
     Bytecode* args = script->ptrReadPos;
 
     set_curtain_draw_callback((VoidCallback) evt_get_variable(script, *args++));

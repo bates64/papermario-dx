@@ -6,12 +6,12 @@
 #include "world/common/npc/Boo/patrol.inc.c"
 #include "world/common/npc/Boo/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_Boo_01) = {
+EvtScript EVS_NpcIdle_Boo_01 = {
     Return
     End
 };
 
-API_CALLABLE(N(AwaitCDownPress)) {
+API_CALLABLE(AwaitCDownPress) {
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_C_DOWN) {
         return ApiStatus_DONE2;
     } else {
@@ -19,7 +19,7 @@ API_CALLABLE(N(AwaitCDownPress)) {
     }
 }
 
-EvtScript N(EVS_NpcInteract_Boo_01) = {
+EvtScript EVS_NpcInteract_Boo_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             IfEq(AF_ARN05_ToggleDialogue_Boo1, false)
@@ -42,13 +42,13 @@ EvtScript N(EVS_NpcInteract_Boo_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_01_Mourning) = {
+EvtScript EVS_NpcInteract_Boo_01_Mourning = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0094)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_02) = {
+EvtScript EVS_NpcInteract_Boo_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             IfEq(AF_ARN05_ToggleDialogue_Boo2, false)
@@ -71,13 +71,13 @@ EvtScript N(EVS_NpcInteract_Boo_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_02_Mourning) = {
+EvtScript EVS_NpcInteract_Boo_02_Mourning = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009B)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_03) = {
+EvtScript EVS_NpcInteract_Boo_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
@@ -121,7 +121,7 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_04) = {
+EvtScript EVS_NpcInteract_Boo_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
@@ -135,7 +135,7 @@ EvtScript N(EVS_NpcInteract_Boo_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_05) = {
+EvtScript EVS_NpcInteract_Boo_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             IfEq(AF_ARN05_ToggleDialogue_Boo5, false)
@@ -158,29 +158,29 @@ EvtScript N(EVS_NpcInteract_Boo_05) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Boo_05_Mourning) = {
+EvtScript EVS_NpcInteract_Boo_05_Mourning = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B5)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_01) = {
+EvtScript EVS_NpcInit_Boo_01 = {
     IfLt(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Boo_01)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_01))
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_01)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_02)))
+EvtScript EVS_NpcInit_Boo_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_03)))
+EvtScript EVS_NpcInit_Boo_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_03))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_TUBBA_EAT_BOO)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -199,8 +199,8 @@ EvtScript N(EVS_NpcInit_Boo_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_04)))
+EvtScript EVS_NpcInit_Boo_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_04))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_TUBBA_EAT_BOO)
             Call(RemoveNpc, NPC_SELF)
@@ -217,16 +217,16 @@ EvtScript N(EVS_NpcInit_Boo_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_05) = {
+EvtScript EVS_NpcInit_Boo_05 = {
     IfLt(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Boo_01)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_01))
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Boo_05)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Boo_05))
     Return
     End
 };
 
-NpcData N(NpcData_Boo_01)[] = {
+NpcData NpcData_Boo_01[] = {
     {
         .id = NPC_Boo_01,
         .pos = { 55.0f, 195.0f, 160.0f },
@@ -245,8 +245,8 @@ NpcData N(NpcData_Boo_01)[] = {
                 .detectSize = { 50 },
             }
         },
-        .init = &N(EVS_NpcInit_Boo_01),
-        .settings = &N(NpcSettings_Boo_Patrol),
+        .init = &EVS_NpcInit_Boo_01,
+        .settings = &NpcSettings_Boo_Patrol,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -256,8 +256,8 @@ NpcData N(NpcData_Boo_01)[] = {
         .id = NPC_Boo_02,
         .pos = { 160.0f, 191.0f, 250.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Boo_02),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_02,
+        .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -267,8 +267,8 @@ NpcData N(NpcData_Boo_01)[] = {
         .id = NPC_Boo_03,
         .pos = { 390.0f, 190.0f, 255.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Boo_03),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_03,
+        .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -278,8 +278,8 @@ NpcData N(NpcData_Boo_01)[] = {
         .id = NPC_Boo_04,
         .pos = { 503.0f, 206.0f, 210.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Boo_04),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_04,
+        .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -303,8 +303,8 @@ NpcData N(NpcData_Boo_01)[] = {
                 .detectSize = { 50 },
             }
         },
-        .init = &N(EVS_NpcInit_Boo_05),
-        .settings = &N(NpcSettings_Boo_Patrol),
+        .init = &EVS_NpcInit_Boo_05,
+        .settings = &NpcSettings_Boo_Patrol,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -312,7 +312,7 @@ NpcData N(NpcData_Boo_01)[] = {
     },
 };
 
-EvtScript N(EVS_TubbaWalking) = {
+EvtScript EVS_TubbaWalking = {
     Loop(LVar0)
         Call(PlaySoundAtNpc, NPC_Tubba, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
         Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(0.5))
@@ -322,7 +322,7 @@ EvtScript N(EVS_TubbaWalking) = {
     End
 };
 
-EvtScript N(EVS_Scene_TubbaRaid) = {
+EvtScript EVS_Scene_TubbaRaid = {
     Call(DisablePlayerInput, true)
     Call(NpcFacePlayer, NPC_Boo_03, 1)
     Call(PlaySoundAtNpc, NPC_Boo_03, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
@@ -412,7 +412,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Call(EnablePartnerAI)
     Call(InterpPlayerYaw, 90, 0)
     Wait(5 * DT)
-    Call(N(AwaitCDownPress))
+    Call(AwaitCDownPress)
     Call(CloseMessage)
     Call(ForceUsePartner)
     Wait(60 * DT)
@@ -452,7 +452,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
         Wait(10 * DT)
     EndThread
     Set(LVar0, 4)
-    Exec(N(EVS_TubbaWalking))
+    Exec(EVS_TubbaWalking)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
     Call(NpcMoveTo, NPC_Tubba, 550, 196, 0)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Idle)
@@ -468,7 +468,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Set(MV_TubbaApproachDone, false)
     Thread
         Set(LVar0, 7)
-        Exec(N(EVS_TubbaWalking))
+        Exec(EVS_TubbaWalking)
         Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
         Call(NpcMoveTo, NPC_Tubba, 370, 220, 0)
         Call(GetNpcPos, NPC_Boo_03, LVar0, LVar1, LVar2)
@@ -545,7 +545,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Call(InterpNpcYaw, NPC_Tubba, 90, 1)
     Wait(30 * DT)
     Set(LVar0, 7)
-    Exec(N(EVS_TubbaWalking))
+    Exec(EVS_TubbaWalking)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Walk)
     Call(NpcMoveTo, NPC_Tubba, 370, 220, 0)
     Call(NpcMoveTo, NPC_Tubba, 550, 196, 0)
@@ -586,7 +586,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     End
 };
 
-EvtScript N(EVS_SetupTubbaRaid) = {
+EvtScript EVS_SetupTubbaRaid = {
     IfLt(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
         Call(SetNpcPos, NPC_Boo_03, 330, 184, 240)
         Loop(0)
@@ -603,18 +603,18 @@ EvtScript N(EVS_SetupTubbaRaid) = {
             Wait(1)
         EndLoop
         Call(InterruptUsePartner)
-        ExecWait(N(EVS_Scene_TubbaRaid))
-        Call(BindNpcInteract, NPC_Boo_01, Ref(N(EVS_NpcInteract_Boo_01_Mourning)))
-        Call(BindNpcInteract, NPC_Boo_02, Ref(N(EVS_NpcInteract_Boo_02_Mourning)))
-        Call(BindNpcInteract, NPC_Boo_05, Ref(N(EVS_NpcInteract_Boo_05_Mourning)))
+        ExecWait(EVS_Scene_TubbaRaid)
+        Call(BindNpcInteract, NPC_Boo_01, Ref(EVS_NpcInteract_Boo_01_Mourning))
+        Call(BindNpcInteract, NPC_Boo_02, Ref(EVS_NpcInteract_Boo_02_Mourning))
+        Call(BindNpcInteract, NPC_Boo_05, Ref(EVS_NpcInteract_Boo_05_Mourning))
         Set(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba) = {
+EvtScript EVS_NpcInit_Tubba = {
     IfGe(GB_StoryProgress, STORY_CH3_SAW_TUBBA_EAT_BOO)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -622,7 +622,7 @@ EvtScript N(EVS_NpcInit_Tubba) = {
     End
 };
 
-AnimID N(LimitAnims_Tubba)[] = {
+AnimID LimitAnims_Tubba[] = {
     ANIM_WorldTubba_Idle,
     ANIM_WorldTubba_Walk,
     ANIM_WorldTubba_Reach,
@@ -632,19 +632,19 @@ AnimID N(LimitAnims_Tubba)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Tubba) = {
+NpcData NpcData_Tubba = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Tubba),
-    .settings = &N(NpcSettings_TubbaBlubba),
+    .init = &EVS_NpcInit_Tubba,
+    .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TUBBA_ANIMS,
-    .limitAnimations = N(LimitAnims_Tubba),
+    .limitAnimations = LimitAnims_Tubba,
 };
 
-EvtScript N(EVS_NpcIdle_Boo_06) = {
+EvtScript EVS_NpcIdle_Boo_06 = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -60)
@@ -668,41 +668,41 @@ EvtScript N(EVS_NpcIdle_Boo_06) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_06) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Boo_06)))
+EvtScript EVS_NpcInit_Boo_06 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_07) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Boo_06)))
+EvtScript EVS_NpcInit_Boo_07 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_08) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Boo_06)))
+EvtScript EVS_NpcInit_Boo_08 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Boo_09) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Boo_06)))
+EvtScript EVS_NpcInit_Boo_09 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Boo_06))
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-NpcData N(NpcData_Boo_06)[] = {
+NpcData NpcData_Boo_06[] = {
     {
         .id = NPC_Boo_06,
         .pos = { 36.0f, 277.0f, 140.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Boo_06),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_06,
+        .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -711,8 +711,8 @@ NpcData N(NpcData_Boo_06)[] = {
         .id = NPC_Boo_07,
         .pos = { 200.0f, 275.0f, 182.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Boo_07),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_07,
+        .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -721,8 +721,8 @@ NpcData N(NpcData_Boo_06)[] = {
         .id = NPC_Boo_08,
         .pos = { 379.0f, 300.0f, 192.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Boo_08),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_08,
+        .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
@@ -731,23 +731,23 @@ NpcData N(NpcData_Boo_06)[] = {
         .id = NPC_Boo_09,
         .pos = { 525.0f, 286.0f, 178.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Boo_09),
-        .settings = &N(NpcSettings_Boo),
+        .init = &EVS_NpcInit_Boo_09,
+        .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
     },
 };
 
-NpcGroupList N(BeforeNPCs) = {
-    NPC_GROUP(N(NpcData_Tubba)),
-    NPC_GROUP(N(NpcData_Boo_01)),
+NpcGroupList BeforeNPCs = {
+    NPC_GROUP(NpcData_Tubba),
+    NPC_GROUP(NpcData_Boo_01),
     {}
 };
 
-NpcGroupList N(AfterNPCs) = {
-    NPC_GROUP(N(NpcData_Tubba)),
-    NPC_GROUP(N(NpcData_Boo_01)),
-    NPC_GROUP(N(NpcData_Boo_06)),
+NpcGroupList AfterNPCs = {
+    NPC_GROUP(NpcData_Tubba),
+    NPC_GROUP(NpcData_Boo_01),
+    NPC_GROUP(NpcData_Boo_06),
     {}
 };

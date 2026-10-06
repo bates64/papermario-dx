@@ -3,13 +3,11 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_quake_hammer
-
 #include "battle/common/move/HammerSupport.inc.c"
 
-extern EvtScript N(EVS_UseMove_Impl);
+extern EvtScript EVS_UseMove_Impl;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
@@ -17,31 +15,31 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 80) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(1)
             Set(LVarD, 80) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(2)
             Set(LVarD, 80) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove_Impl) = {
+EvtScript EVS_UseMove_Impl = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_Hammer_UseBasicQuake))
+            ExecWait(EVS_Hammer_UseBasicQuake)
         CaseEq(1)
-            ExecWait(N(EVS_Hammer_UseSuperQuake))
+            ExecWait(EVS_Hammer_UseSuperQuake)
         CaseEq(2)
-            ExecWait(N(EVS_Hammer_UseUltraQuake))
+            ExecWait(EVS_Hammer_UseUltraQuake)
     EndSwitch
     ChildThread
         Wait(8)
@@ -142,12 +140,12 @@ EvtScript N(EVS_UseMove_Impl) = {
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EndThread
     Wait(10)
-    ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+    ExecWait(EVS_HammerSupport_ReturnHome_Quake)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
-    &N(EVS_UseMove),
+    &EVS_UseMove,
 );

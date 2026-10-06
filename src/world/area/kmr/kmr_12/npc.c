@@ -3,19 +3,19 @@
 
 #include "world/common/enemy/Goomba/wander.inc.c"
 
-API_CALLABLE(N(GetAmbushEnemy)) {
+API_CALLABLE(GetAmbushEnemy) {
     script->varTablePtr[0] = get_enemy_safe(NPC_Goomba_Ambush);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_OnReadBillboard) = {
+EvtScript EVS_OnReadBillboard = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Sign_EatMushroomsTrap, 160, 40)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Set(LFlag0, false)
-    Call(N(GetAmbushEnemy))
+    Call(GetAmbushEnemy)
     IfNe(LVar0, nullptr)
         Call(GetNpcVar, NPC_Goomba_Ambush, 0, LVar0)
         IfEq(LVar0, 0)
@@ -32,7 +32,7 @@ EvtScript N(EVS_OnReadBillboard) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Goomba) = {
+EvtScript EVS_NpcIdle_Goomba = {
     Wait(1)
     Call(SetSelfVar, 0, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goomba_FakeMushroom)
@@ -75,19 +75,19 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    BindTrigger(Ref(N(EVS_OnReadBillboard)), TRIGGER_WALL_PRESS_A, COLLIDER_o78, 1, 0)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Goomba_Wander)))
+    BindTrigger(Ref(EVS_OnReadBillboard), TRIGGER_WALL_PRESS_A, COLLIDER_o78, 1, 0)
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Goomba_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Goomba) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomba)))
+EvtScript EVS_NpcInit_Goomba = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
     Return
     End
 };
 
-NpcData N(NpcData_Goomba) = {
+NpcData NpcData_Goomba = {
     .id = NPC_Goomba_Ambush,
     .pos = { -33.0f, 30.0f, -25.0f },
     .yaw = 90,
@@ -103,14 +103,14 @@ NpcData N(NpcData_Goomba) = {
             .detectSize = { 400, 60 },
         }
     },
-    .init = &N(EVS_NpcInit_Goomba),
-    .settings = &N(NpcSettings_Goomba_Wander),
+    .init = &EVS_NpcInit_Goomba,
+    .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Goomba), BTL_KMR_1_FORMATION_01, BTL_KMR_1_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Goomba, BTL_KMR_1_FORMATION_01, BTL_KMR_1_STAGE_02),
     {}
 };

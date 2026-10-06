@@ -5,7 +5,7 @@
 u16 StarShrineLightBeamAlpha = 255;
 
 
-API_CALLABLE(N(SetWorldColorParams)) {
+static API_CALLABLE(SetWorldColorParams) {
     Bytecode* args;
     static u8 oldPrimR, oldPrimG, oldPrimB;
     static u8 oldEnvR, oldEnvG, oldEnvB;
@@ -45,33 +45,33 @@ API_CALLABLE(N(SetWorldColorParams)) {
     return ApiStatus_BLOCK;
 }
 
-void N(setup_gfx_light_beam)(void) {
+void setup_gfx_light_beam(void) {
     gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, StarShrineLightBeamAlpha & 0xFF);
 }
 
-API_CALLABLE(N(SetLightBeamAlpha)) {
+API_CALLABLE(SetLightBeamAlpha) {
     Bytecode* args = script->ptrReadPos;
 
     StarShrineLightBeamAlpha = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-s32 N(StarshipShimmerAmt) = 255;
+s32 StarshipShimmerAmt = 255;
 
-void N(setup_gfx_starship_shimmer)(void) {
+void setup_gfx_starship_shimmer(void) {
     gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(StarshipShimmerAmt));
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, StarshipShimmerAmt);
 }
 
-API_CALLABLE(N(SetStarshipShimmerAmt)) {
+API_CALLABLE(SetStarshipShimmerAmt) {
     Bytecode* args = script->ptrReadPos;
 
-    N(StarshipShimmerAmt) = evt_get_variable(script, *args++);
+    StarshipShimmerAmt = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Starship_Update) = {
+EvtScript EVS_Starship_Update = {
     Loop(0)
         Call(MakeLerp, 0, 60, 30, EASING_COS_IN_OUT)
         Loop(0)
@@ -106,7 +106,7 @@ EvtScript N(EVS_Starship_Update) = {
     End
 };
 
-EvtScript N(EVS_UpdateStarshipCollision) = {
+EvtScript EVS_UpdateStarshipCollision = {
     Loop(0)
         Call(UpdateColliderTransform, COLLIDER_o630)
         Call(UpdateColliderTransform, COLLIDER_o627)
@@ -116,11 +116,11 @@ EvtScript N(EVS_UpdateStarshipCollision) = {
     End
 };
 
-EvtScript N(EVS_SetupStarship) = {
+EvtScript EVS_SetupStarship = {
     Call(ParentColliderToModel, COLLIDER_o630, MODEL_o637)
     Call(ParentColliderToModel, COLLIDER_o627, MODEL_o637)
     IfGe(GB_StoryProgress, STORY_CH8_STAR_SHIP_ACTIVATED)
-        Exec(N(EVS_UpdateStarshipCollision))
+        Exec(EVS_UpdateStarshipCollision)
         Set(MV_Starship_Yaw, -110)
         Call(GetEntryID, LVar0)
         IfEq(LVar0, hos_05_ENTRY_3)
@@ -128,26 +128,26 @@ EvtScript N(EVS_SetupStarship) = {
         Else
             Set(MV_Starship_PosY, -85)
         EndIf
-        Exec(N(EVS_Starship_Update))
+        Exec(EVS_Starship_Update)
     EndIf
     Return
     End
 };
 
-s32 N(MostSolidGeometry)[] = {
+s32 MostSolidGeometry[] = {
     MODEL_g283, MODEL_o4, MODEL_o6, MODEL_g5, MODEL_g97, MODEL_g157, 0xFFFF
 };
 
-EvtScript N(EVS_SetupLightBeam) = {
+EvtScript EVS_SetupLightBeam = {
     Call(EnableGroup, MODEL_g268, false)
     Call(EnableGroup, MODEL_g178, false)
     IfLt(GB_StoryProgress, STORY_CH8_STAR_SHIP_ACTIVATED)
         Call(EnableModel, MODEL_o8, false)
     Else
         Call(SetModelCustomGfx, MODEL_o8, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_light_beam)), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_light_beam), nullptr)
         Call(EnableModel, MODEL_o8, true)
-        Call(N(SetLightBeamAlpha), 127)
+        Call(SetLightBeamAlpha, 127)
         Call(EnableGroup, MODEL_g277, true)
         Call(EnableModel, MODEL_o362, false)
         Call(EnableModel, MODEL_o397, false)
@@ -159,19 +159,19 @@ EvtScript N(EVS_SetupLightBeam) = {
     End
 };
 
-EvtScript N(EVS_Starship_Summon) = {
+EvtScript EVS_Starship_Summon = {
     Call(DisablePlayerInput, true)
     Thread
         Call(SetModelTintMode, APPLY_TINT_BG, nullptr, ENV_TINT_REMAP)
-        Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(N(MostSolidGeometry)), ENV_TINT_REMAP)
-        Call(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 0)
+        Call(SetModelTintMode, APPLY_TINT_GROUPS, Ref(MostSolidGeometry), ENV_TINT_REMAP)
+        Call(SetWorldColorParams, 255, 255, 255, 0, 0, 0, 0)
         Wait(1)
-        Call(N(SetWorldColorParams), 102, 102, 102, 0, 0, 0, 60)
+        Call(SetWorldColorParams, 102, 102, 102, 0, 0, 0, 60)
     EndThread
-    Exec(N(EVS_UpdateStarshipCollision))
+    Exec(EVS_UpdateStarshipCollision)
     Set(MV_Starship_Yaw, 0)
     Set(MV_Starship_PosY, 0)
-    Exec(N(EVS_Starship_Update))
+    Exec(EVS_Starship_Update)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_9)
         TEX_PAN_PARAMS_STEP(  -90,   70,  -60,   90)
@@ -184,13 +184,13 @@ EvtScript N(EVS_Starship_Summon) = {
     PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 250, 0, 10, LVar9)
     Wait(20)
     Call(SetModelCustomGfx, MODEL_o646, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_starship_shimmer)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_starship_shimmer), nullptr)
     Call(EnableGroup, MODEL_g279, true)
     Thread
         Call(MakeLerp, 0, 200, 75, EASING_QUADRATIC_IN)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(SetStarshipShimmerAmt), LVar0)
+            Call(SetStarshipShimmerAmt, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -199,12 +199,12 @@ EvtScript N(EVS_Starship_Summon) = {
     EndThread
     Wait(60)
     Call(SetModelCustomGfx, MODEL_o8, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_light_beam)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(setup_gfx_light_beam), nullptr)
     Call(EnableModel, MODEL_o8, true)
     Call(MakeLerp, 0, 127, 60, EASING_COS_IN_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetLightBeamAlpha), LVar0)
+        Call(SetLightBeamAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -217,7 +217,7 @@ EvtScript N(EVS_Starship_Summon) = {
     Call(MakeLerp, 200, 0, 45, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetStarshipShimmerAmt), LVar0)
+        Call(SetStarshipShimmerAmt, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -245,7 +245,7 @@ EvtScript N(EVS_Starship_Summon) = {
         EndIf
     EndLoop
     Wait(30)
-    Call(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 60)
+    Call(SetWorldColorParams, 255, 255, 255, 0, 0, 0, 60)
     Call(DisablePlayerInput, false)
     Return
     End

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-API_CALLABLE(N(SpawnDirectedShootingStarFX)) {
+API_CALLABLE(SpawnDirectedShootingStarFX) {
     Bytecode* args = script->ptrReadPos;
     f32 type = evt_get_float_variable(script, *args++); /// @bug? s32 accessed as a float
     f32 startX = evt_get_float_variable(script, *args++);
@@ -16,7 +16,7 @@ API_CALLABLE(N(SpawnDirectedShootingStarFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnRandomBackgroundShootingStarFX)) {
+API_CALLABLE(SpawnRandomBackgroundShootingStarFX) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 yaw = gCameras[CAM_DEFAULT].curYaw / 180.0f * PI;
     f32 yawPlus = yaw + (PI_D / 2);
@@ -44,7 +44,7 @@ API_CALLABLE(N(SpawnRandomBackgroundShootingStarFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnRandomForegroundShootingStarFX)) {
+API_CALLABLE(SpawnRandomForegroundShootingStarFX) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 yaw = gCameras[CAM_DEFAULT].curYaw / 180.0f * PI;
     f32 yawPlus = yaw + (PI_D / 2);
@@ -75,7 +75,7 @@ API_CALLABLE(N(SpawnRandomForegroundShootingStarFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnRandomBouncingShootingStarFX)) {
+API_CALLABLE(SpawnRandomBouncingShootingStarFX) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 yaw = gCameras[CAM_DEFAULT].curYaw / 180.0f * PI;
     f32 yawPlus = yaw + (PI_D / 2);
@@ -110,7 +110,7 @@ API_CALLABLE(N(SpawnRandomBouncingShootingStarFX)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Starfall_Directed) = {
+EvtScript EVS_Starfall_Directed = {
     #define LV_Type LVar0
     #define LV_PosX LVar1
     #define LV_PosY LVar2
@@ -185,20 +185,20 @@ EvtScript N(EVS_Starfall_Directed) = {
             Set(LV_SoundDelay, 0)
         EndIf
         // spawn the effect
-        Call(N(SpawnDirectedShootingStarFX), LV_Type, LV_PosX, LV_PosY, LV_PosZ, LV_EndX, LV_EndY, LV_EndZ, LV_Speed)
+        Call(SpawnDirectedShootingStarFX, LV_Type, LV_PosX, LV_PosY, LV_PosZ, LV_EndX, LV_EndY, LV_EndZ, LV_Speed)
         Wait(LV_Delay)
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_Starfall_Random) = {
+EvtScript EVS_Starfall_Random = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Thread
         Label(0)
             Call(RandInt, 50, LVar0)
             Add(LVar0, 10)
-            Call(N(SpawnRandomBackgroundShootingStarFX))
+            Call(SpawnRandomBackgroundShootingStarFX)
             Wait(LVar0)
             Goto(0)
     EndThread
@@ -206,7 +206,7 @@ EvtScript N(EVS_Starfall_Random) = {
         Label(1)
             Call(RandInt, 50, LVar0)
             Add(LVar0, 20)
-            Call(N(SpawnRandomForegroundShootingStarFX))
+            Call(SpawnRandomForegroundShootingStarFX)
             Wait(LVar0)
             Goto(1)
     EndThread
@@ -214,7 +214,7 @@ EvtScript N(EVS_Starfall_Random) = {
         Label(2)
             Call(RandInt, 50, LVar0)
             Add(LVar0, 20)
-            Call(N(SpawnRandomBouncingShootingStarFX))
+            Call(SpawnRandomBouncingShootingStarFX)
             Call(PlaySoundAt, SOUND_SEQ_SHOOTING_STAR_FALL, SOUND_SPACE_DEFAULT, LVar1, LVar2, LVar3)
             Wait(LVar0)
             Goto(2)

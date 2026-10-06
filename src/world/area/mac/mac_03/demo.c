@@ -1,6 +1,6 @@
 #include "mac_03.h"
 
-EvtScript N(EVS_DemoFollowTrainCamera) = {
+EvtScript EVS_DemoFollowTrainCamera = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfEq(MF_TrainReverseDir, false)
@@ -25,7 +25,7 @@ EvtScript N(EVS_DemoFollowTrainCamera) = {
     End
 };
 
-EvtScript N(EVS_DemoUpdatePassengerPos) = {
+EvtScript EVS_DemoUpdatePassengerPos = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -60,7 +60,7 @@ EvtScript N(EVS_DemoUpdatePassengerPos) = {
     End
 };
 
-EvtScript N(EVS_DemoDepartForMtRugged) = {
+EvtScript EVS_DemoDepartForMtRugged = {
     Call(EnableWorldStatusBar, false)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
@@ -88,7 +88,7 @@ EvtScript N(EVS_DemoDepartForMtRugged) = {
     Call(InterpPlayerYaw, 90, 1)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Set(MF_TrainMoving, true)
-    Exec(N(EVS_DemoUpdatePassengerPos))
+    Exec(EVS_DemoUpdatePassengerPos)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(240.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(-100.0), Float(-50.0))
@@ -112,7 +112,7 @@ EvtScript N(EVS_DemoDepartForMtRugged) = {
     EndThread
     Wait(40)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    ExecGetTID(N(EVS_DemoFollowTrainCamera), LVar9)
+    ExecGetTID(EVS_DemoFollowTrainCamera, LVar9)
     Wait(180)
     IfEq(GF_DemoSceneDone, true)
         Return
@@ -124,7 +124,7 @@ EvtScript N(EVS_DemoDepartForMtRugged) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -143,10 +143,10 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-EvtScript N(EVS_PlayDemoScene) = {
+EvtScript EVS_PlayDemoScene = {
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_DemoDepartForMtRugged))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_DemoDepartForMtRugged)
     Return
     End
 };

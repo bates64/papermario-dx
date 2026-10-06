@@ -2,28 +2,26 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Dayzee.h"
 
-#define NAMESPACE A(crazee_dayzee)
+extern s32 DefaultAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(DefaultAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SING        = 4,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              95,
@@ -48,15 +46,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 30 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
@@ -68,10 +66,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_CRAZEE_DAYZEE,
     .level = ACTOR_LEVEL_CRAZEE_DAYZEE,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 50,
     .airLiftChance = 85,
     .hurricaneChance = 80,
@@ -86,7 +84,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 9, 25 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Dayzee_Idle,
     STATUS_KEY_STONE,     ANIM_Dayzee_Still,
     STATUS_KEY_SLEEP,     ANIM_Dayzee_Sleep,
@@ -99,20 +97,20 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Dayzee_Run)
     ExecWait(EVS_Enemy_ReturnHome)
@@ -120,7 +118,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
@@ -163,7 +161,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Dayzee_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Dayzee_Hurt)
@@ -222,7 +220,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Sing) = {
+EvtScript EVS_Attack_Sing = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(GetBattlePhase, LVar0)
@@ -298,7 +296,7 @@ EvtScript N(EVS_Attack_Sing) = {
             Call(YieldTurn)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -316,7 +314,7 @@ EvtScript N(EVS_Attack_Sing) = {
             Call(MoveBattleCamOver, 10)
             Wait(20)
             Call(YieldTurn)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -324,7 +322,7 @@ EvtScript N(EVS_Attack_Sing) = {
     End
 };
 
-EvtScript N(EVS_Move_Flee) = {
+EvtScript EVS_Move_Flee = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(SetBattleCamDist, 300)
@@ -357,10 +355,10 @@ EvtScript N(EVS_Move_Flee) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Sing))
+        ExecWait(EVS_Attack_Sing)
         Return
     EndIf
     Call(GetActorHP, ACTOR_SELF, LVar0)
@@ -368,26 +366,26 @@ EvtScript N(EVS_TakeTurn) = {
     Switch(LVar0)
         CaseEq(1)
             IfLt(LVar1, 80)
-                ExecWait(N(EVS_Move_Flee))
+                ExecWait(EVS_Move_Flee)
                 Return
             EndIf
         CaseEq(2)
             IfLt(LVar1, 40)
-                ExecWait(N(EVS_Move_Flee))
+                ExecWait(EVS_Move_Flee)
                 Return
             EndIf
         CaseEq(3)
             IfLt(LVar1, 20)
-                ExecWait(N(EVS_Move_Flee))
+                ExecWait(EVS_Move_Flee)
                 Return
             EndIf
         CaseEq(4)
             IfLt(LVar1, 10)
-                ExecWait(N(EVS_Move_Flee))
+                ExecWait(EVS_Move_Flee)
                 Return
             EndIf
     EndSwitch
-    ExecWait(N(EVS_Attack_Sing))
+    ExecWait(EVS_Attack_Sing)
     Return
     End
 };

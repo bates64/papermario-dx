@@ -3,14 +3,14 @@
 
 #include "world/common/util/MonitorPlayerOrbiting.inc.c"
 
-API_CALLABLE(N(SaveSpinningRoofHintTime)) {
+API_CALLABLE(SaveSpinningRoofHintTime) {
     PlayerData* playerData = &gPlayerData;
 
     playerData->droTreeHintTime = playerData->frameCounter;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_TreeOrbitReaction) = {
+EvtScript EVS_Scene_TreeOrbitReaction = {
     Loop(0)
         Call(GetPlayerFloorCollider, LVar0)
         IfEq(LVar0, COLLIDER_ground)
@@ -53,14 +53,14 @@ EvtScript N(EVS_Scene_TreeOrbitReaction) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(N(SaveSpinningRoofHintTime))
+    Call(SaveSpinningRoofHintTime)
     Set(GF_DRO01_HeardHintAboutSpinningRoof, true)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-void N(red_tree_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
+void red_tree_orbit_listener(PlayerOrbitState* orbit, s32 event) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     switch (event) {
@@ -71,7 +71,7 @@ void N(red_tree_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
                 f32 angle2 = atan2(125.0f, -42.0f, playerStatus->pos.x, playerStatus->pos.z);
                 f32 deltaAngle = get_clamped_angle_diff(angle1, angle2);
                 if (fabsf(deltaAngle) < 30.0f) {
-                    start_script(&N(EVS_Scene_TreeOrbitReaction), EVT_PRIORITY_1, 0);
+                    start_script(&EVS_Scene_TreeOrbitReaction, EVT_PRIORITY_1, 0);
                     orbit->state = ORBIT_STATE_BREAK_ORBIT;
                 }
             }
@@ -85,7 +85,7 @@ void N(red_tree_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
     }
 }
 
-API_CALLABLE(N(HasBeenHalfHourSinceTreeOrbit)) {
+API_CALLABLE(HasBeenHalfHourSinceTreeOrbit) {
     PlayerData* playerData = &gPlayerData;
     s32 minutes = (playerData->frameCounter - playerData->droTreeHintTime) / 3600;
 
@@ -98,18 +98,18 @@ API_CALLABLE(N(HasBeenHalfHourSinceTreeOrbit)) {
     return ApiStatus_DONE2;
 }
 
-PlayerOrbitTarget N(RunAroundTarget) = {
+PlayerOrbitTarget RunAroundTarget = {
     .pos = { 125, 0, -42 },
     .startRadius = 75,
     .orbitRadius = 75,
-    .eventListener = N(red_tree_orbit_listener),
+    .eventListener = red_tree_orbit_listener,
 };
 
-EvtScript N(EVS_NpcInteract_HintDryite) = {
+EvtScript EVS_NpcInteract_HintDryite = {
     IfEq(GF_MAC01_Merlon_HeardAboutDream, true)
         IfEq(GF_DRO01_HeardHintAboutSpinningRoof, true)
             // in case the player forgets, remind them after a half hour
-            Call(N(HasBeenHalfHourSinceTreeOrbit))
+            Call(HasBeenHalfHourSinceTreeOrbit)
             IfEq(LVar0, true)
                 Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_007B)
                 Return
@@ -142,7 +142,7 @@ EvtScript N(EVS_NpcInteract_HintDryite) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_HintDryite) = {
+EvtScript EVS_NpcInit_HintDryite = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(dro_01_ENTRY_3)
@@ -151,10 +151,10 @@ EvtScript N(EVS_NpcInit_HintDryite) = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HintDryite)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HintDryite))
     IfEq(GF_MAC01_Merlon_HeardAboutDream, true)
         Thread
-            Call(N(MonitorPlayerOrbiting), Ref(N(RunAroundTarget)))
+            Call(MonitorPlayerOrbiting, Ref(RunAroundTarget))
         EndThread
     EndIf
     Return

@@ -7,7 +7,7 @@
 
 #include "../common/SpinyTromp.inc.c"
 
-EvtScript N(EVS_SpinyTromp_ManageCamera) = {
+EvtScript EVS_SpinyTromp_ManageCamera = {
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
@@ -26,7 +26,7 @@ EvtScript N(EVS_SpinyTromp_ManageCamera) = {
                 EndIf
                 Add(LVar1, SPINY_TROMP_RADIUS)
                 Set(LVar2, LVar1)
-                Call(N(SpinyTromp_SnapToGround))
+                Call(SpinyTromp_SnapToGround)
                 Sub(LVar2, SPINY_TROMP_RADIUS)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar2, 30)
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -38,7 +38,7 @@ EvtScript N(EVS_SpinyTromp_ManageCamera) = {
     End
 };
 
-EvtScript N(EVS_SpinyTromp_ShakeCam) = {
+EvtScript EVS_SpinyTromp_ShakeCam = {
     Loop(0)
         Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.0))
     EndLoop
@@ -46,7 +46,7 @@ EvtScript N(EVS_SpinyTromp_ShakeCam) = {
     End
 };
 
-EvtScript N(EVS_SetupSpinyTromp) = {
+EvtScript EVS_SetupSpinyTromp = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     IfGe(GB_StoryProgress, STORY_CH5_HIDDEN_PASSAGE_OPEN)
         Call(SetGroupVisibility, MODEL_goron, MODEL_GROUP_HIDDEN)
@@ -70,25 +70,25 @@ EvtScript N(EVS_SetupSpinyTromp) = {
     IfEq(GF_KZN17_Hammer3BlockG, false)
         Goto(0)
     EndIf
-    ExecGetTID(N(EVS_SpinyTromp_ManageCamera), LVarA)
-    Exec(N(EVS_Kolorado_TrompPanic))
-    ExecGetTID(N(EVS_SpinyTromp_ShakeCam), MV_ScreenShakeTID)
+    ExecGetTID(EVS_SpinyTromp_ManageCamera, LVarA)
+    Exec(EVS_Kolorado_TrompPanic)
+    ExecGetTID(EVS_SpinyTromp_ShakeCam, MV_ScreenShakeTID)
     Call(PlaySound, SOUND_LOOP_TROMP_ROLL)
     Set(LVar3, 0)
     Call(MakeLerp, SPINY_TROMP_START_X, SPINY_TROMP_END_X, 270, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SpinyTromp_SnapToGround))
-        Call(N(SpinyTromp_UpdateSoundPos), LVar0, LVar1, LVar2)
+        Call(SpinyTromp_SnapToGround)
+        Call(SpinyTromp_UpdateSoundPos, LVar0, LVar1, LVar2)
         Set(MV_TrompPosX, LVar0)
         Add(MV_TrompPosX, 20)
         Call(TranslateGroup, MODEL_goron, LVar0, LVar2, 30)
         Call(TranslateModel, MODEL_me, LVar0, LVar2, 30)
         Call(RotateGroup, MODEL_goron, LVar3, 0, 0, 1)
         Call(RotateModel, MODEL_me, LVar3, 0, 0, 1)
-        Call(N(SpinyTromp_UpdateRollWobble))
+        Call(SpinyTromp_UpdateRollWobble)
         Call(TranslateModel, MODEL_me, LVar5, LVar6, 30)
-        Call(N(SpinyTromp_UpdateRollAngle), SPINY_TROMP_START_X, SPINY_TROMP_START_Y)
+        Call(SpinyTromp_UpdateRollAngle, SPINY_TROMP_START_X, SPINY_TROMP_START_Y)
         IfEq(AF_KZN_Tromp2_StopPlayer, false)
             Thread
                 Call(GetPlayerPos, LVar3, LVar1, LVar2)
@@ -107,7 +107,7 @@ EvtScript N(EVS_SetupSpinyTromp) = {
         EndIf
         IfEq(AF_KZN_Tromp2_HitKolorado, false)
             IfGt(LVar0, 430)
-                Exec(N(EVS_Kolorado_TrompImpact))
+                Exec(EVS_Kolorado_TrompImpact)
                 Set(AF_KZN_Tromp2_HitKolorado, true)
             EndIf
         EndIf
@@ -128,13 +128,13 @@ EvtScript N(EVS_SetupSpinyTromp) = {
             EndIf
         EndIf
         Wait(1)
-        Call(N(SpinyTromp_GetPlayerDist))
+        Call(SpinyTromp_GetPlayerDist)
         IfLt(LVar4, 80)
             IfEq(AF_KZN_TrompHitPlayer, false)
-                Call(N(SpinyTromp_GetActingPartner))
+                Call(SpinyTromp_GetActingPartner)
                 IfNe(LVar0, PARTNER_BOW)
                     Set(AF_KZN_TrompHitPlayer, true)
-                    Exec(N(EVS_SpinyTromp_HitPlayer))
+                    Exec(EVS_SpinyTromp_HitPlayer)
                 EndIf
             EndIf
         EndIf

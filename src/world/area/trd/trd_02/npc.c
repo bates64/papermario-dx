@@ -4,7 +4,7 @@
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
 #include "world/common/enemy/KoopaTroopa/patrol.inc.c"
 
-NpcData N(NpcData_Bobomb_01) = {
+NpcData NpcData_Bobomb_01 = {
     .id = NPC_Bobomb_01,
     .pos = { -70.0f, 0.0f, 80.0f },
     .yaw = 90,
@@ -20,14 +20,14 @@ NpcData N(NpcData_Bobomb_01) = {
             .detectSize = { 250, 175 },
         }
     },
-    .settings = &N(NpcSettings_Bobomb_Wander),
+    .settings = &NpcSettings_Bobomb_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BOBOMB_DROPS,
     .animations = BOBOMB_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Bobomb_02) = {
+NpcData NpcData_Bobomb_02 = {
     .id = NPC_Bobomb_02,
     .pos = { 140.0f, 0.0f, 80.0f },
     .yaw = 270,
@@ -43,14 +43,14 @@ NpcData N(NpcData_Bobomb_02) = {
             .detectSize = { 250, 175 },
         }
     },
-    .settings = &N(NpcSettings_Bobomb_Wander),
+    .settings = &NpcSettings_Bobomb_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BOBOMB_DROPS,
     .animations = BOBOMB_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_KoopaTroopa) = {
+NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
     .pos = { 50.0f, 187.0f, 183.0f },
     .yaw = 0,
@@ -68,16 +68,16 @@ NpcData N(NpcData_KoopaTroopa) = {
             .detectSize = { 150, 80 },
         }
     },
-    .settings = &N(NpcSettings_KoopaTroopa_Patrol),
+    .settings = &NpcSettings_KoopaTroopa_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_TRD_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Bobomb_01), BTL_TRD_1_FORMATION_10, BTL_TRD_1_STAGE_09),
-    NPC_GROUP(N(NpcData_Bobomb_02), BTL_TRD_1_FORMATION_10, BTL_TRD_1_STAGE_09),
-    NPC_GROUP(N(NpcData_KoopaTroopa), BTL_TRD_1_FORMATION_07, BTL_TRD_1_STAGE_0C),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Bobomb_01, BTL_TRD_1_FORMATION_10, BTL_TRD_1_STAGE_09),
+    NPC_GROUP(NpcData_Bobomb_02, BTL_TRD_1_FORMATION_10, BTL_TRD_1_STAGE_09),
+    NPC_GROUP(NpcData_KoopaTroopa, BTL_TRD_1_FORMATION_07, BTL_TRD_1_STAGE_0C),
     {}
 };

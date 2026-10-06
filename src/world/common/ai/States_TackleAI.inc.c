@@ -39,7 +39,7 @@ enum TackleEnemyType {
     TACKLER_BONY_BEETLE     = 6,
 };
 
-void N(TackleAI_InitTackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void TackleAI_InitTackle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -49,7 +49,7 @@ void N(TackleAI_InitTackle)(Evt* script, MobileAISettings* settings, EnemyDetect
     script->AI_TEMP_STATE = AI_STATE_PRE_TACKLE;
 }
 
-void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void TackleAI_PreTackle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 dist;
@@ -86,7 +86,7 @@ void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* settings, EnemyDetectV
     script->AI_TEMP_STATE = AI_STATE_TACKLE;
 }
 
-void N(TackleAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void TackleAI_Tackle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 hit;
@@ -123,7 +123,7 @@ void N(TackleAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     script->AI_TEMP_STATE = AI_STATE_POST_TACKLE;
 }
 
-void N(TackleAI_PostTackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void TackleAI_PostTackle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 

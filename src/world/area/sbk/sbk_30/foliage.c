@@ -2,10 +2,10 @@
 
 #include "foliage.h"
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_ki_ha);
-FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_ki_miki);
+FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki_ha);
+FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_ki_miki);
 
-FoliageDropList N(Tree1_Drops) = {
+FoliageDropList Tree1_Drops = {
     .count = 1,
     .drops = {
         {
@@ -18,30 +18,30 @@ FoliageDropList N(Tree1_Drops) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree2) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
+ShakeTreeConfig ShakeTree_Tree2 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
 };
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
-    .drops = &N(Tree1_Drops),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
+    .drops = &Tree1_Drops,
 };
 
-BombTrigger N(BombPos_Tree) = {
+BombTrigger BombPos_Tree = {
     .pos = { 266.0f, 0.0f, -209.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupFoliage) = {
+EvtScript EVS_SetupFoliage = {
     IfLt(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
-        Set(LVar0, Ref(N(ShakeTree_Tree2)))
+        Set(LVar0, Ref(ShakeTree_Tree2))
     Else
-        Set(LVar0, Ref(N(ShakeTree_Tree1)))
+        Set(LVar0, Ref(ShakeTree_Tree1))
     EndIf
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o84, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree), 1, 0)
     Return
     End
 };

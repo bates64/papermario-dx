@@ -3,37 +3,35 @@
 #include "effects.h"
 #include "sprite/npc/Gulpit.h"
 
-#define NAMESPACE A(gulpit_rocks)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_RockType   = 0,
 };
 
-s32 N(BigRockAnims)[] = {
+s32 BigRockAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Gulpit_LargeRock,
     STATUS_END,
 };
 
-s32 N(SmallRockAnims)[] = {
+s32 SmallRockAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Gulpit_SmallRock,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,               0,
@@ -58,15 +56,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 14 },
         .opacity = 255,
-        .idleAnimations = N(BigRockAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = BigRockAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -6 },
@@ -78,10 +76,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_GULPIT_ROCKS,
     .level = ACTOR_LEVEL_GULPIT_ROCKS,
     .maxHP = 1,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 0,
     .airLiftChance = 100,
     .hurricaneChance = 0,
@@ -96,19 +94,19 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(GetActorVar, ACTOR_SELF, AVAR_RockType, LVar0)
     Switch(LVar0)
         CaseEq(0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(BigRockAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BigRockAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_LargeRock)
             Call(GetActorVar, ACTOR_SELF, AVAR_RockType, 0)
             Call(SetActorSize, ACTOR_SELF, 24, 15)
         CaseEq(1)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SmallRockAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SmallRockAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Gulpit_SmallRock)
             Call(GetActorVar, ACTOR_SELF, AVAR_RockType, 1)
             Call(SetActorSize, ACTOR_SELF, 10, 8)
@@ -117,12 +115,12 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_SelectRockAnim) = {
+EvtScript EVS_SelectRockAnim = {
     Call(GetActorVar, ACTOR_SELF, AVAR_RockType, LVarA)
     Switch(LVarA)
         CaseEq(0)
@@ -133,7 +131,7 @@ EvtScript N(EVS_SelectRockAnim) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -144,7 +142,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Gulpit_LargeRock)
             SetConst(LVar2, ANIM_Gulpit_SmallRock)
-            ExecWait(N(EVS_SelectRockAnim))
+            ExecWait(EVS_SelectRockAnim)
             ExecWait(EVS_Enemy_Hit)
         EndCaseGroup
         CaseOrEq(EVENT_ZERO_DAMAGE)
@@ -154,7 +152,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Gulpit_LargeRock)
             SetConst(LVar2, ANIM_Gulpit_SmallRock)
-            ExecWait(N(EVS_SelectRockAnim))
+            ExecWait(EVS_SelectRockAnim)
             ExecWait(EVS_Enemy_NoDamageHit)
         EndCaseGroup
         CaseOrEq(EVENT_BURN_DEATH)
@@ -162,7 +160,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Gulpit_LargeRock)
             SetConst(LVar2, ANIM_Gulpit_SmallRock)
-            ExecWait(N(EVS_SelectRockAnim))
+            ExecWait(EVS_SelectRockAnim)
             ExecWait(EVS_Enemy_Hit)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, true)
             Call(GetActorVar, ACTOR_SELF, AVAR_RockType, LVar0)
@@ -186,7 +184,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Return
     End
 };

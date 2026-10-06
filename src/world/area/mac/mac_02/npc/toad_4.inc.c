@@ -1,6 +1,6 @@
 #include "../mac_02.h"
 
-EvtScript N(EVS_NpcInteract_Toad_04) = {
+EvtScript EVS_NpcInteract_Toad_04 = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -44,8 +44,8 @@ EvtScript N(EVS_NpcInteract_Toad_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_04)))
+EvtScript EVS_NpcInit_Toad_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_04))
     Return
     End
 };

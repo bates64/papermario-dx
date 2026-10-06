@@ -8,7 +8,7 @@
 #include "world/common/enemy/JungleFuzzy/wander.inc.c"
 #include "world/common/enemy/SpearGuy/wander.inc.c"
 
-EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
+EvtScript EVS_NpcIdle_JungleFuzzy = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Label(0)
         Call(GetSelfVar, 7, LVar0)
@@ -24,22 +24,22 @@ EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
     Wait(20)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_JungleFuzzy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_JungleFuzzy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_JungleFuzzy) = {
+EvtScript EVS_NpcInit_JungleFuzzy = {
     Call(SetSelfVar, 7, 0)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, true)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JungleFuzzy)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JungleFuzzy))
     Return
     End
 };
 
-EvtScript N(EVS_YoshiKid_WatchPlayerProximinity) = {
+EvtScript EVS_YoshiKid_WatchPlayerProximinity = {
     Label(1)
         Call(GetSelfVar, 0, LVar0)
         Switch(LVar0)
@@ -59,7 +59,7 @@ EvtScript N(EVS_YoshiKid_WatchPlayerProximinity) = {
     End
 };
 
-EvtScript N(EVS_OnShakeTree_Yoshi) = {
+EvtScript EVS_OnShakeTree_Yoshi = {
     Call(DisablePlayerInput, true)
     Call(SetNpcVar, NPC_YoshiKid, 0, 9)
     Thread
@@ -76,7 +76,7 @@ EvtScript N(EVS_OnShakeTree_Yoshi) = {
     End
 };
 
-EvtScript N(EVS_YoshiKid_Sleeping) = {
+EvtScript EVS_YoshiKid_Sleeping = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_SNORE_INHALE_A, SOUND_SPACE_DEFAULT)
         Wait(24)
@@ -91,8 +91,8 @@ EvtScript N(EVS_YoshiKid_Sleeping) = {
     End
 };
 
-EvtScript N(EVS_YoshiKid_PlaySounds) = {
-    ExecGetTID(N(EVS_YoshiKid_Sleeping), LVar9)
+EvtScript EVS_YoshiKid_PlaySounds = {
+    ExecGetTID(EVS_YoshiKid_Sleeping, LVar9)
     Loop(0)
         Wait(1)
         Call(GetNpcVar, NPC_YoshiKid, 0, LVar0)
@@ -110,15 +110,15 @@ EvtScript N(EVS_YoshiKid_PlaySounds) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_YoshiKid) = {
+EvtScript EVS_NpcIdle_YoshiKid = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_05_ENTRY_3)
         Call(DisablePlayerInput, true)
         Call(ShowMessageAtScreenPos, MSG_CH5_00B8, 160, 40)
         Call(DisablePlayerInput, false)
     EndIf
-    BindTrigger(Ref(N(EVS_OnShakeTree_Yoshi)), TRIGGER_WALL_HAMMER, COLLIDER_o87, 1, 0)
-    ExecGetTID(N(EVS_YoshiKid_WatchPlayerProximinity), LVar9)
+    BindTrigger(Ref(EVS_OnShakeTree_Yoshi), TRIGGER_WALL_HAMMER, COLLIDER_o87, 1, 0)
+    ExecGetTID(EVS_YoshiKid_WatchPlayerProximinity, LVar9)
     Loop(0)
         Wait(1)
         Call(GetSelfVar, 0, LVar0)
@@ -192,7 +192,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Set(GB_StoryProgress, STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
         Call(SetPlayerAnimation, ANIM_Mario1_ThumbsUp)
         Wait(120)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Else
         Wait(30)
@@ -204,14 +204,14 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid) = {
+EvtScript EVS_NpcInit_YoshiKid = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN05_SavedYoshi, false)
             Call(SetNpcPos, NPC_SELF, -308, 110, -300)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Purple_Sleep)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid)))
-            Exec(N(EVS_YoshiKid_PlaySounds))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid))
+            Exec(EVS_YoshiKid_PlaySounds)
             Return
         EndIf
     EndIf
@@ -220,19 +220,19 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
     End
 };
 
-NpcData N(NpcData_YoshiKid) = {
+NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
     .pos = { -320.0f, 0.0f, 80.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_YoshiKid),
-    .settings = &N(NpcSettings_YoshiKid),
+    .init = &EVS_NpcInit_YoshiKid,
+    .settings = &NpcSettings_YoshiKid,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = YOSHI_KID_PURPLE_ANIMS,
     .tattle = MSG_NpcTattle_PurpleYoshiKid,
 };
 
-AnimID N(LimitAnims_JungleFuzzy)[] = {
+AnimID LimitAnims_JungleFuzzy[] = {
     ANIM_Fuzzy_Jungle_Idle,
     ANIM_Fuzzy_Jungle_Walk,
     ANIM_Fuzzy_Jungle_Run,
@@ -240,7 +240,7 @@ AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_JungleFuzzy) = {
+NpcData NpcData_JungleFuzzy = {
     .id = NPC_JungleFuzzy,
     .pos = { 0.0f, 0.0f, 0.0f },
     .yaw = 270,
@@ -256,16 +256,16 @@ NpcData N(NpcData_JungleFuzzy) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_JungleFuzzy),
-    .settings = &N(NpcSettings_JungleFuzzy_Wander),
+    .init = &EVS_NpcInit_JungleFuzzy,
+    .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
-    .limitAnimations = N(LimitAnims_JungleFuzzy),
+    .limitAnimations = LimitAnims_JungleFuzzy,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_SpearGuy)[] = {
+NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
         .pos = { 0.0f, 0.0f, 0.0f },
@@ -283,55 +283,55 @@ NpcData N(NpcData_SpearGuy)[] = {
             }
         },
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
-        .settings = &N(NpcSettings_SpearGuy_Wander),
+        .settings = &NpcSettings_SpearGuy_Wander,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .limitAnimations = N(LimitAnims_SpearGuy),
+        .limitAnimations = LimitAnims_SpearGuy,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
 };
 
-NpcData N(NpcData_HeartPlant) = {
+NpcData NpcData_HeartPlant = {
     .id = NPC_HeartPlant,
     .pos = { 430.0f, 0.0f, 205.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HeartPlant),
+    .settings = &NpcSettings_HeartPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = HEART_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_HurtPlant) = {
+NpcData NpcData_HurtPlant = {
     .id = NPC_HurtPlant,
     .pos = { 375.0f, 0.0f, 260.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HurtPlant),
+    .settings = &NpcSettings_HurtPlant,
     .flags = HURT_PLANT_FLAGS,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
-    .limitAnimations = N(LimitAnims_HurtPlant),
+    .limitAnimations = LimitAnims_HurtPlant,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_MBush) = {
+NpcData NpcData_MBush = {
     .id = NPC_MBush,
     .pos = { 400.0f, 0.0f, -75.0f },
     .yaw = 90,
-    .settings = &N(NpcSettings_MBush),
+    .settings = &NpcSettings_MBush,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = MBUSH_DROPS,
     .animations = MBUSH_ANIMS,
     .tattle = MSG_NpcTattle_MBush,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_JungleFuzzy), BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_SpearGuy), BTL_JAN_FORMATION_00, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_HeartPlant)),
-    NPC_GROUP(N(NpcData_HurtPlant), BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_MBush), BTL_JAN_FORMATION_0E, BTL_JAN_STAGE_01),
-    NPC_GROUP(N(NpcData_YoshiKid)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_JungleFuzzy, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_00, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_HeartPlant),
+    NPC_GROUP(NpcData_HurtPlant, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_MBush, BTL_JAN_FORMATION_0E, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_YoshiKid),
     {}
 };

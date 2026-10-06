@@ -1,6 +1,6 @@
 #include "hos_00.h"
 
-EvtScript N(EVS_PlayToadTownSong) = {
+EvtScript EVS_PlayToadTownSong = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_6)
@@ -11,11 +11,11 @@ EvtScript N(EVS_PlayToadTownSong) = {
     End
 };
 
-EvtScript N(EVS_PlayMusicByPosition) = {
+EvtScript EVS_PlayMusicByPosition = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_00_ENTRY_0)
-            Exec(N(EVS_PlayToadTownSong))
+            Exec(EVS_PlayToadTownSong)
         CaseOrEq(hos_00_ENTRY_1)
         CaseOrEq(hos_00_ENTRY_2)
             Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)
@@ -44,7 +44,7 @@ EvtScript N(EVS_PlayMusicByPosition) = {
         IfLt(LVar1, -55)
             Call(FadeOutMusic, 0, 833)
             Wait(25)
-            Exec(N(EVS_PlayToadTownSong))
+            Exec(EVS_PlayToadTownSong)
             Wait(30)
             Goto(10)
         EndIf
@@ -53,18 +53,18 @@ EvtScript N(EVS_PlayMusicByPosition) = {
     End
 };
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_00_ENTRY_3)
         Call(SetMusic, 0, SONG_STARSHIP_THEME, 0, VOL_LEVEL_FULL)
     Else
-        Exec(N(EVS_PlayMusicByPosition))
+        Exec(EVS_PlayMusicByPosition)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_PlayKammyKoopaSong) = {
+EvtScript EVS_PlayKammyKoopaSong = {
     Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Return
     End

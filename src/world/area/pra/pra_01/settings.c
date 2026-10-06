@@ -2,7 +2,7 @@
 
 #include "../common/MapInit_EnableFloorReflection.inc.c"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [pra_01_ENTRY_0]    {  519.0,  -60.0,  105.0,   90.0 },
     [pra_01_ENTRY_1]    {  977.0,    0.0,   70.0,  270.0 },
     [pra_01_ENTRY_2]    {  977.0,    0.0,  -78.0,  270.0 },
@@ -10,10 +10,10 @@ EntryList N(Entrances) = {
     [pra_01_ENTRY_4]    {  774.0,  -30.0,   85.0,  270.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "yki_bg",
     .tattle = { MSG_MapTattle_pra_01 },
     .sfxReverb = 1,

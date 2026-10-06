@@ -1,8 +1,6 @@
 #include "common.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_tidal_wave
-
 extern s32 actionCmdTableTidalWave[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -33,7 +31,7 @@ enum {
 HudScriptPtr HudButtonsUp[TIDAL_WAVE_INPUT_COUNT] = { HES_PressAButton, HES_PressBButton, HES_PressCDownButton };
 HudScriptPtr HudButtonsDown[TIDAL_WAVE_INPUT_COUNT] = { HES_AButtonDown, HES_BButtonHeld, HES_CDownButtonHeld };
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -75,7 +73,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -106,7 +104,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -318,7 +316,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     s32 i;
 
     for (i = HIDX_FIRST_BUTTON; i < ARRAY_COUNT(gActionCommandStatus.hudElemIDs) - 1; i++) {
@@ -326,7 +324,7 @@ void N(draw)(void) {
     }
 }
 
-void N(free)(void) {
+void destroy(void) {
     s32 i;
 
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);

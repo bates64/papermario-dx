@@ -1,15 +1,15 @@
 #include "kkj_01.h"
 
-EvtScript N(EVS_ExitDoors_kkj_00_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_0, "kkj_00", kkj_00_ENTRY_1,
+EvtScript EVS_ExitDoors_kkj_00_1 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_0, "kkj_00", kkj_00_ENTRY_1,
     COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoors_kkj_02_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_1, "kkj_02", kkj_02_ENTRY_0,
+EvtScript EVS_ExitDoors_kkj_02_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_1, "kkj_02", kkj_02_ENTRY_0,
     COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoors_kkj_14_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_4, "kkj_14", kkj_14_ENTRY_0,
+EvtScript EVS_ExitDoors_kkj_14_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_4, "kkj_14", kkj_14_ENTRY_0,
     COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_ShowMessage_CantOpen) = {
+EvtScript EVS_ShowMessage_CantOpen = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_DoesntOpen, 160, 40)
     Call(DisablePlayerInput, false)
@@ -17,21 +17,21 @@ EvtScript N(EVS_ShowMessage_CantOpen) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
+EvtScript EVS_BindExitTriggers = {
     IfEq(AF_KKJ01_MarioLetIntoBedroom, true)
-        BindTrigger(Ref(N(EVS_ExitDoors_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoors_kkj_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     EndIf
-    BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_ttsw, 1, 0)
-    BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_00_1)), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_02_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttsw, 1, 0)
+    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kkj_00_1), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kkj_02_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -70,11 +70,11 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     IfNe(GB_StoryProgress, STORY_INTRO)
         Call(EnableModel, MODEL_g74, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g77, COLLIDER_FLAGS_UPPER_MASK)
@@ -83,9 +83,9 @@ EvtScript N(EVS_Main) = {
         Call(EnableModel, MODEL_o337, false)
         Call(EnableModel, MODEL_o330, false)
     EndIf
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_BindExitTriggers))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_BindExitTriggers)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

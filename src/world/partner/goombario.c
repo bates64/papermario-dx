@@ -5,17 +5,15 @@
 #include "message_ids.h"
 #include "entity.h"
 
-#define NAMESPACE world_goombario
-
 extern SpeechBubbleData* SpeechBubblePtr;
 
-BSS s32 N(HadSpeechPrompt);
-BSS s32 N(HadInteractPrompt);
-BSS Npc* N(InteractNpc);
-BSS TweesterPhysics N(TweesterPhysicsData);
-BSS s32 N(IsTattleActive);
+BSS s32 HadSpeechPrompt;
+BSS s32 HadInteractPrompt;
+BSS Npc* InteractNpc;
+BSS TweesterPhysics TweesterPhysicsData;
+BSS s32 IsTattleActive;
 
-s32 N(EntityTattles)[][2] = {
+s32 EntityTattles[][2] = {
     { ENTITY_TYPE_HAMMER1_BLOCK,        MSG_EntityTattle_HammerBlock1_CanBreak },
     { ENTITY_TYPE_HAMMER1_BLOCK_TINY,   MSG_EntityTattle_HammerBlock1_CanBreak },
     { ENTITY_TYPE_HAMMER2_BLOCK,        MSG_EntityTattle_HammerBlock2_CantBreak },
@@ -56,7 +54,7 @@ s32 N(EntityTattles)[][2] = {
     { -1, -1 }
 };
 
-s32 N(get_trigger_tattle)(s32 tattleColliderID) {
+s32 get_trigger_tattle(s32 tattleColliderID) {
     s32 i;
 
     for (i = 0; i < MAX_TRIGGERS; i++) {
@@ -72,12 +70,12 @@ s32 N(get_trigger_tattle)(s32 tattleColliderID) {
     return 0;
 }
 
-void N(init)(Npc* goombario) {
+void init(Npc* goombario) {
     goombario->collisionHeight = 24;
     goombario->collisionDiameter = 20;
 }
 
-API_CALLABLE(N(TakeOut)) {
+API_CALLABLE(TakeOut) {
     Npc* goombario = script->owner2.npc;
     WorldTattleInteractionID = -1;
 
@@ -93,14 +91,14 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldGoombario_TakeOut = {
-    Call(N(TakeOut))
+    Call(TakeOut)
     Return
     End
 };
 
-TweesterPhysics* N(TweesterPhysicsPtr) = &N(TweesterPhysicsData);
+TweesterPhysics* TweesterPhysicsPtr = &TweesterPhysicsData;
 
-API_CALLABLE(N(Update)) {
+API_CALLABLE(Update) {
     PlayerData* playerData = &gPlayerData;
     Npc* npc = script->owner2.npc;
     f32 sinAngle, cosAngle, liftoffVelocity;
@@ -108,7 +106,7 @@ API_CALLABLE(N(Update)) {
 
     if (isInitialCall) {
         partner_walking_enable(npc, true);
-        mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
+        mem_clear(TweesterPhysicsPtr, sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
 
@@ -121,63 +119,63 @@ API_CALLABLE(N(Update)) {
         return 0;
     }
 
-    switch (N(TweesterPhysicsPtr)->state) {
+    switch (TweesterPhysicsPtr->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
-            N(TweesterPhysicsPtr)->prevFlags = npc->flags;
-            N(TweesterPhysicsPtr)->radius = fabsf(dist2D(npc->pos.x, npc->pos.z, entity->pos.x, entity->pos.z));
-            N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, npc->pos.x, npc->pos.z);
-            N(TweesterPhysicsPtr)->angularVel = 6.0f;
-            N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
-            N(TweesterPhysicsPtr)->countdown = 120;
+            TweesterPhysicsPtr->state = TWEESTER_PARTNER_ATTRACT;
+            TweesterPhysicsPtr->prevFlags = npc->flags;
+            TweesterPhysicsPtr->radius = fabsf(dist2D(npc->pos.x, npc->pos.z, entity->pos.x, entity->pos.z));
+            TweesterPhysicsPtr->angle = atan2(entity->pos.x, entity->pos.z, npc->pos.x, npc->pos.z);
+            TweesterPhysicsPtr->angularVel = 6.0f;
+            TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
+            TweesterPhysicsPtr->countdown = 120;
             npc->flags |= NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
             npc->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
-            sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
+            sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
 
-            npc->pos.x = entity->pos.x + (sinAngle * N(TweesterPhysicsPtr)->radius);
-            npc->pos.z = entity->pos.z - (cosAngle * N(TweesterPhysicsPtr)->radius);
-            N(TweesterPhysicsPtr)->angle = clamp_angle(N(TweesterPhysicsPtr)->angle - N(TweesterPhysicsPtr)->angularVel);
+            npc->pos.x = entity->pos.x + (sinAngle * TweesterPhysicsPtr->radius);
+            npc->pos.z = entity->pos.z - (cosAngle * TweesterPhysicsPtr->radius);
+            TweesterPhysicsPtr->angle = clamp_angle(TweesterPhysicsPtr->angle - TweesterPhysicsPtr->angularVel);
 
-            if (N(TweesterPhysicsPtr)->radius > 20.0f) {
-                N(TweesterPhysicsPtr)->radius--;
-            } else if (N(TweesterPhysicsPtr)->radius < 19.0f) {
-                N(TweesterPhysicsPtr)->radius++;
+            if (TweesterPhysicsPtr->radius > 20.0f) {
+                TweesterPhysicsPtr->radius--;
+            } else if (TweesterPhysicsPtr->radius < 19.0f) {
+                TweesterPhysicsPtr->radius++;
             }
 
-            liftoffVelocity = sin_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->liftoffVelPhase)) * 3.0f;
-            N(TweesterPhysicsPtr)->liftoffVelPhase += 3.0f;
+            liftoffVelocity = sin_rad(DEG_TO_RAD(TweesterPhysicsPtr->liftoffVelPhase)) * 3.0f;
+            TweesterPhysicsPtr->liftoffVelPhase += 3.0f;
 
-            if (N(TweesterPhysicsPtr)->liftoffVelPhase > 150.0f) {
-                N(TweesterPhysicsPtr)->liftoffVelPhase = 150.0f;
+            if (TweesterPhysicsPtr->liftoffVelPhase > 150.0f) {
+                TweesterPhysicsPtr->liftoffVelPhase = 150.0f;
             }
 
             npc->pos.y += liftoffVelocity;
 
-            npc->renderYaw = clamp_angle(360.0f - N(TweesterPhysicsPtr)->angle);
-            N(TweesterPhysicsPtr)->angularVel += 0.8;
+            npc->renderYaw = clamp_angle(360.0f - TweesterPhysicsPtr->angle);
+            TweesterPhysicsPtr->angularVel += 0.8;
 
-            if (N(TweesterPhysicsPtr)->angularVel > 40.0f) {
-                N(TweesterPhysicsPtr)->angularVel = 40.0f;
+            if (TweesterPhysicsPtr->angularVel > 40.0f) {
+                TweesterPhysicsPtr->angularVel = 40.0f;
             }
 
-            N(TweesterPhysicsPtr)->countdown--;
-            if (N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
+            TweesterPhysicsPtr->countdown--;
+            if (TweesterPhysicsPtr->countdown == 0) {
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
-            npc->flags = N(TweesterPhysicsPtr)->prevFlags;
-            N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
+            npc->flags = TweesterPhysicsPtr->prevFlags;
+            TweesterPhysicsPtr->countdown = 30;
+            TweesterPhysicsPtr->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(npc);
             partner_walking_update_motion(npc);
 
-            N(TweesterPhysicsPtr)->countdown--;
-            if (N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+            TweesterPhysicsPtr->countdown--;
+            if (TweesterPhysicsPtr->countdown == 0) {
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
             break;
@@ -185,22 +183,22 @@ API_CALLABLE(N(Update)) {
     return 0;
 }
 
-void N(try_cancel_tweester)(Npc* goombario) {
+void try_cancel_tweester(Npc* goombario) {
     if (TweesterTouchingPartner) {
         TweesterTouchingPartner = nullptr;
-        goombario->flags = N(TweesterPhysicsPtr)->prevFlags;
-        N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+        goombario->flags = TweesterPhysicsPtr->prevFlags;
+        TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking (goombario);
     }
 }
 
 EvtScript EVS_WorldGoombario_Update = {
-    Call(N(Update))
+    Call(Update)
     Return
     End
 };
 
-s32 N(can_open_menus)(Npc* goombario) {
+s32 can_open_menus(Npc* goombario) {
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         return false;
     }
@@ -212,7 +210,7 @@ s32 N(can_open_menus)(Npc* goombario) {
     return true;
 }
 
-API_CALLABLE(N(SelectTattleMsg)) {
+API_CALLABLE(SelectTattleMsg) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* goombario = script->owner2.npc;
     s32 msgID;
@@ -234,16 +232,16 @@ API_CALLABLE(N(SelectTattleMsg)) {
     };
 
     if (isInitialCall) {
-        N(try_cancel_tweester)(goombario);
-        N(IsTattleActive) = false;
-        N(HadSpeechPrompt) = false;
-        N(HadInteractPrompt) = false;
+        try_cancel_tweester(goombario);
+        IsTattleActive = false;
+        HadSpeechPrompt = false;
+        HadInteractPrompt = false;
         if (playerStatus->animFlags & PA_FLAG_SPEECH_PROMPT_AVAILABLE) {
-            N(HadSpeechPrompt) = true;
-            N(InteractNpc) = SpeechBubblePtr->encounteredNPC;
+            HadSpeechPrompt = true;
+            InteractNpc = SpeechBubblePtr->encounteredNPC;
         }
         if (playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) {
-            N(HadInteractPrompt) = true;
+            HadInteractPrompt = true;
         }
         script->USE_STATE = USE_TATTLE_INIT;
     }
@@ -260,7 +258,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
             }
             script->functionTemp[1] = 3;
             disable_player_input();
-            N(IsTattleActive) = true;
+            IsTattleActive = true;
             script->functionTemp[2] = playerStatus->inputDisabledCount;
             script->USE_STATE++;
             break;
@@ -271,7 +269,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount) {
                     script->VAR_MSG = -1;
                     enable_player_input();
-                    N(IsTattleActive) = false;
+                    IsTattleActive = false;
                     return ApiStatus_DONE2;
                 }
                 script->USE_STATE = USE_TATTLE_FACE_PLAYER;
@@ -284,7 +282,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
             goombario->yaw = clamp_angle(gCameras[CAM_DEFAULT].curYaw + playerStatus->spriteFacingAngle - 90.0f);
             gPartnerStatus.partnerActionState = PARTNER_ACTION_USE;
             close_status_bar();
-            if (N(HadSpeechPrompt)) {
+            if (HadSpeechPrompt) {
                 script->VAR_MSG = 0;
                 script->USE_STATE = USE_TATTLE_FORCE_NPC;
                 break;
@@ -297,8 +295,8 @@ API_CALLABLE(N(SelectTattleMsg)) {
                 entityType = get_entity_type(WorldTattleInteractionID);
                 msgID = -1;
 
-                for (i = 0; N(EntityTattles)[i][0] != -1; i++) {
-                    if (N(EntityTattles)[i][0] != entityType) {
+                for (i = 0; EntityTattles[i][0] != -1; i++) {
+                    if (EntityTattles[i][0] != entityType) {
                         continue;
                     }
                     switch (entityType) {
@@ -352,7 +350,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
                     if (msgID != -1) {
                         script->VAR_MSG = msgID;
                     } else {
-                        script->VAR_MSG = N(EntityTattles)[i][1];
+                        script->VAR_MSG = EntityTattles[i][1];
                     }
                     script->VAR_SKIP = false;
                     return ApiStatus_DONE2;
@@ -361,8 +359,8 @@ API_CALLABLE(N(SelectTattleMsg)) {
 
             // check for NPC tattle
             if (WorldTattleInteractionID >= 0 && (WorldTattleInteractionID & COLLISION_WITH_NPC_BIT)) {
-                N(InteractNpc) = get_npc_unsafe(WorldTattleInteractionID & 0x1FFF);
-                enemyTattleMsg = get_enemy(N(InteractNpc)->npcID)->tattleMsg;
+                InteractNpc = get_npc_unsafe(WorldTattleInteractionID & 0x1FFF);
+                enemyTattleMsg = get_enemy(InteractNpc->npcID)->tattleMsg;
                 if (enemyTattleMsg != 0) {
                     msgID = enemyTattleMsg;
                     if (msgID < EVT_LIMIT) {
@@ -376,7 +374,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
             }
 
             // generic interact tattle
-            if (N(HadInteractPrompt)) {
+            if (HadInteractPrompt) {
                 script->VAR_MSG = MSG_EntityTattle_Interact;
                 script->VAR_SKIP = false;
                 return ApiStatus_DONE2;
@@ -385,7 +383,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
             // check for custom trigger tattle
             msgID = MSG_NONE;
             if (WorldTattleInteractionID >= 0) {
-                msgID = N(get_trigger_tattle)(WorldTattleInteractionID);
+                msgID = get_trigger_tattle(WorldTattleInteractionID);
             }
 
             // check map tattle
@@ -421,7 +419,7 @@ API_CALLABLE(N(SelectTattleMsg)) {
             }
             break;
         case USE_TATTLE_FORCE_NPC:
-            npcMsgID = get_enemy(N(InteractNpc)->npcID)->tattleMsg;
+            npcMsgID = get_enemy(InteractNpc->npcID)->tattleMsg;
             if (npcMsgID != MSG_NONE) {
                 script->VAR_MSG = npcMsgID;
                 script->VAR_SKIP = false;
@@ -432,13 +430,13 @@ API_CALLABLE(N(SelectTattleMsg)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(TattleEnd)) {
+API_CALLABLE(TattleEnd) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
     set_time_freeze_mode(TIME_FREEZE_NONE);
 
-    if (N(IsTattleActive)) {
-        N(IsTattleActive) = false;
+    if (IsTattleActive) {
+        IsTattleActive = false;
         enable_player_input();
     }
 
@@ -448,14 +446,14 @@ API_CALLABLE(N(TattleEnd)) {
 }
 
 EvtScript EVS_WorldGoombario_UseAbility = {
-    Call(N(SelectTattleMsg))
+    Call(SelectTattleMsg)
     // abort without cleanup if failed to init
     IfEq(LVar0, -1)
         Return
     EndIf
     // abort if no tattle message is available
     IfEq(LVar0, MSG_NONE)
-        Call(N(TattleEnd))
+        Call(TattleEnd)
         Return
     EndIf
     // show message if VAR_SKIP is false
@@ -464,12 +462,12 @@ EvtScript EVS_WorldGoombario_UseAbility = {
     EndIf
     Wait(1)
     // cleanup
-    Call(N(TattleEnd))
+    Call(TattleEnd)
     Return
     End
 };
 
-API_CALLABLE(N(PutAway)) {
+API_CALLABLE(PutAway) {
     Npc* goombario = script->owner2.npc;
 
     if (isInitialCall) {
@@ -484,12 +482,12 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldGoombario_PutAway = {
-    Call(N(PutAway))
+    Call(PutAway)
     Return
     End
 };
 
-void N(pre_battle)(Npc* goombario) {
+void pre_battle(Npc* goombario) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
     if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE) {
@@ -507,13 +505,13 @@ void N(pre_battle)(Npc* goombario) {
 
 WORLD_PARTNER_ENTRY = {
     .isFlying = false,
-    .init = N(init),
+    .init = init,
     .takeOut = &EVS_WorldGoombario_TakeOut,
     .update = &EVS_WorldGoombario_Update,
     .useAbility = &EVS_WorldGoombario_UseAbility,
     .putAway = &EVS_WorldGoombario_PutAway,
     .idle = ANIM_WorldGoombario_Idle,
-    .canUseAbility = N(can_open_menus),
-    .canPlayerOpenMenus = N(can_open_menus),
-    .preBattle = N(pre_battle),
+    .canUseAbility = can_open_menus,
+    .canPlayerOpenMenus = can_open_menus,
+    .preBattle = pre_battle,
 };

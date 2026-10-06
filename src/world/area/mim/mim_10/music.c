@@ -1,6 +1,6 @@
 #include "mim_10.h"
 
-EvtScript N(EVS_SetToadTownMusic) = {
+EvtScript EVS_SetToadTownMusic = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_FULL)
@@ -11,19 +11,19 @@ EvtScript N(EVS_SetToadTownMusic) = {
     End
 };
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfEq(GB_StoryProgress, STORY_CH3_SAW_BOO_ENTER_FOREST)
-        Exec(N(EVS_SetToadTownMusic))
+        Exec(EVS_SetToadTownMusic)
         Return
     EndIf
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
-        Exec(N(EVS_SetToadTownMusic))
+        Exec(EVS_SetToadTownMusic)
         Return
     EndIf
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
     IfLt(LVar1, 0)
-        Exec(N(EVS_SetToadTownMusic))
+        Exec(EVS_SetToadTownMusic)
         Wait(30)
     Else
         Call(SetMusic, 0, SONG_FOREVER_FOREST, 0, VOL_LEVEL_FULL)
@@ -50,7 +50,7 @@ EvtScript N(EVS_SetupMusic) = {
     IfLt(LVar1, 0)
         Call(FadeOutMusic, 0, 1000)
         Wait(30)
-        Exec(N(EVS_SetToadTownMusic))
+        Exec(EVS_SetToadTownMusic)
         Wait(30)
         Goto(10)
     EndIf

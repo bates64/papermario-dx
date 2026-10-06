@@ -247,7 +247,6 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 25, 85 },
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 #include "common/FadeBackgroundDarken.inc.c"
 #include "common/FadeBackgroundLighten.inc.c"
 
@@ -522,8 +521,8 @@ EvtScript N(EVS_Move_ChargeUp) = {
     Call(SetBattleCamDist, 320)
     Call(MoveBattleCamOver, 50)
     Wait(20)
-    Call(N(FadeBackgroundDarken))
-    Call(N(StartRumbleWithParams), 70, 80)
+    Call(DarkenBackground)
+    Call(StartRumbleWithParams, 70, 80)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 40, Float(0.3))
     EndThread
@@ -537,7 +536,7 @@ EvtScript N(EVS_Move_ChargeUp) = {
     Wait(20)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 30)
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Return
@@ -811,7 +810,7 @@ EvtScript N(EVS_Attack_InkBlast) = {
     Sub(LVar4, 28)
     Sub(LVar5, 3)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpitInk), LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
+    Call(SpitInk, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
     Call(EnemyTestTarget, ACTOR_SELF, LVarF, DAMAGE_TYPE_NO_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarF)
         CaseOrEq(HIT_RESULT_MISS)

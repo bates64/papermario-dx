@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Kammy/idle.inc.c"
 
-AnimID N(LimitAnims_Kammy)[] = {
+AnimID LimitAnims_Kammy[] = {
     ANIM_WorldKammy_FlyStill,
     ANIM_WorldKammy_FlyIdle,
     ANIM_WorldKammy_FlySlow,
@@ -21,18 +21,18 @@ AnimID N(LimitAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Kammy) = {
+NpcData NpcData_Kammy = {
     .id = NPC_Kammy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .settings = &N(NpcSettings_Kammy),
+    .settings = &NpcSettings_Kammy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .limitAnimations = N(LimitAnims_Kammy),
+    .limitAnimations = LimitAnims_Kammy,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kammy)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kammy),
     {}
 };

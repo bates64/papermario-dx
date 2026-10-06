@@ -20,7 +20,7 @@ enum SlotMachineProgress {
     SLOT_PROGRESS_DISPENSE      = 7,
 };
 
-EvtScript N(EVS_SetCam_ViewReels) = {
+EvtScript EVS_SetCam_ViewReels = {
     Wait(8)
     Call(DisableCameraLeadingPlayer)
     Call(UseSettingsFrom, CAM_DEFAULT, 535, 0, 0)
@@ -31,7 +31,7 @@ EvtScript N(EVS_SetCam_ViewReels) = {
     End
 };
 
-EvtScript N(EVS_SetCam_ViewPayout) = {
+EvtScript EVS_SetCam_ViewPayout = {
     Call(UseSettingsFrom, CAM_DEFAULT, 535, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 535, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(275.0))
@@ -43,14 +43,14 @@ EvtScript N(EVS_SetCam_ViewPayout) = {
     End
 };
 
-s32 N(HitBlockRecoilOffsets)[] = {
+s32 HitBlockRecoilOffsets[] = {
     3, 0, -3, 0,
     2, 0, -2, 0,
     1, 0, -1, 0,
 };
 
-EvtScript N(EVS_HitBlockRecoil) = {
-    UseBuf(Ref(N(HitBlockRecoilOffsets)))
+EvtScript EVS_HitBlockRecoil = {
+    UseBuf(Ref(HitBlockRecoilOffsets))
     Loop(12)
         BufRead1(LVar1)
         Call(TranslateModel, LVar0, 0, LVar1, 0)
@@ -60,7 +60,7 @@ EvtScript N(EVS_HitBlockRecoil) = {
     End
 };
 
-EvtScript N(EVS_HitBlock_SlotStart) = {
+EvtScript EVS_HitBlock_SlotStart = {
     IfEq(MF_HitStartBlock, false)
         Thread
             Wait(15)
@@ -71,7 +71,7 @@ EvtScript N(EVS_HitBlock_SlotStart) = {
         Call(EnableModel, MODEL_s1, true)
         Call(EnableModel, MODEL_s2, false)
         Set(LVar0, MODEL_s1)
-        ExecWait(N(EVS_HitBlockRecoil))
+        ExecWait(EVS_HitBlockRecoil)
         Call(EnableModel, MODEL_s1, false)
         Call(EnableModel, MODEL_s2, true)
     EndIf
@@ -79,20 +79,20 @@ EvtScript N(EVS_HitBlock_SlotStart) = {
     End
 };
 
-EvtScript N(EVS_HitBlock_SlotWheel1) = {
+EvtScript EVS_HitBlock_SlotWheel1 = {
     IfEq(MF_Block1_Hit, false)
         Set(MF_Block1_Hit, true)
         Add(MV_SlotMachineProgress, SLOT_PROGRESS_HIT_ONE)
         Set(MV_ProgressOnHitBlock1, MV_SlotMachineProgress)
         IfEq(MV_SlotMachineProgress, SLOT_PROGRESS_HIT_THREE)
-            Exec(N(EVS_SetCam_ViewReels))
+            Exec(EVS_SetCam_ViewReels)
             Set(MV_SlotMachineProgress, SLOT_PROGRESS_DISPENSE)
         EndIf
         Set(AF_OMO09_Block1_DontBlink, true)
         Call(EnableModel, MODEL_h1, true)
         Call(EnableModel, MODEL_h1_a, false)
         Set(LVar0, MODEL_h1)
-        ExecWait(N(EVS_HitBlockRecoil))
+        ExecWait(EVS_HitBlockRecoil)
         Call(EnableModel, MODEL_h1, false)
         Call(EnableModel, MODEL_h1_a, true)
     EndIf
@@ -100,20 +100,20 @@ EvtScript N(EVS_HitBlock_SlotWheel1) = {
     End
 };
 
-EvtScript N(EVS_HitBlock_SlotWheel2) = {
+EvtScript EVS_HitBlock_SlotWheel2 = {
     IfEq(MF_Block2_Hit, false)
         Set(MF_Block2_Hit, true)
         Add(MV_SlotMachineProgress, SLOT_PROGRESS_HIT_ONE)
         Set(MV_ProgressOnHitBlock2, MV_SlotMachineProgress)
         IfEq(MV_SlotMachineProgress, SLOT_PROGRESS_HIT_THREE)
-            Exec(N(EVS_SetCam_ViewReels))
+            Exec(EVS_SetCam_ViewReels)
             Set(MV_SlotMachineProgress, SLOT_PROGRESS_DISPENSE)
         EndIf
         Set(AF_OMO09_Block2_DontBlink, true)
         Call(EnableModel, MODEL_h2, true)
         Call(EnableModel, MODEL_h2_a, false)
         Set(LVar0, MODEL_h2)
-        ExecWait(N(EVS_HitBlockRecoil))
+        ExecWait(EVS_HitBlockRecoil)
         Call(EnableModel, MODEL_h2, false)
         Call(EnableModel, MODEL_h2_a, true)
     EndIf
@@ -121,20 +121,20 @@ EvtScript N(EVS_HitBlock_SlotWheel2) = {
     End
 };
 
-EvtScript N(EVS_HitBlock_SlotWheel3) = {
+EvtScript EVS_HitBlock_SlotWheel3 = {
     IfEq(MF_Block3_Hit, false)
         Set(MF_Block3_Hit, true)
         Add(MV_SlotMachineProgress, SLOT_PROGRESS_HIT_ONE)
         Set(MV_ProgressOnHitBlock3, MV_SlotMachineProgress)
         IfEq(MV_SlotMachineProgress, SLOT_PROGRESS_HIT_THREE)
-            Exec(N(EVS_SetCam_ViewReels))
+            Exec(EVS_SetCam_ViewReels)
             Set(MV_SlotMachineProgress, SLOT_PROGRESS_DISPENSE)
         EndIf
         Set(AF_OMO09_Block3_DontBlink, true)
         Call(EnableModel, MODEL_h3, true)
         Call(EnableModel, MODEL_h3_a, false)
         Set(LVar0, MODEL_h3)
-        ExecWait(N(EVS_HitBlockRecoil))
+        ExecWait(EVS_HitBlockRecoil)
         Call(EnableModel, MODEL_h3, false)
         Call(EnableModel, MODEL_h3_a, true)
     EndIf
@@ -142,7 +142,7 @@ EvtScript N(EVS_HitBlock_SlotWheel3) = {
     End
 };
 
-EvtScript N(EVS_UpdateActiveBlock1) = {
+EvtScript EVS_UpdateActiveBlock1 = {
     Set(MF_Block1_Active, true)
     Set(LVar2, MV_SlotWheel1_Angle)
     Add(LVar2, 360)
@@ -223,7 +223,7 @@ EvtScript N(EVS_UpdateActiveBlock1) = {
     End
 };
 
-EvtScript N(EVS_UpdateActiveBlock2) = {
+EvtScript EVS_UpdateActiveBlock2 = {
     Set(MF_Block2_Active, true)
     Set(LVar2, MV_SlotWheel2_Angle)
     Add(LVar2, 360)
@@ -304,7 +304,7 @@ EvtScript N(EVS_UpdateActiveBlock2) = {
     End
 };
 
-EvtScript N(EVS_UpdateActiveBlock3) = {
+EvtScript EVS_UpdateActiveBlock3 = {
     Set(MF_Block3_Active, true)
     Set(LVar2, MV_SlotWheel3_Angle)
     Add(LVar2, 360)
@@ -386,14 +386,14 @@ EvtScript N(EVS_UpdateActiveBlock3) = {
 };
 
 //TODO these should be a 3x8 array
-s32 N(ReelContents)[] = {
+s32 ReelContents[] = {
     SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN,
     SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_STAR,   SYM_COIN, SYM_SHYGUY, SYM_COIN,
     SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN,
 };
 
 // returns the SlotMatchResult on LVarA and SlotSymbol on LVarB (only valid if SlotMatchResult != SLOT_MATCH_NONE)
-API_CALLABLE(N(CheckSlotsResult)) {
+API_CALLABLE(CheckSlotsResult) {
     Bytecode* args = script->ptrReadPos;
     s32 angleReel1 = evt_get_variable(script, *args++);
     s32 angleReel2 = evt_get_variable(script, *args++);
@@ -404,17 +404,17 @@ API_CALLABLE(N(CheckSlotsResult)) {
 
     // get results from completed reels
     if (angleReel1 != -1) {
-        results[0] = N(ReelContents)[(angleReel1 % 360) / 45];
+        results[0] = ReelContents[(angleReel1 % 360) / 45];
     } else {
         results[0] = 0;
     }
     if (angleReel2 != -1) {
-        results[1] = N(ReelContents)[((angleReel2 % 360) / 45) + 8];
+        results[1] = ReelContents[((angleReel2 % 360) / 45) + 8];
     } else {
         results[1] = 0;
     }
     if (angleReel3 != -1) {
-        results[2] = N(ReelContents)[((angleReel3 % 360) / 45) + 16];
+        results[2] = ReelContents[((angleReel3 % 360) / 45) + 16];
     } else {
         results[2] = 0;
     }
@@ -445,7 +445,7 @@ API_CALLABLE(N(CheckSlotsResult)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Block1_UpdateBlinking) = {
+EvtScript EVS_Block1_UpdateBlinking = {
     Set(AF_OMO09_Block1_DontBlink, false)
     Set(LVar0, 0)
     Label(0)
@@ -472,7 +472,7 @@ EvtScript N(EVS_Block1_UpdateBlinking) = {
     End
 };
 
-EvtScript N(EVS_Block2_UpdateBlinking) = {
+EvtScript EVS_Block2_UpdateBlinking = {
     Set(AF_OMO09_Block2_DontBlink, false)
     Set(LVar0, 0)
     Label(0)
@@ -499,7 +499,7 @@ EvtScript N(EVS_Block2_UpdateBlinking) = {
     End
 };
 
-EvtScript N(EVS_Block3_UpdateBlinking) = {
+EvtScript EVS_Block3_UpdateBlinking = {
     Set(AF_OMO09_Block3_DontBlink, false)
     Set(LVar0, 0)
     Label(0)
@@ -526,7 +526,7 @@ EvtScript N(EVS_Block3_UpdateBlinking) = {
     End
 };
 
-EvtScript N(EVS_StartBlock_UpdateBlinking) = {
+EvtScript EVS_StartBlock_UpdateBlinking = {
     Set(AF_OMO09_StartBlock_DontBlink, false)
     Set(LVar0, 0)
     Label(0)
@@ -544,14 +544,14 @@ EvtScript N(EVS_StartBlock_UpdateBlinking) = {
             Goto(0)
         EndIf
     Set(AB_OMO09_IsPlayerNearSlotMachine, true)
-    Exec(N(EVS_Block1_UpdateBlinking))
-    Exec(N(EVS_Block2_UpdateBlinking))
-    Exec(N(EVS_Block3_UpdateBlinking))
+    Exec(EVS_Block1_UpdateBlinking)
+    Exec(EVS_Block2_UpdateBlinking)
+    Exec(EVS_Block3_UpdateBlinking)
     Return
     End
 };
 
-EvtScript N(EVS_SlotMachine_MainUpdate) = {
+EvtScript EVS_SlotMachine_MainUpdate = {
     Label(0)
     Set(MF_AnimateSlotLights, false)
     Label(1)
@@ -566,9 +566,9 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
     Set(MV_ProgressOnHitBlock2, 0)
     Set(MV_ProgressOnHitBlock3, 0)
     Set(MV_SlotMachineProgress, 0)
-    Exec(N(EVS_UpdateActiveBlock1))
-    Exec(N(EVS_UpdateActiveBlock2))
-    Exec(N(EVS_UpdateActiveBlock3))
+    Exec(EVS_UpdateActiveBlock1)
+    Exec(EVS_UpdateActiveBlock2)
+    Exec(EVS_UpdateActiveBlock3)
     Wait(3)
     Set(LVar0, 0)
     Set(LVar2, 0)
@@ -588,17 +588,17 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
             IfEq(MF_Block1_Active, false)
                 IfEq(MF_Block2_Active, false)
                     Set(LVar2, 1)
-                    Call(N(CheckSlotsResult), MV_SlotWheel1_Angle, MV_SlotWheel2_Angle, -1)
+                    Call(CheckSlotsResult, MV_SlotWheel1_Angle, MV_SlotWheel2_Angle, -1)
                 EndIf
                 IfEq(MF_Block3_Active, false)
                     Set(LVar2, 1)
-                    Call(N(CheckSlotsResult), MV_SlotWheel1_Angle, -1, MV_SlotWheel3_Angle)
+                    Call(CheckSlotsResult, MV_SlotWheel1_Angle, -1, MV_SlotWheel3_Angle)
                 EndIf
             EndIf
             IfEq(MF_Block2_Active, false)
                 IfEq(MF_Block3_Active, false)
                     Set(LVar2, 1)
-                    Call(N(CheckSlotsResult), -1, MV_SlotWheel2_Angle, MV_SlotWheel3_Angle)
+                    Call(CheckSlotsResult, -1, MV_SlotWheel2_Angle, MV_SlotWheel3_Angle)
                 EndIf
             EndIf
             IfNe(LVarA, SLOT_MATCH_NONE)
@@ -615,7 +615,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
     Call(DisablePlayerInput, true)
     Call(StopSound, SOUND_LOOP_OMO_SLOT_MACHINE)
     Wait(20)
-    Call(N(CheckSlotsResult), MV_SlotWheel1_Angle, MV_SlotWheel2_Angle, MV_SlotWheel3_Angle)
+    Call(CheckSlotsResult, MV_SlotWheel1_Angle, MV_SlotWheel2_Angle, MV_SlotWheel3_Angle)
     IfNe(LVarA, 0)
         Set(MF_AnimateSlotLights, true)
     EndIf
@@ -625,7 +625,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
         CaseEq(SYM_SHYGUY)
             Switch(LVarA)
                 CaseEq(SLOT_MATCH_THREE)
-                    ExecWait(N(EVS_SetCam_ViewPayout))
+                    ExecWait(EVS_SetCam_ViewPayout)
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot1, 485, 130, -50)
                         Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot1, Float(0.8))
@@ -658,7 +658,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
                     EndThread
                     Wait(20)
                 CaseEq(SLOT_MATCH_TWO)
-                    ExecWait(N(EVS_SetCam_ViewPayout))
+                    ExecWait(EVS_SetCam_ViewPayout)
                     Thread
                         Call(SetNpcPos, NPC_ShyGuy_Jackpot2, 510, 130, -50)
                         Call(SetNpcJumpscale, NPC_ShyGuy_Jackpot2, Float(0.8))
@@ -678,7 +678,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
         CaseEq(SYM_COIN)
             Switch(LVarA)
                 CaseEq(SLOT_MATCH_THREE)
-                    ExecWait(N(EVS_SetCam_ViewPayout))
+                    ExecWait(EVS_SetCam_ViewPayout)
                     Thread
                         Loop(2)
                             Set(LVar1, 480)
@@ -691,7 +691,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
                     EndThread
                     Wait(30)
                 CaseEq(SLOT_MATCH_TWO)
-                    ExecWait(N(EVS_SetCam_ViewPayout))
+                    ExecWait(EVS_SetCam_ViewPayout)
                     Call(MakeItemEntity, ITEM_COIN, 535, 150, 50, ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0)
                     Wait(30)
                 CaseDefault
@@ -700,7 +700,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
         CaseEq(SYM_STAR)
             Switch(LVarA)
                 CaseEq(SLOT_MATCH_THREE)
-                    ExecWait(N(EVS_SetCam_ViewPayout))
+                    ExecWait(EVS_SetCam_ViewPayout)
                     Thread
                         Loop(2)
                             Set(LVar1, 480)
@@ -713,7 +713,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
                     EndThread
                     Wait(30)
                 CaseEq(SLOT_MATCH_TWO)
-                    ExecWait(N(EVS_SetCam_ViewPayout))
+                    ExecWait(EVS_SetCam_ViewPayout)
                     Call(MakeItemEntity, ITEM_MUSHROOM, 535, 150, 50, ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0)
                     Wait(30)
                 CaseDefault
@@ -753,7 +753,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
     Set(AF_OMO09_Block3_DontBlink, false)
     Call(EnableModel, MODEL_s1, true)
     Call(EnableModel, MODEL_s2, false)
-    Exec(N(EVS_StartBlock_UpdateBlinking))
+    Exec(EVS_StartBlock_UpdateBlinking)
     Call(EnableModel, MODEL_h1, true)
     Call(EnableModel, MODEL_h1_a, false)
     Call(EnableModel, MODEL_h2, true)
@@ -765,14 +765,14 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
     End
 };
 
-s32 N(SlotMachineBlocks)[] = {
+s32 SlotMachineBlocks[] = {
     MODEL_s1,
     MODEL_h1,
     MODEL_h2,
     MODEL_h3,
 };
 
-API_CALLABLE(N(UpdateSlotMachineBlockShadows)) {
+API_CALLABLE(UpdateSlotMachineBlockShadows) {
     s32 (*shadowIDs)[4];
     Shadow* shadow;
     Model* model;
@@ -784,16 +784,16 @@ API_CALLABLE(N(UpdateSlotMachineBlockShadows)) {
     if (isInitialCall) {
 
         script->functionTempPtr[0] = shadowIDs = heap_malloc(sizeof(*shadowIDs));
-        for (i = 0; i < ARRAY_COUNT(N(SlotMachineBlocks)); i++) {
-            model = get_model_from_list_index(get_model_list_index_from_tree_index(N(SlotMachineBlocks)[i]));
+        for (i = 0; i < ARRAY_COUNT(SlotMachineBlocks); i++) {
+            model = get_model_from_list_index(get_model_list_index_from_tree_index(SlotMachineBlocks[i]));
             (*shadowIDs)[i] = create_shadow_type(SHADOW_VARYING_SQUARE, model->center.x, model->center.y - 100.0f, model->center.z);
         }
     }
 
     shadowIDs = script->functionTempPtr[0];
-    for (i = 0; i < ARRAY_COUNT(N(SlotMachineBlocks)); i++) {
+    for (i = 0; i < ARRAY_COUNT(SlotMachineBlocks); i++) {
         shadow = get_shadow_by_index((*shadowIDs)[i]);
-        model = get_model_from_list_index(get_model_list_index_from_tree_index(N(SlotMachineBlocks)[i]));
+        model = get_model_from_list_index(get_model_list_index_from_tree_index(SlotMachineBlocks[i]));
         x = model->center.x;
         y = model->center.y;
         z = model->center.z;
@@ -812,15 +812,15 @@ API_CALLABLE(N(UpdateSlotMachineBlockShadows)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_SetupSlotMachine) = {
+EvtScript EVS_SetupSlotMachine = {
     Call(ParentColliderToModel, COLLIDER_s1, MODEL_s1)
     Call(ParentColliderToModel, COLLIDER_h1, MODEL_h1)
     Call(ParentColliderToModel, COLLIDER_h2, MODEL_h2)
     Call(ParentColliderToModel, COLLIDER_h3, MODEL_h3)
-    BindTrigger(Ref(N(EVS_HitBlock_SlotStart)), TRIGGER_CEILING_TOUCH, COLLIDER_s1, 1, 0)
-    BindTrigger(Ref(N(EVS_HitBlock_SlotWheel1)), TRIGGER_CEILING_TOUCH, COLLIDER_h1, 1, 0)
-    BindTrigger(Ref(N(EVS_HitBlock_SlotWheel2)), TRIGGER_CEILING_TOUCH, COLLIDER_h2, 1, 0)
-    BindTrigger(Ref(N(EVS_HitBlock_SlotWheel3)), TRIGGER_CEILING_TOUCH, COLLIDER_h3, 1, 0)
+    BindTrigger(Ref(EVS_HitBlock_SlotStart), TRIGGER_CEILING_TOUCH, COLLIDER_s1, 1, 0)
+    BindTrigger(Ref(EVS_HitBlock_SlotWheel1), TRIGGER_CEILING_TOUCH, COLLIDER_h1, 1, 0)
+    BindTrigger(Ref(EVS_HitBlock_SlotWheel2), TRIGGER_CEILING_TOUCH, COLLIDER_h2, 1, 0)
+    BindTrigger(Ref(EVS_HitBlock_SlotWheel3), TRIGGER_CEILING_TOUCH, COLLIDER_h3, 1, 0)
     Call(RandInt, 7, MV_SlotWheel1_Angle)
     Mul(MV_SlotWheel1_Angle, 45)
     Call(RotateModel, MODEL_o864, MV_SlotWheel1_Angle, 1, 0, 0)
@@ -861,18 +861,18 @@ EvtScript N(EVS_SetupSlotMachine) = {
         EndLoop
     EndThread
     Thread
-        Call(N(UpdateSlotMachineBlockShadows))
+        Call(UpdateSlotMachineBlockShadows)
     EndThread
     Call(EnableModel, MODEL_s1, true)
     Call(EnableModel, MODEL_s2, false)
-    Exec(N(EVS_StartBlock_UpdateBlinking))
+    Exec(EVS_StartBlock_UpdateBlinking)
     Call(EnableModel, MODEL_h1, true)
     Call(EnableModel, MODEL_h1_a, false)
     Call(EnableModel, MODEL_h2, true)
     Call(EnableModel, MODEL_h2_a, false)
     Call(EnableModel, MODEL_h3, true)
     Call(EnableModel, MODEL_h3_a, false)
-    Exec(N(EVS_SlotMachine_MainUpdate))
+    Exec(EVS_SlotMachine_MainUpdate)
     Return
     End
 };

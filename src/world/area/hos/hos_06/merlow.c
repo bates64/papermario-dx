@@ -3,19 +3,19 @@
 
 extern IconHudScriptPair gItemHudScripts[];
 
-NpcSettings N(NpcSettings_Merluvlee) = {
+NpcSettings NpcSettings_Merluvlee = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
 };
 
-NpcSettings N(NpcSettings_Merlow) = {
+NpcSettings NpcSettings_Merlow = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
 };
 
-LetterDelivery N(LetterDelivery_Merlow) = {
+LetterDelivery LetterDelivery_Merlow = {
     .recipientID = NPC_Merlow,
     .recipientTalk = ANIM_Merlow_Talk,
     .recipientIdle = ANIM_Merlow_Idle,
@@ -27,13 +27,13 @@ LetterDelivery N(LetterDelivery_Merlow) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_NpcInteract_Merluvlee_Passthrough) = {
-    ExecWait(N(EVS_NpcInteract_Merluvlee))
+EvtScript EVS_NpcInteract_Merluvlee_Passthrough = {
+    ExecWait(EVS_NpcInteract_Merluvlee)
     Return
     End
 };
 
-ShopItemData N(MerlowBadgeInventory)[MERLOW_BADGE_COUNT] = {
+ShopItemData MerlowBadgeInventory[MERLOW_BADGE_COUNT] = {
     { .itemID = ITEM_ATTACK_FX_A,    .price =  1, .descMsg = MSG_ItemShopDesc_AttackFXA },
     { .itemID = ITEM_PAY_OFF,        .price =  1, .descMsg = MSG_ItemShopDesc_PayOff },
     { .itemID = ITEM_CHILL_OUT,      .price =  3, .descMsg = MSG_ItemShopDesc_ChillOut },
@@ -53,14 +53,14 @@ ShopItemData N(MerlowBadgeInventory)[MERLOW_BADGE_COUNT] = {
     { .itemID = ITEM_POWER_PLUS_A,   .price = 25, .descMsg = MSG_ItemShopDesc_PowerPlus },
 };
 
-API_CALLABLE(N(Merlow_GetPlayerStarPieces)) {
+API_CALLABLE(Merlow_GetPlayerStarPieces) {
     Bytecode* args = script->ptrReadPos;
 
     evt_set_variable(script, *args++, gPlayerData.starPieces);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Merlow_SetBadgePurchased)) {
+API_CALLABLE(Merlow_SetBadgePurchased) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
@@ -68,7 +68,7 @@ API_CALLABLE(N(Merlow_SetBadgePurchased)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
+API_CALLABLE(Merlow_ShopBadgesPopup) {
     PlayerData* playerData = &gPlayerData;
     PopupMenu* menu;
     s32 selected, menuPos, i;
@@ -79,18 +79,18 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
         menuPos = 0;
         for (i = 0; i < MERLOW_BADGE_COUNT; i++) {
             if (!evt_get_variable(nullptr, GF_HOS06_MerlowBadge_00 + i)) {
-                ItemData* item = &gItemTable[N(MerlowBadgeInventory)[i].itemID];
+                ItemData* item = &gItemTable[MerlowBadgeInventory[i].itemID];
                 IconHudScriptPair* itemHudScripts = &gItemHudScripts[item->hudElemID];
                 menu->userIndex[menuPos] = i;
                 menu->nameMsg[menuPos] = item->nameMsg;
                 menu->ptrIcon[menuPos] = itemHudScripts->enabled;
-                menu->enabled[menuPos] = playerData->starPieces >= N(MerlowBadgeInventory)[i].price;
-                if (playerData->starPieces < N(MerlowBadgeInventory)[i].price) {
+                menu->enabled[menuPos] = playerData->starPieces >= MerlowBadgeInventory[i].price;
+                if (playerData->starPieces < MerlowBadgeInventory[i].price) {
                     menu->ptrIcon[menuPos] = itemHudScripts->disabled;
                     menu->enabled[menuPos] = false;
                 }
-                menu->descMsg[menuPos] = N(MerlowBadgeInventory)[i].descMsg;
-                menu->value[menuPos] = N(MerlowBadgeInventory)[i].price;
+                menu->descMsg[menuPos] = MerlowBadgeInventory[i].descMsg;
+                menu->value[menuPos] = MerlowBadgeInventory[i].price;
                 menuPos++;
             }
         }
@@ -120,7 +120,7 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
     if (selected != POPUP_RESULT_CANCEL) {
         ShopItemData* selectedItem;
         i = menu->userIndex[selected - 1];
-        selectedItem = &N(MerlowBadgeInventory)[i];
+        selectedItem = &MerlowBadgeInventory[i];
         script->varTable[0] = selectedItem->itemID;
         script->varTable[1] = selectedItem->price;
         script->varTable[2] = i;
@@ -134,8 +134,8 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_Merlow) = {
-    Set(LVar0, Ref(N(LetterDelivery_Merlow)))
+EvtScript EVS_NpcInteract_Merlow = {
+    Set(LVar0, Ref(LetterDelivery_Merlow))
     ExecWait(EVS_TryLetterDelivery)
     EVT_RETURN_IF_DELIVERED()
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
@@ -157,20 +157,20 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
         Call(ContinueSpeech, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004E)
         Return
     EndIf
-    Call(N(Merlow_GetPlayerStarPieces), LVar0)
+    Call(Merlow_GetPlayerStarPieces, LVar0)
     IfEq(LVar0, 0)
         Call(ContinueSpeech, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004F)
         Return
     EndIf
     Call(ContinueSpeech, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0050)
     Label(0)
-    Call(N(Merlow_ShopBadgesPopup))
+    Call(Merlow_ShopBadgesPopup)
     Wait(10)
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0051)
         Return
     EndIf
-    Call(N(Merlow_GetPlayerStarPieces), LVar3)
+    Call(Merlow_GetPlayerStarPieces, LVar3)
     IfLt(LVar3, LVar1)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0051)
         Goto(0)
@@ -198,13 +198,13 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
     Call(AddStarPieces, LVar1)
     Add(GB_HOS06_Merlow_PurchaseCount, 1)
     Set(MF_PurchasedBadge, true)
-    Call(N(Merlow_SetBadgePurchased), LVar2)
+    Call(Merlow_SetBadgePurchased, LVar2)
     EVT_GIVE_REWARD(LVar3)
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0055)
         Return
     EndIf
-    Call(N(Merlow_GetPlayerStarPieces), LVar0)
+    Call(Merlow_GetPlayerStarPieces, LVar0)
     IfLe(LVar0, 0)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0055)
         Return
@@ -221,27 +221,27 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Merluvlee_Passthrough) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merluvlee_Passthrough)))
-    Exec(N(EVS_NpcInit_Merluvlee))
+EvtScript EVS_NpcInit_Merluvlee_Passthrough = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merluvlee_Passthrough))
+    Exec(EVS_NpcInit_Merluvlee)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Merlow) = {
+EvtScript EVS_NpcInit_Merlow = {
     Set(MF_PurchasedBadge, false)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merlow)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merlow))
     Return
     End
 };
 
-NpcData N(NpcData_Family)[] = {
+NpcData NpcData_Family[] = {
     {
         .id = NPC_Merluvlee,
         .pos = { 62.0f, 20.0f, 7.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Merluvlee_Passthrough),
-        .settings = &N(NpcSettings_Merluvlee),
+        .init = &EVS_NpcInit_Merluvlee_Passthrough,
+        .settings = &NpcSettings_Merluvlee,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = {
@@ -253,8 +253,8 @@ NpcData N(NpcData_Family)[] = {
         .id = NPC_Merlow,
         .pos = { -150.0f, 160.0f, -25.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Merlow),
-        .settings = &N(NpcSettings_Merlow),
+        .init = &EVS_NpcInit_Merlow,
+        .settings = &NpcSettings_Merlow,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = {
@@ -264,7 +264,7 @@ NpcData N(NpcData_Family)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Family)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Family),
     {}
 };

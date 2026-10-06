@@ -1,8 +1,6 @@
 #include "common.h"
 #include "effects_internal.h"
 
-#define NAMESPACE water_fountain
-
 typedef struct DropletFrame {
     /* 0x00 */ s8 offsetX;
     /* 0x01 */ s8 offsetY;
@@ -17,7 +15,7 @@ extern Gfx D_09000280_3B8AE0[];
 extern Gfx D_09000328_3B8B88[];
 extern Gfx D_09000348_3B8BA8[];
 
-DropletFrame N(InkDropletAnim)[] = {
+DropletFrame InkDropletAnim[] = {
     {   0,  0,  30, 140,    0, 255 },
     {   0,  6,  30, 120,    0, 250 },
     {   1, 12,  30, 110,   -5, 240 },
@@ -80,7 +78,7 @@ DropletFrame N(InkDropletAnim)[] = {
     {   0, 50, 210, 140,  180,  10 }
 };
 
-DropletFrame N(WaterDropletAnim)[] = {
+DropletFrame WaterDropletAnim[] = {
     {  0,  0,  30, 140,   0, 255 },
     {  0,  6,  30, 120,   0, 240 },
     {  1, 12,  30, 110,  -5, 230 },
@@ -116,10 +114,10 @@ DropletFrame N(WaterDropletAnim)[] = {
     {  0, 42, 120,  54,  90,  40 }
 };
 
-s32 N(DropletAngles)[] = { 0, 40, 55, 190, 20, 130, 270, 300 };
+s32 DropletAngles[] = { 0, 40, 55, 190, 20, 130, 270, 300 };
 
-void water_fountain_init(EffectInstance* effect);
-void water_fountain_update(EffectInstance* effect);
+void init(EffectInstance* effect);
+void update(EffectInstance* effect);
 void water_fountain_render(EffectInstance* effect);
 void water_fountain_appendGfx(void* effect);
 
@@ -129,8 +127,8 @@ EffectInstance* water_fountain_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s3
     WaterFountainFXData* data;
     s32 numParts = 1;
 
-    effectBp.init = water_fountain_init;
-    effectBp.update = water_fountain_update;
+    effectBp.init = init;
+    effectBp.update = update;
     effectBp.renderScene = water_fountain_render;
     effectBp.renderUI = nullptr;
     effectBp.effectID = EFFECT_WATER_FOUNTAIN;
@@ -166,10 +164,10 @@ EffectInstance* water_fountain_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s3
     return effect;
 }
 
-void water_fountain_init(EffectInstance* effect) {
+void init(EffectInstance* effect) {
 }
 
-void water_fountain_update(EffectInstance* effect) {
+void update(EffectInstance* effect) {
     WaterFountainFXData* data = effect->data.waterFountain;
 
     if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
@@ -220,11 +218,11 @@ void water_fountain_appendGfx(void* effect) {
 
     if (type == FX_FOUNTAIN_TYPE_INK) {
         numBursts = 3;
-        frameTable = N(InkDropletAnim);
+        frameTable = InkDropletAnim;
         numFrames = 20;
     } else {
         numBursts = 3;
-        frameTable = N(WaterDropletAnim);
+        frameTable = WaterDropletAnim;
         numFrames = 11;
     }
 
@@ -272,7 +270,7 @@ void water_fountain_appendGfx(void* effect) {
                         1.0f);
                     guMtxCatF(sp58, sp18, sp18);
                     guRotateF(sp58,
-                        (f32) burstFrame[frameIdx].angleOffset + N(DropletAngles)[(j + i) & 7],
+                        (f32) burstFrame[frameIdx].angleOffset + DropletAngles[(j + i) & 7],
                         0.0f, 0.0f, 1.0f);
                     guMtxCatF(sp58, sp18, sp18);
                     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);

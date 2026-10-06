@@ -39,5 +39,3 @@ enum {
     NPC_KoopaBros_Yellow        = 72,
     NPC_KoopaBros_Black         = 73,
 };
-
-#define NAMESPACE trd_09

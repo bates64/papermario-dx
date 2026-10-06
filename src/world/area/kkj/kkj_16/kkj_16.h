@@ -29,19 +29,17 @@ enum {
     NPC_HammerBros_03   = 2,
 };
 
-#define NAMESPACE kkj_16
-
 #include "world/common/enemy/HammerBros/idle.h"
 #include "world/common/enemy/Koopatrol/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_ManageSneakingScenes);
-extern EvtScript N(EVS_EndPeachChapter2);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_ManageSneakingScenes;
+extern EvtScript EVS_EndPeachChapter2;
+extern EvtScript EVS_MakeEntities;
 
-API_CALLABLE(N(CheckPlayerInSight));
-API_CALLABLE(N(GetApproachPeachPos));
-API_CALLABLE(N(UpdateSearchlight));
+API_CALLABLE(CheckPlayerInSight);
+API_CALLABLE(GetApproachPeachPos);
+API_CALLABLE(UpdateSearchlight);
 
-extern NpcGroupList N(EarlyNPCs);
-extern NpcGroupList N(LaterNPCs);
+extern NpcGroupList EarlyNPCs;
+extern NpcGroupList LaterNPCs;

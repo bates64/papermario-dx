@@ -1,7 +1,7 @@
 #include "pra_29.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfGe(GB_StoryProgress, STORY_CH7_EXTENDED_PALACE_BRIDGE)
     Else
         Call(MakeEntity, Ref(Entity_BlueSwitch), 330, 0, -77, 0, 2, MAKE_ENTITY_END)

@@ -294,7 +294,7 @@ EvtScript N(EVS_Init) = {
         Call(SetPartSize, ACTOR_SELF, LVar0, 16, 16)
         Add(LVar0, 1)
     EndLoop
-    Call(N(ChompChainInit))
+    Call(ChompChainInit)
     Exec(N(EVS_UpdateChain))
     Return
     End
@@ -423,7 +423,7 @@ EvtScript N(EVS_UpdateChain) = {
         Call(ActorExists, ACTOR_CHOMP, LVar0)
         IfEq(LVar0, true)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-            Call(N(ChompChainUpdate), LVar2)
+            Call(ChompChainUpdate, LVar2)
             Goto(0)
         EndIf
     Label(1)

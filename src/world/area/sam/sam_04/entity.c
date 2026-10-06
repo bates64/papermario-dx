@@ -1,7 +1,7 @@
 #include "sam_04.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_HiddenPanel), 40, 0, 400, 0, MODEL_ground, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_SAM04_HiddenPanel)
     Call(MakeItemEntity, ITEM_LETTER_TO_MAYOR_PENGUIN, -290, 70, 110, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM04_Item_Letter05)

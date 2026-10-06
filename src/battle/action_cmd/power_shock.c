@@ -12,8 +12,6 @@
  * fixed, this is effectively just choosing a random threhsold value.
  */
 
-#define NAMESPACE action_command_power_shock
-
 extern s32 actionCmdTablePowerShock[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -28,13 +26,13 @@ enum {
 // how much to add to the meter per input
 #define METER_FILL_TICK 850
 
-s32 N(DrainRateTable)[] = { 0, 25, 50, 75, 75 };
+s32 DrainRateTable[] = { 0, 25, 50, 75, 75 };
 
-#define GET_DRAIN_RATE(pct) (N(DrainRateTable)[((pct) / (ONE_PCT_MASH / 5))])
+#define GET_DRAIN_RATE(pct) (DrainRateTable[((pct) / (ONE_PCT_MASH / 5))])
 
-BSS s32 N(HasStarted);
+BSS s32 HasStarted;
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -58,7 +56,7 @@ API_CALLABLE(N(init)) {
     acs->hudPrepareTime = 30;
     acs->isMeterFilled = false;
     acs->thresholdMoveDir = 0;
-    N(HasStarted) = false;
+    HasStarted = false;
 
     acs->hudPosX = -48;
     acs->hudPosY = 80;
@@ -92,7 +90,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -123,7 +121,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -177,7 +175,7 @@ void N(update)(void) {
             hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_MashAButton);
             acs->meterFillLevel = 0;
             acs->any.unk_5C = 0;
-            N(HasStarted) = true;
+            HasStarted = true;
             acs->stateTimer = acs->duration;
             sfx_play_sound_with_params(SOUND_LOOP_CHARGE_METER, 0, 0, 0);
             acs->state = AC_STATE_ACTIVE;
@@ -302,7 +300,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     s32 hudX, hudY;
     HudElemID hid;
@@ -317,7 +315,7 @@ void N(draw)(void) {
     // Redundant call, but needed to match.
     hud_element_get_render_pos(hid, &hudX, &hudY);
 
-    if (!N(HasStarted)) {
+    if (!HasStarted) {
         draw_mash_meter_multicolor_with_divisor(hudX, hudY, acs->meterFillLevel / ONE_PCT_MASH, 1);
     } else if (!acs->isMeterFilled) {
         draw_mash_meter_multicolor_with_divisor(hudX, hudY, acs->meterFillLevel / ONE_PCT_MASH, 4);
@@ -328,7 +326,7 @@ void N(draw)(void) {
     hud_element_draw_clipped(hid);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_100_PCT]);

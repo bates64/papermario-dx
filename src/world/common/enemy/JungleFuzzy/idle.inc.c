@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_JungleFuzzy) = {
+NpcSettings NpcSettings_JungleFuzzy = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_JUNGLE_FUZZY,

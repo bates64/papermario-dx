@@ -176,15 +176,12 @@ ActorBlueprint NAMESPACE = {
 };
 
 #define BOWSER_LARGE
-#include "common/StartRumbleWithParams.inc.c"
 #include "common/UpdateEnchantedBowserColors.inc.c"
 #include "common/FadeBackgroundDarken.inc.c"
 #include "common/FadeBackgroundLighten.inc.c"
 #include "common/RemoveChillOut.inc.c"
 #include "common/StarRodAppearEffect.inc.c"
 #include "common/StarRodPowerUpEffect.inc.c"
-#include "common/GetJumpHammerCharge.inc.c"
-#include "common/GetPlayerHpPercent.inc.c"
 #include "common/ItemEntityJumpToPos.inc.c"
 
 EvtScript N(EVS_Init) = {
@@ -317,7 +314,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
             Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
         CaseEq(EVENT_RECEIVE_BUFF)
-            Call(N(FadeBackgroundLighten))
+            Call(LightenBackground)
         CaseEq(EVENT_30)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_BattleBowser_Hurt)
@@ -454,13 +451,13 @@ EvtScript N(EVS_ReturnHome) = {
 };
 
 EvtScript N(EVS_AnimateImgFX) = {
-    Call(N(UpdateEnchantedBowserColors))
+    Call(UpdateEnchantedBowserColors)
     Return
     End
 };
 
 EvtScript N(EVS_StarRodCast) = {
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
@@ -469,7 +466,7 @@ EvtScript N(EVS_StarRodCast) = {
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_GATHER)
             Add(LVar2, 10)
-            Call(N(StarRodAppearEffect), LVar0, LVar1, LVar2, Float(2.5), Float(0.075))
+            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, Float(2.5), Float(0.075))
         EndThread
     Else
         Add(LVar0, 9)
@@ -477,7 +474,7 @@ EvtScript N(EVS_StarRodCast) = {
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_GATHER)
             Add(LVar2, 10)
-            Call(N(StarRodAppearEffect), LVar0, LVar1, LVar2, Float(2.5), Float(0.03))
+            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, Float(2.5), Float(0.03))
         EndThread
     EndIf
     Wait(65)
@@ -506,7 +503,7 @@ EvtScript N(EVS_StarRodCast) = {
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 1, ACTOR_DECORATION_RADIAL_STAR_EMITTER)
     Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(BoostedDefense)))
     Call(SetStatusTable, ACTOR_SELF, Ref(N(BoostedStatusTable)))
-    Call(N(RemoveChillOut))
+    Call(RemoveChillOut)
     Wait(3)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
@@ -523,11 +520,11 @@ EvtScript N(EVS_StarRodCast) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_ENCHANT)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(N(StarRodPowerUpEffect), LVar0, LVar1, LVar2, Float(1.2))
+        Call(StarRodPowerUpEffect, LVar0, LVar1, LVar2, Float(1.2))
     EndThread
     Wait(75)
     Thread
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_RearUpLaugh)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -627,7 +624,7 @@ EvtScript N(EVS_Recover) = {
         Call(MoveBattleCamOver, 40)
     EndIf
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Brandish)
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_CAST_RECOVER)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
@@ -709,7 +706,7 @@ EvtScript N(EVS_TakeTurn_Inner) = {
     Call(GetEnemyMaxHP, ACTOR_SELF, LVar1)
     Mul(LVar0, 100)
     Div(LVar0, LVar1)
-    Call(N(GetPlayerHpPercent), LVar2)
+    Call(GetPlayerHpPercent, LVar2)
     Sub(LVar2, LVar0)
     IfGt(LVar2, 25)
         Call(GetActorVar, ACTOR_SELF, AVAR_RecoversLeft, LVar0)
@@ -785,7 +782,7 @@ EvtScript N(EVS_UseAttackOrShockwave) = {
     // if either hammer or jump are boosted, try using shockwave
     Call(RandInt, 100, LVar0)
     IfLt(LVar0, 75)
-        Call(N(GetJumpHammerCharge), LVar0, LVar1)
+        Call(GetJumpHammerCharge, LVar0, LVar1)
         IfGt(LVar0, 0)
             ExecWait(N(EVS_UseDrainingShockwave))
             Return
@@ -849,15 +846,15 @@ EvtScript N(EVS_ManageCommandLoss) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
                 Set(LVar2, 0)
                 Sub(LVar3, 1)
-                Call(N(DisableRandomAbility), LVar4, LVar5)
+                Call(DisableRandomAbility, LVar4, LVar5)
                 Call(MakeItemEntity, LVar4, LVar1, LVar2, LVar3, ITEM_SPAWN_MODE_DECORATION, 0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossItemIdx, LVar0)
                 Add(LVar1, 7)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 8, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 8, Float(1.0))
                 Add(LVar1, 12)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 8, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 8, Float(1.0))
                 Add(LVar1, 7)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_Idle)
             CaseEq(AVAL_LossState_ShowMessage)
                 Call(ShowMessageBox, LVar5, 60)
@@ -913,14 +910,14 @@ EvtScript N(EVS_Attack_BodySlam) = {
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 18, false, true, false)
             Thread
-                Call(N(StartRumbleWithParams), 80, 14)
+                Call(StartRumbleWithParams, 80, 14)
                 Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
             EndThread
             Sub(LVar0, 35)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(JumpToGoal, ACTOR_SELF, 14, false, true, false)
             Thread
-                Call(N(StartRumbleWithParams), 80, 14)
+                Call(StartRumbleWithParams, 80, 14)
                 Call(ShakeCam, CAM_BATTLE, 0, 4, Float(2.0))
             EndThread
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
@@ -964,13 +961,13 @@ EvtScript N(EVS_Attack_BodySlam) = {
         IfNotFlag(LVar1, STATUS_FLAG_STONE | STATUS_FLAG_RIGHT_ON)
             Call(GetStatusFlags, ACTOR_SELF, LVar1)
             IfNotFlag(LVar1, STATUS_FLAG_SHRINK)
-                Call(N(CanPlayerLoseAction), LVar0)
+                Call(CanPlayerLoseAction, LVar0)
             EndIf
         EndIf
     EndIf
     IfNe(LVar0, -1)
         Call(LandJump, ACTOR_SELF)
-        Call(N(StartRumbleWithParams), 80, 14)
+        Call(StartRumbleWithParams, 80, 14)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_LANDING)
         Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_KnockAway)
         Exec(N(EVS_ManageCommandLoss))
@@ -981,14 +978,14 @@ EvtScript N(EVS_Attack_BodySlam) = {
         Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_LANDING)
         Thread
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
         EndThread
         Add(LVar0, 30)
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
         Thread
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 3, Float(2.0))
         EndThread
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
@@ -1048,7 +1045,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
                 EndIf
             EndIf
         EndIf
-        Call(N(StartRumbleWithParams), 80, 14)
+        Call(StartRumbleWithParams, 80, 14)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 40)
         Set(LVar1, 0)
@@ -1057,7 +1054,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
         Call(JumpToGoal, ACTOR_SELF, 18, false, true, false)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEAVY_NPC_LANDING)
         Thread
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
         EndThread
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_PostJump)
@@ -1081,7 +1078,7 @@ EvtScript N(EVS_AttackMissed) = {
     Thread
         Wait(5)
         Loop(4)
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 2, Float(2.0))
             Wait(4)
         EndLoop
@@ -1202,7 +1199,7 @@ EvtScript N(EVS_UseDrainingShockwave) = {
     EndIf
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Brandish)
     Wait(10)
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_USE)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -1243,7 +1240,7 @@ EvtScript N(EVS_UseDrainingShockwave) = {
         PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, Float(1.0), 60)
     EndIf
     Thread
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
     EndThread
     Wait(8)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -1388,10 +1385,10 @@ EvtScript N(EVS_Attack_FireBreath) = {
         EndIf
         Sub(LVar3, 10)
         PlayEffect(EFFECT_FIRE_BREATH, 2, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 50, 1, 24)
-        Call(N(SetBowserFireBreathScales), LVarF)
+        Call(SetBowserFireBreathScales, LVarF)
     EndIf
     Thread
-        Call(N(StartRumbleWithParams), 50, 148)
+        Call(StartRumbleWithParams, 50, 148)
         Call(PlaySound, SOUND_BOWSER_FIRE_BREATH_LOOP)
         Wait(70)
         Call(PlaySound, SOUND_BOWSER_FIRE_BREATH_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
@@ -1548,7 +1545,7 @@ EvtScript N(EVS_Attack_LightningBlast) = {
     Call(MoveBattleCamOver, 30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_CHARGE_LIGHTNING)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Brandish)
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -1587,7 +1584,7 @@ EvtScript N(EVS_Attack_LightningBlast) = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Thread
         Call(GetGoalPos, ACTOR_SELF, LVar0, 0, LVar1)
-        Call(N(UnkLightningBoltFxFunc1), LVar0, LVar1)
+        Call(UnkLightningBoltFxFunc1, LVar0, LVar1)
     EndThread
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)
@@ -1597,10 +1594,10 @@ EvtScript N(EVS_Attack_LightningBlast) = {
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
                 Wait(20)
-                Call(N(FadeBackgroundLighten))
+                Call(LightenBackground)
             Else
                 Wait(20)
-                Call(N(FadeBackgroundLighten))
+                Call(LightenBackground)
             EndIf
             Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
             Set(LVar1, ANIM_BattleBowser_Walk)
@@ -1624,7 +1621,7 @@ EvtScript N(EVS_Attack_LightningBlast) = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
         CaseOrEq(HIT_RESULT_10)
             Wait(30)
-            Call(N(FadeBackgroundLighten))
+            Call(LightenBackground)
             IfEq(LVarF, HIT_RESULT_10)
                 Return
             EndIf

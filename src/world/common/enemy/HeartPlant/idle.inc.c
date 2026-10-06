@@ -4,7 +4,7 @@
 #define EVAR_USE_COUNT 0
 #define EVAR_IN_USE 1
 
-API_CALLABLE(N(HeartPlant_SpawnHeart)) {
+API_CALLABLE(HeartPlant_SpawnHeart) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -16,9 +16,9 @@ API_CALLABLE(N(HeartPlant_SpawnHeart)) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript N(EVS_NpcInteract_HeartPlant);
+extern EvtScript EVS_NpcInteract_HeartPlant;
 
-EvtScript N(EVS_NpcCreate_HeartPlant) = {
+EvtScript EVS_NpcCreate_HeartPlant = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, EVAR_USE_COUNT, 0)
     Call(SetSelfVar, EVAR_IN_USE, false)
@@ -26,25 +26,25 @@ EvtScript N(EVS_NpcCreate_HeartPlant) = {
     End
 };
 
-EvtScript N(EVS_HeartPlant_RebindInteractAfterDelay) = {
+EvtScript EVS_HeartPlant_RebindInteractAfterDelay = {
     Wait(45)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HeartPlant)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HeartPlant))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_HeartPlant) = {
+EvtScript EVS_NpcInteract_HeartPlant = {
     Call(GetSelfVar, EVAR_IN_USE, LVar0)
     IfEq(LVar0, false)
         Call(SetSelfVar, EVAR_IN_USE, true)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_HEART_PLANT, SOUND_SPACE_DEFAULT)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Idle)
         Wait(1)
-        Call(N(HeartPlant_SpawnHeart))
+        Call(HeartPlant_SpawnHeart)
         Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Interact)
         Thread
             Call(BindNpcInteract, NPC_SELF, nullptr)
-            Exec(N(EVS_HeartPlant_RebindInteractAfterDelay))
+            Exec(EVS_HeartPlant_RebindInteractAfterDelay)
             Wait(45)
             Call(SetSelfVar, EVAR_IN_USE, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Idle)
@@ -54,10 +54,10 @@ EvtScript N(EVS_NpcInteract_HeartPlant) = {
     End
 };
 
-NpcSettings N(NpcSettings_HeartPlant) = {
+NpcSettings NpcSettings_HeartPlant = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_NONE,
-    .onCreate = &N(EVS_NpcCreate_HeartPlant),
-    .onInteract = &N(EVS_NpcInteract_HeartPlant),
+    .onCreate = &EVS_NpcCreate_HeartPlant,
+    .onInteract = &EVS_NpcInteract_HeartPlant,
 };

@@ -2,8 +2,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-BSS EffectInstance* N(ChapterEffect);
-BSS s32 N(ChapterEffectTime);
+BSS EffectInstance* ChapterEffect;
+BSS s32 ChapterEffectTime;
 
 #if VERSION_PAL
 #define CHUNK_SIZE (8)
@@ -11,7 +11,7 @@ BSS s32 N(ChapterEffectTime);
 #define CHUNK_SIZE (10)
 #endif
 
-s16 N(AnimTextOffsets)[CHUNK_SIZE * 2] = {
+s16 AnimTextOffsets[CHUNK_SIZE * 2] = {
 #if VERSION_PAL
     310, 270, 240, 210,
     180, 150, 120, 100,
@@ -25,7 +25,7 @@ s16 N(AnimTextOffsets)[CHUNK_SIZE * 2] = {
 #endif
 };
 
-API_CALLABLE(N(ManageEffects)) {
+API_CALLABLE(ManageEffects) {
     s32 type = script->varTable[0];
     s32 x, y;
     s32 xOffset = 0;
@@ -37,55 +37,55 @@ API_CALLABLE(N(ManageEffects)) {
 
     if (isInitialCall) {
         set_curtain_scale_goal(1.0f);
-        N(ChapterEffect) = fx_chapter_change(type, 100.0f, 100.0f, 0.0f, 1.0f, 0);
-        N(ChapterEffectTime) = 0;
+        ChapterEffect = fx_chapter_change(type, 100.0f, 100.0f, 0.0f, 1.0f, 0);
+        ChapterEffectTime = 0;
     }
 
     x = xOffset + 117;
-    if (N(ChapterEffectTime) >= 0) {
-        if (N(ChapterEffectTime) < 2 * CHUNK_SIZE) {
-            x -= N(AnimTextOffsets)[N(ChapterEffectTime)];
+    if (ChapterEffectTime >= 0) {
+        if (ChapterEffectTime < 2 * CHUNK_SIZE) {
+            x -= AnimTextOffsets[ChapterEffectTime];
         }
     } else {
         x = xOffset - 193;
     }
     y = 58;
-    N(ChapterEffect)->data.chapterChange->chapterPos.x = x;
-    N(ChapterEffect)->data.chapterChange->chapterPos.y = y;
+    ChapterEffect->data.chapterChange->chapterPos.x = x;
+    ChapterEffect->data.chapterChange->chapterPos.y = y;
 
     x = xOffset + 117;
-    if (N(ChapterEffectTime) >= CHUNK_SIZE) {
-        if (N(ChapterEffectTime) < 3 * CHUNK_SIZE) {
-            y -= N(AnimTextOffsets)[N(ChapterEffectTime) - CHUNK_SIZE];
+    if (ChapterEffectTime >= CHUNK_SIZE) {
+        if (ChapterEffectTime < 3 * CHUNK_SIZE) {
+            y -= AnimTextOffsets[ChapterEffectTime - CHUNK_SIZE];
         }
     } else {
         y = -252;
     }
-    N(ChapterEffect)->data.chapterChange->endOfPos.x = x;
-    N(ChapterEffect)->data.chapterChange->endOfPos.y = y;
+    ChapterEffect->data.chapterChange->endOfPos.x = x;
+    ChapterEffect->data.chapterChange->endOfPos.y = y;
 
     x = 280;
-    if (N(ChapterEffectTime) >= 2 * CHUNK_SIZE) {
-        if (N(ChapterEffectTime) < 4 * CHUNK_SIZE) {
-            x += N(AnimTextOffsets)[N(ChapterEffectTime) - 2 * CHUNK_SIZE];
+    if (ChapterEffectTime >= 2 * CHUNK_SIZE) {
+        if (ChapterEffectTime < 4 * CHUNK_SIZE) {
+            x += AnimTextOffsets[ChapterEffectTime - 2 * CHUNK_SIZE];
         }
     } else {
         x = 590;
     }
     y = 90;
-    N(ChapterEffect)->data.chapterChange->msgPos.x = x;
-    N(ChapterEffect)->data.chapterChange->msgPos.y = y;
-    N(ChapterEffectTime)++;
+    ChapterEffect->data.chapterChange->msgPos.x = x;
+    ChapterEffect->data.chapterChange->msgPos.y = y;
+    ChapterEffectTime++;
 
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(DismissCurtains)) {
+API_CALLABLE(DismissCurtains) {
     set_curtain_scale_goal(2.0f);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(WaitForContinueInput)) {
+API_CALLABLE(WaitForContinueInput) {
     ApiStatus ret;
 
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_START) {
@@ -101,13 +101,13 @@ API_CALLABLE(N(WaitForContinueInput)) {
     return ret;
 }
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Thread
-        Call(N(ManageEffects))
+        Call(ManageEffects)
     EndThread
     Wait(50)
-    Call(N(WaitForContinueInput))
+    Call(WaitForContinueInput)
     Call(FadeOutMusic, 0, 2000)
     Wait(30)
     Call(GetEntryID, LVar0)
@@ -131,13 +131,13 @@ EvtScript N(EVS_EnterMap) = {
         CaseEq(kmr_22_ENTRY_8)
             Call(GotoMapSpecial, Ref("kpa_63"), kpa_63_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
     EndSwitch
-    Call(N(DismissCurtains))
+    Call(DismissCurtains)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(GetEntryID, LVar0)
@@ -170,26 +170,26 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kmr_22_ENTRY_1)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter1)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter1))
         CaseEq(kmr_22_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter2)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter2))
         CaseEq(kmr_22_ENTRY_3)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter3)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter3))
         CaseEq(kmr_22_ENTRY_4)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter4)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter4))
         CaseEq(kmr_22_ENTRY_5)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter5)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter5))
         CaseEq(kmr_22_ENTRY_6)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter6)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter6))
         CaseEq(kmr_22_ENTRY_7)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter7)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter7))
         CaseEq(kmr_22_ENTRY_8)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Chapter8)))
+            Call(MakeNpcs, false, Ref(NpcGroup_Chapter8))
     EndSwitch
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Wait(1)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Call(SetMusic, 0, SONG_CHAPTER_START, 0, VOL_LEVEL_FULL)
     Call(ClearAmbientSounds, 250)
     Return

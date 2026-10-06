@@ -5,14 +5,14 @@
 
 #include "world/common/ai/SentinelAI.inc.c"
 
-EvtScript N(EVS_NpcCreate_Sentinel) = {
+EvtScript EVS_NpcCreate_Sentinel = {
     Call(SetSelfEnemyFlagBits, ENEMY_INTANGIBLE_FLAGS | ENEMY_FLAG_IGNORE_SPIN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_DONT_UPDATE_SHADOW_Y | NPC_FLAG_JUMPING, true)
     Return
     End
 };
 
-MobileAISettings N(AISettings_Sentinel_Wander) = {
+MobileAISettings AISettings_Sentinel_Wander = {
     .moveSpeed = 1.5f,
     .moveTime = 90,
     .waitTime = 30,
@@ -25,12 +25,12 @@ MobileAISettings N(AISettings_Sentinel_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Sentinel_Wander) = {
+EvtScript EVS_NpcAI_Sentinel_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.5f))
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.3f))
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
-    Call(N(SentinelAI_Main), Ref(N(AISettings_Sentinel_Wander)))
+    Call(SentinelAI_Main, Ref(AISettings_Sentinel_Wander))
     // AI returns control to script when the player is caught
     Call(DisablePlayerInput, true)
     Wait(2)
@@ -87,7 +87,7 @@ EvtScript N(EVS_NpcAI_Sentinel_Wander) = {
     End
 };
 
-EvtScript N(EVS_UnusedSentinelOnHit) = {
+EvtScript EVS_UnusedSentinelOnHit = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_NONE)
@@ -103,7 +103,7 @@ EvtScript N(EVS_UnusedSentinelOnHit) = {
     End
 };
 
-EvtScript N(EVS_UnusedSentinelDefeat) = {
+EvtScript EVS_UnusedSentinelDefeat = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -115,10 +115,10 @@ EvtScript N(EVS_UnusedSentinelDefeat) = {
     End
 };
 
-NpcSettings N(NpcSettings_Sentinel_Wander) = {
+NpcSettings NpcSettings_Sentinel_Wander = {
     .height = 38,
     .radius = 32,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_Sentinel_Wander),
-    .onCreate = &N(EVS_NpcCreate_Sentinel),
+    .doAI = &EVS_NpcAI_Sentinel_Wander,
+    .onCreate = &EVS_NpcCreate_Sentinel,
 };

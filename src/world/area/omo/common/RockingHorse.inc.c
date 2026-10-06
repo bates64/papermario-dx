@@ -11,7 +11,7 @@ typedef struct RockingHorse {
     /* 0x18 */ Vec3i soundPos;
 } RockingHorse; // size = 0x24
 
-API_CALLABLE(N(UpdateRockingHorses)) {
+API_CALLABLE(UpdateRockingHorses) {
     Matrix4f mtxPivot, mtxRotate;
     RockingHorse* horse;
     Model* model;
@@ -20,11 +20,11 @@ API_CALLABLE(N(UpdateRockingHorses)) {
     u32 i;
 
     if (isInitialCall) {
-        horse = heap_malloc(sizeof(*horse) * ARRAY_COUNT(N(RockingHorseModels)));
+        horse = heap_malloc(sizeof(*horse) * ARRAY_COUNT(RockingHorseModels));
         script->functionTempPtr[0] = horse;
 
-        for (i = 0; i < ARRAY_COUNT(N(RockingHorseModels)); i++, horse++) {
-            s32 modelID = N(RockingHorseModels)[i];
+        for (i = 0; i < ARRAY_COUNT(RockingHorseModels); i++, horse++) {
+            s32 modelID = RockingHorseModels[i];
 
             horse->modelID = modelID;
             model = get_model_from_list_index(get_model_list_index_from_tree_index(modelID));
@@ -40,7 +40,7 @@ API_CALLABLE(N(UpdateRockingHorses)) {
     }
 
     horse = script->functionTempPtr[0];
-    for (i = 0; i < ARRAY_COUNT(N(RockingHorseModels)); i++, horse++) {
+    for (i = 0; i < ARRAY_COUNT(RockingHorseModels); i++, horse++) {
         horse->rockPhase += horse->rockPhaseAngularVel;
         horse->rockPhase = clamp_angle(horse->rockPhase);
         rockAngle = sin_deg(horse->rockPhase) * 20.0f;
@@ -62,8 +62,8 @@ API_CALLABLE(N(UpdateRockingHorses)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_Gizmos_RockingHorses) = {
-    Call(N(UpdateRockingHorses))
+EvtScript EVS_Gizmos_RockingHorses = {
+    Call(UpdateRockingHorses)
     Return
     End
 };

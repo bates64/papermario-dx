@@ -18,7 +18,7 @@
 #include "world/common/prefab/ToadHouse.inc.c"
 #include "world/common/prefab/ToadHouse.data.inc.c"
 
-LetterDelivery N(LetterDelivery_FrostT) = {
+LetterDelivery LetterDelivery_FrostT = {
     .recipientID = NPC_ShiverToad_03,
     .recipientTalk = ANIM_ShiverToad_Green_Talk,
     .recipientIdle = ANIM_ShiverToad_Green_Idle,
@@ -30,7 +30,7 @@ LetterDelivery N(LetterDelivery_FrostT) = {
     .reward = ITEM_LETTER_CHAIN_GOOMPAPA_2,
 };
 
-EvtScript N(EVS_NpcInteract_Merle) = {
+EvtScript EVS_NpcInteract_Merle = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
             Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F4)
@@ -48,7 +48,7 @@ EvtScript N(EVS_NpcInteract_Merle) = {
     End
 };
 
-EvtScript N(EVS_Merle_CarryScarf) = {
+EvtScript EVS_Merle_CarryScarf = {
     Label(0)
         Call(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -70,7 +70,7 @@ EvtScript N(EVS_Merle_CarryScarf) = {
     End
 };
 
-EvtScript N(EVS_Merle_HandOverScarf) = {
+EvtScript EVS_Merle_HandOverScarf = {
     Set(LVar4, 10)
     Loop(10)
         Call(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
@@ -94,7 +94,7 @@ EvtScript N(EVS_Merle_HandOverScarf) = {
     End
 };
 
-EvtScript N(EVS_Scene_Merle_Greeting) = {
+EvtScript EVS_Scene_Merle_Greeting = {
     Call(WaitForPlayerInputEnabled)
     Wait(1)
     Call(GetPartnerInUse, LVar0)
@@ -157,7 +157,7 @@ EvtScript N(EVS_Scene_Merle_Greeting) = {
     End
 };
 
-EvtScript N(EVS_Scene_Merle_WaitingOnHill) = {
+EvtScript EVS_Scene_Merle_WaitingOnHill = {
     Label(60)
     Call(GetPlayerActionState, LVar0)
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
@@ -214,7 +214,7 @@ EvtScript N(EVS_Scene_Merle_WaitingOnHill) = {
     End
 };
 
-API_CALLABLE(N(MerleSceneHideOutside)) {
+API_CALLABLE(MerleSceneHideOutside) {
     s32 alpha;
 
     if (isInitialCall) {
@@ -249,7 +249,7 @@ API_CALLABLE(N(MerleSceneHideOutside)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_Scene_Merle_EnterHouse) = {
+EvtScript EVS_Scene_Merle_EnterHouse = {
     Call(AwaitPlayerApproach, 0, -140, 60)
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
@@ -300,7 +300,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
         Set(LVarF, MODEL_k)
         Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_HIDING, false)
         Call(SetNpcFlagBits, NPC_StarKid_03, NPC_FLAG_HIDING, true)
-        Call(N(MerleSceneHideOutside))
+        Call(MerleSceneHideOutside)
     EndThread
     Thread
         Call(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
@@ -353,10 +353,10 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetNpcSpeed, NPC_Merle, Float(2.0 / DT))
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Walk)
-    ExecGetTID(N(EVS_Merle_CarryScarf), LVarA)
+    ExecGetTID(EVS_Merle_CarryScarf, LVarA)
     Call(NpcMoveTo, NPC_Merle, 0, -275, 0)
     KillThread(LVarA)
-    ExecGetTID(N(EVS_Merle_HandOverScarf), LVarA)
+    ExecGetTID(EVS_Merle_HandOverScarf, LVarA)
     Wait(20 * DT)
     KillThread(LVarA)
     Call(SetItemPos, MV_ScarfItemID, NPC_DISPOSE_LOCATION)
@@ -385,41 +385,41 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(BindNpcInteract, NPC_Merle, Ref(N(EVS_NpcInteract_Merle)))
+    Call(BindNpcInteract, NPC_Merle, Ref(EVS_NpcInteract_Merle))
     Call(SetNpcFlagBits, NPC_Merle, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Merle) = {
+EvtScript EVS_NpcIdle_Merle = {
     Wait(3)
     IfLt(GB_StoryProgress, STORY_CH7_ARRIVED_AT_STARBORN_VALLEY)
-        ExecWait(N(EVS_Scene_Merle_Greeting))
-        ExecWait(N(EVS_Scene_Merle_WaitingOnHill))
-        ExecWait(N(EVS_Scene_Merle_EnterHouse))
+        ExecWait(EVS_Scene_Merle_Greeting)
+        ExecWait(EVS_Scene_Merle_WaitingOnHill)
+        ExecWait(EVS_Scene_Merle_EnterHouse)
         Return
     EndIf
     IfEq(GB_StoryProgress, STORY_CH7_ARRIVED_AT_STARBORN_VALLEY)
         Call(SetNpcPos, NPC_Merle, -90, 45, 190)
         Call(InterpNpcYaw, NPC_Merle, 270, 0)
         Set(MF_MerleReady, true)
-        ExecWait(N(EVS_Scene_Merle_WaitingOnHill))
-        ExecWait(N(EVS_Scene_Merle_EnterHouse))
+        ExecWait(EVS_Scene_Merle_WaitingOnHill)
+        ExecWait(EVS_Scene_Merle_EnterHouse)
         Return
     EndIf
     IfEq(GB_StoryProgress, STORY_CH7_MERLE_APOLOGIZED)
         Call(SetNpcPos, NPC_Merle, 0, 90, -143)
         Call(InterpNpcYaw, NPC_Merle, 270, 0)
         Set(MF_MerleReady, true)
-        ExecWait(N(EVS_Scene_Merle_EnterHouse))
+        ExecWait(EVS_Scene_Merle_EnterHouse)
         Return
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Scene_Merle_OneLastThing) = {
+EvtScript EVS_Scene_Merle_OneLastThing = {
     Thread
         Call(DisablePartnerAI, false)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
@@ -507,7 +507,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ShiverToad_01) = {
+EvtScript EVS_NpcInteract_ShiverToad_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, MSG_CH7_00F8)
@@ -518,7 +518,7 @@ EvtScript N(EVS_NpcInteract_ShiverToad_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ShiverToad_02) = {
+EvtScript EVS_NpcInteract_ShiverToad_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Blue_Talk, ANIM_ShiverToad_Blue_Idle, 0, MSG_CH7_00FA)
@@ -529,20 +529,20 @@ EvtScript N(EVS_NpcInteract_ShiverToad_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ShiverToad_03) = {
+EvtScript EVS_NpcInteract_ShiverToad_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle, 0, MSG_CH7_00FC)
         CaseGe(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle, 0, MSG_CH7_00FD)
     EndSwitch
-    Set(LVar0, Ref(N(LetterDelivery_FrostT)))
+    Set(LVar0, Ref(LetterDelivery_FrostT))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Ninji_01) = {
+EvtScript EVS_NpcInteract_Ninji_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Ninji_Talk, ANIM_Ninji_Idle, 0, MSG_CH7_0102)
@@ -553,7 +553,7 @@ EvtScript N(EVS_NpcInteract_Ninji_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Ninji_02) = {
+EvtScript EVS_NpcInteract_Ninji_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Ninji_Talk, ANIM_Ninji_Idle, 0, MSG_CH7_0104)
@@ -564,7 +564,7 @@ EvtScript N(EVS_NpcInteract_Ninji_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Ninji_03) = {
+EvtScript EVS_NpcInteract_Ninji_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Ninji_Talk, ANIM_Ninji_Idle, 0, MSG_CH7_0106)
@@ -575,7 +575,7 @@ EvtScript N(EVS_NpcInteract_Ninji_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Ninji_04) = {
+EvtScript EVS_NpcInteract_Ninji_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Ninji_Talk, ANIM_Ninji_Idle, 0, MSG_CH7_0114)
@@ -586,7 +586,7 @@ EvtScript N(EVS_NpcInteract_Ninji_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_01) = {
+EvtScript EVS_NpcInteract_StarKid_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_CH7_0108)
@@ -597,7 +597,7 @@ EvtScript N(EVS_NpcInteract_StarKid_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_02) = {
+EvtScript EVS_NpcInteract_StarKid_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_CH7_010A)
@@ -608,7 +608,7 @@ EvtScript N(EVS_NpcInteract_StarKid_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_03) = {
+EvtScript EVS_NpcInteract_StarKid_03 = {
     IfEq(GF_SAM06_FoundSidewaysStarKid, false)
         Set(GF_SAM06_FoundSidewaysStarKid, true)
         Call(MakeLerp, 90, 360, 20, EASING_LINEAR)
@@ -631,7 +631,7 @@ EvtScript N(EVS_NpcInteract_StarKid_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_04) = {
+EvtScript EVS_NpcInteract_StarKid_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_CH7_010E)
@@ -642,7 +642,7 @@ EvtScript N(EVS_NpcInteract_StarKid_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_05) = {
+EvtScript EVS_NpcInteract_StarKid_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_CH7_0110)
@@ -653,7 +653,7 @@ EvtScript N(EVS_NpcInteract_StarKid_05) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_06) = {
+EvtScript EVS_NpcInteract_StarKid_06 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_CH7_0112)
@@ -664,7 +664,7 @@ EvtScript N(EVS_NpcInteract_StarKid_06) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     Set(LVar0, MSG_CH7_0116)
     Set(LVar8, MSG_CH7_0117)
     Set(LVar1, MSG_CH7_0118)
@@ -674,13 +674,13 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestingSong))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestingSong)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -336, -48, 0)
     Thread
         Wait(15)
-        Call(N(ToadHouse_CamSetFOV), 0, Float(40.0))
+        Call(ToadHouse_CamSetFOV, 0, Float(40.0))
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, Float(50.0), Float(-16.0))
         Call(SetCamDistance, CAM_DEFAULT, Float(111.0))
@@ -703,7 +703,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Wait(20)
     Thread
         Wait(81)
-        Call(N(ToadHouse_CamSetFOV), 0, 25)
+        Call(ToadHouse_CamSetFOV, 0, 25)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
@@ -713,8 +713,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Exec(N(EVS_SetupMusic))
+EvtScript EVS_ToadHouse_ReturnFromRest = {
+    Exec(EVS_SetupMusic)
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(PlayerMoveTo, -347, -114, 0)
@@ -724,9 +724,9 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Merle) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merle)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Merle)))
+EvtScript EVS_NpcInit_Merle = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Merle))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Merle))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_GOT_SNOWMAN_SCARF)
             Call(SetNpcPos, NPC_SELF, -200, 0, 300)
@@ -738,62 +738,62 @@ EvtScript N(EVS_NpcInit_Merle) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShiverToad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShiverToad_01)))
+EvtScript EVS_NpcInit_ShiverToad_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShiverToad_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShiverToad_02)))
+EvtScript EVS_NpcInit_ShiverToad_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShiverToad_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShiverToad_03)))
+EvtScript EVS_NpcInit_ShiverToad_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShiverToad_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Ninji_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Ninji_01)))
+EvtScript EVS_NpcInit_Ninji_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Ninji_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Ninji_02)))
+EvtScript EVS_NpcInit_Ninji_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Ninji_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Ninji_03)))
+EvtScript EVS_NpcInit_Ninji_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Ninji_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Ninji_04)))
+EvtScript EVS_NpcInit_Ninji_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Ninji_04))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_01)))
+EvtScript EVS_NpcInit_StarKid_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_02)))
+EvtScript EVS_NpcInit_StarKid_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_03)))
+EvtScript EVS_NpcInit_StarKid_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_03))
     IfEq(GF_SAM06_FoundSidewaysStarKid, false)
         Call(SetNpcRotation, NPC_SELF, 0, 90, 0)
     EndIf
@@ -801,37 +801,37 @@ EvtScript N(EVS_NpcInit_StarKid_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_04)))
+EvtScript EVS_NpcInit_StarKid_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_04))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_05) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_05)))
+EvtScript EVS_NpcInit_StarKid_05 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_05))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_06) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_06)))
+EvtScript EVS_NpcInit_StarKid_06 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_06))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShiverToad_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+EvtScript EVS_NpcInit_ShiverToad_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End
 };
 
-NpcData N(NpcData_Merle)[] = {
+NpcData NpcData_Merle[] = {
     {
         .id = NPC_Merle,
         .pos = { 0.0f, 90.0f, -300.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Merle),
-        .settings = &N(NpcSettings_Merle),
+        .init = &EVS_NpcInit_Merle,
+        .settings = &NpcSettings_Merle,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = MERLE_ANIMS,
@@ -841,8 +841,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_ShiverToad_01,
         .pos = { -376.0f, 60.0f, 112.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_ShiverToad_01),
-        .settings = &N(NpcSettings_ShiverToad),
+        .init = &EVS_NpcInit_ShiverToad_01,
+        .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_RED_ANIMS,
@@ -864,8 +864,8 @@ NpcData N(NpcData_Merle)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_ShiverToad_02),
-        .settings = &N(NpcSettings_ShiverToad_Wander),
+        .init = &EVS_NpcInit_ShiverToad_02,
+        .settings = &NpcSettings_ShiverToad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_BLUE_ANIMS,
@@ -875,8 +875,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_ShiverToad_03,
         .pos = { 127.0f, 0.0f, 445.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_ShiverToad_03),
-        .settings = &N(NpcSettings_ShiverToad),
+        .init = &EVS_NpcInit_ShiverToad_03,
+        .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_GREEN_ANIMS,
@@ -898,8 +898,8 @@ NpcData N(NpcData_Merle)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Ninji_01),
-        .settings = &N(NpcSettings_Ninji_Wander),
+        .init = &EVS_NpcInit_Ninji_01,
+        .settings = &NpcSettings_Ninji_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = NINJI_ANIMS,
@@ -921,8 +921,8 @@ NpcData N(NpcData_Merle)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Ninji_02),
-        .settings = &N(NpcSettings_Ninji_Wander),
+        .init = &EVS_NpcInit_Ninji_02,
+        .settings = &NpcSettings_Ninji_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = NINJI_ANIMS,
@@ -932,8 +932,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_Ninji_03,
         .pos = { 239.0f, 50.0f, 315.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_Ninji_03),
-        .settings = &N(NpcSettings_Ninji),
+        .init = &EVS_NpcInit_Ninji_03,
+        .settings = &NpcSettings_Ninji,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = NINJI_ANIMS,
@@ -943,8 +943,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_Ninji_04,
         .pos = { 390.0f, 80.0f, 50.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Ninji_04),
-        .settings = &N(NpcSettings_Ninji),
+        .init = &EVS_NpcInit_Ninji_04,
+        .settings = &NpcSettings_Ninji,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = NINJI_ANIMS,
@@ -966,8 +966,8 @@ NpcData N(NpcData_Merle)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_StarKid_01),
-        .settings = &N(NpcSettings_StarKid_Wander),
+        .init = &EVS_NpcInit_StarKid_01,
+        .settings = &NpcSettings_StarKid_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -977,8 +977,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_StarKid_02,
         .pos = { 3.0f, 60.0f, 137.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_StarKid_02),
-        .settings = &N(NpcSettings_StarKid),
+        .init = &EVS_NpcInit_StarKid_02,
+        .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -988,8 +988,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_StarKid_03,
         .pos = { 120.0f, 100.0f, -210.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarKid_03),
-        .settings = &N(NpcSettings_StarKid),
+        .init = &EVS_NpcInit_StarKid_03,
+        .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -999,8 +999,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_StarKid_04,
         .pos = { 369.0f, 90.0f, 9.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_StarKid_04),
-        .settings = &N(NpcSettings_StarKid),
+        .init = &EVS_NpcInit_StarKid_04,
+        .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -1010,8 +1010,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_StarKid_05,
         .pos = { 405.0f, 90.0f, -19.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_StarKid_05),
-        .settings = &N(NpcSettings_StarKid),
+        .init = &EVS_NpcInit_StarKid_05,
+        .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -1021,8 +1021,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_StarKid_06,
         .pos = { 364.0f, 90.0f, -47.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_StarKid_06),
-        .settings = &N(NpcSettings_StarKid),
+        .init = &EVS_NpcInit_StarKid_06,
+        .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = STAR_KID_ANIMS,
@@ -1032,8 +1032,8 @@ NpcData N(NpcData_Merle)[] = {
         .id = NPC_ShiverToad_04,
         .pos = { -274.0f, 60.0f, -28.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_ShiverToad_04),
-        .settings = &N(NpcSettings_ShiverToad),
+        .init = &EVS_NpcInit_ShiverToad_04,
+        .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_RED_ANIMS,
@@ -1041,7 +1041,7 @@ NpcData N(NpcData_Merle)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Merle), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Merle, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
     {}
 };

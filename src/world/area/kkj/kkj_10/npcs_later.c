@@ -1,6 +1,6 @@
 #include "kkj_10.h"
 
-AnimID N(LimitAnims_Koopatrol_Later)[] = {
+AnimID LimitAnims_Koopatrol_Later[] = {
     ANIM_WorldKoopatrol_Still,
     ANIM_WorldKoopatrol_Idle,
     ANIM_WorldKoopatrol_IdleFlashlight,
@@ -16,7 +16,7 @@ AnimID N(LimitAnims_Koopatrol_Later)[] = {
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_CapturePeach_Later) = {
+EvtScript EVS_CapturePeach_Later = {
     Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -29,7 +29,7 @@ EvtScript N(EVS_CapturePeach_Later) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_IdleFlashlight)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0174)
-    Call(N(GetApproachPeachPos), NPC_SELF, 100, LVar3, LVar0, LVar2)
+    Call(GetApproachPeachPos, NPC_SELF, 100, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_RunFlashlight)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
@@ -47,17 +47,17 @@ EvtScript N(EVS_CapturePeach_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_01_Later) = {
+EvtScript EVS_NpcIdle_Koopatrol_01_Later = {
     Thread
         Set(LVar2, 0)
         Loop(0)
-            Call(N(UpdateSearchlight), LVar0, 100, 90, 0, 40, 130, 0)
+            Call(UpdateSearchlight, LVar0, 100, 90, 0, 40, 130, 0)
             IfEq(LVar2, 0)
                 Call(GetPeachDisguise, LVar1)
                 IfEq(LVar1, PEACH_DISGUISE_NONE)
                     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
                     IfNe(LVar0, 0)
-                        Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
+                        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
                         Set(LVar2, 1)
                     EndIf
                 Else
@@ -86,17 +86,17 @@ EvtScript N(EVS_NpcIdle_Koopatrol_01_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_02_Later) = {
+EvtScript EVS_NpcIdle_Koopatrol_02_Later = {
     Thread
         Set(LVar2, 0)
         Loop(0)
-            Call(N(UpdateSearchlight), LVar0, 100, 90, 0, 40, 131, 1)
+            Call(UpdateSearchlight, LVar0, 100, 90, 0, 40, 131, 1)
             IfEq(LVar2, 0)
                 Call(GetPeachDisguise, LVar1)
                 IfEq(LVar1, PEACH_DISGUISE_NONE)
                     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, false)
                     IfNe(LVar0, 0)
-                        Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
+                        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
                         Set(LVar2, 1)
                     EndIf
                 Else
@@ -125,7 +125,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_02_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopatrol_01_Later) = {
+EvtScript EVS_NpcInteract_Koopatrol_01_Later = {
     Call(DisablePlayerInput, true)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
@@ -140,7 +140,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_01_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopatrol_02_Later) = {
+EvtScript EVS_NpcInteract_Koopatrol_02_Later = {
     Call(DisablePlayerInput, true)
     Call(GetPeachDisguise, LVar0)
     IfEq(LVar0, PEACH_DISGUISE_CLUBBA)
@@ -160,50 +160,50 @@ EvtScript N(EVS_NpcInteract_Koopatrol_02_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_01_Later) = {
+EvtScript EVS_NpcInit_Koopatrol_01_Later = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_WalkFlashlight)
     Call(SetNpcPos, NPC_SELF, -240, 0, -50)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_01_Later)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopatrol_01_Later)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_01_Later))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_01_Later))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_02_Later) = {
+EvtScript EVS_NpcInit_Koopatrol_02_Later = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_WalkFlashlight)
     Call(SetNpcPos, NPC_SELF, 0, 0, 240)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_02_Later)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopatrol_02_Later)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_02_Later))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_02_Later))
     Return
     End
 };
 
-NpcData N(NpcData_Koopatrol_Later)[] = {
+NpcData NpcData_Koopatrol_Later[] = {
     {
         .id = NPC_Koopatrol_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_01_Later),
-        .settings = &N(NpcSettings_Koopatrol),
+        .init = &EVS_NpcInit_Koopatrol_01_Later,
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol_Later),
+        .limitAnimations = LimitAnims_Koopatrol_Later,
     },
     {
         .id = NPC_Koopatrol_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_02_Later),
-        .settings = &N(NpcSettings_Koopatrol),
+        .init = &EVS_NpcInit_Koopatrol_02_Later,
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol_Later),
+        .limitAnimations = LimitAnims_Koopatrol_Later,
     },
 };
 
-NpcGroupList N(LaterNPCs) = {
-    NPC_GROUP(N(NpcData_Koopatrol_Later)),
+NpcGroupList LaterNPCs = {
+    NPC_GROUP(NpcData_Koopatrol_Later),
     {}
 };

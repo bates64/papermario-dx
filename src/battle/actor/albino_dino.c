@@ -2,22 +2,20 @@
 #include "script_api/battle.h"
 #include "sprite/npc/AlbinoDino.h"
 
-#define NAMESPACE A(albino_dino)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_TACKLE      = 4,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_AlbinoDino_Idle,
     STATUS_KEY_STONE,     ANIM_AlbinoDino_Still,
     STATUS_KEY_SLEEP,     ANIM_AlbinoDino_Idle,
@@ -30,13 +28,13 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   4,
     ELEMENT_FIRE,    99,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,               0,
@@ -61,15 +59,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -9, 46 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -6, -17 },
@@ -81,10 +79,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_ALBINO_DINO,
     .level = ACTOR_LEVEL_ALBINO_DINO,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 40,
     .airLiftChance = 15,
     .hurricaneChance = 10,
@@ -99,20 +97,20 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 11, 40 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_AlbinoDino_Run)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
@@ -122,7 +120,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -166,7 +164,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_AlbinoDino_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_AlbinoDino_Hurt)
@@ -217,7 +215,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_AddWalkQuakeFX) = {
+EvtScript EVS_AddWalkQuakeFX = {
     Set(LVarA, 0)
     Label(0)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -239,14 +237,14 @@ EvtScript N(EVS_AddWalkQuakeFX) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
-    ExecGetTID(N(EVS_AddWalkQuakeFX), LVar9)
+    ExecGetTID(EVS_AddWalkQuakeFX, LVar9)
     Thread
         Loop(3)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ALBINO_DINO_STEP_A)
@@ -278,7 +276,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(YieldTurn)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorYaw, ACTOR_SELF, 180)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -317,7 +315,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(ShakeCam, CAM_BATTLE, 0, 3, Float(1.0))
             Wait(10)
             Call(YieldTurn)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)

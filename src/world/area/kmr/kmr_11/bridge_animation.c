@@ -1,6 +1,6 @@
 #include "kmr_11.h"
 
-AnimScript N(AnimScript_Bridge) = {
+AnimScript AnimScript_Bridge = {
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)
     as_SetScale(1, 1.0, 1.0, 1.0)

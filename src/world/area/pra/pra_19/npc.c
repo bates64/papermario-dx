@@ -4,7 +4,7 @@
 #include "sprite/player.h"
 #include "world/common/npc/Kooper/base.h"
 
-NpcSettings N(NpcSettings_Kooper) = {
+NpcSettings NpcSettings_Kooper = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPA_TROOPA,
@@ -19,7 +19,7 @@ NpcSettings N(NpcSettings_Kooper) = {
 
 #include "world/common/enemy/Duplighost/disguised.inc.c"
 
-API_CALLABLE(N(PlayBigSmokePuff)) {
+API_CALLABLE(PlayBigSmokePuff) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -30,7 +30,7 @@ API_CALLABLE(N(PlayBigSmokePuff)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ChooseImposterBattleFormation)) {
+API_CALLABLE(ChooseImposterBattleFormation) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
@@ -71,15 +71,15 @@ API_CALLABLE(N(ChooseImposterBattleFormation)) {
     return ApiStatus_DONE2;
 }
 
-void N(appendGfx_example_player)(void* data);
-void N(worker_render_example_player)(void);
+void appendGfx_example_player(void* data);
+void worker_render_example_player(void);
 
-API_CALLABLE(N(CreateExamplePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_render_example_player));
+API_CALLABLE(CreateExamplePlayerRenderer) {
+    script->array[0] = create_worker_scene(nullptr, worker_render_example_player);
     return ApiStatus_DONE2;
 }
 
-void N(worker_render_example_player)(void) {
+void worker_render_example_player(void) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
     Npc* npc = get_npc_safe(NPC_ExamplePlayer);
@@ -91,12 +91,12 @@ void N(worker_render_example_player)(void) {
         rtPtr->renderMode = npc->renderMode;
         rtPtr->dist = -z;
         rtPtr->appendGfxArg = npc;
-        rtPtr->appendGfx = N(appendGfx_example_player);
+        rtPtr->appendGfx = appendGfx_example_player;
         queue_render_task(rtPtr);
     }
 }
 
-void N(appendGfx_example_player)(void* data) {
+void appendGfx_example_player(void* data) {
     Npc* npc = data;
     Matrix4f mtxTransform, mtxTranslate, mtxScale;
 
@@ -110,12 +110,12 @@ void N(appendGfx_example_player)(void* data) {
     spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
 }
 
-API_CALLABLE(N(SetPlayerFacingAngle)) {
+API_CALLABLE(SetPlayerFacingAngle) {
     gPlayerStatus.spriteFacingAngle = script->varTable[0];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ChangeNpcCollisionRadius)) {
+API_CALLABLE(ChangeNpcCollisionRadius) {
     Npc* npc1 = resolve_npc(script, script->varTable[3]);
     Npc* npc2 = resolve_npc(script, script->varTable[4]);
 
@@ -124,7 +124,7 @@ API_CALLABLE(N(ChangeNpcCollisionRadius)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AwaitImposterHitPlayer)) {
+API_CALLABLE(AwaitImposterHitPlayer) {
     Npc* npc0 = get_npc_unsafe(NPC_FakeKooper);
     Npc* npc1 = get_npc_unsafe(NPC_FakeGoompa);
     Npc* npc2 = get_npc_unsafe(NPC_FakeLuigi);
@@ -150,7 +150,7 @@ API_CALLABLE(N(AwaitImposterHitPlayer)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(UpdateExampleKooperMotion)) {
+API_CALLABLE(UpdateExampleKooperMotion) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_unsafe(evt_get_variable(script, *args++));
 
@@ -195,7 +195,7 @@ API_CALLABLE(N(UpdateExampleKooperMotion)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_FocusCam_OnPosition) = {
+EvtScript EVS_FocusCam_OnPosition = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, LVarA)
     Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
@@ -208,7 +208,7 @@ EvtScript N(EVS_FocusCam_OnPosition) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_StartBattle) = {
+EvtScript EVS_FocusCam_StartBattle = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(6.0))
@@ -222,7 +222,7 @@ EvtScript N(EVS_FocusCam_StartBattle) = {
     End
 };
 
-EvtScript N(EVS_FocusCam_OnPlayer) = {
+EvtScript EVS_FocusCam_OnPlayer = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfGt(LVar0, 386)
         Set(LVar0, 386)
@@ -239,12 +239,12 @@ EvtScript N(EVS_FocusCam_OnPlayer) = {
     End
 };
 
-EvtScript N(EVS_Imposter_Unmask) = {
-    Call(N(ChangeNpcCollisionRadius))
+EvtScript EVS_Imposter_Unmask = {
+    Call(ChangeNpcCollisionRadius)
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, LVar3, LVar6, LVar7, 0, LVar5)
     Call(GetNpcPos, LVar3, LVar0, LVar1, LVar2)
-    Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+    Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
     Call(SetNpcPos, LVar3, NPC_DISPOSE_LOCATION)
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Call(SetNpcPos, LVar4, LVar0, LVar1, LVar2)
@@ -258,7 +258,7 @@ EvtScript N(EVS_Imposter_Unmask) = {
             Goto(1)
         EndIf
     Call(EndSpeech, LVar4, ANIM_Duplighost_Talk, ANIM_Duplighost_Idle, 0)
-    ExecWait(N(EVS_FocusCam_OnPlayer))
+    ExecWait(EVS_FocusCam_OnPlayer)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Thread
         Call(SetNpcAnimation, LVar4, ANIM_Duplighost_Run)
@@ -273,7 +273,7 @@ EvtScript N(EVS_Imposter_Unmask) = {
     End
 };
 
-EvtScript N(EVS_Imposter_HopTwice) = {
+EvtScript EVS_Imposter_HopTwice = {
     Call(SetNpcJumpscale, LVar3, Float(1.0))
     Call(GetNpcPos, LVar3, LVar0, LVar1, LVar2)
     Call(NpcJump0, LVar3, LVar0, LVar1, LVar2, 10)
@@ -283,12 +283,12 @@ EvtScript N(EVS_Imposter_HopTwice) = {
     End
 };
 
-EvtScript N(EVS_RevealEveryImposter) = {
+EvtScript EVS_RevealEveryImposter = {
     IfEq(MV_RevealedFakeGoompa, 0)
         Thread
             Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_FakeGoompa, NPC_DISPOSE_LOCATION)
-            Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+            Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_GoompaGhost, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_GoompaGhost, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -299,7 +299,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
         Thread
             Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_FakeLuigi, NPC_DISPOSE_LOCATION)
-            Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+            Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_LuigiGhost, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_LuigiGhost, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -310,7 +310,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
         Thread
             Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_FakeKoopaKoot, NPC_DISPOSE_LOCATION)
-            Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+            Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_KoopaKootGhost, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_KoopaKootGhost, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -321,7 +321,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
         Thread
             Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_FakeKolorado, NPC_DISPOSE_LOCATION)
-            Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+            Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
             Call(SetNpcPos, NPC_KoloradoGhost, LVar0, LVar1, LVar2)
             Call(PlaySoundAtNpc, NPC_KoloradoGhost, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -333,7 +333,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
     End
 };
 
-EvtScript N(EVS_Imposter_ChaseDownPlayer) = {
+EvtScript EVS_Imposter_ChaseDownPlayer = {
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, LVar3, LVar4)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -342,7 +342,7 @@ EvtScript N(EVS_Imposter_ChaseDownPlayer) = {
     End
 };
 
-EvtScript N(EVS_Imposter_CarryPlayerBack) = {
+EvtScript EVS_Imposter_CarryPlayerBack = {
     Call(InterpNpcYaw, LVar3, LVar9, 0)
     Loop(30)
         Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
@@ -356,7 +356,7 @@ EvtScript N(EVS_Imposter_CarryPlayerBack) = {
     End
 };
 
-EvtScript N(EVS_Imposter_ReturnToStation) = {
+EvtScript EVS_Imposter_ReturnToStation = {
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 20)
     Call(SetNpcAnimation, LVar3, LVar4)
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
@@ -365,7 +365,7 @@ EvtScript N(EVS_Imposter_ReturnToStation) = {
     End
 };
 
-EvtScript N(EVS_PreventPlayerLeaving) = {
+EvtScript EVS_PreventPlayerLeaving = {
     Call(DisablePlayerInput, true)
     Loop(0)
         Wait(1)
@@ -378,26 +378,26 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
     IfEq(MV_RevealedFakeGoompa, 0)
         Set(LVar3, NPC_FakeGoompa)
         Set(LVar4, ANIM_Goompa_Run)
-        Exec(N(EVS_Imposter_ChaseDownPlayer))
+        Exec(EVS_Imposter_ChaseDownPlayer)
     EndIf
     IfEq(MV_RevealedFakeLuigi, 0)
         Set(LVar3, NPC_FakeLuigi)
         Set(LVar4, ANIM_Luigi_Run)
-        Exec(N(EVS_Imposter_ChaseDownPlayer))
+        Exec(EVS_Imposter_ChaseDownPlayer)
     EndIf
     IfEq(MV_RevealedFakeKoopaKoot, 0)
         Set(LVar3, NPC_FakeKoopaKoot)
         Set(LVar4, ANIM_KoopaKoot_Run)
-        Exec(N(EVS_Imposter_ChaseDownPlayer))
+        Exec(EVS_Imposter_ChaseDownPlayer)
     EndIf
     IfEq(MV_RevealedFakeKolorado, 0)
         Set(LVar3, NPC_FakeKolorado)
         Set(LVar4, ANIM_Kolorado_Run)
-        Exec(N(EVS_Imposter_ChaseDownPlayer))
+        Exec(EVS_Imposter_ChaseDownPlayer)
     EndIf
     Set(LVar3, NPC_FakeKooper)
     Set(LVar4, ANIM_WorldKooper_Run)
-    ExecWait(N(EVS_Imposter_ChaseDownPlayer))
+    ExecWait(EVS_Imposter_ChaseDownPlayer)
     Call(InterpPlayerYaw, 90, 3)
     Call(SetPlayerAnimation, ANIM_MarioW2_LayingDown)
     Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
@@ -428,28 +428,28 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
         Set(LVar4, 0)
         Set(LVar5, 0)
         Set(LVar6, 10)
-        Exec(N(EVS_Imposter_CarryPlayerBack))
+        Exec(EVS_Imposter_CarryPlayerBack)
     EndIf
     IfEq(MV_RevealedFakeLuigi, 0)
         Set(LVar3, NPC_FakeLuigi)
         Set(LVar4, -20)
         Set(LVar5, 0)
         Set(LVar6, 0)
-        Exec(N(EVS_Imposter_CarryPlayerBack))
+        Exec(EVS_Imposter_CarryPlayerBack)
     EndIf
     IfEq(MV_RevealedFakeKoopaKoot, 0)
         Set(LVar3, NPC_FakeKoopaKoot)
         Set(LVar4, -20)
         Set(LVar5, 0)
         Set(LVar6, 10)
-        Exec(N(EVS_Imposter_CarryPlayerBack))
+        Exec(EVS_Imposter_CarryPlayerBack)
     EndIf
     IfEq(MV_RevealedFakeKolorado, 0)
         Set(LVar3, NPC_FakeKolorado)
         Set(LVar4, -20)
         Set(LVar5, 0)
         Set(LVar6, 20)
-        Exec(N(EVS_Imposter_CarryPlayerBack))
+        Exec(EVS_Imposter_CarryPlayerBack)
     EndIf
     Call(NpcMoveTo, NPC_FakeKooper, 370, 73, 30)
     Call(DisablePlayerPhysics, false)
@@ -458,41 +458,41 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
         Set(LVar4, ANIM_Goompa_Idle)
         Set(LVar0, 350)
         Set(LVar2, 90)
-        Exec(N(EVS_Imposter_ReturnToStation))
+        Exec(EVS_Imposter_ReturnToStation)
     EndIf
     IfEq(MV_RevealedFakeLuigi, 0)
         Set(LVar3, NPC_FakeLuigi)
         Set(LVar4, ANIM_Luigi_Idle)
         Set(LVar0, 280)
         Set(LVar2, 90)
-        Exec(N(EVS_Imposter_ReturnToStation))
+        Exec(EVS_Imposter_ReturnToStation)
     EndIf
     IfEq(MV_RevealedFakeKoopaKoot, 0)
         Set(LVar3, NPC_FakeKoopaKoot)
         Set(LVar4, ANIM_KoopaKoot_Idle)
         Set(LVar0, 420)
         Set(LVar2, 60)
-        Exec(N(EVS_Imposter_ReturnToStation))
+        Exec(EVS_Imposter_ReturnToStation)
     EndIf
     IfEq(MV_RevealedFakeKolorado, 0)
         Set(LVar3, NPC_FakeKolorado)
         Set(LVar4, ANIM_Kolorado_Idle)
         Set(LVar0, 315)
         Set(LVar2, 55)
-        Exec(N(EVS_Imposter_ReturnToStation))
+        Exec(EVS_Imposter_ReturnToStation)
     EndIf
     Set(LVar3, NPC_FakeKooper)
     Set(LVar4, ANIM_WorldKooper_Idle)
     Set(LVar0, 385)
     Set(LVar2, 120)
-    ExecWait(N(EVS_Imposter_ReturnToStation))
+    ExecWait(EVS_Imposter_ReturnToStation)
     Call(ShowMessageAtScreenPos, MSG_CH7_0165, 160, 40)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_Example_UseKooper) = {
+EvtScript EVS_Example_UseKooper = {
     Call(GetNpcPos, NPC_ExamplePlayer, LVar3, LVar4, LVar5)
     Thread
         Call(GetNpcPos, NPC_ExamplePlayer, LVar0, LVar1, LVar2)
@@ -516,8 +516,8 @@ EvtScript N(EVS_Example_UseKooper) = {
         Call(SetNpcPos, NPC_ExampleKooper, LVar0, LVar1, LVar2)
         Set(LVar3, LVar0)
         Add(LVar3, 140)
-        Call(N(UpdateExampleKooperMotion), NPC_ExampleKooper, LVar3, 0)
-        Call(N(UpdateExampleKooperMotion), NPC_ExampleKooper, LVar0, 1)
+        Call(UpdateExampleKooperMotion, NPC_ExampleKooper, LVar3, 0)
+        Call(UpdateExampleKooperMotion, NPC_ExampleKooper, LVar0, 1)
         Call(SetNpcAnimation, NPC_ExampleKooper, ANIM_WorldKooper_StillShell)
         Thread
             Call(SetNpcAnimation, NPC_ExamplePlayer, ANIM_Mario1_Jump)
@@ -533,7 +533,7 @@ EvtScript N(EVS_Example_UseKooper) = {
     End
 };
 
-EvtScript N(EVS_Imposter_BurstFromWall) = {
+EvtScript EVS_Imposter_BurstFromWall = {
     Call(SetNpcPos, LVar3, 533, 0, 77)
     Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcSpeed, LVar3, Float(6.0))
@@ -546,7 +546,7 @@ EvtScript N(EVS_Imposter_BurstFromWall) = {
     End
 };
 
-EvtScript N(EVS_ManageImpostersScene) = {
+EvtScript EVS_ManageImpostersScene = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
         Goto(30)
     EndIf
@@ -593,7 +593,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
             IfLt(LVar0, 380)
                 Goto(11)
             EndIf
-        Exec(N(EVS_Example_UseKooper))
+        Exec(EVS_Example_UseKooper)
         Set(GB_PRA19_TutorialState, 2)
         Goto(21)
     Label(20)
@@ -601,7 +601,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
     Call(SetNpcPos, NPC_ExamplePlayer, 415, 0, -75)
     Call(SetNpcAnimation, NPC_ExampleKooper, ANIM_WorldKooper_Idle)
     Call(SetNpcPos, NPC_ExampleKooper, 385, 0, -75)
-    Exec(N(EVS_Example_UseKooper))
+    Exec(EVS_Example_UseKooper)
     Label(21)
         Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         Wait(1)
@@ -632,40 +632,40 @@ EvtScript N(EVS_ManageImpostersScene) = {
     Set(LVar5, ANIM_Goompa_Idle)
     Set(LVar0, 350)
     Set(LVar2, 90)
-    Exec(N(EVS_Imposter_BurstFromWall))
+    Exec(EVS_Imposter_BurstFromWall)
     Set(LVar3, NPC_FakeLuigi)
     Set(LVar4, ANIM_Luigi_Run)
     Set(LVar5, ANIM_Luigi_Idle)
     Set(LVar0, 280)
     Set(LVar2, 90)
-    Exec(N(EVS_Imposter_BurstFromWall))
+    Exec(EVS_Imposter_BurstFromWall)
     Set(LVar3, NPC_FakeKoopaKoot)
     Set(LVar4, ANIM_KoopaKoot_Run)
     Set(LVar5, ANIM_KoopaKoot_Idle)
     Set(LVar0, 420)
     Set(LVar2, 60)
-    Exec(N(EVS_Imposter_BurstFromWall))
+    Exec(EVS_Imposter_BurstFromWall)
     Set(LVar3, NPC_FakeKolorado)
     Set(LVar4, ANIM_Kolorado_Run)
     Set(LVar5, ANIM_Kolorado_Idle)
     Set(LVar0, 315)
     Set(LVar2, 55)
-    Exec(N(EVS_Imposter_BurstFromWall))
+    Exec(EVS_Imposter_BurstFromWall)
     Set(LVar3, NPC_FakeKooper)
     Set(LVar4, ANIM_WorldKooper_Run)
     Set(LVar5, ANIM_WorldKooper_Idle)
     Set(LVar0, 385)
     Set(LVar2, 120)
-    Exec(N(EVS_Imposter_BurstFromWall))
+    Exec(EVS_Imposter_BurstFromWall)
     Thread
         Wait(2)
-        Call(N(AwaitImposterHitPlayer))
+        Call(AwaitImposterHitPlayer)
         Call(SetPlayerFlagBits, PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_ROTATION_LOCKED | PS_FLAG_FACE_FORWARD, true)
         Call(MakeLerp, 0, 11 * 180, 30, EASING_QUADRATIC_OUT)
         Loop(0)
             Call(UpdateLerp)
             Call(InterpPlayerYaw, LVar0, 0)
-            Call(N(SetPlayerFacingAngle))
+            Call(SetPlayerFacingAngle)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -680,50 +680,50 @@ EvtScript N(EVS_ManageImpostersScene) = {
     // kolorado imposter speaks
     Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeKolorado)
-    Exec(N(EVS_Imposter_HopTwice))
+    Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeKolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH7_0153)
     // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeGoompa)
-    Exec(N(EVS_Imposter_HopTwice))
+    Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeGoompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH7_0154)
      // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeKooper)
-    Exec(N(EVS_Imposter_HopTwice))
+    Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeKooper, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_0155)
      // goomba imposter speaks
     Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeKoopaKoot)
-    Exec(N(EVS_Imposter_HopTwice))
+    Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeKoopaKoot, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH7_0156)
      // luigi imposter speaks
     Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Set(LVar3, NPC_FakeLuigi)
-    Exec(N(EVS_Imposter_HopTwice))
+    Exec(EVS_Imposter_HopTwice)
     Call(SpeakToPlayer, NPC_FakeLuigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH7_0157)
      // follow-up dialogue
     Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Call(SpeakToPlayer, NPC_FakeKolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH7_0158)
     Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Call(SpeakToPlayer, NPC_FakeGoompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH7_0159)
     Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
-    ExecWait(N(EVS_FocusCam_OnPosition))
+    ExecWait(EVS_FocusCam_OnPosition)
     Call(SpeakToPlayer, NPC_FakeLuigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH7_015A)
     Call(ResetCam, CAM_DEFAULT, Float(2.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -733,12 +733,12 @@ EvtScript N(EVS_ManageImpostersScene) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGt(LVar0, 490)
             Set(LVar9, 270)
-            ExecWait(N(EVS_PreventPlayerLeaving))
+            ExecWait(EVS_PreventPlayerLeaving)
         EndIf
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, 190)
             Set(LVar9, 90)
-            ExecWait(N(EVS_PreventPlayerLeaving))
+            ExecWait(EVS_PreventPlayerLeaving)
         EndIf
         IfEq(MV_RevealedFakeGoompa, 1)
             IfEq(MV_RevealedFakeLuigi, 1)
@@ -767,7 +767,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                         Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
                         Call(EnablePartnerAI)
                         Call(DisablePlayerInput, false)
-                        BindTrigger(Ref(N(EVS_ExitWalk_pra_20_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+                        BindTrigger(Ref(EVS_ExitWalk_pra_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
                         Set(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
                         BreakLoop
                     EndIf
@@ -782,14 +782,14 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 Call(SetNpcAnimation, NPC_FakeKooper, ANIM_WorldKooper_Hurt)
                 Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
-                ExecWait(N(EVS_FocusCam_OnPosition))
+                ExecWait(EVS_FocusCam_OnPosition)
                 Call(SpeakToPlayer, NPC_FakeKooper, ANIM_WorldKooper_Hurt, ANIM_WorldKooper_Hurt, 0, MSG_CH7_0162)
-                ExecWait(N(EVS_FocusCam_StartBattle))
+                ExecWait(EVS_FocusCam_StartBattle)
                 Call(SetPlayerAnimation, ANIM_Mario1_Flail)
-                ExecWait(N(EVS_RevealEveryImposter))
+                ExecWait(EVS_RevealEveryImposter)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-                Call(N(ChooseImposterBattleFormation), MV_RevealedFakeGoompa, MV_RevealedFakeLuigi, MV_RevealedFakeKoopaKoot, MV_RevealedFakeKolorado)
+                Call(ChooseImposterBattleFormation, MV_RevealedFakeGoompa, MV_RevealedFakeLuigi, MV_RevealedFakeKoopaKoot, MV_RevealedFakeKolorado)
                 Call(DisablePlayerInput, false)
                 Call(StartBossBattle, SONG_SPECIAL_BATTLE)
                 BreakLoop
@@ -797,13 +797,13 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
-                ExecWait(N(EVS_FocusCam_OnPosition))
+                ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeGoompa)
                 Set(LVar4, NPC_GoompaGhost)
                 Set(LVar5, MSG_CH7_0161)
                 Set(LVar6, ANIM_Goompa_Talk)
                 Set(LVar7, ANIM_Goompa_Idle)
-                ExecWait(N(EVS_Imposter_Unmask))
+                ExecWait(EVS_Imposter_Unmask)
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeGoompa, 1)
                 Call(DisablePlayerInput, false)
@@ -811,13 +811,13 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
-                ExecWait(N(EVS_FocusCam_OnPosition))
+                ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeLuigi)
                 Set(LVar4, NPC_LuigiGhost)
                 Set(LVar5, MSG_CH7_0164)
                 Set(LVar6, ANIM_Luigi_Talk)
                 Set(LVar7, ANIM_Luigi_Idle)
-                ExecWait(N(EVS_Imposter_Unmask))
+                ExecWait(EVS_Imposter_Unmask)
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeLuigi, 1)
                 Call(DisablePlayerInput, false)
@@ -825,13 +825,13 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
-                ExecWait(N(EVS_FocusCam_OnPosition))
+                ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeKoopaKoot)
                 Set(LVar4, NPC_KoopaKootGhost)
                 Set(LVar5, MSG_CH7_0163)
                 Set(LVar6, ANIM_KoopaKoot_Talk)
                 Set(LVar7, ANIM_KoopaKoot_Idle)
-                ExecWait(N(EVS_Imposter_Unmask))
+                ExecWait(EVS_Imposter_Unmask)
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeKoopaKoot, 1)
                 Call(DisablePlayerInput, false)
@@ -839,13 +839,13 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 Call(DisablePlayerInput, true)
                 Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
-                ExecWait(N(EVS_FocusCam_OnPosition))
+                ExecWait(EVS_FocusCam_OnPosition)
                 Set(LVar3, NPC_FakeKolorado)
                 Set(LVar4, NPC_KoloradoGhost)
                 Set(LVar5, MSG_CH7_0160)
                 Set(LVar6, ANIM_Kolorado_Talk)
                 Set(LVar7, ANIM_Kolorado_Idle)
-                ExecWait(N(EVS_Imposter_Unmask))
+                ExecWait(EVS_Imposter_Unmask)
                 Wait(1)
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeKolorado, 1)
@@ -857,7 +857,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
     End
 };
 
-EvtScript N(EVS_Scene_DefeatMiniboss) = {
+EvtScript EVS_Scene_DefeatMiniboss = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -866,130 +866,130 @@ EvtScript N(EVS_Scene_DefeatMiniboss) = {
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
-    BindTrigger(Ref(N(EVS_ExitWalk_pra_20_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_pra_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Set(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_FakeKooper) = {
+EvtScript EVS_NpcInteract_FakeKooper = {
     Call(SpeakToPlayer, NPC_FakeKooper, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_015D)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_FakeGoompa) = {
+EvtScript EVS_NpcInteract_FakeGoompa = {
     Call(SpeakToPlayer, NPC_FakeGoompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH7_015C)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_FakeLuigi) = {
+EvtScript EVS_NpcInteract_FakeLuigi = {
     Call(SpeakToPlayer, NPC_FakeLuigi, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH7_015F)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_FakeKoopaKoot) = {
+EvtScript EVS_NpcInteract_FakeKoopaKoot = {
     Call(SpeakToPlayer, NPC_FakeKoopaKoot, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH7_015E)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_FakeKolorado) = {
+EvtScript EVS_NpcInteract_FakeKolorado = {
     Call(SpeakToPlayer, NPC_FakeKolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH7_015B)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_Controller) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_Scene_DefeatMiniboss)))
+EvtScript EVS_NpcInit_Duplighost_Controller = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_DefeatMiniboss))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
-    Exec(N(EVS_ManageImpostersScene))
+    Exec(EVS_ManageImpostersScene)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeKooper) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeKooper)))
+EvtScript EVS_NpcInit_FakeKooper = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKooper))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeGoompa) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeGoompa)))
+EvtScript EVS_NpcInit_FakeGoompa = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeGoompa))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeLuigi) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeLuigi)))
+EvtScript EVS_NpcInit_FakeLuigi = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeLuigi))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeKoopaKoot) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeKoopaKoot)))
+EvtScript EVS_NpcInit_FakeKoopaKoot = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKoopaKoot))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeKolorado) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_FakeKolorado)))
+EvtScript EVS_NpcInit_FakeKolorado = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_FakeKolorado))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ExamplePlayer) = {
+EvtScript EVS_NpcInit_ExamplePlayer = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mario1_Idle)
     MallocArray(16, LVarA)
-    Call(N(CreateExamplePlayerRenderer))
+    Call(CreateExamplePlayerRenderer)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ExampleKooper) = {
+EvtScript EVS_NpcInit_ExampleKooper = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_Goompa) = {
+EvtScript EVS_NpcInit_Duplighost_Goompa = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_Luigi) = {
+EvtScript EVS_NpcInit_Duplighost_Luigi = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_KoopaKoot) = {
+EvtScript EVS_NpcInit_Duplighost_KoopaKoot = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_Kolorado) = {
+EvtScript EVS_NpcInit_Duplighost_Kolorado = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-AnimID N(LimitAnims_Goompa)[] = {
+AnimID LimitAnims_Goompa[] = {
     ANIM_Goompa_Idle,
     ANIM_Goompa_Walk,
     ANIM_Goompa_Talk,
@@ -997,7 +997,7 @@ AnimID N(LimitAnims_Goompa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Luigi)[] = {
+AnimID LimitAnims_Luigi[] = {
     ANIM_Luigi_Idle,
     ANIM_Luigi_Walk,
     ANIM_Luigi_Talk,
@@ -1005,7 +1005,7 @@ AnimID N(LimitAnims_Luigi)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_KoopaKoot)[] = {
+AnimID LimitAnims_KoopaKoot[] = {
     ANIM_KoopaKoot_Idle,
     ANIM_KoopaKoot_Walk,
     ANIM_KoopaKoot_Talk,
@@ -1013,7 +1013,7 @@ AnimID N(LimitAnims_KoopaKoot)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Kolorado)[] = {
+AnimID LimitAnims_Kolorado[] = {
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_Walk,
     ANIM_Kolorado_Talk,
@@ -1021,7 +1021,7 @@ AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Duplighost)[] = {
+AnimID LimitAnims_Duplighost[] = {
     ANIM_Duplighost_Idle,
     ANIM_Duplighost_Walk,
     ANIM_Duplighost_Talk,
@@ -1029,13 +1029,13 @@ AnimID N(LimitAnims_Duplighost)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Imposters)[] = {
+NpcData NpcData_Imposters[] = {
     {
         .id = NPC_FakeKooper,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FakeKooper),
-        .settings = &N(NpcSettings_Kooper),
+        .init = &EVS_NpcInit_FakeKooper,
+        .settings = &NpcSettings_Kooper,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
@@ -1044,128 +1044,128 @@ NpcData N(NpcData_Imposters)[] = {
         .id = NPC_FakeGoompa,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FakeGoompa),
-        .settings = &N(NpcSettings_Goompa),
+        .init = &EVS_NpcInit_FakeGoompa,
+        .settings = &NpcSettings_Goompa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GOOMPA_ANIMS,
-        .limitAnimations = N(LimitAnims_Goompa),
+        .limitAnimations = LimitAnims_Goompa,
     },
     {
         .id = NPC_FakeLuigi,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FakeLuigi),
-        .settings = &N(NpcSettings_Kooper),
+        .init = &EVS_NpcInit_FakeLuigi,
+        .settings = &NpcSettings_Kooper,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
-        .limitAnimations = N(LimitAnims_Luigi),
+        .limitAnimations = LimitAnims_Luigi,
     },
     {
         .id = NPC_FakeKoopaKoot,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FakeKoopaKoot),
-        .settings = &N(NpcSettings_KoopaKoot),
+        .init = &EVS_NpcInit_FakeKoopaKoot,
+        .settings = &NpcSettings_KoopaKoot,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOOPA_KOOT_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaKoot),
+        .limitAnimations = LimitAnims_KoopaKoot,
     },
     {
         .id = NPC_FakeKolorado,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FakeKolorado),
-        .settings = &N(NpcSettings_Kolorado),
+        .init = &EVS_NpcInit_FakeKolorado,
+        .settings = &NpcSettings_Kolorado,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .limitAnimations = N(LimitAnims_Kolorado),
+        .limitAnimations = LimitAnims_Kolorado,
     },
     {
         .id = NPC_ExamplePlayer,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_ExamplePlayer),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_ExamplePlayer,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
-        .limitAnimations = N(LimitAnims_Duplighost),
+        .limitAnimations = LimitAnims_Duplighost,
     },
     {
         .id = NPC_ExampleKooper,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_ExampleKooper),
-        .settings = &N(NpcSettings_Kooper),
+        .init = &EVS_NpcInit_ExampleKooper,
+        .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
     },
 };
 
-NpcData N(NpcData_Duplighosts)[] = {
+NpcData NpcData_Duplighosts[] = {
     {
         .id = NPC_GoompaGhost,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Duplighost_Goompa),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_Goompa,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
-        .limitAnimations = N(LimitAnims_Duplighost),
+        .limitAnimations = LimitAnims_Duplighost,
     },
     {
         .id = NPC_LuigiGhost,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Duplighost_Luigi),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_Luigi,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
-        .limitAnimations = N(LimitAnims_Duplighost),
+        .limitAnimations = LimitAnims_Duplighost,
     },
     {
         .id = NPC_KoopaKootGhost,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Duplighost_KoopaKoot),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_KoopaKoot,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
-        .limitAnimations = N(LimitAnims_Duplighost),
+        .limitAnimations = LimitAnims_Duplighost,
     },
     {
         .id = NPC_KoloradoGhost,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Duplighost_Kolorado),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_Kolorado,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
-        .limitAnimations = N(LimitAnims_Duplighost),
+        .limitAnimations = LimitAnims_Duplighost,
     },
     {
         .id = NPC_Duplighost_Controller,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Duplighost_Controller),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_Controller,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
-        .limitAnimations = N(LimitAnims_Duplighost),
+        .limitAnimations = LimitAnims_Duplighost,
     },
 };
 
-EvtScript N(EVS_NpcIdle_TargetKooper) = {
+EvtScript EVS_NpcIdle_TargetKooper = {
     Loop(0)
         Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_TargetKooper, LVar0, LVar1, LVar2)
@@ -1175,7 +1175,7 @@ EvtScript N(EVS_NpcIdle_TargetKooper) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_TargetGoompa) = {
+EvtScript EVS_NpcIdle_TargetGoompa = {
     Loop(0)
         Call(GetNpcPos, NPC_FakeGoompa, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_TargetGoompa, LVar0, LVar1, LVar2)
@@ -1185,7 +1185,7 @@ EvtScript N(EVS_NpcIdle_TargetGoompa) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_TargetLuigi) = {
+EvtScript EVS_NpcIdle_TargetLuigi = {
     Loop(0)
         Call(GetNpcPos, NPC_FakeLuigi, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_TargetLuigi, LVar0, LVar1, LVar2)
@@ -1195,7 +1195,7 @@ EvtScript N(EVS_NpcIdle_TargetLuigi) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_TargetKoopaKoot) = {
+EvtScript EVS_NpcIdle_TargetKoopaKoot = {
     Loop(0)
         Call(GetNpcPos, NPC_FakeKoopaKoot, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_TargetKoopaKoot, LVar0, LVar1, LVar2)
@@ -1205,7 +1205,7 @@ EvtScript N(EVS_NpcIdle_TargetKoopaKoot) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_TargetKolorado) = {
+EvtScript EVS_NpcIdle_TargetKolorado = {
     Loop(0)
         Call(GetNpcPos, NPC_FakeKolorado, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_TargetKolorado, LVar0, LVar1, LVar2)
@@ -1215,7 +1215,7 @@ EvtScript N(EVS_NpcIdle_TargetKolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_TargetKooper) = {
+EvtScript EVS_NpcHit_TargetKooper = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -1225,7 +1225,7 @@ EvtScript N(EVS_NpcHit_TargetKooper) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_TargetGoompa) = {
+EvtScript EVS_NpcHit_TargetGoompa = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -1235,7 +1235,7 @@ EvtScript N(EVS_NpcHit_TargetGoompa) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_TargetLuigi) = {
+EvtScript EVS_NpcHit_TargetLuigi = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -1245,7 +1245,7 @@ EvtScript N(EVS_NpcHit_TargetLuigi) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_TargetKoopaKoot) = {
+EvtScript EVS_NpcHit_TargetKoopaKoot = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -1255,7 +1255,7 @@ EvtScript N(EVS_NpcHit_TargetKoopaKoot) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_TargetKolorado) = {
+EvtScript EVS_NpcHit_TargetKolorado = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -1265,53 +1265,53 @@ EvtScript N(EVS_NpcHit_TargetKolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TargetKooper) = {
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetKooper)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetKooper)))
+EvtScript EVS_NpcInit_TargetKooper = {
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetKooper))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetKooper))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TargetGoompa) = {
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetGoompa)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetGoompa)))
+EvtScript EVS_NpcInit_TargetGoompa = {
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetGoompa))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetGoompa))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TargetLuigi) = {
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetLuigi)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetLuigi)))
+EvtScript EVS_NpcInit_TargetLuigi = {
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetLuigi))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetLuigi))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TargetKoopaKoot) = {
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetKoopaKoot)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetKoopaKoot)))
+EvtScript EVS_NpcInit_TargetKoopaKoot = {
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetKoopaKoot))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetKoopaKoot))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_TargetKolorado) = {
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetKolorado)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetKolorado)))
+EvtScript EVS_NpcInit_TargetKolorado = {
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_TargetKolorado))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_TargetKolorado))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-NpcData N(NpcData_Targets)[] = {
+NpcData NpcData_Targets[] = {
     {
         .id = NPC_TargetKooper,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TargetKooper),
-        .settings = &N(NpcSettings_Kooper),
+        .init = &EVS_NpcInit_TargetKooper,
+        .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
@@ -1320,51 +1320,51 @@ NpcData N(NpcData_Targets)[] = {
         .id = NPC_TargetGoompa,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TargetGoompa),
-        .settings = &N(NpcSettings_Goompa),
+        .init = &EVS_NpcInit_TargetGoompa,
+        .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GOOMPA_ANIMS,
-        .limitAnimations = N(LimitAnims_Goompa),
+        .limitAnimations = LimitAnims_Goompa,
     },
     {
         .id = NPC_TargetLuigi,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TargetLuigi),
-        .settings = &N(NpcSettings_Kooper),
+        .init = &EVS_NpcInit_TargetLuigi,
+        .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
-        .limitAnimations = N(LimitAnims_Luigi),
+        .limitAnimations = LimitAnims_Luigi,
     },
     {
         .id = NPC_TargetKoopaKoot,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TargetKoopaKoot),
-        .settings = &N(NpcSettings_KoopaKoot),
+        .init = &EVS_NpcInit_TargetKoopaKoot,
+        .settings = &NpcSettings_KoopaKoot,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOOPA_KOOT_ANIMS,
-        .limitAnimations = N(LimitAnims_KoopaKoot),
+        .limitAnimations = LimitAnims_KoopaKoot,
     },
     {
         .id = NPC_TargetKolorado,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TargetKolorado),
-        .settings = &N(NpcSettings_Kolorado),
+        .init = &EVS_NpcInit_TargetKolorado,
+        .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .limitAnimations = N(LimitAnims_Kolorado),
+        .limitAnimations = LimitAnims_Kolorado,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Imposters), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
-    NPC_GROUP(N(NpcData_Duplighosts), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
-    NPC_GROUP(N(NpcData_Targets), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Imposters, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
+    NPC_GROUP(NpcData_Duplighosts, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
+    NPC_GROUP(NpcData_Targets, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_01),
     {}
 };

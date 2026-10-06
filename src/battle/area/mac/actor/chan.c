@@ -147,15 +147,13 @@ s32 N(ToppledAnims)[] = {
     STATUS_END,
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 // seems to be copied directly from buzzy_beetle.c
 EvtScript N(EVS_SetInitialState) = {
     Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
     Call(GetActorVar, ACTOR_SELF, AVAR_IsCeiling, LVar0)
     IfEq(LVar0, true)
         Call(SetActorVar, ACTOR_SELF, AVAR_ToppleState, AVAL_State_Ceiling)
-        Call(N(SetAbsoluteStatusOffsets), -10, 0, 10, 0)
+        Call(SetAbsoluteStatusOffsets, -10, 0, 10, 0)
         Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn_Ceiling)))
         Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Ceiling)))
         Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_FLIPABLE, false)
@@ -186,7 +184,7 @@ EvtScript N(EVS_FallFromCeiling) = {
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleState, AVAL_State_Toppled)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 16)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -9)
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn_Ground)))
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Ground)))
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
@@ -571,7 +569,7 @@ EvtScript N(EVS_TakeTurn_Ceiling) = {
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleState, AVAL_State_Upright)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 16)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -9)
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn_Ground)))
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Ground)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))

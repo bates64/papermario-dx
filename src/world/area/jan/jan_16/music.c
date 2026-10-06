@@ -1,6 +1,6 @@
 #include "jan_16.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(jan_16_ENTRY_0)

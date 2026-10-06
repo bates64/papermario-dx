@@ -3,7 +3,7 @@
 // LVar0 wall 1 model ID
 // LVar1 wall 2 model ID
 // LVar2 tex panner ID
-EvtScript N(EVS_GlassShimmer) = {
+EvtScript EVS_GlassShimmer = {
     Call(SetTexPanner, LVar0, LVar2)
     Call(SetTexPanner, LVar1, LVar2)
     Loop(0)

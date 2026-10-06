@@ -3,7 +3,7 @@
 #include "world/common/enemy/FrostClubba/hitbox.inc.c"
 #include "world/common/ai/ClubbaPatrolAI.inc.c"
 
-MobileAISettings N(AISettings_FrostClubba_Patrol) = {
+MobileAISettings AISettings_FrostClubba_Patrol = {
     .moveSpeed = 2.0f,
     .alertRadius = 100.0f,
     .alertOffsetDist = 40.0f,
@@ -16,21 +16,21 @@ MobileAISettings N(AISettings_FrostClubba_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_FrostClubba_Patrol) = {
+EvtScript EVS_NpcAI_FrostClubba_Patrol = {
     Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 3)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 7)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 6)
-    Call(N(ClubbaPatrolAI_Main), Ref(N(AISettings_FrostClubba_Patrol)))
+    Call(ClubbaPatrolAI_Main, Ref(AISettings_FrostClubba_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_FrostClubba_Patrol) = {
+NpcSettings NpcSettings_FrostClubba_Patrol = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_WHITE_CLUBBA,
-    .doAI = &N(EVS_NpcAI_FrostClubba_Patrol),
+    .doAI = &EVS_NpcAI_FrostClubba_Patrol,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

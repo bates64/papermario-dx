@@ -32,21 +32,19 @@ enum {
     NPC_Dryite_06               = 12,
 };
 
-#define NAMESPACE dro_01
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList Chapter3NPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(Chapter3NPCs);
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_OpenShopDoor;
+extern EvtScript EVS_CloseShopDoor;
+extern EvtScript EVS_ShopSignSwing;
 
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_OpenShopDoor);
-extern EvtScript N(EVS_CloseShopDoor);
-extern EvtScript N(EVS_ShopSignSwing);
-
-extern ShopItemData N(ShopInventory)[];
-extern ShopSellPriceData N(ShopPriceList)[];
-extern ShopItemLocation N(ShopItemPositions)[];
-extern ShopOwner N(MouserShopOwner);
+extern ShopItemData ShopInventory[];
+extern ShopSellPriceData ShopPriceList[];
+extern ShopItemLocation ShopItemPositions[];
+extern ShopOwner MouserShopOwner;

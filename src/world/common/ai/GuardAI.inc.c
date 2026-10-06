@@ -14,7 +14,7 @@ enum GuardAiVars {
     AI_VAR_GUARD_ORIGINAL_YAW           = 0,
 };
 
-void N(GuardAI_IdleInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_IdleInit(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -32,7 +32,7 @@ void N(GuardAI_IdleInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolu
     }
 }
 
-void N(GuardAI_Idle)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_Idle(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -49,7 +49,7 @@ void N(GuardAI_Idle)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* 
     }
 }
 
-void N(GuardAI_AlertInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_AlertInit(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->jumpVel = 10.0f;
@@ -59,7 +59,7 @@ void N(GuardAI_AlertInit)(Evt* script, GuardAISettings* settings, EnemyDetectVol
     script->AI_TEMP_STATE = AI_STATE_ALERT;
 }
 
-void N(GuardAI_Alert)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_Alert(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->pos.y += npc->jumpVel;
@@ -73,7 +73,7 @@ void N(GuardAI_Alert)(Evt* script, GuardAISettings* settings, EnemyDetectVolume*
     }
 }
 
-void N(GuardAI_ChaseInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_ChaseInit(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 angle;
@@ -99,7 +99,7 @@ void N(GuardAI_ChaseInit)(Evt* script, GuardAISettings* settings, EnemyDetectVol
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
 
-void N(GuardAI_Chase)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_Chase(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -121,7 +121,7 @@ void N(GuardAI_Chase)(Evt* script, GuardAISettings* settings, EnemyDetectVolume*
     }
 }
 
-void N(GuardAI_LosePlayer)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_LosePlayer(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (npc->duration > 0) {
@@ -132,7 +132,7 @@ void N(GuardAI_LosePlayer)(Evt* script, GuardAISettings* settings, EnemyDetectVo
     }
 }
 
-void N(GuardAI_ReturnHomeInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_ReturnHomeInit(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -146,7 +146,7 @@ void N(GuardAI_ReturnHomeInit)(Evt* script, GuardAISettings* settings, EnemyDete
     script->AI_TEMP_STATE = AI_STATE_GUARD_RETURN_HOME;
 }
 
-void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
+void GuardAI_ReturnHome(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -182,7 +182,7 @@ void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* settings, EnemyDetectVo
     }
 }
 
-API_CALLABLE(N(GuardAI_Main)) {
+API_CALLABLE(GuardAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -226,35 +226,35 @@ API_CALLABLE(N(GuardAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_GUARD_IDLE_INIT:
-            N(GuardAI_IdleInit)(script, settings, detect);
+            GuardAI_IdleInit(script, settings, detect);
             // fallthrough
         case AI_STATE_GUARD_IDLE:
-            N(GuardAI_Idle)(script, settings, detect);
+            GuardAI_Idle(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:
-            N(GuardAI_AlertInit)(script, settings, detect);
+            GuardAI_AlertInit(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            N(GuardAI_Alert)(script, settings, detect);
+            GuardAI_Alert(script, settings, detect);
             break;
 
         case AI_STATE_CHASE_INIT:
-            N(GuardAI_ChaseInit)(script, settings, detect);
+            GuardAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(GuardAI_Chase)(script, settings, detect);
+            GuardAI_Chase(script, settings, detect);
             break;
 
         case AI_STATE_LOSE_PLAYER:
-            N(GuardAI_LosePlayer)(script, settings, detect);
+            GuardAI_LosePlayer(script, settings, detect);
             break;
 
         case AI_STATE_GUARD_RETURN_HOME_INIT:
-            N(GuardAI_ReturnHomeInit)(script, settings, detect);
+            GuardAI_ReturnHomeInit(script, settings, detect);
             // fallthrough
         case AI_STATE_GUARD_RETURN_HOME:
-            N(GuardAI_ReturnHome)(script, settings, detect);
+            GuardAI_ReturnHome(script, settings, detect);
             break;
 
         case AI_STATE_SUSPEND:

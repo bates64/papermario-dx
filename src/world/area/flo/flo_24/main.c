@@ -3,25 +3,25 @@
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript N(EVS_ExitWalk_flo_08_1) = EVT_EXIT_WALK(60, flo_24_ENTRY_0, "flo_08", flo_08_ENTRY_1);
-EvtScript N(EVS_ExitWalk_flo_10_0) = EVT_EXIT_WALK(60, flo_24_ENTRY_1, "flo_10", flo_10_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_08_1 = EVT_EXIT_WALK(60, flo_24_ENTRY_0, "flo_08", flo_08_ENTRY_1);
+EvtScript EVS_ExitWalk_flo_10_0 = EVT_EXIT_WALK(60, flo_24_ENTRY_1, "flo_10", flo_10_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_08_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_flo_10_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_flo_08_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_flo_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(MakeTransformGroup, MODEL_g58)
     Call(MakeTransformGroup, MODEL_g73)
-    Exec(N(EVS_SetupFoliage))
-    Exec(N(EVS_SetupWater))
+    Exec(EVS_SetupFoliage)
+    Exec(EVS_SetupWater)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o177, SURFACE_TYPE_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o178, SURFACE_TYPE_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o179, SURFACE_TYPE_DOCK_WALL)
@@ -35,13 +35,13 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_24_ENTRY_2)
-        Exec(N(EVS_Scene_FillWithWater))
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_Scene_FillWithWater)
+        Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
     EndIf
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
     EndIf

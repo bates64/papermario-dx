@@ -1,6 +1,6 @@
 #include "nok_04.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SetMusic, 0, SONG_FUZZY_ATTACK, 0, VOL_LEVEL_FULL)
     Else
@@ -10,13 +10,13 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PushPartnerSong) = {
+EvtScript EVS_PushPartnerSong = {
     Call(PushSong, SONG_NEW_PARTNER, 0)
     Return
     End
 };
 
-EvtScript N(EVS_PopSong) = {
+EvtScript EVS_PopSong = {
     Call(FadeOutMusic, 0, 500)
     Wait(15)
     Call(PopSong)

@@ -2,22 +2,20 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleClubba.h"
 
-#define NAMESPACE A(clubba)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SWING       = 3,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BattleClubba_Idle,
     STATUS_KEY_STONE,     ANIM_BattleClubba_Still,
     STATUS_KEY_SLEEP,     ANIM_BattleClubba_Sleep,
@@ -30,12 +28,12 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              90,
@@ -60,15 +58,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -12, 32 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 8, -3 },
@@ -80,10 +78,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_CLUBBA,
     .level = ACTOR_LEVEL_CLUBBA,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 60,
     .airLiftChance = 60,
     .hurricaneChance = 70,
@@ -98,20 +96,20 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 35 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -209,7 +207,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)

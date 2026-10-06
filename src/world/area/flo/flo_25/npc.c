@@ -6,7 +6,7 @@
 
 #include "world/common/npc/GateFlower/idle.inc.c"
 
-API_CALLABLE(N(JudgeItemTastiness)) {
+API_CALLABLE(JudgeItemTastiness) {
     s32 itemId = evt_get_variable(script, *script->ptrReadPos);
     ItemData* item = &gItemTable[itemId];
 
@@ -21,7 +21,7 @@ API_CALLABLE(N(JudgeItemTastiness)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_GateFlower) = {
+EvtScript EVS_NpcInteract_GateFlower = {
     Call(DisablePlayerInput, true)
     IfEq(GF_FLO25_GaveRedBerry, false)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Red_Talk, ANIM_GateFlower_Red_Idle, 0, MSG_CH6_003C)
             CaseDefault
                 Set(LVar8, LVar0)
-                Call(N(JudgeItemTastiness), LVar0)
+                Call(JudgeItemTastiness, LVar0)
                 Call(MakeItemEntity, LVar8, 505, 20, -24, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(LVar7, LVar0)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
@@ -152,8 +152,8 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GateFlower) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GateFlower)))
+EvtScript EVS_NpcInit_GateFlower = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GateFlower))
     IfEq(GF_FLO25_GaveRedBerry, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Red_HappyDance)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o94, COLLIDER_FLAGS_UPPER_MASK)
@@ -168,19 +168,19 @@ EvtScript N(EVS_NpcInit_GateFlower) = {
     End
 };
 
-NpcData N(NpcData_GateFlower) = {
+NpcData NpcData_GateFlower = {
     .id = NPC_GateFlower,
     .pos = { 505.0f, 0.0f, -25.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_GateFlower),
-    .settings = &N(NpcSettings_GateFlower),
+    .init = &EVS_NpcInit_GateFlower,
+    .settings = &NpcSettings_GateFlower,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GATE_FLOWER_RED_ANIMS,
     .tattle = MSG_NpcTattle_RedGateFlower,
 };
 
-NpcData N(NpcData_RuffPuff) = {
+NpcData NpcData_RuffPuff = {
     .id = NPC_RuffPuff,
     .pos = { -200.0f, 45.0f, 0.0f },
     .yaw = 90,
@@ -196,14 +196,14 @@ NpcData N(NpcData_RuffPuff) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_RuffPuff_Wander),
+    .settings = &NpcSettings_RuffPuff_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = RUFF_PUFF_DROPS,
     .animations = RUFF_PUFF_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Bzzap) = {
+NpcData NpcData_Bzzap = {
     .id = NPC_Bzzap,
     .pos = { 150.0f, 55.0f, 0.0f },
     .yaw = 90,
@@ -219,16 +219,16 @@ NpcData N(NpcData_Bzzap) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Bzzap_Wander),
+    .settings = &NpcSettings_Bzzap_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_RuffPuff), BTL_FLO_FORMATION_22, BTL_FLO_STAGE_05),
-    NPC_GROUP(N(NpcData_Bzzap), BTL_FLO_FORMATION_1A, BTL_FLO_STAGE_01),
-    NPC_GROUP(N(NpcData_GateFlower)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_RuffPuff, BTL_FLO_FORMATION_22, BTL_FLO_STAGE_05),
+    NPC_GROUP(NpcData_Bzzap, BTL_FLO_FORMATION_1A, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_GateFlower),
     {}
 };

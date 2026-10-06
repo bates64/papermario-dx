@@ -2,8 +2,6 @@
 #include "effects_internal.h"
 #include "nu/nusys.h"
 
-#define NAMESPACE motion_blur_flame
-
 extern Gfx D_09000200_3A35D0[];
 extern Gfx D_090002A8_3A3678[];
 extern Gfx D_09000358_3A3728[];
@@ -23,16 +21,16 @@ typedef struct ScreenResamplePreset {
     /* 0x14 */ s32 stripHeight;
 } ScreenResamplePreset; // size = 0x18
 
-ScreenResamplePreset N(ScreenResamplePresets)[] = {
+ScreenResamplePreset ScreenResamplePresets[] = {
     { 16, 16, 1.0f, 1.0f, 8, 8 },
     { 16, 16, 1.0f, 1.0f, 8, 8 },
     { 16, 16, 1.0f, 1.0f, 8, 8 },
 };
 
-s32 N(SampleAlphaPct)[MOTION_BLUR_FLAME_SAMPLES] = { 100, 60, 30, 10 };
+s32 SampleAlphaPct[MOTION_BLUR_FLAME_SAMPLES] = { 100, 60, 30, 10 };
 
-void motion_blur_flame_init(EffectInstance* effect);
-void motion_blur_flame_update(EffectInstance* effect);
+void init(EffectInstance* effect);
+void update(EffectInstance* effect);
 void motion_blur_flame_render(EffectInstance* effect);
 void motion_blur_flame_appendGfx(void* effect);
 
@@ -42,8 +40,8 @@ EffectInstance* motion_blur_flame_main(s32 type, f32 x, f32 y, f32 z, f32 scale,
     MotionBlurFlameFXData* data;
     s32 numParts = 1;
 
-    bp.init = motion_blur_flame_init;
-    bp.update = motion_blur_flame_update;
+    bp.init = init;
+    bp.update = update;
     bp.renderScene = motion_blur_flame_render;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_MOTION_BLUR_FLAME;
@@ -77,10 +75,10 @@ EffectInstance* motion_blur_flame_main(s32 type, f32 x, f32 y, f32 z, f32 scale,
     return effect;
 }
 
-void motion_blur_flame_init(EffectInstance* effect) {
+void init(EffectInstance* effect) {
 }
 
-void motion_blur_flame_update(EffectInstance* effect) {
+void update(EffectInstance* effect) {
     MotionBlurFlameFXData* data = effect->data.motionBlurFlame;
 
     if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
@@ -129,7 +127,7 @@ void motion_blur_flame_appendGfx(void* effect) {
     s32 type = data->type;
     s32 alpha = data->alpha;
 
-    ScreenResamplePreset* preset = &N(ScreenResamplePresets)[type];
+    ScreenResamplePreset* preset = &ScreenResamplePresets[type];
     s32 stripHeight = preset->stripHeight;
     s32 radius = preset->screenRadius;
     b32 historyIsVisible[MOTION_BLUR_FLAME_SAMPLES];
@@ -174,7 +172,7 @@ void motion_blur_flame_appendGfx(void* effect) {
         historyScreenY[i] = screenY;
 
         if (isVisible && (screenX >= 0) && (screenY >= 0) && (screenX < SCREEN_WIDTH) && (screenY < SCREEN_HEIGHT)) {
-            sampleAlpha = (alpha * N(SampleAlphaPct)[i]) / 100;
+            sampleAlpha = (alpha * SampleAlphaPct[i]) / 100;
             primR = (data->color.r * sampleAlpha) >> 9;
             primG = (data->color.g * sampleAlpha) >> 9;
             primB = (data->color.b * sampleAlpha) >> 9;

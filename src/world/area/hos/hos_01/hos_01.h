@@ -34,16 +34,14 @@ enum {
     MF_SpiritsGone      = MapFlag(0),
 };
 
-#define NAMESPACE hos_01
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupModelFX;
+extern EvtScript EVS_Scene_StarWayOpened;
+extern EvtScript EVS_AscendStarWarp;
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupModelFX);
-extern EvtScript N(EVS_Scene_StarWayOpened);
-extern EvtScript N(EVS_AscendStarWarp);
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_MakeEntities);
-
-API_CALLABLE(N(SetStarWarpIdleParams));
-API_CALLABLE(N(SetStarWarpTravelParams));
-API_CALLABLE(N(SetStarWarpMasterAlpha));
+API_CALLABLE(SetStarWarpIdleParams);
+API_CALLABLE(SetStarWarpTravelParams);
+API_CALLABLE(SetStarWarpMasterAlpha);

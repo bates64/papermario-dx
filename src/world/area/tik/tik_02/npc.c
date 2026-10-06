@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Blooper/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_Blooper) = {
+EvtScript EVS_NpcIdle_Blooper = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGt(LVar0, 65)
@@ -11,7 +11,7 @@ EvtScript N(EVS_NpcIdle_Blooper) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    Exec(N(EVS_PlayBlooperSong))
+    Exec(EVS_PlayBlooperSong)
     Call(ShowMessageAtScreenPos, MSG_MGM_0000, 160, 40)
     Thread
         Call(InterpPlayerYaw, 315, 0)
@@ -43,7 +43,7 @@ EvtScript N(EVS_NpcIdle_Blooper) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Blooper) = {
+EvtScript EVS_NpcDefeat_Blooper = {
     Wait(5)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -75,27 +75,27 @@ EvtScript N(EVS_NpcDefeat_Blooper) = {
     EndIf
     Set(GF_TIK02_Defeated_Blooper, true)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(DisablePlayerInput, false)
     Call(RemoveNpc, NPC_SELF)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Blooper) = {
+EvtScript EVS_NpcInit_Blooper = {
     IfEq(GF_TIK02_Defeated_Blooper, false)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Blooper)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Blooper)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Blooper))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Blooper))
         IfEq(GF_TIK_DefeatedOneBlooper, false)
             Call(SetNpcScale, NPC_SELF, Float(0.75), Float(0.75), Float(0.75))
-            Call(N(GetBlooperBattleID), 0)
+            Call(GetBlooperBattleID, 0)
         Else
             IfEq(GF_TIK_DefeatedTwoBloopers, false)
                 Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
-                Call(N(GetBlooperBattleID), 1)
+                Call(GetBlooperBattleID, 1)
             Else
                 Call(SetNpcScale, NPC_SELF, Float(2.0), Float(2.0), Float(2.0))
-                Call(N(GetBlooperBattleID), 2)
+                Call(GetBlooperBattleID, 2)
             EndIf
         EndIf
     Else
@@ -105,18 +105,18 @@ EvtScript N(EVS_NpcInit_Blooper) = {
     End
 };
 
-NpcData N(NpcData_Blooper) = {
+NpcData NpcData_Blooper = {
     .id = NPC_Blooper,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Blooper),
-    .settings = &N(NpcSettings_Blooper),
+    .init = &EVS_NpcInit_Blooper,
+    .settings = &NpcSettings_Blooper,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BLOOPER_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Blooper), BTL_TIK2_FORMATION_00, BTL_TIK2_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Blooper, BTL_TIK2_FORMATION_00, BTL_TIK2_STAGE_00),
     {}
 };

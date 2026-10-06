@@ -1,6 +1,6 @@
 #include "../mac_02.h"
 
-EvtScript N(EVS_CarryStolenFryingPan) = {
+EvtScript EVS_CarryStolenFryingPan = {
     Call(GetNpcPos, NPC_ShyGuy, LVar2, LVar3, LVar4)
     Add(LVar3, 20)
     Call(MakeItemEntity, ITEM_FRYING_PAN, LVar2, LVar3, LVar4, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -17,7 +17,7 @@ EvtScript N(EVS_CarryStolenFryingPan) = {
     End
 };
 
-EvtScript N(EVS_PlayShyGuyRunSounds) = {
+EvtScript EVS_PlayShyGuyRunSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_ShyGuy, SOUND_SEQ_SHY_GUY_STEP, SOUND_SPACE_DEFAULT)
         Wait(2)
@@ -26,7 +26,7 @@ EvtScript N(EVS_PlayShyGuyRunSounds) = {
     End
 };
 
-EvtScript N(EVS_Scene_FryingPanStolen) = {
+EvtScript EVS_Scene_FryingPanStolen = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, 40)
@@ -42,7 +42,7 @@ EvtScript N(EVS_Scene_FryingPanStolen) = {
     Call(SetNpcPos, NPC_ShyGuy, -200, 20, -260)
     Call(SetNpcAnimation, NPC_ShyGuy, ANIM_ShyGuy_Red_Dash)
     Wait(10)
-    Exec(N(EVS_CarryStolenFryingPan))
+    Exec(EVS_CarryStolenFryingPan)
     Thread
         Call(EnableGroup, MODEL_cook_in, true)
         Call(PlaySoundAtCollider, COLLIDER_deilit1u, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -63,7 +63,7 @@ EvtScript N(EVS_Scene_FryingPanStolen) = {
     EndThread
     Wait(5)
     Call(PlaySoundAtNpc, NPC_ShyGuy, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
-    ExecGetTID(N(EVS_PlayShyGuyRunSounds), LVarA)
+    ExecGetTID(EVS_PlayShyGuyRunSounds, LVarA)
     Call(SetNpcSpeed, NPC_ShyGuy, 8)
     Call(NpcMoveTo, NPC_ShyGuy, -140, -240, 0)
     Call(NpcMoveTo, NPC_ShyGuy, -140, -140, 0)
@@ -80,9 +80,9 @@ EvtScript N(EVS_Scene_FryingPanStolen) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy) = {
+EvtScript EVS_NpcInit_ShyGuy = {
     IfLt(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
-        Exec(N(EVS_Scene_FryingPanStolen))
+        Exec(EVS_Scene_FryingPanStolen)
     EndIf
     Return
     End

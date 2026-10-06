@@ -1,20 +1,20 @@
 #include "hos_02.h"
 #include "effects.h"
 
-u16 N(HaloScalePhaseAngle) = 0;
+u16 HaloScalePhaseAngle = 0;
 
-void N(build_gfx_lamp_halos)(void) {
-    f32 scale = ((sins(N(HaloScalePhaseAngle)) * (1.0f / 0x8000)) * 0.5 * 0.5) + 1.05;
+void build_gfx_lamp_halos(void) {
+    f32 scale = ((sins(HaloScalePhaseAngle) * (1.0f / 0x8000)) * 0.5 * 0.5) + 1.05;
 
-    N(HaloScalePhaseAngle) += (s32)RAD_TO_BINANG(25.1720);
+    HaloScalePhaseAngle += (s32)RAD_TO_BINANG(25.1720);
     guScale(&gDisplayContext->matrixStack[gMatrixListPos], scale, scale, scale);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
               G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 }
 
-u16 N(YellowStarPhaseAngle) = 0;
+u16 YellowStarPhaseAngle = 0;
 
-void N(build_gfx_yellow_stars)(void) {
+void build_gfx_yellow_stars(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
@@ -25,21 +25,21 @@ void N(build_gfx_yellow_stars)(void) {
 
     for (i = 0; i < numVertices; i++) {
         u8* colors = copiedVertices[i].v.cn;
-        s16 temp1 = (sins(N(YellowStarPhaseAngle) * (i % 3 + 1) + i) + 0x8000) / 2;
+        s16 temp1 = (sins(YellowStarPhaseAngle * (i % 3 + 1) + i) + 0x8000) / 2;
         colors[0] = temp1 * 155 / 0x8000 + 100;
         colors[1] = temp1 * 155 / 0x8000 + 100;
 
-        temp3 = sins(N(YellowStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(YellowStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 = sins(YellowStarPhaseAngle / 0x8000 * (((i / 2) % 3 + 1) << 15) + YellowStarPhaseAngle / 0x4000 * 0x8000 + i) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_0));
-    N(YellowStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    YellowStarPhaseAngle += (s32)RAD_TO_BINANG(25.1898);
 }
 
-u16 N(BlueStarPhaseAngle) = 0;
+u16 BlueStarPhaseAngle = 0;
 
-void N(build_gfx_blue_stars)(void) {
+void build_gfx_blue_stars(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
@@ -50,21 +50,21 @@ void N(build_gfx_blue_stars)(void) {
 
     for (i = 0; i < numVertices; i++) {
         u8* colors = copiedVertices[i].v.cn;
-        s16 temp1 = (sins(N(BlueStarPhaseAngle) * (i % 3 + 1) + i) + 0x8000) / 2;
+        s16 temp1 = (sins(BlueStarPhaseAngle * (i % 3 + 1) + i) + 0x8000) / 2;
         colors[0] = temp1 * 155 / 0x8000 + 48.62745098039216;
         colors[1] = temp1 * 155 / 0x8000 + 89.41176470588236;
 
-        temp3 = sins(N(BlueStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(BlueStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 = sins(BlueStarPhaseAngle / 0x8000 * (((i / 2) % 3 + 1) << 15) + BlueStarPhaseAngle / 0x4000 * 0x8000 + i) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 99.6078431372549;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_1));
-    N(BlueStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    BlueStarPhaseAngle += (s32)RAD_TO_BINANG(25.1898);
 }
 
-u16 N(GreenStarPhaseAngle) = 0;
+u16 GreenStarPhaseAngle = 0;
 
-void N(build_gfx_green_stars)(void) {
+void build_gfx_green_stars(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
@@ -75,21 +75,21 @@ void N(build_gfx_green_stars)(void) {
 
     for (i = 0; i < numVertices; i++) {
         u8* colors = copiedVertices[i].v.cn;
-        s16 temp1 = (sins(N(GreenStarPhaseAngle) * (i % 3 + 1) + i) + 0x8000) / 2;
+        s16 temp1 = (sins(GreenStarPhaseAngle * (i % 3 + 1) + i) + 0x8000) / 2;
         colors[0] = temp1 * 155 / 0x8000 + 67.45098039215686;
         colors[1] = temp1 * 155 / 0x8000 + 100.0;
 
-        temp3 = sins(N(GreenStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15) + N(GreenStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 = sins(GreenStarPhaseAngle / 0x8000 * (((i / 2) % 3 + 1) << 15) + GreenStarPhaseAngle / 0x4000 * 0x8000 + i) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 59.21568627450981;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_2));
-    N(GreenStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    GreenStarPhaseAngle += (s32)RAD_TO_BINANG(25.1898);
 }
 
-u16 N(PinkStarPhaseAngle) = 0;
+u16 PinkStarPhaseAngle = 0;
 
-void N(build_gfx_pink_stars)(void) {
+void build_gfx_pink_stars(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
@@ -100,19 +100,19 @@ void N(build_gfx_pink_stars)(void) {
 
     for (i = 0; i < numVertices; i++) {
         u8* colors = copiedVertices[i].v.cn;
-        s16 temp1 = (sins(N(PinkStarPhaseAngle) * (i % 3 + 1) + i) + 0x8000) / 2;
+        s16 temp1 = (sins(PinkStarPhaseAngle * (i % 3 + 1) + i) + 0x8000) / 2;
         colors[0] = temp1 * 155 / 0x8000 + 100.0;
         colors[1] = temp1 * 155 / 0x8000 + 80.3921568627451;
 
-        temp3 = sins(N(PinkStarPhaseAngle) / 0x8000 * (((i / 2) % 3 + 1) << 15)  + N(PinkStarPhaseAngle) / 0x4000 * 0x8000 + i) + 0x8000;
+        temp3 = sins(PinkStarPhaseAngle / 0x8000 * (((i / 2) % 3 + 1) << 15)  + PinkStarPhaseAngle / 0x4000 * 0x8000 + i) + 0x8000;
         colors[2] = colors[0] * temp3 / 0x10000 + 96.07843137254902;
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_3));
-    N(PinkStarPhaseAngle) += (s32)RAD_TO_BINANG(25.1898);
+    PinkStarPhaseAngle += (s32)RAD_TO_BINANG(25.1898);
 }
 
-API_CALLABLE(N(SetStarWarpIdleParams)) {
+API_CALLABLE(SetStarWarpIdleParams) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -123,7 +123,7 @@ API_CALLABLE(N(SetStarWarpIdleParams)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetStarWarpTravelParams)) {
+API_CALLABLE(SetStarWarpTravelParams) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -134,15 +134,15 @@ API_CALLABLE(N(SetStarWarpTravelParams)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupModelFX) = {
+EvtScript EVS_SetupModelFX = {
     PlayEffect(EFFECT_75, 1, -1105, -86, 230, 1, -1)
     Set(MV_StarWarpEffect, LVarF)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_02_ENTRY_0)
-            Call(N(SetStarWarpTravelParams), MV_StarWarpEffect)
+            Call(SetStarWarpTravelParams, MV_StarWarpEffect)
         CaseEq(hos_02_ENTRY_1)
-            Call(N(SetStarWarpIdleParams), MV_StarWarpEffect)
+            Call(SetStarWarpIdleParams, MV_StarWarpEffect)
     EndSwitch
     // star shimmer floor
     Call(SetTexPanner, MODEL_o380, TEX_PANNER_1)
@@ -163,7 +163,7 @@ EvtScript N(EVS_SetupModelFX) = {
     Call(SetModelCustomGfx, MODEL_o398, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o347, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o348, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(build_gfx_lamp_halos)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(build_gfx_lamp_halos), nullptr)
     Call(SetModelFlags, MODEL_o414, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_o415, MODEL_FLAG_BILLBOARD, true)
     Call(SetModelFlags, MODEL_o399, MODEL_FLAG_BILLBOARD, true)
@@ -181,7 +181,7 @@ EvtScript N(EVS_SetupModelFX) = {
     Call(SetModelFlags, MODEL_o458, MODEL_FLAG_BILLBOARD, true)
     // yellow stars
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o466, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_yellow_stars)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(build_gfx_yellow_stars), nullptr)
     Call(SetModelCustomGfx, MODEL_o466, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o467, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o468, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
@@ -206,21 +206,21 @@ EvtScript N(EVS_SetupModelFX) = {
     Call(SetModelFlags, MODEL_o548, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
     // blue stars
     Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_o466, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(N(build_gfx_blue_stars)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(build_gfx_blue_stars), nullptr)
     Call(SetModelCustomGfx, MODEL_o543, CUSTOM_GFX_2, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o539, CUSTOM_GFX_2, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o543, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
     Call(SetModelFlags, MODEL_o539, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
     // green stars
     Call(MakeLocalVertexCopy, VTX_COPY_2, MODEL_o466, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(N(build_gfx_green_stars)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(build_gfx_green_stars), nullptr)
     Call(SetModelCustomGfx, MODEL_o546, CUSTOM_GFX_3, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o540, CUSTOM_GFX_3, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o546, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
     Call(SetModelFlags, MODEL_o540, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
     // pink stars
     Call(MakeLocalVertexCopy, VTX_COPY_3, MODEL_o466, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_4, Ref(N(build_gfx_pink_stars)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_4, Ref(build_gfx_pink_stars), nullptr)
     Call(SetModelCustomGfx, MODEL_o544, CUSTOM_GFX_4, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o547, CUSTOM_GFX_4, ENV_TINT_UNCHANGED)
     Call(SetModelFlags, MODEL_o544, MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)

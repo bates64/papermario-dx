@@ -80,8 +80,6 @@ enum {
     MV_PrevDestructState    = MapVar(13),
 };
 
-#define NAMESPACE kkj_25
-
 #include "world/common/npc/Bowser/idle.h"
 #include "world/common/npc/Dummy/idle.h"
 #include "world/common/enemy/Kammy/flying.h"
@@ -90,16 +88,16 @@ enum {
 #include "world/common/npc/Peach/base.h"
 #include "world/common/npc/Twink/base.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_ManageArenaEffects);
-extern EvtScript N(EVS_Scene_BowserTrapsMario);
-extern EvtScript N(EVS_Scene_KammyDefeated);
-extern EvtScript N(EVS_Scene_BowserDefeated);
-extern EvtScript N(EVS_Scene_PeachBreaksFree);
-extern EvtScript N(EVS_Scene_ActivateMachine);
-extern EvtScript N(EVS_SpawnBowserStarEnergyWaves);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_ManageArenaEffects;
+extern EvtScript EVS_Scene_BowserTrapsMario;
+extern EvtScript EVS_Scene_KammyDefeated;
+extern EvtScript EVS_Scene_BowserDefeated;
+extern EvtScript EVS_Scene_PeachBreaksFree;
+extern EvtScript EVS_Scene_ActivateMachine;
+extern EvtScript EVS_SpawnBowserStarEnergyWaves;
+extern EvtScript EVS_MakeEntities;
 
-extern NpcGroupList N(InitialNpcs);
-extern NpcGroupList N(MidpointNpcs);
-extern NpcGroupList N(FinaleNpcs);
+extern NpcGroupList InitialNpcs;
+extern NpcGroupList MidpointNpcs;
+extern NpcGroupList FinaleNpcs;

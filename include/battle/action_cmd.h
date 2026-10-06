@@ -8,29 +8,6 @@
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
 #endif
-#include "battle/action_cmd/jump.h"
-#include "battle/action_cmd/hammer.h"
-#include "battle/action_cmd/flee.h"
-#include "battle/action_cmd/break_free.h"
-#include "battle/action_cmd/whirlwind.h"
-#include "battle/action_cmd/stop_leech.h"
-#include "battle/action_cmd/unused_flee.h"
-#include "battle/action_cmd/dizzy_shell.h"
-#include "battle/action_cmd/fire_shell.h"
-#include "battle/action_cmd/unused_mash_a.h"
-#include "battle/action_cmd/bomb.h"
-#include "battle/action_cmd/body_slam.h"
-#include "battle/action_cmd/air_lift.h"
-#include "battle/action_cmd/air_raid.h"
-#include "battle/action_cmd/squirt.h"
-#include "battle/action_cmd/power_shock.h"
-#include "battle/action_cmd/mega_shock.h"
-#include "battle/action_cmd/smack.h"
-#include "battle/action_cmd/spiny_surge.h"
-#include "battle/action_cmd/hurricane.h"
-#include "battle/action_cmd/spook.h"
-#include "battle/action_cmd/three_chances.h"
-#include "battle/action_cmd/tidal_wave.h"
 
 // standard states for action commands
 // used by every command except three_chances and tidal_wave
@@ -67,6 +44,45 @@ enum ActionCommandModes {
     AC_MODE_TUTORIAL_WAIT_INPUT     = 3,
 };
 
+// Variants and states passed through the action-command overlay interface.
+enum {
+    ACV_BOMB_BASIC                  = 0,
+    ACV_BOMB_SUPER                  = 1,
+    ACV_BOMB_ULTRA                  = 2,
+};
+
+enum {
+    ACV_SLAM_BOMBETTE               = 0,
+    ACV_SLAM_WATT                   = 1,
+};
+
+enum {
+    ACV_SMACK_HAND                  = 0,
+    ACV_SMACK_FAN                   = 1,
+};
+
+enum {
+    ACV_THREE_CHANCES_WATER_BLOCK   = 0,
+    ACV_THREE_CHANCES_TURBO_CHARGE  = 1,
+    ACV_THREE_CHANCES_CLOUD_NINE    = 2,
+};
+
+enum {
+    ACV_WHIRLWIND_HUFF              = 0,
+    ACV_WHIRLWIND_BUZZAR            = 1,
+};
+
+enum {
+    SPINY_SURGE_RESET              = -1,
+    SPINY_SURGE_NONE               = 0,
+    SPINY_SURGE_HOLD               = 1,
+    SPINY_SURGE_THROW              = 2,
+    SPINY_SURGE_IGNORE             = 3,
+};
+
+// Timeout duration for the leech action command, in frames.
+#define AC_LEECH_MAX_TIME 32767
+
 typedef void (*ActionCommandCallback)(void);
 
 typedef struct ActionCommandInterface {
@@ -84,11 +100,11 @@ void reset_action_command_overlay(void);
 #define ACTION_COMMAND_ENTRY(commandID) \
     export const ActionCommandInterface gActionCommand = { \
         .id = (commandID), \
-        .init = N(init), \
-        .start = N(start), \
-        .update = N(update), \
-        .draw = N(draw), \
-        .free = N(free), \
+        .init = init, \
+        .start = start, \
+        .update = update, \
+        .draw = draw, \
+        .free = destroy, \
     }
 
 extern const ActionCommandInterface gActionCommand;

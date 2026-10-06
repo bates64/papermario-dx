@@ -1,8 +1,6 @@
 #include "common.h"
 #include "effects_internal.h"
 
-#define NAMESPACE stop_watch
-
 #define STOP_WATCH_STRIP_VTX_COUNT (32)
 
 // we will build the models for the clock glyphs dynamically and inline them
@@ -16,9 +14,9 @@ typedef struct GlyphLocation {
     /* 0x08 */ s32 delay;
 } GlyphLocation; // size = 0xC
 
-u8 N(GlyphScales)[] = { 120, 80, 40, 60 };
+u8 GlyphScales[] = { 120, 80, 40, 60 };
 
-Color_RGB8 N(GlyphColors)[] = {
+Color_RGB8 GlyphColors[] = {
     { 255, 130, 130 },
     { 255, 130, 196 },
     { 255, 130, 255 },
@@ -38,7 +36,7 @@ Color_RGB8 N(GlyphColors)[] = {
     { 255, 130, 130 },
 };
 
-GlyphLocation N(GlyphLocations)[] = {
+GlyphLocation GlyphLocations[] = {
     { .pos = { -50, -70 }, .delay =  5 },
     { .pos = {  80, -90 }, .delay = 20 },
     { .pos = {  20, -50 }, .delay = 45 },
@@ -51,8 +49,8 @@ GlyphLocation N(GlyphLocations)[] = {
     { .pos = { 140,  90 }, .delay = 25 },
 };
 
-void stop_watch_init(EffectInstance* effect);
-void stop_watch_update(EffectInstance* effect);
+void init(EffectInstance* effect);
+void update(EffectInstance* effect);
 void stop_watch_render(EffectInstance* effect);
 void stop_watch_appendGfx(void* effect);
 
@@ -63,8 +61,8 @@ EffectInstance* stop_watch_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 du
     s32 numParts = 1;
     s32 i;
 
-    bp.init = stop_watch_init;
-    bp.update = stop_watch_update;
+    bp.init = init;
+    bp.update = update;
     bp.renderScene = stop_watch_render;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_STOP_WATCH;
@@ -93,23 +91,23 @@ EffectInstance* stop_watch_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 du
     data->rippleAmplitude = 1.0f;
 
     for (i = 0; i < 10; i++) {
-        data->glyphPosX[i] = N(GlyphLocations)[i].pos.x;
-        data->glyphPosY[i] = N(GlyphLocations)[i].pos.y;
+        data->glyphPosX[i] = GlyphLocations[i].pos.x;
+        data->glyphPosY[i] = GlyphLocations[i].pos.y;
         data->glyphPosZ[i] = 0;
         data->glyphRotX[i] = 0;
         data->glyphRotY[i] = 0;
         data->glyphRotZ[i] = 0;
         data->glyphAlpha[i] = 0;
-        data->glyphDelay[i] = N(GlyphLocations)[i].delay;
+        data->glyphDelay[i] = GlyphLocations[i].delay;
     }
 
     return effect;
 }
 
-void stop_watch_init(EffectInstance* effect) {
+void init(EffectInstance* effect) {
 }
 
-void stop_watch_update(EffectInstance* effect) {
+void update(EffectInstance* effect) {
     StopWatchFXData* data = effect->data.stopWatch;
     s32 timeleft;
     s32 time;
@@ -266,11 +264,11 @@ void stop_watch_appendGfx(void* effect) {
 
     // now draw the ten clock glyphs with 10 calls to the drawMesh display list we just inlined
     for (i = 0; i < 10; i++) {
-        guPositionF(transformMtx, data->glyphRotX[i], data->glyphRotY[i], data->glyphRotZ[i], N(GlyphScales)[i % 4] * 0.01, data->glyphPosX[i], data->glyphPosY[i], data->glyphPosZ[i]);
+        guPositionF(transformMtx, data->glyphRotX[i], data->glyphRotY[i], data->glyphRotZ[i], GlyphScales[i % 4] * 0.01, data->glyphPosX[i], data->glyphPosY[i], data->glyphPosZ[i]);
         guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-        gDPSetPrimColor(gMainGfxPos++, 0, 0, N(GlyphColors)[i].r, N(GlyphColors)[i].g, N(GlyphColors)[i].b, masterAlpha * data->glyphAlpha[i] / 255);
+        gDPSetPrimColor(gMainGfxPos++, 0, 0, GlyphColors[i].r, GlyphColors[i].g, GlyphColors[i].b, masterAlpha * data->glyphAlpha[i] / 255);
         gSPDisplayList(gMainGfxPos++, drawMeshGfxPos);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }

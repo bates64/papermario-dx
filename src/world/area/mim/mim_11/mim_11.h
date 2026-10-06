@@ -27,12 +27,10 @@ enum {
     MF_Drop_Bush1       = MapFlag(10),
 };
 
-#define NAMESPACE mim_11
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupMansionGate;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_SetupMusic;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupMansionGate);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_SetupMusic);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

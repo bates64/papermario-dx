@@ -4,23 +4,21 @@
 #include "sprite/npc/BattleMuskular.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_chill_out
-
 BSS b32 DidChillOutHit;
 
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-API_CALLABLE(N(InitHitCheck)) {
+API_CALLABLE(InitHitCheck) {
     DidChillOutHit = false;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DidMoveHit)) {
+API_CALLABLE(DidMoveHit) {
     script->varTable[0] = DidChillOutHit;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnChillOutFX)) {
+API_CALLABLE(SpawnChillOutFX) {
     f32 x = rand_int(200) - 25;
     f32 y = rand_int(120) + 7;
     f32 z = rand_int(50) - 25;
@@ -36,7 +34,7 @@ API_CALLABLE(N(SpawnChillOutFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CanChillOutHit)) {
+API_CALLABLE(CanChillOutHit) {
     Actor* actor = get_actor(script->owner1.actorID);
     Actor* target = get_actor(actor->targetActorID);
     ActorPart* part = get_actor_part(target, actor->targetPartID);
@@ -67,7 +65,7 @@ API_CALLABLE(N(CanChillOutHit)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InflictChillOutHit)) {
+API_CALLABLE(InflictChillOutHit) {
     Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target = get_actor(enemy->targetActorID);
     ActorPart* targetPart = get_actor_part(target, enemy->targetPartID);
@@ -115,11 +113,11 @@ API_CALLABLE(N(InflictChillOutHit)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
-    Call(N(InitHitCheck))
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    Call(InitHitCheck)
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleMuskular_Idle)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleMuskular_Shout)
     Wait(16)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
@@ -130,7 +128,7 @@ EvtScript N(EVS_UsePower) = {
         IfEq(LVar0, HIT_RESULT_MISS)
             Goto(11)
         EndIf
-        Call(N(CanChillOutHit))
+        Call(CanChillOutHit)
         IfEq(LVar0, true)
             Call(GetOwnerTarget, LVarA, LVarB)
             Thread
@@ -165,7 +163,7 @@ EvtScript N(EVS_UsePower) = {
             Goto(10)
         EndIf
     Loop(30)
-        Call(N(SpawnChillOutFX))
+        Call(SpawnChillOutFX)
         Wait(2)
     EndLoop
     Call(ChooseNextTarget, ITER_FIRST, 0)
@@ -175,9 +173,9 @@ EvtScript N(EVS_UsePower) = {
         IfEq(LVar0, HIT_RESULT_MISS)
             Goto(1)
         EndIf
-        Call(N(CanChillOutHit))
+        Call(CanChillOutHit)
         IfEq(LVar0, true)
-            Call(N(InflictChillOutHit))
+            Call(InflictChillOutHit)
         Else
             Call(PlayerDamageEnemy, LVar0, 0, SUPPRESS_EVENT_ALL, 0, 0, BS_FLAGS1_FORCE_IMMUNE_HIT | BS_FLAGS1_TRIGGER_EVENTS)
         EndIf
@@ -188,14 +186,14 @@ EvtScript N(EVS_UsePower) = {
             Goto(0)
         EndIf
     Wait(5)
-    Call(N(DidMoveHit))
+    Call(DidMoveHit)
     IfEq(LVar0, true)
         Call(ShowMessageBox, BTL_MSG_CHILL_OUT_BEGIN, 60)
     EndIf
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_SpiritDeparts))
-    ExecWait(N(EVS_StarPower_EndWish))
-    Call(N(DidMoveHit))
+    ExecWait(EVS_StarPower_SpiritDeparts)
+    ExecWait(EVS_StarPower_EndWish)
+    Call(DidMoveHit)
     IfEq(LVar0, true)
         Call(WaitForMessageBoxDone)
     EndIf
@@ -204,5 +202,5 @@ EvtScript N(EVS_UsePower) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

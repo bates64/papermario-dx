@@ -6,7 +6,7 @@
 
 extern AnimScript Entity_SimpleSpring_AnimLaunch;
 
-API_CALLABLE(N(PlaySpringReboundAnimation)) {
+API_CALLABLE(PlaySpringReboundAnimation) {
     Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_EntityID_Spring));
 
     if (entity == nullptr) {
@@ -17,7 +17,7 @@ API_CALLABLE(N(PlaySpringReboundAnimation)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_PlayWalkingSounds) = {
+EvtScript EVS_PlayWalkingSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, LVar0, SOUND_GOOMBA_BROS_STEP, SOUND_SPACE_DEFAULT)
         Wait(4)
@@ -26,7 +26,7 @@ EvtScript N(EVS_PlayWalkingSounds) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_GoombaBros_Red) = {
+EvtScript EVS_NpcIdle_GoombaBros_Red = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcIdle_GoombaBros_Red) = {
         Call(SetNpcSpeed, NPC_GoombaBros_Red, Float(6.0 / DT))
         Call(SetNpcAnimation, NPC_GoombaBros_Red, ANIM_GoombaBros_Red_Walk)
         Set(LVar0, 0)
-        ExecGetTID(N(EVS_PlayWalkingSounds), LVarA)
+        ExecGetTID(EVS_PlayWalkingSounds, LVarA)
         Call(NpcMoveTo, NPC_GoombaBros_Red, 405, 42, 0)
         KillThread(LVarA)
         Call(SetNpcAnimation, NPC_GoombaBros_Red, ANIM_GoombaBros_Red_Idle)
@@ -63,7 +63,7 @@ EvtScript N(EVS_NpcIdle_GoombaBros_Red) = {
     Call(SetNpcSpeed, NPC_GoombaBros_Blue, Float(6.0 / DT))
     Call(SetNpcAnimation, NPC_GoombaBros_Blue, ANIM_GoombaBros_Blue_Walk)
     Set(LVar0, 1)
-    ExecGetTID(N(EVS_PlayWalkingSounds), LVarA)
+    ExecGetTID(EVS_PlayWalkingSounds, LVarA)
     Call(NpcMoveTo, NPC_GoombaBros_Blue, 376, 11, 0)
     KillThread(LVarA)
     Call(SetNpcAnimation, NPC_GoombaBros_Blue, ANIM_GoombaBros_Blue_Idle)
@@ -106,7 +106,7 @@ EvtScript N(EVS_NpcIdle_GoombaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_GoombaBros_Red) = {
+EvtScript EVS_NpcDefeat_GoombaBros_Red = {
     Thread
         Wait(5 * DT)
         Call(SetMusic, 0, SONG_GOOMBA_BROS_RETREAT, 0, VOL_LEVEL_FULL)
@@ -125,13 +125,13 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_Red) = {
                 Call(SetNpcAnimation, NPC_GoombaBros_Blue, ANIM_GoombaBros_Blue_CryWalk)
                 Call(PlaySoundAtNpc, NPC_GoombaBros_Blue, SOUND_ACTOR_HURT, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_GoombaBros_Blue, 307, 25, 49, 20 * DT)
-                Call(N(PlaySpringReboundAnimation))
+                Call(PlaySpringReboundAnimation)
                 Call(PlaySoundAtNpc, NPC_GoombaBros_Blue, SOUND_SPRING, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_GoombaBros_Blue, 401, 80, 25, 30 * DT)
                 Wait(5 * DT)
                 Call(SetNpcSpeed, NPC_GoombaBros_Blue, Float(6.0 / DT))
                 Set(LVar0, 1)
-                ExecGetTID(N(EVS_PlayWalkingSounds), LVarA)
+                ExecGetTID(EVS_PlayWalkingSounds, LVarA)
                 Call(NpcMoveTo, NPC_GoombaBros_Blue, 616, -47, 0)
                 KillThread(LVarA)
                 Call(SetNpcFlagBits, NPC_GoombaBros_Blue, NPC_FLAG_GRAVITY, false)
@@ -143,19 +143,19 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_Red) = {
             Call(SetNpcAnimation, NPC_GoombaBros_Red, ANIM_GoombaBros_Red_CryWalk)
             Call(PlaySoundAtNpc, NPC_GoombaBros_Red, SOUND_ACTOR_HURT, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_GoombaBros_Red, 307, 25, 49, 20 * DT)
-            Call(N(PlaySpringReboundAnimation))
+            Call(PlaySpringReboundAnimation)
             Call(PlaySoundAtNpc, NPC_GoombaBros_Red, SOUND_SPRING, SOUND_SPACE_DEFAULT)
             Call(NpcJump0, NPC_GoombaBros_Red, 401, 80, 25, 30 * DT)
             Wait(5 * DT)
             Call(SetNpcSpeed, NPC_GoombaBros_Red, Float(6.0 / DT))
             Set(LVar0, 0)
-            ExecGetTID(N(EVS_PlayWalkingSounds), LVarA)
+            ExecGetTID(EVS_PlayWalkingSounds, LVarA)
             Call(NpcMoveTo, NPC_GoombaBros_Red, 616, -47, 0)
             KillThread(LVarA)
             Call(SetNpcFlagBits, NPC_GoombaBros_Red, NPC_FLAG_GRAVITY, false)
             Call(SetNpcPos, NPC_GoombaBros_Red, NPC_DISPOSE_LOCATION)
             Wait(1)
-            Exec(N(EVS_SetupMusic))
+            Exec(EVS_SetupMusic)
             Set(MV_GoombaBrosDefeated, true)
             Set(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_BROS)
             Call(DisablePlayerInput, false)
@@ -164,9 +164,9 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GoombaBros_Red) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaBros_Red)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaBros_Red)))
+EvtScript EVS_NpcInit_GoombaBros_Red = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaBros_Red))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaBros_Red))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Set(MV_GoombaBrosDefeated, false)
     IfGe(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_BROS)
@@ -176,12 +176,12 @@ EvtScript N(EVS_NpcInit_GoombaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_GoombaBros_Blue) = {
+EvtScript EVS_NpcIdle_GoombaBros_Blue = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_GoombaBros_Blue) = {
+EvtScript EVS_NpcDefeat_GoombaBros_Blue = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -195,9 +195,9 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_Blue) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GoombaBros_Blue) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_GoombaBros_Blue)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_GoombaBros_Blue)))
+EvtScript EVS_NpcInit_GoombaBros_Blue = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_GoombaBros_Blue))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_GoombaBros_Blue))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     IfGe(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_BROS)
         Call(RemoveNpc, NPC_SELF)
@@ -207,7 +207,7 @@ EvtScript N(EVS_NpcInit_GoombaBros_Blue) = {
     End
 };
 
-NpcData N(NpcData_GoombaBros_Red)[] = {
+NpcData NpcData_GoombaBros_Red[] = {
     {
         .id = NPC_GoombaBros_Red,
         .pos = { 526.0f, 80.0f, 0.0f },
@@ -224,8 +224,8 @@ NpcData N(NpcData_GoombaBros_Red)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_GoombaBros_Red),
-        .settings = &N(NpcSettings_GoombaBros_Guard),
+        .init = &EVS_NpcInit_GoombaBros_Red,
+        .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = GOOMBA_BROS_RED_ANIMS,
@@ -246,15 +246,15 @@ NpcData N(NpcData_GoombaBros_Red)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_GoombaBros_Blue),
-        .settings = &N(NpcSettings_GoombaBros_Guard),
+        .init = &EVS_NpcInit_GoombaBros_Blue,
+        .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = GOOMBA_BROS_BLUE_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_GoombaBros_Red), BTL_KMR_2_FORMATION_00, BTL_KMR_2_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_GoombaBros_Red, BTL_KMR_2_FORMATION_00, BTL_KMR_2_STAGE_01),
     {}
 };

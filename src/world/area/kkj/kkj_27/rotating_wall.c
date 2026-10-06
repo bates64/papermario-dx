@@ -1,9 +1,9 @@
 #include "kkj_27.h"
 #include "sprite/player.h"
 
-s32 N(SpillLightAmount) = 0;
+s32 SpillLightAmount = 0;
 
-API_CALLABLE(N(UpdateRotatingPlayerPosition)) {
+API_CALLABLE(UpdateRotatingPlayerPosition) {
     f32 var = EVT_FIXED_TO_FLOAT(script->varTable[2]);
     f32 angle;
     f32 mag;
@@ -17,21 +17,21 @@ API_CALLABLE(N(UpdateRotatingPlayerPosition)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetSpillLightAmount)) {
+API_CALLABLE(SetSpillLightAmount) {
     Bytecode* args = script->ptrReadPos;
 
-    N(SpillLightAmount) = evt_get_variable(script, *args++);
+    SpillLightAmount = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-void N(setup_gfx_spill_light)(void) {
-    if (N(SpillLightAmount) > 0) {
+void setup_gfx_spill_light(void) {
+    if (SpillLightAmount > 0) {
         gDPSetCombineMode(gMainGfxPos++, PM_CC_KKJ_SPILL_LIGHT, PM_CC_KKJ_SPILL_LIGHT);
-        gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(SpillLightAmount));
+        gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, SpillLightAmount);
     }
 }
 
-EvtScript N(EVS_Scene_RotatingWall) = {
+EvtScript EVS_Scene_RotatingWall = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g29, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o124, COLLIDER_FLAGS_UPPER_MASK)
     Thread
@@ -43,7 +43,7 @@ EvtScript N(EVS_Scene_RotatingWall) = {
             SetF(LVar2, LVar0)
             DivF(LVar2, 10)
             Call(RotateGroup, MODEL_g29, LVar2, 0, 1, 0)
-            Call(N(UpdateRotatingPlayerPosition))
+            Call(UpdateRotatingPlayerPosition)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -57,7 +57,7 @@ EvtScript N(EVS_Scene_RotatingWall) = {
         Call(MakeLerp, 8, 255, 40 * DT, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(SetSpillLightAmount), LVar0)
+            Call(SetSpillLightAmount, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -72,7 +72,7 @@ EvtScript N(EVS_Scene_RotatingWall) = {
     End
 };
 
-EvtScript N(EVS_UseRotatingWall) = {
+EvtScript EVS_UseRotatingWall = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(PlayerMoveTo, -205, -10, 15 * DT)
@@ -86,13 +86,13 @@ EvtScript N(EVS_UseRotatingWall) = {
     Call(SetPlayerAnimation, ANIM_Peach3_AfterPressButton)
     Wait(10 * DT)
     Call(ShakeCam, CAM_DEFAULT, 0, 10, Float(1.0))
-    ExecWait(N(EVS_Scene_RotatingWall))
+    ExecWait(EVS_Scene_RotatingWall)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_UseRotatingWall_FirstTime) = {
+EvtScript EVS_UseRotatingWall_FirstTime = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(FacePlayerTowardPoint, -222, 0, 5)
@@ -118,24 +118,24 @@ EvtScript N(EVS_UseRotatingWall_FirstTime) = {
         Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Gasp, ANIM_Peach2_GaspStill, 5, MSG_Peach_0048)
     EndThread
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
-    ExecWait(N(EVS_Scene_RotatingWall))
+    ExecWait(EVS_Scene_RotatingWall)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupRotatingWall) = {
+EvtScript EVS_SetupRotatingWall = {
     Call(EnableModel, MODEL_o182, false)
     Call(EnableModel, MODEL_o184, false)
     Call(EnableModel, MODEL_o186, false)
     Call(SetModelCustomGfx, MODEL_o182, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o184, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o186, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_spill_light)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_spill_light), nullptr)
     IfEq(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(N(EVS_UseRotatingWall_FirstTime)), TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
+        BindTrigger(Ref(EVS_UseRotatingWall_FirstTime), TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
     Else
-        BindTrigger(Ref(N(EVS_UseRotatingWall)), TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
+        BindTrigger(Ref(EVS_UseRotatingWall), TRIGGER_WALL_PRESS_A, COLLIDER_o193, 1, 0)
     EndIf
     Return
     End

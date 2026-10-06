@@ -6,8 +6,6 @@
  * a rising sound effect as it fills.
  */
 
-#define NAMESPACE action_command_stop_leech
-
 extern s32 actionCmdTableStopLeech[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -19,7 +17,7 @@ enum {
 // how much to add to the meter per input if all modifiers are neutral
 #define METER_FILL_TICK 100
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -55,7 +53,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     Bytecode* args = script->ptrReadPos;
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
@@ -83,7 +81,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     ActionCommandStatus* acs = &gActionCommandStatus;
     HudElemID hid;
@@ -164,7 +162,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     s32 hudX, hudY;
     HudElemID hid;
@@ -179,7 +177,7 @@ void N(draw)(void) {
     draw_mash_meter_multicolor_with_divisor(hudX, hudY, acs->meterFillLevel / ONE_PCT_MASH, 2);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
 }

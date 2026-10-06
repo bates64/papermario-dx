@@ -27,7 +27,7 @@ enum NappingClubbaAnim {
     NAPPING_CLUBBA_ANIM_12      = 12,
 };
 
-void N(ClubbaNappingAI_Init)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_Init(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -44,7 +44,7 @@ void N(ClubbaNappingAI_Init)(Evt* script, MobileAISettings* settings, EnemyDetec
     }
 }
 
-void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_Sleep(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 shouldWakeUp = false;
@@ -105,7 +105,7 @@ void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(ClubbaNappingAI_WakeUp)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_WakeUp(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -117,7 +117,7 @@ void N(ClubbaNappingAI_WakeUp)(Evt* script, MobileAISettings* settings, EnemyDet
     }
 }
 
-void N(ClubbaNappingAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_LoiterInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -127,7 +127,7 @@ void N(ClubbaNappingAI_LoiterInit)(Evt* script, MobileAISettings* settings, Enem
     script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_LOITER;
 }
 
-void N(ClubbaNappingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_Loiter(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 nextState;
@@ -161,7 +161,7 @@ void N(ClubbaNappingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDet
     }
 }
 
-void N(ClubbaNappingAI_ReturnHomeInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_ReturnHomeInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -177,7 +177,7 @@ void N(ClubbaNappingAI_ReturnHomeInit)(Evt* script, MobileAISettings* settings, 
     }
 }
 
-void N(ClubbaNappingAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_ReturnHome(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 currentYaw;
@@ -200,7 +200,7 @@ void N(ClubbaNappingAI_ReturnHome)(Evt* script, MobileAISettings* settings, Enem
     }
 }
 
-void N(ClubbaNappingAI_FallAsleep)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ClubbaNappingAI_FallAsleep(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -213,7 +213,7 @@ void N(ClubbaNappingAI_FallAsleep)(Evt* script, MobileAISettings* settings, Enem
     }
 }
 
-API_CALLABLE(N(ClubbaNappingAI_Main)) {
+API_CALLABLE(ClubbaNappingAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -257,26 +257,26 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
     if (script->AI_TEMP_STATE >= AI_STATE_ALERT_INIT
             && script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
             && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
-            && N(MeleeHitbox_CanTargetPlayer)(script)
+            && MeleeHitbox_CanTargetPlayer(script)
     ) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_NAPPING_CLUBBA_INIT:
-            N(ClubbaNappingAI_Init)(script, settings, detect);
+            ClubbaNappingAI_Init(script, settings, detect);
             break;
         case AI_STATE_NAPPING_CLUBBA_SLEEP:
-            N(ClubbaNappingAI_Sleep)(script, settings, detect);
+            ClubbaNappingAI_Sleep(script, settings, detect);
             break;
         case AI_STATE_NAPPING_CLUBBA_WAKE_UP:
-            N(ClubbaNappingAI_WakeUp)(script, settings, detect);
+            ClubbaNappingAI_WakeUp(script, settings, detect);
             break;
         case AI_STATE_NAPPING_CLUBBA_LOITER_INIT:
-            N(ClubbaNappingAI_LoiterInit)(script, settings, detect);
+            ClubbaNappingAI_LoiterInit(script, settings, detect);
             break;
         case AI_STATE_NAPPING_CLUBBA_LOITER:
-            N(ClubbaNappingAI_Loiter)(script, settings, detect);
+            ClubbaNappingAI_Loiter(script, settings, detect);
             break;
         case AI_STATE_CHASE_INIT:
             basic_ai_chase_init(script, settings, detect);
@@ -294,34 +294,34 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
             script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_LOITER_INIT;
             break;
         case AI_STATE_MELEE_ATTACK_INIT: // pre swing
-            N(MeleeAttacker_Init)(script);
+            MeleeAttacker_Init(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_PRE) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_PRE: // raise club
-            N(MeleeAttacker_Pre)(script);
+            MeleeAttacker_Pre(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_SWING: // swing club
-            N(MeleeAttacker_Swing)(script);
+            MeleeAttacker_Swing(script);
             break;
         case AI_STATE_MELEE_ATTACK_POST:
-            N(MeleeAttacker_Post)(script);
+            MeleeAttacker_Post(script);
             break;
         case AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT:
-            N(ClubbaNappingAI_ReturnHomeInit)(script, settings, detect);
+            ClubbaNappingAI_ReturnHomeInit(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_NAPPING_CLUBBA_RETURN_HOME) {
                 break;
             }
             // fallthrough
         case AI_STATE_NAPPING_CLUBBA_RETURN_HOME:
-            N(ClubbaNappingAI_ReturnHome)(script, settings, detect);
+            ClubbaNappingAI_ReturnHome(script, settings, detect);
             break;
         case AI_STATE_NAPPING_CLUBBA_FALL_ASLEEP:
-            N(ClubbaNappingAI_FallAsleep)(script, settings, detect);
+            ClubbaNappingAI_FallAsleep(script, settings, detect);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

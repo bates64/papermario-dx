@@ -5,7 +5,7 @@
 #include "world/common/enemy/PutridPiranha/idle.inc.c"
 #include "world/common/enemy/SpikeTop/wander.inc.c"
 
-LetterDelivery N(LetterDelivery_Kolorado1) = {
+LetterDelivery LetterDelivery_Kolorado1 = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -17,7 +17,7 @@ LetterDelivery N(LetterDelivery_Kolorado1) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-LetterDelivery N(LetterDelivery_Kolorado2) = {
+LetterDelivery LetterDelivery_Kolorado2 = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -29,7 +29,7 @@ LetterDelivery N(LetterDelivery_Kolorado2) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-Vec3f N(KoloradoThrownPath)[] = {
+Vec3f KoloradoThrownPath[] = {
     {  447.0,     0.0,   39.0 },
     {  432.0,     5.0,   47.0 },
     {  427.0,    20.0,   55.0 },
@@ -37,7 +37,7 @@ Vec3f N(KoloradoThrownPath)[] = {
     {  447.0,     0.0,   70.0 },
 };
 
-EvtScript N(EVS_Kolorado_TrompPanic) = {
+EvtScript EVS_Kolorado_TrompPanic = {
     Call(SetNpcPos, NPC_Kolorado, 447, 0, 39)
     Call(SetNpcYaw, NPC_Kolorado, 270)
     Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Panic)
@@ -45,7 +45,7 @@ EvtScript N(EVS_Kolorado_TrompPanic) = {
     End
 };
 
-EvtScript N(EVS_Kolorado_TrompImpact) = {
+EvtScript EVS_Kolorado_TrompImpact = {
     Call(SetEnemyFlagBits, NPC_Kolorado, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
     Call(SetNpcRotationPivot, NPC_Kolorado, 13)
     Call(SetNpcRotation, NPC_Kolorado, 0, 0, 250)
@@ -54,7 +54,7 @@ EvtScript N(EVS_Kolorado_TrompImpact) = {
     Call(PlaySoundAtNpc, NPC_Kolorado, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
     Thread
         Call(SetNpcCollisionSize, NPC_Kolorado, 20, 24)
-        Call(LoadPath, 30, Ref(N(KoloradoThrownPath)), ARRAY_COUNT(N(KoloradoThrownPath)), EASING_LINEAR)
+        Call(LoadPath, 30, Ref(KoloradoThrownPath), ARRAY_COUNT(KoloradoThrownPath), EASING_LINEAR)
         Label(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Kolorado, LVar1, LVar2, LVar3)
@@ -68,7 +68,7 @@ EvtScript N(EVS_Kolorado_TrompImpact) = {
     End
 };
 
-EvtScript N(EVS_Kolorado_HurtInit) = {
+EvtScript EVS_Kolorado_HurtInit = {
     Call(SetNpcPos, NPC_Kolorado, 447, 0, 70)
     Call(SetNpcYaw, NPC_Kolorado, 270)
     Call(SetEnemyFlagBits, NPC_Kolorado, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
@@ -80,7 +80,7 @@ EvtScript N(EVS_Kolorado_HurtInit) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 605)
@@ -103,25 +103,25 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_HIDDEN_PASSAGE_OPEN)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00FC)
-        Set(LVar0, Ref(N(LetterDelivery_Kolorado1)))
+        Set(LVar0, Ref(LetterDelivery_Kolorado1))
         ExecWait(EVS_TryLetterDelivery)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_HurtStill, 5, MSG_CH5_00FA)
-        Set(LVar0, Ref(N(LetterDelivery_Kolorado2)))
+        Set(LVar0, Ref(LetterDelivery_Kolorado2))
         ExecWait(EVS_TryLetterDelivery)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+EvtScript EVS_NpcInit_Kolorado = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_KOLORADO_AT_DEAD_END)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
             Return
         CaseLt(STORY_CH5_HIDDEN_PASSAGE_OPEN)
             Call(SetNpcPos, NPC_SELF, 640, 0, 80)
@@ -129,7 +129,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
             Return
         CaseEq(STORY_CH5_HIDDEN_PASSAGE_OPEN)
             Call(SetNpcCollisionSize, NPC_Kolorado, 20, 24)
-            Exec(N(EVS_Kolorado_HurtInit))
+            Exec(EVS_Kolorado_HurtInit)
             Return
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
@@ -138,19 +138,19 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Piranha)[] = {
+NpcData NpcData_Piranha[] = {
     {
         .id = NPC_Piranha,
         .pos = { -325.0f, 0.0f, 150.0f },
@@ -167,7 +167,7 @@ NpcData N(NpcData_Piranha)[] = {
                 .detectSize = { 270, 130 },
             }
         },
-        .settings = &N(NpcSettings_PutridPiranha),
+        .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = PUTRID_PIRANHA_DROPS,
         .animations = PUTRID_PIRANHA_ANIMS,
@@ -176,7 +176,7 @@ NpcData N(NpcData_Piranha)[] = {
     PUTRID_PIRANHA_HITBOX(NPC_Piranha_Hitbox)
 };
 
-NpcData N(NpcData_SpikeTop) = {
+NpcData NpcData_SpikeTop = {
     .id = NPC_SpikeTop,
     .pos = { -450.0f, 0.0f, 100.0f },
     .yaw = 270,
@@ -192,16 +192,16 @@ NpcData N(NpcData_SpikeTop) = {
             .detectSize = { 270, 130 },
         }
     },
-    .settings = &N(NpcSettings_SpikeTop_Wander),
+    .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPIKE_TOP_DROPS,
     .animations = SPIKE_TOP_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Piranha), BTL_KZN_FORMATION_14, BTL_KZN_STAGE_00),
-    NPC_GROUP(N(NpcData_SpikeTop), BTL_KZN_FORMATION_0D, BTL_KZN_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Piranha, BTL_KZN_FORMATION_14, BTL_KZN_STAGE_00),
+    NPC_GROUP(NpcData_SpikeTop, BTL_KZN_FORMATION_0D, BTL_KZN_STAGE_00),
     {}
 };

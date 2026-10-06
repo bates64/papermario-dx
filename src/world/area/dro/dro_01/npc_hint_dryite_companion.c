@@ -1,6 +1,6 @@
 #include "dro_01.h"
 
-API_CALLABLE(N(GetRunToPos)) {
+API_CALLABLE(GetRunToPos) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_safe(script->owner2.npcID);
     s32 rand;
@@ -24,13 +24,13 @@ API_CALLABLE(N(GetRunToPos)) {
 }
 
 // run away from, the player, orbiting around the hint-giving dryite
-EvtScript N(EVS_NpcInteract_Dryite_04) = {
+EvtScript EVS_NpcInteract_Dryite_04 = {
     ChildThread
         Loop(0)
             Call(NpcFaceNpc, NPC_Dryite_03, NPC_Dryite_04, 1)
         EndLoop
     EndChildThread
-    Call(N(GetRunToPos))
+    Call(GetRunToPos)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Dryite_Green_Run)
     Call(SetNpcSpeed, NPC_SELF, Float(3.5))
@@ -45,7 +45,7 @@ EvtScript N(EVS_NpcInteract_Dryite_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite_04) = {
+EvtScript EVS_NpcInit_Dryite_04 = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(dro_01_ENTRY_3)
@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcInit_Dryite_04) = {
             Return
         EndCaseGroup
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite_04)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_04))
     Return
     End
 };

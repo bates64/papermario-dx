@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Lakitu/idle.inc.c"
 
-Vec3f N(FlightPath_Lakitu_01_Search)[] = {
+Vec3f FlightPath_Lakitu_01_Search[] = {
     {  460.0,   200.0, -240.0 },
     {  360.0,   150.0, -140.0 },
     {  260.0,   100.0, -240.0 },
@@ -13,7 +13,7 @@ Vec3f N(FlightPath_Lakitu_01_Search)[] = {
     {  360.0,   100.0, -440.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_02_Search)[] = {
+Vec3f FlightPath_Lakitu_02_Search[] = {
     { -100.0,   200.0,  -50.0 },
     {    0.0,   150.0, -150.0 },
     {  100.0,   100.0,  -50.0 },
@@ -24,47 +24,47 @@ Vec3f N(FlightPath_Lakitu_02_Search)[] = {
     {    0.0,   100.0,   50.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_01_Gather)[] = {
+Vec3f FlightPath_Lakitu_01_Gather[] = {
     {  360.0,   100.0, -440.0 },
     {  350.0,   120.0, -220.0 },
     {  300.0,   120.0, -164.0 },
     {  160.0,   110.0, -180.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_02_Gather)[] = {
+Vec3f FlightPath_Lakitu_02_Gather[] = {
     {    0.0,   100.0,   50.0 },
     {  200.0,   110.0,   29.0 },
     {  231.0,   110.0,  -18.0 },
     {  115.0,   100.0, -150.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_01_Attack)[] = {
+Vec3f FlightPath_Lakitu_01_Attack[] = {
     {  285.0,   120.0, -108.0 },
     {  370.0,   100.0, -130.0 },
     {  454.0,    60.0,  -20.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_02_Attack)[] = {
+Vec3f FlightPath_Lakitu_02_Attack[] = {
     {  263.0,   110.0,  -66.0 },
     {  360.0,    90.0,   50.0 },
     {  454.0,    50.0,   20.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_01_Flee)[] = {
+Vec3f FlightPath_Lakitu_01_Flee[] = {
     {  400.0,    30.0,  -40.0 },
     {  300.0,    80.0,  -40.0 },
     {  150.0,   200.0,  -40.0 },
     {  100.0,   350.0,  -40.0 },
 };
 
-Vec3f N(FlightPath_Lakitu_02_Flee)[] = {
+Vec3f FlightPath_Lakitu_02_Flee[] = {
     {  400.0,    30.0,   40.0 },
     {  300.0,    80.0,   40.0 },
     {  150.0,   200.0,   40.0 },
     {  100.0,   350.0,   40.0 },
 };
 
-EvtScript N(EVS_PlayFlightSounds) = {
+EvtScript EVS_PlayFlightSounds = {
     Loop(0)
         Call(PlaySound, SOUND_FLIGHT)
         Wait(LVar0)
@@ -73,12 +73,12 @@ EvtScript N(EVS_PlayFlightSounds) = {
     End
 };
 
-EvtScript N(EVS_LakitusFlying_Search) = {
+EvtScript EVS_LakitusFlying_Search = {
     Set(LVar0, 5)
-    ExecGetTID(N(EVS_PlayFlightSounds), MV_FlyingSoundsScript)
+    ExecGetTID(EVS_PlayFlightSounds, MV_FlyingSoundsScript)
     Thread
-        Call(LoadPath, 160 * DT, Ref(N(FlightPath_Lakitu_01_Search)),
-            ARRAY_COUNT(N(FlightPath_Lakitu_01_Search)), EASING_LINEAR)
+        Call(LoadPath, 160 * DT, Ref(FlightPath_Lakitu_01_Search),
+            ARRAY_COUNT(FlightPath_Lakitu_01_Search), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Lakitu_01, LVar1, LVar2, LVar3)
@@ -88,8 +88,8 @@ EvtScript N(EVS_LakitusFlying_Search) = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 160 * DT, Ref(N(FlightPath_Lakitu_02_Search)),
-        ARRAY_COUNT(N(FlightPath_Lakitu_02_Search)), EASING_LINEAR)
+    Call(LoadPath, 160 * DT, Ref(FlightPath_Lakitu_02_Search),
+        ARRAY_COUNT(FlightPath_Lakitu_02_Search), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Lakitu_02, LVar1, LVar2, LVar3)
@@ -103,10 +103,10 @@ EvtScript N(EVS_LakitusFlying_Search) = {
     End
 };
 
-EvtScript N(EVS_LakitusFlying_Gather) = {
+EvtScript EVS_LakitusFlying_Gather = {
     Thread
-        Call(LoadPath, 30 * DT, Ref(N(FlightPath_Lakitu_01_Gather)),
-            ARRAY_COUNT(N(FlightPath_Lakitu_01_Gather)), EASING_LINEAR)
+        Call(LoadPath, 30 * DT, Ref(FlightPath_Lakitu_01_Gather),
+            ARRAY_COUNT(FlightPath_Lakitu_01_Gather), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Lakitu_01, LVar1, LVar2, LVar3)
@@ -116,8 +116,8 @@ EvtScript N(EVS_LakitusFlying_Gather) = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 45 * DT, Ref(N(FlightPath_Lakitu_02_Gather)),
-        ARRAY_COUNT(N(FlightPath_Lakitu_02_Gather)), EASING_LINEAR)
+    Call(LoadPath, 45 * DT, Ref(FlightPath_Lakitu_02_Gather),
+        ARRAY_COUNT(FlightPath_Lakitu_02_Gather), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Lakitu_02, LVar1, LVar2, LVar3)
@@ -131,12 +131,12 @@ EvtScript N(EVS_LakitusFlying_Gather) = {
     End
 };
 
-EvtScript N(EVS_LakitusFlying_Attack) = {
+EvtScript EVS_LakitusFlying_Attack = {
     Set(LVar0, 4)
-    ExecGetTID(N(EVS_PlayFlightSounds), MV_FlyingSoundsScript)
+    ExecGetTID(EVS_PlayFlightSounds, MV_FlyingSoundsScript)
     Thread
-        Call(LoadPath, 35 * DT, Ref(N(FlightPath_Lakitu_01_Attack)),
-            ARRAY_COUNT(N(FlightPath_Lakitu_01_Attack)), EASING_LINEAR)
+        Call(LoadPath, 35 * DT, Ref(FlightPath_Lakitu_01_Attack),
+            ARRAY_COUNT(FlightPath_Lakitu_01_Attack), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Lakitu_01, LVar1, LVar2, LVar3)
@@ -146,8 +146,8 @@ EvtScript N(EVS_LakitusFlying_Attack) = {
             EndIf
         EndLoop
     EndThread
-    Call(LoadPath, 35 * DT, Ref(N(FlightPath_Lakitu_02_Attack)),
-        ARRAY_COUNT(N(FlightPath_Lakitu_02_Attack)), EASING_LINEAR)
+    Call(LoadPath, 35 * DT, Ref(FlightPath_Lakitu_02_Attack),
+        ARRAY_COUNT(FlightPath_Lakitu_02_Attack), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Lakitu_02, LVar1, LVar2, LVar3)
@@ -160,10 +160,10 @@ EvtScript N(EVS_LakitusFlying_Attack) = {
     End
 };
 
-EvtScript N(EVS_LakitusFlying_Flee) = {
+EvtScript EVS_LakitusFlying_Flee = {
     Thread
-        Call(LoadPath, 40 * DT, Ref(N(FlightPath_Lakitu_01_Flee)),
-            ARRAY_COUNT(N(FlightPath_Lakitu_01_Flee)), EASING_LINEAR)
+        Call(LoadPath, 40 * DT, Ref(FlightPath_Lakitu_01_Flee),
+            ARRAY_COUNT(FlightPath_Lakitu_01_Flee), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Lakitu_01, LVar1, LVar2, LVar3)
@@ -174,8 +174,8 @@ EvtScript N(EVS_LakitusFlying_Flee) = {
         EndLoop
         Call(SetNpcPos, NPC_Lakitu_01, NPC_DISPOSE_LOCATION)
     EndThread
-    Call(LoadPath, 40 * DT, Ref(N(FlightPath_Lakitu_02_Flee)),
-        ARRAY_COUNT(N(FlightPath_Lakitu_02_Flee)), EASING_LINEAR)
+    Call(LoadPath, 40 * DT, Ref(FlightPath_Lakitu_02_Flee),
+        ARRAY_COUNT(FlightPath_Lakitu_02_Flee), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Lakitu_02, LVar1, LVar2, LVar3)
@@ -191,7 +191,7 @@ EvtScript N(EVS_LakitusFlying_Flee) = {
     End
 };
 
-EvtScript N(EVS_Scene_LakituAmbush) = {
+EvtScript EVS_Scene_LakituAmbush = {
     IfEq(GF_FLO11_Defeated_Lakitus, true)
         Return
     EndIf
@@ -212,7 +212,7 @@ EvtScript N(EVS_Scene_LakituAmbush) = {
     EndLoop
     Call(DisablePlayerInput, true)
     Set(MV_LakituSearchSync, 0)
-    Exec(N(EVS_LakitusFlying_Search))
+    Exec(EVS_LakitusFlying_Search)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -247,7 +247,7 @@ EvtScript N(EVS_Scene_LakituAmbush) = {
     EndLoop
     Call(NpcFaceNpc, NPC_Lakitu_01, NPC_Lakitu_02, 1)
     Call(NpcFaceNpc, NPC_Lakitu_02, NPC_Lakitu_01, 1)
-    Exec(N(EVS_LakitusFlying_Gather))
+    Exec(EVS_LakitusFlying_Gather)
     Wait(30)
     Call(SpeakToPlayer, NPC_Lakitu_01, ANIM_Lakitu_Talk, ANIM_Lakitu_Idle, 0, MSG_CH6_0088)
     Call(NpcFaceNpc, NPC_Lakitu_02, NPC_Lakitu_01, 1)
@@ -267,13 +267,13 @@ EvtScript N(EVS_Scene_LakituAmbush) = {
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Exec(N(EVS_LakitusFlying_Attack))
+    Exec(EVS_LakitusFlying_Attack)
     Call(SetNpcVar, NPC_Lakitu_01, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Lakitu_01) = {
+EvtScript EVS_NpcIdle_Lakitu_01 = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         IfNe(LVar0, 0)
@@ -289,7 +289,7 @@ EvtScript N(EVS_NpcIdle_Lakitu_01) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Lakitu_01) = {
+EvtScript EVS_NpcDefeat_Lakitu_01 = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -308,7 +308,7 @@ EvtScript N(EVS_NpcDefeat_Lakitu_01) = {
             Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-            ExecWait(N(EVS_LakitusFlying_Flee))
+            ExecWait(EVS_LakitusFlying_Flee)
             Call(ResetCam, CAM_DEFAULT, Float(4.0))
             Set(GF_FLO11_Defeated_Lakitus, true)
             Set(MV_LakituAmbushState, 1)
@@ -320,7 +320,7 @@ EvtScript N(EVS_NpcDefeat_Lakitu_01) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Lakitu_02) = {
+EvtScript EVS_NpcDefeat_Lakitu_02 = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -336,14 +336,14 @@ EvtScript N(EVS_NpcDefeat_Lakitu_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakitu_01) = {
+EvtScript EVS_NpcInit_Lakitu_01 = {
     Call(SetNpcPos, NPC_Lakitu_01, NPC_DISPOSE_LOCATION)
     IfEq(GF_FLO11_Defeated_Lakitus, false)
         IfGe(GB_StoryProgress, STORY_CH6_GOT_MAGICAL_BEAN)
             IfEq(GF_FLO10_LilyRequestedWaterStone, true)
                 Set(MV_LakituAmbushState, 0)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Lakitu_01)))
-                Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu_01)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Lakitu_01))
+                Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu_01))
                 Call(SetNpcPos, NPC_Lakitu_01, 350, 120, -220)
                 Call(InterpNpcYaw, NPC_Lakitu_01, 270, 1)
             EndIf
@@ -353,12 +353,12 @@ EvtScript N(EVS_NpcInit_Lakitu_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakitu_02) = {
+EvtScript EVS_NpcInit_Lakitu_02 = {
     Call(SetNpcPos, NPC_Lakitu_02, NPC_DISPOSE_LOCATION)
     IfEq(GF_FLO11_Defeated_Lakitus, false)
         IfGe(GB_StoryProgress, STORY_CH6_GOT_MAGICAL_BEAN)
             IfEq(GF_FLO10_LilyRequestedWaterStone, true)
-                Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu_02)))
+                Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu_02))
                 Call(SetNpcPos, NPC_Lakitu_02, 200, 110, 29)
                 Call(InterpNpcYaw, NPC_Lakitu_02, 0, 1)
             EndIf
@@ -368,13 +368,13 @@ EvtScript N(EVS_NpcInit_Lakitu_02) = {
     End
 };
 
-NpcData N(NpcData_Lakitus)[] = {
+NpcData NpcData_Lakitus[] = {
     {
         .id = NPC_Lakitu_01,
         .pos = { 553.0f, 60.0f, 52.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Lakitu_01),
-        .settings = &N(NpcSettings_Lakitu),
+        .init = &EVS_NpcInit_Lakitu_01,
+        .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
@@ -383,15 +383,15 @@ NpcData N(NpcData_Lakitus)[] = {
         .id = NPC_Lakitu_02,
         .pos = { 553.0f, 60.0f, 52.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Lakitu_02),
-        .settings = &N(NpcSettings_Lakitu),
+        .init = &EVS_NpcInit_Lakitu_02,
+        .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Lakitus), BTL_FLO_FORMATION_07, BTL_FLO_STAGE_08),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Lakitus, BTL_FLO_FORMATION_07, BTL_FLO_STAGE_08),
     {}
 };

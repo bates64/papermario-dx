@@ -1,6 +1,6 @@
 #include "omo_03.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [omo_03_ENTRY_0]    { -320.0,    0.0,  320.0,   45.0 },
     [omo_03_ENTRY_1]    {  340.0,    0.0,  330.0,  315.0 },
     [omo_03_ENTRY_2]    { -320.0,   10.0, -320.0,  135.0 },
@@ -10,10 +10,10 @@ EntryList N(Entrances) = {
     [omo_03_ENTRY_6]    { -320.0,    0.0,  320.0,   45.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "omo_bg",
     .tattle = { MSG_MapTattle_omo_03 },
     .songVariation = 1,

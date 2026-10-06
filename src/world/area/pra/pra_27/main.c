@@ -1,6 +1,6 @@
 #include "pra_27.h"
 
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_REFLECT_FLOOR;
     sprintf(wMapShapeName, "pra_05_shape");
     sprintf(wMapHitName, "pra_05_hit");
@@ -10,16 +10,16 @@ export s32 N(map_init)(void) {
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
 
-s32 N(DoorModelsL)[] = { MODEL_o772, MODEL_o844, -1 };
-s32 N(DoorModelsR)[] = { MODEL_o768, MODEL_o846, -1 };
+s32 DoorModelsL[] = { MODEL_o772, MODEL_o844, -1 };
+s32 DoorModelsR[] = { MODEL_o768, MODEL_o846, -1 };
 
-EvtScript N(EVS_ExitDoors_pra_36_1) = {
+EvtScript EVS_ExitDoors_pra_36_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_27_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
-    Set(LVar2, Ref(N(DoorModelsL)))
-    Set(LVar3, Ref(N(DoorModelsR)))
+    Set(LVar2, Ref(DoorModelsL))
+    Set(LVar3, Ref(DoorModelsR))
     Exec(BaseExitDoor)
     Wait(17)
     Call(GotoMap, Ref("pra_36"), pra_36_ENTRY_1)
@@ -28,32 +28,32 @@ EvtScript N(EVS_ExitDoors_pra_36_1) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_36_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_pra_36_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Set(LVar0, pra_27_ENTRY_0)
-    Set(LVar2, Ref(N(DoorModelsL)))
-    Set(LVar3, Ref(N(DoorModelsR)))
+    Set(LVar2, Ref(DoorModelsL))
+    Set(LVar3, Ref(DoorModelsR))
     ExecWait(BaseEnterDoor)
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     Set(LVar0, REFLECTION_FLOOR_ONLY)
     Set(LVar1, GF_PRA_BrokeIllusion)
-    Exec(N(EVS_SetupReflections))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupReflections)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

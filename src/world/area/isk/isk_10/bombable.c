@@ -1,17 +1,17 @@
 #include "isk_10.h"
 #include "effects.h"
 
-BombTrigger N(BombPos_UpperWall) = {
+BombTrigger BombPos_UpperWall = {
     .pos = { -593.0f, -520.0f, 104.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(BombPos_LowerWall) = {
+BombTrigger BombPos_LowerWall = {
     .pos = { -569.0f, -780.0f, -99.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_OnBlast_UpperWall) = {
+EvtScript EVS_OnBlast_UpperWall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 30, 14, 1, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g328, true)
@@ -26,7 +26,7 @@ EvtScript N(EVS_OnBlast_UpperWall) = {
     End
 };
 
-EvtScript N(EVS_OnBlast_LowerWall) = {
+EvtScript EVS_OnBlast_LowerWall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 27, 19, 1, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g327, true)
@@ -41,7 +41,7 @@ EvtScript N(EVS_OnBlast_LowerWall) = {
     End
 };
 
-EvtScript N(EVS_HideDestroyedWall) = {
+EvtScript EVS_HideDestroyedWall = {
     Call(EnableModel, MODEL_o2029, false)
     Call(EnableModel, MODEL_o2030, false)
     Call(EnableModel, MODEL_o2031, false)
@@ -56,17 +56,17 @@ EvtScript N(EVS_HideDestroyedWall) = {
     End
 };
 
-EvtScript N(EVS_SetupBombableWall) = {
+EvtScript EVS_SetupBombableWall = {
     IfEq(GF_ISK_BombedWallFrom08, false)
-        BindTrigger(Ref(N(EVS_OnBlast_UpperWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_UpperWall)), 1, 0)
+        BindTrigger(Ref(EVS_OnBlast_UpperWall), TRIGGER_POINT_BOMB, Ref(BombPos_UpperWall), 1, 0)
     Else
         Call(EnableModel, MODEL_g328, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     IfEq(GF_ISK_BombedWallFrom10, false)
         IfEq(GF_ISK_BombedWallFrom08, false)
-            BindTrigger(Ref(N(EVS_OnBlast_UpperWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_UpperWall)), 1, 0)
-            ExecWait(N(EVS_HideDestroyedWall))
+            BindTrigger(Ref(EVS_OnBlast_UpperWall), TRIGGER_POINT_BOMB, Ref(BombPos_UpperWall), 1, 0)
+            ExecWait(EVS_HideDestroyedWall)
         Else
             Call(EnableModel, MODEL_g328, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
@@ -74,10 +74,10 @@ EvtScript N(EVS_SetupBombableWall) = {
     Else
         Call(EnableModel, MODEL_g328, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
-        ExecWait(N(EVS_HideDestroyedWall))
+        ExecWait(EVS_HideDestroyedWall)
     EndIf
     IfEq(GF_ISK10_BombedWall, false)
-        BindTrigger(Ref(N(EVS_OnBlast_LowerWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_LowerWall)), 1, 0)
+        BindTrigger(Ref(EVS_OnBlast_LowerWall), TRIGGER_POINT_BOMB, Ref(BombPos_LowerWall), 1, 0)
     Else
         Call(EnableModel, MODEL_g327, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)

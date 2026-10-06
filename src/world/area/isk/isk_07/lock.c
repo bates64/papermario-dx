@@ -1,8 +1,8 @@
 #include "isk_07.h"
 
-ITEM_LIST(N(KeyList), ITEM_RUINS_KEY);
+ITEM_LIST(KeyList, ITEM_RUINS_KEY);
 
-EvtScript N(EVS_UnlockPrompt_RuinsDoor) = {
+EvtScript EVS_UnlockPrompt_RuinsDoor = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
@@ -41,10 +41,10 @@ EvtScript N(EVS_UnlockPrompt_RuinsDoor) = {
     End
 };
 
-EvtScript N(EVS_SetupLock) = {
+EvtScript EVS_SetupLock = {
     IfEq(GF_ISK07_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g310)
-        BindPadlock(Ref(N(EVS_UnlockPrompt_RuinsDoor)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
+        BindPadlock(Ref(EVS_UnlockPrompt_RuinsDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
     Else
         Call(EnableModel, MODEL_g310, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)
@@ -56,7 +56,7 @@ EvtScript N(EVS_SetupLock) = {
     End
 };
 
-EvtScript N(EVS_ShutEntryDoor) = {
+EvtScript EVS_ShutEntryDoor = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilitte, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_deilitte, SOUND_ISK_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 65, 0, 15, EASING_QUADRATIC_IN)
@@ -74,7 +74,7 @@ EvtScript N(EVS_ShutEntryDoor) = {
     End
 };
 
-EvtScript N(EVS_OpenEntryDoor) = {
+EvtScript EVS_OpenEntryDoor = {
     Call(MakeLerp, 0, 65, 15, EASING_LINEAR)
     Label(10)
         Call(UpdateLerp)

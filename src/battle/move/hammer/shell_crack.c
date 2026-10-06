@@ -3,8 +3,6 @@
 #include "script_api/battle.h"
 #include "effects.h"
 
-#define NAMESPACE battle_move_shell_crack
-
 #include "battle/common/move/HammerSupport.inc.c"
 
 API_CALLABLE(func_802A10A4_77F2E4) {
@@ -21,9 +19,9 @@ API_CALLABLE(func_802A10A4_77F2E4) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript N(EVS_UseMove_Impl);
+extern EvtScript EVS_UseMove_Impl;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
@@ -31,24 +29,24 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 60) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(1)
             Set(LVarD, 60) // duration
             Set(LVarE, SUPER_HAMMER_DMG_BAD)
             Set(LVarF, SUPER_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(2)
             Set(LVarD, 60) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
     EndSwitch
     Return
     End
 };
 
 
-EvtScript N(EVS_802A3248) = {
+EvtScript EVS_802A3248 = {
     Call(StartRumble, BTL_RUMBLE_PLAYER_EXTREME)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 2, Float(1.0))
@@ -66,18 +64,18 @@ EvtScript N(EVS_802A3248) = {
     End
 };
 
-EvtScript N(EVS_UseMove_Impl) = {
+EvtScript EVS_UseMove_Impl = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_UseBasicHammer))
+            ExecWait(EVS_UseBasicHammer)
         CaseEq(1)
-            ExecWait(N(EVS_UseSuperHammer))
+            ExecWait(EVS_UseSuperHammer)
         CaseEq(2)
-            ExecWait(N(EVS_UseUltraHammer))
+            ExecWait(EVS_UseUltraHammer)
     EndSwitch
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
-    ExecWait(N(EVS_802A3248))
+    ExecWait(EVS_802A3248)
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(func_802A10A4_77F2E4)
@@ -85,7 +83,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Wait(1)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+        ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         Return
     EndIf
     Call(GetPlayerActionQuality, LVar0)
@@ -116,11 +114,11 @@ EvtScript N(EVS_UseMove_Impl) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_SmashSuccess))
+            ExecWait(EVS_HammerSupport_ReturnHome_SmashSuccess)
         EndCaseGroup
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+            ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         EndCaseGroup
     EndSwitch
     Return
@@ -128,5 +126,5 @@ EvtScript N(EVS_UseMove_Impl) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
-    &N(EVS_UseMove),
+    &EVS_UseMove,
 );

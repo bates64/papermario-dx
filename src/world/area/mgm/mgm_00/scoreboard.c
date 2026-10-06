@@ -24,21 +24,21 @@ typedef struct RecordDisplayData {
     /* 0x14 */ s32 workerID;
 } RecordDisplayData; /* size = 0x18 */
 
-EvtScript N(EVS_SetupScoreboard) = {
+EvtScript EVS_SetupScoreboard = {
     Return
     End
 };
 
 #if VERSION_PAL
-s32  N(pal_unkdata)[] = {
+s32  pal_unkdata[] = {
   230, 238, 234, 246,
 };
 
-s32 N(pal_unkdata_2)[] = {
+s32 pal_unkdata_2[] = {
     45, 41, 43, 37
 };
 
-Gfx N(Gfx_RecordDisplay_Init)[] = {
+Gfx Gfx_RecordDisplay_Init[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
     gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
@@ -50,7 +50,7 @@ Gfx N(Gfx_RecordDisplay_Init)[] = {
     gsSPEndDisplayList(),
 };
 #else
-Gfx N(Gfx_RecordDisplay_Init)[] = {
+Gfx Gfx_RecordDisplay_Init[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
     gsDPSetCombineMode(G_CC_PRIMITIVE, G_CC_PRIMITIVE),
@@ -69,12 +69,12 @@ Gfx N(Gfx_RecordDisplay_Init)[] = {
 #endif
 
 #if VERSION_PAL
-void N(draw_record_display)(RecordDisplayData* data, s32 alpha);
-INCLUDE_ASM(void, "world/area/mgm/mgm_00/mgm_00_3_scoreboard", mgm_00_draw_record_display);
+void draw_record_display(RecordDisplayData* data, s32 alpha);
+INCLUDE_ASM(void, "world/area/mgm/mgm_00/mgm_00_3_scoreboard", draw_record_display);
 #else
-void N(draw_record_display)(RecordDisplayData* data, s32 alpha) {
+void draw_record_display(RecordDisplayData* data, s32 alpha) {
     if (alpha > 0) {
-        gSPDisplayList(gMainGfxPos++, N(Gfx_RecordDisplay_Init));
+        gSPDisplayList(gMainGfxPos++, Gfx_RecordDisplay_Init);
         gDPPipeSync(gMainGfxPos++);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 16, 120, 24, alpha * 0.65);
         gDPFillRectangle(gMainGfxPos++, 48, 53, 272, 129);
@@ -102,7 +102,7 @@ void N(draw_record_display)(RecordDisplayData* data, s32 alpha) {
 }
 #endif
 
-void N(appendGfx_record)(void* renderData) {
+void appendGfx_record(void* renderData) {
     RecordDisplayData* data = (RecordDisplayData*)evt_get_variable(nullptr, MV_RecordDisplayData);
 
     switch (data->state) {
@@ -146,21 +146,21 @@ void N(appendGfx_record)(void* renderData) {
         case RECORD_STATE_DONE:
             break;
     }
-    N(draw_record_display)(data, data->alpha);
+    draw_record_display(data, data->alpha);
 }
 
-void N(worker_render_record)(void) {
+void worker_render_record(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
-    task.appendGfx = &N(appendGfx_record);
+    task.appendGfx = &appendGfx_record;
     task.dist = 0;
 
     queue_render_task(&task);
 }
 
-API_CALLABLE(N(UpdateRecordDisplay)) {
+API_CALLABLE(UpdateRecordDisplay) {
     RecordDisplayData* data;
     Bytecode* args = script->ptrReadPos;
     s32 gameType = evt_get_variable(script, *args++);
@@ -170,7 +170,7 @@ API_CALLABLE(N(UpdateRecordDisplay)) {
         script->functionTempPtr[0] = data;
         data->state = RECORD_START_SHOW;
         data->alpha = 255;
-        data->workerID = create_worker_scene(nullptr, &N(worker_render_record));
+        data->workerID = create_worker_scene(nullptr, &worker_render_record);
         data->gameType = gameType;
         evt_set_variable(script, MV_RecordDisplayData, (s32)data);
     }
@@ -183,29 +183,29 @@ API_CALLABLE(N(UpdateRecordDisplay)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_OnInteract_JumpRecords) = {
+EvtScript EVS_OnInteract_JumpRecords = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(N(UpdateRecordDisplay), MINIGAME_TYPE_JUMP)
+    Call(UpdateRecordDisplay, MINIGAME_TYPE_JUMP)
     Call(DisablePlayerInput, false)
     Call(DisablePlayerPhysics, false)
     Return
     End
 };
 
-EvtScript N(EVS_OnInteract_SmashRecords) = {
+EvtScript EVS_OnInteract_SmashRecords = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(N(UpdateRecordDisplay), MINIGAME_TYPE_SMASH)
+    Call(UpdateRecordDisplay, MINIGAME_TYPE_SMASH)
     Call(DisablePlayerInput, false)
     Call(DisablePlayerPhysics, false)
     Return
     End
 };
 
-EvtScript N(EVS_BindInteractTriggers) = {
-    BindTrigger(Ref(N(EVS_OnInteract_JumpRecords)), TRIGGER_WALL_PRESS_A, COLLIDER_score1, 1, 0)
-    BindTrigger(Ref(N(EVS_OnInteract_SmashRecords)), TRIGGER_WALL_PRESS_A, COLLIDER_score2, 1, 0)
+EvtScript EVS_BindInteractTriggers = {
+    BindTrigger(Ref(EVS_OnInteract_JumpRecords), TRIGGER_WALL_PRESS_A, COLLIDER_score1, 1, 0)
+    BindTrigger(Ref(EVS_OnInteract_SmashRecords), TRIGGER_WALL_PRESS_A, COLLIDER_score2, 1, 0)
     Return
     End
 };

@@ -1,6 +1,6 @@
 #include "mac_01.h"
 
-EvtScript N(EVS_SetDoorRot_PostOffice) = {
+EvtScript EVS_SetDoorRot_PostOffice = {
     SetF(LVar1, LVar0)
     DivF(LVar1, Float(45.0))
     Call(TranslateModel, MODEL_o189, LVar1, 0, 0)
@@ -11,7 +11,7 @@ EvtScript N(EVS_SetDoorRot_PostOffice) = {
     End
 };
 
-s16 N(Models_PostOfficeWalls_Unused)[] = {
+s16 Models_PostOfficeWalls_Unused[] = {
     MODEL_y1,
     MODEL_y2,
     MODEL_k14,
@@ -29,7 +29,7 @@ s16 N(Models_PostOfficeWalls_Unused)[] = {
     MODEL_k13,
 };
 
-EvtScript N(EVS_SetWallRot_PostOffice) = {
+EvtScript EVS_SetWallRot_PostOffice = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_k11, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_k12, LVar1, 1, 0, 0)
@@ -56,17 +56,17 @@ EvtScript N(EVS_SetWallRot_PostOffice) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_PostOffice) = {
+EvtScript EVS_DropDoor_PostOffice = {
     Call(RotateModel, MODEL_o189, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_PostOffice) = {
+EvtScript EVS_RoomListener_PostOffice = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_yubin_in, MODEL_GROUP_VISIBLE)
-            ExecWait(N(EVS_Scene_MailbagTheft))
+            ExecWait(EVS_Scene_MailbagTheft)
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_yubin_in, MODEL_GROUP_HIDDEN)
     EndSwitch
@@ -74,13 +74,13 @@ EvtScript N(EVS_RoomListener_PostOffice) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_ToadHouse) = {
+EvtScript EVS_SetDoorRot_ToadHouse = {
     Call(RotateModel, MODEL_door_k, LVar0, 0, -1, 0)
     Return
     End
 };
 
-s16 N(Models_ToadHouseWalls_Unused)[] = {
+s16 Models_ToadHouseWalls_Unused[] = {
     MODEL_kk12,
     MODEL_kk13,
     MODEL_kk14,
@@ -90,7 +90,7 @@ s16 N(Models_ToadHouseWalls_Unused)[] = {
     MODEL_kk11,
 };
 
-EvtScript N(EVS_SetWallRot_ToadHouse) = {
+EvtScript EVS_SetWallRot_ToadHouse = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(1.0))
     Call(RotateModel, MODEL_kk11, LVar1, 1, 0, 0)
@@ -110,7 +110,7 @@ EvtScript N(EVS_SetWallRot_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_ToadHouse) = {
+EvtScript EVS_RoomListener_ToadHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_kino_in, MODEL_GROUP_VISIBLE)
@@ -123,13 +123,13 @@ EvtScript N(EVS_RoomListener_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_MerlonHouse) = {
+EvtScript EVS_SetDoorRot_MerlonHouse = {
     Call(RotateModel, MODEL_door, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_MerlonHouse) = {
+EvtScript EVS_SetWallRot_MerlonHouse = {
     Set(LVar1, LVar0)
     Mul(LVar1, 2)
     Call(RotateGroup, MODEL_off_kabe, LVar1, 0, 1, 0)
@@ -137,16 +137,16 @@ EvtScript N(EVS_SetWallRot_MerlonHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_MerlonHouse) = {
+EvtScript EVS_RoomListener_MerlonHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Switch(GB_StoryProgress)
                 CaseLt(STORY_CH1_SPOKE_WITH_MERLIN)
-                    ExecWait(N(EVS_MerlonShooAway))
+                    ExecWait(EVS_MerlonShooAway)
                     Set(LVar0, -1)
                     Return
                 CaseRange(STORY_CH6_RETURNED_TO_TOAD_TOWN, STORY_CH7_INVITED_TO_STARBORN_VALLEY)
-                    Exec(N(EVS_Scene_MerlonAndNinji))
+                    Exec(EVS_Scene_MerlonAndNinji)
                 CaseRange(STORY_CH3_GOT_SUPER_BOOTS, STORY_CH8_REACHED_PEACHS_CASTLE)
                     IfEq(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
                         BreakSwitch
@@ -175,7 +175,7 @@ EvtScript N(EVS_RoomListener_MerlonHouse) = {
     End
 };
 
-EvtScript N(EVS_SpinRoof) = {
+EvtScript EVS_SpinRoof = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVar0, 0)
     Label(0)
@@ -191,65 +191,65 @@ EvtScript N(EVS_SpinRoof) = {
     End
 };
 
-s32 N(InsideNPCs_PostOffice)[] = {
+s32 InsideNPCs_PostOffice[] = {
     NPC_Postmaster,
     NPC_Parakarry,
     NPC_PostOfficeShyGuy,
     -1
 };
 
-s32 N(InsideNPCs_ToadHouse)[] = {
+s32 InsideNPCs_ToadHouse[] = {
     NPC_ToadHouseToad,
     NPC_ToadHouseShyGuy,
     -1
 };
 
-s32 N(InsideNPCs_MerlonHouse)[] = {
+s32 InsideNPCs_MerlonHouse[] = {
     NPC_Merlon,
     NPC_Ninji,
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     // post office
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_PostOffice)),
-        Ref(N(EVS_SetWallRot_PostOffice)),
-        Ref(N(EVS_DropDoor_PostOffice)),
-        Ref(N(EVS_RoomListener_PostOffice)),
+        Ref(EVS_SetDoorRot_PostOffice),
+        Ref(EVS_SetWallRot_PostOffice),
+        Ref(EVS_DropDoor_PostOffice),
+        Ref(EVS_RoomListener_PostOffice),
         COLLIDER_deilit1,
         COLLIDER_deilit1u,
         MODEL_post_office,
-        Ref(N(InsideNPCs_PostOffice)))
+        Ref(InsideNPCs_PostOffice))
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_ToadHouse)),
-        Ref(N(EVS_SetWallRot_ToadHouse)),
+        Ref(EVS_SetDoorRot_ToadHouse),
+        Ref(EVS_SetWallRot_ToadHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_ToadHouse)),
+        Ref(EVS_RoomListener_ToadHouse),
         COLLIDER_deilit2,
         COLLIDER_deilit2u,
         MODEL_kinopi,
-        Ref(N(InsideNPCs_ToadHouse)))
+        Ref(InsideNPCs_ToadHouse))
     // merlon's house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_MerlonHouse)),
-        Ref(N(EVS_SetWallRot_MerlonHouse)),
+        Ref(EVS_SetDoorRot_MerlonHouse),
+        Ref(EVS_SetWallRot_MerlonHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_MerlonHouse)),
+        Ref(EVS_RoomListener_MerlonHouse),
         COLLIDER_deilitd,
         COLLIDER_deilitud,
         MODEL_de_aru,
-        Ref(N(InsideNPCs_MerlonHouse)))
+        Ref(InsideNPCs_MerlonHouse))
     // initial visibility
-    Exec(N(EVS_SpinRoof))
+    Exec(EVS_SpinRoof)
     Set(LVar0, ROOM_UPDATE_EXIT_END)
-    Exec(N(EVS_RoomListener_PostOffice))
-    Exec(N(EVS_RoomListener_ToadHouse))
-    Exec(N(EVS_RoomListener_MerlonHouse))
+    Exec(EVS_RoomListener_PostOffice)
+    Exec(EVS_RoomListener_ToadHouse)
+    Exec(EVS_RoomListener_MerlonHouse)
     Return
     End
 };

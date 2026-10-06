@@ -21,10 +21,8 @@ enum {
     NPC_HeartPlant_02           = 4,
 };
 
-#define NAMESPACE jan_15
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupTrees;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupTrees);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

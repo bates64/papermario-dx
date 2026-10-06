@@ -20,8 +20,6 @@ enum {
     MV_LavaLevel    = MapVar(10),
 };
 
-#define NAMESPACE kzn_23
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

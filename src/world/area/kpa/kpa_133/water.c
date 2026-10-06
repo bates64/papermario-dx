@@ -1,6 +1,6 @@
 #include "kpa_133.h"
 
-EvtScript N(EVS_SetWaterLevel) = {
+EvtScript EVS_SetWaterLevel = {
     Call(SetRenderMode, MODEL_s_sui, RENDER_MODE_SURFACE_XLU_LAYER2)
     Call(SetRenderMode, MODEL_sui, RENDER_MODE_SURFACE_XLU_LAYER2)
     Switch(GB_KPA_WaterLevel)

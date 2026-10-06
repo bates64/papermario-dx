@@ -1,6 +1,6 @@
 #include "kkj_00.h"
 
-EvtScript N(EVS_OpenAndCloseFrontDoor_Intro) = {
+EvtScript EVS_OpenAndCloseFrontDoor_Intro = {
     Call(PlaySoundAtCollider, COLLIDER_tts, SOUND_LARGE_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -28,9 +28,9 @@ EvtScript N(EVS_OpenAndCloseFrontDoor_Intro) = {
     End
 };
 
-EvtScript N(EVS_Scene_Intro) = {
+EvtScript EVS_Scene_Intro = {
     Call(DisablePlayerInput, true)
-    Exec(N(EVS_OpenAndCloseFrontDoor_Intro))
+    Exec(EVS_OpenAndCloseFrontDoor_Intro)
     Thread
         Call(SetNpcSpeed, NPC_Luigi, Float(4.0))
         Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_RunBack)

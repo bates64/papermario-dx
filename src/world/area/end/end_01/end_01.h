@@ -126,10 +126,8 @@ enum {
     PARADE_PHASE_EXIT           = -330,
 };
 
-#define NAMESPACE end_01
+extern EvtScript EVS_Main;
+extern EvtScript EVS_ManageParade;
+extern EvtScript EVS_OffsetNpcScroll;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_ManageParade);
-extern EvtScript N(EVS_OffsetNpcScroll);
-
-API_CALLABLE(N(AddScrollToNpcPos));
+API_CALLABLE(AddScrollToNpcPos);

@@ -33,29 +33,27 @@ enum {
     MF_SpawnFlag_StarPiece  = MapFlag(10),
 };
 
-#define NAMESPACE kmr_11
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_Interact_SwitchBush;
+extern EvtScript EVS_Scene_MeetGoombaKing;
+extern EvtScript EVS_Scene_SelfDestruct;
+extern EvtScript EVS_PlayFortressAnimation;
+extern EvtScript EVS_PlayBridgeAnimation;
+extern EvtScript EVS_Scene_KammyWatching;
+extern EvtScript EVS_BadExit_kmr_24_0;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_Interact_SwitchBush);
-extern EvtScript N(EVS_Scene_MeetGoombaKing);
-extern EvtScript N(EVS_Scene_SelfDestruct);
-extern EvtScript N(EVS_PlayFortressAnimation);
-extern EvtScript N(EVS_PlayBridgeAnimation);
-extern EvtScript N(EVS_Scene_KammyWatching);
-extern EvtScript N(EVS_BadExit_kmr_24_0);
+extern NpcGroupList DefaultNPCs;
 
-extern NpcGroupList N(DefaultNPCs);
+extern StaticAnimatorNode* AnimSkeleton_Fortress[];
+extern StaticAnimatorNode* AnimSkeleton_Bridge[];
+extern AnimScript AnimScript_Fortress;
+extern AnimScript AnimScript_Bridge;
 
-extern StaticAnimatorNode* N(AnimSkeleton_Fortress)[];
-extern StaticAnimatorNode* N(AnimSkeleton_Bridge)[];
-extern AnimScript N(AnimScript_Fortress);
-extern AnimScript N(AnimScript_Bridge);
-
-API_CALLABLE(N(SetCameraVFov));
-API_CALLABLE(N(SetupFog));
+API_CALLABLE(SetCameraVFov);
+API_CALLABLE(SetupFog);
 
 API_CALLABLE(InitAnimatedModels);
 API_CALLABLE(SetAnimatedModelRenderMode);

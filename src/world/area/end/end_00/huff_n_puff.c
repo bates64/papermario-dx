@@ -1,9 +1,9 @@
 #include "end_00.h"
 #include "effects.h"
 
-extern EvtScript N(EVS_SetNpcShadowScale);
+extern EvtScript EVS_SetNpcShadowScale;
 
-EvtScript N(EVS_HoldPosition_Yoshis) = {
+EvtScript EVS_HoldPosition_Yoshis = {
     Call(GetNpcPos, NPC_YoshiKidGreen, LVar0, LVar1, LVar2)
     SetF(LVar0, LVar0)
     SetF(LVar3, LVar0)
@@ -20,23 +20,23 @@ EvtScript N(EVS_HoldPosition_Yoshis) = {
     Call(SetNpcPos, NPC_YoshiKidYellow, LVar5, LVar1, LVar2)
     Call(SetNpcPos, NPC_YoshiKidRed, LVar6, LVar1, LVar2)
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_YoshiKidBlue)
+        Call(AddScrollToNpcPos, NPC_YoshiKidBlue)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_YoshiKidPurple)
+        Call(AddScrollToNpcPos, NPC_YoshiKidPurple)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_YoshiKidYellow)
+        Call(AddScrollToNpcPos, NPC_YoshiKidYellow)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_YoshiKidRed)
+        Call(AddScrollToNpcPos, NPC_YoshiKidRed)
     EndChildThread
-    Call(N(AddScrollToNpcPos), NPC_YoshiKidGreen)
+    Call(AddScrollToNpcPos, NPC_YoshiKidGreen)
     Return
     End
 };
 
-EvtScript N(EVS_HoldPosition_Puffs) = {
+EvtScript EVS_HoldPosition_Puffs = {
     Call(GetNpcPos, NPC_HuffNPuffBody, LVar0, LVar1, LVar2)
     SetF(LVar0, LVar0)
     SetF(LVar3, LVar0)
@@ -49,23 +49,23 @@ EvtScript N(EVS_HoldPosition_Puffs) = {
     Call(SetNpcPos, NPC_RuffPuff1, LVar3, 60, 0)
     Call(SetNpcPos, NPC_RuffPuff2, LVar4, 60, 0)
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_HuffNPuffFace)
+        Call(AddScrollToNpcPos, NPC_HuffNPuffFace)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_HuffNPuffArms)
+        Call(AddScrollToNpcPos, NPC_HuffNPuffArms)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_RuffPuff1)
+        Call(AddScrollToNpcPos, NPC_RuffPuff1)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_RuffPuff2)
+        Call(AddScrollToNpcPos, NPC_RuffPuff2)
     EndChildThread
-    Call(N(AddScrollToNpcPos), NPC_HuffNPuffBody)
+    Call(AddScrollToNpcPos, NPC_HuffNPuffBody)
     Return
     End
 };
 
-EvtScript N(EVS_Puffs_Surprise) = {
+EvtScript EVS_Puffs_Surprise = {
     Call(SetNpcAnimation, NPC_HuffNPuffBody, ANIM_HuffNPuff_FrownBody)
     Call(SetNpcAnimation, NPC_HuffNPuffFace, ANIM_HuffNPuff_FrownFace)
     Call(SetNpcAnimation, NPC_HuffNPuffArms, ANIM_HuffNPuff_FrownArms)
@@ -75,7 +75,7 @@ EvtScript N(EVS_Puffs_Surprise) = {
     End
 };
 
-EvtScript N(EVS_Puffs_Hurt) = {
+EvtScript EVS_Puffs_Hurt = {
     Call(SetNpcAnimation, NPC_HuffNPuffBody, ANIM_HuffNPuff_HurtBody)
     Call(SetNpcAnimation, NPC_HuffNPuffFace, ANIM_HuffNPuff_HurtFace)
     Call(SetNpcAnimation, NPC_HuffNPuffArms, ANIM_HuffNPuff_HurtArms)
@@ -85,7 +85,7 @@ EvtScript N(EVS_Puffs_Hurt) = {
     End
 };
 
-EvtScript N(EVS_Puffs_Retreat) = {
+EvtScript EVS_Puffs_Retreat = {
     Call(GetNpcPos, NPC_HuffNPuffBody, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, 80)
@@ -106,7 +106,7 @@ EvtScript N(EVS_Puffs_Retreat) = {
     End
 };
 
-EvtScript N(EVS_GourmetGuy_Enter) = {
+EvtScript EVS_GourmetGuy_Enter = {
     Loop(0)
         Wait(1)
         Call(GetNpcPos, NPC_YoshiKidGreen, LVar0, LVar1, LVar2)
@@ -118,18 +118,18 @@ EvtScript N(EVS_GourmetGuy_Enter) = {
     Call(SetNpcSpeed, NPC_GourmetGuy, Float(1.0))
     Call(NpcMoveTo, NPC_GourmetGuy, LVar0, -20, 0)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Idle)
-    Call(N(AddScrollToNpcPos), NPC_GourmetGuy)
+    Call(AddScrollToNpcPos, NPC_GourmetGuy)
     Return
     End
 };
 
-EvtScript N(EVS_HoldPosition_GourmetGuy) = {
-    Call(N(AddScrollToNpcPos), NPC_GourmetGuy)
+EvtScript EVS_HoldPosition_GourmetGuy = {
+    Call(AddScrollToNpcPos, NPC_GourmetGuy)
     Return
     End
 };
 
-EvtScript N(EVS_YoshiKids) = {
+EvtScript EVS_YoshiKids = {
     Wait(20 * DT)
     Call(SetNpcJumpscale, NPC_YoshiKidGreen, Float(1.0))
     Call(NpcJump0, NPC_YoshiKidGreen, 680, 0, 0, 20 * DT)
@@ -174,7 +174,7 @@ EvtScript N(EVS_YoshiKids) = {
         Call(SetNpcAnimation, NPC_YoshiKidRed, ANIM_YoshiKid_Red_LookUp)
     EndThread
     Wait(70 * DT)
-    ExecGetTID(N(EVS_HoldPosition_Yoshis), LVarA)
+    ExecGetTID(EVS_HoldPosition_Yoshis, LVarA)
     Loop(0)
         Wait(1)
         Call(GetNpcPos, NPC_YoshiKidGreen, LVar0, LVar1, LVar2)
@@ -221,7 +221,7 @@ EvtScript N(EVS_YoshiKids) = {
     Call(SetNpcYaw, NPC_YoshiKidRed, 90)
     Call(SetNpcAnimation, NPC_YoshiKidRed, ANIM_YoshiKid_Red_EatMiss)
     Wait(10 * DT)
-    Exec(N(EVS_Puffs_Hurt))
+    Exec(EVS_Puffs_Hurt)
     Thread
         Call(GetNpcPos, NPC_HuffNPuffBody, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_SMOKE_RING, 0, LVar0, LVar1, LVar2)
@@ -264,7 +264,7 @@ EvtScript N(EVS_YoshiKids) = {
             SetF(LVar2, LVar0)
             DivF(LVar2, 100)
             Set(LVar0, 69)
-            Exec(N(EVS_SetNpcShadowScale))
+            Exec(EVS_SetNpcShadowScale)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -318,7 +318,7 @@ EvtScript N(EVS_YoshiKids) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_HuffNPuff) = {
+EvtScript EVS_ParadePhase_HuffNPuff = {
     Thread
         Loop(0)
             Wait(1)
@@ -339,8 +339,8 @@ EvtScript N(EVS_ParadePhase_HuffNPuff) = {
         Call(EnableNpcShadow, NPC_HuffNPuffFace, false)
         Call(EnableNpcShadow, NPC_HuffNPuffArms, false)
     EndThread
-    Exec(N(EVS_YoshiKids))
-    ExecGetTID(N(EVS_GourmetGuy_Enter), LVarB)
+    Exec(EVS_YoshiKids)
+    ExecGetTID(EVS_GourmetGuy_Enter, LVarB)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -348,16 +348,16 @@ EvtScript N(EVS_ParadePhase_HuffNPuff) = {
             BreakLoop
         EndIf
     EndLoop
-    ExecGetTID(N(EVS_HoldPosition_Puffs), LVarA)
+    ExecGetTID(EVS_HoldPosition_Puffs, LVarA)
     Wait(10 * DT)
     KillThread(LVarB)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Leap)
     Call(GetNpcPos, NPC_GourmetGuy, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_GourmetGuy, LVar0, LVar1, LVar2, 10)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_TalkSurprise)
-    ExecGetTID(N(EVS_HoldPosition_GourmetGuy), LVarB)
+    ExecGetTID(EVS_HoldPosition_GourmetGuy, LVarB)
     Wait(130 * DT)
-    Exec(N(EVS_Puffs_Surprise))
+    Exec(EVS_Puffs_Surprise)
     Wait(30 * DT)
     Call(InterpNpcYaw, NPC_HuffNPuffBody, 90, 0)
     Call(InterpNpcYaw, NPC_HuffNPuffFace, 90, 0)
@@ -389,11 +389,11 @@ EvtScript N(EVS_ParadePhase_HuffNPuff) = {
     EndThread
     Wait(6)
     Loop(2)
-        Exec(N(EVS_Puffs_Hurt))
+        Exec(EVS_Puffs_Hurt)
         KillThread(LVarA)
-        ExecWait(N(EVS_Puffs_Retreat))
-        Exec(N(EVS_Puffs_Surprise))
-        ExecGetTID(N(EVS_HoldPosition_Puffs), LVarA)
+        ExecWait(EVS_Puffs_Retreat)
+        Exec(EVS_Puffs_Surprise)
+        ExecGetTID(EVS_HoldPosition_Puffs, LVarA)
         Wait(10 * DT)
         KillThread(LVarB)
         Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Walk)
@@ -401,7 +401,7 @@ EvtScript N(EVS_ParadePhase_HuffNPuff) = {
         Add(LVar0, -20)
         Call(NpcMoveTo, NPC_GourmetGuy, LVar0, LVar2, 10)
         Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Idle)
-        ExecGetTID(N(EVS_HoldPosition_GourmetGuy), LVarB)
+        ExecGetTID(EVS_HoldPosition_GourmetGuy, LVarB)
         Wait(10 * DT)
     EndLoop
     KillThread(LVarA)

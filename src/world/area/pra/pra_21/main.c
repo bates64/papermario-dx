@@ -1,18 +1,18 @@
 #include "pra_21.h"
 
-s32 N(DoorModelsL)[] = { MODEL_o977, -1 };
-s32 N(DoorModelsR)[] = { MODEL_o976, -1 };
+s32 DoorModelsL[] = { MODEL_o977, -1 };
+s32 DoorModelsR[] = { MODEL_o976, -1 };
 
-EvtScript N(EVS_ExitDoor_pra_20_1) = EVT_EXIT_SINGLE_DOOR(pra_21_ENTRY_0, "pra_20", pra_20_ENTRY_1,
+EvtScript EVS_ExitDoor_pra_20_1 = EVT_EXIT_SINGLE_DOOR(pra_21_ENTRY_0, "pra_20", pra_20_ENTRY_1,
     COLLIDER_deilittnnw, MODEL_o774, DOOR_SWING_IN);
 
-EvtScript N(EVS_ExitDoors_pra_36_0) = {
+EvtScript EVS_ExitDoors_pra_36_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_21_ENTRY_1)
     Set(LVar1, COLLIDER_deilittnne)
-    Set(LVar2, Ref(N(DoorModelsL)))
-    Set(LVar3, Ref(N(DoorModelsR)))
+    Set(LVar2, Ref(DoorModelsL))
+    Set(LVar3, Ref(DoorModelsR))
     Exec(BaseExitDoor)
     Wait(17)
     Call(GotoMap, Ref("pra_36"), pra_36_ENTRY_0)
@@ -21,14 +21,14 @@ EvtScript N(EVS_ExitDoors_pra_36_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoor_pra_20_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnnw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_36_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnne, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoor_pra_20_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnnw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_36_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnne, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_21_ENTRY_0)
@@ -36,21 +36,21 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
         CaseEq(pra_21_ENTRY_1)
-            Set(LVar2, Ref(N(DoorModelsL)))
-            Set(LVar3, Ref(N(DoorModelsR)))
+            Set(LVar2, Ref(DoorModelsL))
+            Set(LVar3, Ref(DoorModelsR))
             ExecWait(BaseEnterDoor)
     EndSwitch
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     IfLt(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)
         Set(LVar0, 0)
     Else
@@ -70,7 +70,7 @@ EvtScript N(EVS_Main) = {
     Call(TranslateModel, MODEL_o983, LVar0, 0, 0)
     Call(TranslateModel, MODEL_o984, LVar0, 0, 0)
     Call(UpdateColliderTransform, COLLIDER_o1063)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

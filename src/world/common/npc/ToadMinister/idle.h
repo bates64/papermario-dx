@@ -4,4 +4,4 @@
 
 #define NpcSettings_ToadMinister NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_ToadMinister);
+extern NpcSettings NpcSettings_ToadMinister;

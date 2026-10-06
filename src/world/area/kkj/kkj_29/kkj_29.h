@@ -23,11 +23,9 @@ enum {
     NPC_HammerBros      = 3,
 };
 
-#define NAMESPACE kkj_29
+extern EvtScript EVS_Main;
+extern EvtScript EVS_ManageStageEffects;
+extern EvtScript EVS_ManageQuizGame;
+extern EvtScript EVS_EndPeachChapter5;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_ManageStageEffects);
-extern EvtScript N(EVS_ManageQuizGame);
-extern EvtScript N(EVS_EndPeachChapter5);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

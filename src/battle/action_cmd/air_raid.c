@@ -1,8 +1,6 @@
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_air_raid
-
 extern s32 actionCmdTableAirRaid[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -15,17 +13,17 @@ enum {
 // how much to add to the meter per input if all modifiers are neutral
 #define METER_FILL_RATE 850
 
-s32 N(DrainRateTable)[] = { 0, 25, 50, 75, 75 };
+s32 DrainRateTable[] = { 0, 25, 50, 75, 75 };
 
-#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(N(DrainRateTable), pct)
+#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(DrainRateTable, pct)
 
 // threshold meter values; not used for anything
 // these correspond to values provided via SetupMashMeter
-s32 N(BasicThresholds)[] = { 40, 70, 99, 200 };
-s32 N(SuperThresholds)[] = { 35, 60, 80, 99, 200 };
-s32 N(UltraThresholds)[] = { 35, 35, 60, 80, 99, 200 };
+s32 BasicThresholds[] = { 40, 70, 99, 200 };
+s32 SuperThresholds[] = { 35, 60, 80, 99, 200 };
+s32 UltraThresholds[] = { 35, 35, 60, 80, 99, 200 };
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -74,7 +72,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -106,7 +104,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
@@ -215,27 +213,27 @@ void N(update)(void) {
             // resultTier is not used by this move; uses actionProgress instead via the move script
             switch (partner->actorBlueprint->level) {
                 case PARTNER_RANK_NORMAL:
-                    if (battleStatus->actionProgress >= N(BasicThresholds)[battleStatus->resultTier]) {
+                    if (battleStatus->actionProgress >= BasicThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
 
-                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < N(BasicThresholds)[battleStatus->resultTier - 1]) {
+                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < BasicThresholds[battleStatus->resultTier - 1]) {
                         battleStatus->resultTier--;
                     }
                     break;
                 case PARTNER_RANK_SUPER:
-                    if (battleStatus->actionProgress >= N(SuperThresholds)[battleStatus->resultTier]) {
+                    if (battleStatus->actionProgress >= SuperThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < N(SuperThresholds)[battleStatus->resultTier - 1]) {
+                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < SuperThresholds[battleStatus->resultTier - 1]) {
                         battleStatus->resultTier--;
                     }
                     break;
                 case PARTNER_RANK_ULTRA:
-                    if (battleStatus->actionProgress >= N(UltraThresholds)[battleStatus->resultTier]) {
+                    if (battleStatus->actionProgress >= UltraThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < N(UltraThresholds)[battleStatus->resultTier - 1]) {
+                    if (battleStatus->resultTier > 0 && battleStatus->actionProgress < UltraThresholds[battleStatus->resultTier - 1]) {
                         battleStatus->resultTier--;
                     }
                     break;

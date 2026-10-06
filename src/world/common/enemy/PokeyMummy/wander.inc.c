@@ -1,12 +1,12 @@
 #pragma once
 #include "wander.h"
 
-API_CALLABLE(N(SetInstigatorValue)) {
+API_CALLABLE(SetInstigatorValue) {
     script->owner1.enemy->instigatorValue = 3;
     return ApiStatus_DONE2;
 }
 
-MobileAISettings N(AISettings_PokeyMummy_Wander) = {
+MobileAISettings AISettings_PokeyMummy_Wander = {
     .moveSpeed = 1.8f,
     .moveTime = 40,
     .waitTime = 10,
@@ -19,18 +19,18 @@ MobileAISettings N(AISettings_PokeyMummy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_PokeyMummy_Wander) = {
-    Call(N(SetInstigatorValue))
-    Call(BasicAI_Main, Ref(N(AISettings_PokeyMummy_Wander)))
+EvtScript EVS_NpcAI_PokeyMummy_Wander = {
+    Call(SetInstigatorValue)
+    Call(BasicAI_Main, Ref(AISettings_PokeyMummy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_PokeyMummy_Wander) = {
+NpcSettings NpcSettings_PokeyMummy_Wander = {
     .height = 72,
     .radius = 15,
     .level = ACTOR_LEVEL_POKEY_MUMMY,
-    .doAI = &N(EVS_NpcAI_PokeyMummy_Wander),
+    .doAI = &EVS_NpcAI_PokeyMummy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

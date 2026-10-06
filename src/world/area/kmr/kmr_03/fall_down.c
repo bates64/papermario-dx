@@ -1,7 +1,7 @@
 #include "kmr_03.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_FallingDown) = {
+EvtScript EVS_Scene_FallingDown = {
     Call(UseSettingsFrom, CAM_DEFAULT, -270, 20, -80)
     Call(SetPanTarget, CAM_DEFAULT, -270, 20, -80)
     Call(SetCamDistance, CAM_DEFAULT, Float(700.0))

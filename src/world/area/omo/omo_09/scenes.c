@@ -1,16 +1,16 @@
 #include "omo_09.h"
 #include "effects.h"
 
-s32 N(HoverOffsets)[] = {
+s32 HoverOffsets[] = {
      1,  2 , 3,  2,  1,
     -1, -2, -3, -2, -1,
 };
 
-EvtScript N(EVS_NpcIdle_Kammy) = {
+EvtScript EVS_NpcIdle_Kammy = {
     Call(SetSelfVar, 0, 0)
     Call(GetNpcPos, NPC_SELF, LVar6, LVar3, LVar4)
     Loop(0)
-        UseBuf(Ref(N(HoverOffsets)))
+        UseBuf(Ref(HoverOffsets))
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
             Call(GetSelfVar, 0, LVar5)
@@ -28,7 +28,7 @@ EvtScript N(EVS_NpcIdle_Kammy) = {
     End
 };
 
-API_CALLABLE(N(GetKammyBroomEmitterPos)) {
+API_CALLABLE(GetKammyBroomEmitterPos) {
     Npc* npc = get_npc_unsafe(NPC_Kammy);
 
     script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 40.0f);
@@ -37,10 +37,10 @@ API_CALLABLE(N(GetKammyBroomEmitterPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAux_Kammy) = {
+EvtScript EVS_NpcAux_Kammy = {
     Call(GetNpcPos, NPC_Kammy, LVar6, LVar7, LVar8)
     Loop(0)
-        Call(N(GetKammyBroomEmitterPos))
+        Call(GetKammyBroomEmitterPos)
         Call(GetNpcPos, NPC_Kammy, LVar9, LVarA, LVarB)
         Set(LVar3, LVar9)
         Set(LVar4, LVarA)
@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcAux_Kammy) = {
     End
 };
 
-EvtScript N(EVS_Scene_KammySetAmbush) = {
+EvtScript EVS_Scene_KammySetAmbush = {
     Call(DisablePlayerInput, true)
     Set(GF_OMO09_SpawnedPeachChoice3, true)
     Set(AB_OMO_CurrentPeachChoice, GB_OMO_PeachChoice3)

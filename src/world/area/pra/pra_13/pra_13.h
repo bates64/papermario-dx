@@ -21,8 +21,6 @@ enum {
     NPC_Duplighost_02       = 3,
 };
 
-#define NAMESPACE pra_13
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

@@ -42,20 +42,18 @@ enum {
     MF_RidingZipline2   = MapFlag(11),
 };
 
-#define NAMESPACE jan_22
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SyncZiplineDummyNPC1;
+extern EvtScript EVS_SyncZiplineDummyNPC2;
+extern EvtScript EVS_SeparateBushesImmediately;
+extern EvtScript EVS_Scene_RaphaelComingThrough;
+extern EvtScript EVS_SetupZiplines;
+extern EvtScript EVS_SetupBasketElevator;
+extern EvtScript EVS_SetupTrees;
+extern EvtScript EVS_SetupBushes;
+extern EvtScript EVS_MoveBushes;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SyncZiplineDummyNPC1);
-extern EvtScript N(EVS_SyncZiplineDummyNPC2);
-extern EvtScript N(EVS_SeparateBushesImmediately);
-extern EvtScript N(EVS_Scene_RaphaelComingThrough);
-extern EvtScript N(EVS_SetupZiplines);
-extern EvtScript N(EVS_SetupBasketElevator);
-extern EvtScript N(EVS_SetupTrees);
-extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_MoveBushes);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList(N(DefaultNPCs));
-extern NpcGroupList(N(RavenNPCs));
+extern NpcGroupList(DefaultNPCs);
+extern NpcGroupList(RavenNPCs);

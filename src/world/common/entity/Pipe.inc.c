@@ -11,7 +11,7 @@
     Set(LVarA, entry) \
     Set(LVarB, collider) \
     Set(LVarC, Ref(script)) \
-    ExecWait(N(EVS_Pipe_ExitHorizontal)) \
+    ExecWait(EVS_Pipe_ExitHorizontal) \
     Return \
     End \
 }
@@ -22,7 +22,7 @@
     Set(LVarA, entry) \
     Set(LVarB, collider) \
     Set(LVarC, Ref(script)) \
-    ExecWait(N(EVS_Pipe_ExitVertical)) \
+    ExecWait(EVS_Pipe_ExitVertical) \
     Return \
     End \
 }
@@ -30,26 +30,26 @@
 #define EVT_ENTER_PIPE_HORIZONTAL(collider, bindExitsScript) \
     Set(LVarA, Ref(bindExitsScript)) \
     Set(LVarB, collider) \
-    Exec(N(EVS_Pipe_EnterHorizontal))
+    Exec(EVS_Pipe_EnterHorizontal)
 
 #define EVT_ENTER_PIPE_VERTICAL(bindExitsScript) \
     Set(LVarA, Ref(bindExitsScript)) \
-    Exec(N(EVS_Pipe_EnterVertical))
+    Exec(EVS_Pipe_EnterVertical)
 
 // ----------------------------------------------------------------
 // Implementation
 
-API_CALLABLE(N(Pipe_SetAnimFlag)) {
+API_CALLABLE(Pipe_SetAnimFlag) {
     gPlayerStatusPtr->animFlags |= PA_FLAG_CHANGING_MAP;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Pipe_GetCurrentFloor)) {
+API_CALLABLE(Pipe_GetCurrentFloor) {
     script->varTable[0] = gCollisionStatus.curFloor;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Pipe_AwaitDownInput)) {
+API_CALLABLE(Pipe_AwaitDownInput) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
     s32 stickX, stickY;
 
@@ -71,7 +71,7 @@ API_CALLABLE(N(Pipe_AwaitDownInput)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(Pipe_GetEntryPos)) {
+API_CALLABLE(Pipe_GetEntryPos) {
     MapSettings* mapSettings = get_current_map_settings();
     s32 index = evt_get_variable(script, LVar0);
 
@@ -83,12 +83,12 @@ API_CALLABLE(N(Pipe_GetEntryPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Pipe_GetCameraYaw)) {
+API_CALLABLE(Pipe_GetCameraYaw) {
     script->varTable[0] = clamp_angle(gCameras[gCurrentCameraID].curYaw + 180.0f);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Pipe_GetPointAheadOfPlayer)) {
+API_CALLABLE(Pipe_GetPointAheadOfPlayer) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 r = evt_get_float_variable(script, *script->ptrReadPos);
     f32 x = playerStatus->pos.x;
@@ -106,9 +106,9 @@ API_CALLABLE(N(Pipe_GetPointAheadOfPlayer)) {
 // ----------------------------------------------------------------
 // Scripts
 
-extern EvtScript N(EVS_Pipe_ExitVertical_Impl);
+extern EvtScript EVS_Pipe_ExitVertical_Impl;
 
-EvtScript N(EVS_Pipe_EnterVertical) = {
+EvtScript EVS_Pipe_EnterVertical = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -120,7 +120,7 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf
     Call(GetEntryID, LVar0)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Sub(LVar2, 40)
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Call(InterpPlayerYaw, LVar4, 0)
@@ -154,7 +154,7 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
     Call(DisablePlayerInput, false)
     Call(HidePlayerShadow, false)
     Label(0)
-    Call(N(Pipe_GetCurrentFloor))
+    Call(Pipe_GetCurrentFloor)
     Wait(1)
     IfNe(LVar0, -1)
         Goto(0)
@@ -164,13 +164,13 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
     End
 };
 
-EvtScript N(EVS_Pipe_EnterHorizontal) = {
+EvtScript EVS_Pipe_EnterHorizontal = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVarB, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Set(LVar5, LVar1)
     Set(LVar6, LVar2)
     Set(LVar7, LVar3)
@@ -202,7 +202,7 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
     Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     Loop(40)
-        Call(N(Pipe_GetPointAheadOfPlayer), Float(1.0))
+        Call(Pipe_GetPointAheadOfPlayer, Float(1.0))
         Call(SetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop
@@ -227,8 +227,8 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
     End
 };
 
-EvtScript N(EVS_Pipe_ExitVertical) = {
-    Call(N(Pipe_AwaitDownInput))
+EvtScript EVS_Pipe_ExitVertical = {
+    Call(Pipe_AwaitDownInput)
     IfEq(LVar0, 0)
         Return
     EndIf
@@ -244,24 +244,24 @@ EvtScript N(EVS_Pipe_ExitVertical) = {
     Else
         Call(DisablePlayerInput, true)
     EndIf
-    ExecWait(N(EVS_Pipe_ExitVertical_Impl))
+    ExecWait(EVS_Pipe_ExitVertical_Impl)
     Return
     End
 };
 
-EvtScript N(EVS_Pipe_ExitVertical_Impl) = {
-    Call(N(Pipe_SetAnimFlag))
+EvtScript EVS_Pipe_ExitVertical_Impl = {
+    Call(Pipe_SetAnimFlag)
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Set(LVar0, LVarA)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(PlayerMoveTo, LVar1, LVar3, 3)
     Set(LVar0, LVarA)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
-    Call(N(Pipe_GetCameraYaw))
+    Call(Pipe_GetCameraYaw)
     Call(InterpPlayerYaw, LVar0, 0)
     Wait(2)
     Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, false)
@@ -283,7 +283,7 @@ EvtScript N(EVS_Pipe_ExitVertical_Impl) = {
     End
 };
 
-EvtScript N(EVS_Pipe_ExitHorizontal) = {
+EvtScript EVS_Pipe_ExitHorizontal = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -305,11 +305,11 @@ EvtScript N(EVS_Pipe_ExitHorizontal) = {
         Call(DisablePlayerInput, true)
     EndIf
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(N(Pipe_SetAnimFlag))
+    Call(Pipe_SetAnimFlag)
     Call(DisablePlayerPhysics, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVarB, COLLIDER_FLAGS_UPPER_MASK)
     Set(LVar0, LVarA)
-    Call(N(Pipe_GetEntryPos))
+    Call(Pipe_GetEntryPos)
     Set(LVar5, LVar1)
     Set(LVar6, LVar2)
     Add(LVar6, 2)
@@ -334,7 +334,7 @@ EvtScript N(EVS_Pipe_ExitHorizontal) = {
     Thread
         Wait(3)
         Loop(40)
-            Call(N(Pipe_GetPointAheadOfPlayer), Float(1.0))
+            Call(Pipe_GetPointAheadOfPlayer, Float(1.0))
             Call(SetPlayerPos, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop

@@ -2,31 +2,29 @@
 #include "script_api/battle.h"
 #include "sprite/npc/DryBones.h"
 
-#define NAMESPACE A(dry_bones)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandlePhase;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandlePhase);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_BONE        = 2,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_CollapseTurns  = 0,
     AVAR_Collapsed      = 8,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_UNK         = 0,
 };
 
 #define BASE_COLLAPSE_DURATION  2
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_DryBones_Idle,
     STATUS_KEY_STONE,     ANIM_DryBones_Still,
     STATUS_KEY_SLEEP,     ANIM_DryBones_Sleep,
@@ -39,31 +37,31 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(CollapsedAnims)[] = {
+s32 CollapsedAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_DryBones_BonePile,
     STATUS_END,
 };
 
-s32 N(BoneAnims)[] = {
+s32 BoneAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_DryBones_Bone,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   2,
     ELEMENT_FIRE,   -10,
     ELEMENT_BLAST,  -10,
     ELEMENT_END,
 };
 
-s32 N(CollapsedDefense)[] = {
+s32 CollapsedDefense[] = {
     ELEMENT_NORMAL,  99,
     ELEMENT_FIRE,   -10,
     ELEMENT_BLAST,  -10,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,               0,
@@ -88,7 +86,7 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-s32 N(CollapsedStatusTable)[] = {
+s32 CollapsedStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,               0,
@@ -113,15 +111,15 @@ s32 N(CollapsedStatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -8, 30 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -132,8 +130,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(BoneAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = BoneAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -145,10 +143,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_DRY_BONES,
     .level = ACTOR_LEVEL_DRY_BONES,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 50,
     .airLiftChance = 75,
     .hurricaneChance = 70,
@@ -163,17 +161,17 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 3, 27 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
     Call(SetActorVar, ACTOR_SELF, AVAR_Collapsed, false)
     Return
     End
 };
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Call(GetOriginalActorType, ACTOR_SELF, LVarA)
     Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
@@ -215,7 +213,7 @@ EvtScript N(EVS_HandlePhase) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetActorVar, ACTOR_SELF, AVAR_Collapsed, LVar0)
         Call(GetStatusFlags, ACTOR_SELF, LVar1)
@@ -245,14 +243,14 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_Collapse) = {
+EvtScript EVS_Collapse = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_DRY_BONES_COLLAPSE)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_DryBones_Collapse)
     Wait(20)
     Call(SetActorVar, ACTOR_SELF, AVAR_Collapsed, true)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(CollapsedAnims)))
-    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(CollapsedDefense)))
-    Call(SetStatusTable, ACTOR_SELF, Ref(N(CollapsedStatusTable)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(CollapsedAnims))
+    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(CollapsedDefense))
+    Call(SetStatusTable, ACTOR_SELF, Ref(CollapsedStatusTable))
     Call(ClearStatusEffects, ACTOR_SELF)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -1, 10)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
@@ -297,7 +295,7 @@ EvtScript N(EVS_Collapse) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -334,7 +332,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_DryBones_Hurt)
             ExecWait(EVS_Enemy_SpinSmashHit)
-            ExecWait(N(EVS_Collapse))
+            ExecWait(EVS_Collapse)
         CaseOrEq(EVENT_ZERO_DAMAGE)
         CaseOrEq(EVENT_IMMUNE)
             Call(GetActorVar, ACTOR_SELF, AVAR_Collapsed, LVar0)
@@ -355,7 +353,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_Collapsed, LVar0)
             IfEq(LVar0, 0)
                 Wait(10)
-                ExecWait(N(EVS_Collapse))
+                ExecWait(EVS_Collapse)
             EndIf
         CaseEq(EVENT_RECOVER_STATUS)
             Call(GetActorVar, ACTOR_SELF, AVAR_Collapsed, LVar0)
@@ -420,7 +418,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_SpinBone) = {
+EvtScript EVS_SpinBone = {
     Set(LVar0, 0)
     Label(0)
         Call(SetPartRotation, ACTOR_SELF, PRT_BONE, 0, 0, LVar0)
@@ -432,7 +430,7 @@ EvtScript N(EVS_SpinBone) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -459,9 +457,9 @@ EvtScript N(EVS_TakeTurn) = {
             Wait(20)
             Call(SetActorVar, ACTOR_SELF, AVAR_Collapsed, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_CollapseTurns, 0)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(DefenseTable)))
-            Call(SetStatusTable, ACTOR_SELF, Ref(N(StatusTable)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(DefenseTable))
+            Call(SetStatusTable, ACTOR_SELF, Ref(StatusTable))
             Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_DAMAGE_IMMUNE, false)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -8, 30)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -10)
@@ -504,7 +502,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(PlaySoundAtPart, ACTOR_SELF, PRT_BONE, SOUND_DRY_BONES_THROW)
             Call(SetPartSounds, ACTOR_SELF, PRT_BONE, ACTOR_SOUND_WALK, SOUND_NONE, SOUND_NONE)
             Call(SetPartSounds, ACTOR_SELF, PRT_BONE, ACTOR_SOUND_JUMP, SOUND_NONE, SOUND_NONE)
-            ExecGetTID(N(EVS_SpinBone), LVarA)
+            ExecGetTID(EVS_SpinBone, LVarA)
             Call(SetGoalToTarget, ACTOR_SELF)
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Sub(LVar0, 100)
@@ -533,7 +531,7 @@ EvtScript N(EVS_TakeTurn) = {
     Call(PlaySoundAtPart, ACTOR_SELF, PRT_BONE, SOUND_DRY_BONES_THROW)
     Call(SetPartSounds, ACTOR_SELF, PRT_BONE, ACTOR_SOUND_WALK, SOUND_NONE, SOUND_NONE)
     Call(SetPartSounds, ACTOR_SELF, PRT_BONE, ACTOR_SOUND_JUMP, SOUND_NONE, SOUND_NONE)
-    ExecGetTID(N(EVS_SpinBone), LVarA)
+    ExecGetTID(EVS_SpinBone, LVarA)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetPartMoveSpeed, ACTOR_SELF, PRT_BONE, Float(12.0))

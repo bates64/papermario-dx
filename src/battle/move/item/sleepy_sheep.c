@@ -7,10 +7,6 @@
 #include "sprite/player.h"
 #include "include_asset.h"
 
-#define NAMESPACE battle_item_sleepy_sheep
-
-#include "battle/common/move/ItemRefund.inc.c"
-
 s32 virtual_entity_create(EntityModelScriptPtr);
 void virtual_entity_set_pos(s32, s32, s32, s32);
 void virtual_entity_set_scale(s32, f32, f32, f32);
@@ -25,7 +21,7 @@ BSS s32 D_802A3F58[10];
 BSS s32 D_802A3F80[2]; // unused?
 BSS Vec3f D_802A3F88;
 
-API_CALLABLE(N(func_802A123C_71E88C)) {
+API_CALLABLE(func_802A123C_71E88C) {
     Vec3f* posPtr = &D_802A3F88;
     s32 entityID;
     f32 x, y, z;
@@ -102,7 +98,7 @@ API_CALLABLE(N(func_802A123C_71E88C)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(func_802A1740_71ED90)) {
+API_CALLABLE(func_802A1740_71ED90) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     s32 i;
@@ -132,7 +128,7 @@ API_CALLABLE(N(func_802A1740_71ED90)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A1848_71EE98)) {
+API_CALLABLE(func_802A1848_71EE98) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     s32 i;
@@ -171,7 +167,6 @@ API_CALLABLE(N(func_802A1848_71EE98)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-
 #include "battle/move/item/sleepy_sheep1.png.h"
 INCLUDE_IMG("battle/move/item/sleepy_sheep1.png", battle_item_sleepy_sheep1_png);
 INCLUDE_PAL("battle/move/item/sleepy_sheep1.pal", battle_item_sleepy_sheep1_pal);
@@ -184,14 +179,14 @@ INCLUDE_PAL("battle/move/item/sleepy_sheep2.pal", battle_item_sleepy_sheep2_pal)
 INCLUDE_IMG("battle/move/item/sleepy_sheep3.png", battle_item_sleepy_sheep3_png);
 INCLUDE_PAL("battle/move/item/sleepy_sheep3.pal", battle_item_sleepy_sheep3_pal);
 
-Vtx N(model)[] = {
+Vtx model[] = {
     { .v = {{ -28,  0,  0 }, false, { 0,    1536 }, { 0, 0, 0, 255 }}},
     { .v = {{  27,  0,  0 }, false, { 1792, 1536 }, { 0, 0, 0, 255 }}},
     { .v = {{  27, 47,  0 }, false, { 1792,    0 }, { 0, 0, 0, 255 }}},
     { .v = {{ -28, 47,  0 }, false, { 0,       0 }, { 0, 0, 0, 255 }}},
 };
 
-Gfx N(frame1_displayList)[] = {
+Gfx frame1_displayList[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -206,14 +201,14 @@ Gfx N(frame1_displayList)[] = {
     gsDPLoadTextureTile_4b(battle_item_sleepy_sheep1_png, G_IM_FMT_CI, battle_item_sleepy_sheep1_png_width, battle_item_sleepy_sheep1_png_height, 0, 0, battle_item_sleepy_sheep1_png_width - 1, battle_item_sleepy_sheep1_png_height - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPVertex(N(model), ARRAY_COUNT(N(model)), 0),
+    gsSPVertex(model, ARRAY_COUNT(model), 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSP1Triangle(0, 2, 3, 0),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
 
-Gfx N(frame2_displayList)[] = {
+Gfx frame2_displayList[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -228,14 +223,14 @@ Gfx N(frame2_displayList)[] = {
     gsDPLoadTextureTile_4b(battle_item_sleepy_sheep2_png, G_IM_FMT_CI, battle_item_sleepy_sheep2_png_width, battle_item_sleepy_sheep2_png_height, 0, 0, battle_item_sleepy_sheep2_png_width - 1, battle_item_sleepy_sheep2_png_height - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPVertex(N(model), ARRAY_COUNT(N(model)), 0),
+    gsSPVertex(model, ARRAY_COUNT(model), 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSP1Triangle(0, 2, 3, 0),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
 
-Gfx N(frame3_displayList)[] = {
+Gfx frame3_displayList[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -250,46 +245,46 @@ Gfx N(frame3_displayList)[] = {
     gsDPLoadTextureTile_4b(battle_item_sleepy_sheep3_png, G_IM_FMT_CI, battle_item_sleepy_sheep3_png_width, battle_item_sleepy_sheep3_png_height, 0, 0, battle_item_sleepy_sheep3_png_width - 1, battle_item_sleepy_sheep3_png_height - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPVertex(N(model), ARRAY_COUNT(N(model)), 0),
+    gsSPVertex(model, ARRAY_COUNT(model), 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSP1Triangle(0, 2, 3, 0),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
 
-EntityModelScript N(modelCommandList) = {
+EntityModelScript modelCommandList = {
     ems_SetRenderMode(RENDER_MODE_ALPHATEST)
-    ems_Draw(N(frame1_displayList), 2)
-    ems_Draw(N(frame2_displayList), 3)
-    ems_Draw(N(frame1_displayList), 2)
-    ems_Draw(N(frame3_displayList), 2)
+    ems_Draw(frame1_displayList, 2)
+    ems_Draw(frame2_displayList, 3)
+    ems_Draw(frame1_displayList, 2)
+    ems_Draw(frame3_displayList, 2)
     ems_Restart
     ems_End
 };
 
-EntityModelScript N(modelCommandList2) = {
+EntityModelScript modelCommandList2 = {
     ems_SetRenderMode(RENDER_MODE_ALPHATEST)
-    ems_Draw(N(frame2_displayList),3)
-    ems_Draw(N(frame1_displayList),2)
-    ems_Draw(N(frame3_displayList),2)
-    ems_Draw(N(frame1_displayList),2)
+    ems_Draw(frame2_displayList,3)
+    ems_Draw(frame1_displayList,2)
+    ems_Draw(frame3_displayList,2)
+    ems_Draw(frame1_displayList,2)
     ems_Restart
     ems_End
 };
 
-EntityModelScript N(modelCommandList3) = {
+EntityModelScript modelCommandList3 = {
     ems_SetRenderMode(RENDER_MODE_ALPHATEST)
-    ems_Draw(N(frame1_displayList), 2)
-    ems_Draw(N(frame3_displayList), 2)
-    ems_Draw(N(frame1_displayList), 2)
-    ems_Draw(N(frame2_displayList), 3)
+    ems_Draw(frame1_displayList, 2)
+    ems_Draw(frame3_displayList, 2)
+    ems_Draw(frame1_displayList, 2)
+    ems_Draw(frame2_displayList, 3)
     ems_Restart
     ems_End
 };
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_SLEEPY_SHEEP)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(SetBattleCamTarget, -67, -15, -5)
     Call(SetBattleCamOffsetY, 45)
@@ -334,13 +329,13 @@ EvtScript N(EVS_UseItem) = {
     Wait(1)
     Call(SetActorYaw, ACTOR_PLAYER, 180)
     Thread
-        Call(N(func_802A123C_71E88C))
+        Call(func_802A123C_71E88C)
     EndThread
     Call(InitTargetIterator)
     Thread
         Wait(40)
-        Call(N(func_802A1740_71ED90))
-        Call(N(func_802A1848_71EE98))
+        Call(func_802A1740_71ED90)
+        Call(func_802A1848_71EE98)
     EndThread
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
@@ -365,7 +360,7 @@ EvtScript N(EVS_UseItem) = {
         Call(SetActorYaw, ACTOR_PLAYER, 0)
     EndThread
     Wait(40)
-    Call(CreateVirtualEntity, LVarA, Ref(N(modelCommandList)))
+    Call(CreateVirtualEntity, LVarA, Ref(modelCommandList))
     Set(LVar7, -200)
     Set(LVar8, 0)
     Set(LVar9, 0)
@@ -432,7 +427,7 @@ EvtScript N(EVS_UseItem) = {
             Goto(0)
         EndIf
     Wait(30)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
@@ -453,18 +448,18 @@ s32 D_802A3E88_7214D8[] = {
 f32 D_802A3F00_721550[] = { 1.0f, 1.0f, 0.75f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.75f, 0.75f };
 
 EntityModelScriptList D_802A3F28_721578 = {
-    N(modelCommandList),
-    N(modelCommandList2),
-    N(modelCommandList3),
-    N(modelCommandList),
-    N(modelCommandList2),
-    N(modelCommandList3),
-    N(modelCommandList),
-    N(modelCommandList2),
-    N(modelCommandList3),
-    N(modelCommandList)
+    modelCommandList,
+    modelCommandList2,
+    modelCommandList3,
+    modelCommandList,
+    modelCommandList2,
+    modelCommandList3,
+    modelCommandList,
+    modelCommandList2,
+    modelCommandList3,
+    modelCommandList
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

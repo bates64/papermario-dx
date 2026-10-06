@@ -222,15 +222,30 @@ API_CALLABLE(SpawnRecoverHeartFX);
 API_CALLABLE(SpawnRecoverFlowerFX);
 
 /// @evtapi
+/// Grants Refund coins for the current item and shows its HUD icon.
+/// Only one refund may be active; finish GiveRefundCleanup before starting another.
+/// @evtout LVar0 time to wait for coin spawns (zero if no refund)
+API_CALLABLE(GiveRefund);
+
+/// @evtapi
+/// Removes the current refund icon. Call before changing the current item.
+API_CALLABLE(GiveRefundCleanup);
+
+/// @evtapi
+/// Adds HP immediately, capped at the player's maximum HP.
+/// @param amount
+API_CALLABLE(AddHP);
+
+/// @evtapi
+/// Adds FP immediately, capped at the player's maximum FP.
+/// @param amount
+API_CALLABLE(AddFP);
+
+/// @evtapi
 API_CALLABLE(IncrementPlayerHP);
 
 /// @evtapi
 API_CALLABLE(IncrementPlayerFP);
-
-/// @evtapi
-/// @param frequency
-/// @param duration
-API_CALLABLE(StartRumbleWithParams);
 
 /// @evtapi
 /// @evtout LVar0 itemScript
@@ -768,6 +783,14 @@ API_CALLABLE(SetHPBarOffset);
 API_CALLABLE(SetActorStatusOffsets);
 
 /// @evtapi
+/// Sets the script owner's status offsets, overriding its blueprint's base offsets.
+/// @param iconOffsetX
+/// @param iconOffsetY
+/// @param textOffsetX
+/// @param textOffsetY
+API_CALLABLE(SetAbsoluteStatusOffsets);
+
+/// @evtapi
 /// @param formationPtr
 /// @param priority
 /// @evtout LVar0 newActorID
@@ -1022,6 +1045,15 @@ API_CALLABLE(CopyBuffs);
 API_CALLABLE(GetMenuSelection);
 
 /// @evtapi
+/// @param outMoveID
+API_CALLABLE(GetSelectedMoveID);
+
+/// @evtapi
+/// @param outJumpCharge
+/// @param outHammerCharge
+API_CALLABLE(GetJumpHammerCharge);
+
+/// @evtapi
 /// @param moveTime
 API_CALLABLE(PlayerFallToGoal);
 
@@ -1040,6 +1072,11 @@ API_CALLABLE(CancelablePlayerRunToGoal);
 /// @evtapi
 /// @param outValue
 API_CALLABLE(GetPlayerHP);
+
+/// @evtapi
+/// Returns the player's current HP as an integer percentage of maximum HP.
+/// @param outPercent
+API_CALLABLE(GetPlayerHpPercent);
 
 /// @evtapi
 /// @param outResult

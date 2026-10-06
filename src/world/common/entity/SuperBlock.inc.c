@@ -26,18 +26,18 @@
     Call(MakeEntity, Ref(Entity_SuperBlock), args, MAKE_ENTITY_END)\
     Set(SUPER_BLOCK_MAPVAR, LVar0)\
     Call(AssignBlockFlag, SUPER_BLOCK_GAMEFLAG)\
-    Call(AssignScript, Ref(N(SuperBlock_OnHit)))
+    Call(AssignScript, Ref(SuperBlock_OnHit))
 
 // ----------------------------------------------------------------
 // Implementation
 
 #define SUPER_BLOCK_NUM_ORBS 3
 
-s32 N(SuperBlock_CantUpgradeMessages)[2] = {
+s32 SuperBlock_CantUpgradeMessages[2] = {
     MSG_Menus_00F0, MSG_Menus_00F1
 };
 
-s16 N(SuperBlock_PartnerIDs)[8] = {
+s16 SuperBlock_PartnerIDs[8] = {
     PARTNER_GOOMBARIO,
     PARTNER_KOOPER,
     PARTNER_BOMBETTE,
@@ -48,7 +48,7 @@ s16 N(SuperBlock_PartnerIDs)[8] = {
     PARTNER_LAKILESTER
 };
 
-s32 N(SuperBlock_UpgradeDescMessages)[8][2] = {
+s32 SuperBlock_UpgradeDescMessages[8][2] = {
     { MSG_Menus_00E0, MSG_Menus_00E1 },
     { MSG_Menus_00E2, MSG_Menus_00E3 },
     { MSG_Menus_00E4, MSG_Menus_00E5 },
@@ -59,26 +59,26 @@ s32 N(SuperBlock_UpgradeDescMessages)[8][2] = {
     { MSG_Menus_00EE, MSG_Menus_00EF }
 };
 
-f32 N(SuperBlock_UpgradeOrbAngles)[SUPER_BLOCK_NUM_ORBS] = {
+f32 SuperBlock_UpgradeOrbAngles[SUPER_BLOCK_NUM_ORBS] = {
     140.0f, 180.0f, 220.0f
 };
 
-API_CALLABLE(N(SuperBlock_SetOverride40)) {
+API_CALLABLE(SuperBlock_SetOverride40) {
     gOverrideFlags |= GLOBAL_OVERRIDES_40;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_ClearOverride40)) {
+API_CALLABLE(SuperBlock_ClearOverride40) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_HideBlockContent)) {
+API_CALLABLE(SuperBlock_HideBlockContent) {
     entity_upgrade_block_hide_content(evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_GetPartnerRank)) {
+API_CALLABLE(SuperBlock_GetPartnerRank) {
     PlayerData* playerData = &gPlayerData;
     Bytecode* args = script->ptrReadPos;
     s32 partnerIdx = evt_get_variable(script, *args++);
@@ -90,7 +90,7 @@ API_CALLABLE(N(SuperBlock_GetPartnerRank)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(SuperBlock_get_partner_rank)(s32 idx, s16 maxLevel) {
+s32 SuperBlock_get_partner_rank(s32 idx, s16 maxLevel) {
     if (!gPlayerData.partners[idx].enabled) {
         return -1;
     }
@@ -102,7 +102,7 @@ s32 N(SuperBlock_get_partner_rank)(s32 idx, s16 maxLevel) {
     return -1;
 }
 
-API_CALLABLE(N(SuperBlock_CountEligiblePartners)) {
+API_CALLABLE(SuperBlock_CountEligiblePartners) {
     PlayerData* playerData = &gPlayerData;
     s16 var = script->varTable[12] >= 0;
     s32 i;
@@ -110,7 +110,7 @@ API_CALLABLE(N(SuperBlock_CountEligiblePartners)) {
     script->varTable[0] = -1;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {
-        if (playerData->partners[i].enabled && N(SuperBlock_get_partner_rank)(i, var) != -1) {
+        if (playerData->partners[i].enabled && SuperBlock_get_partner_rank(i, var) != -1) {
             script->varTable[0] = 1;
             break;
         }
@@ -119,7 +119,7 @@ API_CALLABLE(N(SuperBlock_CountEligiblePartners)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
+API_CALLABLE(SuperBlock_ShowSelectPartnerMenu) {
     PlayerData* playerData = &gPlayerData;
     PopupMenu* popupMenu;
     s32 partnerID;
@@ -136,20 +136,20 @@ API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
 
         // build the popup menu entries from unlocked partners
         entryIndex = 0;
-        for (i = 0; i < ARRAY_COUNT(N(SuperBlock_PartnerIDs)); i++) {
-            partnerID = N(SuperBlock_PartnerIDs)[i];
+        for (i = 0; i < ARRAY_COUNT(SuperBlock_PartnerIDs); i++) {
+            partnerID = SuperBlock_PartnerIDs[i];
             if (playerData->partners[partnerID].enabled) {
                 popupMenu->userIndex[entryIndex] = partnerID;
                 popupMenu->nameMsg[entryIndex] = gPartnerPopupProperties[partnerID].nameMsg;
-                canUpgradePartner = N(SuperBlock_get_partner_rank)(partnerID, hasUltraStone);
+                canUpgradePartner = SuperBlock_get_partner_rank(partnerID, hasUltraStone);
                 if (canUpgradePartner >= 0) {
                     popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID].enabled;
                     popupMenu->enabled[entryIndex] = true;
-                    popupMenu->descMsg[entryIndex] = N(SuperBlock_UpgradeDescMessages)[i][canUpgradePartner];
+                    popupMenu->descMsg[entryIndex] = SuperBlock_UpgradeDescMessages[i][canUpgradePartner];
                 } else {
                     popupMenu->ptrIcon[entryIndex] = wPartnerHudScripts[partnerID].disabled;
                     popupMenu->enabled[entryIndex] = false;
-                    popupMenu->descMsg[entryIndex] = N(SuperBlock_CantUpgradeMessages)[hasUltraStone];
+                    popupMenu->descMsg[entryIndex] = SuperBlock_CantUpgradeMessages[hasUltraStone];
                 }
                 popupMenu->value[entryIndex] = playerData->partners[partnerID].level;
                 entryIndex++;
@@ -191,12 +191,12 @@ API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_LoadCurrentPartnerName)) {
+API_CALLABLE(SuperBlock_LoadCurrentPartnerName) {
     set_message_text_var(gPartnerPopupProperties[gPlayerData.curPartner].nameMsg, 0);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_StartGlowEffect)) {
+API_CALLABLE(SuperBlock_StartGlowEffect) {
     Bytecode* args = script->ptrReadPos;
     s32 entityIdx = evt_get_variable(script, *args++);
     Entity* entity = get_entity_by_index(entityIdx);
@@ -207,21 +207,21 @@ API_CALLABLE(N(SuperBlock_StartGlowEffect)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_EndGlowEffect)) {
+API_CALLABLE(SuperBlock_EndGlowEffect) {
     EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *script->ptrReadPos);
 
     effect->flags |= FX_INSTANCE_FLAG_DISMISS;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_GatherEnergyFX)) {
+API_CALLABLE(SuperBlock_GatherEnergyFX) {
     Entity* entity = get_entity_by_index(evt_get_variable(script, *script->ptrReadPos));
 
     fx_radial_shimmer(4, entity->pos.x, entity->pos.y + 12.5f, entity->pos.z, 1.0f, 75);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_RadiateFaintEnergyFX)) {
+API_CALLABLE(SuperBlock_RadiateFaintEnergyFX) {
     Npc* npc = get_npc_safe(NPC_PARTNER);
 
     fx_radial_shimmer(9, npc->pos.x, npc->pos.y + 12.5f, npc->pos.z, 1.0f, 30);
@@ -243,7 +243,7 @@ typedef struct EnergyOrbSet {
     s32 gatherStateTime;
 } EnergyOrbSet;
 
-API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
+API_CALLABLE(SuperBlock_AnimateEnergyOrbs) {
     Bytecode* args = script->ptrReadPos;
     Npc* partner = get_npc_safe(NPC_PARTNER);
     EnergyOrbSet* userData;
@@ -280,7 +280,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
         t1 = 50.0f;
         for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
             x = 0.0f;
-            add_vec2D_polar(&x, &userData->partnerPosY[i], t1, N(SuperBlock_UpgradeOrbAngles)[i]);
+            add_vec2D_polar(&x, &userData->partnerPosY[i], t1, SuperBlock_UpgradeOrbAngles[i]);
             userData->partnerPosX[i] = cosTheta * x;
             userData->partnerPosZ[i] = sinTheta * x;
             userData->partnerPosX[i] = partner->pos.x - (userData->superBlock->pos.x + userData->partnerPosX[i]);
@@ -295,7 +295,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
             t1 = update_lerp(EASING_CUBIC_OUT, 0.0f, 50.0f, userData->scatterStateTime, 20 * DT);
             for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
                 x = userData->posY[i] = 0.0f;
-                add_vec2D_polar(&x, &userData->posY[i], t1, N(SuperBlock_UpgradeOrbAngles)[i]);
+                add_vec2D_polar(&x, &userData->posY[i], t1, SuperBlock_UpgradeOrbAngles[i]);
                 userData->posX[i] = cosTheta * x;
                 userData->posZ[i] = sinTheta * x;
             }
@@ -310,7 +310,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
             t1 = 50.0f;
             for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
                 x = userData->posY[i] = 0.0f;
-                add_vec2D_polar(&x, &userData->posY[i], t1, N(SuperBlock_UpgradeOrbAngles)[i]);
+                add_vec2D_polar(&x, &userData->posY[i], t1, SuperBlock_UpgradeOrbAngles[i]);
                 userData->posX[i] = cosTheta * x;
                 userData->posZ[i] = sinTheta * x;
             }
@@ -364,7 +364,7 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SuperBlock_WhiteScreenFlash)) {
+API_CALLABLE(SuperBlock_WhiteScreenFlash) {
     Bytecode* args = script->ptrReadPos;
     s32 ret = ApiStatus_BLOCK;
 
@@ -411,19 +411,19 @@ API_CALLABLE(N(SuperBlock_WhiteScreenFlash)) {
     return ret;
 }
 
-API_CALLABLE(N(SuperBlock_PartnerSparkles2)) {
+API_CALLABLE(SuperBlock_PartnerSparkles2) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
     fx_sparkles(FX_SPARKLES_2, partner->pos.x, partner->pos.y + 30.0f, partner->pos.z, 30.0f);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_PartnerSparkles4)) {
+API_CALLABLE(SuperBlock_PartnerSparkles4) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
     fx_sparkles(FX_SPARKLES_4, partner->pos.x, partner->pos.y + 30.0f, partner->pos.z, 30.0f);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_WaitForPlayerToLand)) {
+API_CALLABLE(SuperBlock_WaitForPlayerToLand) {
     script->varTable[0] = false;
     if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE)) {
         script->varTable[0] = true;
@@ -431,39 +431,39 @@ API_CALLABLE(N(SuperBlock_WaitForPlayerToLand)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(SuperBlock_ShowUpgradeEffects) = {
+EvtScript SuperBlock_ShowUpgradeEffects = {
     Wait(10 * DT)
     Call(PlaySound, SOUND_RELEASE_ENERGY)
-    Call(N(SuperBlock_GatherEnergyFX), SUPER_BLOCK_MAPVAR)
+    Call(SuperBlock_GatherEnergyFX, SUPER_BLOCK_MAPVAR)
     Wait(85 * DT)
     Thread
         Call(PlaySound, SOUND_GATHER_ENERGY)
-        Call(N(SuperBlock_WhiteScreenFlash), 70, 70)
+        Call(SuperBlock_WhiteScreenFlash, 70, 70)
         Wait(27 * DT)
         Call(PlaySound, SOUND_GROW)
-        Call(N(SuperBlock_WhiteScreenFlash), 50, 50)
+        Call(SuperBlock_WhiteScreenFlash, 50, 50)
     EndThread
     Thread
         Wait(3)
-        Call(N(SuperBlock_HideBlockContent), SUPER_BLOCK_MAPVAR)
+        Call(SuperBlock_HideBlockContent, SUPER_BLOCK_MAPVAR)
     EndThread
     Thread
         Wait(47 * DT)
-        Call(N(SuperBlock_RadiateFaintEnergyFX))
-        Call(N(SuperBlock_PartnerSparkles2))
+        Call(SuperBlock_RadiateFaintEnergyFX)
+        Call(SuperBlock_PartnerSparkles2)
         Wait(5 * DT)
-        Call(N(SuperBlock_PartnerSparkles4))
+        Call(SuperBlock_PartnerSparkles4)
         Wait(5 * DT)
-        Call(N(SuperBlock_PartnerSparkles2))
+        Call(SuperBlock_PartnerSparkles2)
     EndThread
     Wait(3)
-    Call(N(SuperBlock_AnimateEnergyOrbs), SUPER_BLOCK_MAPVAR)
+    Call(SuperBlock_AnimateEnergyOrbs, SUPER_BLOCK_MAPVAR)
     Wait(30 * DT)
     Return
     End
 };
 
-EvtScript N(SuperBlock_OnHit) = {
+EvtScript SuperBlock_OnHit = {
     IfEq(SUPER_BLOCK_GAMEFLAG, 1)
         Return
     EndIf
@@ -471,26 +471,26 @@ EvtScript N(SuperBlock_OnHit) = {
     IfEq(LVar0, 1)
         Return
     EndIf
-    Call(N(SuperBlock_WaitForPlayerToLand))
+    Call(SuperBlock_WaitForPlayerToLand)
     IfEq(LVar0, 1)
         Return
     EndIf
     Call(ModifyGlobalOverrideFlags, 1, GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
-    Call(N(SuperBlock_SetOverride40))
+    Call(SuperBlock_SetOverride40)
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(N(SuperBlock_StartGlowEffect), SUPER_BLOCK_MAPVAR, LVar9)
+    Call(SuperBlock_StartGlowEffect, SUPER_BLOCK_MAPVAR, LVar9)
     Call(FindItem, ITEM_ULTRA_STONE, LVarC)
-    Call(N(SuperBlock_CountEligiblePartners))
+    Call(SuperBlock_CountEligiblePartners)
     IfEq(LVar0, -1)
         Call(ShowMessageAtScreenPos, MSG_Menus_00DC, 160, 40)
         Wait(10)
-        Call(N(SuperBlock_EndGlowEffect), LVar9)
+        Call(SuperBlock_EndGlowEffect, LVar9)
         Call(DisablePlayerInput, false)
         Call(EnablePartnerAI)
         Call(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
-        Call(N(SuperBlock_ClearOverride40))
+        Call(SuperBlock_ClearOverride40)
         Return
     EndIf
     IfEq(GF_Tutorial_SuperBlock, 0)
@@ -499,13 +499,13 @@ EvtScript N(SuperBlock_OnHit) = {
     Else
         Call(ShowMessageAtScreenPos, MSG_Menus_00DB, 160, 40)
     EndIf
-    Call(N(SuperBlock_ShowSelectPartnerMenu))
+    Call(SuperBlock_ShowSelectPartnerMenu)
     IfEq(LVar0, -1)
-        Call(N(SuperBlock_EndGlowEffect), LVar9)
+        Call(SuperBlock_EndGlowEffect, LVar9)
         Call(DisablePlayerInput, false)
         Call(EnablePartnerAI)
         Call(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
-        Call(N(SuperBlock_ClearOverride40))
+        Call(SuperBlock_ClearOverride40)
         Return
     EndIf
     Set(LVarA, LVar0)
@@ -522,18 +522,18 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(ShowChoice, MSG_Choice_000D)
     Call(CloseMessage)
     IfNe(LVar0, 0)
-        Call(N(SuperBlock_EndGlowEffect), LVar9)
+        Call(SuperBlock_EndGlowEffect, LVar9)
         Call(DisablePlayerInput, false)
         Call(EnablePartnerAI)
         Call(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
-        Call(N(SuperBlock_ClearOverride40))
+        Call(SuperBlock_ClearOverride40)
         Return
     EndIf
-    ExecWait(N(SuperBlock_ShowUpgradeEffects))
-    Call(N(SuperBlock_GetPartnerRank), LVarB, LVarD)
+    ExecWait(SuperBlock_ShowUpgradeEffects)
+    Call(SuperBlock_GetPartnerRank, LVarB, LVarD)
     Set(SUPER_BLOCK_GAMEFLAG, 1)
-    Call(N(SuperBlock_EndGlowEffect), LVar9)
-    Call(N(SuperBlock_LoadCurrentPartnerName))
+    Call(SuperBlock_EndGlowEffect, LVar9)
+    Call(SuperBlock_LoadCurrentPartnerName)
     IfEq(LVarD, 1)
         Call(ShowMessageAtScreenPos, MSG_Menus_00DD, 160, 40)
     Else
@@ -542,7 +542,7 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(DisablePlayerInput, false)
     Call(EnablePartnerAI)
     Call(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
-    Call(N(SuperBlock_ClearOverride40))
+    Call(SuperBlock_ClearOverride40)
     Return
     End
 };

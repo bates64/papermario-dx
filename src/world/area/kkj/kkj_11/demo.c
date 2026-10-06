@@ -1,6 +1,6 @@
 #include "kkj_11.h"
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Call(DemoJoystickXY, -75, -44)
     Wait(41)
     Call(DemoJoystickXY, -74, -44)
@@ -194,7 +194,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -213,10 +213,10 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-EvtScript N(EVS_PlayDemoScene) = {
+EvtScript EVS_PlayDemoScene = {
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

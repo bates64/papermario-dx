@@ -1,7 +1,7 @@
 #include "kpa_03.h"
 #include "entity.h"
 
-API_CALLABLE(N(MonitorPlayerAltitude)) {
+API_CALLABLE(MonitorPlayerAltitude) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->lastGoodPos.y >= 0) {
@@ -13,7 +13,7 @@ API_CALLABLE(N(MonitorPlayerAltitude)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGe(LVar1, LVar3)
@@ -26,18 +26,18 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     IfEq(MV_PlayerHeightLevel, 0)
         Set(LVar3, -275)
-        ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+        ExecGetTID(EVS_TetherCamToPlayer, LVarA)
         Call(SetPlayerJumpscale, Float(0.7))
         Call(PlayerJump, -507, -288, -159, 20)
     Else
         Set(LVar3, 0)
-        ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+        ExecGetTID(EVS_TetherCamToPlayer, LVarA)
         Call(SetPlayerJumpscale, Float(1.1))
         Call(PlayerJump, -500, 0, -150, 40)
     EndIf
@@ -50,12 +50,12 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Thread
-        Call(N(MonitorPlayerAltitude))
+        Call(MonitorPlayerAltitude)
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), -400, -300, -150, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Call(MakeEntity, Ref(Entity_YellowBlock), 620, -65, -200, 0, ITEM_SHOOTING_STAR, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_KPA03_ItemBlock_ShootingStar)
     Return

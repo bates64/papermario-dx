@@ -2,15 +2,15 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_NpcAI_Tubba_Chase);
-extern EvtScript N(EVS_NpcAI_Tubba_WakeUp);
+extern EvtScript EVS_NpcAI_Tubba_Chase;
+extern EvtScript EVS_NpcAI_Tubba_WakeUp;
 
 #include "world/common/npc/Yakkey/idle.inc.c"
 
 #include "world/common/enemy/TubbaBlubba/patrol.inc.c"
 #include "world/common/enemy/TubbaBlubba/idle.inc.c"
 
-API_CALLABLE(N(UnusedChasePlayer)) {
+API_CALLABLE(UnusedChasePlayer) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(NPC_Tubba);
     f32 posX, posZ;
@@ -37,7 +37,7 @@ API_CALLABLE(N(UnusedChasePlayer)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
+EvtScript EVS_Scene_TubbaFallsAsleep = {
     Label(10)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
@@ -256,7 +256,7 @@ EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Tubba_Asleep) = {
+EvtScript EVS_NpcIdle_Tubba_Asleep = {
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
     Call(SetNpcPos, NPC_SELF, 600, 50, 115)
     Call(SetNpcRotationPivot, NPC_SELF, 0)
@@ -290,7 +290,7 @@ EvtScript N(EVS_NpcIdle_Tubba_Asleep) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Tubba_WakeUp) = {
+EvtScript EVS_NpcAI_Tubba_WakeUp = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_TUBBA_SNORE_EXHALE, SOUND_SPACE_DEFAULT)
     Call(ShowSleepBubble, NPC_Tubba, 0, 50, 2, 552, 111, 128, 30, LVar0)
@@ -310,12 +310,12 @@ EvtScript N(EVS_NpcAI_Tubba_WakeUp) = {
     Wait(12)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_LandAngry)
     Wait(5)
-    Call(BindNpcAI, NPC_Tubba, Ref(N(EVS_NpcAI_Tubba_Chase)))
+    Call(BindNpcAI, NPC_Tubba, Ref(EVS_NpcAI_Tubba_Chase))
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Tubba_Chase) = {
+EvtScript EVS_NpcAI_Tubba_Chase = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_RunAngry)
     Thread
@@ -326,38 +326,38 @@ EvtScript N(EVS_NpcAI_Tubba_Chase) = {
             Wait(8)
         EndLoop
     EndThread
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_Tubba_Patrol)))
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_Tubba_Patrol))
     Return
     End
 };
 
-API_CALLABLE(N(PostBattleHideWorld)) {
+API_CALLABLE(PostBattleHideWorld) {
     increment_status_bar_disabled();
     set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
     return ApiStatus_DONE2;
 }
 
 // failsafe if the player somehow defeats Tubba
-EvtScript N(EVS_NpcDefeat_Tubba) = {
-    Call(N(PostBattleHideWorld))
+EvtScript EVS_NpcDefeat_Tubba = {
+    Call(PostBattleHideWorld)
     Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_6)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tubba) = {
+EvtScript EVS_NpcInit_Tubba = {
     Call(SetNpcScale, NPC_SELF, Float(1.25), Float(1.25), Float(1.25))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Tubba)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Tubba))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_BEGAN_NAPPING)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_TubbaFallsAsleep)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_TubbaFallsAsleep))
         CaseLt(STORY_CH3_TUBBA_WOKE_UP)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Tubba_Asleep)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Tubba_Asleep))
         CaseLt(STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
             Call(SetNpcPos, NPC_SELF, 245, 0, 250)
             Call(SetNpcYaw, NPC_SELF, 270)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Tubba_Chase)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Tubba_Chase))
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -365,7 +365,7 @@ EvtScript N(EVS_NpcInit_Tubba) = {
     End
 };
 
-EvtScript N(EVS_Scene_YakkeyShouts) = {
+EvtScript EVS_Scene_YakkeyShouts = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         IfEq(LVar0, 1)
@@ -462,7 +462,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     EndSwitch
     Call(EnablePartnerAI)
     Wait(15)
-    Call(BindNpcAI, NPC_Tubba, Ref(N(EVS_NpcAI_Tubba_WakeUp)))
+    Call(BindNpcAI, NPC_Tubba, Ref(EVS_NpcAI_Tubba_WakeUp))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
@@ -481,14 +481,14 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yakkey) = {
+EvtScript EVS_NpcInit_Yakkey = {
     Call(SetSelfVar, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_YakkeyShouts)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_YakkeyShouts))
     Return
     End
 };
 
-NpcData N(NpcData_Tubba) = {
+NpcData NpcData_Tubba = {
     .id = NPC_Tubba,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -509,26 +509,26 @@ NpcData N(NpcData_Tubba) = {
             .detectSize = { 1000, 250 },
         }
     },
-    .init = &N(EVS_NpcInit_Tubba),
-    .settings = &N(NpcSettings_TubbaBlubba),
+    .init = &EVS_NpcInit_Tubba,
+    .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
 };
 
-NpcData N(NpcData_Yakkey) = {
+NpcData NpcData_Yakkey = {
     .id = NPC_Yakkey,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Yakkey),
-    .settings = &N(NpcSettings_Yakkey),
+    .init = &EVS_NpcInit_Yakkey,
+    .settings = &NpcSettings_Yakkey,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = YAKKEY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Tubba), BTL_DGB_FORMATION_04),
-    NPC_GROUP(N(NpcData_Yakkey)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Tubba, BTL_DGB_FORMATION_04),
+    NPC_GROUP(NpcData_Yakkey),
     {}
 };

@@ -1,8 +1,6 @@
 #include "common.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_squirt
-
 extern s32 actionCmdTableSquirt[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -14,14 +12,14 @@ enum {
 // how much to subtract from the meter per frame after overfilling it
 #define METER_DRAIN_RATE 250
 
-s32 N(DrainRateTable)[] = { 300, 300, 265, 220, 175, 175 };
-s32 N(FillRateTable)[] = { 300, 300, 265, 220, 175, 175 };
+s32 DrainRateTable[] = { 300, 300, 265, 220, 175, 175 };
+s32 FillRateTable[] = { 300, 300, 265, 220, 175, 175 };
 
 // bug: the sixth entry is not accessible due to the way idx is calculated in these macros
-#define GET_DRAIN_RATE(pct) (N(DrainRateTable)[((pct) / (ONE_PCT_MASH / 5))])
-#define GET_FILL_RATE(pct)  (N(FillRateTable)[((pct) / (ONE_PCT_MASH / 5))])
+#define GET_DRAIN_RATE(pct) (DrainRateTable[((pct) / (ONE_PCT_MASH / 5))])
+#define GET_FILL_RATE(pct)  (FillRateTable[((pct) / (ONE_PCT_MASH / 5))])
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -60,7 +58,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -90,7 +88,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -223,7 +221,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     s32 hudX, hudY;
     HudElemID hid;
@@ -239,7 +237,7 @@ void N(draw)(void) {
     }
 }
 
-void N(free)(void) {
+void destroy(void) {
     sfx_stop_sound(SOUND_LOOP_CHARGE_METER);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);

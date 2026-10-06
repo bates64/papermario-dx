@@ -8,11 +8,9 @@
 
 extern EntityModelScript EMS_StarIcon;
 
-#define NAMESPACE battle_move_up_and_away
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-API_CALLABLE(N(DarkenBackground)) {
+API_CALLABLE(DarkenBackgroundFurther) {
     if (isInitialCall) {
         mdl_set_all_tint_type(ENV_TINT_SHROUD);
         *gBackgroundTintModePtr = ENV_TINT_SHROUD;
@@ -31,7 +29,7 @@ API_CALLABLE(N(DarkenBackground)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(RestoreBackground)) {
+API_CALLABLE(RestoreBackground) {
     if (isInitialCall) {
         script->functionTemp[0] = 254;
     }
@@ -48,7 +46,7 @@ API_CALLABLE(N(RestoreBackground)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(ShouldTargetBeCaptured)) {
+API_CALLABLE(ShouldTargetBeCaptured) {
     Actor* targetActor = get_actor(get_actor(script->owner1.actorID)->targetActorID);
 
     script->varTable[0] = false;
@@ -74,15 +72,15 @@ API_CALLABLE(N(ShouldTargetBeCaptured)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleKalmar_Idle)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleKalmar_Shout)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Wait(20)
     Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 128, 10)
-    Call(N(DarkenBackground))
+    Call(DarkenBackgroundFurther)
     Call(PlaySound, SOUND_UP_AND_AWAY_CAST)
     PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, 0, 20, 0, Float(1.0), 90)
     Wait(30)
@@ -95,7 +93,7 @@ EvtScript N(EVS_UsePower) = {
     Call(InitTargetIterator)
     Label(0)
         Call(SetGoalToTarget, ACTOR_SELF)
-        Call(N(ShouldTargetBeCaptured))
+        Call(ShouldTargetBeCaptured)
         Set(LFlag0, false)
         Call(ItemCheckHit, LVar1, 0, 0, 0, 0)
         IfEq(LVar1, HIT_RESULT_MISS)
@@ -173,14 +171,14 @@ EvtScript N(EVS_UsePower) = {
             Goto(0)
         EndIf
     Wait(70)
-    Call(N(RestoreBackground))
-    ExecWait(N(EVS_StarPower_SpiritDeparts))
+    Call(RestoreBackground)
+    ExecWait(EVS_StarPower_SpiritDeparts)
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_EndWish))
+    ExecWait(EVS_StarPower_EndWish)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

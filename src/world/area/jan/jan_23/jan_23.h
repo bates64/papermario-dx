@@ -31,8 +31,6 @@ enum {
     MF_RaphaelShoutingDone  = MapFlag(0),
 };
 
-#define NAMESPACE jan_23
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

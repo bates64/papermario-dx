@@ -1,6 +1,6 @@
 #include "kkj_14.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH0_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH1_BEGAN_PEACH_MISSION)

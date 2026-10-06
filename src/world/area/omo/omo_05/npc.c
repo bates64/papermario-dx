@@ -7,7 +7,7 @@
 
 #include "world/common/npc/GourmetGuy/idle.inc.c"
 
-API_CALLABLE(N(JudgeFoodQuality)) {
+API_CALLABLE(JudgeFoodQuality) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
     ItemData* item = &gItemTable[itemID];
@@ -22,7 +22,7 @@ API_CALLABLE(N(JudgeFoodQuality)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpinCameraAround)) {
+API_CALLABLE(SpinCameraAround) {
     Camera* camera = &gCameras[CAM_DEFAULT];
 
     if (isInitialCall) {
@@ -39,7 +39,7 @@ API_CALLABLE(N(SpinCameraAround)) {
     }
 }
 
-EvtScript N(EVS_NpcInteract_GourmetGuy) = {
+EvtScript EVS_NpcInteract_GourmetGuy = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, 0, LVar2)
@@ -65,7 +65,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
         Return
     EndIf
     Set(LVar8, LVar0)
-    Call(N(JudgeFoodQuality), LVar0)
+    Call(JudgeFoodQuality, LVar0)
     Call(MakeItemEntity, LVar8, -255, 35, 110, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(LVar7, LVar0)
     Call(SetItemFlags, LVar7, 64, 1)
@@ -253,9 +253,9 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             Call(RotateModel, MODEL_o329, 105, 0, 1, 0)
             Call(RotateModel, MODEL_o330, 105, 0, 1, 0)
             Wait(5 * DT)
-            Call(N(SpinCameraAround))
-            Call(N(SpinCameraAround))
-            Call(N(SpinCameraAround))
+            Call(SpinCameraAround)
+            Call(SpinCameraAround)
+            Call(SpinCameraAround)
             Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 0, 10)
             Call(UseSettingsFrom, CAM_DEFAULT, -250, 0, 100)
             Call(SetPanTarget, CAM_DEFAULT, -250, 0, 100)
@@ -346,7 +346,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt2, COLLIDER_FLAGS_UPPER_MASK)
             Set(GB_StoryProgress, STORY_CH4_GAVE_CAKE_TO_GOURMET_GUY)
     EndSwitch
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(DisablePlayerInput, false)
     IfEq(GB_StoryProgress, STORY_CH4_GAVE_CAKE_TO_GOURMET_GUY)
         Call(RemoveNpc, NPC_SELF)
@@ -355,7 +355,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GourmetGuy) = {
+EvtScript EVS_NpcInit_GourmetGuy = {
     IfGe(GB_StoryProgress, STORY_CH4_GAVE_CAKE_TO_GOURMET_GUY)
         Call(RemoveNpc, NPC_GourmetGuy_Fork)
         Call(RemoveNpc, NPC_GourmetGuy_Knife)
@@ -368,19 +368,19 @@ EvtScript N(EVS_NpcInit_GourmetGuy) = {
         Call(SetNpcAnimation, NPC_GourmetGuy_Knife, ANIM_GourmetGuy_Knife)
         Call(SetNpcFlagBits, NPC_GourmetGuy_Knife, NPC_FLAG_INVISIBLE, true)
         Call(SetNpcPos, NPC_GourmetGuy_Knife, -210, 50, 90)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GourmetGuy)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GourmetGuy))
     EndIf
     Return
     End
 };
 
-NpcData N(NpcData_GourmetGuy)[] = {
+NpcData NpcData_GourmetGuy[] = {
     {
         .id = NPC_GourmetGuy,
         .pos = { -250.0f, 10.0f, 85.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_GourmetGuy),
-        .settings = &N(NpcSettings_GourmetGuy),
+        .init = &EVS_NpcInit_GourmetGuy,
+        .settings = &NpcSettings_GourmetGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = GOURMET_GUY_ANIMS,
@@ -390,7 +390,7 @@ NpcData N(NpcData_GourmetGuy)[] = {
         .id = NPC_GourmetGuy_Knife,
         .pos = { -250.0f, 10.0f, 85.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_GourmetGuy),
+        .settings = &NpcSettings_GourmetGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GOURMET_GUY_ANIMS,
@@ -400,7 +400,7 @@ NpcData N(NpcData_GourmetGuy)[] = {
         .id = NPC_GourmetGuy_Fork,
         .pos = { -250.0f, 10.0f, 85.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_GourmetGuy),
+        .settings = &NpcSettings_GourmetGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GOURMET_GUY_ANIMS,
@@ -408,7 +408,7 @@ NpcData N(NpcData_GourmetGuy)[] = {
     },
 };
 
-NpcData N(NpcData_GrooveGuy) = {
+NpcData NpcData_GrooveGuy = {
     .id = NPC_GrooveGuy,
     .pos = { 320.0f, 10.0f, -145.0f },
     .yaw = 270,
@@ -424,15 +424,15 @@ NpcData N(NpcData_GrooveGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_GrooveGuy_Wander),
+    .settings = &NpcSettings_GrooveGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_A,
     .animations = GROOVE_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_GourmetGuy)),
-    NPC_GROUP(N(NpcData_GrooveGuy), BTL_OMO_FORMATION_2A, BTL_OMO_STAGE_06),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_GourmetGuy),
+    NPC_GROUP(NpcData_GrooveGuy, BTL_OMO_FORMATION_2A, BTL_OMO_STAGE_06),
     {}
 };

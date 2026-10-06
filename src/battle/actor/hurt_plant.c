@@ -2,22 +2,20 @@
 #include "script_api/battle.h"
 #include "sprite/npc/HurtPlant.h"
 
-#define NAMESPACE A(hurt_plant)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_BITE        = 2,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_HurtPlant_Idle,
     STATUS_KEY_STONE,     ANIM_HurtPlant_Still,
     STATUS_KEY_SLEEP,     ANIM_HurtPlant_Sleep,
@@ -30,13 +28,13 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_FIRE,     0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              95,
@@ -61,15 +59,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -10, 24 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -8, -5 },
@@ -81,10 +79,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_HURT_PLANT,
     .level = ACTOR_LEVEL_HURT_PLANT,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 70,
     .airLiftChance = 20,
     .hurricaneChance = 20,
@@ -99,28 +97,26 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 1, 20 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseFlag(STATUS_FLAG_SLEEP)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -6, 14)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -2, -5)
-            Call(N(SetAbsoluteStatusOffsets), -20, 8, 0, 14)
+            Call(SetAbsoluteStatusOffsets, -20, 8, 0, 14)
         CaseDefault
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -10, 24)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -8, -5)
-            Call(N(SetAbsoluteStatusOffsets), -18, 23, 1, 20)
+            Call(SetAbsoluteStatusOffsets, -18, 23, 1, 20)
     EndSwitch
     Wait(1)
     Goto(0)
@@ -128,7 +124,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, true)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_DIG)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HurtPlant_Burrow)
@@ -144,7 +140,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -194,7 +190,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_HurtPlant_Hurt)
             ExecWait(EVS_Enemy_ShockHit)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HurtPlant_Stun)
             Wait(3)
@@ -258,7 +254,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -324,7 +320,7 @@ EvtScript N(EVS_TakeTurn) = {
             Wait(15)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
@@ -345,7 +341,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HurtPlant_ReleaseBite)
             Wait(5)
             Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)

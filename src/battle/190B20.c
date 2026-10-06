@@ -2757,72 +2757,70 @@ void show_foreground_models(void) {
     }
 }
 
-#include "common/StartRumbleWithParams.inc.c"
-
 EvtScript EVS_BattleRumble_Long = {
-    Call(N(StartRumbleWithParams), 256, 30)
-    Call(N(StartRumbleWithParams), 200, 15)
-    Call(N(StartRumbleWithParams), 50, 15)
+    Call(StartRumbleWithParams, 256, 30)
+    Call(StartRumbleWithParams, 200, 15)
+    Call(StartRumbleWithParams, 50, 15)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitMin = {
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitLight = {
-    Call(N(StartRumbleWithParams), 150, 20)
+    Call(StartRumbleWithParams, 150, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitHeavy = {
-    Call(N(StartRumbleWithParams), 200, 30)
+    Call(StartRumbleWithParams, 200, 30)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitExtreme = {
-    Call(N(StartRumbleWithParams), 256, 40)
+    Call(StartRumbleWithParams, 256, 40)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_HitMax = {
-    Call(N(StartRumbleWithParams), 256, 60)
+    Call(StartRumbleWithParams, 256, 60)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerMin = {
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerLight = {
-    Call(N(StartRumbleWithParams), 150, 20)
+    Call(StartRumbleWithParams, 150, 20)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerHeavy = {
-    Call(N(StartRumbleWithParams), 200, 30)
+    Call(StartRumbleWithParams, 200, 30)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerExtreme = {
-    Call(N(StartRumbleWithParams), 256, 40)
+    Call(StartRumbleWithParams, 256, 40)
     Return
     End
 };
 
 EvtScript EVS_BattleRumble_PlayerMax = {
-    Call(N(StartRumbleWithParams), 256, 60)
+    Call(StartRumbleWithParams, 256, 60)
     Return
     End
 };

@@ -3,7 +3,7 @@
 
 #include "world/common/ai/FlyingAI.inc.c"
 
-MobileAISettings N(AISettings_HyperParagoomba_Wander) = {
+MobileAISettings AISettings_HyperParagoomba_Wander = {
     .moveSpeed = 1.8f,
     .moveTime = 60,
     .waitTime = 15,
@@ -16,21 +16,21 @@ MobileAISettings N(AISettings_HyperParagoomba_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_HyperParagoomba_Wander) = {
+EvtScript EVS_NpcAI_HyperParagoomba_Wander = {
     Call(SetSelfVar, AI_VAR_FLYING_FLAGS, AI_FLYING_FLAG_INTERPY)
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-8.5f))
     Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.6f))
     Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(7.0f))
-    Call(N(FlyingAI_Main), Ref(N(AISettings_HyperParagoomba_Wander)))
+    Call(FlyingAI_Main, Ref(AISettings_HyperParagoomba_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_HyperParagoomba_Wander) = {
+NpcSettings NpcSettings_HyperParagoomba_Wander = {
     .height = 18,
     .radius = 20,
     .level = ACTOR_LEVEL_HYPER_GOOMBA,
-    .doAI = &N(EVS_NpcAI_HyperParagoomba_Wander),
+    .doAI = &EVS_NpcAI_HyperParagoomba_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

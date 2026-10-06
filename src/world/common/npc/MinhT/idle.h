@@ -3,4 +3,4 @@
 
 #define NpcSettings_MinhT NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_MinhT);
+extern NpcSettings NpcSettings_MinhT;

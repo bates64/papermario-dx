@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Merlon) = {
+NpcSettings NpcSettings_Merlon = {
     .defaultAnim = ANIM_Merlon_Idle,
     .height = 36,
     .radius = 32,

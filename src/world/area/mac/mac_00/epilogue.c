@@ -1,7 +1,7 @@
 #include "mac_00.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_PlayerExitPipe_Epilogue) = {
+EvtScript EVS_PlayerExitPipe_Epilogue = {
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Call(SetPlayerPos, -100, -10, -370)
@@ -23,7 +23,7 @@ EvtScript N(EVS_PlayerExitPipe_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_LuigiExitPipe_Epilogue) = {
+EvtScript EVS_LuigiExitPipe_Epilogue = {
     Call(EnableNpcShadow, NPC_Luigi_Epilogue, false)
     Call(SetNpcPos, NPC_Luigi_Epilogue, -100, -35, -370)
     Call(SetNpcYaw, NPC_Luigi_Epilogue, 135)
@@ -46,7 +46,7 @@ EvtScript N(EVS_LuigiExitPipe_Epilogue) = {
     End
 };
 
-EvtScript N(EVS_Scene_BeginEpilogue) = {
+EvtScript EVS_Scene_BeginEpilogue = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -100, 30, -370)
     Call(SetPanTarget, CAM_DEFAULT, -100, 30, -370)
@@ -54,13 +54,13 @@ EvtScript N(EVS_Scene_BeginEpilogue) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
-        ExecWait(N(EVS_PlayerExitPipe_Epilogue))
+        ExecWait(EVS_PlayerExitPipe_Epilogue)
         Wait(10)
         Call(func_802D1270, -60, -320, Float(4.0))
     EndThread
     Thread
         Wait(70)
-        ExecWait(N(EVS_LuigiExitPipe_Epilogue))
+        ExecWait(EVS_LuigiExitPipe_Epilogue)
         Wait(10)
         Call(SetNpcFlagBits, NPC_Luigi_Epilogue, NPC_FLAG_GRAVITY, true)
         Call(SetNpcAnimation, NPC_Luigi_Epilogue, ANIM_Luigi_Run)
@@ -86,7 +86,7 @@ EvtScript N(EVS_Scene_BeginEpilogue) = {
     Call(NpcMoveTo, NPC_Luigi_Epilogue, 60, -100, 0)
     Call(SetNpcFlagBits, NPC_Luigi_Epilogue, NPC_FLAG_GRAVITY, false)
     Call(SetNpcPos, NPC_Luigi_Epilogue, NPC_DISPOSE_LOCATION)
-    Exec(N(EVS_BlockExitToGoomaRoad))
+    Exec(EVS_BlockExitToGoomaRoad)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
     Return

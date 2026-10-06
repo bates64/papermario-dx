@@ -3,7 +3,7 @@
 
 #include "world/common/ai/GrooveGuyAI.inc.c"
 
-MobileAISettings N(AISettings_GrooveGuy_Wander) = {
+MobileAISettings AISettings_GrooveGuy_Wander = {
     .moveSpeed = 1.7f,
     .moveTime = 80,
     .waitTime = 1,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_GrooveGuy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_GrooveGuy_Wander) = {
-    Call(N(GrooveGuyAI_Main), Ref(N(AISettings_GrooveGuy_Wander)))
+EvtScript EVS_NpcAI_GrooveGuy_Wander = {
+    Call(GrooveGuyAI_Main, Ref(AISettings_GrooveGuy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_GrooveGuy_Wander) = {
+NpcSettings NpcSettings_GrooveGuy_Wander = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_GROOVE_GUY,
-    .doAI = &N(EVS_NpcAI_GrooveGuy_Wander),
+    .doAI = &EVS_NpcAI_GrooveGuy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

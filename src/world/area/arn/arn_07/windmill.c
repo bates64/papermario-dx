@@ -1,6 +1,6 @@
 #include "arn_07.h"
 
-API_CALLABLE(N(WrapWindmillAngle)) {
+API_CALLABLE(WrapWindmillAngle) {
     f32 angle = evt_get_float_variable(script, LVar0);
 
     if (angle >= 360.0) {
@@ -10,21 +10,21 @@ API_CALLABLE(N(WrapWindmillAngle)) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript(N(EVS_UpdateWindmill));
+extern EvtScript(EVS_UpdateWindmill);
 
-EvtScript N(EVS_SetupWindmill) = {
-    Exec(N(EVS_UpdateWindmill))
+EvtScript EVS_SetupWindmill = {
+    Exec(EVS_UpdateWindmill)
     Return
     End
 };
 
-EvtScript N(EVS_UpdateWindmill) = {
+EvtScript EVS_UpdateWindmill = {
     SetF(LVar0, Float(0.0))
     Set(LVar1, 30)
     Call(PlaySoundAtModel, MODEL_o36, SOUND_LOOP_WINDMILL_EXT, SOUND_SPACE_DEFAULT)
     Label(0)
         AddF(LVar0, Float(1.0))
-        Call(N(WrapWindmillAngle))
+        Call(WrapWindmillAngle)
         Call(RotateModel, MODEL_o40, LVar0, 0, 0, 1)
         Wait(1)
         Sub(LVar1, 1)

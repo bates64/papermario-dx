@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Paragloomba/wander.inc.c"
 
-NpcData N(NpcData_Paragloomba_01) = {
+NpcData NpcData_Paragloomba_01 = {
     .id = NPC_Paragoomba_01,
     .pos = { 230.0f, 50.0f, 50.0f },
     .yaw = 90,
@@ -18,13 +18,13 @@ NpcData N(NpcData_Paragloomba_01) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_Paragloomba_Wander),
+    .settings = &NpcSettings_Paragloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGLOOMBA_DROPS,
     .animations = PARAGLOOMBA_ANIMS,
 };
 
-NpcData N(NpcData_Paragloomba_02) = {
+NpcData NpcData_Paragloomba_02 = {
     .id = NPC_Paragoomba_02,
     .pos = { 535.0f, 50.0f, 20.0f },
     .yaw = 90,
@@ -40,14 +40,14 @@ NpcData N(NpcData_Paragloomba_02) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_Paragloomba_Wander),
+    .settings = &NpcSettings_Paragloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGLOOMBA_DROPS,
     .animations = PARAGLOOMBA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Paragloomba_01), BTL_TIK_FORMATION_0C, BTL_TIK_STAGE_01),
-    NPC_GROUP(N(NpcData_Paragloomba_02), BTL_TIK_FORMATION_0D, BTL_TIK_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Paragloomba_01, BTL_TIK_FORMATION_0C, BTL_TIK_STAGE_01),
+    NPC_GROUP(NpcData_Paragloomba_02, BTL_TIK_FORMATION_0D, BTL_TIK_STAGE_01),
     {}
 };

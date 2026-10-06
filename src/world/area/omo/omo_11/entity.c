@@ -5,7 +5,7 @@
 #define SUPER_BLOCK_GAMEFLAG GF_OMO11_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(-115, 270, -120, 0)
     Call(MakeEntity, Ref(Entity_MulticoinBlock), 315, 270, -100, 0, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO11_MultiCoinBrick)

@@ -75,7 +75,7 @@
 // pointer to spout effect is stored in this NPC var
 #define NPC_VAR_SPOUT_PTR 0
 
-API_CALLABLE(N(CreateWhaleGeyser)) {
+API_CALLABLE(CreateWhaleGeyser) {
     Bytecode* args = script->ptrReadPos;
     s32 var1 = evt_get_variable(script, *args++);
     f32 var2 = evt_get_float_variable(script, *args++);
@@ -92,7 +92,7 @@ API_CALLABLE(N(CreateWhaleGeyser)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetWhaleGeyserPos)) {
+API_CALLABLE(SetWhaleGeyserPos) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     f32 x = evt_get_float_variable(script, *args++);
@@ -105,7 +105,7 @@ API_CALLABLE(N(SetWhaleGeyserPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DisposeWhaleGeyser)) {
+API_CALLABLE(DisposeWhaleGeyser) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -113,11 +113,11 @@ API_CALLABLE(N(DisposeWhaleGeyser)) {
     return ApiStatus_DONE2;
 }
 
-u32 N(WhaleRootAnimPhase) = 0;
-s32 N(WhaleBodyAnimPhase) = -1;
-s32 N(WhaleBellyAnimPhase) = -1;
+u32 WhaleRootAnimPhase = 0;
+s32 WhaleBodyAnimPhase = -1;
+s32 WhaleBellyAnimPhase = -1;
 
-Npc* N(resolve_npc)(Evt* script, s32 npcIdOrPtr) {
+Npc* resolve_whale_npc(Evt* script, s32 npcIdOrPtr) {
     if (npcIdOrPtr == NPC_SELF) {
         return get_npc_safe(script->owner2.npcID);
     } else if (npcIdOrPtr >= EVT_LIMIT) {
@@ -127,7 +127,7 @@ Npc* N(resolve_npc)(Evt* script, s32 npcIdOrPtr) {
     }
 }
 
-API_CALLABLE(N(GetWhaleHeadPos)) {
+API_CALLABLE(GetWhaleHeadPos) {
     Npc* whale = get_npc_safe(WHALE_NPC_ID);
     f32 yaw = -whale->yaw;
     f32 x = whale->pos.x + 30.0f + (sin_deg(yaw) * WHALE_HEAD_OFFSET);
@@ -140,22 +140,22 @@ API_CALLABLE(N(GetWhaleHeadPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MakeWhaleRootPos)) {
+API_CALLABLE(MakeWhaleRootPos) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 outX = *args++;
     s32 outY = *args++;
     s32 outZ = *args++;
-    Npc* whale = N(resolve_npc)(script, npcID);
+    Npc* whale = resolve_whale_npc(script, npcID);
     f32 y;
 
     if (whale == nullptr) {
         return ApiStatus_DONE2;
     }
 
-    N(WhaleRootAnimPhase) += 4;
-    if (N(WhaleRootAnimPhase) >= 360) {
-        N(WhaleRootAnimPhase) -= 360;
+    WhaleRootAnimPhase += 4;
+    if (WhaleRootAnimPhase >= 360) {
+        WhaleRootAnimPhase -= 360;
     }
 
     y = whale->pos.y;
@@ -165,7 +165,7 @@ API_CALLABLE(N(MakeWhaleRootPos)) {
         case XNIM_Whale_Talk:
         case XNIM_Whale_Sick:
         case XNIM_Whale_WakeUp:
-            y += 2.0f * sin_deg(N(WhaleRootAnimPhase));
+            y += 2.0f * sin_deg(WhaleRootAnimPhase);
             break;
         case XNIM_Whale_OpenMouth:
         case XNIM_Whale_CloseMouth:
@@ -186,7 +186,7 @@ API_CALLABLE(N(MakeWhaleRootPos)) {
 
 /// Applies a bend to the copied whale vertices based on their local X position,
 /// starting at x = 30 (in local space), and increasing further along the tail.
-void N(BendWhaleBody)(Vtx* referenceVertices, Vtx* copiedVertices, s32 numVertices, s32* wagPhasePtr) {
+void BendWhaleBody(Vtx* referenceVertices, Vtx* copiedVertices, s32 numVertices, s32* wagPhasePtr) {
     s16* vtxPos;
     s32 wagPhase;
     s32 bendPow, bendFrac;
@@ -244,41 +244,41 @@ void N(BendWhaleBody)(Vtx* referenceVertices, Vtx* copiedVertices, s32 numVertic
     }
 }
 
-void N(build_gfx_whale_body)(void) {
+void build_gfx_whale_body(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
 
     mdl_get_copied_vertices(VTX_COPY_1, &firstVertex, &copiedVertices, &numVertices);
-    N(BendWhaleBody)(firstVertex, copiedVertices, numVertices, &N(WhaleBodyAnimPhase));
+    BendWhaleBody(firstVertex, copiedVertices, numVertices, &WhaleBodyAnimPhase);
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_1));
-    if (N(WhaleBodyAnimPhase) >= 0) {
-        N(WhaleBodyAnimPhase) += 4;
+    if (WhaleBodyAnimPhase >= 0) {
+        WhaleBodyAnimPhase += 4;
     }
-    if (N(WhaleBodyAnimPhase) >= 360) {
-        N(WhaleBodyAnimPhase) = -1;
+    if (WhaleBodyAnimPhase >= 360) {
+        WhaleBodyAnimPhase = -1;
     }
 }
 
-void N(build_gfx_whale_belly)(void) {
+void build_gfx_whale_belly(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
 
     mdl_get_copied_vertices(VTX_COPY_2, &firstVertex, &copiedVertices, &numVertices);
-    N(BendWhaleBody)(firstVertex, copiedVertices, numVertices, &N(WhaleBellyAnimPhase));
+    BendWhaleBody(firstVertex, copiedVertices, numVertices, &WhaleBellyAnimPhase);
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_2));
-    if (N(WhaleBellyAnimPhase) >= 0) {
-        N(WhaleBellyAnimPhase) += 4;
+    if (WhaleBellyAnimPhase >= 0) {
+        WhaleBellyAnimPhase += 4;
     }
-    if (N(WhaleBellyAnimPhase) >= 360) {
-        N(WhaleBellyAnimPhase) = -1;
+    if (WhaleBellyAnimPhase >= 360) {
+        WhaleBellyAnimPhase = -1;
     }
 }
 
-EvtScript N(EVS_WhaleState_Idle) = {
+EvtScript EVS_WhaleState_Idle = {
     Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, WHALE_MODEL_LFIN, LVar0, 1, 0, 0)
     Call(RotateModel, WHALE_MODEL_RFIN, LVar0, -1, 0, 0)
@@ -286,7 +286,7 @@ EvtScript N(EVS_WhaleState_Idle) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_OpenMouth) = {
+EvtScript EVS_WhaleState_OpenMouth = {
     Call(CosInterpMinMax, LVarC, LVar0, 0, 30, 30, 1, 0)
     SetF(LVar1, LVar0)
     DivF(LVar1, Float(3.0))
@@ -318,7 +318,7 @@ EvtScript N(EVS_WhaleState_OpenMouth) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_CloseMouth) = {
+EvtScript EVS_WhaleState_CloseMouth = {
     Call(CosInterpMinMax, LVarC, LVar0, 0, -30, 8, 1, 0)
     AddF(LVar0, Float(30.0))
     SetF(LVar1, LVar0)
@@ -343,22 +343,22 @@ EvtScript N(EVS_WhaleState_CloseMouth) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_Sleep) = {
+EvtScript EVS_WhaleState_Sleep = {
     Return
     End
 };
 
-EvtScript N(EVS_WhaleState_Spout) = {
+EvtScript EVS_WhaleState_Spout = {
     Call(GetNpcVar, WHALE_NPC_ID, NPC_VAR_SPOUT_PTR, LVar3)
     IfEq(LVar3, nullptr)
-        Call(N(GetWhaleHeadPos))
+        Call(GetWhaleHeadPos)
         Call(PlaySoundAt, SOUND_LOOP_WHALE_GEYSER, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-        Call(N(CreateWhaleGeyser), 0, LVar0, LVar1, LVar2, 0, -1, 0, 30)
+        Call(CreateWhaleGeyser, 0, LVar0, LVar1, LVar2, 0, -1, 0, 30)
         Call(SetNpcVar, WHALE_NPC_ID, NPC_VAR_SPOUT_PTR, LVar0)
     EndIf
     Call(GetNpcVar, WHALE_NPC_ID, NPC_VAR_SPOUT_PTR, LVar3)
-    Call(N(GetWhaleHeadPos))
-    Call(N(SetWhaleGeyserPos), LVar3, LVar0, LVar1, LVar2)
+    Call(GetWhaleHeadPos)
+    Call(SetWhaleGeyserPos, LVar3, LVar0, LVar1, LVar2)
     Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, WHALE_MODEL_LFIN, LVar0, 1, 0, 0)
     Call(RotateModel, WHALE_MODEL_RFIN, LVar0, -1, 0, 0)
@@ -366,12 +366,12 @@ EvtScript N(EVS_WhaleState_Spout) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_Still) = {
+EvtScript EVS_WhaleState_Still = {
     Return
     End
 };
 
-EvtScript N(EVS_WhaleState_WakeUp) = {
+EvtScript EVS_WhaleState_WakeUp = {
     IfGe(LVarC, 0)
         IfLe(LVarC, 2)
             Call(EnableModel, WHALE_MODEL_EYES_OPEN, false)
@@ -395,7 +395,7 @@ EvtScript N(EVS_WhaleState_WakeUp) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_Shiver) = {
+EvtScript EVS_WhaleState_Shiver = {
     Set(LVar0, LVarC)
     Div(LVar0, 20)
     Mod(LVar0, 2)
@@ -415,7 +415,7 @@ EvtScript N(EVS_WhaleState_Shiver) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_Shake) = {
+EvtScript EVS_WhaleState_Shake = {
     Call(CosInterpMinMax, LVarC, LVar0, Float(-6.0), Float(6.0), 3, 0, 0)
     Call(CosInterpMinMax, LVarC, LVar1, Float(6.0), Float(-6.0), 2, 0, 0)
     Call(TranslateModel, WHALE_MODEL_JAW, LVar0, LVar1, 0)
@@ -430,7 +430,7 @@ EvtScript N(EVS_WhaleState_Shake) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_QuietTalk) = {
+EvtScript EVS_WhaleState_QuietTalk = {
     Set(LVar0, LVarC)
     Div(LVar0, 20)
     Mod(LVar0, 2)
@@ -450,7 +450,7 @@ EvtScript N(EVS_WhaleState_QuietTalk) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_Swim) = {
+EvtScript EVS_WhaleState_Swim = {
     Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, WHALE_MODEL_LFIN, LVar0, 1, 0, 0)
     Call(RotateModel, WHALE_MODEL_RFIN, LVar0, -1, 0, 0)
@@ -458,7 +458,7 @@ EvtScript N(EVS_WhaleState_Swim) = {
     End
 };
 
-EvtScript N(EVS_WhaleState_Talk) = {
+EvtScript EVS_WhaleState_Talk = {
     Call(CosInterpMinMax, LVarC, LVar0, 0, 8, 3, 0, 0)
     Set(LVar1, LVar0)
     Div(LVar1, 3)
@@ -486,18 +486,18 @@ EvtScript N(EVS_WhaleState_Talk) = {
 };
 
 // main script
-EvtScript N(EVS_SetupWhale) = {
+EvtScript EVS_SetupWhale = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(MakeLocalVertexCopy, VTX_COPY_1, WHALE_MODEL_BODY, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_whale_body)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(build_gfx_whale_body), nullptr)
     Call(SetModelCustomGfx, WHALE_MODEL_BODY, CUSTOM_GFX_1, -1)
     Call(MakeLocalVertexCopy, VTX_COPY_2, WHALE_MODEL_BELLY, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(N(build_gfx_whale_belly)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(build_gfx_whale_belly), nullptr)
     Call(SetModelCustomGfx, WHALE_MODEL_BELLY, CUSTOM_GFX_2, -1)
     Call(SetNpcVar, WHALE_NPC_ID, NPC_VAR_SPOUT_PTR, nullptr)
     Thread
         Label(0)
-        Call(N(MakeWhaleRootPos), WHALE_NPC_ID, LVar0, LVar1, LVar2)
+        Call(MakeWhaleRootPos, WHALE_NPC_ID, LVar0, LVar1, LVar2)
         SubF(LVar0, -80)
         SubF(LVar1, -18)
         SubF(LVar2, 420)
@@ -561,43 +561,43 @@ EvtScript N(EVS_SetupWhale) = {
                 IfNe(LVar0, nullptr)
                     Call(PlaySound, SOUND_LRAW_WHALE_GEYSER | SOUND_ID_TRIGGER_CHANGE_SOUND)
                     Call(StopTrackingSoundPos, SOUND_LRAW_WHALE_GEYSER)
-                    Call(N(DisposeWhaleGeyser), LVar0)
+                    Call(DisposeWhaleGeyser, LVar0)
                     Call(SetNpcVar, WHALE_NPC_ID, NPC_VAR_SPOUT_PTR, nullptr)
                 EndIf
             EndIf
             Switch(LVarB)
                 CaseEq(XNIM_Whale_CloseMouth)
                     Call(PlaySoundAtNpc, WHALE_NPC_ID, SOUND_WHALE_CLOSE_MOUTH, SOUND_SPACE_DEFAULT)
-                    Set(LVarD, Ref(N(EVS_WhaleState_CloseMouth)))
+                    Set(LVarD, Ref(EVS_WhaleState_CloseMouth))
                 CaseEq(XNIM_Whale_Idle)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Idle)))
+                    Set(LVarD, Ref(EVS_WhaleState_Idle))
                 CaseEq(XNIM_Whale_OpenMouth)
                     Call(PlaySoundAtNpc, WHALE_NPC_ID, SOUND_WHALE_OPEN_MOUTH, SOUND_SPACE_DEFAULT)
-                    Set(LVarD, Ref(N(EVS_WhaleState_OpenMouth)))
+                    Set(LVarD, Ref(EVS_WhaleState_OpenMouth))
                 CaseEq(XNIM_Whale_Swim)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Swim)))
+                    Set(LVarD, Ref(EVS_WhaleState_Swim))
                 CaseEq(XNIM_Whale_Talk)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Talk)))
+                    Set(LVarD, Ref(EVS_WhaleState_Talk))
                 CaseEq(XNIM_Whale_Sleep)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Sleep)))
+                    Set(LVarD, Ref(EVS_WhaleState_Sleep))
                     Call(EnableModel, WHALE_MODEL_EYES_OPEN, false)
                     Call(EnableModel, WHALE_MODEL_EYES_SHUT, false)
                 CaseEq(XNIM_Whale_Shiver)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Shiver)))
+                    Set(LVarD, Ref(EVS_WhaleState_Shiver))
                     Call(EnableModel, WHALE_MODEL_EYES_OPEN, false)
                     Call(EnableModel, WHALE_MODEL_EYES_SHUT, false)
                 CaseEq(XNIM_Whale_Shake)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Shake)))
+                    Set(LVarD, Ref(EVS_WhaleState_Shake))
                     Call(EnableModel, WHALE_MODEL_EYES_OPEN, false)
                     Call(EnableModel, WHALE_MODEL_EYES_SHUT, false)
                 CaseEq(XNIM_Whale_Sick)
-                    Set(LVarD, Ref(N(EVS_WhaleState_QuietTalk)))
+                    Set(LVarD, Ref(EVS_WhaleState_QuietTalk))
                 CaseEq(XNIM_Whale_Spout)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Spout)))
+                    Set(LVarD, Ref(EVS_WhaleState_Spout))
                 CaseEq(XNIM_Whale_Still)
-                    Set(LVarD, Ref(N(EVS_WhaleState_Still)))
+                    Set(LVarD, Ref(EVS_WhaleState_Still))
                 CaseEq(XNIM_Whale_WakeUp)
-                    Set(LVarD, Ref(N(EVS_WhaleState_WakeUp)))
+                    Set(LVarD, Ref(EVS_WhaleState_WakeUp))
             EndSwitch
         EndIf
         ExecWait(LVarD)

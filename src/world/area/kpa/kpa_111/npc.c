@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/DryBones/wander.inc.c"
 
-NpcData N(NpcData_DryBones)[] = {
+NpcData NpcData_DryBones[] = {
     {
         .id = NPC_DryBones_01,
         .pos = { -10.0f, 0.0f, 100.0f },
@@ -19,7 +19,7 @@ NpcData N(NpcData_DryBones)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_DryBones_Wander),
+        .settings = &NpcSettings_DryBones_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = DRY_BONES_DROPS,
         .animations = DRY_BONES_ANIMS,
@@ -29,7 +29,7 @@ NpcData N(NpcData_DryBones)[] = {
     DRY_BONES_BONE_HITBOX(NPC_DryBones_01 + 3),
 };
 
-NpcData N(NpcData_DryBones_02)[] = {
+NpcData NpcData_DryBones_02[] = {
     {
         .id = NPC_DryBones_02,
         .pos = { 200.0f, 0.0f, 140.0f },
@@ -46,7 +46,7 @@ NpcData N(NpcData_DryBones_02)[] = {
                 .detectSize = { 180 },
             }
         },
-        .settings = &N(NpcSettings_DryBones_Wander),
+        .settings = &NpcSettings_DryBones_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = DRY_BONES_DROPS,
         .animations = DRY_BONES_ANIMS,
@@ -56,8 +56,8 @@ NpcData N(NpcData_DryBones_02)[] = {
     DRY_BONES_BONE_HITBOX(NPC_DryBones_02 + 3),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_DryBones), BTL_KPA_FORMATION_07, BTL_KPA_STAGE_0C),
-    NPC_GROUP(N(NpcData_DryBones_02), BTL_KPA_FORMATION_0C, BTL_KPA_STAGE_0C),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_DryBones, BTL_KPA_FORMATION_07, BTL_KPA_STAGE_0C),
+    NPC_GROUP(NpcData_DryBones_02, BTL_KPA_FORMATION_0C, BTL_KPA_STAGE_0C),
     {}
 };

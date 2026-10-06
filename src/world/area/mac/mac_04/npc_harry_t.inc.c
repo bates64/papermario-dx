@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EvtScript N(EVS_NpcInteract_HarryT) = {
+EvtScript EVS_NpcInteract_HarryT = {
     Set(LVar9, 0)
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfLt(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
@@ -24,7 +24,7 @@ EvtScript N(EVS_NpcInteract_HarryT) = {
                 Call(NpcJump0, NPC_HarryT, 162, 40, -480, 0)
                 Call(SetNpcAnimation, NPC_HarryT, ANIM_HarryT_Idle)
                 Wait(20)
-                Exec(N(EVS_ForceStoreroomUnlock))
+                Exec(EVS_ForceStoreroomUnlock)
                 Call(SetNpcAnimation, NPC_HarryT, ANIM_HarryT_Run)
                 Call(NpcMoveTo, NPC_HarryT, 200, -524, 0)
                 Call(SetNpcPos, NPC_HarryT, 200, 30, -524)
@@ -42,8 +42,8 @@ EvtScript N(EVS_NpcInteract_HarryT) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_HarryT) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_HarryT)))
+EvtScript EVS_NpcInit_HarryT = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_HarryT))
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         IfLt(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
             Call(SetNpcAnimation, NPC_HarryT, ANIM_HarryT_Idle)

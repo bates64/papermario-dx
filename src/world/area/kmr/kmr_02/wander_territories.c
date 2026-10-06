@@ -1,6 +1,6 @@
 #include "kmr_02.h"
 
-EnemyTerritoryWander N(WanderTerritory0) = {
+EnemyTerritoryWander WanderTerritory0 = {
     .centerPos = { 0, 0, 0 },
     .wanderSize = { 150, 0 },
     .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
@@ -11,7 +11,7 @@ EnemyTerritoryWander N(WanderTerritory0) = {
     .isFlying = true,
 };
 
-EnemyTerritoryWander N(WanderTerritory1) = {
+EnemyTerritoryWander WanderTerritory1 = {
     .centerPos = { 0, 0, 0 },
     .wanderSize = { 150, 0 },
     .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
@@ -22,7 +22,7 @@ EnemyTerritoryWander N(WanderTerritory1) = {
     .isFlying = true,
 };
 
-EnemyTerritoryWander N(WanderTerritory2) = {
+EnemyTerritoryWander WanderTerritory2 = {
     .centerPos = { 0, 0, 0 },
     .wanderSize = { 150, 0 },
     .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
@@ -33,7 +33,7 @@ EnemyTerritoryWander N(WanderTerritory2) = {
     .isFlying = true,
 };
 
-EnemyTerritoryWander N(WanderTerritory3) = {
+EnemyTerritoryWander WanderTerritory3 = {
     .centerPos = { 0, 0, 0 },
     .wanderSize = { 150, 0 },
     .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
@@ -44,26 +44,26 @@ EnemyTerritoryWander N(WanderTerritory3) = {
     .isFlying = true,
 };
 
-EnemyTerritoryWander* N(WanderTerritories)[] = {
-    &N(WanderTerritory0),
-    &N(WanderTerritory1),
-    &N(WanderTerritory2),
-    &N(WanderTerritory3),
+EnemyTerritoryWander* WanderTerritories[] = {
+    &WanderTerritory0,
+    &WanderTerritory1,
+    &WanderTerritory2,
+    &WanderTerritory3,
 };
 
-API_CALLABLE(N(SetWanderTerritory)) {
+API_CALLABLE(SetWanderTerritory) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 territoryIndex = evt_get_variable(script, *args++);
     Enemy* enemy = get_enemy(npcID);
 
     // copy territory to enemy
-    enemy->territory->wander = *N(WanderTerritories)[territoryIndex];
+    enemy->territory->wander = *WanderTerritories[territoryIndex];
 
     return ApiStatus_DONE2;
 }
 
-MobileAISettings N(AISettings_SwitchedWander) = {
+MobileAISettings AISettings_SwitchedWander = {
     .moveSpeed = 2.0f,
     .moveTime = 15,
     .waitTime = 30,
@@ -71,8 +71,8 @@ MobileAISettings N(AISettings_SwitchedWander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcIdle_SwitchedWander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_SwitchedWander)))
+EvtScript EVS_NpcIdle_SwitchedWander = {
+    Call(BasicAI_Main, Ref(AISettings_SwitchedWander))
     Return
     End
 };

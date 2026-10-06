@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/PyroGuy/wander.inc.c"
 
-NpcData N(NpcData_PyroGuy_01) = {
+NpcData NpcData_PyroGuy_01 = {
     .id = NPC_PyroGuy_01,
     .pos = { -180.0f, 0.0f, 70.0f },
     .yaw = 270,
@@ -18,14 +18,14 @@ NpcData N(NpcData_PyroGuy_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_PyroGuy_Wander),
+    .settings = &NpcSettings_PyroGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
     .animations = PYRO_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_PyroGuy_02) = {
+NpcData NpcData_PyroGuy_02 = {
     .id = NPC_PyroGuy_02,
     .pos = { 330.0f, 0.0f, 83.0f },
     .yaw = 270,
@@ -41,15 +41,15 @@ NpcData N(NpcData_PyroGuy_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_PyroGuy_Wander),
+    .settings = &NpcSettings_PyroGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
     .animations = PYRO_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_PyroGuy_01), BTL_OMO_FORMATION_22, BTL_OMO_STAGE_07),
-    NPC_GROUP(N(NpcData_PyroGuy_02), BTL_OMO_FORMATION_24, BTL_OMO_STAGE_07),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_PyroGuy_01, BTL_OMO_FORMATION_22, BTL_OMO_STAGE_07),
+    NPC_GROUP(NpcData_PyroGuy_02, BTL_OMO_FORMATION_24, BTL_OMO_STAGE_07),
     {}
 };

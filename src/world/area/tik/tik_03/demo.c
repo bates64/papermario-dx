@@ -1,12 +1,12 @@
 #include "tik_03.h"
 #include "world/partners.h"
 
-API_CALLABLE(N(ChangePartnerFollowState)) {
+API_CALLABLE(ChangePartnerFollowState) {
     partner_disable_ai_soon();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Call(DemoJoystickXY, -85, -1)
     Wait(32)
     Call(DemoSetButtons, BUTTON_A)
@@ -17,7 +17,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     Wait(30)
     Call(DemoSetButtons, 0)
     Wait(15)
-    Call(N(ChangePartnerFollowState))
+    Call(ChangePartnerFollowState)
     Wait(15)
     IfEq(GF_DemoSceneDone, true)
         Return
@@ -29,7 +29,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -48,20 +48,20 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-s32 N(DemoInitState) = {
+s32 DemoInitState = {
     0
 };
 
-API_CALLABLE(N(SetupDemoScene)) {
+API_CALLABLE(SetupDemoScene) {
     PlayerStatus* player = &gPlayerStatus;
 
-    switch (N(DemoInitState)) {
+    switch (DemoInitState) {
         case 0:
-            N(DemoInitState) = 1;
+            DemoInitState = 1;
             break;
         case 1:
         case 2:
-            N(DemoInitState)++;
+            DemoInitState++;
             break;
         case 3:
             partner_clear_player_tracking(gPartnerNpc);
@@ -77,11 +77,11 @@ API_CALLABLE(N(SetupDemoScene)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_PlayDemoScene) = {
-    Call(N(SetupDemoScene))
+EvtScript EVS_PlayDemoScene = {
+    Call(SetupDemoScene)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

@@ -1,10 +1,10 @@
 #include "isk_02.h"
 
-extern EvtScript N(EVS_ManageSarcophagus1);
-extern EvtScript N(EVS_ManageSarcophagus2);
-extern EvtScript N(EVS_ManageSarcophagus3);
+extern EvtScript EVS_ManageSarcophagus1;
+extern EvtScript EVS_ManageSarcophagus2;
+extern EvtScript EVS_ManageSarcophagus3;
 
-API_CALLABLE(N(AwaitPlayerMummyAmbush)) {
+API_CALLABLE(AwaitPlayerMummyAmbush) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_variable(script, *args++);
     f32 y = evt_get_variable(script, *args++);
@@ -17,13 +17,13 @@ API_CALLABLE(N(AwaitPlayerMummyAmbush)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupSarcophagi) = {
+EvtScript EVS_SetupSarcophagi = {
     Set(AF_ISK02_OpeningSarcophagus1, false)
     Set(AF_ISK02_OpeningSarcophagus2, false)
     Set(AF_ISK02_OpeningSarcophagus3, false)
-    Exec(N(EVS_ManageSarcophagus1))
-    Exec(N(EVS_ManageSarcophagus2))
-    Exec(N(EVS_ManageSarcophagus3))
+    Exec(EVS_ManageSarcophagus1)
+    Exec(EVS_ManageSarcophagus2)
+    Exec(EVS_ManageSarcophagus3)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_h1o, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_h2o, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_h3o, COLLIDER_FLAGS_UPPER_MASK)
@@ -31,7 +31,7 @@ EvtScript N(EVS_SetupSarcophagi) = {
     End
 };
 
-EvtScript N(EVS_OpenSarcophagus) = {
+EvtScript EVS_OpenSarcophagus = {
     IfEq(LVar0, 0)
         Call(PlaySoundAtModel, LVar3, SOUND_SARCOPHAGUS_OPEN, SOUND_SPACE_DEFAULT)
         Call(TranslateModel, LVar3, 0, 0, 13)
@@ -57,10 +57,10 @@ EvtScript N(EVS_OpenSarcophagus) = {
     End
 };
 
-EvtScript N(EVS_ManageSarcophagus1) = {
+EvtScript EVS_ManageSarcophagus1 = {
     IfEq(AF_ISK02_Sarcophagus1Opened, false)
         Label(5)
-            Call(N(AwaitPlayerMummyAmbush), -210, 580)
+            Call(AwaitPlayerMummyAmbush, -210, 580)
             Wait(1)
             IfEq(LVar0, 0)
                 Goto(5)
@@ -70,7 +70,7 @@ EvtScript N(EVS_ManageSarcophagus1) = {
     Call(SetNpcFlagBits, NPC_Pokey_01, NPC_FLAG_INVISIBLE, false)
     Set(LVar0, AF_ISK02_Sarcophagus1Opened)
     Set(LVar3, MODEL_g346)
-    ExecWait(N(EVS_OpenSarcophagus))
+    ExecWait(EVS_OpenSarcophagus)
     Set(AF_ISK02_OpeningSarcophagus1, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_h1c, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_h1o, COLLIDER_FLAGS_UPPER_MASK)
@@ -79,10 +79,10 @@ EvtScript N(EVS_ManageSarcophagus1) = {
     End
 };
 
-EvtScript N(EVS_ManageSarcophagus2) = {
+EvtScript EVS_ManageSarcophagus2 = {
     IfEq(AF_ISK02_Sarcophagus2Opened, false)
         Label(5)
-            Call(N(AwaitPlayerMummyAmbush), -30, 670)
+            Call(AwaitPlayerMummyAmbush, -30, 670)
             Wait(1)
             IfEq(LVar0, 0)
                 Goto(5)
@@ -93,7 +93,7 @@ EvtScript N(EVS_ManageSarcophagus2) = {
     Call(SetNpcFlagBits, NPC_Pokey_02, NPC_FLAG_INVISIBLE, false)
     Set(LVar0, AF_ISK02_Sarcophagus2Opened)
     Set(LVar3, MODEL_g348)
-    ExecWait(N(EVS_OpenSarcophagus))
+    ExecWait(EVS_OpenSarcophagus)
     Set(AF_ISK02_OpeningSarcophagus2, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_h2c, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_h2o, COLLIDER_FLAGS_UPPER_MASK)
@@ -102,10 +102,10 @@ EvtScript N(EVS_ManageSarcophagus2) = {
     End
 };
 
-EvtScript N(EVS_ManageSarcophagus3) = {
+EvtScript EVS_ManageSarcophagus3 = {
     IfEq(AF_ISK02_Sarcophagus3Opened, false)
         Label(5)
-            Call(N(AwaitPlayerMummyAmbush), 220, 600)
+            Call(AwaitPlayerMummyAmbush, 220, 600)
             Wait(1)
             IfEq(LVar0, 0)
                 Goto(5)
@@ -115,7 +115,7 @@ EvtScript N(EVS_ManageSarcophagus3) = {
     Call(SetNpcFlagBits, NPC_Pokey_03, NPC_FLAG_INVISIBLE, false)
     Set(LVar0, AF_ISK02_Sarcophagus3Opened)
     Set(LVar3, MODEL_g350)
-    ExecWait(N(EVS_OpenSarcophagus))
+    ExecWait(EVS_OpenSarcophagus)
     Set(AF_ISK02_OpeningSarcophagus3, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_h3c, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_h3o, COLLIDER_FLAGS_UPPER_MASK)

@@ -10,7 +10,7 @@
 #include "world/common/prefab/ToadHouse.inc.c"
 #include "world/common/prefab/ToadHouse.data.inc.c"
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     Set(LVar0, MSG_CH8_0064)
     Set(LVar8, MSG_CH8_0065)
     Set(LVar1, MSG_CH8_0066)
@@ -20,11 +20,11 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
+EvtScript EVS_ToadHouse_GetInBed = {
     Call(SetMusic, 0, SONG_TAKING_REST, 0, VOL_LEVEL_FULL)
     Thread
         Wait(20)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
@@ -59,8 +59,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Call(N(ToadHouse_CamSetFOV), 0, 25)
+EvtScript EVS_ToadHouse_ReturnFromRest = {
+    Call(ToadHouse_CamSetFOV, 0, 25)
     Call(UseSettingsFrom, CAM_DEFAULT, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetPanTarget, CAM_DEFAULT, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
@@ -68,20 +68,20 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     Call(HidePlayerShadow, false)
     Call(SetPlayerPos, -139, 0, -90)
     Call(PlayerMoveTo, -102, -130, 20)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_01) = {
+EvtScript EVS_NpcInteract_Toad_01 = {
     Call(GetPlayerPos, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
-    ExecWait(N(EVS_NpcInteract_ToadHouseKeeper))
+    ExecWait(EVS_NpcInteract_ToadHouseKeeper)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_02) = {
+EvtScript EVS_NpcInteract_Toad_02 = {
     Switch(AB_KPA95_DialogueState_Toad2)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_0069)
@@ -94,7 +94,7 @@ EvtScript N(EVS_NpcInteract_Toad_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadGuard) = {
+EvtScript EVS_NpcInteract_ToadGuard = {
     Switch(AB_KPA95_DialogueState_ToadGuard)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Green_Talk, ANIM_ToadGuard_Green_Idle, 0, MSG_CH8_006B)
@@ -107,7 +107,7 @@ EvtScript N(EVS_NpcInteract_ToadGuard) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin) = {
+EvtScript EVS_NpcInteract_Penguin = {
     Switch(AB_KPA95_DialogueState_Penguin)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH8_006D)
@@ -120,16 +120,16 @@ EvtScript N(EVS_NpcInteract_Penguin) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_01)))
+EvtScript EVS_NpcInit_Toad_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_01))
     Call(SetNpcPos, NPC_SELF, -70, 0, -140)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_02)))
+EvtScript EVS_NpcInit_Toad_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))
     Call(SetNpcPos, NPC_SELF, 100, 0, -90)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Toad_Blue_Idle)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
@@ -137,8 +137,8 @@ EvtScript N(EVS_NpcInit_Toad_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadGuard) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadGuard)))
+EvtScript EVS_NpcInit_ToadGuard = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadGuard))
     Call(SetNpcPos, NPC_SELF, 30, 0, -170)
     Call(SetNpcAnimation, NPC_SELF, ANIM_ToadGuard_Green_Idle)
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
@@ -146,21 +146,21 @@ EvtScript N(EVS_NpcInit_ToadGuard) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin)))
+EvtScript EVS_NpcInit_Penguin = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin))
     Call(SetNpcPos, NPC_SELF, 170, 0, -180)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
     End
 };
 
-NpcData N(NpcData_Prisoners)[] = {
+NpcData NpcData_Prisoners[] = {
     {
         .id = NPC_Toad_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Toad_01),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_01,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -170,8 +170,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .id = NPC_Toad_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Toad_02),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad_02,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -181,8 +181,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .id = NPC_ToadGuard,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_ToadGuard),
-        .settings = &N(NpcSettings_ToadGuard),
+        .init = &EVS_NpcInit_ToadGuard,
+        .settings = &NpcSettings_ToadGuard,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
@@ -192,8 +192,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .id = NPC_Penguin,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Penguin),
-        .settings = &N(NpcSettings_Penguin),
+        .init = &EVS_NpcInit_Penguin,
+        .settings = &NpcSettings_Penguin,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -201,7 +201,7 @@ NpcData N(NpcData_Prisoners)[] = {
     },
 };
 
-EvtScript N(EVS_NpcDefeat_Koopatrol) = {
+EvtScript EVS_NpcDefeat_Koopatrol = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -221,9 +221,9 @@ EvtScript N(EVS_NpcDefeat_Koopatrol) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol) = {
+EvtScript EVS_NpcInit_Koopatrol = {
     IfEq(GF_KPA95_Defeated_Guard, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Koopatrol)))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Koopatrol))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -231,7 +231,7 @@ EvtScript N(EVS_NpcInit_Koopatrol) = {
     End
 };
 
-NpcData N(NpcData_Koopatrol) = {
+NpcData NpcData_Koopatrol = {
     .id = NPC_Koopatrol,
     .pos = { -70.0f, 0.0f, 55.0f },
     .yaw = 270,
@@ -249,15 +249,15 @@ NpcData N(NpcData_Koopatrol) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Koopatrol),
-    .settings = &N(NpcSettings_Koopatrol_Patrol),
+    .init = &EVS_NpcInit_Koopatrol,
+    .settings = &NpcSettings_Koopatrol_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Prisoners)),
-    NPC_GROUP(N(NpcData_Koopatrol), BTL_KPA_FORMATION_17, BTL_KPA_STAGE_0D),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Prisoners),
+    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_17, BTL_KPA_STAGE_0D),
     {}
 };

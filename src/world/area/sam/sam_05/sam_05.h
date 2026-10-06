@@ -39,15 +39,13 @@ enum {
     NPC_StarKid_16              = 22,
 };
 
-#define NAMESPACE sam_05
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Scene_MonstarAppears;
+extern EvtScript EVS_Scene_MonstarDefeated;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList BeforeNPCs;
+extern NpcGroupList AfterNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Scene_MonstarAppears);
-extern EvtScript N(EVS_Scene_MonstarDefeated);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(BeforeNPCs);
-extern NpcGroupList N(AfterNPCs);
-
-extern Gfx N(monstar_gfx)[];
-extern Vtx N(monstar_vtx)[];
+extern Gfx sam_05_monstar_gfx[];
+extern Vtx sam_05_monstar_vtx[];

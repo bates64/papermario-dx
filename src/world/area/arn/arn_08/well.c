@@ -1,7 +1,7 @@
 #include "arn_08.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(AwaitPlayerFallDist)) {
+API_CALLABLE(AwaitPlayerFallDist) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 fallSpeed;
     s32 colliderID;
@@ -22,7 +22,7 @@ API_CALLABLE(N(AwaitPlayerFallDist)) {
     }
 }
 
-API_CALLABLE(N(AwaitPlayerJumpDown)) {
+API_CALLABLE(AwaitPlayerJumpDown) {
     if (gPlayerStatus.pos.y < -10.0f) {
         return ApiStatus_DONE2;
     } else {
@@ -30,17 +30,17 @@ API_CALLABLE(N(AwaitPlayerJumpDown)) {
     }
 }
 
-EvtScript N(EVS_ExitWell) = {
+EvtScript EVS_ExitWell = {
     Loop(0)
         IfNe(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WELL)
             BreakLoop
         EndIf
         Wait(1)
     EndLoop
-    Call(N(AwaitPlayerJumpDown))
+    Call(AwaitPlayerJumpDown)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(N(AwaitPlayerFallDist))
+    Call(AwaitPlayerFallDist)
     Set(AF_ARN_UsingWellSpring, true)
     IfLt(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
         Set(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
@@ -51,9 +51,9 @@ EvtScript N(EVS_ExitWell) = {
     End
 };
 
-EvtScript N(EVS_SetupHole) = {
+EvtScript EVS_SetupHole = {
     Call(SetCamProperties, CAM_DEFAULT, Float(90.0), 0, 0, 0, Float(470.0), Float(17.0), Float(-7.0))
-    Exec(N(EVS_ExitWell))
+    Exec(EVS_ExitWell)
     Return
     End
 };

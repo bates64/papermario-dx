@@ -1,6 +1,6 @@
 #include "osr_04.h"
 
-EvtScript N(EVS_TexPan_Smoke) = {
+EvtScript EVS_TexPan_Smoke = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_ke1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_ke2, TEX_PANNER_1)
@@ -21,19 +21,19 @@ EvtScript N(EVS_TexPan_Smoke) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
-    Exec(N(EVS_Scene_BowsersAssault))
-    Exec(N(EVS_TexPan_Smoke))
+EvtScript EVS_EnterMap = {
+    Exec(EVS_Scene_BowsersAssault)
+    Exec(EVS_TexPan_Smoke)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_NONE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(FadeOutMusic, 0, 500)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

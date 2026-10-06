@@ -6,25 +6,21 @@
 #include "sprite/player.h"
 #include "include_asset.h"
 
-#define NAMESPACE battle_item_coconut
-
-#include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
-
 
 #include "battle/move/item/coconut.png.h"
 INCLUDE_IMG("battle/move/item/coconut.png", battle_item_coconut_png);
 INCLUDE_PAL("battle/move/item/coconut.pal", battle_item_coconut_pal);
 
 /// 32x32 square.
-Vtx N(model)[] = {
+Vtx model[] = {
     { .v = {{ -16, -16, 0 }, false, { 0,    0    }, { 0, 0, 0, 255 }}},
     { .v = {{ 15,  -16, 0 }, false, { 1024, 0    }, { 0, 0, 0, 255 }}},
     { .v = {{ 15,  15,  0 }, false, { 1024, 1024 }, { 0, 0, 0, 255 }}},
     { .v = {{ -16, 15,  0 }, false, { 0,    1024 }, { 0, 0, 0, 255 }}},
 };
 
-Gfx N(displayList)[] = {
+Gfx displayList[] = {
     gsDPPipeSync(),
     gsSPTexture(-1, -1, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -39,24 +35,24 @@ Gfx N(displayList)[] = {
     gsDPLoadTextureTile_4b(battle_item_coconut_png, G_IM_FMT_CI, battle_item_coconut_png_width, battle_item_coconut_png_height, 0, 0, battle_item_coconut_png_width - 1, battle_item_coconut_png_height - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPVertex(&N(model), ARRAY_COUNT(N(model)), 0),
+    gsSPVertex(&model, ARRAY_COUNT(model), 0),
     gsSP1Triangle(0, 1, 2, 0),
     gsSP1Triangle(0, 2, 3, 0),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
 
-EntityModelScript N(modelCommandList) = STANDARD_ENTITY_MODEL_SCRIPT(N(displayList), RENDER_MODE_ALPHATEST);
+EntityModelScript modelCommandList = STANDARD_ENTITY_MODEL_SCRIPT(displayList, RENDER_MODE_ALPHATEST);
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_COCONUT)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(MoveBattleCamOver, 15)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Call(PlaySound, SOUND_THROW)
     Wait(3)
-    Call(CreateVirtualEntity, LVarA, Ref(N(modelCommandList)))
+    Call(CreateVirtualEntity, LVarA, Ref(modelCommandList))
     SetF(LVar0, Float(1.0))
     Call(MultiplyByActorScale, LVar0)
     Call(SetVirtualEntityScale, LVarA, LVar0, LVar0, LVar0)
@@ -90,11 +86,11 @@ EvtScript N(EVS_UseItem) = {
     Add(LVar1, 0)
     Call(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 16)
     Call(DeleteVirtualEntity, LVarA)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

@@ -4,16 +4,14 @@
 #include "message_ids.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_peach_focus
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Twink_PowerLevel   = 0,
     AVAR_Twink_DefensePtr   = 1,
 };
 
-API_CALLABLE(N(IncreaseTwinkDefense)) {
+API_CALLABLE(IncreaseTwinkDefense) {
     // a pointer to Twink's DefenseTable is stored in his actorVar1 in twink.c
     // it has now been copied to this script var, where we can retrieve it
     s32* twinkDefenseTable = script->varTablePtr[0];
@@ -23,7 +21,7 @@ API_CALLABLE(N(IncreaseTwinkDefense)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
+EvtScript EVS_UsePower = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
     Wait(10)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Peach1_Run)
@@ -53,8 +51,8 @@ EvtScript N(EVS_UsePower) = {
     Call(PlaySound, SOUND_BEGIN_WISH)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
-    Call(N(FadeBackgroundDarken))
+    Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
+    Call(DarkenBackground)
     Call(GetActorVar, ACTOR_PARTNER, AVAR_Twink_PowerLevel, LVar0)
     IfEq(LVar0, 0)
         Call(ActorSpeak, MSG_CH8_0096, ACTOR_PLAYER, 0, ANIM_Peach3_Pray, ANIM_Peach3_Pray)
@@ -64,7 +62,7 @@ EvtScript N(EVS_UsePower) = {
     Wait(10)
     Call(PlaySound, SOUND_WISH_ASCENDING)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(N(SpawnWishSparkleFX), LVar0, LVar1, LVar2)
+    Call(SpawnWishSparkleFX, LVar0, LVar1, LVar2)
     Wait(30)
     Call(PlaySound, SOUND_STAR_POWER_RECOVERY)
     Call(GetActorVar, ACTOR_PARTNER, AVAR_Twink_PowerLevel, LVar0)
@@ -72,7 +70,7 @@ EvtScript N(EVS_UsePower) = {
     Call(SetActorVar, ACTOR_PARTNER, AVAR_Twink_PowerLevel, LVar0)
     Call(ModifyActorDecoration, ACTOR_PARTNER, 1, 0, LVar0, 0, 0, 0)
     Call(GetActorVar, ACTOR_PARTNER, AVAR_Twink_DefensePtr, LVar0)
-    Call(N(IncreaseTwinkDefense))
+    Call(IncreaseTwinkDefense)
     Wait(10)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(SetActorYaw, ACTOR_SELF, 150)
@@ -88,7 +86,7 @@ EvtScript N(EVS_UsePower) = {
     Call(SetActorYaw, ACTOR_SELF, 0)
     Wait(1)
     Call(PlayerYieldTurn)
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Wait(15)
     Call(SetGoalToHome, ACTOR_PLAYER)
     Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
@@ -100,5 +98,5 @@ EvtScript N(EVS_UsePower) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

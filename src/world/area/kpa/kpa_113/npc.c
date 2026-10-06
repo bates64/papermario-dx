@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/SpikeTop/wander.inc.c"
 
-NpcData N(NpcData_BonyBeetle) = {
+NpcData NpcData_BonyBeetle = {
     .id = NPC_BonyBeetle,
     .pos = { 100.0f, 0.0f, 83.0f },
     .yaw = 90,
@@ -18,13 +18,13 @@ NpcData N(NpcData_BonyBeetle) = {
             .detectSize = { 260, 100 },
         }
     },
-    .settings = &N(NpcSettings_BonyBeetle_Wander),
+    .settings = &NpcSettings_BonyBeetle_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS,
     .animations = BONY_BEETLE_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BonyBeetle), BTL_KPA_FORMATION_06, BTL_KPA_STAGE_0C),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BonyBeetle, BTL_KPA_FORMATION_06, BTL_KPA_STAGE_0C),
     {}
 };

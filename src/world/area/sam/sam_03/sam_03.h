@@ -23,9 +23,7 @@ enum {
     NPC_Gulpit_02_Hitbox    = 3,
 };
 
-#define NAMESPACE sam_03
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(BeforeNPCs);
-extern NpcGroupList N(AfterNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList BeforeNPCs;
+extern NpcGroupList AfterNPCs;

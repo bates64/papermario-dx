@@ -1,6 +1,6 @@
 #include "isk_07.h"
 
-EvtScript N(EVS_RedStairs_FlipCCW) = {
+EvtScript EVS_RedStairs_FlipCCW = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1994, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o2000, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_o2000, SOUND_LOOP_ISK_FLIP_STAIRS, SOUND_SPACE_DEFAULT)
@@ -17,7 +17,7 @@ EvtScript N(EVS_RedStairs_FlipCCW) = {
     End
 };
 
-EvtScript N(EVS_RedStairs_FlipCW) = {
+EvtScript EVS_RedStairs_FlipCW = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o1994, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2000, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_o1994, SOUND_LOOP_ISK_FLIP_STAIRS, SOUND_SPACE_DEFAULT)
@@ -34,7 +34,7 @@ EvtScript N(EVS_RedStairs_FlipCW) = {
     End
 };
 
-EvtScript N(EVS_FlipRedStairs) = {
+EvtScript EVS_FlipRedStairs = {
     Call(InterpCamTargetPos, 0, 1, 369, -349, 369, 20)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
     Call(UseSettingsFrom, CAM_DEFAULT, 369, -349, 369)
@@ -43,10 +43,10 @@ EvtScript N(EVS_FlipRedStairs) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     IfEq(MF_StairsFlipped, false)
-        ExecWait(N(EVS_RedStairs_FlipCCW))
+        ExecWait(EVS_RedStairs_FlipCCW)
         Set(MF_StairsFlipped, true)
     Else
-        ExecWait(N(EVS_RedStairs_FlipCW))
+        ExecWait(EVS_RedStairs_FlipCW)
         Set(MF_StairsFlipped, false)
     EndIf
     Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(0.1))
@@ -60,11 +60,11 @@ EvtScript N(EVS_FlipRedStairs) = {
     End
 };
 
-EvtScript N(EVS_SetupStairs) = {
+EvtScript EVS_SetupStairs = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o1994, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2000, COLLIDER_FLAGS_UPPER_MASK)
     Set(MF_StairsFlipped, false)
-    BindTrigger(Ref(N(EVS_FlipRedStairs)), TRIGGER_AREA_FLAG_SET, AF_ISK07_FlippingRedStairs, 1, 0)
+    BindTrigger(Ref(EVS_FlipRedStairs), TRIGGER_AREA_FLAG_SET, AF_ISK07_FlippingRedStairs, 1, 0)
     Return
     End
 };

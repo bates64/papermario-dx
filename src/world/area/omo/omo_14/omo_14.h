@@ -31,8 +31,6 @@ enum {
     MV_ActingPartner    = MapVar(10),
 };
 
-#define NAMESPACE omo_14
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

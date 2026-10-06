@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-API_CALLABLE(N(SetBowserFireBreathScales)) {
+static API_CALLABLE(SetBowserFireBreathScales) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     FireBreathFXData* data = effect->data.fireBreath;

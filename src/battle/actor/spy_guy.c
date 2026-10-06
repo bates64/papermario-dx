@@ -4,19 +4,17 @@
 #include "script_api/battle.h"
 #include "sprite/npc/SpyGuy.h"
 
-#define NAMESPACE A(spy_guy)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_STONE       = 2,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_ItemState          = 0,
     AVAL_Item_None          = 0,
     AVAL_Item_Fumble        = 1,
@@ -29,12 +27,12 @@ enum N(ActorVars) {
     AVAR_ShouldSwitchWeapon = 3,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SHOOT       = 2,
     DMG_MALLET      = 2,
 };
 
-s32 N(MalletAnims)[] = {
+s32 MalletAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpyGuy_IdleHammer,
     STATUS_KEY_STONE,     ANIM_SpyGuy_StillHammer,
     STATUS_KEY_SLEEP,     ANIM_SpyGuy_Sleep,
@@ -47,7 +45,7 @@ s32 N(MalletAnims)[] = {
     STATUS_END,
 };
 
-s32 N(SlingshotAnims)[] = {
+s32 SlingshotAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpyGuy_IdleSling,
     STATUS_KEY_STONE,     ANIM_SpyGuy_StillSling,
     STATUS_KEY_SLEEP,     ANIM_SpyGuy_Sleep,
@@ -60,18 +58,18 @@ s32 N(SlingshotAnims)[] = {
     STATUS_END,
 };
 
-s32 N(StoneAnims)[] = {
+s32 StoneAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_SpyGuy_Stone,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_SHOCK,    0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              70,
@@ -96,15 +94,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 30 },
         .opacity = 255,
-        .idleAnimations = N(MalletAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = MalletAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -13 },
@@ -115,8 +113,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(StoneAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = StoneAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -128,10 +126,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_SPY_GUY,
     .level = ACTOR_LEVEL_SPY_GUY,
     .maxHP = 7,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 50,
     .airLiftChance = 85,
     .hurricaneChance = 80,
@@ -146,28 +144,28 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Weapon, AVAL_Weapon_Mallet)
     Call(SetActorVar, ACTOR_SELF, AVAR_ShouldSwitchWeapon, false)
     Call(GetInstigatorValue, ACTOR_SELF, LVar0)
     IfNe(LVar0, 0)
         Call(SetActorVar, ACTOR_SELF, AVAR_Weapon, AVAL_Weapon_Slingshot)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SlingshotAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlingshotAnims))
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_IdleSling)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_TrySwitchWeapon) = {
+EvtScript EVS_TrySwitchWeapon = {
     Call(GetActorVar, ACTOR_SELF, AVAR_ShouldSwitchWeapon, LVar0)
     IfEq(LVar0, 0)
         Return
@@ -199,7 +197,7 @@ EvtScript N(EVS_TrySwitchWeapon) = {
     Switch(LVar0)
         CaseEq(AVAL_Weapon_Slingshot)
             Call(SetActorVar, ACTOR_SELF, AVAR_Weapon, AVAL_Weapon_Mallet)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(MalletAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(MalletAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_JumpSling)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
@@ -210,7 +208,7 @@ EvtScript N(EVS_TrySwitchWeapon) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_IdleHammer)
         CaseEq(AVAL_Weapon_Mallet)
             Call(SetActorVar, ACTOR_SELF, AVAR_Weapon, AVAL_Weapon_Slingshot)
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SlingshotAnims)))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlingshotAnims))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_JumpHammer)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetActorJumpGravity, ACTOR_SELF, Float(1.4))
@@ -226,7 +224,7 @@ EvtScript N(EVS_TrySwitchWeapon) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
@@ -240,14 +238,14 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_SpyGuy_Hurt)
             ExecWait(EVS_Enemy_Hit)
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldSwitchWeapon, true)
-            ExecWait(N(EVS_TrySwitchWeapon))
+            ExecWait(EVS_TrySwitchWeapon)
         CaseEq(EVENT_BURN_HIT)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_SpyGuy_BurnHurt)
             SetConst(LVar2, ANIM_SpyGuy_BurnStill)
             ExecWait(EVS_Enemy_BurnHit)
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldSwitchWeapon, true)
-            ExecWait(N(EVS_TrySwitchWeapon))
+            ExecWait(EVS_TrySwitchWeapon)
         CaseEq(EVENT_BURN_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_SpyGuy_BurnHurt)
@@ -262,7 +260,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_SpyGuy_Hurt)
             ExecWait(EVS_Enemy_SpinSmashHit)
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldSwitchWeapon, true)
-            ExecWait(N(EVS_TrySwitchWeapon))
+            ExecWait(EVS_TrySwitchWeapon)
         CaseEq(EVENT_SPIN_SMASH_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_SpyGuy_Hurt)
@@ -290,7 +288,7 @@ EvtScript N(EVS_HandleEvent) = {
                 SetConst(LVar1, ANIM_SpyGuy_IdleHammer)
             EndIf
             ExecWait(EVS_Enemy_NoDamageHit)
-            ExecWait(N(EVS_TrySwitchWeapon))
+            ExecWait(EVS_TrySwitchWeapon)
         EndCaseGroup
         CaseEq(EVENT_DEATH)
             SetConst(LVar0, PRT_MAIN)
@@ -347,7 +345,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Slingshot) = {
+EvtScript EVS_Attack_Slingshot = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -437,9 +435,8 @@ EvtScript N(EVS_Attack_Slingshot) = {
 
 #include "battle/common/CheckPlayerCanLoseCommand.inc.c"
 
-#include "common/StartRumbleWithParams.inc.c"
 
-EvtScript N(EVS_ManageItemMotion) = {
+EvtScript EVS_ManageItemMotion = {
     Label(0)
         Call(GetActorVar, ACTOR_SELF, AVAR_ItemState, LVarA)
         Switch(LVarA)
@@ -449,20 +446,20 @@ EvtScript N(EVS_ManageItemMotion) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
                 Set(LVar2, 0)
                 Sub(LVar3, 1)
-                Call(N(DisableRandomAbility), LVar4, LVar5)
+                Call(DisableRandomAbility, LVar4, LVar5)
                 Call(MakeItemEntity, LVar4, LVar1, LVar2, LVar3, ITEM_SPAWN_MODE_DECORATION, 0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_Knockoff_ItemIdx, LVar0)
                 Add(LVar1, 30)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 20, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 20, Float(1.0))
                 Add(LVar1, 20)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 10, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 10, Float(1.0))
                 Add(LVar1, 10)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
                 Call(SetActorVar, ACTOR_SELF, AVAR_ItemState, AVAR_ItemState)
             CaseEq(AVAL_Item_KnockAway)
                 Call(ShowMessageBox, LVar5, 60)
                 Sub(LVar1, 150)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 30, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 30, Float(1.0))
                 Call(RemoveItemEntity, LVar0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_ItemState, AVAL_Item_Gone)
                 Return
@@ -473,7 +470,7 @@ EvtScript N(EVS_ManageItemMotion) = {
     End
 };
 
-EvtScript N(EVS_Attack_Mallet) = {
+EvtScript EVS_Attack_Mallet = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -537,7 +534,7 @@ EvtScript N(EVS_Attack_Mallet) = {
             Set(LFlag0, false)
             Call(GetBattleFlags, LVar0)
             IfNotFlag(LVar0, BS_FLAGS1_ATK_BLOCKED)
-                Call(N(CheckPlayerCanLoseCommand), LVar0)
+                Call(CheckPlayerCanLoseCommand, LVar0)
                 IfNe(LVar0, -1)
                     Set(LFlag0, true)
                 EndIf
@@ -559,7 +556,7 @@ EvtScript N(EVS_Attack_Mallet) = {
             EndIf
             IfEq(LFlag0, true)
                 Call(SetActorVar, ACTOR_SELF, AVAR_ItemState, AVAL_Item_Fumble)
-                Exec(N(EVS_ManageItemMotion))
+                Exec(EVS_ManageItemMotion)
                 Wait(8)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_DashHammer)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -585,7 +582,7 @@ EvtScript N(EVS_Attack_Mallet) = {
                 Thread
                     Wait(5)
                     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_COMMAND_LOSS)
-                    Call(N(StartRumbleWithParams), 200, 10)
+                    Call(StartRumbleWithParams, 200, 10)
                 EndThread
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_LeanBack)
                 Wait(5)
@@ -621,19 +618,19 @@ EvtScript N(EVS_Attack_Mallet) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(SetActorVar, ACTOR_SELF, AVAR_Weapon, AVAL_Weapon_Slingshot)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SlingshotAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlingshotAnims))
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_IdleSling)
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_Weapon, LVar0)
     Switch(LVar0)
         CaseEq(AVAL_Weapon_Slingshot)
-            ExecWait(N(EVS_Attack_Slingshot))
+            ExecWait(EVS_Attack_Slingshot)
         CaseEq(AVAL_Weapon_Mallet)
-            ExecWait(N(EVS_Attack_Mallet))
+            ExecWait(EVS_Attack_Mallet)
     EndSwitch
     Return
     End

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 
-API_CALLABLE(N(SetSpinSmashable)) {
+API_CALLABLE(SetSpinSmashable) {
     s32 canSpinSmash = evt_get_variable(script, *script->ptrReadPos);
     Actor* actor = get_actor(script->owner1.actorID);
 

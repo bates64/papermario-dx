@@ -6,7 +6,7 @@
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-EvtScript N(EVS_GetRescuedYoshiCount) = {
+EvtScript EVS_GetRescuedYoshiCount = {
     Set(LVar0, 0)
     Add(LVar0, GF_JAN05_SavedYoshi)
     Add(LVar0, GF_JAN07_SavedYoshi)
@@ -17,7 +17,7 @@ EvtScript N(EVS_GetRescuedYoshiCount) = {
     End
 };
 
-EvtScript N(EVS_Scene_GetJadeRaven) = {
+EvtScript EVS_Scene_GetJadeRaven = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     IfEq(GF_JAN02_Met_VillageLeader, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_0023)
@@ -105,7 +105,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_VillageLeader) = {
+EvtScript EVS_NpcInteract_VillageLeader = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             IfEq(GF_JAN02_Met_VillageLeader, false)
@@ -116,7 +116,7 @@ EvtScript N(EVS_NpcInteract_VillageLeader) = {
             EndIf
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
-            ExecWait(N(EVS_Scene_GetJadeRaven))
+            ExecWait(EVS_Scene_GetJadeRaven)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_002D)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
@@ -139,32 +139,32 @@ EvtScript N(EVS_NpcInteract_VillageLeader) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_VillageLeader) = {
+EvtScript EVS_NpcInit_VillageLeader = {
     Call(BindNpcIdle, NPC_SELF, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_IdleSit)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_VillageLeader)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
             Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
             Call(InterpNpcYaw, NPC_SELF, 90, 1)
             Call(SetNpcPos, NPC_SELF, 0, 15, -50)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_VillageLeader)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
             Call(InterpNpcYaw, NPC_SELF, 90, 1)
             Call(SetNpcPos, NPC_SELF, 30, 15, -30)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_VillageLeader)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_VillageLeader)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Councillor) = {
+EvtScript EVS_NpcInteract_Councillor = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             IfEq(AF_JAN02_MetCouncillor, false)
@@ -195,7 +195,7 @@ EvtScript N(EVS_NpcInteract_Councillor) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Councillor) = {
+EvtScript EVS_NpcInit_Councillor = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_LeadersFriend_IdleSit)
     Call(SetNpcCollisionSize, NPC_SELF, 40, 32)
     Switch(GB_StoryProgress)
@@ -204,17 +204,17 @@ EvtScript N(EVS_NpcInit_Councillor) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_LeadersFriend_BowSit)
     EndSwitch
     Call(BindNpcIdle, NPC_SELF, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Councillor)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Councillor))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yoshi_01) = {
+EvtScript EVS_NpcInteract_Yoshi_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_Talk, ANIM_Yoshi_Red_Idle, 0, MSG_CH5_003D)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            ExecWait(N(EVS_GetRescuedYoshiCount))
+            ExecWait(EVS_GetRescuedYoshiCount)
             IfEq(LVar0, 0)
                 IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_CryTalk, ANIM_Yoshi_Red_Cry, 0, MSG_CH5_003E)
@@ -241,7 +241,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_01) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Yoshi_01) = {
+EvtScript EVS_NpcIdle_Yoshi_01 = {
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -520, -270, 50)
         Call(NpcMoveTo, NPC_SELF, -420, -270, 50)
@@ -250,26 +250,26 @@ EvtScript N(EVS_NpcIdle_Yoshi_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yoshi_01) = {
+EvtScript EVS_NpcInit_Yoshi_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN08_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Red_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_01)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_01))
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yoshi_01)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yoshi_02) = {
+EvtScript EVS_NpcInteract_Yoshi_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_Talk, ANIM_Yoshi_Blue_Idle, 0, MSG_CH5_0046)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            ExecWait(N(EVS_GetRescuedYoshiCount))
+            ExecWait(EVS_GetRescuedYoshiCount)
             IfEq(LVar0, 0)
                 IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_CryTalk, ANIM_Yoshi_Blue_Cry, 0, MSG_CH5_0047)
@@ -296,7 +296,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_02) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Yoshi_02) = {
+EvtScript EVS_NpcIdle_Yoshi_02 = {
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, 180, -520, 50)
         Call(NpcMoveTo, NPC_SELF, 80, -520, 50)
@@ -305,26 +305,26 @@ EvtScript N(EVS_NpcIdle_Yoshi_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yoshi_02) = {
+EvtScript EVS_NpcInit_Yoshi_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN10_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Blue_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_02)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_02))
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yoshi_02)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yoshi_03) = {
+EvtScript EVS_NpcInteract_Yoshi_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_Talk, ANIM_Yoshi_Purple_Idle, 0, MSG_CH5_004F)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            ExecWait(N(EVS_GetRescuedYoshiCount))
+            ExecWait(EVS_GetRescuedYoshiCount)
             IfEq(LVar0, 0)
                 IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_CryTalk, ANIM_Yoshi_Purple_Cry, 0, MSG_CH5_0050)
@@ -351,7 +351,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Yoshi_03) = {
+EvtScript EVS_NpcIdle_Yoshi_03 = {
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, 600, -150, 50)
         Call(NpcMoveTo, NPC_SELF, 500, -150, 50)
@@ -360,21 +360,21 @@ EvtScript N(EVS_NpcIdle_Yoshi_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yoshi_03) = {
+EvtScript EVS_NpcInit_Yoshi_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN05_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Purple_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_03)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_03))
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yoshi_03)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_03))
     Return
     End
 };
 
-AnimID N(LimitAnims_Councillor)[] = {
+AnimID LimitAnims_Councillor[] = {
     ANIM_LeadersFriend_TalkSit,
     ANIM_LeadersFriend_TalkSitSad,
     ANIM_LeadersFriend_IdleSit,
@@ -382,13 +382,13 @@ AnimID N(LimitAnims_Councillor)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Townsfolk)[] = {
+NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_YoshiLeader,
         .pos = { 323.0f, 30.0f, 412.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_VillageLeader),
-        .settings = &N(NpcSettings_Yoshi),
+        .init = &EVS_NpcInit_VillageLeader,
+        .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = YOSHI_LEADER_ANIMS,
@@ -398,12 +398,12 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_YoshiCouncillor,
         .pos = { 172.0f, 30.0f, 418.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Councillor),
-        .settings = &N(NpcSettings_Yoshi),
+        .init = &EVS_NpcInit_Councillor,
+        .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = YOSHI_COUNCILLOR_ANIMS,
-        .limitAnimations = N(LimitAnims_Councillor),
+        .limitAnimations = LimitAnims_Councillor,
         .tattle = MSG_NpcTattle_LeadersFriend,
     },
     {
@@ -424,8 +424,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Yoshi_01),
-        .settings = &N(NpcSettings_Yoshi_Patrol),
+        .init = &EVS_NpcInit_Yoshi_01,
+        .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_RED_ANIMS,
@@ -450,8 +450,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Yoshi_02),
-        .settings = &N(NpcSettings_Yoshi_Patrol),
+        .init = &EVS_NpcInit_Yoshi_02,
+        .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_BLUE_ANIMS,
@@ -475,8 +475,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 100 },
             }
         },
-        .init = &N(EVS_NpcInit_Yoshi_03),
-        .settings = &N(NpcSettings_Yoshi_Patrol),
+        .init = &EVS_NpcInit_Yoshi_03,
+        .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_PURPLE_ANIMS,
@@ -484,21 +484,21 @@ NpcData N(NpcData_Townsfolk)[] = {
     },
 };
 
-NpcData N(NpcData_ChuckQuizmo) = {
+NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
     .pos = { -150.0f, 15.0f, 300.0f },
     .yaw = 90,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_JAN, QUIZ_COUNT_JAN, QUIZ_MAP_JAN_02 }},
-    .settings = &N(NpcSettings_ChuckQuizmo),
+    .settings = &NpcSettings_ChuckQuizmo,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Townsfolk)),
-    NPC_GROUP(N(NpcData_ChuckQuizmo)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Townsfolk),
+    NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };

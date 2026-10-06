@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EvtScript N(EVS_NpcInteract_Goomama) = {
+EvtScript EVS_NpcInteract_Goomama = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_GOOMBARIO)
         Call(DisablePartnerAI, true)
@@ -26,7 +26,7 @@ EvtScript N(EVS_NpcInteract_Goomama) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Goombaria) = {
+EvtScript EVS_NpcInteract_Goombaria = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_GOOMBARIO)
         Call(DisablePartnerAI, true)
@@ -46,14 +46,14 @@ EvtScript N(EVS_NpcInteract_Goombaria) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Goomama) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Goomama)))
+EvtScript EVS_NpcInit_Goomama = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Goomama))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Goombaria) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Goombaria)))
+EvtScript EVS_NpcInit_Goombaria = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Goombaria))
     Return
     End
 };

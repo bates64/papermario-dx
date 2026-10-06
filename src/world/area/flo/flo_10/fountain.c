@@ -2,7 +2,7 @@
 #include "sprite/npc/Lily.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_RaiseFountain) = {
+EvtScript EVS_RaiseFountain = {
     Call(MakeLerp, -50, 170, 385, EASING_LINEAR)
     Label(1)
         Call(UpdateLerp)
@@ -15,7 +15,7 @@ EvtScript N(EVS_RaiseFountain) = {
     End
 };
 
-EvtScript N(EVS_GrowFountain) = {
+EvtScript EVS_GrowFountain = {
     Call(MakeLerp, 0, 100, 90, EASING_QUADRATIC_IN)
     Label(1)
         Call(UpdateLerp)
@@ -33,7 +33,7 @@ EvtScript N(EVS_GrowFountain) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Rainbow) = {
+EvtScript EVS_TexPan_Rainbow = {
     Call(SetTexPanner, MODEL_o73, TEX_PANNER_A)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_A)
@@ -46,15 +46,15 @@ EvtScript N(EVS_TexPan_Rainbow) = {
     End
 };
 
-EvtScript N(EVS_EnableRainbow) = {
+EvtScript EVS_EnableRainbow = {
     Wait(60)
     Call(EnableModel, MODEL_o73, true)
-    Exec(N(EVS_TexPan_Rainbow))
+    Exec(EVS_TexPan_Rainbow)
     Return
     End
 };
 
-EvtScript N(EVS_RaiseLily) = {
+EvtScript EVS_RaiseLily = {
     Wait(80)
     Call(EnableNpcShadow, NPC_Lily, false)
     Call(GetNpcPos, NPC_Lily, LVar3, LVar4, LVar5)
@@ -75,7 +75,7 @@ EvtScript N(EVS_RaiseLily) = {
     End
 };
 
-EvtScript N(EVS_RaisePlayer) = {
+EvtScript EVS_RaisePlayer = {
     Call(DisablePlayerPhysics, true)
     Wait(40)
     Call(SetPlayerAnimation, ANIM_MarioW2_SitIdle)
@@ -105,7 +105,7 @@ EvtScript N(EVS_RaisePlayer) = {
     End
 };
 
-EvtScript N(EVS_RaiseCamera) = {
+EvtScript EVS_RaiseCamera = {
     Wait(80)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
@@ -119,19 +119,19 @@ EvtScript N(EVS_RaiseCamera) = {
     End
 };
 
-EvtScript N(EVS_UnleashFountain) = {
+EvtScript EVS_UnleashFountain = {
     Call(DisablePartnerAI, false)
-    Exec(N(EVS_RaiseFountain))
-    Exec(N(EVS_GrowFountain))
-    Exec(N(EVS_EnableRainbow))
-    Exec(N(EVS_RaiseLily))
-    Exec(N(EVS_RaisePlayer))
-    Exec(N(EVS_RaiseCamera))
+    Exec(EVS_RaiseFountain)
+    Exec(EVS_GrowFountain)
+    Exec(EVS_EnableRainbow)
+    Exec(EVS_RaiseLily)
+    Exec(EVS_RaisePlayer)
+    Exec(EVS_RaiseCamera)
     Return
     End
 };
 
-EvtScript N(EVS_LowerFountain) = {
+EvtScript EVS_LowerFountain = {
     Call(MakeLerp, 170, 75, 150, EASING_LINEAR)
     Label(1)
         Call(UpdateLerp)
@@ -144,7 +144,7 @@ EvtScript N(EVS_LowerFountain) = {
     End
 };
 
-EvtScript N(EVS_ShrinkFountain) = {
+EvtScript EVS_ShrinkFountain = {
     Call(MakeLerp, 100, 15, 150, EASING_QUADRATIC_IN)
     Label(1)
         Call(UpdateLerp)
@@ -162,14 +162,14 @@ EvtScript N(EVS_ShrinkFountain) = {
     End
 };
 
-EvtScript N(EVS_FountainSlowing) = {
-    Exec(N(EVS_LowerFountain))
-    Exec(N(EVS_ShrinkFountain))
+EvtScript EVS_FountainSlowing = {
+    Exec(EVS_LowerFountain)
+    Exec(EVS_ShrinkFountain)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_ReleaseFountain) = {
+EvtScript EVS_Scene_ReleaseFountain = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
@@ -183,7 +183,7 @@ EvtScript N(EVS_Scene_ReleaseFountain) = {
     Call(TranslateGroup, MODEL_g22, 0, -50, 0)
     Call(ScaleGroup, MODEL_g22, 0, 0, 0)
     Call(EnableGroup, MODEL_g31, true)
-    ExecWait(N(EVS_UnleashFountain))
+    ExecWait(EVS_UnleashFountain)
     Wait(20)
     Call(PlaySound, SOUND_LOOP_FLO_RELEASE_FOUNTAIN)
     Wait(360)
@@ -192,7 +192,7 @@ EvtScript N(EVS_Scene_ReleaseFountain) = {
     Call(SetPlayerJumpscale, Float(0.2))
     Call(PlayerJump1, -100, -10, -172, 75)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
-    ExecWait(N(EVS_FountainSlowing))
+    ExecWait(EVS_FountainSlowing)
     Wait(60)
     Call(GotoMap, Ref("flo_24"), flo_24_ENTRY_2)
     Wait(100)
@@ -200,7 +200,7 @@ EvtScript N(EVS_Scene_ReleaseFountain) = {
     End
 };
 
-EvtScript N(EVS_Scene_PostReleaseFountain) = {
+EvtScript EVS_Scene_PostReleaseFountain = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, -100, -10, -172)
@@ -221,7 +221,7 @@ EvtScript N(EVS_Scene_PostReleaseFountain) = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(10 * DT)
-    ExecWait(N(EVS_PushFlowerSong))
+    ExecWait(EVS_PushFlowerSong)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Lily, ANIM_Lily_Talk, ANIM_Lily_Idle, 5, MSG_CH6_0082)
     Call(NpcFacePlayer, NPC_Lily, 1)
@@ -234,14 +234,14 @@ EvtScript N(EVS_Scene_PostReleaseFountain) = {
     Call(EndSpeech, NPC_Lily, ANIM_Lily_Talk, ANIM_Lily_Idle, 0)
     Call(SetNpcAnimation, NPC_Lily, ANIM_Lily_Idle)
     Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
-    ExecWait(N(EVS_PopSong))
+    ExecWait(EVS_PopSong)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupFountain) = {
+EvtScript EVS_SetupFountain = {
     IfLt(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
         Call(EnableGroup, MODEL_water, false)
         Call(EnableGroup, MODEL_g12, false)
@@ -310,7 +310,7 @@ EvtScript N(EVS_SetupFountain) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     IfGe(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
-        Exec(N(EVS_TexPan_Rainbow))
+        Exec(EVS_TexPan_Rainbow)
     EndIf
     Return
     End

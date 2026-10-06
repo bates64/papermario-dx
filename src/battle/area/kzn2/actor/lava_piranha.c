@@ -281,7 +281,6 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 30, 47 },
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
 enum {
     VINE_RENDER_STATE_NONE      = -1,
@@ -1433,7 +1432,7 @@ EvtScript N(EVS_Death) = {
             Call(ShakeCam, CAM_BATTLE, 0, 119, Float(0.3))
             Call(PlaySound, SOUND_LRAW_RUMBLE | SOUND_ID_TRIGGER_CHANGE_SOUND)
         EndThread
-        Call(N(StartRumbleWithParams), 80, 234)
+        Call(StartRumbleWithParams, 80, 234)
         Call(HideHealthBar, ACTOR_SELF)
         Call(HideHealthBar, ACTOR_BUD_1)
         Call(HideHealthBar, ACTOR_BUD_2)
@@ -1531,7 +1530,7 @@ EvtScript N(EVS_Death) = {
             Call(ShakeCam, CAM_BATTLE, 0, 165, Float(1.2))
             Call(PlaySound, SOUND_LRAW_RUMBLE | SOUND_ID_TRIGGER_CHANGE_SOUND)
         EndThread
-        Call(N(StartRumbleWithParams), 80, 300)
+        Call(StartRumbleWithParams, 80, 300)
         Call(UseIdleAnimation, ACTOR_PLAYER, false)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_LookUp)
         Wait(20)
@@ -1566,7 +1565,7 @@ EvtScript N(EVS_Death) = {
         Call(SetBattleCamDist, 460)
         Call(SetBattleCamOffsetY, 0)
         Call(MoveBattleCamOver, 30)
-        Call(N(StartRumbleWithParams), 180, 16)
+        Call(StartRumbleWithParams, 180, 16)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 4, Float(3.0))
             Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.0))
@@ -1704,7 +1703,7 @@ EvtScript N(EVS_Death) = {
             Call(ShakeCam, CAM_BATTLE, 0, 8, Float(0.2))
             Call(PlaySound, SOUND_LRAW_RUMBLE | SOUND_ID_TRIGGER_CHANGE_SOUND)
         EndThread
-        Call(N(StartRumbleWithParams), 80, 216)
+        Call(StartRumbleWithParams, 80, 216)
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_PIRANHA_WRITHE)
             Call(GetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, LVar0)
@@ -1832,7 +1831,7 @@ EvtScript N(EVS_Death) = {
         Call(SetAnimation, ACTOR_BUD_2, PRT_MAIN, ANIM_LavaBud_Dead)
         PlayEffect(EFFECT_SHOCKWAVE, 0, -60, 0, 2)
         Thread
-            Call(N(StartRumbleWithParams), 180, 16)
+            Call(StartRumbleWithParams, 180, 16)
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(4.0))
         EndThread
         Wait(3)

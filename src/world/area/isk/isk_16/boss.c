@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 
 
-EvtScript N(EVS_Scene_TutankoopaAppears) = {
+EvtScript EVS_Scene_TutankoopaAppears = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetModelTintMode, APPLY_TINT_MODELS, -1, ENV_TINT_SHROUD)
@@ -34,7 +34,7 @@ EvtScript N(EVS_Scene_TutankoopaAppears) = {
     EndThread
     Call(SetPlayerSpeed, Float(4.0 / DT))
     Call(PlayerMoveTo, 343, 460, 0)
-    ExecWait(N(EVS_BindExitTriggers))
+    ExecWait(EVS_BindExitTriggers)
     Wait(20 * DT)
     Call(SetPanTarget, CAM_DEFAULT, 410, -910, 410)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5 / DT))
@@ -139,7 +139,7 @@ EvtScript N(EVS_Scene_TutankoopaAppears) = {
     End
 };
 
-EvtScript N(EVS_PlayChompSounds) = {
+EvtScript EVS_PlayChompSounds = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_ChainChomp, SOUND_CHAIN_CHOMP_BITE, SOUND_SPACE_DEFAULT)
         Wait(5)
@@ -148,7 +148,7 @@ EvtScript N(EVS_PlayChompSounds) = {
     End
 };
 
-EvtScript N(EVS_Scene_TutankoopaDefeated) = {
+EvtScript EVS_Scene_TutankoopaDefeated = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
@@ -172,7 +172,7 @@ EvtScript N(EVS_Scene_TutankoopaDefeated) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(EnableModel, MODEL_o2359, false)
-    ExecGetTID(N(EVS_PlayChompSounds), LVarA)
+    ExecGetTID(EVS_PlayChompSounds, LVarA)
     Call(SetNpcPos, NPC_ChainChomp, 516, -910, 263)
     Call(SetNpcSpeed, NPC_ChainChomp, Float(3.0 / DT))
     Call(NpcMoveTo, NPC_ChainChomp, 493, 292, 0)

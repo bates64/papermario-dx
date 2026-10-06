@@ -11,6 +11,4 @@
 #include "mapfs/kmr_21_shape.h"
 #include "mapfs/kmr_21_hit.h"
 
-#define NAMESPACE kmr_21
-
-extern EvtScript N(EVS_Main);
+extern EvtScript EVS_Main;

@@ -11,9 +11,9 @@ enum {
     LAVA_GLOW_MODE_END   = 10
 };
 
-f32 N(LavaGlowLightTime) = 0.0f;
+f32 LavaGlowLightTime = 0.0f;
 
-API_CALLABLE(N(ApplyLavaGlowLighting)) {
+API_CALLABLE(ApplyLavaGlowLighting) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 glowMode = evt_get_variable(script, *args++);
@@ -46,9 +46,9 @@ API_CALLABLE(N(ApplyLavaGlowLighting)) {
         }
     }
 
-    N(LavaGlowLightTime) += 1.0f;
-    if (N(LavaGlowLightTime) > 360.0f) {
-        N(LavaGlowLightTime) -= 360.0f;
+    LavaGlowLightTime += 1.0f;
+    if (LavaGlowLightTime > 360.0f) {
+        LavaGlowLightTime -= 360.0f;
     }
 
     switch (glowMode) {
@@ -79,15 +79,15 @@ API_CALLABLE(N(ApplyLavaGlowLighting)) {
             break;
     }
 
-    slowOsc = sin_deg(N(LavaGlowLightTime) * 3.0f);
-    fastOsc = sin_deg(N(LavaGlowLightTime) * 8.0f);
+    slowOsc = sin_deg(LavaGlowLightTime * 3.0f);
+    fastOsc = sin_deg(LavaGlowLightTime * 8.0f);
     primA = baseAlpha + baseAlpha * (slowOsc * 0.5 + fastOsc * 0.5);
 
     mdl_set_depth_tint_params(60, 50, 30, primA, 20, 20, 20, fogStart, 1000);
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(ClearLavaGlowLighting)) {
+API_CALLABLE(ClearLavaGlowLighting) {
     Bytecode* args = script->ptrReadPos;
     ModelIDList* modelIDs = (ModelIDList*) evt_get_variable(script, *args++);
     s32 i;

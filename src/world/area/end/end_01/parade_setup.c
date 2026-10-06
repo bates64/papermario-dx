@@ -4,28 +4,28 @@
 extern HeapNode heap_spriteHead;
 
 extern b32 SpriteUseGeneralHeap;
-extern ParadeNpcInfo N(ParadeNpcsTable)[];
+extern ParadeNpcInfo ParadeNpcsTable[];
 
-extern EvtScript N(EVS_ParadePhase_Wizards);
-extern EvtScript N(EVS_ParadePhase_ShyGuyDancing);
-extern EvtScript N(EVS_ParadePhase_ShyGuyFormation);
-extern EvtScript N(EVS_ParadePhase_Toads1);
-extern EvtScript N(EVS_ParadePhase_MarioPeach);
-extern EvtScript N(EVS_ParadePhase_Toads2);
-extern EvtScript N(EVS_MarioPeachExit);
-extern EvtScript N(EVS_ParadePhase_StarSpirits);
-extern EvtScript N(EVS_ParadePhase_SkatingPenguins);
-extern EvtScript N(EVS_ParadePhase_Opera);
-extern EvtScript N(EVS_ParadePhase_MayorPenguin);
+extern EvtScript EVS_ParadePhase_Wizards;
+extern EvtScript EVS_ParadePhase_ShyGuyDancing;
+extern EvtScript EVS_ParadePhase_ShyGuyFormation;
+extern EvtScript EVS_ParadePhase_Toads1;
+extern EvtScript EVS_ParadePhase_MarioPeach;
+extern EvtScript EVS_ParadePhase_Toads2;
+extern EvtScript EVS_MarioPeachExit;
+extern EvtScript EVS_ParadePhase_StarSpirits;
+extern EvtScript EVS_ParadePhase_SkatingPenguins;
+extern EvtScript EVS_ParadePhase_Opera;
+extern EvtScript EVS_ParadePhase_MayorPenguin;
 
-extern EvtScript N(EVS_InitCredits);
-extern EvtScript N(EVS_ShowCredits_Jobs);
-extern EvtScript N(EVS_ShowCredits_Names);
+extern EvtScript EVS_InitCredits;
+extern EvtScript EVS_ShowCredits_Jobs;
+extern EvtScript EVS_ShowCredits_Names;
 
-API_CALLABLE(N(CreateParadeNPC)) {
+API_CALLABLE(CreateParadeNPC) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
-    ParadeNpcInfo* npcInfo = &N(ParadeNpcsTable)[npcID];
+    ParadeNpcInfo* npcInfo = &ParadeNpcsTable[npcID];
     NpcBlueprint bp;
     Npc* npc;
 
@@ -46,7 +46,7 @@ API_CALLABLE(N(CreateParadeNPC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ParadeSpriteHeapMalloc)) {
+API_CALLABLE(ParadeSpriteHeapMalloc) {
     Bytecode* args = script->ptrReadPos;
     s32 heapSize = evt_get_variable(script, *args++);
     s32 outVar = *args++;
@@ -55,7 +55,7 @@ API_CALLABLE(N(ParadeSpriteHeapMalloc)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ParadeSpriteHeapFree)) {
+API_CALLABLE(ParadeSpriteHeapFree) {
     Bytecode* args = script->ptrReadPos;
     s32 pointer = *args++;
 
@@ -63,7 +63,7 @@ API_CALLABLE(N(ParadeSpriteHeapFree)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateCameraScroll)) {
+API_CALLABLE(UpdateCameraScroll) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     camera->panActive = true;
@@ -71,7 +71,7 @@ API_CALLABLE(N(UpdateCameraScroll)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AddScrollToNpcPos)) {
+API_CALLABLE(AddScrollToNpcPos) {
     Bytecode* args = script->ptrReadPos;
     Npc** npc = (Npc**)&script->functionTempPtr[1];
 
@@ -85,7 +85,7 @@ API_CALLABLE(N(AddScrollToNpcPos)) {
 }
 
 // unused
-API_CALLABLE(N(WaitForConfirmInput)) {
+API_CALLABLE(WaitForConfirmInput) {
     if (gGameStatusPtr->pressedButtons[0] & (BUTTON_A | BUTTON_START)) {
         return ApiStatus_DONE2;
     } else {
@@ -93,7 +93,7 @@ API_CALLABLE(N(WaitForConfirmInput)) {
     }
 }
 
-EvtScript N(EVS_SetupInitialCamera) = {
+EvtScript EVS_SetupInitialCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, PARADE_START, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, PARADE_START, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -102,11 +102,11 @@ EvtScript N(EVS_SetupInitialCamera) = {
     End
 };
 
-EvtScript N(EVS_UpdateScrollPos) = {
+EvtScript EVS_UpdateScrollPos = {
     Call(SetPanTarget, CAM_DEFAULT, Float(PARADE_START), 0, 0)
     SetF(LVar1, Float(0.0))
     Loop(0)
-        Call(N(UpdateCameraScroll))
+        Call(UpdateCameraScroll)
         Call(TranslateGroup, MODEL_bg, LVar1, 0, 0)
         AddF(LVar1, Float(PARADE_SCROLL_RATE / DT))
         Wait(1)
@@ -115,7 +115,7 @@ EvtScript N(EVS_UpdateScrollPos) = {
     End
 };
 
-EvtScript N(EVS_UpdateTexPan_Ground) = {
+EvtScript EVS_UpdateTexPan_Ground = {
     Call(EnableTexPanning, MODEL_o145, true)
     Call(EnableTexPanning, MODEL_o146, true)
     Call(EnableTexPanning, MODEL_j2, true)
@@ -157,99 +157,99 @@ EvtScript N(EVS_UpdateTexPan_Ground) = {
     End
 };
 
-EvtScript N(EVS_OffsetNpcScroll) = {
-    Call(N(AddScrollToNpcPos), LVar0)
+EvtScript EVS_OffsetNpcScroll = {
+    Call(AddScrollToNpcPos, LVar0)
     Return
     End
 };
 
-AnimID N(LimitAnims_Eldstar)[] = {
+AnimID LimitAnims_Eldstar[] = {
     ANIM_BattleEldstar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Mamar)[] = {
+AnimID LimitAnims_Mamar[] = {
     ANIM_BattleMamar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Skolar)[] = {
+AnimID LimitAnims_Skolar[] = {
     ANIM_BattleSkolar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Muskular)[] = {
+AnimID LimitAnims_Muskular[] = {
     ANIM_BattleMuskular_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Misstar)[] = {
+AnimID LimitAnims_Misstar[] = {
     ANIM_BattleMisstar_Still,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Klevar)[] = {
+AnimID LimitAnims_Klevar[] = {
     ANIM_BattleKlevar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Kalmar)[] = {
+AnimID LimitAnims_Kalmar[] = {
     ANIM_BattleKalmar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_PyroGuy)[] = {
+AnimID LimitAnims_PyroGuy[] = {
     ANIM_PyroGuy_Run,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_ShyGuy)[] = {
+AnimID LimitAnims_ShyGuy[] = {
     ANIM_ShyGuy_Red_Dash,
     ANIM_ShyGuy_Red_Crashed,
     ANIM_ShyGuy_Red_Idle,
     ANIM_LIST_END
 };
 
-ParadeNpcInfo N(ParadeNpcsTable)[] = {
+ParadeNpcInfo ParadeNpcsTable[] = {
     [NPC_Eldstar] {
         .initialAnim = ANIM_BattleEldstar_Idle,
-        .animList = N(LimitAnims_Eldstar),
+        .animList = LimitAnims_Eldstar,
         .pos = { -3135.0f, 210.0f, -120.0f },
         .yaw = 270.0f
     },
     [NPC_Mamar] {
         .initialAnim = ANIM_BattleMamar_Idle,
-        .animList = N(LimitAnims_Mamar),
+        .animList = LimitAnims_Mamar,
         .pos = { -3195.0f, 200.0f, -120.0f },
         .yaw = 270.0f
     },
     [NPC_Skolar] {
         .initialAnim = ANIM_BattleSkolar_Idle,
-        .animList = N(LimitAnims_Skolar),
+        .animList = LimitAnims_Skolar,
         .pos = { -3075.0f, 195.0f, -120.0f },
         .yaw = 270.0f
     },
     [NPC_Muskular] {
         .initialAnim = ANIM_BattleMuskular_Idle,
-        .animList = N(LimitAnims_Muskular),
+        .animList = LimitAnims_Muskular,
         .pos = { -3045.0f, 148.0f, -104.0f },
         .yaw = 270.0f
     },
     [NPC_Misstar] {
         .initialAnim = ANIM_BattleMisstar_Still,
-        .animList = N(LimitAnims_Misstar),
+        .animList = LimitAnims_Misstar,
         .pos = { -3105.0f, 158.0f, -104.0f },
         .yaw = 270.0f
     },
     [NPC_Klevar] {
         .initialAnim = ANIM_BattleKlevar_Idle,
-        .animList = N(LimitAnims_Klevar),
+        .animList = LimitAnims_Klevar,
         .pos = { -3165.0f, 158.0f, -104.0f },
         .yaw = 270.0f
     },
     [NPC_Kalmar] {
         .initialAnim = ANIM_BattleKalmar_Idle,
-        .animList = N(LimitAnims_Kalmar),
+        .animList = LimitAnims_Kalmar,
         .pos = { -3225.0f, 148.0f, -104.0f },
         .yaw = 270.0f
     },
@@ -400,13 +400,13 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_PyroGuy1] {
         .initialAnim = ANIM_PyroGuy_Run,
-        .animList = N(LimitAnims_PyroGuy),
+        .animList = LimitAnims_PyroGuy,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 90.0f
     },
     [NPC_PyroGuy2] {
         .initialAnim = ANIM_PyroGuy_Run,
-        .animList = N(LimitAnims_PyroGuy),
+        .animList = LimitAnims_PyroGuy,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 270.0f
     },
@@ -472,7 +472,7 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
     [NPC_Pratfaller] {
         .initialAnim = ANIM_ShyGuy_Red_Dash,
-        .animList = N(LimitAnims_ShyGuy),
+        .animList = LimitAnims_ShyGuy,
         .pos = { -788.0f, 0.0f, 0.0f },
         .yaw = 270.0f
     },
@@ -563,27 +563,27 @@ ParadeNpcInfo N(ParadeNpcsTable)[] = {
     },
 };
 
-EvtScript N(EVS_ManageNpcPool) = {
-    Call(N(CreateParadeNPC), NPC_Eldstar)
-    Call(N(CreateParadeNPC), NPC_Mamar)
-    Call(N(CreateParadeNPC), NPC_Skolar)
-    Call(N(CreateParadeNPC), NPC_Muskular)
-    Call(N(CreateParadeNPC), NPC_Misstar)
-    Call(N(CreateParadeNPC), NPC_Klevar)
-    Call(N(CreateParadeNPC), NPC_Kalmar)
-    Call(N(CreateParadeNPC), NPC_PenguinMayor)
-    Call(N(CreateParadeNPC), NPC_PenguinMayorWife)
-    Call(N(CreateParadeNPC), NPC_PenguinSkater1)
-    Call(N(CreateParadeNPC), NPC_PenguinSkater2)
-    Call(N(CreateParadeNPC), NPC_ViolinPlayer1)
-    Call(N(CreateParadeNPC), NPC_ViolinPlayer2)
-    Call(N(CreateParadeNPC), NPC_ViolinPlayer3)
-    Call(N(CreateParadeNPC), NPC_Conductor)
-    Call(N(CreateParadeNPC), NPC_Singer)
-    Call(N(ParadeSpriteHeapMalloc), 0x13400, LVar0)
-    Call(N(CreateParadeNPC), NPC_AmayzeDayzee1)
-    Call(N(CreateParadeNPC), NPC_AmayzeDayzee2)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+EvtScript EVS_ManageNpcPool = {
+    Call(CreateParadeNPC, NPC_Eldstar)
+    Call(CreateParadeNPC, NPC_Mamar)
+    Call(CreateParadeNPC, NPC_Skolar)
+    Call(CreateParadeNPC, NPC_Muskular)
+    Call(CreateParadeNPC, NPC_Misstar)
+    Call(CreateParadeNPC, NPC_Klevar)
+    Call(CreateParadeNPC, NPC_Kalmar)
+    Call(CreateParadeNPC, NPC_PenguinMayor)
+    Call(CreateParadeNPC, NPC_PenguinMayorWife)
+    Call(CreateParadeNPC, NPC_PenguinSkater1)
+    Call(CreateParadeNPC, NPC_PenguinSkater2)
+    Call(CreateParadeNPC, NPC_ViolinPlayer1)
+    Call(CreateParadeNPC, NPC_ViolinPlayer2)
+    Call(CreateParadeNPC, NPC_ViolinPlayer3)
+    Call(CreateParadeNPC, NPC_Conductor)
+    Call(CreateParadeNPC, NPC_Singer)
+    Call(ParadeSpriteHeapMalloc, 0x13400, LVar0)
+    Call(CreateParadeNPC, NPC_AmayzeDayzee1)
+    Call(CreateParadeNPC, NPC_AmayzeDayzee2)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -608,16 +608,16 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Conductor)
     Call(DeleteNpc, NPC_Singer)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_Merle)
-    Call(N(CreateParadeNPC), NPC_Merlee)
-    Call(N(CreateParadeNPC), NPC_Merlon)
-    Call(N(CreateParadeNPC), NPC_Merluvlee)
-    Call(N(CreateParadeNPC), NPC_Merlow)
-    Call(N(CreateParadeNPC), NPC_Merlar)
-    Call(N(CreateParadeNPC), NPC_SunSad)
-    Call(N(CreateParadeNPC), NPC_SunHappy)
-    Call(N(CreateParadeNPC), NPC_Bubulb1)
-    Call(N(CreateParadeNPC), NPC_Bubulb2)
+    Call(CreateParadeNPC, NPC_Merle)
+    Call(CreateParadeNPC, NPC_Merlee)
+    Call(CreateParadeNPC, NPC_Merlon)
+    Call(CreateParadeNPC, NPC_Merluvlee)
+    Call(CreateParadeNPC, NPC_Merlow)
+    Call(CreateParadeNPC, NPC_Merlar)
+    Call(CreateParadeNPC, NPC_SunSad)
+    Call(CreateParadeNPC, NPC_SunHappy)
+    Call(CreateParadeNPC, NPC_Bubulb1)
+    Call(CreateParadeNPC, NPC_Bubulb2)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -628,31 +628,31 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_AmayzeDayzee1)
     Call(DeleteNpc, NPC_AmayzeDayzee2)
     Wait(1)
-    Call(N(ParadeSpriteHeapMalloc), 0x4700, LVar0)
-    Call(N(CreateParadeNPC), NPC_PyroGuy1)
-    Call(N(CreateParadeNPC), NPC_PyroGuy2)
-    Call(N(CreateParadeNPC), NPC_Pratfaller)
-    Call(N(CreateParadeNPC), NPC_ShyGuyMarshall)
-    Call(N(CreateParadeNPC), NPC_GeneralGuy)
-    Call(N(CreateParadeNPC), NPC_BackupDancer1)
-    Call(N(CreateParadeNPC), NPC_BackupDancer2)
-    Call(N(CreateParadeNPC), NPC_GrooveGuy1)
-    Call(N(CreateParadeNPC), NPC_GrooveGuy2)
-    Call(N(CreateParadeNPC), NPC_GrooveGuy3)
-    Call(N(CreateParadeNPC), NPC_GrooveGuy4)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation11)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation12)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation13)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation21)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation22)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation23)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation31)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation32)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation33)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation41)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation42)
-    Call(N(CreateParadeNPC), NPC_ShyGuyFormation43)
-    Call(N(ParadeSpriteHeapFree), LVar0)
+    Call(ParadeSpriteHeapMalloc, 0x4700, LVar0)
+    Call(CreateParadeNPC, NPC_PyroGuy1)
+    Call(CreateParadeNPC, NPC_PyroGuy2)
+    Call(CreateParadeNPC, NPC_Pratfaller)
+    Call(CreateParadeNPC, NPC_ShyGuyMarshall)
+    Call(CreateParadeNPC, NPC_GeneralGuy)
+    Call(CreateParadeNPC, NPC_BackupDancer1)
+    Call(CreateParadeNPC, NPC_BackupDancer2)
+    Call(CreateParadeNPC, NPC_GrooveGuy1)
+    Call(CreateParadeNPC, NPC_GrooveGuy2)
+    Call(CreateParadeNPC, NPC_GrooveGuy3)
+    Call(CreateParadeNPC, NPC_GrooveGuy4)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation11)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation12)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation13)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation21)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation22)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation23)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation31)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation32)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation33)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation41)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation42)
+    Call(CreateParadeNPC, NPC_ShyGuyFormation43)
+    Call(ParadeSpriteHeapFree, LVar0)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -671,12 +671,12 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_Bubulb1)
     Call(DeleteNpc, NPC_Bubulb2)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_HornPlayer1)
-    Call(N(CreateParadeNPC), NPC_HornPlayer2)
-    Call(N(CreateParadeNPC), NPC_Drummer1)
-    Call(N(CreateParadeNPC), NPC_Drummer2)
-    Call(N(CreateParadeNPC), NPC_StandardBearer1)
-    Call(N(CreateParadeNPC), NPC_StandardBearer2)
+    Call(CreateParadeNPC, NPC_HornPlayer1)
+    Call(CreateParadeNPC, NPC_HornPlayer2)
+    Call(CreateParadeNPC, NPC_Drummer1)
+    Call(CreateParadeNPC, NPC_Drummer2)
+    Call(CreateParadeNPC, NPC_StandardBearer1)
+    Call(CreateParadeNPC, NPC_StandardBearer2)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -708,37 +708,37 @@ EvtScript N(EVS_ManageNpcPool) = {
     Call(DeleteNpc, NPC_ShyGuyFormation42)
     Call(DeleteNpc, NPC_ShyGuyFormation43)
     Wait(1)
-    Call(N(CreateParadeNPC), NPC_Mario)
-    Call(N(CreateParadeNPC), NPC_Peach)
-    Call(N(CreateParadeNPC), NPC_Twink)
-    Call(N(CreateParadeNPC), NPC_Twirler1)
-    Call(N(CreateParadeNPC), NPC_Twirler2)
-    Call(N(CreateParadeNPC), NPC_Twirler3)
-    Call(N(CreateParadeNPC), NPC_Baton1)
-    Call(N(CreateParadeNPC), NPC_Baton2)
-    Call(N(CreateParadeNPC), NPC_Baton3)
-    Call(N(CreateParadeNPC), NPC_StandardBearer3)
-    Call(N(CreateParadeNPC), NPC_StandardBearer4)
+    Call(CreateParadeNPC, NPC_Mario)
+    Call(CreateParadeNPC, NPC_Peach)
+    Call(CreateParadeNPC, NPC_Twink)
+    Call(CreateParadeNPC, NPC_Twirler1)
+    Call(CreateParadeNPC, NPC_Twirler2)
+    Call(CreateParadeNPC, NPC_Twirler3)
+    Call(CreateParadeNPC, NPC_Baton1)
+    Call(CreateParadeNPC, NPC_Baton2)
+    Call(CreateParadeNPC, NPC_Baton3)
+    Call(CreateParadeNPC, NPC_StandardBearer3)
+    Call(CreateParadeNPC, NPC_StandardBearer4)
     Return
     End
 };
 
-EvtScript N(EVS_ParadePhase_PlayCredits) = {
+EvtScript EVS_ParadePhase_PlayCredits = {
     Wait(60)
-    Exec(N(EVS_InitCredits))
-    Exec(N(EVS_ShowCredits_Jobs))
-    Exec(N(EVS_ShowCredits_Names))
+    Exec(EVS_InitCredits)
+    Exec(EVS_ShowCredits_Jobs)
+    Exec(EVS_ShowCredits_Names)
     Return
     End
 };
 
-EvtScript N(EVS_ManageParade) = {
+EvtScript EVS_ManageParade = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetMusic, 0, SONG_PARADE_NIGHT, 0, VOL_LEVEL_FULL)
-    Exec(N(EVS_SetupInitialCamera))
-    Exec(N(EVS_ManageNpcPool))
-    ExecGetID(LVarA, N(EVS_ParadePhase_StarSpirits))
+    Exec(EVS_SetupInitialCamera)
+    Exec(EVS_ManageNpcPool)
+    ExecGetID(LVarA, EVS_ParadePhase_StarSpirits)
     Loop(0)
         Wait(1)
         IsScriptRunning(LVarA, LVar0)
@@ -746,9 +746,9 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_PlayCredits))
-    ExecGetID(LVarA, N(EVS_UpdateScrollPos))
-    ExecGetID(LVarB, N(EVS_UpdateTexPan_Ground))
+    Exec(EVS_ParadePhase_PlayCredits)
+    ExecGetID(LVarA, EVS_UpdateScrollPos)
+    ExecGetID(LVarB, EVS_UpdateTexPan_Ground)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -756,7 +756,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_SkatingPenguins))
+    Exec(EVS_ParadePhase_SkatingPenguins)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -764,7 +764,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_MayorPenguin))
+    Exec(EVS_ParadePhase_MayorPenguin)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -772,7 +772,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Opera))
+    Exec(EVS_ParadePhase_Opera)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -780,7 +780,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Wizards))
+    Exec(EVS_ParadePhase_Wizards)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -788,7 +788,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_ShyGuyDancing))
+    Exec(EVS_ParadePhase_ShyGuyDancing)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -796,7 +796,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_ShyGuyFormation))
+    Exec(EVS_ParadePhase_ShyGuyFormation)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -804,7 +804,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Toads1))
+    Exec(EVS_ParadePhase_Toads1)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -812,7 +812,7 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    ExecGetID(LVarC, N(EVS_ParadePhase_MarioPeach))
+    ExecGetID(LVarC, EVS_ParadePhase_MarioPeach)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -829,9 +829,9 @@ EvtScript N(EVS_ManageParade) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_ParadePhase_Toads2))
+    Exec(EVS_ParadePhase_Toads2)
     Wait(150)
-    Exec(N(EVS_MarioPeachExit))
+    Exec(EVS_MarioPeachExit)
     Wait(200)
     Call(GotoMap, Ref("kmr_30"), kmr_30_ENTRY_0)
     Wait(100)

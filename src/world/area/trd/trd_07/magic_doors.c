@@ -1,7 +1,7 @@
 #include "trd_07.h"
 #include "effects.h"
 
-API_CALLABLE(N(GetPointsWithCamRelativeOffset)) {
+API_CALLABLE(GetPointsWithCamRelativeOffset) {
     Bytecode* args = script->ptrReadPos;
     f32 posX = evt_get_float_variable(script, *args++);
     f32 posZ = evt_get_float_variable(script, *args++);
@@ -14,7 +14,7 @@ API_CALLABLE(N(GetPointsWithCamRelativeOffset)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnMovingDoorDust)) {
+API_CALLABLE(SpawnMovingDoorDust) {
     Bytecode* args = script->ptrReadPos;
     s32 posX = evt_get_variable(script, *args++);
     s32 posY = evt_get_variable(script, *args++);
@@ -26,7 +26,7 @@ API_CALLABLE(N(SpawnMovingDoorDust)) {
 }
 
 // LVar0 = modelID
-EvtScript N(EVS_AnimateDoorRaising) = {
+EvtScript EVS_AnimateDoorRaising = {
     Thread
         Wait(20)
         Call(PlaySound, SOUND_TRD_MAGIC_DOOR_JUMP)
@@ -125,7 +125,7 @@ EvtScript N(EVS_AnimateDoorRaising) = {
 };
 
 // LVar0 = modelID
-EvtScript N(EVS_AnimateDoorLowering) = {
+EvtScript EVS_AnimateDoorLowering = {
     Set(LVar9, LVar0)
     Call(MakeLerp, 70, 0, 20, EASING_CUBIC_IN)
     Label(0)
@@ -137,11 +137,11 @@ EvtScript N(EVS_AnimateDoorLowering) = {
         EndIf
     Call(PlaySound, SOUND_TRD_MAGIC_DOOR_LAND)
     IfEq(LVar9, MODEL_migi)
-        Call(N(SpawnMovingDoorDust), 270, 0, 40, 270)
-        Call(N(SpawnMovingDoorDust), 270, 0, -40, 270)
+        Call(SpawnMovingDoorDust, 270, 0, 40, 270)
+        Call(SpawnMovingDoorDust, 270, 0, -40, 270)
     Else
-        Call(N(SpawnMovingDoorDust), -255, 0, 40, 90)
-        Call(N(SpawnMovingDoorDust), -255, 0, -40, 90)
+        Call(SpawnMovingDoorDust, -255, 0, 40, 90)
+        Call(SpawnMovingDoorDust, -255, 0, -40, 90)
     EndIf
     Call(MakeLerp, 0, 20, 10, EASING_QUADRATIC_OUT)
     Label(1)
@@ -161,11 +161,11 @@ EvtScript N(EVS_AnimateDoorLowering) = {
         EndIf
     Call(PlaySound, SOUND_TRD_MAGIC_DOOR_LAND)
     IfEq(LVar9, MODEL_migi)
-        Call(N(SpawnMovingDoorDust), 270, 0, 40, 270)
-        Call(N(SpawnMovingDoorDust), 270, 0, -40, 270)
+        Call(SpawnMovingDoorDust, 270, 0, 40, 270)
+        Call(SpawnMovingDoorDust, 270, 0, -40, 270)
     Else
-        Call(N(SpawnMovingDoorDust), -255, 0, 40, 90)
-        Call(N(SpawnMovingDoorDust), -255, 0, -40, 90)
+        Call(SpawnMovingDoorDust, -255, 0, 40, 90)
+        Call(SpawnMovingDoorDust, -255, 0, -40, 90)
     EndIf
     Call(MakeLerp, 0, 10, 5, EASING_QUADRATIC_OUT)
     Label(3)
@@ -185,19 +185,19 @@ EvtScript N(EVS_AnimateDoorLowering) = {
         EndIf
     Call(PlaySound, SOUND_TRD_MAGIC_DOOR_LAND)
     IfEq(LVar9, MODEL_migi)
-        Call(N(SpawnMovingDoorDust), 270, 0, 40, 270)
-        Call(N(SpawnMovingDoorDust), 270, 0, -40, 270)
+        Call(SpawnMovingDoorDust, 270, 0, 40, 270)
+        Call(SpawnMovingDoorDust, 270, 0, -40, 270)
         Call(EnableModel, MODEL_o44, false)
     Else
-        Call(N(SpawnMovingDoorDust), -255, 0, 40, 90)
-        Call(N(SpawnMovingDoorDust), -255, 0, -40, 90)
+        Call(SpawnMovingDoorDust, -255, 0, 40, 90)
+        Call(SpawnMovingDoorDust, -255, 0, -40, 90)
         Call(EnableModel, MODEL_o43, false)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_RaiseMagicDoors) = {
+EvtScript EVS_RaiseMagicDoors = {
     // for for enter walk scrip to complete
     Label(10)
         IsScriptRunning(MV_EnterWalkScriptID, LVar0)
@@ -213,21 +213,21 @@ EvtScript N(EVS_RaiseMagicDoors) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetPointsWithCamRelativeOffset), LVar0, LVar2, Float(30.0))
+    Call(GetPointsWithCamRelativeOffset, LVar0, LVar2, Float(30.0))
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(EnableModel, MODEL_o44, true)
     Set(LVar0, MODEL_migi)
-    ExecWait(N(EVS_AnimateDoorRaising))
+    ExecWait(EVS_AnimateDoorRaising)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Wait(1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, 400)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetPointsWithCamRelativeOffset), LVar0, LVar2, Float(-60.0))
+    Call(GetPointsWithCamRelativeOffset, LVar0, LVar2, Float(-60.0))
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
@@ -235,7 +235,7 @@ EvtScript N(EVS_RaiseMagicDoors) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(EnableModel, MODEL_o43, true)
     Set(LVar0, MODEL_hidari)
-    ExecWait(N(EVS_AnimateDoorRaising))
+    ExecWait(EVS_AnimateDoorRaising)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
@@ -249,7 +249,7 @@ EvtScript N(EVS_RaiseMagicDoors) = {
     End
 };
 
-EvtScript N(EVS_LowerMagicDoors) = {
+EvtScript EVS_LowerMagicDoors = {
     Call(DisablePlayerInput, true)
     Wait(15)
     Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
@@ -259,28 +259,28 @@ EvtScript N(EVS_LowerMagicDoors) = {
     EVT_VEC3I_SET(LVar0, 220, 0, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetPointsWithCamRelativeOffset), LVar0, LVar2, Float(30.0))
+    Call(GetPointsWithCamRelativeOffset, LVar0, LVar2, Float(30.0))
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Set(LVar0, MODEL_migi)
-    ExecWait(N(EVS_AnimateDoorLowering))
+    ExecWait(EVS_AnimateDoorLowering)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Wait(1)
     EVT_VEC3I_SET(LVar0, 220, 0, 0)
     Sub(LVar0, 400)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetPointsWithCamRelativeOffset), LVar0, LVar2, Float(-60.0))
+    Call(GetPointsWithCamRelativeOffset, LVar0, LVar2, Float(-60.0))
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Set(LVar0, MODEL_hidari)
-    ExecWait(N(EVS_AnimateDoorLowering))
+    ExecWait(EVS_AnimateDoorLowering)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttw, COLLIDER_FLAGS_UPPER_MASK)
@@ -291,19 +291,19 @@ EvtScript N(EVS_LowerMagicDoors) = {
     End
 };
 
-EvtScript N(EVS_RestoreMagicDoors) = {
-    Exec(N(EVS_LowerMagicDoors))
+EvtScript EVS_RestoreMagicDoors = {
+    Exec(EVS_LowerMagicDoors)
     Return
     End
 };
 
-EvtScript N(EVS_SetupMagicDoors) = {
+EvtScript EVS_SetupMagicDoors = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(EnableModel, MODEL_o44, false)
     Call(EnableModel, MODEL_o43, false)
     IfEq(GF_TRD07_Defeated_DungeonAmbush, false)
-        Exec(N(EVS_RaiseMagicDoors))
+        Exec(EVS_RaiseMagicDoors)
     EndIf
     Return
     End

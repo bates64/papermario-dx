@@ -143,8 +143,6 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 20 },
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 EvtScript N(EVS_Init) = {
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
     Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
@@ -205,7 +203,7 @@ EvtScript N(EVS_HopOntoCrate) = {
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING | ACTOR_FLAG_UPSIDE_DOWN, false)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 2, 24)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -2, -10)
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_NO_TARGET, true)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_OFFSET, ACTOR_PART_FLAG_PRIMARY_TARGET, true)
@@ -230,7 +228,7 @@ EvtScript N(EVS_HopToGround) = {
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING | ACTOR_FLAG_UPSIDE_DOWN, false)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 2, 24)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -2, -10)
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_PRIMARY_TARGET, true)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_NO_TARGET, false)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_OFFSET, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
@@ -289,7 +287,7 @@ EvtScript N(EVS_ClimbOntoCeiling) = {
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, true)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 2, 24)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 2, 8)
-    Call(N(SetAbsoluteStatusOffsets), -10, -25, 10, -30)
+    Call(SetAbsoluteStatusOffsets, -10, -25, 10, -30)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_PRIMARY_TARGET, true)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_NO_TARGET, false)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_OFFSET, ACTOR_PART_FLAG_PRIMARY_TARGET, false)
@@ -438,7 +436,7 @@ EvtScript N(EVS_CeilingHit) = {
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING | ACTOR_FLAG_UPSIDE_DOWN, false)
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 2, 24)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -2, -10)
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     Call(GetStatusFlags, ACTOR_SELF, LVarA)
     IfFlag(LVarA, STATUS_FLAGS_IMMOBILIZED)
         Call(SetActorVar, ACTOR_SELF, AVAR_CurrentHome, AVAL_Home_Ground)
@@ -713,7 +711,6 @@ EvtScript N(EVS_Attack_Leap) = {
 
 #include "common/ItemEntityJumpToPos.inc.c"
 #include "common/DisableRandomAbility.inc.c"
-#include "common/StartRumbleWithParams.inc.c"
 #include "battle/common/CheckPlayerCanLoseCommand.inc.c"
 
 EvtScript N(EVS_ManageCommandLoss) = {
@@ -726,19 +723,19 @@ EvtScript N(EVS_ManageCommandLoss) = {
                 Call(GetActorPos, ACTOR_PLAYER, LVar1, LVar2, LVar3)
                 Set(LVar2, 0)
                 Sub(LVar3, 1)
-                Call(N(DisableRandomAbility), LVar4, LVar5)
+                Call(DisableRandomAbility, LVar4, LVar5)
                 Call(MakeItemEntity, LVar4, LVar1, LVar2, LVar3, ITEM_SPAWN_MODE_DECORATION, 0)
                 Add(LVar1, 30)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 20, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 20, Float(1.0))
                 Add(LVar1, 20)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 10, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 10, Float(1.0))
                 Add(LVar1, 10)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 5, Float(1.0))
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_Idle)
             CaseEq(AVAL_LossState_ShowMessage)
                 Call(ShowMessageBox, LVar5, 60)
                 Sub(LVar1, 150)
-                Call(N(ItemEntityJumpToPos), LVar0, LVar1, LVar2, LVar3, 30, Float(1.0))
+                Call(ItemEntityJumpToPos, LVar0, LVar1, LVar2, LVar3, 30, Float(1.0))
                 Call(RemoveItemEntity, LVar0)
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_Done)
                 Return
@@ -900,7 +897,7 @@ EvtScript N(EVS_Attack_DisableTackle) = {
                 Wait(10)
                 Call(SetActorVar, ACTOR_SELF, AVAR_CommandLossState, AVAL_LossState_ShowMessage)
                 PlayEffect(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, Float(1.0), 0)
-                Call(N(StartRumbleWithParams), 200, 10)
+                Call(StartRumbleWithParams, 200, 10)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_COMMAND_LOSS)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzipede_Kick)
                 Wait(20)
@@ -990,7 +987,7 @@ EvtScript N(EVS_TakeTurn) = {
     IfLt(LVar0, 500)
         ExecWait(N(EVS_Attack_Leap))
     Else
-        Call(N(CheckPlayerCanLoseCommand), LVar0)
+        Call(CheckPlayerCanLoseCommand, LVar0)
         IfEq(LVar0, 0)
             ExecWait(N(EVS_Attack_DisableTackle))
         Else

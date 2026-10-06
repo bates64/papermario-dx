@@ -1,13 +1,13 @@
 #include "nok_04.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [nok_04_ENTRY_0]    { -336.0,    0.0,  356.0,   45.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
     .tattle = { MSG_MapTattle_nok_04 },
 };

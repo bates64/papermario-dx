@@ -1,7 +1,7 @@
 #include "omo_05.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_YellowBlock), 400, 70, -150, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO05_ItemBlock_CoinA)
     Call(MakeEntity, Ref(Entity_YellowBlock), 550, 70, -150, 0, ITEM_COIN, MAKE_ENTITY_END)

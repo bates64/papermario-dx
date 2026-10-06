@@ -4,7 +4,7 @@
 #include "world/common/enemy/Lakitu/idle.inc.c"
 #include "world/common/enemy/YMagikoopa/idle.inc.c"
 
-Vec3f N(RetreatPath_Magikoopa)[] = {
+Vec3f RetreatPath_Magikoopa[] = {
     {  -55.0,    15.0,   35.0 },
     { -155.0,    35.0,   35.0 },
     { -255.0,    75.0,   35.0 },
@@ -12,7 +12,7 @@ Vec3f N(RetreatPath_Magikoopa)[] = {
     { -455.0,   315.0,   35.0 },
 };
 
-Vec3f N(RetreatPath_Lakitu_01)[] = {
+Vec3f RetreatPath_Lakitu_01[] = {
     {  -20.0,    15.0,   30.0 },
     { -120.0,    35.0,   30.0 },
     { -220.0,    75.0,   30.0 },
@@ -20,7 +20,7 @@ Vec3f N(RetreatPath_Lakitu_01)[] = {
     { -420.0,   315.0,   30.0 },
 };
 
-Vec3f N(RetreatPath_Lakitu_02)[] = {
+Vec3f RetreatPath_Lakitu_02[] = {
     {   65.0,    15.0,   30.0 },
     {  -35.0,    35.0,   30.0 },
     { -135.0,    75.0,   30.0 },
@@ -28,7 +28,7 @@ Vec3f N(RetreatPath_Lakitu_02)[] = {
     { -335.0,   315.0,   30.0 },
 };
 
-Vec3f N(RetreatPath_Lakitu_03)[] = {
+Vec3f RetreatPath_Lakitu_03[] = {
     {  120.0,    15.0,   30.0 },
     {   20.0,    35.0,   30.0 },
     {  -80.0,    75.0,   30.0 },
@@ -36,7 +36,7 @@ Vec3f N(RetreatPath_Lakitu_03)[] = {
     { -280.0,   315.0,   30.0 },
 };
 
-EvtScript N(EVS_Scene_LakilesterLikesBeingGood) = {
+EvtScript EVS_Scene_LakilesterLikesBeingGood = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetPlayerPos, 30, 0, 50)
@@ -69,12 +69,12 @@ EvtScript N(EVS_Scene_LakilesterLikesBeingGood) = {
     End
 };
 
-EvtScript N(EVS_GangRetreat) = {
+EvtScript EVS_GangRetreat = {
     Thread
         Call(PlaySoundAtNpc, NPC_FlyingMagikoopa, SOUND_FLO_MAGIKOOPA_FLY_AWAY, SOUND_SPACE_DEFAULT)
         Call(SetNpcFlagBits, NPC_FlyingMagikoopa, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(InterpNpcYaw, NPC_FlyingMagikoopa, 270, 0)
-        Call(LoadPath, 60 * DT, Ref(N(RetreatPath_Magikoopa)), ARRAY_COUNT(N(RetreatPath_Magikoopa)), EASING_LINEAR)
+        Call(LoadPath, 60 * DT, Ref(RetreatPath_Magikoopa), ARRAY_COUNT(RetreatPath_Magikoopa), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_FlyingMagikoopa, LVar1, LVar2, LVar3)
@@ -89,7 +89,7 @@ EvtScript N(EVS_GangRetreat) = {
         Call(PlaySoundAtNpc, NPC_Lakitu_01, SOUND_FLO_LAKITU_FLY_AWAY, SOUND_SPACE_DEFAULT)
         Call(SetNpcFlagBits, NPC_Lakitu_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(InterpNpcYaw, NPC_Lakitu_01, 270, 0)
-        Call(LoadPath, 60 * DT, Ref(N(RetreatPath_Lakitu_01)), ARRAY_COUNT(N(RetreatPath_Lakitu_01)), EASING_LINEAR)
+        Call(LoadPath, 60 * DT, Ref(RetreatPath_Lakitu_01), ARRAY_COUNT(RetreatPath_Lakitu_01), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Lakitu_01, LVar1, LVar2, LVar3)
@@ -102,7 +102,7 @@ EvtScript N(EVS_GangRetreat) = {
     Thread
         Call(SetNpcFlagBits, NPC_Lakitu_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
         Call(InterpNpcYaw, NPC_Lakitu_02, 270, 0)
-        Call(LoadPath, 70 * DT, Ref(N(RetreatPath_Lakitu_02)), ARRAY_COUNT(N(RetreatPath_Lakitu_02)), EASING_LINEAR)
+        Call(LoadPath, 70 * DT, Ref(RetreatPath_Lakitu_02), ARRAY_COUNT(RetreatPath_Lakitu_02), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Lakitu_02, LVar1, LVar2, LVar3)
@@ -115,7 +115,7 @@ EvtScript N(EVS_GangRetreat) = {
     Call(PlaySoundAtNpc, NPC_Lakitu_03, SOUND_FLO_LAKITU_FLY_AWAY, SOUND_SPACE_DEFAULT)
     Call(SetNpcFlagBits, NPC_Lakitu_03, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(InterpNpcYaw, NPC_Lakitu_03, 270, 0)
-    Call(LoadPath, 80 * DT, Ref(N(RetreatPath_Lakitu_03)), ARRAY_COUNT(N(RetreatPath_Lakitu_03)), EASING_LINEAR)
+    Call(LoadPath, 80 * DT, Ref(RetreatPath_Lakitu_03), ARRAY_COUNT(RetreatPath_Lakitu_03), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Lakitu_03, LVar1, LVar2, LVar3)
@@ -128,7 +128,7 @@ EvtScript N(EVS_GangRetreat) = {
     End
 };
 
-EvtScript N(EVS_ChargeAtPlayer) = {
+EvtScript EVS_ChargeAtPlayer = {
     Wait(5)
     Call(IsPlayerWithin, 40, 0, 200, LVar0)
     IfEq(LVar0, 0)
@@ -158,7 +158,7 @@ EvtScript N(EVS_ChargeAtPlayer) = {
     End
 };
 
-EvtScript N(EVS_Scene_GangDefeated) = {
+EvtScript EVS_Scene_GangDefeated = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -167,7 +167,7 @@ EvtScript N(EVS_Scene_GangDefeated) = {
     Call(AdjustCam, CAM_DEFAULT, Float(8.0 / DT), 0, 450, Float(17.0), Float(-6.0))
     Call(SpeakToPlayer, NPC_FlyingMagikoopa, ANIM_FlyingMagikoopa_Yellow_Talk, ANIM_FlyingMagikoopa_Yellow_Idle, 0, MSG_CH6_00BB)
     Wait(20 * DT)
-    Exec(N(EVS_GangRetreat))
+    Exec(EVS_GangRetreat)
     Wait(80 * DT)
     Call(AdjustCam, CAM_DEFAULT, Float(8.0 / DT), 0, 300, Float(19.0), Float(-8.5))
     Call(GetCurrentPartnerID, LVar0)
@@ -213,7 +213,7 @@ EvtScript N(EVS_Scene_GangDefeated) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Magikoopa) = {
+EvtScript EVS_NpcIdle_Magikoopa = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         IfNe(LVar0, 0)
@@ -236,7 +236,7 @@ EvtScript N(EVS_NpcIdle_Magikoopa) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Lakitu) = {
+EvtScript EVS_NpcDefeat_Lakitu = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -254,7 +254,7 @@ EvtScript N(EVS_NpcDefeat_Lakitu) = {
                 Call(SetNpcPos, NPC_Lakitu_02, 65, 15, 30)
                 Call(SetNpcYaw, NPC_Lakitu_03, 270)
                 Call(SetNpcPos, NPC_Lakitu_03, 120, 15, 30)
-                Exec(N(EVS_Scene_GangDefeated))
+                Exec(EVS_Scene_GangDefeated)
             EndIf
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -263,7 +263,7 @@ EvtScript N(EVS_NpcDefeat_Lakitu) = {
     End
 };
 
-EvtScript N(EVS_ReactionFacePlayer) = {
+EvtScript EVS_ReactionFacePlayer = {
     Switch(MV_ReactingNpc)
         CaseEq(0)
             Call(NpcFacePlayer, NPC_Magikoopa, 1)
@@ -278,7 +278,7 @@ EvtScript N(EVS_ReactionFacePlayer) = {
     End
 };
 
-EvtScript N(EVS_FirstReactionDialogue) = {
+EvtScript EVS_FirstReactionDialogue = {
     Switch(MV_ReactingNpc)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_Magikoopa, ANIM_Magikoopa_Yellow_Shout, ANIM_Magikoopa_Yellow_Idle, 16, MSG_CH6_00B9)
@@ -297,7 +297,7 @@ EvtScript N(EVS_FirstReactionDialogue) = {
     End
 };
 
-EvtScript N(EVS_SecondReactionDialogue) = {
+EvtScript EVS_SecondReactionDialogue = {
     Switch(MV_ReactingNpc)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_Magikoopa, ANIM_Magikoopa_Yellow_Shout, ANIM_Magikoopa_Yellow_Idle, 16, MSG_CH6_00BA)
@@ -310,12 +310,12 @@ EvtScript N(EVS_SecondReactionDialogue) = {
     EndSwitch
     Call(SetNpcVar, NPC_Magikoopa, 0, 1)
     Wait(5)
-    Exec(N(EVS_ChargeAtPlayer))
+    Exec(EVS_ChargeAtPlayer)
     Return
     End
 };
 
-EvtScript N(EVS_GenericHitReaction) = {
+EvtScript EVS_GenericHitReaction = {
     IfGe(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
         Return
     EndIf
@@ -323,14 +323,14 @@ EvtScript N(EVS_GenericHitReaction) = {
     Call(SetPartnerForcedFollowMode, 1)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(AdjustCam, CAM_DEFAULT, Float(8.0 / DT), 0, 300, Float(17.0), Float(-6.0))
-    ExecWait(N(EVS_ReactionFacePlayer))
+    ExecWait(EVS_ReactionFacePlayer)
     Switch(AB_FLO_GuardedMachineHitCount)
         CaseEq(0)
-            ExecWait(N(EVS_FirstReactionDialogue))
+            ExecWait(EVS_FirstReactionDialogue)
             Add(AB_FLO_GuardedMachineHitCount, 1)
             Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
         CaseEq(1)
-            ExecWait(N(EVS_SecondReactionDialogue))
+            ExecWait(EVS_SecondReactionDialogue)
     EndSwitch
     Call(SetPartnerForcedFollowMode, 0)
     Call(DisablePlayerInput, false)
@@ -338,47 +338,47 @@ EvtScript N(EVS_GenericHitReaction) = {
     End
 };
 
-EvtScript N(EVS_HitReaction_Magikoopa) = {
+EvtScript EVS_HitReaction_Magikoopa = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 0)
-        ExecWait(N(EVS_GenericHitReaction))
+        ExecWait(EVS_GenericHitReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_HitReaction_Lakitu_01) = {
+EvtScript EVS_HitReaction_Lakitu_01 = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 1)
-        ExecWait(N(EVS_GenericHitReaction))
+        ExecWait(EVS_GenericHitReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_HitReaction_Lakitu_02) = {
+EvtScript EVS_HitReaction_Lakitu_02 = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 2)
-        ExecWait(N(EVS_GenericHitReaction))
+        ExecWait(EVS_GenericHitReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_HitReaction_Lakitu_03) = {
+EvtScript EVS_HitReaction_Lakitu_03 = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 3)
-        ExecWait(N(EVS_GenericHitReaction))
+        ExecWait(EVS_GenericHitReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_GenericBombReaction) = {
+EvtScript EVS_GenericBombReaction = {
     IfGe(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
         Return
     EndIf
@@ -390,98 +390,98 @@ EvtScript N(EVS_GenericBombReaction) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    ExecWait(N(EVS_ReactionFacePlayer))
+    ExecWait(EVS_ReactionFacePlayer)
     IfEq(AB_FLO_GuardedMachineHitCount, 0)
-        ExecWait(N(EVS_FirstReactionDialogue))
+        ExecWait(EVS_FirstReactionDialogue)
         Add(AB_FLO_GuardedMachineHitCount, 1)
         Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
     Else
-        ExecWait(N(EVS_SecondReactionDialogue))
+        ExecWait(EVS_SecondReactionDialogue)
     EndIf
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_BombReaction_Magikoopa) = {
+EvtScript EVS_BombReaction_Magikoopa = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 0)
         Call(GetNpcPos, NPC_Magikoopa, LVar0, LVar1, LVar2)
-        ExecWait(N(EVS_GenericBombReaction))
+        ExecWait(EVS_GenericBombReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_BombReaction_Lakitu_01) = {
+EvtScript EVS_BombReaction_Lakitu_01 = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 1)
         Call(GetNpcPos, NPC_Lakitu_01, LVar0, LVar1, LVar2)
-        ExecWait(N(EVS_GenericBombReaction))
+        ExecWait(EVS_GenericBombReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_BombReaction_Lakitu_02) = {
+EvtScript EVS_BombReaction_Lakitu_02 = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 2)
         Call(GetNpcPos, NPC_Lakitu_02, LVar0, LVar1, LVar2)
-        ExecWait(N(EVS_GenericBombReaction))
+        ExecWait(EVS_GenericBombReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_BombReaction_Lakitu_03) = {
+EvtScript EVS_BombReaction_Lakitu_03 = {
     IfEq(MV_ReactingNpc, -1)
         Set(MV_ReactingNpc, 3)
         Call(GetNpcPos, NPC_Lakitu_03, LVar0, LVar1, LVar2)
-        ExecWait(N(EVS_GenericBombReaction))
+        ExecWait(EVS_GenericBombReaction)
         Set(MV_ReactingNpc, -1)
     EndIf
     Return
     End
 };
 
-BombTrigger N(Npc_BombTrigger_01) = {
+BombTrigger Npc_BombTrigger_01 = {
     .pos = { 5.0f, 0.0f, -10.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(Npc_BombTrigger_02) = {
+BombTrigger Npc_BombTrigger_02 = {
     .pos = { -5.0f, 0.0f, -20.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(Npc_BombTrigger_03) = {
+BombTrigger Npc_BombTrigger_03 = {
     .pos = { 50.0f, 0.0f, -10.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(Npc_BombTrigger_04) = {
+BombTrigger Npc_BombTrigger_04 = {
     .pos = { 105.0f, 0.0f, -10.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupMachineDamageReactions) = {
+EvtScript EVS_SetupMachineDamageReactions = {
     Set(MV_ReactingNpc, -1)
-    BindTrigger(Ref(N(EVS_HitReaction_Magikoopa)),  TRIGGER_WALL_HAMMER, COLLIDER_o174, 1, 0)
-    BindTrigger(Ref(N(EVS_HitReaction_Magikoopa)),  TRIGGER_WALL_HAMMER, COLLIDER_o130, 1, 0)
-    BindTrigger(Ref(N(EVS_BombReaction_Magikoopa)), TRIGGER_POINT_BOMB,  Ref(N(Npc_BombTrigger_02)), 1, 0)
-    BindTrigger(Ref(N(EVS_BombReaction_Lakitu_01)), TRIGGER_POINT_BOMB,  Ref(N(Npc_BombTrigger_01)), 1, 0)
-    BindTrigger(Ref(N(EVS_HitReaction_Lakitu_02)),  TRIGGER_WALL_HAMMER, COLLIDER_o127, 1, 0)
-    BindTrigger(Ref(N(EVS_BombReaction_Lakitu_02)), TRIGGER_POINT_BOMB,  Ref(N(Npc_BombTrigger_03)), 1, 0)
-    BindTrigger(Ref(N(EVS_HitReaction_Lakitu_03)),  TRIGGER_WALL_HAMMER, COLLIDER_o131, 1, 0)
-    BindTrigger(Ref(N(EVS_BombReaction_Lakitu_03)), TRIGGER_POINT_BOMB,  Ref(N(Npc_BombTrigger_04)), 1, 0)
+    BindTrigger(Ref(EVS_HitReaction_Magikoopa),  TRIGGER_WALL_HAMMER, COLLIDER_o174, 1, 0)
+    BindTrigger(Ref(EVS_HitReaction_Magikoopa),  TRIGGER_WALL_HAMMER, COLLIDER_o130, 1, 0)
+    BindTrigger(Ref(EVS_BombReaction_Magikoopa), TRIGGER_POINT_BOMB,  Ref(Npc_BombTrigger_02), 1, 0)
+    BindTrigger(Ref(EVS_BombReaction_Lakitu_01), TRIGGER_POINT_BOMB,  Ref(Npc_BombTrigger_01), 1, 0)
+    BindTrigger(Ref(EVS_HitReaction_Lakitu_02),  TRIGGER_WALL_HAMMER, COLLIDER_o127, 1, 0)
+    BindTrigger(Ref(EVS_BombReaction_Lakitu_02), TRIGGER_POINT_BOMB,  Ref(Npc_BombTrigger_03), 1, 0)
+    BindTrigger(Ref(EVS_HitReaction_Lakitu_03),  TRIGGER_WALL_HAMMER, COLLIDER_o131, 1, 0)
+    BindTrigger(Ref(EVS_BombReaction_Lakitu_03), TRIGGER_POINT_BOMB,  Ref(Npc_BombTrigger_04), 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Lakitu) = {
+EvtScript EVS_NpcInteract_Lakitu = {
     Switch(AB_FLO_GuardLakituTalkCount)
         CaseEq(0)
             Call(GetSelfNpcID, LVar0)
@@ -515,7 +515,7 @@ EvtScript N(EVS_NpcInteract_Lakitu) = {
             EndIf
             Call(SetNpcVar, NPC_Magikoopa, 0, 1)
             Wait(5)
-            Exec(N(EVS_ChargeAtPlayer))
+            Exec(EVS_ChargeAtPlayer)
             Call(BindNpcInteract, NPC_Lakitu_01, 0)
             Call(BindNpcInteract, NPC_Lakitu_02, 0)
             Call(BindNpcInteract, NPC_Lakitu_03, 0)
@@ -525,11 +525,11 @@ EvtScript N(EVS_NpcInteract_Lakitu) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Magikoopa) = {
+EvtScript EVS_NpcInit_Magikoopa = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Magikoopa)))
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lakitu)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Magikoopa))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakitu))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -537,9 +537,9 @@ EvtScript N(EVS_NpcInit_Magikoopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_FlyingMagikoopa) = {
+EvtScript EVS_NpcInit_FlyingMagikoopa = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu)))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -547,10 +547,10 @@ EvtScript N(EVS_NpcInit_FlyingMagikoopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakitu_01) = {
+EvtScript EVS_NpcInit_Lakitu_01 = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lakitu)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakitu))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -558,10 +558,10 @@ EvtScript N(EVS_NpcInit_Lakitu_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakitu_02) = {
+EvtScript EVS_NpcInit_Lakitu_02 = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lakitu)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakitu))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -569,10 +569,10 @@ EvtScript N(EVS_NpcInit_Lakitu_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakitu_03) = {
+EvtScript EVS_NpcInit_Lakitu_03 = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lakitu)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakitu)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakitu))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakitu))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -580,13 +580,13 @@ EvtScript N(EVS_NpcInit_Lakitu_03) = {
     End
 };
 
-NpcData N(NpcData_MachineGang)[] = {
+NpcData NpcData_MachineGang[] = {
     {
         .id = NPC_Lakitu_01,
         .pos = { 0.0f, 15.0f, 60.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Lakitu_01),
-        .settings = &N(NpcSettings_Lakitu),
+        .init = &EVS_NpcInit_Lakitu_01,
+        .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
@@ -596,8 +596,8 @@ NpcData N(NpcData_MachineGang)[] = {
         .id = NPC_Lakitu_02,
         .pos = { 65.0f, 15.0f, 60.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Lakitu_02),
-        .settings = &N(NpcSettings_Lakitu),
+        .init = &EVS_NpcInit_Lakitu_02,
+        .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
@@ -607,8 +607,8 @@ NpcData N(NpcData_MachineGang)[] = {
         .id = NPC_Lakitu_03,
         .pos = { 135.0f, 15.0f, 35.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Lakitu_03),
-        .settings = &N(NpcSettings_Lakitu),
+        .init = &EVS_NpcInit_Lakitu_03,
+        .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
@@ -618,8 +618,8 @@ NpcData N(NpcData_MachineGang)[] = {
         .id = NPC_Magikoopa,
         .pos = { -60.0f, 0.0f, 50.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Magikoopa),
-        .settings = &N(NpcSettings_YMagikoopa),
+        .init = &EVS_NpcInit_Magikoopa,
+        .settings = &NpcSettings_YMagikoopa,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = YELLOW_MAGIKOOPA_DROPS,
         .animations = YELLOW_MAGIKOOPA_ANIMS,
@@ -629,8 +629,8 @@ NpcData N(NpcData_MachineGang)[] = {
         .id = NPC_FlyingMagikoopa,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_FlyingMagikoopa),
-        .settings = &N(NpcSettings_YMagikoopa),
+        .init = &EVS_NpcInit_FlyingMagikoopa,
+        .settings = &NpcSettings_YMagikoopa,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = YELLOW_MAGIKOOPA_DROPS,
         .animations = FLYING_YELLOW_MAGIKOOPA_ANIMS,
@@ -638,7 +638,7 @@ NpcData N(NpcData_MachineGang)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_MachineGang), BTL_FLO_FORMATION_0B, BTL_FLO_STAGE_06),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_MachineGang, BTL_FLO_FORMATION_0B, BTL_FLO_STAGE_06),
     {}
 };

@@ -1,14 +1,14 @@
 #include "end_00.h"
 #include "effects.h"
 
-s32 N(UnusedAlpha) = 255;
+s32 UnusedAlpha = 255;
 
-API_CALLABLE(N(SetUnusedAlpha)) {
-    N(UnusedAlpha) = evt_get_variable(script, *script->ptrReadPos);
+API_CALLABLE(SetUnusedAlpha) {
+    UnusedAlpha = evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_MoveBoosToTubbaBody) = {
+EvtScript EVS_MoveBoosToTubbaBody = {
     Call(GetNpcPos, NPC_TubbasBody, LVar0, LVar1, LVar2)
     SetF(LVar0, LVar0)
     SetF(LVar3, LVar0)
@@ -19,20 +19,20 @@ EvtScript N(EVS_MoveBoosToTubbaBody) = {
     Call(SetNpcPos, NPC_Boo2, LVar3, 20, -2)
     Call(SetNpcPos, NPC_Boo3, LVar4, 20, 2)
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_Boo1)
+        Call(AddScrollToNpcPos, NPC_Boo1)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_Boo2)
+        Call(AddScrollToNpcPos, NPC_Boo2)
     EndChildThread
     ChildThread
-        Call(N(AddScrollToNpcPos), NPC_Boo3)
+        Call(AddScrollToNpcPos, NPC_Boo3)
     EndChildThread
-    Call(N(AddScrollToNpcPos), 49)
+    Call(AddScrollToNpcPos, 49)
     Return
     End
 };
 
-EvtScript N(EVS_ParadePhase_Tutankoopa) = {
+EvtScript EVS_ParadePhase_Tutankoopa = {
     Thread
         Call(SetNpcPos, NPC_Tutankoopa2, -960, 0, 30)
         Call(NpcMoveTo, NPC_Tutankoopa2, -240, 30, 90 * DT)
@@ -57,7 +57,7 @@ EvtScript N(EVS_ParadePhase_Tutankoopa) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Boos) = {
+EvtScript EVS_ParadePhase_Boos = {
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -67,7 +67,7 @@ EvtScript N(EVS_ParadePhase_Boos) = {
     EndLoop
     Call(InterpNpcYaw, NPC_Bootler, 90, 0)
     Set(LVar0, NPC_Bootler)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarA)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarA)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -76,7 +76,7 @@ EvtScript N(EVS_ParadePhase_Boos) = {
         EndIf
     EndLoop
     Wait(10 * DT)
-    Call(N(SetUnusedAlpha), 255)
+    Call(SetUnusedAlpha, 255)
     Call(SetNpcImgFXParams, NPC_Boo1, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     Call(SetNpcImgFXParams, NPC_Boo2, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     Call(SetNpcImgFXParams, NPC_Boo3, IMGFX_SET_ALPHA, 0, 0, 0, 0)
@@ -84,14 +84,14 @@ EvtScript N(EVS_ParadePhase_Boos) = {
     Call(EnableNpcShadow, NPC_Boo2, false)
     Call(EnableNpcShadow, NPC_Boo3, false)
     Call(NpcMoveTo, NPC_TubbasBody, -460, 0, 100 * DT)
-    ExecGetTID(N(EVS_MoveBoosToTubbaBody), LVarB)
+    ExecGetTID(EVS_MoveBoosToTubbaBody, LVarB)
     Wait(20 * DT)
     Call(SetNpcPos, NPC_TubbasHeart, -260, 0, 0)
     Call(SetNpcJumpscale, NPC_TubbasHeart, Float(1.0))
     Call(NpcJump0, NPC_TubbasHeart, -290, 0, 0, 10 * DT)
     Call(NpcJump0, NPC_TubbasHeart, -320, 0, 0, 10 * DT)
     Set(LVar0, 53)
-    ExecGetTID(N(EVS_OffsetNpcScroll), LVarC)
+    ExecGetTID(EVS_OffsetNpcScroll, LVarC)
     Call(InterpNpcYaw, NPC_TubbasBody, 90, 0)
     Thread
         Call(MakeLerp, 0, 255, 30 * DT, EASING_LINEAR)
@@ -171,7 +171,7 @@ EvtScript N(EVS_ParadePhase_Boos) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_GoombaKing) = {
+EvtScript EVS_ParadePhase_GoombaKing = {
     Wait(1)
     Call(SetNpcRotation, NPC_GoombaKing, 0, 0, 180)
     Thread

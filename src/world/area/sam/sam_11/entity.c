@@ -4,11 +4,11 @@
 #include "model.h"
 #include "sprite/player.h"
 
-s32 N(TargetBackgroundColR) = 0;
-s32 N(TargetBackgroundColG) = 0;
-s32 N(TargetBackgroundColB) = 0;
+s32 TargetBackgroundColR = 0;
+s32 TargetBackgroundColG = 0;
+s32 TargetBackgroundColB = 0;
 
-API_CALLABLE(N(UpdateHouseShowHide)) {
+API_CALLABLE(UpdateHouseShowHide) {
     u8 r, g, b, a;
     u8 alpha;
 
@@ -32,9 +32,9 @@ API_CALLABLE(N(UpdateHouseShowHide)) {
     }
     a = alpha;
     mdl_set_shroud_tint_params(0, 0, 0, a);
-    r = (N(TargetBackgroundColR) * (255 - a)) / 255;
-    g = (N(TargetBackgroundColG) * (255 - a)) / 255;
-    b = (N(TargetBackgroundColB) * (255 - a)) / 255;
+    r = (TargetBackgroundColR * (255 - a)) / 255;
+    g = (TargetBackgroundColG * (255 - a)) / 255;
+    b = (TargetBackgroundColB * (255 - a)) / 255;
     gCameras[CAM_DEFAULT].bgColor[0] = r;
     gCameras[CAM_DEFAULT].bgColor[1] = g;
     gCameras[CAM_DEFAULT].bgColor[2] = b;
@@ -48,22 +48,22 @@ API_CALLABLE(N(UpdateHouseShowHide)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetEntityHideMode1)) {
+API_CALLABLE(SetPresentHideMode1) {
     gEntityHideMode = ENTITY_HIDE_MODE_1;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetEntityHideMode2)) {
+API_CALLABLE(SetPresentHideMode2) {
     gEntityHideMode = ENTITY_HIDE_MODE_2;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetEntityHideMode0)) {
+API_CALLABLE(SetPresentHideMode0) {
     gEntityHideMode = ENTITY_HIDE_MODE_0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MovePlayerAlongRoofSlide)) {
+API_CALLABLE(MovePlayerAlongRoofSlide) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 xComp, zComp;
     f32 x, y, z;
@@ -92,7 +92,7 @@ API_CALLABLE(N(MovePlayerAlongRoofSlide)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsPlayerInputDisabled)) {
+API_CALLABLE(IsPlayerInputDisabled) {
     if (gPlayerStatus.flags & (PS_FLAG_INPUT_DISABLED | PS_FLAG_NO_STATIC_COLLISION)) {
         script->varTable[0] = true;
     } else {
@@ -101,7 +101,7 @@ API_CALLABLE(N(IsPlayerInputDisabled)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MonitorCurrentFloor)) {
+API_CALLABLE(MonitorCurrentFloor) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->lastGoodPos.y == 385) {
@@ -113,51 +113,51 @@ API_CALLABLE(N(MonitorCurrentFloor)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_OnExitRightHouse) = {
-    ExecWait(N(EVS_RevealRightHouse))
+EvtScript EVS_OnExitRightHouse = {
+    ExecWait(EVS_RevealRightHouse)
     Set(LVar0, 0)
     Set(LVar1, MODEL_sou)
     Set(LVar2, 90)
-    Call(N(UpdateHouseShowHide))
+    Call(UpdateHouseShowHide)
     Return
     End
 };
 
-EvtScript N(EVS_OnEnterRightHouse) = {
+EvtScript EVS_OnEnterRightHouse = {
     Set(LVar0, 1)
     Set(LVar1, MODEL_sou)
     Set(LVar2, 32)
-    Call(N(UpdateHouseShowHide))
+    Call(UpdateHouseShowHide)
     Return
     End
 };
 
-EvtScript N(EVS_OnEnterLeftHouse) = {
+EvtScript EVS_OnEnterLeftHouse = {
     Set(LVar0, 0)
     Set(LVar1, MODEL_gon)
     Set(LVar2, 32)
-    Call(N(UpdateHouseShowHide))
+    Call(UpdateHouseShowHide)
     Return
     End
 };
 
-EvtScript N(EVS_SetEntityHideMode_LeftHouse) = {
-    Call(N(SetEntityHideMode1))
+EvtScript EVS_SetEntityHideMode_LeftHouse = {
+    Call(SetPresentHideMode1)
     Wait(1)
-    Call(N(SetEntityHideMode2))
-    Wait(1)
-    Return
-    End
-};
-
-EvtScript N(EVS_SetEntityHideMode_Outside) = {
-    Call(N(SetEntityHideMode0))
+    Call(SetPresentHideMode2)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_TetherCamToPlayerCappedY) = {
+EvtScript EVS_SetEntityHideMode_Outside = {
+    Call(SetPresentHideMode0)
+    Wait(1)
+    Return
+    End
+};
+
+EvtScript EVS_TetherCamToPlayerCappedY = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGe(LVar1, LVar3)
@@ -170,8 +170,8 @@ EvtScript N(EVS_TetherCamToPlayerCappedY) = {
     End
 };
 
-EvtScript N(EVS_TouchFloor_RightRoof) = {
-    Call(N(IsPlayerInputDisabled))
+EvtScript EVS_TouchFloor_RightRoof = {
+    Call(IsPlayerInputDisabled)
     IfEq(LVar0, true)
         Return
     EndIf
@@ -192,9 +192,9 @@ EvtScript N(EVS_TouchFloor_RightRoof) = {
     Call(SetZoneEnabled, ZONE_sou, false)
     Call(EnableCameraFollowPlayerY)
     Set(LVar3, 500)
-    ExecGetTID(N(EVS_TetherCamToPlayerCappedY), LVarA)
+    ExecGetTID(EVS_TetherCamToPlayerCappedY, LVarA)
     Call(PlaySoundAtPlayer, SOUND_SLIDE, SOUND_SPACE_DEFAULT)
-    Call(N(MovePlayerAlongRoofSlide))
+    Call(MovePlayerAlongRoofSlide)
     Call(StopSound, SOUND_SLIDE)
     Call(SetPlayerJumpscale, Float(0.5))
     Call(PlayerJump, -150, 325, -300, 40)
@@ -211,7 +211,7 @@ EvtScript N(EVS_TouchFloor_RightRoof) = {
     End
 };
 
-EvtScript N(EVS_SpawnChimneySmokeAtPlayer) = {
+EvtScript EVS_SpawnChimneySmokeAtPlayer = {
     Call(PlaySoundAtPlayer, SOUND_FIREPLACE_BURST, SOUND_SPACE_DEFAULT)
     Thread
         Call(GetPlayerPos, LVar1, LVar2, LVar3)
@@ -236,7 +236,7 @@ EvtScript N(EVS_SpawnChimneySmokeAtPlayer) = {
     End
 };
 
-EvtScript N(EVS_TouchFloor_LeftRoof) = {
+EvtScript EVS_TouchFloor_LeftRoof = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, -215)
         Return
@@ -250,7 +250,7 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     IfGt(LVar2, -375)
         Return
     EndIf
-    Call(N(IsPlayerInputDisabled))
+    Call(IsPlayerInputDisabled)
     IfEq(LVar0, true)
         Return
     EndIf
@@ -285,10 +285,10 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     Call(SetPlayerPos, -214, 150, -370)
     Call(SetPlayerAnimation, ANIM_Mario1_Burnt)
     Wait(10)
-    Exec(N(EVS_SpawnChimneySmokeAtPlayer))
-    ExecWait(N(EVS_RevealLeftHouse))
-    ExecWait(N(EVS_SetEntityHideMode_LeftHouse))
-    Exec(N(EVS_OnEnterLeftHouse))
+    Exec(EVS_SpawnChimneySmokeAtPlayer)
+    ExecWait(EVS_RevealLeftHouse)
+    ExecWait(EVS_SetEntityHideMode_LeftHouse)
+    Exec(EVS_OnEnterLeftHouse)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -336,7 +336,7 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     End
 };
 
-EvtScript N(EVS_LandOnRightRoof) = {
+EvtScript EVS_LandOnRightRoof = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     IfEq(MF_RoofLandTriggerGuard, true)
         Return
@@ -367,30 +367,30 @@ EvtScript N(EVS_LandOnRightRoof) = {
         IfEq(MF_UsingSpring, false)
             Goto(10)
         EndIf
-    ExecWait(N(EVS_SetEntityHideMode_LeftHouse))
-    Exec(N(EVS_OnExitRightHouse))
+    ExecWait(EVS_SetEntityHideMode_LeftHouse)
+    Exec(EVS_OnExitRightHouse)
     Set(MF_RoofLandTriggerGuard, false)
     Return
     End
 };
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     IfEq(MV_CurrentFloor, 1)
         Set(LVar3, 500)
-        ExecGetTID(N(EVS_TetherCamToPlayerCappedY), LVarA)
-        ExecWait(N(EVS_SetEntityHideMode_Outside))
+        ExecGetTID(EVS_TetherCamToPlayerCappedY, LVarA)
+        ExecWait(EVS_SetEntityHideMode_Outside)
         Set(MF_UsingSpring, false)
         Call(SetPlayerJumpscale, Float(0.5))
         Call(PlayerJump, 175, 385, -310, 35)
         Set(MF_UsingSpring, true)
-        Exec(N(EVS_LandOnRightRoof))
-        ExecWait(N(EVS_OnEnterRightHouse))
+        Exec(EVS_LandOnRightRoof)
+        ExecWait(EVS_OnEnterRightHouse)
     Else
         Set(LVar3, 175)
-        ExecGetTID(N(EVS_TetherCamToPlayerCappedY), LVarA)
+        ExecGetTID(EVS_TetherCamToPlayerCappedY, LVarA)
         Call(SetPlayerJumpscale, Float(0.7))
         Call(PlayerJump, 160, 150, -310, 25)
     EndIf
@@ -398,7 +398,7 @@ EvtScript N(EVS_UseSpring) = {
     KillThread(LVarA)
     Wait(2)
     IfEq(MV_CurrentFloor, 1)
-        ExecWait(N(EVS_HideRightHouse))
+        ExecWait(EVS_HideRightHouse)
     EndIf
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -406,28 +406,28 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_Interact_Padlock) = {
-    ExecWait(N(EVS_SetupLockedHouse))
+EvtScript EVS_Interact_Padlock = {
+    ExecWait(EVS_SetupLockedHouse)
     Set(GF_SAM11_UnlockedDoor, true)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_SAM11_UnlockedDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 153, 8, -145, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_Interact_Padlock)))
+        Call(AssignScript, Ref(EVS_Interact_Padlock))
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Thread
-        Call(N(MonitorCurrentFloor))
+        Call(MonitorCurrentFloor)
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), 224, 150, -328, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Call(SetEntityCullMode, 1)
     Set(MF_RoofLandTriggerGuard, false)
-    BindTrigger(Ref(N(EVS_TouchFloor_RightRoof)), TRIGGER_FLOOR_TOUCH, COLLIDER_o570, 1, 0)
-    BindTrigger(Ref(N(EVS_TouchFloor_LeftRoof)), TRIGGER_FLOOR_TOUCH, COLLIDER_g_yuki2, 1, 0)
+    BindTrigger(Ref(EVS_TouchFloor_RightRoof), TRIGGER_FLOOR_TOUCH, COLLIDER_o570, 1, 0)
+    BindTrigger(Ref(EVS_TouchFloor_LeftRoof), TRIGGER_FLOOR_TOUCH, COLLIDER_g_yuki2, 1, 0)
     Call(MakeItemEntity, ITEM_WAREHOUSE_KEY, 0, -60, 220, ITEM_SPAWN_MODE_KEY, GF_SAM11_Item_WarehouseKey)
     Return
     End

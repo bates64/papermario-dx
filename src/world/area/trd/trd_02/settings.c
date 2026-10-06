@@ -1,8 +1,8 @@
 #include "trd_02.h"
 
-extern EvtScript N(EVS_Main);
+extern EvtScript EVS_Main;
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [trd_02_ENTRY_0]    { -257.0,    0.0,   80.0,   90.0 },
     [trd_02_ENTRY_1]    {  257.0,    0.0,   80.0,  270.0 },
     [trd_02_ENTRY_2]    { -257.0,  187.0,  -55.0,   90.0 },
@@ -10,16 +10,16 @@ EntryList N(Entrances) = {
     [trd_02_ENTRY_4]    {  235.0,   50.0,  -70.0,  270.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .tattle = { MSG_MapTattle_trd_02 },
     .songVariation = 1,
     .sfxReverb = 3,
 };
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(SetMusic, 0, SONG_KOOPA_FORTRESS, 0, VOL_LEVEL_FULL)
     Call(UseDoorSounds, DOOR_SOUNDS_METAL)
     Return

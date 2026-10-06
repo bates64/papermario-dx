@@ -1,7 +1,7 @@
 #include "mac_00.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_PlayerExitPipe_Intro) = {
+EvtScript EVS_PlayerExitPipe_Intro = {
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Call(SetPlayerPos, -100, -10, -370)
@@ -23,7 +23,7 @@ EvtScript N(EVS_PlayerExitPipe_Intro) = {
     End
 };
 
-EvtScript N(EVS_LuigiExitPipe_Intro) = {
+EvtScript EVS_LuigiExitPipe_Intro = {
     Call(EnableNpcShadow, NPC_Luigi_Intro, false)
     Call(SetNpcPos, NPC_Luigi_Intro, -100, -35, -370)
     Call(SetNpcYaw, NPC_Luigi_Intro, 135)
@@ -46,7 +46,7 @@ EvtScript N(EVS_LuigiExitPipe_Intro) = {
     End
 };
 
-EvtScript N(EVS_Scene_Intro) = {
+EvtScript EVS_Scene_Intro = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, -100, 30, -370)
     Call(SetPanTarget, CAM_DEFAULT, -100, 30, -370)
@@ -54,7 +54,7 @@ EvtScript N(EVS_Scene_Intro) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
-        ExecWait(N(EVS_PlayerExitPipe_Intro))
+        ExecWait(EVS_PlayerExitPipe_Intro)
         Wait(10 * DT)
         Call(func_802D1270, -60, -320, Float(4.0 / DT))
         Wait(63 * DT)
@@ -64,7 +64,7 @@ EvtScript N(EVS_Scene_Intro) = {
     EndThread
     Thread
         Wait(70 * DT)
-        ExecWait(N(EVS_LuigiExitPipe_Intro))
+        ExecWait(EVS_LuigiExitPipe_Intro)
         Wait(10 * DT)
         Call(SetNpcFlagBits, NPC_Luigi_Intro, NPC_FLAG_GRAVITY, true)
         Call(SetNpcAnimation, NPC_Luigi_Intro, ANIM_Luigi_Run)

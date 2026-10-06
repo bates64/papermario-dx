@@ -1,16 +1,16 @@
 #include "kmr_30.h"
 
-NpcSettings N(NpcSettings_ParadePeach) = {
+NpcSettings NpcSettings_ParadePeach = {
     .height = 46,
     .radius = 36,
     .level = ACTOR_LEVEL_NONE,
 };
 
-NpcData N(NpcData_ParadePeach) = {
+NpcData NpcData_ParadePeach = {
     .id = NPC_ParadePeach,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .settings = &N(NpcSettings_ParadePeach),
+    .settings = &NpcSettings_ParadePeach,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = {
@@ -33,7 +33,7 @@ NpcData N(NpcData_ParadePeach) = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ParadePeach)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ParadePeach),
     {}
 };

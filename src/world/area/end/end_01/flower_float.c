@@ -1,7 +1,7 @@
 #include "end_01.h"
 #include "effects.h"
 
-EvtScript N(EVS_TexPan_FlowerFloat_Base) = {
+EvtScript EVS_TexPan_FlowerFloat_Base = {
     Call(EnableTexPanning, MODEL_flo1, true)
     Set(LVar0, 0)
     Loop(0)
@@ -13,7 +13,7 @@ EvtScript N(EVS_TexPan_FlowerFloat_Base) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FlowerFloat_WisterwoodBody) = {
+EvtScript EVS_TexPan_FlowerFloat_WisterwoodBody = {
     Call(EnableTexPanning, MODEL_flo2, true)
     Call(EnableTexPanning, MODEL_flo4, true)
     Set(LVar0, 0)
@@ -26,7 +26,7 @@ EvtScript N(EVS_TexPan_FlowerFloat_WisterwoodBody) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FlowerFloat_WisterwoodBlink) = {
+EvtScript EVS_TexPan_FlowerFloat_WisterwoodBlink = {
     Call(EnableTexPanning, MODEL_flo3, true)
     Call(SetTexPanOffset, TEX_PANNER_B, TEX_PANNER_MAIN, 0x8000, 0)
     Loop(0)
@@ -50,7 +50,7 @@ EvtScript N(EVS_TexPan_FlowerFloat_WisterwoodBlink) = {
     End
 };
 
-EvtScript N(EVS_Amayze_Dayzees) = {
+EvtScript EVS_Amayze_Dayzees = {
     Call(GetNpcPos, NPC_AmayzeDayzee1, LVar0, LVar1, LVar2)
     Add(LVar1, 30)
     Sub(LVar2, 2)
@@ -66,7 +66,7 @@ EvtScript N(EVS_Amayze_Dayzees) = {
     End
 };
 
-EvtScript N(EVS_Sun) = {
+EvtScript EVS_Sun = {
     Thread
         Call(SetNpcPos, NPC_SunSad, -2185, 130, -30)
         Call(NpcFlyTo, NPC_SunSad, -2185, 50, -30, 10 * DT, 0, EASING_LINEAR)
@@ -87,7 +87,7 @@ EvtScript N(EVS_Sun) = {
     End
 };
 
-EvtScript N(EVS_Bubulbs) = {
+EvtScript EVS_Bubulbs = {
     Call(GetNpcPos, NPC_Bubulb1, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
     Add(LVar3, -120)
@@ -132,8 +132,8 @@ EvtScript N(EVS_Bubulbs) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Wizards) = {
-    ExecGetTID(N(EVS_Amayze_Dayzees), LVarD)
+EvtScript EVS_ParadePhase_Wizards = {
+    ExecGetTID(EVS_Amayze_Dayzees, LVarD)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -142,8 +142,8 @@ EvtScript N(EVS_ParadePhase_Wizards) = {
         EndIf
     EndLoop
     Wait(1)
-    ExecGetTID(N(EVS_TexPan_FlowerFloat_Base), LVarA)
-    Exec(N(EVS_Bubulbs))
+    ExecGetTID(EVS_TexPan_FlowerFloat_Base, LVarA)
+    Exec(EVS_Bubulbs)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -160,9 +160,9 @@ EvtScript N(EVS_ParadePhase_Wizards) = {
     Call(GetNpcPos, NPC_Merlon, LVar0, LVar1, LVar2)
     PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GRAY_WAVE, LVar0, LVar1, LVar2, 1, 20)
     Wait(30)
-    Exec(N(EVS_Sun))
-    ExecGetTID(N(EVS_TexPan_FlowerFloat_WisterwoodBody), LVarB)
-    ExecGetTID(N(EVS_TexPan_FlowerFloat_WisterwoodBlink), LVarC)
+    Exec(EVS_Sun)
+    ExecGetTID(EVS_TexPan_FlowerFloat_WisterwoodBody, LVarB)
+    ExecGetTID(EVS_TexPan_FlowerFloat_WisterwoodBlink, LVarC)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)

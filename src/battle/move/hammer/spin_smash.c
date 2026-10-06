@@ -3,8 +3,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_spin_smash
-
 API_CALLABLE(func_802A1000_737890) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* playerActor = battleStatus->playerActor;
@@ -31,11 +29,11 @@ API_CALLABLE(func_802A1074_737904) {
 
 #include "battle/common/move/HammerSupport.inc.c"
 
-extern EvtScript N(EVS_UseMoveBasic_Impl);
-extern EvtScript N(EVS_UseMoveSuper_Impl);
-extern EvtScript N(EVS_UseMoveUltra_Impl);
+extern EvtScript EVS_UseMoveBasic_Impl;
+extern EvtScript EVS_UseMoveSuper_Impl;
+extern EvtScript EVS_UseMoveUltra_Impl;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(SetDamageSource, DMG_SRC_SPIN_SMASH)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
@@ -44,27 +42,27 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 60) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMoveBasic_Impl))
+            ExecWait(EVS_UseMoveBasic_Impl)
         CaseEq(1)
             Set(LVarD, 60) // duration
             Set(LVarE, SUPER_HAMMER_DMG_BAD)
             Set(LVarF, SUPER_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMoveSuper_Impl))
+            ExecWait(EVS_UseMoveSuper_Impl)
         CaseEq(2)
             Set(LVarD, 60) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMoveUltra_Impl))
+            ExecWait(EVS_UseMoveUltra_Impl)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMoveBasic_Impl) = {
+EvtScript EVS_UseMoveBasic_Impl = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_HammerSupport_SmashApproach))
+    ExecWait(EVS_HammerSupport_SmashApproach)
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
@@ -98,7 +96,7 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash1_Raise)
     Wait(8)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash1_Hold1)
-    Call(N(ShouldMovesAutoSucceed))
+    Call(ShouldMovesAutoSucceed)
     IfEq(LVar0, HIT_RESULT_HIT)
         Loop(45)
             Wait(1)
@@ -143,7 +141,7 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Wait(25)
-        ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+        ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         Return
     EndIf
     Call(GetPlayerActionQuality, LVar0)
@@ -160,7 +158,7 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Wait(10)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+            ExecWait(EVS_HammerSupport_ReturnHome_Quake)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -178,17 +176,17 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
     Wait(10)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(SetActorYaw, ACTOR_PLAYER, 0)
-    ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+    ExecWait(EVS_HammerSupport_ReturnHome_Quake)
     Return
     End
 };
 
 
-EvtScript N(EVS_UseMoveSuper_Impl) = {
+EvtScript EVS_UseMoveSuper_Impl = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_HammerSupport_SmashApproach))
+    ExecWait(EVS_HammerSupport_SmashApproach)
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
@@ -221,7 +219,7 @@ EvtScript N(EVS_UseMoveSuper_Impl) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash2_Raise)
     Wait(8)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash2_Hold1)
-    Call(N(ShouldMovesAutoSucceed))
+    Call(ShouldMovesAutoSucceed)
     IfEq(LVar0, false)
         Loop(45)
             Wait(1)
@@ -266,7 +264,7 @@ EvtScript N(EVS_UseMoveSuper_Impl) = {
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Wait(25)
-        ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+        ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         Return
     EndIf
     Call(GetPlayerActionQuality, LVar0)
@@ -283,7 +281,7 @@ EvtScript N(EVS_UseMoveSuper_Impl) = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Wait(10)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+            ExecWait(EVS_HammerSupport_ReturnHome_Quake)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -301,17 +299,17 @@ EvtScript N(EVS_UseMoveSuper_Impl) = {
     Wait(10)
     Call(SetActorYaw, ACTOR_PLAYER, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-    ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+    ExecWait(EVS_HammerSupport_ReturnHome_Quake)
     Return
     End
 };
 
 
-EvtScript N(EVS_UseMoveUltra_Impl) = {
+EvtScript EVS_UseMoveUltra_Impl = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_HammerSupport_SmashApproach))
+    ExecWait(EVS_HammerSupport_SmashApproach)
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
@@ -342,7 +340,7 @@ EvtScript N(EVS_UseMoveUltra_Impl) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash3_Raise)
     Wait(8)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash3_Hold1)
-    Call(N(ShouldMovesAutoSucceed))
+    Call(ShouldMovesAutoSucceed)
     IfEq(LVar0, false)
         Loop(45)
             Wait(1)
@@ -387,7 +385,7 @@ EvtScript N(EVS_UseMoveUltra_Impl) = {
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Wait(25)
-        ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+        ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         Return
     EndIf
     Call(GetPlayerActionQuality, LVar0)
@@ -404,7 +402,7 @@ EvtScript N(EVS_UseMoveUltra_Impl) = {
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Wait(10)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+            ExecWait(EVS_HammerSupport_ReturnHome_Quake)
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -422,11 +420,11 @@ EvtScript N(EVS_UseMoveUltra_Impl) = {
     Wait(10)
     Call(SetActorYaw, ACTOR_PLAYER, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-    ExecWait(N(EVS_HammerSupport_ReturnHome_Quake))
+    ExecWait(EVS_HammerSupport_ReturnHome_Quake)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
-    &N(EVS_UseMove),
+    &EVS_UseMove,
 );

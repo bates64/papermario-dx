@@ -1,6 +1,6 @@
 #include "common.h"
 
-EvtScript N(EVS_Reflection_Unk) = {
+EvtScript EVS_Reflection_Unk = {
     Call(GetEntryID, LVarA)
     IfEq(LVarA, LVar1)
         Set(LVar0, REFLECTION_WALL_ONLY)
@@ -26,20 +26,20 @@ EvtScript N(EVS_Reflection_Unk) = {
 
 // LVar0 mode
 // LVar1 disable wall flag (reflections wont show if false)
-EvtScript N(EVS_SetupReflections) = {
+EvtScript EVS_SetupReflections = {
     MallocArray(16, LVarA)
     IfEq(LVar1, false)
         Switch(LVar0)
             CaseEq(REFLECTION_FLOOR_WALL)
-                Call(N(EnableWallReflection))
+                Call(EnableWallReflection)
             CaseEq(REFLECTION_FLOOR_ONLY)
                 // do nothing
             CaseEq(REFLECTION_WALL_ONLY)
-                Call(N(EnableWallReflection))
+                Call(EnableWallReflection)
         EndSwitch
     EndIf
-    Call(N(EnableFloorReflection), LVar0)
-    Call(N(EnablePartnerReflection), LVar0)
+    Call(EnableFloorReflection, LVar0)
+    Call(EnablePartnerReflection, LVar0)
     Return
     End
 };

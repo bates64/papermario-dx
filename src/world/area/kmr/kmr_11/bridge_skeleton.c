@@ -1,99 +1,99 @@
 #include "kmr_11.h"
 
-StaticAnimatorNode N(BridgeDebrisNode_dummy32) = {
+StaticAnimatorNode BridgeDebrisNode_dummy32 = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_dummy32),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDebrisTransform_dummy32) = {
+StaticAnimatorNode BridgeDebrisTransform_dummy32 = {
     .pos = { -159.0f, 0.0f, -126.0f },
-    .child = &N(BridgeDebrisNode_dummy32),
+    .child = &BridgeDebrisNode_dummy32,
 };
 
-StaticAnimatorNode N(BridgeDebrisNode_dummy31) = {
+StaticAnimatorNode BridgeDebrisNode_dummy31 = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_dummy31),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDebrisTransform_dummy31) = {
+StaticAnimatorNode BridgeDebrisTransform_dummy31 = {
     .pos = { -159.0f, 0.0f, -126.0f },
-    .child = &N(BridgeDebrisNode_dummy31),
-    .sibling = &N(BridgeDebrisTransform_dummy32),
+    .child = &BridgeDebrisNode_dummy31,
+    .sibling = &BridgeDebrisTransform_dummy32,
 };
 
-StaticAnimatorNode N(BridgeDebrisNode_dummy30) = {
+StaticAnimatorNode BridgeDebrisNode_dummy30 = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_dummy30),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDebrisTransform_dummy30) = {
+StaticAnimatorNode BridgeDebrisTransform_dummy30 = {
     .pos = { -159.0f, 0.0f, -126.0f },
-    .child = &N(BridgeDebrisNode_dummy30),
-    .sibling = &N(BridgeDebrisTransform_dummy31),
+    .child = &BridgeDebrisNode_dummy30,
+    .sibling = &BridgeDebrisTransform_dummy31,
 };
 
-StaticAnimatorNode N(BridgeDebrisGroup_dummy30) = {
+StaticAnimatorNode BridgeDebrisGroup_dummy30 = {
     .pos = { 140.0f, -10.0f, -360.0f },
     .rot = { AS_F(0.0f), AS_F(-180.0f), AS_F(0.0f) },
-    .child = &N(BridgeDebrisTransform_dummy30),
+    .child = &BridgeDebrisTransform_dummy30,
 };
 
-StaticAnimatorNode N(BridgeDebrisNode_dummy3) = {
+StaticAnimatorNode BridgeDebrisNode_dummy3 = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_dummy3),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDebrisTransform_dummy3) = {
+StaticAnimatorNode BridgeDebrisTransform_dummy3 = {
     .pos = { -159.0f, 0.0f, -126.0f },
-    .child = &N(BridgeDebrisNode_dummy3),
+    .child = &BridgeDebrisNode_dummy3,
 };
 
-StaticAnimatorNode N(BridgeDebrisNode_dummy2) = {
+StaticAnimatorNode BridgeDebrisNode_dummy2 = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_dummy2),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDebrisTransform_dummy2) = {
+StaticAnimatorNode BridgeDebrisTransform_dummy2 = {
     .pos = { -159.0f, 0.0f, -126.0f },
-    .child = &N(BridgeDebrisNode_dummy2),
-    .sibling = &N(BridgeDebrisTransform_dummy3),
+    .child = &BridgeDebrisNode_dummy2,
+    .sibling = &BridgeDebrisTransform_dummy3,
 };
 
-StaticAnimatorNode N(BridgeDebrisNode_dummy1) = {
+StaticAnimatorNode BridgeDebrisNode_dummy1 = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .modelID = AS_MODEL_ID(MODEL_dummy1),
     .vtxList = 0,
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDebrisTransform_dummy1) = {
+StaticAnimatorNode BridgeDebrisTransform_dummy1 = {
     .pos = { -159.0f, 0.0f, -126.0f },
-    .child = &N(BridgeDebrisNode_dummy1),
-    .sibling = &N(BridgeDebrisTransform_dummy2),
+    .child = &BridgeDebrisNode_dummy1,
+    .sibling = &BridgeDebrisTransform_dummy2,
 };
 
-StaticAnimatorNode N(BridgeDebrisGroup_dummy1) = {
+StaticAnimatorNode BridgeDebrisGroup_dummy1 = {
     .pos = { 0.0f, -10.0f, 0.0f },
-    .child = &N(BridgeDebrisTransform_dummy1),
-    .sibling = &N(BridgeDebrisGroup_dummy30),
+    .child = &BridgeDebrisTransform_dummy1,
+    .sibling = &BridgeDebrisGroup_dummy30,
 };
 
-StaticAnimatorNode N(BridgeDebrisRoot) = {
+StaticAnimatorNode BridgeDebrisRoot = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(BridgeDebrisGroup_dummy1),
+    .child = &BridgeDebrisGroup_dummy1,
 };
 
-StaticAnimatorNode N(BridgeDummyNode) = {
+StaticAnimatorNode BridgeDummyNode = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(0.0f) },
     .modelID = AS_MODEL_ID(MODEL_dummy),
@@ -101,12 +101,12 @@ StaticAnimatorNode N(BridgeDummyNode) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeDummyTransform) = {
+StaticAnimatorNode BridgeDummyTransform = {
     .pos = { 0.0f, 110.0f, 0.0f },
-    .child = &N(BridgeDummyNode),
+    .child = &BridgeDummyNode,
 };
 
-StaticAnimatorNode N(BridgeSegmentNode_b1) = {
+StaticAnimatorNode BridgeSegmentNode_b1 = {
     .pos = { -237.0f, 109.0f, 155.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(-179.9945f) },
     .modelID = AS_MODEL_ID(MODEL_b1),
@@ -114,7 +114,7 @@ StaticAnimatorNode N(BridgeSegmentNode_b1) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeSegmentNode_b2) = {
+StaticAnimatorNode BridgeSegmentNode_b2 = {
     .pos = { 312.0f, -169.0f, 155.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(0.0f) },
     .modelID = AS_MODEL_ID(MODEL_b2),
@@ -122,7 +122,7 @@ StaticAnimatorNode N(BridgeSegmentNode_b2) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeSegmentNode_b3) = {
+StaticAnimatorNode BridgeSegmentNode_b3 = {
     .pos = { -237.0f, 169.0f, 155.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(-179.9945f) },
     .modelID = AS_MODEL_ID(MODEL_b3),
@@ -130,7 +130,7 @@ StaticAnimatorNode N(BridgeSegmentNode_b3) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeSegmentNode_b4) = {
+StaticAnimatorNode BridgeSegmentNode_b4 = {
     .pos = { 312.0f, -229.0f, 155.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(0.0f) },
     .modelID = AS_MODEL_ID(MODEL_b4),
@@ -138,7 +138,7 @@ StaticAnimatorNode N(BridgeSegmentNode_b4) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeSegmentNode_b5) = {
+StaticAnimatorNode BridgeSegmentNode_b5 = {
     .pos = { -237.0f, 229.0f, 155.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(-179.9945f) },
     .modelID = AS_MODEL_ID(MODEL_b5),
@@ -146,7 +146,7 @@ StaticAnimatorNode N(BridgeSegmentNode_b5) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeSegmentNode_b6) = {
+StaticAnimatorNode BridgeSegmentNode_b6 = {
     .pos = { 312.0f, -289.0f, 155.0f },
     .rot = { AS_F(0.0f), AS_F(-12.695089f), AS_F(0.0f) },
     .modelID = AS_MODEL_ID(MODEL_b6),
@@ -154,142 +154,142 @@ StaticAnimatorNode N(BridgeSegmentNode_b6) = {
     .vertexStartOffset = -1
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode16) = {
+StaticAnimatorNode BridgeSegmentRigNode16 = {
     .pos = { 75.0f, 0.0f, 0.0f },
-    .sibling = &N(BridgeSegmentNode_b6),
+    .sibling = &BridgeSegmentNode_b6,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode15) = {
+StaticAnimatorNode BridgeSegmentRigNode15 = {
     .pos = { 30.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(BridgeSegmentRigNode16),
+    .child = &BridgeSegmentRigNode16,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode14) = {
+StaticAnimatorNode BridgeSegmentRigNode14 = {
     .pos = { 30.0f, 0.0f, 0.0f },
-    .child = &N(BridgeSegmentRigNode15),
+    .child = &BridgeSegmentRigNode15,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode13) = {
+StaticAnimatorNode BridgeSegmentRigNode13 = {
     .pos = { 75.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(BridgeSegmentRigNode14),
-    .sibling = &N(BridgeSegmentNode_b5),
+    .child = &BridgeSegmentRigNode14,
+    .sibling = &BridgeSegmentNode_b5,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode12) = {
-    .pos = { 75.0f, 0.0f, 0.0f },
-    .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(179.9945f) },
-    .child = &N(BridgeSegmentRigNode13),
-    .sibling = &N(BridgeSegmentNode_b4),
-};
-
-StaticAnimatorNode N(BridgeSegmentRigNode11) = {
-    .pos = { 30.0f, 0.0f, 0.0f },
-    .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(BridgeSegmentRigNode12),
-};
-
-StaticAnimatorNode N(BridgeSegmentRigNode10) = {
-    .pos = { 30.0f, 0.0f, 0.0f },
-    .child = &N(BridgeSegmentRigNode11),
-};
-
-StaticAnimatorNode N(BridgeSegmentRigNode09) = {
-    .pos = { 75.0f, 0.0f, 0.0f },
-    .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(BridgeSegmentRigNode10),
-    .sibling = &N(BridgeSegmentNode_b3),
-};
-
-StaticAnimatorNode N(BridgeSegmentRigNode08) = {
+StaticAnimatorNode BridgeSegmentRigNode12 = {
     .pos = { 75.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(179.9945f) },
-    .child = &N(BridgeSegmentRigNode09),
-    .sibling = &N(BridgeSegmentNode_b2),
+    .child = &BridgeSegmentRigNode13,
+    .sibling = &BridgeSegmentNode_b4,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode07) = {
+StaticAnimatorNode BridgeSegmentRigNode11 = {
     .pos = { 30.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(BridgeSegmentRigNode08),
+    .child = &BridgeSegmentRigNode12,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode06) = {
+StaticAnimatorNode BridgeSegmentRigNode10 = {
     .pos = { 30.0f, 0.0f, 0.0f },
-    .child = &N(BridgeSegmentRigNode07),
+    .child = &BridgeSegmentRigNode11,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigNode05) = {
+StaticAnimatorNode BridgeSegmentRigNode09 = {
     .pos = { 75.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(BridgeSegmentRigNode06),
-    .sibling = &N(BridgeSegmentNode_b1),
+    .child = &BridgeSegmentRigNode10,
+    .sibling = &BridgeSegmentNode_b3,
 };
 
-StaticAnimatorNode N(BridgeSegmentRigRoot) = {
+StaticAnimatorNode BridgeSegmentRigNode08 = {
+    .pos = { 75.0f, 0.0f, 0.0f },
+    .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(179.9945f) },
+    .child = &BridgeSegmentRigNode09,
+    .sibling = &BridgeSegmentNode_b2,
+};
+
+StaticAnimatorNode BridgeSegmentRigNode07 = {
+    .pos = { 30.0f, 0.0f, 0.0f },
+    .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
+    .child = &BridgeSegmentRigNode08,
+};
+
+StaticAnimatorNode BridgeSegmentRigNode06 = {
+    .pos = { 30.0f, 0.0f, 0.0f },
+    .child = &BridgeSegmentRigNode07,
+};
+
+StaticAnimatorNode BridgeSegmentRigNode05 = {
+    .pos = { 75.0f, 0.0f, 0.0f },
+    .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
+    .child = &BridgeSegmentRigNode06,
+    .sibling = &BridgeSegmentNode_b1,
+};
+
+StaticAnimatorNode BridgeSegmentRigRoot = {
     .pos = { 0.0f, 0.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(179.9945f) },
-    .child = &N(BridgeSegmentRigNode05),
+    .child = &BridgeSegmentRigNode05,
 };
 
-StaticAnimatorNode N(BridgeSegmentAssembly) = {
+StaticAnimatorNode BridgeSegmentAssembly = {
     .pos = { 0.0f, 110.0f, 0.0f },
-    .child = &N(BridgeSegmentRigRoot),
-    .sibling = &N(BridgeDummyTransform),
+    .child = &BridgeSegmentRigRoot,
+    .sibling = &BridgeDummyTransform,
 };
 
-StaticAnimatorNode N(BridgeAssembly) = {
+StaticAnimatorNode BridgeAssembly = {
     .pos = { -266.0f, 0.0f, -99.0f },
     .rot = { AS_F(0.0f), AS_F(12.695089f), AS_F(0.0f) },
-    .child = &N(BridgeSegmentAssembly),
-    .sibling = &N(BridgeDebrisRoot),
+    .child = &BridgeSegmentAssembly,
+    .sibling = &BridgeDebrisRoot,
 };
 
-StaticAnimatorNode N(BridgeRoot) = {
+StaticAnimatorNode BridgeRoot = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(BridgeAssembly),
+    .child = &BridgeAssembly,
 };
 
-StaticAnimatorNode* N(AnimSkeleton_Bridge)[] = {
-    &N(BridgeRoot),
-        &N(BridgeAssembly),
-            &N(BridgeSegmentAssembly),
-                &N(BridgeSegmentRigRoot),
-                    &N(BridgeSegmentRigNode05),
-                        &N(BridgeSegmentRigNode06),
-                            &N(BridgeSegmentRigNode07),
-                                &N(BridgeSegmentRigNode08),
-                                    &N(BridgeSegmentRigNode09),
-                                        &N(BridgeSegmentRigNode10),
-                                            &N(BridgeSegmentRigNode11),
-                                                &N(BridgeSegmentRigNode12),
-                                                    &N(BridgeSegmentRigNode13),
-                                                        &N(BridgeSegmentRigNode14),
-                                                            &N(BridgeSegmentRigNode15),
-                                                                &N(BridgeSegmentRigNode16),
-                                                                &N(BridgeSegmentNode_b6),
-                                                    &N(BridgeSegmentNode_b5),
-                                                &N(BridgeSegmentNode_b4),
-                                    &N(BridgeSegmentNode_b3),
-                                &N(BridgeSegmentNode_b2),
-                    &N(BridgeSegmentNode_b1),
-            &N(BridgeDummyTransform),
-                &N(BridgeDummyNode),
-        &N(BridgeDebrisRoot),
-            &N(BridgeDebrisGroup_dummy1),
-                &N(BridgeDebrisTransform_dummy1),
-                    &N(BridgeDebrisNode_dummy1),
-                &N(BridgeDebrisTransform_dummy2),
-                    &N(BridgeDebrisNode_dummy2),
-                &N(BridgeDebrisTransform_dummy3),
-                    &N(BridgeDebrisNode_dummy3),
-            &N(BridgeDebrisGroup_dummy30),
-                &N(BridgeDebrisTransform_dummy30),
-                    &N(BridgeDebrisNode_dummy30),
-                &N(BridgeDebrisTransform_dummy31),
-                    &N(BridgeDebrisNode_dummy31),
-                &N(BridgeDebrisTransform_dummy32),
-                    &N(BridgeDebrisNode_dummy32),
+StaticAnimatorNode* AnimSkeleton_Bridge[] = {
+    &BridgeRoot,
+        &BridgeAssembly,
+            &BridgeSegmentAssembly,
+                &BridgeSegmentRigRoot,
+                    &BridgeSegmentRigNode05,
+                        &BridgeSegmentRigNode06,
+                            &BridgeSegmentRigNode07,
+                                &BridgeSegmentRigNode08,
+                                    &BridgeSegmentRigNode09,
+                                        &BridgeSegmentRigNode10,
+                                            &BridgeSegmentRigNode11,
+                                                &BridgeSegmentRigNode12,
+                                                    &BridgeSegmentRigNode13,
+                                                        &BridgeSegmentRigNode14,
+                                                            &BridgeSegmentRigNode15,
+                                                                &BridgeSegmentRigNode16,
+                                                                &BridgeSegmentNode_b6,
+                                                    &BridgeSegmentNode_b5,
+                                                &BridgeSegmentNode_b4,
+                                    &BridgeSegmentNode_b3,
+                                &BridgeSegmentNode_b2,
+                    &BridgeSegmentNode_b1,
+            &BridgeDummyTransform,
+                &BridgeDummyNode,
+        &BridgeDebrisRoot,
+            &BridgeDebrisGroup_dummy1,
+                &BridgeDebrisTransform_dummy1,
+                    &BridgeDebrisNode_dummy1,
+                &BridgeDebrisTransform_dummy2,
+                    &BridgeDebrisNode_dummy2,
+                &BridgeDebrisTransform_dummy3,
+                    &BridgeDebrisNode_dummy3,
+            &BridgeDebrisGroup_dummy30,
+                &BridgeDebrisTransform_dummy30,
+                    &BridgeDebrisNode_dummy30,
+                &BridgeDebrisTransform_dummy31,
+                    &BridgeDebrisNode_dummy31,
+                &BridgeDebrisTransform_dummy32,
+                    &BridgeDebrisNode_dummy32,
     nullptr
 };

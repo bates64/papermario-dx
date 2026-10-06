@@ -11,7 +11,7 @@
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {
+EvtScript EVS_NpcInteract_Penguin_ShopOwner = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             ExecWait(EVS_ShopOwnerDialog)
@@ -24,12 +24,12 @@ EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Penguin_ShopOwner) = {
+EvtScript EVS_NpcIdle_Penguin_ShopOwner = {
     Return
     End
 };
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     Set(LVar0, MSG_CH7_006B)
     Set(LVar8, MSG_CH7_006C)
     Set(LVar1, MSG_CH7_006D)
@@ -46,13 +46,13 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestingSong))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestingSong)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, 294, -213, 0)
     Thread
         Wait(15)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 65, -36)
         Call(SetCamDistance, CAM_DEFAULT, 111)
@@ -75,7 +75,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Wait(20)
     Thread
         Wait(81)
-        Call(N(ToadHouse_CamSetFOV), 0, 25)
+        Call(ToadHouse_CamSetFOV, 0, 25)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
@@ -85,7 +85,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
+EvtScript EVS_ToadHouse_ReturnFromRest = {
     IfEq(GF_SAM02_Item_IcedPotato, true)
         Set(MF_SkipIcedPotato, false)
         Set(GF_SAM02_Item_IcedPotato, false)
@@ -98,7 +98,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
         IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
             IfEq(GF_SAM02_MushroomPresents, false)
                 Set(GF_SAM02_MushroomPresents, true)
-                Exec(N(EVS_MakeToadHouseGifts))
+                Exec(EVS_MakeToadHouseGifts)
             EndIf
         EndIf
     EndIf
@@ -107,12 +107,12 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     Call(SetPlayerPos, 277, 0, -256)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, 336, -199, 0)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_02) = {
+EvtScript EVS_NpcInteract_Penguin_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Switch(MV_DialogueState_Penguin2)
@@ -140,7 +140,7 @@ EvtScript N(EVS_NpcInteract_Penguin_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_03) = {
+EvtScript EVS_NpcInteract_Penguin_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Switch(MV_DialogueState_Penguin3)
@@ -168,12 +168,12 @@ EvtScript N(EVS_NpcInteract_Penguin_03) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Penguin_04) = {
+EvtScript EVS_NpcIdle_Penguin_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_04) = {
+EvtScript EVS_NpcInteract_Penguin_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Switch(MV_DialogueState_Penguin4)
@@ -209,7 +209,7 @@ EvtScript N(EVS_NpcInteract_Penguin_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_05) = {
+EvtScript EVS_NpcInteract_Penguin_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Switch(MV_DialogueState_Penguin5)
@@ -245,7 +245,7 @@ EvtScript N(EVS_NpcInteract_Penguin_05) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_06) = {
+EvtScript EVS_NpcInteract_Penguin_06 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Switch(MV_DialogueState_Penguin6)
@@ -281,7 +281,7 @@ EvtScript N(EVS_NpcInteract_Penguin_06) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Penguin_07) = {
+EvtScript EVS_NpcInteract_Penguin_07 = {
     Call(FindItem, ITEM_FIRST_DEGREE_CARD, LVar1)
     Call(FindItem, ITEM_SECOND_DEGREE_CARD, LVar2)
     Call(FindItem, ITEM_THIRD_DEGREE_CARD, LVar3)
@@ -312,68 +312,68 @@ EvtScript N(EVS_NpcInteract_Penguin_07) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_ShopOwner) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_ShopOwner)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Penguin_ShopOwner)))
+EvtScript EVS_NpcInit_Penguin_ShopOwner = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_ShopOwner))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Penguin_ShopOwner))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShiverToad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+EvtScript EVS_NpcInit_ShiverToad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_02)))
+EvtScript EVS_NpcInit_Penguin_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_03)))
+EvtScript EVS_NpcInit_Penguin_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_04)))
+EvtScript EVS_NpcInit_Penguin_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_04))
     IfGe(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
         IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
             Call(SetNpcPos, NPC_SELF, 0, 30, 280)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Penguin_04)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Penguin_04))
         EndIf
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_05) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_05)))
+EvtScript EVS_NpcInit_Penguin_05 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_05))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_06) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_06)))
+EvtScript EVS_NpcInit_Penguin_06 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_06))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Penguin_07) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Penguin_07)))
+EvtScript EVS_NpcInit_Penguin_07 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Penguin_07))
     Return
     End
 };
 
-NpcData N(NpcData_Townsfolk)[] = {
+NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_Penguin_ShopOwner,
         .pos = { 35.0f, 0.0f, -365.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_Penguin_ShopOwner),
-        .settings = &N(NpcSettings_Penguin),
+        .init = &EVS_NpcInit_Penguin_ShopOwner,
+        .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -383,8 +383,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_ShiverToad,
         .pos = { 329.0f, 0.0f, -167.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_ShiverToad),
-        .settings = &N(NpcSettings_ShiverToad),
+        .init = &EVS_NpcInit_ShiverToad,
+        .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_RED_ANIMS,
@@ -407,8 +407,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Penguin_04),
-        .settings = &N(NpcSettings_Penguin_Wander),
+        .init = &EVS_NpcInit_Penguin_04,
+        .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -430,8 +430,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Penguin_05),
-        .settings = &N(NpcSettings_Penguin_Wander),
+        .init = &EVS_NpcInit_Penguin_05,
+        .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -453,8 +453,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Penguin_06),
-        .settings = &N(NpcSettings_Penguin_Wander),
+        .init = &EVS_NpcInit_Penguin_06,
+        .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -464,8 +464,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_Penguin_07,
         .pos = { -237.0f, 0.0f, 273.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Penguin_07),
-        .settings = &N(NpcSettings_Penguin),
+        .init = &EVS_NpcInit_Penguin_07,
+        .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -473,13 +473,13 @@ NpcData N(NpcData_Townsfolk)[] = {
     },
 };
 
-NpcData N(NpcData_MysteryOnly)[] = {
+NpcData NpcData_MysteryOnly[] = {
     {
         .id = NPC_Penguin_02,
         .pos = { -380.0f, 0.0f, -140.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Penguin_02),
-        .settings = &N(NpcSettings_Penguin),
+        .init = &EVS_NpcInit_Penguin_02,
+        .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -501,8 +501,8 @@ NpcData N(NpcData_MysteryOnly)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Penguin_03),
-        .settings = &N(NpcSettings_Penguin_Wander),
+        .init = &EVS_NpcInit_Penguin_03,
+        .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
@@ -510,28 +510,28 @@ NpcData N(NpcData_MysteryOnly)[] = {
     },
 };
 
-NpcData N(NpcData_ChuckQuizmo) = {
+NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
     .pos = { -230.0f, 0.0f, 160.0f },
     .yaw = 90,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_SAM, QUIZ_COUNT_SAM, QUIZ_MAP_SAM_02 }},
-    .settings = &N(NpcSettings_ChuckQuizmo),
+    .settings = &NpcSettings_ChuckQuizmo,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Townsfolk), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(N(NpcData_MysteryOnly), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(N(NpcData_ChuckQuizmo)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Townsfolk, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_MysteryOnly, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
-NpcGroupList N(MysteryNPCs) = {
-    NPC_GROUP(N(NpcData_Townsfolk), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(N(NpcData_ChuckQuizmo)),
+NpcGroupList MysteryNPCs = {
+    NPC_GROUP(NpcData_Townsfolk, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };

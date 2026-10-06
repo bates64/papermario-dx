@@ -1,6 +1,6 @@
 #include "sam_02.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_SAM02,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_SAM02,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_SAM02,
@@ -26,7 +26,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_SAM02,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_DIZZY_DIAL,    .price = 15, .descMsg = MSG_ItemShopDesc_DizzyDial },
     { .itemID = ITEM_SHOOTING_STAR, .price = 30, .descMsg = MSG_ItemShopDesc_ShootingStar },
     { .itemID = ITEM_SNOWMAN_DOLL,  .price =  8, .descMsg = MSG_ItemShopDesc_SnowmanDoll },
@@ -36,7 +36,7 @@ ShopItemData N(Inventory)[] = {
     {},
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_FIRE_FLOWER,  .sellPrice =  8 },
     { .itemID = ITEM_BLAND_MEAL,   .sellPrice = 15 },
     { .itemID = ITEM_YUMMY_MEAL,   .sellPrice = 20 },
@@ -46,7 +46,7 @@ ShopSellPriceData N(PriceList)[] = {
     {},
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -57,7 +57,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_1, .triggerColliderID = COLLIDER_o433 },
     { .posModelID = MODEL_2, .triggerColliderID = COLLIDER_o434 },
     { .posModelID = MODEL_3, .triggerColliderID = COLLIDER_o435 },
@@ -66,15 +66,15 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_6, .triggerColliderID = COLLIDER_o438 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_Penguin_ShopOwner,
     .idleAnim = ANIM_Penguin_Idle,
     .talkAnim = ANIM_Penguin_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
+EvtScript EVS_SetupShop = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o512, COLLIDER_FLAGS_UPPER_MASK)
@@ -88,8 +88,8 @@ EvtScript N(EVS_SetupShop) = {
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o512, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), ITEM_ENTITY_FLAG_TOSS_LOWER)
-    Call(MakeShopOwner, Ref(N(Owner)))
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), ITEM_ENTITY_FLAG_TOSS_LOWER)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };

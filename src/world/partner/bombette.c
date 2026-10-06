@@ -4,19 +4,17 @@
 #include "sprite/npc/WorldBombette.h"
 #include "sprite/player.h"
 
-#define NAMESPACE world_bombette
-
-BSS b32 N(PlayerWasFacingLeft);
-BSS b32 N(PlayingFuseSound);
-BSS b32 N(IsBlasting); // true for 3 frames while using ability
-BSS b32 N(LockingPlayerInput);
-BSS b32 N(MaintainPosAfterBlast);
-BSS b32 N(TriggeredEarlyDetonation);
-BSS b32 N(MovementBlocked);
+BSS b32 PlayerWasFacingLeft;
+BSS b32 PlayingFuseSound;
+BSS b32 IsBlasting; // true for 3 frames while using ability
+BSS b32 LockingPlayerInput;
+BSS b32 MaintainPosAfterBlast;
+BSS b32 TriggeredEarlyDetonation;
+BSS b32 MovementBlocked;
 
 void entity_try_partner_interaction_trigger(s32 arg0);
 
-void N(blast_affect_entities)(Npc* npc) {
+void blast_affect_entities(Npc* npc) {
     f32 x, y, z;
     f32 angle = 0.0f;
 
@@ -62,14 +60,14 @@ void N(blast_affect_entities)(Npc* npc) {
     }
 }
 
-void N(init)(Npc* bombette) {
+void init(Npc* bombette) {
     bombette->collisionHeight = 28;
     bombette->collisionDiameter = 24;
-    N(IsBlasting) = false;
-    N(PlayingFuseSound) = false;
+    IsBlasting = false;
+    PlayingFuseSound = false;
 }
 
-API_CALLABLE(N(TakeOut)) {
+API_CALLABLE(TakeOut) {
     Npc* bombette = script->owner2.npc;
 
     if (isInitialCall) {
@@ -84,15 +82,15 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldBombette_TakeOut = {
-    Call(N(TakeOut))
+    Call(TakeOut)
     Return
     End
 };
 
-BSS TweesterPhysics N(TweesterPhysicsData);
-TweesterPhysics* N(TweesterPhysicsPtr) = &N(TweesterPhysicsData);
+BSS TweesterPhysics TweesterPhysicsData;
+TweesterPhysics* TweesterPhysicsPtr = &TweesterPhysicsData;
 
-API_CALLABLE(N(Update)) {
+API_CALLABLE(Update) {
     PlayerData* playerData = &gPlayerData;
     Npc* bombette = script->owner2.npc;
     f32 sinAngle, cosAngle, liftoffVelocity;
@@ -100,7 +98,7 @@ API_CALLABLE(N(Update)) {
 
     if (isInitialCall) {
         partner_walking_enable(bombette, true);
-        mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
+        mem_clear(TweesterPhysicsPtr, sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
 
@@ -114,63 +112,63 @@ API_CALLABLE(N(Update)) {
         return ApiStatus_BLOCK;
     }
 
-    switch (N(TweesterPhysicsPtr)->state) {
+    switch (TweesterPhysicsPtr->state) {
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
-            N(TweesterPhysicsPtr)->prevFlags = bombette->flags;
-            N(TweesterPhysicsPtr)->radius = fabsf(dist2D(bombette->pos.x, bombette->pos.z,
+            TweesterPhysicsPtr->state = TWEESTER_PARTNER_ATTRACT;
+            TweesterPhysicsPtr->prevFlags = bombette->flags;
+            TweesterPhysicsPtr->radius = fabsf(dist2D(bombette->pos.x, bombette->pos.z,
                                                      entity->pos.x, entity->pos.z));
-            N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z,
+            TweesterPhysicsPtr->angle = atan2(entity->pos.x, entity->pos.z,
                                               bombette->pos.x, bombette->pos.z);
-            N(TweesterPhysicsPtr)->angularVel = 6.0f;
-            N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
-            N(TweesterPhysicsPtr)->countdown = 120;
+            TweesterPhysicsPtr->angularVel = 6.0f;
+            TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
+            TweesterPhysicsPtr->countdown = 120;
             bombette->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             bombette->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
-            sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
-            bombette->pos.x = entity->pos.x + (sinAngle * N(TweesterPhysicsPtr)->radius);
-            bombette->pos.z = entity->pos.z - (cosAngle * N(TweesterPhysicsPtr)->radius);
-            N(TweesterPhysicsPtr)->angle = clamp_angle(N(TweesterPhysicsPtr)->angle - N(TweesterPhysicsPtr)->angularVel);
+            sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
+            bombette->pos.x = entity->pos.x + (sinAngle * TweesterPhysicsPtr->radius);
+            bombette->pos.z = entity->pos.z - (cosAngle * TweesterPhysicsPtr->radius);
+            TweesterPhysicsPtr->angle = clamp_angle(TweesterPhysicsPtr->angle - TweesterPhysicsPtr->angularVel);
 
-            if (N(TweesterPhysicsPtr)->radius > 20.0f) {
-                N(TweesterPhysicsPtr)->radius--;
-            } else if (N(TweesterPhysicsPtr)->radius < 19.0f) {
-                N(TweesterPhysicsPtr)->radius++;
+            if (TweesterPhysicsPtr->radius > 20.0f) {
+                TweesterPhysicsPtr->radius--;
+            } else if (TweesterPhysicsPtr->radius < 19.0f) {
+                TweesterPhysicsPtr->radius++;
             }
 
-            liftoffVelocity = sin_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->liftoffVelPhase)) * 3.0f;
-            N(TweesterPhysicsPtr)->liftoffVelPhase += 3.0f;
+            liftoffVelocity = sin_rad(DEG_TO_RAD(TweesterPhysicsPtr->liftoffVelPhase)) * 3.0f;
+            TweesterPhysicsPtr->liftoffVelPhase += 3.0f;
 
-            if (N(TweesterPhysicsPtr)->liftoffVelPhase > 150.0f) {
-                N(TweesterPhysicsPtr)->liftoffVelPhase = 150.0f;
+            if (TweesterPhysicsPtr->liftoffVelPhase > 150.0f) {
+                TweesterPhysicsPtr->liftoffVelPhase = 150.0f;
             }
 
             bombette->pos.y += liftoffVelocity;
-            bombette->renderYaw = clamp_angle(360.0f - N(TweesterPhysicsPtr)->angle);
-            N(TweesterPhysicsPtr)->angularVel += 0.8;
+            bombette->renderYaw = clamp_angle(360.0f - TweesterPhysicsPtr->angle);
+            TweesterPhysicsPtr->angularVel += 0.8;
 
-            if (N(TweesterPhysicsPtr)->angularVel > 40.0f) {
-                N(TweesterPhysicsPtr)->angularVel = 40.0f;
+            if (TweesterPhysicsPtr->angularVel > 40.0f) {
+                TweesterPhysicsPtr->angularVel = 40.0f;
             }
 
-            N(TweesterPhysicsPtr)->countdown--;
-            if (N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
+            TweesterPhysicsPtr->countdown--;
+            if (TweesterPhysicsPtr->countdown == 0) {
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
-            bombette->flags = N(TweesterPhysicsPtr)->prevFlags;
-            N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
+            bombette->flags = TweesterPhysicsPtr->prevFlags;
+            TweesterPhysicsPtr->countdown = 30;
+            TweesterPhysicsPtr->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_walking_update_player_tracking(bombette);
             partner_walking_update_motion(bombette);
 
-            N(TweesterPhysicsPtr)->countdown--;
-            if (N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+            TweesterPhysicsPtr->countdown--;
+            if (TweesterPhysicsPtr->countdown == 0) {
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
             break;
@@ -179,33 +177,33 @@ API_CALLABLE(N(Update)) {
 }
 
 EvtScript EVS_WorldBombette_Update = {
-    Call(N(Update))
+    Call(Update)
     Return
     End
 };
 
-void N(try_cancel_tweester)(Npc* npc) {
+void try_cancel_tweester(Npc* npc) {
     if (TweesterTouchingPartner != nullptr) {
         TweesterTouchingPartner = nullptr;
-        npc->flags = N(TweesterPhysicsPtr)->prevFlags;
-        N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+        npc->flags = TweesterPhysicsPtr->prevFlags;
+        TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking(npc);
     }
 }
 
-s32 N(can_use_ability)(Npc* npc) {
+s32 can_use_ability(Npc* npc) {
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
-        N(TriggeredEarlyDetonation) = true;
+        TriggeredEarlyDetonation = true;
         return false;
     }
     return true;
 }
 
-s32 N(can_open_menus)(Npc* npc) {
+s32 can_open_menus(Npc* npc) {
     return gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE;
 }
 
-API_CALLABLE(N(UseAbility)) {
+API_CALLABLE(UseAbility) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
@@ -236,7 +234,7 @@ API_CALLABLE(N(UseAbility)) {
     }
 
     if (isInitialCall) {
-        N(try_cancel_tweester)(npc);
+        try_cancel_tweester(npc);
         script->USE_STATE = BLAST_STATE_BEGIN;
     }
 
@@ -247,14 +245,14 @@ API_CALLABLE(N(UseAbility)) {
             }
             disable_player_input();
             script->functionTemp[3] = playerStatus->inputDisabledCount;
-            N(LockingPlayerInput) = true;
-            N(IsBlasting) = false;
-            N(MaintainPosAfterBlast) = false;
-            N(TriggeredEarlyDetonation) = false;
+            LockingPlayerInput = true;
+            IsBlasting = false;
+            MaintainPosAfterBlast = false;
+            TriggeredEarlyDetonation = false;
             npc->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING);
             partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_LIT;
             partnerStatus->actingPartner = PARTNER_BOMBETTE;
-            N(PlayerWasFacingLeft) = partner_force_player_flip_done();
+            PlayerWasFacingLeft = partner_force_player_flip_done();
             enable_npc_blur(npc);
             npc->duration = 4;
             npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
@@ -275,7 +273,7 @@ API_CALLABLE(N(UseAbility)) {
             npc->moveToPos.z = playerStatus->pos.z;
             npc->curAnim = ANIM_WorldBombette_Run;
             add_vec2D_polar(&npc->moveToPos.x, &npc->moveToPos.z, 0.0f, playerStatus->targetYaw);
-            temp_f0 = clamp_angle(playerStatus->targetYaw + (N(PlayerWasFacingLeft) ? -90.0f : 90.0f));
+            temp_f0 = clamp_angle(playerStatus->targetYaw + (PlayerWasFacingLeft ? -90.0f : 90.0f));
             add_vec2D_polar(&npc->moveToPos.x, &npc->moveToPos.z, playerStatus->colliderDiameter / 4, temp_f0);
             npc->pos.x += (npc->moveToPos.x - npc->pos.x) / npc->duration;
             npc->pos.y += (npc->moveToPos.y - npc->pos.y) / npc->duration;
@@ -316,11 +314,11 @@ API_CALLABLE(N(UseAbility)) {
                 break;
             }
             sfx_play_sound_at_npc(SOUND_LOOP_BOMBETTE_FUSE, SOUND_SPACE_DEFAULT, NPC_PARTNER);
-            N(PlayingFuseSound) = true;
+            PlayingFuseSound = true;
             add_vec2D_polar(&npc->pos.x, &npc->pos.z, 0.0f, npc->yaw);
             npc->curAnim = ANIM_WorldBombette_WalkLit;
             npc->jumpVel = 0.0f;
-            N(MovementBlocked) = false;
+            MovementBlocked = false;
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_IGNORE_CHAR_COLLISION;
             npc->moveSpeed = 1.0f;
@@ -333,11 +331,11 @@ API_CALLABLE(N(UseAbility)) {
                 break;
             }
             if (script->functionTemp[1] < 45) {
-                if (!(npc->flags & NPC_FLAG_COLLIDING_WITH_WORLD) && !N(MovementBlocked)) {
+                if (!(npc->flags & NPC_FLAG_COLLIDING_WITH_WORLD) && !MovementBlocked) {
                     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
                     npc_surface_spawn_fx(npc, SURFACE_INTERACT_WALK);
                 } else {
-                    N(MovementBlocked) = true;
+                    MovementBlocked = true;
                 }
             }
 
@@ -356,8 +354,8 @@ API_CALLABLE(N(UseAbility)) {
                     npc->flags &= ~NPC_FLAG_GRAVITY;
                     script->functionTemp[1] = 2;
                     script->USE_STATE = BLAST_STATE_EXPLODE;
-                    if (N(LockingPlayerInput)) {
-                        N(LockingPlayerInput) = false;
+                    if (LockingPlayerInput) {
+                        LockingPlayerInput = false;
                         enable_player_input();
                     }
                     break;
@@ -379,16 +377,16 @@ API_CALLABLE(N(UseAbility)) {
                     suggest_player_anim_allow_backward(ANIM_Mario1_Idle);
                 }
                 enable_player_input();
-                N(LockingPlayerInput) = false;
+                LockingPlayerInput = false;
             }
 
             npc_do_other_npc_collision(npc);
             if (npc->flags & NPC_FLAG_COLLIDING_WITH_NPC) {
-                if (N(LockingPlayerInput)) {
-                    N(LockingPlayerInput) = false;
+                if (LockingPlayerInput) {
+                    LockingPlayerInput = false;
                     enable_player_input();
                 }
-            } else if (!N(TriggeredEarlyDetonation)) {
+            } else if (!TriggeredEarlyDetonation) {
                 if (script->functionTemp[1] != 0) {
                     script->functionTemp[1]--;
                     break;
@@ -408,8 +406,8 @@ API_CALLABLE(N(UseAbility)) {
                 script->functionTemp[1]--;
                 break;
             }
-            if (N(PlayingFuseSound)) {
-                N(PlayingFuseSound) = false;
+            if (PlayingFuseSound) {
+                PlayingFuseSound = false;
                 sfx_stop_sound(SOUND_LOOP_BOMBETTE_FUSE);
             }
             fx_explosion(gPlayerData.partners[gPlayerData.curPartner].level, npc->pos.x, npc->pos.y + (npc->collisionHeight * 0.5f), npc->pos.z);
@@ -430,8 +428,8 @@ API_CALLABLE(N(UseAbility)) {
             collisionStatus->bombetteExplosionPos.x = npc->pos.x;
             collisionStatus->bombetteExplosionPos.y = npc->pos.y;
             collisionStatus->bombetteExplosionPos.z = npc->pos.z;
-            N(blast_affect_entities)(npc);
-            N(IsBlasting) = true;
+            blast_affect_entities(npc);
+            IsBlasting = true;
             partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_BLAST;
             script->functionTemp[1] = 3;
             script->USE_STATE++;
@@ -442,7 +440,7 @@ API_CALLABLE(N(UseAbility)) {
                 break;
             }
             partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_RECOVER;
-            N(IsBlasting) = false;
+            IsBlasting = false;
             npc->jumpVel = ((playerStatus->pos.y - npc->pos.y) / 20.0f) + 30.0;
             npc->moveSpeed = 0.8f;
             npc->yaw = rand_int(360);
@@ -472,7 +470,7 @@ API_CALLABLE(N(UseAbility)) {
                 script->functionTemp[1]--;
                 break;
             }
-            if (!N(MaintainPosAfterBlast)) {
+            if (!MaintainPosAfterBlast) {
                 npc->pos.x = playerStatus->pos.x;
                 npc->pos.z = playerStatus->pos.z;
             }
@@ -511,29 +509,29 @@ API_CALLABLE(N(UseAbility)) {
             if (playerStatus->actionState == ACTION_STATE_IDLE) {
                 suggest_player_anim_allow_backward(ANIM_Mario1_Idle);
             }
-            if (N(LockingPlayerInput)) {
-                N(LockingPlayerInput) = false;
+            if (LockingPlayerInput) {
+                LockingPlayerInput = false;
                 enable_player_input();
             }
             partnerStatus->partnerActionState = ACTION_STATE_IDLE;
             partnerStatus->actingPartner = PARTNER_NONE;
             npc->jumpVel = 0.0f;
-            N(IsBlasting) = false;
-            N(TriggeredEarlyDetonation) = false;
+            IsBlasting = false;
+            TriggeredEarlyDetonation = false;
             npc->pos.y = playerStatus->pos.y;
             npc->rot.x = 0.0f;
             npc->rot.z = 0.0f;
             npc->curAnim = ANIM_WorldBombette_Idle;
             partner_clear_player_tracking(npc);
-            if (N(PlayingFuseSound)) {
-                N(PlayingFuseSound) = false;
+            if (PlayingFuseSound) {
+                PlayingFuseSound = false;
                 sfx_stop_sound(SOUND_LOOP_BOMBETTE_FUSE);
             }
             temp_ret = ApiStatus_DONE2;
             return temp_ret;
         case BLAST_STATE_FINISH:
-            if (N(LockingPlayerInput)) {
-                N(LockingPlayerInput) = false;
+            if (LockingPlayerInput) {
+                LockingPlayerInput = false;
                 enable_player_input();
             }
             partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
@@ -546,9 +544,9 @@ API_CALLABLE(N(UseAbility)) {
             npc->pos.x = playerStatus->pos.x;
             npc->pos.y = playerStatus->pos.y;
             npc->pos.z = playerStatus->pos.z;
-            N(IsBlasting) = false;
-            N(TriggeredEarlyDetonation) = false;
-            if (!N(PlayerWasFacingLeft)) {
+            IsBlasting = false;
+            TriggeredEarlyDetonation = false;
+            if (!PlayerWasFacingLeft) {
                 add_vec2D_polar(&npc->pos.x, &npc->pos.z, playerStatus->colliderDiameter / 4, clamp_angle(playerStatus->targetYaw + 90.0f));
             } else {
                 add_vec2D_polar(&npc->pos.x, &npc->pos.z, playerStatus->colliderDiameter / 4, clamp_angle(playerStatus->targetYaw - 90.0f));
@@ -556,8 +554,8 @@ API_CALLABLE(N(UseAbility)) {
             npc->jumpVel = 0.0f;
             partner_clear_player_tracking(npc);
             temp_ret = ApiStatus_DONE2;
-            if (N(PlayingFuseSound)) {
-                N(PlayingFuseSound) = false;
+            if (PlayingFuseSound) {
+                PlayingFuseSound = false;
                 sfx_stop_sound(SOUND_LOOP_BOMBETTE_FUSE);
             }
             temp_ret = ApiStatus_DONE2;
@@ -570,12 +568,12 @@ API_CALLABLE(N(UseAbility)) {
 }
 
 EvtScript EVS_WorldBombette_UseAbility = {
-    Call(N(UseAbility))
+    Call(UseAbility)
     Return
     End
 };
 
-API_CALLABLE(N(PutAway)) {
+API_CALLABLE(PutAway) {
     Npc* bombette = script->owner2.npc;
 
     if (isInitialCall) {
@@ -590,12 +588,12 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldBombette_PutAway = {
-    Call(N(PutAway))
+    Call(PutAway)
     Return
     End
 };
 
-s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
+s32 test_first_strike(Npc* bombette, Npc* enemy) {
     f32 bombetteX, bombetteZ;
     f32 enemyX, enemyZ;
     f32 x, y, z, dist;
@@ -604,7 +602,7 @@ s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
     b32 hasCollision;
     s32 enemyHit;
 
-    if (!N(IsBlasting)) {
+    if (!IsBlasting) {
         return false;
     }
 
@@ -643,16 +641,16 @@ s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
     return enemyHit;
 }
 
-void N(pre_battle)(Npc* bombette) {
+void pre_battle(Npc* bombette) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
     if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE) {
-        if (N(LockingPlayerInput)) {
+        if (LockingPlayerInput) {
             enable_player_input();
         }
 
-        N(IsBlasting) = false;
+        IsBlasting = false;
         playerStatus->flags &= ~PS_FLAG_JUMPING;
         bombette->jumpVel = 0.0f;
         bombette->flags &= ~NPC_FLAG_JUMPING;
@@ -667,7 +665,7 @@ void N(pre_battle)(Npc* bombette) {
         bombette->pos.y = playerStatus->pos.y;
         bombette->pos.z = playerStatus->pos.z;
 
-        if (!N(PlayerWasFacingLeft)) {
+        if (!PlayerWasFacingLeft) {
             add_vec2D_polar(&bombette->pos.x, &bombette->pos.z,
                             playerStatus->colliderDiameter / 4, clamp_angle(playerStatus->targetYaw + 90.0f));
         } else {
@@ -683,8 +681,8 @@ void N(pre_battle)(Npc* bombette) {
         partner_clear_player_tracking(bombette);
         disable_npc_blur(bombette);
 
-        if (N(PlayingFuseSound)) {
-            N(PlayingFuseSound) = false;
+        if (PlayingFuseSound) {
+            PlayingFuseSound = false;
             sfx_stop_sound(SOUND_LOOP_BOMBETTE_FUSE);
         }
     }
@@ -692,14 +690,14 @@ void N(pre_battle)(Npc* bombette) {
 
 WORLD_PARTNER_ENTRY = {
     .isFlying = false,
-    .init = N(init),
+    .init = init,
     .takeOut = &EVS_WorldBombette_TakeOut,
     .update = &EVS_WorldBombette_Update,
     .useAbility = &EVS_WorldBombette_UseAbility,
     .putAway = &EVS_WorldBombette_PutAway,
     .idle = ANIM_WorldBombette_Idle,
-    .testFirstStrike = N(test_first_strike),
-    .canUseAbility = N(can_use_ability),
-    .canPlayerOpenMenus = N(can_open_menus),
-    .preBattle = N(pre_battle),
+    .testFirstStrike = test_first_strike,
+    .canUseAbility = can_use_ability,
+    .canPlayerOpenMenus = can_open_menus,
+    .preBattle = pre_battle,
 };

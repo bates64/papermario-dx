@@ -22,7 +22,7 @@ enum SwooperAiAnims {
     AI_ANIM_SWOOPER_HANG            = 0,
 };
 
-API_CALLABLE(N(SwooperAI_Main)) {
+API_CALLABLE(SwooperAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;

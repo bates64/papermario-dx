@@ -2,18 +2,18 @@
 #include "npc.h"
 #include "world/partners.h"
 
-API_CALLABLE(N(ToadHouse_SuspendStatusBar)) {
+API_CALLABLE(ToadHouse_SuspendStatusBar) {
     status_bar_ignore_changes();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_ResumeStatusBar)) {
+API_CALLABLE(ToadHouse_ResumeStatusBar) {
     status_bar_respond_to_changes();
     sync_status_bar();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_UpdateScreenOverlay)) {
+API_CALLABLE(ToadHouse_UpdateScreenOverlay) {
     Bytecode* args = script->ptrReadPos;
     s32 type = evt_get_variable(script, *args++);
     s32 zoom = evt_get_variable(script, *args++);
@@ -23,7 +23,7 @@ API_CALLABLE(N(ToadHouse_UpdateScreenOverlay)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_CamSetFOV)) {
+API_CALLABLE(ToadHouse_CamSetFOV) {
     Bytecode* args = script->ptrReadPos;
     s32 camIdx = evt_get_variable(script, *args++);
 
@@ -31,7 +31,7 @@ API_CALLABLE(N(ToadHouse_CamSetFOV)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_AwaitScriptComplete)) {
+API_CALLABLE(ToadHouse_AwaitScriptComplete) {
     Bytecode* args = script->ptrReadPos;
     s32 waitingScriptID = evt_get_variable(script, *args++);
 
@@ -42,7 +42,7 @@ API_CALLABLE(N(ToadHouse_AwaitScriptComplete)) {
     }
 }
 
-API_CALLABLE(N(ToadHouse_SuspendPartnerAbility)) {
+API_CALLABLE(ToadHouse_SuspendPartnerAbility) {
     if (gPlayerData.curPartner == PARTNER_NONE) {
         return ApiStatus_DONE2;
     }
@@ -50,12 +50,12 @@ API_CALLABLE(N(ToadHouse_SuspendPartnerAbility)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_ResumePartnerAbility)) {
+API_CALLABLE(ToadHouse_ResumePartnerAbility) {
     partner_resume_ability_script();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_DoesPlayerNeedSleep)) {
+API_CALLABLE(ToadHouse_DoesPlayerNeedSleep) {
     PlayerData* playerData = &gPlayerData;
 
     script->varTable[1] = false;
@@ -73,7 +73,7 @@ API_CALLABLE(N(ToadHouse_DoesPlayerNeedSleep)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_InitScreenOverlay)) {
+API_CALLABLE(ToadHouse_InitScreenOverlay) {
     Bytecode* args = script->ptrReadPos;
     s32 r = evt_get_variable(script, *args++);
     s32 g = evt_get_variable(script, *args++);
@@ -83,7 +83,7 @@ API_CALLABLE(N(ToadHouse_InitScreenOverlay)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_PutPartnerAway)) {
+API_CALLABLE(ToadHouse_PutPartnerAway) {
     Bytecode* args = script->ptrReadPos;
     Bytecode saveToVar = *args++;
 
@@ -92,7 +92,7 @@ API_CALLABLE(N(ToadHouse_PutPartnerAway)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_GetPartnerOut)) {
+API_CALLABLE(ToadHouse_GetPartnerOut) {
     Bytecode* args = script->ptrReadPos;
     Bytecode readFromVar = *args++;
 

@@ -8,7 +8,7 @@
     .next = nextVar, \
 }
 
-GameVarRange N(GameByteTable)[] = {
+GameVarRange GameByteTable[] = {
     VAR_RANGE_BYTE("GSW EVT",   GB_StoryProgress,                 GB_KMR20_MarioReadDiaryFlags_00,  GB_Unused_EVT_02),
     VAR_RANGE_BYTE("GSW KMR",   GB_KMR20_MarioReadDiaryFlags_00,  GB_MAC01_Merlon_SpinJumpCount,    GB_Unused_KMR_05),
     VAR_RANGE_BYTE("GSW MAC",   GB_MAC01_Merlon_SpinJumpCount,    GB_TIK15_RipCheato_PurchaseCount, GB_Unused_MAC_13),
@@ -52,7 +52,7 @@ GameVarRange N(GameByteTable)[] = {
     .next = nextVar, \
 }
 
-GameVarRange N(GameFlagTable)[] = {
+GameVarRange GameFlagTable[] = {
     VAR_RANGE_FLAG("GSWF EVT",   GF_Unused_EVT_00,                GF_KMR04_Tree3_Dolly,            GF_Unused_EVT_0A),
     VAR_RANGE_FLAG("GSWF KMR",   GF_KMR04_Tree3_Dolly,            GF_Unused_MAC_00,                GF_Unused_KMR_51),
     VAR_RANGE_FLAG("GSWF MAC",   GF_Unused_MAC_00,                GF_Unused_TIK_00,                GF_Unused_MAC_EF),

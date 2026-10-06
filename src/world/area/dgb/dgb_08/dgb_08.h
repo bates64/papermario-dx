@@ -29,11 +29,9 @@ enum {
     NPC_Clubba_Last         = 11,
 };
 
-#define NAMESPACE dgb_08
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(BeforeNPCs);
-extern NpcGroupList N(TubbaNPCs);
-extern NpcGroupList N(AfterNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList BeforeNPCs;
+extern NpcGroupList TubbaNPCs;
+extern NpcGroupList AfterNPCs;

@@ -3,4 +3,4 @@
 
 #define NpcSettings_Gooma NpcSettings_GoombaFamily
 
-extern NpcSettings N(NpcSettings_Gooma);
+extern NpcSettings NpcSettings_Gooma;

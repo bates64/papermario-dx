@@ -1,6 +1,6 @@
 #include "mac_01.h"
 
-API_CALLABLE(N(HideRowfBadges_IntroScene)) {
+API_CALLABLE(HideRowfBadges_IntroScene) {
     if (evt_get_variable(nullptr, GF_MAC01_RowfBadgeAvailableA) == 0) {
         set_item_entity_flags(gGameStatusPtr->shopItemEntities[0].index, ITEM_ENTITY_FLAG_HIDDEN);
     }
@@ -13,10 +13,10 @@ API_CALLABLE(N(HideRowfBadges_IntroScene)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_IntroWalking) = {
+EvtScript EVS_Scene_IntroWalking = {
     Call(DisablePlayerInput, true)
     Call(EnableModel, MODEL_ju_1, false)
-    Call(N(HideRowfBadges_IntroScene))
+    Call(HideRowfBadges_IntroScene)
     Call(UseSettingsFrom, CAM_DEFAULT, -560, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -560, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(250.0))

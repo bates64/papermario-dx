@@ -1,7 +1,7 @@
 #include "omo_08.h"
 #include "effects.h"
 
-extern EvtScript N(EVS_HitBox);
+extern EvtScript EVS_HitBox;
 
 enum {
     BOX_COLOR_GREEN     = 0,
@@ -12,31 +12,31 @@ enum {
 
 #define BOX_SEQUENCE(a, b, c, d) (a << 6 | b << 4 | c << 2 | d)
 
-s32 N(GreenBoxInfo)[] = {
+s32 GreenBoxInfo[] = {
     BOX_COLOR_GREEN,
     MODEL_bm1_2, MODEL_b1_2,
     MODEL_bm1_1, MODEL_b1_1,
 };
 
-s32 N(YellowBoxInfo)[] = {
+s32 YellowBoxInfo[] = {
     BOX_COLOR_YELLOW,
     MODEL_bm2_2, MODEL_b2_2,
     MODEL_bm2_1, MODEL_b2_1,
 };
 
-s32 N(RedBoxInfo)[] = {
+s32 RedBoxInfo[] = {
     BOX_COLOR_RED,
     MODEL_bm3_2, MODEL_b3_2,
     MODEL_bm3_1, MODEL_b3_1,
 };
 
-s32 N(BlueBoxInfo)[] = {
+s32 BlueBoxInfo[] = {
     BOX_COLOR_BLUE,
     MODEL_bm4_2, MODEL_b4_2,
     MODEL_bm4_1, MODEL_b4_1,
 };
 
-EvtScript N(EVS_GreenLightOff) = {
+EvtScript EVS_GreenLightOff = {
     Call(EnableModel, MODEL_bm1_1, true)
     Call(EnableModel, MODEL_b1_1, true)
     Call(EnableModel, MODEL_bm1_2, false)
@@ -45,7 +45,7 @@ EvtScript N(EVS_GreenLightOff) = {
     End
 };
 
-EvtScript N(EVS_YellowLightOff) = {
+EvtScript EVS_YellowLightOff = {
     Call(EnableModel, MODEL_bm2_1, true)
     Call(EnableModel, MODEL_b2_1, true)
     Call(EnableModel, MODEL_bm2_2, false)
@@ -54,7 +54,7 @@ EvtScript N(EVS_YellowLightOff) = {
     End
 };
 
-EvtScript N(EVS_RedLightOff) = {
+EvtScript EVS_RedLightOff = {
     Call(EnableModel, MODEL_bm3_1, true)
     Call(EnableModel, MODEL_b3_1, true)
     Call(EnableModel, MODEL_bm3_2, false)
@@ -63,7 +63,7 @@ EvtScript N(EVS_RedLightOff) = {
     End
 };
 
-EvtScript N(EVS_BlueLightOff) = {
+EvtScript EVS_BlueLightOff = {
     Call(EnableModel, MODEL_bm4_1, true)
     Call(EnableModel, MODEL_b4_1, true)
     Call(EnableModel, MODEL_bm4_2, false)
@@ -72,7 +72,7 @@ EvtScript N(EVS_BlueLightOff) = {
     End
 };
 
-EvtScript N(EVS_GreenLightOn) = {
+EvtScript EVS_GreenLightOn = {
     Call(EnableModel, MODEL_bm1_1, false)
     Call(EnableModel, MODEL_b1_1, false)
     Call(EnableModel, MODEL_bm1_2, true)
@@ -81,7 +81,7 @@ EvtScript N(EVS_GreenLightOn) = {
     End
 };
 
-EvtScript N(EVS_YellowLightOn) = {
+EvtScript EVS_YellowLightOn = {
     Call(EnableModel, MODEL_bm2_1, false)
     Call(EnableModel, MODEL_b2_1, false)
     Call(EnableModel, MODEL_bm2_2, true)
@@ -90,7 +90,7 @@ EvtScript N(EVS_YellowLightOn) = {
     End
 };
 
-EvtScript N(EVS_RedLightOn) = {
+EvtScript EVS_RedLightOn = {
     Call(EnableModel, MODEL_bm3_1, false)
     Call(EnableModel, MODEL_b3_1, false)
     Call(EnableModel, MODEL_bm3_2, true)
@@ -99,7 +99,7 @@ EvtScript N(EVS_RedLightOn) = {
     End
 };
 
-EvtScript N(EVS_BlueLightOn) = {
+EvtScript EVS_BlueLightOn = {
     Call(EnableModel, MODEL_bm4_1, false)
     Call(EnableModel, MODEL_b4_1, false)
     Call(EnableModel, MODEL_bm4_2, true)
@@ -108,7 +108,7 @@ EvtScript N(EVS_BlueLightOn) = {
     End
 };
 
-EvtScript N(EVS_ResetBoxesAfterAmbush) = {
+EvtScript EVS_ResetBoxesAfterAmbush = {
     // wait for all shy guys to be defeated
     Label(0)
         Call(GetNpcPos, NPC_ShyGuy_01, LVar0, LVar1, LVar2)
@@ -123,7 +123,7 @@ EvtScript N(EVS_ResetBoxesAfterAmbush) = {
             Goto(0)
         EndIf
     Thread
-        Exec(N(EVS_GreenLightOff))
+        Exec(EVS_GreenLightOff)
         Call(MakeLerp, 90, 0, 10, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
@@ -137,7 +137,7 @@ EvtScript N(EVS_ResetBoxesAfterAmbush) = {
     EndThread
     Wait(2)
     Thread
-        Exec(N(EVS_YellowLightOff))
+        Exec(EVS_YellowLightOff)
         Call(MakeLerp, 90, 0, 10, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
@@ -151,7 +151,7 @@ EvtScript N(EVS_ResetBoxesAfterAmbush) = {
     EndThread
     Wait(3)
     Thread
-        Exec(N(EVS_RedLightOff))
+        Exec(EVS_RedLightOff)
         Call(MakeLerp, 90, 0, 10, EASING_COS_IN_OUT)
         Loop(0)
             Call(UpdateLerp)
@@ -164,7 +164,7 @@ EvtScript N(EVS_ResetBoxesAfterAmbush) = {
         EndLoop
     EndThread
     Wait(3)
-    Exec(N(EVS_BlueLightOff))
+    Exec(EVS_BlueLightOff)
     Call(MakeLerp, 90, 0, 10, EASING_COS_IN_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -179,62 +179,62 @@ EvtScript N(EVS_ResetBoxesAfterAmbush) = {
     Set(MV_BoxHitCount, 0)
     Call(EnableModel, MODEL_bm1_2, false)
     Call(EnableModel, MODEL_b1_2, false)
-    Set(LVar0, Ref(N(GreenBoxInfo)))
-    BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o907, 1, 0)
+    Set(LVar0, Ref(GreenBoxInfo))
+    BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o907, 1, 0)
     Call(EnableModel, MODEL_bm2_2, false)
     Call(EnableModel, MODEL_b2_2, false)
-    Set(LVar0, Ref(N(YellowBoxInfo)))
-    BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o911, 1, 0)
+    Set(LVar0, Ref(YellowBoxInfo))
+    BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o911, 1, 0)
     Call(EnableModel, MODEL_bm3_2, false)
     Call(EnableModel, MODEL_b3_2, false)
-    Set(LVar0, Ref(N(RedBoxInfo)))
-    BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o915, 1, 0)
+    Set(LVar0, Ref(RedBoxInfo))
+    BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o915, 1, 0)
     Call(EnableModel, MODEL_bm4_2, false)
     Call(EnableModel, MODEL_b4_2, false)
-    Set(LVar0, Ref(N(BlueBoxInfo)))
-    BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o918, 1, 0)
+    Set(LVar0, Ref(BlueBoxInfo))
+    BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o918, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_BoxResult_GiveCoins) = {
+EvtScript EVS_BoxResult_GiveCoins = {
     Set(LVar0, 4)
     Loop(3)
-        Exec(N(EVS_GreenLightOff))
+        Exec(EVS_GreenLightOff)
         Wait(LVar0)
-        Exec(N(EVS_YellowLightOff))
+        Exec(EVS_YellowLightOff)
         Wait(LVar0)
-        Exec(N(EVS_RedLightOff))
+        Exec(EVS_RedLightOff)
         Wait(LVar0)
-        Exec(N(EVS_BlueLightOff))
+        Exec(EVS_BlueLightOff)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o907, SOUND_OMO_BOX_CHIME_2, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_GreenLightOn))
+        Exec(EVS_GreenLightOn)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o911, SOUND_OMO_BOX_CHIME_1, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_YellowLightOn))
+        Exec(EVS_YellowLightOn)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o915, SOUND_OMO_BOX_CHIME_3, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_RedLightOn))
+        Exec(EVS_RedLightOn)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o918, SOUND_OMO_BOX_CHIME_4, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_BlueLightOn))
+        Exec(EVS_BlueLightOn)
         Wait(LVar0)
         Sub(LVar0, 1)
     EndLoop
     Wait(4)
     Set(LVar0, 4)
     Loop(3)
-        Exec(N(EVS_GreenLightOff))
-        Exec(N(EVS_YellowLightOff))
-        Exec(N(EVS_RedLightOff))
-        Exec(N(EVS_BlueLightOff))
+        Exec(EVS_GreenLightOff)
+        Exec(EVS_YellowLightOff)
+        Exec(EVS_RedLightOff)
+        Exec(EVS_BlueLightOff)
         Wait(LVar0)
         Call(PlaySound, SOUND_OMO_BOX_DONE)
-        Exec(N(EVS_GreenLightOn))
-        Exec(N(EVS_YellowLightOn))
-        Exec(N(EVS_RedLightOn))
-        Exec(N(EVS_BlueLightOn))
+        Exec(EVS_GreenLightOn)
+        Exec(EVS_YellowLightOn)
+        Exec(EVS_RedLightOn)
+        Exec(EVS_BlueLightOn)
         Wait(LVar0)
         Sub(LVar0, 1)
     EndLoop
@@ -304,28 +304,28 @@ EvtScript N(EVS_BoxResult_GiveCoins) = {
     End
 };
 
-EvtScript N(EVS_BoxResult_RepairTrack) = {
+EvtScript EVS_BoxResult_RepairTrack = {
     Call(DisablePlayerInput, true)
     Loop(4)
-        Exec(N(EVS_GreenLightOff))
+        Exec(EVS_GreenLightOff)
         Wait(3)
-        Exec(N(EVS_YellowLightOff))
+        Exec(EVS_YellowLightOff)
         Wait(3)
-        Exec(N(EVS_RedLightOff))
+        Exec(EVS_RedLightOff)
         Wait(3)
-        Exec(N(EVS_BlueLightOff))
+        Exec(EVS_BlueLightOff)
         Wait(3)
         Call(PlaySoundAtCollider, COLLIDER_o907, SOUND_OMO_BOX_CHIME_2, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_GreenLightOn))
+        Exec(EVS_GreenLightOn)
         Wait(3)
         Call(PlaySoundAtCollider, COLLIDER_o911, SOUND_OMO_BOX_CHIME_1, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_YellowLightOn))
+        Exec(EVS_YellowLightOn)
         Wait(3)
         Call(PlaySoundAtCollider, COLLIDER_o915, SOUND_OMO_BOX_CHIME_3, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_RedLightOn))
+        Exec(EVS_RedLightOn)
         Wait(3)
         Call(PlaySoundAtCollider, COLLIDER_o918, SOUND_OMO_BOX_CHIME_4, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_BlueLightOn))
+        Exec(EVS_BlueLightOn)
         Wait(3)
     EndLoop
     Call(UseSettingsFrom, CAM_DEFAULT, 160, 10, -200)
@@ -505,44 +505,44 @@ EvtScript N(EVS_BoxResult_RepairTrack) = {
     End
 };
 
-EvtScript N(EVS_BoxResult_ReleaseShyGuys) = {
+EvtScript EVS_BoxResult_ReleaseShyGuys = {
     Set(LVar0, 4)
     Loop(3)
-        Exec(N(EVS_GreenLightOff))
+        Exec(EVS_GreenLightOff)
         Wait(LVar0)
-        Exec(N(EVS_YellowLightOff))
+        Exec(EVS_YellowLightOff)
         Wait(LVar0)
-        Exec(N(EVS_RedLightOff))
+        Exec(EVS_RedLightOff)
         Wait(LVar0)
-        Exec(N(EVS_BlueLightOff))
+        Exec(EVS_BlueLightOff)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o907, SOUND_OMO_BOX_CHIME_2, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_BlueLightOn))
+        Exec(EVS_BlueLightOn)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o911, SOUND_OMO_BOX_CHIME_1, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_RedLightOn))
+        Exec(EVS_RedLightOn)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o915, SOUND_OMO_BOX_CHIME_3, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_YellowLightOn))
+        Exec(EVS_YellowLightOn)
         Wait(LVar0)
         Call(PlaySoundAtCollider, COLLIDER_o918, SOUND_OMO_BOX_CHIME_4, SOUND_SPACE_DEFAULT)
-        Exec(N(EVS_GreenLightOn))
+        Exec(EVS_GreenLightOn)
         Wait(LVar0)
         Sub(LVar0, 1)
     EndLoop
     Wait(4)
     Set(LVar0, 4)
     Loop(3)
-        Exec(N(EVS_GreenLightOff))
-        Exec(N(EVS_YellowLightOff))
-        Exec(N(EVS_RedLightOff))
-        Exec(N(EVS_BlueLightOff))
+        Exec(EVS_GreenLightOff)
+        Exec(EVS_YellowLightOff)
+        Exec(EVS_RedLightOff)
+        Exec(EVS_BlueLightOff)
         Wait(LVar0)
         Call(PlaySound, SOUND_OMO_BOX_DONE)
-        Exec(N(EVS_GreenLightOn))
-        Exec(N(EVS_YellowLightOn))
-        Exec(N(EVS_RedLightOn))
-        Exec(N(EVS_BlueLightOn))
+        Exec(EVS_GreenLightOn)
+        Exec(EVS_YellowLightOn)
+        Exec(EVS_RedLightOn)
+        Exec(EVS_BlueLightOn)
         Wait(LVar0)
         Sub(LVar0, 1)
     EndLoop
@@ -626,21 +626,21 @@ EvtScript N(EVS_BoxResult_ReleaseShyGuys) = {
         Call(NpcJump0, NPC_ShyGuy_04, LVar0, 0, LVar2, 20)
         Call(SetNpcFlagBits, NPC_ShyGuy_04, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
         Call(ResetCam, CAM_DEFAULT, 1)
-        Exec(N(EVS_ResetBoxesAfterAmbush))
+        Exec(EVS_ResetBoxesAfterAmbush)
     EndThread
     Return
     End
 };
 
-EvtScript N(EVS_HitBox) = {
+EvtScript EVS_HitBox = {
     Switch(LVar0)
-        CaseEq(Ref(N(GreenBoxInfo)))
+        CaseEq(Ref(GreenBoxInfo))
             Call(PlaySoundAtCollider, COLLIDER_o907, SOUND_OMO_BOX_GLOW_2, SOUND_SPACE_DEFAULT)
-        CaseEq(Ref(N(YellowBoxInfo)))
+        CaseEq(Ref(YellowBoxInfo))
             Call(PlaySoundAtCollider, COLLIDER_o911, SOUND_OMO_BOX_GLOW_1, SOUND_SPACE_DEFAULT)
-        CaseEq(Ref(N(RedBoxInfo)))
+        CaseEq(Ref(RedBoxInfo))
             Call(PlaySoundAtCollider, COLLIDER_o915, SOUND_OMO_BOX_GLOW_3, SOUND_SPACE_DEFAULT)
-        CaseEq(Ref(N(BlueBoxInfo)))
+        CaseEq(Ref(BlueBoxInfo))
             Call(PlaySoundAtCollider, COLLIDER_o918, SOUND_OMO_BOX_GLOW_4, SOUND_SPACE_DEFAULT)
     EndSwitch
     UseBuf(LVar0)
@@ -673,11 +673,11 @@ EvtScript N(EVS_HitBox) = {
         Wait(30)
         Switch(MV_BoxHitSequence)
             CaseEq(BOX_SEQUENCE(BOX_COLOR_GREEN, BOX_COLOR_YELLOW, BOX_COLOR_RED, BOX_COLOR_BLUE))
-                ExecWait(N(EVS_BoxResult_GiveCoins))
+                ExecWait(EVS_BoxResult_GiveCoins)
             CaseEq(BOX_SEQUENCE(BOX_COLOR_YELLOW, BOX_COLOR_GREEN, BOX_COLOR_RED, BOX_COLOR_BLUE))
-                ExecWait(N(EVS_BoxResult_RepairTrack))
+                ExecWait(EVS_BoxResult_RepairTrack)
             CaseDefault
-                ExecWait(N(EVS_BoxResult_ReleaseShyGuys))
+                ExecWait(EVS_BoxResult_ReleaseShyGuys)
         EndSwitch
         Call(DisablePlayerInput, false)
     Else
@@ -703,26 +703,26 @@ EvtScript N(EVS_HitBox) = {
     End
 };
 
-EvtScript N(EVS_SetupBoxes) = {
+EvtScript EVS_SetupBoxes = {
     IfLt(GB_StoryProgress, STORY_CH4_SOLVED_COLOR_PUZZLE)
         Set(MV_BoxHitSequence, 0)
         Set(MV_BoxHitCount, 0)
         Call(EnableModel, MODEL_bm1_2, false)
         Call(EnableModel, MODEL_b1_2, false)
-        Set(LVar0, Ref(N(GreenBoxInfo)))
-        BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o907, 1, 0)
+        Set(LVar0, Ref(GreenBoxInfo))
+        BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o907, 1, 0)
         Call(EnableModel, MODEL_bm2_2, false)
         Call(EnableModel, MODEL_b2_2, false)
-        Set(LVar0, Ref(N(YellowBoxInfo)))
-        BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o911, 1, 0)
+        Set(LVar0, Ref(YellowBoxInfo))
+        BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o911, 1, 0)
         Call(EnableModel, MODEL_bm3_2, false)
         Call(EnableModel, MODEL_b3_2, false)
-        Set(LVar0, Ref(N(RedBoxInfo)))
-        BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o915, 1, 0)
+        Set(LVar0, Ref(RedBoxInfo))
+        BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o915, 1, 0)
         Call(EnableModel, MODEL_bm4_2, false)
         Call(EnableModel, MODEL_b4_2, false)
-        Set(LVar0, Ref(N(BlueBoxInfo)))
-        BindTrigger(Ref(N(EVS_HitBox)), TRIGGER_WALL_HAMMER, COLLIDER_o918, 1, 0)
+        Set(LVar0, Ref(BlueBoxInfo))
+        BindTrigger(Ref(EVS_HitBox), TRIGGER_WALL_HAMMER, COLLIDER_o918, 1, 0)
     Else
         Call(SetGroupVisibility, MODEL_box, MODEL_GROUP_HIDDEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o907, COLLIDER_FLAGS_UPPER_MASK)

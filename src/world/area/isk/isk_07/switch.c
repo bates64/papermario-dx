@@ -1,8 +1,8 @@
 #include "isk_07.h"
 
-extern EvtScript N(EVS_OnTouch_StairSwitch);
+extern EvtScript EVS_OnTouch_StairSwitch;
 
-API_CALLABLE(N(WaitForPlayerTouchingGround)) {
+API_CALLABLE(WaitForPlayerTouchingGround) {
     if (gCollisionStatus.curFloor == COLLIDER_o2022) {
         return ApiStatus_BLOCK;
     } else {
@@ -10,14 +10,14 @@ API_CALLABLE(N(WaitForPlayerTouchingGround)) {
     }
 }
 
-EvtScript N(EVS_SetupSwitch) = {
+EvtScript EVS_SetupSwitch = {
     Call(ParentColliderToModel, COLLIDER_o2022, MODEL_g313)
-    BindTrigger(Ref(N(EVS_OnTouch_StairSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2022, 1, 0)
+    BindTrigger(Ref(EVS_OnTouch_StairSwitch), TRIGGER_FLOOR_TOUCH, COLLIDER_o2022, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_OnTouch_StairSwitch) = {
+EvtScript EVS_OnTouch_StairSwitch = {
     Call(IsPlayerOnValidFloor, LVar0)
     IfEq(LVar0, false)
         Return
@@ -49,7 +49,7 @@ EvtScript N(EVS_OnTouch_StairSwitch) = {
         IfEq(LVar1, 1)
             Goto(20)
         EndIf
-    Call(N(WaitForPlayerTouchingGround))
+    Call(WaitForPlayerTouchingGround)
     Return
     End
 };

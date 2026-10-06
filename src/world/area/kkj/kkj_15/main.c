@@ -2,7 +2,7 @@
 
 #include "../common/RestoreFromPeachState.inc.c"
 
-Gfx N(setup_gfx_candle_lights)[] = {
+Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -21,9 +21,9 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_EndPeachChapter0) = {
+EvtScript EVS_EndPeachChapter0 = {
     Set(LVar0, GB_KKJ_LastPartner)
-    Call(N(RestoreFromPeachState))
+    Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("kmr_10"), kmr_10_ENTRY_0, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
@@ -31,9 +31,9 @@ EvtScript N(EVS_EndPeachChapter0) = {
     End
 };
 
-EvtScript N(EVS_EndPeachChapter1) = {
+EvtScript EVS_EndPeachChapter1 = {
     Set(LVar0, GB_KKJ_LastPartner)
-    Call(N(RestoreFromPeachState))
+    Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("trd_00"), trd_00_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
@@ -41,9 +41,9 @@ EvtScript N(EVS_EndPeachChapter1) = {
     End
 };
 
-EvtScript N(EVS_EndPeachChapter3) = {
+EvtScript EVS_EndPeachChapter3 = {
     Set(LVar0, GB_KKJ_LastPartner)
-    Call(N(RestoreFromPeachState))
+    Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("arn_07"), arn_07_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
@@ -51,45 +51,45 @@ EvtScript N(EVS_EndPeachChapter3) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kkj_11_3) = EVT_EXIT_SINGLE_DOOR(kkj_15_ENTRY_0, "kkj_11", kkj_11_ENTRY_3,
+EvtScript EVS_ExitDoor_kkj_11_3 = EVT_EXIT_SINGLE_DOOR(kkj_15_ENTRY_0, "kkj_11", kkj_11_ENTRY_3,
     COLLIDER_tte, MODEL_o2, DOOR_SWING_IN);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoor_kkj_11_3)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoor_kkj_11_3), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_15_ENTRY_0)
             Set(LVar2, MODEL_o2)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kkj_15_ENTRY_1)
             Switch(GB_StoryProgress)
                 CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
-                    Exec(N(EVS_EnterRotatingWall))
-                    Exec(N(EVS_SetupChapter1))
+                    Exec(EVS_EnterRotatingWall)
+                    Exec(EVS_SetupChapter1)
                 CaseEq(STORY_CH2_BEGAN_PEACH_MISSION)
-                    Exec(N(EVS_EnterRotatingWall))
-                    Exec(N(EVS_SetupChapter2))
+                    Exec(EVS_EnterRotatingWall)
+                    Exec(EVS_SetupChapter2)
                 CaseEq(STORY_CH3_BEGAN_PEACH_MISSION)
-                    Exec(N(EVS_Scene_Chapter3))
+                    Exec(EVS_Scene_Chapter3)
                 CaseDefault
-                    Exec(N(EVS_EnterRotatingWall))
-                    Exec(N(EVS_BindExitTriggers))
+                    Exec(EVS_EnterRotatingWall)
+                    Exec(EVS_BindExitTriggers)
             EndSwitch
         CaseEq(kkj_15_ENTRY_2)
-            Exec(N(EVS_Scene_Chapter0_BowserAndKammy))
+            Exec(EVS_Scene_Chapter0_BowserAndKammy)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
@@ -100,11 +100,11 @@ EvtScript N(EVS_Main) = {
     EndSwitch
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-            Call(MakeNpcs, false, Ref(N(Chapter0NPCs)))
+            Call(MakeNpcs, false, Ref(Chapter0NPCs))
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(Chapter1NPCs)))
+            Call(MakeNpcs, false, Ref(Chapter1NPCs))
         CaseEq(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(Chapter3NPCs)))
+            Call(MakeNpcs, false, Ref(Chapter3NPCs))
     EndSwitch
     IfNe(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
         Call(EnableModel, MODEL_o76, false)
@@ -120,7 +120,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o151, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
     Call(SetTexPanner, MODEL_o152, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -130,9 +130,9 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_15_ENTRY_1)
         IfEq(GB_StoryProgress, STORY_CH3_BEGAN_PEACH_MISSION)
@@ -142,7 +142,7 @@ EvtScript N(EVS_Main) = {
         EndIf
         Wait(10)
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

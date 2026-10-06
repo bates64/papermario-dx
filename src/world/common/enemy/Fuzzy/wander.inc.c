@@ -3,7 +3,7 @@
 
 #include "world/common/ai/HoppingAI.inc.c"
 
-MobileAISettings N(AISettings_Fuzzy_Wander) = {
+MobileAISettings AISettings_Fuzzy_Wander = {
     .moveSpeed = 2.0f,
     .moveTime = 30,
     .waitTime = 30,
@@ -16,19 +16,19 @@ MobileAISettings N(AISettings_Fuzzy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Fuzzy_Wander) = {
+EvtScript EVS_NpcAI_Fuzzy_Wander = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Call(SetSelfVar, AI_VAR_HOPPER, HOPPER_FUZZY)
-    Call(N(HoppingAI_Main), Ref(N(AISettings_Fuzzy_Wander)))
+    Call(HoppingAI_Main, Ref(AISettings_Fuzzy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Fuzzy_Wander) = {
+NpcSettings NpcSettings_Fuzzy_Wander = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_FUZZY,
-    .doAI = &N(EVS_NpcAI_Fuzzy_Wander),
+    .doAI = &EVS_NpcAI_Fuzzy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

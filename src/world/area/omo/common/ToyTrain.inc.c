@@ -40,7 +40,7 @@ enum TrainSpeedMode {
     TRAIN_SPEED_PARTIAL_PATH    = 3,
 };
 
-API_CALLABLE(N(CompareFloats)) {
+API_CALLABLE(CompareFloats) {
     Bytecode* args = script->ptrReadPos;
     f32 a = evt_get_float_variable(script, *args++);
     f32 b = evt_get_float_variable(script, *args++);
@@ -54,7 +54,7 @@ API_CALLABLE(N(CompareFloats)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AdvanceBuffer)) {
+API_CALLABLE(AdvanceBuffer) {
     Bytecode* args = script->ptrReadPos;
     s32 constant = evt_get_variable(script, *args++);
     s32 size = evt_get_variable(script, *args++);
@@ -64,7 +64,7 @@ API_CALLABLE(N(AdvanceBuffer)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetPlayerStatusPosYaw)) {
+API_CALLABLE(SetPlayerStatusPosYaw) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_float_variable(script, *args++);
     f32 y = evt_get_float_variable(script, *args++);
@@ -78,7 +78,7 @@ API_CALLABLE(N(SetPlayerStatusPosYaw)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetNpcPosYaw)) {
+API_CALLABLE(SetNpcPosYaw) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     f32 x = evt_get_float_variable(script, *args++);
@@ -98,7 +98,7 @@ API_CALLABLE(N(SetNpcPosYaw)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsAOrBPressed)) {
+API_CALLABLE(IsAOrBPressed) {
     script->varTable[0] = false;
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
         script->varTable[0] = true;
@@ -109,7 +109,7 @@ API_CALLABLE(N(IsAOrBPressed)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateTrain) = {
+EvtScript EVS_UpdateTrain = {
     MallocArray(20, LVar0)
     UseArray(LVar0)
     SetF(ArrayVar(2), Float(0.0))
@@ -159,7 +159,7 @@ EvtScript N(EVS_UpdateTrain) = {
                 EndIf
             CaseEq(TRAIN_STATE_BEGIN)
                 UseBuf(MV_TrainPath)
-                Call(N(AdvanceBuffer), 3, 0, 0)
+                Call(AdvanceBuffer, 3, 0, 0)
                 BufRead2(LVar0, LVar1)
                 IfEq(LVar0, -1)
                     Set(MV_TrainRideState, TRAIN_STATE_DONE)
@@ -191,7 +191,7 @@ EvtScript N(EVS_UpdateTrain) = {
                         Call(CosInterpMinMax, LVar0, ArrayVar(10), Float(1.0), Float(10.0), LVar1, 0, Float(0.0))
                 EndSwitch
                 Call(GetDist2D, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
-                Call(N(CompareFloats), LVar0, ArrayVar(10), LVar2)
+                Call(CompareFloats, LVar0, ArrayVar(10), LVar2)
                 IfEq(LVar2, 1)
                     Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
                     Call(AddVectorPolar, ArrayVar(0), ArrayVar(1), ArrayVar(10), LVar0)
@@ -201,7 +201,7 @@ EvtScript N(EVS_UpdateTrain) = {
                     SetF(ArrayVar(0), ArrayVar(2))
                     SetF(ArrayVar(1), ArrayVar(3))
                     UseBuf(MV_TrainPath)
-                    Call(N(AdvanceBuffer), 3, 2, ArrayVar(4))
+                    Call(AdvanceBuffer, 3, 2, ArrayVar(4))
                     BufRead2(ArrayVar(2), ArrayVar(3))
                     Add(ArrayVar(4), 1)
                     IfEq(ArrayVar(2), -1)
@@ -214,7 +214,7 @@ EvtScript N(EVS_UpdateTrain) = {
                     EndIf
                 EndIf
                 Call(GetDist2D, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
-                Call(N(CompareFloats), LVar0, ArrayVar(10), LVar2)
+                Call(CompareFloats, LVar0, ArrayVar(10), LVar2)
                 IfEq(LVar2, 1)
                     Call(GetFloatAngleClamped, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
                     Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), ArrayVar(10), LVar0)
@@ -224,7 +224,7 @@ EvtScript N(EVS_UpdateTrain) = {
                     SetF(ArrayVar(5), ArrayVar(7))
                     SetF(ArrayVar(6), ArrayVar(8))
                     UseBuf(MV_TrainPath)
-                    Call(N(AdvanceBuffer), 3, 2, ArrayVar(9))
+                    Call(AdvanceBuffer, 3, 2, ArrayVar(9))
                     BufRead2(ArrayVar(7), ArrayVar(8))
                     Add(ArrayVar(9), 1)
                     IfEq(ArrayVar(7), -1)
@@ -302,13 +302,13 @@ EvtScript N(EVS_UpdateTrain) = {
                 SetF(LVar1, MV_TrainPosZ)
                 SetF(LVar2, MV_TrainYaw)
                 Call(AddVectorPolar, LVar0, LVar1, Float(15.0), LVar2)
-                Call(N(SetPlayerStatusPosYaw), LVar0, 50, LVar1, MV_TrainYaw)
+                Call(SetPlayerStatusPosYaw, LVar0, 50, LVar1, MV_TrainYaw)
                 SetF(LVar0, MV_TrainPosX)
                 SetF(LVar1, MV_TrainPosZ)
                 SetF(LVar2, MV_TrainYaw)
                 AddF(LVar2, Float(180.0))
                 Call(AddVectorPolar, LVar0, LVar1, Float(15.0), LVar2)
-                Call(N(SetNpcPosYaw), NPC_PARTNER, LVar0, 50, LVar1, MV_TrainYaw)
+                Call(SetNpcPosYaw, NPC_PARTNER, LVar0, 50, LVar1, MV_TrainYaw)
                 SetF(LVar0, MV_TrainPosX)
                 SetF(LVar1, MV_TrainPosZ)
                 SetF(LVar2, MV_TrainYaw)
@@ -318,7 +318,7 @@ EvtScript N(EVS_UpdateTrain) = {
                     SubF(LVar2, Float(90.0))
                 EndIf
                 Call(AddVectorPolar, LVar0, LVar1, Float(20.0), LVar2)
-                Call(N(SetNpcPosYaw), NPC_Conductor, LVar0, 50, LVar1, MV_TrainYaw)
+                Call(SetNpcPosYaw, NPC_Conductor, LVar0, 50, LVar1, MV_TrainYaw)
             CaseEq(TRAIN_STATE_DONE)
                 // do nothing
         EndSwitch
@@ -373,7 +373,7 @@ EvtScript N(EVS_UpdateTrain) = {
     End
 };
 
-EvtScript N(EVS_UpdateCameraDuringTrainRide) = {
+EvtScript EVS_UpdateCameraDuringTrainRide = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, 0, LVar2)
@@ -383,7 +383,7 @@ EvtScript N(EVS_UpdateCameraDuringTrainRide) = {
     End
 };
 
-EvtScript N(EVS_RestoreCameraAfterTrainRide) = {
+EvtScript EVS_RestoreCameraAfterTrainRide = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(MakeLerp, 0, LVar1, 45, EASING_LINEAR)
     Loop(0)
@@ -399,7 +399,7 @@ EvtScript N(EVS_RestoreCameraAfterTrainRide) = {
     End
 };
 
-EvtScript N(EVS_LowerCameraBeforeTrainRide) = {
+EvtScript EVS_LowerCameraBeforeTrainRide = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(MakeLerp, LVar1, 0, 40, EASING_LINEAR)
     Loop(0)
@@ -420,7 +420,7 @@ EvtScript N(EVS_LowerCameraBeforeTrainRide) = {
     End
 };
 
-EvtScript N(EVS_BoardTrain) = {
+EvtScript EVS_BoardTrain = {
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Thread
@@ -477,7 +477,7 @@ EvtScript N(EVS_BoardTrain) = {
     End
 };
 
-EvtScript N(EVS_DisembarkTrain) = {
+EvtScript EVS_DisembarkTrain = {
     Call(StopSound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -523,7 +523,7 @@ EvtScript N(EVS_DisembarkTrain) = {
     End
 };
 
-EvtScript N(EVS_SkipTrainRideToDestination) = {
+EvtScript EVS_SkipTrainRideToDestination = {
     Switch(AB_OMO_TrainDest)
         CaseEq(OMO_STATION_BLUE)
             Call(GotoMapSpecial, Ref("omo_03"), omo_03_ENTRY_3, TRANSITION_TOY_TRAIN)
@@ -539,7 +539,7 @@ EvtScript N(EVS_SkipTrainRideToDestination) = {
     End
 };
 
-EvtScript N(EVS_SkipTrainRideToNextStation) = {
+EvtScript EVS_SkipTrainRideToNextStation = {
     Switch(AB_OMO_TrainOrigin)
         CaseEq(OMO_STATION_BLUE)
             Switch(AB_OMO_TrainDest)
@@ -595,17 +595,17 @@ EvtScript N(EVS_SkipTrainRideToNextStation) = {
     End
 };
 
-EvtScript N(EVS_AwaitTrainRideSkip) = {
+EvtScript EVS_AwaitTrainRideSkip = {
     Label(10)
         Wait(1)
-        Call(N(IsAOrBPressed))
+        Call(IsAOrBPressed)
         IfNe(LVar0, 1)
             Goto(10)
         EndIf
     IfEq(AF_OMO_UsingRightSwitch, false)
-        ExecWait(N(EVS_SkipTrainRideToDestination))
+        ExecWait(EVS_SkipTrainRideToDestination)
     Else
-        ExecWait(N(EVS_SkipTrainRideToNextStation))
+        ExecWait(EVS_SkipTrainRideToNextStation)
     EndIf
     Return
     End

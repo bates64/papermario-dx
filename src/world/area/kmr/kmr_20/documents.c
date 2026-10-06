@@ -18,39 +18,39 @@ HudScript HES_Postcard_disabled = HES_TEMPLATE_ITEM(key_Postcard_disabled);
 HudScript HES_EmptyBook = HES_TEMPLATE_ITEM(key_EmptyBook);
 HudScript HES_EmptyBook_disabled = HES_TEMPLATE_ITEM(key_EmptyBook_disabled);
 
-BSS PopupMenu N(ChooseDocumentPopupMenu);
-BSS IMG_BIN N(LetterBackgroundImg)[0x3D86] ALIGNED(16);
-BSS PAL_BIN N(LetterBackgroundPal)[0x100];
-BSS IMG_BIN N(LetterPhotoImg)[0x3D86];
-BSS PAL_BIN N(N(LetterPhotoPal))[0x100];
-BSS s32 N(LetterWorkerID);
-BSS s32 N(LetterAlpha);
-BSS MessageImageData N(LetterImgData)[2];
+BSS PopupMenu ChooseDocumentPopupMenu;
+BSS IMG_BIN LetterBackgroundImg[0x3D86] ALIGNED(16);
+BSS PAL_BIN LetterBackgroundPal[0x100];
+BSS IMG_BIN LetterPhotoImg[0x3D86];
+BSS PAL_BIN LetterPhotoPal[0x100];
+BSS s32 LetterWorkerID;
+BSS s32 LetterAlpha;
+BSS MessageImageData LetterImgData[2];
 
-void N(worker_draw_letter)(void) {
-    N(LetterAlpha) += 20;
-    if (N(LetterAlpha) > 255) {
-        N(LetterAlpha) = 255;
+void worker_draw_letter(void) {
+    LetterAlpha += 20;
+    if (LetterAlpha > 255) {
+        LetterAlpha = 255;
     }
 
-    draw_ci_image_with_clipping(N(LetterImgData)[0].raster,
-        N(LetterImgData)[0].width, N(LetterImgData)[0].height,
-        N(LetterImgData)[0].format, N(LetterImgData)[0].bitDepth,
-        N(LetterImgData)[0].palette,
+    draw_ci_image_with_clipping(LetterImgData[0].raster,
+        LetterImgData[0].width, LetterImgData[0].height,
+        LetterImgData[0].format, LetterImgData[0].bitDepth,
+        LetterImgData[0].palette,
         85, 97,
         0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
-        N(LetterAlpha));
+        LetterAlpha);
 
-    draw_ci_image_with_clipping(N(LetterImgData)[1].raster,
-        N(LetterImgData)[1].width, N(LetterImgData)[1].height,
-        N(LetterImgData)[1].format, N(LetterImgData)[1].bitDepth,
-        N(LetterImgData)[1].palette,
+    draw_ci_image_with_clipping(LetterImgData[1].raster,
+        LetterImgData[1].width, LetterImgData[1].height,
+        LetterImgData[1].format, LetterImgData[1].bitDepth,
+        LetterImgData[1].palette,
         160, 102,
         0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
-        N(LetterAlpha));
+        LetterAlpha);
 }
 
-s32 N(LetterStoryRequirements)[] = {
+s32 LetterStoryRequirements[] = {
     STORY_INTRO,
     STORY_CH4_PULLED_SWITCH_SWITCH,
     STORY_CH1_STAR_SPIRIT_RESCUED,
@@ -65,7 +65,7 @@ s32 N(LetterStoryRequirements)[] = {
     STORY_CH7_STAR_SPIRIT_RESCUED,
 };
 
-s32 N(LetterSenderStringIDs)[] = {
+s32 LetterSenderStringIDs[] = {
     MSG_Document_Letter_Mario01_From,
     MSG_Document_Letter_Mario02_From,
     MSG_Document_Letter_Mario03_From,
@@ -80,7 +80,7 @@ s32 N(LetterSenderStringIDs)[] = {
     MSG_Document_Letter_Mario12_From,
 };
 
-s32 N(LetterBodyStringIDs)[] = {
+s32 LetterBodyStringIDs[] = {
     MSG_Document_Letter_Mario01_Body,
     MSG_Document_Letter_Mario02_Body,
     MSG_Document_Letter_Mario03_Body,
@@ -96,7 +96,7 @@ s32 N(LetterBodyStringIDs)[] = {
 };
 
 // TODO mix of image / palette pointers
-IMG_PTR N(LetterDmaOffsets)[] = {
+IMG_PTR LetterDmaOffsets[] = {
     charset_postcard_OFFSET, (IMG_PTR) charset_postcard_pal_OFFSET,
     charset_letter_content_1_OFFSET, (IMG_PTR) charset_letter_content_1_pal_OFFSET,
     charset_letter_content_2_OFFSET, (IMG_PTR) charset_letter_content_2_pal_OFFSET,
@@ -112,13 +112,13 @@ IMG_PTR N(LetterDmaOffsets)[] = {
     charset_letter_content_12_OFFSET, (IMG_PTR) charset_letter_content_12_pal_OFFSET,
 };
 
-API_CALLABLE(N(InitLetters)){
+API_CALLABLE(InitLetters){
     script->functionTemp[3] = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ReadLetters)){
-    PopupMenu* menu = &N(ChooseDocumentPopupMenu);
+API_CALLABLE(ReadLetters){
+    PopupMenu* menu = &ChooseDocumentPopupMenu;
     s32 temp;
     s32 userIndex;
     s32 storyReq;
@@ -135,9 +135,9 @@ API_CALLABLE(N(ReadLetters)){
         case 0:
             numEntries = 0;
 
-            for (i = 0; i < ARRAY_COUNT(N(LetterStoryRequirements)); i++) {
+            for (i = 0; i < ARRAY_COUNT(LetterStoryRequirements); i++) {
                 cond = false;
-                storyReq = N(LetterStoryRequirements)[i];
+                storyReq = LetterStoryRequirements[i];
                 switch (storyReq) {
                     case STORY_CH4_PULLED_SWITCH_SWITCH:
                         if (gPlayerData.quizzesCorrect != 0) {
@@ -169,7 +169,7 @@ API_CALLABLE(N(ReadLetters)){
                     menu->ptrIcon[numEntries] = HES_Postcard;
                     menu->userIndex[numEntries] = i;
                     menu->enabled[numEntries] = true;
-                    menu->nameMsg[numEntries] = N(LetterSenderStringIDs)[i];
+                    menu->nameMsg[numEntries] = LetterSenderStringIDs[i];
                     menu->descMsg[numEntries] = 0;
                     temp = GET_PACKED_FLAG(GB_KMR20_MarioReadLetterFlags_00, i);
 
@@ -214,7 +214,7 @@ API_CALLABLE(N(ReadLetters)){
                 }
                 script->functionTemp[3] = script->functionTemp[2] - 1;
                 userIndex = menu->userIndex[script->functionTemp[2] - 1];
-                script->varTable[0] = N(LetterBodyStringIDs)[userIndex];
+                script->varTable[0] = LetterBodyStringIDs[userIndex];
 
                 flags = SET_PACKED_FLAG(GB_KMR20_MarioReadLetterFlags_00, userIndex);
                 set_global_byte(PACKED_BYTE(GB_KMR20_MarioReadLetterFlags_00, userIndex), flags);
@@ -222,36 +222,36 @@ API_CALLABLE(N(ReadLetters)){
                     evt_set_variable(nullptr, GF_KMR20_ReadThankYouLetterFromKoopaVillage, true);
                 }
 
-                dma_copy(charset_ROM_START + (s32) N(LetterDmaOffsets)[0],
-                         charset_ROM_START + (s32) N(LetterDmaOffsets)[0] + sizeof(N(LetterBackgroundImg)),
-                         N(LetterBackgroundImg));
-                dma_copy(charset_ROM_START + (s32) N(LetterDmaOffsets)[1],
-                         charset_ROM_START + (s32) N(LetterDmaOffsets)[1] + sizeof(N(LetterBackgroundPal)),
-                         N(LetterBackgroundPal));
+                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[0],
+                         charset_ROM_START + (s32) LetterDmaOffsets[0] + sizeof(LetterBackgroundImg),
+                         LetterBackgroundImg);
+                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[1],
+                         charset_ROM_START + (s32) LetterDmaOffsets[1] + sizeof(LetterBackgroundPal),
+                         LetterBackgroundPal);
 
-                N(LetterImgData)[0].raster = N(LetterBackgroundImg);
-                N(LetterImgData)[0].palette = N(LetterBackgroundPal);
-                N(LetterImgData)[0].width = 150;
-                N(LetterImgData)[0].height = 105;
-                N(LetterImgData)[0].format = G_IM_FMT_CI;
-                N(LetterImgData)[0].bitDepth = G_IM_SIZ_4b;
+                LetterImgData[0].raster = LetterBackgroundImg;
+                LetterImgData[0].palette = LetterBackgroundPal;
+                LetterImgData[0].width = 150;
+                LetterImgData[0].height = 105;
+                LetterImgData[0].format = G_IM_FMT_CI;
+                LetterImgData[0].bitDepth = G_IM_SIZ_4b;
 
-                dma_copy(charset_ROM_START + (s32) N(LetterDmaOffsets)[(userIndex * 2) + 2],
-                         charset_ROM_START + (s32) N(LetterDmaOffsets)[(userIndex * 2) + 2] + sizeof(N(LetterPhotoImg)),
-                         N(LetterPhotoImg));
-                dma_copy(charset_ROM_START + (s32) N(LetterDmaOffsets)[(userIndex * 2) + 3],
-                         charset_ROM_START + (s32) N(LetterDmaOffsets)[(userIndex * 2) + 3] + sizeof(N(N(LetterPhotoPal))),
-                         N(N(LetterPhotoPal)));
+                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 2],
+                         charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 2] + sizeof(LetterPhotoImg),
+                         LetterPhotoImg);
+                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 3],
+                         charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 3] + sizeof(LetterPhotoPal),
+                         LetterPhotoPal);
 
-                N(LetterImgData)[1].raster = N(LetterPhotoImg);
-                N(LetterImgData)[1].palette = N(N(LetterPhotoPal));
-                N(LetterImgData)[1].width = 70;
-                N(LetterImgData)[1].height = 95;
-                N(LetterImgData)[1].format = G_IM_FMT_CI;
-                N(LetterImgData)[1].bitDepth = G_IM_SIZ_8b;
+                LetterImgData[1].raster = LetterPhotoImg;
+                LetterImgData[1].palette = LetterPhotoPal;
+                LetterImgData[1].width = 70;
+                LetterImgData[1].height = 95;
+                LetterImgData[1].format = G_IM_FMT_CI;
+                LetterImgData[1].bitDepth = G_IM_SIZ_8b;
 
-                N(LetterWorkerID) = create_worker_frontUI(nullptr, N(worker_draw_letter));
-                N(LetterAlpha) = 0;
+                LetterWorkerID = create_worker_frontUI(nullptr, worker_draw_letter);
+                LetterAlpha = 0;
                 return ApiStatus_DONE2;
             }
             break;
@@ -259,12 +259,12 @@ API_CALLABLE(N(ReadLetters)){
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(CleanupLetters)){
-    free_worker(N(LetterWorkerID));
+API_CALLABLE(CleanupLetters){
+    free_worker(LetterWorkerID);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Inspect_Letters) = {
+EvtScript EVS_Inspect_Letters = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Set(GF_KMR20_CheckedDeskForMail, true)
@@ -278,9 +278,9 @@ EvtScript N(EVS_Inspect_Letters) = {
             Wait(5)
         EndIf
     EndIf
-    Call(N(InitLetters))
+    Call(InitLetters)
     Label(0)
-        Call(N(ReadLetters))
+        Call(ReadLetters)
         IfEq(LVar0, -1)
             Goto(10)
         EndIf
@@ -288,7 +288,7 @@ EvtScript N(EVS_Inspect_Letters) = {
             Goto(10)
         EndIf
     Call(ShowMessageAtScreenPos, LVar0, 160, 40)
-    Call(N(CleanupLetters))
+    Call(CleanupLetters)
     Goto(0)
     Label(10)
     Call(DisablePlayerInput, false)
@@ -296,7 +296,7 @@ EvtScript N(EVS_Inspect_Letters) = {
     End
 };
 
-s32 N(DiaryStoryRequirements)[] = {
+s32 DiaryStoryRequirements[] = {
     STORY_CH3_GOT_SUPER_BOOTS,
     STORY_CH3_GOT_SUPER_BOOTS,
     STORY_CH4_STAR_SPRIT_DEPARTED,
@@ -311,7 +311,7 @@ s32 N(DiaryStoryRequirements)[] = {
     STORY_EPILOGUE,
 };
 
-s32 N(DiaryEntryStringIDs)[] = {
+s32 DiaryEntryStringIDs[] = {
     MSG_Document_LuigisDiary_01,
     MSG_Document_LuigisDiary_02,
     MSG_Document_LuigisDiary_03,
@@ -326,13 +326,13 @@ s32 N(DiaryEntryStringIDs)[] = {
     MSG_Document_LuigisDiary_12,
 };
 
-API_CALLABLE(N(InitDiary)){
+API_CALLABLE(InitDiary){
     script->functionTemp[3] = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ReadDiary)){
-    PopupMenu* menu = &N(ChooseDocumentPopupMenu);
+API_CALLABLE(ReadDiary){
+    PopupMenu* menu = &ChooseDocumentPopupMenu;
     s32 userIndex;
     s32 numEntries;
     s32 flags;
@@ -345,8 +345,8 @@ API_CALLABLE(N(ReadDiary)){
     switch (script->functionTemp[0]) {
         case 0:
             numEntries = 0;
-            for (i = 0; i < ARRAY_COUNT(N(DiaryStoryRequirements)); i++) {
-                if (evt_get_variable(nullptr, GB_StoryProgress) >= N(DiaryStoryRequirements)[i]) {
+            for (i = 0; i < ARRAY_COUNT(DiaryStoryRequirements); i++) {
+                if (evt_get_variable(nullptr, GB_StoryProgress) >= DiaryStoryRequirements[i]) {
                     menu->ptrIcon[numEntries] = HES_EmptyBook;
                     menu->userIndex[numEntries] = i;
                     menu->enabled[numEntries] = true;
@@ -394,7 +394,7 @@ API_CALLABLE(N(ReadDiary)){
                 }
                 script->functionTemp[3] = script->functionTemp[2] - 1;
                 userIndex = menu->userIndex[script->functionTemp[2] - 1];
-                script->varTable[0] = N(DiaryEntryStringIDs)[userIndex];
+                script->varTable[0] = DiaryEntryStringIDs[userIndex];
                 // separate lines required to match, cant combine macro
                 flags = SET_PACKED_FLAG(GB_KMR20_MarioReadDiaryFlags_00, userIndex);
                 set_global_byte(PACKED_BYTE(GB_KMR20_MarioReadDiaryFlags_00, userIndex), flags);
@@ -405,12 +405,12 @@ API_CALLABLE(N(ReadDiary)){
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(MuteAmbienceVolume_Documents)){
+API_CALLABLE(MuteAmbienceVolume_Documents){
     snd_ambient_set_volume(0, 1000, 1);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Inspect_LuigisDiary) = {
+EvtScript EVS_Inspect_LuigisDiary = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
         IfEq(AF_KMR20_DiaryBlockedByLuigi, true)
@@ -424,9 +424,9 @@ EvtScript N(EVS_Inspect_LuigisDiary) = {
         Call(ShowMessageAtScreenPos, MSG_CH0_0100, 160, 40)
         Wait(5)
     EndIf
-    Call(N(InitDiary))
+    Call(InitDiary)
     Label(0)
-        Call(N(ReadDiary))
+        Call(ReadDiary)
         IfEq(LVar0, -1)
             Goto(10)
         EndIf
@@ -441,7 +441,7 @@ EvtScript N(EVS_Inspect_LuigisDiary) = {
     End
 };
 
-EvtScript N(EVS_Shake_Mailbox) = {
+EvtScript EVS_Shake_Mailbox = {
     Call(PlaySoundAtCollider, COLLIDER_o305, SOUNC_CHECK_MAILBOX, SOUND_SPACE_DEFAULT)
     Call(TranslateModel, MODEL_o222, 2, 0, 0)
     Call(TranslateModel, MODEL_o223, 3, 0, 0)
@@ -466,7 +466,7 @@ EvtScript N(EVS_Shake_Mailbox) = {
     End
 };
 
-EvtScript N(EVS_SecretPanel_Flip) = {
+EvtScript EVS_SecretPanel_Flip = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o252, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_o252, SOUND_FLIP_PANEL, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 2160, 60, EASING_QUADRATIC_OUT)
@@ -484,7 +484,7 @@ EvtScript N(EVS_SecretPanel_Flip) = {
     End
 };
 
-EvtScript N(EVS_Setup_SecretPanel) = {
+EvtScript EVS_Setup_SecretPanel = {
     Call(GetPlayerActionState, LVar0)
     IfNe(LVar0, ACTION_STATE_SPIN_POUND)
         IfNe(LVar0, ACTION_STATE_TORNADO_POUND)
@@ -492,7 +492,7 @@ EvtScript N(EVS_Setup_SecretPanel) = {
         EndIf
     EndIf
     Call(DisablePlayerInput, true)
-    Call(N(MuteAmbienceVolume_Documents))
+    Call(MuteAmbienceVolume_Documents)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
         IfEq(AF_KMR20_DiaryBlockedByLuigi, true)
             Call(EnableModel, MODEL_o200, false)
@@ -505,7 +505,7 @@ EvtScript N(EVS_Setup_SecretPanel) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_SecretPanel_Flip))
+    Exec(EVS_SecretPanel_Flip)
     Wait(1)
     Call(SetPlayerPos, -150, 30, -35)
     Loop(0)
@@ -518,18 +518,18 @@ EvtScript N(EVS_Setup_SecretPanel) = {
     Call(DisablePlayerInput, false)
     IfEq(MF_LuigiInBasement, true)
         Set(MF_LuigiInBasement, false)
-        Exec(N(EVS_Scene_CaughtLuigiInBasement))
+        Exec(EVS_Scene_CaughtLuigiInBasement)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Setup_Interactables) = {
-    BindTrigger(Ref(N(EVS_Inspect_Letters)), TRIGGER_WALL_PRESS_A, COLLIDER_o251, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_LuigisDiary)), TRIGGER_WALL_PRESS_A, COLLIDER_o240, 1, 0)
-    BindTrigger(Ref(N(EVS_Shake_Mailbox)), TRIGGER_WALL_PRESS_A, COLLIDER_o305, 1, 0)
-    BindTrigger(Ref(N(EVS_Setup_SecretPanel)), TRIGGER_FLOOR_TOUCH, COLLIDER_o252, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Records)), TRIGGER_WALL_PRESS_A, COLLIDER_o355, 1, 0)
+EvtScript EVS_Setup_Interactables = {
+    BindTrigger(Ref(EVS_Inspect_Letters), TRIGGER_WALL_PRESS_A, COLLIDER_o251, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_LuigisDiary), TRIGGER_WALL_PRESS_A, COLLIDER_o240, 1, 0)
+    BindTrigger(Ref(EVS_Shake_Mailbox), TRIGGER_WALL_PRESS_A, COLLIDER_o305, 1, 0)
+    BindTrigger(Ref(EVS_Setup_SecretPanel), TRIGGER_FLOOR_TOUCH, COLLIDER_o252, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Records), TRIGGER_WALL_PRESS_A, COLLIDER_o355, 1, 0)
     Return
     End
 };

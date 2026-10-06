@@ -5,7 +5,7 @@
 
 #include "world/common/ai/GenericHitboxDefeat.inc.c"
 
-MobileAISettings N(AISettings_Gulpit_Wander) = {
+MobileAISettings AISettings_Gulpit_Wander = {
     .moveSpeed = 0.5f,
     .moveTime = 60,
     .waitTime = 15,
@@ -18,26 +18,26 @@ MobileAISettings N(AISettings_Gulpit_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Gulpit_Wander) = {
+EvtScript EVS_NpcAI_Gulpit_Wander = {
     Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 13)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 30)
-    Call(N(WanderMeleeAI_Main), Ref(N(AISettings_Gulpit_Wander)))
+    Call(WanderMeleeAI_Main, Ref(AISettings_Gulpit_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Gulpit_Wander) = {
+NpcSettings NpcSettings_Gulpit_Wander = {
     .height = 48,
     .radius = 36,
     .level = ACTOR_LEVEL_GULPIT,
-    .doAI = &N(EVS_NpcAI_Gulpit_Wander),
+    .doAI = &EVS_NpcAI_Gulpit_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-EvtScript N(EVS_NpcAI_Gulpit_Hitbox) = {
+EvtScript EVS_NpcAI_Gulpit_Hitbox = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 6)
     Call(SetSelfVar, AI_VAR_HITBOX_DIST, 28)
@@ -45,26 +45,26 @@ EvtScript N(EVS_NpcAI_Gulpit_Hitbox) = {
     Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_ANGLE, 32)
     Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 10)
     Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_NONE)
-    Call(N(MeleeHitbox_Main))
+    Call(MeleeHitbox_Main)
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Gulpit_Hitbox) = {
+NpcSettings NpcSettings_Gulpit_Hitbox = {
     .height = 32,
     .radius = 22,
     .level = ACTOR_LEVEL_GULPIT,
-    .doAI = &N(EVS_NpcAI_Gulpit_Hitbox),
-    .onDefeat = &N(EVS_GenericHitboxDefeat),
+    .doAI = &EVS_NpcAI_Gulpit_Hitbox,
+    .onDefeat = &EVS_GenericHitboxDefeat,
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
-AnimID N(LimitAnims_Gulpit_Hitbox)[] = {
+AnimID LimitAnims_Gulpit_Hitbox[] = {
     ANIM_Gulpit_Still,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Gulpit)[] = {
+AnimID LimitAnims_Gulpit[] = {
     ANIM_Gulpit_Still,
     ANIM_Gulpit_Idle,
     ANIM_Gulpit_Hurt,

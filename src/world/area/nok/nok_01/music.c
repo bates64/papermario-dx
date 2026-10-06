@@ -1,6 +1,6 @@
 #include "nok_01.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SetMusic, 0, SONG_FUZZY_ATTACK, 0, VOL_LEVEL_FULL)
     Else
@@ -10,7 +10,7 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_80242C38) = {
+EvtScript EVS_80242C38 = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SetMusic, 0, SONG_FUZZY_ATTACK, 0, VOL_LEVEL_7)
         Wait(4)
@@ -36,7 +36,7 @@ EvtScript N(EVS_80242C38) = {
     End
 };
 
-EvtScript N(EVS_80242DE0) = {
+EvtScript EVS_80242DE0 = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SetMusic, 0, SONG_FUZZY_ATTACK, 0, VOL_LEVEL_4)
         Wait(2)
@@ -58,7 +58,7 @@ EvtScript N(EVS_80242DE0) = {
     End
 };
 
-EvtScript N(EVS_PlayRestingSong) = {
+EvtScript EVS_PlayRestingSong = {
     Call(SetMusic, 0, SONG_TAKING_REST, 0, VOL_LEVEL_FULL)
     Return
     End

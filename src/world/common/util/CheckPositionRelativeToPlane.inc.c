@@ -35,7 +35,7 @@
 #define PLANE_SIDE_NEGATIVE     0
 #define PLANE_SIDE_POSITIVE     1
 
-API_CALLABLE(N(CheckPositionRelativeToPlane)) {
+API_CALLABLE(CheckPositionRelativeToPlane) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 Ax = evt_get_variable(script, *args++);

@@ -505,9 +505,6 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 EvtScript N(EVS_TakeTurn) = {
     Call(SetActorVar, ACTOR_SELF, AVAR_FlipResistance, 2)
     Call(GetActorVar, ACTOR_SELF, AVAR_IsFlipped, LVar0)
@@ -574,7 +571,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
             Call(GetStatusFlags, ACTOR_SELF, LVar3)
             IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                Call(N(StartRumbleWithParams), 80, 14)
+                Call(StartRumbleWithParams, 80, 14)
                 Call(ShakeCam, CAM_BATTLE, 0, 2, Float(0.5))
             EndIf
             Wait(3)
@@ -589,7 +586,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(SetPartFlags, ACTOR_SELF, PRT_FLIPPED, ACTOR_PART_FLAG_NO_TARGET | ACTOR_PART_FLAG_NO_SHADOW)
             Call(SetPartFlags, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_PRIMARY_TARGET | ACTOR_PART_FLAG_NO_SHADOW)
             Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
-            Call(N(SetAbsoluteStatusOffsets), -26, 38, 2, 63)
+            Call(SetAbsoluteStatusOffsets, -26, 38, 2, 63)
             Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, false)
             Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Hurt, ANIM_KentCKoopa_Hurt)
         EndIf
@@ -781,7 +778,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
         IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
         EndIf
     EndThread
@@ -791,7 +788,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
         IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
         EndIf
     EndThread
@@ -801,7 +798,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Thread
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
         IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-            Call(N(StartRumbleWithParams), 80, 14)
+            Call(StartRumbleWithParams, 80, 14)
             Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
         EndIf
     EndThread
@@ -865,7 +862,7 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread
@@ -877,7 +874,7 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread
@@ -889,7 +886,7 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread
@@ -960,10 +957,10 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
                 EndIf
             EndIf
             Thread
-                Call(N(StartRumbleWithParams), 80, 14)
+                Call(StartRumbleWithParams, 80, 14)
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread
@@ -981,7 +978,7 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread
@@ -993,7 +990,7 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread
@@ -1025,7 +1022,7 @@ EvtScript N(EVS_FlipOver) = {
     Call(SetEnemyTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 40)
     Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(FlippedDefense)))
     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(FlippedAnims)))
-    Call(N(SetAbsoluteStatusOffsets), -24, 47, 23, 37)
+    Call(SetAbsoluteStatusOffsets, -24, 47, 23, 37)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KentCKoopa_Hurt)
     Call(SetActorVar, ACTOR_SELF, AVAR_IsFlipped, true)
     Call(SetActorVar, ACTOR_SELF, AVAR_Anim_Hurt, ANIM_KentCKoopa_Struggle)
@@ -1052,7 +1049,7 @@ EvtScript N(EVS_FlipOver) = {
             Thread
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
                 IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
-                    Call(N(StartRumbleWithParams), 80, 14)
+                    Call(StartRumbleWithParams, 80, 14)
                     Call(ShakeCam, CAM_BATTLE, 0, 1, Float(0.5))
                 EndIf
             EndThread

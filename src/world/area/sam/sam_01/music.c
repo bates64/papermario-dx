@@ -1,6 +1,6 @@
 #include "sam_01.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
             Call(SetMusic, 0, SONG_SHIVER_CITY, 0, VOL_LEVEL_FULL)

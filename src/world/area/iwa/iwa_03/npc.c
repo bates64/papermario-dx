@@ -3,7 +3,7 @@
 #include "world/common/enemy/MontyMole/ground_ambush.inc.c"
 #include "world/common/enemy/Cleft/wander.inc.c"
 
-NpcData N(NpcData_Cleft_01) = {
+NpcData NpcData_Cleft_01 = {
     .id = NPC_Cleft_01,
     .pos = { -525.0f, -75.0f, 60.0f },
     .yaw = 0,
@@ -19,14 +19,14 @@ NpcData N(NpcData_Cleft_01) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Cleft_02) = {
+NpcData NpcData_Cleft_02 = {
     .id = NPC_Cleft_02,
     .pos = { -1686.0f, -60.0f, 180.0f },
     .yaw = 0,
@@ -42,14 +42,14 @@ NpcData N(NpcData_Cleft_02) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Cleft_03) = {
+NpcData NpcData_Cleft_03 = {
     .id = NPC_Cleft_03,
     .pos = { -1300.0f, 408.0f, -125.0f },
     .yaw = 0,
@@ -65,14 +65,14 @@ NpcData N(NpcData_Cleft_03) = {
             .detectSize = { 140 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_MontyMole)[] = {
+NpcData NpcData_MontyMole[] = {
     {
         .id = NPC_MontyMole,
         .pos = { -1000.0f, 23.0f, 60.0f },
@@ -89,7 +89,7 @@ NpcData N(NpcData_MontyMole)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_GroundAmbush),
+        .settings = &NpcSettings_MontyMole_GroundAmbush,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -111,7 +111,7 @@ NpcData N(NpcData_MontyMole)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_GroundAmbush_Hole),
+        .settings = &NpcSettings_MontyMole_GroundAmbush_Hole,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DISABLE_AI | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -119,10 +119,10 @@ NpcData N(NpcData_MontyMole)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Cleft_01), BTL_IWA_FORMATION_03, BTL_IWA_STAGE_00),
-    NPC_GROUP(N(NpcData_Cleft_02), BTL_IWA_FORMATION_00, BTL_IWA_STAGE_00),
-    NPC_GROUP(N(NpcData_Cleft_03), BTL_IWA_FORMATION_01, BTL_IWA_STAGE_00),
-    NPC_GROUP(N(NpcData_MontyMole), BTL_IWA_FORMATION_09, BTL_IWA_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Cleft_01, BTL_IWA_FORMATION_03, BTL_IWA_STAGE_00),
+    NPC_GROUP(NpcData_Cleft_02, BTL_IWA_FORMATION_00, BTL_IWA_STAGE_00),
+    NPC_GROUP(NpcData_Cleft_03, BTL_IWA_FORMATION_01, BTL_IWA_STAGE_00),
+    NPC_GROUP(NpcData_MontyMole, BTL_IWA_FORMATION_09, BTL_IWA_STAGE_00),
     {}
 };

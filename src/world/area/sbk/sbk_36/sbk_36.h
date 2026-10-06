@@ -14,5 +14,3 @@
 enum {
     MF_TreeDrop_Letter  = MapFlag(10),
 };
-
-#define NAMESPACE sbk_36

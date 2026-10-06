@@ -2,7 +2,7 @@
 
 #include "world/ai.h"
 
-EvtScript N(EVS_GenericHitboxDefeat) = {
+EvtScript EVS_GenericHitboxDefeat = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)

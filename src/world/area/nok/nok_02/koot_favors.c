@@ -10,7 +10,7 @@ typedef struct KootFavor {
     /* 0x18 */ s32 requiredItem;
 } KootFavor; // size = 0x1C
 
-KootFavor N(KootFavorData)[] = {
+KootFavor KootFavorData[] = {
     [KOOT_FAVOR_CH1_1] {
         .requestMsg = MSG_KootFavor_0000,
         .minorRewardMsg = MSG_KootFavor_0001,
@@ -193,7 +193,7 @@ KootFavor N(KootFavorData)[] = {
     }
 };
 
-API_CALLABLE(N(IsFourthMultipleFavor)) {
+API_CALLABLE(IsFourthMultipleFavor) {
     Bytecode* args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++);
 
@@ -205,16 +205,16 @@ API_CALLABLE(N(IsFourthMultipleFavor)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FindNextFavor)) {
+API_CALLABLE(FindNextFavor) {
     Bytecode* args = script->ptrReadPos;
     s32 currentFavorVar = *args++;
     u32 count = 0;
-    KootFavor* it = N(KootFavorData);
+    KootFavor* it = KootFavorData;
     s32 randomIdx;
     u32 i;
 
     // count number of available favors
-    for (i = 0; i < ARRAY_COUNT(N(KootFavorData)); i++, it++) {
+    for (i = 0; i < ARRAY_COUNT(KootFavorData); i++, it++) {
         if (evt_get_variable(script, it->unlockedFlag) && !evt_get_variable(script, it->completeFlag)) {
             count++;
             if (!evt_get_variable(script, it->gaveUpFlag)) {
@@ -224,7 +224,7 @@ API_CALLABLE(N(FindNextFavor)) {
         }
     }
 
-    if (i == ARRAY_COUNT(N(KootFavorData))) {
+    if (i == ARRAY_COUNT(KootFavorData)) {
         if (count == 0) {
             // found no available favors and none were skipped
             script->varTable[0] = 0;
@@ -235,8 +235,8 @@ API_CALLABLE(N(FindNextFavor)) {
             randomIdx = rand_int(count - 1);
             count = 0;
 
-            it = N(KootFavorData);
-            for (i = 0; i < ARRAY_COUNT(N(KootFavorData)); i++, it++) {
+            it = KootFavorData;
+            for (i = 0; i < ARRAY_COUNT(KootFavorData); i++, it++) {
                 if (evt_get_variable(script, it->unlockedFlag) && !evt_get_variable(script, it->completeFlag)) {
                     if (count++ == randomIdx) {
                         break;
@@ -255,18 +255,18 @@ API_CALLABLE(N(FindNextFavor)) {
     }
 }
 
-API_CALLABLE(N(GiveUpFavor)) {
+API_CALLABLE(GiveUpFavor) {
     Bytecode* args = script->ptrReadPos;
     s32 currentFavorVar = *args++;
     s32 favorIdx = evt_get_variable(script, currentFavorVar) - 1;
-    KootFavor* it = N(KootFavorData);
+    KootFavor* it = KootFavorData;
     s32 count = 0;
     s32 randomIdx;
     u32 i;
 
-    evt_set_variable(script, N(KootFavorData)[favorIdx].gaveUpFlag, true);
+    evt_set_variable(script, KootFavorData[favorIdx].gaveUpFlag, true);
 
-    for (i = 0; i < ARRAY_COUNT(N(KootFavorData)); i++, it++) {
+    for (i = 0; i < ARRAY_COUNT(KootFavorData); i++, it++) {
         if (evt_get_variable(script, it->unlockedFlag) && !evt_get_variable(script, it->completeFlag)) {
             count++;
             if (!evt_get_variable(script, it->gaveUpFlag)) {
@@ -275,7 +275,7 @@ API_CALLABLE(N(GiveUpFavor)) {
         }
     }
 
-    if (i == ARRAY_COUNT(N(KootFavorData))) {
+    if (i == ARRAY_COUNT(KootFavorData)) {
         if (count < 2) {
             script->varTable[0] = 0;
             evt_set_variable(script, currentFavorVar, 0xFF);
@@ -284,8 +284,8 @@ API_CALLABLE(N(GiveUpFavor)) {
             randomIdx = rand_int(count - 2);
             count = 0;
 
-            it = N(KootFavorData);
-            for (i = 0; i < ARRAY_COUNT(N(KootFavorData)); i++, it++) {
+            it = KootFavorData;
+            for (i = 0; i < ARRAY_COUNT(KootFavorData); i++, it++) {
                 if (i == favorIdx) {
                     continue;
                 }
@@ -306,10 +306,10 @@ API_CALLABLE(N(GiveUpFavor)) {
     }
 }
 
-API_CALLABLE(N(GetFavorMessages)) {
+API_CALLABLE(GetFavorMessages) {
     Bytecode* args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++) - 1;
-    KootFavor* favor = &N(KootFavorData)[favorIdx];
+    KootFavor* favor = &KootFavorData[favorIdx];
 
     script->varTable[0] = favor->requestMsg;
     script->varTable[1] = favor->minorRewardMsg;
@@ -317,31 +317,31 @@ API_CALLABLE(N(GetFavorMessages)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetFavorComplete)) {
+API_CALLABLE(SetFavorComplete) {
     Bytecode* args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++) - 1;
-    KootFavor* favor = &N(KootFavorData)[favorIdx];
+    KootFavor* favor = &KootFavorData[favorIdx];
 
     evt_set_variable(script, favor->completeFlag, true);
     return ApiStatus_DONE2;
 }
 
 // initially empty list, mutable through AdjustFavorItemList
-ITEM_LIST(N(FavorItemList), ITEM_NONE);
+ITEM_LIST(FavorItemList, ITEM_NONE);
 
-API_CALLABLE(N(AdjustFavorItemList)) {
+API_CALLABLE(AdjustFavorItemList) {
     Bytecode *args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++) - 1;
-    s32 itemID = N(KootFavorData)[favorIdx].requiredItem;
+    s32 itemID = KootFavorData[favorIdx].requiredItem;
     s16* typeFlags = &gItemTable[itemID].typeFlags;
 
-    N(FavorItemList)[0] = itemID;
+    FavorItemList[0] = itemID;
     script->varTable[0] = (*typeFlags & ITEM_TYPE_FLAG_CONSUMABLE) > 0;
     script->varTable[1] = itemID;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_KoopaKoot) = {
+EvtScript EVS_NpcInteract_KoopaKoot = {
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A2)
@@ -349,9 +349,9 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
     EndIf
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         IfEq(GF_MAC02_KootFavor_CurrentComplete, false)
-            Call(N(AdjustFavorItemList), GB_KootFavor_Current)
+            Call(AdjustFavorItemList, GB_KootFavor_Current)
             IfEq(LVar0, 0)
-                EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
+                EVT_CHOOSE_CONSUMABLE_FROM(FavorItemList, NPC_KoopaKoot)
                 Switch(LVar0)
                     CaseEq(ITEM_CHOICE_CANCELED)
                     CaseEq(ITEM_CHOICE_NONE)
@@ -359,7 +359,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                         Set(GF_MAC02_KootFavor_CurrentComplete, true)
                 EndSwitch
             Else
-                EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
+                EVT_CHOOSE_CONSUMABLE_FROM(FavorItemList, NPC_KoopaKoot)
                 Switch(LVar0)
                     CaseEq(ITEM_CHOICE_CANCELED)
                     CaseEq(ITEM_CHOICE_NONE)
@@ -369,18 +369,18 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
             EndIf
         EndIf
         IfEq(GF_MAC02_KootFavor_CurrentComplete, true)
-            Call(N(SetFavorComplete), GB_KootFavor_Current)
+            Call(SetFavorComplete, GB_KootFavor_Current)
             Add(GB_KootFavor_Completed, 1)
-            Call(N(IsFourthMultipleFavor), GB_KootFavor_Completed)
+            Call(IsFourthMultipleFavor, GB_KootFavor_Completed)
             IfFalse(LVar0)
-                Call(N(GetFavorMessages), GB_KootFavor_Current)
+                Call(GetFavorMessages, GB_KootFavor_Current)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar1)
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
                 Set(LVar0, ITEM_COIN)
                 ExecWait(EVS_GiveCoinReward)
                 Call(AddCoin, 1)
             Else
-                Call(N(GetFavorMessages), GB_KootFavor_Current)
+                Call(GetFavorMessages, GB_KootFavor_Current)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar2)
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
                 Call(ShowGotItem, ITEM_STAR_PIECE, true, ITEM_PICKUP_FLAG_3_STAR_PIECES)
@@ -406,7 +406,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 CaseEq(0) // go on
                     Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00AE)
                 CaseEq(1) // give up
-                    Call(N(GiveUpFavor), GB_KootFavor_Current)
+                    Call(GiveUpFavor, GB_KootFavor_Current)
                     IfEq(LVar0, 0)
                         Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B0)
                         Set(GB_KootFavor_State, KOOT_FAVOR_STATE_1)
@@ -416,7 +416,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                     EndIf
                     Goto(50)
                 CaseEq(2) // forgotten
-                    Call(N(GetFavorMessages), GB_KootFavor_Current)
+                    Call(GetFavorMessages, GB_KootFavor_Current)
                     Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar0)
             EndSwitch
         Else
@@ -427,7 +427,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
             EndIf
             Call(ShowChoice, MSG_Choice_0010)
             IfEq(LVar0, 0)
-                Call(N(GetFavorMessages), GB_KootFavor_Current)
+                Call(GetFavorMessages, GB_KootFavor_Current)
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar0)
                 Set(GF_KootFavor_LeftKoopaVillage, false)
             Else
@@ -436,7 +436,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
         EndIf
         Goto(90)
     EndIf
-    Call(N(FindNextFavor), GB_KootFavor_Current)
+    Call(FindNextFavor, GB_KootFavor_Current)
     IfEq(LVar0, 0)
         IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A5)
@@ -460,7 +460,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
     Call(ShowChoice, MSG_Choice_0010)
     IfEq(LVar0, 0)
         Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A9)
-        Call(N(GetFavorMessages), GB_KootFavor_Current)
+        Call(GetFavorMessages, GB_KootFavor_Current)
         Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar0)
         Set(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, false)
@@ -484,7 +484,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
     End
 };
 
-EvtScript N(EVS_SetupKootFavors) = {
+EvtScript EVS_SetupKootFavors = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Goto(80)
     EndIf

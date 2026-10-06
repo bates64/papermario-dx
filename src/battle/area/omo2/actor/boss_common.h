@@ -3,7 +3,7 @@
 
 #include "mapfs/omo_bt07_shape.h"
 
-enum N(BattleCommon) {
+enum BattleCommon {
     ACTOR_GENERAL       = ACTOR_ENEMY0,
     ACTOR_TANK          = ACTOR_ENEMY1,
     ACTOR_BULB          = ACTOR_ENEMY2,

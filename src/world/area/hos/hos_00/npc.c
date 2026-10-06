@@ -7,7 +7,7 @@
 
 #include "world/common/enemy/FlyingMagikoopa/idle.inc.c"
 
-EvtScript N(EVS_Scene_Wishing) = {
+EvtScript EVS_Scene_Wishing = {
     Call(DisablePlayerInput, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 305, -10, -50)
     Call(SetPanTarget, CAM_DEFAULT, 305, -10, -50)
@@ -30,7 +30,7 @@ EvtScript N(EVS_Scene_Wishing) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_FlyingMagikoopa) = {
+EvtScript EVS_NpcDefeat_FlyingMagikoopa = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa) = {
             Call(GetNpcPos, NPC_Twink, LVar3, LVar1, LVar2)
             Add(LVar3, -25)
             Call(SetNpcPos, NPC_Twink, LVar3, LVar1, -45)
-            Exec(N(EVS_Scene_TwinkDeparts))
+            Exec(EVS_Scene_TwinkDeparts)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -50,7 +50,7 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_FlyingMagikoopa) = {
+EvtScript EVS_NpcIdle_FlyingMagikoopa = {
     Label(0)
         Call(GetSelfVar, 0, LVar0)
         Switch(LVar0)
@@ -64,10 +64,10 @@ EvtScript N(EVS_NpcIdle_FlyingMagikoopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_FlyingMagikoopa) = {
+EvtScript EVS_NpcInit_FlyingMagikoopa = {
     IfLt(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_FlyingMagikoopa)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_FlyingMagikoopa)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_FlyingMagikoopa))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_FlyingMagikoopa))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -75,12 +75,12 @@ EvtScript N(EVS_NpcInit_FlyingMagikoopa) = {
     End
 };
 
-API_CALLABLE(N(SetCurrentPartner)) {
+API_CALLABLE(SetCurrentPartner) {
     gPlayerData.curPartner = evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_Twink) = {
+EvtScript EVS_NpcIdle_Twink = {
     Call(SetSelfVar, 0, 0)
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
@@ -90,61 +90,61 @@ EvtScript N(EVS_NpcIdle_Twink) = {
         Wait(1)
     EndLoop
     Call(EnablePartner, PARTNER_TWINK)
-    Call(N(SetCurrentPartner), PARTNER_TWINK)
+    Call(SetCurrentPartner, PARTNER_TWINK)
     Call(StartBattle)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Twink) = {
+EvtScript EVS_NpcInteract_Twink = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Twink) = {
+EvtScript EVS_NpcDefeat_Twink = {
     Call(SetSelfVar, 0, 2)
     Call(DisablePartner, PARTNER_TWINK)
-    Call(N(SetCurrentPartner), PARTNER_GOOMBARIO)
+    Call(SetCurrentPartner, PARTNER_GOOMBARIO)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Twink) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Twink)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Twink)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Twink)))
+EvtScript EVS_NpcInit_Twink = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Twink))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Twink))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Twink))
     Return
     End
 };
 
-NpcData N(NpcData_Twink) = {
+NpcData NpcData_Twink = {
     .id = NPC_Twink,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Twink),
-    .settings = &N(NpcSettings_Twink),
+    .init = &EVS_NpcInit_Twink,
+    .settings = &NpcSettings_Twink,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
 };
 
-NpcData N(NpcData_FlyingMagikoopa) = {
+NpcData NpcData_FlyingMagikoopa = {
     .id = NPC_FlyingMagikoopa,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_FlyingMagikoopa),
-    .settings = &N(NpcSettings_FlyingMagikoopa),
+    .init = &EVS_NpcInit_FlyingMagikoopa,
+    .settings = &NpcSettings_FlyingMagikoopa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = FLYING_MAGIKOOPA_ANIMS,
 };
 
-NpcData N(NpcData_Wishing)[] = {
+NpcData NpcData_Wishing[] = {
     {
         .id = NPC_Toadette,
         .pos = { 280.0f, -10.0f, -50.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toadette),
+        .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -153,20 +153,20 @@ NpcData N(NpcData_Wishing)[] = {
         .id = NPC_ToadKid,
         .pos = { 330.0f, -10.0f, -40.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_ToadKid),
+        .settings = &NpcSettings_ToadKid,
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,
         .animations = TOAD_KID_RED_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Twink), BTL_HOS_FORMATION_00),
-    NPC_GROUP(N(NpcData_FlyingMagikoopa), BTL_HOS_FORMATION_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Twink, BTL_HOS_FORMATION_00),
+    NPC_GROUP(NpcData_FlyingMagikoopa, BTL_HOS_FORMATION_03),
     {}
 };
 
-NpcGroupList N(WishingNPCs) = {
-    NPC_GROUP(N(NpcData_Wishing)),
+NpcGroupList WishingNPCs = {
+    NPC_GROUP(NpcData_Wishing),
     {}
 };

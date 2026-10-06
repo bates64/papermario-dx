@@ -1,6 +1,6 @@
 #include "mgm_01.h"
 
-API_CALLABLE(N(GetSpotlightPos)) {
+API_CALLABLE(GetSpotlightPos) {
     SpriteShadingProfile* shading;
     f32 spotLightPosX, spotLightPosZ;
     f32 lightBeamRotX, lightBeamRotZ;
@@ -36,9 +36,9 @@ API_CALLABLE(N(GetSpotlightPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateSpotlight) = {
+EvtScript EVS_UpdateSpotlight = {
     Label(0)
-        Call(N(GetSpotlightPos))
+        Call(GetSpotlightPos)
         Call(TranslateModel, MODEL_o36, LVar0, 0, LVar1)
         Call(RotateModel, MODEL_o37, LVar2, 1, 0, 0)
         Call(RotateModel, MODEL_o37, LVar3, 0, 0, 1)
@@ -48,7 +48,7 @@ EvtScript N(EVS_UpdateSpotlight) = {
     End
 };
 
-EvtScript N(EVS_HideCardModels) = {
+EvtScript EVS_HideCardModels = {
     Call(EnableModel, MODEL_o64, false)
     Call(EnableModel, MODEL_o65, false)
     Call(EnableModel, MODEL_o66, false)
@@ -64,15 +64,15 @@ EvtScript N(EVS_HideCardModels) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_ARN_09)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetRenderMode, MODEL_o36, RENDER_MODE_SURFACE_XLU_ZB_ZUPD)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_UpdateSpotlight))
-    Exec(N(EVS_HideCardModels))
-    Exec(N(EVS_802424A4))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_UpdateSpotlight)
+    Exec(EVS_HideCardModels)
+    Exec(EVS_802424A4)
     Return
     End
 };

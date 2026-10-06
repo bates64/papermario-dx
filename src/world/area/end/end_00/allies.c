@@ -3,7 +3,7 @@
 
 #include "world/common/npc/VannaT/base.h"
 
-EvtScript N(EVS_ParadePhase_Luigi) = {
+EvtScript EVS_ParadePhase_Luigi = {
     Call(PlaySound, SOUND_LRAW_AUDIENCE_MURMUR)
     Wait(80 * DT)
     Thread
@@ -40,7 +40,7 @@ EvtScript N(EVS_ParadePhase_Luigi) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Partners) = {
+EvtScript EVS_ParadePhase_Partners = {
     PlayEffect(EFFECT_CONFETTI, 3, -2545, 200, 0, 1, 800)
     Call(EnableNpcShadow, NPC_Goombario, false)
     Call(EnableNpcShadow, NPC_Bombette, false)
@@ -71,7 +71,7 @@ EvtScript N(EVS_ParadePhase_Partners) = {
     End
 };
 
-EvtScript N(EVS_Twirler) = {
+EvtScript EVS_Twirler = {
     Call(EnableNpcShadow, LVar1, false)
     Call(SetNpcJumpscale, LVar1, Float(0.5))
     Loop(0)
@@ -99,7 +99,7 @@ EvtScript N(EVS_Twirler) = {
     End
 };
 
-EvtScript N(EVS_QuizCrew) = {
+EvtScript EVS_QuizCrew = {
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -134,7 +134,7 @@ EvtScript N(EVS_QuizCrew) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Toads) = {
+EvtScript EVS_ParadePhase_Toads = {
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -144,13 +144,13 @@ EvtScript N(EVS_ParadePhase_Toads) = {
     EndLoop
     Set(LVar0, NPC_Twirler1)
     Set(LVar1, NPC_Baton1)
-    ExecGetTID(N(EVS_Twirler), LVarA)
+    ExecGetTID(EVS_Twirler, LVarA)
     Set(LVar0, NPC_Twirler2)
     Set(LVar1, NPC_Baton2)
-    ExecGetTID(N(EVS_Twirler), LVarB)
+    ExecGetTID(EVS_Twirler, LVarB)
     Set(LVar0, NPC_Twirler3)
     Set(LVar1, NPC_Baton3)
-    ExecGetTID(N(EVS_Twirler), LVarC)
+    ExecGetTID(EVS_Twirler, LVarC)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -158,7 +158,7 @@ EvtScript N(EVS_ParadePhase_Toads) = {
             BreakLoop
         EndIf
     EndLoop
-    Exec(N(EVS_QuizCrew))
+    Exec(EVS_QuizCrew)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)

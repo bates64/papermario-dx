@@ -52,20 +52,18 @@ enum {
     MF_AnimateSlotLights    = MapFlag(7),
 };
 
-#define NAMESPACE omo_09
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupGizmos);
-extern EvtScript N(EVS_SetupConveyors);
-extern EvtScript N(EVS_SetupSlotMachine);
-extern EvtScript N(EVS_Scene_KammySetAmbush);
-extern EvtScript N(EVS_NpcIdle_Kammy);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(KammySceneNPCs);
-extern NpcGroupList N(PokeyAmbushNPCs);
-extern NpcGroupList N(KoopatrolAmbushNPCs);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupGizmos;
+extern EvtScript EVS_SetupConveyors;
+extern EvtScript EVS_SetupSlotMachine;
+extern EvtScript EVS_Scene_KammySetAmbush;
+extern EvtScript EVS_NpcIdle_Kammy;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList KammySceneNPCs;
+extern NpcGroupList PokeyAmbushNPCs;
+extern NpcGroupList KoopatrolAmbushNPCs;
+extern NpcGroupList DefaultNPCs;
 
 API_CALLABLE(DisableCameraLeadingPlayer);
 API_CALLABLE(EnableCameraLeadingPlayer);

@@ -1,7 +1,7 @@
 #include "tik_21.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_YellowBlock), -157, -45, 0, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_TIK21_ItemBlock_Coin)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), -82, -45, 0, 0, ITEM_COIN, MAKE_ENTITY_END)

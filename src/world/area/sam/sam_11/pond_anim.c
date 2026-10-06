@@ -1,6 +1,6 @@
 #include "sam_11.h"
 
-AnimScript N(AS_ShatterPond) = {
+AnimScript AS_ShatterPond = {
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)
     as_SetScale(1, 1.0, 1.0, 1.0)

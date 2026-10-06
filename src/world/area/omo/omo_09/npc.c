@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 
-MobileAISettings N(AISettings_ShyGuy_Wander_NoReaction) = {
+MobileAISettings AISettings_ShyGuy_Wander_NoReaction = {
     .moveSpeed = 2.0f,
     .moveTime = 60,
     .waitTime = 15,
@@ -17,17 +17,17 @@ MobileAISettings N(AISettings_ShyGuy_Wander_NoReaction) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Wander_NoReaction) = {
-    Call(BasicAI_Main, Ref(N(AISettings_ShyGuy_Wander_NoReaction)))
+EvtScript EVS_NpcAI_ShyGuy_Wander_NoReaction = {
+    Call(BasicAI_Main, Ref(AISettings_ShyGuy_Wander_NoReaction))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy_Wander_NoReaction) = {
+NpcSettings NpcSettings_ShyGuy_Wander_NoReaction = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_Wander_NoReaction),
+    .doAI = &EVS_NpcAI_ShyGuy_Wander_NoReaction,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = 0,
@@ -39,7 +39,7 @@ NpcSettings N(NpcSettings_ShyGuy_Wander_NoReaction) = {
 #include "world/common/enemy/Pokey/wander.inc.c"
 #include "world/common/enemy/Kammy/flying.inc.c"
 
-EvtScript N(EVS_ShyGuy_CarryItem) = {
+EvtScript EVS_ShyGuy_CarryItem = {
     Set(LVarA, LVar0) // npcID
     Set(LVarB, LVar1) // itemID
     Set(LVarD, LVar2) // item type
@@ -72,7 +72,7 @@ EvtScript N(EVS_ShyGuy_CarryItem) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_ShyGuy_Thief) = {
+EvtScript EVS_NpcDefeat_ShyGuy_Thief = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -89,7 +89,7 @@ EvtScript N(EVS_NpcDefeat_ShyGuy_Thief) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Pokey) = {
+EvtScript EVS_NpcIdle_Pokey = {
     Label(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -118,7 +118,7 @@ EvtScript N(EVS_NpcIdle_Pokey) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Pokey) = {
+EvtScript EVS_NpcDefeat_Pokey = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -131,10 +131,10 @@ EvtScript N(EVS_NpcDefeat_Pokey) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Pokey) = {
+EvtScript EVS_NpcInit_Pokey = {
     IfEq(GB_OMO_PeachChoice3, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Pokey)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Pokey)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -142,10 +142,10 @@ EvtScript N(EVS_NpcInit_Pokey) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol) = {
+EvtScript EVS_NpcInit_Koopatrol = {
     IfEq(GB_OMO_PeachChoice3, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Pokey)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Pokey)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -153,13 +153,13 @@ EvtScript N(EVS_NpcInit_Koopatrol) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kammy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kammy)))
+EvtScript EVS_NpcInit_Kammy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kammy))
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Jackpot) = {
+EvtScript EVS_NpcAI_ShyGuy_Jackpot = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         Switch(LVar0)
@@ -167,7 +167,7 @@ EvtScript N(EVS_NpcAI_ShyGuy_Jackpot) = {
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 IfEq(LVar1, 0)
                     Call(SetSelfVar, 0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
+                    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Wander))
                 EndIf
             CaseEq(2)
                 Call(DisablePlayerInput, true)
@@ -184,12 +184,12 @@ EvtScript N(EVS_NpcAI_ShyGuy_Jackpot) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_ShyGuy_Jackpot) = {
+EvtScript EVS_NpcDefeat_ShyGuy_Jackpot = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetSelfVar, 0, 2)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_Jackpot)))
+            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Jackpot))
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -198,36 +198,36 @@ EvtScript N(EVS_NpcDefeat_ShyGuy_Jackpot) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ShyGuy_Jackpot) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_Jackpot)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy_Jackpot)))
+EvtScript EVS_NpcInit_ShyGuy_Jackpot = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Jackpot))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy_Jackpot))
     Return
     End
 };
 
-NpcData N(NpcData_Pokey) = {
+NpcData NpcData_Pokey = {
     .id = NPC_Pokey,
     .pos = { 1900.0f, 150.0f, -30.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Pokey),
-    .settings = &N(NpcSettings_Pokey_Wander),
+    .init = &EVS_NpcInit_Pokey,
+    .settings = &NpcSettings_Pokey_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = POKEY_ANIMS,
 };
 
-NpcData N(NpcData_Koopatrol) = {
+NpcData NpcData_Koopatrol = {
     .id = NPC_Koopatrol,
     .pos = { 1900.0f, 150.0f, -30.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Koopatrol),
-    .settings = &N(NpcSettings_Koopatrol),
+    .init = &EVS_NpcInit_Koopatrol,
+    .settings = &NpcSettings_Koopatrol,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_01) = {
+NpcData NpcData_ShyGuy_01 = {
     .id = NPC_ShyGuy_Jackpot1,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -243,14 +243,14 @@ NpcData N(NpcData_ShyGuy_01) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_Jackpot),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_ShyGuy_Jackpot,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_02) = {
+NpcData NpcData_ShyGuy_02 = {
     .id = NPC_ShyGuy_Jackpot2,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -266,14 +266,14 @@ NpcData N(NpcData_ShyGuy_02) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_Jackpot),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_ShyGuy_Jackpot,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_03) = {
+NpcData NpcData_ShyGuy_03 = {
     .id = NPC_ShyGuy_Jackpot3,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -289,14 +289,14 @@ NpcData N(NpcData_ShyGuy_03) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_Jackpot),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_ShyGuy_Jackpot,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_04) = {
+NpcData NpcData_ShyGuy_04 = {
     .id = NPC_ShyGuy_Jackpot4,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -312,14 +312,14 @@ NpcData N(NpcData_ShyGuy_04) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_Jackpot),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_ShyGuy_Jackpot,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_05) = {
+NpcData NpcData_ShyGuy_05 = {
     .id = NPC_ShyGuy_Jackpot5,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -335,14 +335,14 @@ NpcData N(NpcData_ShyGuy_05) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_ShyGuy_Jackpot),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_ShyGuy_Jackpot,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-AnimID N(LimitAnims_Kammy)[] = {
+AnimID LimitAnims_Kammy[] = {
     ANIM_WorldKammy_FlyRodTalk,
     ANIM_WorldKammy_FlyRodCast,
     ANIM_WorldKammy_FlyBrake,
@@ -352,34 +352,34 @@ AnimID N(LimitAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Kammy) = {
+NpcData NpcData_Kammy = {
     .id = NPC_Kammy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kammy),
-    .settings = &N(NpcSettings_Kammy_Flying),
+    .init = &EVS_NpcInit_Kammy,
+    .settings = &NpcSettings_Kammy_Flying,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .limitAnimations = N(LimitAnims_Kammy),
+    .limitAnimations = LimitAnims_Kammy,
 };
 
-EvtScript N(EVS_ShyGuy_Thief) = {
+EvtScript EVS_ShyGuy_Thief = {
     IfEq(GF_OMO09_Defeated_MysteryNoteThief, true)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_ShyGuy_Thief)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_ShyGuy_Thief))
     Set(LVar0, NPC_ShyGuy_Thief)
     Set(LVar1, ITEM_MYSTERY_NOTE)
     Set(LVar2, ITEM_TYPE_KEY)
     SetConst(LVar3, GF_OMO09_Item_MysteryNote)
-    Exec(N(EVS_ShyGuy_CarryItem))
+    Exec(EVS_ShyGuy_CarryItem)
     Return
     End
 };
 
-NpcData N(NpcData_ShyGuy_Thief) = {
+NpcData NpcData_ShyGuy_Thief = {
     .id = NPC_ShyGuy_Thief,
     .pos = { 155.0f, 10.0f, -96.0f },
     .yaw = 270,
@@ -397,8 +397,8 @@ NpcData N(NpcData_ShyGuy_Thief) = {
             .detectSize = { 105, 140 },
         }
     },
-    .init = &N(EVS_ShyGuy_Thief),
-    .settings = &N(NpcSettings_ShyGuy_Patrol),
+    .init = &EVS_ShyGuy_Thief,
+    .settings = &NpcSettings_ShyGuy_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = YELLOW_SHY_GUY_ANIMS,
@@ -406,7 +406,7 @@ NpcData N(NpcData_ShyGuy_Thief) = {
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_SpyGuy)[] = {
+NpcData NpcData_SpyGuy[] = {
     {
         .id = NPC_SpyGuy,
         .pos = { 850.0f, 0.0f, 0.0f },
@@ -423,7 +423,7 @@ NpcData N(NpcData_SpyGuy)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_SpyGuy_Wander),
+        .settings = &NpcSettings_SpyGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
         .animations = SPY_GUY_ANIMS,
@@ -434,44 +434,44 @@ NpcData N(NpcData_SpyGuy)[] = {
     SPY_GUY_ROCK_HITBOX(NPC_SpyGuy_Rock3),
 };
 
-NpcGroupList N(PokeyAmbushNPCs) = {
-    NPC_GROUP(N(NpcData_Pokey), BTL_OMO3_FORMATION_08, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_01), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_05), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_Thief), BTL_OMO_FORMATION_09, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SpyGuy), BTL_OMO_FORMATION_19, BTL_OMO_STAGE_00),
+NpcGroupList PokeyAmbushNPCs = {
+    NPC_GROUP(NpcData_Pokey, BTL_OMO3_FORMATION_08, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_05, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_Thief, BTL_OMO_FORMATION_09, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SpyGuy, BTL_OMO_FORMATION_19, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(KoopatrolAmbushNPCs) = {
-    NPC_GROUP(N(NpcData_Koopatrol), BTL_OMO3_FORMATION_09, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_01), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_05), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_Thief), BTL_OMO_FORMATION_09, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SpyGuy), BTL_OMO_FORMATION_19, BTL_OMO_STAGE_00),
+NpcGroupList KoopatrolAmbushNPCs = {
+    NPC_GROUP(NpcData_Koopatrol, BTL_OMO3_FORMATION_09, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_05, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_Thief, BTL_OMO_FORMATION_09, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SpyGuy, BTL_OMO_FORMATION_19, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy_01), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_05), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_ShyGuy_Thief), BTL_OMO_FORMATION_09, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SpyGuy), BTL_OMO_FORMATION_19, BTL_OMO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_05, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_ShyGuy_Thief, BTL_OMO_FORMATION_09, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SpyGuy, BTL_OMO_FORMATION_19, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(KammySceneNPCs) = {
-    NPC_GROUP(N(NpcData_Kammy)),
-    NPC_GROUP(N(NpcData_Pokey), BTL_OMO3_FORMATION_08, BTL_OMO3_STAGE_04),
-    NPC_GROUP(N(NpcData_Koopatrol), BTL_OMO3_FORMATION_09, BTL_OMO3_STAGE_04),
+NpcGroupList KammySceneNPCs = {
+    NPC_GROUP(NpcData_Kammy),
+    NPC_GROUP(NpcData_Pokey, BTL_OMO3_FORMATION_08, BTL_OMO3_STAGE_04),
+    NPC_GROUP(NpcData_Koopatrol, BTL_OMO3_FORMATION_09, BTL_OMO3_STAGE_04),
     {}
 };

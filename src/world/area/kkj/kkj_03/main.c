@@ -1,6 +1,6 @@
 #include "kkj_03.h"
 
-Gfx N(setup_gfx_candle_lights)[] = {
+Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetCycleType(G_CYC_2CYCLE),
@@ -19,35 +19,35 @@ Gfx N(setup_gfx_candle_lights)[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript N(EVS_ExitDoors_kkj_02_1) = EVT_EXIT_DOUBLE_DOOR(kkj_03_ENTRY_0, "kkj_02", kkj_02_ENTRY_1,
+EvtScript EVS_ExitDoors_kkj_02_1 = EVT_EXIT_DOUBLE_DOOR(kkj_03_ENTRY_0, "kkj_02", kkj_02_ENTRY_1,
     COLLIDER_deilit1, MODEL_door1, MODEL_door2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_02_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_kkj_02_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_03_ENTRY_0)
             Set(LVar2, MODEL_door1)
             Set(LVar3, MODEL_door2)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_Scene_MeetingPeach))
+            Exec(EVS_Scene_MeetingPeach)
         CaseEq(kkj_03_ENTRY_1)
-            Exec(N(EVS_Scene_Ascending))
+            Exec(EVS_Scene_Ascending)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     Call(EnableGroup, MODEL_g156, false)
     Call(SetTexPanner, MODEL_o715, TEX_PANNER_0)
     Thread
@@ -58,11 +58,11 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o715, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
-    Exec(N(EVS_SetupMusic))
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(setup_gfx_candle_lights), nullptr)
+    Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Exec(N(EVS_BindExitTriggers))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_BindExitTriggers)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

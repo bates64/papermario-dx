@@ -1,12 +1,12 @@
 #include "kkj_00.h"
 
-EvtScript N(EVS_ExitDoors_kkj_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_1, "kkj_01", kkj_01_ENTRY_0,
+EvtScript EVS_ExitDoors_kkj_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_1, "kkj_01", kkj_01_ENTRY_0,
     COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoor_kkj_19_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_3, "kkj_19", kkj_19_ENTRY_0,
+EvtScript EVS_ExitDoor_kkj_19_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_3, "kkj_19", kkj_19_ENTRY_0,
     COLLIDER_ttne, MODEL_door8, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_ShowMessage_CantOpen) = {
+EvtScript EVS_ShowMessage_CantOpen = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_DoesntOpen, 160, 40)
     Call(DisablePlayerInput, false)
@@ -14,7 +14,7 @@ EvtScript N(EVS_ShowMessage_CantOpen) = {
     End
 };
 
-EvtScript N(EVS_PreventFrontDoorExit) = {
+EvtScript EVS_PreventFrontDoorExit = {
     Call(DisablePlayerInput, true)
     Call(EnableNpcAI, NPC_Luigi, false)
     Call(EnableNpcAI, NPC_Toad_01, false)
@@ -29,17 +29,17 @@ EvtScript N(EVS_PreventFrontDoorExit) = {
     End
 };
 
-EvtScript N(EVS_BindDoorTriggers) = {
-    BindTrigger(Ref(N(EVS_PreventFrontDoorExit)), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
-    BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_01_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoor_kkj_19_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
+EvtScript EVS_BindDoorTriggers = {
+    BindTrigger(Ref(EVS_PreventFrontDoorExit), TRIGGER_WALL_PRESS_A, COLLIDER_tts, 1, 0)
+    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    BindTrigger(Ref(EVS_ShowMessage_CantOpen), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kkj_01_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_kkj_19_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttne, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -66,15 +66,15 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
         CaseEq(kkj_00_ENTRY_5)
-            Exec(N(EVS_Scene_Intro))
+            Exec(EVS_Scene_Intro)
         CaseEq(kkj_00_ENTRY_6)
-            Exec(N(EVS_Scene_Ending))
+            Exec(EVS_Scene_Ending)
     EndSwitch
     Return
     End
 };
 
-SlideParams N(SlideData1) = {
+SlideParams SlideData1 = {
     .heading = 358.5f,
     .maxDescendAccel = 0.5f,
     .launchVel = 20.0f,
@@ -82,7 +82,7 @@ SlideParams N(SlideData1) = {
     .integrator = { 0.0, 0.0, 0.0, 0.0 },
 };
 
-SlideParams N(SlideData2) = {
+SlideParams SlideData2 = {
     .heading = 1.5f,
     .maxDescendAccel = 0.5f,
     .launchVel = 20.0f,
@@ -90,40 +90,40 @@ SlideParams N(SlideData2) = {
     .integrator = { 0.0, 0.0, 0.0, 0.0 },
 };
 
-API_CALLABLE(N(StartPlayerSlide)) {
+API_CALLABLE(StartPlayerSlide) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* status = &gPlayerStatus;
 
     if (evt_get_variable(script, *args++) == 0) {
-        status->slideParams = &N(SlideData1);
+        status->slideParams = &SlideData1;
     } else {
-        status->slideParams = &N(SlideData2);
+        status->slideParams = &SlideData2;
     }
 
     status->flags |= PS_FLAG_SLIDING;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_StartSlide_Left) = {
-    Call(N(StartPlayerSlide), 0)
+EvtScript EVS_StartSlide_Left = {
+    Call(StartPlayerSlide, 0)
     Return
     End
 };
 
-EvtScript N(EVS_StartSlide_Right) = {
-    Call(N(StartPlayerSlide), 1)
+EvtScript EVS_StartSlide_Right = {
+    Call(StartPlayerSlide, 1)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(MakeNpcs, false, Ref(N(IntroNPCs)))
+        Call(MakeNpcs, false, Ref(IntroNPCs))
     Else
-        Call(MakeNpcs, false, Ref(N(EndingNPCs)))
+        Call(MakeNpcs, false, Ref(EndingNPCs))
     EndIf
     Call(EnableGroup, MODEL_g2, false)
     Call(EnableGroup, MODEL_g51, false)
@@ -135,8 +135,8 @@ EvtScript N(EVS_Main) = {
             Call(FadeOutMusic, 0, 3000)
         EndThread
     EndIf
-    Exec(N(EVS_BindDoorTriggers))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_BindDoorTriggers)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

@@ -2,7 +2,7 @@
 #include "../sam.h"
 #include "effects.h"
 
-EvtScript N(EVS_ManageSnowfall) = {
+EvtScript EVS_ManageSnowfall = {
     Set(AF_SAM_Snowing, true)
     Set(AF_SAM_LastSnowing, false)
     Label(10)

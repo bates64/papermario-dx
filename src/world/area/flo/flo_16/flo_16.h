@@ -22,12 +22,10 @@ enum {
     MV_SuperBlock       = MapVar(0),
 };
 
-#define NAMESPACE flo_16
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupVines;
+extern EvtScript EVS_SetupPillarPuzzle;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupVines);
-extern EvtScript N(EVS_SetupPillarPuzzle);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

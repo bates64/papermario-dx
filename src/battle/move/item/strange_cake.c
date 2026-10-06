@@ -6,11 +6,7 @@
 #include "sprite/player.h"
 #include "include_asset.h"
 
-#define NAMESPACE battle_item_strange_cake
-
-#include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
-
 
 #include "battle/move/item/strange_cake1.png.h"
 INCLUDE_IMG("battle/move/item/strange_cake1.png", battle_item_strange_cake1_png);
@@ -24,16 +20,16 @@ INCLUDE_PAL("battle/move/item/strange_cake2.pal", battle_item_strange_cake2_pal)
 INCLUDE_IMG("battle/move/item/strange_cake3.png", battle_item_strange_cake3_png);
 INCLUDE_PAL("battle/move/item/strange_cake3.pal", battle_item_strange_cake3_pal);
 
-HudScript N(D_802A27D0) = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake1, 32, 32);
-HudScript N(D_802A27F8) = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake2, 32, 32);
-HudScript N(D_802A2820) = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake3, 32, 32);
+HudScript D_802A27D0 = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake1, 32, 32);
+HudScript D_802A27F8 = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake2, 32, 32);
+HudScript D_802A2820 = HES_TEMPLATE_CI_ENUM_SIZE(battle_item_strange_cake3, 32, 32);
 
-HudScriptList N(D_802A2848_732B48) = {
-    N(D_802A27F8), N(D_802A2820), N(D_802A27D0), N(D_802A27F8)
+HudScriptList D_802A2848_732B48 = {
+    D_802A27F8, D_802A2820, D_802A27D0, D_802A27F8
 };
 
 // indexes into D_802A2848_732B48
-s32 N(D_802A2858_732B58)[] = {
+s32 D_802A2858_732B58[] = {
     0, 1, 2, 0, 1, 0
 };
 
@@ -46,7 +42,7 @@ BSS s32 D_802A2DF8;
 BSS s32 D_802A2DFC;
 BSS s32 D_802A2E00;
 
-void N(func_802A123C_73153C(void)) {
+void func_802A123C_73153C(void) {
     s32 id;
     s32 i;
 
@@ -67,7 +63,7 @@ void N(func_802A123C_73153C(void)) {
     }
 }
 
-API_CALLABLE(N(func_802A13E4_7316E4)) {
+API_CALLABLE(func_802A13E4_7316E4) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 temp_a0_4;
     s32 temp_v1_3;
@@ -82,12 +78,12 @@ API_CALLABLE(N(func_802A13E4_7316E4)) {
 
     switch (D_802A2DEC) {
         case 0:
-            D_802A2E00 = create_worker_frontUI(nullptr, N(func_802A123C_73153C));
+            D_802A2E00 = create_worker_frontUI(nullptr, func_802A123C_73153C);
             D_802A2DF4 = rand_int(13000);
             D_802A2DF8 = 1000;
 
             for (i = 0; i < ARRAY_COUNT(D_802A2DD8); i++) {
-                hid = hud_element_create(N(D_802A2848_732B48)[N(D_802A2858_732B58)[i]]);
+                hid = hud_element_create(D_802A2848_732B48[D_802A2858_732B58[i]]);
                 D_802A2DD8[i] = hid;
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             }
@@ -166,7 +162,7 @@ API_CALLABLE(N(func_802A13E4_7316E4)) {
             }
 
             var_v0_3 = i = D_802A2DF0 / 26; // use of i required to match
-            battleStatus->moveArgument = N(D_802A2858_732B58)[var_v0_3];
+            battleStatus->moveArgument = D_802A2858_732B58[var_v0_3];
             script->varTable[0] = battleStatus->moveArgument;
             free_worker(D_802A2E00);
             for (i = 0; i < ARRAY_COUNT(D_802A2DD8); i++) {
@@ -177,33 +173,8 @@ API_CALLABLE(N(func_802A13E4_7316E4)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SpawnHeartRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(0, a, b, c, d);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SpawnFlowerRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(1, a, b, c, d);
-    return ApiStatus_DONE2;
-}
-
 #if !VERSION_PAL
-#include "common/AddHP.inc.c"
-#include "common/AddFP.inc.c"
-
-API_CALLABLE(N(func_802A1A40_731D40)) {
+API_CALLABLE(func_802A1A40_731D40) {
     ItemData* item = &gItemTable[ITEM_KOOKY_COOKIE];
     PlayerData* playerData = &gPlayerData;
 
@@ -218,7 +189,7 @@ API_CALLABLE(N(func_802A1A40_731D40)) {
 }
 #endif
 
-API_CALLABLE(N(func_802A1A8C_731D8C)) {
+API_CALLABLE(func_802A1A8C_731D8C) {
     ItemData* item = &gItemTable[ITEM_KOOKY_COOKIE];
     PlayerData* playerData = &gPlayerData;
 
@@ -232,7 +203,7 @@ API_CALLABLE(N(func_802A1A8C_731D8C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A1AD8_731DD8)) {
+API_CALLABLE(func_802A1AD8_731DD8) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -242,7 +213,7 @@ API_CALLABLE(N(func_802A1AD8_731DD8)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A1B14_731E14)) {
+API_CALLABLE(func_802A1B14_731E14) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     ActorPart* part = player->partsTable;
@@ -254,7 +225,7 @@ API_CALLABLE(N(func_802A1B14_731E14)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A1B68_731E68)) {
+API_CALLABLE(func_802A1B68_731E68) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -264,27 +235,27 @@ API_CALLABLE(N(func_802A1B68_731E68)) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript N(script7);
-extern EvtScript N(script8);
-extern EvtScript N(script9);
+extern EvtScript script7;
+extern EvtScript script8;
+extern EvtScript script9;
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     IfEq(LVar1, ITEM_KOOKY_COOKIE)
         SetConst(LVarA, ITEM_KOOKY_COOKIE)
         Set(LVar1, 0)
-        ExecWait(N(UseItemWithEffect))
-        ExecWait(N(EatItem))
-        Call(N(func_802A1A8C_731D8C))
+        ExecWait(UseItemWithEffect)
+        ExecWait(EatItem)
+        Call(func_802A1A8C_731D8C)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 20)
         Add(LVar1, 25)
-        Call(N(SpawnFlowerRecoveryFX), LVar0, LVar1, LVar2, LVar3)
+        Call(SpawnRecoverFlowerFX, LVar0, LVar1, LVar2, LVar3)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 25)
         Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LVar3)
 #if !VERSION_PAL
-        Call(N(AddFP), LVar3)
+        Call(AddFP, LVar3)
 #endif
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_ThumbsUp)
@@ -297,8 +268,8 @@ EvtScript N(EVS_UseItem) = {
     Else
         SetConst(LVarA, ITEM_STRANGE_CAKE)
         Set(LVar1, 0)
-        ExecWait(N(UseItemWithEffect))
-        ExecWait(N(EatItem))
+        ExecWait(UseItemWithEffect)
+        ExecWait(EatItem)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_UsePower)
     EndIf
     Wait(10)
@@ -307,27 +278,27 @@ EvtScript N(EVS_UseItem) = {
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_DING)
     EndThread
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_MYSTERY_REEL)
-    Call(N(func_802A13E4_7316E4))
+    Call(func_802A13E4_7316E4)
     Wait(2)
     Switch(LVar0)
         CaseEq(0)
-            ExecWait(N(script7))
+            ExecWait(script7)
         CaseEq(1)
-            ExecWait(N(script8))
+            ExecWait(script8)
         CaseEq(2)
-            ExecWait(N(script9))
+            ExecWait(script9)
     EndSwitch
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
-EvtScript N(script7) = {
+EvtScript script7 = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     PlayEffect(EFFECT_SNAKING_STATIC, 0, LVar0, LVar1, LVar2, Float(1.0), 30)
-    Call(N(func_802A1AD8_731DD8))
+    Call(func_802A1AD8_731DD8)
     Wait(20)
     Call(ShowMessageBox, BTL_MSG_PLAYER_CHARGED, 60)
     Call(WaitForMessageBoxDone)
@@ -335,13 +306,12 @@ EvtScript N(script7) = {
     End
 };
 
-
-EvtScript N(script8) = {
+EvtScript script8 = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
     PlayEffect(EFFECT_RADIAL_SHIMMER, 6, LVar0, LVar1, LVar2, Float(1.0), 30)
-    Call(N(func_802A1B14_731E14))
+    Call(func_802A1B14_731E14)
     Wait(20)
     Call(ShowMessageBox, BTL_MSG_PLAYER_TRANSPARENT, 60)
     Call(WaitForMessageBoxDone)
@@ -349,12 +319,12 @@ EvtScript N(script8) = {
     End
 };
 
-EvtScript N(script9) = {
+EvtScript script9 = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Sleep)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(GetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Exec(EVS_PlaySleepHitFX)
-    Call(N(func_802A1B68_731E68))
+    Call(func_802A1B68_731E68)
     Wait(20)
     Call(ShowMessageBox, BTL_MSG_PLAYER_ASLEEP, 60)
     Call(WaitForMessageBoxDone)
@@ -363,5 +333,5 @@ EvtScript N(script9) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

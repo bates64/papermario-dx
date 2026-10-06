@@ -14,10 +14,10 @@ enum {
 #include "../common/MoveBush.inc.c"
 #include "../common/MoveBushTemplates.h"
 
-EvtScript N(EVS_MoveBushes_Separate) = EVT_MOVE_BUSHES(COLLIDER_o12,
+EvtScript EVS_MoveBushes_Separate = EVT_MOVE_BUSHES(COLLIDER_o12,
     MODEL_o40, MODEL_o54, MV_BushOffsetL, MV_BushOffsetR);
 
-EvtScript N(EVS_MoveBushes) = {
+EvtScript EVS_MoveBushes = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o12, COLLIDER_FLAGS_UPPER_MASK)
     Call(MakeLerp, 0, 45, 30, EASING_CUBIC_OUT)
     Loop(0)
@@ -35,11 +35,11 @@ EvtScript N(EVS_MoveBushes) = {
     End
 };
 
-EvtScript N(EVS_OnPullVine) = {
+EvtScript EVS_OnPullVine = {
     Switch(LVarC)
         CaseEq(VINE_IDX_1)
-            Exec(N(EVS_MoveBushes_Separate))
-            Exec(N(EVS_MoveBushes))
+            Exec(EVS_MoveBushes_Separate)
+            Exec(EVS_MoveBushes)
         CaseEq(VINE_IDX_2)
             Call(GetModelCenter, LVar9)
             Add(LVar0, -20)
@@ -65,7 +65,7 @@ EvtScript N(EVS_OnPullVine) = {
     End
 };
 
-EvtScript N(EVS_SetupVines) = {
+EvtScript EVS_SetupVines = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o10, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o78, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o79, COLLIDER_FLAGS_UPPER_MASK)
@@ -76,8 +76,8 @@ EvtScript N(EVS_SetupVines) = {
         Set(LVarC, VINE_IDX_1)
     Else
         Set(LVarC, VINE_IDX_0)
-        Exec(N(EVS_MoveBushes_Separate))
-        Exec(N(EVS_MoveBushes))
+        Exec(EVS_MoveBushes_Separate)
+        Exec(EVS_MoveBushes)
     EndIf
     Set(LVarF, MODEL_o28)
     Set(LVarD, MODEL_o8)
@@ -85,45 +85,45 @@ EvtScript N(EVS_SetupVines) = {
     Set(LVar9, MODEL_o57)
     Set(LVarA, MODEL_o58)
     Set(LVarB, MODEL_o59)
-    Set(LVar4, Ref(N(EVS_OnPullVine)))
+    Set(LVar4, Ref(EVS_OnPullVine))
     Set(LVar5, 0)
-    Exec(N(EVS_PullVine_Manage))
+    Exec(EVS_PullVine_Manage)
     Set(LVarC, VINE_IDX_2)
     Set(LVarD, MODEL_o78)
     Set(LVarE, MODEL_o79)
     Set(LVar9, MODEL_o61)
     Set(LVarA, MODEL_o62)
     Set(LVarB, MODEL_o63)
-    Set(LVar4, Ref(N(EVS_OnPullVine)))
+    Set(LVar4, Ref(EVS_OnPullVine))
     Set(LVar5, 15)
-    Exec(N(EVS_PullVine_Manage))
+    Exec(EVS_PullVine_Manage)
     Set(LVarC, VINE_IDX_3)
     Set(LVarD, MODEL_o77)
     Set(LVarE, MODEL_o76)
     Set(LVar9, MODEL_o65)
     Set(LVarA, MODEL_o67)
     Set(LVarB, MODEL_o2)
-    Set(LVar4, Ref(N(EVS_OnPullVine)))
+    Set(LVar4, Ref(EVS_OnPullVine))
     Set(LVar5, 15)
-    Exec(N(EVS_PullVine_Manage))
+    Exec(EVS_PullVine_Manage)
     Set(LVarC, VINE_IDX_4)
     Set(LVarD, MODEL_o81)
     Set(LVarE, MODEL_o80)
     Set(LVar9, MODEL_o69)
     Set(LVarA, MODEL_o70)
     Set(LVarB, MODEL_o71)
-    Set(LVar4, Ref(N(EVS_OnPullVine)))
+    Set(LVar4, Ref(EVS_OnPullVine))
     Set(LVar5, 15)
-    Exec(N(EVS_PullVine_Manage))
+    Exec(EVS_PullVine_Manage)
     Set(LVarC, VINE_IDX_5)
     Set(LVarD, MODEL_o82)
     Set(LVarE, MODEL_o83)
     Set(LVar9, MODEL_o75)
     Set(LVarA, MODEL_o73)
     Set(LVarB, MODEL_o2)
-    Set(LVar4, Ref(N(EVS_OnPullVine)))
+    Set(LVar4, Ref(EVS_OnPullVine))
     Set(LVar5, 15)
-    Exec(N(EVS_PullVine_Manage))
+    Exec(EVS_PullVine_Manage)
     Return
     End
 };

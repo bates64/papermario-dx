@@ -3,4 +3,4 @@
 
 #define NpcSettings_Lee NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Lee);
+extern NpcSettings NpcSettings_Lee;

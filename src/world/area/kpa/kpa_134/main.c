@@ -1,51 +1,51 @@
 #include "kpa_134.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitWalk_kpa_133_1) = EVT_EXIT_WALK(40, kpa_134_ENTRY_0, "kpa_133", kpa_133_ENTRY_1);
-EvtScript N(EVS_ExitDoors_kpa_130_0) = EVT_EXIT_DOUBLE_DOOR(kpa_134_ENTRY_1, "kpa_130", kpa_130_ENTRY_0, COLLIDER_nno, MODEL_o408, MODEL_o409);
-EvtScript N(EVS_ExitWalk_kpa_133_2) = EVT_EXIT_WALK(40, kpa_134_ENTRY_2, "kpa_133", kpa_133_ENTRY_2);
-EvtScript N(EVS_ExitWalk_kpa_133_3) = EVT_EXIT_WALK(40, kpa_134_ENTRY_3, "kpa_133", kpa_133_ENTRY_3);
+EvtScript EVS_ExitWalk_kpa_133_1 = EVT_EXIT_WALK(40, kpa_134_ENTRY_0, "kpa_133", kpa_133_ENTRY_1);
+EvtScript EVS_ExitDoors_kpa_130_0 = EVT_EXIT_DOUBLE_DOOR(kpa_134_ENTRY_1, "kpa_130", kpa_130_ENTRY_0, COLLIDER_nno, MODEL_o408, MODEL_o409);
+EvtScript EVS_ExitWalk_kpa_133_2 = EVT_EXIT_WALK(40, kpa_134_ENTRY_2, "kpa_133", kpa_133_ENTRY_2);
+EvtScript EVS_ExitWalk_kpa_133_3 = EVT_EXIT_WALK(40, kpa_134_ENTRY_3, "kpa_133", kpa_133_ENTRY_3);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_133_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_exitw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_133_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilite, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_133_3)), TRIGGER_FLOOR_ABOVE, COLLIDER_g98, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_133_1), TRIGGER_FLOOR_ABOVE, COLLIDER_exitw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_133_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilite, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kpa_133_3), TRIGGER_FLOOR_ABOVE, COLLIDER_g98, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_134_ENTRY_0)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(kpa_134_ENTRY_1)
             Set(LVar0, 1)
             Set(LVar2, MODEL_o408)
             Set(LVar3, MODEL_o409)
             Exec(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(kpa_134_ENTRY_2)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
         CaseEq(kpa_134_ENTRY_3)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupChains))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupChains)
     IfEq(GF_KPA134_BlueSwitch, false)
-        BindTrigger(Ref(N(EVS_FlipWallPanels)), TRIGGER_AREA_FLAG_SET, AF_KPA134_HitWaterSwitch, 1, 0)
+        BindTrigger(Ref(EVS_FlipWallPanels), TRIGGER_AREA_FLAG_SET, AF_KPA134_HitWaterSwitch, 1, 0)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o383, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o384, COLLIDER_FLAGS_UPPER_MASK)
@@ -110,8 +110,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(EVS_UpdateTexturePan)
     EndThread
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

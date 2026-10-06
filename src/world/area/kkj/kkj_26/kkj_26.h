@@ -13,10 +13,8 @@
 
 #include "sprite/npc/Twink.h"
 
-#define NAMESPACE kkj_26
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_GotoMap_hos_00_1);
-extern EvtScript N(EVS_Scene_WhereIsMario);
-extern EvtScript N(EVS_Scene_AfterAllSpiritsRescued);
-extern EvtScript N(EVS_PlayDemoScene);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_GotoMap_hos_00_1;
+extern EvtScript EVS_Scene_WhereIsMario;
+extern EvtScript EVS_Scene_AfterAllSpiritsRescued;
+extern EvtScript EVS_PlayDemoScene;

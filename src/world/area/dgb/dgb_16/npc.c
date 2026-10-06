@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Clubba/napping.inc.c"
 
-NpcData N(NpcData_Clubba_01)[] = {
+NpcData NpcData_Clubba_01[] = {
     {
         .id = NPC_Clubba_01,
         .pos = { -70.0f, 0.0f, -100.0f },
@@ -19,17 +19,17 @@ NpcData N(NpcData_Clubba_01)[] = {
                 .detectSize = { 430, 92 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .limitAnimations = N(LimitAnims_Clubba),
+        .limitAnimations = LimitAnims_Clubba,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_01_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_02)[] = {
+NpcData NpcData_Clubba_02[] = {
     {
         .id = NPC_Clubba_02,
         .pos = { 0.0f, 0.0f, -235.0f },
@@ -46,7 +46,7 @@ NpcData N(NpcData_Clubba_02)[] = {
                 .detectSize = { 430, 92 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -55,7 +55,7 @@ NpcData N(NpcData_Clubba_02)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_02_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_03)[] = {
+NpcData NpcData_Clubba_03[] = {
     {
         .id = NPC_Clubba_03,
         .pos = { 70.0f, 0.0f, -100.0f },
@@ -72,7 +72,7 @@ NpcData N(NpcData_Clubba_03)[] = {
                 .detectSize = { 430, 92 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -81,7 +81,7 @@ NpcData N(NpcData_Clubba_03)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_03_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_04)[] = {
+NpcData NpcData_Clubba_04[] = {
     {
         .id = NPC_Clubba_04,
         .pos = { 140.0f, 0.0f, -235.0f },
@@ -98,7 +98,7 @@ NpcData N(NpcData_Clubba_04)[] = {
                 .detectSize = { 430, 92 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -107,7 +107,7 @@ NpcData N(NpcData_Clubba_04)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_04_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_05)[] = {
+NpcData NpcData_Clubba_05[] = {
     {
         .id = NPC_Clubba_05,
         .pos = { 210.0f, 0.0f, -100.0f },
@@ -124,7 +124,7 @@ NpcData N(NpcData_Clubba_05)[] = {
                 .detectSize = { 430, 92 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -133,7 +133,7 @@ NpcData N(NpcData_Clubba_05)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_05_Hitbox),
 };
 
-NpcData N(NpcData_Clubba_06)[] = {
+NpcData NpcData_Clubba_06[] = {
     {
         .id = NPC_Clubba_06,
         .pos = { 280.0f, 0.0f, -235.0f },
@@ -150,7 +150,7 @@ NpcData N(NpcData_Clubba_06)[] = {
                 .detectSize = { 430, 92 },
             }
         },
-        .settings = &N(NpcSettings_Clubba_Napping),
+        .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
@@ -159,12 +159,12 @@ NpcData N(NpcData_Clubba_06)[] = {
     CLUBBA_MACE_HITBOX(NPC_Clubba_06_Hitbox),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba_01), BTL_DGB_FORMATION_03, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_02), BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_03), BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_04), BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_05), BTL_DGB_FORMATION_01, BTL_DGB_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_06), BTL_DGB_FORMATION_01, BTL_DGB_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Clubba_01, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_02, BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_03, BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_04, BTL_DGB_FORMATION_00, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_05, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_06, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_02),
     {}
 };

@@ -1,17 +1,17 @@
 #include "mim_12.h"
 
-EvtScript N(EVS_ExitWalk_mim_11_1) = EVT_EXIT_WALK(60, mim_12_ENTRY_0, "mim_11", mim_11_ENTRY_1);
-EvtScript N(EVS_ExitWalk_arn_07_2) = EVT_EXIT_WALK(60, mim_12_ENTRY_1, "arn_07", arn_07_ENTRY_2);
+EvtScript EVS_ExitWalk_mim_11_1 = EVT_EXIT_WALK(60, mim_12_ENTRY_0, "mim_11", mim_11_ENTRY_1);
+EvtScript EVS_ExitWalk_arn_07_2 = EVT_EXIT_WALK(60, mim_12_ENTRY_1, "arn_07", arn_07_ENTRY_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_mim_11_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_arn_07_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_mim_11_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_arn_07_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+EvtScript EVS_EnterMap = {
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Call(SetNpcPos, NPC_GateBoo_01, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_GateBoo_02, NPC_DISPOSE_LOCATION)
@@ -27,17 +27,17 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_FOREVER_FOREST)
     Call(SetSpriteShading, SHADING_MIM_12)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 1024) // far clip distance closer than normal, further than MIM
     Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamEnabled, CAM_DEFAULT, true)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_SetupForestGate))
-    Exec(N(EVS_EnterMap))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_SetupForestGate)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

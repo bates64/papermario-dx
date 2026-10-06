@@ -5,7 +5,7 @@
 #include "world/common/enemy/Cleft/wander.inc.c"
 #include "world/common/npc/Bubulb/idle.inc.c"
 
-NpcData N(NpcData_Cleft_01) = {
+NpcData NpcData_Cleft_01 = {
     .id = NPC_Cleft_01,
     .pos = { 526.0f, 238.0f, 69.0f },
     .yaw = 0,
@@ -21,14 +21,14 @@ NpcData N(NpcData_Cleft_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Cleft_02) = {
+NpcData NpcData_Cleft_02 = {
     .id = NPC_Cleft_02,
     .pos = { 450.0f, 50.0f, 215.0f },
     .yaw = 90,
@@ -44,14 +44,14 @@ NpcData N(NpcData_Cleft_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Cleft_03) = {
+NpcData NpcData_Cleft_03 = {
     .id = NPC_Cleft_03,
     .pos = { 90.0f, 0.0f, 160.0f },
     .yaw = 270,
@@ -67,14 +67,14 @@ NpcData N(NpcData_Cleft_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Cleft_Wander),
+    .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_MontyMole_01)[] = {
+NpcData NpcData_MontyMole_01[] = {
     {
         .id = NPC_MontyMole,
         .pos = { 867.0f, 0.0f, 101.0f },
@@ -91,7 +91,7 @@ NpcData N(NpcData_MontyMole_01)[] = {
                 .detectSize = { 150 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_WallAmbush),
+        .settings = &NpcSettings_MontyMole_WallAmbush,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MONTY_MOLE_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -113,7 +113,7 @@ NpcData N(NpcData_MontyMole_01)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_MontyMole_WallAmbush_Hole),
+        .settings = &NpcSettings_MontyMole_WallAmbush_Hole,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DISABLE_AI | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MONTY_MOLE_AMBUSH_ANIMS,
@@ -121,7 +121,7 @@ NpcData N(NpcData_MontyMole_01)[] = {
     },
 };
 
-EvtScript N(EVS_Bubulb_Conversation) = {
+EvtScript EVS_Bubulb_Conversation = {
     IfEq(AF_IWA_SpokeWithBubulb, false)
         Set(LVar2, LVar0)
         Set(AF_IWA_SpokeWithBubulb, true)
@@ -134,7 +134,7 @@ EvtScript N(EVS_Bubulb_Conversation) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bubulb) = {
+EvtScript EVS_NpcInteract_Bubulb = {
     IfEq(GF_IWA02_Gift_MagicalSeed2, false)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
@@ -161,14 +161,14 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
                 Set(LVar0, MSG_CH2_0025)
                 Set(LVar1, MSG_CH2_0026)
         EndSwitch
-        ExecWait(N(EVS_Bubulb_Conversation))
+        ExecWait(EVS_Bubulb_Conversation)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb)))
+EvtScript EVS_NpcInit_Bubulb = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
     IfEq(GF_IWA02_Gift_MagicalSeed2, false)
         Call(SetNpcCollisionSize, NPC_SELF, 25, 25)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Purple_BuriedIdle)
@@ -178,23 +178,23 @@ EvtScript N(EVS_NpcInit_Bubulb) = {
     End
 };
 
-NpcData N(NpcData_Bubulb) = {
+NpcData NpcData_Bubulb = {
     .id = NPC_Bubulb,
     .pos = { 1075.0f, 50.0f, 230.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bubulb),
-    .settings = &N(NpcSettings_Bubulb),
+    .init = &EVS_NpcInit_Bubulb,
+    .settings = &NpcSettings_Bubulb,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = BUBULB_PURPLE_ANIMS,
     .tattle = MSG_NpcTattle_IWA_Bubulb_Revealed,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Cleft_01), BTL_IWA_FORMATION_03, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_Cleft_02), BTL_IWA_FORMATION_01, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_Cleft_03), BTL_IWA_FORMATION_00, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_MontyMole_01), BTL_IWA_FORMATION_05, BTL_IWA_STAGE_01),
-    NPC_GROUP(N(NpcData_Bubulb)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Cleft_01, BTL_IWA_FORMATION_03, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_Cleft_02, BTL_IWA_FORMATION_01, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_Cleft_03, BTL_IWA_FORMATION_00, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_MontyMole_01, BTL_IWA_FORMATION_05, BTL_IWA_STAGE_01),
+    NPC_GROUP(NpcData_Bubulb),
     {}
 };

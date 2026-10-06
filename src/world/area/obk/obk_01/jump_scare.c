@@ -1,7 +1,7 @@
 #include "obk_01.h"
 #include "effects.h"
 
-EvtScript N(EVS_Scene_JumpScareBoo) = {
+EvtScript EVS_Scene_JumpScareBoo = {
     Call(DisablePlayerInput, true)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Add(LVar4, 80)

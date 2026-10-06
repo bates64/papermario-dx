@@ -1,6 +1,6 @@
 #include "kkj_15.h"
 
-EvtScript N(EVS_ExtiDoor_Chapter2) = {
+EvtScript EVS_ExtiDoor_Chapter2 = {
     IfEq(AF_KKJ_PeachSawGrandHall, false)
         Call(DisablePlayerInput, true)
         Call(DisablePartnerAI, true)
@@ -24,8 +24,8 @@ EvtScript N(EVS_ExtiDoor_Chapter2) = {
     End
 };
 
-EvtScript N(EVS_SetupChapter2) = {
-    BindTrigger(Ref(N(EVS_ExtiDoor_Chapter2)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
+EvtScript EVS_SetupChapter2 = {
+    BindTrigger(Ref(EVS_ExtiDoor_Chapter2), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Return
     End
 };

@@ -145,7 +145,6 @@ s32 N(BasicToppledAnims)[] = {
     STATUS_END,
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
 BSS PlayerStatus N(DummyPlayerStatus);
 
@@ -443,7 +442,7 @@ EvtScript N(HandleCommand) = {
                     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(BasicHurtAnims)))
                     Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
                     IfEq(LFlag0, true)
-                        Call(N(StartRumbleWithParams), 256, 5)
+                        Call(StartRumbleWithParams, 256, 5)
                         Thread
                             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.8))
                         EndThread
@@ -482,7 +481,7 @@ EvtScript N(HandleCommand) = {
                     Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(BasicHurtAnims)))
                     Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
                     IfEq(LFlag0, true)
-                        Call(N(StartRumbleWithParams), 256, 5)
+                        Call(StartRumbleWithParams, 256, 5)
                         Thread
                             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.8))
                         EndThread

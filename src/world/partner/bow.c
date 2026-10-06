@@ -4,27 +4,25 @@
 #include "sprite/npc/WorldBow.h"
 #include "sprite/player.h"
 
-#define NAMESPACE world_bow
+BSS b32 IsHiding;
+BSS b32 LockingPlayerInput;
+BSS TweesterPhysics TweesterPhysicsData;
+BSS s32 OuttaSightPosX;
+BSS s32 OuttaSightPosY;
+BSS s32 OuttaSightPosZ;
 
-BSS b32 N(IsHiding);
-BSS b32 N(LockingPlayerInput);
-BSS TweesterPhysics N(TweesterPhysicsData);
-BSS s32 N(OuttaSightPosX);
-BSS s32 N(OuttaSightPosY);
-BSS s32 N(OuttaSightPosZ);
+void end_outta_sight_cleanup(Npc* partner);
+s32 check_for_treadmill_overlaps(void);
 
-void N(end_outta_sight_cleanup)(Npc* partner);
-s32 N(check_for_treadmill_overlaps)(void);
-
-void N(init)(Npc* bow) {
+void init(Npc* bow) {
     bow->collisionHeight = 26;
     bow->collisionDiameter = 24;
     bow->renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
-    N(LockingPlayerInput) = false;
-    N(IsHiding) = false;
+    LockingPlayerInput = false;
+    IsHiding = false;
 }
 
-API_CALLABLE(N(TakeOut)) {
+API_CALLABLE(TakeOut) {
     Npc* bow = script->owner2.npc;
 
     if (isInitialCall) {
@@ -39,14 +37,14 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldBow_TakeOut = {
-    Call(N(TakeOut))
+    Call(TakeOut)
     Return
     End
 };
 
-TweesterPhysics* N(TweesterPhysicsPtr) = &N(TweesterPhysicsData);
+TweesterPhysics* TweesterPhysicsPtr = &TweesterPhysicsData;
 
-API_CALLABLE(N(Update)) {
+API_CALLABLE(Update) {
     PlayerData* playerData = &gPlayerData;
     Npc* bow = script->owner2.npc;
     f32 sinAngle, cosAngle, liftoffVelocity;
@@ -54,7 +52,7 @@ API_CALLABLE(N(Update)) {
 
     if (isInitialCall) {
         partner_flying_enable(bow, true);
-        mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
+        mem_clear(TweesterPhysicsPtr, sizeof(TweesterPhysics));
         TweesterTouchingPartner = nullptr;
     }
 
@@ -67,59 +65,59 @@ API_CALLABLE(N(Update)) {
         return ApiStatus_BLOCK;
     }
 
-    switch (N(TweesterPhysicsPtr)->state){
+    switch (TweesterPhysicsPtr->state){
         case TWEESTER_PARTNER_INIT:
-            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
-            N(TweesterPhysicsPtr)->prevFlags = bow->flags;
-            N(TweesterPhysicsPtr)->radius = fabsf(dist2D(bow->pos.x, bow->pos.z, entity->pos.x, entity->pos.z));
-            N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, bow->pos.x, bow->pos.z);
-            N(TweesterPhysicsPtr)->angularVel = 6.0f;
-            N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
-            N(TweesterPhysicsPtr)->countdown = 120;
+            TweesterPhysicsPtr->state = TWEESTER_PARTNER_ATTRACT;
+            TweesterPhysicsPtr->prevFlags = bow->flags;
+            TweesterPhysicsPtr->radius = fabsf(dist2D(bow->pos.x, bow->pos.z, entity->pos.x, entity->pos.z));
+            TweesterPhysicsPtr->angle = atan2(entity->pos.x, entity->pos.z, bow->pos.x, bow->pos.z);
+            TweesterPhysicsPtr->angularVel = 6.0f;
+            TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
+            TweesterPhysicsPtr->countdown = 120;
             bow->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             bow->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
-            sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
-            bow->pos.x = entity->pos.x + (sinAngle * N(TweesterPhysicsPtr)->radius);
-            bow->pos.z = entity->pos.z - (cosAngle * N(TweesterPhysicsPtr)->radius);
-            N(TweesterPhysicsPtr)->angle = clamp_angle(N(TweesterPhysicsPtr)->angle - N(TweesterPhysicsPtr)->angularVel);
-            if (N(TweesterPhysicsPtr)->radius > 20.0f) {
-                N(TweesterPhysicsPtr)->radius -= 1.0f;
-            } else if (N(TweesterPhysicsPtr)->radius < 19.0f) {
-                N(TweesterPhysicsPtr)->radius++;
+            sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
+            bow->pos.x = entity->pos.x + (sinAngle * TweesterPhysicsPtr->radius);
+            bow->pos.z = entity->pos.z - (cosAngle * TweesterPhysicsPtr->radius);
+            TweesterPhysicsPtr->angle = clamp_angle(TweesterPhysicsPtr->angle - TweesterPhysicsPtr->angularVel);
+            if (TweesterPhysicsPtr->radius > 20.0f) {
+                TweesterPhysicsPtr->radius -= 1.0f;
+            } else if (TweesterPhysicsPtr->radius < 19.0f) {
+                TweesterPhysicsPtr->radius++;
             }
 
-            liftoffVelocity = sin_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->liftoffVelPhase)) * 3.0f;
-            N(TweesterPhysicsPtr)->liftoffVelPhase += 3.0f;
+            liftoffVelocity = sin_rad(DEG_TO_RAD(TweesterPhysicsPtr->liftoffVelPhase)) * 3.0f;
+            TweesterPhysicsPtr->liftoffVelPhase += 3.0f;
 
-            if (N(TweesterPhysicsPtr)->liftoffVelPhase > 150.0f) {
-                N(TweesterPhysicsPtr)->liftoffVelPhase = 150.0f;
+            if (TweesterPhysicsPtr->liftoffVelPhase > 150.0f) {
+                TweesterPhysicsPtr->liftoffVelPhase = 150.0f;
             }
 
             bow->pos.y += liftoffVelocity;
-            bow->renderYaw = clamp_angle(360.0f - N(TweesterPhysicsPtr)->angle);
-            N(TweesterPhysicsPtr)->angularVel += 0.8;
+            bow->renderYaw = clamp_angle(360.0f - TweesterPhysicsPtr->angle);
+            TweesterPhysicsPtr->angularVel += 0.8;
 
-            if (N(TweesterPhysicsPtr)->angularVel > 40.0f) {
-                N(TweesterPhysicsPtr)->angularVel = 40.0f;
+            if (TweesterPhysicsPtr->angularVel > 40.0f) {
+                TweesterPhysicsPtr->angularVel = 40.0f;
             }
-            N(TweesterPhysicsPtr)->countdown--;
-            if (N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
+            TweesterPhysicsPtr->countdown--;
+            if (TweesterPhysicsPtr->countdown == 0) {
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_HOLD;
             }
             break;
         case TWEESTER_PARTNER_HOLD:
-            bow->flags = N(TweesterPhysicsPtr)->prevFlags;
-            N(TweesterPhysicsPtr)->countdown = 30;
-            N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
+            bow->flags = TweesterPhysicsPtr->prevFlags;
+            TweesterPhysicsPtr->countdown = 30;
+            TweesterPhysicsPtr->state = TWEESTER_PARTNER_RELEASE;
             break;
         case TWEESTER_PARTNER_RELEASE:
             partner_flying_update_player_tracking(bow);
             partner_flying_update_motion(bow);
 
-            N(TweesterPhysicsPtr)->countdown--;
-            if (N(TweesterPhysicsPtr)->countdown == 0) {
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+            TweesterPhysicsPtr->countdown--;
+            if (TweesterPhysicsPtr->countdown == 0) {
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
                 TweesterTouchingPartner = nullptr;
             }
             break;
@@ -128,22 +126,22 @@ API_CALLABLE(N(Update)) {
 }
 
 EvtScript EVS_WorldBow_Update = {
-    Call(N(Update))
+    Call(Update)
     Return
     End
 };
 
-void N(try_cancel_tweester)(Npc* bow) {
+void try_cancel_tweester(Npc* bow) {
     if (TweesterTouchingPartner != nullptr) {
         TweesterTouchingPartner = nullptr;
-        bow->flags = N(TweesterPhysicsPtr)->prevFlags;
-        N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+        bow->flags = TweesterPhysicsPtr->prevFlags;
+        TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking(bow);
     }
 }
 
 // check whether the player would collide with an obstacle while on a treadmill in AREA_OMO
-s32 N(check_for_treadmill_overlaps)(void) {
+s32 check_for_treadmill_overlaps(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 x, y, z;
     f32 yaw;
@@ -166,7 +164,7 @@ s32 N(check_for_treadmill_overlaps)(void) {
     return player_test_lateral_overlap(PLAYER_COLLISION_0, playerStatus, &x, &y, &z, playerStatus->colliderDiameter, yaw);
 }
 
-API_CALLABLE(N(UseAbility)) {
+API_CALLABLE(UseAbility) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
@@ -186,14 +184,14 @@ API_CALLABLE(N(UseAbility)) {
     };
 
     if (isInitialCall) {
-        N(try_cancel_tweester)(bow);
+        try_cancel_tweester(bow);
         if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP || !partner_can_continue_ability(PARTNER_BOW)) {
             return ApiStatus_DONE2;
         }
         if (playerStatus->animFlags & PA_FLAG_PARTNER_USAGE_FORCED) {
             playerStatus->animFlags &= ~PA_FLAG_PARTNER_USAGE_FORCED;
             script->functionTemp[2] = disable_player_input();
-            N(LockingPlayerInput) = true;
+            LockingPlayerInput = true;
             script->USE_STATE = OUTTA_SIGHT_BEGIN;
         } else {
             script->USE_STATE = OUTTA_SIGHT_INIT;
@@ -209,25 +207,25 @@ API_CALLABLE(N(UseAbility)) {
             playerStatus->flags |= PS_FLAG_PAUSE_DISABLED;
             script->functionTemp[1] = 3;
             script->functionTemp[2] = disable_player_input();
-            N(LockingPlayerInput) = true;
+            LockingPlayerInput = true;
             script->USE_STATE++; // OUTTA_SIGHT_DELAY
             break;
         case OUTTA_SIGHT_DELAY:
             if ((!partner_can_continue_ability(PARTNER_BOW) || is_starting_conversation())
                 && script->functionTemp[2] < playerStatus->inputDisabledCount
-                && N(LockingPlayerInput)
+                && LockingPlayerInput
             ) {
                 enable_player_input();
-                N(LockingPlayerInput) = false;
+                LockingPlayerInput = false;
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                 return ApiStatus_DONE2;
             }
             script->functionTemp[1]--;
             if (script->functionTemp[1] == 0) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount) {
-                    if (N(LockingPlayerInput)) {
+                    if (LockingPlayerInput) {
                         enable_player_input();
-                        N(LockingPlayerInput) = false;
+                        LockingPlayerInput = false;
                     }
                     playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                     return ApiStatus_DONE2;
@@ -241,17 +239,17 @@ API_CALLABLE(N(UseAbility)) {
         case OUTTA_SIGHT_BEGIN:
             if (playerStatus->flags & PS_FLAG_HIT_FIRE) {
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
-                if (N(LockingPlayerInput)) {
+                if (LockingPlayerInput) {
                     enable_player_input();
-                    N(LockingPlayerInput) = false;
+                    LockingPlayerInput = false;
                 }
                 return ApiStatus_DONE2;
             }
             if (script->functionTemp[2] != 0) {
-                N(LockingPlayerInput) = true;
+                LockingPlayerInput = true;
             }
 
-            N(IsHiding) = true;
+            IsHiding = true;
             bow->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
             partnerStatus->partnerActionState = 1;
             partnerStatus->actingPartner = 9;
@@ -279,9 +277,9 @@ API_CALLABLE(N(UseAbility)) {
                 bow->pos.x += ((bow->moveToPos.x - bow->pos.x) / bow->duration);
                 bow->pos.y += ((bow->moveToPos.y - bow->pos.y) / bow->duration);
                 bow->pos.z += ((bow->moveToPos.z - bow->pos.z) / bow->duration);
-                N(OuttaSightPosX) = playerStatus->pos.x - bow->pos.x;
-                N(OuttaSightPosY) = playerStatus->pos.y - bow->pos.y;
-                N(OuttaSightPosZ) = playerStatus->pos.z - bow->pos.z;
+                OuttaSightPosX = playerStatus->pos.x - bow->pos.x;
+                OuttaSightPosY = playerStatus->pos.y - bow->pos.y;
+                OuttaSightPosZ = playerStatus->pos.z - bow->pos.z;
                 bow->duration--;
                 if (bow->duration == 0) {
                     bow->yaw = playerStatus->targetYaw;
@@ -292,7 +290,7 @@ API_CALLABLE(N(UseAbility)) {
                 }
                 break;
             }
-            N(end_outta_sight_cleanup)(bow);
+            end_outta_sight_cleanup(bow);
             return ApiStatus_DONE2;
 
         case OUTTA_SIGHT_VANISH:
@@ -308,23 +306,23 @@ API_CALLABLE(N(UseAbility)) {
 
                 get_shadow_by_index(bow->shadowIndex)->alpha = playerStatus->curAlpha >> 1;
                 npc_set_imgfx_params(bow, IMGFX_SET_ALPHA, playerStatus->curAlpha, 0, 0, 0, 0);
-                bow->pos.x = playerStatus->pos.x - N(OuttaSightPosX);
-                bow->pos.y = playerStatus->pos.y - N(OuttaSightPosY);
-                bow->pos.z = playerStatus->pos.z - N(OuttaSightPosZ);
+                bow->pos.x = playerStatus->pos.x - OuttaSightPosX;
+                bow->pos.y = playerStatus->pos.y - OuttaSightPosY;
+                bow->pos.z = playerStatus->pos.z - OuttaSightPosZ;
                 break;
             }
-            N(end_outta_sight_cleanup)(bow);
+            end_outta_sight_cleanup(bow);
             return ApiStatus_DONE2;
 
         case OUTTA_SIGHT_IDLE:
             if (collisionStatus->curFloor <= NO_COLLIDER) {
-                N(end_outta_sight_cleanup)(bow);
+                end_outta_sight_cleanup(bow);
                 return ApiStatus_DONE2;
             }
 
-            bow->pos.x = playerStatus->pos.x - N(OuttaSightPosX);
-            bow->pos.y = playerStatus->pos.y - N(OuttaSightPosY);
-            bow->pos.z = playerStatus->pos.z - N(OuttaSightPosZ);
+            bow->pos.x = playerStatus->pos.x - OuttaSightPosX;
+            bow->pos.y = playerStatus->pos.y - OuttaSightPosY;
+            bow->pos.z = playerStatus->pos.z - OuttaSightPosZ;
 
             stickInputMag = dist2D(0.0f, 0.0f, partnerStatus->stickX, partnerStatus->stickY);
             if ((collisionStatus->curFloor <= NO_COLLIDER)
@@ -333,7 +331,7 @@ API_CALLABLE(N(UseAbility)) {
                 || playerStatus->flags & PS_FLAG_HIT_FIRE
             ) {
                 // prevent exiting from the ground while underneath a wall
-                if (N(check_for_treadmill_overlaps)() <= NO_COLLIDER) {
+                if (check_for_treadmill_overlaps() <= NO_COLLIDER) {
                     script->USE_STATE++; // OUTTA_SIGHT_REAPPEAR
                     script->functionTemp[1] = 3;
                     script->functionTemp[2] = playerStatus->inputDisabledCount;
@@ -353,19 +351,19 @@ API_CALLABLE(N(UseAbility)) {
             }
 
             sfx_play_sound_at_npc(SOUND_BOW_APPEAR, SOUND_SPACE_DEFAULT, NPC_PARTNER);
-            N(end_outta_sight_cleanup)(bow);
+            end_outta_sight_cleanup(bow);
             return ApiStatus_DONE1;
     }
     return ApiStatus_BLOCK;
 }
 
 EvtScript EVS_WorldBow_UseAbility = {
-    Call(N(UseAbility))
+    Call(UseAbility)
     Return
     End
 };
 
-void N(end_outta_sight_cleanup)(Npc* bow) {
+void end_outta_sight_cleanup(Npc* bow) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
     s32 actionState;
@@ -375,13 +373,13 @@ void N(end_outta_sight_cleanup)(Npc* bow) {
     bow->renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
     get_shadow_by_index(bow->shadowIndex)->alpha = playerStatus->curAlpha / 2;
 
-    if (N(LockingPlayerInput)) {
+    if (LockingPlayerInput) {
         enable_player_input();
     }
 
     playerStatus->flags &= ~(PS_FLAG_HAZARD_INVINCIBILITY | PS_FLAG_JUMPING);
     bow->flags &= ~(NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_INVISIBLE);
-    N(LockingPlayerInput) = false;
+    LockingPlayerInput = false;
     actionState = ACTION_STATE_IDLE;
 
     if (playerStatus->flags & PS_FLAG_HIT_FIRE) {
@@ -393,18 +391,18 @@ void N(end_outta_sight_cleanup)(Npc* bow) {
     partnerStatus->actingPartner = 0;
     playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
     partner_clear_player_tracking(bow);
-    N(IsHiding) = false;
+    IsHiding = false;
 }
 
-API_CALLABLE(N(PutAway)) {
+API_CALLABLE(PutAway) {
     Npc* bow = script->owner2.npc;
 
     if (isInitialCall) {
         partner_init_put_away(bow);
-        if (N(IsHiding)) {
+        if (IsHiding) {
             sfx_play_sound_at_npc(SOUND_BOW_APPEAR, SOUND_SPACE_DEFAULT, NPC_PARTNER);
         }
-        N(end_outta_sight_cleanup)(bow);
+        end_outta_sight_cleanup(bow);
     }
 
     if (partner_put_away(bow)) {
@@ -415,28 +413,28 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldBow_PutAway = {
-    Call(N(PutAway))
+    Call(PutAway)
     Return
     End
 };
 
-void N(pre_battle)(Npc* bow) {
+void pre_battle(Npc* bow) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
-    if (N(IsHiding)) {
+    if (IsHiding) {
         enable_player_input();
         set_action_state(ACTION_STATE_IDLE);
         partner_clear_player_tracking(bow);
         partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
         partnerStatus->actingPartner = PARTNER_NONE;
-        N(IsHiding) = false;
+        IsHiding = false;
         bow->flags &= ~NPC_FLAG_INVISIBLE;
     }
 }
 
 WORLD_PARTNER_ENTRY = {
     .isFlying = true,
-    .init = N(init),
+    .init = init,
     .takeOut = &EVS_WorldBow_TakeOut,
     .update = &EVS_WorldBow_Update,
     .useAbility = &EVS_WorldBow_UseAbility,
@@ -444,5 +442,5 @@ WORLD_PARTNER_ENTRY = {
     .idle = ANIM_WorldBow_Idle,
     .canUseAbility = partner_is_idle,
     .canPlayerOpenMenus = world_partner_can_open_menus_default,
-    .preBattle = N(pre_battle),
+    .preBattle = pre_battle,
 };

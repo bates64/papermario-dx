@@ -1,6 +1,6 @@
 #include "kzn_11.h"
 
-API_CALLABLE(N(AddPushVelocity)) {
+API_CALLABLE(AddPushVelocity) {
     Bytecode* args = script->ptrReadPos;
     s32 velX = evt_get_variable(script, *args++);
     s32 floorA = evt_get_variable(script, *args++);
@@ -22,7 +22,7 @@ API_CALLABLE(N(AddPushVelocity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCurrentFloor)) {
+API_CALLABLE(GetCurrentFloor) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -30,7 +30,7 @@ API_CALLABLE(N(GetCurrentFloor)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsPartnerLakilester)) {
+API_CALLABLE(IsPartnerLakilester) {
     if (gPartnerStatus.actingPartner == PARTNER_LAKILESTER) {
         script->varTable[9] = true;
     } else {
@@ -39,7 +39,7 @@ API_CALLABLE(N(IsPartnerLakilester)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateLeftPlatform) = {
+EvtScript EVS_UpdateLeftPlatform = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(ParentColliderToModel, COLLIDER_o67, MODEL_o67)
     Call(ParentColliderToModel, COLLIDER_o68, MODEL_o68)
@@ -57,11 +57,11 @@ EvtScript N(EVS_UpdateLeftPlatform) = {
             Set(LVar4, LVar0)
             Sub(LVar4, LVar3)
             Set(LVar3, LVar0)
-            Call(N(AddPushVelocity), LVar4, 26, 25)
+            Call(AddPushVelocity, LVar4, 26, 25)
             IfLt(LVar0, -45)
-                Call(N(IsPartnerLakilester))
+                Call(IsPartnerLakilester)
                 IfEq(LVar9, 1)
-                    Call(N(GetCurrentFloor), LVar2)
+                    Call(GetCurrentFloor, LVar2)
                     IfEq(LVar2, COLLIDER_pp1)
                         BreakLoop
                     EndIf
@@ -83,11 +83,11 @@ EvtScript N(EVS_UpdateLeftPlatform) = {
             Set(LVar4, LVar0)
             Sub(LVar4, LVar3)
             Set(LVar3, LVar0)
-            Call(N(AddPushVelocity), LVar4, 26, 25)
+            Call(AddPushVelocity, LVar4, 26, 25)
             IfGt(LVar0, 45)
-                Call(N(IsPartnerLakilester))
+                Call(IsPartnerLakilester)
                 IfEq(LVar9, 1)
-                    Call(N(GetCurrentFloor), LVar2)
+                    Call(GetCurrentFloor, LVar2)
                     IfEq(LVar2, COLLIDER_pp2)
                         BreakLoop
                     EndIf
@@ -104,7 +104,7 @@ EvtScript N(EVS_UpdateLeftPlatform) = {
     End
 };
 
-EvtScript N(EVS_UpdateRightPlatform) = {
+EvtScript EVS_UpdateRightPlatform = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(ParentColliderToModel, COLLIDER_o26, MODEL_o26)
     Call(ParentColliderToModel, COLLIDER_o27, MODEL_o27)
@@ -122,11 +122,11 @@ EvtScript N(EVS_UpdateRightPlatform) = {
             Set(LVar4, LVar0)
             Sub(LVar4, LVar3)
             Set(LVar3, LVar0)
-            Call(N(AddPushVelocity), LVar4, 30, 29)
+            Call(AddPushVelocity, LVar4, 30, 29)
             IfLt(LVar0, -45)
-                Call(N(IsPartnerLakilester))
+                Call(IsPartnerLakilester)
                 IfEq(LVar9, 1)
-                    Call(N(GetCurrentFloor), LVar2)
+                    Call(GetCurrentFloor, LVar2)
                     IfEq(LVar2, COLLIDER_pp1)
                         BreakLoop
                     EndIf
@@ -148,11 +148,11 @@ EvtScript N(EVS_UpdateRightPlatform) = {
             Set(LVar4, LVar0)
             Sub(LVar4, LVar3)
             Set(LVar3, LVar0)
-            Call(N(AddPushVelocity), LVar4, 30, 29)
+            Call(AddPushVelocity, LVar4, 30, 29)
             IfGt(LVar0, 120)
-                Call(N(IsPartnerLakilester))
+                Call(IsPartnerLakilester)
                 IfEq(LVar9, 1)
-                    Call(N(GetCurrentFloor), LVar2)
+                    Call(GetCurrentFloor, LVar2)
                     IfEq(LVar2, COLLIDER_pp2)
                         BreakLoop
                     EndIf

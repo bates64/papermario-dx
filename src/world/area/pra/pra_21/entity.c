@@ -1,7 +1,7 @@
 #include "pra_21.h"
 #include "entity.h"
 
-API_CALLABLE(N(GetTargetPosXForSpring)) {
+API_CALLABLE(GetTargetPosXForSpring) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->targetYaw >= 0.0f && playerStatus->targetYaw < 180.0f) {
@@ -13,7 +13,7 @@ API_CALLABLE(N(GetTargetPosXForSpring)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MonitorPlayerFloor)) {
+API_CALLABLE(MonitorPlayerFloor) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->lastGoodPos.y == 0) {
@@ -25,7 +25,7 @@ API_CALLABLE(N(MonitorPlayerFloor)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGe(LVar1, LVar3)
@@ -38,21 +38,21 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Call(GetPlayerPos, LVar7, LVar8, LVar9)
     IfEq(MV_PlayerFloor, 0)
         Set(LVar3, -175)
-        ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
-        Call(N(GetTargetPosXForSpring))
+        ExecGetTID(EVS_TetherCamToPlayer, LVarA)
+        Call(GetTargetPosXForSpring)
         Set(LVar1, -200)
         Set(LVar2, 15)
         Call(SetPlayerJumpscale, Float(2.0))
     Else
         Set(LVar3, 0)
-        ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+        ExecGetTID(EVS_TetherCamToPlayer, LVarA)
         IfEq(GB_PRA_TwinStatueState, 2)
             Set(LVar0, 340)
         Else
@@ -72,12 +72,12 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Thread
-        Call(N(MonitorPlayerFloor))
+        Call(MonitorPlayerFloor)
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), 366, -200, -80, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Call(MakeEntity, Ref(Entity_YellowBlock), 55, 80, -75, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_PRA21_ItemBlock_MapleSyrup)
     Call(MakeEntity, Ref(Entity_HiddenPanel), 50, 0, -75, 0, MODEL_o961, MAKE_ENTITY_END)

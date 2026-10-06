@@ -3,8 +3,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_hammer_charge_2
-
 #include "battle/common/move/HammerSupport.inc.c"
 
 #include "battle/common/IsHammerMaxCharged.inc.c"
@@ -51,40 +49,40 @@ API_CALLABLE(func_802A12FC_75E8CC) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript N(EVS_UseMoveBasic_Impl);
+extern EvtScript EVS_UseMoveBasic_Impl;
 
-EvtScript N(EVS_UseMove1) = {
+EvtScript EVS_UseMove1 = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
             Set(LVarD, 65) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMoveBasic_Impl))
+            ExecWait(EVS_UseMoveBasic_Impl)
         CaseEq(1)
             Set(LVarD, 65) // duration
             Set(LVarE, SUPER_HAMMER_DMG_BAD)
             Set(LVarF, SUPER_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMoveBasic_Impl))
+            ExecWait(EVS_UseMoveBasic_Impl)
         CaseEq(2)
             Set(LVarD, 65) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD + 1)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMoveBasic_Impl))
+            ExecWait(EVS_UseMoveBasic_Impl)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMoveBasic_Impl) = {
+EvtScript EVS_UseMoveBasic_Impl = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_UseBasicHammer))
+            ExecWait(EVS_UseBasicHammer)
         CaseEq(1)
-            ExecWait(N(EVS_UseSuperHammer))
+            ExecWait(EVS_UseSuperHammer)
         CaseEq(2)
-            ExecWait(N(EVS_UseBasicHammer))
+            ExecWait(EVS_UseBasicHammer)
     EndSwitch
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, LVar9, 16)
     Call(GetPlayerActionQuality, LVar0)
@@ -131,7 +129,7 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_STRIKE)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+        ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         Return
     EndIf
     Set(LFlag0, false)
@@ -165,36 +163,36 @@ EvtScript N(EVS_UseMoveBasic_Impl) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_SmashSuccess))
+            ExecWait(EVS_HammerSupport_ReturnHome_SmashSuccess)
         EndCaseGroup
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+            ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         EndCaseGroup
     EndSwitch
     Return
     End
 };
 
-extern EvtScript N(EVS_802A39C8);
-extern EvtScript N(EVS_802A3CF4);
-extern EvtScript N(EVS_802A4020);
+extern EvtScript EVS_802A39C8;
+extern EvtScript EVS_802A3CF4;
+extern EvtScript EVS_802A4020;
 
-EvtScript N(EVS_UseMove0) = {
+EvtScript EVS_UseMove0 = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_802A39C8))
+            ExecWait(EVS_802A39C8)
         CaseEq(1)
-            ExecWait(N(EVS_802A3CF4))
+            ExecWait(EVS_802A3CF4)
         CaseEq(2)
-            ExecWait(N(EVS_802A4020))
+            ExecWait(EVS_802A4020)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_802A39C8) = {
+EvtScript EVS_802A39C8 = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
     Thread
@@ -205,13 +203,13 @@ EvtScript N(EVS_802A39C8) = {
     EndThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer1_Charging)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(UnkMoveFunc3), LVar0, LVar1, LVar2, Float(1.2))
+    Call(UnkMoveFunc3, LVar0, LVar1, LVar2, Float(1.2))
     Wait(3)
-    Call(N(UnkMoveFunc3), LVar0, LVar1, LVar2, Float(0.8))
+    Call(UnkMoveFunc3, LVar0, LVar1, LVar2, Float(0.8))
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
-    Call(N(IsHammerMaxCharged))
+    Call(IsHammerMaxCharged)
     IfEq(LVar0, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 15)
@@ -245,7 +243,7 @@ EvtScript N(EVS_802A39C8) = {
 };
 
 
-EvtScript N(EVS_802A3CF4) = {
+EvtScript EVS_802A3CF4 = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
     Thread
@@ -256,13 +254,13 @@ EvtScript N(EVS_802A3CF4) = {
     EndThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer2_Charging)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(UnkMoveFunc3), LVar0, LVar1, LVar2, Float(1.2))
+    Call(UnkMoveFunc3, LVar0, LVar1, LVar2, Float(1.2))
     Wait(3)
-    Call(N(UnkMoveFunc3), LVar0, LVar1, LVar2, Float(0.8))
+    Call(UnkMoveFunc3, LVar0, LVar1, LVar2, Float(0.8))
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
-    Call(N(IsHammerMaxCharged))
+    Call(IsHammerMaxCharged)
     IfEq(LVar0, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 15)
@@ -296,7 +294,7 @@ EvtScript N(EVS_802A3CF4) = {
 };
 
 
-EvtScript N(EVS_802A4020) = {
+EvtScript EVS_802A4020 = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
     Thread
@@ -307,13 +305,13 @@ EvtScript N(EVS_802A4020) = {
     EndThread
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer3_Charging)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(UnkMoveFunc3), LVar0, LVar1, LVar2, Float(1.2))
+    Call(UnkMoveFunc3, LVar0, LVar1, LVar2, Float(1.2))
     Wait(3)
-    Call(N(UnkMoveFunc3), LVar0, LVar1, LVar2, Float(0.8))
+    Call(UnkMoveFunc3, LVar0, LVar1, LVar2, Float(0.8))
     Wait(30)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 5)
-    Call(N(IsHammerMaxCharged))
+    Call(IsHammerMaxCharged)
     IfEq(LVar0, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 15)
@@ -347,6 +345,6 @@ EvtScript N(EVS_802A4020) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
-    &N(EVS_UseMove0),
-    &N(EVS_UseMove1),
+    &EVS_UseMove0,
+    &EVS_UseMove1,
 );

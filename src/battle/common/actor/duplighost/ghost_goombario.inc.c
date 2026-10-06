@@ -342,7 +342,7 @@ EvtScript N(EVS_Attack_Headbonk) = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Call(SetJumpAnimations, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk, ANIM_BattleGoombario_Headbonk)
-            Call(N(ActorJumpToPos))
+            Call(ActorJumpToPos)
             Thread
                 Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
             EndThread

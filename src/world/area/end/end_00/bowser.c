@@ -1,7 +1,7 @@
 #include "end_00.h"
 #include "effects.h"
 
-EvtScript N(EVS_JrTroopa_SpinningDodge) = {
+EvtScript EVS_JrTroopa_SpinningDodge = {
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_RaiseStaff)
     Wait(5 * DT)
     Call(MakeLerp, 0, 360, 10 * DT, EASING_LINEAR)
@@ -17,7 +17,7 @@ EvtScript N(EVS_JrTroopa_SpinningDodge) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Bowser) = {
+EvtScript EVS_ParadePhase_Bowser = {
     Wait(10 * DT)
     Call(SetNpcJumpscale, NPC_JrTroopa, Float(0.5))
     Call(NpcJump1, NPC_JrTroopa, 2010, 0, 0, 20 * DT)
@@ -32,7 +32,7 @@ EvtScript N(EVS_ParadePhase_Bowser) = {
     PlayEffect(EFFECT_SHAPE_SPELL, 0, 1930, 0, 0, 2160, 100, 0, 10)
     Wait(30 * DT)
     PlayEffect(EFFECT_SHAPE_SPELL, 0, 2160, 100, 0, 1930, 0, 0, 10)
-    Exec(N(EVS_JrTroopa_SpinningDodge))
+    Exec(EVS_JrTroopa_SpinningDodge)
     Call(NpcJump1, NPC_JrTroopa, 1890, 0, 0, 20 * DT)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_Idle)
     Call(NpcFlyTo, NPC_Kammy, 2060, 60, 0, 10 * DT, -10, EASING_LINEAR)
@@ -40,7 +40,7 @@ EvtScript N(EVS_ParadePhase_Bowser) = {
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     PlayEffect(EFFECT_SHAPE_SPELL, 0, 2060, 60, 0, 1890, 0, 0, 10)
-    Exec(N(EVS_JrTroopa_SpinningDodge))
+    Exec(EVS_JrTroopa_SpinningDodge)
     Call(NpcJump1, NPC_JrTroopa, 2040, 0, 0, 20 * DT)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_Idle)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlySlowSly)
@@ -52,7 +52,7 @@ EvtScript N(EVS_ParadePhase_Bowser) = {
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     PlayEffect(EFFECT_SHAPE_SPELL, 0, 1940, 60, 0, 2040, 0, 0, 10)
-    Exec(N(EVS_JrTroopa_SpinningDodge))
+    Exec(EVS_JrTroopa_SpinningDodge)
     Call(NpcJump1, NPC_JrTroopa, 2160, 0, 0, 20 * DT)
     Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_Idle)
     Wait(10 * DT)
@@ -72,7 +72,7 @@ EvtScript N(EVS_ParadePhase_Bowser) = {
     Wait(10 * DT)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodCast)
     PlayEffect(EFFECT_SHAPE_SPELL, 0, 2100, 60, 0, 2160, 0, 0, 10)
-    Exec(N(EVS_JrTroopa_SpinningDodge))
+    Exec(EVS_JrTroopa_SpinningDodge)
     Call(NpcJump1, NPC_JrTroopa, 2100, 0, 0, 20 * DT)
     Thread
         Call(SetNpcAnimation, NPC_JrTroopa, ANIM_MageJrTroopa_Run)

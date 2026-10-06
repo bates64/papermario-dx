@@ -1,6 +1,6 @@
 #include "hos_03.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [hos_03_ENTRY_0]    { -497.0,    0.0,  479.0,   45.0 },
     [hos_03_ENTRY_1]    {  705.0,    0.0,    0.0,  270.0 },
     [hos_03_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
@@ -14,10 +14,10 @@ EntryList N(Entrances) = {
     [hos_03_ENTRY_A]    {  354.0,    0.0,  294.0,  117.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "hos_bg",
     .tattle = { MSG_MapTattle_hos_03 },
 };

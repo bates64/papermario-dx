@@ -1,13 +1,13 @@
 #include "obk_05.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [obk_05_ENTRY_0]    {  -68.0,    0.0,  235.0,    0.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "obk_bg",
     .tattle = { MSG_MapTattle_obk_05 },
     .songVariation = 1,

@@ -6,7 +6,6 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Twink.h"
 #include "sprite/npc/BattleMerlee.h"
-#include "battle/action_cmd/flee.h"
 #include "battle/battle.h"
 #include "sprite/player.h"
 
@@ -183,6 +182,21 @@ API_CALLABLE(GiveRefund) {
     if (player_team_is_ability_active(player, ABILITY_REFUND) && sellValue > 0) {
         s32 i;
         s32 iconPosX, iconPosY, iconPosZ;
+        HudScriptPtr icon = HES_Refund;
+
+#if VERSION_PAL
+        switch (gCurrentLanguage) {
+            case LANGUAGE_DE:
+                icon = HES_Refund_de;
+                break;
+            case LANGUAGE_FR:
+                icon = HES_Refund_fr;
+                break;
+            case LANGUAGE_ES:
+                icon = HES_Refund_es;
+                break;
+        }
+#endif
 
         // 75% of the item's sell value, rounded up
         sellValue = (sellValue * 75 + 99) / 100;
@@ -202,7 +216,7 @@ API_CALLABLE(GiveRefund) {
         posY = player->curPos.y;
         posZ = player->curPos.z;
         get_screen_coords(gCurrentCameraID, posX, posY, posZ, &iconPosX, &iconPosY, &iconPosZ);
-        HID_Refund = hud_element_create(HES_Refund);
+        HID_Refund = hud_element_create(icon);
         hud_element_set_render_pos(HID_Refund, iconPosX + 36, iconPosY - 63);
     }
 
@@ -525,6 +539,53 @@ API_CALLABLE(SpawnRecoverFlowerFX) {
     s32 var4 = evt_get_variable(script, *args++);
 
     fx_recover(1, var1, var2, var3, var4);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetSelectedMoveID) {
+    evt_set_variable(script, *script->ptrReadPos, gBattleStatus.selectedMoveID);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetJumpHammerCharge) {
+    Bytecode* args = script->ptrReadPos;
+
+    evt_set_variable(script, *args++, gBattleStatus.jumpCharge);
+    evt_set_variable(script, *args++, gBattleStatus.hammerCharge);
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetPlayerHpPercent) {
+    evt_set_variable(script, *script->ptrReadPos, (gPlayerData.curHP * 100) / gPlayerData.curMaxHP);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(AddHP) {
+    PlayerData* playerData = &gPlayerData;
+    s32 amt = evt_get_variable(script, *script->ptrReadPos);
+    s32 newHP = playerData->curHP + amt;
+
+    if (newHP > playerData->curMaxHP) {
+        newHP = playerData->curMaxHP;
+    }
+
+    playerData->curHP = newHP;
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(AddFP) {
+    PlayerData* playerData = &gPlayerData;
+    s32 amt = evt_get_variable(script, *script->ptrReadPos);
+    s32 newFP = playerData->curFP + amt;
+
+    if (newFP > playerData->curMaxFP) {
+        newFP = playerData->curMaxFP;
+    }
+
+    playerData->curFP = newFP;
+
     return ApiStatus_DONE2;
 }
 

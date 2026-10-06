@@ -19,7 +19,7 @@
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-LetterDelivery N(LetterDelivery_RedYoshiKid) = {
+LetterDelivery LetterDelivery_RedYoshiKid = {
     .recipientID = NPC_YoshiKid_02,
     .recipientTalk = ANIM_YoshiKid_Red_Talk,
     .recipientIdle = ANIM_YoshiKid_Red_Idle,
@@ -31,7 +31,7 @@ LetterDelivery N(LetterDelivery_RedYoshiKid) = {
     .reward = ITEM_LETTER_CHAIN_DANE_T_2,
 };
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -43,7 +43,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-ITEM_LIST(N(FoodItemList),
+ITEM_LIST(FoodItemList,
     ITEM_FRIED_SHROOM,
     ITEM_SPICY_SOUP,
     ITEM_NUTTY_CAKE,
@@ -83,7 +83,7 @@ ITEM_LIST(N(FoodItemList),
     ITEM_KOOKY_COOKIE,
     ITEM_YOSHI_COOKIE);
 
-API_CALLABLE(N(CountFoodItems)) {
+API_CALLABLE(CountFoodItems) {
     Bytecode* args = script->ptrReadPos;
     PlayerData* playerData = &gPlayerData;
     s32 outVar = *args++;
@@ -92,7 +92,7 @@ API_CALLABLE(N(CountFoodItems)) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        it = N(FoodItemList);
+        it = FoodItemList;
         while (*it != 0) {
             if (playerData->invItems[i] == *it++) {
                 foodCount++;
@@ -103,7 +103,7 @@ API_CALLABLE(N(CountFoodItems)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GetRescuedYoshiCount) = {
+EvtScript EVS_GetRescuedYoshiCount = {
     Set(LVar0, 0)
     Add(LVar0, GF_JAN05_SavedYoshi)
     Add(LVar0, GF_JAN07_SavedYoshi)
@@ -114,7 +114,7 @@ EvtScript N(EVS_GetRescuedYoshiCount) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     Set(LVar0, MSG_CH5_0094)
     Set(LVar8, MSG_CH5_0095)
     Set(LVar1, MSG_CH5_0096)
@@ -124,13 +124,13 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestingSong))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestingSong)
     Call(SetPlayerSpeed, Float(3.5))
     Call(PlayerMoveTo, 322, -178, 0)
     Thread
         Wait(15)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 54, -27)
         Call(SetCamDistance, CAM_DEFAULT, 135)
@@ -155,7 +155,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Wait(20)
     Thread
         Wait(81)
-        Call(N(ToadHouse_CamSetFOV), 0, 25)
+        Call(ToadHouse_CamSetFOV, 0, 25)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
@@ -165,37 +165,37 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
+EvtScript EVS_ToadHouse_ReturnFromRest = {
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 345, 0, -186)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, 291, -100, 0)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+EvtScript EVS_NpcInit_Toad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yoshi_01) = {
+EvtScript EVS_NpcInteract_Yoshi_01 = {
     ExecWait(EVS_ShopOwnerDialog)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Yoshi_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yoshi_01)))
+EvtScript EVS_NpcInit_Yoshi_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_VillageLeader) = {
-    ExecWait(N(EVS_GetRescuedYoshiCount))
+EvtScript EVS_NpcInteract_VillageLeader = {
+    ExecWait(EVS_GetRescuedYoshiCount)
     Switch(LVar0)
         CaseLt(1)
             IfEq(GF_JAN03_AgreedToRescueChildren, false)
@@ -215,7 +215,7 @@ EvtScript N(EVS_NpcInteract_VillageLeader) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_VillageLeader) = {
+EvtScript EVS_NpcIdle_VillageLeader = {
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -300, -70, 50)
         Call(NpcMoveTo, NPC_SELF, -350, -70, 50)
@@ -224,14 +224,14 @@ EvtScript N(EVS_NpcIdle_VillageLeader) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_VillageLeader) = {
+EvtScript EVS_NpcInit_VillageLeader = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(RemoveNpc, NPC_SELF)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Panic)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_VillageLeader)))
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_VillageLeader)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_VillageLeader))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_VillageLeader))
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -239,12 +239,12 @@ EvtScript N(EVS_NpcInit_VillageLeader) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yoshi_02) = {
+EvtScript EVS_NpcInteract_Yoshi_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_Talk, ANIM_Yoshi_Green_Idle, 0, MSG_CH5_005A)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            ExecWait(N(EVS_GetRescuedYoshiCount))
+            ExecWait(EVS_GetRescuedYoshiCount)
             IfEq(LVar0, 0)
                 IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_CryTalk, ANIM_Yoshi_Green_Cry, 0, MSG_CH5_005B)
@@ -271,7 +271,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_02) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Yoshi_02) = {
+EvtScript EVS_NpcIdle_Yoshi_02 = {
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, -430, -220, 50)
         Call(NpcMoveTo, NPC_SELF, -340, -220, 50)
@@ -280,28 +280,28 @@ EvtScript N(EVS_NpcIdle_Yoshi_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yoshi_02) = {
+EvtScript EVS_NpcInit_Yoshi_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN11_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Green_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_02)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_02))
             Else
                 Call(BindNpcIdle, NPC_SELF, 0)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yoshi_02)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Yoshi_03) = {
+EvtScript EVS_NpcInteract_Yoshi_03 = {
     IfGe(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
-        Call(N(CountFoodItems), LVar0)
+        Call(CountFoodItems, LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006C)
-            EVT_CHOOSE_CONSUMABLE_FROM(N(FoodItemList), NPC_Yoshi_03)
+            EVT_CHOOSE_CONSUMABLE_FROM(FoodItemList, NPC_Yoshi_03)
             IfLe(LVar0, ITEM_CHOICE_NONE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006E)
             Else
@@ -315,7 +315,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_0063)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            ExecWait(N(EVS_GetRescuedYoshiCount))
+            ExecWait(EVS_GetRescuedYoshiCount)
             IfEq(LVar0, 0)
                 IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_CryTalk, ANIM_Yoshi_Yellow_Cry, 0, MSG_CH5_0064)
@@ -342,7 +342,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Yoshi_03) = {
+EvtScript EVS_NpcIdle_Yoshi_03 = {
     Loop(0)
 #if VERSION_JP
         Call(NpcMoveTo, NPC_SELF, -100, -80, 50)
@@ -355,33 +355,33 @@ EvtScript N(EVS_NpcIdle_Yoshi_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Yoshi_03) = {
+EvtScript EVS_NpcInit_Yoshi_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             IfEq(GF_JAN07_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Yellow_Panic)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_03)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Yoshi_03))
             Else
                 Call(BindNpcIdle, NPC_SELF, 0)
             EndIf
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Yoshi_03)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Yoshi_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_YoshiKid_01) = {
+EvtScript EVS_NpcIdle_YoshiKid_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_YoshiKid_04) = {
+EvtScript EVS_NpcIdle_YoshiKid_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_YoshiKid_01) = {
+EvtScript EVS_NpcInteract_YoshiKid_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0, MSG_CH5_006F)
@@ -398,7 +398,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_YoshiKid_02) = {
+EvtScript EVS_NpcInteract_YoshiKid_02 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0074)
@@ -411,13 +411,13 @@ EvtScript N(EVS_NpcInteract_YoshiKid_02) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0078)
     EndSwitch
-    Set(LVar0, Ref(N(LetterDelivery_RedYoshiKid)))
+    Set(LVar0, Ref(LetterDelivery_RedYoshiKid))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_YoshiKid_03) = {
+EvtScript EVS_NpcInteract_YoshiKid_03 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Blue_Talk, ANIM_YoshiKid_Blue_Idle, 0, MSG_CH5_007D)
@@ -434,7 +434,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_YoshiKid_04) = {
+EvtScript EVS_NpcInteract_YoshiKid_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0, MSG_CH5_0082)
@@ -451,7 +451,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid_04) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_YoshiKid_05) = {
+EvtScript EVS_NpcInteract_YoshiKid_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Purple_Talk, ANIM_YoshiKid_Purple_Idle, 0, MSG_CH5_0087)
@@ -468,7 +468,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid_05) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid_01) = {
+EvtScript EVS_NpcInit_YoshiKid_01 = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         IfEq(GF_JAN11_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
@@ -479,39 +479,39 @@ EvtScript N(EVS_NpcInit_YoshiKid_01) = {
             Else
                 Call(SetNpcPos, NPC_SELF, -450, 0, -190)
             EndIf
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid_01)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid_01))
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_YoshiKid_01)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid_02) = {
+EvtScript EVS_NpcInit_YoshiKid_02 = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         IfEq(GF_JAN08_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_YoshiKid_02)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid_03) = {
+EvtScript EVS_NpcInit_YoshiKid_03 = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         IfEq(GF_JAN10_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_YoshiKid_03)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid_04) = {
+EvtScript EVS_NpcInit_YoshiKid_04 = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         IfEq(GF_JAN07_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
@@ -523,27 +523,27 @@ EvtScript N(EVS_NpcInit_YoshiKid_04) = {
             Call(SetNpcPos, NPC_SELF, -135, 0, -70)
 #endif
             Call(InterpNpcYaw, NPC_SELF, 270, 0)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid_04)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid_04))
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_YoshiKid_04)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_04))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid_05) = {
+EvtScript EVS_NpcInit_YoshiKid_05 = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         IfEq(GF_JAN05_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_YoshiKid_05)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_YoshiKid_05))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Raven) = {
+EvtScript EVS_NpcInteract_Raven = {
     Call(GetSelfNpcID, LVar0)
     Switch(LVar0)
         CaseEq(NPC_Raven_01)
@@ -575,8 +575,8 @@ EvtScript N(EVS_NpcInteract_Raven) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Raven)))
+EvtScript EVS_NpcInit_Raven = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Raven))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
         CaseRange(STORY_CH5_ZIP_LINE_READY, STORY_CH5_OPENED_ESCAPE_ROUTE)
@@ -592,15 +592,15 @@ EvtScript N(EVS_NpcInit_Raven) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0012)
-            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            Set(LVar0, Ref(LetterDelivery_Kolorado))
             ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_GOT_JADE_RAVEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0013)
-            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            Set(LVar0, Ref(LetterDelivery_Kolorado))
             ExecWait(EVS_TryLetterDelivery)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
             IfEq(AF_JAN03_KoloradoLocalsHint, false)
@@ -609,13 +609,13 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0015)
             EndIf
-            Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+            Set(LVar0, Ref(LetterDelivery_Kolorado))
             ExecWait(EVS_TryLetterDelivery)
         CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(FindItem, ITEM_VOLCANO_VASE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0016)
-                Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+                Set(LVar0, Ref(LetterDelivery_Kolorado))
                 ExecWait(EVS_TryLetterDelivery)
             Else
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
@@ -623,7 +623,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                 Switch(LVar0)
                     CaseEq(ITEM_CHOICE_CANCELED)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)
-                        Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+                        Set(LVar0, Ref(LetterDelivery_Kolorado))
                         ExecWait(EVS_TryLetterDelivery)
                     CaseDefault
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0018)
@@ -659,7 +659,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     Set(LVar0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
@@ -670,7 +670,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
             Set(LVar0, 1)
     EndSwitch
     IfEq(LVar0, 1)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -678,7 +678,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Sushie) = {
+EvtScript EVS_NpcInteract_Sushie = {
     IfEq(AF_JAN03_MetSushieDialogue, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0058)
         Set(AF_JAN03_MetSushieDialogue, true)
@@ -689,7 +689,7 @@ EvtScript N(EVS_NpcInteract_Sushie) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Sushie) = {
+EvtScript EVS_NpcIdle_Sushie = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetNpcJumpscale, NPC_SELF, 1)
     Loop(0)
@@ -702,14 +702,14 @@ EvtScript N(EVS_NpcIdle_Sushie) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sushie) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Sushie)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Sushie)))
+EvtScript EVS_NpcInit_Sushie = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Sushie))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Sushie))
     Return
     End
 };
 
-AnimID N(LimitAnims_VillageLeader)[] = {
+AnimID LimitAnims_VillageLeader[] = {
     ANIM_VillageLeader_Idle,
     ANIM_VillageLeader_IdleSad,
     ANIM_VillageLeader_Walk,
@@ -722,40 +722,40 @@ AnimID N(LimitAnims_VillageLeader)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_VillageLeader) = {
+NpcData NpcData_VillageLeader = {
     .id = NPC_VillageLeader,
     .pos = { -300.0f, 0.0f, -70.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_VillageLeader),
-    .settings = &N(NpcSettings_Yoshi),
+    .init = &EVS_NpcInit_VillageLeader,
+    .settings = &NpcSettings_Yoshi,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = YOSHI_LEADER_ANIMS,
-    .limitAnimations = N(LimitAnims_VillageLeader),
+    .limitAnimations = LimitAnims_VillageLeader,
     .tattle = MSG_NpcTattle_VillageLeader,
 };
 
-AnimID N(LimitAnims_Sushie)[] = {
+AnimID LimitAnims_Sushie[] = {
     ANIM_WorldSushie_Idle,
     ANIM_WorldSushie_Run,
     ANIM_WorldSushie_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Sushie) = {
+NpcData NpcData_Sushie = {
     .id = NPC_Sushie,
     .pos = { -425.0f, 0.0f, -350.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Sushie),
-    .settings = &N(NpcSettings_Sushie),
+    .init = &EVS_NpcInit_Sushie,
+    .settings = &NpcSettings_Sushie,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = SUSHIE_ANIMS,
-    .limitAnimations = N(LimitAnims_Sushie),
+    .limitAnimations = LimitAnims_Sushie,
     .tattle = MSG_NpcTattle_Sushie,
 };
 
-AnimID N(LimitAnims_Kolorado)[] = {
+AnimID LimitAnims_Kolorado[] = {
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_IdleSad,
     ANIM_Kolorado_Walk,
@@ -763,26 +763,26 @@ AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { -475.0f, 0.0f, -75.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
-    .limitAnimations = N(LimitAnims_Kolorado),
+    .limitAnimations = LimitAnims_Kolorado,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Toad)[] = {
+NpcData NpcData_Toad[] = {
     {
         .id = NPC_Toad,
         .pos = { 275.0f, 0.0f, -70.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Toad),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Toad,
+        .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -792,8 +792,8 @@ NpcData N(NpcData_Toad)[] = {
         .id = NPC_Yoshi_01,
         .pos = { 125.0f, 30.0f, -425.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Yoshi_01),
-        .settings = &N(NpcSettings_Yoshi),
+        .init = &EVS_NpcInit_Yoshi_01,
+        .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_BLUE_ANIMS,
@@ -817,8 +817,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Yoshi_02),
-        .settings = &N(NpcSettings_Yoshi_Patrol),
+        .init = &EVS_NpcInit_Yoshi_02,
+        .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_GREEN_ANIMS,
@@ -842,8 +842,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Yoshi_03),
-        .settings = &N(NpcSettings_Yoshi_Patrol),
+        .init = &EVS_NpcInit_Yoshi_03,
+        .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_YELLOW_ANIMS,
@@ -870,8 +870,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_YoshiKid_01),
-        .settings = &N(NpcSettings_YoshiKid_Patrol),
+        .init = &EVS_NpcInit_YoshiKid_01,
+        .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_GREEN_ANIMS,
@@ -896,8 +896,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_YoshiKid_02),
-        .settings = &N(NpcSettings_YoshiKid_Patrol),
+        .init = &EVS_NpcInit_YoshiKid_02,
+        .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_RED_ANIMS,
@@ -922,8 +922,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_YoshiKid_03),
-        .settings = &N(NpcSettings_YoshiKid_Patrol),
+        .init = &EVS_NpcInit_YoshiKid_03,
+        .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_BLUE_ANIMS,
@@ -948,8 +948,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_YoshiKid_04),
-        .settings = &N(NpcSettings_YoshiKid_Patrol),
+        .init = &EVS_NpcInit_YoshiKid_04,
+        .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_YELLOW_ANIMS,
@@ -974,8 +974,8 @@ NpcData N(NpcData_Toad)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_YoshiKid_05),
-        .settings = &N(NpcSettings_YoshiKid_Patrol),
+        .init = &EVS_NpcInit_YoshiKid_05,
+        .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_PURPLE_ANIMS,
@@ -983,32 +983,32 @@ NpcData N(NpcData_Toad)[] = {
     },
 };
 
-AnimID N(LimitAnims_Raven)[] = {
+AnimID LimitAnims_Raven[] = {
     ANIM_Raven_Still,
     ANIM_Raven_Idle,
     ANIM_Raven_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Ravens)[] = {
+NpcData NpcData_Ravens[] = {
     {
         .id = NPC_Raven_01,
         .pos = { -650.0f, 374.0f, -150.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
-        .limitAnimations = N(LimitAnims_Raven),
+        .limitAnimations = LimitAnims_Raven,
         .tattle = MSG_NpcTattle_RavenA,
     },
     {
         .id = NPC_Raven_02,
         .pos = { -645.0f, 457.0f, -255.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1020,8 +1020,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_03,
         .pos = { -570.0f, 374.0f, -300.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1031,8 +1031,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_04,
         .pos = { -500.0f, 374.0f, -285.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1042,8 +1042,8 @@ NpcData N(NpcData_Ravens)[] = {
         .id = NPC_Raven_05,
         .pos = { -450.0f, 374.0f, -175.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1051,45 +1051,45 @@ NpcData N(NpcData_Ravens)[] = {
     },
 };
 
-NpcData N(NpcData_ChuckQuizmo) = {
+NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
     .pos = { 300.0f, 0.0f, 400.0f },
     .yaw = 90,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_JAN, QUIZ_COUNT_JAN, QUIZ_MAP_JAN_03 }},
-    .settings = &N(NpcSettings_ChuckQuizmo),
+    .settings = &NpcSettings_ChuckQuizmo,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 
-NpcGroupList N(CrisisNPCs) = {
-    NPC_GROUP(N(NpcData_VillageLeader)),
-    NPC_GROUP(N(NpcData_Sushie)),
-    NPC_GROUP(N(NpcData_Ravens)),
-    NPC_GROUP(N(NpcData_Toad)),
+NpcGroupList CrisisNPCs = {
+    NPC_GROUP(NpcData_VillageLeader),
+    NPC_GROUP(NpcData_Sushie),
+    NPC_GROUP(NpcData_Ravens),
+    NPC_GROUP(NpcData_Toad),
     {}
 };
 
-NpcGroupList N(ChapterNPCs) = {
-    NPC_GROUP(N(NpcData_VillageLeader)),
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Ravens)),
-    NPC_GROUP(N(NpcData_Toad)),
+NpcGroupList ChapterNPCs = {
+    NPC_GROUP(NpcData_VillageLeader),
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Ravens),
+    NPC_GROUP(NpcData_Toad),
     {}
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_VillageLeader)),
-    NPC_GROUP(N(NpcData_Ravens)),
-    NPC_GROUP(N(NpcData_Toad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_VillageLeader),
+    NPC_GROUP(NpcData_Ravens),
+    NPC_GROUP(NpcData_Toad),
     {}
 };
 
-NpcGroupList N(AfterNPCs) = {
-    NPC_GROUP(N(NpcData_ChuckQuizmo)),
-    NPC_GROUP(N(NpcData_Ravens)),
-    NPC_GROUP(N(NpcData_Toad)),
+NpcGroupList AfterNPCs = {
+    NPC_GROUP(NpcData_ChuckQuizmo),
+    NPC_GROUP(NpcData_Ravens),
+    NPC_GROUP(NpcData_Toad),
     {}
 };

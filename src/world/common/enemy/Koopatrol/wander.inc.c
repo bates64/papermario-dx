@@ -3,7 +3,7 @@
 
 #include "world/common/ai/TackleWanderAI.inc.c"
 
-MobileAISettings N(AISettings_Koopatrol_Wander) = {
+MobileAISettings AISettings_Koopatrol_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 30,
     .waitTime = 50,
@@ -16,21 +16,21 @@ MobileAISettings N(AISettings_Koopatrol_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Koopatrol_Wander) = {
+EvtScript EVS_NpcAI_Koopatrol_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 4)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 10)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_KOOPATROL)
-    Call(N(TackleWanderAI_Main), Ref(N(AISettings_Koopatrol_Wander)))
+    Call(TackleWanderAI_Main, Ref(AISettings_Koopatrol_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Koopatrol_Wander) = {
+NpcSettings NpcSettings_Koopatrol_Wander = {
     .height = 40,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPATROL,
-    .doAI = &N(EVS_NpcAI_Koopatrol_Wander),
+    .doAI = &EVS_NpcAI_Koopatrol_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

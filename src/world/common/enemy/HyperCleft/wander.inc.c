@@ -3,7 +3,7 @@
 
 #include "world/common/ai/CleftAI.inc.c"
 
-MobileAISettings N(AISettings_HyperCleft_Wander) = {
+MobileAISettings AISettings_HyperCleft_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 30,
     .waitTime = 30,
@@ -17,18 +17,18 @@ MobileAISettings N(AISettings_HyperCleft_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_HyperCleft_Wander) = {
+EvtScript EVS_NpcAI_HyperCleft_Wander = {
     Call(SetSelfVar, AI_VAR_CLEFT_DASH_DELAY, 8)
-    Call(N(CleftAI_Main), Ref(N(AISettings_HyperCleft_Wander)))
+    Call(CleftAI_Main, Ref(AISettings_HyperCleft_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_HyperCleft_Wander) = {
+NpcSettings NpcSettings_HyperCleft_Wander = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_HYPER_CLEFT,
-    .doAI = &N(EVS_NpcAI_HyperCleft_Wander),
+    .doAI = &EVS_NpcAI_HyperCleft_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

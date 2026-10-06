@@ -27,14 +27,12 @@ enum {
     MF_StairsFlipped        = MapFlag(0),
 };
 
-#define NAMESPACE isk_07
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupLock);
-extern EvtScript N(EVS_SetupStairs);
-extern EvtScript N(EVS_SetupSwitch);
-extern EvtScript N(EVS_SetupSarcophagi);
-extern EvtScript N(EVS_OpenEntryDoor);
-extern EvtScript N(EVS_ShutEntryDoor);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupLock;
+extern EvtScript EVS_SetupStairs;
+extern EvtScript EVS_SetupSwitch;
+extern EvtScript EVS_SetupSarcophagi;
+extern EvtScript EVS_OpenEntryDoor;
+extern EvtScript EVS_ShutEntryDoor;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

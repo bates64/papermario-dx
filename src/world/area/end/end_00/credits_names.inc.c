@@ -2,7 +2,7 @@
 
 #include "../common/Credits.h"
 
-CreditsEntry N(Credits_Names)[] = {
+CreditsEntry Credits_Names[] = {
     {
         .next = 235,
     },

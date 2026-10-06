@@ -20,9 +20,7 @@ enum {
     NPC_Clubba_03_Aux   = 5,
 };
 
-#define NAMESPACE pra_18
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_ExitDoors_pra_33_1);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_ExitDoors_pra_33_1;
+extern NpcGroupList DefaultNPCs;

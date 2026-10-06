@@ -51,9 +51,7 @@ enum {
     MV_RevealedFakeKolorado     = MapVar(5),
 };
 
-#define NAMESPACE pra_19
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_ExitWalk_pra_20_0);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_ExitWalk_pra_20_0;
+extern NpcGroupList DefaultNPCs;

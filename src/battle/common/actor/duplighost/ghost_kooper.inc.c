@@ -119,8 +119,6 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 EvtScript N(EVS_Idle) = {
     Label(0)
     Call(GetActorVar, ACTOR_SELF, AVAR_Kooper_Toppled, LVar0)
@@ -128,11 +126,11 @@ EvtScript N(EVS_Idle) = {
         CaseEq(0)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -2, 38)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -3, -9)
-            Call(N(SetAbsoluteStatusOffsets), -10, 25, 10, 25)
+            Call(SetAbsoluteStatusOffsets, -10, 25, 10, 25)
         CaseEq(1)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 5, 15)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -6)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
     EndSwitch
     Wait(1)
     Goto(0)
@@ -416,7 +414,7 @@ EvtScript N(EVS_TakeTurn) = {
         CaseOrEq(HIT_RESULT_LUCKY)
             Set(LVarA, LVar0)
             Thread
-                Call(N(UnkActorPosFunc))
+                Call(UnkActorPosFunc)
                 Call(RemoveActorDecoration, ACTOR_SELF, PRT_ZERO, 0)
             EndThread
             Wait(4)

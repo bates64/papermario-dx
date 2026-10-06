@@ -1,14 +1,14 @@
 #include "omo_03.h"
 #include "effects.h"
 
-Vec3f N(FlightPath)[] = {
+Vec3f FlightPath[] = {
     { -100.0,   200.0,  130.0 },
     {  -70.0,    60.0,  140.0 },
     {  -40.0,    25.0,  150.0 },
     {  -10.0,    15.0,  160.0 },
 };
 
-EvtScript N(EVS_Scene_Epilogue) = {
+EvtScript EVS_Scene_Epilogue = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -29,7 +29,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
     Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Idle)
     Call(SetNpcAnimation, NPC_ShyGuy_03, ANIM_ShyGuy_Red_Idle)
     Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_Walk)
-    Call(LoadPath, 60, Ref(N(FlightPath)), ARRAY_COUNT(N(FlightPath)), EASING_LINEAR)
+    Call(LoadPath, 60, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
     Label(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Parakarry, LVar1, LVar2, LVar3)

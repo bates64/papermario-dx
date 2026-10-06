@@ -1,6 +1,6 @@
 #include "hos_20.h"
 
-API_CALLABLE(N(CheckForSkipInput)) {
+API_CALLABLE(CheckForSkipInput) {
     script->varTable[8] = false;
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
         script->varTable[8] = true;
@@ -11,7 +11,7 @@ API_CALLABLE(N(CheckForSkipInput)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateStarship) = {
+EvtScript EVS_AnimateStarship = {
     Thread
         Set(LVar4, 185)
         Set(LVar5, 50)
@@ -64,7 +64,7 @@ EvtScript N(EVS_AnimateStarship) = {
     End
 };
 
-EvtScript N(EVS_Starship_Flight1) = {
+EvtScript EVS_Starship_Flight1 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -79,7 +79,7 @@ EvtScript N(EVS_Starship_Flight1) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_PosX, -300)
     Set(MV_Starship_Yaw, 0)
-    Exec(N(EVS_AnimateStarship))
+    Exec(EVS_AnimateStarship)
     Wait(1)
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP)
     IfLt(GB_StoryProgress, STORY_UNUSED_0000005D)
@@ -123,7 +123,7 @@ EvtScript N(EVS_Starship_Flight1) = {
         Wait(60)
         Loop(215)
             Wait(1)
-            Call(N(CheckForSkipInput))
+            Call(CheckForSkipInput)
             IfEq(LVar8, true)
                 BreakLoop
             EndIf
@@ -136,7 +136,7 @@ EvtScript N(EVS_Starship_Flight1) = {
     End
 };
 
-EvtScript N(EVS_Starship_Flight2) = {
+EvtScript EVS_Starship_Flight2 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -152,7 +152,7 @@ EvtScript N(EVS_Starship_Flight2) = {
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP)
     Set(MV_Starship_PosX, 0)
     Set(MV_Starship_Yaw, 0)
-    Exec(N(EVS_AnimateStarship))
+    Exec(EVS_AnimateStarship)
     Wait(100)
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
     Call(PlaySound, SOUND_STARSHIP_BOOST)
@@ -172,7 +172,7 @@ EvtScript N(EVS_Starship_Flight2) = {
     End
 };
 
-EvtScript N(EVS_Starship_Return) = {
+EvtScript EVS_Starship_Return = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -187,7 +187,7 @@ EvtScript N(EVS_Starship_Return) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_Starship_PosX, 300)
     Set(MV_Starship_Yaw, 180)
-    Exec(N(EVS_AnimateStarship))
+    Exec(EVS_AnimateStarship)
     Wait(2)
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP)
     Thread
@@ -217,7 +217,7 @@ EvtScript N(EVS_Starship_Return) = {
     Wait(60)
     Loop(215)
         Wait(1)
-        Call(N(CheckForSkipInput))
+        Call(CheckForSkipInput)
         IfEq(LVar8, true)
             BreakLoop
         EndIf

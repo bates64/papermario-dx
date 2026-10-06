@@ -1,8 +1,8 @@
 #include "mim_10.h"
 
-EvtScript N(EVS_ExitWalk_mac_02_1) = EVT_EXIT_WALK(60, mim_10_ENTRY_0, "mac_02", mac_02_ENTRY_1);
+EvtScript EVS_ExitWalk_mac_02_1 = EVT_EXIT_WALK(60, mim_10_ENTRY_0, "mac_02", mac_02_ENTRY_1);
 
-EvtScript N(EVS_ExitWalk_mim_01_1) = {
+EvtScript EVS_ExitWalk_mim_01_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, mim_10_ENTRY_1)
     Exec(ExitWalk)
@@ -21,35 +21,35 @@ EvtScript N(EVS_ExitWalk_mim_01_1) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_mac_02_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_mim_01_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_mac_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_mim_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_SetupBootlerTrigger))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Exec(EVS_SetupBootlerTrigger)
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
     Set(GF_MAC01_RowfBadgesChosen, false)
     Return

@@ -1,9 +1,9 @@
 #include "flo_22.h"
 #include "sprite/player.h"
 
-ITEM_LIST(N(BerryList), ITEM_RED_BERRY, ITEM_BLUE_BERRY, ITEM_YELLOW_BERRY, ITEM_BUBBLE_BERRY);
+ITEM_LIST(BerryList, ITEM_RED_BERRY, ITEM_BLUE_BERRY, ITEM_YELLOW_BERRY, ITEM_BUBBLE_BERRY);
 
-EvtScript N(EVS_SniffleHint) = {
+EvtScript EVS_SniffleHint = {
     Call(DisablePlayerInput, true)
     Wait(20)
     Call(ShowMessageAtScreenPos, MSG_CH6_00DB, 300, 120)
@@ -13,7 +13,7 @@ EvtScript N(EVS_SniffleHint) = {
     End
 };
 
-EvtScript N(EVS_TossItemIntoWell) = {
+EvtScript EVS_TossItemIntoWell = {
     Call(SetPlayerAnimation, ANIM_MarioW1_Toss)
     Thread
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
@@ -43,7 +43,7 @@ EvtScript N(EVS_TossItemIntoWell) = {
     End
 };
 
-EvtScript N(EVS_OnInteract_Well) = {
+EvtScript EVS_OnInteract_Well = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerInput, false)
     Call(ShowConsumableChoicePopup)
@@ -55,7 +55,7 @@ EvtScript N(EVS_OnInteract_Well) = {
         CaseLe(ITEM_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Well, 160, 40)
         CaseEq(ITEM_BLUE_BERRY)
-            ExecWait(N(EVS_TossItemIntoWell))
+            ExecWait(EVS_TossItemIntoWell)
             Call(RemoveItemAt, LVar1)
             IfEq(GF_FLO22_ThrewBlueBerryDownWell, false)
                 Call(ShowMessageAtWorldPos, MSG_CH6_00DD, 35, 35, 0)
@@ -83,7 +83,7 @@ EvtScript N(EVS_OnInteract_Well) = {
                 Call(ShowMessageAtWorldPos, MSG_CH6_00DE, 35, 35, 0)
             EndIf
         CaseDefault
-            ExecWait(N(EVS_TossItemIntoWell))
+            ExecWait(EVS_TossItemIntoWell)
             Call(RemoveItemAt, LVar1)
             Call(ShowMessageAtWorldPos, MSG_CH6_00DC, 35, 35, 0)
             Call(RandInt, 1, LVar1)
@@ -115,8 +115,8 @@ EvtScript N(EVS_OnInteract_Well) = {
     End
 };
 
-EvtScript N(EVS_SetupWell) = {
-    BindPadlock(Ref(N(EVS_OnInteract_Well)), TRIGGER_WALL_PRESS_A, COLLIDER_o5, Ref(N(BerryList)), 0, 1)
+EvtScript EVS_SetupWell = {
+    BindPadlock(Ref(EVS_OnInteract_Well), TRIGGER_WALL_PRESS_A, COLLIDER_o5, Ref(BerryList), 0, 1)
     IfEq(GF_FLO22_ThrewBlueBerryDownWell, true)
         Call(MakeItemEntity, ITEM_FLOWER_SAVER_B, -83, 0, 0, ITEM_SPAWN_MODE_KEY, GF_FLO22_Item_FlowerSaverB)
     EndIf

@@ -8,7 +8,7 @@
 #define EVAR_SAVED_Y 11
 #define EVAR_SAVED_Z 12
 
-EvtScript N(EVS_NpcAI_MBush) = {
+EvtScript EVS_NpcAI_MBush = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
     Call(SetSelfVar, EVAR_INTERACTED, false)
@@ -66,13 +66,13 @@ EvtScript N(EVS_NpcAI_MBush) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_MBush) = {
+EvtScript EVS_NpcInteract_MBush = {
     Call(SetSelfVar, EVAR_INTERACTED, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_MBush) = {
+EvtScript EVS_NpcDefeat_MBush = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -86,7 +86,7 @@ EvtScript N(EVS_NpcDefeat_MBush) = {
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Hidden)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MBush)))
+            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_MBush))
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -95,11 +95,11 @@ EvtScript N(EVS_NpcDefeat_MBush) = {
     End
 };
 
-NpcSettings N(NpcSettings_MBush) = {
+NpcSettings NpcSettings_MBush = {
     .height = 30,
     .radius = 30,
     .level = ACTOR_LEVEL_M_BUSH,
-    .doAI = &N(EVS_NpcAI_MBush),
-    .onInteract = &N(EVS_NpcInteract_MBush),
-    .onDefeat = &N(EVS_NpcDefeat_MBush),
+    .doAI = &EVS_NpcAI_MBush,
+    .onInteract = &EVS_NpcInteract_MBush,
+    .onDefeat = &EVS_NpcDefeat_MBush,
 };

@@ -3,7 +3,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-u8 N(HintPrices)[] = {
+u8 HintPrices[] = {
     5, 20, 30
 };
 
@@ -21,7 +21,7 @@ typedef struct BadgeHint {
 // constant is larger than any valid story progress value
 #define BADGE_REQ_MERLOW_SHOP 10002
 
-BadgeHint N(BadgeHintData)[] = {
+BadgeHint BadgeHintData[] = {
     { MSG_MerluvleeHint_JumpCharge,       ITEM_JUMP_CHARGE,   STORY_CH3_STAR_SPRIT_DEPARTED },
     { MSG_MerluvleeHint_SuperJumpCharge,  ITEM_S_JUMP_CHG,     STORY_CH6_ARRIVED_AT_FLOWER_FIELDS },
     { MSG_MerluvleeHint_ShrinkStomp,      ITEM_SHRINK_STOMP,   STORY_CH1_DEFEATED_JR_TROOPA },
@@ -109,7 +109,7 @@ typedef struct GameFlagHint {
     /* 0x08 */ s32 requiredProgress;
 } GameFlagHint; // size = 0xC
 
-GameFlagHint N(SuperBlockHintData)[] = {
+GameFlagHint SuperBlockHintData[] = {
     { MSG_MerluvleeHint_SuperBlock_01, GF_TIK07_SuperBlock, STORY_CH2_GOT_SUPER_HAMMER },
     { MSG_MerluvleeHint_SuperBlock_02, GF_TIK10_SuperBlock, STORY_CH3_GOT_SUPER_BOOTS },
     { MSG_MerluvleeHint_SuperBlock_03, GF_TIK02_SuperBlock, STORY_CH5_ZIP_LINE_READY },
@@ -128,7 +128,7 @@ GameFlagHint N(SuperBlockHintData)[] = {
     { MSG_MerluvleeHint_SuperBlock_16, GF_SAM08_SuperBlock, STORY_CH7_MAYOR_MURDER_MYSTERY },
 };
 
-GameFlagHint N(StarPieceHintData)[] = {
+GameFlagHint StarPieceHintData[] = {
     { MSG_MerluvleeHint_StarPiece_01, GF_KMR05_Item_StarPiece,  STORY_REQ_ANY_TIME },
     { MSG_MerluvleeHint_StarPiece_02, GF_KMR11_Tree1_StarPiece, STORY_REQ_ANY_TIME },
     { MSG_MerluvleeHint_StarPiece_03, GF_KMR00_HiddenPanel,     STORY_CH3_GOT_SUPER_BOOTS },
@@ -201,7 +201,7 @@ GameFlagHint N(StarPieceHintData)[] = {
     { MSG_MerluvleeHint_StarPiece_63, GF_PRA22_HiddenPanel,     STORY_CH7_RAISED_FROZEN_STAIRS },
 };
 
-s32 N(PlayerHasBadge)(s32 badgeID) {
+s32 PlayerHasBadge(s32 badgeID) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gPlayerData.badges); i++) {
@@ -212,19 +212,19 @@ s32 N(PlayerHasBadge)(s32 badgeID) {
     return false;
 }
 
-API_CALLABLE(N(ResetHintFlags)) {
+API_CALLABLE(ResetHintFlags) {
     u32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(BadgeHintData)); i++) {
+    for (i = 0; i < ARRAY_COUNT(BadgeHintData); i++) {
         evt_set_variable(nullptr, AF_HOS06_BadgeHints + i, false);
     }
-    for (i = 0; i < ARRAY_COUNT(N(SuperBlockHintData)); i++) {
+    for (i = 0; i < ARRAY_COUNT(SuperBlockHintData); i++) {
         evt_set_variable(nullptr, AF_HOS06_SuperBlocksHints + i, false);
     }
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetBadgeHint)) {
+API_CALLABLE(GetBadgeHint) {
     s32 storyProgress = evt_get_variable(nullptr, GB_StoryProgress);
     BadgeHint* hint;
     u32 count = 0;
@@ -233,9 +233,9 @@ API_CALLABLE(N(GetBadgeHint)) {
 
     // check for all badges obtainable outside Merlow's shop
     script->varTable[1] = 0;
-    for (i = 0, hint = N(BadgeHintData); i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
+    for (i = 0, hint = BadgeHintData; i < ARRAY_COUNT(BadgeHintData); i++, hint++) {
         if (storyProgress >= hint->requiredProgress
-            && !N(PlayerHasBadge)(hint->itemID)
+            && !PlayerHasBadge(hint->itemID)
             && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
         {
             count++;
@@ -245,12 +245,12 @@ API_CALLABLE(N(GetBadgeHint)) {
     // select the Nth valid hint at random
     if (count > 0) {
         selectedIdx = rand_int(count - 1);
-        hint = N(BadgeHintData);
+        hint = BadgeHintData;
         count = 0;
 
-        for (i = 0; i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
+        for (i = 0; i < ARRAY_COUNT(BadgeHintData); i++, hint++) {
             if (storyProgress >= hint->requiredProgress
-                && !N(PlayerHasBadge)(hint->itemID)
+                && !PlayerHasBadge(hint->itemID)
                 && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
             {
                 if (count == selectedIdx) {
@@ -265,9 +265,9 @@ API_CALLABLE(N(GetBadgeHint)) {
     }
 
     // if no obtainable badges are found, check for badges obtained via Merlow's shop
-    for (i = 0, hint = N(BadgeHintData); i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
+    for (i = 0, hint = BadgeHintData; i < ARRAY_COUNT(BadgeHintData); i++, hint++) {
         if (hint->requiredProgress == BADGE_REQ_MERLOW_SHOP
-            && !N(PlayerHasBadge)(hint->itemID)
+            && !PlayerHasBadge(hint->itemID)
             && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
         {
             count++;
@@ -277,13 +277,13 @@ API_CALLABLE(N(GetBadgeHint)) {
     // select the Nth valid hint at random
     if (count > 0) {
         selectedIdx = rand_int(count - 1);
-        hint = N(BadgeHintData);
+        hint = BadgeHintData;
         count = 0;
         i = 0;
 
-        for (; i < ARRAY_COUNT(N(BadgeHintData)); i++, hint++) {
+        for (; i < ARRAY_COUNT(BadgeHintData); i++, hint++) {
             if (hint->requiredProgress == BADGE_REQ_MERLOW_SHOP
-                && !N(PlayerHasBadge)(hint->itemID)
+                && !PlayerHasBadge(hint->itemID)
                 && !evt_get_variable(nullptr, AF_HOS06_BadgeHints + i))
             {
                 if (count == selectedIdx) {
@@ -298,7 +298,7 @@ API_CALLABLE(N(GetBadgeHint)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetSuperBlockHint)) {
+API_CALLABLE(GetSuperBlockHint) {
     s32 storyProgress = evt_get_variable(nullptr, GB_StoryProgress);
     GameFlagHint* hint;
     u32 count = 0;
@@ -308,8 +308,8 @@ API_CALLABLE(N(GetSuperBlockHint)) {
     script->varTable[1] = 0;
 
     // count unused super blocks
-    hint = N(SuperBlockHintData);
-    for (i = 0; i < ARRAY_COUNT(N(SuperBlockHintData)); i++, hint++) {
+    hint = SuperBlockHintData;
+    for (i = 0; i < ARRAY_COUNT(SuperBlockHintData); i++, hint++) {
         if (storyProgress >= hint->requiredProgress
             && !evt_get_variable(nullptr, hint->doneFlag)
             && !evt_get_variable(nullptr, AF_HOS06_SuperBlocksHints + i))
@@ -321,10 +321,10 @@ API_CALLABLE(N(GetSuperBlockHint)) {
     // select the Nth valid hint at random
     if (count > 0) {
         selectedIdx = rand_int(count - 1);
-        hint = N(SuperBlockHintData);
+        hint = SuperBlockHintData;
         count = 0;
 
-        for (i = 0; i < ARRAY_COUNT(N(SuperBlockHintData)); i++, hint++) {
+        for (i = 0; i < ARRAY_COUNT(SuperBlockHintData); i++, hint++) {
             if (storyProgress >= hint->requiredProgress
                 && !evt_get_variable(nullptr, hint->doneFlag)
                 && !evt_get_variable(nullptr, AF_HOS06_SuperBlocksHints + i))
@@ -341,7 +341,7 @@ API_CALLABLE(N(GetSuperBlockHint)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetStarPieceHint)) {
+API_CALLABLE(GetStarPieceHint) {
     s32 storyProgress = evt_get_variable(nullptr, GB_StoryProgress);
     GameFlagHint* hint;
     u32 count = 0;
@@ -351,8 +351,8 @@ API_CALLABLE(N(GetStarPieceHint)) {
     script->varTable[1] = 0;
 
     // count unobtained star pieces
-    hint = N(StarPieceHintData);
-    for (i = 0; i < ARRAY_COUNT(N(StarPieceHintData)); i++, hint++) {
+    hint = StarPieceHintData;
+    for (i = 0; i < ARRAY_COUNT(StarPieceHintData); i++, hint++) {
         if (storyProgress >= hint->requiredProgress
             && !evt_get_variable(nullptr, hint->doneFlag)
             && !evt_get_variable(nullptr, AF_HOS06_StarPieceHints + i))
@@ -364,10 +364,10 @@ API_CALLABLE(N(GetStarPieceHint)) {
     // select the Nth valid hint at random
     if (count > 0) {
         selectedIdx = rand_int(count - 1);
-        hint = N(StarPieceHintData);
+        hint = StarPieceHintData;
         count = 0;
 
-        for (i = 0; i < ARRAY_COUNT(N(StarPieceHintData)); i++, hint++) {
+        for (i = 0; i < ARRAY_COUNT(StarPieceHintData); i++, hint++) {
             if (storyProgress >= hint->requiredProgress
                 && !evt_get_variable(nullptr, hint->doneFlag)
                 && !evt_get_variable(nullptr, AF_HOS06_StarPieceHints + i))
@@ -384,12 +384,12 @@ API_CALLABLE(N(GetStarPieceHint)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(HasEnoughCoinsForHint)) {
+API_CALLABLE(HasEnoughCoinsForHint) {
     Bytecode* args = script->ptrReadPos;
     s32 hintType = evt_get_variable(script, *args++);
     s32 outVar = *args++;
 
-    if (gPlayerData.coins < N(HintPrices)[hintType]) {
+    if (gPlayerData.coins < HintPrices[hintType]) {
         evt_set_variable(script, outVar, true);
     } else {
         evt_set_variable(script, outVar, false);
@@ -397,23 +397,23 @@ API_CALLABLE(N(HasEnoughCoinsForHint)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DeductHintCoins)) {
+API_CALLABLE(DeductHintCoins) {
     Bytecode* args = script->ptrReadPos;
     s32 hintType = evt_get_variable(script, *args++);
 
-    gPlayerData.coins -= N(HintPrices)[hintType];
+    gPlayerData.coins -= HintPrices[hintType];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(RefundHintCoins)) {
+API_CALLABLE(RefundHintCoins) {
     Bytecode* args = script->ptrReadPos;
     s32 hintType = evt_get_variable(script, *args++);
 
-    gPlayerData.coins += N(HintPrices)[hintType];
+    gPlayerData.coins += HintPrices[hintType];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FortuneRitualDarkenModels)) {
+API_CALLABLE(FortuneRitualDarkenModels) {
     if (isInitialCall) {
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o98)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o76)),  CUSTOM_GFX_NONE, ENV_TINT_REMAP);
@@ -437,7 +437,7 @@ API_CALLABLE(N(FortuneRitualDarkenModels)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FortuneRitualPulseModels)) {
+API_CALLABLE(FortuneRitualPulseModels) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
         script->functionTemp[2] = 64;
@@ -475,7 +475,7 @@ API_CALLABLE(N(FortuneRitualPulseModels)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FortuneRitualRestoreModels)) {
+API_CALLABLE(FortuneRitualRestoreModels) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
     }
@@ -499,7 +499,7 @@ API_CALLABLE(N(FortuneRitualRestoreModels)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AnimateRitualOrbEffects)) {
+API_CALLABLE(AnimateRitualOrbEffects) {
     EffectInstance* effects[3];
     Matrix4f sp28, sp68;
     f32 tx;
@@ -552,7 +552,7 @@ API_CALLABLE(N(AnimateRitualOrbEffects)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetEnergyOrbBright)) {
+API_CALLABLE(SetEnergyOrbBright) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -560,7 +560,7 @@ API_CALLABLE(N(SetEnergyOrbBright)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_PerformHintRitual) = {
+EvtScript EVS_PerformHintRitual = {
     Call(SetMusic, 0, SONG_MERLEE_SPELL, BGM_VARIATION_2, VOL_LEVEL_FULL)
     Call(SetNpcAnimation, NPC_Merluvlee, ANIM_Merluvlee_Release)
     Call(GetModelCenter, MODEL_o100)
@@ -572,7 +572,7 @@ EvtScript N(EVS_PerformHintRitual) = {
     Call(EnableModel, MODEL_o186, false)
     Wait(30)
     Thread
-        Call(N(FortuneRitualDarkenModels))
+        Call(FortuneRitualDarkenModels)
     EndThread
     Call(GetModelCenter, MODEL_o100)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -602,7 +602,7 @@ EvtScript N(EVS_PerformHintRitual) = {
     PlayEffect(EFFECT_MOTION_BLUR_FLAME, 0, LVar0, LVar1, LVar2, 1, -1)
     Set(ArrayVar(5), LVarF)
     Thread
-        Call(N(AnimateRitualOrbEffects))
+        Call(AnimateRitualOrbEffects)
     EndThread
     Wait(50)
     Call(GetModelCenter, MODEL_o100)
@@ -616,7 +616,7 @@ EvtScript N(EVS_PerformHintRitual) = {
     PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Thread
-        Call(N(FortuneRitualPulseModels))
+        Call(FortuneRitualPulseModels)
     EndThread
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)
@@ -626,13 +626,13 @@ EvtScript N(EVS_PerformHintRitual) = {
     Call(DismissEffect, ArrayVar(2))
     Wait(40)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW | SOUND_ID_TRIGGER_CHANGE_SOUND, 0, LVar0, LVar1, LVar2)
-    Call(N(SetEnergyOrbBright), ArrayVar(1))
+    Call(SetEnergyOrbBright, ArrayVar(1))
     Wait(15)
     Call(EnableModel, MODEL_o185, true)
     Call(EnableModel, MODEL_o186, true)
     Call(DismissEffect, ArrayVar(1))
     Thread
-        Call(N(FortuneRitualRestoreModels))
+        Call(FortuneRitualRestoreModels)
     EndThread
     Wait(46)
     Call(ResetCam, CAM_DEFAULT, Float(5.0))
@@ -642,13 +642,13 @@ EvtScript N(EVS_PerformHintRitual) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Merluvlee) = {
-    Call(N(ResetHintFlags))
+EvtScript EVS_NpcInit_Merluvlee = {
+    Call(ResetHintFlags)
     Return
     End
 };
 
-EvtScript N(EVS_KootRequestBall_Merluvlee) = {
+EvtScript EVS_KootRequestBall_Merluvlee = {
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH4_1)
         IfEq(GF_HOS06_MerluvleeRequestedCrystalBall, false)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -665,7 +665,7 @@ EvtScript N(EVS_KootRequestBall_Merluvlee) = {
     End
 };
 
-EvtScript N(EVS_KootCheckBall_Merluvlee) = {
+EvtScript EVS_KootCheckBall_Merluvlee = {
     IfEq(GF_HOS06_MerluvleeRequestedCrystalBall, false)
         Return
     EndIf
@@ -689,7 +689,7 @@ EvtScript N(EVS_KootCheckBall_Merluvlee) = {
     End
 };
 
-EvtScript N(EVS_AskForHint) = {
+EvtScript EVS_AskForHint = {
     Call(DisablePlayerInput, true)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_HOLD)
     Call(PlayerMoveTo, -49, 0, 6)
@@ -726,45 +726,45 @@ EvtScript N(EVS_AskForHint) = {
         Call(DisablePlayerInput, false)
         Return
     EndIf
-    Call(N(HasEnoughCoinsForHint), LVar0, LVar1)
+    Call(HasEnoughCoinsForHint, LVar0, LVar1)
     IfNe(LVar1, 0)
         Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003D)
         Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_NONE)
         Call(DisablePlayerInput, false)
         Return
     EndIf
-    Call(N(DeductHintCoins), LVar0)
+    Call(DeductHintCoins, LVar0)
     Switch(LVar0)
         CaseEq(0)
             Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003E)
             Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Gather, ANIM_Merluvlee_Gather, 0, MSG_HOS_0041)
-            ExecWait(N(EVS_PerformHintRitual))
-            Call(N(GetStarPieceHint))
+            ExecWait(EVS_PerformHintRitual)
+            Call(GetStarPieceHint)
             IfEq(LVar1, 0)
                 Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Think, ANIM_Merluvlee_Think, 0, MSG_HOS_0042)
-                Call(N(RefundHintCoins), 0)
+                Call(RefundHintCoins, 0)
             Else
                 Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, LVar1)
             EndIf
         CaseEq(1)
             Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_003F)
             Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Gather, ANIM_Merluvlee_Gather, 0, MSG_HOS_0041)
-            ExecWait(N(EVS_PerformHintRitual))
-            Call(N(GetBadgeHint))
+            ExecWait(EVS_PerformHintRitual)
+            Call(GetBadgeHint)
             IfEq(LVar1, 0)
                 Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Think, ANIM_Merluvlee_Think, 0, MSG_HOS_0043)
-                Call(N(RefundHintCoins), 1)
+                Call(RefundHintCoins, 1)
             Else
                 Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, LVar1)
             EndIf
         CaseEq(2)
             Call(ContinueSpeech, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_0040)
             Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Gather, ANIM_Merluvlee_Gather, 0, MSG_HOS_0041)
-            ExecWait(N(EVS_PerformHintRitual))
-            Call(N(GetSuperBlockHint))
+            ExecWait(EVS_PerformHintRitual)
+            Call(GetSuperBlockHint)
             IfEq(LVar1, 0)
                 Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Think, ANIM_Merluvlee_Think, 0, MSG_HOS_0044)
-                Call(N(RefundHintCoins), 2)
+                Call(RefundHintCoins, 2)
             Else
                 Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, LVar1)
             EndIf
@@ -775,10 +775,10 @@ EvtScript N(EVS_AskForHint) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Merluvlee) = {
+EvtScript EVS_NpcInteract_Merluvlee = {
     Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_0045)
-    ExecWait(N(EVS_KootCheckBall_Merluvlee))
-    ExecWait(N(EVS_KootRequestBall_Merluvlee))
+    ExecWait(EVS_KootCheckBall_Merluvlee)
+    ExecWait(EVS_KootRequestBall_Merluvlee)
     Return
     End
 };

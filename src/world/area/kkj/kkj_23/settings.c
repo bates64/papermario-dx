@@ -1,19 +1,19 @@
 #include "kkj_23.h"
 
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
     return false;
 }
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [kkj_23_ENTRY_0]    {  735.0,    0.0,  -60.0,  270.0 },
     [kkj_23_ENTRY_1]    {   10.0,    0.0,  -60.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "kpa_bg",
     .tattle = { MSG_MapTattle_kkj_23 },
 };

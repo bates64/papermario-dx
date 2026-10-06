@@ -1,7 +1,7 @@
 #include "osr_03.h"
 #include "effects.h"
 
-API_CALLABLE(N(FlashScreenWhite)) {
+API_CALLABLE(FlashScreenWhite) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         script->functionTemp[2] = 0;
@@ -36,7 +36,7 @@ API_CALLABLE(N(FlashScreenWhite)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(BigExplosionRumble)) {
+API_CALLABLE(BigExplosionRumble) {
     Bytecode* args = script->ptrReadPos;
     f32 frequency;
     s32 duration;
@@ -61,7 +61,7 @@ API_CALLABLE(N(BigExplosionRumble)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_UpdateCamShaking) = {
+EvtScript EVS_UpdateCamShaking = {
     Call(ShakeCam, CAM_DEFAULT, 0, 210, Float(2.0))
     Call(MakeLerp, 200, 50, 65, EASING_LINEAR)
     Loop(0)
@@ -76,7 +76,7 @@ EvtScript N(EVS_UpdateCamShaking) = {
     End
 };
 
-s32 N(ExplosionPositions)[] = {
+s32 ExplosionPositions[] = {
     -520,  -280,  270,
      230,  -150,  300,
     -500,  -200,  190,
@@ -87,11 +87,11 @@ s32 N(ExplosionPositions)[] = {
      320,  -460,  530,
 };
 
-EvtScript N(EVS_PlayExplosionFX) = {
+EvtScript EVS_PlayExplosionFX = {
     Set(LVar4, 20)
     Set(LVar5, 110)
     Loop(0)
-        UseBuf(Ref(N(ExplosionPositions)))
+        UseBuf(Ref(ExplosionPositions))
         Loop(8)
             Call(PlaySoundWithVolume, SOUND_SEQ_FINALE_EXPLOSION, LVar5)
             BufRead3(LVar0, LVar1, LVar2)
@@ -111,7 +111,7 @@ EvtScript N(EVS_PlayExplosionFX) = {
     End
 };
 
-EvtScript N(EVS_Scene_CastleDestruction) = {
+EvtScript EVS_Scene_CastleDestruction = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
@@ -119,10 +119,10 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
     Call(SetPlayerPos, 0, 0, 0)
     Call(DisablePlayerPhysics, true)
     Set(MV_CastleLiftDist, 0)
-    Exec(N(EVS_AnimateSwingingChains))
-    Exec(N(EVS_AnimateSpinningRing))
-    Exec(N(EVS_UpdateCamShaking))
-    ExecGetTID(N(EVS_PlayExplosionFX), LVar9)
+    Exec(EVS_AnimateSwingingChains)
+    Exec(EVS_AnimateSpinningRing)
+    Exec(EVS_UpdateCamShaking)
+    ExecGetTID(EVS_PlayExplosionFX, LVar9)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 22, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, true)
@@ -142,7 +142,7 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
             Call(RandInt, 20, LVar0)
             Add(LVar0, 30)
             Wait(LVar0)
-            Call(N(FlashScreenWhite))
+            Call(FlashScreenWhite)
         EndLoop
     EndThread
     Call(MakeLerp, 220, 600, 90, EASING_QUADRATIC_IN)
@@ -173,12 +173,12 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
     PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, -430, 1920, 15, LVar9)
     Wait(30)
     Thread
-        Call(N(BigExplosionRumble), 30, Float(2.0))
+        Call(BigExplosionRumble, 30, Float(2.0))
         Call(MakeLerp, 200, 100, 15, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
             DivF(LVar0, 100)
-            Call(N(BigExplosionRumble), 4, LVar0)
+            Call(BigExplosionRumble, 4, LVar0)
             IfEq(LVar1, 0)
                 BreakLoop
             EndIf

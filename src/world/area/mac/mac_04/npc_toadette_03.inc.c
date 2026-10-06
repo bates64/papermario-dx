@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EvtScript N(EVS_NpcInteract_Toadette_03) = {
+EvtScript EVS_NpcInteract_Toadette_03 = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -61,12 +61,12 @@ EvtScript N(EVS_NpcInteract_Toadette_03) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toadette_03) = {
+EvtScript EVS_NpcInit_Toadette_03 = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPIRIT_RESCUED, STORY_CH4_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, -300, 0, 325)
     EndSwitch
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette_03)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_03))
     Return
     End
 };

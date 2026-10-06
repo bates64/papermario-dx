@@ -20,9 +20,7 @@ enum {
     NPC_ToadGuard               = 2,
 };
 
-#define NAMESPACE kpa_10
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_MakeEntities;

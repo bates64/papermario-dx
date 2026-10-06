@@ -1,7 +1,7 @@
 #include "kkj_14.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_Chapter1) = {
+EvtScript EVS_Scene_Chapter1 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Thread

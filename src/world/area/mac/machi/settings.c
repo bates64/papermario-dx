@@ -1,6 +1,6 @@
 #include "machi.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [machi_ENTRY_0]     {    0.0,    0.0, -485.0,    0.0 },
     [machi_ENTRY_1]     {  345.0,    0.0, -345.0,    0.0 },
     [machi_ENTRY_2]     {  485.0,    0.0,    0.0,    0.0 },
@@ -20,9 +20,9 @@ EntryList N(Entrances) = {
     [machi_ENTRY_10]    {   30.0,   35.0, -200.0,  180.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
 };

@@ -43,19 +43,17 @@ enum {
     MV_PartnerOnBoard   = MapVar(13),
 };
 
-#define NAMESPACE hos_05
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupStarship;
+extern EvtScript EVS_Starship_Summon;
+extern EvtScript EVS_Starship_Depart;
+extern EvtScript EVS_SetupStarshipAndWater;
+extern EvtScript EVS_EnterStarship;
+extern EvtScript EVS_Intro_Main;
+extern EvtScript EVS_SetupNarrator;
+extern EvtScript EVS_SetupLightBeam;
+extern NpcGroupList IntroNPCs;
+extern NpcGroupList DefaultNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupStarship);
-extern EvtScript N(EVS_Starship_Summon);
-extern EvtScript N(EVS_Starship_Depart);
-extern EvtScript N(EVS_SetupStarshipAndWater);
-extern EvtScript N(EVS_EnterStarship);
-extern EvtScript N(EVS_Intro_Main);
-extern EvtScript N(EVS_SetupNarrator);
-extern EvtScript N(EVS_SetupLightBeam);
-extern NpcGroupList N(IntroNPCs);
-extern NpcGroupList N(DefaultNPCs);
-
-void N(draw_foreground_bowser_silhouette)(void);
+void draw_foreground_bowser_silhouette(void);

@@ -1,24 +1,24 @@
 #include "tik_02.h"
 
-EvtScript N(EVS_ExitWalk_tik_18_1) = EVT_EXIT_WALK(60, tik_02_ENTRY_0, "tik_18", tik_18_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_18_1 = EVT_EXIT_WALK(60, tik_02_ENTRY_0, "tik_18", tik_18_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_18_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_tik_18_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_02)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK02_WATER)
     Call(PlaySoundAtF, SOUND_LOOP_TIK02_FLOW2, SOUND_SPACE_WITH_DEPTH, -230, -180, 120)
     Call(PlaySoundAtF, SOUND_LOOP_TIK02_FLOW3, SOUND_SPACE_WITH_DEPTH, 20, -180, 120)
-    Exec(N(EVS_SetupDrips))
+    Exec(EVS_SetupDrips)
     // water streams
     Call(SetTexPanner, MODEL_nagare1, TEX_PANNER_1)
     Thread
@@ -54,7 +54,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(EVS_UpdateTexturePan)
     EndThread
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Return

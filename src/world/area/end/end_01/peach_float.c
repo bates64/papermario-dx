@@ -1,6 +1,6 @@
 #include "end_01.h"
 
-EvtScript N(EVS_ParadePhase_Toads1) = {
+EvtScript EVS_ParadePhase_Toads1 = {
     Wait(10)
     Call(SetNpcPaletteSwapMode, NPC_HornPlayer1, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS)
     Call(SetNpcPaletteSwapMode, NPC_HornPlayer2, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS)
@@ -18,7 +18,7 @@ EvtScript N(EVS_ParadePhase_Toads1) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FinalFloat_MushroomTop) = {
+EvtScript EVS_TexPan_FinalFloat_MushroomTop = {
     Call(EnableTexPanning, MODEL_mp1, true)
     Set(LVar0, 0)
     Set(LVar1, 0)
@@ -33,7 +33,7 @@ EvtScript N(EVS_TexPan_FinalFloat_MushroomTop) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FinalFloat_MushroomRim) = {
+EvtScript EVS_TexPan_FinalFloat_MushroomRim = {
     Call(EnableTexPanning, MODEL_mp2, true)
     Set(LVar0, 0)
     Loop(0)
@@ -45,7 +45,7 @@ EvtScript N(EVS_TexPan_FinalFloat_MushroomRim) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FinalFloat_Front) = {
+EvtScript EVS_TexPan_FinalFloat_Front = {
     Call(EnableTexPanning, MODEL_mp3, true)
     Set(LVar0, 0)
     Loop(0)
@@ -57,7 +57,7 @@ EvtScript N(EVS_TexPan_FinalFloat_Front) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FinalFloat_Star) = {
+EvtScript EVS_TexPan_FinalFloat_Star = {
     Call(EnableTexPanning, MODEL_mp4, true)
     Set(LVar0, 0)
     Loop(0)
@@ -69,7 +69,7 @@ EvtScript N(EVS_TexPan_FinalFloat_Star) = {
     End
 };
 
-EvtScript N(EVS_TexPan_FinalFloat_Sides) = {
+EvtScript EVS_TexPan_FinalFloat_Sides = {
     Call(EnableTexPanning, MODEL_mp6, true)
     Set(LVar0, 0)
     Loop(0)
@@ -81,7 +81,7 @@ EvtScript N(EVS_TexPan_FinalFloat_Sides) = {
     End
 };
 
-Vec3f N(TwinkFlightPath)[] = {
+Vec3f TwinkFlightPath[] = {
     { -389.0,   120.0,    0.0 },
     { -379.0,    90.0,    0.0 },
     { -349.0,    80.0,    0.0 },
@@ -98,7 +98,7 @@ Vec3f N(TwinkFlightPath)[] = {
     { -269.0,    90.0,    2.0 },
 };
 
-EvtScript N(EVS_Twink) = {
+EvtScript EVS_Twink = {
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -107,7 +107,7 @@ EvtScript N(EVS_Twink) = {
         EndIf
     EndLoop
     Wait(30 * DT)
-    Call(LoadPath, 60 * DT, Ref(N(TwinkFlightPath)), ARRAY_COUNT(N(TwinkFlightPath)), EASING_LINEAR)
+    Call(LoadPath, 60 * DT, Ref(TwinkFlightPath), ARRAY_COUNT(TwinkFlightPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -125,7 +125,7 @@ EvtScript N(EVS_Twink) = {
     End
 };
 
-EvtScript N(EVS_Mario) = {
+EvtScript EVS_Mario = {
     Loop(5)
         Call(InterpNpcYaw, NPC_Mario, 90, 7 * DT)
         Wait(45 * DT)
@@ -164,7 +164,7 @@ EvtScript N(EVS_Mario) = {
     End
 };
 
-EvtScript N(EVS_Peach) = {
+EvtScript EVS_Peach = {
     Loop(5)
         Call(InterpNpcYaw, NPC_Peach, 90, 7 * DT)
         Wait(45 * DT)
@@ -207,20 +207,20 @@ EvtScript N(EVS_Peach) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_MarioPeach) = {
-    Exec(N(EVS_TexPan_FinalFloat_MushroomTop))
-    Exec(N(EVS_TexPan_FinalFloat_MushroomRim))
-    Exec(N(EVS_TexPan_FinalFloat_Front))
-    Exec(N(EVS_TexPan_FinalFloat_Star))
-    Exec(N(EVS_TexPan_FinalFloat_Sides))
-    Exec(N(EVS_Peach))
-    Exec(N(EVS_Twink))
-    ExecWait(N(EVS_Mario))
+EvtScript EVS_ParadePhase_MarioPeach = {
+    Exec(EVS_TexPan_FinalFloat_MushroomTop)
+    Exec(EVS_TexPan_FinalFloat_MushroomRim)
+    Exec(EVS_TexPan_FinalFloat_Front)
+    Exec(EVS_TexPan_FinalFloat_Star)
+    Exec(EVS_TexPan_FinalFloat_Sides)
+    Exec(EVS_Peach)
+    Exec(EVS_Twink)
+    ExecWait(EVS_Mario)
     Return
     End
 };
 
-EvtScript N(EVS_Twirler) = {
+EvtScript EVS_Twirler = {
     ChildThread
         Call(EnableNpcShadow, LVar1, false)
         Call(SetNpcJumpscale, LVar1, Float(0.5))
@@ -258,7 +258,7 @@ EvtScript N(EVS_Twirler) = {
     End
 };
 
-EvtScript N(EVS_StandardBearer) = {
+EvtScript EVS_StandardBearer = {
     Call(SetNpcSpeed, LVar0, Float(PARADE_SCROLL_RATE / DT))
     Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
     Add(LVar1, -600)
@@ -267,7 +267,7 @@ EvtScript N(EVS_StandardBearer) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Toads2) = {
+EvtScript EVS_ParadePhase_Toads2 = {
     Call(SetNpcPaletteSwapMode, NPC_Twirler1, NPC_PAL_ADJUST_BLEND_DOUBLE_PALETTES)
     Call(SetNpcPaletteSwapMode, NPC_Twirler2, NPC_PAL_ADJUST_BLEND_DOUBLE_PALETTES)
     Call(SetNpcPaletteSwapMode, NPC_Twirler3, NPC_PAL_ADJUST_BLEND_DOUBLE_PALETTES)
@@ -280,17 +280,17 @@ EvtScript N(EVS_ParadePhase_Toads2) = {
     Call(SetNpcPaletteSwapping, NPC_StandardBearer4, 1, 2, 10, 5, 10, 5, 4, 5)
     Set(LVar0, NPC_Twirler1)
     Set(LVar1, NPC_Baton1)
-    Exec(N(EVS_Twirler))
+    Exec(EVS_Twirler)
     Set(LVar0, NPC_Twirler2)
     Set(LVar1, NPC_Baton2)
-    Exec(N(EVS_Twirler))
+    Exec(EVS_Twirler)
     Set(LVar0, NPC_Twirler3)
     Set(LVar1, NPC_Baton3)
-    Exec(N(EVS_Twirler))
+    Exec(EVS_Twirler)
     Set(LVar0, NPC_StandardBearer3)
-    Exec(N(EVS_StandardBearer))
+    Exec(EVS_StandardBearer)
     Set(LVar0, NPC_StandardBearer4)
-    Exec(N(EVS_StandardBearer))
+    Exec(EVS_StandardBearer)
     SetF(LVar0, 0)
     Loop(500)
         SubF(LVar0, Float(PARADE_SCROLL_RATE / DT))
@@ -301,7 +301,7 @@ EvtScript N(EVS_ParadePhase_Toads2) = {
     End
 };
 
-EvtScript N(EVS_MarioPeachExit) = {
+EvtScript EVS_MarioPeachExit = {
     // walk away into the distance
     Thread
         Call(NpcMoveTo, NPC_Mario, -259, -150, 240 * DT)

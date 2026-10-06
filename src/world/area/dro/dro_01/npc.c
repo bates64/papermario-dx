@@ -9,7 +9,7 @@
 #include "world/common/npc/Mouser/idle.inc.c"
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-EvtScript N(EVS_NpcInteract_Mouser_01) = {
+EvtScript EVS_NpcInteract_Mouser_01 = {
     IfGe(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0062)
         Return
@@ -29,13 +29,13 @@ EvtScript N(EVS_NpcInteract_Mouser_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Mouser_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Mouser_01)))
+EvtScript EVS_NpcInit_Mouser_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Mouser_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Dryite_01) = {
+EvtScript EVS_NpcInteract_Dryite_01 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
@@ -63,13 +63,13 @@ EvtScript N(EVS_NpcInteract_Dryite_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite_01)))
+EvtScript EVS_NpcInit_Dryite_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Dryite_02) = {
+EvtScript EVS_NpcInteract_Dryite_02 = {
      //@bug this dialogue was probably supposed to cycle 0 --> 1 --> 2 --> 3 --> 0 ...
     Switch(AB_DRO01_DialogueState_Dryite2)
         CaseEq(0)
@@ -89,13 +89,13 @@ EvtScript N(EVS_NpcInteract_Dryite_02) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite_02)))
+EvtScript EVS_NpcInit_Dryite_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toadette) = {
+EvtScript EVS_NpcInteract_Toadette = {
     Call(SpeakToPlayer, NPC_Toadette_01, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_008E)
     Call(SpeakToPlayer, NPC_Toadette_02, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_008F)
     Call(SpeakToPlayer, NPC_Toadette_03, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_0090)
@@ -103,13 +103,13 @@ EvtScript N(EVS_NpcInteract_Toadette) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toadette) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toadette)))
+EvtScript EVS_NpcInit_Toadette = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_DojoGrad) = {
+EvtScript EVS_NpcInteract_DojoGrad = {
     Call(FindItem, ITEM_FIRST_DEGREE_CARD, LVar1)
     Call(FindItem, ITEM_SECOND_DEGREE_CARD, LVar2)
     Call(FindItem, ITEM_THIRD_DEGREE_CARD, LVar3)
@@ -140,36 +140,36 @@ EvtScript N(EVS_NpcInteract_DojoGrad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_DojoGrad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_DojoGrad)))
+EvtScript EVS_NpcInit_DojoGrad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_DojoGrad))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Dryite_06) = {
+EvtScript EVS_NpcInteract_Dryite_06 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Brown_Talk, ANIM_Dryite_Brown_Idle, 0, MSG_CH2_009F)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Dryite_06) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Dryite_06)))
+EvtScript EVS_NpcInit_Dryite_06 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Dryite_06))
     Return
     End
 };
 
-extern EvtScript N(EVS_NpcInit_HintDryite);
-extern EvtScript N(EVS_NpcInit_Dryite_04);
-extern EvtScript N(EVS_NpcInit_Composer);
-extern EvtScript N(EVS_NpcInit_ShopOwner);
+extern EvtScript EVS_NpcInit_HintDryite;
+extern EvtScript EVS_NpcInit_Dryite_04;
+extern EvtScript EVS_NpcInit_Composer;
+extern EvtScript EVS_NpcInit_ShopOwner;
 
-NpcData N(PassiveNPCs)[] = {
+NpcData PassiveNPCs[] = {
     {
         .id = NPC_Mouser_01,
         .pos = { -332.0f, 0.0f, 188.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Mouser_01),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_Mouser_01,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSER_BLUE_ANIMS,
@@ -191,8 +191,8 @@ NpcData N(PassiveNPCs)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Dryite_01),
-        .settings = &N(NpcSettings_Dryite_Wander),
+        .init = &EVS_NpcInit_Dryite_01,
+        .settings = &NpcSettings_Dryite_Wander,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_YELLOW_ANIMS,
@@ -202,8 +202,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Dryite_02,
         .pos = { -380.0f, 0.0f, -15.0f },
         .yaw = 61,
-        .init = &N(EVS_NpcInit_Dryite_02),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_Dryite_02,
+        .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_BLUE_ANIMS,
@@ -213,8 +213,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Dryite_03,
         .pos = { 195.0f, 0.0f, -75.0f },
         .yaw = 74,
-        .init = &N(EVS_NpcInit_HintDryite),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_HintDryite,
+        .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
@@ -224,8 +224,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Dryite_04,
         .pos = { 225.0f, 0.0f, -83.0f },
         .yaw = 257,
-        .init = &N(EVS_NpcInit_Dryite_04),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_Dryite_04,
+        .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
@@ -235,8 +235,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_ArtistToad,
         .pos = { 285.0f, 0.0f, -274.0f },
         .yaw = 271,
-        .init = &N(EVS_NpcInit_Composer),
-        .settings = &N(NpcSettings_Dryite),
+        .init = &EVS_NpcInit_Composer,
+        .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MUSICIAN_COMPOSER_ANIMS,
@@ -246,8 +246,8 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Mouser_ShopOwner,
         .pos = { 31.0f, 0.0f, -374.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_ShopOwner),
-        .settings = &N(NpcSettings_Mouser),
+        .init = &EVS_NpcInit_ShopOwner,
+        .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSER_PURPLE_ANIMS,
@@ -259,7 +259,7 @@ NpcData N(PassiveNPCs)[] = {
         .yaw = 263,
         .initVarCount = 1,
         .initVar = { .bytes = { 0, QUIZ_AREA_DRO, QUIZ_COUNT_DRO, QUIZ_MAP_DRO_01 }},
-        .settings = &N(NpcSettings_ChuckQuizmo),
+        .settings = &NpcSettings_ChuckQuizmo,
         .flags = BASE_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = QUIZMO_ANIMS,
@@ -281,8 +281,8 @@ NpcData N(PassiveNPCs)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_DojoGrad),
-        .settings = &N(NpcSettings_Dryite_Wander),
+        .init = &EVS_NpcInit_DojoGrad,
+        .settings = &NpcSettings_Dryite_Wander,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_BROWN_ANIMS,
@@ -306,8 +306,8 @@ NpcData N(PassiveNPCs)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Dryite_06),
-        .settings = &N(NpcSettings_Dryite_Patrol),
+        .init = &EVS_NpcInit_Dryite_06,
+        .settings = &NpcSettings_Dryite_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_BROWN_ANIMS,
@@ -315,13 +315,13 @@ NpcData N(PassiveNPCs)[] = {
     },
 };
 
-NpcData N(ThreeSisterNPCs)[] = {
+NpcData ThreeSisterNPCs[] = {
     {
         .id = NPC_Toadette_01,
         .pos = { -141.0f, 0.0f, -18.0f },
         .yaw = 62,
-        .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette,
+        .settings = &NpcSettings_Toadette,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -331,8 +331,8 @@ NpcData N(ThreeSisterNPCs)[] = {
         .id = NPC_Toadette_02,
         .pos = { -124.0f, 0.0f, -61.0f },
         .yaw = 63,
-        .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette,
+        .settings = &NpcSettings_Toadette,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -342,8 +342,8 @@ NpcData N(ThreeSisterNPCs)[] = {
         .id = NPC_Toadette_03,
         .pos = { -80.0f, 0.0f, -35.0f },
         .yaw = 244,
-        .init = &N(EVS_NpcInit_Toadette),
-        .settings = &N(NpcSettings_Toadette),
+        .init = &EVS_NpcInit_Toadette,
+        .settings = &NpcSettings_Toadette,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -351,13 +351,13 @@ NpcData N(ThreeSisterNPCs)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(PassiveNPCs)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(PassiveNPCs),
     {},
 };
 
-NpcGroupList N(Chapter3NPCs) = {
-    NPC_GROUP(N(PassiveNPCs)),
-    NPC_GROUP(N(ThreeSisterNPCs)),
+NpcGroupList Chapter3NPCs = {
+    NPC_GROUP(PassiveNPCs),
+    NPC_GROUP(ThreeSisterNPCs),
     {},
 };

@@ -1,14 +1,14 @@
 #include "kpa_134.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_LowerWaterLevel0);
-extern EvtScript N(EVS_RaiseWaterLevel1);
-extern EvtScript N(EVS_LowerWaterLevel1);
-extern EvtScript N(EVS_RaiseWaterLevel2);
-extern EvtScript N(EVS_SetupLowerChain);
-extern EvtScript N(EVS_SetupUpperChain);
+extern EvtScript EVS_LowerWaterLevel0;
+extern EvtScript EVS_RaiseWaterLevel1;
+extern EvtScript EVS_LowerWaterLevel1;
+extern EvtScript EVS_RaiseWaterLevel2;
+extern EvtScript EVS_SetupLowerChain;
+extern EvtScript EVS_SetupUpperChain;
 
-EvtScript N(EVS_SetupChains) = {
+EvtScript EVS_SetupChains = {
     Call(SetRenderMode, MODEL_s_sui, RENDER_MODE_SURFACE_XLU_LAYER2)
     Call(SetRenderMode, MODEL_o385, RENDER_MODE_SURFACE_XLU_LAYER2)
     Call(EnableModel, MODEL_o388, false)
@@ -35,25 +35,25 @@ EvtScript N(EVS_SetupChains) = {
             Call(TranslateGroup, MODEL_sui1, 0, 220, 0)
             Call(TranslateModel, MODEL_s_sui, 0, 220, 0)
     EndSwitch
-    Exec(N(EVS_SetupLowerChain))
-    Exec(N(EVS_SetupUpperChain))
+    Exec(EVS_SetupLowerChain)
+    Exec(EVS_SetupUpperChain)
     Return
     End
 };
 
-s32 N(ChainAnimOffsets)[] = {
+s32 ChainAnimOffsets[] = {
     -2, -3, -2, -1,  0,
      1,  1,  1,  1,  1,
      0,  0,  0, -1, -1,
     -1, -2, -2, -2, -1,
 };
 
-API_CALLABLE(N(CreateLowerChainShadow)) {
+API_CALLABLE(CreateLowerChainShadow) {
     create_shadow_type(SHADOW_VARYING_CIRCLE, 50.0f, 115.0f, -34.0f);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DetectLowerChainGrab)) {
+API_CALLABLE(DetectLowerChainGrab) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->actionState != ACTION_STATE_FALLING) {
@@ -79,10 +79,10 @@ API_CALLABLE(N(DetectLowerChainGrab)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupLowerChain) = {
-    Call(N(CreateLowerChainShadow))
+EvtScript EVS_SetupLowerChain = {
+    Call(CreateLowerChainShadow)
     Label(10)
-        Call(N(DetectLowerChainGrab))
+        Call(DetectLowerChainGrab)
         Call(DisablePlayerPhysics, true)
         Call(DisablePlayerInput, true)
         Call(PlaySoundAtPlayer, SOUND_KPA_PULL_CHAIN, SOUND_SPACE_DEFAULT)
@@ -92,8 +92,8 @@ EvtScript N(EVS_SetupLowerChain) = {
         Thread
             Set(LVar0, 150)
             Set(LVar1, 30)
-            UseBuf(Ref(N(ChainAnimOffsets)))
-            Loop(ARRAY_COUNT(N(ChainAnimOffsets)))
+            UseBuf(Ref(ChainAnimOffsets))
+            Loop(ARRAY_COUNT(ChainAnimOffsets))
                 BufRead1(LVar2)
                 Add(LVar0, LVar2)
                 Add(LVar1, LVar2)
@@ -103,10 +103,10 @@ EvtScript N(EVS_SetupLowerChain) = {
             EndLoop
         EndThread
         IfEq(GB_KPA_WaterLevel, 0)
-            ExecWait(N(EVS_RaiseWaterLevel1))
+            ExecWait(EVS_RaiseWaterLevel1)
             Set(GB_KPA_WaterLevel, 1)
         Else
-            ExecWait(N(EVS_LowerWaterLevel0))
+            ExecWait(EVS_LowerWaterLevel0)
             Set(GB_KPA_WaterLevel, 0)
         EndIf
         Loop(0)
@@ -121,7 +121,7 @@ EvtScript N(EVS_SetupLowerChain) = {
     End
 };
 
-EvtScript N(EVS_LowerWaterLevel0) = {
+EvtScript EVS_LowerWaterLevel0 = {
     Wait(20)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 120, Float(1.0))
@@ -185,7 +185,7 @@ EvtScript N(EVS_LowerWaterLevel0) = {
     End
 };
 
-EvtScript N(EVS_RaiseWaterLevel1) = {
+EvtScript EVS_RaiseWaterLevel1 = {
     Wait(20)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 220, Float(1.0))
@@ -280,12 +280,12 @@ EvtScript N(EVS_RaiseWaterLevel1) = {
     End
 };
 
-API_CALLABLE(N(CreateUpperChainShadow)) {
+API_CALLABLE(CreateUpperChainShadow) {
     create_shadow_type(SHADOW_VARYING_CIRCLE, 680.0f, 240.0f, -35.0f);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DetectUpperChainGrab)) {
+API_CALLABLE(DetectUpperChainGrab) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->actionState != ACTION_STATE_FALLING) {
@@ -311,10 +311,10 @@ API_CALLABLE(N(DetectUpperChainGrab)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupUpperChain) = {
-    Call(N(CreateUpperChainShadow))
+EvtScript EVS_SetupUpperChain = {
+    Call(CreateUpperChainShadow)
     Label(10)
-        Call(N(DetectUpperChainGrab))
+        Call(DetectUpperChainGrab)
         Call(DisablePlayerPhysics, true)
         Call(DisablePlayerInput, true)
         Call(PlaySoundAtPlayer, SOUND_KPA_PULL_CHAIN, SOUND_SPACE_DEFAULT)
@@ -324,7 +324,7 @@ EvtScript N(EVS_SetupUpperChain) = {
         Thread
             Set(LVar0, 275)
             Set(LVar1, 0)
-            UseBuf(Ref(N(ChainAnimOffsets)))
+            UseBuf(Ref(ChainAnimOffsets))
             Loop(20)
                 BufRead1(LVar2)
                 Add(LVar0, LVar2)
@@ -335,10 +335,10 @@ EvtScript N(EVS_SetupUpperChain) = {
             EndLoop
         EndThread
         IfEq(GB_KPA_WaterLevel, 1)
-            ExecWait(N(EVS_RaiseWaterLevel2))
+            ExecWait(EVS_RaiseWaterLevel2)
             Set(GB_KPA_WaterLevel, 2)
         Else
-            ExecWait(N(EVS_LowerWaterLevel1))
+            ExecWait(EVS_LowerWaterLevel1)
             Set(GB_KPA_WaterLevel, 1)
         EndIf
         Loop(0)
@@ -353,7 +353,7 @@ EvtScript N(EVS_SetupUpperChain) = {
     End
 };
 
-EvtScript N(EVS_LowerWaterLevel1) = {
+EvtScript EVS_LowerWaterLevel1 = {
     Wait(20)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 120, Float(1.0))
@@ -412,7 +412,7 @@ EvtScript N(EVS_LowerWaterLevel1) = {
     End
 };
 
-EvtScript N(EVS_RaiseWaterLevel2) = {
+EvtScript EVS_RaiseWaterLevel2 = {
     Wait(20)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 220, Float(1.0))

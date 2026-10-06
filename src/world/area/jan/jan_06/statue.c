@@ -2,9 +2,9 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-ITEM_LIST(N(JadeRavenList), ITEM_JADE_RAVEN);
+ITEM_LIST(JadeRavenList, ITEM_JADE_RAVEN);
 
-EvtScript N(EVS_MoveStatue) = {
+EvtScript EVS_MoveStatue = {
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.8))
         Call(ShakeCam, CAM_DEFAULT, 0, 25, Float(0.7))
@@ -47,7 +47,7 @@ EvtScript N(EVS_MoveStatue) = {
     End
 };
 
-API_CALLABLE(N(AdjustEnvSoundPosition)) {
+API_CALLABLE(AdjustEnvSoundPosition) {
     Bytecode* args = script->ptrReadPos;
 
     script->functionTemp[0] = evt_get_variable(script, *args++);
@@ -58,22 +58,22 @@ API_CALLABLE(N(AdjustEnvSoundPosition)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(PlayMovingStatueSound) = {
+EvtScript PlayMovingStatueSound = {
     Loop(0)
         Call(GetModelCenter, MODEL_o162)
-        Call(N(AdjustEnvSoundPosition), LVar0, LVar1, LVar2)
+        Call(AdjustEnvSoundPosition, LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_Scene_MoveStatue) = {
+EvtScript EVS_Scene_MoveStatue = {
     Call(PlaySound, SOUND_LOOP_MOVE_LARGE_STATUE)
-    ExecWait(N(EVS_MoveStatue))
+    ExecWait(EVS_MoveStatue)
     Call(GetModelCenter, MODEL_o162)
     Call(PlaySoundAt, SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    ExecGetTID(N(PlayMovingStatueSound), LVar9)
+    ExecGetTID(PlayMovingStatueSound, LVar9)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 180, Float(0.4))
     EndThread
@@ -101,7 +101,7 @@ EvtScript N(EVS_Scene_MoveStatue) = {
     End
 };
 
-EvtScript N(ItemPrompt_Statue) = {
+EvtScript ItemPrompt_Statue = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
@@ -127,16 +127,16 @@ EvtScript N(ItemPrompt_Statue) = {
     Wait(20)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
     Wait(10)
-    ExecWait(N(EVS_Scene_MoveStatue))
+    ExecWait(EVS_Scene_MoveStatue)
     Set(GB_StoryProgress, STORY_CH5_MOVED_RAVEN_STATUE)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupStatue) = {
+EvtScript EVS_SetupStatue = {
     IfLt(GB_StoryProgress, STORY_CH5_MOVED_RAVEN_STATUE)
-        BindPadlock(Ref(N(ItemPrompt_Statue)), TRIGGER_WALL_PRESS_A, COLLIDER_o166, Ref(N(JadeRavenList)), 0, 1)
+        BindPadlock(Ref(ItemPrompt_Statue), TRIGGER_WALL_PRESS_A, COLLIDER_o166, Ref(JadeRavenList), 0, 1)
     EndIf
     Return
     End

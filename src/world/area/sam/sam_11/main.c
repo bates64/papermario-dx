@@ -1,8 +1,8 @@
 #include "sam_11.h"
 
-EvtScript N(EVS_LoadPondAnimation) = {
-    Call(LoadAnimatedModel, 0, Ref(N(ShatterPondSkeleton)))
-    Call(PlayModelAnimation, 0, Ref(N(AS_ShatterPond)))
+EvtScript EVS_LoadPondAnimation = {
+    Call(LoadAnimatedModel, 0, Ref(ShatterPondSkeleton))
+    Call(PlayModelAnimation, 0, Ref(AS_ShatterPond))
     Call(SetAnimatedModelRootPosition, 0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, 0, RENDER_MODE_SURFACE_OPA)
     Return
@@ -11,46 +11,46 @@ EvtScript N(EVS_LoadPondAnimation) = {
 
 #include "foliage.h"
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o558);
-FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_miki3);
+FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o558);
+FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki3);
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree1_LeafModels),
-    .trunk = &N(Tree1_TrunkModels),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree1_LeafModels,
+    .trunk = &Tree1_TrunkModels,
 };
 
-BombTrigger N(BombPos_Tree1) = {
+BombTrigger BombPos_Tree1 = {
     .pos = { 447.0f, 0.0f, -144.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o192);
-FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_miki4);
+FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o192);
+FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki4);
 
-ShakeTreeConfig N(ShakeTree_Tree2) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
+ShakeTreeConfig ShakeTree_Tree2 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
 };
 
-BombTrigger N(BombPos_Tree2) = {
+BombTrigger BombPos_Tree2 = {
     .pos = { -440.0f, 0.0f, -178.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree3_LeafModels) =  FOLIAGE_MODEL_LIST(MODEL_o190);
-FoliageModelList N(Tree3_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_miki5);
+FoliageModelList Tree3_LeafModels =  FOLIAGE_MODEL_LIST(MODEL_o190);
+FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki5);
 
-ShakeTreeConfig N(ShakeTree_Tree3) = {
-    .leaves = &N(Tree3_LeafModels),
-    .trunk = &N(Tree3_TrunkModels),
+ShakeTreeConfig ShakeTree_Tree3 = {
+    .leaves = &Tree3_LeafModels,
+    .trunk = &Tree3_TrunkModels,
 };
 
-BombTrigger N(BombPos_Tree3) = {
+BombTrigger BombPos_Tree3 = {
     .pos = { -450.0f, 0.0f, -80.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_ExitWalk_sam_02_1) = {
+EvtScript EVS_ExitWalk_sam_02_1 = {
     IfEq(MV_ThrownOut, 1)
         Return
     EndIf
@@ -63,7 +63,7 @@ EvtScript N(EVS_ExitWalk_sam_02_1) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_sam_03_0) = {
+EvtScript EVS_ExitWalk_sam_03_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
         Return
@@ -77,16 +77,16 @@ EvtScript N(EVS_ExitWalk_sam_03_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_sam_02_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_sam_03_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_sam_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_sam_03_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
 #include "../common/ManageSnowfall.inc.c"
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHIVER_CITY)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -94,26 +94,26 @@ EvtScript N(EVS_Main) = {
     IfNe(LVar0, sam_11_ENTRY_2)
         Goto(10)
     EndIf
-        Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
+        Call(MakeNpcs, false, Ref(EpilogueNPCs))
         Call(FadeInMusic, 0, SONG_SHIVER_CITY, 0, 3000, 0, 127)
         Return
     Label(10)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Call(MakeNpcs, false, Ref(N(BeforeNPCs)))
+            Call(MakeNpcs, false, Ref(BeforeNPCs))
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(N(MysteryNPCs)))
+            Call(MakeNpcs, false, Ref(MysteryNPCs))
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(N(AfterNPCs)))
+            Call(MakeNpcs, false, Ref(AfterNPCs))
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o621, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(SetRenderMode, MODEL_o583, RENDER_MODE_SURFACE_XLU_LAYER2)
-    ExecWait(N(EVS_SetupMusic))
-    Exec(N(EVS_ManageSnowfall))
-    ExecWait(N(EVS_SetupRooms))
-    ExecWait(N(EVS_SetupPond))
-    ExecWait(N(EVS_SetupStaircase))
+    ExecWait(EVS_SetupMusic)
+    Exec(EVS_ManageSnowfall)
+    ExecWait(EVS_SetupRooms)
+    ExecWait(EVS_SetupPond)
+    ExecWait(EVS_SetupStaircase)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o595, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o653, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o664, SURFACE_TYPE_SNOW)
@@ -124,18 +124,18 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suimen, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilie, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deiliw, SURFACE_TYPE_SNOW)
-    Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree2)))
+    Set(LVar0, Ref(ShakeTree_Tree1))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree2))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki4, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree2)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree3)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree3))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_miki5, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree3)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree3), 1, 0)
     Call(InitAnimatedModels)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, sam_11_ENTRY_2)
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
         Wait(1)
     EndIf

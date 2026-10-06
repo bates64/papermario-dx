@@ -1,8 +1,6 @@
 #include "common.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_body_slam
-
 extern s32 actionCmdTableBodySlam[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -16,7 +14,7 @@ enum {
 // how much to add to the meter per frame
 #define METER_FILL_RATE 154
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -67,7 +65,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -99,7 +97,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -220,7 +218,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     s32 hudX, hudY;
     HudElemID hid;
 
@@ -233,7 +231,7 @@ void N(draw)(void) {
     hud_element_draw_clipped(gActionCommandStatus.hudElemIDs[HIDX_LIGHT]);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_LIGHT]);

@@ -2,17 +2,17 @@
 
 #include "world/common/npc/TrainToad/idle.inc.c"
 
-NpcData N(NpcData_TrainToad) = {
+NpcData NpcData_TrainToad = {
     .id = NPC_Conductor,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .settings = &N(NpcSettings_TrainToad),
+    .settings = &NpcSettings_TrainToad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TRAIN_CONDUCTOR_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TrainToad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_TrainToad),
     {}
 };

@@ -1,6 +1,6 @@
 #include "dro_01.h"
 
-API_CALLABLE(N(AwaitPlayerApproachShop)) {
+API_CALLABLE(AwaitPlayerApproachShop) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     f32 var1 = evt_get_variable(script, *args++);
@@ -18,14 +18,14 @@ API_CALLABLE(N(AwaitPlayerApproachShop)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcIdle_ShopOwner) = {
+EvtScript EVS_NpcIdle_ShopOwner = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_SHADY_MOUSE_LEFT_SHOP)
-            Call(N(AwaitPlayerApproachShop), 16, 190, -134, -131)
+            Call(AwaitPlayerApproachShop, 16, 190, -134, -131)
             Call(DisablePlayerInput, true)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
             Call(SetNpcPos, NPC_SELF, 0, 0, -180)
-            ExecWait(N(EVS_OpenShopDoor))
+            ExecWait(EVS_OpenShopDoor)
             Wait(10 * DT)
             Call(GetPlayerPos, LVarA, LVarB, LVarC)
             Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
@@ -48,7 +48,7 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
             Wait(10 * DT)
             Call(InterpNpcYaw, NPC_SELF, 65, 0)
             Wait(10 * DT)
-            ExecWait(N(EVS_CloseShopDoor))
+            ExecWait(EVS_CloseShopDoor)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
             Call(NpcMoveTo, NPC_SELF, 37, -27, 20 * DT)
             Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
@@ -81,11 +81,11 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
             Call(NpcMoveTo, NPC_SELF, 102, -14, 20 * DT)
             Call(NpcMoveTo, NPC_SELF, -32, -96, 20 * DT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Idle)
-            ExecWait(N(EVS_OpenShopDoor))
+            ExecWait(EVS_OpenShopDoor)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
             Call(NpcMoveTo, NPC_SELF, 20, -375, 30 * DT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Idle)
-            ExecWait(N(EVS_CloseShopDoor))
+            ExecWait(EVS_CloseShopDoor)
             Call(EnableNpcBlur, NPC_SELF, false)
             Set(GB_StoryProgress, STORY_CH2_SHADY_MOUSE_ENTERED_SHOP)
         CaseDefault
@@ -96,7 +96,7 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
     End
 };
 
-LetterDelivery N(LetterDelivery_ShopOwner) = {
+LetterDelivery LetterDelivery_ShopOwner = {
     .recipientID = NPC_Mouser_ShopOwner,
     .recipientTalk = ANIM_Mouser_Purple_Talk,
     .recipientIdle = ANIM_Mouser_Purple_Idle,
@@ -108,25 +108,25 @@ LetterDelivery N(LetterDelivery_ShopOwner) = {
     .reward = ITEM_LETTER_CHAIN_FRANKY,
 };
 
-EvtScript N(EVS_NpcInteract_ShopOwner) = {
+EvtScript EVS_NpcInteract_ShopOwner = {
     IfEq(AB_DRO_SHOP_PREV1, 4)
         IfEq(AB_DRO_SHOP_PREV2, 1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_0088)
-            Set(LVar0, Ref(N(LetterDelivery_ShopOwner)))
+            Set(LVar0, Ref(LetterDelivery_ShopOwner))
             ExecWait(EVS_TryLetterDelivery)
             Return
         EndIf
     EndIf
     ExecWait(EVS_ShopOwnerDialog)
-    Set(LVar0, Ref(N(LetterDelivery_ShopOwner)))
+    Set(LVar0, Ref(LetterDelivery_ShopOwner))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShopOwner) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShopOwner)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShopOwner)))
+EvtScript EVS_NpcInit_ShopOwner = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_ShopOwner))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShopOwner))
     Return
     End
 };

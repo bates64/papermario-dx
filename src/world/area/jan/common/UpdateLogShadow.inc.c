@@ -1,7 +1,7 @@
 #include "common.h"
 #include "model.h"
 
-API_CALLABLE(N(UpdateLogShadow)) {
+API_CALLABLE(UpdateLogShadow) {
     Bytecode* args = script->ptrReadPos;
     f32 hitYaw, hitPitch, hitLength;
     f32 x, y, z;

@@ -1,7 +1,7 @@
 #include "kzn_03.h"
 #include "entity.h"
 
-API_CALLABLE(N(IsPlayerOnFirstCliff)) {
+API_CALLABLE(IsPlayerOnFirstCliff) {
     s32 result = -1;
 
     if (gPlayerStatus.lastGoodPos.y > 800.0) {
@@ -17,7 +17,7 @@ API_CALLABLE(N(IsPlayerOnFirstCliff)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_TetherCameraToPlayer) = {
+EvtScript EVS_TetherCameraToPlayer = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -27,7 +27,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseSpringA) = {
+EvtScript EVS_UseSpringA = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
@@ -35,7 +35,7 @@ EvtScript N(EVS_UseSpringA) = {
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
     Call(EnableCameraFollowPlayerY)
-    ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, 335, 290, 360, 40)
     Call(SetPlayerFlagBits, PS_FLAG_FLYING, true)
@@ -47,14 +47,14 @@ EvtScript N(EVS_UseSpringA) = {
     End
 };
 
-EvtScript N(EVS_UseSpringB) = {
+EvtScript EVS_UseSpringB = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     Call(EnableCameraFollowPlayerY)
-    ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, 350, 470, 210, 40)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -66,7 +66,7 @@ EvtScript N(EVS_UseSpringB) = {
     End
 };
 
-EvtScript N(EVS_UseSpringC) = {
+EvtScript EVS_UseSpringC = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
@@ -74,7 +74,7 @@ EvtScript N(EVS_UseSpringC) = {
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     Call(EnableCameraFollowPlayerY)
-    ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCameraToPlayer, LVarA)
     IfEq(MV_PlayerCliffState, 0)
         Call(SetPlayerJumpscale, Float(1.4))
         Call(PlayerJump, -470, 670, 71, 18)
@@ -91,13 +91,13 @@ EvtScript N(EVS_UseSpringC) = {
     End
 };
 
-EvtScript N(EVS_OnBreakBlock) = {
+EvtScript EVS_OnBreakBlock = {
     Set(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_SavePoint), 365, 530, 135, 0, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_FIRE_SHIELD, 75, 290, 235, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KZN03_Item_FireShield)
     Call(MakeEntity, Ref(Entity_BrickBlock), 215, 745, -105, 0, MAKE_ENTITY_END)
@@ -113,7 +113,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinD)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
         Call(MakeEntity, Ref(Entity_Hammer3Block), 490, 470, 210, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_OnBreakBlock)))
+        Call(AssignScript, Ref(EVS_OnBreakBlock))
         Thread
             Loop(0)
                 IfGe(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
@@ -127,14 +127,14 @@ EvtScript N(EVS_MakeEntities) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_on_off, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Call(MakeEntity, Ref(Entity_ScriptSpring), 160, 30, 350, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpringA)))
+    Call(AssignScript, Ref(EVS_UseSpringA))
     Call(MakeEntity, Ref(Entity_ScriptSpring), 335, 265, 360, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpringB)))
+    Call(AssignScript, Ref(EVS_UseSpringB))
     Thread
-        Call(N(IsPlayerOnFirstCliff))
+        Call(IsPlayerOnFirstCliff)
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), -410, 645, 120, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpringC)))
+    Call(AssignScript, Ref(EVS_UseSpringC))
     Return
     End
 };

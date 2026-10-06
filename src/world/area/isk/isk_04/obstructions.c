@@ -1,14 +1,14 @@
 #include "isk_04.h"
 #include "effects.h"
 
-ITEM_LIST(N(KeyList), ITEM_RUINS_KEY);
+ITEM_LIST(KeyList, ITEM_RUINS_KEY);
 
-BombTrigger N(BombPos_Wall) = {
+BombTrigger BombPos_Wall = {
     .pos = { 510.0f, 25.0f, -184.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_OnBlast_Wall) = {
+EvtScript EVS_OnBlast_Wall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 63, 22, 1, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g262, true)
@@ -23,7 +23,7 @@ EvtScript N(EVS_OnBlast_Wall) = {
     End
 };
 
-EvtScript N(EVS_UnlockDoorPrompt) = {
+EvtScript EVS_UnlockDoorPrompt = {
     Call(ShowKeyChoicePopup)
     Switch(LVar0)
         CaseEq(ITEM_CHOICE_NONE)
@@ -56,16 +56,16 @@ EvtScript N(EVS_UnlockDoorPrompt) = {
     End
 };
 
-EvtScript N(EVS_SetupObstructions) = {
+EvtScript EVS_SetupObstructions = {
     IfEq(GF_ISK04_BombedWall, false)
-        BindTrigger(Ref(N(EVS_OnBlast_Wall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
+        BindTrigger(Ref(EVS_OnBlast_Wall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
     Else
         Call(EnableModel, MODEL_g262, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     IfEq(GF_ISK04_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g304)
-        BindPadlock(Ref(N(EVS_UnlockDoorPrompt)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
+        BindPadlock(Ref(EVS_UnlockDoorPrompt), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittsw, COLLIDER_FLAGS_UPPER_MASK)
         Call(EnableModel, MODEL_g304, false)

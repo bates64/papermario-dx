@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "effects.h"
 
-EvtScript N(EVS_BreakBlock_First) = {
+EvtScript EVS_BreakBlock_First = {
     IfEq(AB_NOK13_BlockPuzzleState, 0)
         Set(AB_NOK13_BlockPuzzleState, 1)
     EndIf
@@ -10,7 +10,7 @@ EvtScript N(EVS_BreakBlock_First) = {
     End
 };
 
-EvtScript N(EVS_BreakBlock_Second) = {
+EvtScript EVS_BreakBlock_Second = {
     IfEq(AB_NOK13_BlockPuzzleState, 1)
         Set(AB_NOK13_BlockPuzzleState, 2)
     EndIf
@@ -18,7 +18,7 @@ EvtScript N(EVS_BreakBlock_Second) = {
     End
 };
 
-EvtScript N(EVS_BreakBlock_Third) = {
+EvtScript EVS_BreakBlock_Third = {
     IfEq(AB_NOK13_BlockPuzzleState, 2)
         Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
         Call(PlaySoundAt, SOUND_SPAWN_BLOCK, SOUND_SPACE_DEFAULT, 40, 60, -285)
@@ -31,7 +31,7 @@ EvtScript N(EVS_BreakBlock_Third) = {
     End
 };
 
-EvtScript N(EVS_ReadSign_Directions) = {
+EvtScript EVS_ReadSign_Directions = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(DisablePlayerInput, true)
@@ -42,17 +42,17 @@ EvtScript N(EVS_ReadSign_Directions) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Signpost), -430, 150, -75, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_ReadSign_Directions)))
+    Call(AssignScript, Ref(EVS_ReadSign_Directions))
     IfEq(GF_NOK13_BadgeBlock_AttackFXB, false)
         Set(AB_NOK13_BlockPuzzleState, 0)
         Call(MakeEntity, Ref(Entity_BrickBlock), 70, 0, -250, 90, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BreakBlock_First)))
+        Call(AssignScript, Ref(EVS_BreakBlock_First))
         Call(MakeEntity, Ref(Entity_BrickBlock), 70, 0, -320, 90, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BreakBlock_Second)))
+        Call(AssignScript, Ref(EVS_BreakBlock_Second))
         Call(MakeEntity, Ref(Entity_BrickBlock), -10, 0, -285, 90, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BreakBlock_Third)))
+        Call(AssignScript, Ref(EVS_BreakBlock_Third))
     Else
         Call(MakeEntity, Ref(Entity_BrickBlock), 70, 0, -250, 90, MAKE_ENTITY_END)
         Call(MakeEntity, Ref(Entity_BrickBlock), 70, 0, -320, 90, MAKE_ENTITY_END)

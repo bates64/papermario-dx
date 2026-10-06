@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SpawnLensFlare)) {
+API_CALLABLE(SpawnLensFlare) {
     Bytecode* args = script->ptrReadPos;
     f32 posX = evt_get_float_variable(script, *args++);
     f32 posY = evt_get_float_variable(script, *args++);
@@ -13,7 +13,7 @@ API_CALLABLE(N(SpawnLensFlare)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_DropHiddenStairs) = {
+EvtScript EVS_DropHiddenStairs = {
     Call(MakeLerp, 0, -300, 30 * DT, EASING_LINEAR)
     Label(10)
         Call(UpdateLerp)
@@ -81,7 +81,7 @@ EvtScript N(EVS_DropHiddenStairs) = {
     End
 };
 
-EvtScript N(EVS_ManageSecretPassage) = {
+EvtScript EVS_ManageSecretPassage = {
     Wait(1)
     Label(10)
     Wait(1)
@@ -112,18 +112,18 @@ EvtScript N(EVS_ManageSecretPassage) = {
     Wait(10 * DT)
     Thread
         Call(PlaySoundAtCollider, COLLIDER_o2092, SOUND_LARGE_LENS_FLARE, SOUND_SPACE_DEFAULT)
-        Call(N(SpawnLensFlare), -16, -438, 510, 240)
-        Call(N(SpawnLensFlare), 16, -438, 510, 240)
+        Call(SpawnLensFlare, -16, -438, 510, 240)
+        Call(SpawnLensFlare, 16, -438, 510, 240)
         Wait(5 * DT)
-        Call(N(SpawnLensFlare), -27, -438, 508, 240)
-        Call(N(SpawnLensFlare), -64, -438, 505, 240)
-        Call(N(SpawnLensFlare), 27, -438, 508, 240)
-        Call(N(SpawnLensFlare), 64, -438, 505, 240)
+        Call(SpawnLensFlare, -27, -438, 508, 240)
+        Call(SpawnLensFlare, -64, -438, 505, 240)
+        Call(SpawnLensFlare, 27, -438, 508, 240)
+        Call(SpawnLensFlare, 64, -438, 505, 240)
         Wait(5 * DT)
-        Call(N(SpawnLensFlare), -74, -438, 504, 240)
-        Call(N(SpawnLensFlare), -104, -438, 499, 240)
-        Call(N(SpawnLensFlare), 74, -438, 504, 240)
-        Call(N(SpawnLensFlare), 104, -438, 499, 240)
+        Call(SpawnLensFlare, -74, -438, 504, 240)
+        Call(SpawnLensFlare, -104, -438, 499, 240)
+        Call(SpawnLensFlare, 74, -438, 504, 240)
+        Call(SpawnLensFlare, 104, -438, 499, 240)
     EndThread
     Wait(30 * DT)
     Thread
@@ -185,7 +185,7 @@ EvtScript N(EVS_ManageSecretPassage) = {
     Wait(10 * DT)
     Call(SetCamPitch, CAM_DEFAULT, Float(10.0), Float(12.0))
     Wait(90 * DT)
-    Exec(N(EVS_DropHiddenStairs))
+    Exec(EVS_DropHiddenStairs)
     Wait(60 * DT)
     Set(MV_HiddenStairsRevealed, true)
     Wait(100 * DT)

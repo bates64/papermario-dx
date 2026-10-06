@@ -16,7 +16,7 @@
 
 #include "world/common/util/MarioSalute.inc.c"
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -29,14 +29,14 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
 };
 
 
-EvtScript N(EVS_DoNothing) = {
+EvtScript EVS_DoNothing = {
     Return
     End
 };
 
 #include "../common/GetIntoShell.inc.c"
 
-EvtScript N(EVS_NpcInteract_Kooper) = {
+EvtScript EVS_NpcInteract_Kooper = {
     IfLt(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
         Set(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
         Call(ShowMessageAtScreenPos, MSG_CH1_00B4, 160, 40)
@@ -143,7 +143,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
         Call(PlayerFaceNpc, NPC_Kooper, false)
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_Talk, ANIM_KooperWithoutShell_Idle, 0, MSG_CH1_00B8)
-        Call(BindNpcInteract, NPC_Kooper, Ref(N(EVS_NpcInteract_Kooper)))
+        Call(BindNpcInteract, NPC_Kooper, Ref(EVS_NpcInteract_Kooper))
         Thread
 #if VERSION_PAL
         Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
@@ -162,13 +162,13 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
     End
 };
 
-EvtScript N(EVS_Scene_MeetKooper) = {
-    ExecWait(N(EVS_NpcInteract_Kooper))
+EvtScript EVS_Scene_MeetKooper = {
+    ExecWait(EVS_NpcInteract_Kooper)
     Return
     End
 };
 
-EvtScript N(EVS_FuzzyBoss_PlayerEntersKoopersHouse) = {
+EvtScript EVS_FuzzyBoss_PlayerEntersKoopersHouse = {
     IfGe(GB_StoryProgress, STORY_CH1_FUZZY_THIEF_LEFT_TOWN)
         Return
     EndIf
@@ -217,7 +217,7 @@ EvtScript N(EVS_FuzzyBoss_PlayerEntersKoopersHouse) = {
     End
 };
 
-Vec2i N(FuzzyJumpPath1)[] = {
+Vec2i FuzzyJumpPath1[] = {
     { -466,  103 },
     { -441,  213 },
     { -385,  285 },
@@ -238,7 +238,7 @@ Vec2i N(FuzzyJumpPath1)[] = {
     { -401,   73 },
 };
 
-Vec2i N(FuzzyJumpPath2)[] = {
+Vec2i FuzzyJumpPath2[] = {
     {  416,  193 },
     {  324,  295 },
     {  214,  424 },
@@ -259,18 +259,18 @@ Vec2i N(FuzzyJumpPath2)[] = {
     {  293,  123 },
 };
 
-EvtScript N(EVS_NpcIdle_MiscFuzzy1) = {
+EvtScript EVS_NpcIdle_MiscFuzzy1 = {
     Label(100)
     IfLt(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_VILLAGE)
         Wait(8)
         Goto(100)
     EndIf
-    UseBuf(Ref(N(FuzzyJumpPath1)))
+    UseBuf(Ref(FuzzyJumpPath1))
     Set(LVar1, 200)
     BufRead2(LVar0, LVar2)
     Call(SetNpcPos, NPC_MiscFuzzy1, LVar0, LVar1, LVar2)
     Label(0)
-        UseBuf(Ref(N(FuzzyJumpPath1)))
+        UseBuf(Ref(FuzzyJumpPath1))
         Loop(18)
             Set(LVar1, 0)
             BufRead2(LVar0, LVar2)
@@ -284,7 +284,7 @@ EvtScript N(EVS_NpcIdle_MiscFuzzy1) = {
     End
 };
 
-EvtScript N(EVS_MiscFuzzyFlee) = {
+EvtScript EVS_MiscFuzzyFlee = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Thread
         Call(MakeItemEntity, ITEM_COIN, LVar0, LVar1, LVar2, ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0)
@@ -321,14 +321,14 @@ EvtScript N(EVS_MiscFuzzyFlee) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_MiscFuzzy1) = {
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_MiscFuzzyFlee)))
+EvtScript EVS_NpcHit_MiscFuzzy1 = {
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_MiscFuzzyFlee))
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_MiscFuzzy2) = {
+EvtScript EVS_NpcIdle_MiscFuzzy2 = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Return
     EndIf
@@ -345,7 +345,7 @@ EvtScript N(EVS_NpcIdle_MiscFuzzy2) = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_C, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, 384, 0, 160, 7)
     Label(0)
-        UseBuf(Ref(N(FuzzyJumpPath2)))
+        UseBuf(Ref(FuzzyJumpPath2))
         Loop(18)
             Set(LVar1, 0)
             BufRead2(LVar0, LVar2)
@@ -361,40 +361,40 @@ EvtScript N(EVS_NpcIdle_MiscFuzzy2) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_MiscFuzzy2) = {
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_MiscFuzzyFlee)))
+EvtScript EVS_NpcHit_MiscFuzzy2 = {
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_MiscFuzzyFlee))
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_MiscFuzzy1) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_MiscFuzzy1)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_MiscFuzzy1)))
+EvtScript EVS_NpcInit_MiscFuzzy1 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy1))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy1))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_MiscFuzzy2) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_MiscFuzzy2)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_MiscFuzzy2)))
+EvtScript EVS_NpcInit_MiscFuzzy2 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy2))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy2))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy_Later) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_MiscFuzzy2)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_MiscFuzzy2)))
+EvtScript EVS_NpcInit_Fuzzy_Later = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy2))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy2))
     Return
     End
 };
 
-EvtScript N(EVS_BreakBlock_DropShell) = {
+EvtScript EVS_BreakBlock_DropShell = {
     IfEq(GF_NOK02_RecoveredShellB, true)
         Return
     EndIf
     Set(GF_NOK02_RecoveredShellB, true)
-    Call(BindNpcAI, NPC_Koopa_02, Ref(N(EVS_DoNothing)))
+    Call(BindNpcAI, NPC_Koopa_02, Ref(EVS_DoNothing))
     Call(DisablePlayerInput, true)
     Call(NpcJump0, NPC_KoopaShell_02, 227, 0, 247, 20)
     Call(PlaySoundAtNpc, NPC_KoopaShell_02, SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT)
@@ -428,7 +428,7 @@ EvtScript N(EVS_BreakBlock_DropShell) = {
     Add(LVar1, 20)
     Set(LVar3, NPC_KoopaShell_02)
     Set(LVar4, NPC_Koopa_02)
-    Exec(N(EVS_GetIntoShell))
+    Exec(EVS_GetIntoShell)
     Call(InterpNpcYaw, LVar3, 60, 0)
     Call(NpcJump0, NPC_KoopaShell_02, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_02, NPC_DISPOSE_LOCATION)
@@ -449,7 +449,7 @@ EvtScript N(EVS_BreakBlock_DropShell) = {
 #include "npcs_crisis.inc.c"
 #include "npcs_normal.inc.c"
 
-EvtScript N(EVS_AnimateDoor_KoloradoHouse) = {
+EvtScript EVS_AnimateDoor_KoloradoHouse = {
     Call(PlaySoundAtCollider, LVar9, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 15, EASING_QUADRATIC_IN)
     Loop(0)
@@ -475,18 +475,18 @@ EvtScript N(EVS_AnimateDoor_KoloradoHouse) = {
     End
 };
 
-EvtScript N(EVS_KoloradoWife_FetchFromHouse) = {
+EvtScript EVS_KoloradoWife_FetchFromHouse = {
     Call(EnableModel, MODEL_g98, true)
     Call(EnableGroup, MODEL_g109, true)
     Call(EnableGroup, MODEL_g47, true)
     Set(LVarA, MODEL_g42)
     Set(LVar9, COLLIDER_o310)
-    Exec(N(EVS_AnimateDoor_KoloradoHouse))
+    Exec(EVS_AnimateDoor_KoloradoHouse)
     Call(NpcMoveTo, NPC_KoloradoWife, -314, -94, 10)
     Wait(10)
     Call(NpcMoveTo, NPC_KoloradoWife, -304, -161, 20)
     Wait(100)
-    Exec(N(EVS_AnimateDoor_KoloradoHouse))
+    Exec(EVS_AnimateDoor_KoloradoHouse)
     Wait(10)
     Call(NpcMoveTo, NPC_KoloradoWife, -308, -102, 20)
     Wait(10)
@@ -501,15 +501,15 @@ EvtScript N(EVS_KoloradoWife_FetchFromHouse) = {
     End
 };
 
-EvtScript N(EVS_KoloradoWife_FetchFromOffice) = {
+EvtScript EVS_KoloradoWife_FetchFromOffice = {
     Set(LVarA, MODEL_g41)
     Set(LVar9, COLLIDER_o314)
     Call(NpcMoveTo, NPC_KoloradoWife, -277, -186, 20)
-    Exec(N(EVS_AnimateDoor_KoloradoHouse))
+    Exec(EVS_AnimateDoor_KoloradoHouse)
     Wait(10)
     Call(NpcMoveTo, NPC_KoloradoWife, -265, -261, 20)
     Wait(100)
-    Exec(N(EVS_AnimateDoor_KoloradoHouse))
+    Exec(EVS_AnimateDoor_KoloradoHouse)
     Wait(10)
     Call(NpcMoveTo, NPC_KoloradoWife, -277, -186, 20)
     Wait(10)
@@ -521,17 +521,17 @@ EvtScript N(EVS_KoloradoWife_FetchFromOffice) = {
     End
 };
 
-EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
+EvtScript EVS_KoloradoWife_FetchKoopaLegends = {
     Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0090)
     Call(SetNpcAnimation, NPC_KoloradoWife, ANIM_KoloradoWife_Walk)
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
-        ExecWait(N(EVS_KoloradoWife_FetchFromHouse))
+        ExecWait(EVS_KoloradoWife_FetchFromHouse)
     Else
         IfEq(GF_NOK11_Defeated_KentC, true)
-            ExecWait(N(EVS_KoloradoWife_FetchFromHouse))
+            ExecWait(EVS_KoloradoWife_FetchFromHouse)
         Else
-            ExecWait(N(EVS_KoloradoWife_FetchFromOffice))
+            ExecWait(EVS_KoloradoWife_FetchFromOffice)
         EndIf
     EndIf
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0091)
@@ -542,7 +542,7 @@ EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_KoloradoWife) = {
+EvtScript EVS_NpcInteract_KoloradoWife = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             IfEq(GF_NOK02_KoloradoWife_FuzzyComplaint, false)
@@ -571,16 +571,16 @@ EvtScript N(EVS_NpcInteract_KoloradoWife) = {
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH1_2)
         IfEq(GF_NOK02_Gift_KoopaLegends, false)
             Set(GF_NOK02_Gift_KoopaLegends, true)
-            ExecWait(N(EVS_MarioSalute))
-            ExecWait(N(EVS_KoloradoWife_FetchKoopaLegends))
+            ExecWait(EVS_MarioSalute)
+            ExecWait(EVS_KoloradoWife_FetchKoopaLegends)
         EndIf
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoloradoWife) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_KoloradoWife)))
+EvtScript EVS_NpcInit_KoloradoWife = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoloradoWife))
     IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, -338, 0, -85)
         Return
@@ -593,35 +593,35 @@ EvtScript N(EVS_NpcInit_KoloradoWife) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaKoot) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_KoopaKoot)))
-    Exec(N(EVS_SetupKootFavors))
+EvtScript EVS_NpcInit_KoopaKoot = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoopaKoot))
+    Exec(EVS_SetupKootFavors)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_Epilogue) = {
+EvtScript EVS_NpcInit_Koopa_Epilogue = {
     Call(SetNpcPos, NPC_SELF, -25, 10, -50)
     Call(SetNpcYaw, NPC_SELF, 90)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bombette_Epilogue) = {
+EvtScript EVS_NpcInit_Bombette_Epilogue = {
     Call(SetNpcPos, NPC_SELF, 25, 0, -50)
     Call(SetNpcYaw, NPC_SELF, 270)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoloradoWife_Epilogue) = {
+EvtScript EVS_NpcInit_KoloradoWife_Epilogue = {
     Call(SetNpcPos, NPC_SELF, -150, 0, -50)
     Call(SetNpcYaw, NPC_SELF, 90)
     Return
     End
 };
 
-NpcData N(NpcData_Crisis)[] = {
+NpcData NpcData_Crisis[] = {
     {
         .id = NPC_Koopa_01,
         .pos = { -109.0f, 0.0f, 191.0f },
@@ -638,8 +638,8 @@ NpcData N(NpcData_Crisis)[] = {
                 .detectSize = { 500 },
             }
         },
-        .init = &N(EVS_NpcInit_Koopa_01_Crisis),
-        .settings = &N(NpcSettings_Koopa_Wander),
+        .init = &EVS_NpcInit_Koopa_01_Crisis,
+        .settings = &NpcSettings_Koopa_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -649,8 +649,8 @@ NpcData N(NpcData_Crisis)[] = {
         .id = NPC_FuzzyThief,
         .pos = { -109.0f, 0.0f, 191.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Fuzzy_Thief),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_Fuzzy_Thief,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = FUZZY_ANIMS,
@@ -659,8 +659,8 @@ NpcData N(NpcData_Crisis)[] = {
         .id = NPC_KoopaShell_01,
         .pos = { -109.0f, 0.0f, 191.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopaShell_01_Crisis),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_KoopaShell_01_Crisis,
+        .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -683,8 +683,8 @@ NpcData N(NpcData_Crisis)[] = {
                 .detectSize = { 500 },
             }
         },
-        .init = &N(EVS_NpcInit_Koopa_02_Crisis),
-        .settings = &N(NpcSettings_KoopaWithoutShell_Patrol),
+        .init = &EVS_NpcInit_Koopa_02_Crisis,
+        .settings = &NpcSettings_KoopaWithoutShell_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_WITHOUT_SHELL_ANIMS,
@@ -694,8 +694,8 @@ NpcData N(NpcData_Crisis)[] = {
         .id = NPC_KoopaShell_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoopaShell_02_Crisis),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_KoopaShell_02_Crisis,
+        .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -704,8 +704,8 @@ NpcData N(NpcData_Crisis)[] = {
         .id = NPC_Kooper,
         .pos = { 20.0f, 0.0f, -145.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Kooper),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_Kooper,
+        .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
@@ -715,8 +715,8 @@ NpcData N(NpcData_Crisis)[] = {
         .id = NPC_FuzzyBoss,
         .pos = { 12.0f, 10.0f, -351.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FuzzyBoss),
-        .settings = &N(NpcSettings_Fuzzy),
+        .init = &EVS_NpcInit_FuzzyBoss,
+        .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = FUZZY_ANIMS,
@@ -725,37 +725,37 @@ NpcData N(NpcData_Crisis)[] = {
         .id = NPC_KoopersShell,
         .pos = { 12.0f, 0.0f, -351.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_KoopersShell),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_KoopersShell,
+        .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPER_ANIMS,
     },
 };
 
-NpcData N(NpcData_Fuzzy_01) = {
+NpcData NpcData_Fuzzy_01 = {
     .id = NPC_MiscFuzzy1,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_MiscFuzzy1),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_MiscFuzzy1,
+    .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
 };
 
-NpcData N(NpcData_Fuzzy_02) = {
+NpcData NpcData_Fuzzy_02 = {
     .id = NPC_MiscFuzzy2,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_MiscFuzzy2),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_MiscFuzzy2,
+    .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
 };
 
-NpcData N(NpcData_Normal)[] = {
+NpcData NpcData_Normal[] = {
     {
         .id = NPC_Koopa_01,
         .pos = { -109.0f, 0.0f, 191.0f },
@@ -772,8 +772,8 @@ NpcData N(NpcData_Normal)[] = {
                 .detectSize = { 500 },
             }
         },
-        .init = &N(EVS_NpcInit_Koopa_01_Normal),
-        .settings = &N(NpcSettings_Koopa_Wander),
+        .init = &EVS_NpcInit_Koopa_01_Normal,
+        .settings = &NpcSettings_Koopa_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -795,8 +795,8 @@ NpcData N(NpcData_Normal)[] = {
                 .detectSize = { 500 },
             }
         },
-        .init = &N(EVS_NpcInit_Koopa_02_Normal),
-        .settings = &N(NpcSettings_Koopa_Wander),
+        .init = &EVS_NpcInit_Koopa_02_Normal,
+        .settings = &NpcSettings_Koopa_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -806,8 +806,8 @@ NpcData N(NpcData_Normal)[] = {
         .id = NPC_Bobomb_01,
         .pos = { 0.0f, 0.0f, -333.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcInit_Bobomb_01),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_01,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = BOBOMB_BLUE_ANIMS,
@@ -817,8 +817,8 @@ NpcData N(NpcData_Normal)[] = {
         .id = NPC_Bobomb_02,
         .pos = { -7.0f, 0.0f, -285.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bobomb_02),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_02,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -828,8 +828,8 @@ NpcData N(NpcData_Normal)[] = {
         .id = NPC_Bobomb_03,
         .pos = { 47.0f, 0.0f, -140.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Bobomb_03),
-        .settings = &N(NpcSettings_Bobomb),
+        .init = &EVS_NpcInit_Bobomb_03,
+        .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOBOMB_GREEN_ANIMS,
@@ -839,8 +839,8 @@ NpcData N(NpcData_Normal)[] = {
         .id = NPC_Kolorado,
         .pos = { -240.0f, 0.0f, -70.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Kolorado),
-        .settings = &N(NpcSettings_Kolorado),
+        .init = &EVS_NpcInit_Kolorado,
+        .settings = &NpcSettings_Kolorado,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -848,24 +848,24 @@ NpcData N(NpcData_Normal)[] = {
     },
 };
 
-NpcData N(NpcData_Fuzzy_Later) = {
+NpcData NpcData_Fuzzy_Later = {
     .id = NPC_Fuzzy_Later,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Fuzzy_Later),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy_Later,
+    .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
 };
 
-NpcData N(NpcData_Shared)[] = {
+NpcData NpcData_Shared[] = {
     {
         .id = NPC_KoopaKoot,
         .pos = { 330.0f, 0.0f, -100.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KoopaKoot),
-        .settings = &N(NpcSettings_KoopaKoot),
+        .init = &EVS_NpcInit_KoopaKoot,
+        .settings = &NpcSettings_KoopaKoot,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_KOOT_ANIMS,
@@ -875,8 +875,8 @@ NpcData N(NpcData_Shared)[] = {
         .id = NPC_KoloradoWife,
         .pos = { -328.0f, 0.0f, -180.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoloradoWife),
-        .settings = &N(NpcSettings_KoloradoWife),
+        .init = &EVS_NpcInit_KoloradoWife,
+        .settings = &NpcSettings_KoloradoWife,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOLORADO_WIFE_ANIMS,
@@ -886,8 +886,8 @@ NpcData N(NpcData_Shared)[] = {
         .id = NPC_Koopa_03,
         .pos = { -307.0f, 0.0f, 97.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Koopa_03),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_Koopa_03,
+        .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -911,8 +911,8 @@ NpcData N(NpcData_Shared)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_Koopa_04),
-        .settings = &N(NpcSettings_KoopaWithoutShell_Patrol),
+        .init = &EVS_NpcInit_Koopa_04,
+        .settings = &NpcSettings_KoopaWithoutShell_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
@@ -920,13 +920,13 @@ NpcData N(NpcData_Shared)[] = {
     },
 };
 
-NpcData N(NpcData_Epilogue)[] = {
+NpcData NpcData_Epilogue[] = {
     {
         .id = NPC_Parakarry,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopa_Epilogue),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_Koopa_Epilogue,
+        .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = PARAKARRY_ANIMS,
@@ -935,8 +935,8 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_Bombette,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Bombette_Epilogue),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_Bombette_Epilogue,
+        .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
@@ -945,8 +945,8 @@ NpcData N(NpcData_Epilogue)[] = {
         .id = NPC_KoloradoWife_Epilogue,
         .pos = { -328.0f, 0.0f, -180.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_KoloradoWife_Epilogue),
-        .settings = &N(NpcSettings_Koopa),
+        .init = &EVS_NpcInit_KoloradoWife_Epilogue,
+        .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = KOLORADO_WIFE_ANIMS,
@@ -954,36 +954,36 @@ NpcData N(NpcData_Epilogue)[] = {
     },
 };
 
-NpcData N(NpcData_ChuckQuizmo) = {
+NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
     .pos = { 300.0f, 0.0f, 330.0f },
     .yaw = 270,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_NOK, QUIZ_COUNT_NOK, QUIZ_MAP_NOK_02 }},
-    .settings = &N(NpcSettings_ChuckQuizmo),
+    .settings = &NpcSettings_ChuckQuizmo,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 
-NpcGroupList N(CrisisNPCs) = {
-    NPC_GROUP(N(NpcData_Crisis)),
-    NPC_GROUP(N(NpcData_Shared)),
-    NPC_GROUP(N(NpcData_Fuzzy_01)),
-    NPC_GROUP(N(NpcData_Fuzzy_02)),
+NpcGroupList CrisisNPCs = {
+    NPC_GROUP(NpcData_Crisis),
+    NPC_GROUP(NpcData_Shared),
+    NPC_GROUP(NpcData_Fuzzy_01),
+    NPC_GROUP(NpcData_Fuzzy_02),
     {}
 };
 
-NpcGroupList N(NormalNPCs) = {
-    NPC_GROUP(N(NpcData_Normal)),
-    NPC_GROUP(N(NpcData_Shared)),
-    NPC_GROUP(N(NpcData_Fuzzy_Later)),
-    NPC_GROUP(N(NpcData_ChuckQuizmo)),
+NpcGroupList NormalNPCs = {
+    NPC_GROUP(NpcData_Normal),
+    NPC_GROUP(NpcData_Shared),
+    NPC_GROUP(NpcData_Fuzzy_Later),
+    NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
-NpcGroupList N(EpilogueNPCs) = {
-    NPC_GROUP(N(NpcData_Epilogue)),
+NpcGroupList EpilogueNPCs = {
+    NPC_GROUP(NpcData_Epilogue),
     {}
 };

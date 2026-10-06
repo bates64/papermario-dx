@@ -5,7 +5,7 @@
 
 #include "world/common/enemy/PutridPiranha/base.h"
 
-NpcSettings N(NpcSettings_PutridPiranha) = {
+NpcSettings NpcSettings_PutridPiranha = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
@@ -13,7 +13,7 @@ NpcSettings N(NpcSettings_PutridPiranha) = {
 
 #include "world/common/enemy/SpearGuy/wander.inc.c"
 
-EvtScript N(EVS_YoshiKid_CryForHelp) = {
+EvtScript EVS_YoshiKid_CryForHelp = {
     Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
@@ -26,7 +26,7 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_YoshiKid) = {
+EvtScript EVS_NpcIdle_YoshiKid = {
     IfEq(GF_JAN07_YoshiCriedForHelp, false)
         Call(DisablePlayerInput, true)
         Call(ShowMessageAtScreenPos, MSG_CH5_00B4, 320, 60)
@@ -44,7 +44,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Cry, ANIM_YoshiKid_Yellow_Cry, 5, MSG_CH5_00B5)
         Wait(10)
-        Exec(N(EVS_YoshiKid_CryForHelp))
+        Exec(EVS_YoshiKid_CryForHelp)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
         Set(GF_JAN07_YoshiCriedForHelp, true)
         Call(DisablePlayerInput, false)
@@ -113,7 +113,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Set(GB_StoryProgress, STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
         Call(SetPlayerAnimation, ANIM_Mario1_ThumbsUp)
         Wait(120)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Else
         Thread
@@ -130,11 +130,11 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_YoshiKid) = {
+EvtScript EVS_NpcInit_YoshiKid = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN07_SavedYoshi, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Yellow_Cry)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_YoshiKid))
             Return
         EndIf
     EndIf
@@ -143,7 +143,7 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_PutridPiranha) = {
+EvtScript EVS_NpcIdle_PutridPiranha = {
 #if VERSION_PAL
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, true)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, true)
@@ -253,7 +253,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_PutridPiranha) = {
+EvtScript EVS_NpcDefeat_PutridPiranha = {
     Call(UseSettingsFrom, CAM_DEFAULT, -20, 0, 20)
     Call(SetPanTarget, CAM_DEFAULT, -20, 0, 20)
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
@@ -271,11 +271,11 @@ EvtScript N(EVS_NpcDefeat_PutridPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_PutridPiranha) = {
+EvtScript EVS_NpcInit_PutridPiranha = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         IfEq(GF_JAN07_SavedYoshi, false)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_PutridPiranha)))
-            Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_PutridPiranha)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PutridPiranha))
+            Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_PutridPiranha))
             Return
         EndIf
     EndIf
@@ -284,7 +284,7 @@ EvtScript N(EVS_NpcInit_PutridPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_SpearGuy_Hitbox) = {
+EvtScript EVS_NpcInit_SpearGuy_Hitbox = {
     IfEq(GF_JAN07_SavedYoshi, false)
         Call(RemoveNpc, NPC_SpearGuy)
         Call(RemoveNpc, NPC_SpearGuy_Hitbox)
@@ -293,7 +293,7 @@ EvtScript N(EVS_NpcInit_SpearGuy_Hitbox) = {
     End
 };
 
-NpcData N(NpcData_SpearGuy)[] = {
+NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
         .pos = { -28.0f, 0.0f, 13.0f },
@@ -310,7 +310,7 @@ NpcData N(NpcData_SpearGuy)[] = {
                 .detectSize = { 150 },
             }
         },
-        .settings = &N(NpcSettings_SpearGuy_Wander),
+        .settings = &NpcSettings_SpearGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
@@ -320,21 +320,21 @@ NpcData N(NpcData_SpearGuy)[] = {
         .id = NPC_SpearGuy_Hitbox,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_SpearGuy_Hitbox),
-        .settings = &N(NpcSettings_SpearGuy_Hitbox),
+        .init = &EVS_NpcInit_SpearGuy_Hitbox,
+        .settings = &NpcSettings_SpearGuy_Hitbox,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SPEAR_GUY_ANIMS,
     },
 };
 
-NpcData N(NpcData_PutridPiranhas)[] = {
+NpcData NpcData_PutridPiranhas[] = {
     {
         .id = NPC_PutridPiranha_01,
         .pos = { -20.0f, 0.0f, 20.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_PutridPiranha),
-        .settings = &N(NpcSettings_PutridPiranha),
+        .init = &EVS_NpcInit_PutridPiranha,
+        .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = PUTRID_PIRANHA_ANIMS,
@@ -343,28 +343,28 @@ NpcData N(NpcData_PutridPiranhas)[] = {
         .id = NPC_PutridPiranha_02,
         .pos = { 80.0f, 0.0f, 20.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_PutridPiranha),
+        .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = PUTRID_PIRANHA_ANIMS,
     },
 };
 
-NpcData N(NpcData_YoshiKid) = {
+NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
     .pos = { 30.0f, 0.0f, 20.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_YoshiKid),
-    .settings = &N(NpcSettings_YoshiKid),
+    .init = &EVS_NpcInit_YoshiKid,
+    .settings = &NpcSettings_YoshiKid,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = YOSHI_KID_YELLOW_ANIMS,
     .tattle = MSG_NpcTattle_YellowYoshiKid,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_SpearGuy), BTL_JAN_FORMATION_01, BTL_JAN_STAGE_03),
-    NPC_GROUP(N(NpcData_PutridPiranhas), BTL_JAN2_FORMATION_01, BTL_JAN2_STAGE_03),
-    NPC_GROUP(N(NpcData_YoshiKid)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_01, BTL_JAN_STAGE_03),
+    NPC_GROUP(NpcData_PutridPiranhas, BTL_JAN2_FORMATION_01, BTL_JAN2_STAGE_03),
+    NPC_GROUP(NpcData_YoshiKid),
     {}
 };

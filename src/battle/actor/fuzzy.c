@@ -4,28 +4,26 @@
 #include "sprite/player.h"
 #include "effects.h"
 
-#define NAMESPACE A(fuzzy)
+extern s32 DefaultAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(DefaultAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_LEECH       = 1,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              95,
@@ -50,15 +48,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 20 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -70,10 +68,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_FUZZY,
     .level = ACTOR_LEVEL_FUZZY,
     .maxHP = 3,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 50,
     .airLiftChance = 95,
     .hurricaneChance = 95,
@@ -88,7 +86,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Fuzzy_Idle,
     STATUS_KEY_STONE,     ANIM_Fuzzy_Still,
     STATUS_KEY_SLEEP,     ANIM_Fuzzy_Sleep,
@@ -101,20 +99,20 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
@@ -235,7 +233,7 @@ EvtScript N(EVS_HandleEvent) = {
 
 #include "common/SpawnEnemyDrainFX.inc.c"
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -369,11 +367,11 @@ EvtScript N(EVS_TakeTurn) = {
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEART_BOUNCE)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Add(LVar1, 10)
-                Call(N(SpawnDrainHealthStartFX), LVar0, LVar1, LVar2, LVar3)
+                Call(SpawnDrainHealthStartFX, LVar0, LVar1, LVar2, LVar3)
                 Thread
                     Wait(15)
                     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_STAR_BOUNCE_A)
-                    Call(N(SpawnDrainHealthContinueFX), LVar0, LVar1, LVar2, LVar3)
+                    Call(SpawnDrainHealthContinueFX, LVar0, LVar1, LVar2, LVar3)
                 EndThread
                 Add(LVar0, 20)
                 Add(LVar1, 20)

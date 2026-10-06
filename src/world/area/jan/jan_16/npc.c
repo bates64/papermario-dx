@@ -5,7 +5,7 @@
 #include "world/common/npc/RaphaelRaven/idle.inc.c"
 #include "world/common/npc/Raven/idle.inc.c"
 
-EvtScript N(EVS_Scene_ReachedRaphaelsTree) = {
+EvtScript EVS_Scene_ReachedRaphaelsTree = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_RAPHAELS_TREE)
         Call(EnableGroup, MODEL_g38, false)
@@ -40,18 +40,18 @@ EvtScript N(EVS_Scene_ReachedRaphaelsTree) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Raven) = {
+EvtScript EVS_NpcInteract_Raven = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_00E3)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven) = {
+EvtScript EVS_NpcInit_Raven = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             Goto(20)
         CaseRange(STORY_CH5_RAPHAEL_LEFT_NEST, STORY_CH5_RAPHAEL_MOVED_ROOT)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Raven)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Raven))
             Call(GetSelfNpcID, LVar0)
             IfEq(LVar0, 1)
                 Call(SetNpcPos, NPC_Raven_01, -450, 0, 26)
@@ -69,7 +69,7 @@ EvtScript N(EVS_NpcInit_Raven) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RaphaelRaven) = {
+EvtScript EVS_NpcInteract_RaphaelRaven = {
     Call(DisablePlayerInput, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -188,11 +188,11 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_RaphaelRaven) = {
+EvtScript EVS_NpcInit_RaphaelRaven = {
     IfEq(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(SetNpcPos, NPC_SELF, 85, 0, 410)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RaphaelRaven)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RaphaelRaven))
         Return
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
@@ -206,13 +206,13 @@ EvtScript N(EVS_NpcInit_RaphaelRaven) = {
     End
 };
 
-NpcData N(NpcData_RaphaelRaven)[] = {
+NpcData NpcData_RaphaelRaven[] = {
     {
         .id = NPC_RaphaelRaven,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_RaphaelRaven),
-        .settings = &N(NpcSettings_RaphaelRaven),
+        .init = &EVS_NpcInit_RaphaelRaven,
+        .settings = &NpcSettings_RaphaelRaven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAPHAEL_RAVEN_ANIMS,
@@ -222,8 +222,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -233,8 +233,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -244,8 +244,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -255,8 +255,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -266,8 +266,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -275,7 +275,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_RaphaelRaven)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_RaphaelRaven),
     {}
 };

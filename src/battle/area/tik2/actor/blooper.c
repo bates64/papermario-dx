@@ -489,7 +489,6 @@ EvtScript N(EVS_Attack_SpinDrop) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 #include "common/SpitInk.inc.c"
 
 EvtScript N(EVS_Attack_InkBlast) = {
@@ -560,7 +559,7 @@ EvtScript N(EVS_Attack_InkBlast) = {
     Sub(LVar4, 27)
     Sub(LVar5, 3)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpitInk), LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
+    Call(SpitInk, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
     Call(EnemyTestTarget, ACTOR_SELF, LVarF, DAMAGE_TYPE_NO_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarF)
         CaseOrEq(HIT_RESULT_MISS)

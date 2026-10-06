@@ -1,6 +1,6 @@
 #include "kkj_11.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [kkj_11_ENTRY_0]    {    0.0,    0.0,  480.0,    0.0 },
     [kkj_11_ENTRY_1]    {    0.0,  100.0, -360.0,  180.0 },
     [kkj_11_ENTRY_2]    { -325.0,    0.0,  360.0,   45.0 },
@@ -12,10 +12,10 @@ EntryList N(Entrances) = {
     [kkj_11_ENTRY_8]    {  466.0,    0.0,   60.0,  270.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .tattle = { MSG_MapTattle_kkj_11 },
     .songVariation = 1,
     .sfxReverb = 3,

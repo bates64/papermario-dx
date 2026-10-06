@@ -2,21 +2,21 @@
 
 #include "world/common/npc/TrainToad/idle.inc.c"
 
-EvtScript N(EVS_NpcInteract_Conductor) = {
+EvtScript EVS_NpcInteract_Conductor = {
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_Conductor_ChooseRoute))
+    ExecWait(EVS_Conductor_ChooseRoute)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Conductor) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Conductor)))
+EvtScript EVS_NpcInit_Conductor = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Conductor))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_TrainToad) = {
+EvtScript EVS_NpcInteract_TrainToad = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_GOT_FRYING_PAN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_Pink_Talk, ANIM_TrainToad_Pink_Idle, 0, MSG_CH4_0023)
@@ -39,19 +39,19 @@ EvtScript N(EVS_NpcInteract_TrainToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TrainToad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TrainToad)))
+EvtScript EVS_NpcInit_TrainToad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad))
     Return
     End
 };
 
-NpcData N(NpcSettings_Toads)[] = {
+NpcData NpcSettings_Toads[] = {
     {
         .id = NPC_Conductor,
         .pos = { 50.0f, 50.0f, 45.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Conductor),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_Conductor,
+        .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_CONDUCTOR_ANIMS,
@@ -61,8 +61,8 @@ NpcData N(NpcSettings_Toads)[] = {
         .id = NPC_TrainToad,
         .pos = { 55.0f, 0.0f, 240.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TrainToad),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_TrainToad,
+        .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_TOAD_PINK_ANIMS,
@@ -70,7 +70,7 @@ NpcData N(NpcSettings_Toads)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcSettings_Toads)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcSettings_Toads),
     {}
 };

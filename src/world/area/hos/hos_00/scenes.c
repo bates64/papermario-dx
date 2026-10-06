@@ -1,7 +1,7 @@
 #include "hos_00.h"
 #include "sprite/player.h"
 
-Vec3f N(TwinkArrivePath)[] = {
+Vec3f TwinkArrivePath[] = {
     {    0.0,     0.0,    2.0 },
     {   73.0,    -6.0,    2.0 },
     {  106.0,    32.0,    2.0 },
@@ -14,7 +14,7 @@ Vec3f N(TwinkArrivePath)[] = {
     {    0.0,    -1.0,    0.0 },
 };
 
-Vec3f N(FlightPath_Magikoopa)[] = {
+Vec3f FlightPath_Magikoopa[] = {
     {   15.0,   174.0,  -45.0 },
     { -157.0,    92.0,  -44.0 },
     { -371.0,   103.0,  -45.0 },
@@ -22,7 +22,7 @@ Vec3f N(FlightPath_Magikoopa)[] = {
     { -250.0,    40.0,  -45.0 },
 };
 
-Vec3f N(TwinkDepartPath1)[] = {
+Vec3f TwinkDepartPath1[] = {
     {    0.0,     0.0,    0.0 },
     {  -60.0,     3.0,  -11.0 },
     {  -55.0,    13.0,    0.0 },
@@ -33,7 +33,7 @@ Vec3f N(TwinkDepartPath1)[] = {
     {  134.0,   250.0,  -80.0 },
 };
 
-Vec3f N(TwinkReturnPath)[] = {
+Vec3f TwinkReturnPath[] = {
     {  -72.0,   318.0,  -80.0 },
     { -127.0,   153.0,  -60.0 },
     { -174.0,   114.0,  -44.0 },
@@ -42,7 +42,7 @@ Vec3f N(TwinkReturnPath)[] = {
     { -174.0,    10.0,  -43.0 },
 };
 
-Vec3f N(TwinkDepartPath2)[] = {
+Vec3f TwinkDepartPath2[] = {
     {    0.0,     0.0,    0.0 },
     {  -30.0,     3.0,  -11.0 },
     {  -55.0,    13.0,    0.0 },
@@ -54,27 +54,27 @@ Vec3f N(TwinkDepartPath2)[] = {
     { 1111.0,   570.0, -527.0 },
 };
 
-API_CALLABLE(N(EnableActionCommands)) {
+API_CALLABLE(EnableActionCommands) {
     gPlayerData.hasActionCommands = true;
     return ApiStatus_DONE2;
 }
 
-f32 N(LastTwinkPosX) = 0;
-f32 N(LastTwinkPosZ) = 0;
+f32 LastTwinkPosX = 0;
+f32 LastTwinkPosZ = 0;
 
-API_CALLABLE(N(HavePartyFaceTwink)) {
+API_CALLABLE(HavePartyFaceTwink) {
     Npc* partner = get_npc_unsafe(NPC_PARTNER);
     Npc* npc = get_npc_unsafe(NPC_Twink);
 
     partner->yaw = atan2(partner->pos.x, partner->pos.z, npc->pos.x, npc->pos.z);
     gPlayerStatus.targetYaw = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, npc->pos.x, npc->pos.z);
-    npc->yaw = atan2(N(LastTwinkPosX), N(LastTwinkPosZ), npc->pos.x, npc->pos.z);
-    N(LastTwinkPosX) = npc->pos.x;
-    N(LastTwinkPosZ) = npc->pos.z;
+    npc->yaw = atan2(LastTwinkPosX, LastTwinkPosZ, npc->pos.x, npc->pos.z);
+    LastTwinkPosX = npc->pos.x;
+    LastTwinkPosZ = npc->pos.z;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateMagikoopaAngles)) {
+API_CALLABLE(UpdateMagikoopaAngles) {
     Npc* npc = get_npc_unsafe(NPC_FlyingMagikoopa);
 
     if (npc->yaw < 180.0f) {
@@ -90,7 +90,7 @@ API_CALLABLE(N(UpdateMagikoopaAngles)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AddOffsetForCamPos)) {
+API_CALLABLE(AddOffsetForCamPos) {
     s32 baseX = script->varTable[0];
     s32 baseZ = script->varTable[2];
 
@@ -101,7 +101,7 @@ API_CALLABLE(N(AddOffsetForCamPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateFacingMagikoopa) = {
+EvtScript EVS_UpdateFacingMagikoopa = {
     Call(GetNpcPos, NPC_FlyingMagikoopa, LVar6, LVar7, LVar8)
     Label(0)
         Call(GetNpcPos, NPC_FlyingMagikoopa, LVar3, LVar4, LVar5)
@@ -111,7 +111,7 @@ EvtScript N(EVS_UpdateFacingMagikoopa) = {
         Sub(LVar3, LVar6)
         Sub(LVar4, LVar7)
         Sub(LVar5, LVar8)
-        Call(N(UpdateMagikoopaAngles))
+        Call(UpdateMagikoopaAngles)
         Set(LVar6, LVar9)
         Set(LVar7, LVarA)
         Set(LVar8, LVarB)
@@ -126,7 +126,7 @@ EvtScript N(EVS_UpdateFacingMagikoopa) = {
     End
 };
 
-EvtScript N(EVS_ConfusedTwinkLookingAround) = {
+EvtScript EVS_ConfusedTwinkLookingAround = {
     Loop(0)
         Call(InterpNpcYaw, NPC_Twink, 270, 0)
         Wait(10 * DT)
@@ -138,7 +138,7 @@ EvtScript N(EVS_ConfusedTwinkLookingAround) = {
 };
 
 // add an offset to Twink's position to counter the one from his sprite
-EvtScript N(EVS_Twink_CancelHoverOffset) = {
+EvtScript EVS_Twink_CancelHoverOffset = {
     Loop(0)
         Loop(5)
             Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
@@ -159,7 +159,7 @@ EvtScript N(EVS_Twink_CancelHoverOffset) = {
     End
 };
 
-EvtScript N(EVS_Twink_CarryItem) = {
+EvtScript EVS_Twink_CarryItem = {
     Loop(0)
         Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
         Add(LVar1, 15)
@@ -171,7 +171,7 @@ EvtScript N(EVS_Twink_CarryItem) = {
     End
 };
 
-EvtScript N(EVS_Scene_MeetingTwink) = {
+EvtScript EVS_Scene_MeetingTwink = {
     Loop(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -257,14 +257,14 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_HOS_000F)
     Wait(5 * DT)
     Call(GetNpcPos, NPC_Twink, LVar4, LVar5, LVar6)
-    Call(LoadPath, 70 * DT, Ref(N(TwinkArrivePath)), ARRAY_COUNT(N(TwinkArrivePath)), EASING_LINEAR)
+    Call(LoadPath, 70 * DT, Ref(TwinkArrivePath), ARRAY_COUNT(TwinkArrivePath), EASING_LINEAR)
     Label(1)
         Call(GetNextPathPos)
         AddF(LVar1, LVar4)
         AddF(LVar2, LVar5)
         AddF(LVar3, LVar6)
         Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
-        Call(N(HavePartyFaceTwink))
+        Call(HavePartyFaceTwink)
         Wait(1)
         IfEq(LVar0, 1)
             Goto(1)
@@ -279,8 +279,8 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Add(LVar1, 15)
     Call(MakeItemEntity, ITEM_LUCKY_STAR, LVar0, LVar1, LVar2, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(MV_LuckyStarItem, LVar0)
-    ExecGetTID(N(EVS_Twink_CancelHoverOffset), LVar8)
-    ExecGetTID(N(EVS_Twink_CarryItem), LVar9)
+    ExecGetTID(EVS_Twink_CancelHoverOffset, LVar8)
+    ExecGetTID(EVS_Twink_CarryItem, LVar9)
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Wink)
     Call(ContinueSpeech, NPC_Twink, -1, -1, 512, MSG_HOS_0012)
     Call(GetPlayerPos, LVar5, LVar3, LVar4)
@@ -322,7 +322,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Wait(11)
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Pleased)
     EVT_GIVE_REWARD(ITEM_LUCKY_STAR)
-    Call(N(EnableActionCommands))
+    Call(EnableActionCommands)
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_HOS_0013)
@@ -355,7 +355,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_HOS_002F)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_HOS_0030)
     Wait(20 * DT)
-    Exec(N(EVS_PlayKammyKoopaSong))
+    Exec(EVS_PlayKammyKoopaSong)
     Call(ShowMessageAtScreenPos, MSG_HOS_0031, 320, 0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -377,8 +377,8 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
-    ExecGetTID(N(EVS_UpdateFacingMagikoopa), LVarA)
-    Call(LoadPath, 67 * DT, Ref(N(FlightPath_Magikoopa)), ARRAY_COUNT(N(FlightPath_Magikoopa)), EASING_LINEAR)
+    ExecGetTID(EVS_UpdateFacingMagikoopa, LVarA)
+    Call(LoadPath, 67 * DT, Ref(FlightPath_Magikoopa), ARRAY_COUNT(FlightPath_Magikoopa), EASING_LINEAR)
     Label(2)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_FlyingMagikoopa, LVar1, LVar2, LVar3)
@@ -413,7 +413,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
         Wait(1)
     EndLoop
     Wait(20 * DT)
-    ExecGetTID(N(EVS_ConfusedTwinkLookingAround), LVarA)
+    ExecGetTID(EVS_ConfusedTwinkLookingAround, LVarA)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Still, 5, MSG_HOS_0032)
     KillThread(LVarA)
     Wait(10 * DT)
@@ -440,7 +440,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     End
 };
 
-EvtScript N(EVS_Scene_TwinkDeparts) = {
+EvtScript EVS_Scene_TwinkDeparts = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(SetMusic, 0, SONG_TWINK_THEME, 0, VOL_LEVEL_FULL)
     Wait(60 * DT)
@@ -469,25 +469,25 @@ EvtScript N(EVS_Scene_TwinkDeparts) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.3 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetNpcPos, NPC_Twink, LVar4, LVar5, LVar6)
-    Call(LoadPath, 85 * DT, Ref(N(TwinkDepartPath1)), ARRAY_COUNT(N(TwinkDepartPath1)), EASING_LINEAR)
+    Call(LoadPath, 85 * DT, Ref(TwinkDepartPath1), ARRAY_COUNT(TwinkDepartPath1), EASING_LINEAR)
     Label(0)
         Call(GetNextPathPos)
         AddF(LVar1, LVar4)
         AddF(LVar2, LVar5)
         AddF(LVar3, LVar6)
         Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
-        Call(N(HavePartyFaceTwink))
+        Call(HavePartyFaceTwink)
         Wait(1)
         IfEq(LVar0, 1)
             Goto(0)
         EndIf
     Wait(45 * DT)
     Thread
-        Call(LoadPath, 60 * DT, Ref(N(TwinkReturnPath)), ARRAY_COUNT(N(TwinkReturnPath)), EASING_LINEAR)
+        Call(LoadPath, 60 * DT, Ref(TwinkReturnPath), ARRAY_COUNT(TwinkReturnPath), EASING_LINEAR)
         Label(1)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
-            Call(N(HavePartyFaceTwink))
+            Call(HavePartyFaceTwink)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(1)
@@ -508,14 +508,14 @@ EvtScript N(EVS_Scene_TwinkDeparts) = {
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_HOS_0036)
     Thread
         Call(GetNpcPos, NPC_Twink, LVar4, LVar5, LVar6)
-        Call(LoadPath, 120 * DT, Ref(N(TwinkDepartPath2)), ARRAY_COUNT(N(TwinkDepartPath2)), EASING_QUADRATIC_IN)
+        Call(LoadPath, 120 * DT, Ref(TwinkDepartPath2), ARRAY_COUNT(TwinkDepartPath2), EASING_QUADRATIC_IN)
         Label(2)
             Call(GetNextPathPos)
             AddF(LVar1, LVar4)
             AddF(LVar2, LVar5)
             AddF(LVar3, LVar6)
             Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
-            Call(N(HavePartyFaceTwink))
+            Call(HavePartyFaceTwink)
             Wait(1)
             IfEq(LVar0, 1)
                 Goto(2)
@@ -523,7 +523,7 @@ EvtScript N(EVS_Scene_TwinkDeparts) = {
     EndThread
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(12.5), Float(-10.0))
-    Call(N(AddOffsetForCamPos))
+    Call(AddOffsetForCamPos)
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))

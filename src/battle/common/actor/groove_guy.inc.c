@@ -8,8 +8,6 @@
 
 #define NAMESPACE A(groove_guy)
 
-
-
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);
@@ -128,19 +126,17 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 EvtScript N(EVS_Idle) = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfFlag(LVar0, STATUS_FLAG_SLEEP)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -4, 14)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
-            Call(N(SetAbsoluteStatusOffsets), -13, 15, 4, 13)
+            Call(SetAbsoluteStatusOffsets, -13, 15, 4, 13)
         Else
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 24)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -10)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
         EndIf
         Wait(1)
         Goto(0)

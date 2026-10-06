@@ -2,8 +2,6 @@
 #include "sprite/npc/HuffNPuff.h"
 #include "sprite/npc/TuffPuff.h"
 #include "sprite/player.h"
-#include "battle/action_cmd/whirlwind.h"
-#include "battle/action_cmd/stop_leech.h"
 #include "huff_n_puff_common.h"
 
 #define NAMESPACE A(huff_n_puff)
@@ -115,7 +113,6 @@ typedef struct SuctionPath {
 
 BSS SuctionPath N(SuctionPaths)[MAX_RUFF_PUFFS];
 
-#include "common/StartRumbleWithParams.inc.c"
 
 API_CALLABLE(N(SetHealthBarPos)) {
     Bytecode* args = script->ptrReadPos;
@@ -1614,7 +1611,7 @@ EvtScript N(EVS_Move_HealOrSlam) = {
     Add(LVar1, 0)
     Add(LVar2, 0)
     Call(N(HuffPuffBreath), 0, LVar0, LVar1, LVar2, Float(180.0), Float(-1.0), Float(1.2), 0, LVar8)
-    Call(N(StartRumbleWithParams), 80, 220)
+    Call(StartRumbleWithParams, 80, 220)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 110, Float(0.3))
     EndThread
@@ -1685,7 +1682,7 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
     Add(LVar0, LVar3)
     Add(LVar1, LVar4)
     PlayEffect(EFFECT_HUFF_PUFF_BREATH, 1, LVar0, LVar1, LVar2, Float(190.0), Float(-1.0), Float(1.5), 100)
-    Call(N(StartRumbleWithParams), 80, 150)
+    Call(StartRumbleWithParams, 80, 150)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 75, Float(0.3))
     EndThread
@@ -1780,7 +1777,7 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
             Add(LVar0, LVar3)
             Add(LVar1, LVar4)
             PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(190.0), Float(1.5), Float(1.0), 40)
-            Call(N(StartRumbleWithParams), 80, 60)
+            Call(StartRumbleWithParams, 80, 60)
             Thread
                 Call(ShakeCam, CAM_BATTLE, 0, 30, Float(0.3))
             EndThread
@@ -1860,7 +1857,7 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
         Add(LVar0, LVar3)
         Add(LVar1, LVar4)
         PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(190.0), Float(1.5), Float(1.0), 200)
-        Call(N(StartRumbleWithParams), 100, 350)
+        Call(StartRumbleWithParams, 100, 350)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 175, Float(0.3))
         EndThread
@@ -1929,7 +1926,7 @@ EvtScript N(EVS_Move_HurricaneBreath) = {
         Add(LVar0, LVar3)
         Add(LVar1, LVar4)
         PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(190.0), Float(1.5), Float(1.0), 100)
-        Call(N(StartRumbleWithParams), 100, 200)
+        Call(StartRumbleWithParams, 100, 200)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 100, Float(0.3))
         EndThread
@@ -2006,7 +2003,7 @@ EvtScript N(EVS_Move_ChargeForGround) = {
     Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(N(ChargedArmAnims)))
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ELECTRIFIED, true)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHARGE_LIGHTNING)
-    Call(N(StartRumbleWithParams), 70, 120)
+    Call(StartRumbleWithParams, 70, 120)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 60, Float(0.3))
     EndThread
@@ -2033,15 +2030,15 @@ EvtScript N(EVS_Attack_GroundLightning) = {
     Call(SetBattleCamDist, 400)
     Call(SetBattleCamOffsetY, 5)
     Call(MoveBattleCamOver, 60)
-    Call(N(StartRumbleWithParams), 70, 100)
+    Call(StartRumbleWithParams, 70, 100)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 100, Float(0.3))
     EndThread
-    Call(N(UnkBackgroundFunc3))
+    Call(UnkBackgroundFunc3)
     Call(MakeLerp, 0, 200, 60, EASING_LINEAR)
     Label(0)
         Call(UpdateLerp)
-        Call(N(SetBackgroundAlpha), LVar0)
+        Call(SetBackgroundAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
@@ -2066,7 +2063,7 @@ EvtScript N(EVS_Attack_GroundLightning) = {
         Call(MakeLerp, 200, 0, 30, EASING_LINEAR)
         Label(1)
             Call(UpdateLerp)
-            Call(N(SetBackgroundAlpha), LVar0)
+            Call(SetBackgroundAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(1)
@@ -2080,7 +2077,7 @@ EvtScript N(EVS_Attack_GroundLightning) = {
     Sub(LVar3, 30)
     PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, 1, LVar2, Float(3.0), 30)
     Wait(5)
-    Call(N(StartRumbleWithParams), 256, 30)
+    Call(StartRumbleWithParams, 256, 30)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(5.0))
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(3.0))
@@ -2150,7 +2147,7 @@ EvtScript N(EVS_Move_ChargeForDirect) = {
     Call(SetIdleAnimations, ACTOR_SELF, PRT_ARMS, Ref(N(ChargedArmAnims)))
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ELECTRIFIED, true)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_CHARGE_LIGHTNING)
-    Call(N(StartRumbleWithParams), 70, 120)
+    Call(StartRumbleWithParams, 70, 120)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 60, Float(0.3))
     EndThread
@@ -2177,16 +2174,16 @@ EvtScript N(EVS_Attack_DirectLightning) = {
     Call(SetBattleCamOffsetY, 50)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
-    Call(N(StartRumbleWithParams), 70, 80)
+    Call(StartRumbleWithParams, 70, 80)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 40, Float(0.3))
     EndThread
     Thread
-        Call(N(UnkBackgroundFunc3))
+        Call(UnkBackgroundFunc3)
         Call(MakeLerp, 0, 200, 40, EASING_LINEAR)
         Label(0)
             Call(UpdateLerp)
-            Call(N(SetBackgroundAlpha), LVar0)
+            Call(SetBackgroundAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(0)
@@ -2230,7 +2227,7 @@ EvtScript N(EVS_Attack_DirectLightning) = {
         Call(MakeLerp, 200, 0, 30, EASING_LINEAR)
         Label(1)
             Call(UpdateLerp)
-            Call(N(SetBackgroundAlpha), LVar0)
+            Call(SetBackgroundAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(1)

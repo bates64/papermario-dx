@@ -1,32 +1,32 @@
 #include "kkj_14.h"
 #include "sprite/player.h"
 
-Vec3f N(TwinkPacingPath1)[] = {
+Vec3f TwinkPacingPath1[] = {
     {  -40.0,    90.0,    0.0 },
     {  -10.0,    65.0,  -20.0 },
     {   20.0,    70.0,  -10.0 },
 };
 
-Vec3f N(TwinkPacingPath2)[] = {
+Vec3f TwinkPacingPath2[] = {
     {   20.0,    70.0,  -10.0 },
     {  -30.0,    45.0,  -20.0 },
     {  -80.0,    50.0,  -10.0 },
 };
 
-Vec3f N(TwinkPacingPath3)[] = {
+Vec3f TwinkPacingPath3[] = {
     {  -80.0,    50.0,  -10.0 },
     {  -70.0,    35.0,   -5.0 },
     {  -60.0,    30.0,    0.0 },
 };
 
-EvtScript N(EVS_Scene_Chapter3) = {
+EvtScript EVS_Scene_Chapter3 = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 270, 0)
     Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -40, 90, 0)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Call(AdjustCam, CAM_DEFAULT, Float(90.0), -20, 250, Float(17.0), Float(-11.0))
-    Call(LoadPath, 24 * DT, Ref(N(TwinkPacingPath1)), ARRAY_COUNT(N(TwinkPacingPath1)), EASING_LINEAR)
+    Call(LoadPath, 24 * DT, Ref(TwinkPacingPath1), ARRAY_COUNT(TwinkPacingPath1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -37,7 +37,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     EndLoop
     Call(NpcFacePlayer, NPC_PARTNER, 5)
     Wait(20 * DT)
-    Call(LoadPath, 30 * DT, Ref(N(TwinkPacingPath2)), ARRAY_COUNT(N(TwinkPacingPath2)), EASING_LINEAR)
+    Call(LoadPath, 30 * DT, Ref(TwinkPacingPath2), ARRAY_COUNT(TwinkPacingPath2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -48,7 +48,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     EndLoop
     Call(NpcFacePlayer, NPC_PARTNER, 5)
     Wait(20 * DT)
-    Call(LoadPath, 10 * DT, Ref(N(TwinkPacingPath3)), ARRAY_COUNT(N(TwinkPacingPath3)), EASING_LINEAR)
+    Call(LoadPath, 10 * DT, Ref(TwinkPacingPath3), ARRAY_COUNT(TwinkPacingPath3), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)

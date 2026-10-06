@@ -2,7 +2,7 @@
 
 #include "../common/FallingStars.inc.c"
 
-EvtScript N(EVS_ExitWalk_osr) = {
+EvtScript EVS_ExitWalk_osr = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, hos_00_ENTRY_0)
     Exec(ExitWalk)
@@ -17,18 +17,18 @@ EvtScript N(EVS_ExitWalk_osr) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_hos_01_0) = EVT_EXIT_WALK(60, hos_00_ENTRY_1, "hos_01", hos_01_ENTRY_0);
-EvtScript N(EVS_ExitWalk_hos_06_0) = EVT_EXIT_WALK(60, hos_00_ENTRY_2, "hos_06", hos_06_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_01_0 = EVT_EXIT_WALK(60, hos_00_ENTRY_1, "hos_01", hos_01_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_06_0 = EVT_EXIT_WALK(60, hos_00_ENTRY_2, "hos_06", hos_06_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_osr)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_01_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_06_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_osr), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_hos_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_hos_06_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_Unknown) = {
+EvtScript EVS_TexPan_Unknown = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(LVar0, 0)
     Loop(0)
@@ -40,22 +40,22 @@ EvtScript N(EVS_TexPan_Unknown) = {
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
-        Exec(N(EVS_SetupBackgroundShade))
+        Exec(EVS_SetupBackgroundShade)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_00_ENTRY_3)
         Call(SetGroupVisibility, MODEL_g107, MODEL_GROUP_HIDDEN)
-        Exec(N(EVS_Scene_Wishing))
+        Exec(EVS_Scene_Wishing)
         Return
     Else
-        Exec(N(EVS_SetupBackgroundShade))
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Exec(EVS_SetupBackgroundShade)
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
         Wait(1)
     EndIf
@@ -63,7 +63,7 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_SHOOTING_STAR_SUMMIT)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
@@ -71,25 +71,25 @@ EvtScript N(EVS_Main) = {
     Set(GF_MAC01_RowfBadgesChosen, false)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_00_ENTRY_3)
-        Call(MakeNpcs, false, Ref(N(WishingNPCs)))
+        Call(MakeNpcs, false, Ref(WishingNPCs))
     Else
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndIf
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, hos_00_ENTRY_3)
-        Exec(N(EVS_Starfall_Directed))
+        Exec(EVS_Starfall_Directed)
     EndIf
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     IfEq(GB_StoryProgress, STORY_CH0_BEGAN_PEACH_MISSION)
         IfEq(AF_HOS00_SkipTwinkMeetingDelay, false)
             Wait(50)
             Set(AF_HOS00_SkipTwinkMeetingDelay, true)
         EndIf
-        Exec(N(EVS_Scene_MeetingTwink))
+        Exec(EVS_Scene_MeetingTwink)
     EndIf
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_TexPan_Unknown))
+    Exec(EVS_EnterMap)
+    Exec(EVS_TexPan_Unknown)
     Return
     End
 };

@@ -3,7 +3,7 @@
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-MobileAISettings N(AISettings_YoshiKid_Patrol) = {
+MobileAISettings AISettings_YoshiKid_Patrol = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -11,15 +11,15 @@ MobileAISettings N(AISettings_YoshiKid_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_YoshiKid_Patrol) = {
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_YoshiKid_Patrol)))
+EvtScript EVS_NpcAI_YoshiKid_Patrol = {
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_YoshiKid_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_YoshiKid_Patrol) = {
+NpcSettings NpcSettings_YoshiKid_Patrol = {
     .height = 28,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_YoshiKid_Patrol),
+    .doAI = &EVS_NpcAI_YoshiKid_Patrol,
 };

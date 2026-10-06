@@ -34,16 +34,14 @@ enum {
     MV_AmbushID         = MapVar(10), // npcID or itemID depending on GB_OMO_PeachChoice1
 };
 
-#define NAMESPACE omo_07
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupGizmos);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupShyGuyPool);
-extern EvtScript N(EVS_Scene_KammySetAmbush);
-extern EvtScript N(EVS_NpcIdle_Kammy);
-extern NpcGroupList N(KammySceneNPCs);
-extern NpcGroupList N(FuzzyAmbushNPCs);
-extern NpcGroupList N(HammerBrosAmbushNPCs);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupGizmos;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupShyGuyPool;
+extern EvtScript EVS_Scene_KammySetAmbush;
+extern EvtScript EVS_NpcIdle_Kammy;
+extern NpcGroupList KammySceneNPCs;
+extern NpcGroupList FuzzyAmbushNPCs;
+extern NpcGroupList HammerBrosAmbushNPCs;
+extern NpcGroupList DefaultNPCs;

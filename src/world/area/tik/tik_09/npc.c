@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/DarkTroopa/wander.inc.c"
 
-EvtScript N(EVS_OpenGates) = {
+EvtScript EVS_OpenGates = {
     Call(MakeLerp, 0, 60, 25, EASING_COS_IN_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -19,15 +19,15 @@ EvtScript N(EVS_OpenGates) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_DarkTroopa) = {
+EvtScript EVS_NpcDefeat_DarkTroopa = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(GetRemainingEnemyCount, LVar0)
             IfEq(LVar0, 1)
                 Set(GF_TIK09_Defeated_Ambush, true)
-                Exec(N(EVS_SpawnSwitch))
-                Exec(N(EVS_OpenGates))
+                Exec(EVS_SpawnSwitch)
+                Exec(EVS_OpenGates)
             EndIf
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
@@ -37,9 +37,9 @@ EvtScript N(EVS_NpcDefeat_DarkTroopa) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_DarkTroopa) = {
+EvtScript EVS_NpcInit_DarkTroopa = {
     IfEq(GF_TIK09_Defeated_Ambush, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_DarkTroopa)))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_DarkTroopa))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -47,7 +47,7 @@ EvtScript N(EVS_NpcInit_DarkTroopa) = {
     End
 };
 
-NpcData N(NpcData_KoopaTroopa_01) = {
+NpcData NpcData_KoopaTroopa_01 = {
     .id = NPC_KoopaTroopa_01,
     .pos = { -80.0f, -10.0f, 0.0f },
     .yaw = 90,
@@ -63,15 +63,15 @@ NpcData N(NpcData_KoopaTroopa_01) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_DarkTroopa),
-    .settings = &N(NpcSettings_DarkTroopa_Wander),
+    .init = &EVS_NpcInit_DarkTroopa,
+    .settings = &NpcSettings_DarkTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = DARK_TROOPA_DROPS,
     .animations = DARK_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_KoopaTroopa_02) = {
+NpcData NpcData_KoopaTroopa_02 = {
     .id = NPC_KoopaTroopa_02,
     .pos = { 60.0f, -10.0f, 0.0f },
     .yaw = 90,
@@ -87,15 +87,15 @@ NpcData N(NpcData_KoopaTroopa_02) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_DarkTroopa),
-    .settings = &N(NpcSettings_DarkTroopa_Wander),
+    .init = &EVS_NpcInit_DarkTroopa,
+    .settings = &NpcSettings_DarkTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = DARK_TROOPA_DROPS,
     .animations = DARK_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_KoopaTroopa_03) = {
+NpcData NpcData_KoopaTroopa_03 = {
     .id = NPC_KoopaTroopa_03,
     .pos = { 180.0f, -10.0f, 0.0f },
     .yaw = 270,
@@ -111,17 +111,17 @@ NpcData N(NpcData_KoopaTroopa_03) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_DarkTroopa),
-    .settings = &N(NpcSettings_DarkTroopa_Wander),
+    .init = &EVS_NpcInit_DarkTroopa,
+    .settings = &NpcSettings_DarkTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = DARK_TROOPA_DROPS,
     .animations = DARK_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa_01), BTL_TIK_FORMATION_02, BTL_TIK_STAGE_03),
-    NPC_GROUP(N(NpcData_KoopaTroopa_02), BTL_TIK_FORMATION_01, BTL_TIK_STAGE_03),
-    NPC_GROUP(N(NpcData_KoopaTroopa_03), BTL_TIK_FORMATION_00, BTL_TIK_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_TIK_FORMATION_02, BTL_TIK_STAGE_03),
+    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_TIK_FORMATION_01, BTL_TIK_STAGE_03),
+    NPC_GROUP(NpcData_KoopaTroopa_03, BTL_TIK_FORMATION_00, BTL_TIK_STAGE_03),
     {}
 };

@@ -9,7 +9,7 @@
 
 #include "foliage.h"
 
-EvtScript N(EVS_JrTroopa_RunFX) = {
+EvtScript EVS_JrTroopa_RunFX = {
     Loop(0)
         Call(GetNpcPos, NPC_JrTroopa_01, LVar0, LVar1, LVar2)
         PlayEffect(EFFECT_LANDING_DUST, 1, LVar0, LVar1, LVar2, 0)
@@ -19,13 +19,13 @@ EvtScript N(EVS_JrTroopa_RunFX) = {
     End
 };
 
-FoliageModelList N(SceneBush_Models) = FOLIAGE_MODEL_LIST(MODEL_o125);
+FoliageModelList SceneBush_Models = FOLIAGE_MODEL_LIST(MODEL_o125);
 
-SearchBushConfig N(SearchBush_Scene) = {
-    .bush = &N(SceneBush_Models),
+SearchBushConfig SearchBush_Scene = {
+    .bush = &SceneBush_Models,
 };
 
-EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
+EvtScript EVS_NpcIdle_JrTroopa_01 = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLe(LVar0, -125)
@@ -41,13 +41,13 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
             Wait(1)
             Goto(10)
     EndChildThread
-    Exec(N(EVS_PlayJrTroopaSong))
+    Exec(EVS_PlayJrTroopaSong)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 5, MSG_CH1_011E)
     Wait(15 * DT)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(SetCamProperties, CAM_DEFAULT, Float(90.0), -190, 0, -40, 200, Float(15.0), Float(-8.5))
     Wait(15 * DT)
-    Set(LVar0, Ref(N(SearchBush_Scene)))
+    Set(LVar0, Ref(SearchBush_Scene))
     Exec(EVS_SearchBush)
     Wait(15 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     Call(NpcMoveTo, NPC_SELF, -201, -67, 10 * DT)
     Call(SetNpcJumpscale, NPC_SELF, Float(2.0))
     Call(NpcJump1, NPC_SELF, -191, 0, -32, 5 * DT)
-    ExecGetTID(N(EVS_JrTroopa_RunFX), LVarA)
+    ExecGetTID(EVS_JrTroopa_RunFX, LVarA)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SLIDE, SOUND_SPACE_DEFAULT)
     Call(NpcMoveTo, NPC_SELF, -165, 50, 15 * DT)
     KillThread(LVarA)
@@ -151,18 +151,18 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_JrTroopa_01) = {
+EvtScript EVS_NpcAI_JrTroopa_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_JrTroopa_01) = {
+EvtScript EVS_NpcInteract_JrTroopa_01 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Defeated, ANIM_JrTroopa_Defeated, 5, MSG_CH1_012B)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_JrTroopa_02) = {
+EvtScript EVS_NpcIdle_JrTroopa_02 = {
     Loop(0)
         Call(GetNpcPos, NPC_JrTroopa_01, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -172,7 +172,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_02) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_JrTroopa_02) = {
+EvtScript EVS_NpcHit_JrTroopa_02 = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_JUMP)
@@ -187,7 +187,7 @@ EvtScript N(EVS_NpcHit_JrTroopa_02) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_JrTroopa_01) = {
+EvtScript EVS_NpcDefeat_JrTroopa_01 = {
     Call(ClearDefeatedEnemies)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Defeated)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -197,9 +197,9 @@ EvtScript N(EVS_NpcDefeat_JrTroopa_01) = {
     Set(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
     Thread
         Wait(4)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
     EndThread
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_JrTroopa_01)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_JrTroopa_01))
     Call(SetNpcFlagBits, NPC_JrTroopa_02, NPC_FLAG_INVISIBLE, true)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
     Call(DisablePlayerInput, false)
@@ -207,13 +207,13 @@ EvtScript N(EVS_NpcDefeat_JrTroopa_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_KentCKoopa_02) = {
+EvtScript EVS_NpcInteract_KentCKoopa_02 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0134)
     Return
     End
 };
 
-API_CALLABLE(N(KentCheckNotEnoughCoins)) {
+API_CALLABLE(KentCheckNotEnoughCoins) {
     PlayerData* playerData = &gPlayerData;
 
     if (playerData->coins >= 100) {
@@ -225,7 +225,7 @@ API_CALLABLE(N(KentCheckNotEnoughCoins)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(KentTakeCoins)) {
+API_CALLABLE(KentTakeCoins) {
     PlayerData* playerData = &gPlayerData;
 
     playerData->coins -= 100;
@@ -233,7 +233,7 @@ API_CALLABLE(N(KentTakeCoins)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
+EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Label(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
@@ -317,7 +317,7 @@ EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
     Call(ResetCam, CAM_DEFAULT, Float(5.0))
     Goto(100)
     Label(30)
-    Call(N(KentCheckNotEnoughCoins))
+    Call(KentCheckNotEnoughCoins)
     IfEq(LVar0, 1)
         Goto(40)
     EndIf
@@ -331,14 +331,14 @@ EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Walk)
     Call(NpcMoveTo, NPC_KentCKoopa_02, LVar0, LVar2, 20)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Idle)
-    Call(N(KentTakeCoins))
+    Call(KentTakeCoins)
     Call(ShowCoinCounter, false)
     Call(SpeakToPlayer, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0133)
     Wait(20)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Walk)
     Call(NpcMoveTo, NPC_KentCKoopa_02, -167, -100, 20)
     Call(SetNpcFlagBits, NPC_KentCKoopa_02, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    Call(BindNpcInteract, NPC_KentCKoopa_02, Ref(N(EVS_NpcInteract_KentCKoopa_02)))
+    Call(BindNpcInteract, NPC_KentCKoopa_02, Ref(EVS_NpcInteract_KentCKoopa_02))
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Idle)
     IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
@@ -355,7 +355,7 @@ EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
     Call(ShowCoinCounter, false)
     Call(ContinueSpeech, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_012F)
     Call(ResetCam, CAM_DEFAULT, Float(5.0))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Wait(30)
     Call(DisablePlayerInput, false)
     Label(41)
@@ -391,7 +391,7 @@ EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
     Call(ShowCoinCounter, false)
     Call(ContinueSpeech, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0131)
     Call(ResetCam, CAM_DEFAULT, Float(5.0))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Wait(30)
     Call(DisablePlayerInput, false)
     Label(51)
@@ -430,27 +430,27 @@ EvtScript N(EVS_NpcIdle_KentCKoopa_01) = {
     Call(SetPlayerPos, LVar3, LVar1, LVar2)
     Goto(15)
     Label(100)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Wait(30)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KentCKoopa_01) = {
+EvtScript EVS_NpcDefeat_KentCKoopa_01 = {
     Set(GF_NOK11_Defeated_KentC, true)
     Call(ClearDefeatedEnemies)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KentCKoopa_02) = {
+EvtScript EVS_NpcDefeat_KentCKoopa_02 = {
     Call(ClearDefeatedEnemies)
     Return
     End
 };
 
-NpcData N(NpcData_KoopaTroopa) = {
+NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
     .pos = { -350.0f, 0.0f, -30.0f },
     .yaw = 90,
@@ -466,13 +466,13 @@ NpcData N(NpcData_KoopaTroopa) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
 };
 
-NpcData N(NpcData_Paragoomba) = {
+NpcData NpcData_Paragoomba = {
     .id = NPC_Paragoomba,
     .pos = { 0.0f, 60.0f, -30.0f },
     .yaw = 0,
@@ -488,13 +488,13 @@ NpcData N(NpcData_Paragoomba) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_Paragoomba_Wander),
+    .settings = &NpcSettings_Paragoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = PARAGOOMBA_DROPS,
     .animations = PARAGOOMBA_ANIMS,
 };
 
-NpcData N(NpcData_SpikedGoomba) = {
+NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
     .pos = { 430.0f, 0.0f, -27.0f },
     .yaw = 270,
@@ -510,36 +510,36 @@ NpcData N(NpcData_SpikedGoomba) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_SpikedGoomba_Wander),
+    .settings = &NpcSettings_SpikedGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKED_GOOMBA_DROPS,
     .animations = SPIKED_GOOMBA_ANIMS,
 };
 
-EvtScript N(EVS_NpcInit_JrTroopa_01) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa_01)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_JrTroopa_01)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_JrTroopa_01)))
+EvtScript EVS_NpcInit_JrTroopa_01 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa_01))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_JrTroopa_01))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_JrTroopa_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_JrTroopa_02) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa_02)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_JrTroopa_02)))
+EvtScript EVS_NpcInit_JrTroopa_02 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa_02))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_JrTroopa_02))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Return
     End
 };
 
-NpcData N(NpcData_JrTroopa)[] = {
+NpcData NpcData_JrTroopa[] = {
     {
         .id = NPC_JrTroopa_01,
         .pos = { -170.0f, 0.0f, -155.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_JrTroopa_01),
-        .settings = &N(NpcSettings_JrTroopa),
+        .init = &EVS_NpcInit_JrTroopa_01,
+        .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
@@ -549,8 +549,8 @@ NpcData N(NpcData_JrTroopa)[] = {
         .id = NPC_JrTroopa_02,
         .pos = { -170.0f, 0.0f, -155.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_JrTroopa_02),
-        .settings = &N(NpcSettings_JrTroopa),
+        .init = &EVS_NpcInit_JrTroopa_02,
+        .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
@@ -558,9 +558,9 @@ NpcData N(NpcData_JrTroopa)[] = {
     },
 };
 
-EvtScript N(EVS_NpcInit_KentCKoopa_01) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KentCKoopa_01)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KentCKoopa_01)))
+EvtScript EVS_NpcInit_KentCKoopa_01 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KentCKoopa_01))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KentCKoopa_01))
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, AB_NOK11_KentEntryID)
@@ -568,8 +568,8 @@ EvtScript N(EVS_NpcInit_KentCKoopa_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KentCKoopa_02) = {
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KentCKoopa_02)))
+EvtScript EVS_NpcInit_KentCKoopa_02 = {
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KentCKoopa_02))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, LVar3)
     IfEq(LVar3, nok_11_ENTRY_0)
@@ -581,13 +581,13 @@ EvtScript N(EVS_NpcInit_KentCKoopa_02) = {
     End
 };
 
-NpcData N(NpcData_KentCKoopa)[] = {
+NpcData NpcData_KentCKoopa[] = {
     {
         .id = NPC_KentCKoopa_01,
         .pos = { -164.0f, 0.0f, -37.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KentCKoopa_01),
-        .settings = &N(NpcSettings_KentCKoopa),
+        .init = &EVS_NpcInit_KentCKoopa_01,
+        .settings = &NpcSettings_KentCKoopa,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = KENT_C_KOOPA_ANIMS,
@@ -596,8 +596,8 @@ NpcData N(NpcData_KentCKoopa)[] = {
         .id = NPC_KentCKoopa_02,
         .pos = { -164.0f, 0.0f, -37.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_KentCKoopa_02),
-        .settings = &N(NpcSettings_KentCKoopa),
+        .init = &EVS_NpcInit_KentCKoopa_02,
+        .settings = &NpcSettings_KentCKoopa,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = KENT_C_KOOPA_ANIMS,
@@ -605,19 +605,19 @@ NpcData N(NpcData_KentCKoopa)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa), BTL_NOK_FORMATION_08, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_Paragoomba), BTL_NOK_FORMATION_02, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_NOK_FORMATION_03, BTL_NOK_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa, BTL_NOK_FORMATION_08, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_Paragoomba, BTL_NOK_FORMATION_02, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_NOK_FORMATION_03, BTL_NOK_STAGE_01),
     {}
 };
 
-NpcGroupList N(JrTroopaNPCs) = {
-    NPC_GROUP(N(NpcData_JrTroopa), BTL_KMR_3_FORMATION_03),
+NpcGroupList JrTroopaNPCs = {
+    NPC_GROUP(NpcData_JrTroopa, BTL_KMR_3_FORMATION_03),
     {}
 };
 
-NpcGroupList N(KentCKoopaNPCs) = {
-    NPC_GROUP(N(NpcData_KentCKoopa), BTL_NOK_FORMATION_18, BTL_NOK_STAGE_00),
+NpcGroupList KentCKoopaNPCs = {
+    NPC_GROUP(NpcData_KentCKoopa, BTL_NOK_FORMATION_18, BTL_NOK_STAGE_00),
     {}
 };

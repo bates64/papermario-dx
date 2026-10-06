@@ -1,7 +1,7 @@
 #include "kpa_96.h"
 #include "world/common/enemy/SpikedGoomba/base.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_KPA96,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_KPA96,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_KPA96,
@@ -27,7 +27,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_KPA96,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_MYSTERY,       .price =  5, .descMsg = MSG_ItemShopDesc_Mystery },
     { .itemID = ITEM_DIZZY_DIAL,    .price = 25, .descMsg = MSG_ItemShopDesc_DizzyDial },
     { .itemID = ITEM_POW_BLOCK,     .price = 15, .descMsg = MSG_ItemShopDesc_POWBlock },
@@ -37,7 +37,7 @@ ShopItemData N(Inventory)[] = {
     {}
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_FRIGHT_JAR,    .sellPrice = 15 },
     { .itemID = ITEM_EGG_MISSILE,   .sellPrice = 30 },
     { .itemID = ITEM_PEBBLE,        .sellPrice = 20 },
@@ -49,7 +49,7 @@ ShopSellPriceData N(PriceList)[] = {
     {}
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -59,7 +59,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_o831, .triggerColliderID = COLLIDER_o865 },
     { .posModelID = MODEL_o832, .triggerColliderID = COLLIDER_o864 },
     { .posModelID = MODEL_o833, .triggerColliderID = COLLIDER_o863 },
@@ -68,35 +68,35 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o836, .triggerColliderID = COLLIDER_o860 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_SpikedGoomba,
     .idleAnim = ANIM_SpikedGoomba_Idle,
     .talkAnim = ANIM_SpikedGoomba_Walk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
+EvtScript EVS_SetupShop = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o860, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o861, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o862, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o863, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o864, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o865, COLLIDER_FLAGS_UPPER_MASK)
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), 0)
-    Call(MakeShopOwner, Ref(N(Owner)))
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_SpikedGoomba) = {
+NpcSettings NpcSettings_SpikedGoomba = {
     .height = 22,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };
 
-API_CALLABLE(N(CheckPlayerHasCoins)) {
+API_CALLABLE(CheckPlayerHasCoins) {
     if (gPlayerData.coins > 0) {
         script->varTable[0] = false;
     } else {
@@ -105,12 +105,12 @@ API_CALLABLE(N(CheckPlayerHasCoins)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_SpikedGoomba) = {
+EvtScript EVS_NpcInteract_SpikedGoomba = {
     IfEq(MV_MetShopkeeper, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_SpikedGoomba_Walk, ANIM_SpikedGoomba_Idle, 0, MSG_CH8_004F)
         Call(ShowChoice, MSG_Choice_0013)
         IfEq(LVar0, 0)
-            Call(N(CheckPlayerHasCoins))
+            Call(CheckPlayerHasCoins)
             IfEq(LVar0, 0)
                 Call(ContinueSpeech, NPC_SELF, ANIM_SpikedGoomba_Walk, ANIM_SpikedGoomba_Idle, 0, MSG_CH8_0051)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o860, COLLIDER_FLAGS_UPPER_MASK)
@@ -134,25 +134,25 @@ EvtScript N(EVS_NpcInteract_SpikedGoomba) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_SpikedGoomba) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_SpikedGoomba)))
+EvtScript EVS_NpcInit_SpikedGoomba = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_SpikedGoomba))
     Return
     End
 };
 
-NpcData N(NpcData_SpikedGoomba) = {
+NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
     .pos = { -122.0f, 0.0f, 163.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_SpikedGoomba),
-    .settings = &N(NpcSettings_SpikedGoomba),
+    .init = &EVS_NpcInit_SpikedGoomba,
+    .settings = &NpcSettings_SpikedGoomba,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = SPIKED_GOOMBA_ANIMS,
     .tattle = MSG_NpcTattle_KPA_ShopOwner,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_SpikedGoomba)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_SpikedGoomba),
     {}
 };

@@ -2,7 +2,7 @@
 
 #include "world/common/npc/Oaklie/idle.inc.c"
 
-EvtScript N(EVS_NpcInteract_Oaklie) = {
+EvtScript EVS_NpcInteract_Oaklie = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_BOW_JOINED_PARTY)
@@ -35,25 +35,25 @@ EvtScript N(EVS_NpcInteract_Oaklie) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Oaklie) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Oaklie)))
+EvtScript EVS_NpcInit_Oaklie = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Oaklie))
     Return
     End
 };
 
-NpcData N(NpcData_Oaklie) = {
+NpcData NpcData_Oaklie = {
     .id = NPC_Oaklie,
     .pos = { 0.0f, 32.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Oaklie),
-    .settings = &N(NpcSettings_Oaklie),
+    .init = &EVS_NpcInit_Oaklie,
+    .settings = &NpcSettings_Oaklie,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = OAKLIE_ANIMS,
     .tattle = MSG_NpcTattle_Oaklie,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Oaklie)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Oaklie),
     {}
 };

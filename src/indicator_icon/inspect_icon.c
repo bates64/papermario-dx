@@ -3,8 +3,6 @@
 
 extern s32 D_8010C950; //TODO never read, consider removing
 
-#define NAMESPACE inspect_icon
-
 typedef struct InspectIconData {
     /* 0x00 */ Vec3f pos;
     /* 0x0C */ f32 yaw;
@@ -225,7 +223,7 @@ void interact_inspect_update(void) {
                 angle -= 360.0f;
             }
             InspectIconPtr->yaw = angle;
-            brightness = N(GetIconBrightnessForAngle)(angle);
+            brightness = GetIconBrightnessForAngle(angle);
             break;
         case INSPECT_ICON_VANISH:
             angle = InspectIconPtr->yaw;
@@ -242,7 +240,7 @@ void interact_inspect_update(void) {
                 // only dimiss when the icon is rotated away from view
                 InteractNotificationCallback = interact_inspect_dismiss;
             }
-            brightness = N(GetIconBrightnessForAngle)(angle);
+            brightness = GetIconBrightnessForAngle(angle);
             break;
     }
     InspectIconPtr->brightness = brightness;

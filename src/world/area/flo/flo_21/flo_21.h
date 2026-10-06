@@ -40,12 +40,10 @@ enum {
     MV_BossFightState   = MapVar(13),
 };
 
-#define NAMESPACE flo_21
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupCloudPuffs;
+extern EvtScript EVS_Scene_HuffNPuffAmbush;
+extern EvtScript EVS_TrySpawningStarCard;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupCloudPuffs);
-extern EvtScript N(EVS_Scene_HuffNPuffAmbush);
-extern EvtScript N(EVS_TrySpawningStarCard);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

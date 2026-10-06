@@ -1,6 +1,6 @@
 #include "flo_10.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_10_ENTRY_1)
         Call(SetMusic, 0, SONG_SUNSHINE_RETURNS, 0, VOL_LEVEL_FULL)
@@ -19,13 +19,13 @@ EvtScript N(EVS_SetupMusic) = {
     End
 };
 
-EvtScript N(EVS_PushFlowerSong) = {
+EvtScript EVS_PushFlowerSong = {
     Call(PushSong, SONG_FLOWER_NPC_THEME, 2)
     Return
     End
 };
 
-EvtScript N(EVS_PopSong) = {
+EvtScript EVS_PopSong = {
     Call(FadeOutMusic, 0, 250)
     Wait(10)
     Call(PopSong)

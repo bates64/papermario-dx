@@ -5,11 +5,7 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_fire_flower
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_716E9C)) {
+API_CALLABLE(func_802A123C_716E9C) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -25,10 +21,10 @@ API_CALLABLE(N(func_802A123C_716E9C)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_FIRE_FLOWER)
-    ExecWait(N(UseItemWithEffect))
-    Call(N(FadeBackgroundDarken))
+    ExecWait(UseItemWithEffect)
+    Call(DarkenBackground)
     Call(PlaySound, SOUND_PLANT_FIRE_FLOWER)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_PlantFireFlower)
     Thread
@@ -53,7 +49,7 @@ EvtScript N(EVS_UseItem) = {
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EndThread
     Thread
-        Call(N(func_802A123C_716E9C), LVar3, LVar4, LVar5)
+        Call(func_802A123C_716E9C, LVar3, LVar4, LVar5)
         Wait(25)
         Loop(12)
             Wait(1)
@@ -82,13 +78,13 @@ EvtScript N(EVS_UseItem) = {
         IfNe(LVar0, ITER_NO_MORE)
             Goto(0)
         EndIf
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Wait(30)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

@@ -41,11 +41,11 @@ enum FlyingAiAnims {
     AI_ANIM_FLYING_POST_DIVE        = 9,
 };
 
-f32 N(FlyingAI_JumpVels)[] = {
+f32 FlyingAI_JumpVels[] = {
     4.5, 3.5, 2.6, 2.0, 1.5,
 };
 
-void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_WanderInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -66,7 +66,7 @@ void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* settings, EnemyDetect
     script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER;
 }
 
-void N(FlyingAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_Wander(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 shouldReturn = false;
@@ -200,7 +200,7 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     }
 }
 
-void N(FlyingAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_LoiterInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -210,7 +210,7 @@ void N(FlyingAI_LoiterInit)(Evt* script, MobileAISettings* settings, EnemyDetect
     script->AI_TEMP_STATE = AI_STATE_FLYING_LOITER;
 }
 
-void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_Loiter(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 hoverHeight = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_HOVER_HEIGHT]);
@@ -278,7 +278,7 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolu
     }
 }
 
-void N(FlyingAI_JumpInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_JumpInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -288,17 +288,17 @@ void N(FlyingAI_JumpInit)(Evt* script, MobileAISettings* settings, EnemyDetectVo
     script->AI_TEMP_STATE = AI_STATE_FLYING_ALERT;
 }
 
-void N(FlyingAI_Jump)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_Jump(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    npc->pos.y += N(FlyingAI_JumpVels)[npc->duration++];
-    if (npc->duration >= ARRAY_COUNT(N(FlyingAI_JumpVels))) {
+    npc->pos.y += FlyingAI_JumpVels[npc->duration++];
+    if (npc->duration >= ARRAY_COUNT(FlyingAI_JumpVels)) {
         script->AI_TEMP_STATE = AI_STATE_FLYING_CHASE_INIT;
     }
 }
 
-void N(FlyingAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_ChaseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 jumpVel = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_CHASE_VELY]);
@@ -325,7 +325,7 @@ void N(FlyingAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-void N(FlyingAI_ChaseDelay)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_ChaseDelay(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (npc->duration > 0) {
@@ -340,7 +340,7 @@ void N(FlyingAI_ChaseDelay)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(FlyingAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingAI_Chase(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
@@ -423,7 +423,7 @@ void N(FlyingAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolum
     }
 }
 
-void N(FlyingAI_Init)(Npc* npc, Enemy* enemy, Evt* script, MobileAISettings* settings) {
+void FlyingAI_Init(Npc* npc, Enemy* enemy, Evt* script, MobileAISettings* settings) {
     f32 posX, posY, posZ, depth;
 
     script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
@@ -451,7 +451,7 @@ void N(FlyingAI_Init)(Npc* npc, Enemy* enemy, Evt* script, MobileAISettings* set
     enemy->aiFlags |= AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE;
 }
 
-API_CALLABLE(N(FlyingAI_Main)) {
+API_CALLABLE(FlyingAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -469,7 +469,7 @@ API_CALLABLE(N(FlyingAI_Main)) {
     detect->detectFlags = 0;
 
     if (isInitialCall) {
-        N(FlyingAI_Init)(npc, enemy, script, settings);
+        FlyingAI_Init(npc, enemy, script, settings);
     }
 
     npc->verticalRenderOffset = -2;
@@ -483,36 +483,36 @@ API_CALLABLE(N(FlyingAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_FLYING_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, settings, detect);
+            FlyingAI_WanderInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_WANDER:
-            N(FlyingAI_Wander)(script, settings, detect);
+            FlyingAI_Wander(script, settings, detect);
             break;
 
         case AI_STATE_FLYING_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, settings, detect);
+            FlyingAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_LOITER:
-            N(FlyingAI_Loiter)(script, settings, detect);
+            FlyingAI_Loiter(script, settings, detect);
             break;
 
         case AI_STATE_FLYING_ALERT_INIT:
-            N(FlyingAI_JumpInit)(script, settings, detect);
+            FlyingAI_JumpInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_ALERT:
-            N(FlyingAI_Jump)(script, settings, detect);
+            FlyingAI_Jump(script, settings, detect);
             break;
 
         case AI_STATE_FLYING_CHASE_INIT:
-            N(FlyingAI_ChaseInit)(script, settings, detect);
+            FlyingAI_ChaseInit(script, settings, detect);
             break;
 
         case AI_STATE_FLYING_CHASE_DELAY:
-            N(FlyingAI_ChaseDelay)(script, settings, detect);
+            FlyingAI_ChaseDelay(script, settings, detect);
             break;
 
         case AI_STATE_FLYING_CHASE:
-            N(FlyingAI_Chase)(script, settings, detect);
+            FlyingAI_Chase(script, settings, detect);
             break;
     }
 

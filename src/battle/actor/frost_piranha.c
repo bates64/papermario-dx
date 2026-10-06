@@ -3,24 +3,22 @@
 #include "effects.h"
 #include "sprite/npc/LargePiranha.h"
 
-#define NAMESPACE A(frost_piranha)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_Attack_Bite;
+extern EvtScript EVS_Attack_FrostBreath;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_Attack_Bite);
-extern EvtScript N(EVS_Attack_FrostBreath);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_BITE        = 4,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_LargePiranha_Frost_Idle,
     STATUS_KEY_STONE,     ANIM_LargePiranha_Frost_Still,
     STATUS_KEY_SLEEP,     ANIM_LargePiranha_Frost_Still,
@@ -33,14 +31,14 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_FIRE,    -2,
     ELEMENT_ICE,     99,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              95,
@@ -65,15 +63,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -15, 50 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_ICY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 3, -14 },
@@ -85,10 +83,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_FROST_PIRANHA,
     .level = ACTOR_LEVEL_FROST_PIRANHA,
     .maxHP = 10,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 70,
     .airLiftChance = 20,
     .hurricaneChance = 20,
@@ -103,27 +101,25 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 1, 44 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVarA)
         IfFlag(LVarA, STATUS_FLAG_DIZZY)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -27, 33)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 5, -11)
-            Call(N(SetAbsoluteStatusOffsets), -37, 9, -7, 31)
+            Call(SetAbsoluteStatusOffsets, -37, 9, -7, 31)
         Else
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -15, 50)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 3, -14)
-            Call(N(SetAbsoluteStatusOffsets), -22, 32, 1, 44)
+            Call(SetAbsoluteStatusOffsets, -22, 32, 1, 44)
         EndIf
         Wait(1)
         Goto(0)
@@ -131,7 +127,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Frost_Run)
     Call(SetGoalToHome, ACTOR_SELF)
@@ -142,7 +138,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -184,7 +180,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_LargePiranha_Frost_Hurt)
             ExecWait(EVS_Enemy_ShockHit)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_LargePiranha_Frost_Hurt)
@@ -236,28 +232,28 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Bite))
+        ExecWait(EVS_Attack_Bite)
         Return
     EndIf
     Call(GetStatusFlags, ACTOR_PLAYER, LVar0)
     IfFlag(LVar0, STATUS_FLAG_FROZEN)
-        ExecWait(N(EVS_Attack_Bite))
+        ExecWait(EVS_Attack_Bite)
         Return
     EndIf
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 250)
-        ExecWait(N(EVS_Attack_FrostBreath))
+        ExecWait(EVS_Attack_FrostBreath)
     Else
-        ExecWait(N(EVS_Attack_Bite))
+        ExecWait(EVS_Attack_Bite)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Attack_Bite) = {
+EvtScript EVS_Attack_Bite = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -348,7 +344,7 @@ EvtScript N(EVS_Attack_Bite) = {
                 Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
                 Call(SetActorYaw, ACTOR_SELF, 180)
                 Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-                ExecWait(N(EVS_ReturnHome))
+                ExecWait(EVS_ReturnHome)
                 Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
                 Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
             EndIf
@@ -389,7 +385,7 @@ EvtScript N(EVS_Attack_Bite) = {
                 Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, false)
             Else
                 Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-                ExecWait(N(EVS_ReturnHome))
+                ExecWait(EVS_ReturnHome)
             EndIf
         EndCaseGroup
     EndSwitch
@@ -401,7 +397,7 @@ EvtScript N(EVS_Attack_Bite) = {
 
 #include "common/UnkEffect6FFunc.inc.c"
 
-EvtScript N(EVS_Attack_FrostBreath) = {
+EvtScript EVS_Attack_FrostBreath = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -438,7 +434,7 @@ EvtScript N(EVS_Attack_FrostBreath) = {
         Set(LVar1, 13)
         SetF(LVar3, Float(1.0))
     EndIf
-    Call(N(UnkEffect6FFunc), LVar2, LVar0, LVar1, LVar2, LVar3, 30, 120, 0, 120)
+    Call(UnkEffect6FFunc, LVar2, LVar0, LVar1, LVar2, LVar3, 30, 120, 0, 120)
     Wait(1)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Frost_FrostBreathLoop)
     Wait(5)
@@ -458,7 +454,7 @@ EvtScript N(EVS_Attack_FrostBreath) = {
             Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -479,7 +475,7 @@ EvtScript N(EVS_Attack_FrostBreath) = {
             Wait(20)
             Call(YieldTurn)
             Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)

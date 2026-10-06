@@ -4,44 +4,42 @@
 #include "sprite/npc/Magikoopa.h"
 #include "sprite/npc/FlyingMagikoopa.h"
 
-#define NAMESPACE A(gray_magikoopa)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Init_Flying;
+extern EvtScript EVS_TakeTurn;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Init_Flying);
-extern EvtScript N(EVS_TakeTurn);
+extern EvtScript EVS_Flee;
 
-extern EvtScript N(EVS_Flee);
+extern s32 GroundAnims[];
+extern s32 FlyingAnims[];
+extern s32 BroomAnims[];
 
-extern s32 N(GroundAnims)[];
-extern s32 N(FlyingAnims)[];
-extern s32 N(BroomAnims)[];
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_GROUND      = 1,
     PRT_FLYING      = 2,
     PRT_BROOM       = 3,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_ShouldKnockDown    = 0,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_MAGIC_BLAST     = 3,
     DMG_WAND_STRIKE     = 3,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(FlyingDefense)[] = {
+s32 FlyingDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              50,
@@ -66,7 +64,7 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-s32 N(FlyingStatusTable)[] = {
+s32 FlyingStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              50,
@@ -91,30 +89,30 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(GroundParts)[] = {
+ActorPartBlueprint GroundParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_GROUND,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 2, 35 },
         .opacity = 255,
-        .idleAnimations = N(GroundAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = GroundAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -5, -12 },
     },
 };
 
-ActorPartBlueprint N(FlyingParts)[] = {
+ActorPartBlueprint FlyingParts[] = {
     {
         .flags = ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_GROUND,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 2, 35 },
         .opacity = 255,
-        .idleAnimations = N(GroundAnims),
-        .defenseTable = N(FlyingDefense),
+        .idleAnimations = GroundAnims,
+        .defenseTable = FlyingDefense,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -5, -12 },
@@ -125,8 +123,8 @@ ActorPartBlueprint N(FlyingParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -10, 35 },
         .opacity = 255,
-        .idleAnimations = N(FlyingAnims),
-        .defenseTable = N(FlyingDefense),
+        .idleAnimations = FlyingAnims,
+        .defenseTable = FlyingDefense,
         .eventFlags = ACTOR_EVENT_FLAG_RIDING_BROOMSTICK,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -8 },
@@ -137,8 +135,8 @@ ActorPartBlueprint N(FlyingParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(BroomAnims),
-        .defenseTable = N(FlyingDefense),
+        .idleAnimations = BroomAnims,
+        .defenseTable = FlyingDefense,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -150,10 +148,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_GRAY_MAGIKOOPA,
     .level = ACTOR_LEVEL_GRAY_MAGIKOOPA,
     .maxHP = 11,
-    .partCount = ARRAY_COUNT(N(GroundParts)),
-    .partsData = N(GroundParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(GroundParts),
+    .partsData = GroundParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 40,
     .airLiftChance = 80,
     .hurricaneChance = 70,
@@ -168,15 +166,15 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 32 },
 };
 
-ActorBlueprint N(flying) = {
+ActorBlueprint flying = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_FLYING_GRAY_MAGIKOOPA,
     .level = ACTOR_LEVEL_FLYING_GRAY_MAGIKOOPA,
     .maxHP = 11,
-    .partCount = ARRAY_COUNT(N(FlyingParts)),
-    .partsData = N(FlyingParts),
-    .initScript = &N(EVS_Init_Flying),
-    .statusTable = N(FlyingStatusTable),
+    .partCount = ARRAY_COUNT(FlyingParts),
+    .partsData = FlyingParts,
+    .initScript = &EVS_Init_Flying,
+    .statusTable = FlyingStatusTable,
     .escapeChance = 40,
     .airLiftChance = 95,
     .hurricaneChance = 75,
@@ -191,7 +189,7 @@ ActorBlueprint N(flying) = {
     .statusTextOffset = { 1, 34 },
 };
 
-s32 N(GroundAnims)[] = {
+s32 GroundAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Magikoopa_Gray_Idle,
     STATUS_KEY_STONE,     ANIM_Magikoopa_Gray_Still,
     STATUS_KEY_SLEEP,     ANIM_Magikoopa_Gray_Sleep,
@@ -204,7 +202,7 @@ s32 N(GroundAnims)[] = {
     STATUS_END,
 };
 
-s32 N(FlyingAnims)[] = {
+s32 FlyingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_FlyingMagikoopa_Gray_Idle,
     STATUS_KEY_STONE,     ANIM_FlyingMagikoopa_Gray_Still,
     STATUS_KEY_SLEEP,     ANIM_FlyingMagikoopa_Gray_Sleep,
@@ -217,23 +215,20 @@ s32 N(FlyingAnims)[] = {
     STATUS_END,
 };
 
-s32 N(BroomAnims)[] = {
+s32 BroomAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_FlyingMagikoopa_Gray_Broom,
     STATUS_END,
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
 #include "common/ShrinkActor.inc.c"
-#include "common/GetSelectedMoveID.inc.c"
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-#include "common/StartRumbleWithParams.inc.c"
 #include "battle/common/CheckMagikoopaCastTarget.inc.c"
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -298,7 +293,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
             Wait(15)
             Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Gray_Shout)
-            ExecWait(N(EVS_Flee))
+            ExecWait(EVS_Flee)
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
             SetConst(LVar0, PRT_GROUND)
@@ -325,14 +320,14 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_KnockDownCheck) = {
+EvtScript EVS_KnockDownCheck = {
     Call(GetBattleFlags, LVar0)
     IfNotFlag(LVar0, BS_FLAGS1_PARTNER_ACTING)
         IfFlag(LVar0, BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldKnockDown, true)
         EndIf
     Else
-        Call(N(GetSelectedMoveID), LVar0)
+        Call(GetSelectedMoveID, LVar0)
         Switch(LVar0)
             CaseOrEq(MOVE_HEADBONK1)
             CaseOrEq(MOVE_HEADBONK2)
@@ -349,7 +344,7 @@ EvtScript N(EVS_KnockDownCheck) = {
     End
 };
 
-EvtScript N(EVS_KnockDown) = {
+EvtScript EVS_KnockDown = {
     Call(GetActorVar, ACTOR_SELF, AVAR_ShouldKnockDown, LVar0)
     IfEq(LVar0, 1)
         Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Gray_Hurt)
@@ -382,7 +377,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-    Call(N(StartRumbleWithParams), 150, 10)
+    Call(StartRumbleWithParams, 150, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
     EndThread
@@ -407,10 +402,10 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetPartFlagBits, ACTOR_SELF, PRT_BROOM, ACTOR_PART_FLAG_INVISIBLE, true)
     Call(SetAnimation, ACTOR_SELF, PRT_GROUND, ANIM_Magikoopa_Gray_Idle)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING, false)
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_GRAY_MAGIKOOPA)
-    Call(SetStatusTable, ACTOR_SELF, Ref(N(StatusTable)))
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 32)
+    Call(SetStatusTable, ACTOR_SELF, Ref(StatusTable))
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 32)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(ResetAllActorSounds, ACTOR_SELF)
     Call(GetIndexFromPos, ACTOR_SELF, LVar0)
@@ -425,32 +420,32 @@ EvtScript N(EVS_KnockDown) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent_Flying) = {
+EvtScript EVS_HandleEvent_Flying = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
     Switch(LVar0)
         CaseEq(EVENT_HIT_COMBO)
-            ExecWait(N(EVS_KnockDownCheck))
+            ExecWait(EVS_KnockDownCheck)
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_FlyingMagikoopa_Gray_Hurt)
             ExecWait(EVS_Enemy_Hit)
         CaseOrEq(EVENT_HIT)
         CaseOrEq(EVENT_FALL_TRIGGER)
-            ExecWait(N(EVS_KnockDownCheck))
+            ExecWait(EVS_KnockDownCheck)
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_FlyingMagikoopa_Gray_Hurt)
             ExecWait(EVS_Enemy_Hit)
-            ExecWait(N(EVS_KnockDown))
+            ExecWait(EVS_KnockDown)
         EndCaseGroup
         CaseOrEq(EVENT_BURN_HIT)
         CaseOrEq(EVENT_15)
-            ExecWait(N(EVS_KnockDownCheck))
+            ExecWait(EVS_KnockDownCheck)
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_FlyingMagikoopa_Gray_BurnHurt)
             SetConst(LVar2, ANIM_FlyingMagikoopa_Gray_BurnStill)
             ExecWait(EVS_Enemy_BurnHit)
-            ExecWait(N(EVS_KnockDown))
+            ExecWait(EVS_KnockDown)
         EndCaseGroup
         CaseEq(EVENT_BURN_DEATH)
             SetConst(LVar0, PRT_FLYING)
@@ -511,7 +506,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
             Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
             Wait(15)
             Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_FlyingMagikoopa_Gray_Shout)
-            ExecWait(N(EVS_Flee))
+            ExecWait(EVS_Flee)
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
             SetConst(LVar0, PRT_FLYING)
@@ -538,7 +533,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
     End
 };
 
-EvtScript N(EVS_Attack_MagicBlast) = {
+EvtScript EVS_Attack_MagicBlast = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -584,7 +579,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
             Sub(LVar3, 50)
             Set(LVar4, 0)
-            Call(N(ShrinkActor), LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 25)
+            Call(ShrinkActor, LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 25)
             Wait(50)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -614,7 +609,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
     Sub(LVar3, 10)
-    Call(N(ShrinkActor), LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 20)
+    Call(ShrinkActor, LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 20)
     Wait(18)
     Wait(2)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_MAGIC | DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_MAGIC_BLAST, BS_FLAGS1_TRIGGER_EVENTS)
@@ -631,7 +626,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
     End
 };
 
-EvtScript N(EVS_Attack_WandStrike) = {
+EvtScript EVS_Attack_WandStrike = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -735,7 +730,7 @@ EvtScript N(EVS_Attack_WandStrike) = {
     End
 };
 
-EvtScript N(EVS_Flee) = {
+EvtScript EVS_Flee = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(HideHealthBar, ACTOR_SELF)
@@ -769,10 +764,10 @@ EvtScript N(EVS_Flee) = {
     End
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar0)
     IfEq(LVar0, 0)
         Call(SetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, -1)
@@ -782,10 +777,10 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Init_Flying) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Flying)))
+EvtScript EVS_Init_Flying = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent_Flying))
     Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar0)
     IfEq(LVar0, 0)
         Call(SetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, -1)
@@ -795,7 +790,7 @@ EvtScript N(EVS_Init_Flying) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Set(LFlag0, false)
     Label(10)
         Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
@@ -805,7 +800,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(GetIndexFromHome, LVar0, LVar1)
             Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar2)
             IfGt(LVar1, LVar2)
-                Call(N(CheckMagikoopaCastTarget), LVar0, LVar3)
+                Call(CheckMagikoopaCastTarget, LVar0, LVar3)
                 IfEq(LVar3, 0)
                     Call(GetStatusFlags, LVar0, LVar4)
                     IfNotFlag(LVar4, STATUS_FLAG_STATIC | STATUS_FLAG_TRANSPARENT)
@@ -826,14 +821,14 @@ EvtScript N(EVS_TakeTurn) = {
         EndIf
     Call(CountTargets, ACTOR_SELF, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY, LVar0)
     IfEq(LVar0, 1)
-        ExecWait(N(EVS_Flee))
+        ExecWait(EVS_Flee)
         Return
     EndIf
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, ACTOR_FLAG_FLYING)
-        ExecWait(N(EVS_Attack_MagicBlast))
+        ExecWait(EVS_Attack_MagicBlast)
     Else
-        ExecWait(N(EVS_Attack_WandStrike))
+        ExecWait(EVS_Attack_WandStrike)
     EndIf
     Return
     Label(100) // make ally invisible

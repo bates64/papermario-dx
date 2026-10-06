@@ -1,6 +1,6 @@
 #include "kkj_11.h"
 
-AnimID N(LimitAnims_Koopatrol_Later)[] = {
+AnimID LimitAnims_Koopatrol_Later[] = {
     ANIM_WorldKoopatrol_Still,
     ANIM_WorldKoopatrol_Idle,
     ANIM_WorldKoopatrol_IdleFlashlight,
@@ -16,7 +16,7 @@ AnimID N(LimitAnims_Koopatrol_Later)[] = {
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_CapturePeach_Later) = {
+EvtScript EVS_CapturePeach_Later = {
     Call(DisablePlayerInput, true)
     Call(PreventNextPeachDisguise)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -29,7 +29,7 @@ EvtScript N(EVS_CapturePeach_Later) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0174)
-    Call(N(GetApproachPeachPos), NPC_SELF, 100, LVar3, LVar0, LVar2)
+    Call(GetApproachPeachPos, NPC_SELF, 100, LVar3, LVar0, LVar2)
     IfNe(LVar3, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_RunFlashlight)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
@@ -47,7 +47,7 @@ EvtScript N(EVS_CapturePeach_Later) = {
     End
 };
 
-EvtScript N(EVS_CheckForPeach_Koopatrol_01_Later) = {
+EvtScript EVS_CheckForPeach_Koopatrol_01_Later = {
     Loop(0)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(GetPlayerPos, LVar3, LVar4, LVar5)
@@ -56,7 +56,7 @@ EvtScript N(EVS_CheckForPeach_Koopatrol_01_Later) = {
             IfEq(LVar3, PEACH_DISGUISE_NONE)
                 Call(IsPlayerWithin, LVar0, LVar2, 80, LVar0)
                 IfEq(LVar0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
+                    Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
                     Return
                 EndIf
             EndIf
@@ -67,7 +67,7 @@ EvtScript N(EVS_CheckForPeach_Koopatrol_01_Later) = {
     End
 };
 
-EvtScript N(EVS_CheckForPeach_Koopatrol_02_Later) = {
+EvtScript EVS_CheckForPeach_Koopatrol_02_Later = {
     Loop(0)
         Call(GetPeachDisguise, LVar0)
         IfEq(LVar0, PEACH_DISGUISE_NONE)
@@ -75,7 +75,7 @@ EvtScript N(EVS_CheckForPeach_Koopatrol_02_Later) = {
             IfEq(LVar0, 1)
                 Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
                 Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Idle)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
+                Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
                 Return
             EndIf
         EndIf
@@ -85,8 +85,8 @@ EvtScript N(EVS_CheckForPeach_Koopatrol_02_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_01_Later) = {
-    Exec(N(EVS_CheckForPeach_Koopatrol_01_Later))
+EvtScript EVS_NpcIdle_Koopatrol_01_Later = {
+    Exec(EVS_CheckForPeach_Koopatrol_01_Later)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_11_ENTRY_1)
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
@@ -111,8 +111,8 @@ EvtScript N(EVS_NpcIdle_Koopatrol_01_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_04_Later) = {
-    Exec(N(EVS_CheckForPeach_Koopatrol_01_Later))
+EvtScript EVS_NpcIdle_Koopatrol_04_Later = {
+    Exec(EVS_CheckForPeach_Koopatrol_01_Later)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_11_ENTRY_4)
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
@@ -137,7 +137,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_04_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopatrol_02_Later) = {
+EvtScript EVS_NpcIdle_Koopatrol_02_Later = {
     Loop(0)
         Call(GetSelfVar, 1, LVar0)
         IfEq(LVar0, 0)
@@ -158,7 +158,7 @@ EvtScript N(EVS_NpcIdle_Koopatrol_02_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopatrol_01_Later) = {
+EvtScript EVS_NpcInteract_Koopatrol_01_Later = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 16, MSG_Peach_0135)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 1)
@@ -177,12 +177,12 @@ EvtScript N(EVS_NpcInteract_Koopatrol_01_Later) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(InterpNpcYaw, NPC_SELF, 220, 5)
     Call(SetSelfVar, 0, 1)
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_12_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kkj_12_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopatrol_04_Later) = {
+EvtScript EVS_NpcInteract_Koopatrol_04_Later = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 16, MSG_Peach_0135)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 1)
@@ -201,12 +201,12 @@ EvtScript N(EVS_NpcInteract_Koopatrol_04_Later) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(InterpNpcYaw, NPC_SELF, 220, 5)
     Call(SetSelfVar, 0, 1)
-    BindTrigger(Ref(N(EVS_ExitDoor_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_kkj_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopatrol_02_Later) = {
+EvtScript EVS_NpcInteract_Koopatrol_02_Later = {
     Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
     Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Idle)
     Wait(10)
@@ -214,7 +214,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_02_Later) = {
     IfEq(LVar0, PEACH_DISGUISE_NONE)
         Call(NpcFacePlayer, NPC_SELF, 0)
         Wait(5)
-        Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
+        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
         Return
     EndIf
     Call(GetSelfVar, 0, LVar0)
@@ -230,7 +230,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_02_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopatrol_03_Later) = {
+EvtScript EVS_NpcInteract_Koopatrol_03_Later = {
     Call(EnableNpcAI, NPC_Koopatrol_02, false)
     Call(SetNpcAnimation, NPC_Koopatrol_02, ANIM_WorldKoopatrol_Idle)
     Call(SetNpcAnimation, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Idle)
@@ -239,7 +239,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_03_Later) = {
     IfEq(LVar0, PEACH_DISGUISE_NONE)
         Call(NpcFacePlayer, NPC_SELF, 0)
         Wait(5)
-        Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach_Later)))
+        Call(BindNpcAI, NPC_SELF, Ref(EVS_CapturePeach_Later))
         Return
     EndIf
     Call(GetSelfVar, 0, LVar0)
@@ -256,7 +256,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_03_Later) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_01_Later) = {
+EvtScript EVS_NpcInit_Koopatrol_01_Later = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_11_ENTRY_1)
         Call(SetNpcPos, NPC_SELF, -70, 100, -350)
@@ -265,33 +265,33 @@ EvtScript N(EVS_NpcInit_Koopatrol_01_Later) = {
         Call(SetNpcPos, NPC_SELF, 0, 100, -350)
         Call(SetNpcYaw, NPC_SELF, 200)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_01_Later)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopatrol_01_Later)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_01_Later))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_01_Later))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_02_Later) = {
+EvtScript EVS_NpcInit_Koopatrol_02_Later = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(SetNpcPos, NPC_SELF, -295, 0, -30)
     Call(NpcFaceNpc, NPC_SELF, NPC_Koopatrol_03, 0)
-    Exec(N(EVS_CheckForPeach_Koopatrol_02_Later))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_02_Later)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopatrol_02_Later)))
+    Exec(EVS_CheckForPeach_Koopatrol_02_Later)
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_02_Later))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_02_Later))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_03_Later) = {
+EvtScript EVS_NpcInit_Koopatrol_03_Later = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKoopatrol_Idle)
     Call(SetNpcPos, NPC_SELF, -255, 0, -55)
     Call(NpcFaceNpc, NPC_SELF, NPC_Koopatrol_02, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopatrol_03_Later)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_03_Later))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol_04_Later) = {
+EvtScript EVS_NpcInit_Koopatrol_04_Later = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_11_ENTRY_4)
         Call(SetNpcPos, NPC_SELF, -40, 0, -220)
@@ -300,60 +300,60 @@ EvtScript N(EVS_NpcInit_Koopatrol_04_Later) = {
         Call(SetNpcPos, NPC_SELF, 0, 0, -240)
         Call(SetNpcYaw, NPC_SELF, 220)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopatrol_04_Later)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopatrol_04_Later)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopatrol_04_Later))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopatrol_04_Later))
     Return
     End
 };
 
-NpcData N(NpcData_Minions_Later)[] = {
+NpcData NpcData_Minions_Later[] = {
     {
         .id = NPC_Koopatrol_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_01_Later),
-        .settings = &N(NpcSettings_Koopatrol),
+        .init = &EVS_NpcInit_Koopatrol_01_Later,
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol_Later),
+        .limitAnimations = LimitAnims_Koopatrol_Later,
     },
     {
         .id = NPC_Koopatrol_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_02_Later),
-        .settings = &N(NpcSettings_Koopatrol),
+        .init = &EVS_NpcInit_Koopatrol_02_Later,
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol_Later),
+        .limitAnimations = LimitAnims_Koopatrol_Later,
     },
     {
         .id = NPC_Koopatrol_03,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_03_Later),
-        .settings = &N(NpcSettings_Koopatrol),
+        .init = &EVS_NpcInit_Koopatrol_03_Later,
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol_Later),
+        .limitAnimations = LimitAnims_Koopatrol_Later,
     },
     {
         .id = NPC_Koopatrol_04,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Koopatrol_04_Later),
-        .settings = &N(NpcSettings_Koopatrol),
+        .init = &EVS_NpcInit_Koopatrol_04_Later,
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol_Later),
+        .limitAnimations = LimitAnims_Koopatrol_Later,
     },
 };
 
-NpcGroupList N(LaterNPCs) = {
-    NPC_GROUP(N(NpcData_Minions_Later)),
+NpcGroupList LaterNPCs = {
+    NPC_GROUP(NpcData_Minions_Later),
     {}
 };

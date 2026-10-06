@@ -16,7 +16,7 @@ enum {
     AI_STATE_FNA_LOSE_PLAYER    = 20,
 };
 
-void N(FlyingNoAttackAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingNoAttackAI_ChaseInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 angle;
@@ -42,7 +42,7 @@ void N(FlyingNoAttackAI_ChaseInit)(Evt* script, MobileAISettings* settings, Enem
     script->AI_TEMP_STATE = AI_STATE_FNA_CHASE;
 }
 
-void N(FlyingNoAttackAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingNoAttackAI_Chase(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z, hitDepth;
@@ -86,7 +86,7 @@ void N(FlyingNoAttackAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDet
     script->AI_TEMP_STATE = AI_STATE_FNA_CHASE_INIT;
 }
 
-void N(FlyingNoAttackAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void FlyingNoAttackAI_LosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -98,7 +98,7 @@ void N(FlyingNoAttackAI_LosePlayer)(Evt* script, MobileAISettings* settings, Ene
     }
 }
 
-API_CALLABLE(N(FlyingNoAttackAI_Main)) {
+API_CALLABLE(FlyingNoAttackAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -116,7 +116,7 @@ API_CALLABLE(N(FlyingNoAttackAI_Main)) {
     detect->detectFlags = 0;
 
     if (isInitialCall) {
-        N(FlyingAI_Init)(npc, enemy, script, settings);
+        FlyingAI_Init(npc, enemy, script, settings);
         script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
     npc->verticalRenderOffset = -2;
@@ -130,31 +130,31 @@ API_CALLABLE(N(FlyingNoAttackAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_FLYING_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, settings, detect);
+            FlyingAI_WanderInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_WANDER:
-            N(FlyingAI_Wander)(script, settings, detect);
+            FlyingAI_Wander(script, settings, detect);
             break;
         case AI_STATE_FLYING_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, settings, detect);
+            FlyingAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_LOITER:
-            N(FlyingAI_Loiter)(script, settings, detect);
+            FlyingAI_Loiter(script, settings, detect);
             break;
         case AI_STATE_FLYING_ALERT_INIT:
-            N(FlyingAI_JumpInit)(script, settings, detect);
+            FlyingAI_JumpInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_ALERT:
-            N(FlyingAI_Jump)(script, settings, detect);
+            FlyingAI_Jump(script, settings, detect);
             break;
         case AI_STATE_FNA_CHASE_INIT:
-            N(FlyingNoAttackAI_ChaseInit)(script, settings, detect);
+            FlyingNoAttackAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_FNA_CHASE:
-            N(FlyingNoAttackAI_Chase)(script, settings, detect);
+            FlyingNoAttackAI_Chase(script, settings, detect);
             break;
         case AI_STATE_FNA_LOSE_PLAYER:
-            N(FlyingNoAttackAI_LosePlayer)(script, settings, detect);
+            FlyingNoAttackAI_LosePlayer(script, settings, detect);
             break;
     }
 

@@ -1,7 +1,7 @@
 #include "omo_02.h"
 #include "entity.h"
 
-EvtScript N(EVS_TetherCamToPlayer) = {
+EvtScript EVS_TetherCamToPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -11,7 +11,7 @@ EvtScript N(EVS_TetherCamToPlayer) = {
     End
 };
 
-EvtScript N(EVS_StarBoxLaunch_Impl) = {
+EvtScript EVS_StarBoxLaunch_Impl = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
@@ -22,7 +22,7 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
         Wait(1)
     EndLoop
     Call(EnableCameraFollowPlayerY)
-    ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
+    ExecGetTID(EVS_TetherCamToPlayer, LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, -290, 85, -78, 40)
     KillThread(LVarA)
@@ -36,7 +36,7 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_YellowBlock), 300, 60, -100, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO02_ItemBlock_SleepySheep)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), -200, 60, -78, 0, ITEM_COIN, MAKE_ENTITY_END)
@@ -44,7 +44,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_BrickBlock), -80, 89, -78, 0, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_SHOOTING_STAR, -80, 114, -78, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_OMO02_Item_ShootingStar)
     Call(MakeEntity, Ref(Entity_StarBoxLauncher), -358, 0, -82, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_StarBoxLaunch_Impl)))
+    Call(AssignScript, Ref(EVS_StarBoxLaunch_Impl))
     Return
     End
 };

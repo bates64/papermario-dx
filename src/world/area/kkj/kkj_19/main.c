@@ -6,7 +6,7 @@ typedef struct IngredientSouce {
     /* 0x08 */ s32 overrideDescMsg;
 } IngredientSouce; // size = 0x0C
 
-IngredientSouce N(IngredientSources)[] = {
+IngredientSouce IngredientSources[] = {
     { ITEM_BAKING_SUGAR,        COLLIDER_o101, MSG_NONE },
     { ITEM_BAKING_SALT,         COLLIDER_o102, MSG_NONE },
     { ITEM_BAKING_EGG,          COLLIDER_o103, MSG_NONE },
@@ -19,29 +19,29 @@ IngredientSouce N(IngredientSources)[] = {
     { ITEM_BAKING_MILK,         COLLIDER_o110, MSG_NONE },
 };
 
-s32 N(IngredientWindowsOpen) = false;
-s32 N(IngredientWindowsDismissTime) = 0;
-s32 N(IngredientWindowsIndex) = 0;
+s32 IngredientWindowsOpen = false;
+s32 IngredientWindowsDismissTime = 0;
+s32 IngredientWindowsIndex = 0;
 
-API_CALLABLE(N(TryOpenIngredientWindows)) {
+API_CALLABLE(TryOpenIngredientWindows) {
     Bytecode* args = script->ptrReadPos;
     s32 canCheck;
 
-    N(IngredientWindowsIndex) = evt_get_variable(script, *args++);
+    IngredientWindowsIndex = evt_get_variable(script, *args++);
     canCheck = evt_get_variable(nullptr, AF_KKJ19_CanTakeIngredients);
 
     if (canCheck == true) {
-        N(IngredientWindowsOpen) = true;
-        N(IngredientWindowsDismissTime) = 5;
+        IngredientWindowsOpen = true;
+        IngredientWindowsDismissTime = 5;
     } else {
-        N(IngredientWindowsOpen) = false;
+        IngredientWindowsOpen = false;
     }
 
     return ApiStatus_DONE2;
 }
 
-void N(worker_update_ingredient_windows)(void) {
-    if (N(IngredientWindowsOpen)) {
+void worker_update_ingredient_windows(void) {
+    if (IngredientWindowsOpen) {
         set_window_update(WIN_SHOP_ITEM_NAME, (s32)basic_window_update);
         set_window_update(WIN_SHOP_ITEM_DESC, (s32)basic_window_update);
     } else {
@@ -49,33 +49,33 @@ void N(worker_update_ingredient_windows)(void) {
         set_window_update(WIN_SHOP_ITEM_DESC, (s32)basic_hidden_window_update);
     }
 
-    if (N(IngredientWindowsDismissTime) > 0) {
-        N(IngredientWindowsDismissTime)--;
+    if (IngredientWindowsDismissTime > 0) {
+        IngredientWindowsDismissTime--;
     } else {
-        N(IngredientWindowsOpen) = false;
+        IngredientWindowsOpen = false;
     }
 }
 
-void N(draw_content_ingredient_name)(
+void draw_content_ingredient_name(
     MenuPanel* menu,
     s32 baseX, s32 baseY,
     s32 width, s32 height,
     s32 opacity, s32 darkening
 ) {
-    IngredientSouce* ingredient = &N(IngredientSources)[N(IngredientWindowsIndex)];
+    IngredientSouce* ingredient = &IngredientSources[IngredientWindowsIndex];
     ItemData* item = &gItemTable[ingredient->itemID];
     s32 halfWidth = get_msg_width(item->nameMsg, 0) >> 1;
 
     draw_msg(item->nameMsg, baseX + 60 - halfWidth, baseY + 6, 255, 0, 0);
 }
 
-void N(draw_content_ingredient_desc)(
+void draw_content_ingredient_desc(
     MenuPanel* menu,
     s32 baseX, s32 baseY,
     s32 width, s32 height,
     s32 opacity, s32 darkening
 ) {
-    IngredientSouce* ingredient = &N(IngredientSources)[N(IngredientWindowsIndex)];
+    IngredientSouce* ingredient = &IngredientSources[IngredientWindowsIndex];
     ItemData* item = &gItemTable[ingredient->itemID];
 
     if (ingredient->overrideDescMsg != MSG_NONE) {
@@ -85,13 +85,13 @@ void N(draw_content_ingredient_desc)(
     }
 }
 
-EvtScript N(EVS_TouchFloor_IngredientStation) = {
-    Call(N(TryOpenIngredientWindows), LVar0)
+EvtScript EVS_TouchFloor_IngredientStation = {
+    Call(TryOpenIngredientWindows, LVar0)
     Return
     End
 };
 
-WindowStyleCustom N(IngredientNameWS) = {
+WindowStyleCustom IngredientNameWS = {
     .background = {},
     .corners = {
         .imgData = ui_box_corners5_png,
@@ -108,19 +108,19 @@ WindowStyleCustom N(IngredientNameWS) = {
     .color2 = { 122,  89,  63, 255 },
 };
 
-MenuWindowBP N(IngredientWindows)[] = {
+MenuWindowBP IngredientWindows[] = {
     {
         .windowID = WIN_SHOP_ITEM_NAME,
         .pos = { 100, 66 },
         .width = 120,
         .height = 28,
         .priority = WINDOW_PRIORITY_0,
-        .fpDrawContents = &N(draw_content_ingredient_name),
+        .fpDrawContents = &draw_content_ingredient_name,
         .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
-        .style = { .customStyle = &N(IngredientNameWS) },
+        .style = { .customStyle = &IngredientNameWS },
     },
     {
         .windowID = WIN_SHOP_ITEM_DESC,
@@ -128,7 +128,7 @@ MenuWindowBP N(IngredientWindows)[] = {
         .width = 256,
         .height = 32,
         .priority = WINDOW_PRIORITY_0,
-        .fpDrawContents = &N(draw_content_ingredient_desc),
+        .fpDrawContents = &draw_content_ingredient_desc,
         .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
@@ -137,24 +137,24 @@ MenuWindowBP N(IngredientWindows)[] = {
     }
 };
 
-API_CALLABLE(N(CreateIngredientInfoWindows)) {
+API_CALLABLE(CreateIngredientInfoWindows) {
     s32 i;
 
-    N(IngredientWindowsOpen) = false;
-    N(IngredientWindowsDismissTime) = 0;
-    N(IngredientWindowsIndex) = 0;
+    IngredientWindowsOpen = false;
+    IngredientWindowsDismissTime = 0;
+    IngredientWindowsIndex = 0;
 
-    get_worker(create_worker_frontUI(N(worker_update_ingredient_windows), nullptr));
-    setup_pause_menu_tab(N(IngredientWindows), ARRAY_COUNT(N(IngredientWindows)));
+    get_worker(create_worker_frontUI(worker_update_ingredient_windows, nullptr));
+    setup_pause_menu_tab(IngredientWindows, ARRAY_COUNT(IngredientWindows));
 
-    for (i = 0; i < ARRAY_COUNT(N(IngredientSources)); i++) {
-        bind_trigger_1(&N(EVS_TouchFloor_IngredientStation), TRIGGER_FLOOR_TOUCH, N(IngredientSources)[i].colliderID, i, 0, 3);
+    for (i = 0; i < ARRAY_COUNT(IngredientSources); i++) {
+        bind_trigger_1(&EVS_TouchFloor_IngredientStation, TRIGGER_FLOOR_TOUCH, IngredientSources[i].colliderID, i, 0, 3);
     }
 
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitDoor_0) = {
+EvtScript EVS_ExitDoor_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, kkj_19_ENTRY_0)
@@ -173,42 +173,42 @@ EvtScript N(EVS_ExitDoor_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoor_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoor_0), TRIGGER_WALL_PRESS_A, COLLIDER_ttse, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     IfEq(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
-        Exec(N(EVS_ManageBaking))
+        Exec(EVS_ManageBaking)
     Else
         Set(LVar0, kkj_19_ENTRY_0)
         Set(LVar2, MODEL_o95)
         Set(LVar3, DOOR_SWING_IN)
         ExecWait(EnterSingleDoor)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
-            Call(MakeNpcs, false, Ref(N(IntroNPCs)))
+            Call(MakeNpcs, false, Ref(IntroNPCs))
         CaseEq(STORY_CH4_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, false, Ref(N(PeachNPCs)))
+            Call(MakeNpcs, false, Ref(PeachNPCs))
     EndSwitch
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     IfEq(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
-        Call(N(CreateIngredientInfoWindows))
+        Call(CreateIngredientInfoWindows)
     EndIf
     Return
     End

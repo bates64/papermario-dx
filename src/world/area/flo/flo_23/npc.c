@@ -5,7 +5,7 @@
 
 #include "world/common/npc/GateFlower/idle.inc.c"
 
-API_CALLABLE(N(JudgeItemTastiness)) {
+API_CALLABLE(JudgeItemTastiness) {
     s32 itemId = evt_get_variable(script, *script->ptrReadPos);
     ItemData* item = &gItemTable[itemId];
 
@@ -20,7 +20,7 @@ API_CALLABLE(N(JudgeItemTastiness)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_GateFlower) = {
+EvtScript EVS_NpcInteract_GateFlower = {
     Call(DisablePlayerInput, true)
     IfEq(GF_FLO23_GaveBlueBerry, false)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -40,7 +40,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Blue_Talk, ANIM_GateFlower_Blue_Idle, 0, MSG_CH6_004A)
             CaseDefault
                 Set(LVar8, LVar0)
-                Call(N(JudgeItemTastiness), LVar0)
+                Call(JudgeItemTastiness, LVar0)
                 Call(MakeItemEntity, LVar8, 385, 20, -34, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(LVar7, LVar0)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
@@ -151,8 +151,8 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GateFlower) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GateFlower)))
+EvtScript EVS_NpcInit_GateFlower = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GateFlower))
     IfEq(GF_FLO23_GaveBlueBerry, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Blue_HappyDance)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o95, COLLIDER_FLAGS_UPPER_MASK)
@@ -167,19 +167,19 @@ EvtScript N(EVS_NpcInit_GateFlower) = {
     End
 };
 
-NpcData N(NpcData_GateFlower) = {
+NpcData NpcData_GateFlower = {
     .id = NPC_GateFlower,
     .pos = { 385.0f, 0.0f, -35.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_GateFlower),
-    .settings = &N(NpcSettings_GateFlower),
+    .init = &EVS_NpcInit_GateFlower,
+    .settings = &NpcSettings_GateFlower,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GATE_FLOWER_BLUE_ANIMS,
     .tattle = MSG_NpcTattle_BlueGateFlower,
 };
 
-NpcData N(NpcData_Spiny_01) = {
+NpcData NpcData_Spiny_01 = {
     .id = NPC_Spiny_01,
     .pos = { 80.0f, 0.0f, 0.0f },
     .yaw = 90,
@@ -195,13 +195,13 @@ NpcData N(NpcData_Spiny_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Spiny_Wander),
+    .settings = &NpcSettings_Spiny_Wander,
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
 };
 
-NpcData N(NpcData_Spiny_02) = {
+NpcData NpcData_Spiny_02 = {
     .id = NPC_Spiny_02,
     .pos = { -320.0f, 0.0f, 0.0f },
     .yaw = 270,
@@ -217,15 +217,15 @@ NpcData N(NpcData_Spiny_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Spiny_Wander),
+    .settings = &NpcSettings_Spiny_Wander,
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Spiny_01), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_02), BTL_FLO_FORMATION_0D, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_GateFlower)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Spiny_01, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_02, BTL_FLO_FORMATION_0D, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_GateFlower),
     {}
 };

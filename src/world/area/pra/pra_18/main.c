@@ -5,27 +5,27 @@
 
 #include "../common/GlassShimmer.inc.c"
 
-s32 N(NearRightDoorModelsL)[] = { MODEL_o772, -1 };
-s32 N(NearRightDoorModelsR)[] = { MODEL_o768, -1 };
-s32 N(FarRightDoorModelsL)[]  = { MODEL_o859, -1 };
-s32 N(FarRightDoorModelsR)[]  = { MODEL_o861, -1 };
-s32 N(BothRightDoorModelsL)[] = { MODEL_o772, MODEL_o859, -1 };
-s32 N(BothRightDoorModelsR)[] = { MODEL_o768, MODEL_o861, -1 };
+s32 NearRightDoorModelsL[] = { MODEL_o772, -1 };
+s32 NearRightDoorModelsR[] = { MODEL_o768, -1 };
+s32 FarRightDoorModelsL[]  = { MODEL_o859, -1 };
+s32 FarRightDoorModelsR[]  = { MODEL_o861, -1 };
+s32 BothRightDoorModelsL[] = { MODEL_o772, MODEL_o859, -1 };
+s32 BothRightDoorModelsR[] = { MODEL_o768, MODEL_o861, -1 };
 
-s32 N(LeftDoorModelsL)[] = { MODEL_o995, MODEL_o996, -1 };
-s32 N(LeftDoorModelsR)[] = { MODEL_o997, MODEL_o998, -1 };
+s32 LeftDoorModelsL[] = { MODEL_o995, MODEL_o996, -1 };
+s32 LeftDoorModelsR[] = { MODEL_o997, MODEL_o998, -1 };
 
-EvtScript N(EVS_ExitDoors_pra_16_1) = {
+EvtScript EVS_ExitDoors_pra_16_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_18_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(N(BothRightDoorModelsL)))
-        Set(LVar3, Ref(N(BothRightDoorModelsR)))
+        Set(LVar2, Ref(BothRightDoorModelsL))
+        Set(LVar3, Ref(BothRightDoorModelsR))
     Else
-        Set(LVar2, Ref(N(NearRightDoorModelsL)))
-        Set(LVar3, Ref(N(NearRightDoorModelsR)))
+        Set(LVar2, Ref(NearRightDoorModelsL))
+        Set(LVar3, Ref(NearRightDoorModelsR))
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
@@ -35,13 +35,13 @@ EvtScript N(EVS_ExitDoors_pra_16_1) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_pra_33_1) = {
+EvtScript EVS_ExitDoors_pra_33_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_18_ENTRY_1)
     Set(LVar1, COLLIDER_deilittne)
-    Set(LVar2, Ref(N(LeftDoorModelsL)))
-    Set(LVar3, Ref(N(LeftDoorModelsR)))
+    Set(LVar2, Ref(LeftDoorModelsL))
+    Set(LVar3, Ref(LeftDoorModelsR))
     Exec(BaseExitDoor)
     Wait(17)
     Call(GotoMap, Ref("pra_33"), pra_33_ENTRY_1)
@@ -50,17 +50,17 @@ EvtScript N(EVS_ExitDoors_pra_33_1) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_pra_16_2) = {
+EvtScript EVS_ExitDoors_pra_16_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_18_ENTRY_2)
     Set(LVar1, COLLIDER_deilittnw)
     IfEq(GF_PRA_BrokeIllusion, false)
-        Set(LVar2, Ref(N(BothRightDoorModelsL)))
-        Set(LVar3, Ref(N(BothRightDoorModelsR)))
+        Set(LVar2, Ref(BothRightDoorModelsL))
+        Set(LVar3, Ref(BothRightDoorModelsR))
     Else
-        Set(LVar2, Ref(N(FarRightDoorModelsL)))
-        Set(LVar3, Ref(N(FarRightDoorModelsR)))
+        Set(LVar2, Ref(FarRightDoorModelsL))
+        Set(LVar3, Ref(FarRightDoorModelsR))
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
@@ -70,51 +70,51 @@ EvtScript N(EVS_ExitDoors_pra_16_2) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_16_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_pra_16_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
-        BindTrigger(Ref(N(EVS_ExitDoors_pra_33_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoors_pra_33_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     EndIf
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_16_2)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_16_2), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_18_ENTRY_0)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(N(BothRightDoorModelsL)))
-                Set(LVar3, Ref(N(BothRightDoorModelsR)))
+                Set(LVar2, Ref(BothRightDoorModelsL))
+                Set(LVar3, Ref(BothRightDoorModelsR))
             Else
-                Set(LVar2, Ref(N(NearRightDoorModelsL)))
-                Set(LVar3, Ref(N(NearRightDoorModelsR)))
+                Set(LVar2, Ref(NearRightDoorModelsL))
+                Set(LVar3, Ref(NearRightDoorModelsR))
             EndIf
         CaseEq(pra_18_ENTRY_1)
-            Set(LVar2, Ref(N(LeftDoorModelsL)))
-            Set(LVar3, Ref(N(LeftDoorModelsR)))
+            Set(LVar2, Ref(LeftDoorModelsL))
+            Set(LVar3, Ref(LeftDoorModelsR))
         CaseEq(pra_18_ENTRY_2)
             IfEq(GF_PRA_BrokeIllusion, false)
-                Set(LVar2, Ref(N(BothRightDoorModelsL)))
-                Set(LVar3, Ref(N(BothRightDoorModelsR)))
+                Set(LVar2, Ref(BothRightDoorModelsL))
+                Set(LVar3, Ref(BothRightDoorModelsR))
             Else
-                Set(LVar2, Ref(N(FarRightDoorModelsL)))
-                Set(LVar3, Ref(N(FarRightDoorModelsR)))
+                Set(LVar2, Ref(FarRightDoorModelsL))
+                Set(LVar3, Ref(FarRightDoorModelsR))
             EndIf
     EndSwitch
     ExecWait(BaseEnterDoor)
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Exec(EVS_SetupMusic)
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1174, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetGroupVisibility, MODEL_g298, MODEL_GROUP_HIDDEN)
@@ -134,7 +134,7 @@ EvtScript N(EVS_Main) = {
                 Call(SetGroupVisibility, MODEL_g297, MODEL_GROUP_HIDDEN)
         EndSwitch
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

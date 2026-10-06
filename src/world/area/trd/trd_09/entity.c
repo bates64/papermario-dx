@@ -1,16 +1,16 @@
 #include "trd_09.h"
 #include "entity.h"
 
-EvtScript N(EVS_BombRock) = {
+EvtScript EVS_BombRock = {
     Set(GF_TRD09_BombedRock, true)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD09_BombedRock, false)
         Call(MakeEntity, Ref(Entity_BombableRockWide), -470, -75, 139, 0, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_BombRock)))
+        Call(AssignScript, Ref(EVS_BombRock))
     EndIf
     Call(MakeEntity, Ref(Entity_HeartBlock), 1400, -15, 135, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_SavePoint), 1490, -15, 135, 0, MAKE_ENTITY_END)

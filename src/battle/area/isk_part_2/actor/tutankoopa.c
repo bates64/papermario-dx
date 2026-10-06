@@ -258,8 +258,6 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 35 },
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 API_CALLABLE(SpawnFallingRock) {
     Bytecode* args = script->ptrReadPos;
     s32 posX = evt_get_variable(script, *args++);
@@ -308,16 +306,16 @@ EvtScript N(EVS_Idle) = {
                 IfFlag(LVar0, STATUS_FLAG_DIZZY)
                     Call(SetTargetOffset, ACTOR_SELF, PRT_TARGET, -10, 22)
                     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_TARGET, 2, -8)
-                    Call(N(SetAbsoluteStatusOffsets), -25, 15, 0, 20)
+                    Call(SetAbsoluteStatusOffsets, -25, 15, 0, 20)
                 Else
                     Call(SetTargetOffset, ACTOR_SELF, PRT_TARGET, 0, 39)
                     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_TARGET, -5, -15)
-                    Call(N(SetAbsoluteStatusOffsets), -17, 23, 11, 32)
+                    Call(SetAbsoluteStatusOffsets, -17, 23, 11, 32)
                 EndIf
             CaseEq(1)
                 Call(SetTargetOffset, ACTOR_SELF, PRT_TARGET, -10, 22)
                 Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_TARGET, 2, -8)
-                Call(N(SetAbsoluteStatusOffsets), -25, 15, 0, 20)
+                Call(SetAbsoluteStatusOffsets, -25, 15, 0, 20)
         EndSwitch
         Wait(1)
     Goto(0)

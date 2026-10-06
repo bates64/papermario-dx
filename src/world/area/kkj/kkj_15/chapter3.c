@@ -1,23 +1,23 @@
 #include "kkj_15.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetPeachDepressed)) {
+API_CALLABLE(SetPeachDepressed) {
     gGameStatusPtr->peachFlags |= PEACH_FLAG_DEPRESSED;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ClearPeachDepressed)) {
+API_CALLABLE(ClearPeachDepressed) {
     gGameStatusPtr->peachFlags &= ~PEACH_FLAG_DEPRESSED;
     return ApiStatus_DONE2;
 }
 
-Vec3f N(TwinkHideCh3Path)[] = {
+Vec3f TwinkHideCh3Path[] = {
     {  100.0,    50.0, -160.0 },
     {   30.0,   120.0, -120.0 },
     {   50.0,   200.0,  -80.0 },
 };
 
-Vec3f N(TwinkFollowCh3Path1)[] = {
+Vec3f TwinkFollowCh3Path1[] = {
     {   50.0,   200.0,  -70.0 },
     {   80.0,   110.0,  -70.0 },
     {  110.0,   120.0,  -70.0 },
@@ -27,13 +27,13 @@ Vec3f N(TwinkFollowCh3Path1)[] = {
     {  230.0,   120.0,  -70.0 },
 };
 
-Vec3f N(TwinkFollowCh3Path2)[] = {
+Vec3f TwinkFollowCh3Path2[] = {
     {  230.0,   120.0,  -70.0 },
     {  220.0,    60.0,  -70.0 },
     {  250.0,    40.0,  -70.0 },
 };
 
-EvtScript N(EVS_GetApproachPeachPos_Ch3) = {
+EvtScript EVS_GetApproachPeachPos_Ch3 = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, 10)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -72,7 +72,7 @@ EvtScript N(EVS_GetApproachPeachPos_Ch3) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach_Ch3) = {
+EvtScript EVS_PickUpPeach_Ch3 = {
     Thread
         Call(GetNpcPos, NPC_Koopatrol_03, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -108,7 +108,7 @@ EvtScript N(EVS_PickUpPeach_Ch3) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway_Ch3) = {
+EvtScript EVS_CarryPeachAway_Ch3 = {
     Call(InterpNpcYaw, NPC_Koopatrol_04, 90, 3)
     Wait(10)
     Thread
@@ -146,7 +146,7 @@ EvtScript N(EVS_CarryPeachAway_Ch3) = {
     End
 };
 
-EvtScript N(EVS_Scene_Chapter3) = {
+EvtScript EVS_Scene_Chapter3 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -172,7 +172,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Talk, ANIM_WorldKammy_Idle, 0, NPC_Bowser, MSG_Peach_0083)
     Thread
-        ExecWait(N(EVS_AnimateRotatingWall_AlmostCaught))
+        ExecWait(EVS_AnimateRotatingWall_AlmostCaught)
         Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
         Call(PlaySoundAtPlayer, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
         Call(ShowEmote, 0, EMOTE_EXCLAMATION, 0, 30, EMOTER_PLAYER, 0, 0, 0, 0)
@@ -182,7 +182,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     Thread
         Wait(360 * DT)
         Call(SetNpcPos, NPC_PARTNER, 100, 50, -160)
-        Call(LoadPath, 30 * DT, Ref(N(TwinkHideCh3Path)), ARRAY_COUNT(N(TwinkHideCh3Path)), EASING_LINEAR)
+        Call(LoadPath, 30 * DT, Ref(TwinkHideCh3Path), ARRAY_COUNT(TwinkHideCh3Path), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -234,11 +234,11 @@ EvtScript N(EVS_Scene_Chapter3) = {
         Call(SetPlayerAnimation, ANIM_Peach2_LookAround)
         Wait(60 * DT)
         Call(DisablePlayerPhysics, false)
-        Call(N(SetPeachDepressed))
+        Call(SetPeachDepressed)
         Call(SetPlayerAnimation, ANIM_Peach2_SadStill)
         Call(func_802D1270, 30, -10, Float(2.0 / DT))
         Call(DisablePlayerPhysics, true)
-        Call(N(ClearPeachDepressed))
+        Call(ClearPeachDepressed)
         Call(SetNpcVar, NPC_Bowser, 0, 0)
     EndThread
     Call(SpeakToPlayer, NPC_Bowser, ANIM_WorldBowser_Shock, ANIM_WorldBowser_Shock, 0, MSG_Peach_0089)
@@ -298,14 +298,14 @@ EvtScript N(EVS_Scene_Chapter3) = {
     Call(SpeakToNpc, NPC_Koopatrol_03, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, NPC_Bowser, MSG_Peach_0095)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerAnimation, ANIM_Peach1_Idle)
-    ExecWait(N(EVS_GetApproachPeachPos_Ch3))
-    ExecWait(N(EVS_PickUpPeach_Ch3))
+    ExecWait(EVS_GetApproachPeachPos_Ch3)
+    ExecWait(EVS_PickUpPeach_Ch3)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_0096)
-    ExecWait(N(EVS_CarryPeachAway_Ch3))
+    ExecWait(EVS_CarryPeachAway_Ch3)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Cringe)
     Call(EnableNpcShadow, NPC_PARTNER, true)
-    Call(LoadPath, 80 * DT, Ref(N(TwinkFollowCh3Path1)), ARRAY_COUNT(N(TwinkFollowCh3Path1)), EASING_LINEAR)
+    Call(LoadPath, 80 * DT, Ref(TwinkFollowCh3Path1), ARRAY_COUNT(TwinkFollowCh3Path1), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -325,7 +325,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     Wait(15 * DT)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 7 * DT)
-    Call(LoadPath, 15 * DT, Ref(N(TwinkFollowCh3Path2)), ARRAY_COUNT(N(TwinkFollowCh3Path2)), EASING_LINEAR)
+    Call(LoadPath, 15 * DT, Ref(TwinkFollowCh3Path2), ARRAY_COUNT(TwinkFollowCh3Path2), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -336,7 +336,7 @@ EvtScript N(EVS_Scene_Chapter3) = {
     EndLoop
     Wait(30 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)
-    ExecWait(N(EVS_EndPeachChapter3))
+    ExecWait(EVS_EndPeachChapter3)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)

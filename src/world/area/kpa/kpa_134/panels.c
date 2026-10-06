@@ -1,6 +1,6 @@
 #include "kpa_134.h"
 
-s32 N(WallPanels)[] = {
+s32 WallPanels[] = {
     MODEL_o371, -230, 272, -100,
     MODEL_o372, -160, 272, -100,
     MODEL_o373, -103, 272, -100,
@@ -18,7 +18,7 @@ s32 N(WallPanels)[] = {
     -1,
 };
 
-EvtScript N(EVS_FocusCam_Wall) = {
+EvtScript EVS_FocusCam_Wall = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar6, LVar7, LVar8)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5))
     Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
@@ -29,7 +29,7 @@ EvtScript N(EVS_FocusCam_Wall) = {
     End
 };
 
-EvtScript N(EVS_FlipWallPanel) = {
+EvtScript EVS_FlipWallPanel = {
     Call(MakeLerp, 0, 450, 15, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -44,7 +44,7 @@ EvtScript N(EVS_FlipWallPanel) = {
     End
 };
 
-EvtScript N(EVS_FlipWallPanels) = {
+EvtScript EVS_FlipWallPanels = {
     Call(DisablePlayerInput, true)
     Loop(0)
         Wait(1)
@@ -58,17 +58,17 @@ EvtScript N(EVS_FlipWallPanels) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o384, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_sikake, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
-    UseBuf(Ref(N(WallPanels)))
+    UseBuf(Ref(WallPanels))
     Call(GetPlayerPos, LVar6, LVar7, LVar8)
     Set(LVar6, 615)
-    Exec(N(EVS_FocusCam_Wall))
+    Exec(EVS_FocusCam_Wall)
     Loop(0)
         BufRead4(LVar5, LVar6, LVar7, LVar8)
         IfEq(LVar5, -1)
             BreakLoop
         EndIf
         Call(PlaySoundAt, SOUND_KPA_FLIP_BRIDGE_PANEL, SOUND_SPACE_DEFAULT, LVar6, LVar7, LVar8)
-        Exec(N(EVS_FlipWallPanel))
+        Exec(EVS_FlipWallPanel)
         Wait(10)
     EndLoop
     Wait(50)

@@ -6,7 +6,7 @@
 #include "world/common/enemy/Goomba/base.h"
 
 // level changed from 5 -> 14
-NpcSettings N(NpcSettings_Goomba) = {
+NpcSettings NpcSettings_Goomba = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
@@ -18,7 +18,7 @@ NpcSettings N(NpcSettings_Goomba) = {
 #include "world/common/enemy/Clubba/idle.inc.c"
 #include "world/common/enemy/Kammy/flying.inc.c"
 
-EvtScript N(EVS_NpcIdle_Goomba) = {
+EvtScript EVS_NpcIdle_Goomba = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 1050)
@@ -44,7 +44,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Goomba) = {
+EvtScript EVS_NpcDefeat_Goomba = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -57,10 +57,10 @@ EvtScript N(EVS_NpcDefeat_Goomba) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Goomba) = {
+EvtScript EVS_NpcInit_Goomba = {
     IfEq(GB_OMO_PeachChoice1, 0)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomba)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Goomba)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Goomba))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -68,10 +68,10 @@ EvtScript N(EVS_NpcInit_Goomba) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba) = {
+EvtScript EVS_NpcInit_Clubba = {
     IfEq(GB_OMO_PeachChoice1, 1)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomba)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Goomba)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomba))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Goomba))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -79,36 +79,36 @@ EvtScript N(EVS_NpcInit_Clubba) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kammy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kammy)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Kammy)))
+EvtScript EVS_NpcInit_Kammy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kammy))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Kammy))
     Return
     End
 };
 
-NpcData N(NpcData_Goomba) = {
+NpcData NpcData_Goomba = {
     .id = NPC_Goomba,
     .pos = { 1100.0f, 0.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Goomba),
-    .settings = &N(NpcSettings_Goomba),
+    .init = &EVS_NpcInit_Goomba,
+    .settings = &NpcSettings_Goomba,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GOOMBA_ANIMS,
 };
 
-NpcData N(NpcData_Clubba) = {
+NpcData NpcData_Clubba = {
     .id = NPC_Clubba,
     .pos = { 1100.0f, 0.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Clubba),
-    .settings = &N(NpcSettings_Clubba),
+    .init = &EVS_NpcInit_Clubba,
+    .settings = &NpcSettings_Clubba,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = CLUBBA_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy) = {
+NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
     .pos = { -770.0f, 0.0f, 0.0f },
     .yaw = 270,
@@ -124,14 +124,14 @@ NpcData N(NpcData_ShyGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = PINK_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_SkyGuy) = {
+NpcData NpcData_SkyGuy = {
     .id = NPC_SkyGuy,
     .pos = { -170.0f, 60.0f, 30.0f },
     .yaw = 270,
@@ -147,14 +147,14 @@ NpcData N(NpcData_SkyGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_SkyGuy_Wander),
+    .settings = &NpcSettings_SkyGuy_Wander,
     .flags = ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-AnimID N(LimitAnims_Kammy)[] = {
+AnimID LimitAnims_Kammy[] = {
     ANIM_WorldKammy_FlyRodTalk,
     ANIM_WorldKammy_FlyRodCast,
     ANIM_WorldKammy_FlyBrake,
@@ -164,41 +164,41 @@ AnimID N(LimitAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Kammy) = {
+NpcData NpcData_Kammy = {
     .id = NPC_Kammy,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kammy),
-    .settings = &N(NpcSettings_Kammy_Flying),
+    .init = &EVS_NpcInit_Kammy,
+    .settings = &NpcSettings_Kammy_Flying,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .limitAnimations = N(LimitAnims_Kammy),
+    .limitAnimations = LimitAnims_Kammy,
 };
 
-NpcGroupList N(GoombaAmbushNPCs) = {
-    NPC_GROUP(N(NpcData_Goomba), BTL_OMO3_FORMATION_01, BTL_OMO3_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO_FORMATION_04, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SkyGuy), BTL_OMO_FORMATION_0F, BTL_OMO_STAGE_00),
+NpcGroupList GoombaAmbushNPCs = {
+    NPC_GROUP(NpcData_Goomba, BTL_OMO3_FORMATION_01, BTL_OMO3_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO_FORMATION_04, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SkyGuy, BTL_OMO_FORMATION_0F, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(ClubbaAmbushNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba), BTL_OMO3_FORMATION_03, BTL_OMO3_STAGE_00),
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO_FORMATION_04, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SkyGuy), BTL_OMO_FORMATION_0F, BTL_OMO_STAGE_00),
+NpcGroupList ClubbaAmbushNPCs = {
+    NPC_GROUP(NpcData_Clubba, BTL_OMO3_FORMATION_03, BTL_OMO3_STAGE_00),
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO_FORMATION_04, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SkyGuy, BTL_OMO_FORMATION_0F, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_ShyGuy), BTL_OMO_FORMATION_04, BTL_OMO_STAGE_00),
-    NPC_GROUP(N(NpcData_SkyGuy), BTL_OMO_FORMATION_0F, BTL_OMO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_ShyGuy, BTL_OMO_FORMATION_04, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_SkyGuy, BTL_OMO_FORMATION_0F, BTL_OMO_STAGE_00),
     {}
 };
 
-NpcGroupList N(KammySceneNPCs) = {
-    NPC_GROUP(N(NpcData_Kammy)),
-    NPC_GROUP(N(NpcData_Goomba), BTL_OMO3_FORMATION_01, BTL_OMO3_STAGE_00),
-    NPC_GROUP(N(NpcData_Clubba), BTL_OMO3_FORMATION_03, BTL_OMO3_STAGE_00),
+NpcGroupList KammySceneNPCs = {
+    NPC_GROUP(NpcData_Kammy),
+    NPC_GROUP(NpcData_Goomba, BTL_OMO3_FORMATION_01, BTL_OMO3_STAGE_00),
+    NPC_GROUP(NpcData_Clubba, BTL_OMO3_FORMATION_03, BTL_OMO3_STAGE_00),
     {}
 };

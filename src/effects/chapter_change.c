@@ -2,8 +2,6 @@
 #include "effects_internal.h"
 #include "message_ids.h"
 
-#define NAMESPACE chapter_change
-
 typedef struct TexturePiece {
     /* 0x00 */ Gfx* displayList;
     /* 0x04 */ s16 x;
@@ -37,7 +35,7 @@ extern Gfx D_0900C370_3F81D0[];
 extern Gfx D_0900C458_3F82B8[];
 extern Gfx D_0900C540_3F83A0[];
 
-s32 N(SubtitleMsg)[] = {
+s32 SubtitleMsg[] = {
     -1,
     MSG_Menus_019D, MSG_Menus_019E, MSG_Menus_019F,
     MSG_Menus_01A0, MSG_Menus_01A1, MSG_Menus_01A2,
@@ -139,8 +137,8 @@ TexturePiece D_E010E868[] = {
     {              nullptr,     0,     0,  0,  0 }
 };
 
-void chapter_change_init(EffectInstance* effect);
-void chapter_change_update(EffectInstance* effect);
+void init(EffectInstance* effect);
+void update(EffectInstance* effect);
 void chapter_change_render(EffectInstance* effect);
 void chapter_change_appendGfx(void* effect);
 
@@ -183,8 +181,8 @@ EffectInstance* chapter_change_main(s32 type, f32 posX, f32 posY, f32 arg3, f32 
     EffectInstance* effect;
     s32 numParts = 1;
 
-    bp.init = chapter_change_init;
-    bp.update = chapter_change_update;
+    bp.init = init;
+    bp.update = update;
     bp.renderScene = chapter_change_render;
     bp.renderUI = nullptr;
     bp.effectID = EFFECT_CHAPTER_CHANGE;
@@ -217,7 +215,7 @@ EffectInstance* chapter_change_main(s32 type, f32 posX, f32 posY, f32 arg3, f32 
     } else {
         data->envCol.a = 255;
     }
-    data->msgID = (type >= 0 && type < ARRAY_COUNT(N(SubtitleMsg))) ? N(SubtitleMsg)[type] : -1;
+    data->msgID = (type >= 0 && type < ARRAY_COUNT(SubtitleMsg)) ? SubtitleMsg[type] : -1;
     if (data->msgID >= 0) {
         data->msgPos.x = 160;
         data->msgPos.y = 160;
@@ -228,10 +226,10 @@ EffectInstance* chapter_change_main(s32 type, f32 posX, f32 posY, f32 arg3, f32 
     return effect;
 }
 
-void chapter_change_init(EffectInstance* effect) {
+void init(EffectInstance* effect) {
 }
 
-void chapter_change_update(EffectInstance* effect) {
+void update(EffectInstance* effect) {
     ChapterChangeFXData* data = effect->data.chapterChange;
 
     if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {

@@ -1,7 +1,7 @@
 #include "mac_02.h"
 #include "model.h"
 
-API_CALLABLE(N(InitEntryFromTunnels)) {
+API_CALLABLE(InitEntryFromTunnels) {
     Npc* npc;
     s32 i;
 
@@ -23,13 +23,13 @@ API_CALLABLE(N(InitEntryFromTunnels)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetDoorRot_TayceT) = {
+EvtScript EVS_SetDoorRot_TayceT = {
     Call(RotateModel, MODEL_c_door, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_TayceT) = {
+EvtScript EVS_SetWallRot_TayceT = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_ck1, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_ck2, LVar1, 1, 0, 0)
@@ -41,7 +41,7 @@ EvtScript N(EVS_SetWallRot_TayceT) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_TayceT) = {
+EvtScript EVS_RoomListener_TayceT = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_cook_in, MODEL_GROUP_VISIBLE)
@@ -54,13 +54,13 @@ EvtScript N(EVS_RoomListener_TayceT) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_BlueHouse) = {
+EvtScript EVS_SetDoorRot_BlueHouse = {
     Call(RotateModel, MODEL_sk_door, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_BlueHouse) = {
+EvtScript EVS_SetWallRot_BlueHouse = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_sk1, LVar1, 0, 0, 1)
     Call(RotateModel, MODEL_sk2, LVar1, 0, 0, 1)
@@ -68,7 +68,7 @@ EvtScript N(EVS_SetWallRot_BlueHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_BlueHouse) = {
+EvtScript EVS_RoomListener_BlueHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             IfEq(GF_MAC02_UnlockedHouse, false)
@@ -89,51 +89,51 @@ EvtScript N(EVS_RoomListener_BlueHouse) = {
     End
 };
 
-s32 N(InsideNPCs_TayceT)[] = {
+s32 InsideNPCs_TayceT[] = {
     NPC_TayceT,
     -1
 };
 
-s32 N(InsideNPCs_BlueHouse)[] = {
+s32 InsideNPCs_BlueHouse[] = {
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     // tayce T's house on the right
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_TayceT)),
-        Ref(N(EVS_SetWallRot_TayceT)),
+        Ref(EVS_SetDoorRot_TayceT),
+        Ref(EVS_SetWallRot_TayceT),
         nullptr,
-        Ref(N(EVS_RoomListener_TayceT)),
+        Ref(EVS_RoomListener_TayceT),
         COLLIDER_deilit1u,
         COLLIDER_deilit1,
         MODEL_cooking,
-        Ref(N(InsideNPCs_TayceT)))
+        Ref(InsideNPCs_TayceT))
     // blue house on the left
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_BlueHouse)),
-        Ref(N(EVS_SetWallRot_BlueHouse)),
+        Ref(EVS_SetDoorRot_BlueHouse),
+        Ref(EVS_SetWallRot_BlueHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_BlueHouse)),
+        Ref(EVS_RoomListener_BlueHouse),
         COLLIDER_deilit2,
         COLLIDER_deilit2u,
         MODEL_souko,
-        Ref(N(InsideNPCs_BlueHouse)))
+        Ref(InsideNPCs_BlueHouse))
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_02_ENTRY_5)
         Set(LVar0, 3)
-        Exec(N(EVS_RoomListener_TayceT))
+        Exec(EVS_RoomListener_TayceT)
         Call(SetGroupVisibility, MODEL_souko_in, MODEL_GROUP_VISIBLE)
-        Call(N(InitEntryFromTunnels))
+        Call(InitEntryFromTunnels)
         Set(LVar0, 90)
         Call(RotateModel, MODEL_sk1, LVar0, 0, 0, 1)
         Call(RotateModel, MODEL_sk2, LVar0, 0, 0, 1)
     Else
         Set(LVar0, ROOM_UPDATE_EXIT_END)
-        Exec(N(EVS_RoomListener_TayceT))
-        Exec(N(EVS_RoomListener_BlueHouse))
+        Exec(EVS_RoomListener_TayceT)
+        Exec(EVS_RoomListener_BlueHouse)
     EndIf
     Return
     End

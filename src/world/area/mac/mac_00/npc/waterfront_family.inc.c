@@ -1,6 +1,6 @@
 #include "../mac_00.h"
 
-EvtScript N(EVS_NpcInteract_WaterfrontDad) = {
+EvtScript EVS_NpcInteract_WaterfrontDad = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_0044)
@@ -48,7 +48,7 @@ EvtScript N(EVS_NpcInteract_WaterfrontDad) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_WaterfrontMom) = {
+EvtScript EVS_NpcInteract_WaterfrontMom = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_0054)
@@ -98,7 +98,7 @@ EvtScript N(EVS_NpcInteract_WaterfrontMom) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_WaterfrontKid1) = {
+EvtScript EVS_NpcInteract_WaterfrontKid1 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_0061)
@@ -146,7 +146,7 @@ EvtScript N(EVS_NpcInteract_WaterfrontKid1) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_WaterfrontKid2) = {
+EvtScript EVS_NpcInteract_WaterfrontKid2 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Gate_0071)
@@ -196,31 +196,31 @@ EvtScript N(EVS_NpcInteract_WaterfrontKid2) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_WaterfrontDad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_WaterfrontDad)))
+EvtScript EVS_NpcInit_WaterfrontDad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontDad))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_WaterfrontMom) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_WaterfrontMom)))
+EvtScript EVS_NpcInit_WaterfrontMom = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontMom))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_WaterfrontKid1) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_WaterfrontKid1)))
+EvtScript EVS_NpcInit_WaterfrontKid1 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontKid1))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_WaterfrontKid2) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_WaterfrontKid2)))
+EvtScript EVS_NpcInit_WaterfrontKid2 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_WaterfrontKid2))
     Return
     End
 };
 
-EvtScript N(EVS_WaterfrontHouse_DoorLocked) = {
+EvtScript EVS_WaterfrontHouse_DoorLocked = {
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Return
     EndIf

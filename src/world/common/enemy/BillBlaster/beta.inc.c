@@ -12,7 +12,7 @@
 // LVar2: cone yaw, or -1 to track NPC yaw
 // LVar3: full cone width
 // LVarA: waiting animation
-API_CALLABLE(N(BetaBlasterAI_AwaitPlayerAhead)) {
+API_CALLABLE(BetaBlasterAI_AwaitPlayerAhead) {
     Npc* npc;
     f32 playerDirection, facingDirection;
     PlayerStatus* playerStatus;
@@ -78,13 +78,13 @@ API_CALLABLE(N(BetaBlasterAI_AwaitPlayerAhead)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_BetaBlasterAI_AwaitPlayerAhead) = {
-    Call(N(BetaBlasterAI_AwaitPlayerAhead))
+EvtScript EVS_BetaBlasterAI_AwaitPlayerAhead = {
+    Call(BetaBlasterAI_AwaitPlayerAhead)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_BillBlaster_Beta) = {
+EvtScript EVS_NpcAI_BillBlaster_Beta = {
     Label(0)
         // wait until the player is within 400 units and 5 degrees of the firing angle
         SetF(LVar0, Float(400.0))
@@ -93,7 +93,7 @@ EvtScript N(EVS_NpcAI_BillBlaster_Beta) = {
         Set(LVar3, 10)
         Set(LVarA, ANIM_BillBlaster_Idle)
         Set(LVarB, ANIM_BillBlaster_Idle)
-        ExecWait(N(EVS_BetaBlasterAI_AwaitPlayerAhead))
+        ExecWait(EVS_BetaBlasterAI_AwaitPlayerAhead)
         Call(SetNpcAnimation, NPC_SELF, ANIM_BillBlaster_Fire)
         Wait(15)
         // calculate the muzzle position, but do not use it (?)
@@ -124,13 +124,13 @@ EvtScript N(EVS_NpcAI_BillBlaster_Beta) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_BillBlaster_Beta) = {
+EvtScript EVS_NpcCreate_BillBlaster_Beta = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_BillBlaster_Beta) = {
+EvtScript EVS_NpcHit_BillBlaster_Beta = {
     Call(SetBattleMusic, SONG_SPECIAL_BATTLE)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
@@ -158,7 +158,7 @@ EvtScript N(EVS_NpcHit_BillBlaster_Beta) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BillBlaster_Beta) = {
+EvtScript EVS_NpcDefeat_BillBlaster_Beta = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -172,13 +172,13 @@ EvtScript N(EVS_NpcDefeat_BillBlaster_Beta) = {
     End
 };
 
-NpcSettings N(NpcSettings_BillBlaster_Beta) = {
+NpcSettings NpcSettings_BillBlaster_Beta = {
     .defaultAnim = ANIM_BillBlaster_Idle,
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .doAI = &N(EVS_NpcAI_BillBlaster_Beta),
-    .onCreate = &N(EVS_NpcCreate_BillBlaster_Beta),
-    .onHit = &N(EVS_NpcHit_BillBlaster_Beta),
-    .onDefeat = &N(EVS_NpcDefeat_BillBlaster_Beta),
+    .doAI = &EVS_NpcAI_BillBlaster_Beta,
+    .onCreate = &EVS_NpcCreate_BillBlaster_Beta,
+    .onHit = &EVS_NpcHit_BillBlaster_Beta,
+    .onDefeat = &EVS_NpcDefeat_BillBlaster_Beta,
 };

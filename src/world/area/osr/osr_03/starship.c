@@ -1,6 +1,6 @@
 #include "osr_03.h"
 
-EvtScript N(EVS_SetStarshipPosRot) = {
+EvtScript EVS_SetStarshipPosRot = {
     Loop(0)
         Call(TranslateGroup, MODEL_g277, MV_Starship_PosX, MV_Starship_PosY, MV_Starship_PosZ)
         Call(RotateGroup, MODEL_g277, MV_Starship_Yaw, 0, 1, 0)
@@ -18,7 +18,7 @@ EvtScript N(EVS_SetStarshipPosRot) = {
     End
 };
 
-Vec3f N(FlightPath)[] = {
+Vec3f FlightPath[] = {
     { -700.0,  -350.0, 1600.0 },
     { -700.0,  -470.0, 1600.0 },
     { -660.0,  -505.0, 1590.0 },
@@ -30,7 +30,7 @@ Vec3f N(FlightPath)[] = {
     {   20.0,  -600.0,  600.0 },
 };
 
-EvtScript N(EVS_Scene_Starship) = {
+EvtScript EVS_Scene_Starship = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -41,10 +41,10 @@ EvtScript N(EVS_Scene_Starship) = {
     Set(MV_Starship_PosX, -700)
     Set(MV_Starship_PosY, -350)
     Set(MV_Starship_PosZ, 1600)
-    Exec(N(EVS_SetStarshipPosRot))
+    Exec(EVS_SetStarshipPosRot)
     Set(MV_CastleLiftDist, 0)
-    Exec(N(EVS_AnimateSwingingChains))
-    Exec(N(EVS_AnimateSpinningRing))
+    Exec(EVS_AnimateSwingingChains)
+    Exec(EVS_AnimateSpinningRing)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 80, 16, 4096)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, -1, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, -1, 0)
@@ -79,7 +79,7 @@ EvtScript N(EVS_Scene_Starship) = {
         EndLoop
     EndChildThread
     Thread
-        Call(LoadPath, 120, Ref(N(FlightPath)), ARRAY_COUNT(N(FlightPath)), EASING_LINEAR)
+        Call(LoadPath, 120, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
         Label(90)
         Call(GetNextPathPos)
         Set(MV_Starship_PosX, LVar1)

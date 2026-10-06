@@ -60,27 +60,25 @@ enum {
     MF_UsingSpring              = MapFlag(2),
 };
 
-#define NAMESPACE sam_11
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_SetupPond;
+extern EvtScript EVS_SetupStaircase;
+extern EvtScript EVS_LoadPondAnimation;
+extern EvtScript EVS_LowerStaircase;
+extern EvtScript EVS_HideRightHouse;
+extern EvtScript EVS_RevealRightHouse;
+extern EvtScript EVS_RevealLeftHouse;
+extern EvtScript EVS_SetupLockedHouse;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList EpilogueNPCs;
+extern NpcGroupList BeforeNPCs;
+extern NpcGroupList MysteryNPCs;
+extern NpcGroupList AfterNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_SetupPond);
-extern EvtScript N(EVS_SetupStaircase);
-extern EvtScript N(EVS_LoadPondAnimation);
-extern EvtScript N(EVS_LowerStaircase);
-extern EvtScript N(EVS_HideRightHouse);
-extern EvtScript N(EVS_RevealRightHouse);
-extern EvtScript N(EVS_RevealLeftHouse);
-extern EvtScript N(EVS_SetupLockedHouse);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(EpilogueNPCs);
-extern NpcGroupList N(BeforeNPCs);
-extern NpcGroupList N(MysteryNPCs);
-extern NpcGroupList N(AfterNPCs);
-
-extern StaticAnimatorNode* N(ShatterPondSkeleton)[];
-extern AnimScript N(AS_ShatterPond);
+extern StaticAnimatorNode* ShatterPondSkeleton[];
+extern AnimScript AS_ShatterPond;
 
 //TODO sort these into an include somewhere
 API_CALLABLE(InitAnimatedModels);

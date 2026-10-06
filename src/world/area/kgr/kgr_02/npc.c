@@ -1,7 +1,7 @@
 #include "kgr_02.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(AwaitPartnerWatt)) {
+API_CALLABLE(AwaitPartnerWatt) {
     if (gPartnerStatus.actingPartner == PARTNER_WATT) {
         return ApiStatus_DONE2;
     } else {
@@ -9,7 +9,7 @@ API_CALLABLE(N(AwaitPartnerWatt)) {
     }
 }
 
-API_CALLABLE(N(AwaitPartnerNotWatt)) {
+API_CALLABLE(AwaitPartnerNotWatt) {
     if (gPartnerStatus.actingPartner != PARTNER_WATT) {
         return ApiStatus_DONE2;
     } else {
@@ -17,13 +17,13 @@ API_CALLABLE(N(AwaitPartnerNotWatt)) {
     }
 }
 
-EvtScript N(EVS_Dummy) = {
+EvtScript EVS_Dummy = {
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_Flotsam_Bobbing) = {
+EvtScript EVS_Flotsam_Bobbing = {
     Loop(0)
         Call(MakeLerp, 0, -10, 25, EASING_QUADRATIC_OUT)
         Loop(0)
@@ -52,26 +52,26 @@ EvtScript N(EVS_Flotsam_Bobbing) = {
     End
 };
 
-EvtScript N(EVS_SetupFlotsam) = {
+EvtScript EVS_SetupFlotsam = {
     Set(LVar2, MODEL_hako1)
     Set(LVar3, MODEL_bin2)
     Set(LVar4, MODEL_hako4)
-    ExecGetTID(N(EVS_Flotsam_Bobbing), LVarA)
+    ExecGetTID(EVS_Flotsam_Bobbing, LVarA)
     Wait(5)
     Set(LVar2, MODEL_bin1)
     Set(LVar3, MODEL_hako6)
     Set(LVar4, MODEL_hako5)
-    ExecGetTID(N(EVS_Flotsam_Bobbing), LVarB)
+    ExecGetTID(EVS_Flotsam_Bobbing, LVarB)
     Wait(5)
     Set(LVar2, MODEL_hako2)
     Set(LVar3, MODEL_hako3)
     Set(LVar4, MODEL_bin4)
-    ExecGetTID(N(EVS_Flotsam_Bobbing), LVarC)
+    ExecGetTID(EVS_Flotsam_Bobbing, LVarC)
     Wait(5)
     Set(LVar2, MODEL_fune_s)
     Set(LVar3, MODEL_fune_u)
     Set(LVar4, MODEL_bin3)
-    ExecGetTID(N(EVS_Flotsam_Bobbing), LVarD)
+    ExecGetTID(EVS_Flotsam_Bobbing, LVarD)
     Call(SetNpcVar, NPC_Fuzzipede, 2, 0)
     Loop(0)
         Call(GetNpcVar, NPC_Fuzzipede, 2, LVar0)
@@ -88,13 +88,13 @@ EvtScript N(EVS_SetupFlotsam) = {
     End
 };
 
-EvtScript N(EVS_Fuzzipede_ReactToLight) = {
+EvtScript EVS_Fuzzipede_ReactToLight = {
     Set(LVarA, 0)
     Set(LVarB, 0)
     Call(WaitForPlayerInputEnabled)
     Loop(0)
         IfEq(LVarA, 0)
-            Call(N(AwaitPartnerWatt))
+            Call(AwaitPartnerWatt)
             IfEq(LVarB, 0)
                 Call(DisablePlayerInput, true)
                 Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
@@ -115,7 +115,7 @@ EvtScript N(EVS_Fuzzipede_ReactToLight) = {
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP, false)
             Set(LVarA, 1)
         Else
-            Call(N(AwaitPartnerNotWatt))
+            Call(AwaitPartnerNotWatt)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP, true)
             Set(LVarA, 0)
         EndIf
@@ -125,7 +125,7 @@ EvtScript N(EVS_Fuzzipede_ReactToLight) = {
     End
 };
 
-EvtScript N(EVS_Fuzzipede_JumpAround) = {
+EvtScript EVS_Fuzzipede_JumpAround = {
     Loop(0)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZIPEDE_MOTION, SOUND_SPACE_DEFAULT)
         Call(NpcJump0, NPC_SELF, -100, 80, -80, 20)
@@ -147,8 +147,8 @@ EvtScript N(EVS_Fuzzipede_JumpAround) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Fuzzipede) = {
-    Exec(N(EVS_SetupFlotsam))
+EvtScript EVS_NpcAI_Fuzzipede = {
+    Exec(EVS_SetupFlotsam)
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         IfEq(LVar0, 1)
@@ -156,7 +156,7 @@ EvtScript N(EVS_NpcAI_Fuzzipede) = {
         EndIf
         Wait(1)
     EndLoop
-    ExecGetTID(N(EVS_Fuzzipede_JumpAround), LVarA)
+    ExecGetTID(EVS_Fuzzipede_JumpAround, LVarA)
     Call(SetSelfVar, 3, LVarA)
     Loop(0)
         Call(GetSelfVar, 1, LVar0)
@@ -171,7 +171,7 @@ EvtScript N(EVS_NpcAI_Fuzzipede) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_Fuzzipede) = {
+EvtScript EVS_NpcHit_Fuzzipede = {
     Call(DisablePlayerInput, true)
     Call(GetSelfVar, 3, LVar0)
     KillThread(LVar0)
@@ -180,7 +180,7 @@ EvtScript N(EVS_NpcHit_Fuzzipede) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Fuzzipede) = {
+EvtScript EVS_NpcDefeat_Fuzzipede = {
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(SetPlayerPos, -40, 0, 0)
@@ -267,28 +267,28 @@ EvtScript N(EVS_NpcDefeat_Fuzzipede) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_Fuzzipede) = {
+EvtScript EVS_NpcCreate_Fuzzipede = {
     Call(SetNpcPos, NPC_SELF, 100, 80, -80)
-    Exec(N(EVS_Fuzzipede_ReactToLight))
+    Exec(EVS_Fuzzipede_ReactToLight)
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Fuzzipede) = {
+NpcSettings NpcSettings_Fuzzipede = {
     .defaultAnim = ANIM_Fuzzipede_Idle,
     .height = 24,
     .radius = 24,
-    .doAI = &N(EVS_NpcAI_Fuzzipede),
-    .onCreate = &N(EVS_NpcCreate_Fuzzipede),
-    .onHit = &N(EVS_NpcHit_Fuzzipede),
-    .onDefeat = &N(EVS_NpcDefeat_Fuzzipede),
+    .doAI = &EVS_NpcAI_Fuzzipede,
+    .onCreate = &EVS_NpcCreate_Fuzzipede,
+    .onHit = &EVS_NpcHit_Fuzzipede,
+    .onDefeat = &EVS_NpcDefeat_Fuzzipede,
 };
 
-NpcData N(NpcData_Fuzzipede) = {
+NpcData NpcData_Fuzzipede = {
     .id = NPC_Fuzzipede,
     .pos = { 333.0f, -10.0f, -130.0f },
     .yaw = 90,
-    .settings = &N(NpcSettings_Fuzzipede),
+    .settings = &NpcSettings_Fuzzipede,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = {
@@ -296,7 +296,7 @@ NpcData N(NpcData_Fuzzipede) = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Fuzzipede), BTL_KGR_FORMATION_00, BTL_KGR_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Fuzzipede, BTL_KGR_FORMATION_00, BTL_KGR_STAGE_00),
     {}
 };

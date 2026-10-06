@@ -1,7 +1,7 @@
 #include "sbk_36.h"
 #include "entity.h"
 
-EvtScript N(ReadSign) = {
+EvtScript ReadSign = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(DisablePlayerInput, true)
@@ -12,9 +12,9 @@ EvtScript N(ReadSign) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Signpost), 410, 0, -75, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(ReadSign)))
+    Call(AssignScript, Ref(ReadSign))
     Return
     End
 };

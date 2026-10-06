@@ -1,8 +1,8 @@
 #include "isk_11.h"
 
-ITEM_LIST(N(KeyList), ITEM_RUINS_KEY);
+ITEM_LIST(KeyList, ITEM_RUINS_KEY);
 
-EvtScript N(EVS_UnlockPrompt_RuinsKey) = {
+EvtScript EVS_UnlockPrompt_RuinsKey = {
     Call(ShowKeyChoicePopup)
     IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
@@ -35,10 +35,10 @@ EvtScript N(EVS_UnlockPrompt_RuinsKey) = {
     End
 };
 
-EvtScript N(EVS_SetupLock) = {
+EvtScript EVS_SetupLock = {
     IfEq(GF_ISK11_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g374)
-        BindPadlock(Ref(N(EVS_UnlockPrompt_RuinsKey)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
+        BindPadlock(Ref(EVS_UnlockPrompt_RuinsKey), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, 1)
     Else
         Call(EnableGroup, MODEL_g374, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_SURFACE_TYPE_MASK | COLLIDER_FLAG_SAFE_FLOOR | COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_IGNORE_PLAYER | COLLIDER_FLAG_DOCK_WALL | 0x7FF47E00)

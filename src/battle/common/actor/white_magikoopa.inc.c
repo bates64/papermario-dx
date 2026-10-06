@@ -223,12 +223,6 @@ s32 N(IdleAnimations_80223E08)[] = {
 
 #include "common/ShrinkActor.inc.c"
 
-#include "common/GetSelectedMoveID.inc.c"
-
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-#include "common/StartRumbleWithParams.inc.c"
-
 #include "battle/common/CheckMagikoopaCastTarget.inc.c"
 
 API_CALLABLE(N(GetBootsHammerLevel)) {
@@ -365,7 +359,7 @@ EvtScript N(EVS_KnockDownCheck) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldKnockDown, true)
         EndIf
     Else
-        Call(N(GetSelectedMoveID), LVar0)
+        Call(GetSelectedMoveID, LVar0)
         Switch(LVar0)
             CaseOrEq(MOVE_HEADBONK1)
             CaseOrEq(MOVE_HEADBONK2)
@@ -415,7 +409,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-    Call(N(StartRumbleWithParams), 150, 10)
+    Call(StartRumbleWithParams, 150, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
     EndThread
@@ -443,7 +437,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Ground)))
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_WHITE_MAGIKOOPA)
     Call(SetStatusTable, ACTOR_SELF, Ref(N(StatusTable_Ground)))
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 32)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 32)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(ResetAllActorSounds, ACTOR_SELF)
     Call(GetIndexFromPos, ACTOR_SELF, LVar0)
@@ -617,7 +611,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
             Sub(LVar3, 50)
             Set(LVar4, 0)
-            Call(N(ShrinkActor), LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 25)
+            Call(ShrinkActor, LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 25)
             Wait(50)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -647,7 +641,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
     Sub(LVar3, 10)
-    Call(N(ShrinkActor), LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 20)
+    Call(ShrinkActor, LVar0, LVar1, LVar5, LVar3, LVar4, LVar5, 20)
     Wait(18)
     Wait(2)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_MAGIC | DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_MAGIC_BLAST, BS_FLAGS1_TRIGGER_EVENTS)
@@ -840,7 +834,7 @@ EvtScript N(EVS_Move_HealOne) = {
         Add(LVar5, LVar6)
         Sub(LVar3, LVar5)
         Sub(LVar2, LVar3)
-        Call(N(CheckMagikoopaCastTarget), LVar0, LVarA)
+        Call(CheckMagikoopaCastTarget, LVar0, LVarA)
         IfEq(LVarA, 0)
             Call(GetEnemyMaxHP, LVar0, LVarA)
             Call(GetActorHP, LVar0, LVarB)

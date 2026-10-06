@@ -5,11 +5,7 @@
 #include "effects.h"
 #include "model.h"
 
-#define NAMESPACE battle_item_shooting_star
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(SpawnShootingStarFX)) {
+API_CALLABLE(SpawnShootingStarFX) {
     s32 x = rand_int(200) + 100;
     s32 y = 200;
     s32 z = rand_int(40);
@@ -30,7 +26,7 @@ API_CALLABLE(N(SpawnShootingStarFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnDamageStarsFX)) {
+API_CALLABLE(SpawnDamageStarsFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -41,7 +37,7 @@ API_CALLABLE(N(SpawnDamageStarsFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CustomFadeBackgroundDarken)) {
+API_CALLABLE(CustomFadeBackgroundDarken) {
     if (isInitialCall) {
         mdl_set_all_tint_type(ENV_TINT_SHROUD);
         *gBackgroundTintModePtr = ENV_TINT_SHROUD;
@@ -59,7 +55,7 @@ API_CALLABLE(N(CustomFadeBackgroundDarken)) {
     }
 }
 
-API_CALLABLE(N(CustomFadeBackgroundLighten)) {
+API_CALLABLE(CustomFadeBackgroundLighten) {
     if (isInitialCall) {
         script->functionTemp[0] = 10;
     }
@@ -75,24 +71,24 @@ API_CALLABLE(N(CustomFadeBackgroundLighten)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_SHOOTING_STAR)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Thread
         Wait(5)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 20)
     EndThread
-    Call(N(CustomFadeBackgroundDarken))
+    Call(CustomFadeBackgroundDarken)
     Thread
         Set(LVar0, 0)
         Loop(10)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SHOOTING_STAR_FALL_A)
-            Call(N(SpawnShootingStarFX))
+            Call(SpawnShootingStarFX)
             Add(LVar0, 1)
             Wait(5)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SHOOTING_STAR_FALL_B)
-            Call(N(SpawnShootingStarFX))
+            Call(SpawnShootingStarFX)
             Add(LVar0, 1)
             Wait(5)
         EndLoop
@@ -127,7 +123,7 @@ EvtScript N(EVS_UseItem) = {
             Goto(1)
         EndIf
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(N(SpawnDamageStarsFX), LVar0, LVar1, LVar2)
+        Call(SpawnDamageStarsFX, LVar0, LVar1, LVar2)
         Call(GetItemPower, ITEM_SHOOTING_STAR, LVar0, LVar1)
         Call(ItemDamageEnemy, LVar0, DAMAGE_TYPE_COSMIC | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)
         Label(1)
@@ -139,9 +135,9 @@ EvtScript N(EVS_UseItem) = {
     Wait(20)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 20)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Thread
-        Call(N(CustomFadeBackgroundLighten))
+        Call(CustomFadeBackgroundLighten)
     EndThread
     Wait(30)
     Return
@@ -149,5 +145,5 @@ EvtScript N(EVS_UseItem) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

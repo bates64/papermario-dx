@@ -3,7 +3,7 @@
 
 #include "world/common/enemy/FrostClubba/base.h"
 
-NpcSettings N(NpcSettings_Clubba) = {
+NpcSettings NpcSettings_Clubba = {
     .height = 70,
     .radius = 60,
     .level = ACTOR_LEVEL_NONE,
@@ -11,58 +11,58 @@ NpcSettings N(NpcSettings_Clubba) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-EvtScript N(EVS_NpcInteract_Clubba_01) = {
+EvtScript EVS_NpcInteract_Clubba_01 = {
     Call(SetSelfVar, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Clubba_02) = {
+EvtScript EVS_NpcInteract_Clubba_02 = {
     Call(SetSelfVar, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Clubba_03) = {
+EvtScript EVS_NpcInteract_Clubba_03 = {
     Call(SetSelfVar, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Clubba_01) = {
+EvtScript EVS_NpcHit_Clubba_01 = {
     Call(SetSelfVar, 0, 2)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Clubba_02) = {
+EvtScript EVS_NpcHit_Clubba_02 = {
     Call(SetSelfVar, 0, 2)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Clubba_03) = {
+EvtScript EVS_NpcHit_Clubba_03 = {
     Call(SetSelfVar, 0, 2)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Clubba_01_Aux) = {
+EvtScript EVS_NpcHit_Clubba_01_Aux = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Clubba_02_Aux) = {
+EvtScript EVS_NpcHit_Clubba_02_Aux = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Clubba_03_Aux) = {
+EvtScript EVS_NpcHit_Clubba_03_Aux = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Clubba_01) = {
+EvtScript EVS_NpcIdle_Clubba_01 = {
     Loop(0)
         Wait(1)
         Call(GetSelfVar, 0, LVar0)
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcIdle_Clubba_01) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Clubba_02) = {
+EvtScript EVS_NpcIdle_Clubba_02 = {
     Loop(0)
         Wait(1)
         Call(GetSelfVar, 0, LVar0)
@@ -108,7 +108,7 @@ EvtScript N(EVS_NpcIdle_Clubba_02) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Clubba_03) = {
+EvtScript EVS_NpcIdle_Clubba_03 = {
     Loop(0)
         Wait(1)
         Call(GetSelfVar, 0, LVar0)
@@ -132,7 +132,7 @@ EvtScript N(EVS_NpcIdle_Clubba_03) = {
     End
 };
 
-EvtScript N(EVS_PlayClubbaDefeatFX) = {
+EvtScript EVS_PlayClubbaDefeatFX = {
     Wait(20)
     Loop(4)
         Set(LVar0, LVarA)
@@ -162,7 +162,7 @@ EvtScript N(EVS_PlayClubbaDefeatFX) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Clubba_01) = {
+EvtScript EVS_NpcDefeat_Clubba_01 = {
     Thread
         Call(DisablePlayerInput, true)
         Wait(50)
@@ -181,14 +181,14 @@ EvtScript N(EVS_NpcDefeat_Clubba_01) = {
         Set(LVarA, 270)
         Set(LVarB, 20)
         Set(LVarC, -75)
-        Exec(N(EVS_PlayClubbaDefeatFX))
+        Exec(EVS_PlayClubbaDefeatFX)
     EndThread
     Call(DoNpcDefeat)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Clubba_02) = {
+EvtScript EVS_NpcDefeat_Clubba_02 = {
     Thread
         Call(DisablePlayerInput, true)
         Wait(50)
@@ -207,14 +207,14 @@ EvtScript N(EVS_NpcDefeat_Clubba_02) = {
         Set(LVarA, 480)
         Set(LVarB, 20)
         Set(LVarC, -75)
-        Exec(N(EVS_PlayClubbaDefeatFX))
+        Exec(EVS_PlayClubbaDefeatFX)
     EndThread
     Call(DoNpcDefeat)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Clubba_03) = {
+EvtScript EVS_NpcDefeat_Clubba_03 = {
     Thread
         Call(DisablePlayerInput, true)
         Wait(50)
@@ -225,7 +225,7 @@ EvtScript N(EVS_NpcDefeat_Clubba_03) = {
             Call(SetGroupVisibility, MODEL_g298, MODEL_GROUP_HIDDEN)
         EndLoop
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1174, COLLIDER_FLAGS_UPPER_MASK)
-        BindTrigger(Ref(N(EVS_ExitDoors_pra_33_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoors_pra_33_1), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
         Set(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(DisablePlayerInput, false)
     EndThread
@@ -234,14 +234,14 @@ EvtScript N(EVS_NpcDefeat_Clubba_03) = {
         Set(LVarA, 725)
         Set(LVarB, 20)
         Set(LVarC, -75)
-        Exec(N(EVS_PlayClubbaDefeatFX))
+        Exec(EVS_PlayClubbaDefeatFX)
     EndThread
     Call(DoNpcDefeat)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_01) = {
+EvtScript EVS_NpcInit_Clubba_01 = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -250,16 +250,16 @@ EvtScript N(EVS_NpcInit_Clubba_01) = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Clubba_01)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Clubba_01)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Clubba_01)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Clubba_01)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba_01))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_01))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Clubba_01))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_01))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_02) = {
+EvtScript EVS_NpcInit_Clubba_02 = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -268,30 +268,30 @@ EvtScript N(EVS_NpcInit_Clubba_02) = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Clubba_02)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Clubba_02)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Clubba_02)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Clubba_02)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba_02))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_02))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Clubba_02))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_02))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_03) = {
+EvtScript EVS_NpcInit_Clubba_03 = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Clubba_03)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Clubba_03)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Clubba_03)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Clubba_03)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Clubba_03))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Clubba_03))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Clubba_03))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_03))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_01_Aux) = {
+EvtScript EVS_NpcInit_Clubba_01_Aux = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -301,12 +301,12 @@ EvtScript N(EVS_NpcInit_Clubba_01_Aux) = {
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Clubba_01_Aux)))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_01_Aux))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_02_Aux) = {
+EvtScript EVS_NpcInit_Clubba_02_Aux = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -316,18 +316,18 @@ EvtScript N(EVS_NpcInit_Clubba_02_Aux) = {
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Clubba_02_Aux)))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_02_Aux))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Clubba_03_Aux) = {
+EvtScript EVS_NpcInit_Clubba_03_Aux = {
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Clubba_03_Aux)))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Clubba_03_Aux))
     Return
     End
 };
@@ -338,13 +338,13 @@ EvtScript N(EVS_NpcInit_Clubba_03_Aux) = {
 #define CLUBBA_EXTRA_FLAGS (0)
 #endif
 
-NpcData N(NpcData_Clubba_01)[] = {
+NpcData NpcData_Clubba_01[] = {
     {
         .id = NPC_Clubba_01,
         .pos = { 268.0f, 0.0f, 70.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Clubba_01),
-        .settings = &N(NpcSettings_Clubba),
+        .init = &EVS_NpcInit_Clubba_01,
+        .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
         .drops = NO_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
@@ -353,21 +353,21 @@ NpcData N(NpcData_Clubba_01)[] = {
         .id = NPC_Clubba_01_Aux,
         .pos = { 268.0f, 0.0f, 70.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Clubba_01_Aux),
-        .settings = &N(NpcSettings_Clubba),
+        .init = &EVS_NpcInit_Clubba_01_Aux,
+        .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
         .drops = NO_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
     },
 };
 
-NpcData N(NpcData_Clubba_02)[] = {
+NpcData NpcData_Clubba_02[] = {
     {
         .id = NPC_Clubba_02,
         .pos = { 490.0f, 0.0f, 70.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Clubba_02),
-        .settings = &N(NpcSettings_Clubba),
+        .init = &EVS_NpcInit_Clubba_02,
+        .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
         .drops = NO_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
@@ -376,21 +376,21 @@ NpcData N(NpcData_Clubba_02)[] = {
         .id = NPC_Clubba_02_Aux,
         .pos = { 490.0f, 0.0f, 70.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Clubba_02_Aux),
-        .settings = &N(NpcSettings_Clubba),
+        .init = &EVS_NpcInit_Clubba_02_Aux,
+        .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
         .drops = NO_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
     },
 };
 
-NpcData N(NpcData_Clubba_03)[] = {
+NpcData NpcData_Clubba_03[] = {
     {
         .id = NPC_Clubba_03,
         .pos = { 717.0f, 0.0f, 70.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Clubba_03),
-        .settings = &N(NpcSettings_Clubba),
+        .init = &EVS_NpcInit_Clubba_03,
+        .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
         .drops = NO_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
@@ -399,17 +399,17 @@ NpcData N(NpcData_Clubba_03)[] = {
         .id = NPC_Clubba_03_Aux,
         .pos = { 717.0f, 0.0f, 70.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Clubba_03_Aux),
-        .settings = &N(NpcSettings_Clubba),
+        .init = &EVS_NpcInit_Clubba_03_Aux,
+        .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
         .drops = NO_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Clubba_01), BTL_PRA_FORMATION_0B, BTL_PRA_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_02), BTL_PRA_FORMATION_09, BTL_PRA_STAGE_02),
-    NPC_GROUP(N(NpcData_Clubba_03), BTL_PRA_FORMATION_0C, BTL_PRA_STAGE_03),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Clubba_01, BTL_PRA_FORMATION_0B, BTL_PRA_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_02, BTL_PRA_FORMATION_09, BTL_PRA_STAGE_02),
+    NPC_GROUP(NpcData_Clubba_03, BTL_PRA_FORMATION_0C, BTL_PRA_STAGE_03),
     {}
 };

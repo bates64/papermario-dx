@@ -1,6 +1,6 @@
 #include "hos_10.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_10_ENTRY_1)

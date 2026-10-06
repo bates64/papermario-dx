@@ -15,11 +15,9 @@ enum {
     NPC_UnusedFuzzy     = 1,
 };
 
-#define NAMESPACE nok_13
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupMusicalHill);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupMusicalHill;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
 

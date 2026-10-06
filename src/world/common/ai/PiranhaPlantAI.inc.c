@@ -42,7 +42,7 @@ enum PiranhaPlantAiAnims {
     AI_ANIM_PIRANHA_PLANT_BITE      = 11,
 };
 
-void N(PiranhaPlantAI_Init)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_Init(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -56,7 +56,7 @@ void N(PiranhaPlantAI_Init)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(PiranhaPlantAI_Idle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_Idle(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -70,7 +70,7 @@ void N(PiranhaPlantAI_Idle)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_Burrow(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 usedTruncatedPos = false;
@@ -251,7 +251,7 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(PiranhaPlantAI_Emerge)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_Emerge(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -266,7 +266,7 @@ void N(PiranhaPlantAI_Emerge)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(PiranhaPlantAI_Attack)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_Attack(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -287,7 +287,7 @@ void N(PiranhaPlantAI_Attack)(Evt* script, MobileAISettings* settings, EnemyDete
     }
 }
 
-void N(PiranhaPlantAI_Cooldown)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_Cooldown(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -298,7 +298,7 @@ void N(PiranhaPlantAI_Cooldown)(Evt* script, MobileAISettings* settings, EnemyDe
     }
 }
 
-void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void PiranhaPlantAI_LosePlayer(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -312,7 +312,7 @@ void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* settings, Enemy
     }
 }
 
-API_CALLABLE(N(PiranhaPlantAI_Main)) {
+API_CALLABLE(PiranhaPlantAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -344,40 +344,40 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PIRANHA_PLANT_INIT:
-            N(PiranhaPlantAI_Init)(script, settings, detect);
+            PiranhaPlantAI_Init(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_IDLE) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_IDLE:
-            N(PiranhaPlantAI_Idle)(script, settings, detect);
+            PiranhaPlantAI_Idle(script, settings, detect);
             break;
         case AI_STATE_PIRANHA_PLANT_BURROW:
-            N(PiranhaPlantAI_Burrow)(script, settings, detect);
+            PiranhaPlantAI_Burrow(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_EMERGE) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_EMERGE:
-            N(PiranhaPlantAI_Emerge)(script, settings, detect);
+            PiranhaPlantAI_Emerge(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_ATTACK) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_ATTACK:
-            N(PiranhaPlantAI_Attack)(script, settings, detect);
+            PiranhaPlantAI_Attack(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_COOLDOWN) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_COOLDOWN:
-            N(PiranhaPlantAI_Cooldown)(script, settings, detect);
+            PiranhaPlantAI_Cooldown(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
             // fallthrough
         case AI_STATE_LOSE_PLAYER:
-            N(PiranhaPlantAI_LosePlayer)(script, settings, detect);
+            PiranhaPlantAI_LosePlayer(script, settings, detect);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

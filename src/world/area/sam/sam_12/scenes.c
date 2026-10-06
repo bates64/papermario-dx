@@ -2,14 +2,14 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SetScreenFadeAmount)) {
+API_CALLABLE(SetScreenFadeAmount) {
     Bytecode* args = script->ptrReadPos;
 
     set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, evt_get_float_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetItemPositionF)) {
+API_CALLABLE(SetItemPositionF) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
     s32 x = evt_get_float_variable(script, *args++);
@@ -23,7 +23,7 @@ API_CALLABLE(N(SetItemPositionF)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PlayRisingBubble)) {
+API_CALLABLE(PlayRisingBubble) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -34,7 +34,7 @@ API_CALLABLE(N(PlayRisingBubble)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnSleepBubble)) {
+API_CALLABLE(SpawnSleepBubble) {
     Bytecode* args = script->ptrReadPos;
     f32 temp_f26 = evt_get_float_variable(script, *args++);
     f32 x = evt_get_float_variable(script, *args++);
@@ -57,7 +57,7 @@ API_CALLABLE(N(SpawnSleepBubble)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(FlickeringStaticAmts)[] = {
+s32 FlickeringStaticAmts[] = {
     Float(50.0),
     Float(80.0),
     Float(70.0),
@@ -65,7 +65,7 @@ s32 N(FlickeringStaticAmts)[] = {
     Float(50.0),
 };
 
-EvtScript N(EVS_MerlarFlickering) = {
+EvtScript EVS_MerlarFlickering = {
     Label(0)
         Call(RandInt, 90, LVar0)
         Add(LVar0, 30)
@@ -77,7 +77,7 @@ EvtScript N(EVS_MerlarFlickering) = {
             Set(LVar1, 2)
         EndIf
         Loop(LVar1)
-            UseBuf(Ref(N(FlickeringStaticAmts)))
+            UseBuf(Ref(FlickeringStaticAmts))
             Loop(5)
                 BufRead1(LVar0)
                 Call(SetNpcImgFXParams, NPC_Merlar, IMGFX_HOLOGRAM, Float(0.0), LVar0, Float(200.0), Float(100.0))
@@ -91,7 +91,7 @@ EvtScript N(EVS_MerlarFlickering) = {
     End
 };
 
-EvtScript N(EVS_SpawnStarStoneSparkles) = {
+EvtScript EVS_SpawnStarStoneSparkles = {
     Call(PlaySoundAt, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT, 230, 30, 0)
     Label(0)
         PlayEffect(EFFECT_SPARKLES, 2, 230, 30, 0, 30)
@@ -101,7 +101,7 @@ EvtScript N(EVS_SpawnStarStoneSparkles) = {
     End
 };
 
-EvtScript N(EVS_SpawnMerlarSparkles) = {
+EvtScript EVS_SpawnMerlarSparkles = {
     Call(PlaySoundAtNpc, NPC_Merlar, SOUND_MERLAR_APPEARS, SOUND_SPACE_DEFAULT)
     Call(GetNpcPos, NPC_Merlar, LVar0, LVar1, LVar2)
     Add(LVar1, 30)
@@ -113,7 +113,7 @@ EvtScript N(EVS_SpawnMerlarSparkles) = {
     End
 };
 
-EvtScript N(EVS_MarioSleeping) = {
+EvtScript EVS_MarioSleeping = {
     Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     Loop(0)
         Call(PlaySoundAtPlayer, SOUND_SNORE_INHALE_A, SOUND_SPACE_DEFAULT)
@@ -126,7 +126,7 @@ EvtScript N(EVS_MarioSleeping) = {
 #define LOOPCOUNT_1 ((s32)(5 * DT) * 10)
 #define LOOPCOUNT_2 ((s32)(10 * DT) * 10)
 
-EvtScript N(EVS_Scene_MeetMerlar) = {
+EvtScript EVS_Scene_MeetMerlar = {
     Label(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
@@ -146,10 +146,10 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     Call(PlayerMoveTo, 90, 0, 0)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(20 * DT)
-    ExecGetTID(N(EVS_SpawnStarStoneSparkles), LVar9)
+    ExecGetTID(EVS_SpawnStarStoneSparkles, LVar9)
     Wait(100 * DT)
     Call(SetNpcPos, NPC_Merlar, 200, 50, 0)
-    Exec(N(EVS_SpawnMerlarSparkles))
+    Exec(EVS_SpawnMerlarSparkles)
     Call(PlaySoundAtNpc, NPC_Merlar, SOUND_RECEIVE_STAR_POWER, SOUND_SPACE_DEFAULT)
     SetF(LVar0, Float(0.0))
     Loop(LOOPCOUNT_2)
@@ -157,7 +157,7 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
         Call(SetNpcImgFXParams, NPC_Merlar, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
     EndLoop
-    ExecGetTID(N(EVS_MerlarFlickering), LVar8)
+    ExecGetTID(EVS_MerlarFlickering, LVar8)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_Merlar, ANIM_Merlar_Talk, ANIM_Merlar_Hover, 0, MSG_CH7_0133)
     Call(GetNpcPos, NPC_Merlar, LVar0, LVar1, LVar2)
@@ -175,21 +175,21 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-10.0))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_Merlar, ANIM_Merlar_Talk, ANIM_Merlar_Hover, 0, MSG_CH7_0135)
-    ExecGetTID(N(EVS_MarioSleeping), LVarA)
+    ExecGetTID(EVS_MarioSleeping, LVarA)
     Call(EndSpeech, NPC_Merlar, ANIM_Merlar_Talk, ANIM_Merlar_Hover, 0)
     SetF(LVar0, Float(0.0))
     Loop(LOOPCOUNT_1)
         AddF(LVar0, Float(255.0 / LOOPCOUNT_1))
-        Call(N(SetScreenFadeAmount), LVar0)
+        Call(SetScreenFadeAmount, LVar0)
         Wait(1)
     EndLoop
-    Call(N(SpawnSleepBubble), -90, 6, -5, 2, 0, LVar7)
+    Call(SpawnSleepBubble, -90, 6, -5, 2, 0, LVar7)
     Thread
         Set(MF_DoneFadingIn, false)
         SetF(LVar0, Float(255.0))
         Loop(LOOPCOUNT_2)
             AddF(LVar0, Float(-255.0 / LOOPCOUNT_2))
-            Call(N(SetScreenFadeAmount), LVar0)
+            Call(SetScreenFadeAmount, LVar0)
             Wait(1)
         EndLoop
         Set(MF_DoneFadingIn, true)
@@ -228,7 +228,7 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
         Loop(5)
-            Call(N(PlayRisingBubble), 232, 31, 0)
+            Call(PlayRisingBubble, 232, 31, 0)
             Wait(10)
         EndLoop
     EndThread
@@ -236,7 +236,7 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     SetF(LVar0, Float(0.0))
     Loop(LOOPCOUNT_1)
         AddF(LVar0, Float(31.0 / LOOPCOUNT_1))
-        Call(N(SetItemPositionF), MV_StarStoneItemID, Float(230.0), LVar0, Float(0.0))
+        Call(SetItemPositionF, MV_StarStoneItemID, Float(230.0), LVar0, Float(0.0))
         Wait(1)
     EndLoop
     Call(SetPanTarget, CAM_DEFAULT, 160, 0, 0)

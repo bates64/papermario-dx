@@ -1,13 +1,13 @@
 #include "kkj_14.h"
 
-export s32 N(map_init)(void) {
+export s32 map_init(void) {
     if (evt_get_variable(nullptr, GB_StoryProgress) == STORY_INTRO) {
         sprintf(wMapBgName, "nok_bg");
     }
     return false;
 }
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [kkj_14_ENTRY_0]    { -375.0,    0.0,  -30.0,   90.0 },
     [kkj_14_ENTRY_1]    {  435.0,   30.0,  -33.0,  270.0 },
     [kkj_14_ENTRY_2]    { -122.0,   10.0,  -82.0,  180.0 },
@@ -22,10 +22,10 @@ EntryList N(Entrances) = {
     [kkj_14_ENTRY_B]    {  150.0,    0.0,  -30.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "kpa_bg",
     .tattle = { MSG_MapTattle_kkj_14 },
 };

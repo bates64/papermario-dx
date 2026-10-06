@@ -7,8 +7,6 @@
  * meter does not drain.
  */
 
-#define NAMESPACE action_command_unused_mash_a
-
 extern s32 actionCmdTable0A[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -21,7 +19,7 @@ enum {
 // how much to add to the meter per input
 #define METER_FILL_TICK 1500
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -69,7 +67,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -101,7 +99,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;

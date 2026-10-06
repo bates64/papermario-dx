@@ -3,7 +3,7 @@
 
 #include "world/common/npc/Toad/idle.inc.c"
 
-EvtScript N(EVS_EnsurePartnerNeutral) = {
+EvtScript EVS_EnsurePartnerNeutral = {
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         IfEq(LVar0, PARTNER_BOMBETTE)
@@ -23,7 +23,7 @@ EvtScript N(EVS_EnsurePartnerNeutral) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Door) = {
+EvtScript EVS_NpcIdle_Door = {
     IfEq(GB_KPA81_BowserDoorState, 2)
         Return
     EndIf
@@ -47,10 +47,10 @@ EvtScript N(EVS_NpcIdle_Door) = {
             Wait(150 * DT)
             Call(FadeOutMusic, 0, 250)
             Wait(15 * DT)
-            Exec(N(EVS_SetupMusic))
+            Exec(EVS_SetupMusic)
         EndThread
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0008)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
         Call(PanToTarget, CAM_DEFAULT, 0, false)
         Call(DisablePlayerInput, false)
@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Wait(150 * DT)
         Call(FadeOutMusic, 0, 250)
         Wait(15 * DT)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
     EndThread
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0000)
     Call(ShowChoice, MSG_Choice_0013)
@@ -98,7 +98,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         EndIf
         Call(DisablePlayerInput, true)
 #if !VERSION_JP
-        ExecWait(N(EVS_EnsurePartnerNeutral))
+        ExecWait(EVS_EnsurePartnerNeutral)
 #endif
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0004)
         Call(DisablePlayerInput, false)
@@ -114,7 +114,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Label(2)
     Call(DisablePlayerInput, true)
 #if !VERSION_JP
-    ExecWait(N(EVS_EnsurePartnerNeutral))
+    ExecWait(EVS_EnsurePartnerNeutral)
 #endif
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0001)
     Call(ShowChoice, MSG_Choice_0013)
@@ -129,7 +129,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     EndIf
     Label(3)
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_EnsurePartnerNeutral))
+    ExecWait(EVS_EnsurePartnerNeutral)
     Thread
         Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -139,7 +139,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0005)
     Goto(5)
     Label(4)
-    ExecWait(N(EVS_EnsurePartnerNeutral))
+    ExecWait(EVS_EnsurePartnerNeutral)
     Thread
         Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -205,8 +205,8 @@ EvtScript N(EVS_NpcIdle_Door) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Door) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
+EvtScript EVS_NpcInit_Door = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Door))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
@@ -214,18 +214,18 @@ EvtScript N(EVS_NpcInit_Door) = {
     End
 };
 
-NpcData N(NpcData_Door) = {
+NpcData NpcData_Door = {
     .id = NPC_Door,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Door),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_Door,
+    .settings = &NpcSettings_Toad,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Door), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Door, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
     {}
 };

@@ -1,20 +1,20 @@
 #include "../kmr_22.h"
 
-EvtScript N(EVS_NpcInit_Mamar) = {
+EvtScript EVS_NpcInit_Mamar = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMamar_Still)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_TINT, 0, 0, 0, 128)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Tutankoopa) = {
+EvtScript EVS_NpcInit_Tutankoopa = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Tutankoopa_Levitate)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ChainChomp) = {
+EvtScript EVS_NpcInit_ChainChomp = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_ChainChomp_QuickBite)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_FILL_COLOR, 80, 80, 80, 0)
     Call(SetNpcPos, NPC_SELF, 5, -25, -180)

@@ -25,8 +25,6 @@ extern EvtScript N(EVS_Attack_MagicSpell);
 extern EvtScript N(EVS_Attack_LightningBolt);
 extern EvtScript N(EVS_Move_HealSelf);
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 enum N(ActorPartIDs) {
     PRT_BASE        = 1,
     PRT_FLYING      = 2,
@@ -419,14 +417,14 @@ EvtScript N(EVS_Idle) = {
                 IfFlag(LVarA, STATUS_FLAG_DIZZY | STATUS_FLAG_SLEEP)
                     Call(SetTargetOffset, ACTOR_SELF, PRT_FLYING, -15, 28)
                     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_FLYING, 4, -6)
-                    Call(N(SetAbsoluteStatusOffsets), -25, 27, -1, 27)
+                    Call(SetAbsoluteStatusOffsets, -25, 27, -1, 27)
                 Else
                     Call(SetTargetOffset, ACTOR_SELF, PRT_FLYING, -8, 33)
                     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_FLYING, 0, -6)
-                    Call(N(SetAbsoluteStatusOffsets), -22, 30, 2, 28)
+                    Call(SetAbsoluteStatusOffsets, -22, 30, 2, 28)
                 EndIf
             CaseDefault
-                Call(N(SetAbsoluteStatusOffsets), -20, 35, 10, 25)
+                Call(SetAbsoluteStatusOffsets, -20, 35, 10, 25)
         EndSwitch
         Wait(1)
         Goto(0)
@@ -1213,11 +1211,11 @@ EvtScript N(EVS_Attack_LightningBolt) = {
     Wait(30)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BIG_POWER_UP)
     Call(SetAnimation, ACTOR_SELF, PRT_MAGE, ANIM_MageJrTroopa_SwingStaff)
-    Call(N(UnkBackgroundFunc3))
+    Call(UnkBackgroundFunc3)
     Call(MakeLerp, 0, 200, 60, EASING_COS_IN_OUT)
     Label(0)
         Call(UpdateLerp)
-        Call(N(SetBackgroundAlpha), LVar0)
+        Call(SetBackgroundAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
@@ -1272,7 +1270,7 @@ EvtScript N(EVS_Attack_LightningBolt) = {
     Call(MakeLerp, 200, 0, 60, EASING_LINEAR)
     Label(2)
         Call(UpdateLerp)
-        Call(N(SetBackgroundAlpha), LVar0)
+        Call(SetBackgroundAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(2)

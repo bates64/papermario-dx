@@ -23,5 +23,3 @@ enum {
 enum {
     MV_SpiritCardData           = MapVar(1),
 };
-
-#define NAMESPACE trd_10

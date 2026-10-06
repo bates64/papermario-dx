@@ -9,11 +9,11 @@
 extern s16 MessagePlural;
 extern s16 MessageSingular;
 
-BSS s32 N(Quizmo_Worker);
-BSS s32 N(Quizmo_ScriptArray)[5];
-BSS EffectInstance* N(Quizmo_StageEffect);
-BSS EffectInstance* N(Quizmo_AudienceEffect);
-BSS EffectInstance* N(Quizmo_VannaTEffect);
+BSS s32 Quizmo_Worker;
+BSS s32 Quizmo_ScriptArray[5];
+BSS EffectInstance* Quizmo_StageEffect;
+BSS EffectInstance* Quizmo_AudienceEffect;
+BSS EffectInstance* Quizmo_VannaTEffect;
 
 enum {
     QUIZ_ARRAY_SAVED_FOV        = ArrayVar(0),
@@ -76,7 +76,7 @@ enum {
     QUIZ_COUNT_HOS      = 1,
 };
 
-u8 N(Quizmo_Answers)[64] = {
+u8 Quizmo_Answers[64] = {
     2, 1, 1, 2, 2, 0, 2, 0,
     2, 1, 0, 2, 1, 1, 0, 2,
     0, 2, 1, 0, 0, 2, 1, 0,
@@ -87,7 +87,7 @@ u8 N(Quizmo_Answers)[64] = {
     1, 2, 0, 2, 2, 1, 1, 1,
 };
 
-QuizRequirement N(Quizmo_Requirements)[] = {
+QuizRequirement Quizmo_Requirements[] = {
     { STORY_CH0_KAMMY_RETURNED_TO_BOWSER, 0 },
     { STORY_CH1_BEGAN_PEACH_MISSION, 10 },
     { STORY_CH2_BEGAN_PEACH_MISSION, 20 },
@@ -99,17 +99,17 @@ QuizRequirement N(Quizmo_Requirements)[] = {
     { STORY_EPILOGUE, 64 },
 };
 
-API_CALLABLE(N(Quizmo_HideEntities)) {
+API_CALLABLE(Quizmo_HideEntities) {
     gEntityHideMode = ENTITY_HIDE_MODE_1;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_ShowEntities)) {
+API_CALLABLE(Quizmo_ShowEntities) {
     gEntityHideMode = ENTITY_HIDE_MODE_0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_ShouldAppear)) {
+API_CALLABLE(Quizmo_ShouldAppear) {
     Enemy* enemy = script->owner1.enemy;
     u16 hasLocation = evt_get_variable(script, GF_Quizmo_HasLocation);
     u16 changedLocation = evt_get_variable(script, GF_Quizmo_ChangedLocation);
@@ -145,13 +145,13 @@ API_CALLABLE(N(Quizmo_ShouldAppear)) {
     numAnswered = evt_get_variable(nullptr, GB_CompletedQuizzes);
     progress = evt_get_variable(nullptr, GB_StoryProgress);
 
-    for (i = 0; i < ARRAY_COUNT(N(Quizmo_Requirements)); i++) {
-        if (progress < N(Quizmo_Requirements)[i].requiredStoryProgress) {
+    for (i = 0; i < ARRAY_COUNT(Quizmo_Requirements); i++) {
+        if (progress < Quizmo_Requirements[i].requiredStoryProgress) {
             break;
         }
     }
 
-    hasQuestionAvailable = numAnswered < N(Quizmo_Requirements)[i].numQuestionsUnlocked;
+    hasQuestionAvailable = numAnswered < Quizmo_Requirements[i].numQuestionsUnlocked;
     atQuizLocation = (curTown == locTown) && (curMap == locMap) && !changedLocation;
 
     if (hasQuestionAvailable && (atQuizLocation || gGameStatusPtr->debugQuizmo)) {
@@ -164,19 +164,19 @@ API_CALLABLE(N(Quizmo_ShouldAppear)) {
     return ApiStatus_DONE2;
 }
 
-void N(Quizmo_NPC_OnRender)(Npc* npc);
+void Quizmo_NPC_OnRender(Npc* npc);
 
-API_CALLABLE(N(Quizmo_RenderInit)) {
+API_CALLABLE(Quizmo_RenderInit) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
 
-    npc->onRender = N(Quizmo_NPC_OnRender);
+    npc->onRender = Quizmo_NPC_OnRender;
     npc->userData.quizmo = heap_malloc(sizeof(*npc->userData.quizmo));
     npc->userData.quizmo->flags = 0;
 
     return ApiStatus_DONE1;
 }
 
-void N(Quizmo_NPC_OnRender)(Npc* npc) {
+void Quizmo_NPC_OnRender(Npc* npc) {
     Camera* camera = &gCameras[gCurrentCamID];
 
     if (npc->userData.quizmo->flags & 1) {
@@ -184,7 +184,7 @@ void N(Quizmo_NPC_OnRender)(Npc* npc) {
     }
 }
 
-API_CALLABLE(N(Quizmo_HideWorld)) {
+API_CALLABLE(Quizmo_HideWorld) {
     if (isInitialCall) {
         s32 i;
 
@@ -225,7 +225,7 @@ API_CALLABLE(N(Quizmo_HideWorld)) {
     }
 }
 
-API_CALLABLE(N(Quizmo_FadeInWorld)) {
+API_CALLABLE(Quizmo_FadeInWorld) {
     s32 i;
 
     if (isInitialCall) {
@@ -268,14 +268,14 @@ API_CALLABLE(N(Quizmo_FadeInWorld)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(Quizmo_UpdateRecords)) {
+API_CALLABLE(Quizmo_UpdateRecords) {
     u16 quizzesAnswered = gPlayerData.quizzesAnswered;
 
     if (quizzesAnswered < 999) {
         gPlayerData.quizzesAnswered++;
     }
 
-    if (script->varTable[0] == N(Quizmo_Answers)[evt_get_variable(nullptr, GB_CompletedQuizzes)]) {
+    if (script->varTable[0] == Quizmo_Answers[evt_get_variable(nullptr, GB_CompletedQuizzes)]) {
         script->varTable[0] = 1;
         gPlayerData.quizzesCorrect++;
     } else {
@@ -285,25 +285,25 @@ API_CALLABLE(N(Quizmo_UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_CreateStage)) {
+API_CALLABLE(Quizmo_CreateStage) {
     QuizmoStageFXData* stageData;
 
     if (isInitialCall) {
-        N(Quizmo_StageEffect) = fx_quizmo_stage(0,
+        Quizmo_StageEffect = fx_quizmo_stage(0,
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X),
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z));
-        N(Quizmo_AudienceEffect) = fx_quizmo_audience(0,
+        Quizmo_AudienceEffect = fx_quizmo_audience(0,
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X),
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z));
-        N(Quizmo_VannaTEffect) = fx_quizmo_assistant(0,
+        Quizmo_VannaTEffect = fx_quizmo_assistant(0,
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X),
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Y),
             evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z),
             1.0f, 0);
 
-        stageData = N(Quizmo_StageEffect)->data.quizmoStage;
+        stageData = Quizmo_StageEffect->data.quizmoStage;
         stageData->microphoneRaiseAmt = 0;
         stageData->leftWallRaiseAmt = 0;
         stageData->rightWallRaiseAmt = 0;
@@ -311,7 +311,7 @@ API_CALLABLE(N(Quizmo_CreateStage)) {
         stageData->rearWallRaiseAmt = 0;
     }
 
-    stageData = N(Quizmo_StageEffect)->data.quizmoStage;
+    stageData = Quizmo_StageEffect->data.quizmoStage;
 
     stageData->leftWallRaiseAmt += 10;
     stageData->podiumRaiseAmt += 10;
@@ -326,15 +326,15 @@ API_CALLABLE(N(Quizmo_CreateStage)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(Quizmo_DestroyEffects)) {
+API_CALLABLE(Quizmo_DestroyEffects) {
     QuizmoStageFXData* stageData;
 
     if (isInitialCall) {
-        N(Quizmo_AudienceEffect)->flags |= FX_INSTANCE_FLAG_DISMISS;
-        N(Quizmo_VannaTEffect)->flags |= FX_INSTANCE_FLAG_DISMISS;
+        Quizmo_AudienceEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
+        Quizmo_VannaTEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
     }
 
-    stageData = N(Quizmo_StageEffect)->data.quizmoStage;
+    stageData = Quizmo_StageEffect->data.quizmoStage;
     stageData->microphoneRaiseAmt -= 10;
     stageData->leftWallRaiseAmt -= 10;
     stageData->rightWallRaiseAmt -= 10;
@@ -343,22 +343,22 @@ API_CALLABLE(N(Quizmo_DestroyEffects)) {
 
     if (stageData->microphoneRaiseAmt <= 0) {
         stageData->microphoneRaiseAmt = 0;
-        remove_effect(N(Quizmo_StageEffect));
-        free_worker(N(Quizmo_Worker));
+        remove_effect(Quizmo_StageEffect);
+        free_worker(Quizmo_Worker);
         return ApiStatus_DONE2;
     }
 
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(Quizmo_SetStageLightsDelay)) {
-    N(Quizmo_StageEffect)->data.quizmoStage->lightScrollDelay = evt_get_variable(script, *script->ptrReadPos);
+API_CALLABLE(Quizmo_SetStageLightsDelay) {
+    Quizmo_StageEffect->data.quizmoStage->lightScrollDelay = evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_UnkStageEffectMode)) {
+API_CALLABLE(Quizmo_UnkStageEffectMode) {
     s32 var = evt_get_variable(script, *script->ptrReadPos);
-    QuizmoStageFXData* stageData = N(Quizmo_StageEffect)->data.quizmoStage;
+    QuizmoStageFXData* stageData = Quizmo_StageEffect->data.quizmoStage;
 
     switch (var) {
         case 0:
@@ -378,27 +378,27 @@ API_CALLABLE(N(Quizmo_UnkStageEffectMode)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_SetVannaAnim_Idle)) {
-    N(Quizmo_VannaTEffect)->data.quizmoAssistant->anim = 0;
+API_CALLABLE(Quizmo_SetVannaAnim_Idle) {
+    Quizmo_VannaTEffect->data.quizmoAssistant->anim = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_SetVannaAnim_Clap)) {
-    N(Quizmo_VannaTEffect)->data.quizmoAssistant->anim = 1;
+API_CALLABLE(Quizmo_SetVannaAnim_Clap) {
+    Quizmo_VannaTEffect->data.quizmoAssistant->anim = 1;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_SetVannaAnim_Wave)) {
-    N(Quizmo_VannaTEffect)->data.quizmoAssistant->anim = 2;
+API_CALLABLE(Quizmo_SetVannaAnim_Wave) {
+    Quizmo_VannaTEffect->data.quizmoAssistant->anim = 2;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_ShouldQuizmoLeave)) {
+API_CALLABLE(Quizmo_ShouldQuizmoLeave) {
     evt_set_variable(script, LVar0, gGameStatusPtr->debugQuizmo);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_SetCamVfov)) {
+API_CALLABLE(Quizmo_SetCamVfov) {
     Bytecode* args = script->ptrReadPos;
     s32 cameraID = evt_get_variable(script, *args++);
 
@@ -406,7 +406,7 @@ API_CALLABLE(N(Quizmo_SetCamVfov)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_GetCamVfov)) {
+API_CALLABLE(Quizmo_GetCamVfov) {
     Bytecode* args = script->ptrReadPos;
     s32 cameraID = evt_get_variable(script, *args++);
 
@@ -414,7 +414,7 @@ API_CALLABLE(N(Quizmo_GetCamVfov)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_AddViewRelativeOffset)) {
+API_CALLABLE(Quizmo_AddViewRelativeOffset) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -435,7 +435,7 @@ API_CALLABLE(N(Quizmo_AddViewRelativeOffset)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(Quizmo_SpinPlayer)) {
+API_CALLABLE(Quizmo_SpinPlayer) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (isInitialCall) {
@@ -456,7 +456,7 @@ API_CALLABLE(N(Quizmo_SpinPlayer)) {
     }
 }
 
-API_CALLABLE(N(Quizmo_SpinPartner)) {
+API_CALLABLE(Quizmo_SpinPartner) {
     Npc* partner = get_npc_unsafe(NPC_PARTNER);
 
     if (isInitialCall) {
@@ -477,7 +477,7 @@ API_CALLABLE(N(Quizmo_SpinPartner)) {
     }
 }
 
-API_CALLABLE(N(Quizmo_UpdatePartnerPosition)) {
+API_CALLABLE(Quizmo_UpdatePartnerPosition) {
     Npc* npc = get_npc_unsafe(NPC_PARTNER);
     f32* x = (f32*) &script->functionTemp[1];
     f32* y = (f32*) &script->functionTemp[2];
@@ -502,8 +502,8 @@ API_CALLABLE(N(Quizmo_UpdatePartnerPosition)) {
     }
 }
 
-void N(Quizmo_CreateReactionEffect)(void) {
-    s32 result = evt_get_variable(nullptr, N(Quizmo_ScriptArray[QUIZ_ARRAY_INDEX_ANSWER_RESULT]));
+void Quizmo_CreateReactionEffect(void) {
+    s32 result = evt_get_variable(nullptr, Quizmo_ScriptArray[QUIZ_ARRAY_INDEX_ANSWER_RESULT]);
 
     if (result == 1) {
         fx_quizmo_answer(0, 0, 0, 0);
@@ -512,13 +512,13 @@ void N(Quizmo_CreateReactionEffect)(void) {
     }
 }
 
-API_CALLABLE(N(Quizmo_CreateWorker)) {
-    N(Quizmo_Worker) = create_worker_frontUI(nullptr, N(Quizmo_CreateReactionEffect));
+API_CALLABLE(Quizmo_CreateWorker) {
+    Quizmo_Worker = create_worker_frontUI(nullptr, Quizmo_CreateReactionEffect);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Quizmo_Exit) = {
-    Call(N(Quizmo_ShouldQuizmoLeave))
+EvtScript EVS_Quizmo_Exit = {
+    Call(Quizmo_ShouldQuizmoLeave)
     IfLe(LVar0, 1)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 300)
@@ -531,9 +531,9 @@ EvtScript N(EVS_Quizmo_Exit) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_SetQuizCamera) = {
-    Call(N(Quizmo_GetCamVfov), 0, QUIZ_ARRAY_SAVED_FOV)
-    Call(N(Quizmo_SetCamVfov), 0, 25) //TODO
+EvtScript EVS_Quizmo_SetQuizCamera = {
+    Call(Quizmo_GetCamVfov, 0, QUIZ_ARRAY_SAVED_FOV)
+    Call(Quizmo_SetCamVfov, 0, 25) //TODO
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -556,16 +556,16 @@ EvtScript N(EVS_Quizmo_SetQuizCamera) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_ResetCamera) = {
-    Call(N(Quizmo_SetCamVfov), 0, QUIZ_ARRAY_SAVED_FOV)
+EvtScript EVS_Quizmo_ResetCamera = {
+    Call(Quizmo_SetCamVfov, 0, QUIZ_ARRAY_SAVED_FOV)
     Call(PanToTarget, 0, 0, false)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_MovePlayerToPodium) = {
+EvtScript EVS_Quizmo_MovePlayerToPodium = {
     Wait(20)
-    Call(N(Quizmo_AddViewRelativeOffset), QUIZ_ARRAY_ORIGIN_X, QUIZ_ARRAY_ORIGIN_Z, 83, LVar0, LVar1)
+    Call(Quizmo_AddViewRelativeOffset, QUIZ_ARRAY_ORIGIN_X, QUIZ_ARRAY_ORIGIN_Z, 83, LVar0, LVar1)
     Thread
         SetF(LVar2, 0)
         Loop(60)
@@ -587,20 +587,20 @@ EvtScript N(EVS_Quizmo_MovePlayerToPodium) = {
         AddF(LVar4, QUIZ_ARRAY_ORIGIN_Z)
         Call(SetPlayerPos, LVar3, QUIZ_ARRAY_ORIGIN_Y, LVar4)
     EndThread
-    Call(N(Quizmo_SpinPlayer))
+    Call(Quizmo_SpinPlayer)
     Call(FacePlayerTowardPoint, QUIZ_ARRAY_ORIGIN_X, QUIZ_ARRAY_ORIGIN_Z, 0)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_MovePartnerToPodium) = {
+EvtScript EVS_Quizmo_MovePartnerToPodium = {
     Call(GetNpcPos, NPC_PARTNER, LVarA, LVarB, LVarC)
-    Call(N(Quizmo_AddViewRelativeOffset), LVarA, LVarC, 108, LVar0, LVar1)
+    Call(Quizmo_AddViewRelativeOffset, LVarA, LVarC, 108, LVar0, LVar1)
     SetF(LVar5, QUIZ_ARRAY_ORIGIN_Y)
     SubF(LVar5, LVarB)
     Thread
-        Call(N(Quizmo_UpdatePartnerPosition))
+        Call(Quizmo_UpdatePartnerPosition)
         SetF(LVar3, LVar0)
         SetF(LVar4, LVar1)
         SetF(LVar6, LVar5)
@@ -609,16 +609,16 @@ EvtScript N(EVS_Quizmo_MovePartnerToPodium) = {
         AddF(LVar6, LVarB)
         Call(SetNpcPos, NPC_PARTNER, LVar3, LVar6, LVar4)
     EndThread
-    Call(N(Quizmo_SpinPartner))
+    Call(Quizmo_SpinPartner)
     Call(NpcFacePlayer, NPC_PARTNER, 0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_MoveQuizmoToMicrophone) = {
+EvtScript EVS_Quizmo_MoveQuizmoToMicrophone = {
     Call(GetNpcPos, NPC_SELF, LVarA, LVarB, LVarC)
-    Call(N(Quizmo_AddViewRelativeOffset), LVarA, LVarC, -70, LVar0, LVar1)
+    Call(Quizmo_AddViewRelativeOffset, LVarA, LVarC, -70, LVar0, LVar1)
     Thread
         SetF(LVar2, 0)
         Loop(60)
@@ -642,15 +642,15 @@ EvtScript N(EVS_Quizmo_MoveQuizmoToMicrophone) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_SetCharacterPositons) = {
-    Exec(N(EVS_Quizmo_MovePlayerToPodium))
-    Exec(N(EVS_Quizmo_MovePartnerToPodium))
-    ExecWait(N(EVS_Quizmo_MoveQuizmoToMicrophone))
+EvtScript EVS_Quizmo_SetCharacterPositons = {
+    Exec(EVS_Quizmo_MovePlayerToPodium)
+    Exec(EVS_Quizmo_MovePartnerToPodium)
+    ExecWait(EVS_Quizmo_MoveQuizmoToMicrophone)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_PlayerThinking) = {
+EvtScript EVS_Quizmo_PlayerThinking = {
     Loop(0)
         Call(SetPlayerAnimation, ANIM_Mario1_Question)
         Wait(20)
@@ -659,7 +659,7 @@ EvtScript N(EVS_Quizmo_PlayerThinking) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_PlayerHitBuzzer) = {
+EvtScript EVS_Quizmo_PlayerHitBuzzer = {
     Call(SetPlayerAnimation, ANIM_Mario1_Throw)
     Wait(15)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -667,7 +667,7 @@ EvtScript N(EVS_Quizmo_PlayerHitBuzzer) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_PlayerReaction_RightAnswer) = {
+EvtScript EVS_Quizmo_PlayerReaction_RightAnswer = {
     Loop(0)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
         Wait(1)
@@ -840,7 +840,7 @@ EvtScript N(EVS_Quizmo_PlayerReaction_RightAnswer) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_PlayerReaction_WrongAnswer) = {
+EvtScript EVS_Quizmo_PlayerReaction_WrongAnswer = {
     Call(SetPlayerAnimation, ANIM_Mario1_VacantStare)
     Loop(0)
         Wait(1)
@@ -849,9 +849,9 @@ EvtScript N(EVS_Quizmo_PlayerReaction_WrongAnswer) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_ReturnPlayerToOriginalPos) = {
+EvtScript EVS_Quizmo_ReturnPlayerToOriginalPos = {
     Thread
-        Call(N(Quizmo_AddViewRelativeOffset), QUIZ_ARRAY_ORIGIN_X, QUIZ_ARRAY_ORIGIN_Z, 25, LVar0, LVar1)
+        Call(Quizmo_AddViewRelativeOffset, QUIZ_ARRAY_ORIGIN_X, QUIZ_ARRAY_ORIGIN_Z, 25, LVar0, LVar1)
         SetF(LVar2, QUIZ_ARRAY_ORIGIN_X)
         AddF(LVar2, LVar0)
         SetF(LVar3, QUIZ_ARRAY_ORIGIN_Z)
@@ -865,8 +865,8 @@ EvtScript N(EVS_Quizmo_ReturnPlayerToOriginalPos) = {
     End
 };
 
-EvtScript N(EVS_Quizmo_RightAnswer) = {
-    ExecGetID(LVar1, N(EVS_Quizmo_PlayerReaction_RightAnswer))
+EvtScript EVS_Quizmo_RightAnswer = {
+    ExecGetID(LVar1, EVS_Quizmo_PlayerReaction_RightAnswer)
     Wait(60)
     KillScript(LVar1)
     Loop(5)
@@ -876,13 +876,13 @@ EvtScript N(EVS_Quizmo_RightAnswer) = {
         Wait(2)
     EndLoop
     Wait(20)
-    ExecWait(N(EVS_Quizmo_ReturnPlayerToOriginalPos))
+    ExecWait(EVS_Quizmo_ReturnPlayerToOriginalPos)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_WrongAnswer) = {
-    ExecGetID(LVar1, N(EVS_Quizmo_PlayerReaction_WrongAnswer))
+EvtScript EVS_Quizmo_WrongAnswer = {
+    ExecGetID(LVar1, EVS_Quizmo_PlayerReaction_WrongAnswer)
     Wait(60)
     Loop(5)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -892,12 +892,12 @@ EvtScript N(EVS_Quizmo_WrongAnswer) = {
     EndLoop
     Wait(20)
     KillScript(LVar1)
-    ExecWait(N(EVS_Quizmo_ReturnPlayerToOriginalPos))
+    ExecWait(EVS_Quizmo_ReturnPlayerToOriginalPos)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_QuizMain) = {
+EvtScript EVS_Quizmo_QuizMain = {
     IfGt(GB_CompletedQuizzes, 63)
         Set(LVar0, 0)
         Return
@@ -917,21 +917,21 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Call(ShowChoice, MSG_Choice_000D)
     IfEq(LVar0, 1)
         Call(ContinueSpeech, -1, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000C)
-        ExecWait(N(EVS_Quizmo_Exit))
+        ExecWait(EVS_Quizmo_Exit)
         Set(LVar0, 0)
         Return
     EndIf
     Set(GF_Quizmo_TakingQuiz, 1)
-    Call(N(Quizmo_HideEntities))
-    Call(N(Quizmo_HideWorld))
-    Exec(N(EVS_Quizmo_SetQuizCamera))
+    Call(Quizmo_HideEntities)
+    Call(Quizmo_HideWorld)
+    Exec(EVS_Quizmo_SetQuizCamera)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    ExecGetID(LVar1, N(EVS_Quizmo_SetCharacterPositons))
+    ExecGetID(LVar1, EVS_Quizmo_SetCharacterPositons)
     Call(ContinueSpeech, -1, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000B)
     Call(PlaySound, SOUND_LRAW_AUDIENCE_MURMUR)
     Loop(0)
@@ -941,7 +941,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         EndIf
         Wait(1)
     EndLoop
-    Call(N(Quizmo_CreateStage))
+    Call(Quizmo_CreateStage)
     Loop(5)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Add(LVar1, 1)
@@ -958,14 +958,14 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Call(ShowChoice, LVar0)
     KillScript(LVar1)
     Call(StopSound, SOUND_LRAW_QUIZ_TICKING)
-    Exec(N(EVS_Quizmo_PlayerHitBuzzer))
+    Exec(EVS_Quizmo_PlayerHitBuzzer)
     Wait(15)
     Call(PlaySound, SOUND_QUIZ_BUZZER)
-    Call(N(Quizmo_UnkStageEffectMode), LVar0)
+    Call(Quizmo_UnkStageEffectMode, LVar0)
     Set(QUIZ_ARRAY_ANSWER_RESULT, 0)
-    Call(N(Quizmo_CreateWorker))
+    Call(Quizmo_CreateWorker)
     Wait(40)
-    Call(N(Quizmo_UpdateRecords))
+    Call(Quizmo_UpdateRecords)
     Thread
         Wait(110)
         Call(CloseChoice)
@@ -975,11 +975,11 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenCorrect)
         Set(QUIZ_ARRAY_ANSWER_RESULT, 1)
         Thread
-            Call(N(Quizmo_SetStageLightsDelay), 1)
+            Call(Quizmo_SetStageLightsDelay, 1)
             Wait(6)
             Wait(6)
             Wait(6)
-            Call(N(Quizmo_SetStageLightsDelay), 2)
+            Call(Quizmo_SetStageLightsDelay, 2)
         EndThread
         Thread
             Call(PlaySound, SOUND_APPROVE)
@@ -991,28 +991,28 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             Call(PlaySound, SOUND_APPROVE)
         EndThread
         Call(PlaySound, SOUND_AUDIENCE_CHEER)
-        Call(N(Quizmo_SetVannaAnim_Clap))
+        Call(Quizmo_SetVannaAnim_Clap)
         Thread
             Wait(15)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar1, 50)
-            Call(N(Quizmo_AddViewRelativeOffset), 0, 0, 83, LVar0, LVar2)
+            Call(Quizmo_AddViewRelativeOffset, 0, 0, 83, LVar0, LVar2)
             PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             PlayEffect(EFFECT_CONFETTI, 4, LVar0, LVar1, LVar2, 1, 60)
             Wait(15)
             Add(LVar1, -3)
-            Call(N(Quizmo_AddViewRelativeOffset), 0, 0, 58, LVar0, LVar2)
+            Call(Quizmo_AddViewRelativeOffset, 0, 0, 58, LVar0, LVar2)
             PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             PlayEffect(EFFECT_CONFETTI, 4, LVar0, LVar1, LVar2, 1, 60)
             Wait(15)
             Add(LVar1, 30)
-            Call(N(Quizmo_AddViewRelativeOffset), 0, 0, 93, LVar0, LVar2)
+            Call(Quizmo_AddViewRelativeOffset, 0, 0, 93, LVar0, LVar2)
             PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             PlayEffect(EFFECT_CONFETTI, 4, LVar0, LVar1, LVar2, 1, 60)
             Wait(15)
         EndThread
         Wait(20)
-        ExecGetID(LVar1, N(EVS_Quizmo_RightAnswer))
+        ExecGetID(LVar1, EVS_Quizmo_RightAnswer)
         Add(GB_CompletedQuizzes, 1)
         IfGe(GB_CompletedQuizzes, 64)
             Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_0010)
@@ -1026,8 +1026,8 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             EndLoop
             Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenHat)
             EVT_GIVE_REWARD(ITEM_STAR_PIECE)
-            Call(N(Quizmo_SetStageLightsDelay), 15)
-            Call(N(Quizmo_SetVannaAnim_Idle))
+            Call(Quizmo_SetStageLightsDelay, 15)
+            Call(Quizmo_SetVannaAnim_Idle)
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_0011)
         Else
@@ -1042,8 +1042,8 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             EndLoop
             Call(SetNpcAnimation, NPC_SELF, ANIM_ChuckQuizmo_OpenHat)
             EVT_GIVE_REWARD(ITEM_STAR_PIECE)
-            Call(N(Quizmo_SetStageLightsDelay), 15)
-            Call(N(Quizmo_SetVannaAnim_Idle))
+            Call(Quizmo_SetStageLightsDelay, 15)
+            Call(Quizmo_SetVannaAnim_Idle)
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
             IfEq(GB_CompletedQuizzes, 1)
                 Call(SetMessageText, Ref(MessageSingular), 1)
@@ -1058,7 +1058,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Set(QUIZ_ARRAY_ANSWER_RESULT, 2)
         Call(PlaySound, SOUND_MENU_ERROR)
         Call(PlaySound, SOUND_AUDIENCE_BOO)
-        ExecGetID(LVar1, N(EVS_Quizmo_WrongAnswer))
+        ExecGetID(LVar1, EVS_Quizmo_WrongAnswer)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         PlayEffect(EFFECT_WINDY_LEAVES, 0, LVar2, LVar3, LVar4)
         Call(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000D)
@@ -1072,7 +1072,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         EndLoop
         Set(LVar0, 0)
     EndIf
-    Call(N(Quizmo_UnkStageEffectMode), -1)
+    Call(Quizmo_UnkStageEffectMode, -1)
     Call(EnablePartnerAI)
     Thread
         Wait(30)
@@ -1082,53 +1082,53 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         Wait(45)
         Call(StopSound, SOUND_LRAW_AUDIENCE_MURMUR)
     EndThread
-    Call(N(Quizmo_SetVannaAnim_Wave))
-    Call(N(Quizmo_DestroyEffects))
-    ExecWait(N(EVS_Quizmo_Exit))
-    Exec(N(EVS_Quizmo_ResetCamera))
-    Call(N(Quizmo_FadeInWorld))
-    Call(N(Quizmo_ShowEntities))
+    Call(Quizmo_SetVannaAnim_Wave)
+    Call(Quizmo_DestroyEffects)
+    ExecWait(EVS_Quizmo_Exit)
+    Exec(EVS_Quizmo_ResetCamera)
+    Call(Quizmo_FadeInWorld)
+    Call(Quizmo_ShowEntities)
     Set(GF_Quizmo_TakingQuiz, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_NPC_OtherAI) = {
-    Call(N(Quizmo_ShouldAppear))
+EvtScript EVS_Quizmo_NPC_OtherAI = {
+    Call(Quizmo_ShouldAppear)
     IfEq(LVar0, 0)
         Return
     EndIf
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_NO_SPRITE, false)
     Call(SetNpcSprite, -1, ANIM_ChuckQuizmo_Idle)
-    Call(N(Quizmo_RenderInit))
+    Call(Quizmo_RenderInit)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_NPC_Interact) = {
-    UseArray(Ref(N(Quizmo_ScriptArray)))
+EvtScript EVS_Quizmo_NPC_Interact = {
+    UseArray(Ref(Quizmo_ScriptArray))
     Set(GF_Quizmo_ChangedLocation, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerFlagBits, PS_FLAG_MOVEMENT_LOCKED, 1)
-    ExecWait(N(EVS_Quizmo_QuizMain))
+    ExecWait(EVS_Quizmo_QuizMain)
     Call(DisablePlayerPhysics, false)
     Call(SetPlayerFlagBits, PS_FLAG_MOVEMENT_LOCKED, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Quizmo_NPC_Aux) = {
+EvtScript EVS_Quizmo_NPC_Aux = {
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ChuckQuizmo) = {
+NpcSettings NpcSettings_ChuckQuizmo = {
     .defaultAnim = ANIM_ChuckQuizmo_Idle,
     .height = 35,
     .radius = 28,
-    .doAux = &N(EVS_Quizmo_NPC_Aux),
-    .onCreate = &N(EVS_Quizmo_NPC_OtherAI),
-    .onInteract = &N(EVS_Quizmo_NPC_Interact),
+    .doAux = &EVS_Quizmo_NPC_Aux,
+    .onCreate = &EVS_Quizmo_NPC_OtherAI,
+    .onInteract = &EVS_Quizmo_NPC_Interact,
     .flags = BASE_PASSIVE_FLAGS,
     .level = ACTOR_LEVEL_NONE,
 };

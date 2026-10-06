@@ -1,37 +1,37 @@
 #include "osr_00.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitWalk_mac_01_2) = EVT_EXIT_WALK(60, osr_00_ENTRY_0, "mac_01", mac_01_ENTRY_2);
-EvtScript N(EVS_ExitDoors_kkj_00_6) = EVT_EXIT_DOUBLE_DOOR(osr_00_ENTRY_2, "kkj_00", kkj_00_ENTRY_6, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
+EvtScript EVS_ExitWalk_mac_01_2 = EVT_EXIT_WALK(60, osr_00_ENTRY_0, "mac_01", mac_01_ENTRY_2);
+EvtScript EVS_ExitDoors_kkj_00_6 = EVT_EXIT_DOUBLE_DOOR(osr_00_ENTRY_2, "kkj_00", kkj_00_ENTRY_6, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_mac_01_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_00_6)), TRIGGER_WALL_PRESS_A, COLLIDER_deilitn, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_mac_01_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kkj_00_6), TRIGGER_WALL_PRESS_A, COLLIDER_deilitn, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_00_ENTRY_2)
             Set(LVar2, MODEL_d2)
             Set(LVar3, MODEL_d1)
             ExecWait(EnterDoubleDoor)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
         CaseEq(osr_00_ENTRY_3)
-            Exec(N(EVS_Scene_ShowInvitation))
+            Exec(EVS_Scene_ShowInvitation)
         CaseEq(osr_00_ENTRY_4)
-            Exec(N(EVS_Scene_ApproachParty))
+            Exec(EVS_Scene_ApproachParty)
         CaseDefault
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_Fountain) = {
+EvtScript EVS_TexPan_Fountain = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_fw1, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_w2, TEX_PANNER_2)
@@ -53,28 +53,28 @@ EvtScript N(EVS_TexPan_Fountain) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(SpawnSunEffect, FX_SUN_FROM_RIGHT)
-            Call(MakeNpcs, false, Ref(N(IntroNPCs)))
+            Call(MakeNpcs, false, Ref(IntroNPCs))
         CaseGe(STORY_EPILOGUE)
             Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
-            Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
+            Call(MakeNpcs, false, Ref(EpilogueNPCs))
     EndSwitch
     Call(GetEntryID, LVar0)
     IfNe(LVar0, osr_00_ENTRY_3)
-        Exec(N(EVS_SetupMusic))
+        Exec(EVS_SetupMusic)
     EndIf
     Call(GetEntryID, LVar0)
     IfNe(LVar0, osr_00_ENTRY_3)
-        Exec(N(EVS_TexPan_Fountain))
+        Exec(EVS_TexPan_Fountain)
         Call(PlaySoundAtF, SOUND_LOOP_OSR_FOUNTAIN_INTACT, SOUND_SPACE_WITH_DEPTH, 300, 0, 400)
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

@@ -1,7 +1,7 @@
 #include "kkj_13.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(UpdatePropellerSoundPos)) {
+API_CALLABLE(UpdatePropellerSoundPos) {
     Npc* npc = get_npc_safe(NPC_Bowser_Prop);
     f32 x = npc->pos.x;
     f32 y = npc->pos.y;
@@ -13,10 +13,10 @@ API_CALLABLE(N(UpdatePropellerSoundPos)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdatePropellerSounds) = {
+EvtScript EVS_UpdatePropellerSounds = {
     Call(PlaySoundAtNpc, NPC_Bowser_Prop, SOUND_LOOP_BOWSER_PROPELLER, SOUND_SPACE_DEFAULT)
     Loop(0)
-        Call(N(UpdatePropellerSoundPos))
+        Call(UpdatePropellerSoundPos)
         IfLt(LVar0, 0)
             BreakLoop
         EndIf
@@ -30,7 +30,7 @@ EvtScript N(EVS_UpdatePropellerSounds) = {
     End
 };
 
-EvtScript N(EVS_MoveToBattlePositions) = {
+EvtScript EVS_MoveToBattlePositions = {
     Thread
         Call(SetNpcPos, NPC_Bowser_Prop, NPC_DISPOSE_LOCATION)
         Call(PlayerMoveTo, 525, 0, 50)
@@ -62,7 +62,7 @@ EvtScript N(EVS_MoveToBattlePositions) = {
     End
 };
 
-EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
+EvtScript EVS_Scene_MarioConfrontsBowser = {
     IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
         Return
     EndIf
@@ -72,7 +72,7 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_Bowser_Body, 725, 210, -25)
     Call(SetNpcPos, NPC_Bowser_Prop, 725, 210, -25)
-    Exec(N(EVS_UpdatePropellerSounds))
+    Exec(EVS_UpdatePropellerSounds)
     Call(SpeakToPlayer, NPC_CaptivePeach, ANIM_Peach2_TiedHangStruggle, ANIM_Peach2_TiedHangIdle, 0, MSG_CH8_006F)
     Call(EnableNpcShadow, NPC_Bowser_Body, false)
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, false)
@@ -130,7 +130,7 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     EndIf
     Call(ClearPartnerMoveHistory, NPC_PARTNER)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    ExecWait(N(EVS_MoveToBattlePositions))
+    ExecWait(EVS_MoveToBattlePositions)
     Wait(50)
     Call(SpeakToPlayer, NPC_Bowser_Body, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_CH8_0072)
     Wait(10)
@@ -149,7 +149,7 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_BowserAwaitBattle) = {
+EvtScript EVS_NpcIdle_BowserAwaitBattle = {
     Label(0)
         Call(SetSelfVar, 0, 0)
         Loop(0)
@@ -165,7 +165,7 @@ EvtScript N(EVS_NpcIdle_BowserAwaitBattle) = {
     End
 };
 
-Vec3f N(ToWindowPath)[] = {
+Vec3f ToWindowPath[] = {
     {  800.0,    50.0,    0.0 },
     {  780.0,    40.0,    0.0 },
     {  700.0,    20.0,    5.0 },
@@ -174,20 +174,20 @@ Vec3f N(ToWindowPath)[] = {
     {  595.0,    50.0,  -15.0 },
 };
 
-Vec3f N(ThroughWindowPath)[] = {
+Vec3f ThroughWindowPath[] = {
     {  595.0,    50.0,  -15.0 },
     {  595.0,    45.0, -150.0 },
     {  595.0,    35.0, -170.0 },
     {  595.0,    40.0, -190.0 },
 };
 
-Vec3f N(UpAndAwayPath)[] = {
+Vec3f UpAndAwayPath[] = {
     {  595.0,    40.0, -190.0 },
     {  595.0,   145.0, -185.0 },
     {  595.0,   250.0, -180.0 },
 };
 
-EvtScript N(EVS_FlyBowserAndPeach) = {
+EvtScript EVS_FlyBowserAndPeach = {
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Bowser_Body, LVar1, LVar2, LVar3)
@@ -205,13 +205,13 @@ EvtScript N(EVS_FlyBowserAndPeach) = {
     End
 };
 
-EvtScript N(EVS_BowserFliesAway) = {
+EvtScript EVS_BowserFliesAway = {
     Call(SetNpcPos, NPC_Bowser_Body, 800, 0, 0)
     Call(SetNpcYaw, NPC_Bowser_Body, 270)
     Call(SetNpcPos, NPC_Bowser_Prop, 800, 0, 0)
     Call(SetNpcYaw, NPC_Bowser_Prop, 270)
     Call(SetNpcPos, NPC_CaptivePeach, 828, 90, -3)
-    Exec(N(EVS_UpdatePropellerSounds))
+    Exec(EVS_UpdatePropellerSounds)
     Thread
         Wait(15)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
@@ -219,22 +219,22 @@ EvtScript N(EVS_BowserFliesAway) = {
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
         Call(InterpPlayerYaw, 0, 1)
     EndThread
-    Call(LoadPath, 25, Ref(N(ToWindowPath)), ARRAY_COUNT(N(ToWindowPath)), EASING_LINEAR)
-    ExecWait(N(EVS_FlyBowserAndPeach))
+    Call(LoadPath, 25, Ref(ToWindowPath), ARRAY_COUNT(ToWindowPath), EASING_LINEAR)
+    ExecWait(EVS_FlyBowserAndPeach)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarLaugh)
     Wait(40)
-    Call(LoadPath, 25, Ref(N(ThroughWindowPath)), ARRAY_COUNT(N(ThroughWindowPath)), EASING_LINEAR)
-    ExecWait(N(EVS_FlyBowserAndPeach))
+    Call(LoadPath, 25, Ref(ThroughWindowPath), ARRAY_COUNT(ThroughWindowPath), EASING_LINEAR)
+    ExecWait(EVS_FlyBowserAndPeach)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarIdle)
     Wait(15)
-    Call(LoadPath, 25, Ref(N(UpAndAwayPath)), ARRAY_COUNT(N(UpAndAwayPath)), EASING_LINEAR)
-    Exec(N(EVS_FlyBowserAndPeach))
+    Call(LoadPath, 25, Ref(UpAndAwayPath), ARRAY_COUNT(UpAndAwayPath), EASING_LINEAR)
+    Exec(EVS_FlyBowserAndPeach)
     Wait(10)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_BowserDefeated) = {
+EvtScript EVS_Scene_BowserDefeated = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, true)
     Call(EnableGroup, MODEL_g153, false)
@@ -266,7 +266,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(SpeakToPlayer, NPC_CaptivePeach, ANIM_Peach2_TiedHangStruggle, ANIM_Peach2_TiedHangIdle, 0, MSG_CH8_0079)
     Call(EnablePartnerAI)
     Call(PlayerMoveTo, 580, 0, 10)
-    ExecWait(N(EVS_BowserFliesAway))
+    ExecWait(EVS_BowserFliesAway)
     Wait(10)
     Call(SpeakToPlayer, NPC_Bowser_Body, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_CH8_007A)
     Call(ResetCam, CAM_DEFAULT, Float(1.0))
@@ -276,12 +276,12 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Bowser_Body) = {
+EvtScript EVS_NpcDefeat_Bowser_Body = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_CANT_SKIP_WIN_DELAY, true)
-            Exec(N(EVS_Scene_BowserDefeated))
+            Exec(EVS_Scene_BowserDefeated)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
     EndSwitch
@@ -289,19 +289,19 @@ EvtScript N(EVS_NpcDefeat_Bowser_Body) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bowser_Body) = {
+EvtScript EVS_NpcInit_Bowser_Body = {
     Call(SetNpcPos, NPC_Bowser_Body, NPC_DISPOSE_LOCATION)
     IfEq(GF_KKJ13_BowserTaunts, true)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BowserAwaitBattle)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Bowser_Body)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_BowserAwaitBattle))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Bowser_Body))
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarIdle)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bowser_Prop) = {
+EvtScript EVS_NpcInit_Bowser_Prop = {
     Call(EnableNpcShadow, NPC_Bowser_Prop, false)
     Call(SetNpcPos, NPC_Bowser_Prop, NPC_DISPOSE_LOCATION)
     IfEq(GF_KKJ13_BowserTaunts, true)
@@ -312,7 +312,7 @@ EvtScript N(EVS_NpcInit_Bowser_Prop) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_CaptivePeach) = {
+EvtScript EVS_NpcInit_CaptivePeach = {
     Call(SetNpcPos, NPC_CaptivePeach, NPC_DISPOSE_LOCATION)
     IfEq(GF_KKJ13_BowserTaunts, true)
         Return
@@ -323,7 +323,7 @@ EvtScript N(EVS_NpcInit_CaptivePeach) = {
     End
 };
 
-AnimID N(LimitAnims_Bowser)[] = {
+AnimID LimitAnims_Bowser[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
@@ -340,44 +340,44 @@ AnimID N(LimitAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Bowser_Body) = {
+NpcData NpcData_Bowser_Body = {
     .id = NPC_Bowser_Body,
     .pos = { 0.0f, -500.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bowser_Body),
-    .settings = &N(NpcSettings_Bowser),
+    .init = &EVS_NpcInit_Bowser_Body,
+    .settings = &NpcSettings_Bowser,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .limitAnimations = N(LimitAnims_Bowser),
+    .limitAnimations = LimitAnims_Bowser,
 };
 
-NpcData N(NpcData_Bowser_Prop) = {
+NpcData NpcData_Bowser_Prop = {
     .id = NPC_Bowser_Prop,
     .pos = { 0.0f, -500.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bowser_Prop),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_Bowser_Prop,
+    .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .limitAnimations = N(LimitAnims_Bowser),
+    .limitAnimations = LimitAnims_Bowser,
 };
 
-NpcData N(NpcData_CaptivePeach) = {
+NpcData NpcData_CaptivePeach = {
     .id = NPC_CaptivePeach,
     .pos = { 670.0f, 0.0f, -12.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_CaptivePeach),
-    .settings = &N(NpcSettings_Dummy),
+    .init = &EVS_NpcInit_CaptivePeach,
+    .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = PEACH_ANIMS,
 };
 
-NpcGroupList N(ChapterNPCs) = {
-    NPC_GROUP(N(NpcData_Bowser_Body), BTL_KPA2_FORMATION_02),
-    NPC_GROUP(N(NpcData_Bowser_Prop), BTL_KPA2_FORMATION_02),
-    NPC_GROUP(N(NpcData_CaptivePeach)),
+NpcGroupList ChapterNPCs = {
+    NPC_GROUP(NpcData_Bowser_Body, BTL_KPA2_FORMATION_02),
+    NPC_GROUP(NpcData_Bowser_Prop, BTL_KPA2_FORMATION_02),
+    NPC_GROUP(NpcData_CaptivePeach),
     {}
 };

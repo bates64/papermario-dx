@@ -1,7 +1,7 @@
 #include "kkj_26.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Call(EnableWorldStatusBar, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 550, 30, -20)
     Call(SetCamDistance, CAM_DEFAULT, Float(200.0))
@@ -29,7 +29,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -48,14 +48,14 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-EvtScript N(EVS_PlayDemoScene) = {
+EvtScript EVS_PlayDemoScene = {
     Call(RotateModel, MODEL_o85, 80, 0, -1, 0)
     Call(RotateModel, MODEL_o83, 80, 0, 1, 0)
     Call(RotateModel, MODEL_o86, 80, 0, -1, 0)
     Call(RotateModel, MODEL_o84, 80, 0, 1, 0)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

@@ -3,7 +3,7 @@
 
 extern s16 DemoBattleBeginDelay;
 
-API_CALLABLE(N(SetDemoBattleBeginDelay)) {
+static API_CALLABLE(SetDemoBattleBeginDelay) {
     DemoBattleBeginDelay = script->varTable[0];
     return ApiStatus_DONE2;
 }

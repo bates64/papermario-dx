@@ -5,13 +5,9 @@
 #include "entity.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_mushroom
-
 extern EntityModelScript EMS_StarIcon;
 
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_715A8C)) {
+API_CALLABLE(func_802A123C_715A8C) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -25,7 +21,7 @@ API_CALLABLE(N(func_802A123C_715A8C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802A12EC_715B3C)) {
+API_CALLABLE(func_802A12EC_715B3C) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
     Bytecode* args = script->ptrReadPos;
@@ -49,35 +45,7 @@ API_CALLABLE(N(func_802A12EC_715B3C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnHeartRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(0, a, b, c, d);
-
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(SpawnFlowerRecoveryFX)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
-    s32 d = evt_get_variable(script, *args++);
-
-    fx_recover(1, a, b, c, d);
-
-    return ApiStatus_DONE2;
-}
-
-#include "common/AddHP.inc.c"
-
-#include "common/AddFP.inc.c"
-
-API_CALLABLE(N(func_802A15A0_715DF0)) {
+API_CALLABLE(func_802A15A0_715DF0) {
     Bytecode* args = script->ptrReadPos;
     ItemData* itemTable = gItemTable;
     ItemData* item = &itemTable[evt_get_variable(script, *args++)];
@@ -91,7 +59,7 @@ API_CALLABLE(N(func_802A15A0_715DF0)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseOnPartner) = {
+EvtScript EVS_UseOnPartner = {
     Call(SetActorYaw, ACTOR_PLAYER, 30)
     Wait(1)
     Call(SetActorYaw, ACTOR_PLAYER, 60)
@@ -105,7 +73,7 @@ EvtScript N(EVS_UseOnPartner) = {
     Call(SetActorYaw, ACTOR_PLAYER, 180)
     Wait(10)
     Set(LVar1, LVarF)
-    ExecWait(N(UseItem))
+    ExecWait(UseItem)
     Set(LVarE, LVarA)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     Thread
@@ -126,7 +94,7 @@ EvtScript N(EVS_UseOnPartner) = {
         Set(LVarE, LVar0)
         Loop(25)
             Call(GetVirtualEntityPosition, LVarA, LVar0, LVar1, LVar2)
-            Call(N(func_802A123C_715A8C), LVar0, LVar1, LVar2)
+            Call(func_802A123C_715A8C, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop
         Call(RemoveItemEntity, LVarE)
@@ -147,7 +115,7 @@ EvtScript N(EVS_UseOnPartner) = {
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LVarB)
     IfGt(LVarB, 0)
-        Call(N(func_802A12EC_715B3C), LVarB)
+        Call(func_802A12EC_715B3C, LVarB)
     EndIf
     Wait(30)
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -169,20 +137,20 @@ EvtScript N(EVS_UseOnPartner) = {
     End
 };
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     Set(LVarE, LVar1)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Set(LVarA, LVar1)
-    Call(N(func_802A15A0_715DF0), LVarA)
+    Call(func_802A15A0_715DF0, LVarA)
     Call(InitTargetIterator)
     Call(GetOwnerTarget, LVar0, LVar1)
     IfEq(LVar0, ACTOR_PARTNER)
-        ExecWait(N(EVS_UseOnPartner))
+        ExecWait(EVS_UseOnPartner)
         Return
     EndIf
     Set(LVar1, LVarE)
-    ExecWait(N(UseItemWithEffect))
-    ExecWait(N(EatItem))
+    ExecWait(UseItemWithEffect)
+    ExecWait(EatItem)
     IfEq(LVarF, 1)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_StickOutTongue)
     EndIf
@@ -190,22 +158,22 @@ EvtScript N(EVS_UseItem) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 0)
         Add(LVar1, 35)
-        Call(N(SpawnHeartRecoveryFX), LVar0, LVar1, LVar2, LVarB)
+        Call(SpawnRecoverHeartFX, LVar0, LVar1, LVar2, LVarB)
     EndIf
     IfGt(LVarC, 0)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar0, 20)
         Add(LVar1, 25)
-        Call(N(SpawnFlowerRecoveryFX), LVar0, LVar1, LVar2, LVarC)
+        Call(SpawnRecoverFlowerFX, LVar0, LVar1, LVar2, LVarC)
     EndIf
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 25)
     Call(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LVarB)
     IfNe(LVarB, 0)
-        Call(N(AddHP), LVarB)
+        Call(AddHP, LVarB)
     EndIf
     IfNe(LVarC, 0)
-        Call(N(AddFP), LVarC)
+        Call(AddFP, LVarC)
     EndIf
     IfEq(LVarF, 0)
         Wait(10)
@@ -218,11 +186,11 @@ EvtScript N(EVS_UseItem) = {
     Call(ShowRecoveryShimmer, LVar0, LVar1, LVar2, LVarB)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Wait(20)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

@@ -11,16 +11,16 @@ enum {
     NPC_VAR_TRAFFIC_BOO_START_Z = 1,
 };
 
-s16 N(TrafficBooAlphas)[] = {
+s16 TrafficBooAlphas[] = {
     50, 60, 200, 240
 };
 
-API_CALLABLE(N(TrafficBooInit)) {
+API_CALLABLE(TrafficBooInit) {
     script->functionTemp[1] = TRAFFIC_BOO_INIT;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateTrafficBooMotion)) {
+API_CALLABLE(UpdateTrafficBooMotion) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
@@ -61,14 +61,14 @@ API_CALLABLE(N(UpdateTrafficBooMotion)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateTrafficBooAlpha)) {
+API_CALLABLE(UpdateTrafficBooAlpha) {
     s32 alpha = script->varTable[0];
     s32 nextChangeTime = script->varTable[1];
     s32 targetAlpha;
 
     if (nextChangeTime == 0) {
         // choose a new target alpha and schedule a time for the next update
-        script->functionTemp[2] = N(TrafficBooAlphas)[rand_int(ARRAY_COUNT(N(TrafficBooAlphas)) - 1)];
+        script->functionTemp[2] = TrafficBooAlphas[rand_int(ARRAY_COUNT(TrafficBooAlphas) - 1)];
         nextChangeTime = rand_int(50) + 30;
     }
     nextChangeTime--;
@@ -92,13 +92,13 @@ API_CALLABLE(N(UpdateTrafficBooAlpha)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_TrafficBoo) = {
+EvtScript EVS_NpcIdle_TrafficBoo = {
     Set(LVar0, 0)
     Set(LVar1, 0)
-    Call(N(TrafficBooInit))
+    Call(TrafficBooInit)
     Loop(0)
-        Call(N(UpdateTrafficBooMotion))
-        Call(N(UpdateTrafficBooAlpha))
+        Call(UpdateTrafficBooMotion)
+        Call(UpdateTrafficBooAlpha)
         Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Call(SetNpcRenderMode, NPC_SELF, RENDER_MODE_SURFACE_XLU_LAYER1)
         Wait(1)

@@ -1,6 +1,6 @@
 #include "mac_01.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -9,19 +9,19 @@ EvtScript N(EVS_SetupMusic) = {
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_FULL)
         CaseDefault
-            Exec(N(EVS_SetupMusicMix))
+            Exec(EVS_SetupMusicMix)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_PlaySpellcastSong) = {
+EvtScript EVS_PlaySpellcastSong = {
     Call(SetMusic, 0, SONG_MERLEE_SPELL, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Return
     End
 };
 
-EvtScript N(EVS_ResetMusicAfterFortune) = {
+EvtScript EVS_ResetMusicAfterFortune = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_FULL)
@@ -35,13 +35,13 @@ EvtScript N(EVS_ResetMusicAfterFortune) = {
     End
 };
 
-EvtScript N(EVS_PlayFlowerGateSong) = {
+EvtScript EVS_PlayFlowerGateSong = {
     Call(SetMusic, 0, SONG_FLOWER_GATE_APPEARS, 0, VOL_LEVEL_FULL)
     Return
     End
 };
 
-EvtScript N(EVS_PlayRestingSong) = {
+EvtScript EVS_PlayRestingSong = {
     Call(SetMusic, 0, SONG_TAKING_REST, 0, VOL_LEVEL_FULL)
     Return
     End

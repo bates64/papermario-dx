@@ -4,7 +4,7 @@
 #include "world/common/ai/MontyMoleAI.inc.c"
 #include "world/common/ai/WanderRangedAI.inc.c"
 
-EvtScript N(EVS_NpcDefeat_MontyMole_Stone) = {
+EvtScript EVS_NpcDefeat_MontyMole_Stone = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -21,7 +21,7 @@ EvtScript N(EVS_NpcDefeat_MontyMole_Stone) = {
     End
 };
 
-MobileAISettings N(AISettings_MontyMole_StoneThrower) = {
+MobileAISettings AISettings_MontyMole_StoneThrower = {
     .moveSpeed = 1.7f,
     .moveTime = 90,
     .alertRadius = 110.0f,
@@ -31,62 +31,62 @@ MobileAISettings N(AISettings_MontyMole_StoneThrower) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_MontyMole_StoneThrower) = {
+EvtScript EVS_NpcAI_MontyMole_StoneThrower = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_FLIP_INSTANTLY, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(RandInt, 15, LVar0)
     Add(LVar0, 15)
     Wait(LVar0)
-    Call(N(MontyMoleAI_Main), Ref(N(AISettings_MontyMole_StoneThrower)))
+    Call(MontyMoleAI_Main, Ref(AISettings_MontyMole_StoneThrower))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_MontyMole_StoneThrower) = {
+NpcSettings NpcSettings_MontyMole_StoneThrower = {
     .height = 20,
     .radius = 24,
     .level = ACTOR_LEVEL_MONTY_MOLE,
-    .doAI = &N(EVS_NpcAI_MontyMole_StoneThrower),
+    .doAI = &EVS_NpcAI_MontyMole_StoneThrower,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
-MobileAISettings N(AISettings_MontyMole_Stone) = {
+MobileAISettings AISettings_MontyMole_Stone = {
     .moveSpeed = 8.3f,
     .alertRadius = 2.5f,
     .alertOffsetDist = 0.4f,
     .playerSearchInterval = -1,
 };
 
-EvtScript N(EVS_NpcAI_MontyMole_Stone) = {
+EvtScript EVS_NpcAI_MontyMole_Stone = {
     Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_IDLE)
     Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, 0)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 17)
     Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_R, 17)
-    Call(N(MissileAI_Main), Ref(N(AISettings_MontyMole_Stone)))
+    Call(MissileAI_Main, Ref(AISettings_MontyMole_Stone))
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_MontyMole_Stone_DoNothing) = {
+EvtScript EVS_NpcHit_MontyMole_Stone_DoNothing = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_MontyMole_Stone) = {
-    Call(N(GetEncounterEnemyIsOwner))
+EvtScript EVS_NpcHit_MontyMole_Stone = {
+    Call(GetEncounterEnemyIsOwner)
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcHit_MontyMole_Stone_DoNothing)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcHit_MontyMole_Stone_DoNothing))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_SPIN)
             Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_REFLECTING)
-            Call(N(MissileAI_Reflect))
+            Call(MissileAI_Reflect)
             IfEq(LVar0, 0)
                 Return
             EndIf
@@ -100,16 +100,16 @@ EvtScript N(EVS_NpcHit_MontyMole_Stone) = {
         CaseDefault
             Call(SetBattleAsScripted)
     EndSwitch
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MontyMole_Stone)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_MontyMole_Stone))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_MontyMole_Stone) = {
+NpcSettings NpcSettings_MontyMole_Stone = {
     .height = 12,
     .radius = 12,
-    .doAI = &N(EVS_NpcAI_MontyMole_Stone),
-    .onHit = &N(EVS_NpcHit_MontyMole_Stone),
-    .onDefeat = &N(EVS_NpcDefeat_MontyMole_Stone),
+    .doAI = &EVS_NpcAI_MontyMole_Stone,
+    .onHit = &EVS_NpcHit_MontyMole_Stone,
+    .onDefeat = &EVS_NpcDefeat_MontyMole_Stone,
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

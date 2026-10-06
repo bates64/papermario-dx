@@ -1,7 +1,7 @@
 #include "isk_18.h"
 #include "effects.h"
 
-EvtScript N(EVS_SetupFlames) = {
+EvtScript EVS_SetupFlames = {
     PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 305, -738, 435, Float(0.3), LVar0)
     PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 138, -738, 514, Float(0.3), LVar0)
     PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -46, -738, 530, Float(0.3), LVar0)

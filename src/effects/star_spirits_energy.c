@@ -1,8 +1,6 @@
 #include "common.h"
 #include "effects_internal.h"
 
-#define NAMESPACE star_spirit_energy
-
 extern Gfx D_09004E00_412090[];
 extern Gfx D_09005168_4123F8[];
 extern Gfx D_090051C8_412458[];

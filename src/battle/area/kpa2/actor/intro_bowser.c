@@ -149,7 +149,6 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 20 },
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 #include "common/SetBowserFireBreathScales.inc.c"
 #include "common/UpdateEnchantedBowserColors.inc.c"
 #include "common/FadeBackgroundDarken.inc.c"
@@ -422,9 +421,9 @@ EvtScript N(EVS_Attack_FireBreath) = {
     Sub(LVar3, 40)
     Set(LVar4, 20)
     PlayEffect(EFFECT_FIRE_BREATH, 2, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 50, 1, 24)
-    Call(N(SetBowserFireBreathScales), LVarF)
+    Call(SetBowserFireBreathScales, LVarF)
     Thread
-        Call(N(StartRumbleWithParams), 50, 148)
+        Call(StartRumbleWithParams, 50, 148)
         Call(PlaySound, SOUND_BOWSER_FIRE_BREATH_LOOP)
         Wait(70)
         Call(PlaySound, SOUND_BOWSER_FIRE_BREATH_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
@@ -533,13 +532,13 @@ EvtScript N(EVS_ReturnHome) = {
 };
 
 EvtScript N(EVS_AnimateImgFX) = {
-    Call(N(UpdateEnchantedBowserColors))
+    Call(UpdateEnchantedBowserColors)
     Return
     End
 };
 
 EvtScript N(EVS_StarRodCast) = {
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
@@ -548,7 +547,7 @@ EvtScript N(EVS_StarRodCast) = {
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_GATHER)
             Add(LVar2, 10)
-            Call(N(StarRodAppearEffect), LVar0, LVar1, LVar2, Float(2.5), Float(0.05))
+            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, Float(2.5), Float(0.05))
         EndThread
     Else
         Add(LVar0, 6)
@@ -556,7 +555,7 @@ EvtScript N(EVS_StarRodCast) = {
         Thread
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_GATHER)
             Add(LVar2, 10)
-            Call(N(StarRodAppearEffect), LVar0, LVar1, LVar2, Float(2.5), Float(0.02))
+            Call(StarRodAppearEffect, LVar0, LVar1, LVar2, Float(2.5), Float(0.02))
         EndThread
     EndIf
     Wait(65)
@@ -585,7 +584,7 @@ EvtScript N(EVS_StarRodCast) = {
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 1, ACTOR_DECORATION_RADIAL_STAR_EMITTER)
     Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(BoostedDefense)))
     Call(SetStatusTable, ACTOR_SELF, Ref(N(BoostedStatusTable)))
-    Call(N(RemoveChillOut))
+    Call(RemoveChillOut)
     Wait(3)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
     IfNotFlag(LVar3, STATUS_FLAG_SHRINK)
@@ -602,11 +601,11 @@ EvtScript N(EVS_StarRodCast) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BOWSER_STAR_ROD_ENCHANT)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(N(StarRodPowerUpEffect), LVar0, LVar1, LVar2, Float(0.8))
+        Call(StarRodPowerUpEffect, LVar0, LVar1, LVar2, Float(0.8))
     EndThread
     Wait(75)
     Thread
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
     EndThread
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_RearUpLaugh)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)

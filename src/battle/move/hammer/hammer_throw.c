@@ -5,8 +5,6 @@
 #include "sprite/player.h"
 #include "include_asset.h"
 
-#define NAMESPACE battle_move_hammer_throw
-
 #include "battle/common/move/HammerSupport.inc.c"
 
 
@@ -29,14 +27,14 @@ INCLUDE_PAL("battle/move/hammer/ultra_hammer.pal", battle_move_hammer_throw_ultr
 #include "battle/move/hammer/super_hammer.gfx.inc.c"
 #include "battle/move/hammer/ultra_hammer.gfx.inc.c"
 
-EntityModelScript N(EMS_DustyHammer) = STANDARD_ENTITY_MODEL_SCRIPT(N(dusty_hammer_gfx), RENDER_MODE_ALPHATEST);
-EntityModelScript N(EMS_BasicHammer) = STANDARD_ENTITY_MODEL_SCRIPT(N(basic_hammer_gfx), RENDER_MODE_ALPHATEST);
-EntityModelScript N(EMS_SuperHammer) = STANDARD_ENTITY_MODEL_SCRIPT(N(super_hammer_gfx), RENDER_MODE_ALPHATEST);
-EntityModelScript N(EMS_UltraHammer) = STANDARD_ENTITY_MODEL_SCRIPT(N(ultra_hammer_gfx), RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_DustyHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_dusty_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_BasicHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_basic_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_SuperHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_super_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_UltraHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_ultra_hammer_gfx, RENDER_MODE_ALPHATEST);
 
-extern EvtScript N(EVS_UseMove_Impl);
+extern EvtScript EVS_UseMove_Impl;
 
-EvtScript N(EVS_UseMove) = {
+EvtScript EVS_UseMove = {
     Call(ShowActionHud, true)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
@@ -44,24 +42,24 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 50) // duration
             Set(LVarE, BASIC_HAMMER_DMG_BAD)
             Set(LVarF, BASIC_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(1)
             Set(LVarD, 50) // duration
             Set(LVarE, SUPER_HAMMER_DMG_BAD)
             Set(LVarF, SUPER_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
         CaseEq(2)
             Set(LVarD, 50) // duration
             Set(LVarE, ULTRA_HAMMER_DMG_BAD)
             Set(LVarF, ULTRA_HAMMER_DMG_GOOD)
-            ExecWait(N(EVS_UseMove_Impl))
+            ExecWait(EVS_UseMove_Impl)
     EndSwitch
     Return
     End
 };
 
 
-EvtScript N(EVS_802A3E5C) = {
+EvtScript EVS_802A3E5C = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
     Set(LVar1, 0)
@@ -92,7 +90,7 @@ EvtScript N(EVS_802A3E5C) = {
     End
 };
 
-EvtScript N(EVS_802A3FE0) = {
+EvtScript EVS_802A3FE0 = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
     Set(LVar1, 0)
@@ -123,7 +121,7 @@ EvtScript N(EVS_802A3FE0) = {
     End
 };
 
-EvtScript N(EVS_802A4164) = {
+EvtScript EVS_802A4164 = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
     Set(LVar1, 0)
@@ -154,7 +152,7 @@ EvtScript N(EVS_802A4164) = {
     End
 };
 
-EvtScript N(EVS_UseMove_Impl) = {
+EvtScript EVS_UseMove_Impl = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
@@ -168,11 +166,11 @@ EvtScript N(EVS_UseMove_Impl) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            ExecWait(N(EVS_802A3E5C))
+            ExecWait(EVS_802A3E5C)
         CaseEq(1)
-            ExecWait(N(EVS_802A3FE0))
+            ExecWait(EVS_802A3FE0)
         CaseEq(2)
-            ExecWait(N(EVS_802A4164))
+            ExecWait(EVS_802A4164)
     EndSwitch
     Call(InitTargetIterator)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_ATTACK_APPROACH)
@@ -196,7 +194,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     EndSwitch
     Call(GetActionCommandMode, LVar0)
     IfGt(LVar0, AC_MODE_NOT_LEARNED)
-        Call(N(ShouldMovesAutoSucceed))
+        Call(ShouldMovesAutoSucceed)
         IfEq(LVar0, 0)
             Loop(45)
                 Wait(1)
@@ -271,11 +269,11 @@ EvtScript N(EVS_UseMove_Impl) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
-            Call(CreateVirtualEntity, LVarA, Ref(N(EMS_BasicHammer)))
+            Call(CreateVirtualEntity, LVarA, Ref(EMS_BasicHammer))
         CaseEq(1)
-            Call(CreateVirtualEntity, LVarA, Ref(N(EMS_SuperHammer)))
+            Call(CreateVirtualEntity, LVarA, Ref(EMS_SuperHammer))
         CaseEq(2)
-            Call(CreateVirtualEntity, LVarA, Ref(N(EMS_UltraHammer)))
+            Call(CreateVirtualEntity, LVarA, Ref(EMS_UltraHammer))
     EndSwitch
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar0, 20)
@@ -318,7 +316,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     IfEq(LVar3, HIT_RESULT_MISS)
         Call(VirtualEntityLandJump, LVarA)
         Call(DeleteVirtualEntity, LVarA)
-        ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+        ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         Return
     EndIf
     Thread
@@ -418,11 +416,11 @@ EvtScript N(EVS_UseMove_Impl) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_SmashSuccess))
+            ExecWait(EVS_HammerSupport_ReturnHome_SmashSuccess)
         EndCaseGroup
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_HammerSupport_ReturnHome_SmashMiss))
+            ExecWait(EVS_HammerSupport_ReturnHome_SmashMiss)
         EndCaseGroup
     EndSwitch
     Return
@@ -430,5 +428,5 @@ EvtScript N(EVS_UseMove_Impl) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
-    &N(EVS_UseMove),
+    &EVS_UseMove,
 );

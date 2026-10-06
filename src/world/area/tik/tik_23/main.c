@@ -2,27 +2,27 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_ExitWalk_tik_24_1) = EVT_EXIT_WALK(60, tik_23_ENTRY_0, "tik_24", tik_24_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_24_1 = EVT_EXIT_WALK(60, tik_23_ENTRY_0, "tik_24", tik_24_ENTRY_1);
 
-EvtScript N(EVS_GotoMap_tik_20_2) = {
+EvtScript EVS_GotoMap_tik_20_2 = {
     Call(GotoMap, Ref("tik_20"), tik_20_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_ExitPipe_tik_20_2) = EVT_EXIT_PIPE_HORIZONTAL(tik_23_ENTRY_1, COLLIDER_ttd, N(EVS_GotoMap_tik_20_2));
+EvtScript EVS_ExitPipe_tik_20_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_23_ENTRY_1, COLLIDER_ttd, EVS_GotoMap_tik_20_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_24_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitPipe_tik_20_2)), TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_tik_24_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitPipe_tik_20_2), TRIGGER_WALL_PUSH, COLLIDER_ttd, 1, 0)
     Return
     End
 };
 
 #include "../common/DripVolumes.inc.c"
 
-DripVolumeList N(DripVolumes) = {
+DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
@@ -44,33 +44,33 @@ DripVolumeList N(DripVolumes) = {
     }
 };
 
-EvtScript N(EVS_SetupDrips) = {
-    Set(LVar0, Ref(N(DripVolumes)))
+EvtScript EVS_SetupDrips = {
+    Set(LVar0, Ref(DripVolumes))
     Set(LVar1, MODEL_sizuku)
-    Exec(N(EVS_CreateDripVolumes))
+    Exec(EVS_CreateDripVolumes)
     Return
     End
 };
 
 #include "../common/Flotsam.inc.c"
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_23)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, tik_23_ENTRY_1)
-        EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, N(EVS_BindExitTriggers))
+        EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
     EndIf
     Wait(1)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_TIK23_WATER)
-    ExecWait(N(EVS_SetupDrips))
+    ExecWait(EVS_SetupDrips)
     Call(SetTexPanner, MODEL_nagare1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o97, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o98, TEX_PANNER_0)
@@ -84,13 +84,13 @@ EvtScript N(EVS_Main) = {
     EndThread
     Thread
         Set(LVar2, MODEL_bin)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
         Wait(5)
         Set(LVar2, MODEL_kan1)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
         Wait(5)
         Set(LVar2, MODEL_kan2)
-        Exec(N(EVS_Flotsam_Bobbing))
+        Exec(EVS_Flotsam_Bobbing)
     EndThread
     Return
     End

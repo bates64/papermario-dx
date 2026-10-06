@@ -9,7 +9,7 @@ enum {
     DAMAGE_PART_SMOKE_STACK,
 };
 
-API_CALLABLE(N(SetMachineLightningColor)) {
+API_CALLABLE(SetMachineLightningColor) {
     EffectInstance* effect = (EffectInstance*) script->varTable[15];
 
     effect->data.lightningBolt->outerColor.r = 69;
@@ -21,14 +21,14 @@ API_CALLABLE(N(SetMachineLightningColor)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_AnimateMachineLightning) = {
+EvtScript EVS_AnimateMachineLightning = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Loop(0)
         PlayEffect(EFFECT_LIGHTNING_BOLT, 0, Float(-16.0), Float(102.0), Float(-4.1), Float(80.9), Float(102.0), Float(-4.1), Float(0.5), 6)
-        Call(N(SetMachineLightningColor))
+        Call(SetMachineLightningColor)
         Wait(4)
         PlayEffect(EFFECT_LIGHTNING_BOLT, 0, Float(80.9), Float(102.0), Float(-4.1), Float(-16.0), Float(102.0), Float(-4.1), Float(0.5), 6)
-        Call(N(SetMachineLightningColor))
+        Call(SetMachineLightningColor)
         Wait(4)
         IfGe(GB_FLO18_MachineDamage_Right, 3)
             BreakLoop
@@ -37,11 +37,11 @@ EvtScript N(EVS_AnimateMachineLightning) = {
     Set(LVar0, 6)
     Loop(5)
         PlayEffect(EFFECT_LIGHTNING_BOLT, 0, Float(-16.0), Float(102.0), Float(-4.1), Float(80.9), Float(102.0), Float(-4.1), Float(0.5), 6)
-        Call(N(SetMachineLightningColor))
+        Call(SetMachineLightningColor)
         Wait(LVar0)
         Add(LVar0, 2)
         PlayEffect(EFFECT_LIGHTNING_BOLT, 0, Float(80.9), Float(102.0), Float(-4.1), Float(-16.0), Float(102.0), Float(-4.1), Float(0.5), 6)
-        Call(N(SetMachineLightningColor))
+        Call(SetMachineLightningColor)
         Wait(LVar0)
         Add(LVar0, 2)
     EndLoop
@@ -49,7 +49,7 @@ EvtScript N(EVS_AnimateMachineLightning) = {
     End
 };
 
-EvtScript N(EVS_UpdateSmokeParticle) = {
+EvtScript EVS_UpdateSmokeParticle = {
     Call(EnableModel, LVarF, true)
     Set(LVarE, 159)
     Loop(LVarE)
@@ -79,7 +79,7 @@ EvtScript N(EVS_UpdateSmokeParticle) = {
     End
 };
 
-EvtScript N(EVS_ManageSmoke) = {
+EvtScript EVS_ManageSmoke = {
     Set(LVarE, 0)
     Label(0)
         IfGe(GB_FLO18_MachineDamage_Right, 3)
@@ -97,7 +97,7 @@ EvtScript N(EVS_ManageSmoke) = {
         SetF(LVar7, Float(0.296))
         Set(LVarF, LVarE)
         Add(LVarF, CLONED_MODEL(0))
-        Exec(N(EVS_UpdateSmokeParticle))
+        Exec(EVS_UpdateSmokeParticle)
         Add(LVarE, 1)
         IfGe(LVarE, 16)
             Set(LVarE, 0)
@@ -108,7 +108,7 @@ EvtScript N(EVS_ManageSmoke) = {
     End
 };
 
-EvtScript N(EVS_ShakeMachine) = {
+EvtScript EVS_ShakeMachine = {
     IfEq(MF_MachineShaking, true)
         Return
     EndIf
@@ -242,7 +242,7 @@ EvtScript N(EVS_ShakeMachine) = {
     End
 };
 
-EvtScript N(EVS_DamagedLeftOnce) = {
+EvtScript EVS_DamagedLeftOnce = {
     SetF(LVar0, 0)
     SetF(LVar1, 0)
     SetF(LVar2, 0)
@@ -283,7 +283,7 @@ EvtScript N(EVS_DamagedLeftOnce) = {
     End
 };
 
-EvtScript N(EVS_DamagedRightOnce) = {
+EvtScript EVS_DamagedRightOnce = {
     SetF(LVar0, 0)
     SetF(LVar1, 0)
     SetF(LVar2, 0)
@@ -330,7 +330,7 @@ EvtScript N(EVS_DamagedRightOnce) = {
     End
 };
 
-EvtScript N(EVS_DamagedLeftTwice) = {
+EvtScript EVS_DamagedLeftTwice = {
     SetF(LVar2, 0)
     SetF(LVar1, 0)
     SetF(LVar0, 0)
@@ -360,7 +360,7 @@ EvtScript N(EVS_DamagedLeftTwice) = {
     End
 };
 
-EvtScript N(EVS_DamagedRightTwice) = {
+EvtScript EVS_DamagedRightTwice = {
     SetF(LVar2, 0)
     SetF(LVar1, 0)
     SetF(LVar0, 0)
@@ -401,7 +401,7 @@ EvtScript N(EVS_DamagedRightTwice) = {
     End
 };
 
-EvtScript N(EVS_BreakSmokestack) = {
+EvtScript EVS_BreakSmokestack = {
     SetF(LVar0, 0)
     SetF(LVar1, 0)
     SetF(LVar2, 0)
@@ -436,7 +436,7 @@ EvtScript N(EVS_BreakSmokestack) = {
     End
 };
 
-EvtScript N(EVS_BreakAntenna) = {
+EvtScript EVS_BreakAntenna = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o131, COLLIDER_FLAGS_UPPER_MASK)
     SetF(LVar0, 0)
     SetF(LVar1, 0)
@@ -479,7 +479,7 @@ EvtScript N(EVS_BreakAntenna) = {
     End
 };
 
-Vec3i N(SmokeBurstPositions)[] = {
+Vec3i SmokeBurstPositions[] = {
     {  0,  0, 27 },
     { 80, 35, 27 },
     { 60, 10, 27 },
@@ -490,7 +490,7 @@ Vec3i N(SmokeBurstPositions)[] = {
     { 80, 35, 27 },
 };
 
-EvtScript N(EVS_DamageMachine) = {
+EvtScript EVS_DamageMachine = {
     #define LABEL_DONE 0
     Set(LVarA, LVar0) // in: damage part
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -498,7 +498,7 @@ EvtScript N(EVS_DamageMachine) = {
         Return
     EndIf
     Call(PlaySound, SOUND_PUFF_PUFF_SMASH)
-    ExecWait(N(EVS_ShakeMachine))
+    ExecWait(EVS_ShakeMachine)
     Set(LVar0, LVarA)
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_PUFF_PUFF_GUARDS)
         Set(MF_HitGuardedMachine, true)
@@ -519,28 +519,28 @@ EvtScript N(EVS_DamageMachine) = {
         Label(11)
         IfEq(GB_FLO18_MachineDamage_Left, 0)
             Set(GB_FLO18_MachineDamage_Left, 1)
-            Exec(N(EVS_DamagedLeftOnce))
+            Exec(EVS_DamagedLeftOnce)
             Goto(LABEL_DONE)
         EndIf
     EndIf
     IfEq(LVar0, DAMAGE_PART_RIGHT_SIDE)
         IfEq(GB_FLO18_MachineDamage_Right, 0)
             Set(GB_FLO18_MachineDamage_Right, 1)
-            Exec(N(EVS_DamagedRightOnce))
+            Exec(EVS_DamagedRightOnce)
             Goto(LABEL_DONE)
         EndIf
     EndIf
     IfEq(LVar0, DAMAGE_PART_LEFT_SIDE)
         IfEq(GB_FLO18_MachineDamage_Left, 1)
             Set(GB_FLO18_MachineDamage_Left, 2)
-            Exec(N(EVS_DamagedLeftTwice))
+            Exec(EVS_DamagedLeftTwice)
             Goto(LABEL_DONE)
         EndIf
     EndIf
     IfEq(GB_FLO18_MachineDamage_Left, 2)
         IfEq(GB_FLO18_MachineDamage_Right, 1)
             Set(GB_FLO18_MachineDamage_Right, 2)
-            Exec(N(EVS_DamagedRightTwice))
+            Exec(EVS_DamagedRightTwice)
             Goto(LABEL_DONE)
         EndIf
     EndIf
@@ -553,9 +553,9 @@ EvtScript N(EVS_DamageMachine) = {
             Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Set(GB_FLO18_MachineDamage_Right, 3)
-            ExecWait(N(EVS_ShakeMachine))
-            ExecWait(N(EVS_ShakeMachine))
-            ExecWait(N(EVS_ShakeMachine))
+            ExecWait(EVS_ShakeMachine)
+            ExecWait(EVS_ShakeMachine)
+            ExecWait(EVS_ShakeMachine)
             Wait(30)
             Call(GetModelCenter, MODEL_o113)
             PlayEffect(EFFECT_SMOKE_IMPACT, 0, LVar0, 50, LVar2, 100, 20, 0, 30)
@@ -564,8 +564,8 @@ EvtScript N(EVS_DamageMachine) = {
             Wait(15)
             Thread
                 Set(LVar3, 6)
-                UseBuf(Ref(N(SmokeBurstPositions)))
-                Loop(ARRAY_COUNT(N(SmokeBurstPositions)))
+                UseBuf(Ref(SmokeBurstPositions))
+                Loop(ARRAY_COUNT(SmokeBurstPositions))
                     BufRead3(LVar0, LVar1, LVar2)
                     Call(PlaySoundAt, SOUND_FLO_PUFF_PUFF_SMOKE_BURST, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
                     PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, 1, 6)
@@ -578,8 +578,8 @@ EvtScript N(EVS_DamageMachine) = {
                 EndLoop
                 SetF(LVar4, Float(2.0))
                 Loop(2)
-                    UseBuf(Ref(N(SmokeBurstPositions)))
-                    Loop(ARRAY_COUNT(N(SmokeBurstPositions)))
+                    UseBuf(Ref(SmokeBurstPositions))
+                    Loop(ARRAY_COUNT(SmokeBurstPositions))
                         BufRead3(LVar0, LVar1, LVar2)
                         Call(PlaySoundAt, SOUND_FLO_PUFF_PUFF_SMOKE_BURST, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
                         PlayEffect(EFFECT_SMOKE_BURST, 0, LVar0, LVar1, LVar2, 1, 25)
@@ -595,12 +595,12 @@ EvtScript N(EVS_DamageMachine) = {
             Call(PlaySoundAt, SOUND_FLO_PUFF_PUFF_EXPLODE, SOUND_SPACE_DEFAULT, 0, 30, 30)
             PlayEffect(EFFECT_RING_BLAST, 0, 0, 30, 30, Float(4.0), 40)
             Call(ShakeCam, CAM_DEFAULT, 0, 20, Float(2.0))
-            ExecWait(N(EVS_BreakSmokestack))
+            ExecWait(EVS_BreakSmokestack)
             Call(PlaySoundAtCollider, COLLIDER_o126, SOUND_LRAW_PUFF_PUFF_MACHINE | SOUND_ID_TRIGGER_CHANGE_SOUND, SOUND_SPACE_DEFAULT)
             Call(FadeOutMusic, 0, 1000)
             Call(DisablePlayerPhysics, true)
             Wait(30)
-            ExecWait(N(EVS_BreakAntenna))
+            ExecWait(EVS_BreakAntenna)
             Set(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(GotoMap, Ref("flo_15"), flo_15_ENTRY_1)
             Wait(70)
@@ -613,27 +613,27 @@ EvtScript N(EVS_DamageMachine) = {
     End
 };
 
-BombTrigger N(Machine_BombTrigger_01) = {
+BombTrigger Machine_BombTrigger_01 = {
     .pos = { 5.0f, 0.0f, -10.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(Machine_BombTrigger_02) = {
+BombTrigger Machine_BombTrigger_02 = {
     .pos = { -5.0f, 0.0f, -20.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(Machine_BombTrigger_03) = {
+BombTrigger Machine_BombTrigger_03 = {
     .pos = { 50.0f, 0.0f, -10.0f },
     .diameter = 0.0f
 };
 
-BombTrigger N(Machine_BombTrigger_04) = {
+BombTrigger Machine_BombTrigger_04 = {
     .pos = { 105.0f, 0.0f, -10.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupMachine) = {
+EvtScript EVS_SetupMachine = {
     IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(EnableModel, MODEL_o101, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
@@ -653,7 +653,7 @@ EvtScript N(EVS_SetupMachine) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o131, COLLIDER_FLAGS_UPPER_MASK)
         Return
     EndIf
-    Exec(N(EVS_AnimateMachineLightning))
+    Exec(EVS_AnimateMachineLightning)
     Call(EnableModel, MODEL_o101, false)
     IfGe(GB_FLO18_MachineDamage_Left, 1)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o130, COLLIDER_FLAGS_UPPER_MASK)
@@ -682,17 +682,17 @@ EvtScript N(EVS_SetupMachine) = {
         Return
     EndIf
     Set(LVar0, DAMAGE_PART_LEFT_SIDE)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_WALL_HAMMER, COLLIDER_o174, 1, 0)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_POINT_BOMB, Ref(N(Machine_BombTrigger_01)), 1, 0)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_POINT_BOMB, Ref(N(Machine_BombTrigger_02)), 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_WALL_HAMMER, COLLIDER_o174, 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_POINT_BOMB, Ref(Machine_BombTrigger_01), 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_POINT_BOMB, Ref(Machine_BombTrigger_02), 1, 0)
     Set(LVar0, DAMAGE_PART_RIGHT_SIDE)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_WALL_HAMMER, COLLIDER_o127, 1, 0)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_POINT_BOMB, Ref(N(Machine_BombTrigger_03)), 1, 0)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_POINT_BOMB, Ref(N(Machine_BombTrigger_04)), 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_WALL_HAMMER, COLLIDER_o127, 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_POINT_BOMB, Ref(Machine_BombTrigger_03), 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_POINT_BOMB, Ref(Machine_BombTrigger_04), 1, 0)
     Set(LVar0, DAMAGE_PART_LEVER)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_WALL_HAMMER, COLLIDER_o130, 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_WALL_HAMMER, COLLIDER_o130, 1, 0)
     Set(LVar0, DAMAGE_PART_SMOKE_STACK)
-    BindTrigger(Ref(N(EVS_DamageMachine)), TRIGGER_WALL_HAMMER, COLLIDER_o131, 1, 0)
+    BindTrigger(Ref(EVS_DamageMachine), TRIGGER_WALL_HAMMER, COLLIDER_o131, 1, 0)
     Set(LVar0, 0)
     Loop(16)
         Set(LVar1, LVar0)
@@ -701,7 +701,7 @@ EvtScript N(EVS_SetupMachine) = {
         Call(CloneModel, MODEL_o101, LVar1)
         Call(EnableModel, LVar1, false)
     EndLoop
-    Exec(N(EVS_ManageSmoke))
+    Exec(EVS_ManageSmoke)
     Call(EnableTexPanning, MODEL_o92, true)
     Call(EnableTexPanning, MODEL_o93, true)
     Call(EnableTexPanning, MODEL_o94, true)

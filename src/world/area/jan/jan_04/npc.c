@@ -7,7 +7,7 @@
 
 #include "world/common/util/LoadPartyImage.inc.c"
 
-EvtScript N(EVS_ShakeTree_Sushie) = {
+EvtScript EVS_ShakeTree_Sushie = {
     Call(GetNpcVar, NPC_Sushie, 0, LVar0)
     IfEq(LVar0, 2)
         Return
@@ -64,7 +64,7 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
     End
 };
 
-EvtScript N(EVS_Sushie_ScoldPlayerLeaving) = {
+EvtScript EVS_Sushie_ScoldPlayerLeaving = {
     Label(1)
         Call(GetSelfVar, 0, LVar0)
         Switch(LVar0)
@@ -92,7 +92,7 @@ EvtScript N(EVS_Sushie_ScoldPlayerLeaving) = {
     End
 };
 
-EvtScript N(EVS_Sushie_ShoutAtChildren) = {
+EvtScript EVS_Sushie_ShoutAtChildren = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_CH5_009E, 320, 60)
     Call(DisablePlayerInput, false)
@@ -124,26 +124,26 @@ EvtScript N(EVS_Sushie_ShoutAtChildren) = {
     End
 };
 
-BombTrigger N(BombPos_SushieTree) = {
+BombTrigger BombPos_SushieTree = {
     .pos = { 30.0f, 0.0f, -110.0f },
     .diameter = 0.0f
 };
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
-EvtScript N(EVS_NpcIdle_Sushie) = {
+EvtScript EVS_NpcIdle_Sushie = {
     Set(LVar0, GF_JAN04_SushieTreeHitCounterA)
     Set(LVar1, GF_JAN04_SushieTreeHitCounterB)
     Add(LVar0, LVar1)
     IfEq(LVar0, 0)
-        ExecWait(N(EVS_Sushie_ShoutAtChildren))
+        ExecWait(EVS_Sushie_ShoutAtChildren)
     Else
         Call(SetSelfVar, 0, 1)
     EndIf
     Set(AF_JAN04_IgnoreSushieTreeHit, false)
-    BindTrigger(Ref(N(EVS_ShakeTree_Sushie)), TRIGGER_WALL_HAMMER, COLLIDER_o34, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree_Sushie)), TRIGGER_POINT_BOMB, Ref(N(BombPos_SushieTree)), 1, 0)
-    ExecGetTID(N(EVS_Sushie_ScoldPlayerLeaving), LVar9)
+    BindTrigger(Ref(EVS_ShakeTree_Sushie), TRIGGER_WALL_HAMMER, COLLIDER_o34, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree_Sushie), TRIGGER_POINT_BOMB, Ref(BombPos_SushieTree), 1, 0)
+    ExecGetTID(EVS_Sushie_ScoldPlayerLeaving, LVar9)
     Label(0)
         Call(GetSelfVar, 0, LVar0)
         IfNe(LVar0, 10)
@@ -172,12 +172,12 @@ EvtScript N(EVS_NpcIdle_Sushie) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_00A7)
     Call(CloseMessage)
-    Call(N(ChangeNpcToPartner), NPC_Sushie, PARTNER_SUSHIE)
-    Call(N(LoadPartyImage), Ref("party_opuku"))
-    Exec(N(EVS_PushNewPartnerSong))
+    Call(ChangeNpcToPartner, NPC_Sushie, PARTNER_SUSHIE)
+    Call(LoadPartyImage, Ref("party_opuku"))
+    Exec(EVS_PushNewPartnerSong)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_018F, 160, 40)
-    Exec(N(EVS_PopSong))
+    Exec(EVS_PopSong)
     Wait(10 * DT)
     Call(ResetCam, CAM_DEFAULT, Float(5.0))
     Set(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
@@ -187,7 +187,7 @@ EvtScript N(EVS_NpcIdle_Sushie) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Sushie) = {
+EvtScript EVS_NpcInit_Sushie = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_04_ENTRY_3)
         Return
@@ -210,7 +210,7 @@ EvtScript N(EVS_NpcInit_Sushie) = {
                 Call(EnableNpcShadow, NPC_SELF, true)
             EndIf
         EndIf
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Sushie)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Sushie))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -218,7 +218,7 @@ EvtScript N(EVS_NpcInit_Sushie) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bubulb) = {
+EvtScript EVS_NpcInteract_Bubulb = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             IfEq(GF_JAN04_Met_Bubulb, false)
@@ -248,8 +248,8 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb)))
+EvtScript EVS_NpcInit_Bubulb = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
     IfLt(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         IfEq(GF_JAN04_Met_Bubulb, false)
             Call(SetNpcCollisionSize, NPC_SELF, 25, 25)
@@ -261,13 +261,13 @@ EvtScript N(EVS_NpcInit_Bubulb) = {
     End
 };
 
-NpcData N(NpcData_Characters)[] = {
+NpcData NpcData_Characters[] = {
     {
         .id = NPC_Sushie,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Sushie),
-        .settings = &N(NpcSettings_Sushie),
+        .init = &EVS_NpcInit_Sushie,
+        .settings = &NpcSettings_Sushie,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SUSHIE_ANIMS,
@@ -276,8 +276,8 @@ NpcData N(NpcData_Characters)[] = {
         .id = NPC_Bubulb,
         .pos = { -230.0f, 0.0f, -320.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Bubulb),
-        .settings = &N(NpcSettings_Bubulb),
+        .init = &EVS_NpcInit_Bubulb,
+        .settings = &NpcSettings_Bubulb,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = BUBULB_YELLOW_ANIMS,
@@ -285,12 +285,12 @@ NpcData N(NpcData_Characters)[] = {
     },
 };
 
-NpcData N(NpcData_YoshiKids)[] = {
+NpcData NpcData_YoshiKids[] = {
     {
         .id = NPC_YoshiKid_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_YoshiKid),
+        .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_GREEN_ANIMS,
@@ -300,7 +300,7 @@ NpcData N(NpcData_YoshiKids)[] = {
         .id = NPC_YoshiKid_02,
         .pos = { 45.0f, 0.0f, -70.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_YoshiKid),
+        .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_RED_ANIMS,
@@ -310,7 +310,7 @@ NpcData N(NpcData_YoshiKids)[] = {
         .id = NPC_YoshiKid_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_YoshiKid),
+        .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_BLUE_ANIMS,
@@ -320,7 +320,7 @@ NpcData N(NpcData_YoshiKids)[] = {
         .id = NPC_YoshiKid_04,
         .pos = { 20.0f, 0.0f, -70.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_YoshiKid),
+        .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_YELLOW_ANIMS,
@@ -330,7 +330,7 @@ NpcData N(NpcData_YoshiKids)[] = {
         .id = NPC_YoshiKid_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_YoshiKid),
+        .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_PURPLE_ANIMS,
@@ -338,13 +338,13 @@ NpcData N(NpcData_YoshiKids)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Characters)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Characters),
     {}
 };
 
-NpcGroupList N(EpilogueNPCs) = {
-    NPC_GROUP(N(NpcData_Characters)),
-    NPC_GROUP(N(NpcData_YoshiKids)),
+NpcGroupList EpilogueNPCs = {
+    NPC_GROUP(NpcData_Characters),
+    NPC_GROUP(NpcData_YoshiKids),
     {}
 };

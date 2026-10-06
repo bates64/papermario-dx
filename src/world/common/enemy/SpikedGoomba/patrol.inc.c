@@ -3,7 +3,7 @@
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-MobileAISettings N(AISettings_SpikedGoomba_Patrol) = {
+MobileAISettings AISettings_SpikedGoomba_Patrol = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_SpikedGoomba_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_SpikedGoomba_Patrol) = {
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_SpikedGoomba_Patrol)))
+EvtScript EVS_NpcAI_SpikedGoomba_Patrol = {
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_SpikedGoomba_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_SpikedGoomba_Patrol) = {
+NpcSettings NpcSettings_SpikedGoomba_Patrol = {
     .height = 23,
     .radius = 23,
     .level = ACTOR_LEVEL_SPIKED_GOOMBA,
-    .doAI = &N(EVS_NpcAI_SpikedGoomba_Patrol),
+    .doAI = &EVS_NpcAI_SpikedGoomba_Patrol,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

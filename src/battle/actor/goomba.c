@@ -2,33 +2,29 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Goomba.h"
 
-#ifndef NESTED_GOOMBA_INCLUDE
-#define NAMESPACE A(goomba)
-#endif
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorParams) {
+enum ActorParams {
     DMG_HEADBONK        = 1,
 };
 
 #ifndef NESTED_GOOMBA_INCLUDE
 
-extern EvtScript N(EVS_Init);
-extern s32 N(DefaultAnims)[];
+extern EvtScript EVS_Init;
+extern s32 DefaultAnims[];
 
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,             100,
@@ -53,15 +49,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 20 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -73,10 +69,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_GOOMBA,
     .level = ACTOR_LEVEL_GOOMBA,
     .maxHP = 2,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 90,
     .airLiftChance = 100,
     .hurricaneChance = 90,
@@ -93,7 +89,7 @@ export ActorBlueprint blueprint = {
 
 #endif // NESTED_GOOMBA_INCLUDE
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goomba_Idle,
     STATUS_KEY_STONE,     ANIM_Goomba_Still,
     STATUS_KEY_SLEEP,     ANIM_Goomba_Sleep,
@@ -107,7 +103,7 @@ s32 N(DefaultAnims)[] = {
 };
 
 // while shuffling around during idle
-s32 N(ShuffleAnims)[] = {
+s32 ShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goomba_Run,
     STATUS_KEY_STONE,     ANIM_Goomba_Still,
     STATUS_KEY_SLEEP,     ANIM_Goomba_Sleep,
@@ -120,15 +116,15 @@ s32 N(ShuffleAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(10)
         Call(RandInt, 80, LVar0)
         Add(LVar0, 80)
@@ -144,10 +140,10 @@ EvtScript N(EVS_Idle) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleRunToGoal, ACTOR_SELF, 0)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
         Loop(20)
             Label(1)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
@@ -160,10 +156,10 @@ EvtScript N(EVS_Idle) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(1.0))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleRunToGoal, ACTOR_SELF, 0)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(DefaultAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DefaultAnims))
         Loop(80)
             Label(2)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
@@ -178,7 +174,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
@@ -296,7 +292,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)

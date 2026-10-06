@@ -150,7 +150,6 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
 API_CALLABLE(N(GetActorPartOpacity)) {
     Bytecode* args = script->ptrReadPos;
@@ -445,7 +444,7 @@ EvtScript N(EVS_OnHit) = {
         Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-        Call(N(StartRumbleWithParams), 150, 10)
+        Call(StartRumbleWithParams, 150, 10)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
         EndThread
@@ -977,7 +976,7 @@ EvtScript N(EVS_Attack_IcyBreath) = {
                 PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(180.0), Float(2.0), Float(0.2), 30)
                 Call(N(SetBreathColors), LVarF)
             EndIf
-            Call(N(StartRumbleWithParams), 70, 60)
+            Call(StartRumbleWithParams, 70, 60)
             Thread
                 Call(ShakeCam, CAM_BATTLE, 0, 30, Float(0.3))
             EndThread
@@ -1007,7 +1006,7 @@ EvtScript N(EVS_Attack_IcyBreath) = {
         PlayEffect(EFFECT_HUFF_PUFF_BREATH, 0, LVar0, LVar1, LVar2, Float(180.0), Float(2.0), Float(1.0), 60)
         Call(N(SetBreathColors), LVarF)
     EndIf
-    Call(N(StartRumbleWithParams), 70, 100)
+    Call(StartRumbleWithParams, 70, 100)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 50, Float(0.3))
     EndThread
@@ -1621,7 +1620,7 @@ EvtScript N(EVS_Attack_CloneBreath) = {
             Else
                 SetF(LVar3, Float(180.0))
             EndIf
-            Call(N(StartRumbleWithParams), 100, 60)
+            Call(StartRumbleWithParams, 100, 60)
             Thread
                 Call(ShakeCam, CAM_BATTLE, 0, 30, Float(0.3))
             EndThread
@@ -1681,7 +1680,7 @@ EvtScript N(EVS_Attack_CloneBreath) = {
     Else
         SetF(LVar3, Float(180.0))
     EndIf
-    Call(N(StartRumbleWithParams), 100, 120)
+    Call(StartRumbleWithParams, 100, 120)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 60, Float(0.3))
     EndThread
@@ -1859,7 +1858,7 @@ EvtScript N(EVS_Attack_SpitBits) = {
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_CrystalKing_ExhaleLoop)
     Wait(20)
-    Call(N(StartRumbleWithParams), 70, 60)
+    Call(StartRumbleWithParams, 70, 60)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 30, Float(0.2))
     EndThread

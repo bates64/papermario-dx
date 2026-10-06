@@ -1,7 +1,7 @@
 #include "dgb_03.h"
 #include "entity.h"
 
-EvtScript N(EVS_UnlockPrompt_UpperDoor) = {
+EvtScript EVS_UnlockPrompt_UpperDoor = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
@@ -28,16 +28,16 @@ EvtScript N(EVS_UnlockPrompt_UpperDoor) = {
     End
 };
 
-EvtScript N(EVS_OpenLockedDoor) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_dgb_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
+EvtScript EVS_OpenLockedDoor = {
+    BindTrigger(Ref(EVS_ExitDoors_dgb_14_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittnw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_DGB03_UnlockedThirdFloor, false)
         Call(MakeEntity, Ref(Entity_Padlock), -355, 218, 75, 80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_OpenLockedDoor)))
+        Call(AssignScript, Ref(EVS_OpenLockedDoor))
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Call(MakeItemEntity, ITEM_STAR_PIECE, 0, 75, 100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB03_Item_StarPiece)

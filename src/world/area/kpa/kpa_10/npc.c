@@ -3,7 +3,7 @@
 #include "world/common/npc/ToadGuard/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
-NpcData N(NpcData_Prisoners)[] = {
+NpcData NpcData_Prisoners[] = {
     {
         .id = NPC_Toad_01,
 #if VERSION_JP
@@ -12,7 +12,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 845.0f, 30.0f, -285.0f },
 #endif
         .yaw = 0,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -26,7 +26,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 872.0f, 30.0f, -315.0f },
 #endif
         .yaw = 0,
-        .settings = &N(NpcSettings_Toad),
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -40,7 +40,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 900.0f, 30.0f, -285.0f },
 #endif
         .yaw = 0,
-        .settings = &N(NpcSettings_ToadGuard),
+        .settings = &NpcSettings_ToadGuard,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
@@ -48,7 +48,7 @@ NpcData N(NpcData_Prisoners)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Prisoners), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Prisoners, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_02),
     {}
 };

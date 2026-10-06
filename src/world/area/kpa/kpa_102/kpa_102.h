@@ -28,8 +28,6 @@ enum {
     NPC_HammerBros_Hammer6      = 56,
 };
 
-#define NAMESPACE kpa_102
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

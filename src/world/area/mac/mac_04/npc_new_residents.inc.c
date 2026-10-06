@@ -1,6 +1,6 @@
 #include "mac_04.h"
 
-EvtScript N(EVS_NpcInteract_NewResident1) = {
+EvtScript EVS_NpcInteract_NewResident1 = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -46,13 +46,13 @@ EvtScript N(EVS_NpcInteract_NewResident1) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_NewResident1) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_NewResident1)))
+EvtScript EVS_NpcInit_NewResident1 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_NewResident1))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_NewResident2) = {
+EvtScript EVS_NpcInteract_NewResident2 = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -98,8 +98,8 @@ EvtScript N(EVS_NpcInteract_NewResident2) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_NewResident2) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_NewResident2)))
+EvtScript EVS_NpcInit_NewResident2 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_NewResident2))
     Return
     End
 };

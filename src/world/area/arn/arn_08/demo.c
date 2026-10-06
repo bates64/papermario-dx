@@ -1,18 +1,18 @@
 #include "arn_08.h"
 #include "world/partners.h"
 
-API_CALLABLE(N(InitializeDemoEquipment)) {
+API_CALLABLE(InitializeDemoEquipment) {
     gPlayerData.bootsLevel = GEAR_RANK_SUPER;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetPartnerFollowDist)) {
+API_CALLABLE(SetPartnerFollowDist) {
     partner_disable_ai_soon();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ProvideDemoInputs) = {
-    Call(N(InitializeDemoEquipment))
+EvtScript EVS_ProvideDemoInputs = {
+    Call(InitializeDemoEquipment)
     Call(DemoJoystickXY, 2, 0)
     Wait(1)
     Call(DemoJoystickXY, 12, 4)
@@ -65,7 +65,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     Call(DemoJoystickXY, 1, 0)
     Wait(1)
     Call(DemoJoystickXY, 0, 0)
-    Call(N(SetPartnerFollowDist))
+    Call(SetPartnerFollowDist)
     Call(DemoSetButtons, BUTTON_A)
     Wait(12)
     Call(DemoSetButtons, 0)
@@ -80,7 +80,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -99,7 +99,7 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-API_CALLABLE(N(AwaitPlayerFallBelowFloor)) {
+API_CALLABLE(AwaitPlayerFallBelowFloor) {
     f32 fallDist;
     s32 colliderID;
 
@@ -123,24 +123,24 @@ API_CALLABLE(N(AwaitPlayerFallBelowFloor)) {
 }
 
 
-EvtScript N(EVS_8024116C) = {
-    Call(N(AwaitPlayerFallBelowFloor))
+EvtScript EVS_8024116C = {
+    Call(AwaitPlayerFallBelowFloor)
     Return
     End
 };
 
-s32 N(DemoInitState) = 0;
+s32 DemoInitState = 0;
 
-API_CALLABLE(N(SetupDemoScene)) {
+API_CALLABLE(SetupDemoScene) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    switch (N(DemoInitState)) {
+    switch (DemoInitState) {
         case 0:
-            N(DemoInitState) = 1;
+            DemoInitState = 1;
             break;
         case 1:
         case 2:
-            N(DemoInitState)++;
+            DemoInitState++;
             break;
         case 3: {
             partner_clear_player_tracking(gPartnerNpc);
@@ -157,12 +157,12 @@ API_CALLABLE(N(SetupDemoScene)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_PlayDemoScene) = {
+EvtScript EVS_PlayDemoScene = {
     Call(SetCamProperties, CAM_DEFAULT, Float(90.0), 0, 0, 0, Float(470.0), Float(17.0), Float(-7.0))
-    Call(N(SetupDemoScene))
+    Call(SetupDemoScene)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

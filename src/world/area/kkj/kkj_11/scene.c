@@ -1,6 +1,6 @@
 #include "kkj_11.h"
 
-EvtScript N(EVS_OpenAndCloseDoor) = {
+EvtScript EVS_OpenAndCloseDoor = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, -120, 10, EASING_LINEAR)
     Loop(0)
@@ -26,7 +26,7 @@ EvtScript N(EVS_OpenAndCloseDoor) = {
     End
 };
 
-EvtScript N(EVS_FirstTimeEnterHall) = {
+EvtScript EVS_FirstTimeEnterHall = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -45,7 +45,7 @@ EvtScript N(EVS_FirstTimeEnterHall) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(30)
     Set(AF_KKJ_PeachSawGrandHall, true)
-    Exec(N(EVS_OpenAndCloseDoor))
+    Exec(EVS_OpenAndCloseDoor)
     Wait(10)
     Thread
         Wait(5)

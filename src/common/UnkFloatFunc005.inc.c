@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 
-API_CALLABLE(N(UnkFloatFunc005)) {
+static API_CALLABLE(UnkFloatFunc005) {
     Bytecode* args = script->ptrReadPos;
     f32 vt0 = 0.0f;
     f32 vt1 = 0.0f;

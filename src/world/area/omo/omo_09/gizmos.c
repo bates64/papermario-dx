@@ -1,6 +1,6 @@
 #include "omo_09.h"
 
-EvtScript N(EVS_Gizmos_Wheels) = {
+EvtScript EVS_Gizmos_Wheels = {
     Label(0)
         Call(MakeLerp, 0, -360, 100, EASING_LINEAR)
         Label(1)
@@ -19,7 +19,7 @@ EvtScript N(EVS_Gizmos_Wheels) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Shutters) = {
+EvtScript EVS_Gizmos_Shutters = {
     Label(0)
         Call(MakeLerp, 0, 160, 60, EASING_COS_IN_OUT)
         Label(1)
@@ -56,7 +56,7 @@ EvtScript N(EVS_Gizmos_Shutters) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Clocks) = {
+EvtScript EVS_Gizmos_Clocks = {
     Label(0)
         Call(MakeLerp, 0, -360, 100, EASING_LINEAR)
         Label(1)
@@ -79,7 +79,7 @@ typedef struct MovingBlock {
     /* 0xC */ s32 moveDelay;
 } MovingBlock; // size = 0x10
 
-MovingBlock N(MovingBlockPlatforms)[] = {
+MovingBlock MovingBlockPlatforms[] = {
     { COLLIDER_u1, MODEL_u1, 40,  41 },
     { COLLIDER_u2, MODEL_u2, 60,  51 },
     { COLLIDER_u3, MODEL_u3, 70,   1 },
@@ -88,16 +88,16 @@ MovingBlock N(MovingBlockPlatforms)[] = {
     { COLLIDER_u6, MODEL_u6, 70, 101 },
 };
 
-API_CALLABLE(N(AwaitPlayerNearPlatforms)) {
+API_CALLABLE(AwaitPlayerNearPlatforms) {
     if (gPlayerStatus.pos.x < 850.0f) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Gizmos_MovingBlocks) = {
+EvtScript EVS_Gizmos_MovingBlocks = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
-    Call(N(AwaitPlayerNearPlatforms))
+    Call(AwaitPlayerNearPlatforms)
     Wait(LVar9)
     Call(ParentColliderToModel, LVar6, LVar7)
     Loop(0)
@@ -106,14 +106,14 @@ EvtScript N(EVS_Gizmos_MovingBlocks) = {
             Call(UpdateLerp)
             Call(TranslateModel, LVar7, 0, LVar0, 0)
             Call(UpdateColliderTransform, LVar6)
-            Call(N(AwaitPlayerNearPlatforms))
+            Call(AwaitPlayerNearPlatforms)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
             EndIf
         EndLoop
         Loop(30)
-            Call(N(AwaitPlayerNearPlatforms))
+            Call(AwaitPlayerNearPlatforms)
             Wait(1)
         EndLoop
         Call(MakeLerp, LVar8, 0, LVar8, EASING_COS_IN_OUT)
@@ -121,14 +121,14 @@ EvtScript N(EVS_Gizmos_MovingBlocks) = {
             Call(UpdateLerp)
             Call(TranslateModel, LVar7, 0, LVar0, 0)
             Call(UpdateColliderTransform, LVar6)
-            Call(N(AwaitPlayerNearPlatforms))
+            Call(AwaitPlayerNearPlatforms)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
             EndIf
         EndLoop
         Loop(30)
-            Call(N(AwaitPlayerNearPlatforms))
+            Call(AwaitPlayerNearPlatforms)
             Wait(1)
         EndLoop
     EndLoop
@@ -136,14 +136,14 @@ EvtScript N(EVS_Gizmos_MovingBlocks) = {
     End
 };
 
-EvtScript N(EVS_SetupGizmos) = {
-    Exec(N(EVS_Gizmos_Wheels))
-    Exec(N(EVS_Gizmos_Shutters))
-    Exec(N(EVS_Gizmos_Clocks))
-    UseBuf(Ref(N(MovingBlockPlatforms)))
-    Loop(ARRAY_COUNT(N(MovingBlockPlatforms)))
+EvtScript EVS_SetupGizmos = {
+    Exec(EVS_Gizmos_Wheels)
+    Exec(EVS_Gizmos_Shutters)
+    Exec(EVS_Gizmos_Clocks)
+    UseBuf(Ref(MovingBlockPlatforms))
+    Loop(ARRAY_COUNT(MovingBlockPlatforms))
         BufRead4(LVar6, LVar7, LVar8, LVar9)
-        Exec(N(EVS_Gizmos_MovingBlocks))
+        Exec(EVS_Gizmos_MovingBlocks)
     EndLoop
     Return
     End

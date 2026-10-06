@@ -27,22 +27,20 @@ enum {
     MV_EntityID_Padlock  = MapVar(0),
 };
 
-#define NAMESPACE dgb_01
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_ExitDoors_dgb_08_0;
+extern EvtScript EVS_ExitDoors_dgb_08_1;
+extern EvtScript EVS_SetupBridges;
+extern EvtScript EVS_UnlockPrompt_Door;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList FirstFloorEscapeNPCs;
+extern NpcGroupList SecondFloorEscapeNPCs;
+extern NpcGroupList ThirdFloorEscapeNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_ExitDoors_dgb_08_0);
-extern EvtScript N(EVS_ExitDoors_dgb_08_1);
-extern EvtScript N(EVS_SetupBridges);
-extern EvtScript N(EVS_UnlockPrompt_Door);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(FirstFloorEscapeNPCs);
-extern NpcGroupList N(SecondFloorEscapeNPCs);
-extern NpcGroupList N(ThirdFloorEscapeNPCs);
-
-extern StaticAnimatorNode* N(SmashBridgesSkeleton)[];
-extern AnimScript N(AS_SmashBridges);
+extern StaticAnimatorNode* SmashBridgesSkeleton[];
+extern AnimScript AS_SmashBridges;
 
 API_CALLABLE(InitAnimatedModels);
 API_CALLABLE(SetAnimatedModelRenderMode);

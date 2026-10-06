@@ -2,7 +2,7 @@
 
 #include "../common/GetFlowerNormal.inc.c"
 
-EvtScript N(EVS_LaughingFlowers) = {
+EvtScript EVS_LaughingFlowers = {
     Call(PlaySoundAt, SOUND_CHECK_LAUGHING_FLOWERS, SOUND_SPACE_DEFAULT, 301, 0, -27)
     Loop(6)
         Set(LVar0, 2)
@@ -40,13 +40,13 @@ EvtScript N(EVS_LaughingFlowers) = {
     Call(MakeLerp, 0, 30, 50, EASING_COS_IN_OUT)
     Label(10)
     Call(UpdateLerp)
-    Call(N(GetFlowerNormal), MODEL_ea_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_ea_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ea_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ea_2, LVar0, LVar7, LVar8, LVar9)
-    Call(N(GetFlowerNormal), MODEL_eb_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_eb_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_eb_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_eb_2, LVar0, LVar7, LVar8, LVar9)
-    Call(N(GetFlowerNormal), MODEL_ec_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_ec_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ec_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ec_2, LVar0, LVar7, LVar8, LVar9)
     Wait(1)
@@ -57,13 +57,13 @@ EvtScript N(EVS_LaughingFlowers) = {
     Call(MakeLerp, 30, -30, 50, EASING_COS_IN_OUT)
     Label(20)
     Call(UpdateLerp)
-    Call(N(GetFlowerNormal), MODEL_ea_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_ea_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ea_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ea_2, LVar0, LVar7, LVar8, LVar9)
-    Call(N(GetFlowerNormal), MODEL_eb_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_eb_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_eb_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_eb_2, LVar0, LVar7, LVar8, LVar9)
-    Call(N(GetFlowerNormal), MODEL_ec_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_ec_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ec_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ec_2, LVar0, LVar7, LVar8, LVar9)
     Wait(1)
@@ -74,13 +74,13 @@ EvtScript N(EVS_LaughingFlowers) = {
     Call(MakeLerp, -30, 0, 50, EASING_COS_IN_OUT)
     Label(30)
     Call(UpdateLerp)
-    Call(N(GetFlowerNormal), MODEL_ea_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_ea_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ea_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ea_2, LVar0, LVar7, LVar8, LVar9)
-    Call(N(GetFlowerNormal), MODEL_eb_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_eb_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_eb_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_eb_2, LVar0, LVar7, LVar8, LVar9)
-    Call(N(GetFlowerNormal), MODEL_ec_1, LVar7, LVar8, LVar9)
+    Call(GetFlowerNormal, MODEL_ec_1, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ec_1, LVar0, LVar7, LVar8, LVar9)
     Call(RotateModel, MODEL_ec_2, LVar0, LVar7, LVar8, LVar9)
     Wait(1)
@@ -95,21 +95,21 @@ EvtScript N(EVS_LaughingFlowers) = {
     End
 };
 
-EvtScript N(EVS_WaitForPlayerNearby) = {
+EvtScript EVS_WaitForPlayerNearby = {
     Label(0)
         Call(AwaitPlayerApproach, 350, 0, 50)
-        ExecWait(N(EVS_LaughingFlowers))
+        ExecWait(EVS_LaughingFlowers)
         Call(AwaitPlayerLeave, 350, 0, 50)
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_SetupExitHint) = {
+EvtScript EVS_SetupExitHint = {
     Call(SetTexPanner, MODEL_ea_2, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_eb_2, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_ec_2, TEX_PANNER_1)
-    Exec(N(EVS_WaitForPlayerNearby))
+    Exec(EVS_WaitForPlayerNearby)
     Return
     End
 };

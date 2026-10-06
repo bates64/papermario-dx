@@ -4,7 +4,7 @@
 #include "world/common/enemy/BillBlaster/base.h"
 #include "world/common/enemy/BulletBill/base.h"
 
-API_CALLABLE(N(GetBulletBillVar)) {
+API_CALLABLE(GetBulletBillVar) {
     Bytecode* args = script->ptrReadPos;
     Enemy* npc = script->owner1.enemy;
     s32 npcID = evt_get_variable(script, *args++);
@@ -25,13 +25,13 @@ API_CALLABLE(N(GetBulletBillVar)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcCreate_BillBlaster) = {
+EvtScript EVS_NpcCreate_BillBlaster = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_BillBlaster) = {
+EvtScript EVS_NpcHit_BillBlaster = {
     Call(SetBattleMusic, SONG_SPECIAL_BATTLE)
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
@@ -60,12 +60,12 @@ EvtScript N(EVS_NpcHit_BillBlaster) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_BulletBill) = {
+EvtScript EVS_NpcCreate_BulletBill = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_Red) = {
+EvtScript EVS_NpcCreate_KoopaBros_Red = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -73,7 +73,7 @@ EvtScript N(EVS_NpcCreate_KoopaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_Red) = {
+EvtScript EVS_NpcAI_KoopaBros_Red = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
@@ -151,7 +151,7 @@ EvtScript N(EVS_NpcAI_KoopaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_Black) = {
+EvtScript EVS_NpcCreate_KoopaBros_Black = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -159,7 +159,7 @@ EvtScript N(EVS_NpcCreate_KoopaBros_Black) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_Yellow) = {
+EvtScript EVS_NpcCreate_KoopaBros_Yellow = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -167,7 +167,7 @@ EvtScript N(EVS_NpcCreate_KoopaBros_Yellow) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_Green) = {
+EvtScript EVS_NpcCreate_KoopaBros_Green = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -175,7 +175,7 @@ EvtScript N(EVS_NpcCreate_KoopaBros_Green) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_Black) = {
+EvtScript EVS_NpcAI_KoopaBros_Black = {
     Call(SetSelfVar, 0, 0)
     Label(10)
         Call(GetSelfVar, 0, LVar0)
@@ -206,7 +206,7 @@ EvtScript N(EVS_NpcAI_KoopaBros_Black) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_Yellow) = {
+EvtScript EVS_NpcAI_KoopaBros_Yellow = {
     Call(SetSelfVar, 0, 0)
     Label(10)
         Call(GetSelfVar, 0, LVar0)
@@ -237,7 +237,7 @@ EvtScript N(EVS_NpcAI_KoopaBros_Yellow) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_Green) = {
+EvtScript EVS_NpcAI_KoopaBros_Green = {
     Call(SetSelfVar, 0, 0)
     Label(10)
         Call(GetSelfVar, 0, LVar0)
@@ -268,7 +268,7 @@ EvtScript N(EVS_NpcAI_KoopaBros_Green) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_BillBlaster) = {
+EvtScript EVS_NpcAI_BillBlaster = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Label(100)
             Call(GetNpcVar, NPC_KoopaBros_Red, 0, LVar0)
@@ -281,7 +281,7 @@ EvtScript N(EVS_NpcAI_BillBlaster) = {
         Set(LVarA, NPC_BulletBill_01)
         Loop(10)
             // if the bullet bill does not have an assigned owner, assign ourself and fire
-            Call(N(GetBulletBillVar), LVarA, 0, LVar0)
+            Call(GetBulletBillVar, LVarA, 0, LVar0)
             IfEq(LVar0, 0)
                 Call(GetSelfNpcID, LVar0)
                 Call(SetNpcVar, LVarA, 0, LVar0)
@@ -300,7 +300,7 @@ EvtScript N(EVS_NpcAI_BillBlaster) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_BulletBill) = {
+EvtScript EVS_NpcAI_BulletBill = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Label(1)
         Call(SetSelfVar, 0, 0)
@@ -356,7 +356,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BulletBill) = {
+EvtScript EVS_NpcDefeat_BulletBill = {
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -365,7 +365,7 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
                 Wait(20)
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-                Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_BulletBill)))
+                Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_BulletBill))
             EndThread
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -375,68 +375,68 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
     End
 };
 
-NpcSettings N(NpcSettings_KoopaBros_Red) = {
+NpcSettings NpcSettings_KoopaBros_Red = {
     .defaultAnim = ANIM_KoopaBros_Red_Walk,
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_KoopaBros_Red),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_Red),
+    .doAI = &EVS_NpcAI_KoopaBros_Red,
+    .onCreate = &EVS_NpcCreate_KoopaBros_Red,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
-NpcSettings N(NpcSettings_KoopaBros_Black) = {
+NpcSettings NpcSettings_KoopaBros_Black = {
     .defaultAnim = ANIM_KoopaBros_Black_Walk,
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_KoopaBros_Black),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_Black),
+    .doAI = &EVS_NpcAI_KoopaBros_Black,
+    .onCreate = &EVS_NpcCreate_KoopaBros_Black,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
-NpcSettings N(NpcSettings_KoopaBros_Yellow) = {
+NpcSettings NpcSettings_KoopaBros_Yellow = {
     .defaultAnim = ANIM_KoopaBros_Yellow_Walk,
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_KoopaBros_Yellow),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_Yellow),
+    .doAI = &EVS_NpcAI_KoopaBros_Yellow,
+    .onCreate = &EVS_NpcCreate_KoopaBros_Yellow,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
-NpcSettings N(NpcSettings_KoopaBros_Green) = {
+NpcSettings NpcSettings_KoopaBros_Green = {
     .defaultAnim = ANIM_KoopaBros_Green_Walk,
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_KoopaBros_Green),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_Green),
+    .doAI = &EVS_NpcAI_KoopaBros_Green,
+    .onCreate = &EVS_NpcCreate_KoopaBros_Green,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
-NpcSettings N(NpcSettings_BillBlaster) = {
+NpcSettings NpcSettings_BillBlaster = {
     .defaultAnim = ANIM_BillBlaster_Idle,
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .doAI = &N(EVS_NpcAI_BillBlaster),
-    .onCreate = &N(EVS_NpcCreate_BillBlaster),
-    .onHit = &N(EVS_NpcHit_BillBlaster),
+    .doAI = &EVS_NpcAI_BillBlaster,
+    .onCreate = &EVS_NpcCreate_BillBlaster,
+    .onHit = &EVS_NpcHit_BillBlaster,
 };
 
-NpcSettings N(NpcSettings_BulletBill) = {
+NpcSettings NpcSettings_BulletBill = {
     .defaultAnim = ANIM_BulletBill_Idle,
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .doAI = &N(EVS_NpcAI_BulletBill),
-    .onCreate = &N(EVS_NpcCreate_BulletBill),
+    .doAI = &EVS_NpcAI_BulletBill,
+    .onCreate = &EVS_NpcCreate_BulletBill,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_BulletBill),
+    .onDefeat = &EVS_NpcDefeat_BulletBill,
 };
 
-EvtScript N(EVS_NpcDefeat_BillBlaster) = {
+EvtScript EVS_NpcDefeat_BillBlaster = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o85, COLLIDER_FLAGS_UPPER_MASK)
     Set(GF_TRD09_Defeated_BillBlasters, true)
     Call(DoNpcDefeat)
@@ -444,9 +444,9 @@ EvtScript N(EVS_NpcDefeat_BillBlaster) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_BillBlaster) = {
+EvtScript EVS_NpcInit_BillBlaster = {
     IfEq(GF_TRD09_Defeated_BillBlasters, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_BillBlaster)))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_BillBlaster))
     Else
         Call(RemoveEncounter, NPC_SELF)
     EndIf
@@ -454,7 +454,7 @@ EvtScript N(EVS_NpcInit_BillBlaster) = {
     End
 };
 
-NpcData N(NpcData_BillBlasters)[] = {
+NpcData NpcData_BillBlasters[] = {
     {
         .id = NPC_BillBlaster_01,
         .pos = { 1260.0f, 0.0f, -40.0f },
@@ -471,8 +471,8 @@ NpcData N(NpcData_BillBlasters)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BillBlaster),
-        .settings = &N(NpcSettings_BillBlaster),
+        .init = &EVS_NpcInit_BillBlaster,
+        .settings = &NpcSettings_BillBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = BILL_BLASTER_ANIMS,
@@ -493,7 +493,7 @@ NpcData N(NpcData_BillBlasters)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_BillBlaster),
+        .settings = &NpcSettings_BillBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = BILL_BLASTER_DROPS,
         .animations = BILL_BLASTER_ANIMS,
@@ -514,32 +514,32 @@ NpcData N(NpcData_BillBlasters)[] = {
                 .detectSize = { 0 },
             }
         },
-        .settings = &N(NpcSettings_BillBlaster),
+        .settings = &NpcSettings_BillBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = BILL_BLASTER_ANIMS,
     },
 };
 
-NpcData N(NpcData_BulletBill_01) = BULLET_BILL_NPC(NPC_BulletBill_01);
-NpcData N(NpcData_BulletBill_02) = BULLET_BILL_NPC(NPC_BulletBill_02);
-NpcData N(NpcData_BulletBill_03) = BULLET_BILL_NPC(NPC_BulletBill_03);
-NpcData N(NpcData_BulletBill_04) = BULLET_BILL_NPC(NPC_BulletBill_04);
-NpcData N(NpcData_BulletBill_05) = BULLET_BILL_NPC(NPC_BulletBill_05);
-NpcData N(NpcData_BulletBill_06) = BULLET_BILL_NPC(NPC_BulletBill_06);
-NpcData N(NpcData_BulletBill_07) = BULLET_BILL_NPC(NPC_BulletBill_07);
-NpcData N(NpcData_BulletBill_08) = BULLET_BILL_NPC(NPC_BulletBill_08);
-NpcData N(NpcData_BulletBill_09) = BULLET_BILL_NPC(NPC_BulletBill_09);
-NpcData N(NpcData_BulletBill_10) = BULLET_BILL_NPC(NPC_BulletBill_10);
+NpcData NpcData_BulletBill_01 = BULLET_BILL_NPC(NPC_BulletBill_01);
+NpcData NpcData_BulletBill_02 = BULLET_BILL_NPC(NPC_BulletBill_02);
+NpcData NpcData_BulletBill_03 = BULLET_BILL_NPC(NPC_BulletBill_03);
+NpcData NpcData_BulletBill_04 = BULLET_BILL_NPC(NPC_BulletBill_04);
+NpcData NpcData_BulletBill_05 = BULLET_BILL_NPC(NPC_BulletBill_05);
+NpcData NpcData_BulletBill_06 = BULLET_BILL_NPC(NPC_BulletBill_06);
+NpcData NpcData_BulletBill_07 = BULLET_BILL_NPC(NPC_BulletBill_07);
+NpcData NpcData_BulletBill_08 = BULLET_BILL_NPC(NPC_BulletBill_08);
+NpcData NpcData_BulletBill_09 = BULLET_BILL_NPC(NPC_BulletBill_09);
+NpcData NpcData_BulletBill_10 = BULLET_BILL_NPC(NPC_BulletBill_10);
 
-NpcData N(NpcData_KoopaBros)[] = {
+NpcData NpcData_KoopaBros[] = {
     {
         .id = NPC_KoopaBros_Red,
         .pos = { 1590.0f, 60.0f, 0.0f },
         .yaw = 270,
         .initVarCount = 1,
         .initVar = { .value = 0 },
-        .settings = &N(NpcSettings_KoopaBros_Red),
+        .settings = &NpcSettings_KoopaBros_Red,
         .flags = ENEMY_FLAG_PASSIVE,
     },
     {
@@ -548,7 +548,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .yaw = 270,
         .initVarCount = 1,
         .initVar = { .value = 0 },
-        .settings = &N(NpcSettings_KoopaBros_Green),
+        .settings = &NpcSettings_KoopaBros_Green,
         .flags = ENEMY_FLAG_PASSIVE,
     },
     {
@@ -557,7 +557,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .yaw = 270,
         .initVarCount = 1,
         .initVar = { .value = 0 },
-        .settings = &N(NpcSettings_KoopaBros_Yellow),
+        .settings = &NpcSettings_KoopaBros_Yellow,
         .flags = ENEMY_FLAG_PASSIVE,
     },
     {
@@ -566,28 +566,28 @@ NpcData N(NpcData_KoopaBros)[] = {
         .yaw = 270,
         .initVarCount = 1,
         .initVar = { .value = 0 },
-        .settings = &N(NpcSettings_KoopaBros_Black),
+        .settings = &NpcSettings_KoopaBros_Black,
         .flags = ENEMY_FLAG_PASSIVE,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BillBlasters), BTL_TRD_1_FORMATION_17, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_01), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_02), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_03), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_04), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_05), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_06), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_07), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_08), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_09), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_10), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_KoopaBros)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BillBlasters, BTL_TRD_1_FORMATION_17, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_01, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_02, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_03, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_04, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_05, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_06, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_07, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_08, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_09, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_10, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_KoopaBros),
     {}
 };
 
-EvtScript N(EVS_NpcIdle_BulletBill_Demo) = {
+EvtScript EVS_NpcIdle_BulletBill_Demo = {
     Call(GetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
     Call(SetNpcSpeed, NPC_SELF, Float(6.0))
     Call(NpcMoveTo, NPC_SELF, -460, LVar3, 0)
@@ -595,14 +595,14 @@ EvtScript N(EVS_NpcIdle_BulletBill_Demo) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_BulletBill_Demo) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BulletBill_Demo)))
+EvtScript EVS_NpcInit_BulletBill_Demo = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_BulletBill_Demo))
     Call(EnemyEnableFirstStrike, true)
     Return
     End
 };
 
-NpcData N(NpcData_BulletBill_Demo1) = {
+NpcData NpcData_BulletBill_Demo1 = {
     .id = NPC_BulletBill_Demo1,
     .pos = { -100.0f, 11.0f, 50.0f },
     .yaw = 270,
@@ -618,16 +618,16 @@ NpcData N(NpcData_BulletBill_Demo1) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_BulletBill_Demo),
+    .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BulletBill),
+    .settings = &NpcSettings_BulletBill,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
     .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
-NpcData N(NpcData_BulletBill_Demo2) = {
+NpcData NpcData_BulletBill_Demo2 = {
     .id = NPC_BulletBill_Demo2,
     .pos = { -150.0f, 11.0f, 5.0f },
     .yaw = 270,
@@ -643,16 +643,16 @@ NpcData N(NpcData_BulletBill_Demo2) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_BulletBill_Demo),
+    .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BulletBill),
+    .settings = &NpcSettings_BulletBill,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
     .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
-NpcData N(NpcData_BulletBill_Demo3) = {
+NpcData NpcData_BulletBill_Demo3 = {
     .id = NPC_BulletBill_Demo3,
     .pos = { 120.0f, 11.0f, 50.0f },
     .yaw = 270,
@@ -668,16 +668,16 @@ NpcData N(NpcData_BulletBill_Demo3) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_BulletBill_Demo),
+    .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BulletBill),
+    .settings = &NpcSettings_BulletBill,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
     .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
-NpcData N(NpcData_BulletBill_Demo4) = {
+NpcData NpcData_BulletBill_Demo4 = {
     .id = NPC_BulletBill_Demo4,
     .pos = { 330.0f, 11.0f, 5.0f },
     .yaw = 270,
@@ -693,16 +693,16 @@ NpcData N(NpcData_BulletBill_Demo4) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_BulletBill_Demo),
+    .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BulletBill),
+    .settings = &NpcSettings_BulletBill,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
     .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
-NpcData N(NpcData_BulletBill_Demo5) = {
+NpcData NpcData_BulletBill_Demo5 = {
     .id = NPC_BulletBill_Demo5,
     .pos = { 380.0f, 11.0f, -40.0f },
     .yaw = 270,
@@ -718,20 +718,20 @@ NpcData N(NpcData_BulletBill_Demo5) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_BulletBill_Demo),
+    .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_BulletBill),
+    .settings = &NpcSettings_BulletBill,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS,
     .drops = BULLET_BILL_DROPS,
     .animations = BULLET_BILL_ANIMS,
 };
 
-NpcGroupList N(DemoNPCs) = {
-    NPC_GROUP(N(NpcData_BulletBill_Demo1), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_Demo2), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_Demo3), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_Demo4), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(N(NpcData_BulletBill_Demo5), BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+NpcGroupList DemoNPCs = {
+    NPC_GROUP(NpcData_BulletBill_Demo1, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_Demo2, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_Demo3, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_Demo4, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_Demo5, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
     {}
 };

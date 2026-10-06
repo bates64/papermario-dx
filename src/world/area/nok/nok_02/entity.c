@@ -3,29 +3,29 @@
 
 #include "common/ItemEntityJumpToPos.inc.c"
 
-EvtScript N(EVS_BreakBlock_DropStarPiece) = {
-    Call(N(ItemEntityJumpToPos), MV_StarPieceItem, Float(227.0), Float(0.0), Float(247.0), 20, Float(1.0))
+EvtScript EVS_BreakBlock_DropStarPiece = {
+    Call(ItemEntityJumpToPos, MV_StarPieceItem, Float(227.0), Float(0.0), Float(247.0), 20, Float(1.0))
     Return
     End
 };
 
-EvtScript N(EVS_GotoMap_tik_01_3) = {
+EvtScript EVS_GotoMap_tik_01_3 = {
     Call(GotoMap, Ref("tik_01"), tik_01_ENTRY_3)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_BrickBlock), 151, 81, 251, 0, MAKE_ENTITY_END)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             IfEq(GF_NOK02_RecoveredShellB, false)
-                Call(AssignScript, Ref(N(EVS_BreakBlock_DropShell)))
+                Call(AssignScript, Ref(EVS_BreakBlock_DropShell))
             EndIf
         CaseGe(STORY_CH1_KOOPER_JOINED_PARTY)
             IfEq(GF_NOK02_Item_StarPiece, false)
-                Call(AssignScript, Ref(N(EVS_BreakBlock_DropStarPiece)))
+                Call(AssignScript, Ref(EVS_BreakBlock_DropStarPiece))
                 Call(MakeItemEntity, ITEM_STAR_PIECE, 150, 106, 250, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK02_Item_StarPiece)
                 Set(MV_StarPieceItem, LVar0)
             EndIf
@@ -40,7 +40,7 @@ EvtScript N(EVS_MakeEntities) = {
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 365, 0, 90, 30, nok_02_ENTRY_2, Ref(N(EVS_GotoMap_tik_01_3)), EVT_INDEX_OF_GAME_FLAG(GF_NOK02_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_BlueWarpPipe), 365, 0, 90, 30, nok_02_ENTRY_2, Ref(EVS_GotoMap_tik_01_3), EVT_INDEX_OF_GAME_FLAG(GF_NOK02_WarpPipe), MAKE_ENTITY_END)
     Return
     End
 };

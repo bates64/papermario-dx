@@ -19,7 +19,7 @@ s32 TitlePosY = 125;
 s32 TitlePosY = 106;
 #endif
 
-Gfx N(Gfx_TexSetup_TitleImage)[] = {
+Gfx Gfx_TexSetup_TitleImage[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
@@ -42,7 +42,7 @@ Gfx N(Gfx_TexSetup_TitleImage)[] = {
 void worker_draw_title_image(void) {
     s32 i;
 
-    gSPDisplayList(gMainGfxPos++, N(Gfx_TexSetup_TitleImage));
+    gSPDisplayList(gMainGfxPos++, Gfx_TexSetup_TitleImage);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, TitlePrimAlpha);
     gDPPipeSync(gMainGfxPos++);
 
@@ -74,7 +74,7 @@ void worker_draw_title_image(void) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-API_CALLABLE(N(LoadTitleImage)) {
+API_CALLABLE(LoadTitleImage) {
     u32 assetSize;
     void* compressed = load_asset_by_name("title_data", &assetSize);
     TitleData = (TitleDataFile*) heap_malloc(assetSize);
@@ -87,7 +87,7 @@ API_CALLABLE(N(LoadTitleImage)) {
 }
 
 #if !VERSION_PAL
-API_CALLABLE(N(AwaitConfirmInput)) {
+API_CALLABLE(AwaitConfirmInput) {
     u32 pressedButtons = gGameStatusPtr->pressedButtons[0];
     if (pressedButtons & (BUTTON_A | BUTTON_START)) {
         return ApiStatus_DONE2;
@@ -97,24 +97,24 @@ API_CALLABLE(N(AwaitConfirmInput)) {
 }
 #endif
 
-API_CALLABLE(N(SetTitlePrimAlpha)) {
+API_CALLABLE(SetTitlePrimAlpha) {
     TitlePrimAlpha = script->varTable[0];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetTitlePosY)) {
+API_CALLABLE(SetTitlePosY) {
     TitlePosY = script->varTable[0];
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_ShowTitle) = {
-    Call(N(LoadTitleImage))
+EvtScript EVS_Scene_ShowTitle = {
+    Call(LoadTitleImage)
     Wait(15 * DT)
     Thread
         Call(MakeLerp, 0, 255, 100 * DT, EASING_CUBIC_OUT)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(SetTitlePrimAlpha))
+            Call(SetTitlePrimAlpha)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -128,7 +128,7 @@ EvtScript N(EVS_Scene_ShowTitle) = {
 #endif
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetTitlePosY))
+        Call(SetTitlePosY)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -138,7 +138,7 @@ EvtScript N(EVS_Scene_ShowTitle) = {
     Call(MakeLerp, 255, 0, 50 * DT, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetTitlePrimAlpha))
+        Call(SetTitlePrimAlpha)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -151,7 +151,7 @@ EvtScript N(EVS_Scene_ShowTitle) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
@@ -176,7 +176,7 @@ EvtScript N(EVS_Main) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Wait(1)
-    Exec(N(EVS_Scene_ShowTitle))
+    Exec(EVS_Scene_ShowTitle)
     Return
     End
 };

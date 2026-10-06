@@ -36,247 +36,247 @@
 #include "world/area/pra/pra_31/unk_34.gfx.inc.c"
 
 // 0x10 long, doesnt seem to indicate a split
-s32 N(post_gfx_pad)[] = { 0, 0, 0, 0 };
+s32 post_gfx_pad[] = { 0, 0, 0, 0 };
 
-StaticAnimatorNode N(StairsNode35) = {
+StaticAnimatorNode StairsNode35 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_29_gfx),
+    .displayList = &pra_31_unk_29_gfx,
 };
 
-StaticAnimatorNode N(StairsNode34) = {
+StaticAnimatorNode StairsNode34 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(StairsNode35),
+    .child = &StairsNode35,
 };
 
-StaticAnimatorNode N(StairsNode33) = {
+StaticAnimatorNode StairsNode33 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_28_gfx),
+    .displayList = &pra_31_unk_28_gfx,
 };
 
-StaticAnimatorNode N(StairsNode32) = {
+StaticAnimatorNode StairsNode32 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(StairsNode33),
-    .sibling = &N(StairsNode34),
+    .child = &StairsNode33,
+    .sibling = &StairsNode34,
 };
 
-StaticAnimatorNode N(StairsNode31) = {
+StaticAnimatorNode StairsNode31 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_27_gfx),
+    .displayList = &pra_31_unk_27_gfx,
 };
 
-StaticAnimatorNode N(StairsNode30) = {
+StaticAnimatorNode StairsNode30 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(StairsNode31),
-    .sibling = &N(StairsNode32),
+    .child = &StairsNode31,
+    .sibling = &StairsNode32,
 };
 
-StaticAnimatorNode N(StairsNode29) = {
+StaticAnimatorNode StairsNode29 = {
     .pos = { 500.0f, 50.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(StairsNode30),
+    .child = &StairsNode30,
 };
 
-StaticAnimatorNode N(StairsNode28) = {
+StaticAnimatorNode StairsNode28 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_25_gfx),
+    .displayList = &pra_31_unk_25_gfx,
 };
 
-StaticAnimatorNode N(StairsNode27) = {
+StaticAnimatorNode StairsNode27 = {
     .pos = { 420.0f, 50.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(StairsNode28),
-    .sibling = &N(StairsNode29),
+    .child = &StairsNode28,
+    .sibling = &StairsNode29,
 };
 
-StaticAnimatorNode N(StairsNode26) = {
+StaticAnimatorNode StairsNode26 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_21_gfx),
+    .displayList = &pra_31_unk_21_gfx,
 };
 
-StaticAnimatorNode N(StairsNode25) = {
+StaticAnimatorNode StairsNode25 = {
     .pos = { 410.0f, 40.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(StairsNode26),
-    .sibling = &N(StairsNode27),
+    .child = &StairsNode26,
+    .sibling = &StairsNode27,
 };
 
-StaticAnimatorNode N(StairsNode24) = {
+StaticAnimatorNode StairsNode24 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_19_gfx),
+    .displayList = &pra_31_unk_19_gfx,
 };
 
-StaticAnimatorNode N(StairsNode23) = {
+StaticAnimatorNode StairsNode23 = {
     .pos = { 400.0f, 40.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(StairsNode24),
-    .sibling = &N(StairsNode25),
+    .child = &StairsNode24,
+    .sibling = &StairsNode25,
 };
 
-StaticAnimatorNode N(StairsNode22) = {
+StaticAnimatorNode StairsNode22 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_15_gfx),
+    .displayList = &pra_31_unk_15_gfx,
 };
 
-StaticAnimatorNode N(StairsNode21) = {
+StaticAnimatorNode StairsNode21 = {
     .pos = { 390.0f, 30.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(StairsNode22),
-    .sibling = &N(StairsNode23),
+    .child = &StairsNode22,
+    .sibling = &StairsNode23,
 };
 
-StaticAnimatorNode N(StairsNode20) = {
+StaticAnimatorNode StairsNode20 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_13_gfx),
+    .displayList = &pra_31_unk_13_gfx,
 };
 
-StaticAnimatorNode N(StairsNode19) = {
+StaticAnimatorNode StairsNode19 = {
     .pos = { 380.0f, 30.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(StairsNode20),
-    .sibling = &N(StairsNode21),
+    .child = &StairsNode20,
+    .sibling = &StairsNode21,
 };
 
-StaticAnimatorNode N(StairsNode18) = {
+StaticAnimatorNode StairsNode18 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_11_gfx),
+    .displayList = &pra_31_unk_11_gfx,
 };
 
-StaticAnimatorNode N(StairsNode17) = {
+StaticAnimatorNode StairsNode17 = {
     .pos = { 380.0f, 20.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(StairsNode18),
-    .sibling = &N(StairsNode19),
+    .child = &StairsNode18,
+    .sibling = &StairsNode19,
 };
 
-StaticAnimatorNode N(StairsNode16) = {
+StaticAnimatorNode StairsNode16 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_09_gfx),
+    .displayList = &pra_31_unk_09_gfx,
 };
 
-StaticAnimatorNode N(StairsNode15) = {
+StaticAnimatorNode StairsNode15 = {
     .pos = { 370.0f, 20.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(StairsNode16),
-    .sibling = &N(StairsNode17),
+    .child = &StairsNode16,
+    .sibling = &StairsNode17,
 };
 
-StaticAnimatorNode N(StairsNode14) = {
+StaticAnimatorNode StairsNode14 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_07_gfx),
+    .displayList = &pra_31_unk_07_gfx,
 };
 
-StaticAnimatorNode N(StairsNode13) = {
+StaticAnimatorNode StairsNode13 = {
     .pos = { 360.0f, 20.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(StairsNode14),
-    .sibling = &N(StairsNode15),
+    .child = &StairsNode14,
+    .sibling = &StairsNode15,
 };
 
-StaticAnimatorNode N(StairsNode12) = {
+StaticAnimatorNode StairsNode12 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_05_gfx),
+    .displayList = &pra_31_unk_05_gfx,
 };
 
-StaticAnimatorNode N(StairsNode11) = {
+StaticAnimatorNode StairsNode11 = {
     .pos = { 360.0f, 10.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(StairsNode12),
-    .sibling = &N(StairsNode13),
+    .child = &StairsNode12,
+    .sibling = &StairsNode13,
 };
 
-StaticAnimatorNode N(StairsNode10) = {
+StaticAnimatorNode StairsNode10 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_03_gfx),
+    .displayList = &pra_31_unk_03_gfx,
 };
 
-StaticAnimatorNode N(StairsNode09) = {
+StaticAnimatorNode StairsNode09 = {
     .pos = { 350.0f, 10.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-180.0f) },
-    .child = &N(StairsNode10),
-    .sibling = &N(StairsNode11),
+    .child = &StairsNode10,
+    .sibling = &StairsNode11,
 };
 
-StaticAnimatorNode N(StairsNode08) = {
+StaticAnimatorNode StairsNode08 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_01_gfx),
+    .displayList = &pra_31_unk_01_gfx,
 };
 
-StaticAnimatorNode N(StairsNode07) = {
+StaticAnimatorNode StairsNode07 = {
     .pos = { 340.0f, 10.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(-89.99725f) },
-    .child = &N(StairsNode08),
-    .sibling = &N(StairsNode09),
+    .child = &StairsNode08,
+    .sibling = &StairsNode09,
 };
 
-StaticAnimatorNode N(StairsNode06) = {
+StaticAnimatorNode StairsNode06 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_17_gfx),
+    .displayList = &pra_31_unk_17_gfx,
 };
 
-StaticAnimatorNode N(StairsNode05) = {
+StaticAnimatorNode StairsNode05 = {
     .pos = { 400.0f, 30.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(StairsNode06),
-    .sibling = &N(StairsNode07),
+    .child = &StairsNode06,
+    .sibling = &StairsNode07,
 };
 
-StaticAnimatorNode N(StairsNode04) = {
+StaticAnimatorNode StairsNode04 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .displayList = &N(unk_23_gfx),
+    .displayList = &pra_31_unk_23_gfx,
 };
 
-StaticAnimatorNode N(StairsNode03) = {
+StaticAnimatorNode StairsNode03 = {
     .pos = { 420.0f, 40.0f, 0.0f },
     .rot = { AS_F(0.0f), AS_F(0.0f), AS_F(89.99725f) },
-    .child = &N(StairsNode04),
-    .sibling = &N(StairsNode05),
+    .child = &StairsNode04,
+    .sibling = &StairsNode05,
 };
 
-StaticAnimatorNode N(StairsNode02) = {
+StaticAnimatorNode StairsNode02 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(StairsNode03),
+    .child = &StairsNode03,
 };
 
-StaticAnimatorNode N(StairsNode01) = {
+StaticAnimatorNode StairsNode01 = {
     .pos = { 0.0f, 0.0f, 0.0f },
-    .child = &N(StairsNode02),
+    .child = &StairsNode02,
 };
 
-StaticAnimatorNode* N(AS_Stairs_Skeleton)[] = {
-    &N(StairsNode01),
-        &N(StairsNode02),
-            &N(StairsNode03),
-                &N(StairsNode04),
-            &N(StairsNode05),
-                &N(StairsNode06),
-            &N(StairsNode07),
-                &N(StairsNode08),
-            &N(StairsNode09),
-                &N(StairsNode10),
-            &N(StairsNode11),
-                &N(StairsNode12),
-            &N(StairsNode13),
-                &N(StairsNode14),
-            &N(StairsNode15),
-                &N(StairsNode16),
-            &N(StairsNode17),
-                &N(StairsNode18),
-            &N(StairsNode19),
-                &N(StairsNode20),
-            &N(StairsNode21),
-                &N(StairsNode22),
-            &N(StairsNode23),
-                &N(StairsNode24),
-            &N(StairsNode25),
-                &N(StairsNode26),
-            &N(StairsNode27),
-                &N(StairsNode28),
-            &N(StairsNode29),
-                &N(StairsNode30),
-                    &N(StairsNode31),
-                &N(StairsNode32),
-                    &N(StairsNode33),
-                &N(StairsNode34),
-                    &N(StairsNode35),
+StaticAnimatorNode* AS_Stairs_Skeleton[] = {
+    &StairsNode01,
+        &StairsNode02,
+            &StairsNode03,
+                &StairsNode04,
+            &StairsNode05,
+                &StairsNode06,
+            &StairsNode07,
+                &StairsNode08,
+            &StairsNode09,
+                &StairsNode10,
+            &StairsNode11,
+                &StairsNode12,
+            &StairsNode13,
+                &StairsNode14,
+            &StairsNode15,
+                &StairsNode16,
+            &StairsNode17,
+                &StairsNode18,
+            &StairsNode19,
+                &StairsNode20,
+            &StairsNode21,
+                &StairsNode22,
+            &StairsNode23,
+                &StairsNode24,
+            &StairsNode25,
+                &StairsNode26,
+            &StairsNode27,
+                &StairsNode28,
+            &StairsNode29,
+                &StairsNode30,
+                    &StairsNode31,
+                &StairsNode32,
+                    &StairsNode33,
+                &StairsNode34,
+                    &StairsNode35,
     nullptr
 };

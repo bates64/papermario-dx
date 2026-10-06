@@ -34,25 +34,23 @@ enum {
     NPC_Koopatrol_04            = 3,
 };
 
-#define NAMESPACE kkj_15
-
 #include "world/common/npc/Bowser/idle.h"
 #include "world/common/enemy/Kammy/idle.h"
 #include "world/common/enemy/KoopaBros/idle.h"
 #include "world/common/enemy/Koopatrol/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_EnterRotatingWall);
-extern EvtScript N(EVS_Scene_Chapter0_BowserAndKammy);
-extern EvtScript N(EVS_SetupChapter1);
-extern EvtScript N(EVS_SetupChapter2);
-extern EvtScript N(EVS_Scene_Chapter3);
-extern EvtScript N(EVS_AnimateRotatingWall_AlmostCaught);
-extern EvtScript N(EVS_EndPeachChapter0);
-extern EvtScript N(EVS_EndPeachChapter1);
-extern EvtScript N(EVS_EndPeachChapter3);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_EnterRotatingWall;
+extern EvtScript EVS_Scene_Chapter0_BowserAndKammy;
+extern EvtScript EVS_SetupChapter1;
+extern EvtScript EVS_SetupChapter2;
+extern EvtScript EVS_Scene_Chapter3;
+extern EvtScript EVS_AnimateRotatingWall_AlmostCaught;
+extern EvtScript EVS_EndPeachChapter0;
+extern EvtScript EVS_EndPeachChapter1;
+extern EvtScript EVS_EndPeachChapter3;
 
-extern NpcGroupList N(Chapter0NPCs);
-extern NpcGroupList N(Chapter1NPCs);
-extern NpcGroupList N(Chapter3NPCs);
+extern NpcGroupList Chapter0NPCs;
+extern NpcGroupList Chapter1NPCs;
+extern NpcGroupList Chapter3NPCs;

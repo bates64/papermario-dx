@@ -13,7 +13,7 @@ typedef struct BattlePartner {
     export const BattlePartner gBattlePartner = { \
         .id = (partnerID), \
         .posY = (partnerPosY), \
-        .blueprint = &NAMESPACE, \
+        .blueprint = &blueprint, \
     }
 
 const BattlePartner* load_battle_partner(s32 partnerID);

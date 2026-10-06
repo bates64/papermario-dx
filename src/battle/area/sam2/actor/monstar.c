@@ -197,7 +197,6 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
 
 #include "common/SetBackgroundAlpha.inc.c"
 
-#include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_Idle) = {
     ChildThread
@@ -373,18 +372,18 @@ EvtScript N(EVS_Attack_StarStorm) = {
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Monstar_GatherStrength3)
     EndThread
     Thread
-        Call(N(UnkBackgroundFunc3))
+        Call(UnkBackgroundFunc3)
         Call(MakeLerp, 0, 200, 60, EASING_QUADRATIC_IN)
         Label(0)
         Call(UpdateLerp)
-        Call(N(SetBackgroundAlpha), LVar0)
+        Call(SetBackgroundAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
         EndIf
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BIG_POWER_UP)
-    Call(N(StartRumbleWithParams), 80, 120)
+    Call(StartRumbleWithParams, 80, 120)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)
@@ -400,7 +399,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
         Loop(18)
             Call(RandInt, 150, LVar0)
             Add(LVar0, 100)
-            Call(N(StartRumbleWithParams), LVar0, 20)
+            Call(StartRumbleWithParams, LVar0, 20)
             Wait(10)
         EndLoop
     EndThread
@@ -441,7 +440,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
             Call(MakeLerp, 200, 0, 60, EASING_LINEAR)
             Label(1)
             Call(UpdateLerp)
-            Call(N(SetBackgroundAlpha), LVar0)
+            Call(SetBackgroundAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(1)
@@ -467,7 +466,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
             Call(MakeLerp, 200, 0, 60, EASING_LINEAR)
             Label(2)
             Call(UpdateLerp)
-            Call(N(SetBackgroundAlpha), LVar0)
+            Call(SetBackgroundAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(2)

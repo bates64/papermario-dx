@@ -1,6 +1,6 @@
 #include "kkj_01.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_01_ENTRY_1)
         Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_7)

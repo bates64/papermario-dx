@@ -3,7 +3,7 @@
 
 #include "world/common/ai/TackleWanderAI.inc.c"
 
-MobileAISettings N(AISettings_BuzzyBeetle_Wander) = {
+MobileAISettings AISettings_BuzzyBeetle_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 60,
     .waitTime = 60,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_BuzzyBeetle_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_BuzzyBeetle_Wander) = {
+EvtScript EVS_NpcAI_BuzzyBeetle_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 2)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BUZZY_BEETLE)
-    Call(N(TackleWanderAI_Main), Ref(N(AISettings_BuzzyBeetle_Wander)))
+    Call(TackleWanderAI_Main, Ref(AISettings_BuzzyBeetle_Wander))
     Return
     End
 };
 
-MobileAISettings N(AISettings_SpikeTop_Wander) = {
+MobileAISettings AISettings_SpikeTop_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 60,
     .waitTime = 60,
@@ -39,17 +39,17 @@ MobileAISettings N(AISettings_SpikeTop_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_SpikeTop_Wander) = {
+EvtScript EVS_NpcAI_SpikeTop_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 4)
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 10)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 4)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPIKE_TOP)
-    Call(N(TackleWanderAI_Main), Ref(N(AISettings_SpikeTop_Wander)))
+    Call(TackleWanderAI_Main, Ref(AISettings_SpikeTop_Wander))
     Return
     End
 };
 
-MobileAISettings N(AISettings_BonyBeetle_Wander) = {
+MobileAISettings AISettings_BonyBeetle_Wander = {
     .moveSpeed = 1.0f,
     .moveTime = 20,
     .waitTime = 5,
@@ -60,17 +60,17 @@ MobileAISettings N(AISettings_BonyBeetle_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_BonyBeetle_Wander) = {
+EvtScript EVS_NpcAI_BonyBeetle_Wander = {
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 3)
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 8)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 6)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BONY_BEETLE)
-    Call(N(TackleWanderAI_Main), Ref(N(AISettings_BonyBeetle_Wander)))
+    Call(TackleWanderAI_Main, Ref(AISettings_BonyBeetle_Wander))
     Return
     End
 };
 
-API_CALLABLE(N(BuzzyBeetle_OffsetHeight)) {
+API_CALLABLE(BuzzyBeetle_OffsetHeight) {
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
     npc->verticalRenderOffset = npc->collisionHeight;
@@ -79,7 +79,7 @@ API_CALLABLE(N(BuzzyBeetle_OffsetHeight)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(BuzzyBeetle_AwaitPlayerNear)) {
+API_CALLABLE(BuzzyBeetle_AwaitPlayerNear) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
@@ -90,7 +90,7 @@ API_CALLABLE(N(BuzzyBeetle_AwaitPlayerNear)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(BuzzyBeetle_AwaitLanding)) {
+API_CALLABLE(BuzzyBeetle_AwaitLanding) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_safe(script->owner2.npcID);
@@ -107,56 +107,56 @@ API_CALLABLE(N(BuzzyBeetle_AwaitLanding)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcAI_BuzzyBeetle_Ceiling) = {
-    Call(N(BuzzyBeetle_OffsetHeight))
+EvtScript EVS_NpcAI_BuzzyBeetle_Ceiling = {
+    Call(BuzzyBeetle_OffsetHeight)
     Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_CeilingIdle)
-    Call(N(BuzzyBeetle_AwaitPlayerNear))
+    Call(BuzzyBeetle_AwaitPlayerNear)
     Call(EnemyEnableFirstStrike, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Still)
-    Call(N(BuzzyBeetle_AwaitLanding))
+    Call(BuzzyBeetle_AwaitLanding)
     Call(EnemyEnableFirstStrike, false)
     Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 2)
     Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 5)
     Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BUZZY_BEETLE)
-    Call(N(TackleWanderAI_Main), Ref(N(AISettings_BuzzyBeetle_Wander)))
+    Call(TackleWanderAI_Main, Ref(AISettings_BuzzyBeetle_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_BuzzyBeetle_Wander) = {
+NpcSettings NpcSettings_BuzzyBeetle_Wander = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_BUZZY_BEETLE,
-    .doAI = &N(EVS_NpcAI_BuzzyBeetle_Wander),
+    .doAI = &EVS_NpcAI_BuzzyBeetle_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_BuzzyBeetle_Ceiling) = {
+NpcSettings NpcSettings_BuzzyBeetle_Ceiling = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_BUZZY_BEETLE,
-    .doAI = &N(EVS_NpcAI_BuzzyBeetle_Ceiling),
+    .doAI = &EVS_NpcAI_BuzzyBeetle_Ceiling,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_SpikeTop_Wander) = {
+NpcSettings NpcSettings_SpikeTop_Wander = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_SPIKE_TOP,
-    .doAI = &N(EVS_NpcAI_SpikeTop_Wander),
+    .doAI = &EVS_NpcAI_SpikeTop_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_BonyBeetle_Wander) = {
+NpcSettings NpcSettings_BonyBeetle_Wander = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_BONY_BEETLE,
-    .doAI = &N(EVS_NpcAI_BonyBeetle_Wander),
+    .doAI = &EVS_NpcAI_BonyBeetle_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -1,6 +1,6 @@
 #include "nok_11.h"
 
-EvtScript N(EVS_ExitWalk_mac_01_1) = {
+EvtScript EVS_ExitWalk_mac_01_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaArea, true)
@@ -13,9 +13,9 @@ EvtScript N(EVS_ExitWalk_mac_01_1) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_nok_12_0) = EVT_EXIT_WALK(60, nok_11_ENTRY_1, "nok_12", nok_12_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_12_0 = EVT_EXIT_WALK(60, nok_11_ENTRY_1, "nok_12", nok_12_ENTRY_0);
 
-EvtScript N(EVS_SetupTexPan) = {
+EvtScript EVS_SetupTexPan = {
     // flowers
     Call(SetTexPanner, MODEL_hana2, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana3, TEX_PANNER_0)
@@ -56,36 +56,36 @@ EvtScript N(EVS_SetupTexPan) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_mac_01_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiri1, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_12_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_mac_01_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiri1, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_12_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_PleasantPath, true)
     IfEq(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
-        Call(MakeNpcs, false, Ref(N(JrTroopaNPCs)))
+        Call(MakeNpcs, false, Ref(JrTroopaNPCs))
     Else
         IfGe(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
             IfEq(GF_NOK11_Defeated_KentC, false)
-                Call(MakeNpcs, false, Ref(N(KentCKoopaNPCs)))
+                Call(MakeNpcs, false, Ref(KentCKoopaNPCs))
             Else
-                Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+                Call(MakeNpcs, false, Ref(DefaultNPCs))
             EndIf
         Else
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
         EndIf
     EndIf
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupTexPan))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupTexPan)
+    Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_NOK_WATER)
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Return

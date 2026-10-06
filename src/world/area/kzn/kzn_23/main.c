@@ -1,16 +1,16 @@
 #include "kzn_23.h"
 
 // should add to zero over a full cycle
-s32 N(LavaFluctuationOffsets)[] = {
+s32 LavaFluctuationOffsets[] = {
      1,  2,  3,  3,  2,  1,
     -1, -2, -3, -3, -2, -1,
 };
 
 // overlay a sinusoidal offset to the lava level
-EvtScript N(EVS_ModulateLavaLevel) = {
+EvtScript EVS_ModulateLavaLevel = {
     Loop(0)
-        UseBuf(N(LavaFluctuationOffsets))
-        Loop(ARRAY_COUNT(N(LavaFluctuationOffsets)))
+        UseBuf(LavaFluctuationOffsets)
+        Loop(ARRAY_COUNT(LavaFluctuationOffsets))
             BufRead1(LVar1)
             Add(MV_LavaLevel, LVar1)
             Wait(3)
@@ -20,7 +20,7 @@ EvtScript N(EVS_ModulateLavaLevel) = {
     End
 };
 
-EvtScript N(EVS_StartTexPanners) = {
+EvtScript EVS_StartTexPanners = {
     // lava surface
     Call(SetTexPanner, MODEL_yu, TEX_PANNER_0)
     Thread
@@ -51,8 +51,8 @@ EvtScript N(EVS_StartTexPanners) = {
     End
 };
 
-EvtScript N(EVS_RaiseLava) = {
-    Exec(N(EVS_ModulateLavaLevel))
+EvtScript EVS_RaiseLava = {
+    Exec(EVS_ModulateLavaLevel)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(MV_LavaLevel, -105)
     Set(LVar5, 40)
@@ -78,14 +78,14 @@ EvtScript N(EVS_RaiseLava) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_23)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_RaiseLava))
-    Exec(N(EVS_StartTexPanners))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_RaiseLava)
+    Exec(EVS_StartTexPanners)
     Return
     End
 };

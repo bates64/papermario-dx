@@ -4,55 +4,55 @@
 
 #include "world/common/ai/BulletBillAI.inc.c"
 
-GuardAISettings N(AISettings_BillBlaster) = {
+GuardAISettings AISettings_BillBlaster = {
     .playerSearchInterval = 30,
 };
 
-EvtScript N(EVS_NpcAI_BillBlaster) = {
-    Call(N(BillBlasterAI_Main), Ref(N(AISettings_BillBlaster)))
+EvtScript EVS_NpcAI_BillBlaster = {
+    Call(BillBlasterAI_Main, Ref(AISettings_BillBlaster))
     Return
     End
 };
 
-MobileAISettings N(AISettings_BulletBill) = {
+MobileAISettings AISettings_BulletBill = {
     .chaseSpeed = 3.0f,
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_BulletBill) = {
+EvtScript EVS_NpcAI_BulletBill = {
     Call(EnemyEnableFirstStrike, true)
     Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(N(BulletBillAI_Main), Ref(N(AISettings_BulletBill)))
+    Call(BulletBillAI_Main, Ref(AISettings_BulletBill))
     Return
     End
 };
 
-GuardAISettings N(AISettings_BombshellBlaster) = {
+GuardAISettings AISettings_BombshellBlaster = {
     .playerSearchInterval = 10,
 };
 
-EvtScript N(EVS_NpcAI_BombshellBlaster) = {
-    Call(N(BillBlasterAI_Main), Ref(N(AISettings_BombshellBlaster)))
+EvtScript EVS_NpcAI_BombshellBlaster = {
+    Call(BillBlasterAI_Main, Ref(AISettings_BombshellBlaster))
     Return
     End
 };
 
-MobileAISettings N(AISettings_BombshellBill) = {
+MobileAISettings AISettings_BombshellBill = {
     .chaseSpeed = 7.3f,
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_BombshellBill) = {
+EvtScript EVS_NpcAI_BombshellBill = {
     Call(EnemyEnableFirstStrike, true)
     Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(N(BulletBillAI_Main), Ref(N(AISettings_BombshellBill)))
+    Call(BulletBillAI_Main, Ref(AISettings_BombshellBill))
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BombshellBlaster) = {
+EvtScript EVS_NpcDefeat_BombshellBlaster = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -67,7 +67,7 @@ EvtScript N(EVS_NpcDefeat_BombshellBlaster) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BulletBill) = {
+EvtScript EVS_NpcDefeat_BulletBill = {
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -75,7 +75,7 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
             Call(DoNpcDefeat)
             Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_BulletBill)))
+            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_BulletBill))
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BombshellBill) = {
+EvtScript EVS_NpcDefeat_BombshellBill = {
     Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -102,55 +102,55 @@ EvtScript N(EVS_NpcDefeat_BombshellBill) = {
     End
 };
 
-NpcSettings N(NpcSettings_BillBlaster) = {
+NpcSettings NpcSettings_BillBlaster = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .doAI = &N(EVS_NpcAI_BillBlaster),
+    .doAI = &EVS_NpcAI_BillBlaster,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_BombshellBlaster),
+    .onDefeat = &EVS_NpcDefeat_BombshellBlaster,
 };
 
-NpcSettings N(NpcSettings_BulletBill) = {
+NpcSettings NpcSettings_BulletBill = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .doAI = &N(EVS_NpcAI_BulletBill),
+    .doAI = &EVS_NpcAI_BulletBill,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_BulletBill),
+    .onDefeat = &EVS_NpcDefeat_BulletBill,
 };
 
-NpcSettings N(NpcSettings_BombshellBlaster) = {
+NpcSettings NpcSettings_BombshellBlaster = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BOMBSHELL_BLASTER,
-    .doAI = &N(EVS_NpcAI_BombshellBlaster),
+    .doAI = &EVS_NpcAI_BombshellBlaster,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_BombshellBlaster),
+    .onDefeat = &EVS_NpcDefeat_BombshellBlaster,
 };
 
-NpcSettings N(NpcSettings_BombshellBill) = {
+NpcSettings NpcSettings_BombshellBill = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BOMBSHELL_BILL,
-    .doAI = &N(EVS_NpcAI_BombshellBill),
+    .doAI = &EVS_NpcAI_BombshellBill,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_BombshellBill),
+    .onDefeat = &EVS_NpcDefeat_BombshellBill,
 };
 
-EvtScript N(EVS_NpcInit_BombshellBlaster) = {
+EvtScript EVS_NpcInit_BombshellBlaster = {
     Call(SetSelfVar, AI_VAR_BLASTER_RANGE, -995)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_BombshellBlaster_03) = {
+EvtScript EVS_NpcInit_BombshellBlaster_03 = {
     Call(SetSelfVar, AI_VAR_BLASTER_RANGE, 30)
     Return
     End
 };
 
-NpcData N(NpcData_BombshellBlaster_01)[] = {
+NpcData NpcData_BombshellBlaster_01[] = {
     {
         .id = NPC_BombshellBlaster_01,
         .pos = { -288.0f, 120.0f, 120.0f },
@@ -167,8 +167,8 @@ NpcData N(NpcData_BombshellBlaster_01)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
@@ -189,15 +189,15 @@ NpcData N(NpcData_BombshellBlaster_01)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
     },
 };
 
-NpcData N(NpcData_BombshellBlaster_03)[] = {
+NpcData NpcData_BombshellBlaster_03[] = {
     {
         .id = NPC_BombshellBlaster_03,
         .pos = { -748.0f, 300.0f, -22.0f },
@@ -214,8 +214,8 @@ NpcData N(NpcData_BombshellBlaster_03)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster_03),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster_03,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = BOMBSHELL_BLASTER_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
@@ -236,15 +236,15 @@ NpcData N(NpcData_BombshellBlaster_03)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster_03),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster_03,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
     },
 };
 
-NpcData N(NpcData_BombshellBlaster_05)[] = {
+NpcData NpcData_BombshellBlaster_05[] = {
     {
         .id = NPC_BombshellBlaster_05,
         .pos = { 30.0f, 480.0f, -122.0f },
@@ -261,8 +261,8 @@ NpcData N(NpcData_BombshellBlaster_05)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = BOMBSHELL_BLASTER_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
@@ -283,15 +283,15 @@ NpcData N(NpcData_BombshellBlaster_05)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
     },
 };
 
-NpcData N(NpcData_BombshellBlaster_07)[] = {
+NpcData NpcData_BombshellBlaster_07[] = {
     {
         .id = NPC_BombshellBlaster_07,
         .pos = { 820.0f, 600.0f, -122.0f },
@@ -308,8 +308,8 @@ NpcData N(NpcData_BombshellBlaster_07)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = BOMBSHELL_BLASTER_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
@@ -330,51 +330,51 @@ NpcData N(NpcData_BombshellBlaster_07)[] = {
                 .detectSize = { 0 },
             }
         },
-        .init = &N(EVS_NpcInit_BombshellBlaster),
-        .settings = &N(NpcSettings_BombshellBlaster),
+        .init = &EVS_NpcInit_BombshellBlaster,
+        .settings = &NpcSettings_BombshellBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOMBSHELL_BLASTER_ANIMS,
     },
 };
 
-NpcData N(NpcData_BombshellBill_01) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_01);
-NpcData N(NpcData_BombshellBill_02) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_02);
-NpcData N(NpcData_BombshellBill_03) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_03);
-NpcData N(NpcData_BombshellBill_04) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_04);
-NpcData N(NpcData_BombshellBill_05) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_05);
-NpcData N(NpcData_BombshellBill_06) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_06);
-NpcData N(NpcData_BombshellBill_07) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_07);
-NpcData N(NpcData_BombshellBill_08) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_08);
-NpcData N(NpcData_BombshellBill_09) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_09);
-NpcData N(NpcData_BombshellBill_10) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_10);
+NpcData NpcData_BombshellBill_01 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_01);
+NpcData NpcData_BombshellBill_02 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_02);
+NpcData NpcData_BombshellBill_03 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_03);
+NpcData NpcData_BombshellBill_04 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_04);
+NpcData NpcData_BombshellBill_05 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_05);
+NpcData NpcData_BombshellBill_06 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_06);
+NpcData NpcData_BombshellBill_07 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_07);
+NpcData NpcData_BombshellBill_08 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_08);
+NpcData NpcData_BombshellBill_09 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_09);
+NpcData NpcData_BombshellBill_10 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_10);
 
 // the following NPCs are unused
-NpcData N(NpcData_BombshellBill_11) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_11);
-NpcData N(NpcData_BombshellBill_12) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_12);
-NpcData N(NpcData_BombshellBill_13) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_13);
-NpcData N(NpcData_BombshellBill_14) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_14);
-NpcData N(NpcData_BombshellBill_15) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_15);
-NpcData N(NpcData_BombshellBill_16) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_16);
-NpcData N(NpcData_BombshellBill_17) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_17);
-NpcData N(NpcData_BombshellBill_18) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_18);
-NpcData N(NpcData_BombshellBill_19) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_19);
-NpcData N(NpcData_BombshellBill_20) = BOMBSHELL_BILL_NPC(NPC_BombshellBill_20);
+NpcData NpcData_BombshellBill_11 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_11);
+NpcData NpcData_BombshellBill_12 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_12);
+NpcData NpcData_BombshellBill_13 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_13);
+NpcData NpcData_BombshellBill_14 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_14);
+NpcData NpcData_BombshellBill_15 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_15);
+NpcData NpcData_BombshellBill_16 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_16);
+NpcData NpcData_BombshellBill_17 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_17);
+NpcData NpcData_BombshellBill_18 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_18);
+NpcData NpcData_BombshellBill_19 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_19);
+NpcData NpcData_BombshellBill_20 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_20);
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BombshellBlaster_01), BTL_KPA4_FORMATION_02, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBlaster_03), BTL_KPA4_FORMATION_02, BTL_KPA4_STAGE_05),
-    NPC_GROUP(N(NpcData_BombshellBlaster_05), BTL_KPA4_FORMATION_03, BTL_KPA4_STAGE_05),
-    NPC_GROUP(N(NpcData_BombshellBlaster_07), BTL_KPA4_FORMATION_04, BTL_KPA4_STAGE_05),
-    NPC_GROUP(N(NpcData_BombshellBill_01), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_02), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_03), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_04), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_05), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_06), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_07), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_08), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_09), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(N(NpcData_BombshellBill_10), BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BombshellBlaster_01, BTL_KPA4_FORMATION_02, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBlaster_03, BTL_KPA4_FORMATION_02, BTL_KPA4_STAGE_05),
+    NPC_GROUP(NpcData_BombshellBlaster_05, BTL_KPA4_FORMATION_03, BTL_KPA4_STAGE_05),
+    NPC_GROUP(NpcData_BombshellBlaster_07, BTL_KPA4_FORMATION_04, BTL_KPA4_STAGE_05),
+    NPC_GROUP(NpcData_BombshellBill_01, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_02, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_03, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_04, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_05, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_06, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_07, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_08, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_09, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBill_10, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
     {}
 };

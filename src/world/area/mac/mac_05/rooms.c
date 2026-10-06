@@ -1,12 +1,12 @@
 #include "mac_05.h"
 
-EvtScript N(EVS_SetDoorRot_Club64) = {
+EvtScript EVS_SetDoorRot_Club64 = {
     Call(RotateModel, MODEL_o80, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Club64) = {
+EvtScript EVS_SetWallRot_Club64 = {
     Set(LVar1, LVar0)
     Call(RotateModel, MODEL_o95, LVar1, 1, 0, 0)
     Call(RotateModel, MODEL_o96, LVar1, 1, 0, 0)
@@ -32,13 +32,13 @@ EvtScript N(EVS_SetWallRot_Club64) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_Club64) = {
+EvtScript EVS_DropDoor_Club64 = {
     Call(RotateModel, MODEL_o80, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_Club64) = {
+EvtScript EVS_RoomListener_Club64 = {
     Switch(LVar0)
         CaseEq(0)
             Call(SetMusic, 0, SONG_CLUB64, 0, VOL_LEVEL_FULL)
@@ -53,13 +53,13 @@ EvtScript N(EVS_RoomListener_Club64) = {
             Call(EnableModel, MODEL_o139, true)
             Call(EnableModel, MODEL_o140, true)
             Wait(5)
-            Exec(N(EVS_SetupMusic))
+            Exec(EVS_SetupMusic)
     EndSwitch
     Return
     End
 };
 
-s32 N(InsideNPCs_Club64)[] = {
+s32 InsideNPCs_Club64[] = {
     NPC_Toad_02,
     NPC_Bartender,
     NPC_Chanterelle,
@@ -68,19 +68,19 @@ s32 N(InsideNPCs_Club64)[] = {
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     Call(CreateMapRoom,
         2,
-        Ref(N(EVS_SetDoorRot_Club64)),
-        Ref(N(EVS_SetWallRot_Club64)),
-        Ref(N(EVS_DropDoor_Club64)),
-        Ref(N(EVS_RoomListener_Club64)),
+        Ref(EVS_SetDoorRot_Club64),
+        Ref(EVS_SetWallRot_Club64),
+        Ref(EVS_DropDoor_Club64),
+        Ref(EVS_RoomListener_Club64),
         COLLIDER_deilit1,
         COLLIDER_deilit1u,
         MODEL_harbour_club,
-        Ref(N(InsideNPCs_Club64)))
+        Ref(InsideNPCs_Club64))
     Set(LVar0, 3)
-    Exec(N(EVS_RoomListener_Club64))
+    Exec(EVS_RoomListener_Club64)
     Return
     End
 };

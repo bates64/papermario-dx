@@ -24,16 +24,14 @@ enum {
     MV_Starship_Yaw     = MapVar(13),
 };
 
-#define NAMESPACE hos_04
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Starship_FlyingAway);
-extern EvtScript N(EVS_SetupNarrator);
-extern EvtScript N(EVS_Intro_PreHeist_Unused);
-extern EvtScript N(EVS_Intro_PostHeist);
-extern EvtScript N(EVS_SetupFountains);
-extern EvtScript N(EVS_BetaStarship_Flight1);
-extern EvtScript N(EVS_BetaStarship_Flight2);
-extern EvtScript N(EVS_BetaStarship_Return);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Starship_FlyingAway;
+extern EvtScript EVS_SetupNarrator;
+extern EvtScript EVS_Intro_PreHeist_Unused;
+extern EvtScript EVS_Intro_PostHeist;
+extern EvtScript EVS_SetupFountains;
+extern EvtScript EVS_BetaStarship_Flight1;
+extern EvtScript EVS_BetaStarship_Flight2;
+extern EvtScript EVS_BetaStarship_Return;
+extern NpcGroupList DefaultNPCs;

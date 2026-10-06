@@ -99,8 +99,6 @@ enum {
     MF_KoopaBrosSceneLock   = MapFlag(20),
 };
 
-#define NAMESPACE mac_01
-
 #include "world/common/npc/Luigi/idle.h"
 #include "world/common/npc/Dummy/idle.h"
 #include "world/common/npc/Toad/idle.h"
@@ -115,40 +113,40 @@ enum {
 #include "world/common/npc/MusicianPoet/idle.h"
 #include "world/common/npc/MusicianComposer/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupMusicMix);
-extern EvtScript N(EVS_PlayRestingSong);
-extern EvtScript N(EVS_PlaySpellcastSong);
-extern EvtScript N(EVS_PlayFlowerGateSong);
-extern EvtScript N(EVS_ResetMusicAfterFortune);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_SetupBadgeShop);
-extern EvtScript N(EVS_SetupBulletinBoard);
-extern EvtScript N(EVS_SetupCrystalBallGfx);
-extern EvtScript N(EVS_SetupFlowerModels);
-extern EvtScript N(EVS_EnterFlowerGate);
-extern EvtScript N(EVS_ExitFlowerGate);
-extern EvtScript N(EVS_Merlon_GiveHint);
-extern EvtScript N(EVS_MerlonShooAway);
-extern EvtScript N(EVS_SetupQuickChangeTrigger);
-extern EvtScript N(EVS_Scene_IntroWalking);
-extern EvtScript N(EVS_Scene_MailbagTheft);
-extern EvtScript N(EVS_Scene_MerlonAndNinji);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupMusicMix;
+extern EvtScript EVS_PlayRestingSong;
+extern EvtScript EVS_PlaySpellcastSong;
+extern EvtScript EVS_PlayFlowerGateSong;
+extern EvtScript EVS_ResetMusicAfterFortune;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_SetupBadgeShop;
+extern EvtScript EVS_SetupBulletinBoard;
+extern EvtScript EVS_SetupCrystalBallGfx;
+extern EvtScript EVS_SetupFlowerModels;
+extern EvtScript EVS_EnterFlowerGate;
+extern EvtScript EVS_ExitFlowerGate;
+extern EvtScript EVS_Merlon_GiveHint;
+extern EvtScript EVS_MerlonShooAway;
+extern EvtScript EVS_SetupQuickChangeTrigger;
+extern EvtScript EVS_Scene_IntroWalking;
+extern EvtScript EVS_Scene_MailbagTheft;
+extern EvtScript EVS_Scene_MerlonAndNinji;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
 
-extern NpcGroupList N(IntroNPCs);
-extern NpcGroupList N(EpilogueNPCs);
-extern NpcGroupList N(Chapter0NPCs);
-extern NpcGroupList N(Chapter1NPCs);
-extern NpcGroupList N(TwinkMeetingNPCs);
-extern NpcGroupList N(Chapter4NPCs);
-extern NpcGroupList N(NinjiMeetingNPCs);
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList IntroNPCs;
+extern NpcGroupList EpilogueNPCs;
+extern NpcGroupList Chapter0NPCs;
+extern NpcGroupList Chapter1NPCs;
+extern NpcGroupList TwinkMeetingNPCs;
+extern NpcGroupList Chapter4NPCs;
+extern NpcGroupList NinjiMeetingNPCs;
+extern NpcGroupList DefaultNPCs;
 
-extern NpcData N(NpcData_Townsfolk)[10];
+extern NpcData NpcData_Townsfolk[10];
 
-extern ShopItemData N(RowfBadgeInventory)[16];
+extern ShopItemData RowfBadgeInventory[16];
 
-extern EvtScript N(EVS_PlayShyGuyRunSounds);
+extern EvtScript EVS_PlayShyGuyRunSounds;

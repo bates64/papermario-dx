@@ -4,7 +4,7 @@
 
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-API_CALLABLE(N(UpgradeStarPowerCh7)) {
+API_CALLABLE(UpgradeStarPowerCh7) {
     set_max_star_power(7);
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
@@ -12,7 +12,7 @@ API_CALLABLE(N(UpgradeStarPowerCh7)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_Kalmar) = {
+EvtScript EVS_NpcIdle_Kalmar = {
     Loop(0)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -31,7 +31,7 @@ EvtScript N(EVS_NpcIdle_Kalmar) = {
     End
 };
 
-EvtScript N(EVS_Scene_RescuedKalmar) = {
+EvtScript EVS_Scene_RescuedKalmar = {
     Call(DisablePartnerAI, false)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -93,7 +93,7 @@ EvtScript N(EVS_Scene_RescuedKalmar) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Idle)
     Call(EnableNpcAI, NPC_Kalmar, true)
-    Call(N(UpgradeStarPowerCh7))
+    Call(UpgradeStarPowerCh7)
     Call(ShowMessageAtScreenPos, MSG_Menus_0197, 160, 40)
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
@@ -164,32 +164,32 @@ EvtScript N(EVS_Scene_RescuedKalmar) = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Set(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kalmar) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kalmar)))
-    Exec(N(EVS_Scene_RescuedKalmar))
+EvtScript EVS_NpcInit_Kalmar = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kalmar))
+    Exec(EVS_Scene_RescuedKalmar)
     Return
     End
 };
 
-NpcData N(NpcData_Kalmar) = {
+NpcData NpcData_Kalmar = {
     .id = NPC_Kalmar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kalmar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Kalmar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = KALMAR_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kalmar), BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kalmar, BTL_PRA3_FORMATION_01, BTL_PRA3_STAGE_00),
     {}
 };

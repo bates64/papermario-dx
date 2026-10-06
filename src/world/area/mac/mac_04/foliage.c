@@ -2,10 +2,10 @@
 
 #include "foliage.h"
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o287);
-FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o286);
+FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o287);
+FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o286);
 
-FoliageVectorList N(Tree1_Effects) = {
+FoliageVectorList Tree1_Effects = {
     .count = 2,
     .vectors = {
         { 436.0f, 135.0f, -246.0f },
@@ -13,21 +13,21 @@ FoliageVectorList N(Tree1_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree1_LeafModels),
-    .trunk = &N(Tree1_TrunkModels),
-    .vectors = &N(Tree1_Effects),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree1_LeafModels,
+    .trunk = &Tree1_TrunkModels,
+    .vectors = &Tree1_Effects,
 };
 
-BombTrigger N(BombPos_Tree1) = {
+BombTrigger BombPos_Tree1 = {
     .pos = { 470.0f, 20.0f, -242.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o290);
-FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o291);
+FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o290);
+FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o291);
 
-FoliageVectorList N(Tree2_Effects) = {
+FoliageVectorList Tree2_Effects = {
     .count = 2,
     .vectors = {
         { 41.0f, 110.0f, -149.0f },
@@ -35,21 +35,21 @@ FoliageVectorList N(Tree2_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree2) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
-    .vectors = &N(Tree2_Effects),
+ShakeTreeConfig ShakeTree_Tree2 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
+    .vectors = &Tree2_Effects,
 };
 
-BombTrigger N(BombPos_Tree2) = {
+BombTrigger BombPos_Tree2 = {
     .pos = { 50.0f, 20.0f, -141.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree3_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o288);
-FoliageModelList N(Tree3_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o289);
+FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o288);
+FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o289);
 
-FoliageVectorList N(Tree3_Effects) = {
+FoliageVectorList Tree3_Effects = {
     .count = 2,
     .vectors = {
         { -313.0f, 133.0f, 80.0f },
@@ -57,27 +57,27 @@ FoliageVectorList N(Tree3_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree3) = {
-    .leaves = &N(Tree3_LeafModels),
-    .trunk = &N(Tree3_TrunkModels),
-    .vectors = &N(Tree3_Effects),
+ShakeTreeConfig ShakeTree_Tree3 = {
+    .leaves = &Tree3_LeafModels,
+    .trunk = &Tree3_TrunkModels,
+    .vectors = &Tree3_Effects,
 };
 
-BombTrigger N(BombPos_Tree3) = {
+BombTrigger BombPos_Tree3 = {
     .pos = { -293.0f, 20.0f, 86.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(ShakeTree_Tree1)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(ShakeTree_Tree1))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o452, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree2)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree2))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o446, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree2)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree3)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree3))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o435, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree3)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree3), 1, 0)
     Return
     End
 };

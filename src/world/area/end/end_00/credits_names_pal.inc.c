@@ -2,7 +2,7 @@
 
 #include "../common/Credits.h"
 
-CreditsEntry N(Credits_Names)[] = {
+CreditsEntry Credits_Names[] = {
     {
         .appearMode = CREDITS_APPEAR_MODE_00,
         .appearTime = 0,

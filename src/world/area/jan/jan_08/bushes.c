@@ -4,12 +4,12 @@
 #include "../common/MoveBush.inc.c"
 #include "../common/MoveBushTemplates.h"
 
-EvtScript N(EVS_MoveBush_Separate) = EVT_MOVE_BUSHES(COLLIDER_o70,
+EvtScript EVS_MoveBush_Separate = EVT_MOVE_BUSHES(COLLIDER_o70,
     MODEL_o67, MODEL_o68, MV_BushMoveL, MV_BushMoveR);
 
-EvtScript N(EVS_Inspect_SeparateBushes) = {
+EvtScript EVS_Inspect_SeparateBushes = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o70, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_MoveBush_Separate))
+    Exec(EVS_MoveBush_Separate)
     Call(DisablePlayerInput, true)
     Call(MakeLerp, 0, 45, 30, EASING_CUBIC_OUT)
     Loop(0)
@@ -27,15 +27,15 @@ EvtScript N(EVS_Inspect_SeparateBushes) = {
     End
 };
 
-EvtScript N(EVS_Inspect_FlipBush) = {
+EvtScript EVS_Inspect_FlipBush = {
     Call(DisablePlayerInput, true)
     Call(PlaySoundAtCollider, COLLIDER_o88, SOUND_SEARCH_BUSH, 0)
     Loop(3)
-        Call(N(MoveBush_AnimateShearing), LVar1, 1)
+        Call(MoveBush_AnimateShearing, LVar1, 1)
         Wait(1)
-        Call(N(MoveBush_AnimateShearing), LVar1, 0)
+        Call(MoveBush_AnimateShearing, LVar1, 0)
         Wait(1)
-        Call(N(MoveBush_AnimateShearing), LVar1, -1)
+        Call(MoveBush_AnimateShearing, LVar1, -1)
         Wait(1)
     EndLoop
     Call(TranslateModel, LVar1, 0, 0, 0)
@@ -82,9 +82,9 @@ EvtScript N(EVS_Inspect_FlipBush) = {
     End
 };
 
-FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o59);
+FoliageModelList Bush1_BushModels = FOLIAGE_MODEL_LIST(MODEL_o59);
 
-FoliageDropList N(Bush1_Drops) = {
+FoliageDropList Bush1_Drops = {
     .count = 1,
     .drops = {
         {
@@ -96,22 +96,22 @@ FoliageDropList N(Bush1_Drops) = {
     }
 };
 
-FoliageVectorList N(Bush1_Effects) = {
+FoliageVectorList Bush1_Effects = {
     .count = 1,
     .vectors = {
         { 117.0f, 20.0f, -424.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush1) = {
-    .bush = &N(Bush1_BushModels),
-    .drops = &N(Bush1_Drops),
-    .vectors = &N(Bush1_Effects),
+SearchBushConfig SearchBush_Bush1 = {
+    .bush = &Bush1_BushModels,
+    .drops = &Bush1_Drops,
+    .vectors = &Bush1_Effects,
 };
 
-FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o164);
+FoliageModelList Bush2_BushModels = FOLIAGE_MODEL_LIST(MODEL_o164);
 
-FoliageDropList N(Bush2_Drops) = {
+FoliageDropList Bush2_Drops = {
     .count = 1,
     .drops = {
         {
@@ -123,186 +123,186 @@ FoliageDropList N(Bush2_Drops) = {
     }
 };
 
-FoliageVectorList N(Bush2_Effects) = {
+FoliageVectorList Bush2_Effects = {
     .count = 1,
     .vectors = {
         { -202.0f, 20.0f, 167.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush2) = {
-    .bush = &N(Bush2_BushModels),
-    .drops = &N(Bush2_Drops),
-    .vectors = &N(Bush2_Effects),
+SearchBushConfig SearchBush_Bush2 = {
+    .bush = &Bush2_BushModels,
+    .drops = &Bush2_Drops,
+    .vectors = &Bush2_Effects,
 };
 
-FoliageModelList N(Bush3_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o123);
+FoliageModelList Bush3_BushModels = FOLIAGE_MODEL_LIST(MODEL_o123);
 
-FoliageVectorList N(Bush3_Effects) = {
+FoliageVectorList Bush3_Effects = {
     .count = 1,
     .vectors = {
         { -459.0f, 20.0f, 126.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush3) = {
-    .bush = &N(Bush3_BushModels),
-    .vectors = &N(Bush3_Effects),
+SearchBushConfig SearchBush_Bush3 = {
+    .bush = &Bush3_BushModels,
+    .vectors = &Bush3_Effects,
 };
 
-FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o114);
+FoliageModelList Bush4_BushModels = FOLIAGE_MODEL_LIST(MODEL_o114);
 
-FoliageVectorList N(Bush4_Effects) = {
+FoliageVectorList Bush4_Effects = {
     .count = 1,
     .vectors = {
         { -461.0f, 20.0f, -39.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush4) = {
-    .bush = &N(Bush4_BushModels),
-    .vectors = &N(Bush4_Effects),
+SearchBushConfig SearchBush_Bush4 = {
+    .bush = &Bush4_BushModels,
+    .vectors = &Bush4_Effects,
 };
 
-FoliageModelList N(Bush5_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o156);
+FoliageModelList Bush5_BushModels = FOLIAGE_MODEL_LIST(MODEL_o156);
 
-FoliageVectorList N(Bush5_Effects) = {
+FoliageVectorList Bush5_Effects = {
     .count = 1,
     .vectors = {
         { -321.0f, 20.0f, -44.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush5) = {
-    .bush = &N(Bush5_BushModels),
-    .vectors = &N(Bush5_Effects),
+SearchBushConfig SearchBush_Bush5 = {
+    .bush = &Bush5_BushModels,
+    .vectors = &Bush5_Effects,
 };
 
-FoliageModelList N(Bush6_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o115);
+FoliageModelList Bush6_BushModels = FOLIAGE_MODEL_LIST(MODEL_o115);
 
-FoliageVectorList N(Bush6_Effects) = {
+FoliageVectorList Bush6_Effects = {
     .count = 1,
     .vectors = {
         { -279.0f, 20.0f, -55.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush6) = {
-    .bush = &N(Bush6_BushModels),
-    .vectors = &N(Bush6_Effects),
+SearchBushConfig SearchBush_Bush6 = {
+    .bush = &Bush6_BushModels,
+    .vectors = &Bush6_Effects,
 };
 
-FoliageModelList N(Bush7_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o113);
+FoliageModelList Bush7_BushModels = FOLIAGE_MODEL_LIST(MODEL_o113);
 
-FoliageVectorList N(Bush7_Effects) = {
+FoliageVectorList Bush7_Effects = {
     .count = 1,
     .vectors = {
         { -304.0f, 22.0f, -242.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush7) = {
-    .bush = &N(Bush7_BushModels),
-    .vectors = &N(Bush7_Effects),
+SearchBushConfig SearchBush_Bush7 = {
+    .bush = &Bush7_BushModels,
+    .vectors = &Bush7_Effects,
 };
 
-FoliageModelList N(Bush8_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o158);
+FoliageModelList Bush8_BushModels = FOLIAGE_MODEL_LIST(MODEL_o158);
 
-FoliageVectorList N(Bush8_Effects) = {
+FoliageVectorList Bush8_Effects = {
     .count = 1,
     .vectors = {
         { -95.0f, 20.0f, -485.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush8) = {
-    .bush = &N(Bush8_BushModels),
-    .vectors = &N(Bush8_Effects),
+SearchBushConfig SearchBush_Bush8 = {
+    .bush = &Bush8_BushModels,
+    .vectors = &Bush8_Effects,
 };
 
-FoliageModelList N(Bush9_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o159);
+FoliageModelList Bush9_BushModels = FOLIAGE_MODEL_LIST(MODEL_o159);
 
-FoliageVectorList N(Bush9_Effects) = {
+FoliageVectorList Bush9_Effects = {
     .count = 1,
     .vectors = {
         { 89.0f, 20.0f, -485.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush9) = {
-    .bush = &N(Bush9_BushModels),
-    .vectors = &N(Bush9_Effects),
+SearchBushConfig SearchBush_Bush9 = {
+    .bush = &Bush9_BushModels,
+    .vectors = &Bush9_Effects,
 };
 
-FoliageModelList N(Bush10_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o160);
+FoliageModelList Bush10_BushModels = FOLIAGE_MODEL_LIST(MODEL_o160);
 
-FoliageVectorList N(Bush10_Effects) = {
+FoliageVectorList Bush10_Effects = {
     .count = 1,
     .vectors = {
         { 152.0f, 20.0f, -489.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush10) = {
-    .bush = &N(Bush10_BushModels),
-    .vectors = &N(Bush10_Effects),
+SearchBushConfig SearchBush_Bush10 = {
+    .bush = &Bush10_BushModels,
+    .vectors = &Bush10_Effects,
 };
 
-FoliageModelList N(Bush11_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o163);
+FoliageModelList Bush11_BushModels = FOLIAGE_MODEL_LIST(MODEL_o163);
 
-FoliageVectorList N(Bush11_Effects) = {
+FoliageVectorList Bush11_Effects = {
     .count = 1,
     .vectors = {
         { 394.0f, 20.0f, 176.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush11) = {
-    .bush = &N(Bush11_BushModels),
-    .vectors = &N(Bush11_Effects),
+SearchBushConfig SearchBush_Bush11 = {
+    .bush = &Bush11_BushModels,
+    .vectors = &Bush11_Effects,
 };
 
-FoliageModelList N(Bush12_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o161);
+FoliageModelList Bush12_BushModels = FOLIAGE_MODEL_LIST(MODEL_o161);
 
-FoliageVectorList N(Bush12_Effects) = {
+FoliageVectorList Bush12_Effects = {
     .count = 1,
     .vectors = {
         { 239.0f, 22.0f, 430.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_Bush12) = {
-    .bush = &N(Bush12_BushModels),
-    .vectors = &N(Bush12_Effects),
+SearchBushConfig SearchBush_Bush12 = {
+    .bush = &Bush12_BushModels,
+    .vectors = &Bush12_Effects,
 };
 
-EvtScript N(EVS_SetupBushes) = {
-    BindTrigger(Ref(N(EVS_Inspect_SeparateBushes)), TRIGGER_WALL_PRESS_A, COLLIDER_o70, 1, 0)
+EvtScript EVS_SetupBushes = {
+    BindTrigger(Ref(EVS_Inspect_SeparateBushes), TRIGGER_WALL_PRESS_A, COLLIDER_o70, 1, 0)
     Set(LVar1, MODEL_o64)
-    BindPadlock(Ref(N(EVS_Inspect_FlipBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o88, 0, 0, 1)
-    Set(LVar0, Ref(N(SearchBush_Bush1)))
+    BindPadlock(Ref(EVS_Inspect_FlipBush), TRIGGER_WALL_PRESS_A, COLLIDER_o88, 0, 0, 1)
+    Set(LVar0, Ref(SearchBush_Bush1))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o59, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush2)))
+    Set(LVar0, Ref(SearchBush_Bush2))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o209, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush3)))
+    Set(LVar0, Ref(SearchBush_Bush3))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o210, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush4)))
+    Set(LVar0, Ref(SearchBush_Bush4))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o211, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush5)))
+    Set(LVar0, Ref(SearchBush_Bush5))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o212, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush6)))
+    Set(LVar0, Ref(SearchBush_Bush6))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o213, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush7)))
+    Set(LVar0, Ref(SearchBush_Bush7))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o214, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush8)))
+    Set(LVar0, Ref(SearchBush_Bush8))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o215, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush9)))
+    Set(LVar0, Ref(SearchBush_Bush9))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o216, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush10)))
+    Set(LVar0, Ref(SearchBush_Bush10))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o217, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush11)))
+    Set(LVar0, Ref(SearchBush_Bush11))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o218, 1, 0)
-    Set(LVar0, Ref(N(SearchBush_Bush12)))
+    Set(LVar0, Ref(SearchBush_Bush12))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o219, 1, 0)
     Return
     End

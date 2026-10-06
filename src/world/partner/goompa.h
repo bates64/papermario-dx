@@ -4,7 +4,7 @@
 #include "common.h"
 #include "script_api/map.h"
 
-void world_goompa_init(Npc* partner);
+void init(Npc* partner);
 
 extern EvtScript EVS_WorldGoompa_TakeOut;
 extern EvtScript EVS_WorldGoompa_Update;

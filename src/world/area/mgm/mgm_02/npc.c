@@ -28,19 +28,19 @@ extern HudScript HES_BlueMeter;
 extern HudScript HES_AButton;
 extern HudScript HES_MashAButton;
 
-extern s32 N(InitialConfigurations)[3][NUM_BOXES];
-extern s32 N(BoxModelIDs)[NUM_BOXES];
-extern s32 N(BoxColliderIDs)[NUM_BOXES];
-extern s32 N(PanelModelIDs)[NUM_PANELS];
+extern s32 InitialConfigurations[3][NUM_BOXES];
+extern s32 BoxModelIDs[NUM_BOXES];
+extern s32 BoxColliderIDs[NUM_BOXES];
+extern s32 PanelModelIDs[NUM_PANELS];
 
-BSS b32 N(PanelModelsAssigned)[NUM_PANELS];
+BSS b32 PanelModelsAssigned[NUM_PANELS];
 
-extern IMG_BIN N(panel_peach_img);
-extern PAL_BIN N(panel_peach_pal);
+extern IMG_BIN mgm_02_panel_peach_img;
+extern PAL_BIN mgm_02_panel_peach_pal;
 
-API_CALLABLE(N(SetMsgImgs_Panel));
+API_CALLABLE(SetMsgImgs_Panel);
 
-extern EvtScript N(EVS_ReadSign_Instructions);
+extern EvtScript EVS_ReadSign_Instructions;
 
 typedef enum SmashGameBoxCotent {
     BOX_CONTENT_FUZZY       = 0,
@@ -120,7 +120,7 @@ typedef struct SmashGameData {
 #define COUNT_POS_Y 43
 #endif
 
-void N(appendGfx_score_display)(void* renderData) {
+void appendGfx_score_display(void* renderData) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     SmashGameData* data = scorekeeper->varTablePtr[SMASH_DATA_VAR_IDX];
     HudElemID buttonHID;
@@ -175,7 +175,7 @@ void N(appendGfx_score_display)(void* renderData) {
     draw_box(0, WINDOW_STYLE_9, data->windowAPosX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
     draw_msg(MSG_MGM_0047, data->windowAPosX + 42, TEXT_POS_Y, 255, MSG_PAL_WHITE, 0);
     draw_number(NUM_PANELS - data->found, data->windowAPosX + 65, COUNT_POS_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-    draw_ci_image_with_clipping(&N(panel_peach_img), 32, 32, G_IM_FMT_CI, G_IM_SIZ_4b, &N(panel_peach_pal),
+    draw_ci_image_with_clipping(&mgm_02_panel_peach_img, 32, 32, G_IM_FMT_CI, G_IM_SIZ_4b, &mgm_02_panel_peach_pal,
         data->windowAPosX + 5, 26, 10, 20, 300, 200, 255);
 
     timeLeft = MIN(data->timeLeft, PLAY_TIME);
@@ -191,24 +191,24 @@ void N(appendGfx_score_display)(void* renderData) {
     draw_msg(MSG_MGM_0024, data->windowBPosX + 30, 29, 255, MSG_PAL_WHITE, 0);
 }
 
-void N(worker_render_score)(void) {
+void worker_render_score(void) {
     RenderTask task;
 
     task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
-    task.appendGfx = &N(appendGfx_score_display);
+    task.appendGfx = &appendGfx_score_display;
     task.dist = 0;
 
     queue_render_task(&task);
 }
 
-API_CALLABLE(N(CreateScoreDisplay)) {
+API_CALLABLE(CreateScoreDisplay) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     HudElemID hidButton;
     HudElemID hidMeter;
 
     if (isInitialCall) {
-        data->workerID = create_worker_scene(nullptr, &N(worker_render_score));
+        data->workerID = create_worker_scene(nullptr, &worker_render_score);
 
         hidButton = hud_element_create(HES_AButton);
         data->buttonHID = hidButton;
@@ -226,34 +226,34 @@ API_CALLABLE(N(CreateScoreDisplay)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(DisableMenus)) {
+API_CALLABLE(DisableMenus) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_MENUS;
     status_bar_ignore_changes();
     close_status_bar();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(EnableMenus)) {
+API_CALLABLE(EnableMenus) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_MENUS;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroySignpost)) {
+API_CALLABLE(DestroySignpost) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     delete_entity(data->signpostEntity);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreateSignpost)) {
+API_CALLABLE(CreateSignpost) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 entityIndex = create_entity(&Entity_Signpost, 355, 20, -180, 0, 0, 0, 0, MAKE_ENTITY_END);
     data->signpostEntity = entityIndex;
-    get_entity_by_index(entityIndex)->script.source = &N(EVS_ReadSign_Instructions);
+    get_entity_by_index(entityIndex)->script.source = &EVS_ReadSign_Instructions;
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(OnHitBox)) {
+API_CALLABLE(OnHitBox) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 hitModelID = evt_get_variable(script, LVarA);
     s32 hitColliderID = evt_get_variable(script, LVarB); // unused
@@ -290,10 +290,10 @@ API_CALLABLE(N(OnHitBox)) {
 }
 
 #if VERSION_PAL
-API_CALLABLE(N(SetBoxContents));
-INCLUDE_ASM(ApiResult, "world/area/mgm/mgm_02/mgm_02_2_npc", mgm_02_SetBoxContents);
+API_CALLABLE(SetBoxContents);
+INCLUDE_ASM(ApiResult, "world/area/mgm/mgm_02/mgm_02_2_npc", SetBoxContents);
 #else
-API_CALLABLE(N(SetBoxContents)) {
+API_CALLABLE(SetBoxContents) {
     s32 initialConfiguration;
     s32 configuration[NUM_BOXES];
     s32 indexA, indexB, temp;
@@ -310,9 +310,9 @@ API_CALLABLE(N(SetBoxContents)) {
     data->stunFlags = 0;
 
      // choose one of three initial configurations at random
-    initialConfiguration = rand_int(1000) % ARRAY_COUNT(N(InitialConfigurations));
+    initialConfiguration = rand_int(1000) % ARRAY_COUNT(InitialConfigurations);
     for (i = 0; i < NUM_BOXES; i++) {
-        configuration[i] = N(InitialConfigurations[initialConfiguration][i]);
+        configuration[i] = InitialConfigurations[initialConfiguration][i];
     }
 
     // randomly swap 10000 pairs
@@ -331,8 +331,8 @@ API_CALLABLE(N(SetBoxContents)) {
         data->box[i].state = -1;
         data->box[i].stateTimer = 0;
         data->box[i].content = configuration[i];
-        data->box[i].modelID = N(BoxModelIDs[i]);
-        data->box[i].colliderID = N(BoxColliderIDs[i]);
+        data->box[i].modelID = BoxModelIDs[i];
+        data->box[i].colliderID = BoxColliderIDs[i];
         data->box[i].npcID = -1;
         data->box[i].peachPanelModelID = -1;
     }
@@ -352,8 +352,8 @@ API_CALLABLE(N(SetBoxContents)) {
         enemy->varTable[0] = 0;
     }
 
-    for (i = 0; i < ARRAY_COUNT(N(PanelModelsAssigned)); i++) {
-        N(PanelModelsAssigned)[i] = false;
+    for (i = 0; i < ARRAY_COUNT(PanelModelsAssigned); i++) {
+        PanelModelsAssigned[i] = false;
     }
 
     for (i = 0; i < NUM_BOXES; i++) {
@@ -399,10 +399,10 @@ API_CALLABLE(N(SetBoxContents)) {
                         break;
                     }
                 }
-                for (j = 0; j < ARRAY_COUNT(N(PanelModelsAssigned)); j++) {
-                    if (!N(PanelModelsAssigned)[j]) {
-                        N(PanelModelsAssigned)[j] = true;
-                        data->box[i].peachPanelModelID = N(PanelModelIDs[j]);
+                for (j = 0; j < ARRAY_COUNT(PanelModelsAssigned); j++) {
+                    if (!PanelModelsAssigned[j]) {
+                        PanelModelsAssigned[j] = true;
+                        data->box[i].peachPanelModelID = PanelModelIDs[j];
                         break;
                     }
                 }
@@ -417,10 +417,10 @@ API_CALLABLE(N(SetBoxContents)) {
 #endif
 
 #if VERSION_PAL
-API_CALLABLE(N(RunMinigame));
-INCLUDE_ASM(ApiResult, "world/area/mgm/mgm_02/mgm_02_2_npc", mgm_02_RunMinigame);
+API_CALLABLE(RunMinigame);
+INCLUDE_ASM(ApiResult, "world/area/mgm/mgm_02/mgm_02_2_npc", RunMinigame);
 #else
-API_CALLABLE(N(RunMinigame)) {
+API_CALLABLE(RunMinigame) {
     SmashGameData* data;
     Enemy* enemy;
     Npc* npc;
@@ -853,7 +853,7 @@ API_CALLABLE(N(RunMinigame)) {
 }
 #endif
 
-API_CALLABLE(N(UpdateRecords)) {
+API_CALLABLE(UpdateRecords) {
     PlayerData* playerData = &gPlayerData;
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 seconds, deciseconds;
@@ -885,7 +885,7 @@ API_CALLABLE(N(UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GiveCoinWinnings)) {
+API_CALLABLE(GiveCoinWinnings) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
@@ -913,7 +913,7 @@ API_CALLABLE(N(GiveCoinWinnings)) {
     return (data->curScore > 0) ? ApiStatus_BLOCK : ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CleanupGame)) {
+API_CALLABLE(CleanupGame) {
     Enemy* enemy = get_enemy(SCOREKEEPER_ENEMY_IDX);
     SmashGameData* data = enemy->varTablePtr[SMASH_DATA_VAR_IDX];
     Npc* npc;
@@ -976,7 +976,7 @@ API_CALLABLE(N(CleanupGame)) {
     }
 }
 
-API_CALLABLE(N(CreateMinigame)) {
+API_CALLABLE(CreateMinigame) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     SmashGameData* data = heap_malloc(sizeof(*data));
     scorekeeper->varTablePtr[SMASH_DATA_VAR_IDX] = data;
@@ -991,7 +991,7 @@ API_CALLABLE(N(CreateMinigame)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroyMinigame)) {
+API_CALLABLE(DestroyMinigame) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
 
     free_worker(data->workerID);
@@ -1001,12 +1001,12 @@ API_CALLABLE(N(DestroyMinigame)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCoinCount)) {
+API_CALLABLE(GetCoinCount) {
     evt_set_variable(script, LVarA, gPlayerData.coins);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(TakeCoinCost)) {
+API_CALLABLE(TakeCoinCost) {
     PlayerData* playerData = &gPlayerData;
 
     if (isInitialCall) {
@@ -1020,12 +1020,12 @@ API_CALLABLE(N(TakeCoinCost)) {
     return (script->functionTemp[0] == PLAY_COST) ? ApiStatus_DONE2 : ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(HideCoinCounter)) {
+API_CALLABLE(HideCoinCounter) {
     hide_coin_counter_immediately();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Dummy) = {
+EvtScript EVS_Dummy = {
     Return
     End
 };
@@ -1035,13 +1035,13 @@ EvtScript N(EVS_Dummy) = {
 #include "world/common/enemy/Fuzzy/idle.inc.c"
 #include "world/common/enemy/Bobomb/idle.inc.c"
 
-s32 N(InitialConfigurations)[3][NUM_BOXES] = {
+s32 InitialConfigurations[3][NUM_BOXES] = {
     { 2, 0, 2, 0, 2, 3, 3, 3, 3, 3, 2, 3, 2, 1, 3, 3, 2, 3, 0, 3, 3, 2, 3, 3, 1, 2, 3, 3, 2, 3, 3, 1, 3, 3, 2 },
     { 2, 0, 2, 1, 2, 3, 2, 3, 3, 3, 3, 1, 3, 2, 3, 0, 3, 3, 3, 3, 3, 2, 3, 2, 3, 3, 1, 0, 3, 2, 3, 3, 2, 3, 2 },
     { 3, 3, 0, 3, 3, 1, 0, 1, 2, 3, 3, 3, 2, 3, 0, 3, 2, 2, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 3, 3, 2, 3, 1, 3, 3 },
 };
 
-s32 N(BoxModelIDs)[NUM_BOXES] = {
+s32 BoxModelIDs[NUM_BOXES] = {
     MODEL_a1, MODEL_b1, MODEL_c1, MODEL_d1, MODEL_e1, MODEL_f1, MODEL_g1,
     MODEL_a2, MODEL_b2, MODEL_c2, MODEL_d2, MODEL_e2, MODEL_f2, MODEL_g2,
     MODEL_a3, MODEL_b3, MODEL_c3, MODEL_d3, MODEL_e3, MODEL_f3, MODEL_g3,
@@ -1049,7 +1049,7 @@ s32 N(BoxModelIDs)[NUM_BOXES] = {
     MODEL_a5, MODEL_b5, MODEL_c5, MODEL_d5, MODEL_e5, MODEL_f5, MODEL_g5,
 };
 
-s32 N(BoxColliderIDs)[NUM_BOXES] = {
+s32 BoxColliderIDs[NUM_BOXES] = {
     COLLIDER_a1, COLLIDER_b1, COLLIDER_c1, COLLIDER_d1, COLLIDER_e1, COLLIDER_f1, COLLIDER_g1,
     COLLIDER_a2, COLLIDER_b2, COLLIDER_c2, COLLIDER_d2, COLLIDER_e2, COLLIDER_f2, COLLIDER_g2,
     COLLIDER_a3, COLLIDER_b3, COLLIDER_c3, COLLIDER_d3, COLLIDER_e3, COLLIDER_f3, COLLIDER_g3,
@@ -1057,27 +1057,27 @@ s32 N(BoxColliderIDs)[NUM_BOXES] = {
     COLLIDER_a5, COLLIDER_b5, COLLIDER_c5, COLLIDER_d5, COLLIDER_e5, COLLIDER_f5, COLLIDER_g5,
 };
 
-s32 N(PanelModelIDs)[NUM_PANELS] = {
+s32 PanelModelIDs[NUM_PANELS] = {
     MODEL_o50, MODEL_o51, MODEL_o52, MODEL_o53, MODEL_o54,
     MODEL_o55, MODEL_o56, MODEL_o57, MODEL_o58, MODEL_o59
 };
 
-EvtScript N(EVS_CreateScoreDisplay) = {
-    Call(N(CreateScoreDisplay))
+EvtScript EVS_CreateScoreDisplay = {
+    Call(CreateScoreDisplay)
     Return
     End
 };
 
-EvtScript N(EVS_ReadSign_Instructions) = {
+EvtScript EVS_ReadSign_Instructions = {
     Call(DisablePlayerInput, true)
-    Call(N(SetMsgImgs_Panel))
+    Call(SetMsgImgs_Panel)
     Call(ShowMessageAtScreenPos, MSG_MGM_0046, 160, 40)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_ShowBox) = {
+EvtScript EVS_ShowBox = {
     Call(EnableModel, LVar0, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, LVar1, COLLIDER_FLAGS_UPPER_MASK)
     Call(TranslateModel, LVar0, 0, 0, 0)
@@ -1085,8 +1085,8 @@ EvtScript N(EVS_ShowBox) = {
     End
 };
 
-EvtScript N(EVS_MakeBoxAppear) = {
-    Exec(N(EVS_ShowBox))
+EvtScript EVS_MakeBoxAppear = {
+    Exec(EVS_ShowBox)
     Set(LVarA, -25)
     Loop(13)
         Add(LVarA, 2)
@@ -1098,7 +1098,7 @@ EvtScript N(EVS_MakeBoxAppear) = {
     End
 };
 
-EvtScript N(EVS_HideBox) = {
+EvtScript EVS_HideBox = {
     Call(TranslateModel, LVar0, 0, 0, 0)
     Call(EnableModel, LVar0, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar1, COLLIDER_FLAGS_UPPER_MASK)
@@ -1106,8 +1106,8 @@ EvtScript N(EVS_HideBox) = {
     End
 };
 
-EvtScript N(EVS_HideBoxWithSmoke) = {
-    Exec(N(EVS_HideBox))
+EvtScript EVS_HideBoxWithSmoke = {
+    Exec(EVS_HideBox)
     Wait(1)
     Call(GetColliderCenter, LVar1)
     Sub(LVar1, 5)
@@ -1116,337 +1116,337 @@ EvtScript N(EVS_HideBoxWithSmoke) = {
     End
 };
 
-EvtScript N(EVS_HideAllBoxes) = {
+EvtScript EVS_HideAllBoxes = {
     Set(LVar0, MODEL_a1)
     Set(LVar1, MODEL_a1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_a2)
     Set(LVar1, MODEL_a2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_a3)
     Set(LVar1, MODEL_a3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_a4)
     Set(LVar1, MODEL_a4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_a5)
     Set(LVar1, MODEL_a5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_b1)
     Set(LVar1, MODEL_b1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_b2)
     Set(LVar1, MODEL_b2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_b3)
     Set(LVar1, MODEL_b3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_b4)
     Set(LVar1, MODEL_b4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_b5)
     Set(LVar1, MODEL_b5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_c1)
     Set(LVar1, MODEL_c1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_c2)
     Set(LVar1, MODEL_c2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_c3)
     Set(LVar1, MODEL_c3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_c4)
     Set(LVar1, MODEL_c4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_c5)
     Set(LVar1, MODEL_c5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_d1)
     Set(LVar1, MODEL_d1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_d2)
     Set(LVar1, MODEL_d2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_d3)
     Set(LVar1, MODEL_d3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_d4)
     Set(LVar1, MODEL_d4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_d5)
     Set(LVar1, MODEL_d5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_e1)
     Set(LVar1, MODEL_e1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_e2)
     Set(LVar1, MODEL_e2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_e3)
     Set(LVar1, MODEL_e3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_e4)
     Set(LVar1, MODEL_e4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_e5)
     Set(LVar1, MODEL_e5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_f1)
     Set(LVar1, MODEL_f1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_f2)
     Set(LVar1, MODEL_f2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_f3)
     Set(LVar1, MODEL_f3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_f4)
     Set(LVar1, MODEL_f4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_f5)
     Set(LVar1, MODEL_f5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_g1)
     Set(LVar1, MODEL_g1)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_g2)
     Set(LVar1, MODEL_g2)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_g3)
     Set(LVar1, MODEL_g3)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_g4)
     Set(LVar1, MODEL_g4)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Set(LVar0, MODEL_g5)
     Set(LVar1, MODEL_g5)
-    Exec(N(EVS_HideBox))
+    Exec(EVS_HideBox)
     Return
     End
 };
 
-EvtScript N(EVS_HideAllBoxesWithSmoke) = {
+EvtScript EVS_HideAllBoxesWithSmoke = {
     Set(LVar0, MODEL_a1)
     Set(LVar1, MODEL_a1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_a2)
     Set(LVar1, MODEL_a2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_a3)
     Set(LVar1, MODEL_a3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_a4)
     Set(LVar1, MODEL_a4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_a5)
     Set(LVar1, MODEL_a5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_b1)
     Set(LVar1, MODEL_b1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_b2)
     Set(LVar1, MODEL_b2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_b3)
     Set(LVar1, MODEL_b3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_b4)
     Set(LVar1, MODEL_b4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_b5)
     Set(LVar1, MODEL_b5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_c1)
     Set(LVar1, MODEL_c1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_c2)
     Set(LVar1, MODEL_c2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_c3)
     Set(LVar1, MODEL_c3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_c4)
     Set(LVar1, MODEL_c4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_c5)
     Set(LVar1, MODEL_c5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_d1)
     Set(LVar1, MODEL_d1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_d2)
     Set(LVar1, MODEL_d2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_d3)
     Set(LVar1, MODEL_d3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_d4)
     Set(LVar1, MODEL_d4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_d5)
     Set(LVar1, MODEL_d5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_e1)
     Set(LVar1, MODEL_e1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_e2)
     Set(LVar1, MODEL_e2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_e3)
     Set(LVar1, MODEL_e3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_e4)
     Set(LVar1, MODEL_e4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_e5)
     Set(LVar1, MODEL_e5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_f1)
     Set(LVar1, MODEL_f1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_f2)
     Set(LVar1, MODEL_f2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_f3)
     Set(LVar1, MODEL_f3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_f4)
     Set(LVar1, MODEL_f4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_f5)
     Set(LVar1, MODEL_f5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_g1)
     Set(LVar1, MODEL_g1)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_g2)
     Set(LVar1, MODEL_g2)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_g3)
     Set(LVar1, MODEL_g3)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_g4)
     Set(LVar1, MODEL_g4)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Set(LVar0, MODEL_g5)
     Set(LVar1, MODEL_g5)
-    Exec(N(EVS_HideBoxWithSmoke))
+    Exec(EVS_HideBoxWithSmoke)
     Return
     End
 };
 
-EvtScript N(EVS_MakeAllBoxesAppear) = {
+EvtScript EVS_MakeAllBoxesAppear = {
     Set(LVar0, MODEL_a1)
     Set(LVar1, MODEL_a1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_a2)
     Set(LVar1, MODEL_a2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_a3)
     Set(LVar1, MODEL_a3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_a4)
     Set(LVar1, MODEL_a4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_a5)
     Set(LVar1, MODEL_a5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_b1)
     Set(LVar1, MODEL_b1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_b2)
     Set(LVar1, MODEL_b2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_b3)
     Set(LVar1, MODEL_b3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_b4)
     Set(LVar1, MODEL_b4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_b5)
     Set(LVar1, MODEL_b5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_c1)
     Set(LVar1, MODEL_c1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_c2)
     Set(LVar1, MODEL_c2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_c3)
     Set(LVar1, MODEL_c3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_c4)
     Set(LVar1, MODEL_c4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_c5)
     Set(LVar1, MODEL_c5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_d1)
     Set(LVar1, MODEL_d1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_d2)
     Set(LVar1, MODEL_d2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_d3)
     Set(LVar1, MODEL_d3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_d4)
     Set(LVar1, MODEL_d4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_d5)
     Set(LVar1, MODEL_d5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_e1)
     Set(LVar1, MODEL_e1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_e2)
     Set(LVar1, MODEL_e2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_e3)
     Set(LVar1, MODEL_e3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_e4)
     Set(LVar1, MODEL_e4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_e5)
     Set(LVar1, MODEL_e5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_f1)
     Set(LVar1, MODEL_f1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_f2)
     Set(LVar1, MODEL_f2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_f3)
     Set(LVar1, MODEL_f3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_f4)
     Set(LVar1, MODEL_f4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_f5)
     Set(LVar1, MODEL_f5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_g1)
     Set(LVar1, MODEL_g1)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_g2)
     Set(LVar1, MODEL_g2)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_g3)
     Set(LVar1, MODEL_g3)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_g4)
     Set(LVar1, MODEL_g4)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Set(LVar0, MODEL_g5)
     Set(LVar1, MODEL_g5)
-    Exec(N(EVS_MakeBoxAppear))
+    Exec(EVS_MakeBoxAppear)
     Return
     End
 };
 
-EvtScript N(EVS_HidePeachPanels) = {
+EvtScript EVS_HidePeachPanels = {
     Call(EnableModel, MODEL_o50, false)
     Call(EnableModel, MODEL_o51, false)
     Call(EnableModel, MODEL_o52, false)
@@ -1461,10 +1461,10 @@ EvtScript N(EVS_HidePeachPanels) = {
     End
 };
 
-EvtScript N(EVS_OnHitBox) = {
+EvtScript EVS_OnHitBox = {
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
-    Call(N(OnHitBox))
+    Call(OnHitBox)
     Call(GetColliderCenter, LVarB)
     Switch(LVarC)
         CaseEq(2)
@@ -1494,141 +1494,141 @@ EvtScript N(EVS_OnHitBox) = {
     End
 };
 
-EvtScript N(EVS_BindHammerTriggers) = {
+EvtScript EVS_BindHammerTriggers = {
     Set(LVar0, MODEL_a1)
     Set(LVar1, MODEL_a1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_a2)
     Set(LVar1, MODEL_a2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_a3)
     Set(LVar1, MODEL_a3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_a4)
     Set(LVar1, MODEL_a4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_a5)
     Set(LVar1, MODEL_a5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_b1)
     Set(LVar1, MODEL_b1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_b2)
     Set(LVar1, MODEL_b2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_b3)
     Set(LVar1, MODEL_b3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_b4)
     Set(LVar1, MODEL_b4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_b5)
     Set(LVar1, MODEL_b5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_c1)
     Set(LVar1, MODEL_c1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_c2)
     Set(LVar1, MODEL_c2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_c3)
     Set(LVar1, MODEL_c3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_c4)
     Set(LVar1, MODEL_c4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_c5)
     Set(LVar1, MODEL_c5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_d1)
     Set(LVar1, MODEL_d1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_d2)
     Set(LVar1, MODEL_d2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_d3)
     Set(LVar1, MODEL_d3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_d4)
     Set(LVar1, MODEL_d4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_d5)
     Set(LVar1, MODEL_d5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_e1)
     Set(LVar1, MODEL_e1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_e2)
     Set(LVar1, MODEL_e2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_e3)
     Set(LVar1, MODEL_e3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_e4)
     Set(LVar1, MODEL_e4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_e5)
     Set(LVar1, MODEL_e5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_f1)
     Set(LVar1, MODEL_f1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_f2)
     Set(LVar1, MODEL_f2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_f3)
     Set(LVar1, MODEL_f3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_f4)
     Set(LVar1, MODEL_f4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_f5)
     Set(LVar1, MODEL_f5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_g1)
     Set(LVar1, MODEL_g1)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_g2)
     Set(LVar1, MODEL_g2)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_g3)
     Set(LVar1, MODEL_g3)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_g4)
     Set(LVar1, MODEL_g4)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Set(LVar0, MODEL_g5)
     Set(LVar1, MODEL_g5)
-    BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
+    BindTrigger(Ref(EVS_OnHitBox), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetBoxContents) = {
-    Call(N(SetBoxContents))
+EvtScript EVS_SetBoxContents = {
+    Call(SetBoxContents)
     Return
     End
 };
 
-EvtScript N(EVS_CleanupGame) = {
-    Call(N(CleanupGame))
+EvtScript EVS_CleanupGame = {
+    Call(CleanupGame)
     Return
     End
 };
 
-EvtScript N(EVS_Toad_GovernGame) = {
-    Call(N(DisableMenus))
-    Call(N(RunMinigame))
-    Call(N(EnableMenus))
+EvtScript EVS_Toad_GovernGame = {
+    Call(DisableMenus)
+    Call(RunMinigame)
+    Call(EnableMenus)
     Call(DisablePlayerInput, true)
     Call(SetSelfVar, 3, 3)
     Call(PopSong)
-    Exec(N(EVS_CleanupGame))
+    Exec(EVS_CleanupGame)
     Call(ShowMessageAtScreenPos, MSG_MGM_0041, 160, 40)
     Wait(5)
     Call(SetSelfVar, 3, 4)
-    Exec(N(EVS_HidePeachPanels))
-    Exec(N(EVS_HideAllBoxesWithSmoke))
+    Exec(EVS_HidePeachPanels)
+    Exec(EVS_HideAllBoxesWithSmoke)
     Wait(15)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 358, -20, 185)
@@ -1639,7 +1639,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
     Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Call(N(CreateSignpost))
+    Call(CreateSignpost)
     PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175, 0, 0)
     Thread
         Call(SetNpcPos, NPC_Toad, 358, -20, 185)
@@ -1659,7 +1659,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
     Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     Wait(5)
     Call(SetSelfVar, 3, 5)
-    Call(N(UpdateRecords))
+    Call(UpdateRecords)
     Switch(LVar0)
         CaseEq(-1)
             Call(SetSelfVar, 3, 0)
@@ -1672,7 +1672,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_PAL_MGM_0046)
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinWinnings))
+            Call(GiveCoinWinnings)
             Wait(15)
             Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
@@ -1683,7 +1683,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0042)
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinWinnings))
+            Call(GiveCoinWinnings)
             Wait(15)
             Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
@@ -1704,38 +1704,38 @@ EvtScript N(EVS_Toad_GovernGame) = {
     End
 };
 
-EvtScript N(EVS_InitializeMinigame) = {
-    Call(N(CreateMinigame))
-    Exec(N(EVS_HideAllBoxes))
-    Call(N(CreateSignpost))
-    Exec(N(EVS_CreateScoreDisplay))
-    Exec(N(EVS_BindHammerTriggers))
-    Exec(N(EVS_HidePeachPanels))
+EvtScript EVS_InitializeMinigame = {
+    Call(CreateMinigame)
+    Exec(EVS_HideAllBoxes)
+    Call(CreateSignpost)
+    Exec(EVS_CreateScoreDisplay)
+    Exec(EVS_BindHammerTriggers)
+    Exec(EVS_HidePeachPanels)
     Return
     End
 };
 
-EvtScript N(EVS_DestroyMinigame) = {
-    Call(N(DestroyMinigame))
+EvtScript EVS_DestroyMinigame = {
+    Call(DestroyMinigame)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad) = {
+EvtScript EVS_NpcInteract_Toad = {
     IfEq(GF_MGM_Met_SmashAttack, false)
-        Call(N(SetMsgImgs_Panel))
+        Call(SetMsgImgs_Panel)
         Set(GF_MGM_Met_SmashAttack, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003C)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003D)
     EndIf
     Call(ShowCoinCounter, true)
-    Call(N(GetCoinCount))
+    Call(GetCoinCount)
     IfLt(LVarA, 10)
         Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003E)
-        Call(N(HideCoinCounter))
+        Call(HideCoinCounter)
         Wait(12)
-        Exec(N(EVS_DestroyMinigame))
+        Exec(EVS_DestroyMinigame)
         Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_2)
         Wait(100)
         Return
@@ -1749,15 +1749,15 @@ EvtScript N(EVS_NpcInteract_Toad) = {
                 Call(SetSelfVar, 4, LVar1)
             EndIf
             Thread
-                Call(N(TakeCoinCost))
+                Call(TakeCoinCost)
             EndThread
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003F)
-            Call(N(HideCoinCounter))
+            Call(HideCoinCounter)
         CaseDefault
-            Call(N(HideCoinCounter))
+            Call(HideCoinCounter)
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0040)
-            Exec(N(EVS_DestroyMinigame))
+            Exec(EVS_DestroyMinigame)
             Call(GotoMap, Ref("mgm_00"), mgm_00_ENTRY_2)
             Wait(100)
             Return
@@ -1771,15 +1771,15 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
     Call(SetSelfVar, 3, 1)
     Call(PlaySoundWithVolume, SOUND_SPAWN_BLOCK, 80)
-    Exec(N(EVS_MakeAllBoxesAppear))
-    Exec(N(EVS_SetBoxContents))
+    Exec(EVS_MakeAllBoxesAppear)
+    Exec(EVS_SetBoxContents)
     Wait(25)
     Thread
         Wait(12)
         PlayEffect(EFFECT_WALKING_DUST, 1, 358, -10, 185, 0, 0)
         Call(SetNpcPos, NPC_Toad, 358, 500, 185)
         Call(EnableNpcShadow, NPC_Toad, false)
-        Call(N(DestroySignpost))
+        Call(DestroySignpost)
         PlayEffect(EFFECT_WALKING_DUST, 1, 355, 30, -180, 0, 0)
     EndThread
     Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
@@ -1788,33 +1788,33 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
     Call(EnablePartnerAI)
     Call(SetSelfVar, 3, 2)
-    Exec(N(EVS_Toad_GovernGame))
+    Exec(EVS_Toad_GovernGame)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad) = {
+EvtScript EVS_NpcInit_Toad = {
     Call(SetNpcPos, NPC_Toad, 358, -20, 185)
     Call(SetSelfVar, 4, 0)
     Call(SetSelfVar, 3, 0)
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
     Return
     End
 };
 
-NpcData N(NpcData_GuideToad) = {
+NpcData NpcData_GuideToad = {
     .id = NPC_Toad,
     .pos = { 353.0f, -20.0f, 185.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_Toad,
+    .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-EvtScript N(EVS_NpcInit_Fuzzy) = {
+EvtScript EVS_NpcInit_Fuzzy = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Run)
     Call(SetSelfVar, 0, 0)
     Call(GetSelfNpcID, LVar0)
@@ -1843,7 +1843,7 @@ EvtScript N(EVS_NpcInit_Fuzzy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb) = {
+EvtScript EVS_NpcInit_Bobomb = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Bobomb_AngryIdle)
     Call(SetSelfVar, 0, 0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, true)
@@ -1870,7 +1870,7 @@ EvtScript N(EVS_NpcInit_Bobomb) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Luigi) = {
+EvtScript EVS_NpcInit_Luigi = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Jump)
     Call(SetSelfVar, 0, 0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, true)
@@ -1886,133 +1886,133 @@ EvtScript N(EVS_NpcInit_Luigi) = {
     End
 };
 
-NpcData N(NpcData_Fuzzy_01) = {
+NpcData NpcData_Fuzzy_01 = {
     .id = NPC_Fuzzy_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Fuzzy),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy,
+    .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Fuzzy_02) = {
+NpcData NpcData_Fuzzy_02 = {
     .id = NPC_Fuzzy_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Fuzzy),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy,
+    .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Fuzzy_03) = {
+NpcData NpcData_Fuzzy_03 = {
     .id = NPC_Fuzzy_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Fuzzy),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy,
+    .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Fuzzy_04) = {
+NpcData NpcData_Fuzzy_04 = {
     .id = NPC_Fuzzy_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Fuzzy),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy,
+    .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Fuzzy_05) = {
+NpcData NpcData_Fuzzy_05 = {
     .id = NPC_Fuzzy_05,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Fuzzy),
-    .settings = &N(NpcSettings_Fuzzy),
+    .init = &EVS_NpcInit_Fuzzy,
+    .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Bobomb_01) = {
+NpcData NpcData_Bobomb_01 = {
     .id = NPC_Bobomb_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bobomb),
-    .settings = &N(NpcSettings_Bobomb),
+    .init = &EVS_NpcInit_Bobomb,
+    .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Bobomb_02) = {
+NpcData NpcData_Bobomb_02 = {
     .id = NPC_Bobomb_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bobomb),
-    .settings = &N(NpcSettings_Bobomb),
+    .init = &EVS_NpcInit_Bobomb,
+    .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Bobomb_03) = {
+NpcData NpcData_Bobomb_03 = {
     .id = NPC_Bobomb_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bobomb),
-    .settings = &N(NpcSettings_Bobomb),
+    .init = &EVS_NpcInit_Bobomb,
+    .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Bobomb_04) = {
+NpcData NpcData_Bobomb_04 = {
     .id = NPC_Bobomb_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bobomb),
-    .settings = &N(NpcSettings_Bobomb),
+    .init = &EVS_NpcInit_Bobomb,
+    .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Bobomb_05) = {
+NpcData NpcData_Bobomb_05 = {
     .id = NPC_Bobomb_05,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Bobomb),
-    .settings = &N(NpcSettings_Bobomb),
+    .init = &EVS_NpcInit_Bobomb,
+    .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
 };
 
-NpcData N(NpcData_Luigis)[] = {
+NpcData NpcData_Luigis[] = {
     {
         .id = NPC_Luigi_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2022,8 +2022,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2033,8 +2033,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2044,8 +2044,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2055,8 +2055,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2066,8 +2066,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_06,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2077,8 +2077,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_07,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2088,8 +2088,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_08,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2099,8 +2099,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_09,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2110,8 +2110,8 @@ NpcData N(NpcData_Luigis)[] = {
         .id = NPC_Luigi_10,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Luigi),
-        .settings = &N(NpcSettings_Luigi),
+        .init = &EVS_NpcInit_Luigi,
+        .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -2119,18 +2119,18 @@ NpcData N(NpcData_Luigis)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_GuideToad)),
-    NPC_GROUP(N(NpcData_Fuzzy_01)),
-    NPC_GROUP(N(NpcData_Fuzzy_02)),
-    NPC_GROUP(N(NpcData_Fuzzy_03)),
-    NPC_GROUP(N(NpcData_Fuzzy_04)),
-    NPC_GROUP(N(NpcData_Fuzzy_05)),
-    NPC_GROUP(N(NpcData_Bobomb_01)),
-    NPC_GROUP(N(NpcData_Bobomb_02)),
-    NPC_GROUP(N(NpcData_Bobomb_03)),
-    NPC_GROUP(N(NpcData_Bobomb_04)),
-    NPC_GROUP(N(NpcData_Bobomb_05)),
-    NPC_GROUP(N(NpcData_Luigis)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_GuideToad),
+    NPC_GROUP(NpcData_Fuzzy_01),
+    NPC_GROUP(NpcData_Fuzzy_02),
+    NPC_GROUP(NpcData_Fuzzy_03),
+    NPC_GROUP(NpcData_Fuzzy_04),
+    NPC_GROUP(NpcData_Fuzzy_05),
+    NPC_GROUP(NpcData_Bobomb_01),
+    NPC_GROUP(NpcData_Bobomb_02),
+    NPC_GROUP(NpcData_Bobomb_03),
+    NPC_GROUP(NpcData_Bobomb_04),
+    NPC_GROUP(NpcData_Bobomb_05),
+    NPC_GROUP(NpcData_Luigis),
     {}
 };

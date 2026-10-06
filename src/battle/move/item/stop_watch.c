@@ -4,24 +4,20 @@
 #include "model.h"
 #include "effects.h"
 
-#define NAMESPACE battle_item_stop_watch
-
-#include "battle/common/move/ItemRefund.inc.c"
-
 #include "common/FadeBackgroundDarken.inc.c"
 #include "common/FadeBackgroundLighten.inc.c"
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_STOP_WATCH)
-    ExecWait(N(UseItemWithEffect))
+    ExecWait(UseItemWithEffect)
     Thread
         Wait(5)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 20)
     EndThread
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     PlayEffect(EFFECT_STOP_WATCH, 0, 0, 0, 0, Float(1.0), 200)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_TIME_OUT)
     Wait(200)
@@ -43,12 +39,12 @@ EvtScript N(EVS_UseItem) = {
         IfNe(LVar0, ITER_NO_MORE)
             Goto(0)
         EndIf
-    Call(N(FadeBackgroundLighten))
-    ExecWait(N(PlayerGoHome))
+    Call(LightenBackground)
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

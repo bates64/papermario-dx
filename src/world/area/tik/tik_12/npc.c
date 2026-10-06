@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/SpikeTop/wander.inc.c"
 
-NpcData N(NpcData_BuzzyBeetle) = {
+NpcData NpcData_BuzzyBeetle = {
     .id = NPC_BuzzyBeetle,
     .pos = { -6.0f, -135.0f, 75.0f },
     .yaw = 90,
@@ -18,14 +18,14 @@ NpcData N(NpcData_BuzzyBeetle) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_BuzzyBeetle_Wander),
+    .settings = &NpcSettings_BuzzyBeetle_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = TIK_BUZZY_BEETLE_DROPS,
     .animations = BUZZY_BEETLE_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_BuzzyBeetle), BTL_TIK_FORMATION_15, BTL_TIK_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_BuzzyBeetle, BTL_TIK_FORMATION_15, BTL_TIK_STAGE_01),
     {}
 };

@@ -2,9 +2,9 @@
 #include "kpa_52.h"
 #include "entity.h"
 
-ITEM_LIST(N(KeyList_CastleDoor), ITEM_BOWSER_CASTLE_KEY);
+ITEM_LIST(KeyList_CastleDoor, ITEM_BOWSER_CASTLE_KEY);
 
-EvtScript N(EVS_UnlockPrompt_Door) = {
+EvtScript EVS_UnlockPrompt_Door = {
     Call(ShowKeyChoicePopup)
     IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
@@ -24,18 +24,18 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
     Wait(5)
     Call(CloseChoicePopup)
     Unbind
-    BindTrigger(Ref(N(EVS_ExitDoors_kpa_40_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_kpa_40_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA52_UnlockedDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 352, 10, -25, 270, MAKE_ENTITY_END)
         Set(MV_EntityID_Padlock, LVar0)
-        BindPadlock(Ref(N(EVS_UnlockPrompt_Door)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList_CastleDoor)), 0, 1)
+        BindPadlock(Ref(EVS_UnlockPrompt_Door), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList_CastleDoor), 0, 1)
     Else
-        BindTrigger(Ref(N(EVS_ExitDoors_kpa_40_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoors_kpa_40_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte1, 1, 0)
     EndIf
     Return
     End

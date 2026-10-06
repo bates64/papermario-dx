@@ -1,6 +1,6 @@
 #include "hos_04.h"
 
-API_CALLABLE(N(ScreenOverlayFadeIn)) {
+API_CALLABLE(ScreenOverlayFadeIn) {
     if (isInitialCall) {
         script->functionTemp[1] = 0;
     }
@@ -20,7 +20,7 @@ API_CALLABLE(N(ScreenOverlayFadeIn)) {
     }
 }
 
-EvtScript N(EVS_Starship_FlyingAway) = {
+EvtScript EVS_Starship_FlyingAway = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -60,7 +60,7 @@ EvtScript N(EVS_Starship_FlyingAway) = {
     End
 };
 
-EvtScript N(EVS_SetStarshipPosRot) = {
+EvtScript EVS_SetStarshipPosRot = {
     Set(LVar4, 0)
     Set(LVar5, 100)
     Label(10)
@@ -86,7 +86,7 @@ EvtScript N(EVS_SetStarshipPosRot) = {
 };
 
 // flight1 (same as hos_20 entry 0, without motion lines)
-EvtScript N(EVS_BetaStarship_Flight1) = {
+EvtScript EVS_BetaStarship_Flight1 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -106,7 +106,7 @@ EvtScript N(EVS_BetaStarship_Flight1) = {
     Set(MV_Starship_PosX, -5000)
     Set(MV_Starship_PosY, -525)
     Set(MV_Starship_PosZ, 180)
-    Exec(N(EVS_SetStarshipPosRot))
+    Exec(EVS_SetStarshipPosRot)
     Wait(1)
     Thread
         Set(LVar7, 45)
@@ -167,7 +167,7 @@ EvtScript N(EVS_BetaStarship_Flight1) = {
 };
 
 // flight2 (same as hos_20 entry 1, without motion lines)
-EvtScript N(EVS_BetaStarship_Flight2) = {
+EvtScript EVS_BetaStarship_Flight2 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -186,7 +186,7 @@ EvtScript N(EVS_BetaStarship_Flight2) = {
     Set(MV_Starship_PosX, -4673)
     Set(MV_Starship_PosY, -525)
     Set(MV_Starship_PosZ, 180)
-    Exec(N(EVS_SetStarshipPosRot))
+    Exec(EVS_SetStarshipPosRot)
     Wait(1)
     Thread
         Loop(0)
@@ -231,7 +231,7 @@ EvtScript N(EVS_BetaStarship_Flight2) = {
 };
 
 // return flight (same as hos_20 entry 2, without motion lines)
-EvtScript N(EVS_BetaStarship_Return) = {
+EvtScript EVS_BetaStarship_Return = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -251,7 +251,7 @@ EvtScript N(EVS_BetaStarship_Return) = {
     Set(MV_Starship_PosX, 5000)
     Set(MV_Starship_PosY, -525)
     Set(MV_Starship_PosZ, 0)
-    Exec(N(EVS_SetStarshipPosRot))
+    Exec(EVS_SetStarshipPosRot)
     Wait(2)
     Thread
         Call(InterpPlayerYaw, 225, 0)

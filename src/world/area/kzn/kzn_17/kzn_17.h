@@ -23,11 +23,9 @@ enum {
     MV_ScreenShakeTID           = MapVar(10),
 };
 
-#define NAMESPACE kzn_17
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupSpinyTromp);
-extern EvtScript N(EVS_Kolorado_TrompPanic);
-extern EvtScript N(EVS_Kolorado_TrompImpact);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupSpinyTromp;
+extern EvtScript EVS_Kolorado_TrompPanic;
+extern EvtScript EVS_Kolorado_TrompImpact;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

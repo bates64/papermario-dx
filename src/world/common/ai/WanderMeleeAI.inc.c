@@ -10,7 +10,7 @@
 
 #include "world/common/ai/MeleeAttack.inc.c"
 
-API_CALLABLE(N(WanderMeleeAI_Main)) {
+API_CALLABLE(WanderMeleeAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -51,7 +51,7 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
 
     if (script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
             && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
-            && N(MeleeHitbox_CanTargetPlayer)(script)) {
+            && MeleeHitbox_CanTargetPlayer(script)) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
@@ -84,22 +84,22 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
             basic_ai_lose_player(script, settings, detect);
             break;
         case AI_STATE_MELEE_ATTACK_INIT:
-            N(MeleeAttacker_Init)(script);
+            MeleeAttacker_Init(script);
             // fallthrough
         case AI_STATE_MELEE_ATTACK_PRE:
-            N(MeleeAttacker_Pre)(script);
+            MeleeAttacker_Pre(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_SWING:
-            N(MeleeAttacker_Swing)(script);
+            MeleeAttacker_Swing(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_ATTACK_POST:
-            N(MeleeAttacker_Post)(script);
+            MeleeAttacker_Post(script);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

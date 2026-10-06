@@ -1,6 +1,6 @@
 #include "arn_08.h"
 
-EvtScript N(EVS_AnimateGears) = {
+EvtScript EVS_AnimateGears = {
     Call(PlaySound, SOUND_LOOP_WINDMILL_GEARS)
     Thread
         Set(LVar0, 0)

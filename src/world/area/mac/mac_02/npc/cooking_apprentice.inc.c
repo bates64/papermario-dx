@@ -1,6 +1,6 @@
 #include "../mac_02.h"
 
-EvtScript N(EVS_NpcInteract_CookingApprentice) = {
+EvtScript EVS_NpcInteract_CookingApprentice = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -53,8 +53,8 @@ EvtScript N(EVS_NpcInteract_CookingApprentice) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_CookingApprentice) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_CookingApprentice)))
+EvtScript EVS_NpcInit_CookingApprentice = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_CookingApprentice))
     Return
     End
 };

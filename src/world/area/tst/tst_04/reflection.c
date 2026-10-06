@@ -3,18 +3,18 @@
 #include "entity.h"
 #include "model.h"
 
-void N(worker_render_player_reflection)(void);
-void N(appendGfx_test_player_reflection)(void* data);
-void N(worker_update_partner_reflection)(void);
+void worker_render_player_reflection(void);
+void appendGfx_test_player_reflection(void* data);
+void worker_update_partner_reflection(void);
 
-static s32 N(Animator);
+static s32 Animator;
 
-API_CALLABLE(N(EnablePlayerReflection)) {
-    script->array[0] = create_worker_frontUI(nullptr, &N(worker_render_player_reflection));
+API_CALLABLE(EnablePlayerReflection) {
+    script->array[0] = create_worker_frontUI(nullptr, &worker_render_player_reflection);
     return ApiStatus_DONE2;
 }
 
-void N(worker_render_player_reflection)(void) {
+void worker_render_player_reflection(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EntityModel* entityModel;
     RenderTask renderTask;
@@ -32,13 +32,13 @@ void N(worker_render_player_reflection)(void) {
 
         renderTaskPtr->renderMode = playerStatus->renderMode;
         renderTaskPtr->appendGfxArg = playerStatus;
-        renderTaskPtr->appendGfx = &N(appendGfx_test_player_reflection);
+        renderTaskPtr->appendGfx = &appendGfx_test_player_reflection;
         renderTaskPtr->dist = -screenZ;
         queue_render_task(renderTaskPtr);
     }
 }
 
-void N(appendGfx_test_player_reflection)(void* data) {
+void appendGfx_test_player_reflection(void* data) {
     PlayerStatus* playerStatus = data;
     f32 yaw = -gCameras[gCurrentCamID].curYaw;
     Matrix4f main;
@@ -61,10 +61,10 @@ void N(appendGfx_test_player_reflection)(void* data) {
     spr_draw_player_sprite(PLAYER_SPRITE_AUX1, 0, 0, nullptr, main);
 }
 
-API_CALLABLE(N(EnablePartnerReflection)) {
+API_CALLABLE(EnablePartnerReflection) {
     Npc* partner;
 
-    script->array[1] = create_worker_scene(&N(worker_update_partner_reflection), nullptr);
+    script->array[1] = create_worker_scene(&worker_update_partner_reflection, nullptr);
     partner = get_npc_safe(NPC_PARTNER);
 
     if (partner == nullptr) {
@@ -76,7 +76,7 @@ API_CALLABLE(N(EnablePartnerReflection)) {
     return ApiStatus_DONE2;
 }
 
-void N(worker_update_partner_reflection)(void) {
+void worker_update_partner_reflection(void) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
 
     if (partner != nullptr) {
@@ -85,29 +85,29 @@ void N(worker_update_partner_reflection)(void) {
     }
 }
 
-void N(worker_update_animator)(void) {
-    update_model_animator(N(Animator));
+void worker_update_animator(void) {
+    update_model_animator(Animator);
 }
 
-void N(worker_draw_animator)(void) {
+void worker_draw_animator(void) {
     Matrix4f tempMtx;
     Mtx transformMtx;
 
     guTranslateF(tempMtx, -484.0f, 25.0f, -40.0f);
     guMtxF2L(tempMtx, &transformMtx);
-    render_animated_model(N(Animator), &transformMtx);
+    render_animated_model(Animator, &transformMtx);
 }
 
-API_CALLABLE(N(SetupAnimatedModel)) {
-    create_worker_scene(N(worker_update_animator), N(worker_draw_animator));
+API_CALLABLE(SetupAnimatedModel) {
+    create_worker_scene(worker_update_animator, worker_draw_animator);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupReflection) = {
-    Call(N(SetupAnimatedModel))
+EvtScript EVS_SetupReflection = {
+    Call(SetupAnimatedModel)
     MallocArray(16, LVarA)
-    Call(N(EnablePlayerReflection))
-    Call(N(EnablePartnerReflection))
+    Call(EnablePlayerReflection)
+    Call(EnablePartnerReflection)
     Return
     End
 };

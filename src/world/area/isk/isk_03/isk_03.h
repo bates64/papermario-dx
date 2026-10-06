@@ -11,9 +11,7 @@
 #include "mapfs/isk_03_shape.h"
 #include "mapfs/isk_03_hit.h"
 
-#define NAMESPACE isk_03
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupSand);
-extern EvtScript N(EVS_SetupSwitch);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupSand;
+extern EvtScript EVS_SetupSwitch;

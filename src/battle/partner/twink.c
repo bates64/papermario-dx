@@ -4,29 +4,27 @@
 #include "sprite/npc/Twink.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_partner_twink
+extern EvtScript EVS_Init;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandlePhase;
+extern EvtScript EVS_ExecuteAction;
+extern EvtScript EVS_Celebrate;
+extern EvtScript EVS_RunAway;
+extern EvtScript EVS_PartnerRunAwayFail;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandlePhase);
-extern EvtScript N(EVS_ExecuteAction);
-extern EvtScript N(EVS_Celebrate);
-extern EvtScript N(EVS_RunAway);
-extern EvtScript N(EVS_RunAwayFail);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Twink_PowerLevel   = 0,
     AVAR_Twink_DefensePtr   = 1,
     AVAR_Kammy_Speaking     = 1,
 };
 
-API_CALLABLE(N(IsPeachBattle)) {
+API_CALLABLE(IsPeachBattle) {
     BattleStatus* battleStatus = &gBattleStatus;
 
     if (battleStatus->flags2 & BS_FLAGS2_PEACH_BATTLE) {
@@ -38,18 +36,18 @@ API_CALLABLE(N(IsPeachBattle)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Twink_Angry,
     STATUS_KEY_INACTIVE,  ANIM_Twink_Still,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,            100,
     STATUS_KEY_DEFAULT,           100,
     STATUS_KEY_SLEEP,             100,
@@ -74,30 +72,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = 0,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-ActorBlueprint NAMESPACE = {
+ActorBlueprint blueprint = {
     .flags = ACTOR_FLAG_NO_DMG_APPLY,
     .type = ACTOR_TYPE_TWINK,
     .level = ACTOR_LEVEL_TWINK,
     .maxHP = 99,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 0,
     .airLiftChance = 0,
     .hurricaneChance = 0,
@@ -112,44 +110,44 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 13, 31 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
-    Call(N(IsPeachBattle))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase))
+    Call(IsPeachBattle)
     IfNe(LVar0, true)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_ATTACK, true)
     EndIf
     Call(SetActorVar, ACTOR_SELF, AVAR_Twink_PowerLevel, 0)
-    Call(SetActorVar, ACTOR_SELF, AVAR_Twink_DefensePtr, Ref(N(DefenseTable)))
+    Call(SetActorVar, ACTOR_SELF, AVAR_Twink_DefensePtr, Ref(DefenseTable))
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SPARKLES)
     Call(ModifyActorDecoration, ACTOR_SELF, PRT_MAIN, 0, 0, 0, 0, 0)
     Return
     End
 };
 
-s32 N(BobPhase) = 0;
+s32 BobPhase = 0;
 
-API_CALLABLE(N(AddFlightBobbing)) {
+API_CALLABLE(AddFlightBobbing) {
     Actor* actor = get_actor(script->owner1.actorID);
 
-    N(BobPhase) += 18;
-    N(BobPhase) = clamp_angle(N(BobPhase));
-    actor->verticalRenderOffset = 2.0f * sin_rad(DEG_TO_RAD(N(BobPhase)));
+    BobPhase += 18;
+    BobPhase = clamp_angle(BobPhase);
+    actor->verticalRenderOffset = 2.0f * sin_rad(DEG_TO_RAD(BobPhase));
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Loop(0)
-        Call(N(AddFlightBobbing))
+        Call(AddFlightBobbing)
         Wait(1)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(InterruptActionCommand)
@@ -178,23 +176,23 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_EXECUTE_ACTION)
-            ExecWait(N(EVS_ExecuteAction))
+            ExecWait(EVS_ExecuteAction)
         CaseEq(PHASE_CELEBRATE)
-            ExecWait(N(EVS_Celebrate))
+            ExecWait(EVS_Celebrate)
         CaseEq(PHASE_RUN_AWAY_START)
-            ExecWait(N(EVS_RunAway))
+            ExecWait(EVS_RunAway)
         CaseEq(PHASE_RUN_AWAY_FAIL)
-            ExecWait(N(EVS_RunAwayFail))
+            ExecWait(EVS_PartnerRunAwayFail)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Celebrate) = {
+EvtScript EVS_Celebrate = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Twink_Fly)
     SetConst(LVar2, ANIM_Twink_Fly)
@@ -203,7 +201,7 @@ EvtScript N(EVS_Celebrate) = {
     End
 };
 
-EvtScript N(EVS_RunAway) = {
+EvtScript EVS_RunAway = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Twink_Angry)
     ExecWait(EVS_Partner_RunAway)
@@ -211,7 +209,7 @@ EvtScript N(EVS_RunAway) = {
     End
 };
 
-EvtScript N(EVS_RunAwayFail) = {
+EvtScript EVS_PartnerRunAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
@@ -224,12 +222,12 @@ EvtScript N(EVS_RunAwayFail) = {
     End
 };
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Return
     End
 };
 
-EvtScript N(EVS_ExecuteAction) = {
+EvtScript EVS_ExecuteAction = {
     Call(EnableIdleScript, ACTOR_PARTNER, IDLE_SCRIPT_DISABLE)
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_FLY, SOUND_TWINK_FLY_A, SOUND_TWINK_FLY_B)

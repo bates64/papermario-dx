@@ -2,14 +2,14 @@
 
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_RecoverTreeShell) = {
+EvtScript EVS_Scene_RecoverTreeShell = {
     Wait(1)
     IfEq(GF_NOK01_RecoveredTreeShell, true)
         Return
     EndIf
     Set(GF_NOK01_RecoveredTreeShell, true)
-    Call(BindNpcAI, NPC_Koopa_03, Ref(N(EVS_DoNothing)))
-    Call(SetNpcAux, NPC_Koopa_03, Ref(N(EVS_DoNothing)))
+    Call(BindNpcAI, NPC_Koopa_03, Ref(EVS_DoNothing))
+    Call(SetNpcAux, NPC_Koopa_03, Ref(EVS_DoNothing))
     Call(DisablePlayerInput, true)
     Wait(5)
     Call(NpcJump0, NPC_KoopaShell_03, 220, 0, 210, 20)
@@ -44,7 +44,7 @@ EvtScript N(EVS_Scene_RecoverTreeShell) = {
     Add(LVar1, 20)
     Set(LVar3, NPC_KoopaShell_03)
     Set(LVar4, NPC_Koopa_03)
-    Exec(N(EVS_GetIntoShell))
+    Exec(EVS_GetIntoShell)
     Call(InterpNpcYaw, LVar3, 60, 0)
     Call(NpcJump0, NPC_KoopaShell_03, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_03, NPC_DISPOSE_LOCATION)
@@ -62,7 +62,7 @@ EvtScript N(EVS_Scene_RecoverTreeShell) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_03_Crisis) = {
+EvtScript EVS_NpcInteract_Koopa_03_Crisis = {
     IfEq(GF_NOK01_RecoveredTreeShell, true)
         Call(SpeakToPlayer, NPC_Koopa_03, ANIM_Koopa_Talk, ANIM_Koopa_Happy, 0, MSG_CH1_001B)
         Return
@@ -72,22 +72,22 @@ EvtScript N(EVS_NpcInteract_Koopa_03_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopa_03_Crisis) = {
+EvtScript EVS_NpcIdle_Koopa_03_Crisis = {
     IfEq(GF_NOK01_RecoveredTreeShell, true)
         Return
     EndIf
-    ExecWait(N(EVS_NpcAI_KoopaWithoutShell_Wander))
+    ExecWait(EVS_NpcAI_KoopaWithoutShell_Wander)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_RecoverBlockShell) = {
+EvtScript EVS_Scene_RecoverBlockShell = {
     IfEq(GF_NOK01_RecoveredBlockShell, true)
         Return
     EndIf
     Set(GF_NOK01_RecoveredBlockShell, true)
-    Call(BindNpcAI, NPC_Koopa_02, Ref(N(EVS_DoNothing)))
-    Call(SetNpcAux, NPC_Koopa_02, Ref(N(EVS_DoNothing)))
+    Call(BindNpcAI, NPC_Koopa_02, Ref(EVS_DoNothing))
+    Call(SetNpcAux, NPC_Koopa_02, Ref(EVS_DoNothing))
     Call(DisablePlayerInput, true)
     Call(NpcJump0, NPC_KoopaShell_02, 60, 0, 328, 20)
     Call(PlaySound, SOUND_ITEM_BOUNCE)
@@ -121,7 +121,7 @@ EvtScript N(EVS_Scene_RecoverBlockShell) = {
     Add(LVar1, 20)
     Set(LVar3, NPC_KoopaShell_02)
     Set(LVar4, NPC_Koopa_02)
-    Exec(N(EVS_GetIntoShell))
+    Exec(EVS_GetIntoShell)
     Call(InterpNpcYaw, LVar3, 60, 0)
     Call(NpcJump0, NPC_KoopaShell_02, LVar0, LVar1, LVar2, 30)
     Call(SetNpcPos, NPC_KoopaShell_02, NPC_DISPOSE_LOCATION)
@@ -139,13 +139,13 @@ EvtScript N(EVS_Scene_RecoverBlockShell) = {
     End
 };
 
-EvtScript N(EVS_BreakBlock_DropShell) = {
-    Exec(N(EVS_Scene_RecoverBlockShell))
+EvtScript EVS_BreakBlock_DropShell = {
+    Exec(EVS_Scene_RecoverBlockShell)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koopa_02_Crisis) = {
+EvtScript EVS_NpcInteract_Koopa_02_Crisis = {
     IfEq(GF_NOK01_RecoveredBlockShell, true)
         Call(SpeakToPlayer, NPC_Koopa_02, ANIM_Koopa_Idle, ANIM_Koopa_Happy, 0, MSG_CH1_0013)
         Return
@@ -155,7 +155,7 @@ EvtScript N(EVS_NpcInteract_Koopa_02_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koopa_02_Crisis) = {
+EvtScript EVS_NpcIdle_Koopa_02_Crisis = {
     IfEq(GF_NOK01_RecoveredBlockShell, true)
         Return
     EndIf
@@ -163,7 +163,7 @@ EvtScript N(EVS_NpcIdle_Koopa_02_Crisis) = {
     End
 };
 
-EvtScript N(EVS_Scene_KooverGetsMugged) = {
+EvtScript EVS_Scene_KooverGetsMugged = {
     Call(GetNpcPos, NPC_Koover, LVar0, LVar1, LVar2)
     Add(LVar0, 1)
     Add(LVar2, 1)
@@ -233,7 +233,7 @@ EvtScript N(EVS_Scene_KooverGetsMugged) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Koover_Crisis) = {
+EvtScript EVS_NpcInteract_Koover_Crisis = {
     IfEq(GF_NOK01_RecoveredShellA, true)
         Call(SpeakToPlayer, NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0003)
     EndIf
@@ -250,14 +250,14 @@ EvtScript N(EVS_NpcInteract_Koover_Crisis) = {
     Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
     Wait(15)
     Call(EndSpeech, NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0)
-    ExecWait(N(EVS_Scene_KooverGetsMugged))
+    ExecWait(EVS_Scene_KooverGetsMugged)
     Call(SpeakToNpc, NPC_Koover, ANIM_KoopaWithoutShell_CryTalk, ANIM_KoopaWithoutShell_CryIdle, 0, NPC_FuzzyWithShell, MSG_CH1_0001)
     Set(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_VILLAGE)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Koover_Crisis) = {
+EvtScript EVS_NpcIdle_Koover_Crisis = {
     IfEq(GF_NOK01_RecoveredShellA, true)
         Call(SetNpcPos, NPC_FuzzyWithShell, NPC_DISPOSE_LOCATION)
         Return
@@ -287,7 +287,7 @@ EvtScript N(EVS_NpcIdle_Koover_Crisis) = {
         Call(NpcMoveTo, NPC_Koover, -280, 301, 30)
         Call(SetNpcAnimation, NPC_Koover, ANIM_Koopa_Idle)
         Wait(7)
-        ExecWait(N(EVS_NpcInteract_Koover_Crisis))
+        ExecWait(EVS_NpcInteract_Koover_Crisis)
         Call(DisablePlayerPhysics, false)
         Call(DisablePlayerInput, false)
     Else
@@ -301,7 +301,7 @@ EvtScript N(EVS_NpcIdle_Koover_Crisis) = {
     Set(LVar0, 0)
     Label(0)
         IfEq(GF_NOK01_RecoveredShellA, true)
-            Call(BindNpcInteract, NPC_Koover, Ref(N(EVS_NpcInteract_Koover_Crisis)))
+            Call(BindNpcInteract, NPC_Koover, Ref(EVS_NpcInteract_Koover_Crisis))
             Call(SetNpcFlagBits, NPC_Koover, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Return
         EndIf
@@ -317,7 +317,7 @@ EvtScript N(EVS_NpcIdle_Koover_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_FuzzyWithShell) = {
+EvtScript EVS_NpcIdle_FuzzyWithShell = {
     SetGroup(EVT_GROUP_PASSIVE_NPC)
     IfEq(GF_NOK01_RecoveredShellA, true)
         Call(SetNpcPos, NPC_FuzzyWithShell, NPC_DISPOSE_LOCATION)
@@ -361,7 +361,7 @@ EvtScript N(EVS_NpcIdle_FuzzyWithShell) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
+EvtScript EVS_NpcHit_FuzzyWithShell = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Set(LVar1, 0)
     IfEq(LVar0, ENCOUNTER_TRIGGER_HAMMER)
@@ -442,7 +442,7 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
         Add(LVar1, 20)
         Set(LVar3, NPC_KooversShell)
         Set(LVar4, NPC_Koover)
-        Exec(N(EVS_GetIntoShell))
+        Exec(EVS_GetIntoShell)
         Call(InterpNpcYaw, LVar3, 60, 0)
         Call(NpcJump0, NPC_KooversShell, LVar0, LVar1, LVar2, 30)
         Call(SetNpcPos, NPC_KooversShell, NPC_DISPOSE_LOCATION)
@@ -466,7 +466,7 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_01_Crisis) = {
+EvtScript EVS_NpcInteract_Bobomb_01_Crisis = {
     IfEq(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
         Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, true)
         Set(LVar0, MSG_CH1_003D)
@@ -479,13 +479,13 @@ EvtScript N(EVS_NpcInteract_Bobomb_01_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_01_Crisis) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_01_Crisis)))
+EvtScript EVS_NpcInit_Bobomb_01_Crisis = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01_Crisis))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Bobomb_02_Crisis) = {
+EvtScript EVS_NpcInteract_Bobomb_02_Crisis = {
     IfEq(AF_NOK01_ToggleDialogue_Bobomb2, false)
         Set(AF_NOK01_ToggleDialogue_Bobomb2, true)
         Set(LVar0, MSG_CH1_0044)
@@ -498,15 +498,15 @@ EvtScript N(EVS_NpcInteract_Bobomb_02_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bobomb_02_Crisis) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bobomb_02_Crisis)))
+EvtScript EVS_NpcInit_Bobomb_02_Crisis = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02_Crisis))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koover_Crisis) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koover_Crisis)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koover_Crisis)))
+EvtScript EVS_NpcInit_Koover_Crisis = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koover_Crisis))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koover_Crisis))
     IfEq(GF_NOK01_RecoveredShellA, true)
         Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
         Return
@@ -518,37 +518,37 @@ EvtScript N(EVS_NpcInit_Koover_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_FuzzyWithShell) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_FuzzyWithShell)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_FuzzyWithShell)))
+EvtScript EVS_NpcInit_FuzzyWithShell = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_FuzzyWithShell))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_FuzzyWithShell))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_MiscFuzzy1) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_MiscFuzzy1)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_MiscFuzzy1)))
+EvtScript EVS_NpcInit_MiscFuzzy1 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy1))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy1))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_MiscFuzzy2) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_MiscFuzzy2)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_MiscFuzzy2)))
+EvtScript EVS_NpcInit_MiscFuzzy2 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MiscFuzzy2))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_MiscFuzzy2))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KooversShell) = {
+EvtScript EVS_NpcInit_KooversShell = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Shell)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_02_Crisis) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopa_02_Crisis)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_02_Crisis)))
+EvtScript EVS_NpcInit_Koopa_02_Crisis = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_02_Crisis))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_02_Crisis))
     Call(SetNpcPos, NPC_Koopa_02, 40, 0, 325)
     Call(InterpNpcYaw, NPC_Koopa_02, 180, 0)
     IfEq(GF_NOK01_RecoveredBlockShell, false)
@@ -561,16 +561,16 @@ EvtScript N(EVS_NpcInit_Koopa_02_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaShell_02) = {
+EvtScript EVS_NpcInit_KoopaShell_02 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Shell)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopa_03_Crisis) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Koopa_03_Crisis)))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Koopa_03_Crisis)))
+EvtScript EVS_NpcInit_Koopa_03_Crisis = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Koopa_03_Crisis))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_03_Crisis))
     IfEq(GF_NOK01_RecoveredTreeShell, false)
         Call(SetNpcPos, NPC_KoopaShell_03, 190, 114, 220)
         Return
@@ -580,7 +580,7 @@ EvtScript N(EVS_NpcInit_Koopa_03_Crisis) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaShell_03) = {
+EvtScript EVS_NpcInit_KoopaShell_03 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Koopa_Shell)
     Return

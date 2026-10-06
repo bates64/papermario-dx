@@ -4,32 +4,30 @@
 #include "sprite/npc/KoopaTroopa.h"
 #include "effects.h"
 
-#define NAMESPACE A(dark_paratroopa)
+extern EvtScript EVS_Init_Flying;
+extern EvtScript EVS_Idle_Flying;
+extern EvtScript EVS_TakeTurn_Flying;
+extern EvtScript EVS_HandleEvent_Flying;
+extern EvtScript EVS_HandlePhase_Flying;
 
-extern EvtScript N(EVS_Init_Flying);
-extern EvtScript N(EVS_Idle_Flying);
-extern EvtScript N(EVS_TakeTurn_Flying);
-extern EvtScript N(EVS_HandleEvent_Flying);
-extern EvtScript N(EVS_HandlePhase_Flying);
+extern EvtScript EVS_Init_Koopa;
+extern EvtScript EVS_Idle_Koopa;
+extern EvtScript EVS_TakeTurn_Koopa;
+extern EvtScript EVS_HandleEvent_Koopa;
+extern EvtScript EVS_HandlePhase_Koopa;
+extern EvtScript EVS_FallDown;
 
-extern EvtScript N(EVS_Init_Koopa);
-extern EvtScript N(EVS_Idle_Koopa);
-extern EvtScript N(EVS_TakeTurn_Koopa);
-extern EvtScript N(EVS_HandleEvent_Koopa);
-extern EvtScript N(EVS_HandlePhase_Koopa);
-extern EvtScript N(EVS_FallDown);
+extern s32 KoopaAnims[];
+extern s32 FlyingAnims[];
+extern s32 WingAnims[];
 
-extern s32 N(KoopaAnims)[];
-extern s32 N(FlyingAnims)[];
-extern s32 N(WingAnims)[];
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_FLYING      = 2,
     PRT_WINGS       = 3,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_TriggeredFall          = 0,
     AVAR_HasWhirlwind           = 1,
     AVAR_State                  = 8,
@@ -40,7 +38,7 @@ enum N(ActorVars) {
     AVAR_ToppleTurns            = 9,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SKY_DIVE    = 3,
     DMG_SHELL_TOSS  = 3,
 };
@@ -48,7 +46,7 @@ enum N(ActorParams) {
 #define SWEAT_DECOR_IDX         0
 #define WHIRLWIND_DECOR_IDX     1
 
-s32 N(UprightDefenseTable)[] = {
+s32 UprightDefenseTable[] = {
     ELEMENT_NORMAL,   2,
     ELEMENT_SMASH,    2,
     ELEMENT_JUMP,     2,
@@ -57,17 +55,17 @@ s32 N(UprightDefenseTable)[] = {
     ELEMENT_END,
 };
 
-s32 N(defenseTable2)[] = {
+s32 defenseTable2[] = {
     ELEMENT_NORMAL,   2,
     ELEMENT_END,
 };
 
-s32 N(ToppledDefenseTable)[] = {
+s32 ToppledDefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              80,
@@ -92,7 +90,7 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-s32 N(FlyingStatusTable)[] = {
+s32 FlyingStatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              80,
@@ -117,15 +115,15 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 36 },
         .opacity = 255,
-        .idleAnimations = N(KoopaAnims),
-        .defenseTable = N(UprightDefenseTable),
+        .idleAnimations = KoopaAnims,
+        .defenseTable = UprightDefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_FLIPABLE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -7 },
@@ -136,8 +134,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -4, 36 },
         .opacity = 255,
-        .idleAnimations = N(FlyingAnims),
-        .defenseTable = N(defenseTable2),
+        .idleAnimations = FlyingAnims,
+        .defenseTable = defenseTable2,
         .eventFlags = ACTOR_EVENT_FLAG_GROUNDABLE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 2, -14 },
@@ -148,8 +146,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 32 },
         .opacity = 255,
-        .idleAnimations = N(WingAnims),
-        .defenseTable = N(UprightDefenseTable),
+        .idleAnimations = WingAnims,
+        .defenseTable = UprightDefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -161,10 +159,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_DARK_PARATROOPA,
     .level = ACTOR_LEVEL_DARK_PARATROOPA,
     .maxHP = 8,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init_Flying),
-    .statusTable = N(FlyingStatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init_Flying,
+    .statusTable = FlyingStatusTable,
     .escapeChance = 50,
     .airLiftChance = 90,
     .hurricaneChance = 80,
@@ -179,7 +177,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 8, 30 },
 };
 
-s32 N(FlyingAnims)[] = {
+s32 FlyingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_ParaTroopa_Dark_Idle,
     STATUS_KEY_STONE,     ANIM_ParaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_ParaTroopa_Dark_Sleep,
@@ -192,7 +190,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_END,
 };
 
-s32 N(FlyingShuffleAnims)[] = {
+s32 FlyingShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_ParaTroopa_Dark_Idle,
     STATUS_KEY_STONE,     ANIM_ParaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_ParaTroopa_Dark_Sleep,
@@ -205,7 +203,7 @@ s32 N(FlyingShuffleAnims)[] = {
     STATUS_END,
 };
 
-s32 N(WingAnims)[] = {
+s32 WingAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_ParaTroopa_Dark_WingsStill,
     STATUS_KEY_STONE,     ANIM_ParaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_ParaTroopa_Dark_Sleep,
@@ -218,47 +216,44 @@ s32 N(WingAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_HandlePhase_Flying) = {
+EvtScript EVS_HandlePhase_Flying = {
     Call(SetActorVar, ACTOR_SELF, AVAR_TriggeredFall, false)
     Return
     End
 };
 
-EvtScript N(EVS_Init_Flying) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn_Flying)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle_Flying)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Flying)))
-    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase_Flying)))
+EvtScript EVS_Init_Flying = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn_Flying))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle_Flying))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent_Flying))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(EVS_HandlePhase_Flying))
     Call(SetActorVar, ACTOR_SELF, AVAR_TriggeredFall, false)
     Return
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
-EvtScript N(EVS_UpdateOffsets_Flying) = {
+EvtScript EVS_UpdateOffsets_Flying = {
     IfFlag(LVar1, STATUS_FLAG_SLEEP | STATUS_FLAG_DIZZY)
         Call(SetTargetOffset, ACTOR_SELF, PRT_FLYING, 0, 25)
         Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_FLYING, 3, -6)
-        Call(N(SetAbsoluteStatusOffsets), -19, 25, 4, 28)
+        Call(SetAbsoluteStatusOffsets, -19, 25, 4, 28)
     Else
         Call(SetTargetOffset, ACTOR_SELF, PRT_FLYING, -2, 36)
         Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_FLYING, 0, -7)
-        Call(N(SetAbsoluteStatusOffsets), -10, 29, 8, 30)
+        Call(SetAbsoluteStatusOffsets, -10, 29, 8, 30)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Idle_Flying) = {
+EvtScript EVS_Idle_Flying = {
     Label(10)
         Call(RandInt, 80, LVar0)
         Add(LVar0, 80)
         Loop(LVar0)
             Label(0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateOffsets_Flying))
+                ExecWait(EVS_UpdateOffsets_Flying)
                 IfFlag(LVar1, STATUS_FLAGS_IMMOBILIZED)
                     Wait(1)
                     Goto(0)
@@ -268,14 +263,14 @@ EvtScript N(EVS_Idle_Flying) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(0.6))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleFlyToGoal, ACTOR_SELF, 0, -5, EASING_LINEAR)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(FlyingAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(FlyingAnims))
         Loop(20)
             Label(1)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateOffsets_Flying))
+                ExecWait(EVS_UpdateOffsets_Flying)
                 IfFlag(LVar1, STATUS_FLAGS_IMMOBILIZED)
                     Wait(1)
                     Goto(1)
@@ -285,14 +280,14 @@ EvtScript N(EVS_Idle_Flying) = {
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
         Call(SetActorIdleSpeed, ACTOR_SELF, Float(0.6))
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingShuffleAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingShuffleAnims))
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleFlyToGoal, ACTOR_SELF, 0, -5, EASING_LINEAR)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(N(FlyingAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_FLYING, Ref(FlyingAnims))
         Loop(40)
             Label(2)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateOffsets_Flying))
+                ExecWait(EVS_UpdateOffsets_Flying)
                 IfFlag(LVar1, STATUS_FLAGS_IMMOBILIZED)
                     Wait(1)
                     Goto(2)
@@ -304,7 +299,7 @@ EvtScript N(EVS_Idle_Flying) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_ParaTroopa_Dark_Run)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
@@ -314,7 +309,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent_Flying) = {
+EvtScript EVS_HandleEvent_Flying = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -332,7 +327,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
             IfEq(LVar0, PHASE_FIRST_STRIKE)
                 Call(GetEncounterTrigger, LVar0)
                 IfEq(LVar0, ENCOUNTER_TRIGGER_HAMMER)
-                    ExecWait(N(EVS_FallDown))
+                    ExecWait(EVS_FallDown)
                 EndIf
             EndIf
         CaseEq(EVENT_SPIN_SMASH_HIT)
@@ -365,13 +360,13 @@ EvtScript N(EVS_HandleEvent_Flying) = {
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_ParaTroopa_Dark_Hurt)
             ExecWait(EVS_Enemy_Hit)
-            ExecWait(N(EVS_FallDown))
+            ExecWait(EVS_FallDown)
         CaseEq(EVENT_15)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_ParaTroopa_Dark_BurnHurt)
             SetConst(LVar1, ANIM_ParaTroopa_Dark_BurnStill)
             ExecWait(EVS_Enemy_BurnHit)
-            ExecWait(N(EVS_FallDown))
+            ExecWait(EVS_FallDown)
         CaseEq(EVENT_SHOCK_HIT)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_ParaTroopa_Dark_Hurt)
@@ -379,7 +374,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_ParaTroopa_Dark_HurtStill)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_FLYING)
             SetConst(LVar1, ANIM_ParaTroopa_Dark_Hurt)
@@ -402,7 +397,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
             IfEq(LVar0, PHASE_FIRST_STRIKE)
                 Call(GetEncounterTrigger, LVar0)
                 IfEq(LVar0, ENCOUNTER_TRIGGER_HAMMER)
-                    ExecWait(N(EVS_FallDown))
+                    ExecWait(EVS_FallDown)
                 EndIf
             EndIf
         EndCaseGroup
@@ -419,7 +414,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
             Call(SetActorPos, ACTOR_SELF, 20, 0, 0)
             Call(HPBarToCurrent, ACTOR_SELF)
         CaseEq(EVENT_END_FIRST_STRIKE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_FLYING)
@@ -449,7 +444,7 @@ EvtScript N(EVS_HandleEvent_Flying) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn_Flying) = {
+EvtScript EVS_TakeTurn_Flying = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -530,7 +525,7 @@ EvtScript N(EVS_TakeTurn_Flying) = {
             Call(ResetAllActorSounds, ACTOR_SELF)
             Call(AddActorDecoration, ACTOR_SELF, PRT_FLYING, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorYaw, ACTOR_SELF, 180)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_FLYING, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -582,7 +577,7 @@ EvtScript N(EVS_TakeTurn_Flying) = {
             Wait(10)
             Call(YieldTurn)
             Call(ResetAllActorSounds, ACTOR_SELF)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -591,7 +586,7 @@ EvtScript N(EVS_TakeTurn_Flying) = {
     End
 };
 
-EvtScript N(EVS_FallDown) = {
+EvtScript EVS_FallDown = {
     Call(SetPartDispOffset, ACTOR_SELF, PRT_FLYING, 0, 0, 0)
     Call(HideHealthBar, ACTOR_SELF)
     Call(SetPartFlags, ACTOR_SELF, PRT_FLYING, ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_NO_TARGET)
@@ -610,7 +605,7 @@ EvtScript N(EVS_FallDown) = {
         Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-        Call(N(StartRumbleWithParams), 128, 7)
+        Call(StartRumbleWithParams, 128, 7)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.3))
         EndThread
@@ -641,7 +636,7 @@ EvtScript N(EVS_FallDown) = {
             EndLoop
             Call(SetPartFlagBits, ACTOR_SELF, PRT_WINGS, ACTOR_PART_FLAG_INVISIBLE, true)
         EndThread
-        Call(N(StartRumbleWithParams), 150, 7)
+        Call(StartRumbleWithParams, 150, 7)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.3))
         EndThread
@@ -654,9 +649,9 @@ EvtScript N(EVS_FallDown) = {
     Call(SetHomePos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KoopaTroopa_Dark_Idle)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING, false)
-    Call(SetStatusTable, ACTOR_SELF, Ref(N(StatusTable)))
+    Call(SetStatusTable, ACTOR_SELF, Ref(StatusTable))
     Call(BindHandlePhase, ACTOR_SELF, 0)
-    ExecWait(N(EVS_Init_Koopa))
+    ExecWait(EVS_Init_Koopa)
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_DARK_KOOPA)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(HPBarToHome, ACTOR_SELF)
@@ -670,7 +665,7 @@ EvtScript N(EVS_FallDown) = {
 
 // everything below this point refers to plain Dark Koopa
 
-s32 N(KoopaAnims)[] = {
+s32 KoopaAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Dark_Idle,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Dark_Sleep,
@@ -683,7 +678,7 @@ s32 N(KoopaAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ShuffleAnims)[] = {
+s32 ShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Dark_Walk,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Dark_Sleep,
@@ -696,7 +691,7 @@ s32 N(ShuffleAnims)[] = {
     STATUS_END,
 };
 
-s32 N(HyperAnims)[] = {
+s32 HyperAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Dark_Scramble,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Dark_Sleep,
@@ -709,7 +704,7 @@ s32 N(HyperAnims)[] = {
     STATUS_END,
 };
 
-s32 N(HyperShuffleAnims)[] = {
+s32 HyperShuffleAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Dark_Walk,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Dark_Still,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Dark_Sleep,
@@ -722,7 +717,7 @@ s32 N(HyperShuffleAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ToppledAnims)[] = {
+s32 ToppledAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_KoopaTroopa_Dark_ToppleStruggle,
     STATUS_KEY_STONE,     ANIM_KoopaTroopa_Dark_ToppleStill,
     STATUS_KEY_SLEEP,     ANIM_KoopaTroopa_Dark_ToppleSleep,
@@ -735,16 +730,16 @@ s32 N(ToppledAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init_Koopa) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn_Koopa)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle_Koopa)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent_Koopa)))
+EvtScript EVS_Init_Koopa = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn_Koopa))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle_Koopa))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent_Koopa))
     Call(RandInt, 1000, LVar0)
     IfLt(LVar0, 300)
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
     Else
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Hyper)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KoopaTroopa_Dark_Scramble)
     EndIf
     Call(SetActorVar, ACTOR_SELF, AVAR_HasWhirlwind, false)
@@ -752,32 +747,32 @@ EvtScript N(EVS_Init_Koopa) = {
     End
 };
 
-EvtScript N(EVS_UpdateOffsets_Koopa) = {
+EvtScript EVS_UpdateOffsets_Koopa = {
     Switch(LVar0)
         CaseOrEq(AVAL_State_Normal)
         CaseOrEq(AVAL_State_Hyper)
             IfFlag(LVar1, STATUS_FLAG_SLEEP | STATUS_FLAG_DIZZY)
                 Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -5, 15)
                 Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
-                Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+                Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
             Else
                 Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -4, 32)
                 Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -4)
-                Call(N(SetAbsoluteStatusOffsets), -15, 32, 5, 32)
+                Call(SetAbsoluteStatusOffsets, -15, 32, 5, 32)
             EndIf
         EndCaseGroup
         CaseOrEq(AVAL_State_ToppledNormal)
         CaseOrEq(AVAL_State_ToppledHyper)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -5, 15)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
         EndCaseGroup
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Idle_Koopa) = {
+EvtScript EVS_Idle_Koopa = {
     Label(0)
         Call(RandInt, 80, LVarA)
         Add(LVarA, 80)
@@ -785,7 +780,7 @@ EvtScript N(EVS_Idle_Koopa) = {
             Label(1)
                 Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateOffsets_Koopa))
+                ExecWait(EVS_UpdateOffsets_Koopa)
                 IfEq(LVar0, AVAL_State_ToppledNormal)
                     Wait(1)
                     Goto(1)
@@ -803,9 +798,9 @@ EvtScript N(EVS_Idle_Koopa) = {
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         Switch(LVar0)
             CaseEq(AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ShuffleAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
             CaseEq(AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperShuffleAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperShuffleAnims))
         EndSwitch
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar0, 5)
@@ -815,19 +810,19 @@ EvtScript N(EVS_Idle_Koopa) = {
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         Switch(LVar0)
             CaseEq(AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(KoopaAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(KoopaAnims))
             CaseEq(AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
             CaseOrEq(AVAL_State_ToppledNormal)
             CaseOrEq(AVAL_State_ToppledHyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
             EndCaseGroup
         EndSwitch
         Loop(20)
             Label(2)
                 Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateOffsets_Koopa))
+                ExecWait(EVS_UpdateOffsets_Koopa)
                 IfEq(LVar0, AVAL_State_ToppledNormal)
                     Wait(1)
                     Goto(2)
@@ -845,9 +840,9 @@ EvtScript N(EVS_Idle_Koopa) = {
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         Switch(LVar0)
             CaseEq(AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ShuffleAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ShuffleAnims))
             CaseEq(AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperShuffleAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperShuffleAnims))
         EndSwitch
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
@@ -857,19 +852,19 @@ EvtScript N(EVS_Idle_Koopa) = {
         Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
         Switch(LVar0)
             CaseEq(AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(KoopaAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(KoopaAnims))
             CaseEq(AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
             CaseOrEq(AVAL_State_ToppledNormal)
             CaseOrEq(AVAL_State_ToppledHyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
             EndCaseGroup
         EndSwitch
         Loop(50)
             Label(3)
                 Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
                 Call(GetStatusFlags, ACTOR_SELF, LVar1)
-                ExecWait(N(EVS_UpdateOffsets_Koopa))
+                ExecWait(EVS_UpdateOffsets_Koopa)
                 IfEq(LVar0, AVAL_State_ToppledNormal)
                     Wait(1)
                     Goto(3)
@@ -918,9 +913,9 @@ EvtScript N(EVS_Idle_Koopa) = {
     End
 };
 
-s32 N(FlipPosOffsets)[] = { 9, 16, 22, 26, 30, 32, 33, 32, 30, 26, 22, 16, 9, 0, 4, 6, 7, 6, 4, 0, 2, 0 };
+s32 FlipPosOffsets[] = { 9, 16, 22, 26, 30, 32, 33, 32, 30, 26, 22, 16, 9, 0, 4, 6, 7, 6, 4, 0, 2, 0 };
 
-EvtScript N(EVS_HandleEvent_Koopa) = {
+EvtScript EVS_HandleEvent_Koopa = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetAnimationRate, ACTOR_SELF, PRT_MAIN, Float(1.0))
@@ -973,8 +968,8 @@ EvtScript N(EVS_HandleEvent_Koopa) = {
                     Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_ToppledHyper)
             EndSwitch
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -5, 15)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 0)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
@@ -993,8 +988,8 @@ EvtScript N(EVS_HandleEvent_Koopa) = {
                 Call(SetActorRotation, ACTOR_SELF, 0, 0, -75)
                 Wait(1)
             EndThread
-            UseBuf(N(FlipPosOffsets))
-            Loop(ARRAY_COUNT(N(FlipPosOffsets)))
+            UseBuf(FlipPosOffsets)
+            Loop(ARRAY_COUNT(FlipPosOffsets))
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
                 Wait(1)
@@ -1146,7 +1141,7 @@ EvtScript N(EVS_HandleEvent_Koopa) = {
     End
 };
 
-EvtScript N(EVS_Attack_ShellToss) = {
+EvtScript EVS_Attack_ShellToss = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -1259,7 +1254,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
     End
 };
 
-EvtScript N(EVS_Attack_Whirlwind) = {
+EvtScript EVS_Attack_Whirlwind = {
     Label(10)
         Call(GetActorVar, ACTOR_SELF, AVAR_HasWhirlwind, LVar0)
         Wait(1)
@@ -1365,7 +1360,7 @@ EvtScript N(EVS_Attack_Whirlwind) = {
     End
 };
 
-EvtScript N(EVS_TryGettingUp) = {
+EvtScript EVS_TryGettingUp = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorYaw, ACTOR_SELF, 0)
@@ -1406,7 +1401,7 @@ EvtScript N(EVS_TryGettingUp) = {
         Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
         Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
         Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
-        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(UprightDefenseTable)))
+        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(UprightDefenseTable))
         Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -4, 32)
         Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -4)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
@@ -1415,10 +1410,10 @@ EvtScript N(EVS_TryGettingUp) = {
         Switch(LVar0)
             CaseEq(AVAL_State_ToppledNormal)
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(KoopaAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(KoopaAnims))
             CaseEq(AVAL_State_ToppledHyper)
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
         EndSwitch
     EndIf
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -1427,7 +1422,7 @@ EvtScript N(EVS_TryGettingUp) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn_Koopa) = {
+EvtScript EVS_TakeTurn_Koopa = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
@@ -1435,28 +1430,28 @@ EvtScript N(EVS_TakeTurn_Koopa) = {
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
     Switch(LVar0)
         CaseEq(AVAL_State_Normal)
-            ExecWait(N(EVS_Attack_ShellToss))
+            ExecWait(EVS_Attack_ShellToss)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 300)
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(KoopaAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(KoopaAnims))
             Else
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
             EndIf
         CaseEq(AVAL_State_Hyper)
-            ExecWait(N(EVS_Attack_Whirlwind))
+            ExecWait(EVS_Attack_Whirlwind)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 300)
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Normal)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(KoopaAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(KoopaAnims))
             Else
                 Call(SetActorVar, ACTOR_SELF, AVAR_State, AVAL_State_Hyper)
-                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(HyperAnims)))
+                Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(HyperAnims))
             EndIf
         CaseOrEq(AVAL_State_ToppledNormal)
         CaseOrEq(AVAL_State_ToppledHyper)
-            ExecWait(N(EVS_TryGettingUp))
+            ExecWait(EVS_TryGettingUp)
         EndCaseGroup
     EndSwitch
     Return

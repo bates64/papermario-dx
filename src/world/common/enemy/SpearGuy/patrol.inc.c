@@ -3,7 +3,7 @@
 
 #include "world/common/ai/PatrolNoAttackAI.inc.c"
 
-MobileAISettings N(AISettings_SpearGuy_Patrol) = {
+MobileAISettings AISettings_SpearGuy_Patrol = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -11,15 +11,15 @@ MobileAISettings N(AISettings_SpearGuy_Patrol) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_SpearGuy_Patrol) = {
-    Call(N(PatrolNoAttackAI_Main), Ref(N(AISettings_SpearGuy_Patrol)))
+EvtScript EVS_NpcAI_SpearGuy_Patrol = {
+    Call(PatrolNoAttackAI_Main, Ref(AISettings_SpearGuy_Patrol))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_SpearGuy_Patrol) = {
+NpcSettings NpcSettings_SpearGuy_Patrol = {
     .height = 28,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .doAI = &N(EVS_NpcAI_SpearGuy_Patrol),
+    .doAI = &EVS_NpcAI_SpearGuy_Patrol,
 };

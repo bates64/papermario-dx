@@ -30,8 +30,6 @@ enum {
     MF_TrainRideActive      = MapFlag(0),
 };
 
-#define NAMESPACE omo_16
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_Scene_TrainTraveling);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_Scene_TrainTraveling;
+extern NpcGroupList DefaultNPCs;

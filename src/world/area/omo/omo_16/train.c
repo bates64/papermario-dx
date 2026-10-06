@@ -2,7 +2,7 @@
 
 #include "../common/ToyTrain.inc.c"
 
-EvtScript N(EVS_Conductor_AnnounceArrival) = {
+EvtScript EVS_Conductor_AnnounceArrival = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
         Wait(140)
@@ -49,7 +49,7 @@ EvtScript N(EVS_Conductor_AnnounceArrival) = {
     End
 };
 
-EvtScript N(EVS_UpdateCameraDuringLongTrainRide) = {
+EvtScript EVS_UpdateCameraDuringLongTrainRide = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, -2000)
@@ -65,19 +65,19 @@ EvtScript N(EVS_UpdateCameraDuringLongTrainRide) = {
     End
 };
 
-TrainPath N(TrainPath_LeftToRight)[] = {
+TrainPath TrainPath_LeftToRight[] = {
     TRAIN_PATH_BEGIN(-1550.0, 0.0, 90.0),
     TRAIN_PATH_POINT(1550.0, 0.0),
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_RightToLeft)[] = {
+TrainPath TrainPath_RightToLeft[] = {
     TRAIN_PATH_BEGIN(1550.0, 0.0, 270.0),
     TRAIN_PATH_POINT(-1550.0, 0.0),
     TRAIN_PATH_END
 };
 
-API_CALLABLE(N(CheckForSceneSkip)) {
+API_CALLABLE(CheckForSceneSkip) {
     f32 trainPos = evt_get_float_variable(script, MV_TrainPosX);
 
     script->varTable[0] = 0;
@@ -91,22 +91,22 @@ API_CALLABLE(N(CheckForSceneSkip)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_TrainTraveling) = {
+EvtScript EVS_Scene_TrainTraveling = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
-    Exec(N(EVS_UpdateCameraDuringLongTrainRide))
-    Exec(N(EVS_Conductor_AnnounceArrival))
+    Exec(EVS_UpdateCameraDuringLongTrainRide)
+    Exec(EVS_Conductor_AnnounceArrival)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
-        Set(MV_TrainPath, Ref(N(TrainPath_LeftToRight)))
+        Set(MV_TrainPath, Ref(TrainPath_LeftToRight))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
-        Exec(N(EVS_UpdateTrain))
+        Exec(EVS_UpdateTrain)
         Set(MF_TrainRideActive, true)
         Thread
             Label(10)
-            Call(N(CheckForSceneSkip))
+            Call(CheckForSceneSkip)
             IfEq(LVar0, 1)
                 Goto(11)
             EndIf
@@ -127,17 +127,17 @@ EvtScript N(EVS_Scene_TrainTraveling) = {
             Wait(100)
             Return
             Label(11)
-            ExecWait(N(EVS_SkipTrainRideToNextStation))
+            ExecWait(EVS_SkipTrainRideToNextStation)
         EndThread
     Else
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
-        Set(MV_TrainPath, Ref(N(TrainPath_RightToLeft)))
+        Set(MV_TrainPath, Ref(TrainPath_RightToLeft))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
-        Exec(N(EVS_UpdateTrain))
+        Exec(EVS_UpdateTrain)
         Set(MF_TrainRideActive, true)
         Thread
             Label(30)
-            Call(N(CheckForSceneSkip))
+            Call(CheckForSceneSkip)
             IfEq(LVar0, 1)
                 Goto(31)
             EndIf
@@ -158,7 +158,7 @@ EvtScript N(EVS_Scene_TrainTraveling) = {
             Wait(100)
             Return
             Label(31)
-            ExecWait(N(EVS_SkipTrainRideToDestination))
+            ExecWait(EVS_SkipTrainRideToDestination)
         EndThread
     EndIf
     Return

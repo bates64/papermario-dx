@@ -3,7 +3,7 @@
 #include "nok_12.h"
 #include "world/partners.h"
 
-EvtScript N(EVS_ProvideDemoInputs1) = {
+EvtScript EVS_ProvideDemoInputs1 = {
     Call(DemoJoystickXY, 79, -7)
     Wait(28)
     Call(DemoSetButtons, BUTTON_A)
@@ -32,7 +32,7 @@ EvtScript N(EVS_ProvideDemoInputs1) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState1) = {
+EvtScript EVS_MonitorDemoState1 = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -51,7 +51,7 @@ EvtScript N(EVS_MonitorDemoState1) = {
     End
 };
 
-EvtScript N(EVS_ProvideDemoInputs2) = {
+EvtScript EVS_ProvideDemoInputs2 = {
     Wait(13)
     Call(DemoSetButtons, BUTTON_B)
     Wait(3)
@@ -111,7 +111,7 @@ EvtScript N(EVS_ProvideDemoInputs2) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState2) = {
+EvtScript EVS_MonitorDemoState2 = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -130,18 +130,18 @@ EvtScript N(EVS_MonitorDemoState2) = {
     End
 };
 
-s32 N(DemoInitState1) = 0;
+s32 DemoInitState1 = 0;
 
-API_CALLABLE(N(SetupDemoScene1)) {
+API_CALLABLE(SetupDemoScene1) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    switch (N(DemoInitState1)) {
+    switch (DemoInitState1) {
         case 0:
-            N(DemoInitState1) = 1;
+            DemoInitState1 = 1;
             break;
         case 1:
         case 2:
-            N(DemoInitState1)++;
+            DemoInitState1++;
             break;
         case 3:
             partner_clear_player_tracking(gPartnerNpc);
@@ -157,27 +157,27 @@ API_CALLABLE(N(SetupDemoScene1)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_PlayDemoScene1) = {
-    Call(N(SetupDemoScene1))
+EvtScript EVS_PlayDemoScene1 = {
+    Call(SetupDemoScene1)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState1))
-    Exec(N(EVS_ProvideDemoInputs1))
+    Exec(EVS_MonitorDemoState1)
+    Exec(EVS_ProvideDemoInputs1)
     Return
     End
 };
 
-s32 N(DemoInitState2) = 0;
+s32 DemoInitState2 = 0;
 
-API_CALLABLE(N(SetupDemoScene2)) {
+API_CALLABLE(SetupDemoScene2) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    switch (N(DemoInitState2)) {
+    switch (DemoInitState2) {
         case 0:
-            N(DemoInitState2) = 1;
+            DemoInitState2 = 1;
             break;
         case 1:
         case 2:
-            N(DemoInitState2)++;
+            DemoInitState2++;
             break;
         case 3:
             partner_clear_player_tracking(gPartnerNpc);
@@ -193,11 +193,11 @@ API_CALLABLE(N(SetupDemoScene2)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_PlayDemoScene2) = {
-    Call(N(SetupDemoScene2))
+EvtScript EVS_PlayDemoScene2 = {
+    Call(SetupDemoScene2)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState2))
-    Exec(N(EVS_ProvideDemoInputs2))
+    Exec(EVS_MonitorDemoState2)
+    Exec(EVS_ProvideDemoInputs2)
     Return
     End
 };

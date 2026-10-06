@@ -1,16 +1,16 @@
 #include "kzn_17.h"
 
-EvtScript N(EVS_ExitWalk_kzn_11_1) = EVT_EXIT_WALK(60, kzn_17_ENTRY_0, "kzn_11", kzn_11_ENTRY_1);
-EvtScript N(EVS_ExitWalk_kzn_18_0) = EVT_EXIT_WALK(60, kzn_17_ENTRY_1, "kzn_18", kzn_18_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_11_1 = EVT_EXIT_WALK(60, kzn_17_ENTRY_0, "kzn_11", kzn_11_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_18_0 = EVT_EXIT_WALK(60, kzn_17_ENTRY_1, "kzn_18", kzn_18_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kzn_11_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kzn_18_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kzn_11_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kzn_18_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_StartTexPanners) = {
+EvtScript EVS_StartTexPanners = {
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
     Thread
@@ -32,19 +32,19 @@ EvtScript N(EVS_StartTexPanners) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_17)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
-    Exec(N(EVS_SetupSpinyTromp))
-    Exec(N(EVS_StartTexPanners))
+    Exec(EVS_SetupSpinyTromp)
+    Exec(EVS_StartTexPanners)
     Return
     End
 };

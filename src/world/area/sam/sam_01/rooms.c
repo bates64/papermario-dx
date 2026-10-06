@@ -1,12 +1,12 @@
 #include "sam_01.h"
 
-EvtScript N(EVS_SetDoorRot_MayorFoyer) = {
+EvtScript EVS_SetDoorRot_MayorFoyer = {
     Call(RotateModel, MODEL_o235, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_MayorFoyer) = {
+EvtScript EVS_SetWallRot_MayorFoyer = {
     Call(RotateGroup, MODEL_s_mae, LVar0, 1, 0, 0)
     IfGt(LVar0, 89)
         Call(SetGroupVisibility, MODEL_s_mae, MODEL_GROUP_HIDDEN)
@@ -18,13 +18,13 @@ EvtScript N(EVS_SetWallRot_MayorFoyer) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_MayorFoyer) = {
+EvtScript EVS_DropDoor_MayorFoyer = {
     Call(RotateModel, MODEL_o235, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_MayorFoyer) = {
+EvtScript EVS_RoomListener_MayorFoyer = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
@@ -46,13 +46,13 @@ EvtScript N(EVS_RoomListener_MayorFoyer) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_MayorOffice) = {
+EvtScript EVS_SetDoorRot_MayorOffice = {
     Call(RotateModel, MODEL_o236, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_MayorOffice) = {
+EvtScript EVS_SetWallRot_MayorOffice = {
     Call(RotateGroup, MODEL_s_yane, LVar0, 0, 0, 1)
     Call(RotateGroup, MODEL_s_yoko, LVar0, 0, 0, -1)
     IfGt(LVar0, 89)
@@ -65,7 +65,7 @@ EvtScript N(EVS_SetWallRot_MayorOffice) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_MayorOffice) = {
+EvtScript EVS_RoomListener_MayorOffice = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
         IfEq(AF_SAM01_InsideMayorOffice, true)
@@ -85,7 +85,7 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
                     Call(NpcMoveTo, NPC_Herringway, -252, -55, 0)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Idle)
                     Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-                    Call(BindNpcInteract, NPC_Herringway, Ref(N(EVS_NpcInteract_Herringway)))
+                    Call(BindNpcInteract, NPC_Herringway, Ref(EVS_NpcInteract_Herringway))
                 EndThread
             EndIf
         CaseEq(ROOM_UPDATE_ENTER_DONE)
@@ -95,7 +95,7 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
             Set(AF_SAM01_InsideMayorOffice, true)
         CaseEq(ROOM_UPDATE_EXIT_END)
             IfEq(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
-                Exec(N(EVS_SetupMusic))
+                Exec(EVS_SetupMusic)
             EndIf
             Set(AF_SAM01_InsideMayorOffice, false)
     EndSwitch
@@ -103,13 +103,13 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_MiddleHouse) = {
+EvtScript EVS_SetDoorRot_MiddleHouse = {
     Call(RotateModel, MODEL_o253, LVar0, -1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_MiddleHouse) = {
+EvtScript EVS_SetWallRot_MiddleHouse = {
     Call(RotateGroup, MODEL_f_ue, LVar0, 0, 0, -1)
     Call(RotateGroup, MODEL_f_sita, LVar0, 0, 0, 1)
     IfGt(LVar0, 89)
@@ -122,7 +122,7 @@ EvtScript N(EVS_SetWallRot_MiddleHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_MiddleHouse) = {
+EvtScript EVS_RoomListener_MiddleHouse = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_DOOR)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
@@ -140,19 +140,19 @@ EvtScript N(EVS_RoomListener_MiddleHouse) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_UpperRightHouse) = {
+EvtScript EVS_SetDoorRot_UpperRightHouse = {
     Call(RotateModel, MODEL_o336, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetDoorRot_LowerRightHouse) = {
+EvtScript EVS_SetDoorRot_LowerRightHouse = {
     Call(RotateModel, MODEL_o402, LVar0, -1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_RightHouse) = {
+EvtScript EVS_SetWallRot_RightHouse = {
     Call(RotateGroup, MODEL_m_ue, LVar0, 0, 0, 1)
     Call(RotateGroup, MODEL_m_mae, LVar0, 0, 0, -1)
     IfGt(LVar0, 89)
@@ -165,7 +165,7 @@ EvtScript N(EVS_SetWallRot_RightHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_UpperRightHouse) = {
+EvtScript EVS_RoomListener_UpperRightHouse = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
@@ -179,7 +179,7 @@ EvtScript N(EVS_RoomListener_UpperRightHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_LowerRightHouse) = {
+EvtScript EVS_RoomListener_LowerRightHouse = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_DOOR)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
@@ -193,7 +193,7 @@ EvtScript N(EVS_RoomListener_LowerRightHouse) = {
     End
 };
 
-s32 N(InteriorNPCs_MayorBefore)[] = {
+s32 InteriorNPCs_MayorBefore[] = {
     NPC_MayorPenguin,
     NPC_MayorDummy,
     NPC_MayorPenguinWife,
@@ -203,7 +203,7 @@ s32 N(InteriorNPCs_MayorBefore)[] = {
     -1
 };
 
-s32 N(InteriorNPCs_MayorAfter)[] = {
+s32 InteriorNPCs_MayorAfter[] = {
     NPC_MayorPenguin,
     NPC_MayorPenguinWife,
     NPC_PenguinPatrol,
@@ -211,33 +211,33 @@ s32 N(InteriorNPCs_MayorAfter)[] = {
     -1
 };
 
-s32 N(InteriorNPCs_MiddleHouse)[] = {
+s32 InteriorNPCs_MiddleHouse[] = {
     NPC_Herringway,
     -1
 };
 
-s32 N(InteriorNPCs_RightHouse)[] = {
+s32 InteriorNPCs_RightHouse[] = {
     NPC_Herringway,
     NPC_Penguin_04,
     -1
 };
 
-EvtScript N(EVS_SetupMayorRooms) = {
+EvtScript EVS_SetupMayorRooms = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Set(LVar0, Ref(N(InteriorNPCs_MayorBefore)))
+            Set(LVar0, Ref(InteriorNPCs_MayorBefore))
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Set(LVar0, Ref(N(InteriorNPCs_MayorBefore)))
+            Set(LVar0, Ref(InteriorNPCs_MayorBefore))
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Set(LVar0, Ref(N(InteriorNPCs_MayorAfter)))
+            Set(LVar0, Ref(InteriorNPCs_MayorAfter))
     EndSwitch
     // mayor's foyer
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_MayorFoyer)),
-        Ref(N(EVS_SetWallRot_MayorFoyer)),
-        Ref(N(EVS_DropDoor_MayorFoyer)),
-        Ref(N(EVS_RoomListener_MayorFoyer)),
+        Ref(EVS_SetDoorRot_MayorFoyer),
+        Ref(EVS_SetWallRot_MayorFoyer),
+        Ref(EVS_DropDoor_MayorFoyer),
+        Ref(EVS_RoomListener_MayorFoyer),
         COLLIDER_tts,
         COLLIDER_o352,
         MODEL_son,
@@ -245,10 +245,10 @@ EvtScript N(EVS_SetupMayorRooms) = {
     // mayor's office
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_MayorOffice)),
-        Ref(N(EVS_SetWallRot_MayorOffice)),
+        Ref(EVS_SetDoorRot_MayorOffice),
+        Ref(EVS_SetWallRot_MayorOffice),
         nullptr,
-        Ref(N(EVS_RoomListener_MayorOffice)),
+        Ref(EVS_RoomListener_MayorOffice),
         COLLIDER_ttsn,
         COLLIDER_o353,
         MODEL_o430,
@@ -257,47 +257,47 @@ EvtScript N(EVS_SetupMayorRooms) = {
     End
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     Call(SetGroupVisibility, MODEL_s_naisou, MODEL_GROUP_HIDDEN)
     IfNe(GB_StoryProgress, STORY_CH7_SPOKE_WITH_HERRINGWAY)
-        ExecWait(N(EVS_SetupMayorRooms))
+        ExecWait(EVS_SetupMayorRooms)
     EndIf
     // upper middle house
     Call(SetGroupVisibility, MODEL_f_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_MiddleHouse)),
-        Ref(N(EVS_SetWallRot_MiddleHouse)),
+        Ref(EVS_SetDoorRot_MiddleHouse),
+        Ref(EVS_SetWallRot_MiddleHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_MiddleHouse)),
+        Ref(EVS_RoomListener_MiddleHouse),
         COLLIDER_ttf2,
         COLLIDER_o354,
         MODEL_f2,
-        Ref(N(InteriorNPCs_MiddleHouse)))
+        Ref(InteriorNPCs_MiddleHouse))
     // lower right house
     Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_UpperRightHouse)),
-        Ref(N(EVS_SetWallRot_RightHouse)),
+        Ref(EVS_SetDoorRot_UpperRightHouse),
+        Ref(EVS_SetWallRot_RightHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_UpperRightHouse)),
+        Ref(EVS_RoomListener_UpperRightHouse),
         COLLIDER_ttm,
         COLLIDER_o355,
         MODEL_min,
-        Ref(N(InteriorNPCs_RightHouse)))
+        Ref(InteriorNPCs_RightHouse))
     // upper right house
     Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_LowerRightHouse)),
-        Ref(N(EVS_SetWallRot_RightHouse)),
+        Ref(EVS_SetDoorRot_LowerRightHouse),
+        Ref(EVS_SetWallRot_RightHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_LowerRightHouse)),
+        Ref(EVS_RoomListener_LowerRightHouse),
         COLLIDER_o376,
         COLLIDER_o390,
         MODEL_min,
-        Ref(N(InteriorNPCs_RightHouse)))
+        Ref(InteriorNPCs_RightHouse))
     Return
     End
 };

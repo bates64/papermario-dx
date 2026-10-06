@@ -28,7 +28,7 @@
 
 #define NUM_CHAIN_LINKS (1 + CHOMP_CHAIN_LAST_PART_IDX - CHOMP_CHAIN_FIRST_PART_IDX)
 
-API_CALLABLE(N(ChompChainInit)) {
+static API_CALLABLE(ChompChainInit) {
     Actor* actor = get_actor(script->owner1.actorID);
     ActorPart* actorPart;
     ChompChain* chainParts;
@@ -62,7 +62,7 @@ API_CALLABLE(N(ChompChainInit)) {
     return ApiStatus_DONE2;
 }
 
-void N(ChompChainAddPolarPos)(ChompChain* script, f32 magnitude, f32 angleDeg) {
+static void ChompChainAddPolarPos(ChompChain* script, f32 magnitude, f32 angleDeg) {
     f32 angle = DEG_TO_RAD(angleDeg);
     f32 dirX = sin_rad(angle);
     f32 dirY = cos_rad(angle);
@@ -71,7 +71,7 @@ void N(ChompChainAddPolarPos)(ChompChain* script, f32 magnitude, f32 angleDeg) {
     script->curPos.y += magnitude * dirY;
 }
 
-void N(ChompChainGetPolarX)(f32* x, f32 magnitude, f32 angleDeg) {
+static void ChompChainGetPolarX(f32* x, f32 magnitude, f32 angleDeg) {
     f32 angle = DEG_TO_RAD(angleDeg);
     f32 dirX = sin_rad(angle);
     f32 dirY = cos_rad(angle);
@@ -79,7 +79,7 @@ void N(ChompChainGetPolarX)(f32* x, f32 magnitude, f32 angleDeg) {
     *x = magnitude * dirY;
 }
 
-API_CALLABLE(N(ChompChainUpdate)) {
+static API_CALLABLE(ChompChainUpdate) {
     Bytecode* args = script->ptrReadPos;
     f32 sp18;
     Actor* actor;
@@ -152,7 +152,7 @@ API_CALLABLE(N(ChompChainUpdate)) {
         angle = atan2(prevX, prevY, chain->curPos.x, chain->curPos.y);
 
         if (dist >= chain->linkLengthZ) {
-            N(ChompChainGetPolarX)(&sp18, dist - chain->linkLengthZ, angle);
+            ChompChainGetPolarX(&sp18, dist - chain->linkLengthZ, angle);
             chain->velY += sp18 * 0.5;
         }
 
@@ -167,13 +167,13 @@ API_CALLABLE(N(ChompChainUpdate)) {
                 chain->settleAmt += chain->settleRate;
                 moveLen = chain->settleAmt;
             }
-            N(ChompChainAddPolarPos)(chain, moveLen, angle);
+            ChompChainAddPolarPos(chain, moveLen, angle);
         } else {
             chain->settleAmt -= chain->settleRate * 0.2;
             if (chain->settleAmt < 0.0) {
                 chain->settleAmt = 0.0f;
             }
-            N(ChompChainAddPolarPos)(chain, chain->settleAmt, angle);
+            ChompChainAddPolarPos(chain, chain->settleAmt, angle);
         }
         if (chain->settleAmt > 4.0) {
             chain->settleAmt = 4.0f;

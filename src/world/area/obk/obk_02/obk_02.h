@@ -23,12 +23,10 @@ enum {
     MV_LastMapRegion        = MapVar(1),
 };
 
-#define NAMESPACE obk_02
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_UpdateClock);
-extern EvtScript N(EVS_ClockDoNothing);
-extern EvtScript N(EVS_SetupBombableWall);
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_UpdateClock;
+extern EvtScript EVS_ClockDoNothing;
+extern EvtScript EVS_SetupBombableWall;
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_MakeEntities;

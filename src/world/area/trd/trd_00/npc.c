@@ -2,9 +2,9 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_SetupMusic);
+extern EvtScript EVS_SetupMusic;
 
-API_CALLABLE(N(UpgradeStarPowerCh1)) {
+API_CALLABLE(UpgradeStarPowerCh1) {
     set_max_star_power(1);
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
@@ -12,7 +12,7 @@ API_CALLABLE(N(UpgradeStarPowerCh1)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SyncStatusBar)) {
+API_CALLABLE(SyncStatusBar) {
     sync_status_bar();
     return ApiStatus_DONE2;
 }
@@ -20,7 +20,7 @@ API_CALLABLE(N(SyncStatusBar)) {
 #include "world/common/enemy/KoopaBros/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_KoopaBros) = {
+EvtScript EVS_NpcIdle_KoopaBros = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(AwaitPlayerApproach, -580, 276, 50)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, false)
@@ -97,8 +97,8 @@ EvtScript N(EVS_NpcIdle_KoopaBros) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaBros) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaBros)))
+EvtScript EVS_NpcInit_KoopaBros = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaBros))
     IfGe(GB_StoryProgress, STORY_CH1_SPOTTED_BY_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -106,7 +106,7 @@ EvtScript N(EVS_NpcInit_KoopaBros) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Eldstar) = {
+EvtScript EVS_NpcIdle_Eldstar = {
     Loop(0)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -125,13 +125,13 @@ EvtScript N(EVS_NpcIdle_Eldstar) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Eldstar) = {
+EvtScript EVS_NpcDefeat_Eldstar = {
     Call(SetSelfVar, 0, 1)
     Return
     End
 };
 
-EvtScript N(EVS_Scene_RescuedEldstar) = {
+EvtScript EVS_Scene_RescuedEldstar = {
     Call(DisablePartnerAI, false)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcPos, NPC_Eldstar, -567, 26, 236)
@@ -187,7 +187,7 @@ EvtScript N(EVS_Scene_RescuedEldstar) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Idle)
     Call(EnableNpcAI, NPC_Eldstar, true)
-    Call(N(UpgradeStarPowerCh1))
+    Call(UpgradeStarPowerCh1)
     Call(ShowMessageAtScreenPos, MSG_Menus_0191, 160, 40)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Idle, 512, MSG_CH1_010E)
@@ -211,7 +211,7 @@ EvtScript N(EVS_Scene_RescuedEldstar) = {
         Wait(1)
     EndLoop
     Call(FullyRestoreSP)
-    Call(N(SyncStatusBar))
+    Call(SyncStatusBar)
     Label(10)
     Wait(30 * DT)
     Call(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
@@ -276,23 +276,23 @@ EvtScript N(EVS_Scene_RescuedEldstar) = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Set(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Eldstar) = {
+EvtScript EVS_NpcInit_Eldstar = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, trd_00_ENTRY_5)
         Call(GetLoadType, LVar1)
         IfEq(LVar1, 1)
             Call(RemoveNpc, NPC_SELF)
         Else
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Eldstar)))
-            Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Eldstar)))
-            Exec(N(EVS_Scene_RescuedEldstar))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Eldstar))
+            Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Eldstar))
+            Exec(EVS_Scene_RescuedEldstar)
         EndIf
     Else
         Call(RemoveNpc, NPC_SELF)
@@ -301,18 +301,18 @@ EvtScript N(EVS_NpcInit_Eldstar) = {
     End
 };
 
-NpcData N(NpcData_KoopaBros) = {
+NpcData NpcData_KoopaBros = {
     .id = NPC_KoopaBros,
     .pos = { -469.0f, 0.0f, 101.0f },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_KoopaBros),
-    .settings = &N(NpcSettings_KoopaBros),
+    .init = &EVS_NpcInit_KoopaBros,
+    .settings = &NpcSettings_KoopaBros,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = GREEN_KOOPA_BROS_ANIMS,
 };
 
-NpcData N(NpcData_Eldstar) = {
+NpcData NpcData_Eldstar = {
     .id = NPC_Eldstar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -328,15 +328,15 @@ NpcData N(NpcData_Eldstar) = {
             .detectSize = { 500 },
         }
     },
-    .init = &N(EVS_NpcInit_Eldstar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Eldstar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = ELDSTAR_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaBros)),
-    NPC_GROUP(N(NpcData_Eldstar), BTL_TRD_3_FORMATION_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaBros),
+    NPC_GROUP(NpcData_Eldstar, BTL_TRD_3_FORMATION_00),
     {}
 };

@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/SpearGuy/wander.inc.c"
 
-NpcData N(NpcData_SpearGuy)[] = {
+NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
         .pos = { 165.0f, 0.0f, 15.0f },
@@ -19,7 +19,7 @@ NpcData N(NpcData_SpearGuy)[] = {
                 .detectSize = { 150 },
             }
         },
-        .settings = &N(NpcSettings_SpearGuy_Wander),
+        .settings = &NpcSettings_SpearGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
@@ -27,7 +27,7 @@ NpcData N(NpcData_SpearGuy)[] = {
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_SpearGuy), BTL_JAN_FORMATION_06, BTL_JAN_STAGE_06),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_06, BTL_JAN_STAGE_06),
     {}
 };

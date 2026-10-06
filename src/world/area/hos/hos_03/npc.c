@@ -9,71 +9,71 @@
 
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
-EvtScript N(EVS_NpcInteract_StarKid_01) = {
+EvtScript EVS_NpcInteract_StarKid_01 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_HOS_005F)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_01)))
+EvtScript EVS_NpcInit_StarKid_01 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_02) = {
+EvtScript EVS_NpcInteract_StarKid_02 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_HOS_0060)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_02) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_02)))
+EvtScript EVS_NpcInit_StarKid_02 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_02))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_03) = {
+EvtScript EVS_NpcInteract_StarKid_03 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_HOS_0061)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_03) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_03)))
+EvtScript EVS_NpcInit_StarKid_03 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_03))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_04) = {
+EvtScript EVS_NpcInteract_StarKid_04 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_HOS_0062)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_04) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_04)))
+EvtScript EVS_NpcInit_StarKid_04 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_04))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_StarKid_05) = {
+EvtScript EVS_NpcInteract_StarKid_05 = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, MSG_HOS_0063)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarKid_05) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_StarKid_05)))
+EvtScript EVS_NpcInit_StarKid_05 = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_StarKid_05))
     Return
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestingSong))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestingSong)
     Thread
         Wait(20)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
@@ -104,9 +104,9 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Exec(N(EVS_SetupMusic))
-    Call(N(ToadHouse_CamSetFOV), 0, 25)
+EvtScript EVS_ToadHouse_ReturnFromRest = {
+    Exec(EVS_SetupMusic)
+    Call(ToadHouse_CamSetFOV, 0, 25)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 445, 25, 185)
     Call(PlayerMoveTo, 440, 215, 20)
@@ -114,7 +114,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     Set(LVar0, MSG_HOS_0064)
     Set(LVar8, MSG_HOS_0065)
     Set(LVar1, MSG_HOS_0066)
@@ -124,31 +124,31 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
+EvtScript EVS_NpcInit_ToadHouseKeeper = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_ShopOwner) = {
+EvtScript EVS_NpcInteract_ShopOwner = {
     ExecWait(EVS_ShopOwnerDialog)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_ShopOwner) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShopOwner)))
+EvtScript EVS_NpcInit_ShopOwner = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ShopOwner))
     Return
     End
 };
 
-NpcData N(NpcData_Townsfolk)[] = {
+NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_StarMan_01,
         .pos = { -463.0f, 10.0f, 400.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_StarKid_01),
-        .settings = &N(NpcSettings_StarMan),
+        .init = &EVS_NpcInit_StarKid_01,
+        .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -158,8 +158,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_StarMan_02,
         .pos = { -325.0f, 10.0f, 600.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_StarKid_02),
-        .settings = &N(NpcSettings_StarMan),
+        .init = &EVS_NpcInit_StarKid_02,
+        .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -181,8 +181,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 30 },
             }
         },
-        .init = &N(EVS_NpcInit_StarKid_03),
-        .settings = &N(NpcSettings_StarMan_Wander),
+        .init = &EVS_NpcInit_StarKid_03,
+        .settings = &NpcSettings_StarMan_Wander,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -204,8 +204,8 @@ NpcData N(NpcData_Townsfolk)[] = {
                 .detectSize = { 30 },
             }
         },
-        .init = &N(EVS_NpcInit_StarKid_04),
-        .settings = &N(NpcSettings_StarMan_Wander),
+        .init = &EVS_NpcInit_StarKid_04,
+        .settings = &NpcSettings_StarMan_Wander,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -215,8 +215,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_StarMan_05,
         .pos = { -485.0f, 335.0f, -100.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_StarKid_05),
-        .settings = &N(NpcSettings_StarMan),
+        .init = &EVS_NpcInit_StarKid_05,
+        .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -226,8 +226,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_StarMan_ToadHouse,
         .pos = { 458.0f, 35.0f, 233.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ToadHouseKeeper),
-        .settings = &N(NpcSettings_StarMan),
+        .init = &EVS_NpcInit_ToadHouseKeeper,
+        .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -237,8 +237,8 @@ NpcData N(NpcData_Townsfolk)[] = {
         .id = NPC_StarMan_ShopOwner,
         .pos = { 140.0f, 285.0f, -315.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_ShopOwner),
-        .settings = &N(NpcSettings_StarMan),
+        .init = &EVS_NpcInit_ShopOwner,
+        .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = STAR_MAN_ANIMS,
@@ -250,7 +250,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 90,
         .initVarCount = 1,
         .initVar = { .bytes = { 0, QUIZ_AREA_HOS, QUIZ_COUNT_HOS, QUIZ_MAP_HOS_03 }},
-        .settings = &N(NpcSettings_ChuckQuizmo),
+        .settings = &NpcSettings_ChuckQuizmo,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = QUIZMO_ANIMS,
@@ -258,7 +258,7 @@ NpcData N(NpcData_Townsfolk)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Townsfolk)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Townsfolk),
     {}
 };

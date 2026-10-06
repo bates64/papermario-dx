@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "model.h"
 
-API_CALLABLE(N(SwingCameraPitchUpward)) {
+API_CALLABLE(SwingCameraPitchUpward) {
     Camera* camera = &gCameras[CAM_DEFAULT];
 
     if (isInitialCall) {
@@ -22,7 +22,7 @@ API_CALLABLE(N(SwingCameraPitchUpward)) {
     }
 }
 
-EvtScript N(EVS_UpdatePassengers) = {
+EvtScript EVS_UpdatePassengers = {
     Label(0)
         Call(GetModelCenter, MODEL_o637)
         Add(LVar0, -5)
@@ -39,7 +39,7 @@ EvtScript N(EVS_UpdatePassengers) = {
     End
 };
 
-EvtScript N(EVS_Starship_Depart) = {
+EvtScript EVS_Starship_Depart = {
     Call(GetPartnerInUse, LVar9)
     IfNe(LVar9, PARTNER_NONE)
         Return
@@ -47,7 +47,7 @@ EvtScript N(EVS_Starship_Depart) = {
     Call(DisablePlayerInput, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-    ExecGetTID(N(EVS_UpdatePassengers), LVar9)
+    ExecGetTID(EVS_UpdatePassengers, LVar9)
     Call(HidePlayerShadow, true)
     Call(GetModelCenter, MODEL_o637)
     Add(LVar0, -5)
@@ -101,7 +101,7 @@ EvtScript N(EVS_Starship_Depart) = {
     EndIf
     Thread
         Wait(25)
-        Call(N(SwingCameraPitchUpward))
+        Call(SwingCameraPitchUpward)
     EndThread
     Call(PlaySoundAtPlayer, SOUND_STARSHIP_TAKEOFF_LONG, SOUND_SPACE_DEFAULT)
     Set(LVar2, MV_Starship_PosY)
@@ -125,7 +125,7 @@ EvtScript N(EVS_Starship_Depart) = {
     End
 };
 
-EvtScript N(EVS_EnterStarship) = {
+EvtScript EVS_EnterStarship = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -142,7 +142,7 @@ EvtScript N(EVS_EnterStarship) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Set(MV_PlayerOnBoard, true)
     Set(MV_PartnerOnBoard, true)
-    ExecGetTID(N(EVS_UpdatePassengers), LVar9)
+    ExecGetTID(EVS_UpdatePassengers, LVar9)
     Thread
         Wait(25)
         Call(MakeLerp, -350, -70, 60, EASING_QUADRATIC_OUT)

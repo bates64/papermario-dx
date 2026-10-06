@@ -2,7 +2,7 @@
 
 #include "../common/Credits.h"
 
-CreditsEntry N(Credits_Title)[] = {
+CreditsEntry Credits_Title[] = {
     {
         .msgID = MSG_Credits_0000,
         .posX = STANDARD_POS_X,

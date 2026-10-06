@@ -29,15 +29,13 @@ enum {
     MF_PurchasedBadge   = MapFlag(0),
 };
 
-#define NAMESPACE hos_06
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMagicChest;
+extern EvtScript EVS_Interact_MagicChest;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_AskForHint;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMagicChest);
-extern EvtScript N(EVS_Interact_MagicChest);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_AskForHint);
-
-extern EvtScript N(EVS_NpcInteract_Merluvlee);
-extern EvtScript N(EVS_NpcInit_Merluvlee);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_NpcInteract_Merluvlee;
+extern EvtScript EVS_NpcInit_Merluvlee;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

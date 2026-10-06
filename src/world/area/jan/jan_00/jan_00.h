@@ -22,6 +22,4 @@ enum {
     NPC_HeartPlant_05           = 7,
 };
 
-#define NAMESPACE jan_00
-
-extern EvtScript N(EVS_MakeFlowerCoins);
+extern EvtScript EVS_MakeFlowerCoins;

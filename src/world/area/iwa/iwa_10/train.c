@@ -1,6 +1,6 @@
 #include "iwa_10.h"
 
-EvtScript N(EVS_SpawnSmoke) = {
+EvtScript EVS_SpawnSmoke = {
     Call(PlaySoundAtModel, MODEL_07, SOUND_SEQ_TRAIN_CHUG, SOUND_SPACE_DEFAULT)
     SetF(LVar0, MV_TrainMoveDist)
     IfEq(MF_TrainReverseDir, false)
@@ -27,7 +27,7 @@ EvtScript N(EVS_SpawnSmoke) = {
     End
 };
 
-EvtScript N(EVS_OpenCrossingGates) = {
+EvtScript EVS_OpenCrossingGates = {
     Call(MakeLerp, 0, 105, 30, EASING_COS_IN_OUT)
     Label(0)
         Call(UpdateLerp)
@@ -45,7 +45,7 @@ EvtScript N(EVS_OpenCrossingGates) = {
     End
 };
 
-EvtScript N(EVS_CloseCrossingGates) = {
+EvtScript EVS_CloseCrossingGates = {
     Call(MakeLerp, 105, 0, 30, EASING_COS_IN_OUT)
     Label(0)
         Call(UpdateLerp)
@@ -63,7 +63,7 @@ EvtScript N(EVS_CloseCrossingGates) = {
     End
 };
 
-EvtScript N(EVS_AnimateTrain) = {
+EvtScript EVS_AnimateTrain = {
     Label(0)
         Set(LVar0, MV_TrainMoveDist)
         Call(TranslateModel, MODEL_08, LVar0, 0, 0)
@@ -167,7 +167,7 @@ EvtScript N(EVS_AnimateTrain) = {
             IfEq(LVarD, 0)
                 Thread
                     Wait(18)
-                    Exec(N(EVS_SpawnSmoke))
+                    Exec(EVS_SpawnSmoke)
                 EndThread
             EndIf
         EndIf
@@ -278,7 +278,7 @@ EvtScript N(EVS_AnimateTrain) = {
     End
 };
 
-EvtScript N(EVS_UpdatePassengerPos) = {
+EvtScript EVS_UpdatePassengerPos = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -313,7 +313,7 @@ EvtScript N(EVS_UpdatePassengerPos) = {
     End
 };
 
-EvtScript N(EVS_FollowTrainCamera) = {
+EvtScript EVS_FollowTrainCamera = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfEq(MF_TrainReverseDir, false)
@@ -338,7 +338,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
     End
 };
 
-EvtScript N(EVS_ArriveFromToadTown) = {
+EvtScript EVS_ArriveFromToadTown = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -353,14 +353,14 @@ EvtScript N(EVS_ArriveFromToadTown) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt3, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt4, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o273, COLLIDER_FLAGS_UPPER_MASK)
-    ExecGetTID(N(EVS_FollowTrainCamera), LVar9)
-    ExecGetTID(N(EVS_UpdatePassengerPos), LVarE)
+    ExecGetTID(EVS_FollowTrainCamera, LVar9)
+    ExecGetTID(EVS_UpdatePassengerPos, LVarE)
     Set(MF_TrainMoving, true)
     Set(MV_TrainMoveDist, -1200)
     Set(MV_TrainMoveSpeed, 0)
     Set(MF_TrainReverseDir, false)
     Wait(60)
-    Exec(N(EVS_CloseCrossingGates))
+    Exec(EVS_CloseCrossingGates)
     Set(MV_TrainMoveDist, -1200)
     Set(MV_TrainMoveSpeed, -10)
     Set(MF_TrainReverseDir, false)
@@ -418,7 +418,7 @@ EvtScript N(EVS_ArriveFromToadTown) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(DisablePlayerPhysics, false)
     Call(EnablePartnerAI)
-    Exec(N(EVS_OpenCrossingGates))
+    Exec(EVS_OpenCrossingGates)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilitk, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o284, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_tt3, COLLIDER_FLAGS_UPPER_MASK)
@@ -434,7 +434,7 @@ EvtScript N(EVS_ArriveFromToadTown) = {
     End
 };
 
-EvtScript N(EVS_DepartForToadTown) = {
+EvtScript EVS_DepartForToadTown = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -494,8 +494,8 @@ EvtScript N(EVS_DepartForToadTown) = {
     Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
-    Exec(N(EVS_UpdatePassengerPos))
-    Exec(N(EVS_CloseCrossingGates))
+    Exec(EVS_UpdatePassengerPos)
+    Exec(EVS_CloseCrossingGates)
     Call(UseSettingsFrom, CAM_DEFAULT, -1000, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(245.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(-538.5), Float(-60.0))
@@ -520,7 +520,7 @@ EvtScript N(EVS_DepartForToadTown) = {
     EndThread
     Wait(90)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    ExecGetTID(N(EVS_FollowTrainCamera), LVar9)
+    ExecGetTID(EVS_FollowTrainCamera, LVar9)
     Wait(130)
     Wait(100)
     Call(GotoMap, Ref("iwa_11"), iwa_11_ENTRY_1)
@@ -529,7 +529,7 @@ EvtScript N(EVS_DepartForToadTown) = {
     End
 };
 
-EvtScript N(EVS_InitializeTrainScene) = {
+EvtScript EVS_InitializeTrainScene = {
     Call(EnableModel, MODEL_km, false)
     Call(SetModelFlags, MODEL_km, MODEL_FLAG_BILLBOARD, true)
     Call(CloneModel, MODEL_km, CLONED_MODEL(0))
@@ -544,7 +544,7 @@ EvtScript N(EVS_InitializeTrainScene) = {
     Call(CloneModel, MODEL_km, CLONED_MODEL(9))
     Set(MF_TrainReverseDir, true)
     Set(MV_TrainMoveDist, -90)
-    Exec(N(EVS_AnimateTrain))
+    Exec(EVS_AnimateTrain)
     Wait(1)
     Call(RotateGroup, MODEL_fumi1, 105, 0, 1, 0)
     Call(RotateGroup, MODEL_fumi2, 105, 0, 1, 0)

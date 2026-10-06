@@ -510,7 +510,7 @@ EvtScript N(EVS_UseDrainingShockwave) = {
     Call(MoveBattleCamOver, 30)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBowser_Brandish)
     Wait(10)
-    Call(N(FadeBackgroundDarken))
+    Call(DarkenBackground)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 15)
     Sub(LVar2, 3)
@@ -528,7 +528,7 @@ EvtScript N(EVS_UseDrainingShockwave) = {
     Set(LVar1, 55)
     PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, LVar0, LVar1, LVar2, Float(1.0), 60)
     Thread
-        Call(N(FadeBackgroundLighten))
+        Call(LightenBackground)
     EndThread
     Wait(8)
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)

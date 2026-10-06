@@ -2,7 +2,7 @@
 
 #include "world/common/util/PushObjectSupport.inc.c"
 
-EvtScript N(EVS_PushClock_Impl) = {
+EvtScript EVS_PushClock_Impl = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Loop(20)
         Call(GetPartnerInUse, LVarA)
@@ -10,7 +10,7 @@ EvtScript N(EVS_PushClock_Impl) = {
             Set(LVar8, -1)
             Return
         EndIf
-        Call(N(IsPlayerPushingCollider), LVar9)
+        Call(IsPlayerPushingCollider, LVar9)
         IfEq(LVar0, 0)
             Set(LVar8, -1)
             Return
@@ -44,7 +44,7 @@ EvtScript N(EVS_PushClock_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UpdatePlayerPushPosition))
+            Call(UpdatePlayerPushPosition)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -71,7 +71,7 @@ EvtScript N(EVS_PushClock_Impl) = {
     End
 };
 
-EvtScript N(EVS_PushClockRight) = {
+EvtScript EVS_PushClockRight = {
     IfNe(GF_DGB03_PushedClock, false)
         Goto(90)
     EndIf
@@ -79,7 +79,7 @@ EvtScript N(EVS_PushClockRight) = {
     Set(LVar7, 48)
     Set(LVar8, 0)
     Set(LVar9, 27)
-    ExecWait(N(EVS_PushClock_Impl))
+    ExecWait(EVS_PushClock_Impl)
     Label(90)
     IfNe(LVar8, -1)
         Set(GF_DGB03_PushedClockLeft, false)
@@ -90,7 +90,7 @@ EvtScript N(EVS_PushClockRight) = {
     End
 };
 
-EvtScript N(EVS_PushClockLeft) = {
+EvtScript EVS_PushClockLeft = {
     IfNe(GF_DGB03_PushedClock, false)
         Goto(90)
     EndIf
@@ -98,7 +98,7 @@ EvtScript N(EVS_PushClockLeft) = {
     Set(LVar7, -48)
     Set(LVar8, 0)
     Set(LVar9, 28)
-    ExecWait(N(EVS_PushClock_Impl))
+    ExecWait(EVS_PushClock_Impl)
     Label(90)
     IfNe(LVar8, -1)
         Set(GF_DGB03_PushedClockLeft, true)
@@ -109,13 +109,13 @@ EvtScript N(EVS_PushClockLeft) = {
     End
 };
 
-EvtScript N(EVS_SetupClock) = {
+EvtScript EVS_SetupClock = {
     Call(ParentColliderToModel, COLLIDER_o77, MODEL_o77)
     Call(ParentColliderToModel, COLLIDER_o112, MODEL_o77)
     Call(ParentColliderToModel, COLLIDER_o113, MODEL_o77)
     IfEq(GF_DGB03_PushedClock, false)
-        BindTrigger(Ref(N(EVS_PushClockRight)), TRIGGER_WALL_PUSH, COLLIDER_o77, 1, 0)
-        BindTrigger(Ref(N(EVS_PushClockLeft)), TRIGGER_WALL_PUSH, COLLIDER_o112, 1, 0)
+        BindTrigger(Ref(EVS_PushClockRight), TRIGGER_WALL_PUSH, COLLIDER_o77, 1, 0)
+        BindTrigger(Ref(EVS_PushClockLeft), TRIGGER_WALL_PUSH, COLLIDER_o112, 1, 0)
     Else
         IfEq(GF_DGB03_PushedClockLeft, false)
             Set(LVar0, 48)

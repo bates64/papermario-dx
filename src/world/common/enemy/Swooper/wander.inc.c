@@ -3,7 +3,7 @@
 
 #include "world/common/ai/SwooperAI.inc.c"
 
-MobileAISettings N(AISettings_Swooper_Wander) = {
+MobileAISettings AISettings_Swooper_Wander = {
     .moveSpeed = 1.6f,
     .moveTime = 60,
     .waitTime = 30,
@@ -16,13 +16,13 @@ MobileAISettings N(AISettings_Swooper_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Swooper_Wander) = {
-    Call(N(SwooperAI_Main), Ref(N(AISettings_Swooper_Wander)))
+EvtScript EVS_NpcAI_Swooper_Wander = {
+    Call(SwooperAI_Main, Ref(AISettings_Swooper_Wander))
     Return
     End
 };
 
-MobileAISettings N(AISettings_Swoopula_Wander) = {
+MobileAISettings AISettings_Swoopula_Wander = {
     .moveSpeed = 1.6f,
     .moveTime = 60,
     .waitTime = 30,
@@ -35,27 +35,27 @@ MobileAISettings N(AISettings_Swoopula_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Swoopula_Wander) = {
-    Call(N(SwooperAI_Main), Ref(N(AISettings_Swoopula_Wander)))
+EvtScript EVS_NpcAI_Swoopula_Wander = {
+    Call(SwooperAI_Main, Ref(AISettings_Swoopula_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Swooper_Wander) = {
+NpcSettings NpcSettings_Swooper_Wander = {
     .height = 20,
     .radius = 20,
     .level = ACTOR_LEVEL_SWOOPER,
-    .doAI = &N(EVS_NpcAI_Swooper_Wander),
+    .doAI = &EVS_NpcAI_Swooper_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .flags = ENEMY_FLAG_FLYING,
 };
 
-NpcSettings N(NpcSettings_Swoopula_Wander) = {
+NpcSettings NpcSettings_Swoopula_Wander = {
     .height = 20,
     .radius = 20,
     .level = ACTOR_LEVEL_SWOOPULA,
-    .doAI = &N(EVS_NpcAI_Swoopula_Wander),
+    .doAI = &EVS_NpcAI_Swoopula_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .flags = ENEMY_FLAG_FLYING,

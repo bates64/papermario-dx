@@ -1,12 +1,12 @@
 #include "trd_04.h"
 
-extern EvtScript N(EVS_DropSwitch);
+extern EvtScript EVS_DropSwitch;
 
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
 #include "world/common/enemy/KoopaTroopa/patrol.inc.c"
 #include "world/common/enemy/Paratroopa/wander.inc.c"
 
-EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
+EvtScript EVS_NpcDefeat_KoopaTroopa = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -14,23 +14,23 @@ EvtScript N(EVS_NpcDefeat_KoopaTroopa) = {
             Thread
                 Call(DoNpcDefeat)
             EndThread
-            ExecWait(N(EVS_DropSwitch))
+            ExecWait(EVS_DropSwitch)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa) = {
+EvtScript EVS_NpcInit_KoopaTroopa = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_BASEMENT_GUARD)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_KoopaTroopa)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_KoopaTroopa))
     Return
     End
 };
 
-NpcData N(NpcData_KoopaTroopa_Wander) = {
+NpcData NpcData_KoopaTroopa_Wander = {
     .id = NPC_KoopaTroopa,
     .pos = { 0.0f, 0.0f, 125.0f },
     .yaw = 90,
@@ -46,14 +46,14 @@ NpcData N(NpcData_KoopaTroopa_Wander) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = KOOPA_TROOPA_TRD_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_KoopaTroopa_Patrol) = {
+NpcData NpcData_KoopaTroopa_Patrol = {
     .id = NPC_KoopaTroopa,
     .pos = { 220.0f, 0.0f, 30.0f },
     .yaw = 90,
@@ -71,15 +71,15 @@ NpcData N(NpcData_KoopaTroopa_Patrol) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa),
-    .settings = &N(NpcSettings_KoopaTroopa_Patrol),
+    .init = &EVS_NpcInit_KoopaTroopa,
+    .settings = &NpcSettings_KoopaTroopa_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_ParaTroopa) = {
+NpcData NpcData_ParaTroopa = {
     .id = NPC_ParaTroopa,
     .pos = { -5.0f, 237.0f, 157.0f },
     .yaw = 270,
@@ -95,21 +95,21 @@ NpcData N(NpcData_ParaTroopa) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ParaTroopa_Wander),
+    .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARATROOPA_DROPS,
     .animations = PARATROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(NpcGroupAfter) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa_Wander), BTL_TRD_1_FORMATION_05, BTL_TRD_1_STAGE_0C),
-    NPC_GROUP(N(NpcData_ParaTroopa), BTL_TRD_1_FORMATION_0D, BTL_TRD_1_STAGE_05),
+NpcGroupList NpcGroupAfter = {
+    NPC_GROUP(NpcData_KoopaTroopa_Wander, BTL_TRD_1_FORMATION_05, BTL_TRD_1_STAGE_0C),
+    NPC_GROUP(NpcData_ParaTroopa, BTL_TRD_1_FORMATION_0D, BTL_TRD_1_STAGE_05),
     {}
 };
 
-NpcGroupList N(NpcGroupBefore) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa_Patrol), BTL_TRD_1_FORMATION_05, BTL_TRD_1_STAGE_0C),
-    NPC_GROUP(N(NpcData_ParaTroopa), BTL_TRD_1_FORMATION_0D, BTL_TRD_1_STAGE_05),
+NpcGroupList NpcGroupBefore = {
+    NPC_GROUP(NpcData_KoopaTroopa_Patrol, BTL_TRD_1_FORMATION_05, BTL_TRD_1_STAGE_0C),
+    NPC_GROUP(NpcData_ParaTroopa, BTL_TRD_1_FORMATION_0D, BTL_TRD_1_STAGE_05),
     {}
 };

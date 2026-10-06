@@ -11,10 +11,6 @@
 
 #define NAMESPACE A(lee)
 
-// scripts in lee.c calls two functions defined in lee_watt.c for adjusting the background fade
-// this macro is used to highlight those instances
-#define WATT(x) A( watt_lee_##x )
-
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);
@@ -622,11 +618,11 @@ EvtScript N(EVS_Move_CopyPartner) = {
         SetF(LVar3, Float(1.0))
     EndIf
     PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, LVar0, LVar1, LVar2, LVar3, 40)
-    Call(WATT(UnkBackgroundFunc3))
+    Call(UnkBackgroundFunc3)
     Call(MakeLerp, 0, 200, 20, EASING_LINEAR)
     Label(0)
         Call(UpdateLerp)
-        Call(WATT(SetBackgroundAlpha), LVar0)
+        Call(SetBackgroundAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(0)
@@ -684,7 +680,7 @@ EvtScript N(EVS_Move_CopyPartner) = {
         Call(MakeLerp, 200, 0, 20, EASING_LINEAR)
         Label(1)
             Call(UpdateLerp)
-            Call(WATT(SetBackgroundAlpha), LVar0)
+            Call(SetBackgroundAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(1)

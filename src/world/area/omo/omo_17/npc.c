@@ -6,42 +6,42 @@
 #include "world/common/enemy/SkyGuy/wander.inc.c"
 #include "world/common/enemy/SpyGuy/wander.inc.c"
 
-EvtScript N(EVS_NpcCreate_Conductor) = {
+EvtScript EVS_NpcCreate_Conductor = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Conductor) = {
+EvtScript EVS_NpcInteract_Conductor = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Conductor) = {
+EvtScript EVS_NpcAI_Conductor = {
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Conductor) = {
+NpcSettings NpcSettings_Conductor = {
     .defaultAnim = ANIM_TrainToad_Blue_Idle,
     .height = 24,
     .radius = 24,
-    .doAI = &N(EVS_NpcAI_Conductor),
-    .onCreate = &N(EVS_NpcCreate_Conductor),
-    .onInteract = &N(EVS_NpcInteract_Conductor),
+    .doAI = &EVS_NpcAI_Conductor,
+    .onCreate = &EVS_NpcCreate_Conductor,
+    .onInteract = &EVS_NpcInteract_Conductor,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcData N(NpcData_Conductor) = {
+NpcData NpcData_Conductor = {
     .id = NPC_Conductor,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_Conductor),
+    .settings = &NpcSettings_Conductor,
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
-NpcData N(NpcData_SpyGuy)[] = {
+NpcData NpcData_SpyGuy[] = {
     {
         .id = NPC_SpyGuy,
         .pos = { -305.0f, 0.0f, 135.0f },
@@ -58,7 +58,7 @@ NpcData N(NpcData_SpyGuy)[] = {
                 .detectSize = { 250 },
             }
         },
-        .settings = &N(NpcSettings_SpyGuy_Wander),
+        .settings = &NpcSettings_SpyGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
         .animations = SPY_GUY_ANIMS,
@@ -69,7 +69,7 @@ NpcData N(NpcData_SpyGuy)[] = {
     SPY_GUY_ROCK_HITBOX(NPC_SpyGuy_Rock3),
 };
 
-NpcData N(NpcData_PyroGuy) = {
+NpcData NpcData_PyroGuy = {
     .id = NPC_PyroGuy,
     .pos = { 354.0f, 10.0f, -113.0f },
     .yaw = 270,
@@ -85,14 +85,14 @@ NpcData N(NpcData_PyroGuy) = {
             .detectSize = { 250 },
         }
     },
-    .settings = &N(NpcSettings_PyroGuy_Wander),
+    .settings = &NpcSettings_PyroGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
     .animations = PYRO_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_GrooveGuy) = {
+NpcData NpcData_GrooveGuy = {
     .id = NPC_GrooveGuy,
     .pos = { -150.0f, 10.0f, -125.0f },
     .yaw = 90,
@@ -108,17 +108,17 @@ NpcData N(NpcData_GrooveGuy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_GrooveGuy_Wander),
+    .settings = &NpcSettings_GrooveGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_B,
     .animations = GROOVE_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_SpyGuy), BTL_OMO_FORMATION_17, BTL_OMO_STAGE_06),
-    NPC_GROUP(N(NpcData_PyroGuy), BTL_OMO_FORMATION_1D, BTL_OMO_STAGE_06),
-    NPC_GROUP(N(NpcData_GrooveGuy), BTL_OMO_FORMATION_2B, BTL_OMO_STAGE_06),
-    NPC_GROUP(N(NpcData_Conductor)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_SpyGuy, BTL_OMO_FORMATION_17, BTL_OMO_STAGE_06),
+    NPC_GROUP(NpcData_PyroGuy, BTL_OMO_FORMATION_1D, BTL_OMO_STAGE_06),
+    NPC_GROUP(NpcData_GrooveGuy, BTL_OMO_FORMATION_2B, BTL_OMO_STAGE_06),
+    NPC_GROUP(NpcData_Conductor),
     {}
 };

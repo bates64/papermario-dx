@@ -3,7 +3,7 @@
 
 #include "world/common/util/PushObjectSupport.inc.c"
 
-API_CALLABLE(N(PreventFalling)) {
+API_CALLABLE(PreventFalling) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 x, y, z, hitDepth;
 
@@ -28,19 +28,19 @@ API_CALLABLE(N(PreventFalling)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(DoorModelsL)[] = { MODEL_o1001, -1 };
-s32 N(DoorModelsR)[] = { MODEL_o1002, -1 };
+s32 DoorModelsL[] = { MODEL_o1001, -1 };
+s32 DoorModelsR[] = { MODEL_o1002, -1 };
 
-EvtScript N(EVS_ExitDoors_pra_20_4) = EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_20", pra_20_ENTRY_4,
+EvtScript EVS_ExitDoors_pra_20_4 = EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_20", pra_20_ENTRY_4,
     COLLIDER_deilittssw, MODEL_o1085, DOOR_SWING_OUT);
 
-EvtScript N(EVS_ExitDoors_pra_37_0) = {
+EvtScript EVS_ExitDoors_pra_37_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Set(LVar0, pra_22_ENTRY_1)
     Set(LVar1, COLLIDER_deilittsse)
-    Set(LVar2, Ref(N(DoorModelsL)))
-    Set(LVar3, Ref(N(DoorModelsR)))
+    Set(LVar2, Ref(DoorModelsL))
+    Set(LVar3, Ref(DoorModelsR))
     Exec(BaseExitDoor)
     Wait(17)
     Call(GotoMap, Ref("pra_37"), pra_37_ENTRY_0)
@@ -49,18 +49,18 @@ EvtScript N(EVS_ExitDoors_pra_37_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_20_4)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_37_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsse, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoors_pra_20_4), TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_37_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsse, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -70,23 +70,23 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
         CaseEq(pra_22_ENTRY_1)
-            Set(LVar2, Ref(N(DoorModelsL)))
-            Set(LVar3, Ref(N(DoorModelsR)))
+            Set(LVar2, Ref(DoorModelsL))
+            Set(LVar3, Ref(DoorModelsR))
             ExecWait(BaseEnterDoor)
     EndSwitch
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     Return
     End
 };
 
-EvtScript N(EVS_PushRightStatue_Impl) = {
+EvtScript EVS_PushRightStatue_Impl = {
     Loop(30)
         Call(GetPartnerInUse, LVarA)
         IfNe(LVarA, PARTNER_NONE)
             Set(LVar8, -1)
             Return
         EndIf
-        Call(N(IsPlayerPushingCollider), LVar9)
+        Call(IsPlayerPushingCollider, LVar9)
         IfEq(LVar0, 0)
             Set(LVar8, -1)
             Return
@@ -121,7 +121,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(PreventFalling))
+            Call(PreventFalling)
             IfEq(LVarA, true)
                 BreakLoop
             EndIf
@@ -165,7 +165,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
     End
 };
 
-EvtScript N(EVS_PushStatue) = {
+EvtScript EVS_PushStatue = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLe(LVar0, 337)
         Set(LVar6, 0)
@@ -180,7 +180,7 @@ EvtScript N(EVS_PushStatue) = {
         Return
     EndIf
     Set(LVar9, COLLIDER_o1064)
-    ExecWait(N(EVS_PushRightStatue_Impl))
+    ExecWait(EVS_PushRightStatue_Impl)
     IfNe(LVar8, -1)
         Set(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)
         Set(GB_PRA_TwinStatueState, LVar8)
@@ -193,14 +193,14 @@ EvtScript N(EVS_PushStatue) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMusic)
     IfLt(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)
-        BindTrigger(Ref(N(EVS_PushStatue)), TRIGGER_WALL_PUSH, COLLIDER_o1064, 1, 0)
+        BindTrigger(Ref(EVS_PushStatue), TRIGGER_WALL_PUSH, COLLIDER_o1064, 1, 0)
         Set(LVar0, 0)
     Else
         Switch(GB_PRA_TwinStatueState)
@@ -219,7 +219,7 @@ EvtScript N(EVS_Main) = {
     Call(TranslateModel, MODEL_o1008, LVar0, 0, 0)
     Call(TranslateModel, MODEL_o1009, LVar0, 0, 0)
     Call(UpdateColliderTransform, COLLIDER_o1064)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

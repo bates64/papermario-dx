@@ -67,7 +67,6 @@ enum N(AnimState) {
     ANIM_DOING_BLOCKED  = 11,
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
 
 s32 N(BowserDefense)[] = {
@@ -446,7 +445,7 @@ EvtScript N(EVS_AnimBowser_HurtHead) = {
 
 EvtScript N(EVS_AnimBowser_DeathMain) = {
     UseArray(FakeBowserAnimState)
-    Call(N(StartRumbleWithParams), 256, 30)
+    Call(StartRumbleWithParams, 256, 30)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 20, Float(3.0))
@@ -477,38 +476,38 @@ EvtScript N(EVS_AnimBowser_DeathMain) = {
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
     EndThread
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Wait(20)
     Call(PlaySoundAtModel, MODEL_u1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.5))
     EndThread
-    Call(N(StartRumbleWithParams), 150, 20)
+    Call(StartRumbleWithParams, 150, 20)
     Wait(30)
     Call(PlaySoundAtModel, MODEL_p1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.0))
     EndThread
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Wait(30)
     Call(PlaySoundAtModel, MODEL_d1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
     EndThread
-    Call(N(StartRumbleWithParams), 70, 20)
+    Call(StartRumbleWithParams, 70, 20)
     Wait(20)
     Call(PlaySoundAtModel, MODEL_s1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(1.0))
     EndThread
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Wait(20)
     Call(PlaySoundAtModel, MODEL_km1, SOUND_DISTANT_THUD, SOUND_SPACE_DEFAULT)
-    Call(N(StartRumbleWithParams), 60, 20)
+    Call(StartRumbleWithParams, 60, 20)
     Thread
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.6))
@@ -518,7 +517,7 @@ EvtScript N(EVS_AnimBowser_DeathMain) = {
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.3))
     EndThread
-    Call(N(StartRumbleWithParams), 30, 20)
+    Call(StartRumbleWithParams, 30, 20)
     Return
     End
 };
@@ -1470,7 +1469,7 @@ EvtScript N(EVS_FakeBowser_TakeTurn) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Thread
         Loop(4)
-            Call(N(StartRumbleWithParams), 256, 3)
+            Call(StartRumbleWithParams, 256, 3)
             Wait(5)
         EndLoop
     EndThread
@@ -1500,7 +1499,7 @@ EvtScript N(EVS_FakeBowser_TakeTurn) = {
             Wait(8)
             Thread
                 Loop(4)
-                    Call(N(StartRumbleWithParams), 256, 5)
+                    Call(StartRumbleWithParams, 256, 5)
                     Wait(8)
                 EndLoop
             EndThread
@@ -1525,7 +1524,7 @@ EvtScript N(EVS_FakeBowser_TakeTurn) = {
     Wait(18)
     Thread
         Loop(4)
-            Call(N(StartRumbleWithParams), 256, 5)
+            Call(StartRumbleWithParams, 256, 5)
             Wait(8)
         EndLoop
     EndThread

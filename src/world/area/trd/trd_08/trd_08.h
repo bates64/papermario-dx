@@ -23,5 +23,3 @@ enum {
     NPC_FireBar_2C              = 7,
     NPC_FireBar_2D              = 8,
 };
-
-#define NAMESPACE trd_08

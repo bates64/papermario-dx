@@ -1,7 +1,7 @@
 #include "isk_04.h"
 #include "world/partners.h"
 
-EvtScript N(EVS_ProvideDemoInputs) = {
+EvtScript EVS_ProvideDemoInputs = {
     Call(EnableWorldStatusBar, false)
     Call(DemoSetButtons, BUTTON_C_DOWN)
     Wait(5)
@@ -87,7 +87,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     End
 };
 
-EvtScript N(EVS_MonitorDemoState) = {
+EvtScript EVS_MonitorDemoState = {
     Wait(10)
     Loop(0)
         Call(GetDemoState, LVar0)
@@ -106,18 +106,18 @@ EvtScript N(EVS_MonitorDemoState) = {
     End
 };
 
-s32 N(DemoInitState) = 0;
+s32 DemoInitState = 0;
 
-API_CALLABLE(N(SetupDemoScene)) {
+API_CALLABLE(SetupDemoScene) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    switch (N(DemoInitState)) {
+    switch (DemoInitState) {
         case 0:
-            N(DemoInitState) = 1;
+            DemoInitState = 1;
             return ApiStatus_BLOCK;
         case 1:
         case 2:
-            N(DemoInitState)++;
+            DemoInitState++;
             return ApiStatus_BLOCK;
         case 3:
             gPartnerNpc->pos.x = playerStatus->pos.x - 30.0f;
@@ -134,7 +134,7 @@ API_CALLABLE(N(SetupDemoScene)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_SetupDemo) = {
+EvtScript EVS_SetupDemo = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, 530, 25, -50)
     Call(SetCamPitch, CAM_DEFAULT, 12, -3)
@@ -151,10 +151,10 @@ EvtScript N(EVS_SetupDemo) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(N(SetupDemoScene))
+    Call(SetupDemoScene)
     Set(GF_DemoSceneDone, false)
-    Exec(N(EVS_MonitorDemoState))
-    Exec(N(EVS_ProvideDemoInputs))
+    Exec(EVS_MonitorDemoState)
+    Exec(EVS_ProvideDemoInputs)
     Return
     End
 };

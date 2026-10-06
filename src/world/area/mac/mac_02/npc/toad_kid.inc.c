@@ -1,6 +1,6 @@
 #include "../mac_02.h"
 
-EvtScript N(EVS_NpcInteract_ToadKid) = {
+EvtScript EVS_NpcInteract_ToadKid = {
     Switch(GB_StoryProgress)
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -28,11 +28,11 @@ EvtScript N(EVS_NpcInteract_ToadKid) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ToadKid) = {
+EvtScript EVS_NpcInit_ToadKid = {
     IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
         Call(RemoveNpc, NPC_SELF)
     Else
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadKid)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadKid))
     EndIf
     Return
     End

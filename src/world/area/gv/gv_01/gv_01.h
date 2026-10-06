@@ -11,6 +11,4 @@
 #include "mapfs/gv_01_shape.h"
 #include "mapfs/gv_01_hit.h"
 
-#define NAMESPACE gv_01
-
-extern EvtScript N(EVS_Main);
+extern EvtScript EVS_Main;

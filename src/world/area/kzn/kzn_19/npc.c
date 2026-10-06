@@ -9,13 +9,15 @@
 
 #include "world/common/lava_piranha/part1.inc.c"
 
-INCLUDE_IMG("world/area/lava_piranha/vine.png", kzn_19_lava_piranha_vine_img);
-INCLUDE_PAL("world/area/lava_piranha/vine.pal", kzn_19_lava_piranha_vine_pal);
+INCLUDE_IMG("world/area/lava_piranha/vine.png", lava_piranha_vine_img);
+INCLUDE_PAL("world/area/lava_piranha/vine.pal", lava_piranha_vine_pal);
 #include "world/area/lava_piranha/vine.gfx.inc.c"
 
+#define PIRANHA_VINE_GFX lava_piranha_vine_gfx
 #include "world/common/lava_piranha/part2.inc.c"
+#undef PIRANHA_VINE_GFX
 
-LetterDelivery N(LetterDelivery_Kolorado) = {
+LetterDelivery LetterDelivery_Kolorado = {
     .recipientID = NPC_Kolorado,
     .recipientTalk = ANIM_Kolorado_Talk,
     .recipientIdle = ANIM_Kolorado_Idle,
@@ -27,7 +29,7 @@ LetterDelivery N(LetterDelivery_Kolorado) = {
     .reward = ITEM_STAR_PIECE,
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
+EvtScript EVS_NpcIdle_Kolorado = {
     IfEq(GF_KZN19_KoloradoDeadEnd, false)
         Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -55,7 +57,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_Kolorado_Escape) = {
+EvtScript EVS_Kolorado_Escape = {
     Label(0)
         IfEq(MV_BossDefeated, false)
             Wait(1)
@@ -83,31 +85,31 @@ EvtScript N(EVS_Kolorado_Escape) = {
     Call(SetNpcAux, NPC_LavaPiranhaHead, 0)
     Wait(10 * DT)
     Call(FadeOutMusic, 0, 1500)
-    Exec(N(EVS_TrySpawningStarCard))
+    Exec(EVS_TrySpawningStarCard)
     Wait(30)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado) = {
+EvtScript EVS_NpcInteract_Kolorado = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_TalkSad, ANIM_Kolorado_IdleSad, 0, MSG_CH5_0101)
     Call(SetSelfVar, 0, 1)
-    Set(LVar0, Ref(N(LetterDelivery_Kolorado)))
+    Set(LVar0, Ref(LetterDelivery_Kolorado))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
+EvtScript EVS_NpcInit_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_LAVA_PIRANHA)
         Call(GetEntryID, LVar0)
         Switch(LVar0)
             CaseEq(kzn_19_ENTRY_0)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
-                Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
+                Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
             CaseEq(kzn_19_ENTRY_1)
-                Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Kolorado_Escape)))
+                Call(BindNpcIdle, NPC_SELF, Ref(EVS_Kolorado_Escape))
         EndSwitch
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -116,7 +118,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-Vec3f N(FlightPath)[] = {
+Vec3f FlightPath[] = {
     {  250.0,    40.0,  -35.0 },
     {  410.0,    30.0,    0.0 },
     {  460.0,    40.0,  -30.0 },
@@ -124,7 +126,7 @@ Vec3f N(FlightPath)[] = {
     {  540.0,    60.0, -115.0 },
 };
 
-EvtScript N(EVS_Misstar_Escape) = {
+EvtScript EVS_Misstar_Escape = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerPos, 185, 25, -35)
     Call(SetNpcPos, NPC_PARTNER, 155, 25, -35)
@@ -159,7 +161,7 @@ EvtScript N(EVS_Misstar_Escape) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.8))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(InterpNpcYaw, NPC_Misstar, 90, 0)
-    Call(LoadPath, 45, Ref(N(FlightPath)), ARRAY_COUNT(N(FlightPath)), EASING_LINEAR)
+    Call(LoadPath, 45, Ref(FlightPath), ARRAY_COUNT(FlightPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Misstar, LVar1, LVar2, LVar3)
@@ -179,75 +181,75 @@ EvtScript N(EVS_Misstar_Escape) = {
 
 #include "world/common/lava_piranha/LoadAnimationFromTable.inc.c"
 
-EvtScript N(EVS_PlayVinesAnim_Emerge) = {
+EvtScript EVS_PlayVinesAnim_Emerge = {
     Thread
-        Call(N(LoadAnimationFromTable), VINE_0, 15)
+        Call(LoadAnimationFromTable, VINE_0, 15)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
         Call(SetAnimatedModelRootPosition, VINE_0, 220, 20, -40)
-        Call(N(LoadAnimationFromTable), VINE_3, 36)
+        Call(LoadAnimationFromTable, VINE_3, 36)
         Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
         Call(SetAnimatedModelRootPosition, VINE_3, 220, 20, -40)
         Wait(59)
-        Call(N(LoadAnimationFromTable), VINE_0, 0)
+        Call(LoadAnimationFromTable, VINE_0, 0)
         Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
-        Call(N(LoadAnimationFromTable), VINE_3, 34)
+        Call(LoadAnimationFromTable, VINE_3, 34)
         Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
     EndThread
     Wait(5)
     Thread
-        Call(N(LoadAnimationFromTable), VINE_1, 32)
+        Call(LoadAnimationFromTable, VINE_1, 32)
         Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
         Call(SetAnimatedModelRootPosition, VINE_1, 220, 20, -40)
         Wait(59)
-        Call(N(LoadAnimationFromTable), VINE_1, 31)
+        Call(LoadAnimationFromTable, VINE_1, 31)
         Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
     EndThread
     Wait(7)
-    Call(N(LoadAnimationFromTable), VINE_2, 32)
+    Call(LoadAnimationFromTable, VINE_2, 32)
     Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
     Call(SetAnimatedModelRootPosition, VINE_2, 270, 34, -20)
     Wait(62)
-    Call(N(LoadAnimationFromTable), VINE_2, 31)
+    Call(LoadAnimationFromTable, VINE_2, 31)
     Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
     Return
     End
 };
 
-EvtScript N(EVS_PlayVinesAnim_Idle) = {
-    Call(N(LoadAnimationFromTable), VINE_0, 0)
+EvtScript EVS_PlayVinesAnim_Idle = {
+    Call(LoadAnimationFromTable, VINE_0, 0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
-    Call(N(LoadAnimationFromTable), VINE_1, 31)
+    Call(LoadAnimationFromTable, VINE_1, 31)
     Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
-    Call(N(LoadAnimationFromTable), VINE_3, 34)
+    Call(LoadAnimationFromTable, VINE_3, 34)
     Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
     Wait(10)
-    Call(N(LoadAnimationFromTable), VINE_2, 31)
+    Call(LoadAnimationFromTable, VINE_2, 31)
     Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
     Return
     End
 };
 
-EvtScript N(EVS_PlayVinesAnim_Talk) = {
-    Call(N(LoadAnimationFromTable), VINE_0, 17)
+EvtScript EVS_PlayVinesAnim_Talk = {
+    Call(LoadAnimationFromTable, VINE_0, 17)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Return
     End
 };
 
-EvtScript N(EVS_PlayVinesAnim_Defeat) = {
-    Call(N(LoadAnimationFromTable), VINE_0, 16)
+EvtScript EVS_PlayVinesAnim_Defeat = {
+    Call(LoadAnimationFromTable, VINE_0, 16)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
-    Call(N(LoadAnimationFromTable), VINE_1, 33)
+    Call(LoadAnimationFromTable, VINE_1, 33)
     Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
-    Call(N(LoadAnimationFromTable), VINE_2, 33)
+    Call(LoadAnimationFromTable, VINE_2, 33)
     Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
-    Call(N(LoadAnimationFromTable), VINE_3, 35)
+    Call(LoadAnimationFromTable, VINE_3, 35)
     Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_LavaPiranha) = {
+EvtScript EVS_NpcIdle_LavaPiranha = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
@@ -257,27 +259,27 @@ EvtScript N(EVS_NpcIdle_LavaPiranha) = {
     EndLoop
     Call(DisablePlayerInput, true)
     Call(SetMusic, 0, SONG_LAVA_PIRANHA_THEME, 0, VOL_LEVEL_FULL)
-    Call(LoadAnimatedModel, VINE_0, Ref(N(AnimModel_MainHeadVine)))
-    Call(N(LoadAnimationFromTable), VINE_0, 0)
+    Call(LoadAnimatedModel, VINE_0, Ref(AnimModel_MainHeadVine))
+    Call(LoadAnimationFromTable, VINE_0, 0)
     Call(PlayModelAnimation, VINE_0, VINE_0_BASE)
     Call(SetAnimatedModelRootPosition, VINE_0, 220, -100, -40)
     Call(SetAnimatorFlags, VINE_0, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
-    Call(LoadAnimatedModel, VINE_1, Ref(N(AnimModel_SideHeadVine)))
-    Call(N(LoadAnimationFromTable), VINE_1, 31)
+    Call(LoadAnimatedModel, VINE_1, Ref(AnimModel_SideHeadVine))
+    Call(LoadAnimationFromTable, VINE_1, 31)
     Call(PlayModelAnimation, VINE_1, VINE_1_BASE)
     Call(SetAnimatedModelRootPosition, VINE_1, 220, -100, -40)
     Call(SetAnimatorFlags, VINE_1, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
-    Call(LoadAnimatedModel, VINE_2, Ref(N(AnimModel_SideHeadVine)))
-    Call(N(LoadAnimationFromTable), VINE_2, 31)
+    Call(LoadAnimatedModel, VINE_2, Ref(AnimModel_SideHeadVine))
+    Call(LoadAnimationFromTable, VINE_2, 31)
     Call(PlayModelAnimation, VINE_2, VINE_2_BASE)
     Call(SetAnimatedModelRootPosition, VINE_2, 270, -100, -20)
     Call(SetAnimatorFlags, VINE_2, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
-    Call(LoadAnimatedModel, VINE_3, Ref(N(AnimModel_ExtraVine)))
-    Call(N(LoadAnimationFromTable), VINE_3, 34)
+    Call(LoadAnimatedModel, VINE_3, Ref(AnimModel_ExtraVine))
+    Call(LoadAnimationFromTable, VINE_3, 34)
     Call(PlayModelAnimation, VINE_3, VINE_3_BASE)
     Call(SetAnimatedModelRootPosition, VINE_3, 220, -100, -40)
     Call(SetAnimatorFlags, VINE_3, MODEL_ANIMATOR_FLAG_HIDDEN, 1)
-    Call(N(CreateVineRenderer))
+    Call(CreateVineRenderer)
     Call(SetSelfVar, 1, 1)
     Call(InterpPlayerYaw, 90, 0)
     Thread
@@ -305,7 +307,7 @@ EvtScript N(EVS_NpcIdle_LavaPiranha) = {
         Call(InterpPlayerYaw, 90, 0)
     EndThread
     Call(PlaySoundAt, SOUND_LAVA_PIRANHA_EMERGE, SOUND_SPACE_DEFAULT, 330, 25, -50)
-    Exec(N(EVS_PlayVinesAnim_Emerge))
+    Exec(EVS_PlayVinesAnim_Emerge)
     Wait(59)
     Thread
         Call(MakeLerp, 40, 0, 80, EASING_QUADRATIC_OUT)
@@ -326,21 +328,21 @@ EvtScript N(EVS_NpcIdle_LavaPiranha) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Exec(N(EVS_PlayVinesAnim_Talk))
+    Exec(EVS_PlayVinesAnim_Talk)
     Call(SpeakToPlayer, NPC_SELF, ANIM_LavaPiranha_Talk, ANIM_LavaPiranha_Idle, 768, -30, 30, MSG_CH5_0102)
-    Exec(N(EVS_PlayVinesAnim_Idle))
+    Exec(EVS_PlayVinesAnim_Idle)
     Wait(10 * DT)
     Call(EndSpeech, NPC_SELF, ANIM_LavaPiranha_Talk, ANIM_LavaPiranha_Idle, 256, -30, 30)
-    Exec(N(EVS_PlayVinesAnim_Talk))
+    Exec(EVS_PlayVinesAnim_Talk)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_LavaPiranha_Talk, ANIM_LavaPiranha_Idle, 768, -30, 30, MSG_CH5_0103)
-    Exec(N(EVS_PlayVinesAnim_Idle))
+    Exec(EVS_PlayVinesAnim_Idle)
     Wait(10 * DT)
     Call(EndSpeech, NPC_SELF, ANIM_LavaPiranha_Talk, ANIM_LavaPiranha_Idle, 768, -30, 30)
-    Exec(N(EVS_PlayVinesAnim_Talk))
+    Exec(EVS_PlayVinesAnim_Talk)
     Wait(10 * DT)
     Call(EndSpeech, NPC_SELF, ANIM_LavaPiranha_Talk, ANIM_LavaPiranha_Idle, 768, -30, 30)
-    Exec(N(EVS_PlayVinesAnim_Idle))
+    Exec(EVS_PlayVinesAnim_Idle)
     Wait(10 * DT)
     Call(EndSpeech, NPC_SELF, ANIM_LavaPiranha_Talk, ANIM_LavaPiranha_Idle, 768, -30, 30)
     ChildThread
@@ -364,7 +366,7 @@ EvtScript N(EVS_NpcIdle_LavaPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_LavaPiranha) = {
+EvtScript EVS_NpcAux_LavaPiranha = {
     Call(GetSelfVar, 0, LVar0)
     UseArray(LVar0)
     Loop(0)
@@ -379,167 +381,167 @@ EvtScript N(EVS_NpcAux_LavaPiranha) = {
         Call(SetNpcPos, NPC_LavaPiranhaHead, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 10, LVar0, LVar1, LVar2)
         Call(SetNpcRotation, NPC_LavaPiranhaHead, LVar0, 0, LVar2)
-        Call(N(MarkVineInterpolationDirty))
+        Call(MarkVineInterpolationDirty)
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 10, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 0, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 0, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 10, LVar0, LVar1, LVar2)
         Add(LVar2, 90)
-        Call(N(SetVineBoneRot), VINE_0, 0, LVar0, 0, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 0, 1, 1, 1)
+        Call(SetVineBoneRot, VINE_0, 0, LVar0, 0, LVar2)
+        Call(SetVineBoneScale, VINE_0, 0, 1, 1, 1)
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 1, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 1, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 1, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 1, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 9, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 2, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 9, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 2, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 2, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 3, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 3, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 3, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 8, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 4, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 8, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 4, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 4, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 5, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 5, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 5, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 5, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 5, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 6, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 6, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 6, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 6, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 6, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 7, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 7, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 7, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 7, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 7, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_0, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_0, 8, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_0, 8, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_0, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_0, 8, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_0, 8, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_0, 8, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_0, 8, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 8, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_LavaBud_01, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 8, LVar0, LVar1, LVar2)
         Call(SetNpcRotation, NPC_LavaBud_01, LVar0, 0, LVar2)
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 8, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_1, 0, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 0, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 8, LVar0, LVar1, LVar2)
         Add(LVar2, 90)
-        Call(N(SetVineBoneRot), VINE_1, 0, LVar0, 0, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 0, 1, 1, 1)
+        Call(SetVineBoneRot, VINE_1, 0, LVar0, 0, LVar2)
+        Call(SetVineBoneScale, VINE_1, 0, 1, 1, 1)
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 4, LVar0, LVar1, LVar2)
         Sub(LVar2, 2)
-        Call(N(SetVineBonePos), VINE_1, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 1, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_1, 1, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 1, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_1, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_1, 1, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_1, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 2, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_1, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 2, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_1, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_1, 2, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_1, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 3, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_1, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 3, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_1, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_1, 3, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_1, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 4, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_1, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 4, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_1, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_1, 4, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_1, 5, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 5, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_1, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 5, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_1, 5, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_1, 5, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_1, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_1, 6, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_1, 6, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_1, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_1, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_1, 6, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_1, 6, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_1, 6, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 8, LVar0, LVar1, LVar2)
         Call(SetNpcPos, NPC_LavaBud_02, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 8, LVar0, LVar1, LVar2)
         Call(SetNpcRotation, NPC_LavaBud_02, LVar0, 0, LVar2)
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 8, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_2, 0, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 0, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 8, LVar0, LVar1, LVar2)
         Add(LVar2, 90)
-        Call(N(SetVineBoneRot), VINE_2, 0, LVar0, 0, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 0, 1, 1, 1)
+        Call(SetVineBoneRot, VINE_2, 0, LVar0, 0, LVar2)
+        Call(SetVineBoneScale, VINE_2, 0, 1, 1, 1)
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 4, LVar0, LVar1, LVar2)
         Sub(LVar2, 2)
-        Call(N(SetVineBonePos), VINE_2, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 1, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_2, 1, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 1, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_2, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_2, 1, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_2, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 2, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 7, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_2, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 2, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_2, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_2, 2, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_2, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 3, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_2, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 3, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_2, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_2, 3, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_2, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 4, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_2, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 4, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_2, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_2, 4, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_2, 5, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 5, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_2, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 5, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_2, 5, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_2, 5, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_2, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_2, 6, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_2, 6, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_2, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_2, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_2, 6, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_2, 6, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_2, 6, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_3, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_3, 0, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_3, 0, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_3, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_3, 0, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_3, 0, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_3, 0, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_3, 0, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_3, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_3, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_3, 1, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_3, 6, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_3, 1, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_3, 1, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_3, 1, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_3, 1, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_3, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_3, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_3, 2, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_3, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_3, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_3, 2, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_3, 2, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_3, 2, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_3, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_3, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_3, 3, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_3, 5, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_3, 3, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_3, 3, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_3, 3, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_3, 3, Float(0.714), Float(0.714), Float(1.0))
         Call(GetAnimatedPositionByTreeIndex, VINE_3, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBonePos), VINE_3, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBonePos, VINE_3, 4, LVar0, LVar1, LVar2)
         Call(GetAnimatedRotationByTreeIndex, VINE_3, 2, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneRot), VINE_3, 4, LVar0, LVar1, LVar2)
-        Call(N(SetVineBoneScale), VINE_3, 4, Float(0.714), Float(0.714), Float(1.0))
+        Call(SetVineBoneRot, VINE_3, 4, LVar0, LVar1, LVar2)
+        Call(SetVineBoneScale, VINE_3, 4, Float(0.714), Float(0.714), Float(1.0))
         Wait(1)
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_LavaPiranha) = {
+EvtScript EVS_NpcDefeat_LavaPiranha = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -560,9 +562,9 @@ EvtScript N(EVS_NpcDefeat_LavaPiranha) = {
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ato, COLLIDER_FLAGS_UPPER_MASK)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mae, COLLIDER_FLAGS_UPPER_MASK)
             Call(PlaySoundAt, SOUND_LAVA_PIRANHA_DEFEAT, SOUND_SPACE_DEFAULT, 330, 25, -50)
-            Exec(N(EVS_PlayVinesAnim_Defeat))
+            Exec(EVS_PlayVinesAnim_Defeat)
             Wait(1)
-            Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_LavaPiranha)))
+            Call(SetNpcAux, NPC_SELF, Ref(EVS_NpcAux_LavaPiranha))
             Set(MV_BossDefeated, true)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -571,7 +573,7 @@ EvtScript N(EVS_NpcDefeat_LavaPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_LavaPiranha) = {
+EvtScript EVS_NpcInit_LavaPiranha = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kzn_19_ENTRY_1)
         IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_LAVA_PIRANHA)
@@ -582,9 +584,9 @@ EvtScript N(EVS_NpcInit_LavaPiranha) = {
             Call(SetSelfVar, 0, LVar0)
             UseArray(LVar0)
             Call(SetSelfVar, 1, 0)
-            Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_LavaPiranha)))
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_LavaPiranha)))
-            Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_LavaPiranha)))
+            Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_LavaPiranha))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_LavaPiranha))
+            Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_LavaPiranha))
             Return
         EndIf
     EndIf
@@ -594,7 +596,7 @@ EvtScript N(EVS_NpcInit_LavaPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_LavaBud) = {
+EvtScript EVS_NpcDefeat_LavaBud = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -605,9 +607,9 @@ EvtScript N(EVS_NpcDefeat_LavaBud) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_LavaBud) = {
+EvtScript EVS_NpcInit_LavaBud = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_LAVA_PIRANHA)
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_LavaBud)))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_LavaBud))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -615,86 +617,86 @@ EvtScript N(EVS_NpcInit_LavaBud) = {
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { 380.0f, 250.0f, -330.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Misstar) = {
+NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .settings = &N(NpcSettings_StarSpirit),
+    .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
     .tattle = MSG_NpcTattle_Misstar,
 };
 
-AnimID N(LimitAnims_LavaPiranha)[] = {
+AnimID LimitAnims_LavaPiranha[] = {
     ANIM_LavaPiranha_Idle,
     ANIM_LavaPiranha_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_LavaBud)[] = {
+AnimID LimitAnims_LavaBud[] = {
     ANIM_LavaBud_Idle,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_LavaPiranha)[] = {
+NpcData NpcData_LavaPiranha[] = {
     {
         .id = NPC_LavaPiranhaHead,
         .pos = { 400.0f, 25.0f, -30.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_LavaPiranha),
-        .settings = &N(NpcSettings_LavaPiranhaHead),
+        .init = &EVS_NpcInit_LavaPiranha,
+        .settings = &NpcSettings_LavaPiranhaHead,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_HEAD_ANIMS,
-        .limitAnimations = N(LimitAnims_LavaPiranha),
+        .limitAnimations = LimitAnims_LavaPiranha,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     {
         .id = NPC_LavaBud_01,
         .pos = { 400.0f, 25.0f, -30.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_LavaBud),
-        .settings = &N(NpcSettings_LavaPiranhaHead),
+        .init = &EVS_NpcInit_LavaBud,
+        .settings = &NpcSettings_LavaPiranhaHead,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .limitAnimations = N(LimitAnims_LavaBud),
+        .limitAnimations = LimitAnims_LavaBud,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     {
         .id = NPC_LavaBud_02,
         .pos = { 400.0f, 25.0f, -30.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_LavaBud),
-        .settings = &N(NpcSettings_LavaPiranhaHead),
+        .init = &EVS_NpcInit_LavaBud,
+        .settings = &NpcSettings_LavaPiranhaHead,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .limitAnimations = N(LimitAnims_LavaBud),
+        .limitAnimations = LimitAnims_LavaBud,
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
 };
 
-NpcGroupList N(BossNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_LavaPiranha), BTL_KZN2_FORMATION_00, BTL_KZN2_STAGE_06),
+NpcGroupList BossNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_LavaPiranha, BTL_KZN2_FORMATION_00, BTL_KZN2_STAGE_06),
     {}
 };
 
-NpcGroupList N(EscapeNPCs) = {
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList EscapeNPCs = {
+    NPC_GROUP(NpcData_Misstar),
     {}
 };

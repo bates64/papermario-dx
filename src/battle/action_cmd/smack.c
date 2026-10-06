@@ -1,8 +1,6 @@
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_smack
-
 extern s32 actionCmdTableSmack[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -17,18 +15,18 @@ enum {
 #define FAN_METER_FILL_TICK 850
 #define FAIL_METER_FILL_TICK 1100
 
-s32 N(DrainRateTable)[] = { 0, 25, 50, 75, 75 };
+s32 DrainRateTable[] = { 0, 25, 50, 75, 75 };
 
-#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(N(DrainRateTable), pct)
+#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(DrainRateTable, pct)
 
 // threshold meter values for additional hits
 // these correspond to values provided via SetupMashMeter
-s32 N(BasicHitThresholds)[] = { 40, 70, 99, 200 };
-s32 N(SuperHitThresholds)[] = { 35, 60, 80, 99, 200 };
-s32 N(UltraHitThresholds)[] = { 35, 35, 60, 80, 99, 200 };
-s32 N(FanHitThresholds)[] = { 35, 60, 80, 99, 200 };
+s32 BasicHitThresholds[] = { 40, 70, 99, 200 };
+s32 SuperHitThresholds[] = { 35, 60, 80, 99, 200 };
+s32 UltraHitThresholds[] = { 35, 35, 60, 80, 99, 200 };
+s32 FanHitThresholds[] = { 35, 60, 80, 99, 200 };
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -75,7 +73,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -107,7 +105,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partnerActor = battleStatus->partnerActor;
@@ -213,45 +211,45 @@ void N(update)(void) {
 
             switch (partnerActor->actorBlueprint->level) {
                 case PARTNER_RANK_NORMAL:
-                    if (battleStatus->actionProgress >= N(BasicHitThresholds)[battleStatus->resultTier]) {
+                    if (battleStatus->actionProgress >= BasicHitThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
 
                     if (battleStatus->resultTier > 0) {
-                        if (battleStatus->actionProgress < N(BasicHitThresholds)[battleStatus->resultTier - 1]) {
+                        if (battleStatus->actionProgress < BasicHitThresholds[battleStatus->resultTier - 1]) {
                             battleStatus->resultTier--;
                         }
                     }
                     break;
                 case PARTNER_RANK_SUPER:
-                    if (battleStatus->actionProgress >= N(SuperHitThresholds)[battleStatus->resultTier]) {
+                    if (battleStatus->actionProgress >= SuperHitThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
 
                     if (battleStatus->resultTier > 0) {
-                        if (battleStatus->actionProgress < N(SuperHitThresholds)[battleStatus->resultTier - 1]) {
+                        if (battleStatus->actionProgress < SuperHitThresholds[battleStatus->resultTier - 1]) {
                             battleStatus->resultTier--;
                         }
                     }
                     break;
                 case PARTNER_RANK_ULTRA:
                     if (acs->variation == ACV_SMACK_HAND) {
-                        if (battleStatus->actionProgress >= N(UltraHitThresholds)[battleStatus->resultTier]) {
+                        if (battleStatus->actionProgress >= UltraHitThresholds[battleStatus->resultTier]) {
                             battleStatus->resultTier++;
                         }
 
                         if (battleStatus->resultTier > 0) {
-                            if (battleStatus->actionProgress < N(UltraHitThresholds)[battleStatus->resultTier - 1]) {
+                            if (battleStatus->actionProgress < UltraHitThresholds[battleStatus->resultTier - 1]) {
                                 battleStatus->resultTier--;
                             }
                         }
                     } else {
-                        if (battleStatus->actionProgress >= N(FanHitThresholds)[battleStatus->resultTier]) {
+                        if (battleStatus->actionProgress >= FanHitThresholds[battleStatus->resultTier]) {
                             battleStatus->resultTier++;
                         }
 
                         if (battleStatus->resultTier > 0) {
-                            if (battleStatus->actionProgress < N(FanHitThresholds)[battleStatus->resultTier - 1]) {
+                            if (battleStatus->actionProgress < FanHitThresholds[battleStatus->resultTier - 1]) {
                                 battleStatus->resultTier--;
                             }
                         }

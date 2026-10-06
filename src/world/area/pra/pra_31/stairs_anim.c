@@ -1,6 +1,6 @@
 #include "pra_31.h"
 
-AnimScript N(AS_Stairs_InitializeBefore) = {
+AnimScript AS_Stairs_InitializeBefore = {
     as_DisableMirroring
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)
@@ -113,7 +113,7 @@ AnimScript N(AS_Stairs_InitializeBefore) = {
     as_EndLoop
 };
 
-AnimScript N(AS_Stairs_Unfold) = {
+AnimScript AS_Stairs_Unfold = {
     as_DisableMirroring
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)
@@ -543,7 +543,7 @@ AnimScript N(AS_Stairs_Unfold) = {
     as_End
 };
 
-AnimScript N(AS_Stairs_InitializeAfter) = {
+AnimScript AS_Stairs_InitializeAfter = {
     as_DisableMirroring
     as_SetRotation(1, 0.0, 0.0, 0.0)
     as_SetPos(1, 0, 0, 0)

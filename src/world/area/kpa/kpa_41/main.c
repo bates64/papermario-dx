@@ -1,8 +1,8 @@
 #include "kpa_41.h"
 
-EvtScript N(EVS_ExitWalk_LowerLeft) = EVT_EXIT_WALK(60, kpa_41_ENTRY_0, "kpa_40", kpa_40_ENTRY_1);
+EvtScript EVS_ExitWalk_LowerLeft = EVT_EXIT_WALK(60, kpa_41_ENTRY_0, "kpa_40", kpa_40_ENTRY_1);
 
-EvtScript N(EVS_ExitWalk_LowerRight) = {
+EvtScript EVS_ExitWalk_LowerRight = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_41_ENTRY_1)
     Exec(ExitWalk)
@@ -24,9 +24,9 @@ EvtScript N(EVS_ExitWalk_LowerRight) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_UpperLeft) = EVT_EXIT_WALK(60, kpa_41_ENTRY_3, "kpa_40", kpa_40_ENTRY_2);
+EvtScript EVS_ExitWalk_UpperLeft = EVT_EXIT_WALK(60, kpa_41_ENTRY_3, "kpa_40", kpa_40_ENTRY_2);
 
-EvtScript N(EVS_ExitWalk_UpperRight) = {
+EvtScript EVS_ExitWalk_UpperRight = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_41_ENTRY_2)
     Exec(ExitWalk)
@@ -49,35 +49,35 @@ EvtScript N(EVS_ExitWalk_UpperRight) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_LowerLeft)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_LowerRight)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_UpperLeft)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_UpperRight)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_LowerLeft), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_LowerRight), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_UpperLeft), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_UpperRight), TRIGGER_FLOOR_ABOVE, COLLIDER_deili4, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kpa_41_ENTRY_2)
             Set(AB_KPA_MazeProgress, 5)
         CaseDefault
     EndSwitch
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupMusic)
     Return
     End
 };

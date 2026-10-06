@@ -1,10 +1,10 @@
 #include "trd_04.h"
 #include "entity.h"
 
-extern EvtScript N(EVS_ExitDoors_trd_05_0);
-extern EvtScript N(EVS_ExitDoors_trd_03_3);
+extern EvtScript EVS_ExitDoors_trd_05_0;
+extern EvtScript EVS_ExitDoors_trd_03_3;
 
-EvtScript N(EVS_UnlockUpperLeftDoors) = {
+EvtScript EVS_UnlockUpperLeftDoors = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
@@ -31,7 +31,7 @@ EvtScript N(EVS_UnlockUpperLeftDoors) = {
     End
 };
 
-EvtScript N(EVS_UnlockLowerRightDoors) = {
+EvtScript EVS_UnlockLowerRightDoors = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(ShowKeyChoicePopup)
@@ -58,19 +58,19 @@ EvtScript N(EVS_UnlockLowerRightDoors) = {
     End
 };
 
-EvtScript N(EVS_Padlock_LowerDoors) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_05_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
+EvtScript EVS_Padlock_LowerDoors = {
+    BindTrigger(Ref(EVS_ExitDoors_trd_05_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Padlock_UpperDoors) = {
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_03_3)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw3, 1, 0)
+EvtScript EVS_Padlock_UpperDoors = {
+    BindTrigger(Ref(EVS_ExitDoors_trd_03_3), TRIGGER_WALL_PRESS_A, COLLIDER_ttw3, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_DropSwitch) = {
+EvtScript EVS_DropSwitch = {
     Call(DisablePlayerInput, true)
     Wait(40 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, -188, 0, -43)
@@ -106,15 +106,15 @@ EvtScript N(EVS_DropSwitch) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD04_UnlockedLowerDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 265, 8, 90, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_Padlock_LowerDoors)))
+        Call(AssignScript, Ref(EVS_Padlock_LowerDoors))
         Set(MV_EntityID_PadlockLower, LVar0)
     EndIf
     IfEq(GF_TRD04_UnlockedUpperDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), -265, 195, -55, 80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_Padlock_UpperDoors)))
+        Call(AssignScript, Ref(EVS_Padlock_UpperDoors))
         Set(MV_EntityID_PadlockUpper, LVar0)
     EndIf
     IfLe(GB_StoryProgress, STORY_CH1_DEFEATED_BASEMENT_GUARD)

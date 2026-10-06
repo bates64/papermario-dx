@@ -1,7 +1,7 @@
 #include "../mac_01.h"
 #include "effects.h"
 
-API_CALLABLE(N(FortuneRitualDarkenModels)) {
+API_CALLABLE(FortuneRitualDarkenModels) {
     if (isInitialCall) {
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
@@ -20,7 +20,7 @@ API_CALLABLE(N(FortuneRitualDarkenModels)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FortuneRitualPulseModels)) {
+API_CALLABLE(FortuneRitualPulseModels) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
         script->functionTemp[2] = 64;
@@ -58,7 +58,7 @@ API_CALLABLE(N(FortuneRitualPulseModels)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(FortuneRitualRestoreModels)) {
+API_CALLABLE(FortuneRitualRestoreModels) {
     if (isInitialCall) {
         script->functionTemp[0] = 64;
     }
@@ -76,7 +76,7 @@ API_CALLABLE(N(FortuneRitualRestoreModels)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AnimateRitualOrbEffects)) {
+API_CALLABLE(AnimateRitualOrbEffects) {
     EffectInstance* effects[3];
     Matrix4f sp28, sp68;
     f32 tx;
@@ -129,7 +129,7 @@ API_CALLABLE(N(AnimateRitualOrbEffects)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetEnergyOrbBright)) {
+API_CALLABLE(SetEnergyOrbBright) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -137,7 +137,7 @@ API_CALLABLE(N(SetEnergyOrbBright)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Merlon_AnimateDiscoBall) = {
+EvtScript EVS_Merlon_AnimateDiscoBall = {
     Call(EnableModel, MODEL_mirrorball, true)
     Set(LVar0, 328)
     Set(LVar1, 0)
@@ -202,7 +202,7 @@ EvtScript N(EVS_Merlon_AnimateDiscoBall) = {
     End
 };
 
-EvtScript N(EVS_Merlon_ReadFortuneFX) = {
+EvtScript EVS_Merlon_ReadFortuneFX = {
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_RaiseArms)
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
@@ -210,10 +210,10 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     Set(ArrayVar(1), LVarF)
     Wait(30)
     Set(ArrayVar(6), 0)
-    Exec(N(EVS_Merlon_AnimateDiscoBall))
+    Exec(EVS_Merlon_AnimateDiscoBall)
     Wait(30)
     Thread
-        Call(N(FortuneRitualDarkenModels))
+        Call(FortuneRitualDarkenModels)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -241,7 +241,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     PlayEffect(EFFECT_MOTION_BLUR_FLAME, 0, LVar0, LVar1, LVar2, 1, -1)
     Set(ArrayVar(5), LVarF)
     Thread
-        Call(N(AnimateRitualOrbEffects))
+        Call(AnimateRitualOrbEffects)
     EndThread
     Wait(50)
     Call(GetModelCenter, MODEL_tama)
@@ -253,7 +253,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_GREEN_WAVE, LVar0, LVar1, LVar2, Float(0.5), 20)
     Wait(30)
     Thread
-        Call(N(FortuneRitualPulseModels))
+        Call(FortuneRitualPulseModels)
     EndThread
     Call(GetModelCenter, MODEL_tama)
     Call(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
@@ -262,11 +262,11 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     Call(DismissEffect, ArrayVar(2))
     Wait(40)
     Call(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW | SOUND_ID_TRIGGER_CHANGE_SOUND, 0, LVar0, LVar1, LVar2)
-    Call(N(SetEnergyOrbBright), ArrayVar(1))
+    Call(SetEnergyOrbBright, ArrayVar(1))
     Wait(15)
     Call(DismissEffect, ArrayVar(1))
     Thread
-        Call(N(FortuneRitualRestoreModels))
+        Call(FortuneRitualRestoreModels)
     EndThread
     Wait(46)
     Set(ArrayVar(6), 2)
@@ -276,7 +276,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     End
 };
 
-EvtScript N(EVS_Merlon_GiveHint) = {
+EvtScript EVS_Merlon_GiveHint = {
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0036)
     Call(ShowCoinCounter, true)
@@ -287,7 +287,7 @@ EvtScript N(EVS_Merlon_GiveHint) = {
         Call(DisablePlayerInput, false)
         Return
     EndIf
-    Call(N(GetPlayerCoins))
+    Call(GetPlayerCoins)
     IfLt(LVar0, 5)
         Call(ShowCoinCounter, false)
         Call(ContinueSpeech, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_003A)
@@ -300,15 +300,15 @@ EvtScript N(EVS_Merlon_GiveHint) = {
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Gather1)
     Wait(10)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Gather1, ANIM_Merlon_Gather1, 0, MSG_MAC_Plaza_0038)
-    Exec(N(EVS_PlaySpellcastSong))
+    Exec(EVS_PlaySpellcastSong)
     Wait(20)
     IfEq(MV_FortuneFXHandles, 0)
         MallocArray(20, MV_FortuneFXHandles)
     EndIf
     UseArray(MV_FortuneFXHandles)
-    ExecWait(N(EVS_Merlon_ReadFortuneFX))
+    ExecWait(EVS_Merlon_ReadFortuneFX)
     Wait(20)
-    Exec(N(EVS_ResetMusicAfterFortune))
+    Exec(EVS_ResetMusicAfterFortune)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MerlonHint_0000)

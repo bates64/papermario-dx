@@ -20,15 +20,13 @@ enum {
     MV_GlowIntensity        = MapVar(0),
 };
 
-#define NAMESPACE kzn_08
+extern EvtScript EVS_Main;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_MakeEntities);
-
-extern NpcGroupList N(DefaultNPCs);
-extern EvtScript N(EVS_UpdateLavaRoomDarkness);
-extern API_CALLABLE(N(ApplyLavaGlowLighting));
-extern API_CALLABLE(N(ClearLavaGlowLighting));
+extern NpcGroupList DefaultNPCs;
+extern EvtScript EVS_UpdateLavaRoomDarkness;
+extern API_CALLABLE(ApplyLavaGlowLighting);
+extern API_CALLABLE(ClearLavaGlowLighting);
 
 void disable_world_fog(void);
 void mdl_get_depth_tint_params(u8*, u8*, u8*, u8*, u8*, u8*, u8*, s32*, s32*);

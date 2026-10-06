@@ -1,7 +1,7 @@
 #include "hos_05.h"
 
 
-API_CALLABLE(N(AwaitScriptComplete)) {
+API_CALLABLE(AwaitScriptComplete) {
     Bytecode* args = script->ptrReadPos;
     s32 waitingScriptID = evt_get_variable(script, *args++);
 
@@ -12,7 +12,7 @@ API_CALLABLE(N(AwaitScriptComplete)) {
     }
 }
 
-API_CALLABLE(N(CastToLocalFloat)) {
+API_CALLABLE(CastToLocalFloat) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
 
@@ -20,7 +20,7 @@ API_CALLABLE(N(CastToLocalFloat)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitFallingStarParams)) {
+API_CALLABLE(InitFallingStarParams) {
     f32 vt2 = script->varTable[2];
     f32 magnitude;
     f32 angle;
@@ -40,8 +40,8 @@ API_CALLABLE(N(InitFallingStarParams)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupStarshipAndWater) = {
-    Exec(N(EVS_SetupStarship))
+EvtScript EVS_SetupStarshipAndWater = {
+    Exec(EVS_SetupStarship)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  100,  -80,  -50,  120)
@@ -62,31 +62,31 @@ EvtScript N(EVS_SetupStarshipAndWater) = {
     End
 };
 
-EvtScript N(EVS_AnimateFallingStar) = {
-    Call(N(InitFallingStarParams))
+EvtScript EVS_AnimateFallingStar = {
+    Call(InitFallingStarParams)
     Label(0)
         AddF(LVarB, LVarD)
         AddF(LVar2, LVarA)
         AddF(LVar3, LVarB)
         AddF(LVar4, LVarC)
         Call(TranslateModel, LVar0, LVar2, LVar3, LVar4)
-        Call(N(CastToLocalFloat), 6, LVar2)
+        Call(CastToLocalFloat, 6, LVar2)
         Mul(LVar6, LVar6)
-        Call(N(CastToLocalFloat), 7, LVar4)
+        Call(CastToLocalFloat, 7, LVar4)
         Mul(LVar7, LVar7)
         Add(LVar6, LVar7)
         IfLt(LVar6, 10000)
-            Call(N(CastToLocalFloat), 5, LVar3)
+            Call(CastToLocalFloat, 5, LVar3)
             IfLt(LVar5, 136)
-                Call(N(CastToLocalFloat), 5, LVarB)
+                Call(CastToLocalFloat, 5, LVarB)
                 IfLt(LVar5, 0)
                     MulF(LVarB, Float(-1.0))
                 EndIf
             EndIf
         EndIf
-        Call(N(CastToLocalFloat), 5, LVar2)
-        Call(N(CastToLocalFloat), 6, LVar3)
-        Call(N(CastToLocalFloat), 7, LVar4)
+        Call(CastToLocalFloat, 5, LVar2)
+        Call(CastToLocalFloat, 6, LVar3)
+        Call(CastToLocalFloat, 7, LVar4)
         IfLt(LVar6, 0)
             Return
         EndIf
@@ -111,7 +111,7 @@ EvtScript N(EVS_AnimateFallingStar) = {
     End
 };
 
-EvtScript N(EVS_AnimateShrinkingStar) = {
+EvtScript EVS_AnimateShrinkingStar = {
     Set(LVarF, LVar2)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(RandInt, 40, LVar2)
@@ -131,7 +131,7 @@ EvtScript N(EVS_AnimateShrinkingStar) = {
         Call(ScaleModel, LVar0, LVar5, LVar5, LVar5)
         SetF(LVar6, LVar5)
         MulF(LVar6, Float(10.0))
-        Call(N(CastToLocalFloat), 6, LVar6)
+        Call(CastToLocalFloat, 6, LVar6)
         IfLt(LVar6, 2)
             Return
         EndIf
@@ -141,34 +141,34 @@ EvtScript N(EVS_AnimateShrinkingStar) = {
     End
 };
 
-EvtScript N(EVS_8024644C) = {
+EvtScript EVS_8024644C = {
     Set(LVar0, LVar3)
     Set(LVar2, 5)
     Loop(LVar2)
         Call(RandInt, 360, LVar1)
-        ExecGetTID(N(EVS_AnimateFallingStar), LVar3)
+        ExecGetTID(EVS_AnimateFallingStar, LVar3)
         IfNe(LVar3, 0)
-            Call(N(AwaitScriptComplete), LVar3)
+            Call(AwaitScriptComplete, LVar3)
         EndIf
     EndLoop
     Label(0)
         Call(RandInt, 360, LVar1)
-        ExecGetTID(N(EVS_AnimateShrinkingStar), LVar3)
+        ExecGetTID(EVS_AnimateShrinkingStar, LVar3)
         IfNe(LVar3, 0)
-            Call(N(AwaitScriptComplete), LVar3)
+            Call(AwaitScriptComplete, LVar3)
         EndIf
         Goto(0)
     Return
     End
 };
 
-EvtScript N(EVS_80246540) = {
+EvtScript EVS_80246540 = {
     Set(LVar0, LVar3)
     Label(0)
         Call(RandInt, 360, LVar1)
-        ExecGetTID(N(EVS_AnimateShrinkingStar), LVar3)
+        ExecGetTID(EVS_AnimateShrinkingStar, LVar3)
         IfNe(LVar3, 0)
-            Call(N(AwaitScriptComplete), LVar3)
+            Call(AwaitScriptComplete, LVar3)
         EndIf
         Goto(0)
     Return

@@ -5,19 +5,15 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_fright_jar
-
-#include "battle/common/move/ItemRefund.inc.c"
-
 #include "common/FadeBackgroundDarken.inc.c"
 #include "common/FadeBackgroundLighten.inc.c"
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_FRIGHT_JAR)
-    ExecWait(N(UseItemWithEffect))
-    Call(N(FadeBackgroundDarken))
+    ExecWait(UseItemWithEffect)
+    Call(DarkenBackground)
     Thread
         Wait(5)
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
@@ -63,13 +59,13 @@ EvtScript N(EVS_UseItem) = {
         EndIf
     Wait(10)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Walk)
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Wait(20)
-    ExecWait(N(PlayerGoHome))
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

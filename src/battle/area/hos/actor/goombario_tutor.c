@@ -1,6 +1,5 @@
 #include "../area.h"
 #include "battle/action_cmd.h"
-#include "battle/action_cmd/jump.h"
 #include "sprite/npc/BattleGoombario.h"
 #include "sprite/npc/Twink.h"
 

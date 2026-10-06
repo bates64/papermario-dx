@@ -3,7 +3,7 @@
 
 #include "world/common/ai/GuardAI.inc.c"
 
-GuardAISettings N(AISettings_ShyGuy_Guard) = {
+GuardAISettings AISettings_ShyGuy_Guard = {
     .alertRadius = 100.0f,
     .alertOffsetDist = 30.0f,
     .playerSearchInterval = 4,
@@ -14,17 +14,17 @@ GuardAISettings N(AISettings_ShyGuy_Guard) = {
     .chaseOffsetDist = 50.0f,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Guard) = {
-    Call(N(GuardAI_Main), Ref(N(AISettings_ShyGuy_Guard)))
+EvtScript EVS_NpcAI_ShyGuy_Guard = {
+    Call(GuardAI_Main, Ref(AISettings_ShyGuy_Guard))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy_Guard) = {
+NpcSettings NpcSettings_ShyGuy_Guard = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_Guard),
+    .doAI = &EVS_NpcAI_ShyGuy_Guard,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

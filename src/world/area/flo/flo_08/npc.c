@@ -6,7 +6,7 @@
 
 #include "world/common/npc/GateFlower/idle.inc.c"
 
-API_CALLABLE(N(JudgeItemTastiness)) {
+API_CALLABLE(JudgeItemTastiness) {
     s32 itemId = evt_get_variable(script, *script->ptrReadPos);
     ItemData* item = &gItemTable[itemId];
 
@@ -21,7 +21,7 @@ API_CALLABLE(N(JudgeItemTastiness)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_GateFlower) = {
+EvtScript EVS_NpcInteract_GateFlower = {
     Call(DisablePlayerInput, true)
     IfEq(GF_FLO08_GaveYellowBerry, false)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Yellow_Talk, ANIM_GateFlower_Yellow_Idle, 0, MSG_CH6_0043)
             CaseDefault
                 Set(LVar8, LVar0)
-                Call(N(JudgeItemTastiness), LVar0)
+                Call(JudgeItemTastiness, LVar0)
                 Call(MakeItemEntity, LVar8, -695, 20, -29, ITEM_SPAWN_MODE_DECORATION, 0)
                 Set(LVar7, LVar0)
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
@@ -152,8 +152,8 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_GateFlower) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GateFlower)))
+EvtScript EVS_NpcInit_GateFlower = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GateFlower))
     IfEq(GF_FLO08_GaveYellowBerry, true)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Yellow_HappyDance)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o96, COLLIDER_FLAGS_UPPER_MASK)
@@ -168,19 +168,19 @@ EvtScript N(EVS_NpcInit_GateFlower) = {
     End
 };
 
-NpcData N(NpcData_GateFlower) = {
+NpcData NpcData_GateFlower = {
     .id = NPC_GateFlower,
     .pos = { -695.0f, 0.0f, -30.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_GateFlower),
-    .settings = &N(NpcSettings_GateFlower),
+    .init = &EVS_NpcInit_GateFlower,
+    .settings = &NpcSettings_GateFlower,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GATE_FLOWER_YELLOW_ANIMS,
     .tattle = MSG_NpcTattle_YellowGateFlower,
 };
 
-NpcData N(NpcData_Dayzee_01) = {
+NpcData NpcData_Dayzee_01 = {
     .id = NPC_Dayzee_01,
     .pos = { 205.0f, 0.0f, -80.0f },
     .yaw = 90,
@@ -196,14 +196,14 @@ NpcData N(NpcData_Dayzee_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Dayzee_02) = {
+NpcData NpcData_Dayzee_02 = {
     .id = NPC_Dayzee_02,
     .pos = { 275.0f, 0.0f, -115.0f },
     .yaw = 270,
@@ -219,14 +219,14 @@ NpcData N(NpcData_Dayzee_02) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Dayzee_03) = {
+NpcData NpcData_Dayzee_03 = {
     .id = NPC_Dayzee_03,
     .pos = { -230.0f, 60.0f, -110.0f },
     .yaw = 90,
@@ -242,14 +242,14 @@ NpcData N(NpcData_Dayzee_03) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Dayzee_04) = {
+NpcData NpcData_Dayzee_04 = {
     .id = NPC_Dayzee_04,
     .pos = { -330.0f, 60.0f, -110.0f },
     .yaw = 270,
@@ -265,14 +265,14 @@ NpcData N(NpcData_Dayzee_04) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Dayzee_05) = {
+NpcData NpcData_Dayzee_05 = {
     .id = NPC_Dayzee_05,
     .pos = { -430.0f, 60.0f, -110.0f },
     .yaw = 90,
@@ -288,14 +288,14 @@ NpcData N(NpcData_Dayzee_05) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Dayzee_06) = {
+NpcData NpcData_Dayzee_06 = {
     .id = NPC_Dayzee_06,
     .pos = { -530.0f, 60.0f, -110.0f },
     .yaw = 270,
@@ -311,14 +311,14 @@ NpcData N(NpcData_Dayzee_06) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Dayzee_07) = {
+NpcData NpcData_Dayzee_07 = {
     .id = NPC_Dayzee_07,
     .pos = { -630.0f, 60.0f, -110.0f },
     .yaw = 90,
@@ -334,14 +334,14 @@ NpcData N(NpcData_Dayzee_07) = {
             .detectSize = { 150 },
         }
     },
-    .settings = &N(NpcSettings_CrazyDayzee_Wander),
+    .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-EvtScript N(EVS_NpcInit_AmazyDayzee) = {
+EvtScript EVS_NpcInit_AmazyDayzee = {
     Thread
         Wait(2)
         Call(GetNpcPointer, NPC_Dayzee_02, LVar0)
@@ -362,7 +362,7 @@ EvtScript N(EVS_NpcInit_AmazyDayzee) = {
     End
 };
 
-NpcData N(NpcData_AmazyDayzee) = {
+NpcData NpcData_AmazyDayzee = {
     .id = NPC_AmazyDayzee,
     .pos = { 240.0f, 0.0f, -90.0f },
     .yaw = 270,
@@ -378,23 +378,23 @@ NpcData N(NpcData_AmazyDayzee) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_AmazyDayzee),
-    .settings = &N(NpcSettings_AmazyDayzee_Wander),
+    .init = &EVS_NpcInit_AmazyDayzee,
+    .settings = &NpcSettings_AmazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = AMAZY_DAYZEE_DROPS,
     .animations = AMAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_GateFlower)),
-    NPC_GROUP(N(NpcData_Dayzee_01), BTL_FLO_FORMATION_14, BTL_FLO_STAGE_00),
-    NPC_GROUP(N(NpcData_Dayzee_02), BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_00),
-    NPC_GROUP(N(NpcData_Dayzee_03), BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
-    NPC_GROUP(N(NpcData_Dayzee_04), BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
-    NPC_GROUP(N(NpcData_Dayzee_05), BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
-    NPC_GROUP(N(NpcData_Dayzee_06), BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
-    NPC_GROUP(N(NpcData_Dayzee_07), BTL_FLO_FORMATION_12, BTL_FLO_STAGE_01),
-    NPC_GROUP(N(NpcData_AmazyDayzee), BTL_FLO_FORMATION_1C, BTL_FLO_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_GateFlower),
+    NPC_GROUP(NpcData_Dayzee_01, BTL_FLO_FORMATION_14, BTL_FLO_STAGE_00),
+    NPC_GROUP(NpcData_Dayzee_02, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_00),
+    NPC_GROUP(NpcData_Dayzee_03, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_Dayzee_04, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_Dayzee_05, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_Dayzee_06, BTL_FLO_FORMATION_0F, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_Dayzee_07, BTL_FLO_FORMATION_12, BTL_FLO_STAGE_01),
+    NPC_GROUP(NpcData_AmazyDayzee, BTL_FLO_FORMATION_1C, BTL_FLO_STAGE_00),
     {}
 };

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-API_CALLABLE(N(SpitInk)) {
+static API_CALLABLE(SpitInk) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect;
     f32 targetX, targetY, targetZ;

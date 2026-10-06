@@ -1,11 +1,11 @@
 #include "nok_01.h"
 
-EvtScript N(EVS_ExitWalk_nok_13_1) = {
+EvtScript EVS_ExitWalk_nok_13_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, true)
     EndIf
-    Call(N(StopAllRadioStations))
+    Call(StopAllRadioStations)
     Call(ClearAmbientSounds, 250)
     Call(UseExitHeading, 60, nok_01_ENTRY_0)
     Exec(ExitWalk)
@@ -15,9 +15,9 @@ EvtScript N(EVS_ExitWalk_nok_13_1) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_nok_02_0) = {
+EvtScript EVS_ExitWalk_nok_02_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(N(StopAllRadioStations))
+    Call(StopAllRadioStations)
     Call(ClearAmbientSounds, 250)
     Call(UseExitHeading, 60, nok_01_ENTRY_1)
     Exec(ExitWalk)
@@ -27,18 +27,18 @@ EvtScript N(EVS_ExitWalk_nok_02_0) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_13_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_nok_02_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_nok_13_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_nok_02_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -48,19 +48,19 @@ EvtScript N(EVS_EnterMap) = {
             Set(LFlag0, true)
             Thread
                 Wait(30)
-                Exec(N(EVS_BindExitTriggers))
+                Exec(EVS_BindExitTriggers)
             EndThread
         EndIf
     EndIf
     IfEq(LFlag0, false)
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_TexPan_Flowers) = {
+EvtScript EVS_TexPan_Flowers = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_o298, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o320, TEX_PANNER_0)
@@ -83,7 +83,7 @@ EvtScript N(EVS_TexPan_Flowers) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -103,21 +103,21 @@ EvtScript N(EVS_Main) = {
         Set(GF_NOK01_RecoveredTreeShell, true)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        Call(MakeNpcs, false, Ref(N(CrisisNPCs)))
+        Call(MakeNpcs, false, Ref(CrisisNPCs))
     Else
-        Call(MakeNpcs, false, Ref(N(NormalNPCs)))
+        Call(MakeNpcs, false, Ref(NormalNPCs))
     EndIf
     Call(ClearDefeatedEnemies)
-    Exec(N(EVS_SetupShop))
-    Exec(N(EVS_SetupRadio))
-    Exec(N(EVS_TexPan_Flowers))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_MakeRooms))
+    Exec(EVS_SetupShop)
+    Exec(EVS_SetupRadio)
+    Exec(EVS_TexPan_Flowers)
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_MakeRooms)
     Wait(1)
-    ExecWait(N(EVS_SetupFoliage))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupFoliage)
+    Exec(EVS_SetupMusic)
     Set(AB_NOK01_RadioStation, 0)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Return
     End
 };

@@ -1,7 +1,5 @@
 #include "../area.h"
 #include "sprite/npc/Buzzar.h"
-#include "battle/action_cmd/break_free.h"
-#include "battle/action_cmd/whirlwind.h"
 #include "sprite/player.h"
 
 #define NAMESPACE A(buzzar)
@@ -314,7 +312,6 @@ EvtScript N(EVS_TakeTurn) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_Attack_WindBlast) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -363,7 +360,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
                     Thread
                         Call(ShakeCam, CAM_BATTLE, 0, 90, Float(0.5))
                     EndThread
-                    Call(N(StartRumbleWithParams), 70, 100)
+                    Call(StartRumbleWithParams, 70, 100)
                     Thread
                         Loop(20)
                             Call(SetGoalToTarget, ACTOR_SELF)
@@ -401,7 +398,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
                     Call(SetBattleCamDist, 460)
                     Call(SetBattleCamOffsetY, 0)
                     Call(MoveBattleCamOver, 50)
-                    Call(N(StartRumbleWithParams), 70, 130)
+                    Call(StartRumbleWithParams, 70, 130)
                     Thread
                         Loop(30)
                             Call(SetGoalToTarget, ACTOR_SELF)
@@ -466,7 +463,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
     Call(SetBattleCamDist, 460)
     Call(SetBattleCamOffsetY, 0)
     Call(MoveBattleCamOver, 50)
-    Call(N(StartRumbleWithParams), 70, 130)
+    Call(StartRumbleWithParams, 70, 130)
     Thread
         Loop(30)
             Call(SetGoalToTarget, ACTOR_SELF)
@@ -763,7 +760,7 @@ EvtScript N(EVS_LiftMario) = {
     Call(SetActorSounds, ACTOR_SELF, ACTOR_SOUND_FLY_INCREMENT, -8, 0)
     ChildThread
         Loop(0)
-            Call(N(StartRumbleWithParams), 100, 10)
+            Call(StartRumbleWithParams, 100, 10)
             Wait(10)
         EndLoop
     EndChildThread
@@ -928,7 +925,7 @@ EvtScript N(EVS_Attack_GrappleDrop) = {
     EndIf
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BUZZAR_GRAB)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Buzzar_Grab)
-    Call(N(StartRumbleWithParams), 180, 20)
+    Call(StartRumbleWithParams, 180, 20)
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Flail)
     Call(ShowMessageBox, BTL_MSG_ACTION_TIP_BREAK_FREE, 90)

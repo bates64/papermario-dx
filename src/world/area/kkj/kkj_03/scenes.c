@@ -1,7 +1,7 @@
 #include "kkj_03.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_MeetingPeach) = {
+EvtScript EVS_Scene_MeetingPeach = {
     Loop(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -77,7 +77,7 @@ EvtScript N(EVS_Scene_MeetingPeach) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Clouds) = {
+EvtScript EVS_TexPan_Clouds = {
     Call(SetTexPanner, MODEL_o718, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
@@ -90,7 +90,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
     End
 };
 
-EvtScript N(EVS_MoveClouds) = {
+EvtScript EVS_MoveClouds = {
     Set(LVar0, 0)
     Loop(0)
         Call(TranslateGroup, MODEL_g159, 0, LVar0, 0)
@@ -101,12 +101,12 @@ EvtScript N(EVS_MoveClouds) = {
     End
 };
 
-EvtScript N(EVS_Scene_Ascending) = {
+EvtScript EVS_Scene_Ascending = {
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_Peach, 680, 0, -15)
     Call(EnableGroup, MODEL_g156, true)
-    Exec(N(EVS_TexPan_Clouds))
-    Exec(N(EVS_MoveClouds))
+    Exec(EVS_TexPan_Clouds)
+    Exec(EVS_MoveClouds)
     Call(UseSettingsFrom, CAM_DEFAULT, 600, 0, -15)
     Call(SetPanTarget, CAM_DEFAULT, 600, 0, -15)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))

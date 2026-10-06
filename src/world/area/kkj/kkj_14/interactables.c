@@ -3,7 +3,7 @@
 #include "sprite/player.h"
 
 
-EvtScript N(EVS_Inspect_Fireplace) = {
+EvtScript EVS_Inspect_Fireplace = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
@@ -37,7 +37,7 @@ EvtScript N(EVS_Inspect_Fireplace) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Dresses) = {
+EvtScript EVS_Inspect_Dresses = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
@@ -70,7 +70,7 @@ EvtScript N(EVS_Inspect_Dresses) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Vanity) = {
+EvtScript EVS_Inspect_Vanity = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH1_BEGAN_PEACH_MISSION, STORY_CH7_BEGAN_PEACH_MISSION)
@@ -100,7 +100,7 @@ EvtScript N(EVS_Inspect_Vanity) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Photo) = {
+EvtScript EVS_Inspect_Photo = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
@@ -133,7 +133,7 @@ EvtScript N(EVS_Inspect_Photo) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Bed) = {
+EvtScript EVS_Inspect_Bed = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
@@ -166,7 +166,7 @@ EvtScript N(EVS_Inspect_Bed) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Flowers) = {
+EvtScript EVS_Inspect_Flowers = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
@@ -199,23 +199,23 @@ EvtScript N(EVS_Inspect_Flowers) = {
     End
 };
 
-s32 N(FireplaceAlpha) = 255;
+s32 FireplaceAlpha = 255;
 
-API_CALLABLE(N(SetFireplaceAlpha)) {
+API_CALLABLE(SetFireplaceAlpha) {
     Bytecode* args = script->ptrReadPos;
 
-    N(FireplaceAlpha) = evt_get_variable(script, *args++);
+    FireplaceAlpha = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-void N(setup_gfx_fireplace)(void) {
+void setup_gfx_fireplace(void) {
     gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
     gDPSetRenderMode(gMainGfxPos++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
     gDPSetCombineMode(gMainGfxPos++, G_CC_INTERFERENCE, PM_CC_KKJ14_FIRE);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(FireplaceAlpha));
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, FireplaceAlpha);
 }
 
-EvtScript N(EVS_TexPan_Fireplace) = {
+EvtScript EVS_TexPan_Fireplace = {
     // embers
     Call(SetTexPanner, MODEL_o42, TEX_PANNER_5)
     Thread
@@ -238,7 +238,7 @@ EvtScript N(EVS_TexPan_Fireplace) = {
     End
 };
 
-EvtScript N(EVS_RevealButton) = {
+EvtScript EVS_RevealButton = {
     Call(PlaySoundAtCollider, COLLIDER_o128, SOUND_KKJ_REVEAL_BUTTON, 0)
     Call(MakeLerp, 0, 180, 15, EASING_LINEAR)
     Call(UpdateLerp)
@@ -260,7 +260,7 @@ EvtScript N(EVS_RevealButton) = {
     End
 };
 
-EvtScript N(EVS_OpenHiddenPassage) = {
+EvtScript EVS_OpenHiddenPassage = {
     Call(EnableModel, MODEL_o35, false)
     Call(EnableModel, MODEL_o42, false)
     Call(EnableGroup, MODEL_g27, true)
@@ -273,7 +273,7 @@ EvtScript N(EVS_OpenHiddenPassage) = {
     Call(MakeLerp, 255, 0, LVar0, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetFireplaceAlpha), LVar0)
+        Call(SetFireplaceAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop
@@ -304,12 +304,12 @@ EvtScript N(EVS_OpenHiddenPassage) = {
     End
 };
 
-EvtScript N(EVS_Inspect_HiddenButton) = {
+EvtScript EVS_Inspect_HiddenButton = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     IfEq(GF_KKJ14_RevealedButton, false)
-        ExecWait(N(EVS_RevealButton))
+        ExecWait(EVS_RevealButton)
     Else
         Call(FacePlayerTowardPoint, -29, -148, 5)
         Wait(10)
@@ -328,7 +328,7 @@ EvtScript N(EVS_Inspect_HiddenButton) = {
         Call(SetPlayerAnimation, ANIM_Peach1_Idle)
         Call(InterpPlayerYaw, 225, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
-        ExecWait(N(EVS_OpenHiddenPassage))
+        ExecWait(EVS_OpenHiddenPassage)
         Unbind
     EndIf
     Call(EnablePartnerAI)
@@ -338,7 +338,7 @@ EvtScript N(EVS_Inspect_HiddenButton) = {
     End
 };
 
-EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
+EvtScript EVS_Inspect_HiddenButton_FirstTime = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
@@ -348,7 +348,7 @@ EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Shout, ANIM_Twink_Shout, 5, MSG_Peach_0046)
             Set(AF_KKJ14_HiddenButtonRemark, true)
         EndIf
-        ExecWait(N(EVS_RevealButton))
+        ExecWait(EVS_RevealButton)
     Else
         Call(FacePlayerTowardPoint, -29, -148, 5)
         Wait(10)
@@ -376,7 +376,7 @@ EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         EndIf
-        ExecWait(N(EVS_OpenHiddenPassage))
+        ExecWait(EVS_OpenHiddenPassage)
         IfEq(AF_KKJ14_HiddenPassageRemark, false)
             Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
             Call(SetPlayerAnimation, ANIM_Peach2_Delighted)
@@ -392,7 +392,7 @@ EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
     End
 };
 
-EvtScript N(EVS_SetupInteractables) = {
+EvtScript EVS_SetupInteractables = {
     IfEq(GF_KKJ14_RevealedButton, false)
         Call(EnableModel, MODEL_o146, false)
     Else
@@ -402,15 +402,15 @@ EvtScript N(EVS_SetupInteractables) = {
     EndIf
     IfEq(GF_KKJ14_OpenedPassage, false)
         Call(EnableGroup, MODEL_g27, false)
-        Exec(N(EVS_TexPan_Fireplace))
+        Exec(EVS_TexPan_Fireplace)
         Call(SetModelCustomGfx, MODEL_o157, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_fireplace)), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(setup_gfx_fireplace), nullptr)
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH0_WAKE_UP)
             CaseLt(STORY_CH2_BEGAN_PEACH_MISSION)
-                BindTrigger(Ref(N(EVS_Inspect_HiddenButton_FirstTime)), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
+                BindTrigger(Ref(EVS_Inspect_HiddenButton_FirstTime), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
             CaseLt(STORY_CH8_REACHED_PEACHS_CASTLE)
-                BindTrigger(Ref(N(EVS_Inspect_HiddenButton)), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
+                BindTrigger(Ref(EVS_Inspect_HiddenButton), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
             CaseDefault
         EndSwitch
     Else
@@ -419,12 +419,12 @@ EvtScript N(EVS_SetupInteractables) = {
         Call(RotateModel, MODEL_o39, -180, 1, 0, 0)
         Call(EnableGroup, MODEL_g45, false)
     EndIf
-    BindTrigger(Ref(N(EVS_Inspect_Fireplace)), TRIGGER_WALL_PRESS_A, COLLIDER_o129, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Dresses)), TRIGGER_WALL_PRESS_A, COLLIDER_o143, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Vanity)), TRIGGER_WALL_PRESS_A, COLLIDER_o142, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Photo)), TRIGGER_WALL_PRESS_A, COLLIDER_o141, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Bed)), TRIGGER_WALL_PRESS_A, COLLIDER_o25, 1, 0)
-    BindTrigger(Ref(N(EVS_Inspect_Flowers)), TRIGGER_WALL_PRESS_A, COLLIDER_o135, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Fireplace), TRIGGER_WALL_PRESS_A, COLLIDER_o129, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Dresses), TRIGGER_WALL_PRESS_A, COLLIDER_o143, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Vanity), TRIGGER_WALL_PRESS_A, COLLIDER_o142, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Photo), TRIGGER_WALL_PRESS_A, COLLIDER_o141, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Bed), TRIGGER_WALL_PRESS_A, COLLIDER_o25, 1, 0)
+    BindTrigger(Ref(EVS_Inspect_Flowers), TRIGGER_WALL_PRESS_A, COLLIDER_o135, 1, 0)
     Return
     End
 };

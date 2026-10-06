@@ -1,7 +1,7 @@
 
 #include "kpa_14.h"
 
-API_CALLABLE(N(GetFloorBelow)) {
+API_CALLABLE(GetFloorBelow) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -9,7 +9,7 @@ API_CALLABLE(N(GetFloorBelow)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(AddPlatformPushVelocity)) {
+API_CALLABLE(AddPlatformPushVelocity) {
     Bytecode* args = script->ptrReadPos;
     s32 velX = evt_get_variable(script, *args++);
     s32 floor = evt_get_variable(script, *args++);
@@ -34,7 +34,7 @@ API_CALLABLE(N(AddPlatformPushVelocity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(IsPartnerLakilester)) {
+API_CALLABLE(IsPartnerLakilester) {
     if (gPartnerStatus.actingPartner == PARTNER_LAKILESTER) {
         script->varTable[9] = true;
     } else {
@@ -43,7 +43,7 @@ API_CALLABLE(N(IsPartnerLakilester)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_SetupPlatforms) = {
+EvtScript EVS_SetupPlatforms = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     Call(ParentColliderToModel, COLLIDER_o852, MODEL_o860)
     Set(LVar0, 0)
@@ -57,11 +57,11 @@ EvtScript N(EVS_SetupPlatforms) = {
             Set(LVar4, LVar0)
             Sub(LVar4, LVar3)
             Set(LVar3, LVar0)
-            Call(N(AddPlatformPushVelocity), LVar4, COLLIDER_o852, MV_TakingLavaFallDamage)
+            Call(AddPlatformPushVelocity, LVar4, COLLIDER_o852, MV_TakingLavaFallDamage)
             IfGt(LVar0, 145)
-                Call(N(IsPartnerLakilester))
+                Call(IsPartnerLakilester)
                 IfEq(LVar9, 1)
-                    Call(N(GetFloorBelow), LVar2)
+                    Call(GetFloorBelow, LVar2)
                     IfEq(LVar2, COLLIDER_o858)
                         BreakLoop
                     EndIf
@@ -81,11 +81,11 @@ EvtScript N(EVS_SetupPlatforms) = {
             Set(LVar4, LVar0)
             Sub(LVar4, LVar3)
             Set(LVar3, LVar0)
-            Call(N(AddPlatformPushVelocity), LVar4, COLLIDER_o852, MV_TakingLavaFallDamage)
+            Call(AddPlatformPushVelocity, LVar4, COLLIDER_o852, MV_TakingLavaFallDamage)
             IfLt(LVar0, 30)
-                Call(N(IsPartnerLakilester))
+                Call(IsPartnerLakilester)
                 IfEq(LVar9, 1)
-                    Call(N(GetFloorBelow), LVar2)
+                    Call(GetFloorBelow, LVar2)
                     IfEq(LVar2, COLLIDER_o857)
                         BreakLoop
                     EndIf

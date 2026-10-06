@@ -3,4 +3,4 @@
 
 #define NpcSettings_Bartender NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_Bartender);
+extern NpcSettings NpcSettings_Bartender;

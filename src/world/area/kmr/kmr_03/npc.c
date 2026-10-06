@@ -6,11 +6,11 @@
 
 #include "world/common/npc/Goompa/idle.inc.c"
 
-EvtScript N(EVS_NpcAI_Goompa) = {
+EvtScript EVS_NpcAI_Goompa = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH0_FELL_OFF_CLIFF)
             Label(89)
-                Call(N(CheckPositionRelativeToPlane), -118, 86, -70, -15)
+                Call(CheckPositionRelativeToPlane, -118, 86, -70, -15)
                 Wait(1)
                 IfEq(LVar0, 0)
                     Goto(89)
@@ -46,7 +46,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
             Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
             Wait(30 * DT)
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00A8)
-            Call(N(ChangeNpcToPartner), NPC_Goompa, PARTNER_GOOMPA)
+            Call(ChangeNpcToPartner, NPC_Goompa, PARTNER_GOOMPA)
             Set(GB_StoryProgress, STORY_CH0_GOOMPA_JOINED_PARTY)
             Call(UseSettingsFrom, CAM_DEFAULT, -220, 20, -72)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -63,7 +63,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_Goompa) = {
+EvtScript EVS_NpcHit_Goompa = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goompa_Injured)
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goompa_Idle)
@@ -96,15 +96,15 @@ EvtScript N(EVS_NpcHit_Goompa) = {
         Call(SetNpcPos, NPC_Goompa, NPC_DISPOSE_LOCATION)
         Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
         Call(EnablePartnerAI)
-        Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
+        Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_Goompa))
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Goompa) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
-    Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Goompa)))
+EvtScript EVS_NpcInit_Goompa = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_Goompa))
+    Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Goompa))
     Switch(GB_StoryProgress)
         CaseGe(STORY_CH0_GOOMPA_JOINED_PARTY)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
@@ -115,19 +115,19 @@ EvtScript N(EVS_NpcInit_Goompa) = {
     End
 };
 
-NpcData N(NpcData_GoombaFamily) = {
+NpcData NpcData_GoombaFamily = {
     .id = NPC_Goompa,
     .pos = { -50.0f, 0.0f, 80.0f },
     .yaw = 45,
-    .init = &N(EVS_NpcInit_Goompa),
-    .settings = &N(NpcSettings_Goompa),
+    .init = &EVS_NpcInit_Goompa,
+    .settings = &NpcSettings_Goompa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = GOOMPA_ANIMS,
     .tattle = MSG_NpcTattle_Goompa,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_GoombaFamily), BTL_KMR_1_FORMATION_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_GoombaFamily, BTL_KMR_1_FORMATION_02),
     {}
 };

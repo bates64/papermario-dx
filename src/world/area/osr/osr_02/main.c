@@ -1,13 +1,13 @@
 #include "osr_02.h"
 #include "effects.h"
 
-EvtScript N(EVS_ExitDoor_kpa_121_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1,
+EvtScript EVS_ExitDoor_kpa_121_1 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1,
     COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL);
 
-EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTRY_1, "kkj_10", kkj_10_ENTRY_0,
+EvtScript EVS_ExitDoor_kkj_10_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTRY_1, "kkj_10", kkj_10_ENTRY_0,
     COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
+EvtScript EVS_KeepPeachFromBowsersCastle = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, true)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0180)
@@ -17,22 +17,22 @@ EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
+EvtScript EVS_BindExitTriggers = {
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        BindTrigger(Ref(N(EVS_KeepPeachFromBowsersCastle)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+        BindTrigger(Ref(EVS_KeepPeachFromBowsersCastle), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
     Else
-        BindTrigger(Ref(N(EVS_ExitDoor_kpa_121_1)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+        BindTrigger(Ref(EVS_ExitDoor_kpa_121_1), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
     EndIf
-    BindTrigger(Ref(N(EVS_ExitDoor_kkj_10_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoor_kkj_10_0), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -48,14 +48,14 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, MODEL_d1)
             ExecWait(EnterDoubleDoor)
         CaseEq(osr_02_ENTRY_2)
-            Exec(N(EVS_Scene_ReturnStarRod))
+            Exec(EVS_Scene_ReturnStarRod)
     EndSwitch
-    Exec(N(EVS_BindExitTriggers))
+    Exec(EVS_BindExitTriggers)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     IfGt(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
         Set(GF_MAP_PeachsCastle, true)
@@ -64,14 +64,14 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(SetAvailableDisguise, PEACH_DISGUISE_CLUBBA)
-        Call(MakeNpcs, false, Ref(N(PeachNPCs)))
+        Call(MakeNpcs, false, Ref(PeachNPCs))
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_02_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(DefaultNPCs))
     EndSwitch
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfEq(GF_KKJ25_Defeated_Bowser, false)
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-269.16895), Float(50.0), Float(100.22), 1, LVar0)
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-2.6025392), Float(50.0), Float(161.583), 1, LVar0)
@@ -88,7 +88,7 @@ EvtScript N(EVS_Main) = {
     IfGe(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
         Call(FadeOutMusic, 0, 500)
     EndIf
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     IfEq(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
         Set(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)

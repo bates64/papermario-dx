@@ -5,7 +5,7 @@
 
 #define EVAR_INTERACTED 0
 
-EvtScript N(EVS_NpcAI_HurtPlant) = {
+EvtScript EVS_NpcAI_HurtPlant = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Hiding)
     Call(SetSelfVar, EVAR_INTERACTED, false)
@@ -33,19 +33,19 @@ EvtScript N(EVS_NpcAI_HurtPlant) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_HurtPlant) = {
+EvtScript EVS_NpcInteract_HurtPlant = {
     Call(SetSelfVar, EVAR_INTERACTED, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_HurtPlant) = {
+EvtScript EVS_NpcDefeat_HurtPlant = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_HurtPlant)))
+            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_HurtPlant))
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -54,16 +54,16 @@ EvtScript N(EVS_NpcDefeat_HurtPlant) = {
     End
 };
 
-NpcSettings N(NpcSettings_HurtPlant) = {
+NpcSettings NpcSettings_HurtPlant = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_HURT_PLANT,
-    .doAI = &N(EVS_NpcAI_HurtPlant),
-    .onInteract = &N(EVS_NpcInteract_HurtPlant),
-    .onDefeat = &N(EVS_NpcDefeat_HurtPlant),
+    .doAI = &EVS_NpcAI_HurtPlant,
+    .onInteract = &EVS_NpcInteract_HurtPlant,
+    .onDefeat = &EVS_NpcDefeat_HurtPlant,
 };
 
-AnimID N(LimitAnims_HurtPlant)[] = {
+AnimID LimitAnims_HurtPlant[] = {
     ANIM_HurtPlant_Still,
     ANIM_HurtPlant_Hiding,
     ANIM_HurtPlant_Idle,

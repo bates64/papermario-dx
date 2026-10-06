@@ -42,17 +42,15 @@ enum {
     MF_EitherSwitchPressed  = MapFlag(1),
 };
 
-#define NAMESPACE omo_03
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Scene_EnterSpring);
-extern EvtScript N(EVS_SetupGizmos);
-extern EvtScript N(EVS_SetupTrain);
-extern EvtScript N(EVS_Conductor_ChooseRoute);
-extern EvtScript N(EVS_Conductor_ResumeStuckTrain);
-extern EvtScript N(EVS_Scene_Epilogue);
-extern EvtScript N(EVS_Scene_TrainDropped);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(EpilogueNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Scene_EnterSpring;
+extern EvtScript EVS_SetupGizmos;
+extern EvtScript EVS_SetupTrain;
+extern EvtScript EVS_Conductor_ChooseRoute;
+extern EvtScript EVS_Conductor_ResumeStuckTrain;
+extern EvtScript EVS_Scene_Epilogue;
+extern EvtScript EVS_Scene_TrainDropped;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList EpilogueNPCs;

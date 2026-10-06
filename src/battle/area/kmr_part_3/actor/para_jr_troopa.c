@@ -232,19 +232,17 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-
 EvtScript N(EVS_Idle) = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVarA)
         IfFlag(LVarA, STATUS_FLAG_DIZZY | STATUS_FLAG_SLEEP)
             Call(SetTargetOffset, ACTOR_SELF, PRT_GROUND, -12, 28)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_GROUND, 4, -6)
-            Call(N(SetAbsoluteStatusOffsets), -25, 27, -1, 27)
+            Call(SetAbsoluteStatusOffsets, -25, 27, -1, 27)
         Else
             Call(SetTargetOffset, ACTOR_SELF, PRT_GROUND, -5, 33)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_GROUND, 0, -6)
-            Call(N(SetAbsoluteStatusOffsets), -22, 30, 2, 28)
+            Call(SetAbsoluteStatusOffsets, -22, 30, 2, 28)
         EndIf
         Wait(1)
         Goto(0)

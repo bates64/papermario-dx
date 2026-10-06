@@ -15,10 +15,8 @@ enum {
     NPC_Toad        = 0,
 };
 
-#define NAMESPACE osr_01
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PlaySong_Starship);
-extern EvtScript N(EVS_Scene_Wishing);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PlaySong_Starship;
+extern EvtScript EVS_Scene_Wishing;
+extern NpcGroupList DefaultNPCs;

@@ -6,17 +6,15 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-#define NAMESPACE world_watt
-
 void force_player_anim(AnimID);
-void N(sync_held_position)(void);
-void N(update_player_carry_anim)(void);
+void sync_held_position(void);
+void update_player_carry_anim(void);
 
-BSS b32 N(D_802BE300);
-BSS s32 N(AbilityState);
-BSS b32 N(D_802BE308);
-BSS b32 N(IsPlayerHolding);
-BSS EffectInstance* N(StaticEffect);
+BSS b32 D_802BE300;
+BSS s32 AbilityState;
+BSS b32 D_802BE308;
+BSS b32 IsPlayerHolding;
+BSS EffectInstance* StaticEffect;
 
 enum {
     // next two states lock input for a few frames, during which the ability can be canceled
@@ -28,32 +26,32 @@ enum {
     SHINING_STATE_RELEASE   = 2,
 };
 
-void N(create_static_effect)(Npc* npc) {
+void create_static_effect(Npc* npc) {
     if (!(npc->flags & NPC_FLAG_INVISIBLE)) {
-        if (N(StaticEffect) == nullptr) {
-            N(StaticEffect) = fx_static_status(0, npc->pos.x, npc->pos.y + 13.0f, npc->pos.z, 0.9f, 5, 0);
+        if (StaticEffect == nullptr) {
+            StaticEffect = fx_static_status(0, npc->pos.x, npc->pos.y + 13.0f, npc->pos.z, 0.9f, 5, 0);
         }
     }
 }
 
-void N(dispose_static_effect)(void) {
-    if (N(StaticEffect) != nullptr) {
-        N(StaticEffect)->data.staticStatus->timeLeft = 1;
-        N(StaticEffect) = nullptr;
+void dispose_static_effect(void) {
+    if (StaticEffect != nullptr) {
+        StaticEffect->data.staticStatus->timeLeft = 1;
+        StaticEffect = nullptr;
     }
 }
 
-s32 N(EffectAnimLengths)[] = { 24, 6 }; // second type is different from length in static_status.c (6 vs 12)
+s32 EffectAnimLengths[] = { 24, 6 }; // second type is different from length in static_status.c (6 vs 12)
 
-void N(reset_static_effect)(s32 type) {
-    EffectInstance* effect = N(StaticEffect);
+void reset_static_effect(s32 type) {
+    EffectInstance* effect = StaticEffect;
     StaticStatusFXData* part = effect->data.staticStatus;
     f32 invisTime;
     s32 count;
     s32 i;
 
     part->type = type;
-    invisTime = N(EffectAnimLengths)[type] * 0.5f;
+    invisTime = EffectAnimLengths[type] * 0.5f;
     count = effect->numParts - 1;
 
     part++;
@@ -62,17 +60,17 @@ void N(reset_static_effect)(s32 type) {
     }
 }
 
-void N(init)(Npc* npc) {
+void init(Npc* npc) {
     npc->collisionHeight = 24;
     npc->collisionDiameter = 24;
-    N(D_802BE308) = false;
-    N(D_802BE300) = false;
-    N(IsPlayerHolding) = false;
-    N(AbilityState) = SHINING_STATE_BEGIN;
-    N(StaticEffect) = nullptr;
+    D_802BE308 = false;
+    D_802BE300 = false;
+    IsPlayerHolding = false;
+    AbilityState = SHINING_STATE_BEGIN;
+    StaticEffect = nullptr;
 }
 
-API_CALLABLE(N(TakeOut)) {
+API_CALLABLE(TakeOut) {
     Npc* watt = script->owner2.npc;
 
     if (isInitialCall) {
@@ -87,17 +85,17 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldWatt_TakeOut = {
-    Call(N(TakeOut))
+    Call(TakeOut)
     Return
     End
 };
 
-BSS TweesterPhysics N(TweesterPhysicsData);
-TweesterPhysics* N(TweesterPhysicsPtr) = &N(TweesterPhysicsData);
+BSS TweesterPhysics TweesterPhysicsData;
+TweesterPhysics* TweesterPhysicsPtr = &TweesterPhysicsData;
 
-b32 N(WattIsMoving) = false;
+b32 WattIsMoving = false;
 
-API_CALLABLE(N(Update)) {
+API_CALLABLE(Update) {
     PlayerData* playerData = &gPlayerData;
     Npc* watt = script->owner2.npc;
     f32 sinAngle, cosAngle, liftoffVelocity;
@@ -106,7 +104,7 @@ API_CALLABLE(N(Update)) {
     if (!gPartnerStatus.shouldResumeAbility) {
         if (isInitialCall) {
             partner_flying_enable(watt, true);
-            mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
+            mem_clear(TweesterPhysicsPtr, sizeof(TweesterPhysics));
             TweesterTouchingPartner = nullptr;
         }
 
@@ -114,121 +112,121 @@ API_CALLABLE(N(Update)) {
         playerData->partnerUsedTime[PARTNER_WATT]++;
 
         if (entity == nullptr) {
-            N(create_static_effect)(watt);
+            create_static_effect(watt);
             partner_flying_update_player_tracking(watt);
             partner_flying_update_motion(watt);
             if (watt->moveSpeed != 0.0f) {
-                if (!N(WattIsMoving)) {
-                    N(WattIsMoving) = true;
-                    N(reset_static_effect)(1);
+                if (!WattIsMoving) {
+                    WattIsMoving = true;
+                    reset_static_effect(1);
                     watt->curAnim = ANIM_WorldWatt_Run;
                 }
             } else {
-                if (N(WattIsMoving)) {
-                    N(WattIsMoving) = false;
-                    N(reset_static_effect)(0);
+                if (WattIsMoving) {
+                    WattIsMoving = false;
+                    reset_static_effect(0);
                     watt->curAnim = ANIM_WorldWatt_Idle;
                 }
             }
-            if (N(StaticEffect) != nullptr) {
-                N(StaticEffect)->data.staticStatus->pos.x = watt->pos.x;
-                N(StaticEffect)->data.staticStatus->pos.y = watt->pos.y + 13.0f;
-                N(StaticEffect)->data.staticStatus->pos.z = watt->pos.z;
+            if (StaticEffect != nullptr) {
+                StaticEffect->data.staticStatus->pos.x = watt->pos.x;
+                StaticEffect->data.staticStatus->pos.y = watt->pos.y + 13.0f;
+                StaticEffect->data.staticStatus->pos.z = watt->pos.z;
             }
             return ApiStatus_BLOCK;
         }
 
-        switch (N(TweesterPhysicsPtr)->state) {
+        switch (TweesterPhysicsPtr->state) {
             case TWEESTER_PARTNER_INIT:
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_ATTRACT;
-                N(TweesterPhysicsPtr)->prevFlags = watt->flags;
-                N(TweesterPhysicsPtr)->radius = fabsf(dist2D(watt->pos.x, watt->pos.z, entity->pos.x, entity->pos.z));
-                N(TweesterPhysicsPtr)->angle = atan2(entity->pos.x, entity->pos.z, watt->pos.x, watt->pos.z);
-                N(TweesterPhysicsPtr)->angularVel = 6.0f;
-                N(TweesterPhysicsPtr)->liftoffVelPhase = 50.0f;
-                N(TweesterPhysicsPtr)->countdown = 120;
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_ATTRACT;
+                TweesterPhysicsPtr->prevFlags = watt->flags;
+                TweesterPhysicsPtr->radius = fabsf(dist2D(watt->pos.x, watt->pos.z, entity->pos.x, entity->pos.z));
+                TweesterPhysicsPtr->angle = atan2(entity->pos.x, entity->pos.z, watt->pos.x, watt->pos.z);
+                TweesterPhysicsPtr->angularVel = 6.0f;
+                TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
+                TweesterPhysicsPtr->countdown = 120;
                 watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
                 watt->flags &= ~NPC_FLAG_GRAVITY;
             case TWEESTER_PARTNER_ATTRACT:
-                sin_cos_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->angle), &sinAngle, &cosAngle);
-                watt->pos.x = entity->pos.x + (sinAngle * N(TweesterPhysicsPtr)->radius);
-                watt->pos.z = entity->pos.z - (cosAngle * N(TweesterPhysicsPtr)->radius);
-                N(TweesterPhysicsPtr)->angle = clamp_angle(N(TweesterPhysicsPtr)->angle - N(TweesterPhysicsPtr)->angularVel);
+                sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
+                watt->pos.x = entity->pos.x + (sinAngle * TweesterPhysicsPtr->radius);
+                watt->pos.z = entity->pos.z - (cosAngle * TweesterPhysicsPtr->radius);
+                TweesterPhysicsPtr->angle = clamp_angle(TweesterPhysicsPtr->angle - TweesterPhysicsPtr->angularVel);
 
-                if (N(TweesterPhysicsPtr)->radius > 20.0f) {
-                    N(TweesterPhysicsPtr)->radius--;
-                } else if (N(TweesterPhysicsPtr)->radius < 19.0f) {
-                    N(TweesterPhysicsPtr)->radius++;
+                if (TweesterPhysicsPtr->radius > 20.0f) {
+                    TweesterPhysicsPtr->radius--;
+                } else if (TweesterPhysicsPtr->radius < 19.0f) {
+                    TweesterPhysicsPtr->radius++;
                 }
 
-                liftoffVelocity = sin_rad(DEG_TO_RAD(N(TweesterPhysicsPtr)->liftoffVelPhase)) * 3.0f;
-                N(TweesterPhysicsPtr)->liftoffVelPhase += 3.0f;
+                liftoffVelocity = sin_rad(DEG_TO_RAD(TweesterPhysicsPtr->liftoffVelPhase)) * 3.0f;
+                TweesterPhysicsPtr->liftoffVelPhase += 3.0f;
 
-                if (N(TweesterPhysicsPtr)->liftoffVelPhase > 150.0f) {
-                    N(TweesterPhysicsPtr)->liftoffVelPhase = 150.0f;
+                if (TweesterPhysicsPtr->liftoffVelPhase > 150.0f) {
+                    TweesterPhysicsPtr->liftoffVelPhase = 150.0f;
                 }
 
                 watt->pos.y += liftoffVelocity;
-                watt->renderYaw = clamp_angle(360.0f - N(TweesterPhysicsPtr)->angle);
-                N(TweesterPhysicsPtr)->angularVel += 0.8;
+                watt->renderYaw = clamp_angle(360.0f - TweesterPhysicsPtr->angle);
+                TweesterPhysicsPtr->angularVel += 0.8;
 
-                if (N(TweesterPhysicsPtr)->angularVel > 40.0f) {
-                    N(TweesterPhysicsPtr)->angularVel = 40.0f;
+                if (TweesterPhysicsPtr->angularVel > 40.0f) {
+                    TweesterPhysicsPtr->angularVel = 40.0f;
                 }
 
-                N(TweesterPhysicsPtr)->countdown--;
-                if (N(TweesterPhysicsPtr)->countdown == 0) {
-                    N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_HOLD;
+                TweesterPhysicsPtr->countdown--;
+                if (TweesterPhysicsPtr->countdown == 0) {
+                    TweesterPhysicsPtr->state = TWEESTER_PARTNER_HOLD;
                 }
                 break;
             case TWEESTER_PARTNER_HOLD:
-                watt->flags = N(TweesterPhysicsPtr)->prevFlags;
-                N(TweesterPhysicsPtr)->countdown = 30;
-                N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_RELEASE;
+                watt->flags = TweesterPhysicsPtr->prevFlags;
+                TweesterPhysicsPtr->countdown = 30;
+                TweesterPhysicsPtr->state = TWEESTER_PARTNER_RELEASE;
                 break;
             case TWEESTER_PARTNER_RELEASE:
                 partner_flying_update_player_tracking(watt);
                 partner_flying_update_motion(watt);
-                N(TweesterPhysicsPtr)->countdown--;
-                if (N(TweesterPhysicsPtr)->countdown == 0) {
-                    N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+                TweesterPhysicsPtr->countdown--;
+                if (TweesterPhysicsPtr->countdown == 0) {
+                    TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
                     TweesterTouchingPartner = nullptr;
                 }
                 break;
         }
 
-        if (N(StaticEffect) != nullptr) {
-            N(StaticEffect)->data.staticStatus->pos.x = watt->pos.x;
-            N(StaticEffect)->data.staticStatus->pos.y = watt->pos.y + 13.0f;
-            N(StaticEffect)->data.staticStatus->pos.z = watt->pos.z;
+        if (StaticEffect != nullptr) {
+            StaticEffect->data.staticStatus->pos.x = watt->pos.x;
+            StaticEffect->data.staticStatus->pos.y = watt->pos.y + 13.0f;
+            StaticEffect->data.staticStatus->pos.z = watt->pos.z;
         }
     }
     return ApiStatus_BLOCK;
 }
 
 EvtScript EVS_WorldWatt_Update = {
-    Call(N(Update))
+    Call(Update)
     Return
     End
 };
 
-void N(try_cancel_tweester)(Npc* watt) {
+void try_cancel_tweester(Npc* watt) {
     if (TweesterTouchingPartner != nullptr) {
         TweesterTouchingPartner = nullptr;
-        watt->flags = N(TweesterPhysicsPtr)->prevFlags;
-        N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
+        watt->flags = TweesterPhysicsPtr->prevFlags;
+        TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking(watt);
     }
 }
 
-API_CALLABLE(N(UseAbility)) {
+API_CALLABLE(UseAbility) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
     Npc* npc = script->owner2.npc;
     s32 actionState;
 
     if (isInitialCall) {
-        N(try_cancel_tweester)(npc);
+        try_cancel_tweester(npc);
         if ((playerStatus->animFlags & PA_FLAG_CHANGING_MAP)) {
             return ApiStatus_DONE2;
         }
@@ -241,32 +239,32 @@ API_CALLABLE(N(UseAbility)) {
 
             if (gGameStatusPtr->keepUsingPartnerOnMapChange) {
                 if (playerStatus->animFlags & (PA_FLAG_USING_WATT | PA_FLAG_WATT_IN_HANDS)) {
-                    N(AbilityState) = SHINING_STATE_BEGIN;
+                    AbilityState = SHINING_STATE_BEGIN;
                 } else {
-                    N(AbilityState) = SHINING_STATE_INIT;
+                    AbilityState = SHINING_STATE_INIT;
                 }
             } else if (playerStatus->animFlags & PA_FLAG_USING_WATT) {
-                N(AbilityState) = SHINING_STATE_RELEASE;
+                AbilityState = SHINING_STATE_RELEASE;
             } else {
-                N(AbilityState) = SHINING_STATE_INIT;
+                AbilityState = SHINING_STATE_INIT;
             }
         } else {
             partnerStatus->shouldResumeAbility = false;
             playerStatus->animFlags |= (PA_FLAG_USING_WATT | PA_FLAG_WATT_IN_HANDS);
-            N(update_player_carry_anim)();
+            update_player_carry_anim();
             npc->curAnim = ANIM_WorldWatt_Idle;
-            N(AbilityState) = SHINING_STATE_HOLDING;
+            AbilityState = SHINING_STATE_HOLDING;
             script->functionTemp[1] = 2;
         }
     }
 
-    switch (N(AbilityState)) {
+    switch (AbilityState) {
         case SHINING_STATE_INIT:
             if (playerStatus->inputDisabledCount != 0) {
                 return ApiStatus_DONE2;
             }
             script->functionTemp[1] = 3;
-            N(AbilityState) = SHINING_STATE_DELAY;
+            AbilityState = SHINING_STATE_DELAY;
             script->functionTemp[2] = playerStatus->inputDisabledCount;
             break;
         case SHINING_STATE_DELAY:
@@ -278,18 +276,18 @@ API_CALLABLE(N(UseAbility)) {
                 ) {
                     return ApiStatus_DONE2;
                 }
-                N(AbilityState) = SHINING_STATE_BEGIN;
+                AbilityState = SHINING_STATE_BEGIN;
                 break;
             }
             script->functionTemp[1]--;
             break;
     }
 
-    switch (N(AbilityState)) {
+    switch (AbilityState) {
         case SHINING_STATE_BEGIN:
             if (gGameStatusPtr->keepUsingPartnerOnMapChange) {
                 playerStatus->animFlags |= PA_FLAG_USING_WATT;
-                N(IsPlayerHolding) = true;
+                IsPlayerHolding = true;
                 npc->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_FLYING;
                 npc->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
                 gGameStatusPtr->keepUsingPartnerOnMapChange = false;
@@ -303,13 +301,13 @@ API_CALLABLE(N(UseAbility)) {
                 npc->yaw = playerStatus->targetYaw;
                 npc->curAnim = ANIM_WorldWatt_Idle;
                 playerStatus->animFlags |= PA_FLAG_WATT_IN_HANDS;
-                N(update_player_carry_anim)();
+                update_player_carry_anim();
                 npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_WATT_IDLE);
                 script->functionTemp[1] = 2;
-                N(AbilityState) = SHINING_STATE_HOLDING;
+                AbilityState = SHINING_STATE_HOLDING;
             } else {
                 playerStatus->animFlags |= PA_FLAG_USING_WATT;
-                N(IsPlayerHolding) = true;
+                IsPlayerHolding = true;
                 npc->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
                 gGameStatusPtr->keepUsingPartnerOnMapChange = false;
                 partnerStatus->partnerActionState = PARTNER_ACTION_USE;
@@ -322,7 +320,7 @@ API_CALLABLE(N(UseAbility)) {
                 add_vec2D_polar(&npc->moveToPos.x, &npc->moveToPos.z, 15.0f, playerStatus->targetYaw);
                 npc->duration = 8;
                 npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
-                N(AbilityState)++; // SHINING_STATE_GATHER
+                AbilityState++; // SHINING_STATE_GATHER
             }
             break;
         case SHINING_STATE_GATHER:
@@ -335,13 +333,13 @@ API_CALLABLE(N(UseAbility)) {
                 npc->curAnim = ANIM_WorldWatt_Idle;
                 partnerStatus->actingPartner = PARTNER_WATT;
                 playerStatus->animFlags |= PA_FLAG_WATT_IN_HANDS;
-                N(update_player_carry_anim)();
+                update_player_carry_anim();
                 script->functionTemp[1] = 2;
-                N(AbilityState) = SHINING_STATE_HOLDING;
+                AbilityState = SHINING_STATE_HOLDING;
             }
             break;
         case SHINING_STATE_HOLDING:
-            N(sync_held_position)();
+            sync_held_position();
 #if VERSION_JP
             // wait for begin holding cooldown
             if (script->functionTemp[1] != 0) {
@@ -364,11 +362,11 @@ API_CALLABLE(N(UseAbility)) {
                 playerStatus->animFlags &= ~(PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
                 npc->curAnim = ANIM_WorldWatt_Idle;
                 partner_clear_player_tracking(npc);
-                N(IsPlayerHolding) = false;
+                IsPlayerHolding = false;
                 partnerStatus->actingPartner = PARTNER_NONE;
                 partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
                 gGameStatusPtr->keepUsingPartnerOnMapChange = false;
-                N(AbilityState) = SHINING_STATE_BEGIN;
+                AbilityState = SHINING_STATE_BEGIN;
                 npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_NONE);
                 if (!(playerStatus->flags & PS_FLAG_HIT_FIRE)) {
                     set_action_state(ACTION_STATE_IDLE);
@@ -380,7 +378,7 @@ API_CALLABLE(N(UseAbility)) {
 #else
             // immediately cancel state on touching fire
             if ((playerStatus->flags & PS_FLAG_HIT_FIRE)) {
-                N(AbilityState) = SHINING_STATE_RELEASE;
+                AbilityState = SHINING_STATE_RELEASE;
                 break;
             }
             if (playerStatus->actionState == ACTION_STATE_USE_SPINNING_FLOWER) {
@@ -399,22 +397,22 @@ API_CALLABLE(N(UseAbility)) {
                     || actionState == ACTION_STATE_LAND)
                 && partnerStatus->pressedButtons & BUTTON_B
             ) {
-                N(AbilityState) = SHINING_STATE_RELEASE;
+                AbilityState = SHINING_STATE_RELEASE;
             }
 #endif
             break;
     }
 
 #if !VERSION_JP
-    if (N(AbilityState) == SHINING_STATE_RELEASE) {
+    if (AbilityState == SHINING_STATE_RELEASE) {
         playerStatus->animFlags &= ~(PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
         npc->curAnim = ANIM_WorldWatt_Idle;
         partner_clear_player_tracking(npc);
-        N(IsPlayerHolding) = false;
+        IsPlayerHolding = false;
         partnerStatus->actingPartner = PARTNER_NONE;
         partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
         gGameStatusPtr->keepUsingPartnerOnMapChange = false;
-        N(AbilityState) = SHINING_STATE_BEGIN;
+        AbilityState = SHINING_STATE_BEGIN;
         npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_NONE);
         if (!(playerStatus->flags & PS_FLAG_HIT_FIRE)) {
             set_action_state(ACTION_STATE_IDLE);
@@ -423,27 +421,27 @@ API_CALLABLE(N(UseAbility)) {
     }
 #endif
 
-    if (N(StaticEffect) != nullptr) {
-        N(StaticEffect)->data.staticStatus->pos.x = npc->pos.x;
-        N(StaticEffect)->data.staticStatus->pos.y = npc->pos.y + 13.0f;
-        N(StaticEffect)->data.staticStatus->pos.z = npc->pos.z;
+    if (StaticEffect != nullptr) {
+        StaticEffect->data.staticStatus->pos.x = npc->pos.x;
+        StaticEffect->data.staticStatus->pos.y = npc->pos.y + 13.0f;
+        StaticEffect->data.staticStatus->pos.z = npc->pos.z;
     }
     return ApiStatus_BLOCK;
 }
 
 EvtScript EVS_WorldWatt_UseAbility = {
-    Call(N(UseAbility))
+    Call(UseAbility)
     Return
     End
 };
 
-API_CALLABLE(N(PutAway)) {
+API_CALLABLE(PutAway) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
     Npc* watt = script->owner2.npc;
 
     if (isInitialCall) {
-        N(dispose_static_effect)();
+        dispose_static_effect();
         partner_init_put_away(watt);
         force_player_anim(ANIM_Mario1_Idle);
         partnerStatus->actingPartner = PARTNER_NONE;
@@ -460,34 +458,34 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldWatt_PutAway = {
-    Call(N(PutAway))
+    Call(PutAway)
     Return
     End
 };
 
-void N(pre_battle)(Npc* watt) {
+void pre_battle(Npc* watt) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
-    if (N(IsPlayerHolding)) {
+    if (IsPlayerHolding) {
         partnerStatus->npc = *watt;
         partnerStatus->shouldResumeAbility = true;
         partner_clear_player_tracking(watt);
     }
 
-    N(dispose_static_effect)();
+    dispose_static_effect();
 }
 
-void N(post_battle)(Npc* watt) {
+void post_battle(Npc* watt) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
     if (partnerStatus->shouldResumeAbility) {
         *watt = partnerStatus->npc;
         partner_use_ability();
-        N(create_static_effect)(watt);
+        create_static_effect(watt);
     }
 }
 
-API_CALLABLE(N(EnterMap)) {
+API_CALLABLE(EnterMap) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* watt = get_npc_unsafe(NPC_PARTNER);
@@ -500,9 +498,9 @@ API_CALLABLE(N(EnterMap)) {
         case 0:
             if (script->varTable[12] == 0) {
                 partner_kill_ability_script();
-                N(dispose_static_effect)();
+                dispose_static_effect();
             } else {
-                N(create_static_effect)(watt);
+                create_static_effect(watt);
             }
 
             script->functionTemp[1] = script->varTable[4];
@@ -510,18 +508,18 @@ API_CALLABLE(N(EnterMap)) {
                     script->varTable[1], script->varTable[3]);
             playerStatus->heading = playerStatus->targetYaw;
             move_player(script->functionTemp[1], playerStatus->heading, script->varTableF[5]);
-            N(sync_held_position)();
+            sync_held_position();
             watt->flags &= ~NPC_FLAG_GRAVITY;
             watt->flags |= NPC_FLAG_IGNORE_CHAR_COLLISION;
             playerStatus->animFlags |= (PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
             gGameStatusPtr->keepUsingPartnerOnMapChange = true;
             partnerStatus->partnerActionState = PARTNER_ACTION_WATT_SHINE;
             partnerStatus->actingPartner = PARTNER_WATT;
-            N(D_802BE308) = false;
+            D_802BE308 = false;
             script->functionTemp[0]++;
             break;
         case 1:
-            N(sync_held_position)();
+            sync_held_position();
             script->functionTemp[1]--;
             if (script->functionTemp[1] == 0) {
                 if (script->varTable[12]) {
@@ -535,7 +533,7 @@ API_CALLABLE(N(EnterMap)) {
     return ApiStatus_BLOCK;
 }
 
-void N(update_player_carry_anim)(void) {
+void update_player_carry_anim(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 currentSpeed = playerStatus->curSpeed;
     AnimID anim;
@@ -550,7 +548,7 @@ void N(update_player_carry_anim)(void) {
     suggest_player_anim_allow_backward(anim);
 }
 
-void N(sync_held_position)(void) {
+void sync_held_position(void) {
     Npc* partnerNPC;
     Npc* newVar2;
     Camera* camera = gCameras;
@@ -596,22 +594,22 @@ void N(sync_held_position)(void) {
 }
 
 EvtScript EVS_WorldWatt_EnterMap = {
-    Call(N(EnterMap))
+    Call(EnterMap)
     Return
     End
 };
 
 WORLD_PARTNER_ENTRY = {
     .isFlying = true,
-    .init = N(init),
+    .init = init,
     .takeOut = &EVS_WorldWatt_TakeOut,
     .update = &EVS_WorldWatt_Update,
     .useAbility = &EVS_WorldWatt_UseAbility,
     .putAway = &EVS_WorldWatt_PutAway,
     .idle = ANIM_WorldWatt_Idle,
     .canPlayerOpenMenus = world_partner_can_open_menus_default,
-    .preBattle = N(pre_battle),
-    .postBattle = N(post_battle),
+    .preBattle = pre_battle,
+    .postBattle = post_battle,
     .onEnterMap = &EVS_WorldWatt_EnterMap,
-    .syncPlayerPosition = N(sync_held_position),
+    .syncPlayerPosition = sync_held_position,
 };

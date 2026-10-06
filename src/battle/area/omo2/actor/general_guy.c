@@ -447,7 +447,7 @@ EvtScript N(EVS_Attack_ShootLightning) = {
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 30)
     Thread
-        Call(N(FadeBackgroundDarken))
+        Call(DarkenBackground)
     EndThread
     Call(GetModelCenter, MODEL_kyu3)
     Thread
@@ -490,7 +490,7 @@ EvtScript N(EVS_Attack_ShootLightning) = {
             IfTrue(LVar0)
                 Call(SetDarknessMode, BTL_DARKNESS_MODE_3)
             EndIf
-            Call(N(FadeBackgroundLighten))
+            Call(LightenBackground)
             Call(SetAnimation, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_Idle)
             Call(SetPartFlagBits, ACTOR_GENERAL, PRT_MAIN, ACTOR_PART_FLAG_INVISIBLE, true)
             Call(PlayModelAnimation, 0, Ref(AS_ToyTank_CloseHatch))
@@ -519,7 +519,7 @@ EvtScript N(EVS_Attack_ShootLightning) = {
             IfTrue(LVar0)
                 Call(SetDarknessMode, BTL_DARKNESS_MODE_3)
             EndIf
-            Call(N(FadeBackgroundLighten))
+            Call(LightenBackground)
             Call(SetAnimation, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_Idle)
             Call(SetPartFlagBits, ACTOR_GENERAL, PRT_MAIN, ACTOR_PART_FLAG_INVISIBLE, true)
             Call(PlayModelAnimation, 0, Ref(AS_ToyTank_CloseHatch))
@@ -567,7 +567,7 @@ EvtScript N(EVS_Attack_ShootLightning) = {
     IfTrue(LVar0)
         Call(SetDarknessMode, BTL_DARKNESS_MODE_3)
     EndIf
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Call(SetAnimation, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_Idle)
     Call(SetPartFlagBits, ACTOR_GENERAL, PRT_MAIN, ACTOR_PART_FLAG_INVISIBLE, true)
     Call(PlayModelAnimation, 0, Ref(AS_ToyTank_CloseHatch))

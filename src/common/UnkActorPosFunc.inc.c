@@ -1,6 +1,8 @@
+#pragma once
+
 #include "battle/battle.h"
 
-API_CALLABLE(N(UnkActorPosFunc)) {
+static API_CALLABLE(UnkActorPosFunc) {
     Actor* actor = get_actor(script->owner1.actorID);
     ActorState* actorState = &actor->state;
 

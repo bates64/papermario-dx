@@ -1,12 +1,12 @@
 #include "hos_03.h"
 
-EvtScript N(EVS_SetDoorRot_House) = {
+EvtScript EVS_SetDoorRot_House = {
     Call(RotateGroup, MODEL_g54, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_House) = {
+EvtScript EVS_SetWallRot_House = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(-1.0))
     Call(RotateGroup, MODEL_g71, LVar1, 0, 0, 1)
@@ -20,19 +20,19 @@ EvtScript N(EVS_SetWallRot_House) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_House) = {
+EvtScript EVS_DropDoor_House = {
     Call(RotateGroup, MODEL_g54, LVar0, 1, 0, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Shop) = {
+EvtScript EVS_SetDoorRot_Shop = {
     Call(RotateGroup, MODEL_g42, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Shop) = {
+EvtScript EVS_SetWallRot_Shop = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(-1.0))
     Call(RotateGroup, MODEL_g64, LVar1, 0, 0, 1)
@@ -46,18 +46,18 @@ EvtScript N(EVS_SetWallRot_Shop) = {
     End
 };
 
-s32 N(InteriorNPCs_Shop)[] = {
+s32 InteriorNPCs_Shop[] = {
     NPC_StarMan_ShopOwner,
     -1
 };
 
-EvtScript N(EVS_SetDoorRot_ToadHouse) = {
+EvtScript EVS_SetDoorRot_ToadHouse = {
     Call(RotateGroup, MODEL_g33, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_ToadHouse) = {
+EvtScript EVS_SetWallRot_ToadHouse = {
     Set(LVar1, LVar0)
     MulF(LVar1, Float(-1.0))
     Call(RotateGroup, MODEL_g58, LVar1, 0, 0, 1)
@@ -77,18 +77,18 @@ EvtScript N(EVS_SetWallRot_ToadHouse) = {
     End
 };
 
-s32 N(InteriorNPCs_ToadHouse)[] = {
+s32 InteriorNPCs_ToadHouse[] = {
     NPC_StarMan_ToadHouse,
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     // house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_House)),
-        Ref(N(EVS_SetWallRot_House)),
-        Ref(N(EVS_DropDoor_House)),
+        Ref(EVS_SetDoorRot_House),
+        Ref(EVS_SetWallRot_House),
+        Ref(EVS_DropDoor_House),
         nullptr,
         COLLIDER_o99,
         COLLIDER_o184,
@@ -97,25 +97,25 @@ EvtScript N(EVS_SetupRooms) = {
     // shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_Shop)),
-        Ref(N(EVS_SetWallRot_Shop)),
+        Ref(EVS_SetDoorRot_Shop),
+        Ref(EVS_SetWallRot_Shop),
         nullptr,
         nullptr,
         COLLIDER_o72,
         COLLIDER_o185,
         MODEL_o76,
-        Ref(N(InteriorNPCs_Shop)))
+        Ref(InteriorNPCs_Shop))
     // toad house
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_ToadHouse)),
-        Ref(N(EVS_SetWallRot_ToadHouse)),
+        Ref(EVS_SetDoorRot_ToadHouse),
+        Ref(EVS_SetWallRot_ToadHouse),
         nullptr,
         nullptr,
         COLLIDER_o100,
         COLLIDER_o186,
         MODEL_o76,
-        Ref(N(InteriorNPCs_ToadHouse)))
+        Ref(InteriorNPCs_ToadHouse))
     Return
     End
 };

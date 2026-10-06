@@ -5,7 +5,7 @@
 
 extern s16 Entity_ScriptSpring_AnimLaunch[];
 
-API_CALLABLE(N(PlaySpringAnimation)) {
+API_CALLABLE(PlaySpringAnimation) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
 
@@ -17,7 +17,7 @@ API_CALLABLE(N(PlaySpringAnimation)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_BreakBlock_DropSpring) = {
+EvtScript EVS_BreakBlock_DropSpring = {
     IfEq(GF_TIK05_SpringBrick, true)
         Return
     EndIf
@@ -46,20 +46,20 @@ EvtScript N(EVS_BreakBlock_DropSpring) = {
     EndLoop
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
     Call(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
-    Call(N(PlaySpringAnimation), MV_EntityID_Spring)
+    Call(PlaySpringAnimation, MV_EntityID_Spring)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_OpenChest) = EVT_OPEN_CHEST(ITEM_POWER_SMASH, GF_TIK05_Chest_PowerSmash);
+EvtScript EVS_OpenChest = EVT_OPEN_CHEST(ITEM_POWER_SMASH, GF_TIK05_Chest_PowerSmash);
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Chest), -185, 60, -25, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_TIK05_Chest_PowerSmash)
-    Call(AssignScript, Ref(N(EVS_OpenChest)))
+    Call(AssignScript, Ref(EVS_OpenChest))
     Call(MakeEntity, Ref(Entity_BrickBlock), 25, 50, 0, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_BreakBlock_DropSpring)))
+    Call(AssignScript, Ref(EVS_BreakBlock_DropSpring))
     IfEq(GF_TIK05_SpringBrick, false)
         Call(MakeEntity, Ref(Entity_SimpleSpring), 25, 75, 0, 0, 100, MAKE_ENTITY_END)
         Set(MV_EntityID_Spring, LVar0)

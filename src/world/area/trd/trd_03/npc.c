@@ -1,16 +1,16 @@
 #include "trd_03.h"
 
-extern EvtScript N(EVS_StartKoopaBrosTheme);
-extern EvtScript N(EVS_EndKoopaBrosTheme);
-extern EvtScript N(EVS_EnterMap);
+extern EvtScript EVS_StartKoopaBrosTheme;
+extern EvtScript EVS_EndKoopaBrosTheme;
+extern EvtScript EVS_EnterMap;
 
 #include "world/common/enemy/KoopaTroopa/wander.inc.c"
 #include "world/common/enemy/KoopaBros/idle.inc.c"
 #include "world/common/enemy/Bobomb/wander.inc.c"
 
-EvtScript N(EVS_Scene_GreenKoopaBros) = {
+EvtScript EVS_Scene_GreenKoopaBros = {
     Call(DisablePlayerInput, true)
-    Exec(N(EVS_StartKoopaBrosTheme))
+    Exec(EVS_StartKoopaBrosTheme)
     Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -720, 0, 75)
     Call(SetPlayerPos, -700, 0, 80)
@@ -79,7 +79,7 @@ EvtScript N(EVS_Scene_GreenKoopaBros) = {
     EndIf
     Call(EnablePartnerAI)
     Call(SetPlayerPos, -647, 0, 80)
-    ExecWait(N(EVS_EnterMap))
+    ExecWait(EVS_EnterMap)
     Call(InterpNpcYaw, NPC_KoopaBros, 270, 5)
     Call(SetNpcImgFXParams, NPC_KoopaBros, IMGFX_SET_ANIM, IMGFX_ANIM_STARTLE, 2, 1, 0)
     Call(SetNpcAnimation, NPC_KoopaBros, ANIM_KoopaBros_Green_Shock)
@@ -102,12 +102,12 @@ EvtScript N(EVS_Scene_GreenKoopaBros) = {
     Set(GB_StoryProgress, STORY_CH1_KOOPA_BROS_HID_KEY)
     Call(RemoveNpc, NPC_KoopaBros)
     Call(DisablePlayerInput, false)
-    Exec(N(EVS_EndKoopaBrosTheme))
+    Exec(EVS_EndKoopaBrosTheme)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaBros) = {
+EvtScript EVS_NpcInit_KoopaBros = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_HID_KEY)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -115,7 +115,7 @@ EvtScript N(EVS_NpcInit_KoopaBros) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
+EvtScript EVS_NpcIdle_KoopaTroopa_01 = {
     Label(0)
     Wait(1)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPA_BROS_HID_KEY)
@@ -124,18 +124,18 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaTroopa_Walk)
     Wait(10)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_KoopaTroopa_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa_01) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa_01)))
+EvtScript EVS_NpcInit_KoopaTroopa_01 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_KoopaTroopa_02) = {
+EvtScript EVS_NpcIdle_KoopaTroopa_02 = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Wait(1)
@@ -161,29 +161,29 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa_02) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(NpcMoveTo, NPC_SELF, 105, 10, 0)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaTroopa_Walk)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_KoopaTroopa_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa_02) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa_02)))
+EvtScript EVS_NpcInit_KoopaTroopa_02 = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_02))
     Return
     End
 };
 
-NpcData N(NpcData_KoopaBros) = {
+NpcData NpcData_KoopaBros = {
     .id = NPC_KoopaBros,
     .pos = { -569.0f, 0.0f, -57.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_KoopaBros),
-    .settings = &N(NpcSettings_KoopaBros),
+    .init = &EVS_NpcInit_KoopaBros,
+    .settings = &NpcSettings_KoopaBros,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = GREEN_KOOPA_BROS_ANIMS,
 };
 
-NpcData N(NpcData_KoopaTroopa_01) = {
+NpcData NpcData_KoopaTroopa_01 = {
     .id = NPC_KoopaTroopa_01,
     .pos = { -520.0f, 0.0f, 15.0f },
     .yaw = 90,
@@ -199,15 +199,15 @@ NpcData N(NpcData_KoopaTroopa_01) = {
             .detectSize = { 350 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa_01),
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa_01,
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_TRD_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_KoopaTroopa_02) = {
+NpcData NpcData_KoopaTroopa_02 = {
     .id = NPC_KoopaTroopa_02,
     .pos = { -52.0f, 0.0f, -21.0f },
     .yaw = 90,
@@ -223,15 +223,15 @@ NpcData N(NpcData_KoopaTroopa_02) = {
             .detectSize = { 350 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa_02),
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa_02,
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_TRD_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_KoopaTroopa_03) = {
+NpcData NpcData_KoopaTroopa_03 = {
     .id = NPC_KoopaTroopa_03,
     .pos = { 375.0f, 0.0f, 15.0f },
     .yaw = 270,
@@ -247,17 +247,17 @@ NpcData N(NpcData_KoopaTroopa_03) = {
             .detectSize = { 350 },
         }
     },
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_TRD_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaBros), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_01),
-    NPC_GROUP(N(NpcData_KoopaTroopa_01), BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_01),
-    NPC_GROUP(N(NpcData_KoopaTroopa_02), BTL_TRD_1_FORMATION_04, BTL_TRD_1_STAGE_01),
-    NPC_GROUP(N(NpcData_KoopaTroopa_03), BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaBros, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_01),
+    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_01),
+    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_TRD_1_FORMATION_04, BTL_TRD_1_STAGE_01),
+    NPC_GROUP(NpcData_KoopaTroopa_03, BTL_TRD_1_FORMATION_03, BTL_TRD_1_STAGE_01),
     {}
 };

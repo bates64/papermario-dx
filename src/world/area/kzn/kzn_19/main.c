@@ -3,7 +3,7 @@
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
 
-EvtScript N(EVS_TrySpawningStarCard) = {
+EvtScript EVS_TrySpawningStarCard = {
     // determine if card should be spawned
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_KOLORADO_IN_TREASURE_ROOM)
@@ -29,14 +29,14 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(SetPanTarget, CAM_DEFAULT, 185, 55, -30)
         EVT_SPIRIT_ADJUST_CAM(10000)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(N(InitSpiritCardSpawn), MV_SpiritCardData, 4, 180, 304, 15, -54, 185, 110, -30, 55, 25)
+        Call(InitSpiritCardSpawn, MV_SpiritCardData, 4, 180, 304, 15, -54, 185, 110, -30, 55, 25)
         Thread
-            Call(N(UpdateSpiritCardSpawn))
+            Call(UpdateSpiritCardSpawn)
         EndThread
         Thread
             Wait(1)
             Call(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
-            Call(N(AwaitSpiritOrbBurst))
+            Call(AwaitSpiritOrbBurst)
             Call(StopSound, SOUND_LOOP_STAR_ORB_RISING)
             Call(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 185, 110, -30)
         EndThread
@@ -49,7 +49,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
             Wait(115)
             Call(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 185, 110, -30)
         EndThread
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_FALLING)
         Thread
             Wait(80)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -57,7 +57,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Add(LVar1, 100)
         Call(SetCamDistance, CAM_DEFAULT, LVar1)
         Call(SetPanTarget, CAM_DEFAULT, 185, 25, -30)
-        Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_DONE_FALLING)
+        Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_DONE_FALLING)
         Call(GetPlayerPos, LVar2, LVar3, LVar4)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
@@ -67,14 +67,14 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(DisablePlayerInput, false)
     Else
         // just make the card spawn
-        Call(N(SpawnExistingSpiritCard), 4, 185, 55, -30, 25)
+        Call(SpawnExistingSpiritCard, 4, 185, 55, -30, 25)
         Thread
-            Call(N(UpdateExistingSpiritCard))
+            Call(UpdateExistingSpiritCard)
         EndThread
         Wait(1)
     EndIf
     // wait for pickup
-    Call(N(AwaitSpiritCardProgress), SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
+    Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_4, TRANSITION_GET_STAR_CARD)
@@ -83,19 +83,19 @@ EvtScript N(EVS_TrySpawningStarCard) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_kzn_18_1) = EVT_EXIT_WALK(60, kzn_19_ENTRY_0, "kzn_18", kzn_18_ENTRY_1);
-EvtScript N(EVS_ExitWalk_kzn_18_2) = EVT_EXIT_WALK(60, kzn_19_ENTRY_1, "kzn_18", kzn_18_ENTRY_2);
-EvtScript N(EVS_ExitWalk_kzn_20_0) = EVT_EXIT_WALK(60, kzn_19_ENTRY_2, "kzn_20", kzn_20_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_18_1 = EVT_EXIT_WALK(60, kzn_19_ENTRY_0, "kzn_18", kzn_18_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_18_2 = EVT_EXIT_WALK(60, kzn_19_ENTRY_1, "kzn_18", kzn_18_ENTRY_2);
+EvtScript EVS_ExitWalk_kzn_20_0 = EVT_EXIT_WALK(60, kzn_19_ENTRY_2, "kzn_20", kzn_20_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kzn_18_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kzn_18_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kzn_20_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kzn_18_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kzn_18_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kzn_20_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetupTexPan) = {
+EvtScript EVS_SetupTexPan = {
     // lava surfaces
     Call(SetTexPanner, MODEL_yougan1_1, TEX_PANNER_2)
     Thread
@@ -154,7 +154,7 @@ EvtScript N(EVS_SetupTexPan) = {
     End
 };
 
-EvtScript N(EVS_UpdateLavaWaves) = {
+EvtScript EVS_UpdateLavaWaves = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Loop(0)
         Call(MakeLerp, 0, 180, 40, EASING_COS_IN)
@@ -184,25 +184,25 @@ EvtScript N(EVS_UpdateLavaWaves) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_19)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kzn_19_ENTRY_3)
-        Call(MakeNpcs, true, Ref(N(EscapeNPCs)))
+        Call(MakeNpcs, true, Ref(EscapeNPCs))
     Else
-        Call(MakeNpcs, true, Ref(N(BossNPCs)))
+        Call(MakeNpcs, true, Ref(BossNPCs))
     EndIf
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kzn_19_ENTRY_3)
         Thread
-            ExecWait(N(EVS_Misstar_Escape))
-            Exec(N(EVS_BindExitTriggers))
+            ExecWait(EVS_Misstar_Escape)
+            Exec(EVS_BindExitTriggers)
         EndThread
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
         Wait(1)
     EndIf
@@ -223,11 +223,11 @@ EvtScript N(EVS_Main) = {
             Call(EnableGroup, MODEL_naka, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mae, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Exec(N(EVS_SetupTexPan))
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_UpdateLavaWaves))
-    Exec(N(EVS_UpdateEruption))
-    Exec(N(EVS_TrySpawningStarCard))
+    Exec(EVS_SetupTexPan)
+    Exec(EVS_SetupMusic)
+    Exec(EVS_UpdateLavaWaves)
+    Exec(EVS_UpdateEruption)
+    Exec(EVS_TrySpawningStarCard)
     Return
     End
 };

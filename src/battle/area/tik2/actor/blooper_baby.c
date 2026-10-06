@@ -1,6 +1,5 @@
 #include "../area.h"
 #include "sprite/npc/BabyBlooper.h"
-#include "battle/action_cmd/stop_leech.h"
 #include "sprite/player.h"
 
 #define NAMESPACE A(blooper_baby)
@@ -215,14 +214,13 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 25 },
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 #include "common/SpawnEnemyDrainFX.inc.c"
 
 EvtScript N(EVS_Init) = {
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BABY_BLOOPER_MOVE)
-    Call(N(StartRumbleWithParams), 80, 20)
+    Call(StartRumbleWithParams, 80, 20)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BabyBlooper_Still)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BabyBlooper_Idle)
     Call(GetActorPos, ACTOR_ENEMY0, LVar0, LVar1, LVar2)
@@ -235,7 +233,7 @@ EvtScript N(EVS_Init) = {
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(FlyToGoal, ACTOR_SELF, 8, 0, EASING_LINEAR)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BABY_BLOOPER_MOVE)
-    Call(N(StartRumbleWithParams), 80, 20)
+    Call(StartRumbleWithParams, 80, 20)
     Call(GetActorVar, ACTOR_SELF, AVAR_HomePosX, LVar0)
     Call(GetActorVar, ACTOR_SELF, AVAR_HomePosY, LVar1)
     Call(GetActorVar, ACTOR_SELF, AVAR_HomePosZ, LVar2)
@@ -576,11 +574,11 @@ EvtScript N(EVS_TakeTurn) = {
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEART_BOUNCE)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar1, 10)
-            Call(N(SpawnDrainHealthStartFX), LVar0, LVar1, LVar2, LVar3)
+            Call(SpawnDrainHealthStartFX, LVar0, LVar1, LVar2, LVar3)
             Thread
                 Wait(15)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_STAR_BOUNCE_A)
-                Call(N(SpawnDrainHealthContinueFX), LVar0, LVar1, LVar2, LVar3)
+                Call(SpawnDrainHealthContinueFX, LVar0, LVar1, LVar2, LVar3)
             EndThread
             Add(LVar0, 20)
             Add(LVar1, 20)

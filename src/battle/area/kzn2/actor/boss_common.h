@@ -1,7 +1,7 @@
 #ifndef _LAVA_PIRANHA_COMMON_H_
 #define _LAVA_PIRANHA_COMMON_H_
 
-enum N(BattleCommon) {
+enum BattleCommon {
     ACTOR_BOSS          = ACTOR_ENEMY0,
     ACTOR_BUD_1         = ACTOR_ENEMY1,
     ACTOR_BUD_2         = ACTOR_ENEMY2,
@@ -25,7 +25,7 @@ enum N(BattleCommon) {
 };
 
 // state for piranha plant and buds during the second phase
-enum N(PiranhaState) {
+enum PiranhaState {
     PIRANHA_STATE_STUNNED   = 0,
     PIRANHA_STATE_FIERY     = 1,
     PIRANHA_STATE_DEAD      = 2, // used by buds when HP = 0
@@ -40,7 +40,7 @@ enum {
     SHATTER_GROUND  = 4, // animator ID for ground crack and shattering animation
 };
 
-enum N(VineAnims) {
+enum VineAnims {
     // VINE_0
     VINE_ANIM_BOSS_IDLE                 = 0,
     VINE_ANIM_BOSS_TWITCH               = 1, // slight sway while stunned

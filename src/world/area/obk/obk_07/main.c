@@ -1,6 +1,6 @@
 #include "obk_07.h"
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Set(LVar2, MODEL_door_1)
     Set(LVar4, MODEL_door1b)
@@ -10,20 +10,20 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_obk_01_3) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_07_ENTRY_0, "obk_01", obk_01_ENTRY_3,
+EvtScript EVS_ExitDoors_obk_01_3 = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_07_ENTRY_0, "obk_01", obk_01_ENTRY_3,
     COLLIDER_tt1, MODEL_door_1, MODEL_door1b, DOOR_SWING_OUT);
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupFireplace))
-    Exec(N(EVS_SetupPhonograph))
-    BindTrigger(Ref(N(EVS_ExitDoors_obk_01_3)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupMusic))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupFireplace)
+    Exec(EVS_SetupPhonograph)
+    BindTrigger(Ref(EVS_ExitDoors_obk_01_3), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupMusic)
     Call(SetTexPanner, MODEL_ma, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)

@@ -5,14 +5,14 @@
 
 extern HudScript HES_SlowlyMashAButton;
 
-extern EvtScript N(EVS_UpdateGuardBoo);
-extern EvtScript N(EVS_DummyUpdateGuardBoo);
-extern EvtScript N(EVS_GuardBoo_ReturnToPost);
-extern EvtScript N(EVS_NpcAI_GuardBoo_Wary);
+extern EvtScript EVS_UpdateGuardBoo;
+extern EvtScript EVS_DummyUpdateGuardBoo;
+extern EvtScript EVS_GuardBoo_ReturnToPost;
+extern EvtScript EVS_NpcAI_GuardBoo_Wary;
 
-ITEM_LIST(N(RecordList), ITEM_BOO_RECORD);
+ITEM_LIST(RecordList, ITEM_BOO_RECORD);
 
-s32 N(SongList)[] = {
+s32 SongList[] = {
     SONG_PHONOGRAPH_MUSIC,
     SONG_TOAD_TOWN,
 };
@@ -55,16 +55,16 @@ enum {
     PHONOGRAPH_HUD_STATE_FINAL      = 11,   // final state used during minigame
 };
 
-API_CALLABLE(N(CreatePhonographData)) {
+API_CALLABLE(CreatePhonographData) {
     evt_set_variable(script, MV_PhonographDataPtr, (s32) heap_malloc(sizeof(PhonographData)));
     return ApiStatus_DONE2;
 }
 
-PhonographData* N(GetPhonographData)(void) {
+PhonographData* GetPhonographData(void) {
     return (PhonographData*) evt_get_variable(nullptr, MV_PhonographDataPtr);
 }
 
-u8 N(mashMeter_bgColors)[] = {
+u8 phonographMeter_bgColors[] = {
      33,  33, 117,
      29,  35, 163,
      70,  12, 180,
@@ -72,7 +72,7 @@ u8 N(mashMeter_bgColors)[] = {
     115,  13,  19,
 };
 
-u8 N(mashMeter_fillColors)[] = {
+u8 phonographMeter_fillColors[] = {
       0, 228, 134,
      46, 180, 242,
     117, 112, 255,
@@ -80,7 +80,7 @@ u8 N(mashMeter_fillColors)[] = {
     247,  13,   5,
 };
 
-u8 N(mashMeter_cutOffColors)[] = {
+u8 phonographMeter_cutOffColors[] = {
      45,  56, 210,
      84,  40, 209,
     125,  44, 181,
@@ -89,8 +89,8 @@ u8 N(mashMeter_cutOffColors)[] = {
 };
 
 // similar to draw_mash_meter
-void N(DrawMashMeter)(s32 posX, s32 posY, s32 fillValue) {
-    PhonographData* data = N(GetPhonographData)();
+void DrawMashMeter(s32 posX, s32 posY, s32 fillValue) {
+    PhonographData* data = GetPhonographData();
     s32 maxCutoff;
     s32 width;
     s32 i;
@@ -127,24 +127,24 @@ void N(DrawMashMeter)(s32 posX, s32 posY, s32 fillValue) {
     for (i = 0; i < data->mashMeterIntervals; i++) {
         cutOff = data->mashMeterDividers[i + 1];
         width = cutOff * 60 / maxCutoff - offsetX;
-        r = N(mashMeter_bgColors)[i * 3 + 0];
-        g = N(mashMeter_bgColors)[i * 3 + 1];
-        b = N(mashMeter_bgColors)[i * 3 + 2];
+        r = phonographMeter_bgColors[i * 3 + 0];
+        g = phonographMeter_bgColors[i * 3 + 1];
+        b = phonographMeter_bgColors[i * 3 + 2];
         startup_draw_prim_rect_COPY(posX + offsetX, posY, posX + offsetX + width, posY + 5, r, g, b, 255);
         if (i >= data->mashMeterIntervals - 1) {
             break;
         }
-        r = N(mashMeter_cutOffColors)[i * 3 + 0];
-        g = N(mashMeter_cutOffColors)[i * 3 + 1];
-        b = N(mashMeter_cutOffColors)[i * 3 + 2];
+        r = phonographMeter_cutOffColors[i * 3 + 0];
+        g = phonographMeter_cutOffColors[i * 3 + 1];
+        b = phonographMeter_cutOffColors[i * 3 + 2];
         startup_draw_prim_rect_COPY(posX + offsetX + width, posY, posX + offsetX + width, posY + 5, r, g, b, 255);
         offsetX += width;
     }
     offsetX = 0;
     for (i = 0; i < data->mashMeterIntervals; i++) {
-        r = N(mashMeter_fillColors)[i * 3 + 0];
-        g = N(mashMeter_fillColors)[i * 3 + 1];
-        b = N(mashMeter_fillColors)[i * 3 + 2];
+        r = phonographMeter_fillColors[i * 3 + 0];
+        g = phonographMeter_fillColors[i * 3 + 1];
+        b = phonographMeter_fillColors[i * 3 + 2];
 
         cutOff = data->mashMeterDividers[i + 1];
         if (cutOff > fillValue) {
@@ -170,21 +170,21 @@ void N(DrawMashMeter)(s32 posX, s32 posY, s32 fillValue) {
             break;
         }
 
-        r = N(mashMeter_cutOffColors)[i * 3 + 0];
-        g = N(mashMeter_cutOffColors)[i * 3 + 1];
-        b = N(mashMeter_cutOffColors)[i * 3 + 2];
+        r = phonographMeter_cutOffColors[i * 3 + 0];
+        g = phonographMeter_cutOffColors[i * 3 + 1];
+        b = phonographMeter_cutOffColors[i * 3 + 2];
         startup_draw_prim_rect_COPY(posX + offsetX + width, posY, posX + offsetX + width, posY + 5, r, g, b, 255);
         offsetX += filledWidth;
     }
 }
 
-void N(DrawMashMeterWithDivisor)(s32 baseX, s32 baseY, s32 fillValue, s32 smoothDivisor) {
-    N(GetPhonographData)()->mashMeterSmoothDivisor = smoothDivisor;
-    N(DrawMashMeter)(baseX, baseY, fillValue);
+void DrawMashMeterWithDivisor(s32 baseX, s32 baseY, s32 fillValue, s32 smoothDivisor) {
+    GetPhonographData()->mashMeterSmoothDivisor = smoothDivisor;
+    DrawMashMeter(baseX, baseY, fillValue);
 }
 
-void N(worker_update_phonograph_hud)(void) {
-    PhonographData* data = N(GetPhonographData)();
+void worker_update_phonograph_hud(void) {
+    PhonographData* data = GetPhonographData();
     s32 id;
     s32 temp;
     s32 mashInputsCount;
@@ -267,8 +267,8 @@ void N(worker_update_phonograph_hud)(void) {
     }
 }
 
-API_CALLABLE(N(BuggedUpdatePlaybackRate)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(BuggedUpdatePlaybackRate) {
+    PhonographData* data = GetPhonographData();
     s32 temp_f6 = script->varTable[0] / 1000;
 
     temp_f6 = sin_rad(DEG_TO_RAD((temp_f6 * 90) / 50)) * 50.0f;
@@ -285,8 +285,8 @@ API_CALLABLE(N(BuggedUpdatePlaybackRate)) {
     return ApiStatus_DONE2;
 }
 
-void N(worker_draw_phonograph_hud)(void) {
-    PhonographData* data = N(GetPhonographData)();
+void worker_draw_phonograph_hud(void) {
+    PhonographData* data = GetPhonographData();
     HudElemID hid;
     s32 x, y;
 
@@ -296,18 +296,18 @@ void N(worker_draw_phonograph_hud)(void) {
     hid = data->meterHID;
     hud_element_draw_clipped(hid);
     hud_element_get_render_pos(hid, &x, &y);
-    N(DrawMashMeterWithDivisor)(x, y, data->fillValue, 2);
+    DrawMashMeterWithDivisor(x, y, data->fillValue, 2);
 
     hid = data->okHID;
     hud_element_draw_clipped(hid);
 }
 
-API_CALLABLE(N(GetSelectedRecordIndex)) {
+API_CALLABLE(GetSelectedRecordIndex) {
     s32 outVal = -1;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(N(RecordList)) && N(RecordList)[i] != ITEM_NONE; i++) {
-        if (N(RecordList)[i] == script->varTable[0]) {
+    for (i = 0; i < ARRAY_COUNT(RecordList) && RecordList[i] != ITEM_NONE; i++) {
+        if (RecordList[i] == script->varTable[0]) {
             outVal = i;
             break;
         }
@@ -316,13 +316,13 @@ API_CALLABLE(N(GetSelectedRecordIndex)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CreatePhonographHudData)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(CreatePhonographHudData) {
+    PhonographData* data = GetPhonographData();
     HudElemID hid;
     s32 i;
 
     gOverrideFlags |= GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
-    data->hudWorker = create_worker_frontUI(N(worker_update_phonograph_hud), N(worker_draw_phonograph_hud));
+    data->hudWorker = create_worker_frontUI(worker_update_phonograph_hud, worker_draw_phonograph_hud);
     data->state = PHONOGRAPH_HUD_STATE_INIT;
     data->fillValue = 0;
     data->barFillWidth = 0;
@@ -363,13 +363,13 @@ API_CALLABLE(N(CreatePhonographHudData)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PlayRecordSong)) {
-    bgm_set_song(0, N(SongList)[evt_get_variable(script, GB_OBK07_SelectedRecord)], 0, 500, 8);
+API_CALLABLE(PlayRecordSong) {
+    bgm_set_song(0, SongList[evt_get_variable(script, GB_OBK07_SelectedRecord)], 0, 500, 8);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SavePhonographUpdateScriptIDs)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(SavePhonographUpdateScriptIDs) {
+    PhonographData* data = GetPhonographData();
 
     data->state = PHONOGRAPH_HUD_STATE_MASHING;
     data->updateScaleScriptID = evt_get_variable(nullptr, MV_UpdateScaleScript);
@@ -379,8 +379,8 @@ API_CALLABLE(N(SavePhonographUpdateScriptIDs)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroyPhonographHudData)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(DestroyPhonographHudData) {
+    PhonographData* data = GetPhonographData();
 
     data->state = PHONOGRAPH_HUD_STATE_DESTROYED;
     gOverrideFlags &= ~GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
@@ -391,57 +391,57 @@ API_CALLABLE(N(DestroyPhonographHudData)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetPhonographScaleDivisor)) {
-    N(GetPhonographData)();
+API_CALLABLE(GetPhonographScaleDivisor) {
+    GetPhonographData();
     script->varTable[3] = 150;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetPhonographScale)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(SetPhonographScale) {
+    PhonographData* data = GetPhonographData();
 
     data->modelScale = evt_get_float_variable(script, LVar2);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetCrankRotation)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(SetCrankRotation) {
+    PhonographData* data = GetPhonographData();
 
     data->crankRotation = clamp_angle(evt_get_float_variable(script, LVar0));
     evt_set_float_variable(script, LVar0, data->crankRotation);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetRecordRotation)) {
-    PhonographData* temp_s1 = N(GetPhonographData)();
+API_CALLABLE(SetRecordRotation) {
+    PhonographData* temp_s1 = GetPhonographData();
 
     temp_s1->recordRotation = clamp_angle(evt_get_float_variable(script, LVar0));
     evt_set_float_variable(script, LVar0, temp_s1->recordRotation);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetPhonographScale)) {
-    evt_set_float_variable(script, LVar0, N(GetPhonographData)()->modelScale);
+API_CALLABLE(GetPhonographScale) {
+    evt_set_float_variable(script, LVar0, GetPhonographData()->modelScale);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetCrankRotation)) {
-    evt_set_float_variable(script, LVar0, N(GetPhonographData)()->crankRotation);
+API_CALLABLE(GetCrankRotation) {
+    evt_set_float_variable(script, LVar0, GetPhonographData()->crankRotation);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetRecordRotation)) {
-    evt_set_float_variable(script, LVar0, N(GetPhonographData)()->recordRotation);
+API_CALLABLE(GetRecordRotation) {
+    evt_set_float_variable(script, LVar0, GetPhonographData()->recordRotation);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SaveLastUpdateValue)) {
+API_CALLABLE(SaveLastUpdateValue) {
     f32 value = evt_get_float_variable(script, LVar0);
     evt_set_float_variable(script, LVar1, value);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckScaleNearUnity)) {
+API_CALLABLE(CheckScaleNearUnity) {
     f32 curScale = evt_get_float_variable(script, LVar0);
     f32 prevScale = evt_get_float_variable(script, LVar1);
 
@@ -453,7 +453,7 @@ API_CALLABLE(N(CheckScaleNearUnity)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckAngleNearZero)) {
+API_CALLABLE(CheckAngleNearZero) {
     f32 curAngle = evt_get_float_variable(script, LVar0);
     f32 prevAngle = evt_get_float_variable(script, LVar1);
 
@@ -465,12 +465,12 @@ API_CALLABLE(N(CheckAngleNearZero)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GuardBooDoNothing)) {
+API_CALLABLE(GuardBooDoNothing) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatePhonographMeter)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(UpdatePhonographMeter) {
+    PhonographData* data = GetPhonographData();
     s32 distFromCenter = abs(data->fillValue - 50);
 
     if (distFromCenter < 10) {
@@ -507,8 +507,8 @@ API_CALLABLE(N(UpdatePhonographMeter)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitPhonographHud)) {
-    PhonographData* data = N(GetPhonographData)();
+API_CALLABLE(InitPhonographHud) {
+    PhonographData* data = GetPhonographData();
 
     data->meterFillAmount = 0;
     data->inactiveFrames = 0;
@@ -520,9 +520,9 @@ API_CALLABLE(N(InitPhonographHud)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdateGuardBooPos)) {
+API_CALLABLE(UpdateGuardBooPos) {
     Npc* npc = get_npc_unsafe(NPC_GuardBoo);
-    PhonographData* data = N(GetPhonographData)();
+    PhonographData* data = GetPhonographData();
     f32 booPosZ = -136.0f;
     f32 x = npc->pos.x;
     f32 z = npc->pos.z;
@@ -588,7 +588,7 @@ API_CALLABLE(N(UpdateGuardBooPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitGuardBooAlpha)) {
+API_CALLABLE(InitGuardBooAlpha) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
 
     npc->alpha = 180;
@@ -596,15 +596,15 @@ API_CALLABLE(N(InitGuardBooAlpha)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdatePhonographScale) = {
+EvtScript EVS_UpdatePhonographScale = {
     Label(30)
         Call(MakeLerp, 100, 200, 30, EASING_COS_IN_OUT)
         Label(31)
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
-            Call(N(GetPhonographScaleDivisor))
+            Call(GetPhonographScaleDivisor)
             DivF(LVar2, LVar3)
-            Call(N(SetPhonographScale))
+            Call(SetPhonographScale)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(31)
@@ -613,9 +613,9 @@ EvtScript N(EVS_UpdatePhonographScale) = {
         Label(32)
             Call(UpdateLerp)
             SetF(LVar2, LVar0)
-            Call(N(GetPhonographScaleDivisor))
+            Call(GetPhonographScaleDivisor)
             DivF(LVar2, LVar3)
-            Call(N(SetPhonographScale))
+            Call(SetPhonographScale)
             Wait(1)
             IfEq(LVar1, 1)
                 Goto(32)
@@ -625,10 +625,10 @@ EvtScript N(EVS_UpdatePhonographScale) = {
     End
 };
 
-EvtScript N(EVS_UpdateCrankRotation) = {
+EvtScript EVS_UpdateCrankRotation = {
     Set(LVar0, 0)
     Label(10)
-        Call(N(SetCrankRotation))
+        Call(SetCrankRotation)
         Add(LVar0, 2)
         Wait(1)
         Goto(10)
@@ -636,10 +636,10 @@ EvtScript N(EVS_UpdateCrankRotation) = {
     End
 };
 
-EvtScript N(EVS_UpdateRecordRotation) = {
+EvtScript EVS_UpdateRecordRotation = {
     Set(LVar0, 0)
     Label(20)
-        Call(N(SetRecordRotation))
+        Call(SetRecordRotation)
         Add(LVar0, 10)
         Wait(1)
         Goto(20)
@@ -647,17 +647,17 @@ EvtScript N(EVS_UpdateRecordRotation) = {
     End
 };
 
-EvtScript N(EVS_SetPhonographScale) = {
+EvtScript EVS_SetPhonographScale = {
     Set(MF_CancelScaleScript, false)
     Loop(0)
         IfEq(MF_CancelScaleScript, true)
-            Call(N(CheckScaleNearUnity))
+            Call(CheckScaleNearUnity)
             IfEq(LVar2, 1)
                 BreakLoop
             EndIf
         EndIf
-        Call(N(SaveLastUpdateValue))
-        Call(N(GetPhonographScale))
+        Call(SaveLastUpdateValue)
+        Call(GetPhonographScale)
         Call(ScaleModel, MODEL_rap, LVar0, LVar0, LVar0)
         Call(UpdateColliderTransform, COLLIDER_t)
         Wait(1)
@@ -668,17 +668,17 @@ EvtScript N(EVS_SetPhonographScale) = {
     End
 };
 
-EvtScript N(EVS_SetCrankRotation) = {
+EvtScript EVS_SetCrankRotation = {
     Set(MF_CancelCrankScript, false)
     Loop(0)
         IfEq(MF_CancelCrankScript, true)
-            Call(N(CheckAngleNearZero))
+            Call(CheckAngleNearZero)
             IfEq(LVar2, 1)
                 BreakLoop
             EndIf
         EndIf
-        Call(N(SaveLastUpdateValue))
-        Call(N(GetCrankRotation))
+        Call(SaveLastUpdateValue)
+        Call(GetCrankRotation)
         Call(RotateGroup, MODEL_bo, LVar0, 1, 0, 0)
         Wait(1)
     EndLoop
@@ -688,17 +688,17 @@ EvtScript N(EVS_SetCrankRotation) = {
     End
 };
 
-EvtScript N(EVS_SetRecordRotation) = {
+EvtScript EVS_SetRecordRotation = {
     Set(MF_CancelRecordScript, false)
     Loop(0)
         IfEq(MF_CancelRecordScript, true)
-            Call(N(CheckAngleNearZero))
+            Call(CheckAngleNearZero)
             IfEq(LVar2, 1)
                 BreakLoop
             EndIf
         EndIf
-        Call(N(SaveLastUpdateValue))
-        Call(N(GetRecordRotation))
+        Call(SaveLastUpdateValue)
+        Call(GetRecordRotation)
         Call(RotateGroup, MODEL_rec, LVar0, 0, -1, 0)
         Wait(1)
     EndLoop
@@ -708,12 +708,12 @@ EvtScript N(EVS_SetRecordRotation) = {
     End
 };
 
-EvtScript N(EVS_WindDownPhonograph) = {
+EvtScript EVS_WindDownPhonograph = {
     Set(MV_WindingDown, true)
     Call(MakeLerp, MV_MashInputsAmount, 0, LVar0, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(BuggedUpdatePlaybackRate))
+        Call(BuggedUpdatePlaybackRate)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
@@ -739,13 +739,13 @@ EvtScript N(EVS_WindDownPhonograph) = {
     KillScript(MV_UpdateScaleScript)
     KillScript(MV_UpdateCrankScript)
     KillScript(MV_UpdateRecordScript)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Set(MV_WindingDown, false)
     Return
     End
 };
 
-EvtScript N(EVS_PlayPhonograph) = {
+EvtScript EVS_PlayPhonograph = {
     IfEq(MV_WindingDown, true)
         IsScriptRunning(MV_WindDownScript, LVar0)
         IfEq(LVar0, 1)
@@ -794,27 +794,27 @@ EvtScript N(EVS_PlayPhonograph) = {
         EndIf
     EndLoop
     Wait(5)
-    Call(N(CreatePhonographHudData))
-    Call(N(PlayRecordSong))
+    Call(CreatePhonographHudData)
+    Call(PlayRecordSong)
     Wait(30)
-    Call(N(InitPhonographHud))
+    Call(InitPhonographHud)
     IfEq(MV_GuardDeparted, false)
-        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
-        ExecGetID(MV_UpdateGuardScript, N(EVS_UpdateGuardBoo))
+        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
+        ExecGetID(MV_UpdateGuardScript, EVS_UpdateGuardBoo)
     Else
-        ExecGetID(MV_UpdateGuardScript, N(EVS_DummyUpdateGuardBoo))
+        ExecGetID(MV_UpdateGuardScript, EVS_DummyUpdateGuardBoo)
     EndIf
-    ExecGetID(MV_UpdateScaleScript,  N(EVS_UpdatePhonographScale))
-    ExecGetID(MV_UpdateCrankScript,  N(EVS_UpdateCrankRotation))
-    ExecGetID(MV_UpdateRecordScript, N(EVS_UpdateRecordRotation))
-    ExecGetID(MV_SetScaleScript,     N(EVS_SetPhonographScale))
-    ExecGetID(MV_SetCrankScript,     N(EVS_SetCrankRotation))
-    ExecGetID(MV_SetRecordScript,    N(EVS_SetRecordRotation))
-    Call(N(SavePhonographUpdateScriptIDs))
+    ExecGetID(MV_UpdateScaleScript,  EVS_UpdatePhonographScale)
+    ExecGetID(MV_UpdateCrankScript,  EVS_UpdateCrankRotation)
+    ExecGetID(MV_UpdateRecordScript, EVS_UpdateRecordRotation)
+    ExecGetID(MV_SetScaleScript,     EVS_SetPhonographScale)
+    ExecGetID(MV_SetCrankScript,     EVS_SetCrankRotation)
+    ExecGetID(MV_SetRecordScript,    EVS_SetRecordRotation)
+    Call(SavePhonographUpdateScriptIDs)
     Loop(0)
-        Call(N(UpdatePhonographMeter))
+        Call(UpdatePhonographMeter)
         IfEq(LVar0, 1)
-            Call(N(DestroyPhonographHudData))
+            Call(DestroyPhonographHudData)
             Wait(1)
             BreakLoop
         EndIf
@@ -836,17 +836,17 @@ EvtScript N(EVS_PlayPhonograph) = {
         Else
             Set(LVar0, 80)
         EndIf
-        ExecGetID(MV_WindDownScript, N(EVS_WindDownPhonograph))
-        ExecGetID(MV_GuardReturnScript, N(EVS_GuardBoo_ReturnToPost))
+        ExecGetID(MV_WindDownScript, EVS_WindDownPhonograph)
+        ExecGetID(MV_GuardReturnScript, EVS_GuardBoo_ReturnToPost)
     Else
         Set(LVar0, 80)
-        ExecGetID(MV_WindDownScript, N(EVS_WindDownPhonograph))
+        ExecGetID(MV_WindDownScript, EVS_WindDownPhonograph)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_Inspect_Phonograph) = {
+EvtScript EVS_Inspect_Phonograph = {
     IfEq(MV_GuardDancing, true)
         IfEq(MV_GuardDeparted, false)
             Return
@@ -865,7 +865,7 @@ EvtScript N(EVS_Inspect_Phonograph) = {
     IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Goto(100)
     EndIf
-    Call(N(GetSelectedRecordIndex))
+    Call(GetSelectedRecordIndex)
     IfEq(LVar0, -1)
         Goto(100)
     EndIf
@@ -888,7 +888,7 @@ EvtScript N(EVS_Inspect_Phonograph) = {
             Set(MV_ReadyToPlay, true)
         EndThread
     EndIf
-    ExecWait(N(EVS_PlayPhonograph))
+    ExecWait(EVS_PlayPhonograph)
     Return
     // done
     Label(100)
@@ -898,7 +898,7 @@ EvtScript N(EVS_Inspect_Phonograph) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_GuardBoo_Wary) = {
+EvtScript EVS_NpcAI_GuardBoo_Wary = {
     Call(SetNpcAnimation, NPC_GuardBoo, ANIM_Boo_Idle)
     Label(0)
         Call(RandInt, 30, LVar0)
@@ -914,12 +914,12 @@ EvtScript N(EVS_NpcAI_GuardBoo_Wary) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_GuardBoo_DoNothing) = {
+EvtScript EVS_NpcAI_GuardBoo_DoNothing = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_GuardBoo_Dancing) = {
+EvtScript EVS_NpcAI_GuardBoo_Dancing = {
     Loop(0)
         Call(RandInt, 99, LVar0)
         Switch(LVar0)
@@ -952,16 +952,16 @@ EvtScript N(EVS_NpcAI_GuardBoo_Dancing) = {
     End
 };
 
-EvtScript N(EVS_GuardBoo_ReturnToPost) = {
+EvtScript EVS_GuardBoo_ReturnToPost = {
     Wait(1)
     IfEq(MV_GuardDancing, true)
         Wait(150)
-        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_DoNothing)))
+        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
         Wait(1)
         Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
         Wait(90)
     Else
-        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_DoNothing)))
+        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
         Wait(1)
         Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
     EndIf
@@ -986,12 +986,12 @@ EvtScript N(EVS_GuardBoo_ReturnToPost) = {
         Wait(1)
     EndLoop
     Set(MV_GuardDancing, false)
-    Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
+    Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
     Return
     End
 };
 
-EvtScript N(EVS_UpdateGuardBoo) = {
+EvtScript EVS_UpdateGuardBoo = {
     Set(MV_GuardDancing, false)
     Set(MF_GuardBusy, false)
     Call(InterpNpcYaw, NPC_GuardBoo, 270, 5)
@@ -1000,18 +1000,18 @@ EvtScript N(EVS_UpdateGuardBoo) = {
         Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
         IfLe(LVar0, -92)
             Set(MV_GuardDancing, true)
-            Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Dancing)))
+            Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Dancing))
             Return
         EndIf
         IfEq(LVarA, 0)
-            Call(N(UpdateGuardBooPos))
+            Call(UpdateGuardBooPos)
             IfNe(LVarC, 0)
                 Sub(LVarC, 1)
             EndIf
             Wait(1)
         Else
             IfNe(LVarC, 0)
-                Call(N(UpdateGuardBooPos))
+                Call(UpdateGuardBooPos)
                 IfNe(LVarC, 0)
                     Sub(LVarC, 1)
                 EndIf
@@ -1022,15 +1022,15 @@ EvtScript N(EVS_UpdateGuardBoo) = {
                 Switch(LVar0)
                     CaseLt(60)
                     CaseLt(80)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_DoNothing)))
+                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
                         Set(MF_GuardBusy, true)
                         Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
                         Call(SetNpcJumpscale, NPC_GuardBoo, Float(1.0))
                         Call(NpcJump0, NPC_GuardBoo, LVar0, LVar1, LVar2, 10)
                         Set(MF_GuardBusy, false)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
+                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
                     CaseLt(99)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_DoNothing)))
+                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
                         Set(MF_GuardBusy, true)
                         Call(MakeLerp, 0, 720, 20, EASING_QUADRATIC_OUT)
                         Loop(0)
@@ -1042,7 +1042,7 @@ EvtScript N(EVS_UpdateGuardBoo) = {
                             EndIf
                         EndLoop
                         Set(MF_GuardBusy, false)
-                        Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
+                        Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_Wary))
                 EndSwitch
             EndIf
         EndIf
@@ -1054,16 +1054,16 @@ EvtScript N(EVS_UpdateGuardBoo) = {
     End
 };
 
-EvtScript N(EVS_DummyUpdateGuardBoo) = {
+EvtScript EVS_DummyUpdateGuardBoo = {
     Loop(0)
-        Call(N(GuardBooDoNothing))
+        Call(GuardBooDoNothing)
         Wait(1)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_GuardBooVanish) = {
+EvtScript EVS_GuardBooVanish = {
     Thread
         Wait(25)
         Call(PlaySoundAtNpc, NPC_GuardBoo, SOUND_BOO_SPOOK, SOUND_SPACE_DEFAULT)
@@ -1084,7 +1084,7 @@ EvtScript N(EVS_GuardBooVanish) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_GuardBoo) = {
+EvtScript EVS_NpcInteract_GuardBoo = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_PLAYED_THE_RECORD)
             IfEq(GF_OBK08_Item_Record, true)
@@ -1101,22 +1101,22 @@ EvtScript N(EVS_NpcInteract_GuardBoo) = {
 #if VERSION_JP
         CaseEq(STORY_CH3_GOT_WEIGHT)
             Call(SpeakToPlayer, NPC_GuardBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0105)
-            ExecWait(N(EVS_GuardBooVanish))
+            ExecWait(EVS_GuardBooVanish)
         CaseGe(STORY_CH3_WEIGHED_DOWN_CHANDELIER)
             Call(SpeakToPlayer, NPC_GuardBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0106)
-            ExecWait(N(EVS_GuardBooVanish))
+            ExecWait(EVS_GuardBooVanish)
 #endif
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Scene_PlayerGotChestItem) = {
+EvtScript EVS_Scene_PlayerGotChestItem = {
     KillScript(MV_GuardReturnScript)
     Call(SetNpcRotation, NPC_GuardBoo, 0, 0, 0)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(DisablePlayerInput, true)
-    Call(BindNpcAI, NPC_GuardBoo, Ref(N(EVS_NpcAI_GuardBoo_DoNothing)))
+    Call(BindNpcAI, NPC_GuardBoo, Ref(EVS_NpcAI_GuardBoo_DoNothing))
     Call(GetNpcPos, NPC_GuardBoo, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1127,7 +1127,7 @@ EvtScript N(EVS_Scene_PlayerGotChestItem) = {
     Call(SpeakToPlayer, NPC_GuardBoo, ANIM_Boo_Cower, ANIM_Boo_Cower, 0, MSG_CH3_0039)
     Call(SetNpcAnimation, NPC_GuardBoo, ANIM_Boo_Idle)
     Call(EndSpeech, NPC_GuardBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0)
-    ExecWait(N(EVS_GuardBooVanish))
+    ExecWait(EVS_GuardBooVanish)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1140,24 +1140,24 @@ EvtScript N(EVS_Scene_PlayerGotChestItem) = {
     End
 };
 
-EvtScript N(EVS_SetupGuardBoo) = {
+EvtScript EVS_SetupGuardBoo = {
     Call(SetNpcScale, NPC_GuardBoo, Float(1.0), Float(1.0), Float(1.0))
     Call(SetNpcCollisionSize, NPC_GuardBoo, 40, 40)
-    Call(N(InitGuardBooAlpha))
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GuardBoo)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_GuardBoo_Wary)))
+    Call(InitGuardBooAlpha)
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_GuardBoo))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_GuardBoo_Wary))
     Call(SetNpcPos, NPC_GuardBoo, 168, 0, -136)
     Return
     End
 };
 
-EvtScript N(EVS_SetupPhonograph) = {
-    Call(N(CreatePhonographData))
+EvtScript EVS_SetupPhonograph = {
+    Call(CreatePhonographData)
     Call(ParentColliderToModel, COLLIDER_t, MODEL_rap)
     IfLt(GB_StoryProgress, STORY_CH3_PLAYED_THE_RECORD)
         Call(EnableModel, MODEL_reco, false)
     EndIf
-    BindPadlock(Ref(N(EVS_Inspect_Phonograph)), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(N(RecordList)), 0, 1)
+    BindPadlock(Ref(EVS_Inspect_Phonograph), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(RecordList), 0, 1)
     Return
     End
 };

@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 #include "world/common/npc/MusicianComposer/base.h"
 
-EvtScript N(EVS_NpcInteract_Composer) = {
+EvtScript EVS_NpcInteract_Composer = {
     IfEq(GF_DRO01_Gift_Melody, true)
         Call(FindItem, ITEM_MELODY, LVar0)
         IfNe(LVar0, -1)
@@ -66,8 +66,8 @@ EvtScript N(EVS_NpcInteract_Composer) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Composer) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Composer)))
+EvtScript EVS_NpcInit_Composer = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Composer))
     Return
     End
 };

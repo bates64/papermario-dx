@@ -1,6 +1,6 @@
 #include "kmr_02.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [kmr_02_ENTRY_0]    {  391.0,    0.0,  286.0,  315.0 },
     [kmr_02_ENTRY_1]    { -371.0,    0.0,  304.0,   45.0 },
     [kmr_02_ENTRY_2]    { -473.0,    0.0,    4.0,   90.0 },
@@ -14,10 +14,10 @@ EntryList N(Entrances) = {
     [kmr_02_ENTRY_A]    {  200.0,   50.0,   70.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "kmr_bg",
     .tattle = { MSG_MapTattle_kmr_02 },
 };

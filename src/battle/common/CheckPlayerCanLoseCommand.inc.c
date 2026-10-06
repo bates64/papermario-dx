@@ -1,6 +1,6 @@
 #include "common.h"
 
-API_CALLABLE(N(CheckPlayerCanLoseCommand)) {
+static API_CALLABLE(CheckPlayerCanLoseCommand) {
     BattleStatus* status = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
 

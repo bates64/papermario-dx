@@ -4,7 +4,7 @@
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 #include "world/common/enemy/FlyingMagikoopa/wander.inc.c"
 
-NpcData N(NpcData_Koopatrol) = {
+NpcData NpcData_Koopatrol = {
     .id = NPC_Koopatrol,
     .pos = { -200.0f, 0.0f, -225.0f },
     .yaw = 270,
@@ -20,13 +20,13 @@ NpcData N(NpcData_Koopatrol) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-NpcData N(NpcData_FlyingMagikoopa)[] = {
+NpcData NpcData_FlyingMagikoopa[] = {
     {
         .id = NPC_FlyingMagikoopa,
         .pos = { 125.0f, 50.0f, -225.0f },
@@ -43,17 +43,17 @@ NpcData N(NpcData_FlyingMagikoopa)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_FlyingMagikoopa_Wander),
+        .settings = &NpcSettings_FlyingMagikoopa_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = FLYING_MAGIKOOPA_DROPS,
         .animations = FLYING_MAGIKOOPA_ANIMS,
-        .limitAnimations = N(LimitAnims_FlyingMagikoopa),
+        .limitAnimations = LimitAnims_FlyingMagikoopa,
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FLYING_MAGIKOOPA_SPELL_HITBOX(NPC_FlyingMagikoopa + 1),
 };
 
-NpcData N(NpcData_HammerBros)[] = {
+NpcData NpcData_HammerBros[] = {
     {
         .id = NPC_HammerBros,
         .pos = { 450.0f, 0.0f, -225.0f },
@@ -70,7 +70,7 @@ NpcData N(NpcData_HammerBros)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_HammerBros_Wander),
+        .settings = &NpcSettings_HammerBros_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = HAMMER_BROS_DROPS,
         .animations = HAMMER_BROS_ANIMS,
@@ -83,9 +83,9 @@ NpcData N(NpcData_HammerBros)[] = {
     HAMMER_BROS_HAMMER_HITBOX(NPC_HammerBros + 6),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Koopatrol), BTL_KPA_FORMATION_24, BTL_KPA_STAGE_0A),
-    NPC_GROUP(N(NpcData_FlyingMagikoopa), BTL_KPA_FORMATION_32, BTL_KPA_STAGE_0A),
-    NPC_GROUP(N(NpcData_HammerBros), BTL_KPA_FORMATION_16, BTL_KPA_STAGE_0A),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_24, BTL_KPA_STAGE_0A),
+    NPC_GROUP(NpcData_FlyingMagikoopa, BTL_KPA_FORMATION_32, BTL_KPA_STAGE_0A),
+    NPC_GROUP(NpcData_HammerBros, BTL_KPA_FORMATION_16, BTL_KPA_STAGE_0A),
     {}
 };

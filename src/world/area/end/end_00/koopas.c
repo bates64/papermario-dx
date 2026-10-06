@@ -1,7 +1,7 @@
 #include "end_00.h"
 #include "effects.h"
 
-API_CALLABLE(N(CreateWhaleGeyser)) {
+API_CALLABLE(CreateWhaleGeyser) {
     Bytecode* args = script->ptrReadPos;
     s32 var1 = evt_get_variable(script, *args++);
     f32 var2 = evt_get_float_variable(script, *args++);
@@ -18,7 +18,7 @@ API_CALLABLE(N(CreateWhaleGeyser)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetWhaleGeyserPos)) {
+API_CALLABLE(SetWhaleGeyserPos) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     f32 x = evt_get_float_variable(script, *args++);
@@ -31,7 +31,7 @@ API_CALLABLE(N(SetWhaleGeyserPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DisposeWhaleGeyser)) {
+API_CALLABLE(DisposeWhaleGeyser) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
@@ -39,7 +39,7 @@ API_CALLABLE(N(DisposeWhaleGeyser)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_FakeBowserFloat) = {
+EvtScript EVS_FakeBowserFloat = {
     Call(EnableModel, MODEL_o81, false)
     Loop(0)
         Call(MakeLerp, 15, -15, 30, EASING_QUADRATIC_OUT)
@@ -65,7 +65,7 @@ EvtScript N(EVS_FakeBowserFloat) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_Red) = {
+EvtScript EVS_KoopaBros_Red = {
     Call(EnableNpcShadow, NPC_KoopaBrosRed, false)
     Wait(150)
     Call(GetNpcPos, NPC_KoopaBrosRed, LVar0, LVar1, LVar2)
@@ -84,7 +84,7 @@ EvtScript N(EVS_KoopaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_Black) = {
+EvtScript EVS_KoopaBros_Black = {
     Call(EnableNpcShadow, NPC_KoopaBrosBlack, false)
     Wait(155)
     Call(GetNpcPos, NPC_KoopaBrosBlack, LVar0, LVar1, LVar2)
@@ -103,7 +103,7 @@ EvtScript N(EVS_KoopaBros_Black) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_Yellow) = {
+EvtScript EVS_KoopaBros_Yellow = {
     Call(EnableNpcShadow, NPC_KoopaBrosYellow, false)
     Wait(160)
     Call(GetNpcPos, NPC_KoopaBrosYellow, LVar0, LVar1, LVar2)
@@ -122,7 +122,7 @@ EvtScript N(EVS_KoopaBros_Yellow) = {
     End
 };
 
-EvtScript N(EVS_KoopaBros_Green) = {
+EvtScript EVS_KoopaBros_Green = {
     Call(EnableNpcShadow, NPC_KoopaBrosGreen, false)
     Wait(165)
     Call(GetNpcPos, NPC_KoopaBrosGreen, LVar0, LVar1, LVar2)
@@ -141,7 +141,7 @@ EvtScript N(EVS_KoopaBros_Green) = {
     End
 };
 
-EvtScript N(EVS_Bobomb1) = {
+EvtScript EVS_Bobomb1 = {
     Call(SetNpcFlagBits, NPC_Bobomb1, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Wait(180)
     Call(NpcMoveTo, NPC_Bobomb1, -1900, 43, 70)
@@ -163,7 +163,7 @@ EvtScript N(EVS_Bobomb1) = {
     End
 };
 
-EvtScript N(EVS_Bobomb2) = {
+EvtScript EVS_Bobomb2 = {
     Call(SetNpcFlagBits, NPC_Bobomb2, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Wait(180)
     Call(NpcMoveTo, NPC_Bobomb2, -1870, 43, 70)
@@ -185,7 +185,7 @@ EvtScript N(EVS_Bobomb2) = {
     End
 };
 
-EvtScript N(EVS_Bobomb3) = {
+EvtScript EVS_Bobomb3 = {
     Call(SetNpcFlagBits, NPC_Bobomb3, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Wait(180)
     Call(NpcMoveTo, NPC_Bobomb3, -1840, 43, 70)
@@ -207,7 +207,7 @@ EvtScript N(EVS_Bobomb3) = {
     End
 };
 
-EvtScript N(EVS_Bobomb4) = {
+EvtScript EVS_Bobomb4 = {
     Call(SetNpcFlagBits, NPC_Bobomb4, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Wait(180)
     Call(NpcMoveTo, NPC_Bobomb4, -1810, 43, 70)
@@ -229,8 +229,8 @@ EvtScript N(EVS_Bobomb4) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_KoopaBros) = {
-    ExecGetTID(N(EVS_FakeBowserFloat), LVarA)
+EvtScript EVS_ParadePhase_KoopaBros = {
+    ExecGetTID(EVS_FakeBowserFloat, LVarA)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -239,14 +239,14 @@ EvtScript N(EVS_ParadePhase_KoopaBros) = {
         EndIf
     EndLoop
     Wait(1)
-    Exec(N(EVS_KoopaBros_Red))
-    Exec(N(EVS_KoopaBros_Black))
-    Exec(N(EVS_KoopaBros_Yellow))
-    Exec(N(EVS_KoopaBros_Green))
-    Exec(N(EVS_Bobomb1))
-    Exec(N(EVS_Bobomb2))
-    Exec(N(EVS_Bobomb3))
-    Exec(N(EVS_Bobomb4))
+    Exec(EVS_KoopaBros_Red)
+    Exec(EVS_KoopaBros_Black)
+    Exec(EVS_KoopaBros_Yellow)
+    Exec(EVS_KoopaBros_Green)
+    Exec(EVS_Bobomb1)
+    Exec(EVS_Bobomb2)
+    Exec(EVS_Bobomb3)
+    Exec(EVS_Bobomb4)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -259,7 +259,7 @@ EvtScript N(EVS_ParadePhase_KoopaBros) = {
     End
 };
 
-EvtScript N(EVS_Whale_WagTail) = {
+EvtScript EVS_Whale_WagTail = {
     Loop(0)
         Call(MakeLerp, 20, -20, 40, EASING_QUADRATIC_OUT)
         Loop(0)
@@ -284,8 +284,8 @@ EvtScript N(EVS_Whale_WagTail) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Kolorado) = {
-    ExecGetTID(N(EVS_Whale_WagTail), LVarA)
+EvtScript EVS_ParadePhase_Kolorado = {
+    ExecGetTID(EVS_Whale_WagTail, LVarA)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -294,7 +294,7 @@ EvtScript N(EVS_ParadePhase_Kolorado) = {
         EndIf
     EndLoop
     Set(LVar1, 15)
-    Call(N(CreateWhaleGeyser), 0, -1565, LVar1, -200, 0, -1, 0, 30)
+    Call(CreateWhaleGeyser, 0, -1565, LVar1, -200, 0, -1, 0, 30)
     Call(GetNpcPos, NPC_Kolorado, LVar2, LVar3, LVar4)
     Call(GetNpcPos, NPC_KoloradoWife, LVar5, LVar6, LVar7)
     Loop(5)
@@ -310,7 +310,7 @@ EvtScript N(EVS_ParadePhase_Kolorado) = {
         Loop(0)
             Loop(20)
                 Sub(LVar1, 1)
-                Call(N(SetWhaleGeyserPos), LVar0, -1565, LVar1, -200)
+                Call(SetWhaleGeyserPos, LVar0, -1565, LVar1, -200)
                 Sub(LVar3, 1)
                 Call(SetNpcPos, NPC_Kolorado, LVar2, LVar3, LVar4)
                 Sub(LVar6, 1)
@@ -319,7 +319,7 @@ EvtScript N(EVS_ParadePhase_Kolorado) = {
             EndLoop
             Loop(20)
                 Add(LVar1, 1)
-                Call(N(SetWhaleGeyserPos), LVar0, -1565, LVar1, -200)
+                Call(SetWhaleGeyserPos, LVar0, -1565, LVar1, -200)
                 Add(LVar3, 1)
                 Call(SetNpcPos, NPC_Kolorado, LVar2, LVar3, LVar4)
                 Add(LVar6, 1)
@@ -336,7 +336,7 @@ EvtScript N(EVS_ParadePhase_Kolorado) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(N(DisposeWhaleGeyser), LVar3)
+    Call(DisposeWhaleGeyser, LVar3)
     KillThread(LVarA)
     Return
     End

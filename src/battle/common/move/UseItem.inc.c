@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 
 /// Provide arg `true` on `LVar1` to disable refunding.
-EvtScript N(UseItemWithEffect) = {
+EvtScript UseItemWithEffect = {
     IfEq(LVar1, 0)
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
         Wait(10)
@@ -20,10 +20,10 @@ EvtScript N(UseItemWithEffect) = {
         PlayEffect(EFFECT_RADIAL_SHIMMER, 1, LVar0, LVar3, LVar2, Float(1.0), 30)
         Call(MakeItemEntity, LVarA, LVar0, LVar1, LVar2, ITEM_SPAWN_MODE_DECORATION, 0)
         Set(LVarA, LVar0)
-        Call(N(GiveRefund))
+        Call(GiveRefund)
         Wait(LVar0)
         Wait(15)
-        Call(N(GiveRefundCleanup))
+        Call(GiveRefundCleanup)
         Call(RemoveItemEntity, LVarA)
     Else
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -44,7 +44,7 @@ EvtScript N(UseItemWithEffect) = {
     End
 };
 
-EvtScript N(UseItem) = {
+EvtScript UseItem = {
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(SetBattleCamTarget, -85, 1, 0)
     Call(SetBattleCamOffsetY, 41)
@@ -56,16 +56,16 @@ EvtScript N(UseItem) = {
     Add(LVar1, 45)
     Call(MakeItemEntity, LVarA, LVar0, LVar1, LVar2, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(LVarE, LVar0)
-    Call(N(GiveRefund))
+    Call(GiveRefund)
     Wait(LVar0)
     Wait(15)
-    Call(N(GiveRefundCleanup))
+    Call(GiveRefundCleanup)
     Call(RemoveItemEntity, LVarE)
     Return
     End
 };
 
-EvtScript N(PlayerGoHome) = {
+EvtScript PlayerGoHome = {
     Call(UseIdleAnimation, ACTOR_PLAYER, false)
     Call(SetGoalToHome, ACTOR_PLAYER)
     Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
@@ -77,7 +77,7 @@ EvtScript N(PlayerGoHome) = {
     End
 };
 
-EvtScript N(EatItem) = {
+EvtScript EatItem = {
     Thread
         Loop(4)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_EAT_OR_DRINK)
@@ -90,7 +90,7 @@ EvtScript N(EatItem) = {
     End
 };
 
-EvtScript N(DrinkItem) = {
+EvtScript DrinkItem = {
     Thread
         Loop(4)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_EAT_OR_DRINK)

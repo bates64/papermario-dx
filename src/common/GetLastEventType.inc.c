@@ -1,6 +1,6 @@
 #include "common.h"
 
-API_CALLABLE(N(GetLastEventType)) {
+static API_CALLABLE(GetLastEventType) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
 

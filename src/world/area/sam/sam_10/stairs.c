@@ -1,7 +1,7 @@
 #include "sam_10.h"
 #include "effects.h"
 
-Vec2i N(StaircaseStepsData)[] = {
+Vec2i StaircaseStepsData[] = {
     { MODEL_1,   -200 },
     { MODEL_2,   -230 },
     { MODEL_3,   -260 },
@@ -34,7 +34,7 @@ Vec2i N(StaircaseStepsData)[] = {
     { MODEL_30, -1130 },
 };
 
-API_CALLABLE(N(GetCamPointsNearPlayer)) {
+API_CALLABLE(GetCamPointsNearPlayer) {
     script->varTable[0] = gPlayerStatus.pos.x + (sin_deg(310.0f) * 100.0f);
     script->varTable[1] = gPlayerStatus.pos.z - (cos_deg(310.0f) * 100.0f);
     script->varTable[2] = gPlayerStatus.pos.x + (sin_deg(130.0f) * 100.0f);
@@ -42,7 +42,7 @@ API_CALLABLE(N(GetCamPointsNearPlayer)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
+EvtScript EVS_ItemPrompt_StarStoneSocket = {
     Call(DisablePlayerInput, true)
     Call(FindItem, ITEM_STAR_STONE, LVar0)
     IfNe(LVar0, -1)
@@ -92,7 +92,7 @@ EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(2.0), Float(5.0))
-    Call(N(GetCamPointsNearPlayer))
+    Call(GetCamPointsNearPlayer)
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
@@ -127,7 +127,7 @@ EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
         Call(ShakeCam, CAM_DEFAULT, 0, 600, Float(0.15))
     EndThread
     Set(LVar2, 0)
-    UseBuf(Ref(N(StaircaseStepsData)))
+    UseBuf(Ref(StaircaseStepsData))
     Loop(30)
         Add(LVar2, 1)
         BufRead2(LVar3, LVar4)
@@ -205,12 +205,12 @@ EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
     End
 };
 
-BombTrigger N(BombPos_Wall) = {
+BombTrigger BombPos_Wall = {
     .pos = { 337.0f, -20.0f, -103.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_BlastWall) = {
+EvtScript EVS_BlastWall = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 2, 135, 11, 1, 10, 30)
     Call(EnableModel, MODEL_a_oku, true)
     Loop(10)
@@ -228,9 +228,9 @@ EvtScript N(EVS_BlastWall) = {
     End
 };
 
-ITEM_LIST(N(StarStoneList), ITEM_STAR_STONE);
+ITEM_LIST(StarStoneList, ITEM_STAR_STONE);
 
-EvtScript N(EVS_SetupStairs) = {
+EvtScript EVS_SetupStairs = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yuka, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o79, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o80, SURFACE_TYPE_SNOW)
@@ -246,12 +246,12 @@ EvtScript N(EVS_SetupStairs) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_m2_yuka, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_move2, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_m1_kabe, SURFACE_TYPE_SNOW)
-        UseBuf(Ref(N(StaircaseStepsData)))
+        UseBuf(Ref(StaircaseStepsData))
         Loop(30)
             BufRead2(LVarA, LVarB)
             Call(TranslateGroup, LVarA, 0, LVarB, 0)
         EndLoop
-        BindPadlock(Ref(N(EVS_ItemPrompt_StarStoneSocket)), TRIGGER_WALL_PRESS_A, COLLIDER_o61, Ref(N(StarStoneList)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_StarStoneSocket), TRIGGER_WALL_PRESS_A, COLLIDER_o61, Ref(StarStoneList), 0, 1)
     Else
         Call(TranslateGroup, MODEL_g51, 0, 0, -23)
         Call(UpdateColliderTransform, COLLIDER_o61)
@@ -265,7 +265,7 @@ EvtScript N(EVS_SetupStairs) = {
     EndIf
     IfEq(GF_SAM10_BombedWall, false)
         Call(EnableModel, MODEL_a_oku, false)
-        BindTrigger(Ref(N(EVS_BlastWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
+        BindTrigger(Ref(EVS_BlastWall), TRIGGER_POINT_BOMB, Ref(BombPos_Wall), 1, 0)
     Else
         Call(EnableModel, MODEL_a_kabe, false)
         Call(EnableModel, MODEL_a_hibi, false)

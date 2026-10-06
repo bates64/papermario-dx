@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_Scene_PreTitle) = {
+EvtScript EVS_Scene_PreTitle = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Hurt)

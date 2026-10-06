@@ -2,7 +2,7 @@
 #include "idle.h"
 #include "world/common/npc/Kooper/base.h"
 
-NpcSettings N(NpcSettings_Koopa) = {
+NpcSettings NpcSettings_Koopa = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,

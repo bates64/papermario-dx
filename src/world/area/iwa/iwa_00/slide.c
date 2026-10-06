@@ -1,6 +1,6 @@
 #include "iwa_00.h"
 
-SlideParams N(SlideData) = {
+SlideParams SlideData = {
     .heading = 270.0f,
     .maxDescendAccel = 0.4f,
     .launchVel = -0.05f,
@@ -8,20 +8,20 @@ SlideParams N(SlideData) = {
     .integrator = { 0.0, 0.0, 0.0, 0.0 },
 };
 
-API_CALLABLE(N(SetPlayerSliding)) {
+API_CALLABLE(SetPlayerSliding) {
     gPlayerStatus.slideParams = script->varTablePtr[0];
     gPlayerStatus.flags |= PS_FLAG_SLIDING;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdateSliding) = {
-    Set(LVar0, Ref(N(SlideData)))
-    Call(N(SetPlayerSliding))
+EvtScript EVS_UpdateSliding = {
+    Set(LVar0, Ref(SlideData))
+    Call(SetPlayerSliding)
     Return
     End
 };
 
-EvtScript N(EVS_UseSlide) = {
+EvtScript EVS_UseSlide = {
     Call(DisablePlayerInput, true)
     Wait(10)
     Thread
@@ -58,9 +58,9 @@ EvtScript N(EVS_UseSlide) = {
     End
 };
 
-EvtScript N(EVS_BindSlideTriggers) = {
-    BindTrigger(Ref(N(EVS_UseSlide)), TRIGGER_WALL_PRESS_A, COLLIDER_st1, 1, 0)
-    BindTrigger(Ref(N(EVS_UpdateSliding)), TRIGGER_FLOOR_TOUCH, COLLIDER_suberi01, 1, 0)
+EvtScript EVS_BindSlideTriggers = {
+    BindTrigger(Ref(EVS_UseSlide), TRIGGER_WALL_PRESS_A, COLLIDER_st1, 1, 0)
+    BindTrigger(Ref(EVS_UpdateSliding), TRIGGER_FLOOR_TOUCH, COLLIDER_suberi01, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suberi01, SURFACE_TYPE_SLIDE)
     Return
     End

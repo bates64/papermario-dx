@@ -6,7 +6,7 @@
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
-EvtScript N(EVS_NpcIdle_Mamar) = {
+EvtScript EVS_NpcIdle_Mamar = {
     Loop(0)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -25,7 +25,7 @@ EvtScript N(EVS_NpcIdle_Mamar) = {
     End
 };
 
-API_CALLABLE(N(UpgradeStarPowerCh2)) {
+API_CALLABLE(UpgradeStarPowerCh2) {
     set_max_star_power(2);
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
@@ -33,7 +33,7 @@ API_CALLABLE(N(UpgradeStarPowerCh2)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_RescuedMamar) = {
+EvtScript EVS_Scene_RescuedMamar = {
     Call(DisablePartnerAI, false)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -97,7 +97,7 @@ EvtScript N(EVS_Scene_RescuedMamar) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Idle)
     Call(EnableNpcAI, NPC_Mamar, true)
-    Call(N(UpgradeStarPowerCh2))
+    Call(UpgradeStarPowerCh2)
     Call(ShowMessageAtScreenPos, MSG_Menus_0192, 160, 40)
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
@@ -166,18 +166,18 @@ EvtScript N(EVS_Scene_RescuedMamar) = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Set(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Mamar) = {
+EvtScript EVS_NpcInit_Mamar = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, sbk_02_ENTRY_5)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Mamar)))
-        Exec(N(EVS_Scene_RescuedMamar))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Mamar))
+        Exec(EVS_Scene_RescuedMamar)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -185,20 +185,20 @@ EvtScript N(EVS_NpcInit_Mamar) = {
     End
 };
 
-API_CALLABLE(N(CheckTradeEventTime)) {
+API_CALLABLE(CheckTradeEventTime) {
     s32 timeElapsed = (gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600;
     script->varTable[0] = timeElapsed < script->varTable[0];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetTradeEventItemCount)) {
+API_CALLABLE(GetTradeEventItemCount) {
     script->varTable[0] = get_consumables_count();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_TradingToad) = {
+EvtScript EVS_NpcInteract_TradingToad = {
     Set(LVar0, 5)
-    Call(N(CheckTradeEventTime))
+    Call(CheckTradeEventTime)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00EE)
         Wait(10)
@@ -209,7 +209,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
         Set(GF_TradingEvent2_Active, false)
         Return
     EndIf
-    Call(N(GetTradeEventItemCount))
+    Call(GetTradeEventItemCount)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00EF)
         Return
@@ -239,9 +239,9 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TradingToad) = {
+EvtScript EVS_NpcInit_TradingToad = {
     IfNe(GF_TradingEvent2_Active, false)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TradingToad)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TradingToad))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -249,31 +249,31 @@ EvtScript N(EVS_NpcInit_TradingToad) = {
     End
 };
 
-NpcData N(NpcData_Mamar) = {
+NpcData NpcData_Mamar = {
     .id = NPC_Mamar,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Mamar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Mamar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = MAMAR_ANIMS,
 };
 
-NpcData N(NpcData_TradingToad) = {
+NpcData NpcData_TradingToad = {
     .id = NPC_TradingToad,
     .pos = { 0.0f, 2.0f, 150.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_TradingToad),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_TradingToad,
+    .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = TOAD_PINK_ANIMS,
     .tattle = MSG_NpcTattle_PrizeToad,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Mamar)),
-    NPC_GROUP(N(NpcData_TradingToad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Mamar),
+    NPC_GROUP(NpcData_TradingToad),
     {}
 };

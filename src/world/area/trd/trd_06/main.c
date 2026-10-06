@@ -1,22 +1,22 @@
 #include "trd_06.h"
 #include "effects.h"
 
-extern EvtScript N(EVS_Main);
-extern NpcGroupList N(NpcGroup_Prisoners);
-extern NpcGroupList N(NpcGroup_KoopaBros);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_Scene_FallIntoCell);
-extern EvtScript N(EVS_Scene_ImprisonedKoopaBros);
+extern EvtScript EVS_Main;
+extern NpcGroupList NpcGroup_Prisoners;
+extern NpcGroupList NpcGroup_KoopaBros;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_Scene_FallIntoCell;
+extern EvtScript EVS_Scene_ImprisonedKoopaBros;
 
-EvtScript N(EVS_ExitDoors_trd_04_5) = EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5,
+EvtScript EVS_ExitDoors_trd_04_5 = EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5,
     COLLIDER_ttw, MODEL_o93, MODEL_o94);
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(trd_06_ENTRY_0)
-            Exec(N(EVS_Scene_FallIntoCell))
+            Exec(EVS_Scene_FallIntoCell)
         CaseEq(trd_06_ENTRY_1)
             Set(LVar2, MODEL_o93)
             Set(LVar3, MODEL_o94)
@@ -29,18 +29,18 @@ EvtScript N(EVS_EnterMap) = {
             Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
             Call(EnableNpcShadow, NPC_PARTNER, false)
-            Exec(N(EVS_Scene_ImprisonedKoopaBros))
+            Exec(EVS_Scene_ImprisonedKoopaBros)
     EndSwitch
     Return
     End
 };
 
-BombTrigger N(BombPos_CellWall) = {
+BombTrigger BombPos_CellWall = {
     .pos = { 160.0f, 0.0f, 160.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_BombWall_Cell) = {
+EvtScript EVS_BombWall_Cell = {
 #if !VERSION_JP
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
 #endif
@@ -113,7 +113,7 @@ EvtScript N(EVS_BombWall_Cell) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -128,18 +128,18 @@ EvtScript N(EVS_Main) = {
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
-            Call(MakeNpcs, true, Ref(N(NpcGroup_Prisoners)))
+            Call(MakeNpcs, true, Ref(NpcGroup_Prisoners))
             Call(SetGroupVisibility, MODEL_g27, MODEL_GROUP_HIDDEN)
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
-            Call(MakeNpcs, true, Ref(N(NpcGroup_KoopaBros)))
+            Call(MakeNpcs, true, Ref(NpcGroup_KoopaBros))
     EndSwitch
     Wait(2)
-    ExecWait(N(EVS_MakeEntities))
-    BindTrigger(Ref(N(EVS_ExitDoors_trd_04_5)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    ExecWait(EVS_MakeEntities)
+    BindTrigger(Ref(EVS_ExitDoors_trd_04_5), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Call(GetEntryID, LVar0)
     IfLe(LVar0, trd_06_ENTRY_1)
         IfEq(GF_TRD06_BombedWall, false)
-            BindTrigger(Ref(N(EVS_BombWall_Cell)), TRIGGER_POINT_BOMB, Ref(N(BombPos_CellWall)), 1, 0)
+            BindTrigger(Ref(EVS_BombWall_Cell), TRIGGER_POINT_BOMB, Ref(BombPos_CellWall), 1, 0)
             Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_HIDDEN)
         Else
             Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_HIDDEN)
@@ -149,8 +149,8 @@ EvtScript N(EVS_Main) = {
     Else
         Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_HIDDEN)
     EndIf
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_EnterMap)
     Wait(1)
     Call(SetTexPanner, MODEL_suimen, TEX_PANNER_1)
     Thread

@@ -4,8 +4,6 @@
 #include "audio.h"
 #include "battle/action_cmd.h"
 
-#define NAMESPACE action_command_mega_shock
-
 extern s32 actionCmdTableMegaShock[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -19,11 +17,11 @@ enum {
 // how much to add to the meter per input
 #define METER_FILL_TICK 780
 
-s32 N(DrainRateTable)[] = { 0, 25, 50, 75, 75 };
+s32 DrainRateTable[] = { 0, 25, 50, 75, 75 };
 
-#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(N(DrainRateTable), pct)
+#define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(DrainRateTable, pct)
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     BattleStatus* battleStatus = &gBattleStatus;
     ActionCommandStatus* acs = &gActionCommandStatus;
     HudElemID hid;
@@ -74,7 +72,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -105,7 +103,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -312,7 +310,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     s32 hudX, hudY;
     HudElemID hid;
@@ -333,7 +331,7 @@ void N(draw)(void) {
     hud_element_draw_clipped(acs->hudElemIDs[HIDX_100_PCT]);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_A_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_B_BUTTON]);

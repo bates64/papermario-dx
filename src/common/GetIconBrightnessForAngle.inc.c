@@ -2,7 +2,7 @@
 
 // determines the 'brightness' of inspect and speech bubble icons as a function of angle,
 // making them appear more three-dimensional.
-s32 N(GetIconBrightnessForAngle)(f32 angle) {
+static s32 GetIconBrightnessForAngle(f32 angle) {
     s32 angleDiff;
 
     if (angle >= 270.0f) {

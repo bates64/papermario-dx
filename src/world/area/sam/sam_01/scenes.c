@@ -1,7 +1,7 @@
 #include "sam_01.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(GetLeftRightPoints)) {
+API_CALLABLE(GetLeftRightPoints) {
     Bytecode* args = script->ptrReadPos;
     s32 posX = evt_get_variable(script, *args++);
     s32 posZ = evt_get_variable(script, *args++);
@@ -14,7 +14,7 @@ API_CALLABLE(N(GetLeftRightPoints)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_MayorCarryGift) = {
+EvtScript EVS_MayorCarryGift = {
     Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Penguin_09, LVar3, LVar4, LVar5)
     Sub(LVar3, LVar0)
@@ -37,7 +37,7 @@ EvtScript N(EVS_MayorCarryGift) = {
     End
 };
 
-EvtScript N(EVS_HerringwayCarryPresent) = {
+EvtScript EVS_HerringwayCarryPresent = {
     Call(GetItemPos, MV_PresentItemID, LVarA, LVarB, LVarC)
     Loop(6)
         Call(SetItemPos, MV_PresentItemID, LVarA, LVarB, LVarC)
@@ -54,7 +54,7 @@ EvtScript N(EVS_HerringwayCarryPresent) = {
     End
 };
 
-EvtScript N(EVS_OpenMayorsOfficeDoor) = {
+EvtScript EVS_OpenMayorsOfficeDoor = {
     Call(PlaySoundAtCollider, COLLIDER_ttsn, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 20, EASING_COS_IN_OUT)
     Loop(0)
@@ -69,7 +69,7 @@ EvtScript N(EVS_OpenMayorsOfficeDoor) = {
     End
 };
 
-EvtScript N(EVS_CloseMayorsOfficeDoor) = {
+EvtScript EVS_CloseMayorsOfficeDoor = {
     Call(MakeLerp, 80, 0, 20, EASING_COS_IN_OUT)
     Loop(0)
         Call(UpdateLerp)
@@ -84,7 +84,7 @@ EvtScript N(EVS_CloseMayorsOfficeDoor) = {
     End
 };
 
-EvtScript N(EVS_Scene_MysteryBegins) = {
+EvtScript EVS_Scene_MysteryBegins = {
     Call(InterruptUsePartner)
     Call(SetNpcFlagBits, NPC_MayorPenguin, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_MayorPenguinWife, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -98,10 +98,10 @@ EvtScript N(EVS_Scene_MysteryBegins) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(20 * DT)
-    ExecWait(N(EVS_OpenMayorsOfficeDoor))
+    ExecWait(EVS_OpenMayorsOfficeDoor)
     Thread
         Wait(20 * DT)
-        ExecWait(N(EVS_CloseMayorsOfficeDoor))
+        ExecWait(EVS_CloseMayorsOfficeDoor)
     EndThread
     Call(SetNpcFlagBits, NPC_MayorPenguinWife, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Call(SetNpcPos, NPC_MayorPenguinWife, -255, 0, 28)
@@ -210,10 +210,10 @@ EvtScript N(EVS_Scene_MysteryBegins) = {
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_MayorPenguinWife, ANIM_MayorPenguinWife_Horror, ANIM_MayorPenguinWife_Horror, 5, MSG_CH7_0008)
     Wait(20 * DT)
-    ExecWait(N(EVS_OpenMayorsOfficeDoor))
+    ExecWait(EVS_OpenMayorsOfficeDoor)
     Thread
         Wait(30 * DT)
-        ExecWait(N(EVS_CloseMayorsOfficeDoor))
+        ExecWait(EVS_CloseMayorsOfficeDoor)
     EndThread
     Thread
         Set(MF_ContinueScene, false)
@@ -353,7 +353,7 @@ EvtScript N(EVS_Scene_MysteryBegins) = {
     End
 };
 
-EvtScript N(EVS_Scene_MysterySolved) = {
+EvtScript EVS_Scene_MysterySolved = {
     Call(DisablePlayerInput, true)
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
@@ -471,7 +471,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.5), Float(-6.5))
-    Call(N(GetLeftRightPoints), LVar0, LVar2, 45)
+    Call(GetLeftRightPoints, LVar0, LVar2, 45)
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -498,7 +498,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
     Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Twitch)
     Wait(20 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(N(GetLeftRightPoints), LVar0, LVar2, -95)
+    Call(GetLeftRightPoints, LVar0, LVar2, -95)
     Call(SetCamPosA, CAM_DEFAULT, LVar0, LVar1)
     Call(SetCamPosB, CAM_DEFAULT, LVar2, LVar3)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
@@ -614,7 +614,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
     EndThread
     Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_PickUp)
     Wait(30 * DT)
-    ExecGetTID(N(EVS_MayorCarryGift), LVarA)
+    ExecGetTID(EVS_MayorCarryGift, LVarA)
     Call(GetNpcPos, NPC_Herringway, LVar0, LVar1, LVar2)
     Add(LVar2, -25)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -691,22 +691,22 @@ EvtScript N(EVS_Scene_MysterySolved) = {
     Call(NpcMoveTo, NPC_PenguinPatrol, -250, -10, 0)
     Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Idle)
     Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-    ExecWait(N(EVS_OpenMayorsOfficeDoor))
+    ExecWait(EVS_OpenMayorsOfficeDoor)
     Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Walk)
     Call(NpcMoveTo, NPC_PenguinPatrol, -250, 50, 0)
     Call(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Idle)
     Call(SpeakToPlayer, NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_0030)
     Call(SpeakToPlayer, NPC_Herringway, ANIM_Herringway_TalkCarry, ANIM_Herringway_IdleCarry, 0, MSG_CH7_0031)
-    ExecGetTID(N(EVS_HerringwayCarryPresent), LVarA)
+    ExecGetTID(EVS_HerringwayCarryPresent, LVarA)
     Call(SetNpcSpeed, NPC_Herringway, Float(3.0 / DT))
     Call(SetNpcAnimation, NPC_Herringway, ANIM_Herringway_WalkCarry)
     Call(NpcMoveTo, NPC_Herringway, -250, 50, 0)
     Call(SetNpcAnimation, NPC_Herringway, ANIM_Herringway_IdleCarry)
     KillThread(LVarA)
     Call(RemoveItemEntity, MV_PresentItemID)
-    ExecWait(N(EVS_CloseMayorsOfficeDoor))
+    ExecWait(EVS_CloseMayorsOfficeDoor)
     Set(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 5, MSG_CH7_0032)
     Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)

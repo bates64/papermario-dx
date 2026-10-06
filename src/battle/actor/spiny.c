@@ -5,28 +5,26 @@
 #include "sprite/npc/Spiny.h"
 #include "sprite/npc/Lakitu.h"
 
-#define NAMESPACE A(spiny)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_BALL        = 2,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Toppled        = 0,
     AVAR_ToppleTurns    = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_ROLL        = 4,
 };
 
-s32 N(UprightAnims)[] = {
+s32 UprightAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Spiny_Idle,
     STATUS_KEY_STONE,     ANIM_Spiny_Still,
     STATUS_KEY_SLEEP,     ANIM_Spiny_Sleep,
@@ -39,7 +37,7 @@ s32 N(UprightAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ToppledAnims)[] = {
+s32 ToppledAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Spiny_IdleTopple,
     STATUS_KEY_STONE,     ANIM_Spiny_StillTopple,
     STATUS_KEY_SLEEP,     ANIM_Spiny_SleepTopple,
@@ -52,22 +50,22 @@ s32 N(ToppledAnims)[] = {
     STATUS_END,
 };
 
-s32 N(SpinyBallAnims)[] = {
+s32 SpinyBallAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Lakitu_SpinyLargeStill,
     STATUS_END,
 };
 
-s32 N(UprightDefense)[] = {
+s32 UprightDefense[] = {
     ELEMENT_NORMAL,   3,
     ELEMENT_END,
 };
 
-s32 N(ToppledDefense)[] = {
+s32 ToppledDefense[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              60,
@@ -92,15 +90,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 20 },
         .opacity = 255,
-        .idleAnimations = N(UprightAnims),
-        .defenseTable = N(UprightDefense),
+        .idleAnimations = UprightAnims,
+        .defenseTable = UprightDefense,
         .eventFlags = ACTOR_EVENT_FLAG_FLIPABLE | ACTOR_EVENT_FLAG_ALT_SPIKY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -4 },
@@ -111,8 +109,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(SpinyBallAnims),
-        .defenseTable = N(UprightDefense),
+        .idleAnimations = SpinyBallAnims,
+        .defenseTable = UprightDefense,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -124,10 +122,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_SPINY,
     .level = ACTOR_LEVEL_SPINY,
     .maxHP = 5,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 60,
     .airLiftChance = 75,
     .hurricaneChance = 75,
@@ -142,22 +140,22 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_BALL, ANIM_Lakitu_SpinyLargeSpin)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_MAIN, ACTOR_PART_FLAG_INVISIBLE, true)
     Call(SetPartFlagBits, ACTOR_SELF, PRT_BALL, ACTOR_PART_FLAG_INVISIBLE, false)
@@ -174,7 +172,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_CheckToppleAnim) = {
+EvtScript EVS_CheckToppleAnim = {
     Call(GetActorVar, ACTOR_SELF, AVAR_Toppled, LVar3)
     IfEq(LVar3, 1)
         Set(LVar1, LVar2)
@@ -183,9 +181,9 @@ EvtScript N(EVS_CheckToppleAnim) = {
     End
 };
 
-s32 N(FlipPosOffsets)[] = { 7, 13, 17, 21, 23, 24, 23, 21, 17, 13, 7, 0, 4, 7, 6, 4, 0, 2, 0 };
+s32 FlipPosOffsets[] = { 7, 13, 17, 21, 23, 24, 23, 21, 17, 13, 7, 0, 4, 7, 6, 4, 0, 2, 0 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -195,7 +193,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Spiny_Hurt)
             SetConst(LVar2, ANIM_Spiny_HurtTopple)
-            ExecWait(N(EVS_CheckToppleAnim))
+            ExecWait(EVS_CheckToppleAnim)
             ExecWait(EVS_Enemy_Hit)
         EndCaseGroup
         CaseEq(EVENT_BURN_HIT)
@@ -235,18 +233,18 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Spiny_Hurt)
             SetConst(LVar2, ANIM_Spiny_HurtTopple)
-            ExecWait(N(EVS_CheckToppleAnim))
+            ExecWait(EVS_CheckToppleAnim)
             ExecWait(EVS_Enemy_SpinSmashHit)
         CaseEq(EVENT_SPIN_SMASH_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Spiny_Hurt)
             SetConst(LVar2, ANIM_Spiny_HurtTopple)
-            ExecWait(N(EVS_CheckToppleAnim))
+            ExecWait(EVS_CheckToppleAnim)
             ExecWait(EVS_Enemy_SpinSmashHit)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Spiny_Hurt)
             SetConst(LVar2, ANIM_Spiny_HurtTopple)
-            ExecWait(N(EVS_CheckToppleAnim))
+            ExecWait(EVS_CheckToppleAnim)
             ExecWait(EVS_Enemy_Death)
             Return
         CaseEq(EVENT_FLIP_TRIGGER)
@@ -258,11 +256,11 @@ EvtScript N(EVS_HandleEvent) = {
             EndIf
             Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 1)
             Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 1)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefense)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefense))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ALT_SPIKY, false)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
-            UseBuf(N(FlipPosOffsets))
+            UseBuf(FlipPosOffsets)
             Loop(19)
                 BufRead1(LVar0)
                 Call(SetActorDispOffset, ACTOR_SELF, 0, LVar0, 0)
@@ -309,13 +307,13 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Spiny_Hurt)
             SetConst(LVar2, ANIM_Spiny_HurtTopple)
-            ExecWait(N(EVS_CheckToppleAnim))
+            ExecWait(EVS_CheckToppleAnim)
             ExecWait(EVS_Enemy_Hit)
             Wait(10)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Spiny_Hurt)
             SetConst(LVar2, ANIM_Spiny_HurtTopple)
-            ExecWait(N(EVS_CheckToppleAnim))
+            ExecWait(EVS_CheckToppleAnim)
             ExecWait(EVS_Enemy_Death)
             Return
         CaseEq(EVENT_RECOVER_STATUS)
@@ -375,7 +373,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetActorVar, ACTOR_SELF, AVAR_Toppled, LVar0)
@@ -398,8 +396,8 @@ EvtScript N(EVS_TakeTurn) = {
             SetConst(LVar2, ANIM_Spiny_Idle)
             ExecWait(EVS_Enemy_FlipBackUp)
             Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 0)
-            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(UprightDefense)))
-            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
+            Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(UprightDefense))
+            Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
             Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_ALT_SPIKY, true)
             Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
         EndIf
@@ -468,7 +466,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(YieldTurn)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Return
         EndCaseGroup
@@ -499,7 +497,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)
             Call(YieldTurn)
             Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableActorBlur, ACTOR_SELF, ACTOR_BLUR_DISABLE)

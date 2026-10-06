@@ -3,7 +3,7 @@
 
 #include "world/common/ai/ShyGuyWanderAI.inc.c"
 
-MobileAISettings N(AISettings_ShyGuy_Wander) = {
+MobileAISettings AISettings_ShyGuy_Wander = {
     .moveSpeed = 2.0f,
     .moveTime = 60,
     .waitTime = 15,
@@ -18,17 +18,17 @@ MobileAISettings N(AISettings_ShyGuy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_ShyGuy_Wander) = {
-    Call(N(ShyGuyWanderAI_Main), Ref(N(AISettings_ShyGuy_Wander)))
+EvtScript EVS_NpcAI_ShyGuy_Wander = {
+    Call(ShyGuyWanderAI_Main, Ref(AISettings_ShyGuy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_ShyGuy_Wander) = {
+NpcSettings NpcSettings_ShyGuy_Wander = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .doAI = &N(EVS_NpcAI_ShyGuy_Wander),
+    .doAI = &EVS_NpcAI_ShyGuy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

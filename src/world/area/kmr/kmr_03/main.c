@@ -1,31 +1,31 @@
 #include "kmr_03.h"
 
-EvtScript N(EVS_ExitWalk_kmr_04_0) = EVT_EXIT_WALK(60, kmr_03_ENTRY_0, "kmr_04", kmr_04_ENTRY_0);
-EvtScript N(EVS_ExitWalk_kmr_05_0) = EVT_EXIT_WALK(60, kmr_03_ENTRY_1, "kmr_05", kmr_05_ENTRY_0);
+EvtScript EVS_ExitWalk_kmr_04_0 = EVT_EXIT_WALK(60, kmr_03_ENTRY_0, "kmr_04", kmr_04_ENTRY_0);
+EvtScript EVS_ExitWalk_kmr_05_0 = EVT_EXIT_WALK(60, kmr_03_ENTRY_1, "kmr_05", kmr_05_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kmr_04_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kmr_05_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kmr_04_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kmr_05_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     Call(ClearDefeatedEnemies)
-    ExecWait(N(EVS_MakeEntities))
-    ExecWait(N(EVS_SetupFoliage))
-    Exec(N(EVS_SetupMusic))
+    ExecWait(EVS_MakeEntities)
+    ExecWait(EVS_SetupFoliage)
+    Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, kmr_03_ENTRY_2)
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
     Else
-        Exec(N(EVS_BindExitTriggers))
-        Exec(N(EVS_Scene_FallingDown))
+        Exec(EVS_BindExitTriggers)
+        Exec(EVS_Scene_FallingDown)
     EndIf
     Wait(1)
     Return

@@ -3,41 +3,39 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Goompa.h"
 
-#define NAMESPACE battle_partner_goompa
+extern EvtScript EVS_Init;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_Celebrate;
+extern EvtScript runAway;
+extern EvtScript runAwayFail;
+extern EvtScript EVS_ExecuteAction;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_Celebrate);
-extern EvtScript N(runAway);
-extern EvtScript N(runAwayFail);
-extern EvtScript N(EVS_ExecuteAction);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Unk_0      = 0,
     AVAR_Unk_1      = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_UNK         = 0,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goompa_Walk,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,            100,
     STATUS_KEY_DEFAULT,           100,
     STATUS_KEY_SLEEP,             100,
@@ -62,23 +60,23 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .index = PRT_MAIN,
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
     },
 };
 
-ActorBlueprint NAMESPACE = {
+ActorBlueprint blueprint = {
     .flags = ACTOR_FLAG_NO_ATTACK,
     .type = ACTOR_TYPE_GOOMBARIO,
     .maxHP = 99,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .spinSmashReq = 4,
     .powerBounceChance = 80,
     .size = { 29, 26 },
@@ -86,22 +84,22 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 20 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Unk_0, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Unk_1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(InterruptActionCommand)
     Call(GetLastEvent, ACTOR_PARTNER, LVar0)
@@ -148,23 +146,23 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_EXECUTE_ACTION)
-            ExecWait(N(EVS_ExecuteAction))
+            ExecWait(EVS_ExecuteAction)
         CaseEq(PHASE_CELEBRATE)
-            ExecWait(N(EVS_Celebrate))
+            ExecWait(EVS_Celebrate)
         CaseEq(PHASE_RUN_AWAY_START)
-            ExecWait(N(runAway))
+            ExecWait(runAway)
         CaseEq(PHASE_RUN_AWAY_FAIL)
-            ExecWait(N(runAwayFail))
+            ExecWait(runAwayFail)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Celebrate) = {
+EvtScript EVS_Celebrate = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Goompa_Celebrate)
     SetConst(LVar2, ANIM_Goompa_Walk)
@@ -173,7 +171,7 @@ EvtScript N(EVS_Celebrate) = {
     End
 };
 
-EvtScript N(runAway) = {
+EvtScript runAway = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Goompa_Run)
     ExecWait(EVS_Partner_RunAway)
@@ -181,7 +179,7 @@ EvtScript N(runAway) = {
     End
 };
 
-EvtScript N(runAwayFail) = {
+EvtScript runAwayFail = {
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_Goompa_Run)
@@ -192,7 +190,7 @@ EvtScript N(runAwayFail) = {
     End
 };
 
-EvtScript N(EVS_ExecuteAction) = {
+EvtScript EVS_ExecuteAction = {
     Return
     End
 };

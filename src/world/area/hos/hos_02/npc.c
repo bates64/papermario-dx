@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/Ember/wander.inc.c"
 
-NpcData N(NpcData_Ember) = {
+NpcData NpcData_Ember = {
     .id = NPC_Ember_01,
     .pos = { -410.0f, -15.0f, 260.0f },
     .yaw = 90,
@@ -18,14 +18,14 @@ NpcData N(NpcData_Ember) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Ember_Wander),
+    .settings = &NpcSettings_Ember_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = EMBER_DROPS,
     .animations = EMBER_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Ember_02) = {
+NpcData NpcData_Ember_02 = {
     .id = NPC_Ember_02,
     .pos = { 220.0f, 200.0f, -205.0f },
     .yaw = 90,
@@ -41,14 +41,14 @@ NpcData N(NpcData_Ember_02) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Ember_Wander),
+    .settings = &NpcSettings_Ember_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = EMBER_DROPS,
     .animations = EMBER_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Ember_03) = {
+NpcData NpcData_Ember_03 = {
     .id = NPC_Ember_03,
     .pos = { -135.0f, 370.0f, 270.0f },
     .yaw = 90,
@@ -64,16 +64,16 @@ NpcData N(NpcData_Ember_03) = {
             .detectSize = { 1000 },
         }
     },
-    .settings = &N(NpcSettings_Ember_Wander),
+    .settings = &NpcSettings_Ember_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = EMBER_DROPS,
     .animations = EMBER_ANIMS,
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Ember), BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
-    NPC_GROUP(N(NpcData_Ember_02), BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
-    NPC_GROUP(N(NpcData_Ember_03), BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Ember, BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
+    NPC_GROUP(NpcData_Ember_02, BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
+    NPC_GROUP(NpcData_Ember_03, BTL_HOS_FORMATION_01, BTL_HOS_STAGE_01),
     {}
 };

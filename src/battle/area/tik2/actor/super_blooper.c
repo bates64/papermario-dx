@@ -258,7 +258,6 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 40, 80 },
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 #include "common/FadeBackgroundDarken.inc.c"
 #include "common/FadeBackgroundLighten.inc.c"
 #include "common/SpitInk.inc.c"
@@ -633,7 +632,7 @@ EvtScript N(EVS_Attack_InkBlast) = {
     Add(LVar3, 1)
     Sub(LVar4, 30)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-    Call(N(SpitInk), LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
+    Call(SpitInk, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5)
     Call(EnemyTestTarget, ACTOR_SELF, LVarF, DAMAGE_TYPE_NO_CONTACT, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarF)
         CaseOrEq(HIT_RESULT_MISS)
@@ -679,8 +678,8 @@ EvtScript N(EVS_Move_MakeBabies) = {
     Call(MoveBattleCamOver, 40)
     Wait(20)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BIG_POWER_UP)
-    Call(N(FadeBackgroundDarken))
-    Call(N(StartRumbleWithParams), 50, 20)
+    Call(DarkenBackground)
+    Call(StartRumbleWithParams, 50, 20)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(0.3))
     EndThread
@@ -691,7 +690,7 @@ EvtScript N(EVS_Move_MakeBabies) = {
     Call(MoveBattleCamOver, 15)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Blooper_Strain)
     Wait(15)
-    Call(N(StartRumbleWithParams), 100, 20)
+    Call(StartRumbleWithParams, 100, 20)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(0.4))
     EndThread
@@ -702,7 +701,7 @@ EvtScript N(EVS_Move_MakeBabies) = {
     Call(MoveBattleCamOver, 15)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Blooper_StrainMore)
     Wait(15)
-    Call(N(StartRumbleWithParams), 150, 20)
+    Call(StartRumbleWithParams, 150, 20)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 10, Float(0.5))
     EndThread
@@ -729,7 +728,7 @@ EvtScript N(EVS_Move_MakeBabies) = {
     EndIf
     Wait(2)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Blooper_Jump)
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Return
@@ -749,8 +748,8 @@ EvtScript N(EVS_Move_Enrage) = {
     Call(MoveBattleCamOver, 50)
     Wait(20)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BIG_POWER_UP)
-    Call(N(FadeBackgroundDarken))
-    Call(N(StartRumbleWithParams), 70, 80)
+    Call(DarkenBackground)
+    Call(StartRumbleWithParams, 70, 80)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 40, Float(0.3))
     EndThread
@@ -763,7 +762,7 @@ EvtScript N(EVS_Move_Enrage) = {
     ExecWait(N(EVS_Enrage))
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Call(MoveBattleCamOver, 30)
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
     Call(UseIdleAnimation, ACTOR_SELF, true)
     Return

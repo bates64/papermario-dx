@@ -3,7 +3,7 @@
 
 #include "world/common/npc/Toad/idle.inc.c"
 
-EvtScript N(EVS_Scene_Wishing) = {
+EvtScript EVS_Scene_Wishing = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -24,7 +24,7 @@ EvtScript N(EVS_Scene_Wishing) = {
     End
 };
 
-LetterDelivery N(LetterDelivery_MussT) = {
+LetterDelivery LetterDelivery_MussT = {
     .recipientID = NPC_Toad,
     .recipientTalk = ANIM_Toad_Red_Talk,
     .recipientIdle = ANIM_Toad_Red_Idle,
@@ -36,7 +36,7 @@ LetterDelivery N(LetterDelivery_MussT) = {
     .reward = ITEM_LETTER_CHAIN_KOOVER_1,
 };
 
-EvtScript N(EVS_NpcInteract_Toad) = {
+EvtScript EVS_NpcInteract_Toad = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_OSR_0000)
@@ -78,38 +78,38 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Set(LVar0, MSG_OSR_000F)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
-    Set(LVar0, Ref(N(LetterDelivery_MussT)))
+    Set(LVar0, Ref(LetterDelivery_MussT))
     ExecWait(EVS_TryLetterDelivery)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad) = {
+EvtScript EVS_NpcInit_Toad = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_01_ENTRY_3)
             Call(SetNpcPos, NPC_SELF, 0, 0, 400)
             Call(SetNpcYaw, NPC_SELF, 90)
         CaseDefault
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
     EndSwitch
     Return
     End
 };
 
-NpcData N(NpcData_Toad) = {
+NpcData NpcData_Toad = {
     .id = NPC_Toad,
     .pos = { 25.0f, 0.0f, 130.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Toad),
-    .settings = &N(NpcSettings_Toad),
+    .init = &EVS_NpcInit_Toad,
+    .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_OSR_LovesToClean,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Toad)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Toad),
     {}
 };

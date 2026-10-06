@@ -1,37 +1,37 @@
 #include "kmr_11.h"
 #include "foliage.h"
 
-API_CALLABLE(N(SetupFog)) {
+API_CALLABLE(SetupFog) {
     set_world_fog_dist(980, 1000);
     set_world_fog_color(15, 5, 55, 255);
     enable_world_fog();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UseSlowerFadeOnMapChange)) {
+API_CALLABLE(UseSlowerFadeOnMapChange) {
     set_map_change_fade_rate(10); // 20 is default
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_PlayFortressAnimation) = {
-    Call(LoadAnimatedModel, MDL_ANIMATOR_1, Ref(N(AnimSkeleton_Fortress)))
-    Call(PlayModelAnimation, MDL_ANIMATOR_1, Ref(N(AnimScript_Fortress)))
+EvtScript EVS_PlayFortressAnimation = {
+    Call(LoadAnimatedModel, MDL_ANIMATOR_1, Ref(AnimSkeleton_Fortress))
+    Call(PlayModelAnimation, MDL_ANIMATOR_1, Ref(AnimScript_Fortress))
     Call(SetAnimatedModelRootPosition, MDL_ANIMATOR_1, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, MDL_ANIMATOR_1, RENDER_MODE_SURFACE_OPA)
     Return
     End
 };
 
-EvtScript N(EVS_PlayBridgeAnimation) = {
-    Call(LoadAnimatedModel, MDL_ANIMATOR_0, Ref(N(AnimSkeleton_Bridge)))
-    Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(N(AnimScript_Bridge)))
+EvtScript EVS_PlayBridgeAnimation = {
+    Call(LoadAnimatedModel, MDL_ANIMATOR_0, Ref(AnimSkeleton_Bridge))
+    Call(PlayModelAnimation, MDL_ANIMATOR_0, Ref(AnimScript_Bridge))
     Call(SetAnimatedModelRootPosition, MDL_ANIMATOR_0, 0, 0, 0)
     Call(SetAnimatedModelRenderMode, MDL_ANIMATOR_0, RENDER_MODE_SURFACE_OPA)
     Return
     End
 };
 
-EvtScript N(EVS_BadExit_kmr_24_0) = {
+EvtScript EVS_BadExit_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
     Call(GotoMapSpecial, Ref("kmr_24"), kmr_24_ENTRY_0, TRANSITION_MARIO_BLACK)
     Wait(100)
@@ -39,7 +39,7 @@ EvtScript N(EVS_BadExit_kmr_24_0) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_kmr_12_1) = {
+EvtScript EVS_ExitWalk_kmr_12_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kmr_11_ENTRY_0)
     Exec(ExitWalk)
@@ -49,7 +49,7 @@ EvtScript N(EVS_ExitWalk_kmr_12_1) = {
     End
 };
 
-EvtScript N(EVS_ExitWalk_kmr_10_0) = {
+EvtScript EVS_ExitWalk_kmr_10_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kmr_11_ENTRY_1)
     Exec(ExitWalk)
@@ -59,47 +59,47 @@ EvtScript N(EVS_ExitWalk_kmr_10_0) = {
         Return
     Else
         Wait(10)
-        ExecWait(N(EVS_Scene_KammyWatching))
+        ExecWait(EVS_Scene_KammyWatching)
     EndIf
     Unbind
     Return
     End
 };
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kmr_12_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_kmr_10_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kmr_12_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_kmr_10_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
     Return
     End
 };
 
-FoliageModelList N(SwitchBush_Models) = FOLIAGE_MODEL_LIST(MODEL_kusa4);
+FoliageModelList SwitchBush_Models = FOLIAGE_MODEL_LIST(MODEL_kusa4);
 
-FoliageVectorList N(SwitchBush_Effects) = {
+FoliageVectorList SwitchBush_Effects = {
     .count = 1,
     .vectors = {
         { -381.0f, 12.0f, 82.0f },
     }
 };
 
-SearchBushConfig N(SearchBush_SwitchBush) = {
-    .bush = &N(SwitchBush_Models),
-    .vectors = &N(SwitchBush_Effects),
-    .callback = &N(EVS_Interact_SwitchBush),
+SearchBushConfig SearchBush_SwitchBush = {
+    .bush = &SwitchBush_Models,
+    .vectors = &SwitchBush_Effects,
+    .callback = &EVS_Interact_SwitchBush,
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_ROAD)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(N(UseSlowerFadeOnMapChange))
+    Call(UseSlowerFadeOnMapChange)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
     Call(ClearDefeatedEnemies)
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfLt(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-        Call(N(SetupFog))
+        Call(SetupFog)
     EndIf
-    ExecWait(N(EVS_SetupFoliage))
+    ExecWait(EVS_SetupFoliage)
     Call(InitAnimatedModels)
     Call(EnableModel, MODEL_eye_mask, false)
     IfLt(GB_StoryProgress, STORY_CH0_HIT_GATEHOUSE_SWITCH)
@@ -117,23 +117,23 @@ EvtScript N(EVS_Main) = {
     EndIf
     IfLt(GB_StoryProgress, STORY_CH0_DEFEATED_GOOMBA_KING)
         IfEq(GF_KMR11_GoombaBrosFledToCastle, false)
-            Exec(N(EVS_BindExitTriggers))
+            Exec(EVS_BindExitTriggers)
             Call(SetMusic, 0, SONG_GOOMBA_BROS_RETREAT, BGM_VARIATION_1, VOL_LEVEL_FULL)
-            ExecWait(N(EVS_Scene_MeetGoombaKing))
+            ExecWait(EVS_Scene_MeetGoombaKing)
             Set(GF_KMR11_GoombaBrosFledToCastle, true)
         Else
-            Exec(N(EVS_SetupMusic))
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Exec(EVS_SetupMusic)
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
             Wait(1)
         EndIf
     Else
-        Exec(N(EVS_SetupMusic))
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Exec(EVS_SetupMusic)
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
         Wait(1)
     EndIf
-    Set(LVar0, Ref(N(SearchBush_SwitchBush)))
+    Set(LVar0, Ref(SearchBush_SwitchBush))
     BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_kusa4, 1, 0)
     Call(SetGroupVisibility, MODEL_event_cam, MODEL_GROUP_HIDDEN)
     Call(TranslateGroup, MODEL_g172, NPC_DISPOSE_LOCATION)

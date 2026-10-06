@@ -1,19 +1,19 @@
 #include "isk_14.h"
 
-EvtScript N(EVS_ExitWalk_isk_10_1) = EVT_EXIT_WALK(40, isk_14_ENTRY_0, "isk_10", isk_10_ENTRY_1);
+EvtScript EVS_ExitWalk_isk_10_1 = EVT_EXIT_WALK(40, isk_14_ENTRY_0, "isk_10", isk_10_ENTRY_1);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_isk_10_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_isk_10_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_14)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
+    Call(MakeNpcs, true, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
 #if VERSION_PAL
     Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
 #else
@@ -26,7 +26,7 @@ EvtScript N(EVS_Main) = {
             Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
     EndSwitch
 #endif
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Return
     End

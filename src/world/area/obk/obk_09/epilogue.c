@@ -1,11 +1,11 @@
 #include "obk_09.h"
 
-API_CALLABLE(N(SetInvitationLetterScale)) {
+API_CALLABLE(SetInvitationLetterScale) {
     get_item_entity(script->varTable[0])->scale = 0.6f;
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_Epilogue) = {
+EvtScript EVS_Scene_Epilogue = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
@@ -27,7 +27,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
     Wait(15)
     Thread
         Call(DropResizableItemEntity, ITEM_LETTER_TO_KOLORADO, NPC_DISPOSE_LOCATION, ITEM_SPAWN_MODE_DECORATION, 0)
-        Call(N(SetInvitationLetterScale))
+        Call(SetInvitationLetterScale)
         Loop(35)
             Call(GetNpcPos, NPC_Bootler, LVar1, LVar2, LVar3)
             Add(LVar1, -16)

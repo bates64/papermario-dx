@@ -4,25 +4,22 @@
 #include "script_api/battle.h"
 #include "sprite/npc/MediGuy.h"
 
-#define NAMESPACE A(medi_guy)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_SWOOP       = 1,
 };
 
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
 #include "common/MediGuySpriteRotationFunc.inc.c"
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_MediGuy_Idle,
     STATUS_KEY_STONE,     ANIM_MediGuy_Still,
     STATUS_KEY_SLEEP,     ANIM_MediGuy_Sleep,
@@ -35,13 +32,13 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_SHOCK,    0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              70,
@@ -66,15 +63,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 38 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -5 },
@@ -86,10 +83,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_MEDI_GUY,
     .level = ACTOR_LEVEL_MEDI_GUY,
     .maxHP = 7,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 60,
     .airLiftChance = 90,
     .hurricaneChance = 95,
@@ -104,10 +101,10 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 12, 31 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Sub(LVar1, 5)
     Call(ForceHomePos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -116,17 +113,17 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(GetStatusFlags, ACTOR_SELF, LVar0)
         IfFlag(LVar0, STATUS_FLAG_SLEEP)
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -2, 24)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -5)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 20)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 10, 20)
         Else
             Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -2, 38)
             Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, -1, -5)
-            Call(N(SetAbsoluteStatusOffsets), -10, 20, 12, 31)
+            Call(SetAbsoluteStatusOffsets, -10, 20, 12, 31)
         EndIf
         Wait(1)
         Goto(0)
@@ -134,7 +131,7 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     Call(ResetAllActorSounds, ACTOR_SELF)
     Call(SetPartRotation, ACTOR_SELF, PRT_MAIN, 0, 0, 0)
     Call(SetActorYaw, ACTOR_SELF, 180)
@@ -147,7 +144,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -192,7 +189,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar1, ANIM_MediGuy_Hurt)
             ExecWait(EVS_Enemy_Knockback)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_MediGuy_Hurt)
@@ -223,7 +220,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(HPBarToCurrent, ACTOR_SELF)
         CaseEq(EVENT_END_FIRST_STRIKE)
             Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_MAIN)
@@ -253,7 +250,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Swoop) = {
+EvtScript EVS_Attack_Swoop = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -291,7 +288,7 @@ EvtScript N(EVS_Attack_Swoop) = {
                 Wait(5)
                 Set(LVar0, 0)
                 Loop(60)
-                    Call(N(MediGuySpriteRotationFunc), LVar0, LVar1, 15, 60, Float(30.0))
+                    Call(MediGuySpriteRotationFunc, LVar0, LVar1, 15, 60, Float(30.0))
                     Call(SetPartRotation, ACTOR_SELF, PRT_MAIN, 0, 0, LVar1)
                     Add(LVar0, 1)
                     Wait(1)
@@ -313,7 +310,7 @@ EvtScript N(EVS_Attack_Swoop) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorSpeed, ACTOR_SELF, Float(10.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -354,7 +351,7 @@ EvtScript N(EVS_Attack_Swoop) = {
             Call(JumpWithBounce, ACTOR_SELF, 10, Float(2.0))
             Wait(20)
             Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -363,7 +360,7 @@ EvtScript N(EVS_Attack_Swoop) = {
     End
 };
 
-EvtScript N(EVS_Move_HealOne) = {
+EvtScript EVS_Move_HealOne = {
     Set(LVarA, LVar0)
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
@@ -406,7 +403,7 @@ EvtScript N(EVS_Move_HealOne) = {
     End
 };
 
-EvtScript N(EVS_FindInjuredActor) = {
+EvtScript EVS_FindInjuredActor = {
     Call(CreateHomeTargetList, TARGET_FLAG_2)
     Call(InitTargetIterator)
     Label(0)
@@ -425,16 +422,16 @@ EvtScript N(EVS_FindInjuredActor) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
-    ExecWait(N(EVS_FindInjuredActor))
+EvtScript EVS_TakeTurn = {
+    ExecWait(EVS_FindInjuredActor)
     IfEq(LVar0, -1)
-        ExecWait(N(EVS_Attack_Swoop))
+        ExecWait(EVS_Attack_Swoop)
     Else
         Call(RandInt, 1000, LVarA)
         IfLt(LVarA, 600)
-            ExecWait(N(EVS_Move_HealOne))
+            ExecWait(EVS_Move_HealOne)
         Else
-            ExecWait(N(EVS_Attack_Swoop))
+            ExecWait(EVS_Attack_Swoop)
         EndIf
     EndIf
     Return

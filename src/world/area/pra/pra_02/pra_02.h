@@ -19,14 +19,12 @@ enum {
     MV_FarBluePadlock   = MapVar(4),
 };
 
-#define NAMESPACE pra_02
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_ManagePoundableSwitch);
-extern EvtScript N(EVS_UpdateShiftingWallPos);
-extern EvtScript N(EVS_ExitDoors_pra_16_0);
-extern EvtScript N(EVS_ExitDoors_pra_16_3);
-extern EvtScript N(EVS_ExitDoors_pra_13_0);
-extern EvtScript N(EVS_ExitDoors_pra_13_3);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_ManagePoundableSwitch;
+extern EvtScript EVS_UpdateShiftingWallPos;
+extern EvtScript EVS_ExitDoors_pra_16_0;
+extern EvtScript EVS_ExitDoors_pra_16_3;
+extern EvtScript EVS_ExitDoors_pra_13_0;
+extern EvtScript EVS_ExitDoors_pra_13_3;
+extern EvtScript EVS_MakeEntities;

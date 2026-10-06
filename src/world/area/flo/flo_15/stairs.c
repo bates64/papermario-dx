@@ -1,7 +1,7 @@
 #include "flo_15.h"
 #include "effects.h"
 
-s32 N(ShakeCamParams)[] = {
+s32 ShakeCamParams[] = {
     10, Float(0.6),
     13, Float(0.75),
     16, Float(0.9),
@@ -14,7 +14,7 @@ s32 N(ShakeCamParams)[] = {
     10, Float(1.7),
 };
 
-EvtScript N(EVS_MonitorFallingStairs) = {
+EvtScript EVS_MonitorFallingStairs = {
     IfEq(GF_FLO15_BombedRock, false)
         Label(0)
         IfEq(GF_FLO15_BombedRock, false)
@@ -23,7 +23,7 @@ EvtScript N(EVS_MonitorFallingStairs) = {
         EndIf
         Call(DisablePlayerInput, true)
         Thread
-            UseBuf(Ref(N(ShakeCamParams)))
+            UseBuf(Ref(ShakeCamParams))
             Loop(10)
                 BufRead2(LVar1, LVar2)
                 Call(ShakeCam, CAM_DEFAULT, 0, LVar1, LVar2)

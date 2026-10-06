@@ -2,7 +2,7 @@
 
 #include "foliage.h"
 
-EvtScript N(EVS_OnShakeTree3) = {
+EvtScript EVS_OnShakeTree3 = {
     IfEq(GF_MAC03_UnlockedPlayroom, true)
         Return
     EndIf
@@ -41,10 +41,10 @@ EvtScript N(EVS_OnShakeTree3) = {
     End
 };
 
-FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o240);
-FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o128);
+FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o240);
+FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o128);
 
-FoliageVectorList N(Tree1_Effects) = {
+FoliageVectorList Tree1_Effects = {
     .count = 2,
     .vectors = {
         { 63.0f, 100.0f, -508.0f },
@@ -52,21 +52,21 @@ FoliageVectorList N(Tree1_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree1) = {
-    .leaves = &N(Tree1_LeafModels),
-    .trunk = &N(Tree1_TrunkModels),
-    .vectors = &N(Tree1_Effects),
+ShakeTreeConfig ShakeTree_Tree1 = {
+    .leaves = &Tree1_LeafModels,
+    .trunk = &Tree1_TrunkModels,
+    .vectors = &Tree1_Effects,
 };
 
-BombTrigger N(BombPos_Tree1) = {
+BombTrigger BombPos_Tree1 = {
     .pos = { 79.0f, 20.0f, -504.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree2_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o238);
-FoliageModelList N(Tree2_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o130);
+FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o238);
+FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o130);
 
-FoliageVectorList N(Tree2_Effects) = {
+FoliageVectorList Tree2_Effects = {
     .count = 2,
     .vectors = {
         { 538.0f, 100.0f, -293.0f },
@@ -74,21 +74,21 @@ FoliageVectorList N(Tree2_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree2) = {
-    .leaves = &N(Tree2_LeafModels),
-    .trunk = &N(Tree2_TrunkModels),
-    .vectors = &N(Tree2_Effects),
+ShakeTreeConfig ShakeTree_Tree2 = {
+    .leaves = &Tree2_LeafModels,
+    .trunk = &Tree2_TrunkModels,
+    .vectors = &Tree2_Effects,
 };
 
-BombTrigger N(BombPos_Tree2) = {
+BombTrigger BombPos_Tree2 = {
     .pos = { 554.0f, 20.0f, -289.0f },
     .diameter = 0.0f
 };
 
-FoliageModelList N(Tree3_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o239);
-FoliageModelList N(Tree3_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o126);
+FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o239);
+FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o126);
 
-FoliageVectorList N(Tree3_Effects) = {
+FoliageVectorList Tree3_Effects = {
     .count = 2,
     .vectors = {
         { -285.0f, 100.0f, -565.0f },
@@ -96,28 +96,28 @@ FoliageVectorList N(Tree3_Effects) = {
     }
 };
 
-ShakeTreeConfig N(ShakeTree_Tree3) = {
-    .leaves = &N(Tree3_LeafModels),
-    .trunk = &N(Tree3_TrunkModels),
-    .vectors = &N(Tree3_Effects),
-    .callback = &N(EVS_OnShakeTree3),
+ShakeTreeConfig ShakeTree_Tree3 = {
+    .leaves = &Tree3_LeafModels,
+    .trunk = &Tree3_TrunkModels,
+    .vectors = &Tree3_Effects,
+    .callback = &EVS_OnShakeTree3,
 };
 
-BombTrigger N(BombPos_Tree3) = {
+BombTrigger BombPos_Tree3 = {
     .pos = { -265.0f, 20.0f, -535.0f },
     .diameter = 0.0f
 };
 
-EvtScript N(EVS_SetupFoliage) = {
-    Set(LVar0, Ref(N(ShakeTree_Tree1)))
+EvtScript EVS_SetupFoliage = {
+    Set(LVar0, Ref(ShakeTree_Tree1))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o212, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree2)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree1), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree2))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o211, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree2)), 1, 0)
-    Set(LVar0, Ref(N(ShakeTree_Tree3)))
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree2), 1, 0)
+    Set(LVar0, Ref(ShakeTree_Tree3))
     BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_mgm_tree, 1, 0)
-    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree3)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(BombPos_Tree3), 1, 0)
     Return
     End
 };

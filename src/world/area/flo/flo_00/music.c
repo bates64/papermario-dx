@@ -1,6 +1,6 @@
 #include "flo_00.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(flo_00_ENTRY_8)

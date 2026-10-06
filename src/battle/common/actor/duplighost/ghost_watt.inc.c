@@ -405,7 +405,7 @@ EvtScript N(EVS_TakeTurn) = {
         Add(LVar1, 12)
         PlayEffect(EFFECT_RADIAL_SHIMMER, 8, LVar0, LVar1, LVar2, Float(1.3), LVarA)
     EndIf
-    Call(N(UnkBackgroundFunc3))
+    Call(UnkBackgroundFunc3)
     Set(LVar9, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_StrainBigger)
     Loop(LVarA)
@@ -413,7 +413,7 @@ EvtScript N(EVS_TakeTurn) = {
         IfGt(LVar9, 200)
             Set(LVar9, 200)
         EndIf
-        Call(N(SetBackgroundAlpha), LVar9)
+        Call(SetBackgroundAlpha, LVar9)
         Wait(1)
     EndLoop
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Idle)
@@ -422,7 +422,7 @@ EvtScript N(EVS_TakeTurn) = {
     Call(MoveBattleCamOver, 5)
     Thread
         Wait(2)
-        Call(N(SetBackgroundAlpha), 0)
+        Call(SetBackgroundAlpha, 0)
     EndThread
     Call(GetActorVar, ACTOR_SELF, AVAR_Copy_PartnerLevel, LVar9)
     Switch(LVar9)

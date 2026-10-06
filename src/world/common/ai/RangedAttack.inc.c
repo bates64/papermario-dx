@@ -63,7 +63,7 @@ enum MissileReflectAiStates {
     AI_STATE_MISSILE_REFLECT_ACTIVE = 1,
 };
 
-s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
+s32 RangedAttack_GetUsableMissileID(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
     Camera* camera = &gCameras[gCurrentCamID];
@@ -116,7 +116,7 @@ s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
     return -1;
 }
 
-void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* detect) {
+void RangedAttack_TryTakeShot(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -126,7 +126,7 @@ void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetec
         npc->duration = 20;
         script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_COOLDOWN;
     } else {
-        s32 npcID = N(RangedAttack_GetUsableMissileID)(script);
+        s32 npcID = RangedAttack_GetUsableMissileID(script);
 
         if (npcID >= 0
             && get_enemy(npcID)->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE
@@ -139,7 +139,7 @@ void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetec
     }
 }
 
-void N(RangedAttack_Fire)(Evt* script) {
+void RangedAttack_Fire(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Enemy* missile;
@@ -147,7 +147,7 @@ void N(RangedAttack_Fire)(Evt* script) {
 
     npc->duration--;
     if (npc->duration <= 0) {
-        npcID = N(RangedAttack_GetUsableMissileID)(script);
+        npcID = RangedAttack_GetUsableMissileID(script);
         if (npcID < 0) {
             fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
@@ -162,14 +162,14 @@ void N(RangedAttack_Fire)(Evt* script) {
     }
 }
 
-void N(RangedAttack_Cancel)(Evt* script) {
+void RangedAttack_Cancel(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
 
     get_npc_unsafe(enemy->npcID)->duration = enemy->varTable[AI_VAR_RANGED_POST_TIME];
     script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_COOLDOWN;
 }
 
-void N(RangedAttack_Await)(Evt* script) {
+void RangedAttack_Await(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Enemy* missile = get_enemy(enemy->npcID + 1);
@@ -183,7 +183,7 @@ void N(RangedAttack_Await)(Evt* script) {
     }
 }
 
-void N(RangedAttack_Cooldown)(Evt* script) {
+void RangedAttack_Cooldown(Evt* script) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->duration--;
@@ -200,7 +200,7 @@ enum MissileStopReason {
     MISSILE_STOP_TIMEOUT             = 20,
 };
 
-API_CALLABLE(N(MissileAI_Main)) {
+API_CALLABLE(MissileAI_Main) {
     Enemy* missile = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
     s32 stopReason = MISSILE_STOP_NONE;
@@ -344,7 +344,7 @@ enum ReflectEndReason {
     REFLECT_STOP_TIMEOUT             = 20,
 };
 
-API_CALLABLE(N(MissileAI_Reflect)) {
+API_CALLABLE(MissileAI_Reflect) {
     Enemy* missile = script->owner1.enemy;
     Camera* camera = &gCameras[gCurrentCamID];
     s32 stopReason = REFLECT_STOP_NONE;
@@ -449,7 +449,7 @@ API_CALLABLE(N(MissileAI_Reflect)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(GetEncounterEnemyIsOwner)) {
+API_CALLABLE(GetEncounterEnemyIsOwner) {
     Enemy* enemy = script->owner1.enemy;
 
     evt_set_variable(script, LVar0, gCurrentEncounter.curEnemy == enemy);

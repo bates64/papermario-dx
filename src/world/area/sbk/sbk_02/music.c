@@ -1,6 +1,6 @@
 #include "sbk_02.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseOrEq(sbk_02_ENTRY_6)

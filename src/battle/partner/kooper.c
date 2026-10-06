@@ -4,43 +4,38 @@
 #include "battle/partner.h"
 #include "script_api/battle.h"
 #include "sprite/npc/BattleKooper.h"
-#include "battle/action_cmd/hammer.h"
-#include "battle/action_cmd/fire_shell.h"
-#include "battle/action_cmd/dizzy_shell.h"
 
-#define NAMESPACE battle_partner_kooper
+extern EvtScript EVS_Init;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_HandlePhase;
+extern EvtScript firstStrike;
+extern EvtScript EVS_ExecuteAction;
+extern EvtScript EVS_Celebrate;
+extern EvtScript runAway;
+extern EvtScript runAwayFail;
+extern EvtScript shellToss;
+extern EvtScript powerShell;
+extern EvtScript dizzyShell;
+extern EvtScript fireShell;
+extern EvtScript shellTossOnFirstStrike;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_HandlePhase);
-extern EvtScript N(firstStrike);
-extern EvtScript N(EVS_ExecuteAction);
-extern EvtScript N(EVS_Celebrate);
-extern EvtScript N(runAway);
-extern EvtScript N(runAwayFail);
-extern EvtScript N(shellToss);
-extern EvtScript N(powerShell);
-extern EvtScript N(dizzyShell);
-extern EvtScript N(fireShell);
-extern EvtScript N(shellTossOnFirstStrike);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
     PRT_ZERO            = 0,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Unk_0      = 0,
     AVAR_Unk_1      = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_UNK         = 0,
 };
 
-API_CALLABLE(N(SlowDown)) {
+API_CALLABLE(SlowDown) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partnerActor = battleStatus->partnerActor;
     ActorState* partnerActorMovement = &partnerActor->state;
@@ -74,7 +69,7 @@ API_CALLABLE(N(SlowDown)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(SetTargetsYaw)) {
+API_CALLABLE(SetTargetsYaw) {
     SelectableTarget* target;
     Actor* actor = gBattleStatus.partnerActor;
     Actor* targetActor;
@@ -126,7 +121,7 @@ API_CALLABLE(N(SetTargetsYaw)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AverageTargetDizzyChance)) {
+API_CALLABLE(AverageTargetDizzyChance) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partnerActor = battleStatus->partnerActor;
     Actor* targetActor;
@@ -164,7 +159,7 @@ API_CALLABLE(N(AverageTargetDizzyChance)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetFireShellSpeedAndDamage)) {
+API_CALLABLE(GetFireShellSpeedAndDamage) {
     s32 mashResult = script->varTable[0];
     s32 damage;
     s32 speedRating;
@@ -192,7 +187,7 @@ API_CALLABLE(N(GetFireShellSpeedAndDamage)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_BattleKooper_Walk,
     STATUS_KEY_STONE,     ANIM_BattleKooper_Still,
     STATUS_KEY_SLEEP,     ANIM_BattleKooper_Pray,
@@ -203,12 +198,12 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,            100,
     STATUS_KEY_DEFAULT,           100,
     STATUS_KEY_SLEEP,             100,
@@ -233,30 +228,30 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = 0,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 8, 27 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
     },
 };
 
-ActorBlueprint NAMESPACE = {
+ActorBlueprint blueprint = {
     .flags = 0,
     .type = ACTOR_TYPE_KOOPER,
     .level = ACTOR_LEVEL_KOOPER,
     .maxHP = 99,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 0,
     .airLiftChance = 0,
     .hurricaneChance = 0,
@@ -271,21 +266,21 @@ ActorBlueprint NAMESPACE = {
     .statusTextOffset = { 10, 30 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_PARTNER, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_PARTNER, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_PARTNER, Ref(N(EVS_HandleEvent)))
-    Call(BindHandlePhase, ACTOR_PARTNER, Ref(N(EVS_HandlePhase)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_PARTNER, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_PARTNER, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_PARTNER, Ref(EVS_HandleEvent))
+    Call(BindHandlePhase, ACTOR_PARTNER, Ref(EVS_HandlePhase))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(InterruptActionCommand)
     Call(GetLastEvent, ACTOR_PARTNER, LVar0)
@@ -354,25 +349,25 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_FIRST_STRIKE)
-            ExecWait(N(firstStrike))
+            ExecWait(firstStrike)
         CaseEq(PHASE_EXECUTE_ACTION)
-            ExecWait(N(EVS_ExecuteAction))
+            ExecWait(EVS_ExecuteAction)
         CaseEq(PHASE_CELEBRATE)
-            ExecWait(N(EVS_Celebrate))
+            ExecWait(EVS_Celebrate)
         CaseEq(PHASE_RUN_AWAY_START)
-            ExecWait(N(runAway))
+            ExecWait(runAway)
         CaseEq(PHASE_RUN_AWAY_FAIL)
-            ExecWait(N(runAwayFail))
+            ExecWait(runAwayFail)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Celebrate) = {
+EvtScript EVS_Celebrate = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_BattleKooper_Celebrate)
     SetConst(LVar2, ANIM_BattleKooper_Walk)
@@ -382,7 +377,7 @@ EvtScript N(EVS_Celebrate) = {
     End
 };
 
-EvtScript N(runAway) = {
+EvtScript runAway = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_BattleKooper_Run)
     ExecWait(EVS_Partner_RunAway)
@@ -390,7 +385,7 @@ EvtScript N(runAway) = {
     End
 };
 
-EvtScript N(runAwayFail) = {
+EvtScript runAwayFail = {
     Call(UseIdleAnimation, ACTOR_PARTNER, false)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(SetActorSpeed, ACTOR_PARTNER, Float(6.0))
@@ -403,12 +398,12 @@ EvtScript N(runAwayFail) = {
     End
 };
 
-EvtScript N(EVS_HandlePhase) = {
+EvtScript EVS_HandlePhase = {
     Return
     End
 };
 
-EvtScript N(EVS_ExecuteAction) = {
+EvtScript EVS_ExecuteAction = {
     Call(ShowActionHud, true)
     Call(SetBattleFlagBits, BS_FLAGS1_4000, false)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
@@ -424,49 +419,49 @@ EvtScript N(EVS_ExecuteAction) = {
             Call(SetDamageSource, DMG_SRC_SHELL_TOSS)
             Set(LVarF, 2)
             Set(LVarE, 1)
-            ExecWait(N(shellToss))
+            ExecWait(shellToss)
         CaseEq(MOVE_SHELL_TOSS2)
             Call(SetDamageSource, DMG_SRC_SHELL_TOSS)
             Set(LVarF, 3)
             Set(LVarE, 2)
-            ExecWait(N(shellToss))
+            ExecWait(shellToss)
         CaseEq(MOVE_SHELL_TOSS3)
             Call(SetDamageSource, DMG_SRC_SHELL_TOSS)
             Set(LVarF, 5)
             Set(LVarE, 3)
-            ExecWait(N(shellToss))
+            ExecWait(shellToss)
         CaseEq(MOVE_POWER_SHELL)
             Call(SetDamageSource, DMG_SRC_POWER_SHELL)
-            ExecWait(N(powerShell))
+            ExecWait(powerShell)
         CaseEq(MOVE_DIZZY_SHELL)
             Call(SetDamageSource, DMG_SRC_DIZZY_SHELL)
-            ExecWait(N(dizzyShell))
+            ExecWait(dizzyShell)
         CaseEq(MOVE_FIRE_SHELL)
             Call(SetDamageSource, DMG_SRC_FIRE_SHELL)
-            ExecWait(N(fireShell))
+            ExecWait(fireShell)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(firstStrike) = {
+EvtScript firstStrike = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar2)
         CaseEq(MOVE_SHELL_TOSS1)
             Call(SetDamageSource, DMG_SRC_SHELL_TOSS)
-            ExecWait(N(shellTossOnFirstStrike))
+            ExecWait(shellTossOnFirstStrike)
         CaseEq(MOVE_SHELL_TOSS2)
             Call(SetDamageSource, DMG_SRC_SHELL_TOSS)
-            ExecWait(N(shellTossOnFirstStrike))
+            ExecWait(shellTossOnFirstStrike)
         CaseEq(MOVE_SHELL_TOSS3)
             Call(SetDamageSource, DMG_SRC_SHELL_TOSS)
-            ExecWait(N(shellTossOnFirstStrike))
+            ExecWait(shellTossOnFirstStrike)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome_Miss) = {
+EvtScript EVS_ReturnHome_Miss = {
     Call(ResetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_WALK)
     Thread
         Call(UseBattleCamPreset, BTL_CAM_RETURN_HOME)
@@ -499,7 +494,7 @@ EvtScript N(EVS_ReturnHome_Miss) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome_Success) = {
+EvtScript EVS_ReturnHome_Success = {
     Call(ResetActorSounds, ACTOR_PARTNER, ACTOR_SOUND_WALK)
     Call(UseBattleCamPreset, BTL_CAM_PARTNER_MISTAKE)
     Call(PartnerYieldTurn)
@@ -528,7 +523,7 @@ EvtScript N(EVS_ReturnHome_Success) = {
     End
 };
 
-EvtScript N(getShellTossMoveTime) = {
+EvtScript getShellTossMoveTime = {
     Call(SetGoalToTarget, ACTOR_PARTNER)
     Call(GetGoalPos, ACTOR_PARTNER, LVarB, LVarC, LVarD)
     Call(GetActorPos, ACTOR_PARTNER, LVarC, LVarD, LVar0)
@@ -546,7 +541,7 @@ EvtScript N(getShellTossMoveTime) = {
     End
 };
 
-EvtScript N(shellToss) = {
+EvtScript shellToss = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
     Call(InitTargetIterator)
@@ -636,7 +631,7 @@ EvtScript N(shellToss) = {
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_PARAKARRY_AIR_RAID_1)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(MoveBattleCamOver, 15)
-    ExecWait(N(getShellTossMoveTime))
+    ExecWait(getShellTossMoveTime)
     Call(AddActorDecoration, ACTOR_SELF, PRT_ZERO, 0, ACTOR_DECORATION_GREY_SMOKE_TRAIL)
     Call(SetGoalToTarget, ACTOR_PARTNER)
     Call(SetActorSpeed, ACTOR_PARTNER, LVarA)
@@ -645,7 +640,7 @@ EvtScript N(shellToss) = {
     Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENTS_KOOPER_TEST, 0, 2, BS_FLAGS1_INCLUDE_POWER_UPS)
     IfEq(LVar0, HIT_RESULT_MISS)
         Thread
-            Call(N(SlowDown))
+            Call(SlowDown)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_ZERO, 0)
         EndThread
         Wait(4)
@@ -692,18 +687,18 @@ EvtScript N(shellToss) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome_Success))
+            ExecWait(EVS_ReturnHome_Success)
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome_Miss))
+            ExecWait(EVS_ReturnHome_Miss)
         EndCaseGroup
     EndSwitch
     Return
     End
 };
 
-EvtScript N(powerShell) = {
+EvtScript powerShell = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
     Call(GetActorLevel, ACTOR_PARTNER, LVar0)
@@ -874,15 +869,15 @@ EvtScript N(powerShell) = {
     Call(GetPartnerActionQuality, LVar0)
     Switch(LVar0)
         CaseGt(0)
-            ExecWait(N(EVS_ReturnHome_Success))
+            ExecWait(EVS_ReturnHome_Success)
         CaseDefault
-            ExecWait(N(EVS_ReturnHome_Miss))
+            ExecWait(EVS_ReturnHome_Miss)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(dizzyShell) = {
+EvtScript dizzyShell = {
     Call(LoadActionCommand, ACTION_COMMAND_DIZZY_SHELL)
     Call(InitActionCommand)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
@@ -903,7 +898,7 @@ EvtScript N(dizzyShell) = {
     Set(LVarD, 75 * DT)
     Set(LVarA, LVarD)
     Add(LVarA, -3)
-    Call(N(AverageTargetDizzyChance))
+    Call(AverageTargetDizzyChance)
     Call(StartActionCommand, 0, LVarA, AC_DIFFICULTY_3, LVar0)
     Call(SetActionProgress, 0)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleKooper_ShellSpinSlowest)
@@ -972,7 +967,7 @@ EvtScript N(dizzyShell) = {
         Call(SetActorVar, ACTOR_SELF, AVAR_Unk_0, 1)
     EndThread
     Thread
-        Call(N(SetTargetsYaw))
+        Call(SetTargetsYaw)
     EndThread
     Call(SetActorVar, ACTOR_SELF, AVAR_Unk_0, 0)
     Set(LFlag0, false)
@@ -1054,7 +1049,7 @@ EvtScript N(dizzyShell) = {
     End
 };
 
-EvtScript N(fireShell) = {
+EvtScript fireShell = {
     Call(LoadActionCommand, ACTION_COMMAND_FIRE_SHELL)
     Call(InitActionCommand)
     Call(SetupMashMeter, 5, 35, 60, 80, 99, 100)
@@ -1165,7 +1160,7 @@ EvtScript N(fireShell) = {
         EndSwitch
     EndLoop
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_FIRE_SHELL_LAUNCH)
-    Call(N(GetFireShellSpeedAndDamage))
+    Call(GetFireShellSpeedAndDamage)
     Switch(LVarE)
         CaseOrEq(0)
         CaseOrEq(1)
@@ -1287,7 +1282,7 @@ EvtScript N(fireShell) = {
     End
 };
 
-EvtScript N(shellTossOnFirstStrike) = {
+EvtScript shellTossOnFirstStrike = {
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar0, 60)
     Call(SetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -1302,7 +1297,7 @@ EvtScript N(shellTossOnFirstStrike) = {
     Call(PartnerTestEnemy, LVar0, 0, SUPPRESS_EVENTS_KOOPER_TEST, 0, 2, BS_FLAGS1_INCLUDE_POWER_UPS)
     IfEq(LVar0, HIT_RESULT_MISS)
         Thread
-            Call(N(SlowDown))
+            Call(SlowDown)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_ZERO, 0)
         EndThread
         Wait(4)

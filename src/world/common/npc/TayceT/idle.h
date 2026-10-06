@@ -3,4 +3,4 @@
 
 #define NpcSettings_TayceT NpcSettings_Toad
 
-extern NpcSettings N(NpcSettings_TayceT);
+extern NpcSettings NpcSettings_TayceT;

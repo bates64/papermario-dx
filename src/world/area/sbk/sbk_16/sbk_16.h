@@ -10,5 +10,3 @@
 #include "../sbk.h"
 #include "mapfs/sbk_16_shape.h"
 #include "mapfs/sbk_16_hit.h"
-
-#define NAMESPACE sbk_16

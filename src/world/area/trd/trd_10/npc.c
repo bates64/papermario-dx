@@ -2,9 +2,9 @@
 
 #include "world/common/enemy/KoopaBros/base.h"
 
-extern EvtScript N(EVS_BossDefeated);
+extern EvtScript EVS_BossDefeated;
 
-API_CALLABLE(N(IsPartnerBombette)) {
+API_CALLABLE(IsPartnerBombette) {
     if (gPlayerData.curPartner == PARTNER_BOMBETTE) {
         script->varTable[0] = true;
     } else {
@@ -13,7 +13,7 @@ API_CALLABLE(N(IsPartnerBombette)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcCreate_KoopaBros_01) = {
+EvtScript EVS_NpcCreate_KoopaBros_01 = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -22,12 +22,12 @@ EvtScript N(EVS_NpcCreate_KoopaBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_KoopaBros_01) = {
+EvtScript EVS_NpcAux_KoopaBros_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_01) = {
+EvtScript EVS_NpcAI_KoopaBros_01 = {
     Call(DisablePlayerInput, true)
     Call(SetPlayerPos, -333, 0, 0)
     Call(SetNpcPos, NPC_PARTNER, -363, 0, 0)
@@ -113,17 +113,17 @@ EvtScript N(EVS_NpcAI_KoopaBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_KoopaBros_01) = {
+EvtScript EVS_NpcHit_KoopaBros_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_KoopaBros_01) = {
+EvtScript EVS_NpcInteract_KoopaBros_01 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KoopaBros_01) = {
+EvtScript EVS_NpcDefeat_KoopaBros_01 = {
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_CANT_SKIP_WIN_DELAY, true)
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_KoopaBros_01, NPC_DISPOSE_LOCATION)
@@ -167,7 +167,7 @@ EvtScript N(EVS_NpcDefeat_KoopaBros_01) = {
             EndThread
             Thread
                 Wait(165 * DT)
-                Exec(N(EVS_BossDefeated))
+                Exec(EVS_BossDefeated)
                 Wait(1)
                 Call(DisablePlayerInput, false)
             EndThread
@@ -183,7 +183,7 @@ EvtScript N(EVS_NpcDefeat_KoopaBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_02) = {
+EvtScript EVS_NpcCreate_KoopaBros_02 = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -192,32 +192,32 @@ EvtScript N(EVS_NpcCreate_KoopaBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_KoopaBros_02) = {
+EvtScript EVS_NpcAux_KoopaBros_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_02) = {
+EvtScript EVS_NpcAI_KoopaBros_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_KoopaBros_02) = {
+EvtScript EVS_NpcHit_KoopaBros_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_KoopaBros_02) = {
+EvtScript EVS_NpcInteract_KoopaBros_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KoopaBros_02) = {
+EvtScript EVS_NpcDefeat_KoopaBros_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_03) = {
+EvtScript EVS_NpcCreate_KoopaBros_03 = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -226,32 +226,32 @@ EvtScript N(EVS_NpcCreate_KoopaBros_03) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_KoopaBros_03) = {
+EvtScript EVS_NpcAux_KoopaBros_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_03) = {
+EvtScript EVS_NpcAI_KoopaBros_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_KoopaBros_03) = {
+EvtScript EVS_NpcHit_KoopaBros_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_KoopaBros_03) = {
+EvtScript EVS_NpcInteract_KoopaBros_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KoopaBros_03) = {
+EvtScript EVS_NpcDefeat_KoopaBros_03 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcCreate_KoopaBros_04) = {
+EvtScript EVS_NpcCreate_KoopaBros_04 = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -260,89 +260,89 @@ EvtScript N(EVS_NpcCreate_KoopaBros_04) = {
     End
 };
 
-EvtScript N(EVS_NpcAux_KoopaBros_04) = {
+EvtScript EVS_NpcAux_KoopaBros_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_KoopaBros_04) = {
+EvtScript EVS_NpcAI_KoopaBros_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_KoopaBros_04) = {
+EvtScript EVS_NpcHit_KoopaBros_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_KoopaBros_04) = {
+EvtScript EVS_NpcInteract_KoopaBros_04 = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_KoopaBros_04) = {
+EvtScript EVS_NpcDefeat_KoopaBros_04 = {
     Return
     End
 };
 
-NpcSettings N(NpcSettings_KoopaBros_01) = {
+NpcSettings NpcSettings_KoopaBros_01 = {
     .defaultAnim = ANIM_KoopaBros_Black_Walk,
     .height = 34,
     .radius = 24,
-    .doAux = &N(EVS_NpcAux_KoopaBros_01),
-    .doAI = &N(EVS_NpcAI_KoopaBros_01),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_01),
-    .onInteract = &N(EVS_NpcInteract_KoopaBros_01),
-    .onHit = &N(EVS_NpcHit_KoopaBros_01),
-    .onDefeat = &N(EVS_NpcDefeat_KoopaBros_01),
+    .doAux = &EVS_NpcAux_KoopaBros_01,
+    .doAI = &EVS_NpcAI_KoopaBros_01,
+    .onCreate = &EVS_NpcCreate_KoopaBros_01,
+    .onInteract = &EVS_NpcInteract_KoopaBros_01,
+    .onHit = &EVS_NpcHit_KoopaBros_01,
+    .onDefeat = &EVS_NpcDefeat_KoopaBros_01,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcSettings N(NpcSettings_KoopaBros_02) = {
+NpcSettings NpcSettings_KoopaBros_02 = {
     .defaultAnim = ANIM_KoopaBros_Red_Walk,
     .height = 34,
     .radius = 24,
-    .doAux = &N(EVS_NpcAux_KoopaBros_02),
-    .doAI = &N(EVS_NpcAI_KoopaBros_02),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_02),
-    .onInteract = &N(EVS_NpcInteract_KoopaBros_02),
-    .onHit = &N(EVS_NpcHit_KoopaBros_02),
-    .onDefeat = &N(EVS_NpcDefeat_KoopaBros_02),
+    .doAux = &EVS_NpcAux_KoopaBros_02,
+    .doAI = &EVS_NpcAI_KoopaBros_02,
+    .onCreate = &EVS_NpcCreate_KoopaBros_02,
+    .onInteract = &EVS_NpcInteract_KoopaBros_02,
+    .onHit = &EVS_NpcHit_KoopaBros_02,
+    .onDefeat = &EVS_NpcDefeat_KoopaBros_02,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcSettings N(NpcSettings_KoopaBros_03) = {
+NpcSettings NpcSettings_KoopaBros_03 = {
     .defaultAnim = ANIM_KoopaBros_Yellow_Walk,
     .height = 34,
     .radius = 24,
-    .doAux = &N(EVS_NpcAux_KoopaBros_03),
-    .doAI = &N(EVS_NpcAI_KoopaBros_03),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_03),
-    .onInteract = &N(EVS_NpcInteract_KoopaBros_03),
-    .onHit = &N(EVS_NpcHit_KoopaBros_03),
-    .onDefeat = &N(EVS_NpcDefeat_KoopaBros_03),
+    .doAux = &EVS_NpcAux_KoopaBros_03,
+    .doAI = &EVS_NpcAI_KoopaBros_03,
+    .onCreate = &EVS_NpcCreate_KoopaBros_03,
+    .onInteract = &EVS_NpcInteract_KoopaBros_03,
+    .onHit = &EVS_NpcHit_KoopaBros_03,
+    .onDefeat = &EVS_NpcDefeat_KoopaBros_03,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcSettings N(NpcSettings_KoopaBros_04) = {
+NpcSettings NpcSettings_KoopaBros_04 = {
     .defaultAnim = ANIM_KoopaBros_Green_Walk,
     .height = 34,
     .radius = 24,
-    .doAux = &N(EVS_NpcAux_KoopaBros_04),
-    .doAI = &N(EVS_NpcAI_KoopaBros_04),
-    .onCreate = &N(EVS_NpcCreate_KoopaBros_04),
-    .onInteract = &N(EVS_NpcInteract_KoopaBros_04),
-    .onHit = &N(EVS_NpcHit_KoopaBros_04),
-    .onDefeat = &N(EVS_NpcDefeat_KoopaBros_04),
+    .doAux = &EVS_NpcAux_KoopaBros_04,
+    .doAI = &EVS_NpcAI_KoopaBros_04,
+    .onCreate = &EVS_NpcCreate_KoopaBros_04,
+    .onInteract = &EVS_NpcInteract_KoopaBros_04,
+    .onHit = &EVS_NpcHit_KoopaBros_04,
+    .onDefeat = &EVS_NpcDefeat_KoopaBros_04,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcData N(NpcData_KoopaBros_01)[] = {
+NpcData NpcData_KoopaBros_01[] = {
     {
         .id = NPC_KoopaBros_01,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_KoopaBros_01),
+        .settings = &NpcSettings_KoopaBros_01,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
@@ -351,7 +351,7 @@ NpcData N(NpcData_KoopaBros_01)[] = {
         .id = NPC_KoopaBros_02,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_KoopaBros_02),
+        .settings = &NpcSettings_KoopaBros_02,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
@@ -360,7 +360,7 @@ NpcData N(NpcData_KoopaBros_01)[] = {
         .id = NPC_KoopaBros_03,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_KoopaBros_03),
+        .settings = &NpcSettings_KoopaBros_03,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
@@ -369,14 +369,14 @@ NpcData N(NpcData_KoopaBros_01)[] = {
         .id = NPC_KoopaBros_04,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_KoopaBros_04),
+        .settings = &NpcSettings_KoopaBros_04,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaBros_01), BTL_TRD_2_FORMATION_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaBros_01, BTL_TRD_2_FORMATION_00),
     {}
 };

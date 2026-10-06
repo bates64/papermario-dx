@@ -1,6 +1,6 @@
 #include "mim_02.h"
 
-EvtScript N(EVS_Unused_DoNothing) = {
+EvtScript EVS_Unused_DoNothing = {
     Return
     End
 };
@@ -9,9 +9,9 @@ EvtScript N(EVS_Unused_DoNothing) = {
 
 #include "world/common/enemy/ForestFuzzy/wander.inc.c"
 
-ITEM_LIST(N(KeyList), ITEM_FOREST_PASS);
+ITEM_LIST(KeyList, ITEM_FOREST_PASS);
 
-EvtScript N(EVS_NpcInteract_Oaklie) = {
+EvtScript EVS_NpcInteract_Oaklie = {
     IfLt(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)
         Call(SpeakToPlayer, NPC_Oaklie, ANIM_Oaklie_Talk, ANIM_Oaklie_Idle, 0, MSG_CH3_0006)
         Return
@@ -88,12 +88,12 @@ EvtScript N(EVS_NpcInteract_Oaklie) = {
     Wait(5 * DT)
     Call(SetNpcPos, NPC_Oaklie, NPC_DISPOSE_LOCATION)
     Set(GB_StoryProgress, STORY_CH3_ALLOWED_INTO_FOREVER_FOREST)
-    ExecWait(N(EVS_EnableWestGate))
+    ExecWait(EVS_EnableWestGate)
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Oaklie) = {
+EvtScript EVS_NpcIdle_Oaklie = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_ALLOWED_INTO_FOREVER_FOREST)
             Call(DisablePlayerInput, true)
@@ -140,9 +140,9 @@ EvtScript N(EVS_NpcIdle_Oaklie) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Oaklie) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Oaklie)))
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Oaklie)))
+EvtScript EVS_NpcInit_Oaklie = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Oaklie))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Oaklie))
     Switch(GB_StoryProgress)
         CaseGe(STORY_CH3_ALLOWED_INTO_FOREVER_FOREST)
             Call(SetNpcPos, NPC_Oaklie, NPC_DISPOSE_LOCATION)
@@ -151,19 +151,19 @@ EvtScript N(EVS_NpcInit_Oaklie) = {
     End
 };
 
-NpcData N(NpcData_Oaklie) = {
+NpcData NpcData_Oaklie = {
     .id = NPC_Oaklie,
     .pos = { -426.0f, 58.0f, -70.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Oaklie),
-    .settings = &N(NpcSettings_Oaklie),
+    .init = &EVS_NpcInit_Oaklie,
+    .settings = &NpcSettings_Oaklie,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = OAKLIE_ANIMS,
     .tattle = MSG_NpcTattle_Oaklie,
 };
 
-NpcData N(NpcData_Fuzzy_01) = {
+NpcData NpcData_Fuzzy_01 = {
     .id = NPC_Fuzzy_01,
     .pos = { 300.0f, 0.0f, 130.0f },
     .yaw = 0,
@@ -179,14 +179,14 @@ NpcData N(NpcData_Fuzzy_01) = {
             .detectSize = { 400 },
         }
     },
-    .settings = &N(NpcSettings_ForestFuzzy_Wander),
+    .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = 0,
     .drops = FOREST_FUZZY_DROPS,
     .animations = FOREST_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Fuzzy_02) = {
+NpcData NpcData_Fuzzy_02 = {
     .id = NPC_Fuzzy_02,
     .pos = { -100.0f, 0.0f, -320.0f },
     .yaw = 0,
@@ -202,16 +202,16 @@ NpcData N(NpcData_Fuzzy_02) = {
             .detectSize = { 400 },
         }
     },
-    .settings = &N(NpcSettings_ForestFuzzy_Wander),
+    .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = 0,
     .drops = FOREST_FUZZY_DROPS,
     .animations = FOREST_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Oaklie)),
-    NPC_GROUP(N(NpcData_Fuzzy_01), BTL_MIM_FORMATION_00, BTL_MIM_STAGE_00),
-    NPC_GROUP(N(NpcData_Fuzzy_02), BTL_MIM_FORMATION_01, BTL_MIM_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Oaklie),
+    NPC_GROUP(NpcData_Fuzzy_01, BTL_MIM_FORMATION_00, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_Fuzzy_02, BTL_MIM_FORMATION_01, BTL_MIM_STAGE_00),
     {}
 };

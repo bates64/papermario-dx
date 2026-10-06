@@ -4,7 +4,7 @@
 
 #define HAS_COIN_FLAG  AF_BanditHasCoin
 
-API_CALLABLE(N(Bandit_TetherStolenCoin)) {
+API_CALLABLE(Bandit_TetherStolenCoin) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID;
     Npc* npc;
@@ -41,18 +41,18 @@ API_CALLABLE(N(Bandit_TetherStolenCoin)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Bandit_CreateStolenCoin) = {
+EvtScript EVS_Bandit_CreateStolenCoin = {
     Set(LVarA, LVar0)
     Call(GetNpcPos, LVarA, LVar1, LVar2, LVar3)
     Add(LVar2, 30)
     Call(MakeItemEntity, ITEM_COIN, LVar1, LVar2, LVar3, ITEM_SPAWN_MODE_DECORATION, 0)
-    Call(N(Bandit_TetherStolenCoin), LVarA, LVar0, HAS_COIN_FLAG)
+    Call(Bandit_TetherStolenCoin, LVarA, LVar0, HAS_COIN_FLAG)
     Call(RemoveItemEntity, LVar0)
     Return
     End
 };
 
-MobileAISettings N(AISettings_Bandit_Wander) = {
+MobileAISettings AISettings_Bandit_Wander = {
     .moveSpeed = 2.7f,
     .moveTime = 45,
     .waitTime = 30,
@@ -66,13 +66,13 @@ MobileAISettings N(AISettings_Bandit_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Bandit_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Bandit_Wander)))
+EvtScript EVS_NpcAI_Bandit_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_Bandit_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Bandit) = {
+EvtScript EVS_NpcDefeat_Bandit = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcDefeat_Bandit) = {
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Bandit_IdleHolding)
             Call(GetSelfNpcID, LVar0)
-            Exec(N(EVS_Bandit_CreateStolenCoin))
+            Exec(EVS_Bandit_CreateStolenCoin)
             Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
             Call(GetPlayerPos, LVar7, LVar8, LVar9)
             Add(LVar7, 20)
@@ -109,12 +109,12 @@ EvtScript N(EVS_NpcDefeat_Bandit) = {
     End
 };
 
-NpcSettings N(NpcSettings_Bandit_Wander) = {
+NpcSettings NpcSettings_Bandit_Wander = {
     .height = 26,
     .radius = 24,
     .level = ACTOR_LEVEL_BANDIT,
-    .doAI = &N(EVS_NpcAI_Bandit_Wander),
+    .doAI = &EVS_NpcAI_Bandit_Wander,
     .onHit = &EnemyNpcHit,
-    .onDefeat = &N(EVS_NpcDefeat_Bandit),
+    .onDefeat = &EVS_NpcDefeat_Bandit,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER | AI_ACTION_CHASE_REQUIRES_PATH,
 };

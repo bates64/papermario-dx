@@ -4,7 +4,7 @@
 
 void peach_force_disguise_action(s32);
 
-API_CALLABLE(N(SetLightningBoltColor)) {
+API_CALLABLE(SetLightningBoltColor) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     s32 r = evt_get_variable(script, *args++);
@@ -18,12 +18,12 @@ API_CALLABLE(N(SetLightningBoltColor)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ForceDisguiseLoss)) {
+API_CALLABLE(ForceDisguiseLoss) {
     peach_force_disguise_action(false);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_GetApproachPeachPos) = {
+EvtScript EVS_GetApproachPeachPos = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -61,7 +61,7 @@ EvtScript N(EVS_GetApproachPeachPos) = {
     End
 };
 
-EvtScript N(EVS_PickUpPeach) = {
+EvtScript EVS_PickUpPeach = {
     Thread
         Call(GetNpcPos, NPC_Koopatrol_01, LVar0, LVar1, LVar2)
         Sub(LVar0, 5)
@@ -97,7 +97,7 @@ EvtScript N(EVS_PickUpPeach) = {
     End
 };
 
-EvtScript N(EVS_CarryPeachAway) = {
+EvtScript EVS_CarryPeachAway = {
     Call(InterpNpcYaw, NPC_Koopatrol_01, 90, 3)
     Wait(10)
     Thread
@@ -127,7 +127,7 @@ EvtScript N(EVS_CarryPeachAway) = {
     End
 };
 
-EvtScript N(EVS_OpenAndCloseTowerDoors) = {
+EvtScript EVS_OpenAndCloseTowerDoors = {
     Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_LARGE_DOOR_OPEN, 0)
     Call(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -155,7 +155,7 @@ EvtScript N(EVS_OpenAndCloseTowerDoors) = {
     End
 };
 
-EvtScript N(EVS_RemoveDisguise) = {
+EvtScript EVS_RemoveDisguise = {
     Set(LVar0, 0)
     Set(LVar1, 45)
     Loop(10)
@@ -165,7 +165,7 @@ EvtScript N(EVS_RemoveDisguise) = {
         Wait(1)
     EndLoop
     Call(PlaySoundAtPlayer, SOUND_DARK_TOAD_DISPEL, SOUND_SPACE_DEFAULT)
-    Call(N(ForceDisguiseLoss))
+    Call(ForceDisguiseLoss)
     Loop(10)
         Call(InterpPlayerYaw, LVar0, 0)
         Add(LVar0, LVar1)
@@ -177,7 +177,7 @@ EvtScript N(EVS_RemoveDisguise) = {
     End
 };
 
-EvtScript N(EVS_Scene_KammyUnmasksPeach) = {
+EvtScript EVS_Scene_KammyUnmasksPeach = {
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Loop(0)
         Wait(1)
@@ -193,7 +193,7 @@ EvtScript N(EVS_Scene_KammyUnmasksPeach) = {
     Call(SetNpcVar, NPC_Koopatrol_01, 1, 0)
     Call(SetNpcFlagBits, NPC_Koopatrol_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcPos, NPC_Kammy, -50, 0, -50)
-    Exec(N(EVS_OpenAndCloseTowerDoors))
+    Exec(EVS_OpenAndCloseTowerDoors)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Walk)
     Call(SetNpcSpeed, NPC_Kammy, Float(2.0 / DT))
     Call(NpcMoveTo, NPC_Kammy, 30, -50, 0)
@@ -302,11 +302,11 @@ EvtScript N(EVS_Scene_KammyUnmasksPeach) = {
     Add(LVar4, 180)
     Call(PlaySoundAtPlayer, SOUND_BOWSER_LIGHTNING, SOUND_SPACE_DEFAULT)
     PlayEffect(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 5, 20)
-    Call(N(SetLightningBoltColor), LVarF, 255, 0, 255)
+    Call(SetLightningBoltColor, LVarF, 255, 0, 255)
     Add(LVar1, 15)
     PlayEffect(EFFECT_SHIMMER_BURST, 1, LVar0, LVar1, LVar2, 1, 30)
     Call(NpcFacePlayer, NPC_PARTNER, 0)
-    ExecWait(N(EVS_RemoveDisguise))
+    ExecWait(EVS_RemoveDisguise)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Idle)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_GaspStill, ANIM_Peach2_GaspStill, 5, MSG_Peach_0155)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Shout, ANIM_WorldKammy_Shout, 5, MSG_Peach_0156)
@@ -331,16 +331,16 @@ EvtScript N(EVS_Scene_KammyUnmasksPeach) = {
         EndLoop
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
-    ExecWait(N(EVS_GetApproachPeachPos))
-    ExecWait(N(EVS_PickUpPeach))
+    ExecWait(EVS_GetApproachPeachPos)
+    ExecWait(EVS_PickUpPeach)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Carried, ANIM_Peach2_Carried, 5, MSG_Peach_0158)
-    ExecWait(N(EVS_CarryPeachAway))
+    ExecWait(EVS_CarryPeachAway)
     Wait(20 * DT)
     Call(SetNpcSpeed, NPC_PARTNER, Float(6.0))
     Call(NpcFlyTo, NPC_PARTNER, 460, -10, -130, 0, 0, EASING_LINEAR)
     Wait(60 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)
-    ExecWait(N(EVS_EndPeachChapter6))
+    ExecWait(EVS_EndPeachChapter6)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
     Return

@@ -1,9 +1,9 @@
 #include "kkj_17.h"
 
-EvtScript N(EVS_ExitDoors_kkj_11_5) = EVT_EXIT_SINGLE_DOOR(kkj_17_ENTRY_0, "kkj_11", kkj_11_ENTRY_5,
+EvtScript EVS_ExitDoors_kkj_11_5 = EVT_EXIT_SINGLE_DOOR(kkj_17_ENTRY_0, "kkj_11", kkj_11_ENTRY_5,
     COLLIDER_ttw, MODEL_o2, DOOR_SWING_OUT);
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kkj_17_ENTRY_0)
@@ -15,15 +15,15 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_17)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_SetupMagicChest))
+    ExecWait(EVS_MakeEntities)
+    Exec(EVS_SetupMagicChest)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    BindTrigger(Ref(N(EVS_ExitDoors_kkj_11_5)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
-    Exec(N(EVS_EnterMap))
+    BindTrigger(Ref(EVS_ExitDoors_kkj_11_5), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

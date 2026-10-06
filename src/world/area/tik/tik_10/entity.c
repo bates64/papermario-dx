@@ -5,7 +5,7 @@
 #define SUPER_BLOCK_GAMEFLAG GF_TIK10_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(-140, 160, -40, 0)
     Call(CreatePushBlockGrid, 0, 7, 6, -64, -15, -94, 0)
     Call(SetPushBlock, 0, 1, 4, PUSH_GRID_BLOCK)

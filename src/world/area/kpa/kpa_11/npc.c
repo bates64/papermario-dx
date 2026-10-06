@@ -4,7 +4,7 @@
 #include "world/common/enemy/Koopatrol/wander.inc.c"
 #include "world/common/npc/Toad/idle.inc.c"
 
-EvtScript N(EVS_NpcDefeat_Koopatrol) = {
+EvtScript EVS_NpcDefeat_Koopatrol = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -24,9 +24,9 @@ EvtScript N(EVS_NpcDefeat_Koopatrol) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Koopatrol) = {
+EvtScript EVS_NpcInit_Koopatrol = {
     IfEq(GF_KPA11_Defeated_Guard, false)
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Koopatrol)))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Koopatrol))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -34,7 +34,7 @@ EvtScript N(EVS_NpcInit_Koopatrol) = {
     End
 };
 
-NpcData N(NpcData_Koopatrol) = {
+NpcData NpcData_Koopatrol = {
     .id = NPC_Koopatrol,
     .pos = { 550.0f, 30.0f, -145.0f },
     .yaw = 270,
@@ -50,19 +50,19 @@ NpcData N(NpcData_Koopatrol) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Koopatrol),
-    .settings = &N(NpcSettings_Koopatrol_Wander),
+    .init = &EVS_NpcInit_Koopatrol,
+    .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
 
-EvtScript N(EVS_NpcInit_Prisoner) = {
+EvtScript EVS_NpcInit_Prisoner = {
     Return
     End
 };
 
-NpcData N(NpcData_Prisoners)[] = {
+NpcData NpcData_Prisoners[] = {
     {
         .id = NPC_Toad_01,
 #if VERSION_JP
@@ -71,8 +71,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 845.0f, 30.0f, -285.0f },
 #endif
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Prisoner),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Prisoner,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -86,8 +86,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 872.0f, 30.0f, -315.0f },
 #endif
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Prisoner),
-        .settings = &N(NpcSettings_Toad),
+        .init = &EVS_NpcInit_Prisoner,
+        .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -101,8 +101,8 @@ NpcData N(NpcData_Prisoners)[] = {
         .pos = { 900.0f, 30.0f, -285.0f },
 #endif
         .yaw = 0,
-        .init = &N(EVS_NpcInit_Prisoner),
-        .settings = &N(NpcSettings_ToadGuard),
+        .init = &EVS_NpcInit_Prisoner,
+        .settings = &NpcSettings_ToadGuard,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
@@ -110,8 +110,8 @@ NpcData N(NpcData_Prisoners)[] = {
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Koopatrol), BTL_KPA_FORMATION_18, BTL_KPA_STAGE_02),
-    NPC_GROUP(N(NpcData_Prisoners), BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_02),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_18, BTL_KPA_STAGE_02),
+    NPC_GROUP(NpcData_Prisoners, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_02),
     {}
 };

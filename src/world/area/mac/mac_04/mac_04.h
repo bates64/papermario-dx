@@ -49,31 +49,29 @@ enum {
     MF_MusicMixTrigger              = MapFlag(10),
 };
 
-#define NAMESPACE mac_04
-
 #include "world/common/npc/Toad/idle.h"
 #include "world/common/npc/Toad/wander.h"
 #include "world/common/npc/ToadKid/idle.h"
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupMusicTriggers);
-extern EvtScript N(EVS_SetupShop);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_MakeStoreroom);
-extern EvtScript N(EVS_MakeHiddenRoom);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupMusicTriggers;
+extern EvtScript EVS_SetupShop;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_MakeStoreroom;
+extern EvtScript EVS_MakeHiddenRoom;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
 
-extern EvtScript N(EVS_OnEnterShop);
-extern EvtScript N(EVS_HiddenRoom_WaitForOuttaSight);
-extern EvtScript N(EVS_ExitToybox);
-extern EvtScript N(EVS_Toybox_SetupTrainPrompt);
-extern EvtScript N(EVS_ForceStoreroomUnlock);
-extern EvtScript N(EVS_Scene_WishingToadKid);
+extern EvtScript EVS_OnEnterShop;
+extern EvtScript EVS_HiddenRoom_WaitForOuttaSight;
+extern EvtScript EVS_ExitToybox;
+extern EvtScript EVS_Toybox_SetupTrainPrompt;
+extern EvtScript EVS_ForceStoreroomUnlock;
+extern EvtScript EVS_Scene_WishingToadKid;
 
-extern NpcGroupList N(DefaultNPCs);
-extern NpcGroupList N(Chapter4NPCs);
-extern NpcGroupList N(PostChapter4NPCs);
-extern NpcGroupList N(Chapter7NPCs);
-extern NpcGroupList N(WishSceneNPCs);
+extern NpcGroupList DefaultNPCs;
+extern NpcGroupList Chapter4NPCs;
+extern NpcGroupList PostChapter4NPCs;
+extern NpcGroupList Chapter7NPCs;
+extern NpcGroupList WishSceneNPCs;

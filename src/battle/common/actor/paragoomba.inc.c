@@ -491,7 +491,6 @@ EvtScript N(EVS_TakeTurn) = {
     End
 };
 
-#include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_KnockDown) = {
     Call(HideHealthBar, ACTOR_SELF)
@@ -516,7 +515,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-    Call(N(StartRumbleWithParams), 100, 10)
+    Call(StartRumbleWithParams, 100, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.3))
     EndThread

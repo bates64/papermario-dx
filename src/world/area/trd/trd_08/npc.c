@@ -3,7 +3,7 @@
 
 #include "world/common/ai/FireBarAI.inc.c"
 
-EvtScript N(EVS_FireBar_Defeated) = {
+EvtScript EVS_FireBar_Defeated = {
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
     Loop(15)
@@ -54,23 +54,23 @@ EvtScript N(EVS_FireBar_Defeated) = {
     End
 };
 
-FireBarAISettings N(AISettings_FireBar_01) = {
+FireBarAISettings AISettings_FireBar_01 = {
     .centerPos = { -100, 0, 40 },
     .rotRate = 8,
     .firstNpc = NPC_FireBar_1A,
     .npcCount = 4,
-    .callback = N(FireBarAI_Callback),
+    .callback = FireBarAI_Callback,
 };
 
-FireBarAISettings N(AISettings_FireBar_02) = {
+FireBarAISettings AISettings_FireBar_02 = {
     .centerPos = { 300, 0, -35 },
     .rotRate = -8,
     .firstNpc = NPC_FireBar_2A,
     .npcCount = 4,
-    .callback = N(FireBarAI_Callback),
+    .callback = FireBarAI_Callback,
 };
 
-EvtScript N(EVS_NpcCreate_FireBar) = {
+EvtScript EVS_NpcCreate_FireBar = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, 0, true)
     Call(EnableNpcShadow, NPC_SELF, true)
@@ -86,50 +86,50 @@ EvtScript N(EVS_NpcCreate_FireBar) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_FireBar_01) = {
-    Call(N(FireBarAI_Main), Ref(N(AISettings_FireBar_01)))
+EvtScript EVS_NpcAI_FireBar_01 = {
+    Call(FireBarAI_Main, Ref(AISettings_FireBar_01))
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_FireBar_02) = {
-    Call(N(FireBarAI_Main), Ref(N(AISettings_FireBar_02)))
+EvtScript EVS_NpcAI_FireBar_02 = {
+    Call(FireBarAI_Main, Ref(AISettings_FireBar_02))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_FireBar_01) = {
+NpcSettings NpcSettings_FireBar_01 = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .doAI = &N(EVS_NpcAI_FireBar_01),
-    .onCreate = &N(EVS_NpcCreate_FireBar),
+    .doAI = &EVS_NpcAI_FireBar_01,
+    .onCreate = &EVS_NpcCreate_FireBar,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcSettings N(NpcSettings_FireBar_02) = {
+NpcSettings NpcSettings_FireBar_02 = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .doAI = &N(EVS_NpcAI_FireBar_02),
-    .onCreate = &N(EVS_NpcCreate_FireBar),
+    .doAI = &EVS_NpcAI_FireBar_02,
+    .onCreate = &EVS_NpcCreate_FireBar,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcSettings N(NpcSettings_FireBar_Extra) = {
+NpcSettings NpcSettings_FireBar_Extra = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .onCreate = &N(EVS_NpcCreate_FireBar),
+    .onCreate = &EVS_NpcCreate_FireBar,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
-NpcData N(NpcData_FireBar1)[] = {
+NpcData NpcData_FireBar1[] = {
     {
         .id = NPC_FireBar_1A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_01),
+        .settings = &NpcSettings_FireBar_01,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
@@ -138,7 +138,7 @@ NpcData N(NpcData_FireBar1)[] = {
         .id = NPC_FireBar_1B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_Extra),
+        .settings = &NpcSettings_FireBar_Extra,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
@@ -147,7 +147,7 @@ NpcData N(NpcData_FireBar1)[] = {
         .id = NPC_FireBar_1C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_Extra),
+        .settings = &NpcSettings_FireBar_Extra,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
@@ -156,19 +156,19 @@ NpcData N(NpcData_FireBar1)[] = {
         .id = NPC_FireBar_1D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_Extra),
+        .settings = &NpcSettings_FireBar_Extra,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
     },
 };
 
-NpcData N(NpcData_FireBar2)[] = {
+NpcData NpcData_FireBar2[] = {
     {
         .id = NPC_FireBar_2A,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_02),
+        .settings = &NpcSettings_FireBar_02,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
@@ -177,7 +177,7 @@ NpcData N(NpcData_FireBar2)[] = {
         .id = NPC_FireBar_2B,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_Extra),
+        .settings = &NpcSettings_FireBar_Extra,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
@@ -186,7 +186,7 @@ NpcData N(NpcData_FireBar2)[] = {
         .id = NPC_FireBar_2C,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_Extra),
+        .settings = &NpcSettings_FireBar_Extra,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
@@ -195,15 +195,15 @@ NpcData N(NpcData_FireBar2)[] = {
         .id = NPC_FireBar_2D,
         .pos = { 0.0f, 0.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_FireBar_Extra),
+        .settings = &NpcSettings_FireBar_Extra,
         .flags = ENEMY_FLAG_PASSIVE,
         .animations = {
         },
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_FireBar1), BTL_KMR_1_FORMATION_06),
-    NPC_GROUP(N(NpcData_FireBar2), BTL_KMR_1_FORMATION_06),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_FireBar1, BTL_KMR_1_FORMATION_06),
+    NPC_GROUP(NpcData_FireBar2, BTL_KMR_1_FORMATION_06),
     {}
 };

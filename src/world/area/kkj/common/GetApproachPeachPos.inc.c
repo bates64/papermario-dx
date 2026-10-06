@@ -8,7 +8,7 @@
 /// @param outShouldMove
 /// @param outX
 /// @param outZ
-API_CALLABLE(N(GetApproachPeachPos)) {
+API_CALLABLE(GetApproachPeachPos) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);

@@ -29,10 +29,8 @@ enum {
     MV_RotVelocity_Log_03   = MapVar(15),
 };
 
-#define NAMESPACE flo_17
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupLogBridges);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupLogBridges;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

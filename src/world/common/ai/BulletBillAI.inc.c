@@ -44,7 +44,7 @@ enum BulletStatus {
     BULLET_STATUS_DONE          = 100, // bullet has completed its motion and waiting to reset
 };
 
-s32 N(BillBlasterAI_GetIdleBulletNpcID)(void) {
+s32 BillBlasterAI_GetIdleBulletNpcID(void) {
     s32 i;
 
     for (i = FIRST_BULLET_NPCID; i <= LAST_BULLET_NPCID; i++) {
@@ -56,7 +56,7 @@ s32 N(BillBlasterAI_GetIdleBulletNpcID)(void) {
     return -1;
 }
 
-API_CALLABLE(N(BulletBillAI_Main)) {
+API_CALLABLE(BulletBillAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *script->ptrReadPos);
@@ -170,7 +170,7 @@ API_CALLABLE(N(BulletBillAI_Main)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(BillBlasterAI_Main)) {
+API_CALLABLE(BillBlasterAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -208,7 +208,7 @@ API_CALLABLE(N(BillBlasterAI_Main)) {
             }
             break;
         case AI_STATE_BLASTER_PREPARE:
-            bulletNpcID = N(BillBlasterAI_GetIdleBulletNpcID)();
+            bulletNpcID = BillBlasterAI_GetIdleBulletNpcID();
             enemy->varTable[AI_VAR_BLASTER_CHILD] = bulletNpcID;
             if (bulletNpcID > 0) {
                 bulletEnemy = get_enemy(bulletNpcID);

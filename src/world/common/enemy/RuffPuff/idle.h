@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_RuffPuff);
+extern NpcSettings NpcSettings_RuffPuff;

@@ -11,7 +11,7 @@
 
 #include "world/common/ai/RangedAttack.inc.c"
 
-API_CALLABLE(N(RangedAttackAI_Main)) {
+API_CALLABLE(RangedAttackAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -76,7 +76,7 @@ API_CALLABLE(N(RangedAttackAI_Main)) {
         case AI_STATE_CHASE_INIT:
             dist = dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
             if (enemy->varTable[AI_VAR_RANGED_MIN_DIST] == 0 || enemy->varTable[AI_VAR_RANGED_MIN_DIST] < dist) {
-                N(RangedAttack_TryTakeShot)(script, settings->chaseRadius, settings->chaseOffsetDist, detect);
+                RangedAttack_TryTakeShot(script, settings->chaseRadius, settings->chaseOffsetDist, detect);
                 if (script->AI_TEMP_STATE != AI_STATE_CHASE_INIT) {
                     break;
                 }
@@ -90,16 +90,16 @@ API_CALLABLE(N(RangedAttackAI_Main)) {
             basic_ai_lose_player(script, settings, detect);
             break;
         case AI_STATE_RANGED_ATTACK_FIRE:
-            N(RangedAttack_Fire(script));
+            RangedAttack_Fire(script);
             break;
         case AI_STATE_RANGED_ATTACK_CANCEL:
-            N(RangedAttack_Cancel(script));
+            RangedAttack_Cancel(script);
             break;
         case AI_STATE_RANGED_ATTACK_AWAIT:
-            N(RangedAttack_Await(script));
+            RangedAttack_Await(script);
             break;
         case AI_STATE_RANGED_ATTACK_COOLDOWN:
-            N(RangedAttack_Cooldown(script));
+            RangedAttack_Cooldown(script);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

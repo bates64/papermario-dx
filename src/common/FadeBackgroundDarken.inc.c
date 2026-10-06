@@ -2,7 +2,7 @@
 #include "model.h"
 #include "npc.h"
 
-API_CALLABLE(N(FadeBackgroundDarken)) {
+static API_CALLABLE(DarkenBackground) {
     if (isInitialCall) {
         mdl_set_all_tint_type(ENV_TINT_SHROUD);
         *gBackgroundTintModePtr = ENV_TINT_SHROUD;

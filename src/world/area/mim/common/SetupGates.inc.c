@@ -1,6 +1,6 @@
 #include "common.h"
 
-EvtScript N(EVS_SetupGates) = {
+EvtScript EVS_SetupGates = {
     IfEq(GF_MIM_ChoosingPath, false)
         Set(GF_MIM_ChoosingPath, true)
         Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
@@ -12,8 +12,8 @@ EvtScript N(EVS_SetupGates) = {
         Set(LVar1, 0)
         Set(LVar2, 10)
     EndIf
-    ExecWait(N(EVS_SetGateCameraZones))
-    Exec(N(EVS_InitializeGates))
+    ExecWait(EVS_SetGateCameraZones)
+    Exec(EVS_InitializeGates)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -21,10 +21,10 @@ EvtScript N(EVS_SetupGates) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
-    BindTrigger(Ref(N(EVS_UseGate_North)), TRIGGER_WALL_PRESS_A, COLLIDER_monn, 1, 0)
-    BindTrigger(Ref(N(EVS_UseGate_South)), TRIGGER_WALL_PRESS_A, COLLIDER_mons, 1, 0)
-    BindTrigger(Ref(N(EVS_UseGate_West)),  TRIGGER_WALL_PRESS_A, COLLIDER_monw, 1, 0)
-    BindTrigger(Ref(N(EVS_UseGate_East)),  TRIGGER_WALL_PRESS_A, COLLIDER_mone, 1, 0)
+    BindTrigger(Ref(EVS_UseGate_North), TRIGGER_WALL_PRESS_A, COLLIDER_monn, 1, 0)
+    BindTrigger(Ref(EVS_UseGate_South), TRIGGER_WALL_PRESS_A, COLLIDER_mons, 1, 0)
+    BindTrigger(Ref(EVS_UseGate_West),  TRIGGER_WALL_PRESS_A, COLLIDER_monw, 1, 0)
+    BindTrigger(Ref(EVS_UseGate_East),  TRIGGER_WALL_PRESS_A, COLLIDER_mone, 1, 0)
     Return
     End
 };

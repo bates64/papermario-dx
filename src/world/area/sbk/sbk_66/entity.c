@@ -1,7 +1,7 @@
 #include "sbk_66.h"
 #include "entity.h"
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_MulticoinBlock), -80, 60, -200, 0, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_SBK66_MultiCoinBrickA)
     Call(MakeEntity, Ref(Entity_MulticoinBlock), 80, 60, -200, 0, MAKE_ENTITY_END)

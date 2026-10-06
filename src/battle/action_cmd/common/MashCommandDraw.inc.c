@@ -1,6 +1,6 @@
 #include "common.h"
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     s32 hudX, hudY;
     HudElemID hid;

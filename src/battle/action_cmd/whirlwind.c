@@ -3,8 +3,6 @@
 #include "battle/action_cmd/whirlwind_bubble.png.h"
 #include "include_asset.h"
 
-#define NAMESPACE action_command_whirlwind
-
 extern s32 actionCmdTableWhirlwind[];
 
 // indices into ActionCommandStatus::hudElements for this action command
@@ -54,24 +52,24 @@ HudScript HES_Whirlwind7 = HES_TEMPLATE_CI_ENUM_SIZE(battle_action_cmd_whirlwind
 HudScript HES_WhirlwindBubble = HES_TEMPLATE_CI_CUSTOM_SIZE(battle_action_cmd_whirlwind_bubble,
     battle_action_cmd_whirlwind_bubble_png_width, battle_action_cmd_whirlwind_bubble_png_height);
 
-s32 N(DrainRateTable0)[] = { 0, 25, 50, 75, 100, 100 };
-s32 N(DrainRateTable1)[] = { 50, 50, 50, 50, 75, 75, 75, 100, 100, 100, 100 };
+s32 DrainRateTable0[] = { 0, 25, 50, 75, 100, 100 };
+s32 DrainRateTable1[] = { 50, 50, 50, 50, 75, 75, 75, 100, 100, 100, 100 };
 
 // bug: the final entry is not accessible due to the way idx is calculated in these macros
-#define GET_DRAIN_RATE_HUFF(pct)    (N(DrainRateTable0)[((pct) / (ONE_PCT_MASH / 5))])
-#define GET_DRAIN_RATE_BUZZAR(pct)  (N(DrainRateTable1)[((pct) / (ONE_PCT_MASH / 10))])
+#define GET_DRAIN_RATE_HUFF(pct)    (DrainRateTable0[((pct) / (ONE_PCT_MASH / 5))])
+#define GET_DRAIN_RATE_BUZZAR(pct)  (DrainRateTable1[((pct) / (ONE_PCT_MASH / 10))])
 
-HudScriptList N(HuffDigits) = {
+HudScriptList HuffDigits = {
     HES_Whirlwind7, HES_Whirlwind6, HES_Whirlwind5, HES_Whirlwind4, HES_Whirlwind3, HES_Whirlwind2
 };
 
-HudScriptList N(BuzzarDigits) = {
+HudScriptList BuzzarDigits = {
     HES_Whirlwind1, HES_Whirlwind1, HES_Whirlwind2, HES_Whirlwind3, HES_Whirlwind3
 };
 
-s32 N(BuzzarQuality)[] = { 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
+s32 BuzzarQuality[] = { 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -126,7 +124,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -159,7 +157,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -260,7 +258,7 @@ void N(update)(void) {
             if (acs->variation == ACV_WHIRLWIND_HUFF) {
                 battleStatus->actionProgress = (acs->meterFillLevel / ONE_PCT_MASH) / 20;
             } else {
-                battleStatus->actionProgress = N(BuzzarQuality)[(acs->meterFillLevel / ONE_PCT_MASH) / 10];
+                battleStatus->actionProgress = BuzzarQuality[(acs->meterFillLevel / ONE_PCT_MASH) / 10];
             }
 
             if (acs->stateTimer != 0) {
@@ -283,7 +281,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 hudX, hudY;
@@ -301,18 +299,18 @@ void N(draw)(void) {
 
     hid = acs->hudElemIDs[HIDX_DIGIT];
     if (acs->variation == ACV_WHIRLWIND_HUFF) {
-        if (N(HuffDigits)[battleStatus->actionProgress] != hud_element_get_script(hid)) {
-            hud_element_set_script(hid, N(HuffDigits)[battleStatus->actionProgress]);
+        if (HuffDigits[battleStatus->actionProgress] != hud_element_get_script(hid)) {
+            hud_element_set_script(hid, HuffDigits[battleStatus->actionProgress]);
         }
     } else {
-        if (N(BuzzarDigits)[battleStatus->actionProgress] != hud_element_get_script(hid)) {
-            hud_element_set_script(hid, N(BuzzarDigits)[battleStatus->actionProgress]);
+        if (BuzzarDigits[battleStatus->actionProgress] != hud_element_get_script(hid)) {
+            hud_element_set_script(hid, BuzzarDigits[battleStatus->actionProgress]);
         }
     }
     hud_element_draw_clipped(hid);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_DIGIT]);

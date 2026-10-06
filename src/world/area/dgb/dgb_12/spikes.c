@@ -1,17 +1,17 @@
 #include "dgb_12.h"
 
-LavaReset N(SafeFloorColliders)[] = {
+LavaReset SafeFloorColliders[] = {
     { .colliderID = COLLIDER_o200, .pos = { -503.0,    0.0,  -63.0 }},
     { .colliderID = NO_COLLIDER }
 };
 
-EvtScript N(EVS_SetupSpikes) = {
+EvtScript EVS_SetupSpikes = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o202, SURFACE_TYPE_SPIKES)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o215, SURFACE_TYPE_SPIKES)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o216, SURFACE_TYPE_SPIKES)
     Thread
-        Call(ResetFromLava, Ref(N(SafeFloorColliders)))
+        Call(ResetFromLava, Ref(SafeFloorColliders))
     EndThread
     Wait(50)
     Call(TranslateModel, MODEL_o190, 0, 0, 0)

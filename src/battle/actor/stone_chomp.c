@@ -2,16 +2,14 @@
 #include "script_api/battle.h"
 #include "sprite/npc/StoneChomp.h"
 
-#define NAMESPACE A(stone_chomp)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern EvtScript EVS_Chomp_HopToPos;
+extern EvtScript EVS_UpdateChain;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern EvtScript N(EVS_Chomp_HopToPos);
-extern EvtScript N(EVS_UpdateChain);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN            = 1,
     PRT_TARGET          = 2,
     PRT_CHAIN_1         = 3,
@@ -24,15 +22,15 @@ enum N(ActorPartIDs) {
     PRT_CHAIN_8         = 10,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_EnableChainSounds      = 8,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_CHOMP_BITE              = 3,
 };
 
-s32 N(BasicAnims)[] = {
+s32 BasicAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_StoneChomp_Idle,
     STATUS_KEY_STONE,     ANIM_StoneChomp_Still,
     STATUS_KEY_SLEEP,     ANIM_StoneChomp_Sleep,
@@ -43,7 +41,7 @@ s32 N(BasicAnims)[] = {
     STATUS_END,
 };
 
-s32 N(QuickBiteAnims)[] = {
+s32 QuickBiteAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_StoneChomp_QuickBite,
     STATUS_KEY_POISON,    ANIM_StoneChomp_QuickBite,
     STATUS_KEY_STOP,      ANIM_StoneChomp_Still,
@@ -54,7 +52,7 @@ s32 N(QuickBiteAnims)[] = {
     STATUS_END,
 };
 
-s32 N(BiteAnims)[] = {
+s32 BiteAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_StoneChomp_Bite,
     STATUS_KEY_POISON,    ANIM_StoneChomp_Bite,
     STATUS_KEY_STOP,      ANIM_StoneChomp_Still,
@@ -65,7 +63,7 @@ s32 N(BiteAnims)[] = {
     STATUS_END,
 };
 
-s32 N(SlowBiteAnims)[] = {
+s32 SlowBiteAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_StoneChomp_SlowBite,
     STATUS_KEY_POISON,    ANIM_StoneChomp_SlowBite,
     STATUS_KEY_STOP,      ANIM_StoneChomp_Still,
@@ -76,17 +74,17 @@ s32 N(SlowBiteAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ChainAnims)[] = {
+s32 ChainAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_StoneChomp_Chain,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   1,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,               0,
@@ -111,15 +109,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_NO_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(BasicAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = BasicAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -130,8 +128,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -13, 40 },
         .opacity = 255,
-        .idleAnimations = N(BasicAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = BasicAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -14 },
@@ -142,8 +140,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -154,8 +152,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -166,8 +164,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -178,8 +176,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -190,8 +188,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -202,8 +200,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -214,8 +212,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -226,8 +224,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 12 },
         .opacity = 255,
-        .idleAnimations = N(ChainAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ChainAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -239,10 +237,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_STONE_CHOMP,
     .level = ACTOR_LEVEL_STONE_CHOMP,
     .maxHP = 4,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 0,
     .airLiftChance = 25,
     .hurricaneChance = 25,
@@ -265,13 +263,13 @@ export ActorBlueprint blueprint = {
 // Custom version of EVS_Enemy_HopHome
 // (in) LVar0: part idx
 // (in) LVar1: hopping animID
-EvtScript N(EVS_Chomp_HopHome) = {
+EvtScript EVS_Chomp_HopHome = {
     Call(SetAnimation, ACTOR_SELF, LVar0, LVar1)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
     Call(SetActorJumpGravity, ACTOR_SELF, Float(2.0))
-    ExecWait(N(EVS_Chomp_HopToPos))
+    ExecWait(EVS_Chomp_HopToPos)
     Return
     End
 };
@@ -280,7 +278,7 @@ EvtScript N(EVS_Chomp_HopHome) = {
 // (in) LVar0: target posX
 // (in) LVar1: target posY
 // (in) LVar2: target posZ
-EvtScript N(EVS_Chomp_HopToPos) = {
+EvtScript EVS_Chomp_HopToPos = {
     Call(GetActorPos, ACTOR_SELF, LVar3, LVar4, LVar5)
     Label(0)
         Call(GetActorPos, ACTOR_SELF, LVar3, LVar4, LVar5)
@@ -321,11 +319,11 @@ EvtScript N(EVS_Chomp_HopToPos) = {
     End
 };
 
-EvtScript N(EVS_Init) = {
+EvtScript EVS_Init = {
     Call(SetActorVar, ACTOR_SELF, AVAR_EnableChainSounds, false)
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetPartPos, ACTOR_SELF, PRT_TARGET, LVar0, LVar1, LVar2)
     Set(LVar0, PRT_CHAIN_1)
@@ -333,13 +331,13 @@ EvtScript N(EVS_Init) = {
         Call(SetPartSize, ACTOR_SELF, LVar0, 16, 16)
         Add(LVar0, 1)
     EndLoop
-    Call(N(ChompChainInit))
-    Exec(N(EVS_UpdateChain))
+    Call(ChompChainInit)
+    Exec(EVS_UpdateChain)
     Return
     End
 };
 
-EvtScript N(EVS_UpdateTargetPartPos) = {
+EvtScript EVS_UpdateTargetPartPos = {
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -357,17 +355,17 @@ EvtScript N(EVS_UpdateTargetPartPos) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Loop(0)
-            ExecWait(N(EVS_UpdateTargetPartPos))
+            ExecWait(EVS_UpdateTargetPartPos)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfNotFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 BreakLoop
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SlowBiteAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlowBiteAnims))
         Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(1.0))
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -376,7 +374,7 @@ EvtScript N(EVS_Idle) = {
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleJumpToGoal, ACTOR_SELF, 11, 1)
         Loop(0)
-            ExecWait(N(EVS_UpdateTargetPartPos))
+            ExecWait(EVS_UpdateTargetPartPos)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfNotFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 BreakLoop
@@ -392,28 +390,28 @@ EvtScript N(EVS_Idle) = {
         Add(LVar0, 1)
         Wait(LVar0)
         Loop(0)
-            ExecWait(N(EVS_UpdateTargetPartPos))
+            ExecWait(EVS_UpdateTargetPartPos)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfNotFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 BreakLoop
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(BiteAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BiteAnims))
         Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleJumpToGoal, ACTOR_SELF, 15, 1)
         Loop(0)
-            ExecWait(N(EVS_UpdateTargetPartPos))
+            ExecWait(EVS_UpdateTargetPartPos)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfNotFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 BreakLoop
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(SlowBiteAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(SlowBiteAnims))
         Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -421,7 +419,7 @@ EvtScript N(EVS_Idle) = {
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleJumpToGoal, ACTOR_SELF, 12, 1)
         Loop(0)
-            ExecWait(N(EVS_UpdateTargetPartPos))
+            ExecWait(EVS_UpdateTargetPartPos)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfNotFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 BreakLoop
@@ -435,14 +433,14 @@ EvtScript N(EVS_Idle) = {
         Call(SetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(IdleJumpToGoal, ACTOR_SELF, 9, 1)
         Loop(0)
-            ExecWait(N(EVS_UpdateTargetPartPos))
+            ExecWait(EVS_UpdateTargetPartPos)
             Call(GetStatusFlags, ACTOR_SELF, LVar0)
             IfNotFlag(LVar0, STATUS_FLAGS_IMMOBILIZED)
                 BreakLoop
             EndIf
             Wait(1)
         EndLoop
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(QuickBiteAnims)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(QuickBiteAnims))
         Call(SetActorIdleJumpGravity, ACTOR_SELF, Float(0.8))
         Call(SetIdleGoalToHome, ACTOR_SELF)
         Call(GetIdleGoal, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -456,16 +454,16 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-EvtScript N(EVS_UpdateChain) = {
+EvtScript EVS_UpdateChain = {
     Label(0)
         Wait(1)
-        Call(N(ChompChainUpdate))
+        Call(ChompChainUpdate)
         Goto(0)
         Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
@@ -539,7 +537,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(PlaySoundAtActor, ACTOR_SELF, STONE_STONE_CHOMP_STEP)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_StoneChomp_SlowBite)
-            ExecWait(N(EVS_Chomp_HopHome))
+            ExecWait(EVS_Chomp_HopHome)
             Call(SetActorJumpGravity, ACTOR_SELF, Float(1.6))
             Call(JumpToGoal, ACTOR_SELF, 5, false, true, false)
             Call(PlaySoundAtActor, ACTOR_SELF, STONE_STONE_CHOMP_STEP)
@@ -641,7 +639,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(SetActorVar, ACTOR_SELF, AVAR_EnableChainSounds, true)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -696,7 +694,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_StoneChomp_Bite)
-            ExecWait(N(EVS_Chomp_HopToPos))
+            ExecWait(EVS_Chomp_HopToPos)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_StoneChomp_Idle)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(HPBarToHome, ACTOR_SELF)
@@ -753,7 +751,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_StoneChomp_Bite)
-            ExecWait(N(EVS_Chomp_HopToPos))
+            ExecWait(EVS_Chomp_HopToPos)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_StoneChomp_Idle)
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetPartPos, ACTOR_SELF, PRT_TARGET, LVar0, LVar1, LVar2)

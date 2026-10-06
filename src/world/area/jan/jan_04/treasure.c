@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "effects.h"
 
-API_CALLABLE(N(AnimateFlyingChestRotScale)) {
+API_CALLABLE(AnimateFlyingChestRotScale) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
     if (isInitialCall) {
@@ -22,7 +22,7 @@ API_CALLABLE(N(AnimateFlyingChestRotScale)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AnimateFallingChestRot)) {
+API_CALLABLE(AnimateFallingChestRot) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
     if (isInitialCall) {
@@ -38,7 +38,7 @@ API_CALLABLE(N(AnimateFallingChestRot)) {
     return ApiStatus_BLOCK;
 }
 
-Vec3f N(ChestFlightArc)[] = {
+Vec3f ChestFlightArc[] = {
     {  -40.0,   330.0, -900.0 },
     { -117.0,   420.0, -600.0 },
     { -195.0,   465.0, -300.0 },
@@ -47,19 +47,19 @@ Vec3f N(ChestFlightArc)[] = {
     { -350.0,   250.0,  300.0 },
 };
 
-Vec3f N(ChestFallPath)[] = {
+Vec3f ChestFallPath[] = {
     {   10.0,   130.0,  -20.0 },
     {    5.0,    75.0,  -20.0 },
     {    0.0,     0.0,  -20.0 },
 };
 
-Vec3f N(ChestBouncePath)[] = {
+Vec3f ChestBouncePath[] = {
     {    0.0,     0.0,  -20.0 },
     {    0.0,    30.0,   -8.0 },
     {    0.0,     0.0,    0.0 },
 };
 
-EvtScript N(EVS_Scene_TreasureChest) = {
+EvtScript EVS_Scene_TreasureChest = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
@@ -76,11 +76,11 @@ EvtScript N(EVS_Scene_TreasureChest) = {
         Call(MakeEntity, Ref(Entity_Chest), 0, 2650, 0, 148, MAKE_ENTITY_END)
         Set(LVarA, LVar0)
         Thread
-            Call(N(AnimateFlyingChestRotScale))
+            Call(AnimateFlyingChestRotScale)
         EndThread
         Thread
             Set(LVar9, LVarA)
-            Call(LoadPath, 70, Ref(N(ChestFlightArc)), ARRAY_COUNT(N(ChestFlightArc)), EASING_QUADRATIC_OUT)
+            Call(LoadPath, 70, Ref(ChestFlightArc), ARRAY_COUNT(ChestFlightArc), EASING_QUADRATIC_OUT)
             Loop(0)
                 Call(GetNextPathPos)
                 Call(SetEntityPosition, LVar9, LVar1, LVar2, LVar3)
@@ -109,10 +109,10 @@ EvtScript N(EVS_Scene_TreasureChest) = {
         Call(MakeEntity, Ref(Entity_Chest), 0, 2650, 0, 0, MAKE_ENTITY_END)
         Set(LVarA, LVar0)
         Thread
-            Call(N(AnimateFallingChestRot))
+            Call(AnimateFallingChestRot)
         EndThread
         Set(LVar9, LVarA)
-        Call(LoadPath, 12, Ref(N(ChestFallPath)), ARRAY_COUNT(N(ChestFallPath)), EASING_LINEAR)
+        Call(LoadPath, 12, Ref(ChestFallPath), ARRAY_COUNT(ChestFallPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetEntityPosition, LVar9, LVar1, LVar2, LVar3)
@@ -128,7 +128,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
             PlayEffect(EFFECT_WALKING_DUST, 2, 15, 0, 0, 350, 350)
             Call(ShakeCam, CAM_DEFAULT, 0, 30, Float(1.0))
         EndThread
-        Call(LoadPath, 10, Ref(N(ChestBouncePath)), ARRAY_COUNT(N(ChestBouncePath)), EASING_LINEAR)
+        Call(LoadPath, 10, Ref(ChestBouncePath), ARRAY_COUNT(ChestBouncePath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetEntityPosition, LVar9, LVar1, LVar2, LVar3)
@@ -141,7 +141,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
         PlayEffect(EFFECT_WALKING_DUST, 2, -10, 0, 15, 0, 0)
         PlayEffect(EFFECT_WALKING_DUST, 2, -10, 0, 15, 0, 0)
         Wait(60)
-        Exec(N(EVS_GotoMap_kmr_24_0))
+        Exec(EVS_GotoMap_kmr_24_0)
     EndIf
     Return
     End

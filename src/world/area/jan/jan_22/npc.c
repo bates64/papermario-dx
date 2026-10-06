@@ -17,7 +17,7 @@ enum {
     RAVEN_SCENE_HEADNG_OUT          = 25,
 };
 
-API_CALLABLE(N(UpgradeStarPowerCh5)) {
+API_CALLABLE(UpgradeStarPowerCh5) {
     PlayerData* playerData = &gPlayerData;
 
     set_max_star_power(5);
@@ -27,7 +27,7 @@ API_CALLABLE(N(UpgradeStarPowerCh5)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_TetherCamToBasketPlayer) = {
+EvtScript EVS_TetherCamToBasketPlayer = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -37,7 +37,7 @@ EvtScript N(EVS_TetherCamToBasketPlayer) = {
     End
 };
 
-EvtScript N(EVS_UseBasketElevator) = {
+EvtScript EVS_UseBasketElevator = {
     Call(GetPartnerInUse, LVar9)
     IfEq(LVar9, PARTNER_KOOPER)
         Return
@@ -71,7 +71,7 @@ EvtScript N(EVS_UseBasketElevator) = {
         Call(NpcJump0, NPC_PARTNER, LVar3, LVar4, LVar5, 10)
         Call(EnableNpcShadow, NPC_PARTNER, false)
     EndIf
-    ExecGetTID(N(EVS_TetherCamToBasketPlayer), LVar7)
+    ExecGetTID(EVS_TetherCamToBasketPlayer, LVar7)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(PlaySoundAtModel, MODEL_o123, SOUND_JAN_BASKET_ELEVATOR, 0)
     Call(MakeLerp, 0, 170, 60, EASING_LINEAR)
@@ -142,8 +142,8 @@ EvtScript N(EVS_UseBasketElevator) = {
     End
 };
 
-EvtScript N(EVS_SetupBasketElevator) = {
-    BindTrigger(Ref(N(EVS_UseBasketElevator)), TRIGGER_FLOOR_TOUCH, COLLIDER_o124, 1, 0)
+EvtScript EVS_SetupBasketElevator = {
+    BindTrigger(Ref(EVS_UseBasketElevator), TRIGGER_FLOOR_TOUCH, COLLIDER_o124, 1, 0)
     IfLt(GB_StoryProgress, STORY_CH5_ZIP_LINE_READY)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o124, COLLIDER_FLAGS_UPPER_MASK)
         Call(ScaleModel, MODEL_o147, 1, Float(0.15625), 1)
@@ -159,7 +159,7 @@ EvtScript N(EVS_SetupBasketElevator) = {
     End
 };
 
-EvtScript N(EVS_GatherRavensNearRaphael) = {
+EvtScript EVS_GatherRavensNearRaphael = {
     Call(SetNpcPos, NPC_Raven_01, 177, 0, -10)
     Call(SetNpcPos, NPC_Raven_02, 127, 0, 5)
     Call(SetNpcPos, NPC_Raven_03, 152, 0, 0)
@@ -169,7 +169,7 @@ EvtScript N(EVS_GatherRavensNearRaphael) = {
     End
 };
 
-EvtScript N(EVS_Ravens_LeapIntoTree) = {
+EvtScript EVS_Ravens_LeapIntoTree = {
     ChildThread
         Call(PlaySoundAtNpc, NPC_Raven_02, SOUND_RAVEN_LEAP_A, SOUND_SPACE_DEFAULT)
         Call(SetNpcFlagBits, NPC_Raven_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -206,7 +206,7 @@ EvtScript N(EVS_Ravens_LeapIntoTree) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_RaphaelRaven) = {
+EvtScript EVS_NpcInteract_RaphaelRaven = {
     Call(GetNpcPos, NPC_RaphaelRaven, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -227,25 +227,25 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_RaphaelRaven) = {
+EvtScript EVS_NpcIdle_RaphaelRaven = {
     Label(0)
     IfLt(GB_StoryProgress, STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
         Wait(1)
         Goto(0)
     EndIf
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RaphaelRaven)))
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RaphaelRaven))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_RaphaelRaven) = {
+EvtScript EVS_NpcInit_RaphaelRaven = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_RAPHAEL_MOVED_ROOT)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_RaphaelRaven)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_RaphaelRaven))
         CaseEq(STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
             Call(SetNpcPos, NPC_SELF, 125, 0, -40)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RaphaelRaven)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RaphaelRaven))
         CaseDefault
             Call(RemoveNpc, NPC_SELF)
     EndSwitch
@@ -253,7 +253,7 @@ EvtScript N(EVS_NpcInit_RaphaelRaven) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Raven) = {
+EvtScript EVS_NpcInteract_Raven = {
     IfEq(GF_JAN22_Met_Raven, false)
         Call(SpeakToPlayer, NPC_Raven_01, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_00D2)
         Set(GF_JAN22_Met_Raven, true)
@@ -264,7 +264,7 @@ EvtScript N(EVS_NpcInteract_Raven) = {
     End
 };
 
-EvtScript N(EVS_Raven_HopAndWalkAway) = {
+EvtScript EVS_Raven_HopAndWalkAway = {
     Wait(45)
     Call(NpcJump0, LVar0, 30, 0, -15, 10)
     Call(SetNpcAnimation, LVar0, ANIM_Raven_Walk)
@@ -275,7 +275,7 @@ EvtScript N(EVS_Raven_HopAndWalkAway) = {
     End
 };
 
-EvtScript N(EVS_BuildingEffects) = {
+EvtScript EVS_BuildingEffects = {
     Call(PlaySoundAt, SOUND_LOOP_JAN_CONSTRUCTION, SOUND_SPACE_DEFAULT, 270, 130, 0)
     Loop(0)
         Call(ShakeCam, CAM_DEFAULT, 0, 3, Float(1.0))
@@ -295,7 +295,7 @@ EvtScript N(EVS_BuildingEffects) = {
     End
 };
 
-EvtScript N(EVS_ManageRavens) = {
+EvtScript EVS_ManageRavens = {
     Label(0)
         IfLt(GB_StoryProgress, STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
             Wait(1)
@@ -325,7 +325,7 @@ EvtScript N(EVS_ManageRavens) = {
                 Call(InterpNpcYaw, NPC_Raven_04, 90, 0)
                 Call(InterpNpcYaw, NPC_Raven_05, 90, 0)
                 Wait(10 * DT)
-                ExecGetTID(N(EVS_Ravens_LeapIntoTree), LVar9)
+                ExecGetTID(EVS_Ravens_LeapIntoTree, LVar9)
                 Wait(40 * DT)
                 KillThread(LVar9)
                 Wait(10 * DT)
@@ -339,9 +339,9 @@ EvtScript N(EVS_ManageRavens) = {
                 Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
                 Call(PanToTarget, CAM_DEFAULT, 0, true)
                 // repeat the action with a time delay across the sudden camera cut
-                Exec(N(EVS_GatherRavensNearRaphael))
+                Exec(EVS_GatherRavensNearRaphael)
                 Wait(10 * DT)
-                ExecWait(N(EVS_Ravens_LeapIntoTree))
+                ExecWait(EVS_Ravens_LeapIntoTree)
                 Call(SetNpcAnimation, NPC_Raven_01, ANIM_Raven_Walk)
                 Call(SetNpcAnimation, NPC_Raven_02, ANIM_Raven_Walk)
                 Call(SetNpcAnimation, NPC_Raven_03, ANIM_Raven_Walk)
@@ -389,7 +389,7 @@ EvtScript N(EVS_ManageRavens) = {
                 Call(SetNpcAnimation, NPC_Raven_04, ANIM_Raven_Walk)
                 Call(NpcJump0, NPC_Raven_04, 300, 300, -14, 20 * DT)
                 Call(SetNpcRotation, NPC_Raven_04, 0, 0, 0)
-                ExecGetTID(N(EVS_BuildingEffects), LVarA)
+                ExecGetTID(EVS_BuildingEffects, LVarA)
                 Wait(30 * DT)
                 Call(SpeakToPlayer, NPC_RaphaelRaven, ANIM_RaphaelRaven_Talk, ANIM_RaphaelRaven_Idle, 0, MSG_CH5_00CA)
                 Wait(50 * DT)
@@ -528,28 +528,28 @@ EvtScript N(EVS_ManageRavens) = {
                     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                     Call(SpeakToPlayer, NPC_RaphaelRaven, ANIM_RaphaelRaven_Talk, ANIM_RaphaelRaven_Idle, 0, MSG_CH5_00D1)
                     Set(LVar0, NPC_Raven_02)
-                    Exec(N(EVS_Raven_HopAndWalkAway))
+                    Exec(EVS_Raven_HopAndWalkAway)
                     Thread
                         Wait(10 * DT)
                         Set(LVar0, NPC_Raven_03)
-                        Exec(N(EVS_Raven_HopAndWalkAway))
+                        Exec(EVS_Raven_HopAndWalkAway)
                     EndThread
                     Thread
                         Wait(20 * DT)
                         Set(LVar0, NPC_Raven_04)
-                        Exec(N(EVS_Raven_HopAndWalkAway))
+                        Exec(EVS_Raven_HopAndWalkAway)
                     EndThread
                     Thread
                         Wait(30 * DT)
                         Set(LVar0, NPC_Raven_05)
-                        Exec(N(EVS_Raven_HopAndWalkAway))
+                        Exec(EVS_Raven_HopAndWalkAway)
                     EndThread
                     Call(SetNpcAnimation, NPC_RaphaelRaven, ANIM_RaphaelRaven_Walk)
                     Call(SetNpcSpeed, NPC_RaphaelRaven, Float(3.0 / DT))
                     Call(NpcMoveTo, NPC_RaphaelRaven, -120, 0, 0)
                     Call(SetNpcPos, NPC_RaphaelRaven, NPC_DISPOSE_LOCATION)
                     Wait(40 * DT)
-                    Call(BindNpcInteract, NPC_Raven_01, Ref(N(EVS_NpcInteract_Raven)))
+                    Call(BindNpcInteract, NPC_Raven_01, Ref(EVS_NpcInteract_Raven))
                     Call(SetNpcFlagBits, NPC_Raven_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                     Call(EnableCameraLeadingPlayer)
                     Call(ResetCam, CAM_DEFAULT, Float(1.5 / DT))
@@ -564,15 +564,15 @@ EvtScript N(EVS_ManageRavens) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Raven) = {
+EvtScript EVS_NpcInit_Raven = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_RAPHAEL_MOVED_ROOT)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_ManageRavens)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_ManageRavens))
         CaseEq(STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_ManageRavens)))
-            Exec(N(EVS_GatherRavensNearRaphael))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_ManageRavens))
+            Exec(EVS_GatherRavensNearRaphael)
         CaseRange(STORY_CH5_ZIP_LINE_READY, STORY_CH5_OPENED_ESCAPE_ROUTE)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Raven)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Raven))
             Call(SetNpcPos, NPC_Raven_01, 260, 205, -25)
             Call(SetNpcFlagBits, NPC_Raven_01, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Goto(30)
@@ -589,19 +589,19 @@ EvtScript N(EVS_NpcInit_Raven) = {
     End
 };
 
-Vec3f N(RaphaelWalkPath)[] = {
+Vec3f RaphaelWalkPath[] = {
     { -190.0,     0.0, -200.0 },
     { -185.0,     0.0,  -95.0 },
     { -180.0,     0.0,   10.0 },
 };
 
-EvtScript N(EVS_Scene_RaphaelComingThrough) = {
+EvtScript EVS_Scene_RaphaelComingThrough = {
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_RaphaelRaven, -200, 0, -170)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetPlayerPos, -190, 0, -200)
     Call(SetNpcPos, NPC_PARTNER, -190, 0, -210)
-    ExecWait(N(EVS_MoveBushes))
+    ExecWait(EVS_MoveBushes)
     Call(SetNpcAnimation, NPC_RaphaelRaven, ANIM_RaphaelRaven_Walk)
     Call(SetNpcSpeed, NPC_RaphaelRaven, Float(4.0 / DT))
     Call(NpcMoveTo, NPC_RaphaelRaven, -180, -30, 0)
@@ -613,7 +613,7 @@ EvtScript N(EVS_Scene_RaphaelComingThrough) = {
     EndThread
     Wait(15 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Run)
-    Call(LoadPath, 45 * DT, Ref(N(RaphaelWalkPath)), ARRAY_COUNT(N(RaphaelWalkPath)), EASING_LINEAR)
+    Call(LoadPath, 45 * DT, Ref(RaphaelWalkPath), ARRAY_COUNT(RaphaelWalkPath), EASING_LINEAR)
     Label(0)
     Call(GetNextPathPos)
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -670,7 +670,7 @@ EvtScript N(EVS_Scene_RaphaelComingThrough) = {
     End
 };
 
-EvtScript N(EVS_Kolorado_RunPastPlayer) = {
+EvtScript EVS_Kolorado_RunPastPlayer = {
     ChildThread
         Loop(0)
             Call(PlayerFaceNpc, NPC_SELF, false)
@@ -688,7 +688,7 @@ EvtScript N(EVS_Kolorado_RunPastPlayer) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
+EvtScript EVS_NpcIdle_Kolorado_HeldCaptive = {
     Loop(0)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -773,7 +773,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
                 Set(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_SPEAR_GUYS)
             EndThread
-            ExecGetTID(N(EVS_Kolorado_RunPastPlayer), LVar9)
+            ExecGetTID(EVS_Kolorado_RunPastPlayer, LVar9)
             Wait(35)
             Call(EnableCameraLeadingPlayer)
             Call(ResetCam, CAM_DEFAULT, Float(5.0))
@@ -790,7 +790,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_HeldCaptive) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado_Before) = {
+EvtScript EVS_NpcIdle_Kolorado_Before = {
     Label(0)
     IfNe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         Wait(1)
@@ -827,7 +827,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_Before) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado_After) = {
+EvtScript EVS_NpcIdle_Kolorado_After = {
     Label(0)
     Call(GetSelfVar, 0, LVar0)
     Switch(LVar0)
@@ -911,7 +911,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_After) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Kolorado_Before) = {
+EvtScript EVS_NpcInteract_Kolorado_Before = {
     Call(GetAngleToPlayer, NPC_SELF, LVar0)
     IfLt(LVar0, 180)
         Set(LVar1, 27)
@@ -958,12 +958,12 @@ EvtScript N(EVS_NpcInteract_Kolorado_Before) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
     Call(InterpNpcYaw, NPC_SELF, 90, 4)
     Set(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-    ExecWait(N(EVS_SetupMusic))
+    ExecWait(EVS_SetupMusic)
     Return
     End
 };
 
-EvtScript N(EVS_NpcHit_Kolorado_HeldCaptive) = {
+EvtScript EVS_NpcHit_Kolorado_HeldCaptive = {
     Call(GetOwnerEncounterTrigger, LVar0)
     Switch(LVar0)
         CaseEq(ENCOUNTER_TRIGGER_HAMMER)
@@ -991,13 +991,13 @@ EvtScript N(EVS_NpcHit_Kolorado_HeldCaptive) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado_HeldCaptive) = {
+EvtScript EVS_NpcInit_Kolorado_HeldCaptive = {
     Call(SetSelfVar, 0, 0)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_SPEAR_GUYS)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Fallen)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado_HeldCaptive)))
-        Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Kolorado_HeldCaptive)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado_HeldCaptive))
+        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_Kolorado_HeldCaptive))
     Else
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
@@ -1005,15 +1005,15 @@ EvtScript N(EVS_NpcInit_Kolorado_HeldCaptive) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado_WaitingToExplore) = {
+EvtScript EVS_NpcInit_Kolorado_WaitingToExplore = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(SetNpcPos, NPC_SELF, 750, 0, 30)
             Call(SetSelfVar, 0, 0)
-            Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Kolorado_Before)))
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado_Before)))
+            Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado_Before))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado_Before))
         CaseRange(STORY_CH5_RAPHAEL_MOVED_ROOT, STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado_After)))
+            Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado_After))
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         CaseDefault
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -1022,7 +1022,7 @@ EvtScript N(EVS_NpcInit_Kolorado_WaitingToExplore) = {
     End
 };
 
-EvtScript N(EVS_SyncZiplineDummyNPC1) = {
+EvtScript EVS_SyncZiplineDummyNPC1 = {
     Loop(0)
         Call(GetModelCenter, MODEL_o112)
         Call(SetNpcPos, NPC_ZiplineDummy1, LVar0, LVar1, LVar2)
@@ -1032,7 +1032,7 @@ EvtScript N(EVS_SyncZiplineDummyNPC1) = {
     End
 };
 
-EvtScript N(EVS_SyncZiplineDummyNPC2) = {
+EvtScript EVS_SyncZiplineDummyNPC2 = {
     Loop(0)
         Call(GetModelCenter, MODEL_o131)
         Call(SetNpcPos, NPC_ZiplineDummy2, LVar0, LVar1, LVar2)
@@ -1042,14 +1042,14 @@ EvtScript N(EVS_SyncZiplineDummyNPC2) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_ZiplineDummy) = {
+EvtScript EVS_NpcInit_ZiplineDummy = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(SetNpcScale, NPC_SELF, Float(0.3), 1, Float(0.3))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_SpearGuy) = {
+EvtScript EVS_NpcIdle_SpearGuy = {
     ChildThread
         Call(GetNpcPos, NPC_SELF, LVar3, LVar1, LVar2)
         Set(LVar4, LVar3)
@@ -1102,7 +1102,7 @@ EvtScript N(EVS_NpcIdle_SpearGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_SpearGuy) = {
+EvtScript EVS_NpcDefeat_SpearGuy = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -1146,11 +1146,11 @@ EvtScript N(EVS_NpcDefeat_SpearGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_SpearGuy) = {
+EvtScript EVS_NpcInit_SpearGuy = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_ESCAPED_SPEAR_GUYS)
         Call(SetNpcAnimation, NPC_SELF, ANIM_SpearGuy_ShakeSpear)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SpearGuy)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_SpearGuy)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpearGuy))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_SpearGuy))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -1158,7 +1158,7 @@ EvtScript N(EVS_NpcInit_SpearGuy) = {
     End
 };
 
-EvtScript N(EVS_Misstar_Bobbing) = {
+EvtScript EVS_Misstar_Bobbing = {
     Loop(0)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -1177,7 +1177,7 @@ EvtScript N(EVS_Misstar_Bobbing) = {
     End
 };
 
-EvtScript N(EVS_Misstar_CarryingParty) = {
+EvtScript EVS_Misstar_CarryingParty = {
     Set(AF_JAN22_MisstarReleasedParty, false)
     Set(AF_JAN22_MisstarReleasedKolorado, false)
     Label(0)
@@ -1201,7 +1201,7 @@ EvtScript N(EVS_Misstar_CarryingParty) = {
     End
 };
 
-EvtScript N(EVS_PartnerFaceMisstar) = {
+EvtScript EVS_PartnerFaceMisstar = {
     Label(0)
         Call(PlayerFaceNpc, NPC_Misstar, true)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Misstar, 1)
@@ -1211,22 +1211,22 @@ EvtScript N(EVS_PartnerFaceMisstar) = {
     End
 };
 
-Vec3f N(MisstarDescentPath)[] = {
+Vec3f MisstarDescentPath[] = {
     {  990.0,   210.0, -120.0 },
     {  925.0,   115.0,  -80.0 },
     {  860.0,    65.0,  -40.0 },
     {  725.0,    10.0,    0.0 },
 };
 
-EvtScript N(EVS_Scene_Misstar) = {
+EvtScript EVS_Scene_Misstar = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Exec(N(EVS_Misstar_CarryingParty))
+    Exec(EVS_Misstar_CarryingParty)
     Wait(30 * DT)
-    Call(LoadPath, 45 * DT, Ref(N(MisstarDescentPath)), ARRAY_COUNT(N(MisstarDescentPath)), EASING_LINEAR)
+    Call(LoadPath, 45 * DT, Ref(MisstarDescentPath), ARRAY_COUNT(MisstarDescentPath), EASING_LINEAR)
     Label(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
@@ -1246,7 +1246,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Set(AF_JAN22_MisstarReleasedKolorado, true)
     Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_GRAVITY, true)
     Call(NpcJump0, NPC_SELF, 675, 40, 0, 20 * DT)
-    ExecGetTID(N(EVS_Misstar_Bobbing), LVar9)
+    ExecGetTID(EVS_Misstar_Bobbing, LVar9)
     Wait(20 * DT)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1280,7 +1280,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(InterpNpcYaw, NPC_Kolorado_02, 90, 10)
-    ExecGetTID(N(EVS_PartnerFaceMisstar), LVar8)
+    ExecGetTID(EVS_PartnerFaceMisstar, LVar8)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.5))
     Call(NpcJump0, NPC_SELF, 760, 35, 0, 20 * DT)
     KillThread(LVar8)
@@ -1320,8 +1320,8 @@ EvtScript N(EVS_Scene_Misstar) = {
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMisstar_Idle)
-    ExecGetTID(N(EVS_Misstar_Bobbing), LVar9)
-    Call(N(UpgradeStarPowerCh5))
+    ExecGetTID(EVS_Misstar_Bobbing, LVar9)
+    Call(UpgradeStarPowerCh5)
     Call(ShowMessageAtScreenPos, MSG_Menus_0195, 160, 40)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldMisstar_Talk, ANIM_WorldMisstar_Idle, 512, MSG_CH5_00D8)
@@ -1393,7 +1393,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Misstar) = {
+EvtScript EVS_NpcInit_Misstar = {
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
         Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
@@ -1408,7 +1408,7 @@ EvtScript N(EVS_NpcInit_Misstar) = {
         Call(SetCamDistance, CAM_DEFAULT, 500)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Call(PanToTarget, CAM_DEFAULT, 0, true)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_Misstar)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_Misstar))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -1416,13 +1416,13 @@ EvtScript N(EVS_NpcInit_Misstar) = {
     End
 };
 
-NpcData N(NpcData_Kolorado)[] = {
+NpcData NpcData_Kolorado[] = {
     {
         .id = NPC_Kolorado_01,
         .pos = { -100.0f, 0.0f, 10.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Kolorado_HeldCaptive),
-        .settings = &N(NpcSettings_Kolorado),
+        .init = &EVS_NpcInit_Kolorado_HeldCaptive,
+        .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -1432,8 +1432,8 @@ NpcData N(NpcData_Kolorado)[] = {
         .id = NPC_Kolorado_02,
         .pos = { -100.0f, 0.0f, 10.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Kolorado_WaitingToExplore),
-        .settings = &N(NpcSettings_Kolorado),
+        .init = &EVS_NpcInit_Kolorado_WaitingToExplore,
+        .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -1443,8 +1443,8 @@ NpcData N(NpcData_Kolorado)[] = {
         .id = NPC_ZiplineDummy1,
         .pos = { -100.0f, 0.0f, 10.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_ZiplineDummy),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_ZiplineDummy,
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -1454,8 +1454,8 @@ NpcData N(NpcData_Kolorado)[] = {
         .id = NPC_ZiplineDummy2,
         .pos = { -100.0f, 0.0f, 10.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_ZiplineDummy),
-        .settings = &N(NpcSettings_Dummy),
+        .init = &EVS_NpcInit_ZiplineDummy,
+        .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
@@ -1463,7 +1463,7 @@ NpcData N(NpcData_Kolorado)[] = {
     },
 };
 
-NpcData N(NpcData_SpearGuy) = {
+NpcData NpcData_SpearGuy = {
     .id = NPC_SpearGuy,
     .pos = { -70.0f, 0.0f, 10.0f },
     .yaw = 270,
@@ -1482,20 +1482,20 @@ NpcData N(NpcData_SpearGuy) = {
             .detectSize = { 100 },
         }
     },
-    .init = &N(EVS_NpcInit_SpearGuy),
-    .settings = &N(NpcSettings_SpearGuy_Patrol),
+    .init = &EVS_NpcInit_SpearGuy,
+    .settings = &NpcSettings_SpearGuy_Patrol,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = SPEAR_GUY_ANIMS,
 };
 
-NpcData N(NpcData_RaphaelRaven)[] = {
+NpcData NpcData_RaphaelRaven[] = {
     {
         .id = NPC_RaphaelRaven,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_RaphaelRaven),
-        .settings = &N(NpcSettings_RaphaelRaven),
+        .init = &EVS_NpcInit_RaphaelRaven,
+        .settings = &NpcSettings_RaphaelRaven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAPHAEL_RAVEN_ANIMS,
@@ -1505,8 +1505,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Raven),
-        .settings = &N(NpcSettings_Raven),
+        .init = &EVS_NpcInit_Raven,
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1516,7 +1516,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Raven),
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1528,7 +1528,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_03,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Raven),
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1538,7 +1538,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_04,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Raven),
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1548,7 +1548,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .id = NPC_Raven_05,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .settings = &N(NpcSettings_Raven),
+        .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
@@ -1556,26 +1556,26 @@ NpcData N(NpcData_RaphaelRaven)[] = {
     },
 };
 
-NpcData N(NpcData_Misstar) = {
+NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
     .pos = { 1075.0f, 120.0f, 130.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Misstar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Misstar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_SpearGuy), BTL_JAN_FORMATION_00, BTL_JAN_STAGE_07),
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_00, BTL_JAN_STAGE_07),
+    NPC_GROUP(NpcData_Misstar),
     {}
 };
 
-NpcGroupList N(RavenNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_RaphaelRaven)),
+NpcGroupList RavenNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_RaphaelRaven),
     {}
 };

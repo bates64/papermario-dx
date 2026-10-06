@@ -1,7 +1,7 @@
 #include "mim_10.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(AwaitPlayerApproachForest)) {
+API_CALLABLE(AwaitPlayerApproachForest) {
     if (gPlayerStatus.pos.x < 100.0f) {
         return ApiStatus_BLOCK;
     } else {
@@ -9,7 +9,7 @@ API_CALLABLE(N(AwaitPlayerApproachForest)) {
     }
 }
 
-API_CALLABLE(N(InitializeLightingBright)) {
+API_CALLABLE(InitializeLightingBright) {
     enable_world_fog();
     set_world_fog_color(16, 16, 16, 255);
     gCameras[CAM_DEFAULT].bgColor[0] = 20;
@@ -18,7 +18,7 @@ API_CALLABLE(N(InitializeLightingBright)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(InitializeLightingGloomy)) {
+API_CALLABLE(InitializeLightingGloomy) {
     enable_world_fog();
     set_world_fog_dist(990, 1000);
     set_world_fog_color(16, 16, 16, 255);
@@ -29,7 +29,7 @@ API_CALLABLE(N(InitializeLightingGloomy)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ReduceFogEndDist)) {
+API_CALLABLE(ReduceFogEndDist) {
     s32 retVal = ApiStatus_BLOCK;
 
     if (isInitialCall) {
@@ -46,7 +46,7 @@ API_CALLABLE(N(ReduceFogEndDist)) {
     return retVal;
 }
 
-API_CALLABLE(N(DarkenBackground)) {
+API_CALLABLE(DarkenBackground) {
     s32 retVal = ApiStatus_BLOCK;
 
     if (isInitialCall) {
@@ -65,7 +65,7 @@ API_CALLABLE(N(DarkenBackground)) {
 #include "world/common/npc/Bootler/idle.inc.c"
 #include "world/common/npc/JrTroopa/idle.inc.c"
 
-EvtScript N(EVS_Bootler_SpookPlayer) = {
+EvtScript EVS_Bootler_SpookPlayer = {
     ChildThread
         Call(GetPlayerPos, LVarA, LVarB, LVarC)
         Call(UseSettingsFrom, CAM_DEFAULT, LVarA, LVarB, LVarC)
@@ -87,15 +87,15 @@ EvtScript N(EVS_Bootler_SpookPlayer) = {
     End
 };
 
-EvtScript N(EVS_Scene_BootlersInvitation) = {
-    Call(N(AwaitPlayerApproachForest))
+EvtScript EVS_Scene_BootlersInvitation = {
+    Call(AwaitPlayerApproachForest)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 650)
-    Call(N(InitializeLightingBright))
+    Call(InitializeLightingBright)
     Thread
-        Call(N(ReduceFogEndDist))
+        Call(ReduceFogEndDist)
     EndThread
     Thread
-        Call(N(DarkenBackground))
+        Call(DarkenBackground)
     EndThread
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_Bootler, 200, 44, 0)
@@ -160,7 +160,7 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
         EndLoop
     EndThread
     Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOOTLER_SPOOK, SOUND_SPACE_DEFAULT)
-    ExecWait(N(EVS_Bootler_SpookPlayer))
+    ExecWait(EVS_Bootler_SpookPlayer)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(1)
@@ -172,26 +172,26 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
         Wait(1)
     EndLoop
     Set(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(SetNpcPos, NPC_Bootler, NPC_DISPOSE_LOCATION)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_SetupBootlerTrigger) = {
+EvtScript EVS_SetupBootlerTrigger = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_BOO_ENTER_FOREST)
             Return
         CaseLt(STORY_CH3_INVITED_TO_BOOS_MANSION)
-            Exec(N(EVS_Scene_BootlersInvitation))
+            Exec(EVS_Scene_BootlersInvitation)
         CaseRange(STORY_CH3_INVITED_TO_BOOS_MANSION, STORY_CH3_STAR_SPIRIT_RESCUED)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Bootler) = {
+EvtScript EVS_NpcInit_Bootler = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_SAW_BOO_ENTER_FOREST)
             Call(RemoveNpc, NPC_SELF)
@@ -204,7 +204,7 @@ EvtScript N(EVS_NpcInit_Bootler) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_JrTroopa_Escape) = {
+EvtScript EVS_NpcIdle_JrTroopa_Escape = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Set(MV_ScenePlaying, true)
@@ -224,8 +224,8 @@ EvtScript N(EVS_NpcIdle_JrTroopa_Escape) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_JrTroopa) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa_Escape)))
+EvtScript EVS_NpcInit_JrTroopa = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_JrTroopa_Escape))
     IfEq(GF_MIM10_JrTroopaEscaped, true)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -238,30 +238,30 @@ EvtScript N(EVS_NpcInit_JrTroopa) = {
     End
 };
 
-NpcData N(NpcData_Bootler) = {
+NpcData NpcData_Bootler = {
     .id = NPC_Bootler,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bootler),
-    .settings = &N(NpcSettings_Bootler),
+    .init = &EVS_NpcInit_Bootler,
+    .settings = &NpcSettings_Bootler,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = BOOTLER_ANIMS,
 };
 
-NpcData N(NpcData_JrTroopa) = {
+NpcData NpcData_JrTroopa = {
     .id = NPC_JrTroopa,
     .pos = { 0.0f, 0.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_JrTroopa),
-    .settings = &N(NpcSettings_JrTroopa),
+    .init = &EVS_NpcInit_JrTroopa,
+    .settings = &NpcSettings_JrTroopa,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = JR_TROOPA_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Bootler)),
-    NPC_GROUP(N(NpcData_JrTroopa)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Bootler),
+    NPC_GROUP(NpcData_JrTroopa),
     {}
 };

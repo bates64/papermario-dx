@@ -3,24 +3,22 @@
 #include "script_api/battle.h"
 #include "model.h"
 
-#define NAMESPACE battle_move_star_beam
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 #include "battle/common/move/StarBeamSupport.inc.c"
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForBeam))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForBeam)
     Call(AddBattleCamDist, 100)
     Call(MoveBattleCamOver, 20)
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_SELF)
     Thread
-        Call(N(ProcessPeachStarBeam), false)
+        Call(ProcessPeachStarBeam, false)
     EndThread
     Wait(10)
     Loop(0)
         Wait(1)
-        Call(N(GetStage))
+        Call(GetStage)
         IfEq(LVar0, 1)
             BreakLoop
         EndIf
@@ -35,19 +33,19 @@ EvtScript N(EVS_UsePower) = {
         EndIf
     Loop(0)
         Wait(1)
-        Call(N(GetStage))
+        Call(GetStage)
         IfEq(LVar0, 2)
             BreakLoop
         EndIf
     EndLoop
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-    Call(N(unkStarBeamBgFunc))
+    Call(unkStarBeamBgFunc)
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_EndWish))
+    ExecWait(EVS_StarPower_EndWish)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

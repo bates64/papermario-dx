@@ -17,10 +17,10 @@ typedef struct StoneChompAmbushIsk05 {
     /* 0x40 */ f32 height;
 } StoneChompAmbushIsk05; // size = 0x44
 
-StoneChompAmbushIsk05 N(ChompAmbush) = {};
+StoneChompAmbushIsk05 ChompAmbush = {};
 
-void N(worker_draw_chomp_ambush)(void) {
-    StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
+void worker_draw_chomp_ambush(void) {
+    StoneChompAmbushIsk05* ambush = &ChompAmbush;
     Camera* cam = &gCameras[gCurrentCameraID];
     ImgFXTexture ifxImg;
     SpriteRasterInfo spriteRaster;
@@ -76,8 +76,8 @@ void N(worker_draw_chomp_ambush)(void) {
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-API_CALLABLE(N(LaunchChompAmbushWorker)) {
-    StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
+API_CALLABLE(LaunchChompAmbushWorker) {
+    StoneChompAmbushIsk05* ambush = &ChompAmbush;
     SpriteRasterInfo rasterInfo;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
@@ -100,23 +100,23 @@ API_CALLABLE(N(LaunchChompAmbushWorker)) {
     ambush->alpha = 0.0f;
 
     ambush->imgfxIdx = 0;
-    ambush->workerID = create_worker_frontUI(nullptr, N(worker_draw_chomp_ambush));
+    ambush->workerID = create_worker_frontUI(nullptr, worker_draw_chomp_ambush);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(DestroyAmbushWorker)) {
-    StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
+API_CALLABLE(DestroyAmbushWorker) {
+    StoneChompAmbushIsk05* ambush = &ChompAmbush;
 
     free_worker(ambush->workerID);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetChompAmbushPos)) {
+API_CALLABLE(SetChompAmbushPos) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
+    StoneChompAmbushIsk05* ambush = &ChompAmbush;
 
     ambush->pos.x = x;
     ambush->pos.y = y + (ambush->height * SPRITE_WORLD_SCALE_D * 0.5);
@@ -124,12 +124,12 @@ API_CALLABLE(N(SetChompAmbushPos)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetChompAmbushRot)) {
+API_CALLABLE(SetChompAmbushRot) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
+    StoneChompAmbushIsk05* ambush = &ChompAmbush;
 
     ambush->rot.x = x;
     ambush->rot.y = y;
@@ -137,15 +137,15 @@ API_CALLABLE(N(SetChompAmbushRot)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetChompAmbushAlpha)) {
+API_CALLABLE(SetChompAmbushAlpha) {
     Bytecode* args = script->ptrReadPos;
-    StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
+    StoneChompAmbushIsk05* ambush = &ChompAmbush;
 
     ambush->alpha = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnChompAmbushDust)) {
+API_CALLABLE(SpawnChompAmbushDust) {
     f32 x = evt_get_variable(script, LVar2);
     f32 y = evt_get_variable(script, LVar0);
     f32 z = evt_get_variable(script, LVar4);
@@ -154,7 +154,7 @@ API_CALLABLE(N(SpawnChompAmbushDust)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_StoneChomp) = {
+EvtScript EVS_NpcIdle_StoneChomp = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, true)
     Label(100)
     IfEq(GF_ISK05_Hammer2Block, false)
@@ -179,11 +179,11 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
     EndThread
     Call(DisablePlayerInput, true)
     Wait(5)
-    Call(N(LaunchChompAmbushWorker))
+    Call(LaunchChompAmbushWorker)
     Call(MakeLerp, 0, 255, 30, EASING_LINEAR)
     Label(10)
     Call(UpdateLerp)
-    Call(N(SetChompAmbushAlpha), LVar0)
+    Call(SetChompAmbushAlpha, LVar0)
     Wait(1)
     IfEq(LVar1, 1)
         Goto(10)
@@ -195,37 +195,37 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
         Call(MakeLerp, 0, 360, 15, EASING_LINEAR)
         Label(10)
         Call(UpdateLerp)
-        Call(N(SetChompAmbushRot), LVar0, 0, 0)
+        Call(SetChompAmbushRot, LVar0, 0, 0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
         EndIf
     EndThread
     Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
-    Call(N(SetChompAmbushPos), LVar2, LVar3, LVar4)
+    Call(SetChompAmbushPos, LVar2, LVar3, LVar4)
     Call(MakeLerp, LVar3, 0, 30, EASING_QUARTIC_IN)
     Label(1)
     Call(UpdateLerp)
     Call(SetNpcPos, NPC_SELF, LVar2, LVar0, LVar4)
-    Call(N(SetChompAmbushPos), LVar2, LVar0, LVar4)
+    Call(SetChompAmbushPos, LVar2, LVar0, LVar4)
     Wait(1)
     IfEq(LVar1, 1)
         Goto(1)
     EndIf
-    Call(N(SpawnChompAmbushDust))
+    Call(SpawnChompAmbushDust)
     Wait(5)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, false)
     Call(EnableNpcShadow, NPC_SELF, true)
     Wait(1)
-    Call(N(DestroyAmbushWorker))
+    Call(DestroyAmbushWorker)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(DisablePlayerInput, false)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_StoneChomp_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_StoneChomp_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
+EvtScript EVS_NpcDefeat_StoneChomp_Override = {
     Set(GF_ISK05_Defeated_StoneChomp, true)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
@@ -245,7 +245,7 @@ EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
                 EndIf
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)
             EndThread
-            Call(N(StoneChompFXC))
+            Call(StoneChompFXC)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -254,20 +254,20 @@ EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_StoneChomp) = {
+EvtScript EVS_NpcInit_StoneChomp = {
     IfEq(GF_ISK05_Defeated_StoneChomp, true)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_StoneChomp)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_StoneChomp_Override)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_StoneChomp))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_StoneChomp_Override))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
-NpcData N(NpcData_StoneChomp) = {
+NpcData NpcData_StoneChomp = {
     .id = NPC_StoneChomp,
     .pos = { 385.0f, 71.0f, -330.0f },
     .yaw = 320,
@@ -283,16 +283,16 @@ NpcData N(NpcData_StoneChomp) = {
             .detectSize = { 400 },
         }
     },
-    .init = &N(EVS_NpcInit_StoneChomp),
+    .init = &EVS_NpcInit_StoneChomp,
     .initVarCount = 1,
     .initVar = { .value = 0 },
-    .settings = &N(NpcSettings_StoneChomp_Wander),
+    .settings = &NpcSettings_StoneChomp_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = STONE_CHOMP_DROPS,
     .animations = STONE_CHOMP_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_StoneChomp), BTL_ISK_1_FORMATION_07, BTL_ISK_1_STAGE_09),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_StoneChomp, BTL_ISK_1_FORMATION_07, BTL_ISK_1_STAGE_09),
     {}
 };

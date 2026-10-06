@@ -3,33 +3,31 @@
 #include "sprite/npc/Fuzzy.h"
 #include "sprite/player.h"
 
-#define NAMESPACE A(forest_fuzzy)
+extern s32 DefaultAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
+extern Formation CloneFormation;
 
-extern s32 N(DefaultAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-extern Formation N(CloneFormation);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Generation     = 0,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_LEECH       = 1,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              95,
@@ -54,15 +52,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 20 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -74,10 +72,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_FOREST_FUZZY,
     .level = ACTOR_LEVEL_FOREST_FUZZY,
     .maxHP = 6,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 40,
     .airLiftChance = 90,
     .hurricaneChance = 90,
@@ -92,7 +90,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Fuzzy_Forest_Idle,
     STATUS_KEY_STONE,     ANIM_Fuzzy_Forest_Still,
     STATUS_KEY_SLEEP,     ANIM_Fuzzy_Forest_Sleep,
@@ -105,21 +103,21 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Generation, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetActorScale, ACTOR_SELF, Float(1.0), Float(1.0), Float(1.0))
@@ -244,7 +242,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Move_Clone) = {
+EvtScript EVS_Move_Clone = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
@@ -269,7 +267,7 @@ EvtScript N(EVS_Move_Clone) = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzy_Forest_Divide)
     Wait(130)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzy_Forest_Walk)
-    Call(SummonEnemy, Ref(N(CloneFormation)), false)
+    Call(SummonEnemy, Ref(CloneFormation), false)
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Call(SetActorPos, LVar0, LVar1, LVar2, LVar3)
     Call(SetGoalToIndex, LVar0, LVarA)
@@ -305,7 +303,7 @@ EvtScript N(EVS_Move_Clone) = {
 
 #include "common/SpawnEnemyDrainFX.inc.c"
 
-EvtScript N(EVS_Attack_Leech) = {
+EvtScript EVS_Attack_Leech = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
@@ -437,11 +435,11 @@ EvtScript N(EVS_Attack_Leech) = {
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HEART_BOUNCE)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 10)
-        Call(N(SpawnDrainHealthStartFX), LVar0, LVar1, LVar2, LVar3)
+        Call(SpawnDrainHealthStartFX, LVar0, LVar1, LVar2, LVar3)
         Thread
             Wait(15)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_STAR_BOUNCE_A)
-            Call(N(SpawnDrainHealthContinueFX), LVar0, LVar1, LVar2, LVar3)
+            Call(SpawnDrainHealthContinueFX, LVar0, LVar1, LVar2, LVar3)
         EndThread
         Add(LVar0, 20)
         Add(LVar1, 20)
@@ -518,7 +516,7 @@ EvtScript N(EVS_Attack_Leech) = {
     End
 };
 
-EvtScript N(EVS_GetAvailableSpawnPos) = {
+EvtScript EVS_GetAvailableSpawnPos = {
     // find which columns are occupied
     Set(LFlag1, false)
     Set(LFlag2, false)
@@ -591,7 +589,7 @@ EvtScript N(EVS_GetAvailableSpawnPos) = {
     End
 };
 
-EvtScript N(EVS_CountSummoners) = {
+EvtScript EVS_CountSummoners = {
     Set(LVar9, 0)
     Call(CreateHomeTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
@@ -626,51 +624,51 @@ EvtScript N(EVS_CountSummoners) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Leech))
+        ExecWait(EVS_Attack_Leech)
         Return
     EndIf
     Call(GetActorVar, ACTOR_SELF, AVAR_Generation, LVar0)
     IfEq(LVar0, 2)
-        ExecWait(N(EVS_Attack_Leech))
+        ExecWait(EVS_Attack_Leech)
         Return
     EndIf
-    ExecWait(N(EVS_GetAvailableSpawnPos))
+    ExecWait(EVS_GetAvailableSpawnPos)
     IfEq(LVarA, -1)
-        ExecWait(N(EVS_Attack_Leech))
+        ExecWait(EVS_Attack_Leech)
         Return
     EndIf
     // lower chance to summon when more summoners are in battle
-    ExecWait(N(EVS_CountSummoners))
+    ExecWait(EVS_CountSummoners)
     Switch(LVar9)
         CaseEq(1)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 300)
-                ExecWait(N(EVS_Move_Clone))
+                ExecWait(EVS_Move_Clone)
                 Return
             EndIf
         CaseEq(2)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 150)
-                ExecWait(N(EVS_Move_Clone))
+                ExecWait(EVS_Move_Clone)
                 Return
             EndIf
         CaseEq(3)
             Call(RandInt, 1000, LVar0)
             IfLt(LVar0, 100)
-                ExecWait(N(EVS_Move_Clone))
+                ExecWait(EVS_Move_Clone)
                 Return
             EndIf
     EndSwitch
-    ExecWait(N(EVS_Attack_Leech))
+    ExecWait(EVS_Attack_Leech)
     Return
     End
 };
 
-Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
+Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
-Formation N(CloneFormation) = {
-    ACTOR_BY_POS(blueprint, N(SummonPos), 0),
+Formation CloneFormation = {
+    ACTOR_BY_POS(blueprint, SummonPos, 0),
 };

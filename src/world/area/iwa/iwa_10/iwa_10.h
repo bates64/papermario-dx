@@ -46,19 +46,17 @@ enum {
     MV_SuperBlock           = MapVar(11),
 };
 
-#define NAMESPACE iwa_10
+extern EvtScript EVS_Main;
+extern EvtScript EVS_InitializeTrainScene;
+extern EvtScript EVS_ArriveFromToadTown;
+extern EvtScript EVS_DepartForToadTown;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PushSong;
+extern EvtScript EVS_PopSong;
+extern EvtScript EVS_Scene_MeetParakarry;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_InitializeTrainScene);
-extern EvtScript N(EVS_ArriveFromToadTown);
-extern EvtScript N(EVS_DepartForToadTown);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PushSong);
-extern EvtScript N(EVS_PopSong);
-extern EvtScript N(EVS_Scene_MeetParakarry);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
-
-extern EvtScript N(EVS_NpcIdle_Parakarry);
-extern NpcData N(NpcData_Parakarry);
+extern EvtScript EVS_NpcIdle_Parakarry;
+extern NpcData NpcData_Parakarry;

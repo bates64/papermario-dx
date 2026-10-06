@@ -36,29 +36,27 @@ enum {
     MF_LuigiInBasement          = MapFlag(13),
 };
 
-#define NAMESPACE kmr_20
+extern EvtScript EVS_Main;
+extern EvtScript EVS_FadeOutAmbientSounds;
+extern EvtScript EVS_PlayRestingSong;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupRooms;
+extern EvtScript EVS_Setup_Interactables;
+extern EvtScript EVS_SetupBed;
+extern EvtScript EVS_Scene_BeginGame;
+extern EvtScript EVS_Scene_SettingOff;
+extern EvtScript EVS_Scene_BeginEpilogue;
+extern EvtScript EVS_Scene_EpilogueGetLetter;
+extern EvtScript EVS_Scene_LuigiWaitingAround;
+extern EvtScript EVS_Scene_CaughtLuigiInBasement;
+extern EvtScript EVS_Inspect_Records;
+extern EvtScript EVS_SecretPanel_Flip;
+extern EvtScript EVS_SetupTrees;
+extern EvtScript EVS_SetupBushes;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList SceneNPCs;
+extern NpcGroupList DefaultNPCs;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_FadeOutAmbientSounds);
-extern EvtScript N(EVS_PlayRestingSong);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_Setup_Interactables);
-extern EvtScript N(EVS_SetupBed);
-extern EvtScript N(EVS_Scene_BeginGame);
-extern EvtScript N(EVS_Scene_SettingOff);
-extern EvtScript N(EVS_Scene_BeginEpilogue);
-extern EvtScript N(EVS_Scene_EpilogueGetLetter);
-extern EvtScript N(EVS_Scene_LuigiWaitingAround);
-extern EvtScript N(EVS_Scene_CaughtLuigiInBasement);
-extern EvtScript N(EVS_Inspect_Records);
-extern EvtScript N(EVS_SecretPanel_Flip);
-extern EvtScript N(EVS_SetupTrees);
-extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(SceneNPCs);
-extern NpcGroupList N(DefaultNPCs);
-
-API_CALLABLE(N(HideWorldOutsideMariosHouse));
-API_CALLABLE(N(Pipe_GetEntryPos));
+API_CALLABLE(HideWorldOutsideMariosHouse);
+API_CALLABLE(Pipe_GetEntryPos);
 void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);

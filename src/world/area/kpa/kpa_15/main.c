@@ -1,21 +1,21 @@
 #include "kpa_15.h"
 
-EvtScript N(EVS_ExitWalk_kpa_13_2) = EVT_EXIT_WALK(40, kpa_15_ENTRY_0, "kpa_13", kpa_13_ENTRY_2);
+EvtScript EVS_ExitWalk_kpa_13_2 = EVT_EXIT_WALK(40, kpa_15_ENTRY_0, "kpa_13", kpa_13_ENTRY_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_kpa_13_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kpa_13_2), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
-    Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+EvtScript EVS_EnterMap = {
+    Set(LVar0, Ref(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Return
     End
 };
 
-EvtScript N(EVS_SetupTexPanners) = {
+EvtScript EVS_SetupTexPanners = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
@@ -30,19 +30,19 @@ EvtScript N(EVS_SetupTexPanners) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    ExecWait(N(EVS_MakeEntities))
+    ExecWait(EVS_MakeEntities)
     IfEq(GF_KPA16_ShutOffLava, false)
         Call(EnableGroup, MODEL_after, false)
-        Exec(N(EVS_SetupTexPanners))
+        Exec(EVS_SetupTexPanners)
     Else
         Call(EnableGroup, MODEL_before, false)
     EndIf
-    Exec(N(EVS_EnterMap))
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_EnterMap)
+    Exec(EVS_SetupMusic)
     IfEq(GF_KPA16_ShutOffLava, false)
         Thread
             Wait(2)

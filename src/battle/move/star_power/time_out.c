@@ -4,14 +4,12 @@
 #include "sprite/npc/BattleKlevar.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_time_out
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleKlevar_Idle)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleKlevar_Shout)
     Wait(16)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
@@ -35,12 +33,12 @@ EvtScript N(EVS_UsePower) = {
         EndIf
     Wait(5)
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_SpiritDeparts))
-    ExecWait(N(EVS_StarPower_EndWish))
+    ExecWait(EVS_StarPower_SpiritDeparts)
+    ExecWait(EVS_StarPower_EndWish)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

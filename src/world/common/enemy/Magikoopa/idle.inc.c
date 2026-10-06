@@ -1,7 +1,7 @@
 #pragma once
 #include "idle.h"
 
-NpcSettings N(NpcSettings_Magikoopa) = {
+NpcSettings NpcSettings_Magikoopa = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_MAGIKOOPA,

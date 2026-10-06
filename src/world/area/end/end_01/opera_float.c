@@ -2,15 +2,15 @@
 #include "effects.h"
 #include "model.h"
 
-extern s32 N(SpotlightsAlpha);
+extern s32 SpotlightsAlpha;
 
-API_CALLABLE(N(SetWorldDark)) {
+API_CALLABLE(SetWorldDark) {
     mdl_group_set_custom_gfx(MODEL_Root, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, false);
     mdl_set_shroud_tint_params(0, 0, 0, 255);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(FadeInWorld)) {
+API_CALLABLE(FadeInWorld) {
     if (isInitialCall) {
         script->functionTemp[1] = 255;
     }
@@ -30,7 +30,7 @@ API_CALLABLE(N(FadeInWorld)) {
     }
 }
 
-API_CALLABLE(N(UpdateStarSpiritRotation)) {
+API_CALLABLE(UpdateStarSpiritRotation) {
     Npc* npc;
 
     if (isInitialCall) {
@@ -49,7 +49,7 @@ API_CALLABLE(N(UpdateStarSpiritRotation)) {
     }
 }
 
-API_CALLABLE(N(SkateInCirclePenguin1)) {
+API_CALLABLE(SkateInCirclePenguin1) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     Npc* npc;
@@ -76,7 +76,7 @@ API_CALLABLE(N(SkateInCirclePenguin1)) {
     }
 }
 
-API_CALLABLE(N(SkateInCirclePenguin2)) {
+API_CALLABLE(SkateInCirclePenguin2) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     Npc* npc;
@@ -103,19 +103,19 @@ API_CALLABLE(N(SkateInCirclePenguin2)) {
     }
 }
 
-API_CALLABLE(N(SetSpotlightsAlpha)) {
+API_CALLABLE(SetSpotlightsAlpha) {
     Bytecode* args = script->ptrReadPos;
-    N(SpotlightsAlpha) = evt_get_variable(script, *args++);
+    SpotlightsAlpha = evt_get_variable(script, *args++);
 
     return ApiStatus_DONE2;
 }
 
-void N(gfx_build_set_spotlight_alpha)(void) {
+void gfx_build_set_spotlight_alpha(void) {
     gDPSetCombineMode(gMainGfxPos++, PM_CC_3F, PM_CC_3F);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(SpotlightsAlpha));
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, SpotlightsAlpha);
 }
 
-EvtScript N(EVS_MakeSpiritAppear) = {
+EvtScript EVS_MakeSpiritAppear = {
     Call(SetNpcFlagBits, NPC_PenguinSkater1, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     Call(GetNpcPos, LVarA, LVar2, LVar3, LVar4)
     Sub(LVar3, 120)
@@ -123,42 +123,42 @@ EvtScript N(EVS_MakeSpiritAppear) = {
     Add(LVar5, 15)
     PlayEffect(EFFECT_SPARKLES, 0, LVar2, LVar5, LVar4, 30)
     Call(SetNpcPos, LVarA, LVar2, LVar3, LVar4)
-    Call(N(UpdateStarSpiritRotation))
+    Call(UpdateStarSpiritRotation)
     Return
     End
 };
 
-EvtScript N(EVS_ParadePhase_StarSpirits) = {
-    Call(N(SetWorldDark))
+EvtScript EVS_ParadePhase_StarSpirits = {
+    Call(SetWorldDark)
     Wait(20)
     Set(LVarA, NPC_Eldstar)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(2)
     Set(LVarA, NPC_Mamar)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(2)
     Set(LVarA, NPC_Skolar)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(3)
     Set(LVarA, NPC_Misstar)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(5)
     Set(LVarA, NPC_Klevar)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(3)
     Set(LVarA, NPC_Muskular)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(7)
     Set(LVarA, NPC_Kalmar)
-    Exec(N(EVS_MakeSpiritAppear))
+    Exec(EVS_MakeSpiritAppear)
     Wait(30)
-    Call(N(FadeInWorld))
+    Call(FadeInWorld)
     Wait(60)
     Return
     End
 };
 
-EvtScript N(EVS_SkatingPenguin1) = {
+EvtScript EVS_SkatingPenguin1 = {
     Call(SetNpcFlagBits, NPC_PenguinSkater1, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     ChildThread
         Loop(0)
@@ -171,7 +171,7 @@ EvtScript N(EVS_SkatingPenguin1) = {
     Call(GetNpcPos, NPC_PenguinSkater1, LVar0, LVar1, LVar2)
     Add(LVar0, -180)
     Call(NpcMoveTo, NPC_PenguinSkater1, LVar0, LVar2, 120)
-    Call(N(SkateInCirclePenguin1), NPC_PenguinSkater1)
+    Call(SkateInCirclePenguin1, NPC_PenguinSkater1)
     Call(GetNpcPos, NPC_PenguinSkater1, LVar0, LVar1, LVar2)
     Add(LVar0, -180)
     Call(NpcMoveTo, NPC_PenguinSkater1, LVar0, LVar2, 120)
@@ -179,7 +179,7 @@ EvtScript N(EVS_SkatingPenguin1) = {
     End
 };
 
-EvtScript N(EVS_SkatingPenguin2) = {
+EvtScript EVS_SkatingPenguin2 = {
     Call(SetNpcFlagBits, NPC_PenguinSkater2, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     ChildThread
         Loop(0)
@@ -192,7 +192,7 @@ EvtScript N(EVS_SkatingPenguin2) = {
     Call(GetNpcPos, NPC_PenguinSkater2, LVar0, LVar1, LVar2)
     Add(LVar0, -210)
     Call(NpcMoveTo, NPC_PenguinSkater2, LVar0, LVar2, 140)
-    Call(N(SkateInCirclePenguin2), NPC_PenguinSkater2)
+    Call(SkateInCirclePenguin2, NPC_PenguinSkater2)
     Call(GetNpcPos, NPC_PenguinSkater2, LVar0, LVar1, LVar2)
     Add(LVar0, -180)
     Call(NpcMoveTo, NPC_PenguinSkater2, LVar0, LVar2, 120)
@@ -200,9 +200,9 @@ EvtScript N(EVS_SkatingPenguin2) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_SkatingPenguins) = {
-    ExecGetTID(N(EVS_SkatingPenguin1), LVarA)
-    ExecGetTID(N(EVS_SkatingPenguin2), LVarB)
+EvtScript EVS_ParadePhase_SkatingPenguins = {
+    ExecGetTID(EVS_SkatingPenguin1, LVarA)
+    ExecGetTID(EVS_SkatingPenguin2, LVarB)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -216,7 +216,7 @@ EvtScript N(EVS_ParadePhase_SkatingPenguins) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_MayorPenguin) = {
+EvtScript EVS_ParadePhase_MayorPenguin = {
     Thread
         Call(GetNpcPos, NPC_PenguinMayor, LVar0, LVar1, LVar2)
         Add(LVar0, -300)
@@ -231,9 +231,9 @@ EvtScript N(EVS_ParadePhase_MayorPenguin) = {
     End
 };
 
-s32 N(SpotlightsAlpha) = 0;
+s32 SpotlightsAlpha = 0;
 
-EvtScript N(EVS_TexPan_OperaFloat_MainStageLights) = {
+EvtScript EVS_TexPan_OperaFloat_MainStageLights = {
     Call(EnableTexPanning, MODEL_kino3, true)
     Call(EnableTexPanning, MODEL_kino5, true)
     Call(EnableTexPanning, MODEL_kino6, true)
@@ -248,7 +248,7 @@ EvtScript N(EVS_TexPan_OperaFloat_MainStageLights) = {
     End
 };
 
-EvtScript N(EVS_TexPan_OperaFloat_StageLights) = {
+EvtScript EVS_TexPan_OperaFloat_StageLights = {
     Call(EnableTexPanning, MODEL_kino4, true)
     Set(LVar0, 0)
     Loop(0)
@@ -260,17 +260,17 @@ EvtScript N(EVS_TexPan_OperaFloat_StageLights) = {
     End
 };
 
-EvtScript N(EVS_UpdateLightshow) = {
+EvtScript EVS_UpdateLightshow = {
     Call(EnableModel, MODEL_kino7, true)
     Call(EnableModel, MODEL_kino8, true)
     Call(EnableTexPanning, MODEL_kino8, true)
     Call(SetModelCustomGfx, MODEL_kino7, CUSTOM_GFX_1, -1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(gfx_build_set_spotlight_alpha)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(gfx_build_set_spotlight_alpha), nullptr)
     ChildThread
         Call(MakeLerp, 0, 255, 90, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(SetSpotlightsAlpha), LVar0)
+            Call(SetSpotlightsAlpha, LVar0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -289,12 +289,12 @@ EvtScript N(EVS_UpdateLightshow) = {
     End
 };
 
-EvtScript N(EVS_ParadePhase_Opera) = {
+EvtScript EVS_ParadePhase_Opera = {
     Call(EnableModel, MODEL_kino7, false)
     Call(EnableModel, MODEL_kino8, false)
     Set(LVar0, 8)
-    ExecGetTID(N(EVS_TexPan_OperaFloat_MainStageLights), LVarA)
-    ExecGetTID(N(EVS_TexPan_OperaFloat_StageLights), LVarB)
+    ExecGetTID(EVS_TexPan_OperaFloat_MainStageLights, LVarA)
+    ExecGetTID(EVS_TexPan_OperaFloat_StageLights, LVarB)
     Loop(0)
         Wait(1)
         Call(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -304,8 +304,8 @@ EvtScript N(EVS_ParadePhase_Opera) = {
     EndLoop
     KillThread(LVarA)
     Set(LVar0, 1)
-    ExecGetTID(N(EVS_TexPan_OperaFloat_MainStageLights), LVarA)
-    ExecGetTID(N(EVS_UpdateLightshow), LVarC)
+    ExecGetTID(EVS_TexPan_OperaFloat_MainStageLights, LVarA)
+    ExecGetTID(EVS_UpdateLightshow, LVarC)
     Call(SetNpcFlagBits, NPC_Singer, NPC_FLAG_FLYING, true)
     Call(MakeLerp, 0, 55, 90 * DT, EASING_LINEAR)
     Loop(0)
@@ -320,7 +320,7 @@ EvtScript N(EVS_ParadePhase_Opera) = {
     EndLoop
     KillThread(LVarA)
     Set(LVar0, 8)
-    ExecGetTID(N(EVS_TexPan_OperaFloat_MainStageLights), LVarA)
+    ExecGetTID(EVS_TexPan_OperaFloat_MainStageLights, LVarA)
     Wait(10)
     Call(SetNpcAnimation, NPC_Singer, ANIM_ParadeIceShow_Violin_ShadeDivaSing)
     Loop(0)

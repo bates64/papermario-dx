@@ -2,7 +2,7 @@
 
 #include "sprite/player.h"
 
-API_CALLABLE(N(UpgradeStarPowerCh4)) {
+API_CALLABLE(UpgradeStarPowerCh4) {
     PlayerData* playerData = &gPlayerData;
 
     set_max_star_power(4);
@@ -12,7 +12,7 @@ API_CALLABLE(N(UpgradeStarPowerCh4)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcIdle_Muskular) = {
+EvtScript EVS_NpcIdle_Muskular = {
     Loop(0)
         Loop(10)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -31,7 +31,7 @@ EvtScript N(EVS_NpcIdle_Muskular) = {
     End
 };
 
-EvtScript N(EVS_Scene_RescuedMuskular) = {
+EvtScript EVS_Scene_RescuedMuskular = {
     Call(DisablePartnerAI, false)
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcPos, NPC_Muskular, -520, 40, 270)
@@ -95,7 +95,7 @@ EvtScript N(EVS_Scene_RescuedMuskular) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Idle)
     Call(EnableNpcAI, NPC_Muskular, true)
-    Call(N(UpgradeStarPowerCh4))
+    Call(UpgradeStarPowerCh4)
     Call(ShowMessageAtScreenPos, MSG_Menus_0194, 160, 40)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Muskular, ANIM_WorldMuskular_Talk, ANIM_WorldMuskular_Idle, 512, MSG_MAC_Housing_00C7)
@@ -205,18 +205,18 @@ Call(SetNpcSpeed, NPC_Twink, 4)
     Call(NpcFlyTo, NPC_Twink, -600, 200, 350, 0, -10, EASING_LINEAR)
     Call(SetNpcPos, NPC_Twink, NPC_DISPOSE_LOCATION)
     Set(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Muskular) = {
+EvtScript EVS_NpcInit_Muskular = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_04_ENTRY_5)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Muskular)))
-        Exec(N(EVS_Scene_RescuedMuskular))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Muskular))
+        Exec(EVS_Scene_RescuedMuskular)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

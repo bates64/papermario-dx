@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-API_CALLABLE(N(CheckVineTriggerDist)) {
+API_CALLABLE(CheckVineTriggerDist) {
     f32 var1 = script->varTable[0] - script->varTable[3];
     f32 var2 = script->varTable[1] - script->varTable[4];
     f32 var3 = script->varTable[2] - script->varTable[5];
@@ -11,7 +11,7 @@ API_CALLABLE(N(CheckVineTriggerDist)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_DroppingVine) = {
+EvtScript EVS_DroppingVine = {
     Set(LVar9, LVar6)
     Set(LVar8, LVar5)
     Set(LVar7, LVar4)
@@ -22,7 +22,7 @@ EvtScript N(EVS_DroppingVine) = {
     Call(EnableModel, LVar6, false)
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(N(CheckVineTriggerDist))
+        Call(CheckVineTriggerDist)
         IfEq(LVar0, 0)
             Wait(1)
             Goto(0)
@@ -70,4 +70,4 @@ EvtScript N(EVS_DroppingVine) = {
     Set(LVar5, modelLowerAfter) \
     Set(LVar6, modelUpperBefore) \
     Set(LVarA, itemID) \
-    Exec(N(EVS_DroppingVine))
+    Exec(EVS_DroppingVine)

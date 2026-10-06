@@ -6,7 +6,7 @@
 #include "world/common/enemy/Bombette/base.h"
 #include "world/common/enemy/Duplighost/disguised.inc.c"
 
-API_CALLABLE(N(PlayBigSmokePuff)) {
+API_CALLABLE(PlayBigSmokePuff) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -17,7 +17,7 @@ API_CALLABLE(N(PlayBigSmokePuff)) {
     return ApiStatus_DONE2;
 }
 
-void N(appendGfx_fake_player)(void* data) {
+void appendGfx_fake_player(void* data) {
     Npc* npc = data;
     Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
 
@@ -31,7 +31,7 @@ void N(appendGfx_fake_player)(void* data) {
     spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
 }
 
-void N(worker_render_fake_player)(void) {
+void worker_render_fake_player(void) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
     Npc* npc = get_npc_safe(NPC_FakeMario);
@@ -43,17 +43,17 @@ void N(worker_render_fake_player)(void) {
         rtPtr->renderMode = npc->renderMode;
         rtPtr->dist = -z;
         rtPtr->appendGfxArg = npc;
-        rtPtr->appendGfx = N(appendGfx_fake_player);
+        rtPtr->appendGfx = appendGfx_fake_player;
         queue_render_task(rtPtr);
     }
 }
 
-API_CALLABLE(N(CreateFakePlayerRenderer)) {
-    script->array[0] = create_worker_scene(nullptr, N(worker_render_fake_player));
+API_CALLABLE(CreateFakePlayerRenderer) {
+    script->array[0] = create_worker_scene(nullptr, worker_render_fake_player);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ImposterSpin) = {
+EvtScript EVS_ImposterSpin = {
     Call(MakeLerp, 0, 8 * 360, 40, EASING_QUADRATIC_OUT)
     Label(1)
         Call(UpdateLerp)
@@ -66,7 +66,7 @@ EvtScript N(EVS_ImposterSpin) = {
     End
 };
 
-EvtScript N(EVS_Scene_ImpostersCaught) = {
+EvtScript EVS_Scene_ImpostersCaught = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, pra_13_ENTRY_2)
         IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
@@ -87,20 +87,20 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
             Thread
                 Call(GetNpcPos, NPC_FakeMario, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_FakeMario, NPC_DISPOSE_LOCATION)
-                Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+                Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_Duplighost_01, LVar0, LVar1, LVar2)
                 Call(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
                 Call(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Set(LVar4, 2)
                 Call(SetNpcYaw, NPC_Duplighost_01, 90)
-                ExecWait(N(EVS_ImposterSpin))
+                ExecWait(EVS_ImposterSpin)
                 Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Run)
                 Call(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(NpcMoveTo, NPC_Duplighost_01, 430, -70, 15)
             EndThread
             Thread
                 Call(GetNpcPos, NPC_FakeBombette, LVar0, LVar1, LVar2)
-                Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
+                Call(PlayBigSmokePuff, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_FakeBombette, 389, 0, -61)
                 Call(SetNpcPos, NPC_Duplighost_02, LVar0, LVar1, LVar2)
                 Call(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
@@ -108,7 +108,7 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
                 Call(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Set(LVar4, 3)
                 Call(SetNpcYaw, NPC_Duplighost_02, 90)
-                ExecWait(N(EVS_ImposterSpin))
+                ExecWait(EVS_ImposterSpin)
                 Call(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Run)
                 Call(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
                 Call(NpcMoveTo, NPC_Duplighost_02, 420, -70, 15)
@@ -121,7 +121,7 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
     End
 };
 
-EvtScript N(EVS_Scene_DefeatImposters) = {
+EvtScript EVS_Scene_DefeatImposters = {
     Call(SetNpcPos, NPC_Duplighost_01, 400, 0, -70)
     Call(SetNpcPos, NPC_Duplighost_02, 370, 0, -70)
     Call(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Idle)
@@ -153,7 +153,7 @@ EvtScript N(EVS_Scene_DefeatImposters) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeMario) = {
+EvtScript EVS_NpcInit_FakeMario = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mario1_Idle)
     Call(GetEntryID, LVar0)
@@ -173,23 +173,23 @@ EvtScript N(EVS_NpcInit_FakeMario) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_FakeBombette) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_ImpostersCaught)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_Scene_DefeatImposters)))
+EvtScript EVS_NpcInit_FakeBombette = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_ImpostersCaught))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_Scene_DefeatImposters))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, pra_13_ENTRY_2)
         IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
             Call(SetNpcPos, NPC_SELF, 345, 0, -59)
             MallocArray(16, LVarA)
-            Call(N(CreateFakePlayerRenderer))
+            Call(CreateFakePlayerRenderer)
         EndIf
     Else
         IfEq(GF_PRA_BrokeIllusion, true)
             IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
                 Call(SetNpcPos, NPC_SELF, 435, 0, -59)
                 MallocArray(16, LVarA)
-                Call(N(CreateFakePlayerRenderer))
+                Call(CreateFakePlayerRenderer)
             EndIf
         EndIf
     EndIf
@@ -197,36 +197,36 @@ EvtScript N(EVS_NpcInit_FakeBombette) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_01) = {
+EvtScript EVS_NpcInit_Duplighost_01 = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Duplighost_02) = {
+EvtScript EVS_NpcInit_Duplighost_02 = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Return
     End
 };
 
-NpcData N(NpcData_FakeMario) = {
+NpcData NpcData_FakeMario = {
     .id = NPC_FakeMario,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_FakeMario),
-    .settings = &N(NpcSettings_Duplighost),
+    .init = &EVS_NpcInit_FakeMario,
+    .settings = &NpcSettings_Duplighost,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = BOMBETTE_ANIMS,
 };
 
-NpcData N(NpcData_Imposters)[] = {
+NpcData NpcData_Imposters[] = {
     {
         .id = NPC_FakeBombette,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_FakeBombette),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_FakeBombette,
+        .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
@@ -235,8 +235,8 @@ NpcData N(NpcData_Imposters)[] = {
         .id = NPC_Duplighost_01,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Duplighost_01),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_01,
+        .settings = &NpcSettings_Duplighost,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
@@ -245,16 +245,16 @@ NpcData N(NpcData_Imposters)[] = {
         .id = NPC_Duplighost_02,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Duplighost_02),
-        .settings = &N(NpcSettings_Duplighost),
+        .init = &EVS_NpcInit_Duplighost_02,
+        .settings = &NpcSettings_Duplighost,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_FakeMario), BTL_PRA3_FORMATION_02, BTL_PRA3_STAGE_00),
-    NPC_GROUP(N(NpcData_Imposters), BTL_PRA3_FORMATION_02, BTL_PRA3_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_FakeMario, BTL_PRA3_FORMATION_02, BTL_PRA3_STAGE_00),
+    NPC_GROUP(NpcData_Imposters, BTL_PRA3_FORMATION_02, BTL_PRA3_STAGE_00),
     {}
 };

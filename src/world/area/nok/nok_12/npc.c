@@ -7,7 +7,7 @@
 #include "world/common/enemy/SpikedGoomba/patrol.inc.c"
 
 // 'sleep' on top of brick block until it's broken
-EvtScript N(EVS_NpcIdle_SpikedGoomba) = {
+EvtScript EVS_NpcIdle_SpikedGoomba = {
     Label(0)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
@@ -41,25 +41,25 @@ EvtScript N(EVS_NpcIdle_SpikedGoomba) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Hurt)
     Wait(20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_SpikedGoomba_Idle)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_SpikedGoomba_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_SpikedGoomba_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_SpikedGoomba) = {
+EvtScript EVS_NpcInit_SpikedGoomba = {
     Call(SetNpcPos, NPC_SELF, -165, 86, -118)
     Call(SetNpcRotation, NPC_SELF, -85, 0, 0)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SpikedGoomba)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SpikedGoomba))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_KoopaTroopa_02) = {
+EvtScript EVS_NpcIdle_KoopaTroopa_02 = {
     Return
     End
 };
 
-EvtScript N(EVS_KoopaTroopa_Demo_MissAttack) = {
+EvtScript EVS_KoopaTroopa_Demo_MissAttack = {
     Wait(45)
     Call(SetNpcAnimation, NPC_SELF, ANIM_KoopaTroopa_ShellEnter)
     Wait(8)
@@ -76,26 +76,26 @@ EvtScript N(EVS_KoopaTroopa_Demo_MissAttack) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa_02) = {
+EvtScript EVS_NpcInit_KoopaTroopa_02 = {
     Call(GetEntryID, LVar0)
     IfGe(LVar0, nok_12_ENTRY_2)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa_02)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_KoopaTroopa_02))
         Call(SetNpcPos, NPC_SELF, 310, 0, -165)
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_KoopaTroopa_02_Demo) = {
+EvtScript EVS_NpcInit_KoopaTroopa_02_Demo = {
     Call(GetEntryID, LVar0)
     IfGe(LVar0, nok_12_ENTRY_2)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_KoopaTroopa_Demo_MissAttack)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_KoopaTroopa_Demo_MissAttack))
     EndIf
     Return
     End
 };
 
-NpcData N(NpcData_KoopaTroopa_01) = {
+NpcData NpcData_KoopaTroopa_01 = {
     .id = NPC_KoopaTroopa_01,
     .pos = { -370.0f, 0.0f, -25.0f },
     .yaw = 270,
@@ -113,14 +113,14 @@ NpcData N(NpcData_KoopaTroopa_01) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_KoopaTroopa_Patrol),
+    .settings = &NpcSettings_KoopaTroopa_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_KoopaTroopa_02) = {
+NpcData NpcData_KoopaTroopa_02 = {
     .id = NPC_KoopaTroopa_02,
     .pos = { 563.0f, 50.0f, -43.0f },
     .yaw = 270,
@@ -136,15 +136,15 @@ NpcData N(NpcData_KoopaTroopa_02) = {
             .detectSize = { 500 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa_02),
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa_02,
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_KoopaTroopa_02_Demo) = {
+NpcData NpcData_KoopaTroopa_02_Demo = {
     .id = NPC_KoopaTroopa_02,
     .pos = { 600.0f, 50.0f, -75.0f },
     .yaw = 270,
@@ -160,15 +160,15 @@ NpcData N(NpcData_KoopaTroopa_02_Demo) = {
             .detectSize = { 500 },
         }
     },
-    .init = &N(EVS_NpcInit_KoopaTroopa_02_Demo),
-    .settings = &N(NpcSettings_KoopaTroopa_Wander),
+    .init = &EVS_NpcInit_KoopaTroopa_02_Demo,
+    .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_NOK_DROPS,
     .animations = KOOPA_TROOPA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Goomba) = {
+NpcData NpcData_Goomba = {
     .id = NPC_Goomba,
     .pos = { 50.0f, 0.0f, -72.0f },
     .yaw = 270,
@@ -184,14 +184,14 @@ NpcData N(NpcData_Goomba) = {
             .detectSize = { 150, 80 },
         }
     },
-    .settings = &N(NpcSettings_Goomba_Wander),
+    .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_SpikedGoomba) = {
+NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
     .pos = { -160.0f, 0.0f, -120.0f },
     .yaw = 270,
@@ -207,26 +207,26 @@ NpcData N(NpcData_SpikedGoomba) = {
             .detectSize = { 150, 80 },
         }
     },
-    .init = &N(EVS_NpcInit_SpikedGoomba),
-    .settings = &N(NpcSettings_SpikedGoomba_Wander),
+    .init = &EVS_NpcInit_SpikedGoomba,
+    .settings = &NpcSettings_SpikedGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPIKED_GOOMBA_DROPS,
     .animations = SPIKED_GOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa_01), BTL_NOK_FORMATION_09, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_KoopaTroopa_02), BTL_NOK_FORMATION_0F, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_Goomba), BTL_NOK_FORMATION_01, BTL_NOK_STAGE_01),
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_NOK_FORMATION_04, BTL_NOK_STAGE_01),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_NOK_FORMATION_09, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_NOK_FORMATION_0F, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_Goomba, BTL_NOK_FORMATION_01, BTL_NOK_STAGE_01),
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_NOK_FORMATION_04, BTL_NOK_STAGE_01),
     {}
 };
 
-NpcGroupList N(DemoNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa_01), BTL_NOK_FORMATION_09, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_KoopaTroopa_02_Demo), BTL_NOK_FORMATION_0F, BTL_NOK_STAGE_00),
-    NPC_GROUP(N(NpcData_Goomba), BTL_NOK_FORMATION_01, BTL_NOK_STAGE_01),
-    NPC_GROUP(N(NpcData_SpikedGoomba), BTL_NOK_FORMATION_04, BTL_NOK_STAGE_01),
+NpcGroupList DemoNPCs = {
+    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_NOK_FORMATION_09, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_KoopaTroopa_02_Demo, BTL_NOK_FORMATION_0F, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_Goomba, BTL_NOK_FORMATION_01, BTL_NOK_STAGE_01),
+    NPC_GROUP(NpcData_SpikedGoomba, BTL_NOK_FORMATION_04, BTL_NOK_STAGE_01),
     {}
 };

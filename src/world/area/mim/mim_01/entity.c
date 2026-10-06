@@ -2,7 +2,7 @@
 #include "mim_01.h"
 #include "entity.h"
 
-EvtScript N(EVS_ReadSign) = {
+EvtScript EVS_ReadSign = {
     Call(IsStartingConversation, LVar0)
     IfEq(LVar0, true)
         Return
@@ -17,9 +17,9 @@ EvtScript N(EVS_ReadSign) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Signpost), -300, 0, 0, 270, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_ReadSign)))
+    Call(AssignScript, Ref(EVS_ReadSign))
     Return
     End
 };

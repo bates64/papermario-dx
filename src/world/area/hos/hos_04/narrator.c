@@ -14,43 +14,43 @@
 #endif
 
 #if VERSION_JP
-IntroMessage N(JP_IntroMessages_0)[] = {
+IntroMessage JP_IntroMessages_0[] = {
     { MSG_Intro_JP_0022, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0023, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0024, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage N(JP_IntroMessages_1)[] = {
+IntroMessage JP_IntroMessages_1[] = {
     { MSG_Intro_JP_0035, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0036, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0037, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage N(JP_IntroMessages_2)[] = {
+IntroMessage JP_IntroMessages_2[] = {
     { MSG_Intro_JP_0048, DURATION_INTRO_MSG },
     { MSG_Intro_JP_0049, DURATION_INTRO_MSG },
     { MSG_Intro_JP_004A, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage N(JP_IntroMessages_3)[] = {
+IntroMessage JP_IntroMessages_3[] = {
     { MSG_Intro_JP_005B, DURATION_INTRO_MSG },
     { MSG_Intro_JP_005C, DURATION_INTRO_MSG },
     { MSG_Intro_JP_005D, DURATION_INTRO_MSG },
     {}, // end of list
 };
 
-IntroMessage* N(JP_IntroMessageLists)[] = {
-    N(JP_IntroMessages_0),
-    N(JP_IntroMessages_1),
-    N(JP_IntroMessages_2),
-    N(JP_IntroMessages_3)
+IntroMessage* JP_IntroMessageLists[] = {
+    JP_IntroMessages_0,
+    JP_IntroMessages_1,
+    JP_IntroMessages_2,
+    JP_IntroMessages_3
 };
 #endif
 
-IntroMessage N(HeistMessageList)[] = {
+IntroMessage HeistMessageList[] = {
     { INTRO_MSG_BLANK, DURATION_BLANK },
     { MSG_Intro_001B, DURATION_INTRO_MSG },
     { MSG_Intro_001C, DURATION_INTRO_MSG },
@@ -58,32 +58,32 @@ IntroMessage N(HeistMessageList)[] = {
     {}, // end of list
 };
 
-IntroMessage* N(IntroMessages)[] = {
-    N(HeistMessageList),
-    N(HeistMessageList),
-    N(HeistMessageList),
-    N(HeistMessageList),
+IntroMessage* IntroMessages[] = {
+    HeistMessageList,
+    HeistMessageList,
+    HeistMessageList,
+    HeistMessageList,
 };
 
 #if VERSION_JP
-void N(curtain_callback_jp_narration)(void) {
-    N(UpdateIntroMessages)(N(JP_IntroMessageLists));
+void curtain_callback_jp_narration(void) {
+    UpdateIntroMessages(JP_IntroMessageLists);
 }
 #endif
 
-void N(curtain_callback_narration)(void) {
-    N(UpdateIntroMessages)(N(IntroMessages));
+void curtain_callback_narration(void) {
+    UpdateIntroMessages(IntroMessages);
 }
 
-EvtScript N(EVS_SetupNarrator) = {
+EvtScript EVS_SetupNarrator = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
 #if VERSION_JP
         CaseEq(hos_04_ENTRY_3)
-            Call(N(SetCurtainCallback), Ref(N(curtain_callback_jp_narration)))
+            Call(SetCurtainCallback, Ref(curtain_callback_jp_narration))
 #endif
         CaseEq(hos_04_ENTRY_4)
-            Call(N(SetCurtainCallback), Ref(N(curtain_callback_narration)))
+            Call(SetCurtainCallback, Ref(curtain_callback_narration))
     EndSwitch
     Return
     End

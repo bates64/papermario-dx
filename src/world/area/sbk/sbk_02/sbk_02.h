@@ -23,11 +23,9 @@ enum {
     MV_Effect_Sun       = MapVar(0),
 };
 
-#define NAMESPACE sbk_02
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupRuins);
-extern EvtScript N(EVS_Ruins_Arise_Continued);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupRuins;
+extern EvtScript EVS_Ruins_Arise_Continued;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

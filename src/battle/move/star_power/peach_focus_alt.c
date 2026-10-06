@@ -3,11 +3,9 @@
 #include "script_api/battle.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_move_peach_focus_alt
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-API_CALLABLE(N(RestoreStarPower)) {
+API_CALLABLE(RestoreStarPower) {
     PlayerData* playerData = &gPlayerData;
     PlayerData* playerData2 = &gPlayerData;
 
@@ -27,7 +25,7 @@ API_CALLABLE(N(RestoreStarPower)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
+EvtScript EVS_UsePower = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_WISH)
     Wait(10)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Peach2_SpreadArms)
@@ -39,19 +37,19 @@ EvtScript N(EVS_UsePower) = {
     Wait(8)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    Call(N(SpawnStarSparkleFX), LVar0, LVar1, LVar2)
-    Call(N(FadeBackgroundDarken))
+    Call(SpawnStarSparkleFX, LVar0, LVar1, LVar2)
+    Call(DarkenBackground)
     Wait(20)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Peach3_Pray)
     Wait(10)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Add(LVar1, 20)
-    Call(N(SpawnWishSparkleFX), LVar0, LVar1, LVar2)
+    Call(SpawnWishSparkleFX, LVar0, LVar1, LVar2)
     Wait(30)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Peach2_Curious)
-    Call(N(RestoreStarPower))
+    Call(RestoreStarPower)
     Wait(10)
-    Call(N(FadeBackgroundLighten))
+    Call(LightenBackground)
     Wait(15)
     Call(SetGoalToHome, ACTOR_PLAYER)
     Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
@@ -63,5 +61,5 @@ EvtScript N(EVS_UsePower) = {
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

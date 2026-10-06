@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_ChestTrap) = {
+EvtScript EVS_ChestTrap = {
     Wait(15)
     Thread
         Call(PlaySoundAt, SOUND_OBK_CHANDELIER_RELEASE, SOUND_SPACE_DEFAULT, 4, 26, -12)
@@ -41,18 +41,18 @@ EvtScript N(EVS_ChestTrap) = {
     End
 };
 
-EvtScript N(EVS_OpenChest) = {
+EvtScript EVS_OpenChest = {
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_ChestTrap))
+    ExecWait(EVS_ChestTrap)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_Chest), 0, 0, 0, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OBK02_Chest_Trap)
-    Call(AssignScript, Ref(N(EVS_OpenChest)))
+    Call(AssignScript, Ref(EVS_OpenChest))
     Call(MakeEntity, Ref(Entity_HiddenPanel), 100, -210, 0, 0, MODEL_yuka_b1, MAKE_ENTITY_END)
     Call(AssignPanelFlag, GF_OBK02_HiddenPanel)
     Return

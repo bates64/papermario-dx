@@ -16,5 +16,3 @@
 enum {
     NPC_Fuzzipede               = 0,
 };
-
-#define NAMESPACE kgr_02

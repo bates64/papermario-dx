@@ -1,7 +1,7 @@
 #include "tik_04.h"
 #include "model.h"
 
-API_CALLABLE(N(CreatePlatformShadows)) {
+API_CALLABLE(CreatePlatformShadows) {
     Model* model;
 
     model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_erb1));
@@ -12,7 +12,7 @@ API_CALLABLE(N(CreatePlatformShadows)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatePlatformShadows)) {
+API_CALLABLE(UpdatePlatformShadows) {
     Model* model;
     Shadow* shadow;
     f32 x, y, z;
@@ -63,7 +63,7 @@ API_CALLABLE(GetPlayerFloorCollider) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PausePlatformsDuringPound)) {
+API_CALLABLE(PausePlatformsDuringPound) {
     PlayerStatus* player = &gPlayerStatus;
 
     if (gCollisionStatus.curFloor == COLLIDER_erb1 || gCollisionStatus.curFloor == COLLIDER_erb2) {
@@ -74,11 +74,11 @@ API_CALLABLE(N(PausePlatformsDuringPound)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UpdatePlatforms) = {
+EvtScript EVS_UpdatePlatforms = {
     Call(GetPlayerFloorCollider, LVarA)
     SetF(LVar0, Float(0.0))
     Label(0)
-        Call(N(PausePlatformsDuringPound))
+        Call(PausePlatformsDuringPound)
         Call(TranslateModel, LVar1, 10, LVar0, 0)
         Call(UpdateColliderTransform, LVar3)
         SetF(LVar5, LVar0)
@@ -91,7 +91,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
             AddF(LVar0, Float(0.5))
         EndIf
         UseArray(MV_PlatformShadowsArray)
-        Call(N(UpdatePlatformShadows))
+        Call(UpdatePlatformShadows)
         Wait(1)
         Call(GetPlayerFloorCollider, LVarB)
         Call(GetPlayerActionState, LVarC)
@@ -101,7 +101,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
             EndIf
         EndIf
     Label(1)
-        Call(N(PausePlatformsDuringPound))
+        Call(PausePlatformsDuringPound)
         AddF(LVar0, Float(0.5))
         Call(TranslateModel, LVar1, 10, LVar0, 0)
         Call(UpdateColliderTransform, LVar3)
@@ -111,7 +111,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
         Call(TranslateModel, LVar2, -10, LVar5, 0)
         Call(UpdateColliderTransform, LVar4)
         UseArray(MV_PlatformShadowsArray)
-        Call(N(UpdatePlatformShadows))
+        Call(UpdatePlatformShadows)
         Wait(1)
         Call(GetPlayerFloorCollider, LVarB)
         Call(GetPlayerActionState, LVarC)
@@ -127,28 +127,28 @@ EvtScript N(EVS_UpdatePlatforms) = {
     End
 };
 
-EvtScript N(EVS_OnTouchPlatform) = {
+EvtScript EVS_OnTouchPlatform = {
     Set(LVar1, MODEL_erb1)
     Set(LVar2, MODEL_erb2)
     Set(LVar3, COLLIDER_erb1)
     Set(LVar4, COLLIDER_erb2)
-    ExecWait(N(EVS_UpdatePlatforms))
+    ExecWait(EVS_UpdatePlatforms)
     Return
     End
 };
 
-EvtScript N(EVS_SetupPlatforms) = {
+EvtScript EVS_SetupPlatforms = {
     Call(ParentColliderToModel, COLLIDER_erb1, MODEL_erb1)
     Call(ParentColliderToModel, COLLIDER_erb2, MODEL_erb2)
     Call(TranslateModel, MODEL_erb1, 10, 0, 0)
     Call(TranslateModel, MODEL_erb2, -10, 30, 0)
     Call(UpdateColliderTransform, COLLIDER_erb1)
     Call(UpdateColliderTransform, COLLIDER_erb2)
-    BindTrigger(Ref(N(EVS_OnTouchPlatform)), TRIGGER_FLOOR_TOUCH, COLLIDER_erb1, 1, 0)
+    BindTrigger(Ref(EVS_OnTouchPlatform), TRIGGER_FLOOR_TOUCH, COLLIDER_erb1, 1, 0)
     MallocArray(2, MV_PlatformShadowsArray)
     UseArray(MV_PlatformShadowsArray)
-    Call(N(CreatePlatformShadows))
-    Call(N(UpdatePlatformShadows))
+    Call(CreatePlatformShadows)
+    Call(UpdatePlatformShadows)
     Return
     End
 };

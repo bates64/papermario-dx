@@ -21,5 +21,3 @@ enum {
 enum {
     MV_BlockHitCounter  = MapVar(0),
 };
-
-#define NAMESPACE sbk_20

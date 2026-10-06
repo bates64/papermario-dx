@@ -2,7 +2,7 @@
 
 #include "world/common/util/MonitorPlayerOrbiting.inc.c"
 
-API_CALLABLE(N(GetAngleToPlayer)) {
+API_CALLABLE(GetHillAngleToPlayer) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -10,9 +10,9 @@ API_CALLABLE(N(GetAngleToPlayer)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_RotateHillTowardPlayer) = {
+EvtScript EVS_RotateHillTowardPlayer = {
     Label(0)
-        Call(N(GetAngleToPlayer), LVar0)
+        Call(GetHillAngleToPlayer, LVar0)
         Add(LVar0, 180)
         Call(RotateModel, MODEL_o363, LVar0, 0, -1, 0)
         Wait(1)
@@ -21,18 +21,18 @@ EvtScript N(EVS_RotateHillTowardPlayer) = {
     End
 };
 
-EvtScript N(EVS_PlaySong) = {
+EvtScript EVS_PlaySong = {
     Call(SetMusic, 0, LVar0, 0, VOL_LEVEL_FULL)
     Return
     End
 };
 
-void N(musical_hill_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
+void musical_hill_orbit_listener(PlayerOrbitState* orbit, s32 event) {
     Evt* script;
 
     switch (event) {
         case PLAYER_ORBIT_BEGIN:
-            script = start_script(&N(EVS_PlaySong), EVT_PRIORITY_1, 0);
+            script = start_script(&EVS_PlaySong, EVT_PRIORITY_1, 0);
             script->varTable[0] = SONG_CANDY_CANES;
             break;
         case PLAYER_ORBIT_COMPLETE_ROTATION:
@@ -41,23 +41,23 @@ void N(musical_hill_orbit_listener)(PlayerOrbitState* orbit, s32 event) {
             break;
         case PLAYER_ORBIT_CHANGE_DIRECTION:
         case PLAYER_ORBIT_LEFT_REGION:
-            script = start_script(&N(EVS_PlaySong), EVT_PRIORITY_1, 0);
+            script = start_script(&EVS_PlaySong, EVT_PRIORITY_1, 0);
             script->varTable[0] = SONG_PLEASANT_PATH;
             break;
     }
 
 }
 
-PlayerOrbitTarget N(RunAroundTarget) = {
+PlayerOrbitTarget RunAroundTarget = {
     .pos = { -364, 190, -135 },
     .startRadius = 50,
     .orbitRadius = 100,
-    .eventListener = N(musical_hill_orbit_listener),
+    .eventListener = musical_hill_orbit_listener,
 };
 
-EvtScript N(EVS_SetupMusicalHill) = {
-    Exec(N(EVS_RotateHillTowardPlayer))
-    Call(N(MonitorPlayerOrbiting), Ref(N(RunAroundTarget)))
+EvtScript EVS_SetupMusicalHill = {
+    Exec(EVS_RotateHillTowardPlayer)
+    Call(MonitorPlayerOrbiting, Ref(RunAroundTarget))
     Return
     End
 };

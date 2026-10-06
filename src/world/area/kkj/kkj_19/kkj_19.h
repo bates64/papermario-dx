@@ -22,13 +22,11 @@ enum {
     NPC_Twink       = 0, // normally, you cant interact with your partner, so a dummy npc is created to allow it
 };
 
-#define NAMESPACE kkj_19
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_ManageBaking;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_ManageBaking);
-
-extern NpcGroupList N(IntroNPCs);
-extern NpcGroupList N(PeachNPCs);
+extern NpcGroupList IntroNPCs;
+extern NpcGroupList PeachNPCs;
 
 extern IMG_BIN ui_box_corners5_png[];

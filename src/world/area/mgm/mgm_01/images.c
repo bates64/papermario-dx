@@ -17,42 +17,42 @@ INCLUDE_PAL("world/area/mgm/mgm_01/panel_times_5.pal", mgm_01_panel_times_5_pal)
 INCLUDE_IMG("world/area/mgm/mgm_01/panel_bowser.png", mgm_01_panel_bowser_img);
 INCLUDE_PAL("world/area/mgm/mgm_01/panel_bowser.pal", mgm_01_panel_bowser_pal);
 
-MessageImageData N(MsgImgs_Panels)[] = {
+MessageImageData MsgImgs_Panels[] = {
     {
-        .raster   = N(panel_1_coin_img),
-        .palette  = N(panel_1_coin_pal),
-        .width    = N(panel_1_coin_img_width),
-        .height   = N(panel_1_coin_img_height),
+        .raster   = mgm_01_panel_1_coin_img,
+        .palette  = mgm_01_panel_1_coin_pal,
+        .width    = mgm_01_panel_1_coin_img_width,
+        .height   = mgm_01_panel_1_coin_img_height,
         .format   = G_IM_FMT_CI,
         .bitDepth = G_IM_SIZ_4b,
     },
     {
-        .raster   = N(panel_5_coins_img),
-        .palette  = N(panel_5_coins_pal),
-        .width    = N(panel_5_coins_img_width),
-        .height   = N(panel_5_coins_img_height),
+        .raster   = mgm_01_panel_5_coins_img,
+        .palette  = mgm_01_panel_5_coins_pal,
+        .width    = mgm_01_panel_5_coins_img_width,
+        .height   = mgm_01_panel_5_coins_img_height,
         .format   = G_IM_FMT_CI,
         .bitDepth = G_IM_SIZ_4b,
     },
     {
-        .raster   = N(panel_times_5_img),
-        .palette  = N(panel_times_5_pal),
-        .width    = N(panel_times_5_img_width),
-        .height   = N(panel_times_5_img_height),
+        .raster   = mgm_01_panel_times_5_img,
+        .palette  = mgm_01_panel_times_5_pal,
+        .width    = mgm_01_panel_times_5_img_width,
+        .height   = mgm_01_panel_times_5_img_height,
         .format   = G_IM_FMT_CI,
         .bitDepth = G_IM_SIZ_4b,
     },
     {
-        .raster   = N(panel_bowser_img),
-        .palette  = N(panel_bowser_pal),
-        .width    = N(panel_bowser_img_width),
-        .height   = N(panel_bowser_img_height),
+        .raster   = mgm_01_panel_bowser_img,
+        .palette  = mgm_01_panel_bowser_pal,
+        .width    = mgm_01_panel_bowser_img_width,
+        .height   = mgm_01_panel_bowser_img_height,
         .format   = G_IM_FMT_CI,
         .bitDepth = G_IM_SIZ_4b,
     }
 };
 
-API_CALLABLE(N(SetMsgImgs_Panels)) {
-    set_message_images(N(MsgImgs_Panels));
+API_CALLABLE(SetMsgImgs_Panels) {
+    set_message_images(MsgImgs_Panels);
     return ApiStatus_DONE2;
 }

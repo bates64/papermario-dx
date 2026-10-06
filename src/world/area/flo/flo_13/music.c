@@ -1,6 +1,6 @@
 #include "flo_13.h"
 
-EvtScript N(EVS_PlaySongForPlayerPos) = {
+EvtScript EVS_PlaySongForPlayerPos = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, -500)
         Goto(10)
@@ -38,19 +38,19 @@ EvtScript N(EVS_PlaySongForPlayerPos) = {
     End
 };
 
-EvtScript N(EVS_SetupMusic) = {
-    Exec(N(EVS_PlaySongForPlayerPos))
+EvtScript EVS_SetupMusic = {
+    Exec(EVS_PlaySongForPlayerPos)
     Return
     End
 };
 
-EvtScript N(EVS_PushPartnerSong) = {
+EvtScript EVS_PushPartnerSong = {
     Call(SetMusic, 0, SONG_NEW_PARTNER, 0, VOL_LEVEL_FULL)
     Return
     End
 };
 
-EvtScript N(EVS_PopSong) = {
+EvtScript EVS_PopSong = {
     Call(FadeOutMusic, 0, 500)
     Wait(15)
     Call(SetMusic, 0, SONG_FLOWER_FIELDS_CLOUDY, 0, VOL_LEVEL_FULL)

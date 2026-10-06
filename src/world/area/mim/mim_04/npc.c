@@ -4,7 +4,7 @@
 
 #include "world/common/npc/Bubulb/idle.inc.c"
 
-EvtScript N(EVS_NpcInteract_Bubulb) = {
+EvtScript EVS_NpcInteract_Bubulb = {
     IfEq(GF_MIM04_Gift_MagicalSeed3, false)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
@@ -41,8 +41,8 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Bubulb) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb)))
+EvtScript EVS_NpcInit_Bubulb = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
     IfEq(GF_MIM04_Gift_MagicalSeed3, false)
         Call(SetNpcCollisionSize, NPC_SELF, 25, 25)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Green_BuriedIdle)
@@ -52,7 +52,7 @@ EvtScript N(EVS_NpcInit_Bubulb) = {
     End
 };
 
-NpcData N(NpcData_Fuzzy) = {
+NpcData NpcData_Fuzzy = {
     .id = NPC_Fuzzy,
     .pos = { 240.0f, 0.0f, -240.0f },
     .yaw = 0,
@@ -68,27 +68,27 @@ NpcData N(NpcData_Fuzzy) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_ForestFuzzy_Wander),
+    .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = FOREST_FUZZY_DROPS,
     .animations = FOREST_FUZZY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
 };
 
-NpcData N(NpcData_Bubulb) = {
+NpcData NpcData_Bubulb = {
     .id = NPC_Bubulb,
     .pos = { 0.0f, 32.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Bubulb),
-    .settings = &N(NpcSettings_Bubulb),
+    .init = &EVS_NpcInit_Bubulb,
+    .settings = &NpcSettings_Bubulb,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = BUBULB_GREEN_ANIMS,
     .tattle = MSG_NpcTattle_MIM_Bubulb_Revealed,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Fuzzy), BTL_MIM_FORMATION_04, BTL_MIM_STAGE_00),
-    NPC_GROUP(N(NpcData_Bubulb)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Fuzzy, BTL_MIM_FORMATION_04, BTL_MIM_STAGE_00),
+    NPC_GROUP(NpcData_Bubulb),
     {}
 };

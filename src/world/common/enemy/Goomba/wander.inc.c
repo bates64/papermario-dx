@@ -1,7 +1,7 @@
 #pragma once
 #include "wander.h"
 
-MobileAISettings N(AISettings_Goomba_Wander) = {
+MobileAISettings AISettings_Goomba_Wander = {
     .moveSpeed = 1.5f,
     .moveTime = 30,
     .waitTime = 30,
@@ -14,17 +14,17 @@ MobileAISettings N(AISettings_Goomba_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Goomba_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Goomba_Wander)))
+EvtScript EVS_NpcAI_Goomba_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_Goomba_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Goomba_Wander) = {
+NpcSettings NpcSettings_Goomba_Wander = {
     .height = 20,
     .radius = 23,
     .level = ACTOR_LEVEL_GOOMBA,
-    .doAI = &N(EVS_NpcAI_Goomba_Wander),
+    .doAI = &EVS_NpcAI_Goomba_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

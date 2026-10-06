@@ -1,7 +1,7 @@
 #pragma once
 #include "wander.h"
 
-MobileAISettings N(AISettings_Dryite_Wander) = {
+MobileAISettings AISettings_Dryite_Wander = {
     .moveSpeed = 1.5f,
     .moveTime = 60,
     .waitTime = 30,
@@ -9,16 +9,16 @@ MobileAISettings N(AISettings_Dryite_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_Dryite_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_Dryite_Wander)))
+EvtScript EVS_NpcAI_Dryite_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_Dryite_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Dryite_Wander) = {
+NpcSettings NpcSettings_Dryite_Wander = {
     .height = 26,
     .radius = 23,
-    .doAI = &N(EVS_NpcAI_Dryite_Wander),
+    .doAI = &EVS_NpcAI_Dryite_Wander,
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = 16,
 };

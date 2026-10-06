@@ -1,6 +1,6 @@
 #pragma once
 #include "base.h"
 
-extern MobileAISettings N(AISettings_SpearGuy_Patrol);
-extern EvtScript N(EVS_NpcAI_SpearGuy_Patrol);
-extern NpcSettings N(NpcSettings_SpearGuy_Patrol);
+extern MobileAISettings AISettings_SpearGuy_Patrol;
+extern EvtScript EVS_NpcAI_SpearGuy_Patrol;
+extern NpcSettings NpcSettings_SpearGuy_Patrol;

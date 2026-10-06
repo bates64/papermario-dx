@@ -36,7 +36,7 @@
 #define BULLET_BILL_NPC(npcID) \
 { \
     .id = npcID, \
-    .settings = &N(NpcSettings_BulletBill), \
+    .settings = &NpcSettings_BulletBill, \
     .pos = { NPC_DISPOSE_LOCATION }, \
     .yaw = 270, \
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DONT_SUSPEND_SCRIPTS, \

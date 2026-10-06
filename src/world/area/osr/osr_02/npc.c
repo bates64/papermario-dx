@@ -7,13 +7,13 @@
 #include "world/common/npc/StarSpirit/idle.inc.c"
 #include "world/common/npc/StarRod/idle.inc.c"
 
-Vec3f N(FlightPath_TwinkStepForward)[] = {
+Vec3f FlightPath_TwinkStepForward[] = {
     {  -10.0,    40.0,   10.0 },
     {   15.0,    33.0,   20.0 },
     {   50.0,    30.0,   30.0 },
 };
 
-Vec3f N(FlightPath_TwinkDepart)[] = {
+Vec3f FlightPath_TwinkDepart[] = {
     {   50.0,    30.0,   30.0 },
     {   70.0,    45.0,   10.0 },
     {   90.0,    60.0,   30.0 },
@@ -29,7 +29,7 @@ Vec3f N(FlightPath_TwinkDepart)[] = {
     {   50.0,   210.0,   30.0 },
 };
 
-EvtScript N(EVS_StarSpirit_FlyAway) = {
+EvtScript EVS_StarSpirit_FlyAway = {
     Call(SetNpcFlagBits, LVar4, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     Thread
         Loop(30)
@@ -72,7 +72,7 @@ EvtScript N(EVS_StarSpirit_FlyAway) = {
     End
 };
 
-EvtScript N(EVS_Twink_FlyAway) = {
+EvtScript EVS_Twink_FlyAway = {
     Thread
         Loop(30)
             Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
@@ -101,7 +101,7 @@ EvtScript N(EVS_Twink_FlyAway) = {
     EndThread
     Thread
         Call(PlaySoundAtNpc, NPC_Twink, SOUND_TWINK_DEPART, SOUND_SPACE_DEFAULT)
-        Call(LoadPath, 120, Ref(N(FlightPath_TwinkDepart)), ARRAY_COUNT(N(FlightPath_TwinkDepart)), EASING_QUADRATIC_IN)
+        Call(LoadPath, 120, Ref(FlightPath_TwinkDepart), ARRAY_COUNT(FlightPath_TwinkDepart), EASING_QUADRATIC_IN)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -119,7 +119,7 @@ EvtScript N(EVS_Twink_FlyAway) = {
     End
 };
 
-EvtScript N(EVS_Scene_ReturnStarRod) = {
+EvtScript EVS_Scene_ReturnStarRod = {
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, false)
     Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, BGM_VARIATION_2, VOL_LEVEL_FULL)
@@ -269,46 +269,46 @@ EvtScript N(EVS_Scene_ReturnStarRod) = {
     Thread
         Set(LVar4, NPC_Eldstar)
         Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT)
-        ExecWait(N(EVS_StarSpirit_FlyAway))
+        ExecWait(EVS_StarSpirit_FlyAway)
     EndThread
     Thread
         Wait(30)
         Set(LVar4, NPC_Misstar)
         Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_2, SOUND_SPACE_DEFAULT)
-        ExecWait(N(EVS_StarSpirit_FlyAway))
+        ExecWait(EVS_StarSpirit_FlyAway)
     EndThread
     Thread
         Wait(60)
         Set(LVar4, NPC_Skolar)
         Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT)
-        ExecWait(N(EVS_StarSpirit_FlyAway))
+        ExecWait(EVS_StarSpirit_FlyAway)
     EndThread
     Thread
         Wait(90)
         Set(LVar4, NPC_Mamar)
         Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_2, SOUND_SPACE_DEFAULT)
-        ExecWait(N(EVS_StarSpirit_FlyAway))
+        ExecWait(EVS_StarSpirit_FlyAway)
     EndThread
     Thread
         Wait(120)
         Set(LVar4, NPC_Kalmar)
         Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT)
-        ExecWait(N(EVS_StarSpirit_FlyAway))
+        ExecWait(EVS_StarSpirit_FlyAway)
     EndThread
     Thread
         Wait(150)
         Set(LVar4, NPC_Muskular)
         Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_2, SOUND_SPACE_DEFAULT)
-        ExecWait(N(EVS_StarSpirit_FlyAway))
+        ExecWait(EVS_StarSpirit_FlyAway)
     EndThread
     Wait(180)
     Set(LVar4, NPC_Klevar)
     Call(PlaySoundAtNpc, LVar4, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT)
-    ExecWait(N(EVS_StarSpirit_FlyAway))
+    ExecWait(EVS_StarSpirit_FlyAway)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(20)
     Call(SetMusic, 0, SONG_TWINK_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
-    Call(LoadPath, 30, Ref(N(FlightPath_TwinkStepForward)), ARRAY_COUNT(N(FlightPath_TwinkStepForward)), EASING_LINEAR)
+    Call(LoadPath, 30, Ref(FlightPath_TwinkStepForward), ARRAY_COUNT(FlightPath_TwinkStepForward), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_Twink, LVar1, LVar2, LVar3)
@@ -343,7 +343,7 @@ EvtScript N(EVS_Scene_ReturnStarRod) = {
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     Call(EndSpeech, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0)
     Wait(20)
-    Exec(N(EVS_Twink_FlyAway))
+    Exec(EVS_Twink_FlyAway)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
     Wait(250)
     Call(SetNpcAnimation, NPC_Peach, ANIM_Peach1_Walk)
@@ -361,31 +361,31 @@ EvtScript N(EVS_Scene_ReturnStarRod) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Peach) = {
+EvtScript EVS_NpcInit_Peach = {
     Call(SetNpcPos, NPC_SELF, -25, 0, 40)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Twink) = {
+EvtScript EVS_NpcInit_Twink = {
     Call(SetNpcPos, NPC_SELF, -10, 40, 10)
     Call(SetNpcYaw, NPC_SELF, 90)
     Return
     End
 };
 
-s16 N(SpiritHoverOffsets)[] = {
+s16 SpiritHoverOffsets[] = {
     1, 3, 5, 7, 7, 5, 3
 };
 
-API_CALLABLE(N(AnimateSpiritHover)) {
+API_CALLABLE(AnimateSpiritHover) {
     Npc* npc;
 
     if (isInitialCall) {
         script->functionTemp[1] = 0.0f;
         script->functionTempPtr[2] = get_npc_safe(script->owner2.npcID);
-        script->functionTemp[3] = N(SpiritHoverOffsets)[script->owner2.npcID - NPC_Eldstar];
+        script->functionTemp[3] = SpiritHoverOffsets[script->owner2.npcID - NPC_Eldstar];
     }
 
     if (script->functionTemp[3] != 0) {
@@ -399,74 +399,74 @@ API_CALLABLE(N(AnimateSpiritHover)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcAux_Eldstar) = {
-    Call(N(AnimateSpiritHover))
+EvtScript EVS_NpcAux_Eldstar = {
+    Call(AnimateSpiritHover)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Eldstar) = {
+EvtScript EVS_NpcInit_Eldstar = {
     Call(SetNpcPos, NPC_Eldstar, 60, 20, 30)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Mamar) = {
+EvtScript EVS_NpcInit_Mamar = {
     Call(SetNpcPos, NPC_SELF, 66, 80, -27)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Skolar) = {
+EvtScript EVS_NpcInit_Skolar = {
     Call(SetNpcPos, NPC_SELF, 53, 80, -95)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Muskular) = {
+EvtScript EVS_NpcInit_Muskular = {
     Call(SetNpcPos, NPC_SELF, 91, 80, -132)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Misstar) = {
+EvtScript EVS_NpcInit_Misstar = {
     Call(SetNpcPos, NPC_SELF, 151, 80, -132)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Klevar) = {
+EvtScript EVS_NpcInit_Klevar = {
     Call(SetNpcPos, NPC_SELF, 189, 80, -95)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Kalmar) = {
+EvtScript EVS_NpcInit_Kalmar = {
     Call(SetNpcPos, NPC_SELF, 176, 80, -27)
     Call(NpcFacePlayer, NPC_SELF, 0)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Eldstar)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_Eldstar))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_StarRod) = {
+EvtScript EVS_NpcInit_StarRod = {
     Return
     End
 };
 
-AnimID N(LimitAnims_Peach)[] = {
+AnimID LimitAnims_Peach[] = {
     ANIM_Peach1_Idle,
     ANIM_Peach1_Walk,
     ANIM_Peach2_RaiseArms,
@@ -478,169 +478,169 @@ AnimID N(LimitAnims_Peach)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Twink)[] = {
+AnimID LimitAnims_Twink[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Talk,
     ANIM_Twink_Disappointed,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Eldstar)[] = {
+AnimID LimitAnims_Eldstar[] = {
     ANIM_WorldEldstar_Idle,
     ANIM_WorldEldstar_Wave,
     ANIM_WorldEldstar_Leap,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Mamar)[] = {
+AnimID LimitAnims_Mamar[] = {
     ANIM_WorldMamar_Idle,
     ANIM_WorldMamar_TalkHappy,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Skolar)[] = {
+AnimID LimitAnims_Skolar[] = {
     ANIM_WorldSkolar_Idle,
     ANIM_WorldSkolar_TalkAngry,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Muskular)[] = {
+AnimID LimitAnims_Muskular[] = {
     ANIM_WorldMuskular_Idle,
     ANIM_WorldMuskular_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Misstar)[] = {
+AnimID LimitAnims_Misstar[] = {
     ANIM_WorldMisstar_Idle,
     ANIM_WorldMisstar_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Klevar)[] = {
+AnimID LimitAnims_Klevar[] = {
     ANIM_WorldKlevar_Idle,
     ANIM_WorldKlevar_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(LimitAnims_Kalmar)[] = {
+AnimID LimitAnims_Kalmar[] = {
     ANIM_WorldKalmar_Idle,
     ANIM_WorldKalmar_Talk,
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Spirits)[] = {
+NpcData NpcData_Spirits[] = {
     {
         .id = NPC_Peach,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Peach),
-        .settings = &N(NpcSettings_Peach),
+        .init = &EVS_NpcInit_Peach,
+        .settings = &NpcSettings_Peach,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
         .drops = NO_DROPS,
         .animations = PEACH_ANIMS,
-        .limitAnimations = N(LimitAnims_Peach),
+        .limitAnimations = LimitAnims_Peach,
     },
     {
         .id = NPC_Twink,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Twink),
-        .settings = &N(NpcSettings_Twink),
+        .init = &EVS_NpcInit_Twink,
+        .settings = &NpcSettings_Twink,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .limitAnimations = N(LimitAnims_Twink),
+        .limitAnimations = LimitAnims_Twink,
     },
     {
         .id = NPC_Eldstar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Eldstar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Eldstar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Eldstar),
+        .limitAnimations = LimitAnims_Eldstar,
     },
     {
         .id = NPC_Mamar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Mamar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Mamar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Mamar),
+        .limitAnimations = LimitAnims_Mamar,
     },
     {
         .id = NPC_Skolar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Skolar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Skolar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Skolar),
+        .limitAnimations = LimitAnims_Skolar,
     },
     {
         .id = NPC_Muskular,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Muskular),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Muskular,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Muskular),
+        .limitAnimations = LimitAnims_Muskular,
     },
     {
         .id = NPC_Misstar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Misstar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Misstar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Misstar),
+        .limitAnimations = LimitAnims_Misstar,
     },
     {
         .id = NPC_Klevar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Klevar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Klevar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Klevar),
+        .limitAnimations = LimitAnims_Klevar,
     },
     {
         .id = NPC_Kalmar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Kalmar),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_Kalmar,
+        .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
-        .limitAnimations = N(LimitAnims_Kalmar),
+        .limitAnimations = LimitAnims_Kalmar,
     },
     {
         .id = NPC_StarRod,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_StarRod),
-        .settings = &N(NpcSettings_StarRod),
+        .init = &EVS_NpcInit_StarRod,
+        .settings = &NpcSettings_StarRod,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = STAR_ROD_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Spirits)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Spirits),
     {}
 };

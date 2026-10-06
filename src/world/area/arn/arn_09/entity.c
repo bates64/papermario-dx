@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_UseSpring) = {
+EvtScript EVS_UseSpring = {
     IfEq(AF_ARN_UsingWellSpring, true)
         Return
     EndIf
@@ -21,7 +21,7 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_LandFromWell) = {
+EvtScript EVS_LandFromWell = {
     IfEq(AF_ARN_UsingWellSpring, false)
         Return
     EndIf
@@ -39,9 +39,9 @@ EvtScript N(EVS_LandFromWell) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Call(MakeEntity, Ref(Entity_ScriptSpring), 0, 0, 0, 0, MAKE_ENTITY_END)
-    Call(AssignScript, Ref(N(EVS_UseSpring)))
+    Call(AssignScript, Ref(EVS_UseSpring))
     Return
     End
 };

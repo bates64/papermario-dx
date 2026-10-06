@@ -1,6 +1,6 @@
 #include "kkj_13.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
         CaseGe(STORY_CH8_REACHED_PEACHS_CASTLE)

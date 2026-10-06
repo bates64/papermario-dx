@@ -1,7 +1,7 @@
 #include "sam_07.h"
 #include "model.h"
 
-s32 N(IceShardModels)[] = {
+s32 IceShardModels[] = {
     MODEL_o59,  MODEL_o61,  MODEL_o89,  MODEL_o105, MODEL_o56,
     MODEL_o58,  MODEL_o63,  MODEL_o86,  MODEL_o52,  MODEL_o46,
     MODEL_o54,  MODEL_o67,  MODEL_o66,  MODEL_o64,  MODEL_o98,
@@ -27,7 +27,7 @@ typedef struct IceShard {
     /* 0x40 */ Matrix4f transformMatrix;
 } IceShard; // size = 0x80
 
-API_CALLABLE(N(AnimateIceShattering)) {
+API_CALLABLE(AnimateIceShattering) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Matrix4f mtxTransform, mtxRotX, mtxRotY, mtxRotZ;
     IceShard* it;
@@ -37,12 +37,12 @@ API_CALLABLE(N(AnimateIceShattering)) {
 
     if (isInitialCall) {
 
-        script->functionTempPtr[0] = heap_malloc(sizeof(*it) * ARRAY_COUNT(N(IceShardModels)));
+        script->functionTempPtr[0] = heap_malloc(sizeof(*it) * ARRAY_COUNT(IceShardModels));
         script->functionTemp[1] = 0;
 
         it = script->functionTempPtr[0];
-        for (i = 0; i < ARRAY_COUNT(N(IceShardModels)); i++, it++) {
-            model = get_model_from_list_index(get_model_list_index_from_tree_index(N(IceShardModels)[i]));
+        for (i = 0; i < ARRAY_COUNT(IceShardModels); i++, it++) {
+            model = get_model_from_list_index(get_model_list_index_from_tree_index(IceShardModels[i]));
             it->state = 0;
             it->pos.x = model->center.x;
             it->pos.y = model->center.y;
@@ -70,8 +70,8 @@ API_CALLABLE(N(AnimateIceShattering)) {
     }
 
     it = script->functionTempPtr[0];
-    for (i = 0; i < ARRAY_COUNT(N(IceShardModels)); i++, it++) {
-        model = get_model_from_list_index(get_model_list_index_from_tree_index(N(IceShardModels)[i]));
+    for (i = 0; i < ARRAY_COUNT(IceShardModels); i++, it++) {
+        model = get_model_from_list_index(get_model_list_index_from_tree_index(IceShardModels[i]));
         if (it->state == 0) {
             add_vec2D_polar(&it->pos.x, &it->pos.z, it->moveSpeed, it->moveAngle);
             it->velY -= 1.0f;
@@ -108,7 +108,7 @@ API_CALLABLE(N(AnimateIceShattering)) {
         guMtxCatF(mtxTransform, model->userTransformMtx, model->userTransformMtx);
     }
 
-    if ((u32) script->functionTemp[1] >= ARRAY_COUNT(N(IceShardModels))) {
+    if ((u32) script->functionTemp[1] >= ARRAY_COUNT(IceShardModels)) {
         // all shards are in 'done' state, free them all and return
         heap_free(script->functionTempPtr[0]);
         return ApiStatus_DONE2;
@@ -116,7 +116,7 @@ API_CALLABLE(N(AnimateIceShattering)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
+API_CALLABLE(AwaitPlayerNotPoundingFloor) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 floor1 = evt_get_variable(script, *args++);
@@ -132,9 +132,9 @@ API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_BreakIce) = {
+EvtScript EVS_BreakIce = {
     Call(PlaySoundAtCollider, COLLIDER_o116, SOUND_ICE_SHATTER, 0)
-    Call(N(AnimateIceShattering))
+    Call(AnimateIceShattering)
     Loop(10)
         Call(SetGroupVisibility, MODEL_move1, MODEL_GROUP_VISIBLE)
         Wait(1)
@@ -147,7 +147,7 @@ EvtScript N(EVS_BreakIce) = {
     End
 };
 
-EvtScript N(EVS_TouchFloor_FragileIce) = {
+EvtScript EVS_TouchFloor_FragileIce = {
     Call(GetPlayerActionState, LVar0)
     IfNe(LVar0, ACTION_STATE_SPIN_POUND)
         IfNe(LVar0, ACTION_STATE_TORNADO_POUND)
@@ -160,26 +160,26 @@ EvtScript N(EVS_TouchFloor_FragileIce) = {
     Set(GF_SAM07_IceBroken, true)
     Wait(5)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o116, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_BreakIce))
+    Exec(EVS_BreakIce)
     Unbind
     Return
     End
 };
 
-EvtScript N(EVS_Blast_FragileIce) = {
+EvtScript EVS_Blast_FragileIce = {
     IfEq(GF_SAM07_IceBroken, true)
         Return
     EndIf
     Set(GF_SAM07_IceBroken, true)
     Wait(5)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o116, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_BreakIce))
+    Exec(EVS_BreakIce)
     Unbind
     Return
     End
 };
 
-EvtScript N(EVS_UseGreenSwitch) = {
+EvtScript EVS_UseGreenSwitch = {
     Call(DisablePlayerInput, true)
     Call(GetEntityPosition, MV_SwitchEntityID, LVar7, LVar8, LVar9)
     IfEq(GF_SAM07_FloorRaised, false)
@@ -195,7 +195,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             Call(SetEntityPosition, MV_SwitchEntityID, LVar7, LVar0, LVar9)
             Call(EnableCameraFollowPlayerY)
             Wait(1)
-            Call(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
+            Call(AwaitPlayerNotPoundingFloor, COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
             IfEq(LVar1, 1)
                 Goto(0)
             EndIf
@@ -216,7 +216,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             Call(SetEntityPosition, MV_SwitchEntityID, LVar7, LVar0, LVar9)
             Call(EnableCameraFollowPlayerY)
             Wait(1)
-            Call(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
+            Call(AwaitPlayerNotPoundingFloor, COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
             IfEq(LVar1, 1)
                 Goto(1)
             EndIf
@@ -227,12 +227,12 @@ EvtScript N(EVS_UseGreenSwitch) = {
     End
 };
 
-BombTrigger N(BombPos_Ice) = {
+BombTrigger BombPos_Ice = {
     .pos = { -940.0f, -130.0f, -75.0f },
     .diameter = 60
 };
 
-EvtScript N(EVS_SetupPit) = {
+EvtScript EVS_SetupPit = {
     Call(EnableGroup, MODEL_g72, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_m1_kabe, COLLIDER_FLAGS_UPPER_MASK)
     Call(ParentColliderToModel, COLLIDER_m1_yuka, MODEL_m1_yuka)
@@ -242,8 +242,8 @@ EvtScript N(EVS_SetupPit) = {
         Call(TranslateGroup, MODEL_move1, 0, -180, 0)
         Call(UpdateColliderTransform, COLLIDER_m1_yuka)
         Call(UpdateColliderTransform, COLLIDER_o116)
-        BindTrigger(Ref(N(EVS_TouchFloor_FragileIce)), TRIGGER_FLOOR_TOUCH, COLLIDER_o116, 1, 0)
-        BindTrigger(Ref(N(EVS_Blast_FragileIce)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Ice)), 1, 0)
+        BindTrigger(Ref(EVS_TouchFloor_FragileIce), TRIGGER_FLOOR_TOUCH, COLLIDER_o116, 1, 0)
+        BindTrigger(Ref(EVS_Blast_FragileIce), TRIGGER_POINT_BOMB, Ref(BombPos_Ice), 1, 0)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o116, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetGroupVisibility, MODEL_move1, MODEL_GROUP_HIDDEN)

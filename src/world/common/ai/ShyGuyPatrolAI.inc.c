@@ -18,7 +18,7 @@ enum ShyGuyAiAnims {
 };
 #endif
 
-void N(ShyGuyPatrolAI_TripInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ShyGuyPatrolAI_TripInit(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -28,7 +28,7 @@ void N(ShyGuyPatrolAI_TripInit)(Evt* script, MobileAISettings* settings, EnemyDe
     script->AI_TEMP_STATE = AI_STATE_SHYGUY_TRIP;
 }
 
-void N(ShyGuyPatrolAI_Trip)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ShyGuyPatrolAI_Trip(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 yaw = npc->yaw;
@@ -47,7 +47,7 @@ void N(ShyGuyPatrolAI_Trip)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(ShyGuyPatrolAI_Fall)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ShyGuyPatrolAI_Fall(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 yaw = npc->yaw;
@@ -63,7 +63,7 @@ void N(ShyGuyPatrolAI_Fall)(Evt* script, MobileAISettings* settings, EnemyDetect
     }
 }
 
-void N(ShyGuyPatrolAI_Lay)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
+void ShyGuyPatrolAI_Lay(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -74,7 +74,7 @@ void N(ShyGuyPatrolAI_Lay)(Evt* script, MobileAISettings* settings, EnemyDetectV
     }
 }
 
-API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
+API_CALLABLE(ShyGuyPatrolAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -131,56 +131,56 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PATROL_INIT:
-            N(PatrolAI_MoveInit)(script, settings, detect);
+            PatrolAI_MoveInit(script, settings, detect);
             // fallthrough
         case AI_STATE_PATROL:
-            N(PatrolAI_Move)(script, settings, detect);
+            PatrolAI_Move(script, settings, detect);
             break;
 
         case AI_STATE_LOITER_INIT:
-            N(PatrolAI_LoiterInit)(script, settings, detect);
+            PatrolAI_LoiterInit(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(PatrolAI_Loiter)(script, settings, detect);
+            PatrolAI_Loiter(script, settings, detect);
             break;
         case AI_STATE_LOITER_POST:
-            N(PatrolAI_PostLoiter)(script, settings, detect);
+            PatrolAI_PostLoiter(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:
-            N(PatrolAI_JumpInit)(script, settings, detect);
+            PatrolAI_JumpInit(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            N(PatrolAI_Jump)(script, settings, detect);
+            PatrolAI_Jump(script, settings, detect);
             break;
 
         case AI_STATE_CHASE_INIT:
-            N(PatrolAI_ChaseInit)(script, settings, detect);
+            PatrolAI_ChaseInit(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(PatrolAI_Chase)(script, settings, detect);
+            PatrolAI_Chase(script, settings, detect);
             break;
 
         case AI_STATE_LOSE_PLAYER:
-            N(ShyGuyPatrolAI_TripInit)(script, settings, detect);
+            ShyGuyPatrolAI_TripInit(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SHYGUY_TRIP) {
                 break;
             }
             // fallthrough
         case AI_STATE_SHYGUY_TRIP:
-            N(ShyGuyPatrolAI_Trip)(script, settings, detect);
+            ShyGuyPatrolAI_Trip(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SHYGUY_FALL) {
                 break;
             }
             // fallthrough
         case AI_STATE_SHYGUY_FALL:
-            N(ShyGuyPatrolAI_Fall)(script, settings, detect);
+            ShyGuyPatrolAI_Fall(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SHYGUY_LAY) {
                 break;
             }
             // fallthrough
         case AI_STATE_SHYGUY_LAY:
-            N(ShyGuyPatrolAI_Lay)(script, settings, detect);
+            ShyGuyPatrolAI_Lay(script, settings, detect);
             break;
 
         case AI_STATE_SUSPEND:

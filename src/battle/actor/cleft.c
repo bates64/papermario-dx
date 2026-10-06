@@ -4,41 +4,39 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Cleft.h"
 
-#define NAMESPACE A(cleft)
+extern s32 UprightAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(UprightAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Toppled        = 0,
     AVAR_ToppleTurns    = 1,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_TACKLE      = 2,
 };
 
-s32 N(UprightDefenseTable)[] = {
+s32 UprightDefenseTable[] = {
     ELEMENT_NORMAL,   2,
     ELEMENT_FIRE,    99,
     ELEMENT_MAGIC,    0,
     ELEMENT_END,
 };
 
-s32 N(ToppledDefenseTable)[] = {
+s32 ToppledDefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_FIRE,    99,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              40,
@@ -63,15 +61,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 22 },
         .opacity = 255,
-        .idleAnimations = N(UprightAnims),
-        .defenseTable = N(UprightDefenseTable),
+        .idleAnimations = UprightAnims,
+        .defenseTable = UprightDefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
@@ -83,10 +81,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_CLEFT,
     .level = ACTOR_LEVEL_CLEFT,
     .maxHP = 2,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 80,
     .airLiftChance = 40,
     .hurricaneChance = 40,
@@ -101,7 +99,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(UprightAnims)[] = {
+s32 UprightAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Cleft_Idle,
     STATUS_KEY_STONE,     ANIM_Cleft_Still,
     STATUS_KEY_SLEEP,     ANIM_Cleft_Sleep,
@@ -114,7 +112,7 @@ s32 N(UprightAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ToppledAnims)[] = {
+s32 ToppledAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Cleft_ToppleIdle,
     STATUS_KEY_STONE,     ANIM_Cleft_ToppleStill,
     STATUS_KEY_SLEEP,     ANIM_Cleft_ToppleSleep,
@@ -129,23 +127,22 @@ s32 N(ToppledAnims)[] = {
 
 #include "common/SetSpinSmashable.inc.c"
 
-#include "common/StartRumbleWithParams.inc.c"
 
-EvtScript N(EVS_Init) = {
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 0)
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_FlipOver) = {
+EvtScript EVS_FlipOver = {
     Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 1)
     Call(SetActorVar, ACTOR_SELF, AVAR_ToppleTurns, 2)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Run)
@@ -163,7 +160,7 @@ EvtScript N(EVS_FlipOver) = {
     Sub(LVar1, 6)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 20, false, true, false)
-    Call(N(StartRumbleWithParams), 200, 10)
+    Call(StartRumbleWithParams, 200, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
     EndThread
@@ -172,18 +169,18 @@ EvtScript N(EVS_FlipOver) = {
     Call(SetActorRotationOffset, ACTOR_SELF, 0, 0, 0)
     Call(SetActorRotation, ACTOR_SELF, 0, 0, 0)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_ToppleKick)
-    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledAnims)))
-    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(ToppledDefenseTable)))
+    Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(ToppledAnims))
+    Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(ToppledDefenseTable))
     Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 15)
     Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -7)
     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, false)
-    Call(N(SetSpinSmashable), false)
+    Call(SetSpinSmashable, false)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, true)
     Return
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -193,7 +190,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetLastElement, LVar0)
             Switch(LVar0)
                 CaseFlag(DAMAGE_TYPE_BLAST)
-                    ExecWait(N(EVS_FlipOver))
+                    ExecWait(EVS_FlipOver)
                 CaseDefault
                     Call(GetActorVar, ACTOR_SELF, AVAR_Toppled, LVar0)
                     IfEq(LVar0, 1)
@@ -209,7 +206,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetLastElement, LVar0)
             Switch(LVar0)
                 CaseFlag(DAMAGE_TYPE_BLAST)
-                    ExecWait(N(EVS_FlipOver))
+                    ExecWait(EVS_FlipOver)
                 CaseDefault
                     Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION, true)
                     Call(GetActorVar, ACTOR_SELF, AVAR_Toppled, LVar0)
@@ -387,7 +384,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_TryGettingUp) = {
+EvtScript EVS_TryGettingUp = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
@@ -417,7 +414,7 @@ EvtScript N(EVS_TryGettingUp) = {
         Call(SetActorJumpGravity, ACTOR_SELF, Float(1.3))
         Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(JumpToGoal, ACTOR_SELF, 10, false, true, false)
-        Call(N(StartRumbleWithParams), 200, 10)
+        Call(StartRumbleWithParams, 200, 10)
         Thread
             Call(ShakeCam, CAM_BATTLE, 0, 5, Float(1.0))
         EndThread
@@ -426,13 +423,13 @@ EvtScript N(EVS_TryGettingUp) = {
         Call(SetActorPos, ACTOR_SELF, LVar0, 0, LVar2)
         Call(SetActorVar, ACTOR_SELF, AVAR_Toppled, 0)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Idle)
-        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(UprightAnims)))
-        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(UprightDefenseTable)))
+        Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(UprightAnims))
+        Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(UprightDefenseTable))
         Call(SetTargetOffset, ACTOR_SELF, PRT_MAIN, 0, 22)
         Call(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 0, -10)
         Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_SPIKY_TOP, true)
         Wait(1)
-        Call(N(SetSpinSmashable), true)
+        Call(SetSpinSmashable, true)
         Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLIPPED, false)
     EndIf
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -441,7 +438,7 @@ EvtScript N(EVS_TryGettingUp) = {
     End
 };
 
-EvtScript N(EVS_Attack_Tackle) = {
+EvtScript EVS_Attack_Tackle = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -549,12 +546,12 @@ EvtScript N(EVS_Attack_Tackle) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetActorVar, ACTOR_SELF, AVAR_Toppled, LVar0)
     IfEq(LVar0, true)
-        ExecWait(N(EVS_TryGettingUp))
+        ExecWait(EVS_TryGettingUp)
     Else
-        ExecWait(N(EVS_Attack_Tackle))
+        ExecWait(EVS_Attack_Tackle)
     EndIf
     Return
     End

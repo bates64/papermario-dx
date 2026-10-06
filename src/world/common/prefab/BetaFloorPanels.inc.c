@@ -4,11 +4,11 @@
 // unlike those found in the final game, models and colliders for these panels must be
 // manually set up by the map author. a usable flip panel example is found in tst_13.
 
-extern EvtScript N(EVS_BetaBreakFloor_Touch);
-extern EvtScript N(EVS_BetaPanel_PoundAtop);
-extern EvtScript N(EVS_BetaPanel_PoundNearby);
+extern EvtScript EVS_BetaBreakFloor_Touch;
+extern EvtScript EVS_BetaPanel_PoundAtop;
+extern EvtScript EVS_BetaPanel_PoundNearby;
 
-API_CALLABLE(N(CheckShouldBreakFloor)) {
+API_CALLABLE(CheckShouldBreakFloor) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32* array = script->array;
     f32 distance = dist2D(playerStatus->pos.x, playerStatus->pos.z, array[2], array[3]);
@@ -25,7 +25,7 @@ API_CALLABLE(N(CheckShouldBreakFloor)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckShouldFlipFloor)) {
+API_CALLABLE(CheckShouldFlipFloor) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 distance = dist2D(
         playerStatus->pos.x, playerStatus->pos.z,
@@ -43,7 +43,7 @@ API_CALLABLE(N(CheckShouldFlipFloor)) {
 }
 
 // breakable panels
-EvtScript N(EVS_BetaBreakFloor_Setup) = {
+EvtScript EVS_BetaBreakFloor_Setup = {
     UseBuf(LVar0)
     MallocArray(6, LVarA)
     BufRead1(LVar0) // modelID
@@ -59,14 +59,14 @@ EvtScript N(EVS_BetaBreakFloor_Setup) = {
     BufRead1(LVar0) // callback event
     Set(ArrayVar(5), LVar0)
     Set(LVar0, LVarA)
-    BindTrigger(Ref(N(EVS_BetaBreakFloor_Touch)), TRIGGER_FLOOR_TOUCH, ArrayVar(0), 1, 0)
+    BindTrigger(Ref(EVS_BetaBreakFloor_Touch), TRIGGER_FLOOR_TOUCH, ArrayVar(0), 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_BetaBreakFloor_Touch) = {
+EvtScript EVS_BetaBreakFloor_Touch = {
     UseArray(LVar0)
-    Call(N(CheckShouldBreakFloor))
+    Call(CheckShouldBreakFloor)
     IfEq(LVar0, 0)
         Return
     EndIf
@@ -86,7 +86,7 @@ EvtScript N(EVS_BetaBreakFloor_Touch) = {
 };
 
 // flippable panels
-EvtScript N(EVS_BetaPanel_Setup) = {
+EvtScript EVS_BetaPanel_Setup = {
     UseBuf(LVar0)
     MallocArray(6, LVar9)
     BufRead1(LVar1) // modelID
@@ -119,12 +119,12 @@ EvtScript N(EVS_BetaPanel_Setup) = {
             IfNe(LVar2, ArrayVar(3))
                 Goto(2)
             EndIf
-        Call(N(CheckShouldFlipFloor))
+        Call(CheckShouldFlipFloor)
         IfEq(LVar0, 1)
-            ExecWait(N(EVS_BetaPanel_PoundAtop))
+            ExecWait(EVS_BetaPanel_PoundAtop)
         EndIf
         IfEq(LVar0, 2)
-            ExecWait(N(EVS_BetaPanel_PoundNearby))
+            ExecWait(EVS_BetaPanel_PoundNearby)
         EndIf
         Label(3)
             Call(GetPlayerActionState, LVar0)
@@ -140,7 +140,7 @@ EvtScript N(EVS_BetaPanel_Setup) = {
     End
 };
 
-EvtScript N(EVS_BetaPanel_PoundAtop) = {
+EvtScript EVS_BetaPanel_PoundAtop = {
     UseArray(LVar9)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(MakeLerp, 0, 5, 3, EASING_QUADRATIC_IN)
@@ -171,7 +171,7 @@ EvtScript N(EVS_BetaPanel_PoundAtop) = {
     End
 };
 
-EvtScript N(EVS_BetaPanel_PoundNearby) = {
+EvtScript EVS_BetaPanel_PoundNearby = {
     UseArray(LVar9)
     Call(MakeItemEntity, ArrayVar(5), ArrayVar(2), ArrayVar(3), ArrayVar(4), ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0)
     Set(LVar2, 0)

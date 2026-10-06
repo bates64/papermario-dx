@@ -1,7 +1,7 @@
 #include "common.h"
 
 // controls the large arrow hovering in front of the train station
-EvtScript N(EVS_UpdateDirectionArrow) = {
+EvtScript EVS_UpdateDirectionArrow = {
     Call(SetTexPanner, MODEL_y_a, TEX_PANNER_2)
     Call(EnableTexPanning, MODEL_y_a, true)
     // adjust color with a UV offset into a color palette texture
@@ -81,7 +81,7 @@ EvtScript N(EVS_UpdateDirectionArrow) = {
     End
 };
 
-EvtScript N(EVS_PressSwitch_Left) = {
+EvtScript EVS_PressSwitch_Left = {
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Call(GetCurrentPartnerID, LVar0)
@@ -122,7 +122,7 @@ EvtScript N(EVS_PressSwitch_Left) = {
     End
 };
 
-EvtScript N(EVS_PressSwitch_Right) = {
+EvtScript EVS_PressSwitch_Right = {
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Call(GetCurrentPartnerID, LVar0)
@@ -163,17 +163,17 @@ EvtScript N(EVS_PressSwitch_Right) = {
     End
 };
 
-EvtScript N(EVS_SetupSwitches) = {
+EvtScript EVS_SetupSwitches = {
     Set(MF_EitherSwitchPressed, false)
-    Exec(N(EVS_UpdateDirectionArrow))
+    Exec(EVS_UpdateDirectionArrow)
     Call(ParentColliderToModel, COLLIDER_o920, MODEL_y_b1)
     Call(ParentColliderToModel, COLLIDER_o921, MODEL_y_b2)
     Call(ParentColliderToModel, COLLIDER_o923, MODEL_y_c1)
     Call(ParentColliderToModel, COLLIDER_o924, MODEL_y_c2)
-    BindTrigger(Ref(N(EVS_PressSwitch_Left)), TRIGGER_FLOOR_TOUCH, COLLIDER_o920, 1, 0)
-    BindTrigger(Ref(N(EVS_PressSwitch_Left)), TRIGGER_WALL_HAMMER, COLLIDER_o921, 1, 0)
-    BindTrigger(Ref(N(EVS_PressSwitch_Right)), TRIGGER_FLOOR_TOUCH, COLLIDER_o923, 1, 0)
-    BindTrigger(Ref(N(EVS_PressSwitch_Right)), TRIGGER_WALL_HAMMER, COLLIDER_o924, 1, 0)
+    BindTrigger(Ref(EVS_PressSwitch_Left), TRIGGER_FLOOR_TOUCH, COLLIDER_o920, 1, 0)
+    BindTrigger(Ref(EVS_PressSwitch_Left), TRIGGER_WALL_HAMMER, COLLIDER_o921, 1, 0)
+    BindTrigger(Ref(EVS_PressSwitch_Right), TRIGGER_FLOOR_TOUCH, COLLIDER_o923, 1, 0)
+    BindTrigger(Ref(EVS_PressSwitch_Right), TRIGGER_WALL_HAMMER, COLLIDER_o924, 1, 0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(-1100,    0,    0,    0)

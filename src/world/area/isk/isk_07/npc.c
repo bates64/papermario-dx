@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/PokeyMummy/wander.inc.c"
 
-API_CALLABLE(N(IsLastEnemy)) {
+API_CALLABLE(IsLastEnemy) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     s32 livingEncounters;
     s32 i, j;
@@ -32,13 +32,13 @@ API_CALLABLE(N(IsLastEnemy)) {
     }
 }
 
-EvtScript N(EVS_NpcDefeat_Pokey_01) = {
+EvtScript EVS_NpcDefeat_Pokey_01 = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             IfEq(GF_ISK07_Defeated_Mummies, false)
                 Thread
-                    Call(N(IsLastEnemy))
+                    Call(IsLastEnemy)
                     IfEq(LVar1, true)
                         Call(DisablePlayerInput, true)
                         Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcDefeat_Pokey_01) = {
                         Wait(45)
                         Call(MakeItemEntity, ITEM_RUINS_KEY, -250, -240, 545, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_ISK07_Item_RuinsKey)
                         Set(GF_ISK07_Defeated_Mummies, true)
-                        ExecWait(N(EVS_OpenEntryDoor))
+                        ExecWait(EVS_OpenEntryDoor)
                         Wait(60)
                         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
                         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -78,7 +78,7 @@ EvtScript N(EVS_NpcDefeat_Pokey_01) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Pokey_01) = {
+EvtScript EVS_NpcIdle_Pokey_01 = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Label(1)
@@ -93,12 +93,12 @@ EvtScript N(EVS_NpcIdle_Pokey_01) = {
     Call(NpcMoveTo, NPC_SELF, -140, 528, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Pokey_02) = {
+EvtScript EVS_NpcIdle_Pokey_02 = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Label(1)
@@ -113,12 +113,12 @@ EvtScript N(EVS_NpcIdle_Pokey_02) = {
     Call(NpcMoveTo, NPC_SELF, 47, 543, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcIdle_Pokey_03) = {
+EvtScript EVS_NpcIdle_Pokey_03 = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
     Label(1)
@@ -133,46 +133,46 @@ EvtScript N(EVS_NpcIdle_Pokey_03) = {
     Call(NpcMoveTo, NPC_SELF, 227, 489, 10)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_PokeyMummy_Wander)))
+    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_PokeyMummy_Wander))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Pokey_01) = {
+EvtScript EVS_NpcInit_Pokey_01 = {
     IfEq(GF_ISK07_Defeated_Mummies, false)
         Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Pokey_01)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Pokey_01)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_01))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey_01))
     Call(InterpNpcYaw, NPC_SELF, 100, 0)
     Call(SetOwnerInstigatorValue, 3)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Pokey_02) = {
+EvtScript EVS_NpcInit_Pokey_02 = {
     IfEq(GF_ISK07_Defeated_Mummies, false)
         Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Pokey_02)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Pokey_01)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_02))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey_01))
     Call(SetOwnerInstigatorValue, 3)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Pokey_03) = {
+EvtScript EVS_NpcInit_Pokey_03 = {
     IfEq(GF_ISK07_Defeated_Mummies, false)
         Call(SetSelfEnemyFlags, ENEMY_FLAG_NO_DROPS)
     EndIf
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Pokey_03)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Pokey_01)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Pokey_03))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Pokey_01))
     Call(SetOwnerInstigatorValue, 3)
     Return
     End
 };
 
-NpcData N(NpcData_Pokey_01) = {
+NpcData NpcData_Pokey_01 = {
     .id = NPC_Pokey_01,
     .pos = { -132.0f, -390.0f, 492.0f },
     .yaw = 304,
@@ -188,14 +188,14 @@ NpcData N(NpcData_Pokey_01) = {
             .detectSize = { 400 },
         }
     },
-    .init = &N(EVS_NpcInit_Pokey_01),
-    .settings = &N(NpcSettings_PokeyMummy_Wander),
+    .init = &EVS_NpcInit_Pokey_01,
+    .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
 };
 
-NpcData N(NpcData_Pokey_02) = {
+NpcData NpcData_Pokey_02 = {
     .id = NPC_Pokey_02,
     .pos = { 45.0f, -390.0f, 507.0f },
     .yaw = 263,
@@ -211,14 +211,14 @@ NpcData N(NpcData_Pokey_02) = {
             .detectSize = { 150 },
         }
     },
-    .init = &N(EVS_NpcInit_Pokey_02),
-    .settings = &N(NpcSettings_PokeyMummy_Wander),
+    .init = &EVS_NpcInit_Pokey_02,
+    .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
 };
 
-NpcData N(NpcData_Pokey_03) = {
+NpcData NpcData_Pokey_03 = {
     .id = NPC_Pokey_03,
     .pos = { 220.0f, -389.0f, 467.0f },
     .yaw = 244,
@@ -234,16 +234,16 @@ NpcData N(NpcData_Pokey_03) = {
             .detectSize = { 150 },
         }
     },
-    .init = &N(EVS_NpcInit_Pokey_03),
-    .settings = &N(NpcSettings_PokeyMummy_Wander),
+    .init = &EVS_NpcInit_Pokey_03,
+    .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Pokey_01), BTL_ISK_1_FORMATION_00, BTL_ISK_1_STAGE_0C),
-    NPC_GROUP(N(NpcData_Pokey_02), BTL_ISK_1_FORMATION_02, BTL_ISK_1_STAGE_0C),
-    NPC_GROUP(N(NpcData_Pokey_03), BTL_ISK_1_FORMATION_03, BTL_ISK_1_STAGE_0C),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Pokey_01, BTL_ISK_1_FORMATION_00, BTL_ISK_1_STAGE_0C),
+    NPC_GROUP(NpcData_Pokey_02, BTL_ISK_1_FORMATION_02, BTL_ISK_1_STAGE_0C),
+    NPC_GROUP(NpcData_Pokey_03, BTL_ISK_1_FORMATION_03, BTL_ISK_1_STAGE_0C),
     {}
 };

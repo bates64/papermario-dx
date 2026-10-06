@@ -1,6 +1,6 @@
 #include "common.h"
 
-EvtScript N(EVS_Chest_ShowGotItem) = {
+EvtScript EVS_Chest_ShowGotItem = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
     Wait(40)
@@ -10,11 +10,11 @@ EvtScript N(EVS_Chest_ShowGotItem) = {
     End
 };
 
-EvtScript N(EVS_Chest_GetItem) = {
+EvtScript EVS_Chest_GetItem = {
     Call(DisablePlayerInput, true)
     Set(LVar0, LVarA)
     IfNe(LVarA, ITEM_NONE)
-        ExecWait(N(EVS_Chest_ShowGotItem))
+        ExecWait(EVS_Chest_ShowGotItem)
     EndIf
     Call(AddItem, LVarA, LVar0)
     Wait(15)
@@ -27,7 +27,7 @@ EvtScript N(EVS_Chest_GetItem) = {
     { \
         Set(LVarA, item) \
         Set(flag, true) \
-        ExecWait(N(EVS_Chest_GetItem)) \
+        ExecWait(EVS_Chest_GetItem) \
         Return \
         End \
     }

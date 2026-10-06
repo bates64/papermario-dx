@@ -3,7 +3,7 @@
 #include "world/common/enemy/Clubba/hitbox.inc.c"
 #include "world/common/ai/WanderMeleeAI.inc.c"
 
-MobileAISettings N(AISettings_Clubba_Wander) = {
+MobileAISettings AISettings_Clubba_Wander = {
     .moveSpeed = 1.5f,
     .moveTime = 120,
     .waitTime = 30,
@@ -18,21 +18,21 @@ MobileAISettings N(AISettings_Clubba_Wander) = {
     .loiterMode = 3,
 };
 
-EvtScript N(EVS_NpcAI_Clubba_Wander) = {
+EvtScript EVS_NpcAI_Clubba_Wander = {
     Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
     Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
     Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 8)
     Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 12)
-    Call(N(WanderMeleeAI_Main), Ref(N(AISettings_Clubba_Wander)))
+    Call(WanderMeleeAI_Main, Ref(AISettings_Clubba_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_Clubba_Wander) = {
+NpcSettings NpcSettings_Clubba_Wander = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_CLUBBA,
-    .doAI = &N(EVS_NpcAI_Clubba_Wander),
+    .doAI = &EVS_NpcAI_Clubba_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

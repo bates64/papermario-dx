@@ -267,8 +267,6 @@ EvtScript N(EVS_Idle) = {
     End
 };
 
-#include "common/GetSelectedMoveID.inc.c"
-
 EvtScript N(EVS_KnockDownCheck) = {
     Call(GetBattleFlags, LVar0)
     IfNotFlag(LVar0, BS_FLAGS1_PARTNER_ACTING)
@@ -276,7 +274,7 @@ EvtScript N(EVS_KnockDownCheck) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_ShouldKnockDown, true)
         EndIf
     Else
-        Call(N(GetSelectedMoveID), LVar0)
+        Call(GetSelectedMoveID, LVar0)
         Switch(LVar0)
             CaseOrEq(MOVE_HEADBONK1)
             CaseOrEq(MOVE_HEADBONK2)
@@ -292,9 +290,6 @@ EvtScript N(EVS_KnockDownCheck) = {
     Return
     End
 };
-
-#include "battle/common/SetAbsoluteStatusOffsets.inc.c"
-#include "common/StartRumbleWithParams.inc.c"
 
 EvtScript N(EVS_KnockDown) = {
     Call(GetActorVar, ACTOR_SELF, AVAR_ShouldKnockDown, LVar0)
@@ -329,7 +324,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetActorJumpGravity, ACTOR_SELF, Float(0.8))
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, false, true, false)
-    Call(N(StartRumbleWithParams), 150, 10)
+    Call(StartRumbleWithParams, 150, 10)
     Thread
         Call(ShakeCam, CAM_BATTLE, 0, 5, Float(0.7))
     EndThread
@@ -357,7 +352,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
     Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_MAGIKOOPA_BOSS)
     Call(SetStatusTable, ACTOR_SELF, Ref(N(StatusTable)))
-    Call(N(SetAbsoluteStatusOffsets), -10, 20, 10, 32)
+    Call(SetAbsoluteStatusOffsets, -10, 20, 10, 32)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(ResetAllActorSounds, ACTOR_SELF)
     Call(GetIndexFromPos, ACTOR_SELF, LVar0)
@@ -1056,7 +1051,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
                     Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
                     Sub(LVar0, 20)
                     Add(LVar1, 20)
-                    Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
+                    Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
                 EndIf
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -1067,13 +1062,13 @@ EvtScript N(EVS_Attack_MagicBlast) = {
                     Sub(LVar0, 20)
                     Add(LVar1, 20)
                 EndIf
-                Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
+                Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
             Else
                 IfEq(LFlag0, true)
                     Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
                     Sub(LVar0, 20)
                     Add(LVar1, 20)
-                    Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
+                    Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
                 EndIf
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -1084,7 +1079,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
                     Sub(LVar0, 20)
                     Add(LVar1, 20)
                 EndIf
-                Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
+                Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 30)
             EndIf
             Wait(50)
             IfEq(LVar9, HIT_RESULT_LUCKY)
@@ -1122,7 +1117,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
             Add(LVar1, 20)
-            Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
+            Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
         EndIf
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -1133,13 +1128,13 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Sub(LVar0, 20)
             Add(LVar1, 20)
         EndIf
-        Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
+        Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
     Else
         IfEq(LFlag0, true)
             Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
             Sub(LVar0, 20)
             Add(LVar1, 20)
-            Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
+            Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
         EndIf
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -1150,7 +1145,7 @@ EvtScript N(EVS_Attack_MagicBlast) = {
             Sub(LVar0, 20)
             Add(LVar1, 20)
         EndIf
-        Call(N(ShrinkActor), LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
+        Call(ShrinkActor, LVar0, LVar1, LVar6, LVar4, LVar5, LVar6, 20)
     EndIf
     Wait(18)
     IfEq(LFlag0, true)
@@ -1505,7 +1500,7 @@ EvtScript N(EVS_Move_TryBoostAttack) = {
             Call(GetIndexFromHome, LVar0, LVar1)
             Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar2)
             IfGt(LVar1, LVar2)
-                Call(N(CheckMagikoopaCastTarget), LVar0, LVar3)
+                Call(CheckMagikoopaCastTarget, LVar0, LVar3)
                 IfEq(LVar3, 0)
                     Call(GetActorAttackBoost, LVar0, LVar4)
                     IfLt(LVar4, MAX_ATTACK_BOOST)
@@ -1618,7 +1613,7 @@ EvtScript N(EVS_Move_TryBoostDefense) = {
             Call(GetIndexFromHome, LVar0, LVar1)
             Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar2)
             IfGt(LVar1, LVar2)
-                Call(N(CheckMagikoopaCastTarget), LVar0, LVar3)
+                Call(CheckMagikoopaCastTarget, LVar0, LVar3)
                 IfEq(LVar3, 0)
                     Call(GetActorDefenseBoost, LVar0, LVar4)
                     IfLt(LVar4, MAX_DEFENSE_BOOST)
@@ -1731,7 +1726,7 @@ EvtScript N(EVS_Move_TryElectrify) = {
             Call(GetIndexFromHome, LVar0, LVar1)
             Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar2)
             IfGt(LVar1, LVar2)
-                Call(N(CheckMagikoopaCastTarget), LVar0, LVar3)
+                Call(CheckMagikoopaCastTarget, LVar0, LVar3)
                 IfEq(LVar3, 0)
                     Call(GetStatusFlags, LVar0, LVar4)
                     IfNotFlag(LVar4, STATUS_FLAG_STATIC | STATUS_FLAG_TRANSPARENT)
@@ -1849,7 +1844,7 @@ EvtScript N(EVS_Move_TryTransparent) = {
             Call(GetIndexFromHome, LVar0, LVar1)
             Call(GetBattleVar, BTL_VAR_Magikoopa_LastIndexBoosted, LVar2)
             IfGt(LVar1, LVar2)
-                Call(N(CheckMagikoopaCastTarget), LVar0, LVar3)
+                Call(CheckMagikoopaCastTarget, LVar0, LVar3)
                 IfEq(LVar3, 0)
                     Call(GetStatusFlags, LVar0, LVar4)
                     IfNotFlag(LVar4, STATUS_FLAG_STATIC | STATUS_FLAG_TRANSPARENT)

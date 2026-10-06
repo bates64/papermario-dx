@@ -15,20 +15,18 @@ enum {
     NPC_Lily                    = 0,
 };
 
-#define NAMESPACE flo_10
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_PushFlowerSong;
+extern EvtScript EVS_PopSong;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_MakeEntities;
+extern EvtScript EVS_SetupFountain;
+extern EvtScript EVS_SetupWaterStoneSocket;
+extern EvtScript EVS_SetupWaterEffect;
 
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_PushFlowerSong);
-extern EvtScript N(EVS_PopSong);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_MakeEntities);
-extern EvtScript N(EVS_SetupFountain);
-extern EvtScript N(EVS_SetupWaterStoneSocket);
-extern EvtScript N(EVS_SetupWaterEffect);
+extern EvtScript EVS_Scene_ReleaseFountain;
+extern EvtScript EVS_Scene_PostReleaseFountain;
+extern EvtScript EVS_Scene_SunReturns;
 
-extern EvtScript N(EVS_Scene_ReleaseFountain);
-extern EvtScript N(EVS_Scene_PostReleaseFountain);
-extern EvtScript N(EVS_Scene_SunReturns);
-
-extern NpcGroupList N(DefaultNPCs);
+extern NpcGroupList DefaultNPCs;

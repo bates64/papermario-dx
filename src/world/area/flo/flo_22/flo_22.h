@@ -25,11 +25,9 @@ enum {
     MV_Dayzee_State     = MapVar(11),
 };
 
-#define NAMESPACE flo_22
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(EVS_SetupWell);
-extern EvtScript N(EVS_SniffleHint);
-extern EvtScript N(EVS_SetupMusic);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupFoliage;
+extern EvtScript EVS_SetupWell;
+extern EvtScript EVS_SniffleHint;
+extern EvtScript EVS_SetupMusic;
+extern NpcGroupList DefaultNPCs;

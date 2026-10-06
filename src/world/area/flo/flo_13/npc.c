@@ -11,7 +11,7 @@
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_06
 #include "world/common/enemy/Lakitu/spiny_spawner.inc.c"
 
-API_CALLABLE(N(PlayLakiluluFlightSounds)) {
+API_CALLABLE(PlayLakiluluFlightSounds) {
     Npc* npc = get_npc_unsafe(NPC_Lakilulu);
     s16 volume;
     s16 pan;
@@ -38,7 +38,7 @@ API_CALLABLE(N(PlayLakiluluFlightSounds)) {
     }
 }
 
-API_CALLABLE(N(PlayLakilesterFlightSounds)) {
+API_CALLABLE(PlayLakilesterFlightSounds) {
     Npc* npc = get_npc_unsafe(NPC_Lakilester);
     s16 volume;
     s16 pan;
@@ -63,7 +63,7 @@ API_CALLABLE(N(PlayLakilesterFlightSounds)) {
     }
 }
 
-Vec3f N(FlightPath_LakilesterAmbush)[] = {
+Vec3f FlightPath_LakilesterAmbush[] = {
     { -250.0,   130.0,  100.0 },
     { -150.0,    90.0,   70.0 },
     {   50.0,    70.0,   10.0 },
@@ -71,7 +71,7 @@ Vec3f N(FlightPath_LakilesterAmbush)[] = {
     {   30.0,    10.0,   45.0 },
 };
 
-Vec3f N(FlightPath_LakiluluArrives)[] = {
+Vec3f FlightPath_LakiluluArrives[] = {
     { -285.0,   130.0,   45.0 },
     { -185.0,    90.0,   25.0 },
     {   15.0,    70.0,   10.0 },
@@ -79,7 +79,7 @@ Vec3f N(FlightPath_LakiluluArrives)[] = {
     {   -5.0,    10.0,   45.0 },
 };
 
-Vec3f N(FlightPath_LakiluluDeparts)[] = {
+Vec3f FlightPath_LakiluluDeparts[] = {
     {   10.0,     0.0,   45.0 },
     {  -90.0,    20.0,   45.0 },
     { -190.0,    60.0,   45.0 },
@@ -87,7 +87,7 @@ Vec3f N(FlightPath_LakiluluDeparts)[] = {
     { -390.0,   300.0,   45.0 },
 };
 
-EvtScript N(EVS_Lakliester_ManageYaw) = {
+EvtScript EVS_Lakliester_ManageYaw = {
     Call(GetNpcPos, NPC_Lakilester, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Lakilester, LVar3, LVar4, LVar5)
@@ -105,7 +105,7 @@ EvtScript N(EVS_Lakliester_ManageYaw) = {
     End
 };
 
-EvtScript N(EVS_Laklilulu_ManageYaw) = {
+EvtScript EVS_Laklilulu_ManageYaw = {
     Call(GetNpcPos, NPC_Lakilulu, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Lakilulu, LVar3, LVar4, LVar5)
@@ -127,7 +127,7 @@ EvtScript N(EVS_Laklilulu_ManageYaw) = {
     End
 };
 
-EvtScript N(EVS_LakiluluAndSpiny_HoverBobbing) = {
+EvtScript EVS_LakiluluAndSpiny_HoverBobbing = {
     Set(MV_LakiluluSpinySceneState, 0)
     Loop(0)
         Loop(2)
@@ -159,8 +159,8 @@ EvtScript N(EVS_LakiluluAndSpiny_HoverBobbing) = {
     End
 };
 
-EvtScript N(EVS_Lakilulu_SpinyToss) = {
-    Exec(N(EVS_LakiluluAndSpiny_HoverBobbing))
+EvtScript EVS_Lakilulu_SpinyToss = {
+    Exec(EVS_LakiluluAndSpiny_HoverBobbing)
     Call(SetNpcAnimation, NPC_Lakilulu, ANIM_Lakilulu_Lift)
     Call(GetNpcPos, NPC_Lakilulu, LVar1, LVar2, LVar3)
     Add(LVar1, -5)
@@ -217,7 +217,7 @@ EvtScript N(EVS_Lakilulu_SpinyToss) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Lakilester) = {
+EvtScript EVS_NpcIdle_Lakilester = {
     IfNe(GB_StoryProgress, STORY_CH6_SPOKE_WITH_THE_SUN)
         Return
     EndIf
@@ -237,10 +237,10 @@ EvtScript N(EVS_NpcIdle_Lakilester) = {
     Call(SetPartnerFollowMode, PARTNER_FORCED_FOLLOW_ONCE)
     Call(SetNpcAnimation, NPC_Lakilester, ANIM_WorldLakilester_Run)
     Thread
-        Call(N(PlayLakilesterFlightSounds))
+        Call(PlayLakilesterFlightSounds)
     EndThread
-    ExecGetTID(N(EVS_Lakliester_ManageYaw), LVar9)
-    Call(LoadPath, 80 * DT, Ref(N(FlightPath_LakilesterAmbush)), ARRAY_COUNT(N(FlightPath_LakilesterAmbush)), EASING_LINEAR)
+    ExecGetTID(EVS_Lakliester_ManageYaw, LVar9)
+    Call(LoadPath, 80 * DT, Ref(FlightPath_LakilesterAmbush), ARRAY_COUNT(FlightPath_LakilesterAmbush), EASING_LINEAR)
     Label(0)
     Call(GetNextPathPos)
     Call(SetNpcPos, NPC_Lakilester, LVar1, LVar2, LVar3)
@@ -281,7 +281,7 @@ EvtScript N(EVS_NpcIdle_Lakilester) = {
     End
 };
 
-EvtScript N(EVS_Lakilulu_FlyAway) = {
+EvtScript EVS_Lakilulu_FlyAway = {
     Call(GetNpcPos, NPC_Lakilulu, LVar0, LVar1, LVar2)
     Call(AwaitPlayerLeave, LVar0, LVar2, 120)
     Call(DisablePlayerInput, true)
@@ -305,11 +305,11 @@ EvtScript N(EVS_Lakilulu_FlyAway) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
-        Call(N(PlayLakiluluFlightSounds), 55 * DT)
+        Call(PlayLakiluluFlightSounds, 55 * DT)
     EndThread
     Call(SetNpcFlagBits, NPC_Lakilulu, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    ExecGetTID(N(EVS_Laklilulu_ManageYaw), LVar9)
-    Call(LoadPath, 55 * DT, Ref(N(FlightPath_LakiluluDeparts)), ARRAY_COUNT(N(FlightPath_LakiluluDeparts)), EASING_LINEAR)
+    ExecGetTID(EVS_Laklilulu_ManageYaw, LVar9)
+    Call(LoadPath, 55 * DT, Ref(FlightPath_LakiluluDeparts), ARRAY_COUNT(FlightPath_LakiluluDeparts), EASING_LINEAR)
     Label(20)
     Call(GetNextPathPos)
     Call(SetNpcPos, NPC_Lakilulu, LVar1, LVar2, LVar3)
@@ -340,7 +340,7 @@ EvtScript N(EVS_Lakilulu_FlyAway) = {
     End
 };
 
-EvtScript N(EVS_Scene_LakilesterDefeated) = {
+EvtScript EVS_Scene_LakilesterDefeated = {
     Call(DisablePlayerInput, true)
     Wait(30 * DT)
     Call(SpeakToPlayer, NPC_Lakilester, ANIM_WorldLakilester_TiredTalk, ANIM_WorldLakilester_Tired, 0, MSG_CH6_00A2)
@@ -372,10 +372,10 @@ EvtScript N(EVS_Scene_LakilesterDefeated) = {
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
     Thread
-        Call(N(PlayLakiluluFlightSounds), 80 * DT)
+        Call(PlayLakiluluFlightSounds, 80 * DT)
     EndThread
-    ExecGetTID(N(EVS_Laklilulu_ManageYaw), LVar9)
-    Call(LoadPath, 80 * DT, Ref(N(FlightPath_LakiluluArrives)), ARRAY_COUNT(N(FlightPath_LakiluluArrives)), EASING_LINEAR)
+    ExecGetTID(EVS_Laklilulu_ManageYaw, LVar9)
+    Call(LoadPath, 80 * DT, Ref(FlightPath_LakiluluArrives), ARRAY_COUNT(FlightPath_LakiluluArrives), EASING_LINEAR)
     Label(0)
     Call(GetNextPathPos)
     Call(SetNpcPos, NPC_Lakilulu, LVar1, LVar2, LVar3)
@@ -426,7 +426,7 @@ EvtScript N(EVS_Scene_LakilesterDefeated) = {
     Call(SpeakToPlayer, NPC_Lakilulu, ANIM_Lakilulu_ConcernedTalk, ANIM_Lakilulu_ConcernedNod, 0, MSG_CH6_00A7)
     Call(ShowChoice, MSG_Choice_0020)
     IfNe(LVar0, 0)
-        ExecWait(N(EVS_Lakilulu_SpinyToss))
+        ExecWait(EVS_Lakilulu_SpinyToss)
         Wait(10 * DT)
         Goto(10)
     Else
@@ -484,23 +484,23 @@ EvtScript N(EVS_Scene_LakilesterDefeated) = {
     Add(LVar0, 30)
     Call(SetNpcSpeed, NPC_Lakilester, Float(3.5 / DT))
     Call(NpcMoveTo, NPC_Lakilester, LVar0, 60, 0)
-    Call(N(ChangeNpcToPartner), NPC_Lakilester, PARTNER_LAKILESTER)
-    Call(N(LoadPartyImage), Ref("party_pokopi"))
-    Exec(N(EVS_PushPartnerSong))
+    Call(ChangeNpcToPartner, NPC_Lakilester, PARTNER_LAKILESTER)
+    Call(LoadPartyImage, Ref("party_pokopi"))
+    Exec(EVS_PushPartnerSong)
     Wait(15 * DT)
     Call(ShowMessageAtScreenPos, MSG_Menus_0190, 160, 40)
-    Exec(N(EVS_PopSong))
+    Exec(EVS_PopSong)
     Wait(10 * DT)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_StoryProgress, STORY_CH6_LAKILESTER_JOINED_PARTY)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
-    ExecWait(N(EVS_Lakilulu_FlyAway))
+    ExecWait(EVS_Lakilulu_FlyAway)
     Return
     End
 };
 
-EvtScript N(EVS_NpcDefeat_Lakilester) = {
+EvtScript EVS_NpcDefeat_Lakilester = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -517,7 +517,7 @@ EvtScript N(EVS_NpcDefeat_Lakilester) = {
             Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
             Call(PanToTarget, CAM_DEFAULT, 0, true)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-            Exec(N(EVS_Scene_LakilesterDefeated))
+            Exec(EVS_Scene_LakilesterDefeated)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
     EndSwitch
@@ -525,7 +525,7 @@ EvtScript N(EVS_NpcDefeat_Lakilester) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Lakilulu) = {
+EvtScript EVS_NpcInteract_Lakilulu = {
     IfLe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SpeakToPlayer, NPC_Lakilulu, ANIM_Lakilulu_Talk, ANIM_Lakilulu_Idle, 0, MSG_CH6_0032)
     Else
@@ -540,18 +540,18 @@ EvtScript N(EVS_NpcInteract_Lakilulu) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakilester) = {
+EvtScript EVS_NpcInit_Lakilester = {
     IfLt(GB_StoryProgress, STORY_CH6_LAKILESTER_JOINED_PARTY)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Lakilester)))
-        Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Lakilester)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Lakilester))
+        Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_Lakilester))
     EndIf
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakilulu) = {
+EvtScript EVS_NpcInit_Lakilulu = {
     IfLt(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lakilulu)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Lakilulu))
         Call(SetNpcCollisionSize, NPC_SELF, 36, 28)
         IfGe(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SetNpcPos, NPC_SELF, -50, 180, -50)
@@ -563,14 +563,14 @@ EvtScript N(EVS_NpcInit_Lakilulu) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakilulu_Spiny) = {
+EvtScript EVS_NpcInit_Lakilulu_Spiny = {
     Call(SetNpcPos, NPC_Lakilulu_Spiny, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_Lakilulu_Spiny, ANIM_Lakilulu_Spiny)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Lakitu) = {
+EvtScript EVS_NpcInit_Lakitu = {
     IfEq(GB_StoryProgress, STORY_CH6_SPOKE_WITH_THE_SUN)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -578,7 +578,7 @@ EvtScript N(EVS_NpcInit_Lakitu) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Spiny) = {
+EvtScript EVS_NpcInit_Spiny = {
     IfEq(GB_StoryProgress, STORY_CH6_SPOKE_WITH_THE_SUN)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -587,41 +587,41 @@ EvtScript N(EVS_NpcInit_Spiny) = {
     End
 };
 
-NpcData N(NpcData_Lakilester) = {
+NpcData NpcData_Lakilester = {
     .id = NPC_Lakilester,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Lakilester),
-    .settings = &N(NpcSettings_Lakitu),
+    .init = &EVS_NpcInit_Lakilester,
+    .settings = &NpcSettings_Lakitu,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = LAKILESTER_ANIMS,
 };
 
-NpcData N(NpcData_Lakilulu) = {
+NpcData NpcData_Lakilulu = {
     .id = NPC_Lakilulu,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Lakilulu),
-    .settings = &N(NpcSettings_Lakitu),
+    .init = &EVS_NpcInit_Lakilulu,
+    .settings = &NpcSettings_Lakitu,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = LAKILULU_ANIMS,
     .tattle = MSG_NpcTattle_Lakilulu,
 };
 
-NpcData N(NpcData_Lakilulu_Spiny) = {
+NpcData NpcData_Lakilulu_Spiny = {
     .id = NPC_Lakilulu_Spiny,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Lakilulu_Spiny),
-    .settings = &N(NpcSettings_Lakitu),
+    .init = &EVS_NpcInit_Lakilulu_Spiny,
+    .settings = &NpcSettings_Lakitu,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
     .animations = LAKILULU_ANIMS,
 };
 
-NpcData N(NpcData_Lakitu_01) = {
+NpcData NpcData_Lakitu_01 = {
     .id = NPC_Lakitu_01,
     .pos = { 335.0f, 90.0f, 45.0f },
     .yaw = 270,
@@ -637,15 +637,15 @@ NpcData N(NpcData_Lakitu_01) = {
             .detectSize = { 250 },
         }
     },
-    .init = &N(EVS_NpcInit_Lakitu),
-    .settings = &N(NpcSettings_Lakitu_SpinySpawner),
+    .init = &EVS_NpcInit_Lakitu,
+    .settings = &NpcSettings_Lakitu_SpinySpawner,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAKITU_DROPS,
     .animations = LAKITU_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Lakitu_02) = {
+NpcData NpcData_Lakitu_02 = {
     .id = NPC_Lakitu_02,
     .pos = { -320.0f, 90.0f, 0.0f },
     .yaw = 90,
@@ -661,15 +661,15 @@ NpcData N(NpcData_Lakitu_02) = {
             .detectSize = { 200 },
         }
     },
-    .init = &N(EVS_NpcInit_Lakitu),
-    .settings = &N(NpcSettings_Lakitu_SpinySpawner),
+    .init = &EVS_NpcInit_Lakitu,
+    .settings = &NpcSettings_Lakitu_SpinySpawner,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAKITU_DROPS,
     .animations = LAKITU_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_01) = {
+NpcData NpcData_Spiny_01 = {
     .id = NPC_Spiny_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -685,15 +685,15 @@ NpcData N(NpcData_Spiny_01) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_Spiny),
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .init = &EVS_NpcInit_Spiny,
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_02) = {
+NpcData NpcData_Spiny_02 = {
     .id = NPC_Spiny_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -709,15 +709,15 @@ NpcData N(NpcData_Spiny_02) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_Spiny),
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .init = &EVS_NpcInit_Spiny,
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_03) = {
+NpcData NpcData_Spiny_03 = {
     .id = NPC_Spiny_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -733,15 +733,15 @@ NpcData N(NpcData_Spiny_03) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_Spiny),
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .init = &EVS_NpcInit_Spiny,
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_04) = {
+NpcData NpcData_Spiny_04 = {
     .id = NPC_Spiny_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -757,15 +757,15 @@ NpcData N(NpcData_Spiny_04) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_Spiny),
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .init = &EVS_NpcInit_Spiny,
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_05) = {
+NpcData NpcData_Spiny_05 = {
     .id = NPC_Spiny_05,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -781,15 +781,15 @@ NpcData N(NpcData_Spiny_05) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_Spiny),
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .init = &EVS_NpcInit_Spiny,
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcData N(NpcData_Spiny_06) = {
+NpcData NpcData_Spiny_06 = {
     .id = NPC_Spiny_06,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
@@ -805,25 +805,25 @@ NpcData N(NpcData_Spiny_06) = {
             .detectSize = { 0 },
         }
     },
-    .init = &N(EVS_NpcInit_Spiny),
-    .settings = &N(NpcSettings_SpawnedSpiny),
+    .init = &EVS_NpcInit_Spiny,
+    .settings = &NpcSettings_SpawnedSpiny,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = SPINY_DROPS,
     .animations = SPINY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Lakitu_01), BTL_FLO_FORMATION_06, BTL_FLO_STAGE_04),
-    NPC_GROUP(N(NpcData_Lakitu_02), BTL_FLO_FORMATION_04, BTL_FLO_STAGE_04),
-    NPC_GROUP(N(NpcData_Spiny_01), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_02), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_03), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_04), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_05), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Spiny_06), BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
-    NPC_GROUP(N(NpcData_Lakilester), BTL_FLO2_FORMATION_05, BTL_FLO2_STAGE_01),
-    NPC_GROUP(N(NpcData_Lakilulu)),
-    NPC_GROUP(N(NpcData_Lakilulu_Spiny)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Lakitu_01, BTL_FLO_FORMATION_06, BTL_FLO_STAGE_04),
+    NPC_GROUP(NpcData_Lakitu_02, BTL_FLO_FORMATION_04, BTL_FLO_STAGE_04),
+    NPC_GROUP(NpcData_Spiny_01, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_02, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_03, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_04, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_05, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Spiny_06, BTL_FLO_FORMATION_0C, BTL_FLO_STAGE_02),
+    NPC_GROUP(NpcData_Lakilester, BTL_FLO2_FORMATION_05, BTL_FLO2_STAGE_01),
+    NPC_GROUP(NpcData_Lakilulu),
+    NPC_GROUP(NpcData_Lakilulu_Spiny),
     {}
 };

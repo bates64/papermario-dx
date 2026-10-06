@@ -1,6 +1,6 @@
 #include "nok_15.h"
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [nok_15_ENTRY_0]    { -782.0,    0.0,  -48.0,   90.0 },
     [nok_15_ENTRY_1]    {  -21.0,    0.0, -931.0,  145.0 },
     [nok_15_ENTRY_2]    { -238.0,  200.0, -758.0,  130.0 },
@@ -8,10 +8,10 @@ EntryList N(Entrances) = {
     [nok_15_ENTRY_4]    { -138.0,  260.0, -638.0,  320.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .bgName = "nok_bg",
     .tattle = { MSG_MapTattle_nok_15 },
 };

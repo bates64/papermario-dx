@@ -420,10 +420,21 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
 
     # Build global symbol table for cross-object resolution
     global_defined = {}  # name -> addr
+    global_sources = {}  # name -> defining object
+
+    def define_global(name, addr, elf_idx):
+        if name in global_sources:
+            raise ValueError(
+                f"duplicate global symbol '{name}' in "
+                f"{obj_paths[global_sources[name]]} and {obj_paths[elf_idx]}"
+            )
+        global_sources[name] = elf_idx
+        global_defined[name] = addr
+
     for (elf_idx, sym_idx), addr in resolved_syms.items():
         sym = elfs[elf_idx].symbols[sym_idx]
         if sym.binding == STB_GLOBAL and sym.name:
-            global_defined[sym.name] = addr
+            define_global(sym.name, addr, elf_idx)
 
     # Allocate COMMON symbols in bss
     common_addr = bss_start + bss_total
@@ -435,7 +446,7 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
             common_addr = _align(common_addr, align)
             resolved_syms[(elf_idx, sym_idx)] = common_addr
             if sym.binding == STB_GLOBAL and sym.name:
-                global_defined[sym.name] = common_addr
+                define_global(sym.name, common_addr, elf_idx)
             common_addr += sym.size
     bss_total = common_addr - bss_start
 

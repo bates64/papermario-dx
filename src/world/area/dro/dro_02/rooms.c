@@ -1,6 +1,6 @@
 #include "dro_02.h"
 
-EvtScript N(EVS_SwingToadHouseSign) = {
+EvtScript EVS_SwingToadHouseSign = {
     Label(9)
         Call(MakeLerp, 10, -10, 30, EASING_COS_IN_OUT)
         Label(10)
@@ -23,7 +23,7 @@ EvtScript N(EVS_SwingToadHouseSign) = {
     End
 };
 
-EvtScript N(EVS_UnusedDoorSetup) = {
+EvtScript EVS_UnusedDoorSetup = {
     Div(LVar0, 2)
     Add(LVar0, 18)
     Call(RotateModel, MODEL_1_doa, LVar0, 0, 1, 0)
@@ -31,14 +31,14 @@ EvtScript N(EVS_UnusedDoorSetup) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Hideout) = {
+EvtScript EVS_SetDoorRot_Hideout = {
     Call(RotateModel, MODEL_o769, LVar0, 0, -1, 0)
     Call(RotateModel, MODEL_o770, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Hideout) = {
+EvtScript EVS_SetWallRot_Hideout = {
     Set(LVar1, LVar0)
     DivF(LVar1, 50)
     Call(TranslateModel, MODEL_6_kabe, 0, LVar1, 0)
@@ -51,7 +51,7 @@ EvtScript N(EVS_SetWallRot_Hideout) = {
     End
 };
 
-EvtScript N(EVS_DropDoor_Hideout) = {
+EvtScript EVS_DropDoor_Hideout = {
     Set(LVar1, LVar0)
     DivF(LVar1, 50)
     Call(TranslateModel, MODEL_o769, 0, LVar1, 0)
@@ -62,13 +62,13 @@ EvtScript N(EVS_DropDoor_Hideout) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_ToadHouse) = {
+EvtScript EVS_SetDoorRot_ToadHouse = {
     Call(RotateModel, MODEL_4_doa, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_ToadHouse) = {
+EvtScript EVS_SetWallRot_ToadHouse = {
     Set(LVar1, LVar0)
     DivF(LVar1, 50)
     Call(RotateGroup, MODEL_mobe, LVar0, 0, 0, -1)
@@ -76,7 +76,7 @@ EvtScript N(EVS_SetWallRot_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_SetupCamSpeed) = {
+EvtScript EVS_SetupCamSpeed = {
     Switch(LVar0)
         CaseEq(0)
             Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
@@ -87,7 +87,7 @@ EvtScript N(EVS_SetupCamSpeed) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_ToadHouse) = {
+EvtScript EVS_RoomListener_ToadHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_ie4_naka, MODEL_GROUP_VISIBLE)
@@ -100,7 +100,7 @@ EvtScript N(EVS_RoomListener_ToadHouse) = {
     End
 };
 
-EvtScript N(EVS_RoomListener_Hideout) = {
+EvtScript EVS_RoomListener_Hideout = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_ie5_naka, MODEL_GROUP_VISIBLE)
@@ -128,7 +128,7 @@ EvtScript N(EVS_RoomListener_Hideout) = {
     End
 };
 
-EvtScript N(EVS_OpenSecretDoor_FromOutside) = {
+EvtScript EVS_OpenSecretDoor_FromOutside = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(DisablePlayerInput, true)
     Call(SetPartnerForcedFollowMode, 1)
@@ -162,7 +162,7 @@ EvtScript N(EVS_OpenSecretDoor_FromOutside) = {
     End
 };
 
-EvtScript N(EVS_OpenSecretDoor_FromInside) = {
+EvtScript EVS_OpenSecretDoor_FromInside = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(DisablePlayerInput, true)
     Call(SetPartnerForcedFollowMode, 1)
@@ -196,19 +196,19 @@ EvtScript N(EVS_OpenSecretDoor_FromInside) = {
     End
 };
 
-s32 N(InsideNPCs_Hideout)[] = {
+s32 InsideNPCs_Hideout[] = {
     NPC_DisguisedMoustafa,
     NPC_Moustafa,
     -1
 };
 
-s32 N(InsideNPCs_ToadHouse)[] = {
+s32 InsideNPCs_ToadHouse[] = {
     NPC_Toad,
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
-    Exec(N(EVS_SwingToadHouseSign))
+EvtScript EVS_SetupRooms = {
+    Exec(EVS_SwingToadHouseSign)
     Call(ParentColliderToModel, COLLIDER_o1287, MODEL_1_doa)
     IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
         Call(RotateModel, MODEL_1_doa, 18, 0, 1, 0)
@@ -216,32 +216,32 @@ EvtScript N(EVS_SetupRooms) = {
     EndIf
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_STRAIGHT_THROUGH),
-        Ref(N(EVS_SetDoorRot_Hideout)),
-        Ref(N(EVS_SetWallRot_Hideout)),
-        Ref(N(EVS_DropDoor_Hideout)),
-        Ref(N(EVS_RoomListener_Hideout)),
+        Ref(EVS_SetDoorRot_Hideout),
+        Ref(EVS_SetWallRot_Hideout),
+        Ref(EVS_DropDoor_Hideout),
+        Ref(EVS_RoomListener_Hideout),
         COLLIDER_o1252,
         COLLIDER_o1253,
         MODEL_k_i5,
-        Ref(N(InsideNPCs_Hideout)))
+        Ref(InsideNPCs_Hideout))
     IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
-        BindTrigger(Ref(N(EVS_OpenSecretDoor_FromOutside)), TRIGGER_WALL_PRESS_A, COLLIDER_o1287, 1, 0)
-        BindTrigger(Ref(N(EVS_OpenSecretDoor_FromInside)), TRIGGER_WALL_PRESS_A, COLLIDER_o1289, 1, 0)
+        BindTrigger(Ref(EVS_OpenSecretDoor_FromOutside), TRIGGER_WALL_PRESS_A, COLLIDER_o1287, 1, 0)
+        BindTrigger(Ref(EVS_OpenSecretDoor_FromInside), TRIGGER_WALL_PRESS_A, COLLIDER_o1289, 1, 0)
     EndIf
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_ToadHouse)),
-        Ref(N(EVS_SetWallRot_ToadHouse)),
+        Ref(EVS_SetDoorRot_ToadHouse),
+        Ref(EVS_SetWallRot_ToadHouse),
         nullptr,
-        Ref(N(EVS_RoomListener_ToadHouse)),
+        Ref(EVS_RoomListener_ToadHouse),
         COLLIDER_o1204,
         COLLIDER_o1261,
         MODEL_k_i4,
-        Ref(N(InsideNPCs_ToadHouse)))
+        Ref(InsideNPCs_ToadHouse))
     Set(LVar0, ROOM_UPDATE_EXIT_END)
-    Exec(N(EVS_RoomListener_Hideout))
-    Exec(N(EVS_SetupCamSpeed))
-    Exec(N(EVS_RoomListener_ToadHouse))
+    Exec(EVS_RoomListener_Hideout)
+    Exec(EVS_SetupCamSpeed)
+    Exec(EVS_RoomListener_ToadHouse)
     Return
     End
 };

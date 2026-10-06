@@ -1,16 +1,16 @@
 #include "hos_03.h"
 
-EvtScript N(EVS_ExitWalk_hos_02_1) = EVT_EXIT_WALK(60, hos_03_ENTRY_0, "hos_02", hos_02_ENTRY_1);
-EvtScript N(EVS_ExitWalk_hos_04_0) = EVT_EXIT_WALK(60, hos_03_ENTRY_1, "hos_04", hos_04_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_02_1 = EVT_EXIT_WALK(60, hos_03_ENTRY_0, "hos_02", hos_02_ENTRY_1);
+EvtScript EVS_ExitWalk_hos_04_0 = EVT_EXIT_WALK(60, hos_03_ENTRY_1, "hos_04", hos_04_ENTRY_0);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_02_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_hos_04_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_hos_02_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_hos_04_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_ControlUpperVisibility) = {
+EvtScript EVS_ControlUpperVisibility = {
     Label(0)
         Call(GetPlayerFloorCollider, LVar0)
         Switch(LVar0)
@@ -48,7 +48,7 @@ EvtScript N(EVS_ControlUpperVisibility) = {
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_STAR_HAVEN)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
@@ -56,26 +56,26 @@ EvtScript N(EVS_Main) = {
         Set(GB_StoryProgress, STORY_CH8_REACHED_STAR_HAVEN)
     EndIf
     Set(GF_MAP_StarHaven, true)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
-    ExecWait(N(EVS_MakeEntities))
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    ExecWait(EVS_MakeEntities)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
-        Exec(N(EVS_BindExitTriggers))
+        Exec(EVS_BindExitTriggers)
     Else
-        Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+        Set(LVar0, Ref(EVS_BindExitTriggers))
         Exec(EnterWalk)
         Wait(1)
     EndIf
-    Exec(N(EVS_SetupAurora))
+    Exec(EVS_SetupAurora)
     Call(UseRoomDoorSounds, DOOR_SOUNDS_UNUSED)
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(PlaySound, SOUND_LOOP_STAR_SANCTUARY_FAR)
-    Exec(N(EVS_SetupRooms))
-    Exec(N(EVS_SetupShop))
-    Exec(N(EVS_SetupFoliage))
-    Exec(N(EVS_ControlUpperVisibility))
+    Exec(EVS_SetupRooms)
+    Exec(EVS_SetupShop)
+    Exec(EVS_SetupFoliage)
+    Exec(EVS_ControlUpperVisibility)
     Return
     End
 };

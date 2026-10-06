@@ -1,6 +1,6 @@
 #include "end_00.h"
 
-EvtScript N(EVS_ParadePhase_Yoshis) = {
+EvtScript EVS_ParadePhase_Yoshis = {
     ChildThread
         Call(EnableTexPanning, MODEL_o119, true)
         Set(LVar0, 0)

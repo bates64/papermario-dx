@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-Vec3i N(ExplosionPositions1)[] = {
+Vec3i ExplosionPositions1[] = {
     {  5,  5, -220 },
     { 10, 10, -200 },
     { 15, 15, -180 },
@@ -12,7 +12,7 @@ Vec3i N(ExplosionPositions1)[] = {
     { 35, 35, -100 },
 };
 
-Vec3i N(ExplosionPositions2)[] = {
+Vec3i ExplosionPositions2[] = {
     {  -5,  5, -220 },
     { -10, 10, -200 },
     { -15, 15, -180 },
@@ -22,7 +22,7 @@ Vec3i N(ExplosionPositions2)[] = {
     { -35, 25, -100 },
 };
 
-Vec3i N(ExplosionPositions3)[] = {
+Vec3i ExplosionPositions3[] = {
     { 0, 10, -220 },
     { 0, 20, -200 },
     { 0, 30, -180 },
@@ -32,7 +32,7 @@ Vec3i N(ExplosionPositions3)[] = {
     { 0, 70, -100 },
 };
 
-EvtScript N(EVS_PlayExplosionFX) = {
+EvtScript EVS_PlayExplosionFX = {
     UseBuf(LVar0)
     BufRead3(LVarA, LVarB, LVarC)
     PlayEffect(EFFECT_RING_BLAST, 0, LVarA, LVarB, LVarC, Float(1.203), 20)
@@ -58,7 +58,7 @@ EvtScript N(EVS_PlayExplosionFX) = {
     End
 };
 
-EvtScript N(EVS_PlaySmokeFX) = {
+EvtScript EVS_PlaySmokeFX = {
     Loop(10)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(RandInt, 30, LVar3)
@@ -74,7 +74,7 @@ EvtScript N(EVS_PlaySmokeFX) = {
     End
 };
 
-EvtScript N(EVS_Inspect_Fireplace) = {
+EvtScript EVS_Inspect_Fireplace = {
     IfEq(MV_InspectingFireplace, true)
         Return
     EndIf
@@ -97,16 +97,16 @@ EvtScript N(EVS_Inspect_Fireplace) = {
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     EndThread
     Call(PlaySoundAtPlayer, SOUND_FIREPLACE_BURST, SOUND_SPACE_DEFAULT)
-    Set(LVar0, Ref(N(ExplosionPositions1)))
-    Exec(N(EVS_PlayExplosionFX))
-    Set(LVar0, Ref(N(ExplosionPositions2)))
-    Exec(N(EVS_PlayExplosionFX))
-    Set(LVar0, Ref(N(ExplosionPositions3)))
-    Exec(N(EVS_PlayExplosionFX))
+    Set(LVar0, Ref(ExplosionPositions1))
+    Exec(EVS_PlayExplosionFX)
+    Set(LVar0, Ref(ExplosionPositions2))
+    Exec(EVS_PlayExplosionFX)
+    Set(LVar0, Ref(ExplosionPositions3))
+    Exec(EVS_PlayExplosionFX)
     Wait(5)
     Call(SetPlayerAnimation, ANIM_Mario1_Burnt)
     Wait(60)
-    ExecWait(N(EVS_PlaySmokeFX))
+    ExecWait(EVS_PlaySmokeFX)
     Wait(40)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(ResetCam, CAM_DEFAULT, Float(4.0))
@@ -116,8 +116,8 @@ EvtScript N(EVS_Inspect_Fireplace) = {
     End
 };
 
-EvtScript N(EVS_SetupFireplace) = {
-    BindTrigger(Ref(N(EVS_Inspect_Fireplace)), TRIGGER_WALL_PRESS_A, COLLIDER_o283, 1, 0)
+EvtScript EVS_SetupFireplace = {
+    BindTrigger(Ref(EVS_Inspect_Fireplace), TRIGGER_WALL_PRESS_A, COLLIDER_o283, 1, 0)
     Return
     End
 };

@@ -17,7 +17,7 @@ typedef struct StarOutlineState {
     /* 0x38 */ s32 effectEnded;
 } StarOutlineState; // size = 0x3C
 
-API_CALLABLE(N(StarRodAppearEffect)) {
+static API_CALLABLE(StarRodAppearEffect) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
     s32 i;

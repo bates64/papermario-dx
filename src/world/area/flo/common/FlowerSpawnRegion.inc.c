@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects.h"
 
-EvtScript N(EVS_FlowerSpawnRegion) = {
+EvtScript EVS_FlowerSpawnRegion = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
     // save input args
     Set(LVarA, LVar0) // minX
@@ -54,4 +54,4 @@ EvtScript N(EVS_FlowerSpawnRegion) = {
     Set(LVar2, maxX) \
     Set(LVar3, maxZ) \
     Set(LVar4, posY) \
-    Exec(N(EVS_FlowerSpawnRegion))
+    Exec(EVS_FlowerSpawnRegion)

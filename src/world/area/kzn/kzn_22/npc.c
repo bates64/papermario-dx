@@ -4,12 +4,12 @@
 #include "world/common/npc/Kolorado/idle.inc.c"
 #include "world/common/npc/StarSpirit/idle.inc.c"
 
-API_CALLABLE(N(FadeOutAmbientSounds)) {
+API_CALLABLE(FadeOutAmbientSounds) {
     snd_ambient_fade_out(0, true);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ShakeScreen) = {
+EvtScript EVS_ShakeScreen = {
     Loop(0)
         Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(0.5))
     EndLoop
@@ -17,8 +17,8 @@ EvtScript N(EVS_ShakeScreen) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_Kolorado) = {
-    Exec(N(EVS_ShakeScreen))
+EvtScript EVS_NpcIdle_Kolorado = {
+    Exec(EVS_ShakeScreen)
     Label(0)
         // wait for player to reach top of stairs
         Call(GetPlayerFloorCollider, LVar0)
@@ -70,13 +70,13 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Kolorado) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado)))
+EvtScript EVS_NpcInit_Kolorado = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Kolorado))
     Return
     End
 };
 
-Vec3f N(FlightPath1)[] = {
+Vec3f FlightPath1[] = {
     { 300.0, 178.0, 120.0 },
     { 320.0, 170.0, 165.0 },
     { 340.0, 162.0, 200.0 },
@@ -86,7 +86,7 @@ Vec3f N(FlightPath1)[] = {
     { 440.0, 172.0, 195.0 },
 };
 
-Vec3f N(FlightPath2)[] = {
+Vec3f FlightPath2[] = {
     { 445.0, 180.00, 120.0 },
     { 405.0, 190.00,  80.0 },
     { 360.0, 195.00,  70.0 },
@@ -97,7 +97,7 @@ Vec3f N(FlightPath2)[] = {
     { 255.0, 170.00, 210.0 },
 };
 
-Vec3f N(FlightPath3)[] = {
+Vec3f FlightPath3[] = {
     { 255.0, 171.0, 175.0 },
     { 260.0, 173.0, 160.0 },
     { 270.0, 175.0, 150.0 },
@@ -109,7 +109,7 @@ Vec3f N(FlightPath3)[] = {
     { 368.0, 295.0, 170.0 },
 };
 
-EvtScript N(EVS_ControlCamera) = {
+EvtScript EVS_ControlCamera = {
     Call(UseSettingsFrom, CAM_DEFAULT, 400, 150, 200)
     Call(SetPanTarget, CAM_DEFAULT, 400, 150, 200)
     Call(SetCamDistance, CAM_DEFAULT, Float(390.0))
@@ -139,7 +139,7 @@ EvtScript N(EVS_ControlCamera) = {
     End
 };
 
-EvtScript N(EVS_SetCharacterPositions) = {
+EvtScript EVS_SetCharacterPositions = {
     Call(SetNpcPos, NPC_Misstar, LVar4, LVar2, LVar3)
     Add(LVar4, 10)
     Sub(LVar3, 5)
@@ -156,7 +156,7 @@ EvtScript N(EVS_SetCharacterPositions) = {
     End
 };
 
-EvtScript N(EVS_Scene_Misstar) = {
+EvtScript EVS_Scene_Misstar = {
     Loop(0)
         Wait(1)
         IfNe(AF_KZN23_MessageClosed, false)
@@ -168,13 +168,13 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
-    Exec(N(EVS_ControlCamera))
+    Exec(EVS_ControlCamera)
     Call(SetNpcJumpscale, NPC_SELF, Float(3.0))
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10)
     Wait(5)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
-    Call(LoadPath, 35, Ref(N(FlightPath1)), ARRAY_COUNT(N(FlightPath1)), EASING_LINEAR)
+    Call(LoadPath, 35, Ref(FlightPath1), ARRAY_COUNT(FlightPath1), EASING_LINEAR)
     Label(10)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
@@ -197,11 +197,11 @@ EvtScript N(EVS_Scene_Misstar) = {
         Call(NpcJump0, NPC_PARTNER, 245, 191, 171, 8)
     EndThread
     Call(InterpNpcYaw, NPC_SELF, 270, 0)
-    Call(LoadPath, 40, Ref(N(FlightPath2)), ARRAY_COUNT(N(FlightPath2)), EASING_LINEAR)
+    Call(LoadPath, 40, Ref(FlightPath2), ARRAY_COUNT(FlightPath2), EASING_LINEAR)
     Label(20)
         Call(GetNextPathPos)
         Set(LVar4, LVar1)
-        ExecWait(N(EVS_SetCharacterPositions))
+        ExecWait(EVS_SetCharacterPositions)
         IfEq(LVar0, 1)
             Goto(20)
         EndIf
@@ -211,14 +211,14 @@ EvtScript N(EVS_Scene_Misstar) = {
     Thread
         Wait(25)
         Set(AF_KZN22_FlewAway, true)
-        Call(N(FadeOutAmbientSounds))
+        Call(FadeOutAmbientSounds)
     EndThread
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
-    Call(LoadPath, 70, Ref(N(FlightPath3)), ARRAY_COUNT(N(FlightPath3)), EASING_LINEAR)
+    Call(LoadPath, 70, Ref(FlightPath3), ARRAY_COUNT(FlightPath3), EASING_LINEAR)
     Label(21)
         Call(GetNextPathPos)
         Set(LVar4, LVar1)
-        ExecWait(N(EVS_SetCharacterPositions))
+        ExecWait(EVS_SetCharacterPositions)
         IfEq(LVar0, 1)
             Goto(21)
         EndIf
@@ -230,7 +230,7 @@ EvtScript N(EVS_Scene_Misstar) = {
         Set(LVar4, LVar5)
         Set(LVar2, LVar0)
         Set(LVar3, LVar6)
-        ExecWait(N(EVS_SetCharacterPositions))
+        ExecWait(EVS_SetCharacterPositions)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
@@ -241,7 +241,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Misstar) = {
+EvtScript EVS_NpcInit_Misstar = {
     Call(SetNpcPos, NPC_SELF, 300, 180, 80)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldMisstar_IdleAngry)
     Set(AF_KZN23_SceneStarted, false)
@@ -249,37 +249,37 @@ EvtScript N(EVS_NpcInit_Misstar) = {
     Set(AF_KZN23_GrabbedKolorado, false)
     Set(AF_KZN23_GrabbedPlayer, false)
     Set(AF_KZN22_FlewAway, false)
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_Scene_Misstar)))
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_Misstar))
     Return
     End
 };
 
-NpcData N(NpcData_Kolorado) = {
+NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
     .pos = { 445.0f, 150.0f, 175.0f },
     .yaw = 90,
-    .init = &N(EVS_NpcInit_Kolorado),
-    .settings = &N(NpcSettings_Kolorado),
+    .init = &EVS_NpcInit_Kolorado,
+    .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
-NpcData N(NpcData_Misstar) = {
+NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
     .pos = { 285.0f, 160.0f, 80.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Misstar),
-    .settings = &N(NpcSettings_StarSpirit),
+    .init = &EVS_NpcInit_Misstar,
+    .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
     .tattle = MSG_NpcTattle_Misstar,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Kolorado)),
-    NPC_GROUP(N(NpcData_Misstar)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Kolorado),
+    NPC_GROUP(NpcData_Misstar),
     {}
 };

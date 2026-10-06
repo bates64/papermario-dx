@@ -1,6 +1,6 @@
 #include "MonitorPlayerOrbiting.h"
 
-API_CALLABLE(N(MonitorPlayerOrbiting)) {
+API_CALLABLE(MonitorPlayerOrbiting) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerOrbitTarget* target = (PlayerOrbitTarget*) evt_get_variable(script, *script->ptrReadPos);
     PlayerOrbitState* orbit;

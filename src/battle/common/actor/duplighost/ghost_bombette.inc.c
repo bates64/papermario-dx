@@ -286,7 +286,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(RunToGoal, ACTOR_SELF, 10, false)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBombette_Idle)
             Thread
-                Call(N(UnkActorPosFunc))
+                Call(UnkActorPosFunc)
             EndThread
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)

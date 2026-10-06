@@ -18,7 +18,7 @@
 #define DURATION_60 (60)
 #endif
 
-IntroMessage N(HeistMessageList)[] = {
+IntroMessage HeistMessageList[] = {
     { INTRO_MSG_BLANK, DURATION_30 },
     { MSG_Intro_0001, DURATION_50 },
     { MSG_Intro_0002, DURATION_50 },
@@ -59,23 +59,23 @@ IntroMessage N(HeistMessageList)[] = {
     {}, // end of list
 };
 
-IntroMessage* N(IntroMessages)[] = {
-    N(HeistMessageList),
-    N(HeistMessageList),
-    N(HeistMessageList),
-    N(HeistMessageList),
+IntroMessage* IntroMessages[] = {
+    HeistMessageList,
+    HeistMessageList,
+    HeistMessageList,
+    HeistMessageList,
 };
 
-void N(curtain_callback_narration)(void) {
-    N(draw_foreground_bowser_silhouette)();
-    N(UpdateIntroMessages)(N(IntroMessages));
+void curtain_callback_narration(void) {
+    draw_foreground_bowser_silhouette();
+    UpdateIntroMessages(IntroMessages);
 }
 
-EvtScript N(EVS_SetupNarrator) = {
+EvtScript EVS_SetupNarrator = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_05_ENTRY_3)
-            Call(N(SetCurtainCallback), Ref(N(curtain_callback_narration)))
+            Call(SetCurtainCallback, Ref(curtain_callback_narration))
     EndSwitch
     Return
     End

@@ -2,13 +2,13 @@
 
 #include "world/common/enemy/FrostClubba/wander.inc.c"
 
-EvtScript N(EVS_NpcInit_FrostClubba) = {
+EvtScript EVS_NpcInit_FrostClubba = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
     Return
     End
 };
 
-NpcData N(NpcData_FrostClubba)[] = {
+NpcData NpcData_FrostClubba[] = {
     {
         .id = NPC_FrostClubba,
         .pos = { 175.0f, 0.0f, 75.0f },
@@ -25,8 +25,8 @@ NpcData N(NpcData_FrostClubba)[] = {
                 .detectSize = { 200 },
             }
         },
-        .init = &N(EVS_NpcInit_FrostClubba),
-        .settings = &N(NpcSettings_FrostClubba_Wander),
+        .init = &EVS_NpcInit_FrostClubba,
+        .settings = &NpcSettings_FrostClubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = FROST_CLUBBA_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
@@ -35,7 +35,7 @@ NpcData N(NpcData_FrostClubba)[] = {
     FROST_CLUBBA_MACE_HITBOX(NPC_FrostClubba_Hitbox),
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_FrostClubba), BTL_PRA_FORMATION_0D, BTL_PRA_STAGE_00),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_FrostClubba, BTL_PRA_FORMATION_0D, BTL_PRA_STAGE_00),
     {}
 };

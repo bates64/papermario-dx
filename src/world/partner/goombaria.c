@@ -3,14 +3,12 @@
 #include "world/partners.h"
 #include "sprite/npc/Goombaria.h"
 
-#define NAMESPACE world_goombaria
-
-void N(init)(Npc* goombaria) {
+void init(Npc* goombaria) {
     goombaria->collisionHeight = 24;
     goombaria->collisionDiameter = 20;
 }
 
-API_CALLABLE(N(TakeOut)) {
+API_CALLABLE(TakeOut) {
     Npc* goombaria = script->owner2.npc;
 
     if (isInitialCall) {
@@ -20,7 +18,7 @@ API_CALLABLE(N(TakeOut)) {
     return partner_get_out(goombaria) ? ApiStatus_DONE1 : ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(Update)) {
+API_CALLABLE(Update) {
     PlayerData* playerData = &gPlayerData;
     Npc* goombaria = script->owner2.npc;
 
@@ -35,11 +33,11 @@ API_CALLABLE(N(Update)) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(UseAbility)) {
+API_CALLABLE(UseAbility) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(PutAway)) {
+API_CALLABLE(PutAway) {
     Npc* goombaria = script->owner2.npc;
 
     if (isInitialCall) {
@@ -54,32 +52,32 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldGoombaria_TakeOut = {
-    Call(N(TakeOut))
+    Call(TakeOut)
     Return
     End
 };
 
 EvtScript EVS_WorldGoombaria_Update = {
-    Call(N(Update))
+    Call(Update)
     Return
     End
 };
 
 EvtScript EVS_WorldGoombaria_UseAbility = {
-    Call(N(UseAbility))
+    Call(UseAbility)
     Return
     End
 };
 
 EvtScript EVS_WorldGoombaria_PutAway = {
-    Call(N(PutAway))
+    Call(PutAway)
     Return
     End
 };
 
 WORLD_PARTNER_ENTRY = {
     .isFlying = false,
-    .init = N(init),
+    .init = init,
     .takeOut = &EVS_WorldGoombaria_TakeOut,
     .update = &EVS_WorldGoombaria_Update,
     .useAbility = &EVS_WorldGoombaria_UseAbility,

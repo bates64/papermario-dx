@@ -4,7 +4,7 @@
 #include "../common/FlowerSpawnRegion.inc.c"
 #include "../common/DroppingVine.inc.c"
 
-EvtScript N(EVS_SetupVines) = {
+EvtScript EVS_SetupVines = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o214, SURFACE_TYPE_FLOWERS)
     EVT_FLOWER_SPAWN_REGION( -740, -140, -260,  -55, 100)
     EVT_FLOWER_SPAWN_REGION(  250, -140,  725,  -55, 180)

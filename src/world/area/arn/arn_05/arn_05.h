@@ -29,11 +29,9 @@ enum {
     MV_TubbaApproachDone    = MapVar(1),
 };
 
-#define NAMESPACE arn_05
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupTubbaRaid);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(BeforeNPCs);
-extern NpcGroupList N(AfterNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupTubbaRaid;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList BeforeNPCs;
+extern NpcGroupList AfterNPCs;

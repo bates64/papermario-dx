@@ -2,45 +2,45 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript N(EVS_ExitWalk_tik_15_0) = EVT_EXIT_WALK(60, tik_14_ENTRY_1, "tik_15", tik_15_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_15_0 = EVT_EXIT_WALK(60, tik_14_ENTRY_1, "tik_15", tik_15_ENTRY_0);
 
-EvtScript N(EVS_GotoMap_tik_21_2) = {
+EvtScript EVS_GotoMap_tik_21_2 = {
     Call(GotoMap, Ref("tik_21"), tik_21_ENTRY_2)
     Wait(100)
     Return
     End
 };
 
-EvtScript N(EVS_ExitPipe_tik_21_2) = EVT_EXIT_PIPE_HORIZONTAL(tik_14_ENTRY_0, COLLIDER_o47, N(EVS_GotoMap_tik_21_2));
+EvtScript EVS_ExitPipe_tik_21_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_14_ENTRY_0, COLLIDER_o47, EVS_GotoMap_tik_21_2);
 
-EvtScript N(EVS_BindExitTriggers) = {
-    BindTrigger(Ref(N(EVS_ExitPipe_tik_21_2)), TRIGGER_WALL_PUSH, COLLIDER_o47, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitWalk_tik_15_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitPipe_tik_21_2), TRIGGER_WALL_PUSH, COLLIDER_o47, 1, 0)
+    BindTrigger(Ref(EVS_ExitWalk_tik_15_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o47, COLLIDER_FLAGS_UPPER_MASK)
     Return
     End
 };
 
-EvtScript N(EVS_EnterMap) = {
+EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(tik_14_ENTRY_0)
-            EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o47, N(EVS_BindExitTriggers))
+            EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o47, EVS_BindExitTriggers)
         CaseEq(tik_14_ENTRY_1)
-            Set(LVar0, Ref(N(EVS_BindExitTriggers)))
+            Set(LVar0, Ref(EVS_BindExitTriggers))
             Exec(EnterWalk)
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_Main) = {
+EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_14)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_SetupDrips))
-    ExecWait(N(EVS_MakeEntities))
+    Exec(EVS_SetupMusic)
+    Exec(EVS_SetupDrips)
+    ExecWait(EVS_MakeEntities)
     Call(SetTexPanner, MODEL_mizu, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
@@ -50,7 +50,7 @@ EvtScript N(EVS_Main) = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o47, COLLIDER_FLAGS_UPPER_MASK)
-    Exec(N(EVS_EnterMap))
+    Exec(EVS_EnterMap)
     Wait(1)
     Return
     End

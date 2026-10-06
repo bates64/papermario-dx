@@ -4,11 +4,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#define NAMESPACE battle_item_tasty_tonic
-
-#include "battle/common/move/ItemRefund.inc.c"
-
-API_CALLABLE(N(func_802A123C_72223C)) {
+API_CALLABLE(func_802A123C_72223C) {
     s32 actorId = evt_get_variable(script, *script->ptrReadPos);
     Actor* actor = get_actor(actorId);
     s32 id = actor->actorID & ACTOR_CLASS_MASK;
@@ -37,13 +33,13 @@ API_CALLABLE(N(func_802A123C_72223C)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(EVS_UseItem) = {
+EvtScript EVS_UseItem = {
     SetConst(LVarA, ITEM_TASTY_TONIC)
-    ExecWait(battle_item_tasty_tonic_UseItemWithEffect)
+    ExecWait(UseItemWithEffect)
     Call(InitTargetIterator)
     Call(GetOwnerTarget, LVar0, LVar1)
     IfEq(LVar0, 0)
-        ExecWait(battle_item_tasty_tonic_DrinkItem)
+        ExecWait(DrinkItem)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar1, 25)
         Add(LVar2, 5)
@@ -56,7 +52,7 @@ EvtScript N(EVS_UseItem) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Add(LVar2, 5)
         Call(ShowRecoveryShimmer, LVar0, LVar1, LVar2, 10)
-        Call(battle_item_tasty_tonic_func_802A123C_72223C, 0)
+        Call(func_802A123C_72223C, 0)
         Wait(20)
     Else
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -69,14 +65,14 @@ EvtScript N(EVS_UseItem) = {
         Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
         Add(LVar2, 5)
         Call(ShowRecoveryShimmer, LVar0, LVar1, LVar2, 5)
-        Call(battle_item_tasty_tonic_func_802A123C_72223C, 256)
+        Call(func_802A123C_72223C, 256)
         Wait(20)
     EndIf
-    ExecWait(battle_item_tasty_tonic_PlayerGoHome)
+    ExecWait(PlayerGoHome)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_ITEM,
-    &N(EVS_UseItem),
+    &EVS_UseItem,
 );

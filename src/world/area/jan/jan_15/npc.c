@@ -3,7 +3,7 @@
 #include "world/common/enemy/PutridPiranhaSentinel/idle.inc.c"
 #include "world/common/enemy/HeartPlant/idle.inc.c"
 
-EvtScript N(EVS_PutridPiranhas_IdleChomping) = {
+EvtScript EVS_PutridPiranhas_IdleChomping = {
     ChildThread
         Loop(0)
             Call(RandInt, 5, LVar0)
@@ -48,7 +48,7 @@ EvtScript N(EVS_PutridPiranhas_IdleChomping) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_PutridPiranha) = {
+EvtScript EVS_NpcIdle_PutridPiranha = {
     IfEq(GF_JAN15_EncounteredMiniboss, false)
         Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -61,7 +61,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
         Set(GF_JAN15_EncounteredMiniboss, true)
         Call(DisablePlayerInput, false)
     EndIf
-    ExecGetTID(N(EVS_PutridPiranhas_IdleChomping), LVar9)
+    ExecGetTID(EVS_PutridPiranhas_IdleChomping, LVar9)
     Call(AwaitPlayerApproach, 400, -10, 135)
     Call(DisablePlayerInput, true)
     KillThread(LVar9)
@@ -149,7 +149,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcHit_PutridPiranha) = {
+EvtScript EVS_NpcHit_PutridPiranha = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -161,10 +161,10 @@ EvtScript N(EVS_NpcHit_PutridPiranha) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_PutridPiranha) = {
+EvtScript EVS_NpcInit_PutridPiranha = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_PIRANHAS_MINIBOSS)
-        Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_PutridPiranha)))
-        Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_PutridPiranha)))
+        Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_PutridPiranha))
+        Call(BindNpcHit, NPC_SELF, Ref(EVS_NpcHit_PutridPiranha))
     Else
         Call(SetNpcPos, NPC_PutridPiranha_01, NPC_DISPOSE_LOCATION)
         Call(SetNpcPos, NPC_PutridPiranha_02, NPC_DISPOSE_LOCATION)
@@ -174,13 +174,13 @@ EvtScript N(EVS_NpcInit_PutridPiranha) = {
     End
 };
 
-NpcData N(NpcData_Piranhas)[] = {
+NpcData NpcData_Piranhas[] = {
     {
         .id = NPC_PutridPiranha_01,
         .pos = { 365.0f, 0.0f, -45.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_PutridPiranha),
-        .settings = &N(NpcSettings_PutridPiranhaSentinel),
+        .init = &EVS_NpcInit_PutridPiranha,
+        .settings = &NpcSettings_PutridPiranhaSentinel,
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = PIRANHA_SENTINEL_DROPS,
         .animations = PIRANHA_SENTINEL_ANIMS,
@@ -189,7 +189,7 @@ NpcData N(NpcData_Piranhas)[] = {
         .id = NPC_PutridPiranha_02,
         .pos = { 325.0f, 0.0f, 0.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_PutridPiranhaSentinel),
+        .settings = &NpcSettings_PutridPiranhaSentinel,
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = PIRANHA_SENTINEL_DROPS,
         .animations = PIRANHA_SENTINEL_ANIMS,
@@ -198,38 +198,38 @@ NpcData N(NpcData_Piranhas)[] = {
         .id = NPC_PutridPiranha_03,
         .pos = { 375.0f, 0.0f, 45.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_PutridPiranhaSentinel),
+        .settings = &NpcSettings_PutridPiranhaSentinel,
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = PIRANHA_SENTINEL_DROPS,
         .animations = PIRANHA_SENTINEL_ANIMS,
     },
 };
 
-NpcData N(NpcData_HeartPlant_01) = {
+NpcData NpcData_HeartPlant_01 = {
     .id = NPC_HeartPlant_01,
     .pos = { -183.0f, 0.0f, 47.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HeartPlant),
+    .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = HEART_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcData N(NpcData_HeartPlant_02) = {
+NpcData NpcData_HeartPlant_02 = {
     .id = NPC_HeartPlant_02,
     .pos = { -124.0f, 0.0f, 20.0f },
     .yaw = 270,
-    .settings = &N(NpcSettings_HeartPlant),
+    .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = HEART_PLANT_ANIMS,
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Piranhas), BTL_JAN2_FORMATION_03, BTL_JAN2_STAGE_04),
-    NPC_GROUP(N(NpcData_HeartPlant_01)),
-    NPC_GROUP(N(NpcData_HeartPlant_02)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Piranhas, BTL_JAN2_FORMATION_03, BTL_JAN2_STAGE_04),
+    NPC_GROUP(NpcData_HeartPlant_01),
+    NPC_GROUP(NpcData_HeartPlant_02),
     {}
 };

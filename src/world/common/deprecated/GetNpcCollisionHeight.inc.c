@@ -1,7 +1,7 @@
 #include "common.h"
 #include "npc.h"
 
-API_CALLABLE(N(GetNpcCollisionHeight)) {
+API_CALLABLE(GetNpcCollisionHeight) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     Npc* npc = get_npc_safe(npcID);

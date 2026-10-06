@@ -2,16 +2,14 @@
 #include "script_api/battle.h"
 #include "sprite/npc/LavaBubble.h"
 
-#define NAMESPACE A(lava_bubble)
+extern s32 DefaultAnims[];
+extern s32 ProjectileAnims[];
+extern EvtScript EVS_Init;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
 
-extern s32 N(DefaultAnims)[];
-extern s32 N(ProjectileAnims)[];
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_FIRE_1      = 2,
     PRT_FIRE_2      = 3,
@@ -19,20 +17,20 @@ enum N(ActorPartIDs) {
     PRT_FIRE_4      = 5,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_IN_NoTackle    = 0,
     AVAR_CanTackle      = 0,
     AVAR_Generation     = 1,
     AVAR_PauseIdle      = 2,
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_TACKLE          = 4,
     DMG_SHOOT_PLAYER    = 4,
     DMG_SHOOT_PARTNER   = 2,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_WATER,   -2,
     ELEMENT_ICE,     -2,
@@ -41,7 +39,7 @@ s32 N(DefenseTable)[] = {
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              50,
@@ -66,15 +64,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -2, 25 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAG_FIREY,
         .elementImmunityFlags = ELEMENT_FIRE,
         .projectileTargetOffset = { -3, -10 },
@@ -85,8 +83,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(ProjectileAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ProjectileAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -97,8 +95,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(ProjectileAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ProjectileAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -109,8 +107,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(ProjectileAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ProjectileAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -121,8 +119,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 24 },
         .opacity = 255,
-        .idleAnimations = N(ProjectileAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = ProjectileAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
@@ -134,10 +132,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_LAVA_BUBBLE,
     .level = ACTOR_LEVEL_LAVA_BUBBLE,
     .maxHP = 9,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 50,
     .airLiftChance = 90,
     .hurricaneChance = 85,
@@ -152,7 +150,7 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 20 },
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_LavaBubble_Idle,
     STATUS_KEY_STONE,     ANIM_LavaBubble_Still,
     STATUS_KEY_SLEEP,     ANIM_LavaBubble_Idle,
@@ -165,15 +163,15 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(ProjectileAnims)[] = {
+s32 ProjectileAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_LavaBubble_Idle,
     STATUS_END,
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Call(GetActorVar, ACTOR_SELF, AVAR_IN_NoTackle, LVar0)
     Switch(LVar0)
         CaseEq(0)
@@ -195,7 +193,7 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Label(0)
         Call(MakeLerp, 0, 10, 25, EASING_COS_IN_OUT)
         Label(1)
@@ -242,12 +240,12 @@ EvtScript N(EVS_Idle) = {
 
 #include "common/PlayLavaBubbleFlightSound.inc.c"
 
-EvtScript N(EVS_Ember_FlyHome) = {
+EvtScript EVS_Ember_FlyHome = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBubble_FlyFast)
     Call(SetGoalToHome, ACTOR_SELF)
     Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
     Thread
-        Call(N(PlayLavaBubbleFlightSound))
+        Call(PlayLavaBubbleFlightSound)
     EndThread
     Call(FlyToGoal, ACTOR_SELF, 0, 1, EASING_SIN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBubble_Idle)
@@ -255,7 +253,7 @@ EvtScript N(EVS_Ember_FlyHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -300,7 +298,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_LavaBubble_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
         CaseEq(EVENT_SHOCK_DEATH)
             Call(PlaySoundAtActor, ACTOR_SELF, SOUND_EMBER_FLY | SOUND_ID_TRIGGER_CHANGE_SOUND)
             SetConst(LVar0, PRT_MAIN)
@@ -330,7 +328,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(SetActorPos, ACTOR_SELF, 20, 0, 0)
             Call(HPBarToCurrent, ACTOR_SELF)
         CaseEq(EVENT_END_FIRST_STRIKE)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
             Call(HPBarToHome, ACTOR_SELF)
         CaseEq(EVENT_RECOVER_STATUS)
             SetConst(LVar0, PRT_MAIN)
@@ -360,7 +358,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Tackle) = {
+EvtScript EVS_Attack_Tackle = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -375,7 +373,7 @@ EvtScript N(EVS_Attack_Tackle) = {
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
     Thread
-        Call(N(PlayLavaBubbleFlightSound))
+        Call(PlayLavaBubbleFlightSound)
     EndThread
     Call(FlyToGoal, ACTOR_SELF, 0, 0, EASING_SIN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBubble_Idle)
@@ -409,7 +407,7 @@ EvtScript N(EVS_Attack_Tackle) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorYaw, ACTOR_SELF, 180)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -434,7 +432,7 @@ EvtScript N(EVS_Attack_Tackle) = {
             Set(LVar1, ANIM_LavaBubble_Confused)
             ExecWait(EVS_Enemy_Knockback)
             Wait(5)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -446,7 +444,7 @@ EvtScript N(EVS_Attack_Tackle) = {
 // (in) LVar3 posX
 // (in) LVar4 posY
 // (in) LVar5 posZ
-EvtScript N(EVS_ShootFire_Impl) = {
+EvtScript EVS_ShootFire_Impl = {
     Set(LVar6, 2)
     Loop(4)
         Thread
@@ -475,8 +473,8 @@ EvtScript N(EVS_ShootFire_Impl) = {
 // (in) LVar3 posX
 // (in) LVar4 posY
 // (in) LVar5 posZ
-EvtScript N(EVS_ShootFire) = {
-    Exec(N(EVS_ShootFire_Impl))
+EvtScript EVS_ShootFire = {
+    Exec(EVS_ShootFire_Impl)
     Call(GetDistanceToGoal, ACTOR_SELF, LVar0)
     DivF(LVar0, Float(8.0))
     Add(LVar0, 1)
@@ -485,7 +483,7 @@ EvtScript N(EVS_ShootFire) = {
     End
 };
 
-EvtScript N(EVS_Attack_ShootPartner) = {
+EvtScript EVS_Attack_ShootPartner = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PARTNER)
@@ -505,7 +503,7 @@ EvtScript N(EVS_Attack_ShootPartner) = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBubble_FlyFast)
     Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
     Thread
-        Call(N(PlayLavaBubbleFlightSound))
+        Call(PlayLavaBubbleFlightSound)
     EndThread
     Call(FlyToGoal, ACTOR_SELF, 0, -4, EASING_SIN_OUT)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBubble_Idle)
@@ -526,7 +524,7 @@ EvtScript N(EVS_Attack_ShootPartner) = {
             Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
             Sub(LVar3, 100)
             Add(LVar5, 2)
-            ExecWait(N(EVS_ShootFire))
+            ExecWait(EVS_ShootFire)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
@@ -534,7 +532,7 @@ EvtScript N(EVS_Attack_ShootPartner) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorYaw, ACTOR_SELF, 180)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
             Wait(20)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
@@ -552,7 +550,7 @@ EvtScript N(EVS_Attack_ShootPartner) = {
     Call(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
     Sub(LVar4, 6)
     Add(LVar5, 2)
-    ExecWait(N(EVS_ShootFire))
+    ExecWait(EVS_ShootFire)
     Wait(2)
     Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_FIRE | DAMAGE_TYPE_NO_CONTACT, 0, 0, DMG_SHOOT_PARTNER, BS_FLAGS1_TRIGGER_EVENTS)
     Wait(20)
@@ -560,7 +558,7 @@ EvtScript N(EVS_Attack_ShootPartner) = {
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -569,7 +567,7 @@ EvtScript N(EVS_Attack_ShootPartner) = {
     End
 };
 
-EvtScript N(EVS_Attack_ShootPlayer) = {
+EvtScript EVS_Attack_ShootPlayer = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -581,7 +579,7 @@ EvtScript N(EVS_Attack_ShootPlayer) = {
     Call(AddGoalPos, ACTOR_SELF, 30, 0, 0)
     Call(SetActorSpeed, ACTOR_SELF, Float(5.0))
     Thread
-        Call(N(PlayLavaBubbleFlightSound))
+        Call(PlayLavaBubbleFlightSound)
     EndThread
     Call(FlyToGoal, ACTOR_SELF, 0, -4, EASING_SIN_OUT)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
@@ -615,7 +613,7 @@ EvtScript N(EVS_Attack_ShootPlayer) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
             Call(SetActorYaw, ACTOR_SELF, 180)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -652,7 +650,7 @@ EvtScript N(EVS_Attack_ShootPlayer) = {
             Call(SetGoalPos, ACTOR_SELF, LVarA, LVarB, LVarC)
             Call(FlyToGoal, ACTOR_SELF, 0, -10, EASING_LINEAR)
             Wait(20)
-            ExecWait(N(EVS_Ember_FlyHome))
+            ExecWait(EVS_Ember_FlyHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_RESTART)
@@ -661,15 +659,15 @@ EvtScript N(EVS_Attack_ShootPlayer) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(GetActorVar, ACTOR_SELF, AVAR_CanTackle, LVar0)
         Switch(LVar0)
             CaseEq(1)
-                ExecWait(N(EVS_Attack_Tackle))
+                ExecWait(EVS_Attack_Tackle)
             CaseEq(0)
-                ExecWait(N(EVS_Attack_ShootPlayer))
+                ExecWait(EVS_Attack_ShootPlayer)
         EndSwitch
         Return
     EndIf
@@ -678,25 +676,25 @@ EvtScript N(EVS_TakeTurn) = {
         CaseEq(1)
             Call(GetStatusFlags, ACTOR_PARTNER, LVar0)
             IfFlag(LVar0, STATUS_FLAG_KO)
-                ExecWait(N(EVS_Attack_Tackle))
+                ExecWait(EVS_Attack_Tackle)
             Else
                 Call(RandInt, 1000, LVar0)
                 IfLe(LVar0, 300)
-                    ExecWait(N(EVS_Attack_ShootPartner))
+                    ExecWait(EVS_Attack_ShootPartner)
                 Else
-                    ExecWait(N(EVS_Attack_Tackle))
+                    ExecWait(EVS_Attack_Tackle)
                 EndIf
             EndIf
         CaseEq(0)
             Call(GetStatusFlags, ACTOR_PARTNER, LVar0)
             IfFlag(LVar0, STATUS_FLAG_KO)
-                ExecWait(N(EVS_Attack_ShootPlayer))
+                ExecWait(EVS_Attack_ShootPlayer)
             Else
                 Call(RandInt, 1000, LVar0)
                 IfLe(LVar0, 300)
-                    ExecWait(N(EVS_Attack_ShootPartner))
+                    ExecWait(EVS_Attack_ShootPartner)
                 Else
-                    ExecWait(N(EVS_Attack_ShootPlayer))
+                    ExecWait(EVS_Attack_ShootPlayer)
                 EndIf
             EndIf
     EndSwitch

@@ -2,20 +2,20 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-Vec3f N(PeachTossPath)[] = {
+Vec3f PeachTossPath[] = {
     { -307.0,    30.0,  -30.0 },
     { -290.0,    35.0,  -30.0 },
     { -250.0,     0.0,  -30.0 },
 };
 
-Vec3f N(TwinkFollowPath)[] = {
+Vec3f TwinkFollowPath[] = {
     { -480.0,    30.0,  -30.0 },
     { -360.0,    60.0,  -30.0 },
     { -340.0,   120.0,  -70.0 },
     { -380.0,    40.0, -100.0 },
 };
 
-Vec3f N(TwinkApproachPath)[] = {
+Vec3f TwinkApproachPath[] = {
     { -380.0,    40.0, -100.0 },
     { -360.0,    45.0,  -82.0 },
     { -340.0,    40.0,  -65.0 },
@@ -23,7 +23,7 @@ Vec3f N(TwinkApproachPath)[] = {
     { -290.0,    25.0,  -30.0 },
 };
 
-EvtScript N(EVS_Scene_TossedBackInRoom) = {
+EvtScript EVS_Scene_TossedBackInRoom = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetMusic, 0, SONG_PEACH_CAUGHT, 0, VOL_LEVEL_FULL)
@@ -55,7 +55,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
     EndLoop
     Thread
         Wait(10 * DT)
-        Call(LoadPath, 50 * DT, Ref(N(TwinkFollowPath)), ARRAY_COUNT(N(TwinkFollowPath)), EASING_LINEAR)
+        Call(LoadPath, 50 * DT, Ref(TwinkFollowPath), ARRAY_COUNT(TwinkFollowPath), EASING_LINEAR)
         Loop(0)
             Call(GetNextPathPos)
             Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -95,7 +95,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
     Call(SetPlayerAnimation, ANIM_Peach2_Thrown)
     Call(SetNpcAnimation, NPC_Koopatrol_Guard_01, ANIM_WorldKoopatrol_Toss)
     Call(SetNpcAnimation, NPC_Koopatrol_Guard_02, ANIM_WorldKoopatrol_Toss)
-    Call(LoadPath, 15 * DT, Ref(N(PeachTossPath)), ARRAY_COUNT(N(PeachTossPath)), EASING_LINEAR)
+    Call(LoadPath, 15 * DT, Ref(PeachTossPath), ARRAY_COUNT(PeachTossPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetPlayerPos, LVar1, LVar2, LVar3)
@@ -145,7 +145,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
         Call(PlaySoundAtCollider, COLLIDER_ttw, SOUND_BASIC_DOOR_CLOSE, 0)
     EndThread
     Wait(60 * DT)
-    Call(LoadPath, 50 * DT, Ref(N(TwinkApproachPath)), ARRAY_COUNT(N(TwinkApproachPath)), EASING_LINEAR)
+    Call(LoadPath, 50 * DT, Ref(TwinkApproachPath), ARRAY_COUNT(TwinkApproachPath), EASING_LINEAR)
     Loop(0)
         Call(GetNextPathPos)
         Call(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
@@ -183,7 +183,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
         EndIf
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, LVar0)
     EndIf
-    Exec(N(EVS_SetupMusic))
+    Exec(EVS_SetupMusic)
     Call(ResetCam, CAM_DEFAULT, Float(1.0 / DT))
     Call(EnablePartnerAI)
     Call(DisablePlayerPhysics, false)
@@ -192,7 +192,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
     End
 };
 
-AnimID N(LimitAnims_Koopatrol)[] = {
+AnimID LimitAnims_Koopatrol[] = {
     ANIM_WorldKoopatrol_Idle,
     ANIM_WorldKoopatrol_Run,
     ANIM_WorldKoopatrol_Lift,
@@ -201,30 +201,30 @@ AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Guards)[] = {
+NpcData NpcData_Guards[] = {
     {
         .id = NPC_Koopatrol_Guard_01,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopatrol),
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol),
+        .limitAnimations = LimitAnims_Koopatrol,
     },
     {
         .id = NPC_Koopatrol_Guard_02,
         .pos = { 0.0f, -500.0f, 0.0f },
         .yaw = 0,
-        .settings = &N(NpcSettings_Koopatrol),
+        .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .limitAnimations = N(LimitAnims_Koopatrol),
+        .limitAnimations = LimitAnims_Koopatrol,
     },
 };
 
-NpcGroupList N(TossBackNPCs) = {
-    NPC_GROUP(N(NpcData_Guards)),
+NpcGroupList TossBackNPCs = {
+    NPC_GROUP(NpcData_Guards),
     {}
 };

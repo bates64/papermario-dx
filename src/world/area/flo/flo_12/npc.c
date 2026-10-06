@@ -6,7 +6,7 @@
 
 #include "foliage.h"
 
-EvtScript N(EVS_Scene_SunReturns) = {
+EvtScript EVS_Scene_SunReturns = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(GetNpcPos, NPC_Rosie, LVar0, LVar1, LVar2)
@@ -28,7 +28,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-EvtScript N(EVS_PlayerApproachRosie) = {
+EvtScript EVS_PlayerApproachRosie = {
     Wait(10)
     Call(SetNpcFlagBits, NPC_Rosie, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(PlayerMoveTo, -5, 20, 20)
@@ -38,7 +38,7 @@ EvtScript N(EVS_PlayerApproachRosie) = {
     End
 };
 
-EvtScript N(EVS_PlayerApproachRosieAndItem) = {
+EvtScript EVS_PlayerApproachRosieAndItem = {
     Wait(10)
     Call(SetNpcFlagBits, NPC_Rosie, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
@@ -50,13 +50,13 @@ EvtScript N(EVS_PlayerApproachRosieAndItem) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Rosie) = {
-    ExecWait(N(EVS_PushFlowerSong))
+EvtScript EVS_NpcInteract_Rosie = {
+    ExecWait(EVS_PushFlowerSong)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_CRYSTAL_BERRY)
             Switch(GF_FLO12_Met_Rosie)
                 CaseEq(0)
-                    Exec(N(EVS_PlayerApproachRosie))
+                    Exec(EVS_PlayerApproachRosie)
                     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                     Add(LVar0, 30)
                     Call(SetCamProperties, CAM_DEFAULT, Float(4.0), LVar0, LVar1, LVar2, 325, Float(19.0), Float(-9.5))
@@ -94,7 +94,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                     Switch(GF_FLO12_RosieRequestedSomethingBeautiful)
                         CaseEq(0)
                             IfEq(GF_FLO10_LilyRequestedWaterStone, true)
-                                Exec(N(EVS_PlayerApproachRosieAndItem))
+                                Exec(EVS_PlayerApproachRosieAndItem)
                                 Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_TalkHold, 5, MSG_CH6_0090)
                                 Call(SetPlayerAnimation, ANIM_MarioW1_TakeItem)
                                 Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0091)
@@ -113,7 +113,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
         CaseLt(STORY_CH6_GOT_WATER_STONE)
             Call(FindItem, ITEM_CRYSTAL_BERRY, LVar0)
             IfNe(LVar0, -1)
-                Exec(N(EVS_PlayerApproachRosieAndItem))
+                Exec(EVS_PlayerApproachRosieAndItem)
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Add(LVar0, 30)
                 Call(SetCamProperties, CAM_DEFAULT, Float(4.0), LVar0, LVar1, LVar2, 325, Float(19.0), Float(-9.5))
@@ -146,13 +146,13 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0099)
     EndSwitch
     Call(ResetCam, CAM_DEFAULT, Float(4.0))
-    ExecWait(N(EVS_PopMusic))
+    ExecWait(EVS_PopMusic)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Rosie) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rosie)))
+EvtScript EVS_NpcInit_Rosie = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rosie))
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 35)
     Call(SetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
@@ -181,13 +181,13 @@ EvtScript N(EVS_NpcInit_Rosie) = {
     End
 };
 
-NpcData N(NpcData_Rosie)[] = {
+NpcData NpcData_Rosie[] = {
     {
         .id = NPC_Rosie,
         .pos = { -70.0f, 0.0f, 20.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_Rosie),
-        .settings = &N(NpcSettings_Rosie),
+        .init = &EVS_NpcInit_Rosie,
+        .settings = &NpcSettings_Rosie,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = ROSIE_ANIMS,
@@ -197,14 +197,14 @@ NpcData N(NpcData_Rosie)[] = {
         .id = NPC_Dummy,
         .pos = { -70.0f, 0.0f, 20.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Dummy),
+        .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = ROSIE_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Rosie)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Rosie),
     {}
 };

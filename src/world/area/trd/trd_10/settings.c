@@ -1,22 +1,22 @@
 #include "trd_10.h"
 
-extern EvtScript N(EVS_Main);
+extern EvtScript EVS_Main;
 
-EntryList N(Entrances) = {
+EntryList Entrances = {
     [trd_10_ENTRY_0]    { -310.0,    0.0,    0.0,   90.0 },
     [trd_10_ENTRY_1]    { -225.0,    0.0,    0.0,   90.0 },
 };
 
-export MapSettings N(settings) = {
-    .main = &N(EVS_Main),
-    .entryList = &N(Entrances),
-    .entryCount = ENTRY_COUNT(N(Entrances)),
+export MapSettings settings = {
+    .main = &EVS_Main,
+    .entryList = &Entrances,
+    .entryCount = ENTRY_COUNT(Entrances),
     .tattle = { MSG_MapTattle_trd_10 },
     .songVariation = 1,
     .sfxReverb = 3,
 };
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
             Call(SetMusic, 0, SONG_KOOPA_BROS_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)

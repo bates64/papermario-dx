@@ -34,12 +34,10 @@ enum {
     MF_KooperDoneMoving         = MapFlag(0),
 };
 
-#define NAMESPACE sam_08
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupBridge);
-extern EvtScript N(EVS_Scene_HitTrueKooper);
-extern EvtScript N(EVS_Scene_HitFakeKooper);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupBridge;
+extern EvtScript EVS_Scene_HitTrueKooper;
+extern EvtScript EVS_Scene_HitFakeKooper;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList DefaultNPCs;

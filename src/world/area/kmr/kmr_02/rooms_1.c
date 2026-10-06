@@ -1,19 +1,19 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_SetDoorRot_House) = {
+EvtScript EVS_SetDoorRot_House = {
     Call(RotateModel, MODEL_syoumen_enter, LVar0, 0, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_DropDoor_House) = {
+EvtScript EVS_DropDoor_House = {
     Call(RotateModel, MODEL_syoumen_enter, LVar0, Float(54.56), 0, Float(31.5))
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_House) = {
+EvtScript EVS_SetWallRot_House = {
     Call(RotateModel, MODEL_door_ki, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o122, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o123, LVar0, 1, 0, 0)
@@ -37,18 +37,18 @@ EvtScript N(EVS_SetWallRot_House) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_Goombario_NoAI) = {
+EvtScript EVS_NpcAI_Goombario_NoAI = {
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_Goombario) = {
-    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
+EvtScript EVS_NpcAI_Goombario = {
+    ExecWait(EVS_NpcAI_GoombaFamily_Wander)
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_House) = {
+EvtScript EVS_RoomListener_House = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_of, MODEL_GROUP_VISIBLE)
@@ -59,7 +59,7 @@ EvtScript N(EVS_RoomListener_House) = {
                 IfEq(GF_KMR02_Met_Goompapa, true)
                     IfEq(GF_KMR02_Goombario_RelayedMessage, false)
                         Call(DisablePlayerInput, true)
-                        Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcAI_Goombario_NoAI)))
+                        Call(BindNpcAI, NPC_Goombario, Ref(EVS_NpcAI_Goombario_NoAI))
                         Call(SetNpcPos, NPC_Goombario, -54, 0, -55)
                     EndIf
                 EndIf
@@ -72,7 +72,7 @@ EvtScript N(EVS_RoomListener_House) = {
                         Call(SetNpcAnimation, NPC_Goombario, ANIM_WorldGoombario_Walk)
                         Call(NpcMoveTo, NPC_Goombario, 8, -94, 20)
                         Call(SpeakToPlayer, NPC_Goombario, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH0_0050)
-                        Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcAI_Goombario)))
+                        Call(BindNpcAI, NPC_Goombario, Ref(EVS_NpcAI_Goombario))
                         Set(GF_KMR02_Goombario_RelayedMessage, true)
                         Call(DisablePlayerInput, false)
                     EndIf
@@ -83,18 +83,18 @@ EvtScript N(EVS_RoomListener_House) = {
     End
 };
 
-EvtScript N(EVS_SetDoorRot_Verdana) = {
+EvtScript EVS_SetDoorRot_Verdana = {
     Call(RotateModel, MODEL_ura_exit, LVar0, 0, -1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_SetWallRot_Verdana) = {
+EvtScript EVS_SetWallRot_Verdana = {
     Return
     End
 };
 
-EvtScript N(EVS_RoomListener_Verdana) = {
+EvtScript EVS_RoomListener_Verdana = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -193,37 +193,37 @@ EvtScript N(EVS_RoomListener_Verdana) = {
     End
 };
 
-s32 N(InsideNPCs_House)[] = {
+s32 InsideNPCs_House[] = {
     NPC_Gooma,
     NPC_Goompa,
     -1
 };
 
-EvtScript N(EVS_SetupRooms) = {
+EvtScript EVS_SetupRooms = {
     // goomba family home, main room
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_House)),
-        Ref(N(EVS_SetWallRot_House)),
-        Ref(N(EVS_DropDoor_House)),
-        Ref(N(EVS_RoomListener_House)),
+        Ref(EVS_SetDoorRot_House),
+        Ref(EVS_SetWallRot_House),
+        Ref(EVS_DropDoor_House),
+        Ref(EVS_RoomListener_House),
         COLLIDER_deilit5,
         COLLIDER_deilit6,
         MODEL_kuribou_house,
-        Ref(N(InsideNPCs_House)))
+        Ref(InsideNPCs_House))
     // verdana
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_LEFT_HINGE_OPENS_OUT),
-        Ref(N(EVS_SetDoorRot_Verdana)),
-        Ref(N(EVS_SetWallRot_Verdana)),
+        Ref(EVS_SetDoorRot_Verdana),
+        Ref(EVS_SetWallRot_Verdana),
         nullptr,
-        Ref(N(EVS_RoomListener_Verdana)),
+        Ref(EVS_RoomListener_Verdana),
         COLLIDER_deilit4,
         COLLIDER_deilit4_1,
         MODEL_kuribou_house,
-        Ref(N(InsideNPCs_House)))
+        Ref(InsideNPCs_House))
     Set(LVar0, ROOM_UPDATE_EXIT_END)
-    Exec(N(EVS_RoomListener_House))
+    Exec(EVS_RoomListener_House)
     Call(SetGroupVisibility, MODEL_monohoshi, MODEL_GROUP_HIDDEN)
     Return
     End
@@ -232,7 +232,7 @@ EvtScript N(EVS_SetupRooms) = {
 #include "world/common/prefab/ToadHouse.inc.c"
 #include "world/common/prefab/ToadHouse.data.inc.c"
 
-EvtScript N(EVS_ToadHouse_SetDialogue) = {
+EvtScript EVS_ToadHouse_SetDialogue = {
     IfEq(GF_KMR02_ToadHouse_Intro, false)
         Set(LVar0, MSG_CH0_0013)
         Set(LVar8, MSG_CH0_0013)
@@ -248,11 +248,11 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_GetInBed) = {
-    Exec(N(EVS_PlayRestingSong))
+EvtScript EVS_ToadHouse_GetInBed = {
+    Exec(EVS_PlayRestingSong)
     Thread
         Wait(20)
-        Call(N(ToadHouse_CamSetFOV), 0, 40)
+        Call(ToadHouse_CamSetFOV, 0, 40)
         Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
@@ -276,7 +276,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     Thread
         Wait(70)
-        Call(N(ToadHouse_CamSetFOV), 0, 25)
+        Call(ToadHouse_CamSetFOV, 0, 25)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
@@ -286,8 +286,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Exec(N(EVS_SetupMusic))
+EvtScript EVS_ToadHouse_ReturnFromRest = {
+    Exec(EVS_SetupMusic)
     Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, -183, 19, -341)
@@ -296,8 +296,8 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_ToadHouse) = {
-    ExecWait(N(EVS_NpcInteract_ToadHouseKeeper))
+EvtScript EVS_NpcInteract_ToadHouse = {
+    ExecWait(EVS_NpcInteract_ToadHouseKeeper)
     Return
     End
 };

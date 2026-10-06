@@ -1,7 +1,7 @@
 #include "mac_00.h"
 
 
-MusicProximityTrigger N(MusicMixTrigger1) = {
+MusicProximityTrigger MusicMixTrigger1 = {
     .pos = { 15.0f, -400.0f },
     .innerDist = 90.0f,
     .outerDist = 120.0f,
@@ -9,7 +9,7 @@ MusicProximityTrigger N(MusicMixTrigger1) = {
     .manualActivationFlag = MF_MusicMixTrigger1,
 };
 
-MusicProximityTrigger N(MusicMixTrigger2) = {
+MusicProximityTrigger MusicMixTrigger2 = {
     .pos = { 445.0f, -307.0f },
     .innerDist = 90.0f,
     .outerDist = 110.0f,
@@ -17,15 +17,15 @@ MusicProximityTrigger N(MusicMixTrigger2) = {
     .manualActivationFlag = MF_MusicMixTrigger2,
 };
 
-EvtScript N(EVS_SetupMusicTriggers) = {
+EvtScript EVS_SetupMusicTriggers = {
     Call(SetMusic, 0, SONG_TOAD_TOWN, 0, VOL_LEVEL_FULL)
     Call(EnableMusicProximityMix, 0)
     Thread
-        Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger1)))
+        Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger1))
     EndThread
     IfGe(GB_StoryProgress, STORY_CH0_RETURNED_TO_TOAD_TOWN)
         Thread
-            Call(MonitorMusicProximityTrigger, Ref(N(MusicMixTrigger2)))
+            Call(MonitorMusicProximityTrigger, Ref(MusicMixTrigger2))
         EndThread
     EndIf
     Return

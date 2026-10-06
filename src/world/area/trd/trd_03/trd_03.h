@@ -24,5 +24,3 @@ enum {
 enum {
     MV_PlatformsExtended        = MapVar(0),
 };
-
-#define NAMESPACE trd_03

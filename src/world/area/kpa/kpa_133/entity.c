@@ -3,10 +3,10 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-extern EvtScript N(EVS_TriggerSwitch);
-extern EvtScript N(EVS_SetupHiddenSpring);
+extern EvtScript EVS_TriggerSwitch;
+extern EvtScript EVS_SetupHiddenSpring;
 
-API_CALLABLE(N(SetSpringRotation)) {
+API_CALLABLE(SetSpringRotation) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_SpringEntityID));
 
@@ -16,7 +16,7 @@ API_CALLABLE(N(SetSpringRotation)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SetSpringPosition)) {
+API_CALLABLE(SetSpringPosition) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_SpringEntityID));
 
@@ -26,26 +26,26 @@ API_CALLABLE(N(SetSpringPosition)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA133_BlueSwitch, false)
         Call(MakeEntity, Ref(Entity_BlueSwitch), 60, 115, 10, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA133_HitWaterSwitch))
-        Call(AssignScript, Ref(N(EVS_TriggerSwitch)))
+        Call(AssignScript, Ref(EVS_TriggerSwitch))
     EndIf
     IfEq(GF_KPA133_BlueSwitch, true)
         Call(MakeEntity, Ref(Entity_SimpleSpring), 150, 115, 0, 90, 60, MAKE_ENTITY_END)
     Else
         Call(MakeEntity, Ref(Entity_SimpleSpring), 150, 150, -105, 90, 60, MAKE_ENTITY_END)
         Set(MV_SpringEntityID, LVar0)
-        Call(N(SetSpringRotation), -90, 0, 0)
-        Exec(N(EVS_SetupHiddenSpring))
+        Call(SetSpringRotation, -90, 0, 0)
+        Exec(EVS_SetupHiddenSpring)
     EndIf
     Call(MakeItemEntity, ITEM_BOWSER_CASTLE_KEY, -350, 215, -50, ITEM_SPAWN_MODE_KEY, GF_KPA133_Item_CastleKey2)
     Return
     End
 };
 
-EvtScript N(EVS_SetupHiddenSpring) = {
+EvtScript EVS_SetupHiddenSpring = {
     Loop(0)
         Wait(1)
         IfEq(MV_RevealHiddenSpring, true)
@@ -105,7 +105,7 @@ EvtScript N(EVS_SetupHiddenSpring) = {
         Call(MakeLerp, -90, 0, 15, EASING_QUADRATIC_IN)
         Loop(0)
             Call(UpdateLerp)
-            Call(N(SetSpringRotation), LVar0, 0, 0)
+            Call(SetSpringRotation, LVar0, 0, 0)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -115,7 +115,7 @@ EvtScript N(EVS_SetupHiddenSpring) = {
     Thread
         Loop(23)
             Call(GetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
-            Call(N(SetSpringPosition), LVar0, LVar1, LVar2)
+            Call(SetSpringPosition, LVar0, LVar1, LVar2)
             Wait(1)
         EndLoop
         Call(SetNpcPos, NPC_Dummy, NPC_DISPOSE_LOCATION)
@@ -131,7 +131,7 @@ EvtScript N(EVS_SetupHiddenSpring) = {
     End
 };
 
-EvtScript N(EVS_TriggerSwitch) = {
+EvtScript EVS_TriggerSwitch = {
     Set(MV_RevealHiddenSpring, true)
     Return
     End

@@ -3,21 +3,21 @@
 #include "world/common/npc/TrainToad/idle.inc.c"
 #include "world/common/enemy/ShyGuy/wander.inc.c"
 
-EvtScript N(EVS_NpcInteract_Conductor) = {
+EvtScript EVS_NpcInteract_Conductor = {
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_Conductor_ChooseRoute))
+    ExecWait(EVS_Conductor_ChooseRoute)
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInit_Conductor) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Conductor)))
+EvtScript EVS_NpcInit_Conductor = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Conductor))
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_TrainToad) = {
+EvtScript EVS_NpcInteract_TrainToad = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_SOLVED_COLOR_PUZZLE)
             Call(FindItem, ITEM_MYSTERY_NOTE, LVar0)
@@ -45,13 +45,13 @@ EvtScript N(EVS_NpcInteract_TrainToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TrainToad) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TrainToad)))
+EvtScript EVS_NpcInit_TrainToad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TrainToad))
     Return
     End
 };
 
-EvtScript N(EVS_NpcAI_BoxedShyGuy) = {
+EvtScript EVS_NpcAI_BoxedShyGuy = {
     Loop(0)
         Call(GetSelfVar, 0, LVar0)
         Switch(LVar0)
@@ -59,7 +59,7 @@ EvtScript N(EVS_NpcAI_BoxedShyGuy) = {
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 IfEq(LVar1, 0)
                     Call(SetSelfVar, 0, 1)
-                    Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
+                    Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_ShyGuy_Wander))
                 EndIf
             CaseEq(2)
                 Call(DisablePlayerInput, true)
@@ -76,12 +76,12 @@ EvtScript N(EVS_NpcAI_BoxedShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcDefeat_BoxedShyGuy) = {
+EvtScript EVS_NpcDefeat_BoxedShyGuy = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(SetSelfVar, 0, 2)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_BoxedShyGuy)))
+            Call(BindNpcAI, NPC_SELF, Ref(EVS_NpcAI_BoxedShyGuy))
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -90,20 +90,20 @@ EvtScript N(EVS_NpcDefeat_BoxedShyGuy) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_BoxedShyGuy) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_BoxedShyGuy)))
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_BoxedShyGuy)))
+EvtScript EVS_NpcInit_BoxedShyGuy = {
+    Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcAI_BoxedShyGuy))
+    Call(BindNpcDefeat, NPC_SELF, Ref(EVS_NpcDefeat_BoxedShyGuy))
     Return
     End
 };
 
-NpcData N(NpcData_Toads)[] = {
+NpcData NpcData_Toads[] = {
     {
         .id = NPC_Conductor,
         .pos = { -145.0f, 50.0f, -110.0f },
         .yaw = 270,
-        .init = &N(EVS_NpcInit_Conductor),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_Conductor,
+        .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_CONDUCTOR_ANIMS,
@@ -113,8 +113,8 @@ NpcData N(NpcData_Toads)[] = {
         .id = NPC_TrainToad,
         .pos = { -250.0f, 0.0f, 50.0f },
         .yaw = 90,
-        .init = &N(EVS_NpcInit_TrainToad),
-        .settings = &N(NpcSettings_TrainToad),
+        .init = &EVS_NpcInit_TrainToad,
+        .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TRAIN_TOAD_GREEN_ANIMS,
@@ -122,7 +122,7 @@ NpcData N(NpcData_Toads)[] = {
     },
 };
 
-NpcData N(NpcData_ShyGuy_01) = {
+NpcData NpcData_ShyGuy_01 = {
     .id = NPC_ShyGuy_01,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -138,14 +138,14 @@ NpcData N(NpcData_ShyGuy_01) = {
             .detectSize = { 120 },
         }
     },
-    .init = &N(EVS_NpcInit_BoxedShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_BoxedShyGuy,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_02) = {
+NpcData NpcData_ShyGuy_02 = {
     .id = NPC_ShyGuy_02,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -161,14 +161,14 @@ NpcData N(NpcData_ShyGuy_02) = {
             .detectSize = { 120 },
         }
     },
-    .init = &N(EVS_NpcInit_BoxedShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_BoxedShyGuy,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_03) = {
+NpcData NpcData_ShyGuy_03 = {
     .id = NPC_ShyGuy_03,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -184,14 +184,14 @@ NpcData N(NpcData_ShyGuy_03) = {
             .detectSize = { 120 },
         }
     },
-    .init = &N(EVS_NpcInit_BoxedShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_BoxedShyGuy,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcData N(NpcData_ShyGuy_04) = {
+NpcData NpcData_ShyGuy_04 = {
     .id = NPC_ShyGuy_04,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
@@ -207,18 +207,18 @@ NpcData N(NpcData_ShyGuy_04) = {
             .detectSize = { 120 },
         }
     },
-    .init = &N(EVS_NpcInit_BoxedShyGuy),
-    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .init = &EVS_NpcInit_BoxedShyGuy,
+    .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Toads)),
-    NPC_GROUP(N(NpcData_ShyGuy_01), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
-    NPC_GROUP(N(NpcData_ShyGuy_02), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
-    NPC_GROUP(N(NpcData_ShyGuy_03), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
-    NPC_GROUP(N(NpcData_ShyGuy_04), BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Toads),
+    NPC_GROUP(NpcData_ShyGuy_01, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
+    NPC_GROUP(NpcData_ShyGuy_02, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
+    NPC_GROUP(NpcData_ShyGuy_03, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
+    NPC_GROUP(NpcData_ShyGuy_04, BTL_OMO3_FORMATION_0A, BTL_OMO3_STAGE_06),
     {}
 };

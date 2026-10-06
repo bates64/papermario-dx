@@ -1,6 +1,6 @@
 #include "omo_07.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     IfEq(GF_OMO07_SpawnedPeachChoice2, false)
         Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Else

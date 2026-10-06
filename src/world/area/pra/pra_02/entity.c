@@ -2,11 +2,11 @@
 #include "entity.h"
 #include "effects.h"
 
-ITEM_LIST(N(RedKeyList), ITEM_RED_KEY);
+ITEM_LIST(RedKeyList, ITEM_RED_KEY);
 
-ITEM_LIST(N(BlueKeyList), ITEM_BLUE_KEY);
+ITEM_LIST(BlueKeyList, ITEM_BLUE_KEY);
 
-EvtScript N(EVS_RaisePoundableSwitch) = {
+EvtScript EVS_RaisePoundableSwitch = {
     Call(MakeLerp, -10, 0, 10, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -23,7 +23,7 @@ EvtScript N(EVS_RaisePoundableSwitch) = {
     End
 };
 
-EvtScript N(EVS_LowerPoundableSwitch) = {
+EvtScript EVS_LowerPoundableSwitch = {
     Call(PlaySoundAtCollider, COLLIDER_o1344, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, -10, 10, EASING_LINEAR)
     Loop(0)
@@ -41,7 +41,7 @@ EvtScript N(EVS_LowerPoundableSwitch) = {
     End
 };
 
-API_CALLABLE(N(IsPlayerPounding)) {
+API_CALLABLE(IsPlayerPounding) {
     script->varTable[0] = false;
     if (gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND || gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND) {
         script->varTable[0] = true;
@@ -49,7 +49,7 @@ API_CALLABLE(N(IsPlayerPounding)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UpdatePadlockPosition)) {
+API_CALLABLE(UpdatePadlockPosition) {
     Bytecode* args = script->ptrReadPos;
     s32 entityIdx = evt_get_variable(script, *args++);
     f32 x = evt_get_float_variable(script, *args++);
@@ -69,8 +69,8 @@ API_CALLABLE(N(UpdatePadlockPosition)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ManagePoundableSwitch) = {
-    Call(N(IsPlayerPounding))
+EvtScript EVS_ManagePoundableSwitch = {
+    Call(IsPlayerPounding)
     IfEq(LVar0, false)
         Return
     EndIf
@@ -82,7 +82,7 @@ EvtScript N(EVS_ManagePoundableSwitch) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilittse2, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilittne2, COLLIDER_FLAGS_UPPER_MASK)
         Set(GF_PRA02_DoorColorToggle, true)
-        Exec(N(EVS_LowerPoundableSwitch))
+        Exec(EVS_LowerPoundableSwitch)
     Else
         Call(MakeLerp, -250, 0, 250 * DT, EASING_LINEAR)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittse2, COLLIDER_FLAGS_UPPER_MASK)
@@ -90,7 +90,7 @@ EvtScript N(EVS_ManagePoundableSwitch) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilittse, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_UPPER_MASK)
         Set(GF_PRA02_DoorColorToggle, false)
-        Exec(N(EVS_LowerPoundableSwitch))
+        Exec(EVS_LowerPoundableSwitch)
     EndIf
     Wait(30)
     Thread
@@ -110,7 +110,7 @@ EvtScript N(EVS_ManagePoundableSwitch) = {
     Label(0)
         Call(UpdateLerp)
         Set(MV_WallPosOffset, LVar0)
-        ExecWait(N(EVS_UpdateShiftingWallPos))
+        ExecWait(EVS_UpdateShiftingWallPos)
         IfEq(LVar1, 1)
             Goto(0)
         EndIf
@@ -118,42 +118,42 @@ EvtScript N(EVS_ManagePoundableSwitch) = {
     IfEq(GF_PRA02_DoorColorToggle, true)
         Call(SetGroupVisibility, MODEL_g307, MODEL_GROUP_HIDDEN)
         Call(SetGroupVisibility, MODEL_g308, MODEL_GROUP_VISIBLE)
-        ExecWait(N(EVS_RaisePoundableSwitch))
+        ExecWait(EVS_RaisePoundableSwitch)
     Else
         Call(SetGroupVisibility, MODEL_g307, MODEL_GROUP_VISIBLE)
         Call(SetGroupVisibility, MODEL_g308, MODEL_GROUP_HIDDEN)
-        ExecWait(N(EVS_RaisePoundableSwitch))
+        ExecWait(EVS_RaisePoundableSwitch)
     EndIf
     Call(DisablePlayerInput, false)
     Return
     End
 };
 
-EvtScript N(EVS_DoNothing) = {
+EvtScript EVS_DoNothing = {
     Return
     End
 };
 
-EvtScript N(EVS_UsePadlock_Dummy) = {
-    BindTrigger(Ref(N(EVS_DoNothing)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(N(EVS_DoNothing)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+EvtScript EVS_UsePadlock_Dummy = {
+    BindTrigger(Ref(EVS_DoNothing), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(Ref(EVS_DoNothing), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     Return
     End
 };
 
-EvtScript N(EVS_UpdatePadlockPositions) = {
+EvtScript EVS_UpdatePadlockPositions = {
     Loop(0)
-        Call(N(UpdatePadlockPosition), MV_NearRedPadlock, 987, 8, 84)
-        Call(N(UpdatePadlockPosition), MV_FarRedPadlock, 987, 8, -84)
-        Call(N(UpdatePadlockPosition), MV_NearBluePadlock, 987, 258, 84)
-        Call(N(UpdatePadlockPosition), MV_FarBluePadlock, 987, 258, -84)
+        Call(UpdatePadlockPosition, MV_NearRedPadlock, 987, 8, 84)
+        Call(UpdatePadlockPosition, MV_FarRedPadlock, 987, 8, -84)
+        Call(UpdatePadlockPosition, MV_NearBluePadlock, 987, 258, 84)
+        Call(UpdatePadlockPosition, MV_FarBluePadlock, 987, 258, -84)
         Wait(1)
     EndLoop
     Return
     End
 };
 
-EvtScript N(EVS_ItemPrompt_RedPadlock) = {
+EvtScript EVS_ItemPrompt_RedPadlock = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
@@ -172,8 +172,8 @@ EvtScript N(EVS_ItemPrompt_RedPadlock) = {
     Call(RemoveKeyItemAt, LVar0)
     Call(CloseChoicePopup)
     Set(GF_PRA02_UnlockedRedDoor, true)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_16_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_16_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_16_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_16_3), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
     Call(GetEntityPosition, MV_NearRedPadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     Call(GetEntityPosition, MV_FarRedPadlock, LVar0, LVar1, LVar2)
@@ -188,7 +188,7 @@ EvtScript N(EVS_ItemPrompt_RedPadlock) = {
     End
 };
 
-EvtScript N(EVS_ItemPrompt_BluePadlock) = {
+EvtScript EVS_ItemPrompt_BluePadlock = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
@@ -207,8 +207,8 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
     Call(RemoveKeyItemAt, LVar0)
     Call(CloseChoicePopup)
     Set(GF_PRA02_UnlockedBlueDoor, true)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_13_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse2, 1, 0)
-    BindTrigger(Ref(N(EVS_ExitDoors_pra_13_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne2, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_13_0), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse2, 1, 0)
+    BindTrigger(Ref(EVS_ExitDoors_pra_13_3), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne2, 1, 0)
     Call(GetEntityPosition, MV_NearBluePadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     Call(GetEntityPosition, MV_FarBluePadlock, LVar0, LVar1, LVar2)
@@ -223,7 +223,7 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
     End
 };
 
-EvtScript N(EVS_MakeEntities) = {
+EvtScript EVS_MakeEntities = {
     Set(MV_NearRedPadlock, -1)
     Set(MV_FarRedPadlock, -1)
     Set(MV_NearBluePadlock, -1)
@@ -231,33 +231,33 @@ EvtScript N(EVS_MakeEntities) = {
     Set(LVar2, COLLISION_WITH_ENTITY_BIT)
     IfEq(GF_PRA02_UnlockedRedDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 987, 8, 84, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_UsePadlock_Dummy)))
+        Call(AssignScript, Ref(EVS_UsePadlock_Dummy))
         Set(MV_NearRedPadlock, LVar0)
-        BindPadlock(Ref(N(EVS_ItemPrompt_RedPadlock)), TRIGGER_WALL_PRESS_A, LVar2, Ref(N(RedKeyList)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_RedPadlock), TRIGGER_WALL_PRESS_A, LVar2, Ref(RedKeyList), 0, 1)
         Add(LVar2, 1)
         Call(UseDynamicShadow, true)
         Call(MakeEntity, Ref(Entity_Padlock), 987, 8, -84, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_UsePadlock_Dummy)))
+        Call(AssignScript, Ref(EVS_UsePadlock_Dummy))
         Set(MV_FarRedPadlock, LVar0)
-        BindPadlock(Ref(N(EVS_ItemPrompt_RedPadlock)), TRIGGER_WALL_PRESS_A, LVar2, Ref(N(RedKeyList)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_RedPadlock), TRIGGER_WALL_PRESS_A, LVar2, Ref(RedKeyList), 0, 1)
         Add(LVar2, 1)
         Call(UseDynamicShadow, true)
     EndIf
     IfEq(GF_PRA02_UnlockedBlueDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 987, 258, 84, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_UsePadlock_Dummy)))
+        Call(AssignScript, Ref(EVS_UsePadlock_Dummy))
         Set(MV_NearBluePadlock, LVar0)
-        BindPadlock(Ref(N(EVS_ItemPrompt_BluePadlock)), TRIGGER_WALL_PRESS_A, LVar2, Ref(N(BlueKeyList)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_BluePadlock), TRIGGER_WALL_PRESS_A, LVar2, Ref(BlueKeyList), 0, 1)
         Add(LVar2, 1)
         Call(UseDynamicShadow, true)
         Call(MakeEntity, Ref(Entity_Padlock), 987, 258, -84, -80, MAKE_ENTITY_END)
-        Call(AssignScript, Ref(N(EVS_UsePadlock_Dummy)))
+        Call(AssignScript, Ref(EVS_UsePadlock_Dummy))
         Set(MV_FarBluePadlock, LVar0)
-        BindPadlock(Ref(N(EVS_ItemPrompt_BluePadlock)), TRIGGER_WALL_PRESS_A, LVar2, Ref(N(BlueKeyList)), 0, 1)
+        BindPadlock(Ref(EVS_ItemPrompt_BluePadlock), TRIGGER_WALL_PRESS_A, LVar2, Ref(BlueKeyList), 0, 1)
         Add(LVar2, 1)
         Call(UseDynamicShadow, true)
     EndIf
-    Exec(N(EVS_UpdatePadlockPositions))
+    Exec(EVS_UpdatePadlockPositions)
     Call(ParentColliderToModel, COLLIDER_o1344, MODEL_o1222)
     Call(ParentColliderToModel, COLLIDER_o1342, MODEL_o1228)
     Return

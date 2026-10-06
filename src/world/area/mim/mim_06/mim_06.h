@@ -22,11 +22,9 @@ enum {
     NPC_Fuzzy                   = 4,
 };
 
-#define NAMESPACE mim_06
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupGates);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_SetupFlowerHints);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupGates;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_SetupFlowerHints;
+extern NpcGroupList DefaultNPCs;
 

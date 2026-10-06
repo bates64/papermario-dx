@@ -30,16 +30,14 @@ enum {
     MF_KammyFlying      = MapFlag(10),
 };
 
-#define NAMESPACE omo_04
-
-extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_SetupMusic);
-extern EvtScript N(EVS_NpcIdle_Kammy);
-extern EvtScript N(EVS_NpcAux_Kammy);
-extern EvtScript N(EVS_SetupGizmos);
-extern EvtScript N(EVS_Scene_KammySetAmbush);
-extern EvtScript N(EVS_MakeEntities);
-extern NpcGroupList N(KammySceneNPCs);
-extern NpcGroupList N(GoombaAmbushNPCs);
-extern NpcGroupList N(ClubbaAmbushNPCs);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern EvtScript EVS_SetupMusic;
+extern EvtScript EVS_NpcIdle_Kammy;
+extern EvtScript EVS_NpcAux_Kammy;
+extern EvtScript EVS_SetupGizmos;
+extern EvtScript EVS_Scene_KammySetAmbush;
+extern EvtScript EVS_MakeEntities;
+extern NpcGroupList KammySceneNPCs;
+extern NpcGroupList GoombaAmbushNPCs;
+extern NpcGroupList ClubbaAmbushNPCs;
+extern NpcGroupList DefaultNPCs;

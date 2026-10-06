@@ -3,30 +3,28 @@
 #include "effects.h"
 #include "sprite/npc/Gulpit.h"
 
-#define NAMESPACE A(gulpit)
+extern EvtScript EVS_Init;
+extern EvtScript EVS_TakeTurn;
+extern EvtScript EVS_Idle;
+extern EvtScript EVS_HandleEvent;
 
-extern EvtScript N(EVS_Init);
-extern EvtScript N(EVS_TakeTurn);
-extern EvtScript N(EVS_Idle);
-extern EvtScript N(EVS_HandleEvent);
-
-enum N(ActorPartIDs) {
+enum ActorPartIDs {
     PRT_MAIN        = 1,
     PRT_BIG_ROCK    = 2,
     PRT_SMALL_ROCK  = 3,
 };
 
-enum N(ActorVars) {
+enum ActorVars {
     AVAR_Rock_Type  = 0, // from gulpit rock
 };
 
-enum N(ActorParams) {
+enum ActorParams {
     DMG_LICK        = 2,
     DMG_SMALL_ROCK  = 5,
     DMG_BIG_ROCK    = 7,
 };
 
-s32 N(DefaultAnims)[] = {
+s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Gulpit_Idle,
     STATUS_KEY_STONE,     ANIM_Gulpit_Still,
     STATUS_KEY_SLEEP,     ANIM_Gulpit_Sleep,
@@ -39,22 +37,22 @@ s32 N(DefaultAnims)[] = {
     STATUS_END,
 };
 
-s32 N(BigRockAnims)[] = {
+s32 BigRockAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Gulpit_LargeRock,
     STATUS_END,
 };
 
-s32 N(SmallRockAnims)[] = {
+s32 SmallRockAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Gulpit_SmallRock,
     STATUS_END,
 };
 
-s32 N(DefenseTable)[] = {
+s32 DefenseTable[] = {
     ELEMENT_NORMAL,   0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable)[] = {
+s32 StatusTable[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,              60,
@@ -79,15 +77,15 @@ s32 N(StatusTable)[] = {
     STATUS_END,
 };
 
-ActorPartBlueprint N(ActorParts)[] = {
+ActorPartBlueprint ActorParts[] = {
     {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -7, 48 },
         .opacity = 255,
-        .idleAnimations = N(DefaultAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -3, -23 },
@@ -98,8 +96,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(BigRockAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = BigRockAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -110,8 +108,8 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = N(SmallRockAnims),
-        .defenseTable = N(DefenseTable),
+        .idleAnimations = SmallRockAnims,
+        .defenseTable = DefenseTable,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -123,10 +121,10 @@ export ActorBlueprint blueprint = {
     .type = ACTOR_TYPE_GULPIT,
     .level = ACTOR_LEVEL_GULPIT,
     .maxHP = 12,
-    .partCount = ARRAY_COUNT(N(ActorParts)),
-    .partsData = N(ActorParts),
-    .initScript = &N(EVS_Init),
-    .statusTable = N(StatusTable),
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
     .escapeChance = 60,
     .airLiftChance = 50,
     .hurricaneChance = 50,
@@ -141,20 +139,20 @@ export ActorBlueprint blueprint = {
     .statusTextOffset = { 10, 45 },
 };
 
-EvtScript N(EVS_Init) = {
-    Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
-    Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
-    Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
     Return
     End
 };
 
-EvtScript N(EVS_Idle) = {
+EvtScript EVS_Idle = {
     Return
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript EVS_ReturnHome = {
     SetConst(LVar0, PRT_MAIN)
     SetConst(LVar1, ANIM_Gulpit_Run)
     ExecWait(EVS_Enemy_ReturnHome)
@@ -163,7 +161,7 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(EVS_HandleEvent) = {
+EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -207,7 +205,7 @@ EvtScript N(EVS_HandleEvent) = {
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Gulpit_Hurt)
             ExecWait(EVS_Enemy_Knockback)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         CaseEq(EVENT_SHOCK_DEATH)
             SetConst(LVar0, PRT_MAIN)
             SetConst(LVar1, ANIM_Gulpit_Hurt)
@@ -258,7 +256,7 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-EvtScript N(EVS_Attack_Lick) = {
+EvtScript EVS_Attack_Lick = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
@@ -304,7 +302,7 @@ EvtScript N(EVS_Attack_Lick) = {
             Call(YieldTurn)
             Call(SetActorYaw, ACTOR_SELF, 180)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(SetActorYaw, ACTOR_SELF, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -320,7 +318,7 @@ EvtScript N(EVS_Attack_Lick) = {
             Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
             Wait(10)
             Call(YieldTurn)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -329,7 +327,7 @@ EvtScript N(EVS_Attack_Lick) = {
     End
 };
 
-EvtScript N(EVS_Attack_SpitRock) = {
+EvtScript EVS_Attack_SpitRock = {
     Set(LVarA, LVar0)
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
@@ -394,7 +392,7 @@ EvtScript N(EVS_Attack_SpitRock) = {
             Wait(15)
             Call(YieldTurn)
             Call(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
             Call(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
@@ -431,7 +429,7 @@ EvtScript N(EVS_Attack_SpitRock) = {
             Call(SetPartFlagBits, ACTOR_SELF, LVarA, ACTOR_PART_FLAG_INVISIBLE, true)
             Wait(10)
             Call(YieldTurn)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(EVS_ReturnHome)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
@@ -440,15 +438,15 @@ EvtScript N(EVS_Attack_SpitRock) = {
     End
 };
 
-EvtScript N(EVS_TakeTurn) = {
+EvtScript EVS_TakeTurn = {
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
-        ExecWait(N(EVS_Attack_Lick))
+        ExecWait(EVS_Attack_Lick)
         Return
     EndIf
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        ExecWait(N(EVS_Attack_Lick))
+        ExecWait(EVS_Attack_Lick)
         Return
     EndIf
     Set(LVarA, 0)
@@ -475,10 +473,10 @@ EvtScript N(EVS_TakeTurn) = {
         EndIf
     Switch(LVarA)
         CaseEq(0)
-            ExecWait(N(EVS_Attack_Lick))
+            ExecWait(EVS_Attack_Lick)
         CaseEq(1)
             Set(LVar0, LVarB)
-            ExecWait(N(EVS_Attack_SpitRock))
+            ExecWait(EVS_Attack_SpitRock)
         CaseEq(2)
             Call(RandInt, 1, LVar0)
             Switch(LVar0)
@@ -487,7 +485,7 @@ EvtScript N(EVS_TakeTurn) = {
                 CaseEq(1)
                     Set(LVar0, LVarC)
             EndSwitch
-            ExecWait(N(EVS_Attack_SpitRock))
+            ExecWait(EVS_Attack_SpitRock)
         CaseGe(3)
             Call(RandInt, 2, LVar0)
             Switch(LVar0)
@@ -498,7 +496,7 @@ EvtScript N(EVS_TakeTurn) = {
                 CaseEq(2)
                     Set(LVar0, LVarD)
             EndSwitch
-            ExecWait(N(EVS_Attack_SpitRock))
+            ExecWait(EVS_Attack_SpitRock)
     EndSwitch
     Return
     End

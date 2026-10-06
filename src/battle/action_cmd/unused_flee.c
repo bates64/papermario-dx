@@ -9,8 +9,6 @@
  * succeed of the meter is filled. Once filled, it rapidly drains and must be refilled.
  */
 
-#define NAMESPACE action_command_unused_flee
-
 void btl_message_unlock_box_pos(void);
 
 extern s32 actionCmdTable07[];
@@ -25,9 +23,9 @@ enum {
 // how much to add to the meter per input if all modifiers are neutral
 #define METER_FILL_TICK 600
 
-BSS b32 N(HasStarted);
+BSS b32 HasStarted;
 
-API_CALLABLE(N(init)) {
+API_CALLABLE(init) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -44,7 +42,7 @@ API_CALLABLE(N(init)) {
     acs->meterFillLevel = evt_get_variable(script, *args);
     acs->hudPosX = -48;
     acs->meterFillWidth = 0;
-    N(HasStarted) = false;
+    HasStarted = false;
     acs->hudPosY = 80;
 
     hid = hud_element_create(HES_AButton);
@@ -71,7 +69,7 @@ API_CALLABLE(N(init)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(start)) {
+API_CALLABLE(start) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
@@ -93,7 +91,7 @@ API_CALLABLE(N(start)) {
     return ApiStatus_DONE2;
 }
 
-void N(update)(void) {
+void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
     HudElemID hid;
@@ -144,7 +142,7 @@ void N(update)(void) {
 
             hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], HES_MashAButton);
             battleStatus->actionQuality = 0;
-            N(HasStarted) = true;
+            HasStarted = true;
             acs->flee.drainDelay = 0;
             acs->state = AC_STATE_ACTIVE;
             acs->stateTimer = acs->duration;
@@ -197,7 +195,7 @@ void N(update)(void) {
     }
 }
 
-void N(draw)(void) {
+void draw(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     s32 hudX, hudY;
     HudElemID hid;
@@ -207,7 +205,7 @@ void N(draw)(void) {
     hud_element_draw_clipped(hid);
     hud_element_get_render_pos(hid, &hudX, &hudY);
 
-    if (!N(HasStarted)) {
+    if (!HasStarted) {
         draw_mash_meter_multicolor_with_divisor(hudX, hudY, acs->meterFillLevel / ONE_PCT_MASH, 1);
     } else {
         draw_mash_meter_multicolor_with_divisor(hudX, hudY, acs->meterFillLevel / ONE_PCT_MASH, 2);
@@ -216,7 +214,7 @@ void N(draw)(void) {
     hud_element_draw_clipped(acs->hudElemIDs[HIDX_OK]);
 }
 
-void N(free)(void) {
+void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUTTON]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_METER]);
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_OK]);

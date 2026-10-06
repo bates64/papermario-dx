@@ -1,6 +1,6 @@
 #include "dgb_15.h"
 
-EvtScript N(EVS_SetupMusic) = {
+EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_WOKE_UP)
             IfEq(GB_ARN_Tubba_MapID, 15)

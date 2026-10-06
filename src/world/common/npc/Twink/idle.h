@@ -1,4 +1,4 @@
 #pragma once
 #include "base.h"
 
-extern NpcSettings N(NpcSettings_Twink);
+extern NpcSettings NpcSettings_Twink;

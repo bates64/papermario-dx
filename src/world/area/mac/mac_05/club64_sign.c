@@ -1,10 +1,10 @@
 #include "mac_05.h"
 
-s32 N(UnusedInt) = 0;
+s32 UnusedInt = 0;
 
-f32 N(Club64SignAlphaModulus) = 0.0f;
+f32 Club64SignAlphaModulus = 0.0f;
 
-void N(hsl_to_rgb)(f32 hue, f32 saturation, f32 lightness, f32* outR, f32* outG, f32* outB) {
+void hsl_to_rgb(f32 hue, f32 saturation, f32 lightness, f32* outR, f32* outG, f32* outB) {
     f32 hueSector;
     f32 p, q, m;
     f32 s, t;
@@ -64,7 +64,7 @@ void N(hsl_to_rgb)(f32 hue, f32 saturation, f32 lightness, f32* outR, f32* outG,
     }
 }
 
-void N(gfx_build_club_64)(s32 index) {
+void gfx_build_club_64(s32 index) {
     Vtx* first;
     Vtx* copied;
     s32 numCopied;
@@ -75,11 +75,11 @@ void N(gfx_build_club_64)(s32 index) {
 
     for (i = 0; i < numCopied; i++) {
         u8* colors = copied[i].v.cn;
-        f32 hue = N(Club64SignAlphaModulus) + (f32)i / (f32)numCopied;
+        f32 hue = Club64SignAlphaModulus + (f32)i / (f32)numCopied;
         if (hue >= 1.0) {
             hue -= 1.0;
         }
-        N(hsl_to_rgb)(hue, 1.0f, 0.5f, &colR, &colG, &colB);
+        hsl_to_rgb(hue, 1.0f, 0.5f, &colR, &colG, &colB);
 
         colors[0] = colR * 255.0f;
         colors[1] = colG * 255.0f;
@@ -87,15 +87,15 @@ void N(gfx_build_club_64)(s32 index) {
     }
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_3));
-    N(Club64SignAlphaModulus) += 0.01;
-    if (N(Club64SignAlphaModulus) > 1.0) {
-        N(Club64SignAlphaModulus) -= 1.0f;
+    Club64SignAlphaModulus += 0.01;
+    if (Club64SignAlphaModulus > 1.0) {
+        Club64SignAlphaModulus -= 1.0f;
     }
 }
 
-EvtScript N(EVS_AnimateClub64Sign) = {
+EvtScript EVS_AnimateClub64Sign = {
     Call(MakeLocalVertexCopy, VTX_COPY_3, MODEL_o187, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(N(gfx_build_club_64)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_3, Ref(gfx_build_club_64), nullptr)
     Call(SetModelCustomGfx, MODEL_o187, CUSTOM_GFX_3, -1)
     Return
     End

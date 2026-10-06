@@ -1,7 +1,7 @@
 #pragma once
 #include "wander.h"
 
-MobileAISettings N(AISettings_PyroGuy_Wander) = {
+MobileAISettings AISettings_PyroGuy_Wander = {
     .moveSpeed = 3.0f,
     .moveTime = 30,
     .waitTime = 60,
@@ -16,17 +16,17 @@ MobileAISettings N(AISettings_PyroGuy_Wander) = {
     .loiterMode = 1,
 };
 
-EvtScript N(EVS_NpcAI_PyroGuy_Wander) = {
-    Call(BasicAI_Main, Ref(N(AISettings_PyroGuy_Wander)))
+EvtScript EVS_NpcAI_PyroGuy_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_PyroGuy_Wander))
     Return
     End
 };
 
-NpcSettings N(NpcSettings_PyroGuy_Wander) = {
+NpcSettings NpcSettings_PyroGuy_Wander = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_PYRO_GUY,
-    .doAI = &N(EVS_NpcAI_PyroGuy_Wander),
+    .doAI = &EVS_NpcAI_PyroGuy_Wander,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

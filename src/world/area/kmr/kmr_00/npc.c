@@ -4,7 +4,7 @@
 #include "world/common/npc/Goombaria/idle.inc.c"
 
 // initial delay to start bobbing, ensuring star spirits motions are desync'd from one another
-s16 N(StarSpiritBobDelays)[] = {
+s16 StarSpiritBobDelays[] = {
     [NPC_Goombaria]     0, // ignored
     [NPC_Eldstar]       1,
     [NPC_Mamar]         3,
@@ -15,12 +15,12 @@ s16 N(StarSpiritBobDelays)[] = {
     [NPC_Kalmar]        3,
 };
 
-API_CALLABLE(N(UpdateStarSpiritBobbing)) {
+API_CALLABLE(UpdateStarSpiritBobbing) {
     s32 retVal;
     if (isInitialCall) {
         script->functionTemp[1] = 0;
         script->functionTempPtr[2] = get_npc_safe(script->owner2.npcID);
-        script->functionTemp[3] = N(StarSpiritBobDelays)[script->owner2.npcID];
+        script->functionTemp[3] = StarSpiritBobDelays[script->owner2.npcID];
     }
     if (script->functionTemp[3] == 0) {
         Npc* npc = script->functionTempPtr[2];
@@ -34,9 +34,9 @@ API_CALLABLE(N(UpdateStarSpiritBobbing)) {
     return retVal;
 }
 
-EvtScript N(EVS_NpcAux_StarSpirit) = {
+EvtScript EVS_NpcAux_StarSpirit = {
     Thread
-        Call(N(UpdateStarSpiritBobbing))
+        Call(UpdateStarSpiritBobbing)
     EndThread
     Call(RandInt, 100, LVar0)
     Add(LVar0, 1)
@@ -89,9 +89,9 @@ EvtScript N(EVS_NpcAux_StarSpirit) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_StarSpirit) = {
+EvtScript EVS_NpcInit_StarSpirit = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_StarSpirit)))
+    Call(BindNpcAux, NPC_SELF, Ref(EVS_NpcAux_StarSpirit))
     IfGe(GB_StoryProgress, STORY_CH0_WAKE_UP)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -99,7 +99,7 @@ EvtScript N(EVS_NpcInit_StarSpirit) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Goombaria) = {
+EvtScript EVS_NpcInit_Goombaria = {
     IfGe(GB_StoryProgress, STORY_CH0_WAKE_UP)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -107,24 +107,24 @@ EvtScript N(EVS_NpcInit_Goombaria) = {
     End
 };
 
-NpcData N(NpcData_Goombaria) = {
+NpcData NpcData_Goombaria = {
     .id = NPC_Goombaria,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
-    .init = &N(EVS_NpcInit_Goombaria),
-    .settings = &N(NpcSettings_Goombaria),
+    .init = &EVS_NpcInit_Goombaria,
+    .settings = &NpcSettings_Goombaria,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
     .drops = NO_DROPS,
     .animations = GOOMBARIA_ANIMS,
 };
 
-NpcData N(NpcData_StarSpirits)[] = {
+NpcData NpcData_StarSpirits[] = {
     {
         .id = NPC_Eldstar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
@@ -133,8 +133,8 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Mamar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
@@ -143,8 +143,8 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Skolar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
@@ -153,8 +153,8 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Muskular,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
@@ -163,8 +163,8 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Misstar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
@@ -173,8 +173,8 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Klevar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
@@ -183,16 +183,16 @@ NpcData N(NpcData_StarSpirits)[] = {
         .id = NPC_Kalmar,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .init = &N(EVS_NpcInit_StarSpirit),
-        .settings = &N(NpcSettings_StarSpirit),
+        .init = &EVS_NpcInit_StarSpirit,
+        .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
     },
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Goombaria)),
-    NPC_GROUP(N(NpcData_StarSpirits)),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Goombaria),
+    NPC_GROUP(NpcData_StarSpirits),
     {}
 };

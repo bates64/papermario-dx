@@ -3,11 +3,9 @@
 #include "script_api/battle.h"
 #include "sprite/npc/BattleSkolar.h"
 
-#define NAMESPACE battle_move_star_storm
-
 #include "battle/common/move/StarPowerSupport.inc.c"
 
-API_CALLABLE(N(SpawnShootingStarFX)) {
+API_CALLABLE(SpawnShootingStarFX) {
     s32 x = -50 - rand_int(200);
     s32 y = 200;
     s32 z = rand_int(40);
@@ -21,7 +19,7 @@ API_CALLABLE(N(SpawnShootingStarFX)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpawnDamageStarsFX)) {
+API_CALLABLE(SpawnDamageStarsFX) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -32,10 +30,10 @@ API_CALLABLE(N(SpawnDamageStarsFX)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_UsePower) = {
-    ExecWait(N(EVS_StarPower_WishForSpirit))
+EvtScript EVS_UsePower = {
+    ExecWait(EVS_StarPower_WishForSpirit)
     SetConst(LVar0, ANIM_BattleSkolar_Idle)
-    ExecWait(N(EVS_StarPower_SpiritSummoned))
+    ExecWait(EVS_StarPower_SpiritSummoned)
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleSkolar_Shout)
     Wait(16)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
@@ -43,11 +41,11 @@ EvtScript N(EVS_UsePower) = {
         Set(LVar0, 0)
         Loop(10)
             Call(PlaySound, SOUND_SHOOTING_STAR_FALL_A)
-            Call(N(SpawnShootingStarFX))
+            Call(SpawnShootingStarFX)
             Wait(5)
             Add(LVar0, 1)
             Call(PlaySound, SOUND_SHOOTING_STAR_FALL_B)
-            Call(N(SpawnShootingStarFX))
+            Call(SpawnShootingStarFX)
             Wait(5)
             Add(LVar0, 1)
         EndLoop
@@ -80,7 +78,7 @@ EvtScript N(EVS_UsePower) = {
             Goto(1)
         EndIf
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-        Call(N(SpawnDamageStarsFX), LVar0, LVar1, LVar2)
+        Call(SpawnDamageStarsFX, LVar0, LVar1, LVar2)
         Call(ItemDamageEnemy, LVar0, DAMAGE_TYPE_COSMIC | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 7, BS_FLAGS1_TRIGGER_EVENTS)
         Label(1)
         Wait(10)
@@ -89,13 +87,13 @@ EvtScript N(EVS_UsePower) = {
             Goto(0)
         EndIf
     Wait(20)
-    ExecWait(N(EVS_StarPower_SpiritDeparts))
+    ExecWait(EVS_StarPower_SpiritDeparts)
     Call(PlayerYieldTurn)
-    ExecWait(N(EVS_StarPower_EndWish))
+    ExecWait(EVS_StarPower_EndWish)
     Return
     End
 };
 
 BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &N(EVS_UsePower),
+    &EVS_UsePower,
 );

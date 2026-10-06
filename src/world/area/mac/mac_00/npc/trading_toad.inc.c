@@ -2,19 +2,19 @@
 #include "effects.h"
 #include "inventory.h"
 
-API_CALLABLE(N(CheckTradeEventTime)) {
+API_CALLABLE(CheckTradeEventTime) {
     script->varTable[0] = (s32) ((gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600) < script->varTable[0];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetTradeEventItemCount)) {
+API_CALLABLE(GetTradeEventItemCount) {
     script->varTable[0] = get_consumables_count();
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_TradingToad) = {
+EvtScript EVS_NpcInteract_TradingToad = {
     Set(LVar0, 5)
-    Call(N(CheckTradeEventTime))
+    Call(CheckTradeEventTime)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_0119)
         Wait(10)
@@ -25,7 +25,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
         Set(GF_TradingEvent1_Active, false)
         Return
     EndIf
-    Call(N(GetTradeEventItemCount))
+    Call(GetTradeEventItemCount)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011A)
         Return
@@ -55,9 +55,9 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_TradingToad) = {
+EvtScript EVS_NpcInit_TradingToad = {
     IfNe(GF_TradingEvent1_Active, false)
-        Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TradingToad)))
+        Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_TradingToad))
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf

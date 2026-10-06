@@ -2,7 +2,7 @@
 
 #include "sprite/npc/StarMan.h"
 
-s32 N(ShopMessages)[] = {
+s32 ShopMessages[] = {
     [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_HOS03,
     [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_HOS03,
     [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_HOS03,
@@ -28,7 +28,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_HOS03,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData Inventory[] = {
     { .itemID = ITEM_STOP_WATCH,    .price = 15, .descMsg = MSG_ItemShopDesc_StopWatch },
     { .itemID = ITEM_SHOOTING_STAR, .price = 15, .descMsg = MSG_ItemShopDesc_ShootingStar },
     { .itemID = ITEM_SUPER_SODA,    .price =  3, .descMsg = MSG_ItemShopDesc_SuperSoda },
@@ -38,7 +38,7 @@ ShopItemData N(Inventory)[] = {
     {},
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData PriceList[] = {
     { .itemID = ITEM_DRIED_PASTA,   .sellPrice =  7 },
     { .itemID = ITEM_THUNDER_RAGE,  .sellPrice = 15 },
     { .itemID = ITEM_SHOOTING_STAR, .sellPrice = 14 },
@@ -52,7 +52,7 @@ ShopSellPriceData N(PriceList)[] = {
     {},
 };
 
-EvtScript N(EVS_OnBuy) = {
+EvtScript EVS_OnBuy = {
     Switch(LVar0)
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
@@ -63,7 +63,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation ItemPositions[] = {
     { .posModelID = MODEL_o121, .triggerColliderID = COLLIDER_o203 },
     { .posModelID = MODEL_o122, .triggerColliderID = COLLIDER_o204 },
     { .posModelID = MODEL_o123, .triggerColliderID = COLLIDER_o205 },
@@ -72,17 +72,17 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o126, .triggerColliderID = COLLIDER_o208 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner Owner = {
     .npcID = NPC_StarMan_ShopOwner,
     .idleAnim = ANIM_StarMan_Idle,
     .talkAnim = ANIM_StarMan_Talk,
-    .onBuyEvt = &N(EVS_OnBuy),
-    .shopMsgIDs = N(ShopMessages),
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
 };
 
-EvtScript N(EVS_SetupShop) = {
-    Call(MakeShop, Ref(N(ItemPositions)), Ref(N(Inventory)), Ref(N(PriceList)), 0)
-    Call(MakeShopOwner, Ref(N(Owner)))
+EvtScript EVS_SetupShop = {
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
+    Call(MakeShopOwner, Ref(Owner))
     Return
     End
 };

@@ -15,7 +15,5 @@ enum {
     NPC_PutridPiranha   = 0,
 };
 
-#define NAMESPACE kzn_01
-
-extern EvtScript N(EVS_Main);
-extern NpcGroupList N(DefaultNPCs);
+extern EvtScript EVS_Main;
+extern NpcGroupList DefaultNPCs;

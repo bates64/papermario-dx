@@ -10,7 +10,7 @@ enum {
     CHEATO_TYPE_CONSUMABLE  = 2,
 };
 
-s32 N(CheatoItems)[][2] = {
+s32 CheatoItems[][2] = {
     { CHEATO_TYPE_STAR_PIECE, ITEM_NONE },
     { CHEATO_TYPE_CONSUMABLE, ITEM_LIFE_SHROOM },
     { CHEATO_TYPE_BADGE,      ITEM_BUMP_ATTACK },
@@ -26,27 +26,27 @@ s32 N(CheatoItems)[][2] = {
     { CHEATO_TYPE_CONSUMABLE, ITEM_DRIED_SHROOM },
 };
 
-API_CALLABLE(N(GetNextCheatoItem)) {
-    s32* purchase = N(CheatoItems)[script->varTable[0]];
+API_CALLABLE(GetNextCheatoItem) {
+    s32* purchase = CheatoItems[script->varTable[0]];
 
     script->varTable[10] = purchase[0];
     script->varTable[11] = purchase[1];
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckPlayerHasEnoughRoom)) {
+API_CALLABLE(CheckPlayerHasEnoughRoom) {
     script->varTable[0] = get_consumables_empty();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(CheckPlayerHasEnoughCoins)) {
+API_CALLABLE(CheckPlayerHasEnoughCoins) {
     Bytecode* args = script->ptrReadPos;
 
     evt_set_variable(script, *args++, gPlayerData.coins >= RIP_CHEATO_COST);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcInteract_RipCheato) = {
+EvtScript EVS_NpcInteract_RipCheato = {
     IfEq(AF_TIK15_RipCheatoRepeatVisit, false)
         IfEq(GF_TIK15_Met_RipCheato, false)
             Set(LVar0, MSG_MGM_0001)
@@ -67,14 +67,14 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
         Call(ContinueSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0, MSG_MGM_0005)
         Return
     EndIf
-    Call(N(CheckPlayerHasEnoughCoins), LVar0)
+    Call(CheckPlayerHasEnoughCoins, LVar0)
     IfEq(LVar0, 0)
         Call(ShowCoinCounter, false)
         Call(ContinueSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0, MSG_MGM_0006)
         Return
     EndIf
     Set(LVar0, GB_TIK15_RipCheato_PurchaseCount)
-    Call(N(GetNextCheatoItem))
+    Call(GetNextCheatoItem)
     Switch(LVarA)
         CaseEq(CHEATO_TYPE_STAR_PIECE)
             Call(AddCoin, -RIP_CHEATO_COST)
@@ -87,7 +87,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
             EVT_GIVE_REWARD(ITEM_BUMP_ATTACK)
         CaseEq(CHEATO_TYPE_CONSUMABLE)
-            Call(N(CheckPlayerHasEnoughRoom))
+            Call(CheckPlayerHasEnoughRoom)
             IfLe(LVar0, 0)
                 Call(ShowCoinCounter, false)
                 Call(ContinueSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0, MSG_MGM_0007)
@@ -107,26 +107,26 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_RipCheato) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RipCheato)))
+EvtScript EVS_NpcInit_RipCheato = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_RipCheato))
     Set(AF_TIK15_RipCheatoRepeatVisit, false)
     Return
     End
 };
 
-NpcData N(NpcData_RipCheato) = {
+NpcData NpcData_RipCheato = {
     .id = NPC_RipCheato,
     .pos = { -80.0f, -10.0f, 0.0f },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_RipCheato),
-    .settings = &N(NpcSettings_RipCheato),
+    .init = &EVS_NpcInit_RipCheato,
+    .settings = &NpcSettings_RipCheato,
     .flags = BASE_PASSIVE_FLAGS,
     .drops = NO_DROPS,
     .animations = RIP_CHEATO_ANIMS,
     .tattle = MSG_NpcTattle_RipCheato,
 };
 
-NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_RipCheato), BTL_KMR_1_FORMATION_06),
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_RipCheato, BTL_KMR_1_FORMATION_06),
     {}
 };

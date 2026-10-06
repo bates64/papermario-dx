@@ -24,7 +24,7 @@
         POPSECTION \
     )
 
-// two macros are needed for N() usage
+// Expand macro arguments before stringifying the symbol name.
 #define INCLUDE_IMG(FILENAME, SYMBOLNAME) \
     _INCLUDE_IMG(FILENAME, SYMBOLNAME)
 
