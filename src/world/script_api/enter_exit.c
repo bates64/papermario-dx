@@ -196,6 +196,13 @@ API_CALLABLE(SetupSplitDoubleDoors) {
 }
 
 EvtScript EnterWalk = {
+    // a save loaded on this map, such as a debug quick save, starts where it was made
+    Call(GetLoadType, LVarA)
+    IfEq(LVarA, LOAD_FROM_FILE_SELECT)
+        ExecWait(EnterSavePoint)
+        Exec(LVar0)
+        Return
+    EndIf
     Call(ShortenPartnerTetherDistance)
     Call(CheckUsingRideablePartner)
     Call(UseEntryHeading, 60, 15)
@@ -218,6 +225,13 @@ EvtScript EnterWalk = {
 };
 
 EvtScript EnterWalkShort = {
+    // a save loaded on this map, such as a debug quick save, starts where it was made
+    Call(GetLoadType, LVarA)
+    IfEq(LVarA, LOAD_FROM_FILE_SELECT)
+        ExecWait(EnterSavePoint)
+        Exec(LVar0)
+        Return
+    EndIf
     Call(ShortenPartnerTetherDistance)
     Call(CheckUsingRideablePartner)
     Call(UseEntryHeading, 40, 15)
@@ -240,6 +254,13 @@ EvtScript EnterWalkShort = {
 };
 
 EvtScript EnterWalkCustom = {
+    // a save loaded on this map, such as a debug quick save, starts where it was made
+    Call(GetLoadType, LVarA)
+    IfEq(LVarA, LOAD_FROM_FILE_SELECT)
+        ExecWait(EnterSavePoint)
+        Exec(LVar0)
+        Return
+    EndIf
     Call(ShortenPartnerTetherDistance)
     Call(CheckUsingRideablePartner)
     Call(UseEntryHeading, LVar1, LVar4)
@@ -261,6 +282,12 @@ EvtScript EnterWalkCustom = {
 };
 
 EvtScript EnterPostPipe = {
+    // a save loaded on this map, such as a debug quick save, starts where it was made
+    Call(GetLoadType, LVarA)
+    IfEq(LVarA, LOAD_FROM_FILE_SELECT)
+        ExecWait(EnterSavePoint)
+        Return
+    EndIf
     Call(DisablePlayerPhysics, true)
     Call(ShortenPartnerTetherDistance)
     Call(CheckUsingRideablePartner)
@@ -404,6 +431,12 @@ EvtScript BaseExitDoor = {
 };
 
 EvtScript BaseEnterDoor = {
+    // a save loaded on this map, such as a debug quick save, starts where it was made
+    Call(GetLoadType, LVarA)
+    IfEq(LVarA, LOAD_FROM_FILE_SELECT)
+        ExecWait(EnterSavePoint)
+        Return
+    EndIf
     Call(DisablePlayerInput, true)
     Call(ShortenPartnerTetherDistance)
     UseBuf(LVar2)
