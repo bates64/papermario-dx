@@ -258,6 +258,10 @@ void gfx_draw_frame(void) {
 
     #if DX_DEBUG_MENU
     dx_debug_console_main();
+    if (dx_debug_consume_discard_frame()) {
+        gCurrentDisplayContextIndex ^= 1;
+        return;
+    }
     #endif
 
     gDPFullSync(gMainGfxPos++);

@@ -256,10 +256,6 @@ API_CALLABLE(LoadItemScript);
 API_CALLABLE(LoadMoveScript);
 
 /// @evtapi
-/// @param battleSection
-API_CALLABLE(LoadBattleSection);
-
-/// @evtapi
 /// @param outPhase
 API_CALLABLE(GetBattlePhase);
 

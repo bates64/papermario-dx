@@ -235,6 +235,7 @@ void state_step_game_over(void) {
                 gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
                 load_map_by_IDs(gGameStatusPtr->areaID, gGameStatusPtr->mapID, LOAD_FROM_MAP);
                 unload_battle_stage();
+                unload_battle_area();
                 nuContRmbForceStopEnd();
                 gMapTransitionState++;
             }

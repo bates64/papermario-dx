@@ -4,11 +4,17 @@
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 #include "game_modes.h"
 #include "battle/battle.h"
+#include "battle/action_cmd.h"
+#include "battle/menu.h"
+#include "battle/partner.h"
+#include "battle/script_module.h"
+#include "nu/nusys.h"
 #include "hud_element.h"
 #include "inventory.h"
 #include "qsort.h"
 #include <string.h>
 #include "dx/utils.h"
+#include "dx/overlay.h"
 #include "msg.h"
 #include "fio.h"
 
@@ -942,182 +948,38 @@ s32 DebugBattleColumn = 0;
 
 #define DEBUG_BATTLE_PREVIEW_ROWS       6
 #define DEBUG_BATTLE_PREVIEW_NAME_LEN   24
-#define DEBUG_BATTLE_SCAN_ROWS          8
-
 s32 DebugBattlePreviewBattleCount;
 s32 DebugBattlePreviewStageCount;
 s32 DebugBattlePreviewLineCount;
-Battle DebugBattleScan[DEBUG_BATTLE_SCAN_ROWS] ALIGNED8;
-StageListRow DebugBattleStageScan[DEBUG_BATTLE_SCAN_ROWS] ALIGNED8;
-FormationRow DebugBattlePreviewRows[DEBUG_BATTLE_PREVIEW_ROWS] ALIGNED8;
 char DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
-u8 DebugBattlePreviewStringBuf[DEBUG_BATTLE_PREVIEW_NAME_LEN + 2] ALIGNED8;
+static b32 DebugBattlePreviewCached;
+static s32 DebugBattlePreviewAreaID;
+static s32 DebugBattlePreviewFormationID;
+static b32 DebugDiscardFrame;
 
-// copies a small piece of a battle area from ROM without loading the overlay
-b32 dx_debug_read_battle_data(BattleArea* battleArea, void* address, void* dest, s32 size) {
-    u32 areaVramStart;
-    u32 areaSize;
-    u32 addressValue;
-    u32 offset;
-    u8* romStart;
-
-    if (battleArea->dmaStart == nullptr
-        || battleArea->dmaEnd == nullptr
-        || battleArea->dmaDest == nullptr
-        || size <= 0
-    ) {
-        return false;
-    }
-
-    areaVramStart = (u32)battleArea->dmaDest;
-    areaSize = (u32)battleArea->dmaEnd - (u32)battleArea->dmaStart;
-    addressValue = (u32)address;
-    if (addressValue < areaVramStart || (u32)size > areaSize) {
-        return false;
-    }
-
-    offset = addressValue - areaVramStart;
-    if (offset > areaSize - size) {
-        return false;
-    }
-
-    romStart = (u8*)battleArea->dmaStart + offset;
-    dma_copy(romStart, romStart + size, dest);
-    return true;
+b32 dx_debug_consume_discard_frame(void) {
+    b32 discard = DebugDiscardFrame;
+    DebugDiscardFrame = false;
+    return discard;
 }
 
-// reads an actor overlay name from an unloaded battle area
-b32 dx_debug_read_actor_overlay_name(BattleArea* battleArea, const char* address, char* dest) {
-    u32 areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    u32 alignedAddress = (u32)address & ~1;
-    s32 nameOffset = (u32)address - alignedAddress;
-    s32 readSize = DEBUG_BATTLE_PREVIEW_NAME_LEN + nameOffset;
-    s32 i;
-
-    if (readSize & 1) {
-        readSize++;
-    }
-    if (alignedAddress + readSize > areaVramEnd) {
-        readSize = (areaVramEnd - alignedAddress) & ~1;
-    }
-    if (readSize <= nameOffset
-        || !dx_debug_read_battle_data(battleArea, (void*)alignedAddress, DebugBattlePreviewStringBuf, readSize)
-    ) {
-        dest[0] = '\0';
-        return false;
-    }
-
-    for (i = 0; i < DEBUG_BATTLE_PREVIEW_NAME_LEN - 1 && i + nameOffset < readSize; i++) {
-        dest[i] = DebugBattlePreviewStringBuf[i + nameOffset];
-        if (dest[i] == '\0') {
-            return true;
-        }
-    }
-    dest[i] = '\0';
-    return true;
-}
-
-// counts the battles in an unloaded area using a small scratch buffer
-s32 dx_debug_count_battles(BattleArea* battleArea) {
-    u32 areaVramEnd;
-    u32 listAddress;
-    s32 maxEntries;
-    s32 readPos;
-    s32 i;
-
-    if (battleArea->battles == nullptr) {
-        return 0;
-    }
-
-    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    listAddress = (u32)battleArea->battles;
-    if (listAddress >= areaVramEnd) {
-        return 0;
-    }
-
-    maxEntries = (areaVramEnd - listAddress) / sizeof(Battle);
-    if (maxEntries > 0x100) {
-        maxEntries = 0x100;
-    }
-
-    for (readPos = 0; readPos < maxEntries; readPos += DEBUG_BATTLE_SCAN_ROWS) {
-        s32 readCount = maxEntries - readPos;
-
-        if (readCount > DEBUG_BATTLE_SCAN_ROWS) {
-            readCount = DEBUG_BATTLE_SCAN_ROWS;
-        }
-        if (!dx_debug_read_battle_data(
-            battleArea,
-            (void*)(listAddress + readPos * sizeof(Battle)),
-            DebugBattleScan,
-            readCount * sizeof(Battle)
-        )) {
-            return 0;
-        }
-
-        for (i = 0; i < readCount; i++) {
-            if (DebugBattleScan[i].name == nullptr) {
-                return readPos + i;
-            }
-        }
-    }
-    return 0;
-}
-
-// counts the stages in an unloaded area using a small scratch buffer
-s32 dx_debug_count_stages(BattleArea* battleArea) {
-    u32 areaVramEnd;
-    u32 listAddress;
-    s32 maxEntries;
-    s32 readPos;
-    s32 i;
-
-    if (battleArea->stages == nullptr) {
-        return 0;
-    }
-
-    areaVramEnd = (u32)battleArea->dmaDest + ((u32)battleArea->dmaEnd - (u32)battleArea->dmaStart);
-    listAddress = (u32)battleArea->stages;
-    if (listAddress >= areaVramEnd) {
-        return 0;
-    }
-
-    maxEntries = (areaVramEnd - listAddress) / sizeof(StageListRow);
-    if (maxEntries > 0x100) {
-        maxEntries = 0x100;
-    }
-
-    for (readPos = 0; readPos < maxEntries; readPos += DEBUG_BATTLE_SCAN_ROWS) {
-        s32 readCount = maxEntries - readPos;
-
-        if (readCount > DEBUG_BATTLE_SCAN_ROWS) {
-            readCount = DEBUG_BATTLE_SCAN_ROWS;
-        }
-        if (!dx_debug_read_battle_data(
-            battleArea,
-            (void*)(listAddress + readPos * sizeof(StageListRow)),
-            DebugBattleStageScan,
-            readCount * sizeof(StageListRow)
-        )) {
-            return 0;
-        }
-
-        for (i = 0; i < readCount; i++) {
-            if (DebugBattleStageScan[i].name == nullptr) {
-                return readPos + i;
-            }
-        }
-    }
-    return 0;
-}
-
-// builds the actor list shown beneath the selected battle ID
+// Copy only display data out of a temporary area overlay. Borrow the running
+// battle's module when selected, and never unload it on the preview's behalf.
 void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
-    BattleArea* battleArea;
-    Battle* battle;
+    Overlay* overlay;
+    const BattleArea* area;
+    const Battle* battle;
     s32 actorRows;
     s32 i;
 
+    if (DebugBattlePreviewCached && areaID == DebugBattlePreviewAreaID
+        && formationID == DebugBattlePreviewFormationID
+    ) {
+        return;
+    }
+    DebugBattlePreviewCached = true;
+    DebugBattlePreviewAreaID = areaID;
+    DebugBattlePreviewFormationID = formationID;
     DebugBattlePreviewBattleCount = 0;
     DebugBattlePreviewStageCount = 0;
     DebugBattlePreviewLineCount = 1;
@@ -1126,61 +988,46 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
         return;
     }
 
-    battleArea = &gBattleAreas[areaID];
-    DebugBattlePreviewBattleCount = dx_debug_count_battles(battleArea);
-    DebugBattlePreviewStageCount = dx_debug_count_stages(battleArea);
-    if (formationID < 0 || formationID >= DebugBattlePreviewBattleCount) {
+    overlay = ovl_load(gBattleAreas[areaID].overlay, OVL_BATTLE_AREA);
+    area = ovl_import(overlay, BATTLE_AREA_EXPORT_NAME);
+    if (area == nullptr) {
+        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
+        goto done;
+    }
+    DebugBattlePreviewBattleCount = area->battleCount;
+    DebugBattlePreviewStageCount = area->stageCount;
+    if (formationID < 0 || formationID >= area->battleCount) {
         strcpy(DebugBattlePreviewNames[0], "(invalid battle)");
-        return;
+        goto done;
     }
 
-    battle = &DebugBattleScan[0];
-    if (!dx_debug_read_battle_data(
-        battleArea,
-        &(*battleArea->battles)[formationID],
-        battle,
-        sizeof(Battle)
-    )) {
-        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
-        return;
-    }
+    battle = &(*area->battles)[formationID];
     if (battle->formationSize <= 0) {
         strcpy(DebugBattlePreviewNames[0], "(empty formation)");
-        return;
+        goto done;
     }
-
     actorRows = battle->formationSize;
     if (actorRows > DEBUG_BATTLE_PREVIEW_ROWS) {
         actorRows = DEBUG_BATTLE_PREVIEW_ROWS - 1;
     }
-    if (!dx_debug_read_battle_data(
-        battleArea,
-        &(*battle->formation)[0],
-        DebugBattlePreviewRows,
-        actorRows * sizeof(FormationRow)
-    )) {
-        strcpy(DebugBattlePreviewNames[0], "(unavailable)");
-        return;
-    }
-
     for (i = 0; i < actorRows; i++) {
-        const char* actorName = DebugBattlePreviewRows[i].overlay;
-
+        const char* actorName = (*battle->formation)[i].overlay;
         if (actorName == nullptr) {
-            strcpy(DebugBattlePreviewNames[i], "(anonymous)");
-        } else if (!dx_debug_read_actor_overlay_name(battleArea, actorName, DebugBattlePreviewNames[i])) {
-            strcpy(DebugBattlePreviewNames[i], "(unavailable)");
+            actorName = "(anonymous)";
         }
+        strncpy(DebugBattlePreviewNames[i], actorName, DEBUG_BATTLE_PREVIEW_NAME_LEN - 1);
+        DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 1] = '\0';
     }
-
     DebugBattlePreviewLineCount = actorRows;
     if (battle->formationSize > DEBUG_BATTLE_PREVIEW_ROWS) {
-        sprintf(
-            DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1],
-            "... and %ld more",
-            battle->formationSize - (DEBUG_BATTLE_PREVIEW_ROWS - 1)
-        );
+        sprintf(DebugBattlePreviewNames[DEBUG_BATTLE_PREVIEW_ROWS - 1], "... and %ld more",
+            battle->formationSize - (DEBUG_BATTLE_PREVIEW_ROWS - 1));
         DebugBattlePreviewLineCount = DEBUG_BATTLE_PREVIEW_ROWS;
+    }
+
+done:
+    if (area == nullptr || area != get_loaded_battle_area()) {
+        ovl_unload(overlay);
     }
 }
 
@@ -1193,6 +1040,30 @@ void dx_debug_force_end_battle(void) {
     if (gGameStatusPtr->context != CONTEXT_BATTLE) {
         return;
     }
+
+    // Debug actions run while drawing UI. Finish older graphics tasks and
+    // discard this frame's unsubmitted display list before freeing its data.
+    nuGfxTaskAllEndWait();
+    DebugDiscardFrame = true;
+    kill_all_scripts();
+    for (i = 0; i < ARRAY_COUNT(gBattleStatus.enemyActors); i++) {
+        btl_delete_actor(gBattleStatus.enemyActors[i]);
+        ASSERT(gBattleStatus.enemyActors[i] == nullptr);
+    }
+    btl_delete_actor(gBattleStatus.partnerActor);
+    ASSERT(gBattleStatus.partnerActor == nullptr);
+    if (gBattleStatus.playerActor != nullptr) {
+        btl_delete_player_actor(gBattleStatus.playerActor);
+        gBattleStatus.playerActor = nullptr;
+    }
+    remove_all_effects();
+    set_windows_visible(0);
+    unload_action_command();
+    unload_battle_script();
+    unload_battle_partner();
+    unload_battle_menu();
+    btl_set_state(BATTLE_STATE_NONE);
+    gLastDrawBattleState = gBattleState;
 
     state_init_end_battle();
     for (i = 0; i < 8; i++) {
@@ -1257,7 +1128,7 @@ s32 dx_debug_get_battle_area_count() {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gBattleAreas); i++) {
-        if (gBattleAreas[i].battles == nullptr) {
+        if (gBattleAreas[i].overlay == nullptr) {
             return i;
         }
     }

@@ -67,6 +67,18 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
     },
+    [OVL_BATTLE_AREA] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
+    [OVL_STAGE] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
     [OVL_ACTOR] = {
         .mode = OVL_STORAGE_RELOCATABLE,
         .base = (u8*)RELOCATABLE_LINK_ADDR,
@@ -115,39 +127,35 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
     },
-    [OVL_STAGE] = {
-        .mode = OVL_STORAGE_RELOCATABLE,
-        .base = (u8*)RELOCATABLE_LINK_ADDR,
-        .descStart = 0,
-        .descCount = MAX_GENERAL_OVERLAYS,
-    },
 };
 
 #if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
 static const char* get_type_name(OverlayType type) {
     switch (type) {
-        case OVL_ACTOR:
-            return "actor";
-        case OVL_MAP:
-            return "map";
         case OVL_EFFECT:
             return "fx";
+        case OVL_MAP:
+            return "map";
         case OVL_ACTION:
             return "action";
         case OVL_PARTNER:
             return "partner";
-        case OVL_ACTION_CMD:
-            return "action_cmd";
+        case OVL_BATTLE_AREA:
+            return "battle_area";
+        case OVL_STAGE:
+            return "stage";
+        case OVL_ACTOR:
+            return "actor";
         case OVL_BATTLE_PARTNER:
             return "battle_partner";
+        case OVL_ACTION_CMD:
+            return "action_cmd";
         case OVL_BATTLE_SCRIPT:
             return "battle_script";
         case OVL_BATTLE_MENU:
             return "battle_menu";
         case OVL_ENTITY:
             return "entity";
-        case OVL_STAGE:
-            return "stage";
         default:
             return "invalid";
     }

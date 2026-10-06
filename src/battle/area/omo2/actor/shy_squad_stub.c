@@ -2,7 +2,7 @@
 #include "script_api/battle.h"
 #include "sprite/npc/TankGuy.h"
 
-#define NAMESPACE b_area_omo2_6_shy_squad_stub
+#define NAMESPACE b_area_omo2_shy_squad_stub
 
 extern s32 N(DefaultAnims)[];
 extern EvtScript N(EVS_Init);

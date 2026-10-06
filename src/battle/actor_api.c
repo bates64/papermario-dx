@@ -173,13 +173,6 @@ Actor* get_actor(s32 actorID) {
     return ret;
 }
 
-API_CALLABLE(LoadBattleSection) {
-    BattleArea* battleArea = &gBattleAreas[evt_get_variable(script, *script->ptrReadPos)];
-
-    dma_copy(battleArea->dmaStart, battleArea->dmaEnd, battleArea->dmaDest);
-    return ApiStatus_DONE1;
-}
-
 API_CALLABLE(GetBattlePhase) {
     evt_set_variable(script, *script->ptrReadPos, gBattleStatus.battlePhase);
     return ApiStatus_DONE2;

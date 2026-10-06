@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "battle/battle.h"
-#include "battle/battle_tables.h"
 #include "hud_element.h"
 #include "sprite.h"
 #include "game_modes.h"
@@ -22,6 +21,8 @@ BSS Battle* gCurrentBattlePtr;
 
 // Kept in resident code: the battle segment's BSS is not cleared on DMA load.
 static Overlay* LoadedBattleStageOverlay;
+static Overlay* LoadedBattleAreaOverlay;
+static const BattleArea* LoadedBattleArea;
 
 Stage* load_battle_stage(const char* overlayName) {
     Stage* stage;
@@ -43,33 +44,17 @@ void unload_battle_stage(void) {
     LoadedBattleStageOverlay = nullptr;
 }
 
-// standard battle area table entry
+// Keep IDs and debug names resident; the tables and actors live in the overlay.
 #define BTL_AREA(id, debugName) { \
     .name = debugName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
-    .battles = &b_area_##id##_Formations, \
-    .stages = &b_area_##id##_Stages, \
-} \
-
-// extended battle area with a dmaTable, used by kzn2 for lava piranha animations
-#define BTL_AREA_DMA(id, debugName) { \
-    .name = debugName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
-    .battles = &b_area_##id##_Formations, \
-    .stages = &b_area_##id##_Stages, \
-    .dmaTable = b_area_##id##_dmaTable, \
-} \
+    .overlay = #id, \
+}
 
 /// When updating this, make sure you also update:
 /// - the length of gBattleAreas in battle.h
 /// - BattleAreaIDs in battle_names.h
 /// - FormationNames in battle_names.h
-/// - battle_tables.h
-BattleArea gBattleAreas[] = {
+const BattleAreaInfo gBattleAreas[] = {
     [BTL_AREA_KMR_1] BTL_AREA(kmr_part_1, "KMR Part 1"),
     [BTL_AREA_KMR_2] BTL_AREA(kmr_part_2, "KMR Part 2"),
     [BTL_AREA_KMR_3] BTL_AREA(kmr_part_3, "KMR Part 3"),
@@ -93,7 +78,7 @@ BattleArea gBattleAreas[] = {
     [BTL_AREA_JAN]   BTL_AREA(jan, "JAN"),
     [BTL_AREA_JAN2]  BTL_AREA(jan2, "JAN2"),
     [BTL_AREA_KZN]   BTL_AREA(kzn, "KZN"),
-    [BTL_AREA_KZN2]  BTL_AREA_DMA(kzn2, "KZN2"),
+    [BTL_AREA_KZN2]  BTL_AREA(kzn2, "KZN2"),
     [BTL_AREA_FLO]   BTL_AREA(flo, "FLO"),
     [BTL_AREA_FLO2]  BTL_AREA(flo2, "FLO2"),
     [BTL_AREA_TIK]   BTL_AREA(tik, "TIK"),
@@ -125,21 +110,45 @@ void reset_battle_status(void) {
 }
 
 void load_battle_section(void) {
-    BattleArea* battleArea = &gBattleAreas[UNPACK_BTL_AREA(gCurrentBattleID)];
+    s32 areaID = UNPACK_BTL_AREA(gCurrentBattleID);
     s32 battleIdx = UNPACK_BTL_INDEX(gCurrentBattleID);
+    const BattleArea* battleArea;
+    const char* overlayName;
 
-    dma_copy(battleArea->dmaStart, battleArea->dmaEnd, battleArea->dmaDest);
+    ASSERT_MSG((u32)areaID < ARRAY_COUNT(gBattleAreas), "Invalid battle area %ld", areaID);
+    ASSERT_MSG(LoadedBattleAreaOverlay == nullptr, "Previous battle area was not unloaded");
+    overlayName = gBattleAreas[areaID].overlay;
+    LoadedBattleAreaOverlay = ovl_load(overlayName, OVL_BATTLE_AREA);
+    battleArea = ovl_import(LoadedBattleAreaOverlay, BATTLE_AREA_EXPORT_NAME);
+    ASSERT_MSG(battleArea != nullptr, "Area overlay '%s' has no %s export", overlayName, BATTLE_AREA_EXPORT_NAME);
+    LoadedBattleArea = battleArea;
+
+    ASSERT_MSG((u32)battleIdx < battleArea->battleCount, "Invalid battle %ld in %s", battleIdx, overlayName);
 
     gCurrentBattlePtr = &(*battleArea->battles)[battleIdx];
 
     if (gCurrentStageID < 0) {
         gCurrentStagePtr = nullptr;
     } else {
+        ASSERT_MSG(gCurrentStageID < battleArea->stageCount, "Invalid stage %ld in %s", gCurrentStageID, overlayName);
         gCurrentStagePtr = &(*battleArea->stages)[gCurrentStageID];
     }
 
     btl_set_state(BATTLE_STATE_START);
     gLastDrawBattleState = BATTLE_STATE_NONE;
+}
+
+const BattleArea* get_loaded_battle_area(void) {
+    return LoadedBattleArea;
+}
+
+void unload_battle_area(void) {
+    gCurrentBattlePtr = nullptr;
+    gCurrentStagePtr = nullptr;
+    gOverrideBattlePtr = nullptr;
+    LoadedBattleArea = nullptr;
+    ovl_unload(LoadedBattleAreaOverlay);
+    LoadedBattleAreaOverlay = nullptr;
 }
 
 void load_battle(s32 battleID) {

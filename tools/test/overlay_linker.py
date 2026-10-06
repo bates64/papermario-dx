@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Check overlay symbol isolation and collision diagnostics with real MIPS objects."""
 
+import pickle
 import shutil
 import struct
 import subprocess
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/build"))
-from overlay_impl import link_overlay
+from overlay_impl import cmd_gen_syms, link_overlay
 
 LINK_ADDR = 0x80000000
 
@@ -112,6 +114,29 @@ class OverlayLinkerTests(unittest.TestCase):
         obj = self.compile("reference", "extern int missing; int* reference = &missing;")
         with self.assertRaisesRegex(ValueError, "unresolved symbol 'missing'"):
             self.link([obj])
+
+    def test_old_battle_area_addresses_are_not_engine_imports(self):
+        baseline = self.directory / "baseline.txt"
+        baseline.write_text(
+            "b_area_old_actor = 0x80218000;\n"
+            "LoadBattleSection = 0x80269DE4;\n"
+            "legacy_engine = 0x80001234;\n"
+            "current_engine = 0x80005678;\n"
+        )
+        engine = self.compile("engine", "int current_engine = 1;")
+        output = self.directory / "syms.pkl"
+        cmd_gen_syms(SimpleNamespace(
+            input=engine, symbol_files=[str(baseline)], output=str(output),
+            script=str(self.directory / "syms.ld"),
+        ))
+        syms = pickle.loads(output.read_bytes())
+        self.assertNotIn("b_area_old_actor", syms)
+        self.assertNotIn("LoadBattleSection", syms)
+        self.assertEqual(syms["legacy_engine"], 0x80001234)
+        self.assertNotEqual(syms["current_engine"], 0x80005678)
+        reference = self.compile("reference", "extern int b_area_old_actor; int* ref = &b_area_old_actor;")
+        with self.assertRaisesRegex(ValueError, "unresolved symbol 'b_area_old_actor'"):
+            self.link([reference], syms=syms)
 
     def test_local_and_engine_references_remain_distinct(self):
         result = self.link([

@@ -15,3 +15,10 @@ StageList A(Stages) = {
     STAGE("nok_01", "nok_01"),
     {},
 };
+
+BATTLE_AREA_ENTRY = {
+    .battles = &A(Formations),
+    .stages = &A(Stages),
+    .battleCount = ARRAY_COUNT(A(Formations)) - 1,
+    .stageCount = ARRAY_COUNT(A(Stages)) - 1,
+};

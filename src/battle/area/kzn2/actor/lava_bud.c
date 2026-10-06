@@ -42,10 +42,10 @@ enum N(ActorParams) {
 
 static s32 N(unusedArray)[64];
 
-BSS u8 Vine3Base[0x2000];
-BSS u8 Vine2Base[0x3000];
-BSS u8 Vine1Base[0x3000];
-BSS u8 Vine0Base[0x4000];
+extern u8 Vine3Base[0x2000];
+extern u8 Vine2Base[0x3000];
+extern u8 Vine1Base[0x3000];
+extern u8 Vine0Base[0x4000];
 
 #define VINE_1_BASE (s32) Vine1Base
 #define VINE_2_BASE (s32) Vine2Base

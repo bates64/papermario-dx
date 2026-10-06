@@ -17,9 +17,7 @@ asset_stack:
   - assets/us
 
 classes:
-  battle_area: { vram: 0x80218000, vram_symbol: heaps_legacy_VRAM_END }
-  battle_area2: { vram: 0x80231000, vram_symbol: Vine1Base }
-  battle: { vram: 0x8023E000, follows: [battle_area] }
+  battle: { vram: 0x8023E000, follows: [heaps_legacy] }
   battle_move: { vram: 0x802A1000, follows: [battle] }
   dgb_01_smash_bridges: { vram: 0x80200000, vram_symbol: D_80200000 }
   effect_gfx: { vram: 0x9000000 }
@@ -84,47 +82,6 @@ segments:
   - { name: obfuscation_shims, vram: 0x802B2000 }
   - { name: world_use_item, class: world_use_item }
   - { each: src/effects/gfx, class: effect_gfx }
-  - { name: battle/area/kmr_part_1, class: battle_area }
-  - { name: battle/area/kmr_part_2, class: battle_area }
-  - { name: battle/area/kmr_part_3, class: battle_area }
-  - { name: battle/area/mac, class: battle_area }
-  - { name: battle/area/hos, class: battle_area }
-  - { name: battle/area/nok, class: battle_area }
-  - { name: battle/area/trd_part_1, class: battle_area }
-  - { name: battle/area/trd_part_2, class: battle_area }
-  - { name: battle/area/trd_part_3, class: battle_area }
-  - { name: battle/area/iwa, class: battle_area }
-  - { name: battle/area/sbk, class: battle_area, subalign: 16 }
-  - { name: battle/area/isk_part_1, class: battle_area }
-  - { name: battle/area/isk_part_2, class: battle_area }
-  - { name: battle/area/mim, class: battle_area }
-  - { name: battle/area/arn, class: battle_area }
-  - { name: battle/area/dgb, class: battle_area }
-  - { name: battle/area/omo, class: battle_area }
-  - { name: battle/area/omo2, class: battle_area }
-  - { name: battle/area/omo2_6, class: battle_area2 }
-  - { name: battle/area/omo3, class: battle_area }
-  - { name: battle/area/kgr, class: battle_area }
-  - { name: battle/area/jan, class: battle_area }
-  - { name: battle/area/jan2, class: battle_area }
-  - { name: battle/area/kzn, class: battle_area }
-  - { name: battle/area/kzn2, class: battle_area }
-  - { name: battle/area/flo, class: battle_area }
-  - { name: battle/area/flo2, class: battle_area }
-  - { name: battle/area/tik, class: battle_area }
-  - { name: battle/area/tik2, class: battle_area }
-  - { name: battle/area/tik3, class: battle_area }
-  - { name: battle/area/sam, class: battle_area }
-  - { name: battle/area/sam2, class: battle_area }
-  - { name: battle/area/pra, class: battle_area }
-  - { name: battle/area/pra2, class: battle_area, subalign: 16 }
-  - { name: battle/area/pra3, class: battle_area }
-  - { name: battle/area/kpa, class: battle_area }
-  - { name: battle/area/kpa2, class: battle_area }
-  - { name: battle/area/kpa3, class: battle_area }
-  - { name: battle/area/kpa4, class: battle_area }
-  - { name: battle/area/kkj, class: battle_area }
-  - { name: battle/area/dig, class: battle_area }
   - { name: level_up, class: battle_move }
   - { name: starpoint, class: battle_move }
   - { each: src/world/model_anim/kzn, class: world_model_anim }
@@ -203,10 +160,10 @@ charsets:
 
 # Where a segment's sources live.
 #
-# A directory belongs to the segment its path names, so src/battle/area/arn
-# holds battle/area/arn and src/engine1 holds engine1. A directory that names
-# no segment belongs to the one its parent does, and src itself is main, so
-# adding a source file needs no entry here.
+# A directory belongs to the segment its path names, so src/engine1 holds
+# engine1. Runtime overlay families are discovered separately. A directory
+# that names no segment belongs to the one its parent does, and src itself
+# is main, so adding a source file needs no entry here.
 sources:
   # Directories whose segment is not the one their path names.
   dirs:
@@ -232,6 +189,7 @@ sources:
   # Sources that build separately, or not for this version.
   exclude:
     - src/battle/actor/*
+    - src/battle/area/*
     - src/world/area/*/*/
     - src/os/padding_alt.s
     - src/os/skapi.s

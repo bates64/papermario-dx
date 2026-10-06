@@ -963,6 +963,12 @@ def cmd_gen_syms(args):
     syms = {}
     for symbol_file in args.symbol_files:
         syms.update(parse_syms(symbol_file))
+    # Battle areas now relocate independently; their old addresses (and the
+    # removed raw-DMA API) must not silently satisfy an overlay's imports.
+    syms = {
+        name: value for name, value in syms.items()
+        if not name.startswith("b_area_") and name != "LoadBattleSection"
+    }
     # The newly linked engine always wins over addresses from the baseline.
     syms.update(gen_syms_from_elf(args.input))
     write_if_changed(args.output, pickle.dumps(syms))

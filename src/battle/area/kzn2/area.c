@@ -80,3 +80,12 @@ DmaTable A(dmaTable)[] = {
     [VINE_ANIM_EXTRA_DEATH]                 PIRANHA_DMA_ENTRY(23),
     [VINE_ANIM_EXTRA_EMERGE]                PIRANHA_DMA_ENTRY(24),
 };
+
+BATTLE_AREA_ENTRY = {
+    .battles = &A(Formations),
+    .stages = &A(Stages),
+    .battleCount = ARRAY_COUNT(A(Formations)) - 1,
+    .stageCount = ARRAY_COUNT(A(Stages)) - 1,
+    .dmaTable = A(dmaTable),
+    .dmaCount = ARRAY_COUNT(A(dmaTable)),
+};

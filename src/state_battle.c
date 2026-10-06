@@ -162,6 +162,7 @@ void state_step_end_battle(void) {
 
             ovl_unload_type(OVL_ACTOR);
             unload_battle_stage();
+            unload_battle_area();
             remove_all_effects();
 
             if (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED) {

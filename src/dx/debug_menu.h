@@ -21,6 +21,8 @@ typedef enum DebugCheat {
 
 void dx_debug_menu_main();
 void dx_debug_console_main();
+// A debug transition may free data referenced by the frame being constructed.
+b32 dx_debug_consume_discard_frame(void);
 void dx_debug_draw_collision();
 
 b32 dx_debug_menu_is_open();

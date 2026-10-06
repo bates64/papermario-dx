@@ -69,13 +69,14 @@ OVL_TYPE_EFFECT = 0
 OVL_TYPE_MAP = 1
 OVL_TYPE_ACTION = 2
 OVL_TYPE_PARTNER = 3
-OVL_TYPE_ACTOR = 4
-OVL_TYPE_BATTLE_PARTNER = 5
-OVL_TYPE_ACTION_CMD = 6
-OVL_TYPE_BATTLE_SCRIPT = 7
-OVL_TYPE_BATTLE_MENU = 8
-OVL_TYPE_ENTITY = 9
-OVL_TYPE_STAGE = 10
+OVL_TYPE_BATTLE_AREA = 4
+OVL_TYPE_STAGE = 5
+OVL_TYPE_ACTOR = 6
+OVL_TYPE_BATTLE_PARTNER = 7
+OVL_TYPE_ACTION_CMD = 8
+OVL_TYPE_BATTLE_SCRIPT = 9
+OVL_TYPE_BATTLE_MENU = 10
+OVL_TYPE_ENTITY = 11
 
 BATTLE_MENU_SOURCES = (
     "battle/menus/btl_states_menus.c",
@@ -916,6 +917,7 @@ class Configure:
                 ("battle", "move"),
                 ("battle", "actor"),
                 ("battle", "stage"),
+                ("battle", "area"),
             )
             or parts[:2] == ("world", "area") and len(parts) >= 5
         )
@@ -2153,6 +2155,8 @@ class Configure:
             (OVL_TYPE_MAP, "world/area/*/*/", ""),
             (OVL_TYPE_ACTION, "world/action/*.c", ""),
             (OVL_TYPE_PARTNER, "world/partner/*.c", "world_partner_"),
+            (OVL_TYPE_BATTLE_AREA, "battle/area/*", ""),
+            (OVL_TYPE_STAGE, "battle/stage/*", ""),
             (OVL_TYPE_ACTOR, "battle/actor/*", ""),
             (OVL_TYPE_BATTLE_PARTNER, "battle/partner/*.c", ""),
             (OVL_TYPE_ACTION_CMD, "battle/action_cmd/*.c", ""),
@@ -2161,7 +2165,6 @@ class Configure:
             (OVL_TYPE_BATTLE_SCRIPT, "battle/move/jump/*.c", "battle_move_"),
             (OVL_TYPE_BATTLE_SCRIPT, "battle/move/star_power/*.c", "battle_move_"),
             (OVL_TYPE_ENTITY, "entity/**/*.c", ""),
-            (OVL_TYPE_STAGE, "battle/stage/*", ""),
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -2209,8 +2212,14 @@ class Configure:
                         found.pop(key, None)
                         continue
                     if match.is_dir():
+                        # Area modules also contain their still-bundled actors.
+                        children = (
+                            match.rglob("*")
+                            if type_index == OVL_TYPE_BATTLE_AREA
+                            else match.iterdir()
+                        )
                         sources = [
-                            path for path in sorted(match.iterdir()) if is_source(path)
+                            path for path in sorted(children) if is_source(path)
                         ]
                     else:
                         sources = [match]
@@ -2328,7 +2337,14 @@ class Configure:
                     task = "cc_modern"
                     pch_header = c_precompiled_header_path.with_suffix("")
                     pch_deps = [posix(c_precompiled_header_path)]
-                obj_path = build_dir / (c_file.name + ".o")
+                # Preserve nested source paths within a directory module so an
+                # area's actor/main.c cannot collide with its own main.c.
+                source_name = (
+                    c_file.relative_to(src_path)
+                    if src_path.is_dir() and c_file.is_relative_to(src_path)
+                    else c_file.name
+                )
+                obj_path = build_dir / (str(source_name) + ".o")
                 embedded = self.embedded_asset_deps(c_file)
                 variables = {
                     "version": self.version,
@@ -2414,6 +2430,9 @@ class Configure:
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_STAGE:
                 force_export = "--force-export gBattleStage"
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_BATTLE_AREA:
+                force_export = "--force-export gBattleArea"
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [

@@ -181,18 +181,30 @@ typedef struct StageListRow {
 
 typedef StageListRow StageList[];
 
-typedef struct BattleArea {
-    /* 0x00 */ char* name; ///< ASCII debug name.
-    /* 0x04 */ void* dmaStart;
-    /* 0x08 */ void* dmaEnd;
-    /* 0x0C */ void* dmaDest;
-    /* 0x10 */ BattleList* battles;
-    /* 0x14 */ StageList* stages;
-    /* 0x18 */ s32 unused_18;
-    /* 0x1C */ DmaTable* dmaTable;
-} BattleArea; // size = 0x20
+/// Small resident catalog entry. Numeric indices are the public battle-area IDs.
+typedef struct BattleAreaInfo {
+    const char* name; ///< ASCII debug name.
+    const char* overlay;
+} BattleAreaInfo;
 
-EXTERN_C BattleArea gBattleAreas[40];
+/// Exported by an area overlay, alongside any actors still bundled with it.
+typedef struct BattleArea {
+    /* 0x00 */ BattleList* battles;
+    /* 0x04 */ StageList* stages;
+    /* 0x08 */ s32 battleCount;
+    /* 0x0C */ s32 stageCount;
+    /* 0x10 */ DmaTable* dmaTable;
+    /* 0x14 */ s32 dmaCount;
+} BattleArea; // size = 0x18
+
+#define BATTLE_AREA_EXPORT_NAME "gBattleArea"
+#define BATTLE_AREA_ENTRY export const BattleArea gBattleArea
+
+EXTERN_C const BattleAreaInfo gBattleAreas[40];
+
+const BattleArea* get_loaded_battle_area(void);
+// Like the stage, the area must outlive all battle scripts, actors, and rendering.
+void unload_battle_area(void);
 
 #define BATTLE(formation, stage, name) { name, ARRAY_COUNT(formation), (Formation*) formation, stage }
 #define BATTLE_WITH_SCRIPT(formation, stage, script, name) { name, ARRAY_COUNT(formation), (Formation*) formation, stage, &script }
