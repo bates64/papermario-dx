@@ -307,9 +307,9 @@ API_CALLABLE(SetSleepBubbleTimeLeft) {
 
 API_CALLABLE(PlayEffect_impl) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode rawVars[EFFECT_MAX_ARGS + 1];
-    s32 iVars[EFFECT_MAX_ARGS + 1];
-    f32 fVars[EFFECT_MAX_ARGS + 1];
+    Bytecode rawVars[EFFECT_MAX_ARGS + 1] = {};
+    s32 iVars[EFFECT_MAX_ARGS + 1] = {};
+    f32 fVars[EFFECT_MAX_ARGS + 1] = {};
     EffectInstance* effectRet = nullptr;
     EffectInstance* effectOut;
     s32 effectIndex;

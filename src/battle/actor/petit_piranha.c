@@ -2,7 +2,6 @@
 #include "script_api/battle.h"
 #include "effects.h"
 #include "sprite/npc/PetitPiranha.h"
-#include "effects.h"
 #include "battle/common/lava_piranha.h"
 
 extern EvtScript EVS_Init;

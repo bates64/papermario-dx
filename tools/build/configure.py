@@ -2212,14 +2212,8 @@ class Configure:
                         found.pop(key, None)
                         continue
                     if match.is_dir():
-                        # Area modules also contain their still-bundled actors.
-                        children = (
-                            match.rglob("*")
-                            if type_index == OVL_TYPE_BATTLE_AREA
-                            else match.iterdir()
-                        )
                         sources = [
-                            path for path in sorted(children) if is_source(path)
+                            path for path in sorted(match.iterdir()) if is_source(path)
                         ]
                     else:
                         sources = [match]

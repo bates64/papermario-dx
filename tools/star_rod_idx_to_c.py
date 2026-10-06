@@ -869,17 +869,22 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             num_bytes_remaining = struct["length"]
             while num_bytes_remaining > 0:
-                name, formation_length, ptr, stage_ptr, zero = unpack(">IIIII", bytes.read(4 * 5))
+                name, formation_length, ptr, stage_ptr, script_ptr = unpack(">IIIII", bytes.read(4 * 5))
                 num_bytes_remaining -= 4 * 5
 
                 if name == 0:
                     out += "    {},\n"
                 else:
-                    out += "    BATTLE("
-                    out += f"{symbol_map[name][0][1]}, "
-                    out += f"{symbol_map[ptr][0][1]}, "
-                    out += f"&{symbol_map[stage_ptr][0][1]}"
-                    out += "),\n"
+                    formation = symbol_map[ptr][0][1]
+                    debug_name = symbol_map[name][0][1]
+                    stage = symbol_map[stage_ptr][0][1]
+                    if not stage.startswith('"'):
+                        stage = json.dumps(stage)
+                    if script_ptr:
+                        script = symbol_map[script_ptr][0][1]
+                        out += f"    BATTLE_WITH_SCRIPT({formation}, {stage}, {script}, {debug_name}),\n"
+                    else:
+                        out += f"    BATTLE({formation}, {stage}, {debug_name}),\n"
 
             out += f"}};\n"
         elif struct["type"] == "StageTable":

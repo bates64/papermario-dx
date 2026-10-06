@@ -36,18 +36,8 @@ extern EntityScript Entity_CreatedInertBlock_Script;
 extern EntityScript Entity_BreakingBlock_Script;
 extern EntityScript Entity_InertBlock_Script;
 
-extern EntityBlueprint Entity_ShatteringHammer1Block;
-extern EntityBlueprint Entity_ShatteringHammer2Block;
-extern EntityBlueprint Entity_ShatteringHammer3Block;
-extern EntityBlueprint Entity_ShatteringHammer1BlockTiny;
-extern EntityBlueprint Entity_ShatteringHammer2BlockTiny;
-extern EntityBlueprint Entity_ShatteringHammer3BlockTiny;
-extern EntityBlueprint Entity_ShatteringBrickBlock;
-
 void entity_BrickBlock_idle(Entity* entity);
 void entity_breakable_block_create_shattering_entity(Entity* entity);
-
-void entity_MulticoinBlock_update_timer(Entity* entity);
 
 #define MULTICOIN_BLOCK_MAX_COINS 10
 

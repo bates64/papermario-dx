@@ -498,10 +498,7 @@ static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entr
 }
 
 Overlay* ovl_load(const char* name, OverlayType type) {
-    if ((u32)type >= OVL_NUM_TYPES) {
-        PANIC_MSG("Invalid overlay type %d", type);
-        return nullptr;
-    }
+    ASSERT((u32)type < OVL_NUM_TYPES);
 
     const OverlayStorage* storage = &overlayStorage[type];
     s32 descriptorEnd = storage->descStart + storage->descCount;
@@ -554,10 +551,7 @@ void ovl_unload_type(OverlayType type) {
 }
 
 void ovl_restore_type(OverlayType type) {
-    if ((u32)type >= OVL_NUM_TYPES) {
-        PANIC_MSG("Invalid overlay type %d", type);
-        return;
-    }
+    ASSERT((u32)type < OVL_NUM_TYPES);
 
     const OverlayStorage* storage = &overlayStorage[type];
     ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED,

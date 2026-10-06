@@ -16,8 +16,6 @@ API_CALLABLE(HeartPlant_SpawnHeart) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript EVS_NpcInteract_HeartPlant;
-
 EvtScript EVS_NpcCreate_HeartPlant = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, EVAR_USE_COUNT, 0)

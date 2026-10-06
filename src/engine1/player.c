@@ -24,7 +24,6 @@ void clear_interact_prompt(void);
 void update_partner_timers(void);
 void player_update_sprite(void);
 void update_player_shadow(void);
-s32 partner_use_ability(void);
 
 // main function for player physics called from state step functions
 void update_player(void) {

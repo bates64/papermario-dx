@@ -554,6 +554,7 @@ static API_CALLABLE(AdjustFormationPriority) {
             break;
     }
 
+    ASSERT_MSG(formation != nullptr, "Unsupported Duplighost partner %ld", partnerID);
     formation->priority = actor->turnPriority;
 
     return ApiStatus_DONE2;

@@ -17,8 +17,6 @@ extern EntityModelScript Entity_HeartBlockContent_RenderScriptIdle;
 extern EntityModelScript Entity_HeartBlockContent_RenderScriptAfterHit;
 extern EntityModelScript Entity_HeartBlockContent_RenderScriptHit;
 
-extern EntityBlueprint Entity_HeartBlockContent;
-
 extern Gfx Entity_HeartBlock_Render[];
 extern Gfx Entity_HeartBlockContent_RenderHeartSleeping[];
 extern Gfx Entity_HeartBlockContent_RenderHeartAwake[];

@@ -218,7 +218,7 @@ API_CALLABLE(DestroyRitualCards) {
     return ApiStatus_DONE2;
 }
 
-s32 AppendGfx_RitualCard(RitualCard* dro_02_card, Matrix4f mtxParent) {
+s32 AppendGfx_RitualCard(RitualCard* card, Matrix4f mtxParent) {
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
     ImgFXTexture ifxImg;
@@ -228,39 +228,39 @@ s32 AppendGfx_RitualCard(RitualCard* dro_02_card, Matrix4f mtxParent) {
     // resolves a deadlock where imgfx_appendGfx_component would exit early if uninitialized
     ifxImg.alpha = 255;
 
-    if (dro_02_card->drawMode == CARD_DRAW_HIDDEN) {
+    if (card->drawMode == CARD_DRAW_HIDDEN) {
         return IMGFX_RENDER_RESULT_DONE;
     }
 
     gSPDisplayList(gMainGfxPos++, dro_02_card_setup_gfx);
 
-    if (dro_02_card->drawMode == CARD_DRAW_CARD_AND_PLAYER
-        || dro_02_card->drawMode == CARD_DRAW_CARD_ONLY
-        || dro_02_card->drawMode == CARD_DRAW_PLAYER_ONLY
+    if (card->drawMode == CARD_DRAW_CARD_AND_PLAYER
+        || card->drawMode == CARD_DRAW_CARD_ONLY
+        || card->drawMode == CARD_DRAW_PLAYER_ONLY
     ) {
-        guTranslateF(mtxTemp, dro_02_card->pos.x, dro_02_card->pos.y, dro_02_card->pos.z);
+        guTranslateF(mtxTemp, card->pos.x, card->pos.y, card->pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
-        guRotateF(mtxTemp, dro_02_card->yaw, 0.0f, 1.0f, 0.0f);
+        guRotateF(mtxTemp, card->yaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
-        guRotateF(mtxTemp, dro_02_card->pitch, 1.0f, 0.0f, 0.0f);
+        guRotateF(mtxTemp, card->pitch, 1.0f, 0.0f, 0.0f);
         guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        // draw dro_02_card
-        if (dro_02_card->drawMode == CARD_DRAW_CARD_AND_PLAYER || dro_02_card->drawMode == CARD_DRAW_CARD_ONLY) {
+        // draw card
+        if (card->drawMode == CARD_DRAW_CARD_AND_PLAYER || card->drawMode == CARD_DRAW_CARD_ONLY) {
             gSPDisplayList(gMainGfxPos++, dro_02_card_1_gfx);
         }
 
         // draw player
-        if (dro_02_card->drawMode == CARD_DRAW_CARD_AND_PLAYER || dro_02_card->drawMode == CARD_DRAW_PLAYER_ONLY) {
-            spr_get_player_raster_info(&rasterInfo, dro_02_card->playerSpriteID, dro_02_card->playerRasterIndex);
+        if (card->drawMode == CARD_DRAW_CARD_AND_PLAYER || card->drawMode == CARD_DRAW_PLAYER_ONLY) {
+            spr_get_player_raster_info(&rasterInfo, card->playerSpriteID, card->playerRasterIndex);
             gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
             gDPLoadTLUT_pal16(gMainGfxPos++, 0, rasterInfo.defaultPal);
             gDPLoadTextureTile_4b(gMainGfxPos++, rasterInfo.raster, G_IM_FMT_CI, rasterInfo.width, rasterInfo.height,
                                     0, 0, rasterInfo.width - 1, rasterInfo.height - 1, 0,
                                     G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD);
-            guTranslateF(mtxTransform, dro_02_card->spriteOffsetX + 30 - rasterInfo.width / 2, 0.0f, 0.0f);
+            guTranslateF(mtxTransform, card->spriteOffsetX + 30 - rasterInfo.width / 2, 0.0f, 0.0f);
             guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
             gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(gMainGfxPos++, dro_02_card_2_gfx);
@@ -270,7 +270,7 @@ s32 AppendGfx_RitualCard(RitualCard* dro_02_card, Matrix4f mtxParent) {
         return IMGFX_RENDER_RESULT_DONE;
     }
 
-    if (dro_02_card->drawMode == CARD_DRAW_SHUFFLE_ANIM) {
+    if (card->drawMode == CARD_DRAW_SHUFFLE_ANIM) {
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 256 * 4, 256 * 4, 287 * 4, 287 * 4);
         guTranslateF(mtxTemp, RitualCards[0].pos.x, RitualCards[0].pos.y, RitualCards[0].pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
@@ -281,7 +281,7 @@ s32 AppendGfx_RitualCard(RitualCard* dro_02_card, Matrix4f mtxParent) {
         return animResult;
     }
 
-    if (dro_02_card->drawMode == CARD_DRAW_MERGE_ANIM) {
+    if (card->drawMode == CARD_DRAW_MERGE_ANIM) {
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 256 * 4, 256 * 4, 287 * 4, 287 * 4);
         guTranslateF(mtxTemp, RitualCards[0].pos.x, RitualCards[0].pos.y, RitualCards[0].pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
@@ -294,7 +294,7 @@ s32 AppendGfx_RitualCard(RitualCard* dro_02_card, Matrix4f mtxParent) {
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        spr_get_player_raster_info(&rasterInfo, dro_02_card->playerSpriteID, dro_02_card->playerRasterIndex);
+        spr_get_player_raster_info(&rasterInfo, card->playerSpriteID, card->playerRasterIndex);
         ifxImg.raster = rasterInfo.raster;
         ifxImg.palette = rasterInfo.defaultPal;
         ifxImg.width = rasterInfo.width;
@@ -311,7 +311,7 @@ s32 AppendGfx_RitualCard(RitualCard* dro_02_card, Matrix4f mtxParent) {
 }
 
 void GetCardWorldPos(s32 index, f32* outX, f32* outY, f32* outZ) {
-    RitualCard* dro_02_card;
+    RitualCard* card;
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
     Matrix4f mtxParent;
@@ -321,10 +321,10 @@ void GetCardWorldPos(s32 index, f32* outX, f32* outY, f32* outZ) {
                 evt_get_variable(CreatorScript, RITUAL_VAR_POS_Y),
                 evt_get_variable(CreatorScript, RITUAL_VAR_POS_Z));
 
-    dro_02_card = &RitualCards[index];
-    guTranslateF(mtxTemp, dro_02_card->pos.x, dro_02_card->pos.y, dro_02_card->pos.z);
+    card = &RitualCards[index];
+    guTranslateF(mtxTemp, card->pos.x, card->pos.y, card->pos.z);
     guMtxCatF(mtxTemp, mtxParent, mtxTransform);
-    guRotateF(mtxTemp, dro_02_card->yaw, 0.0f, 1.0f, 0.0f);
+    guRotateF(mtxTemp, card->yaw, 0.0f, 1.0f, 0.0f);
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
     guTranslateF(mtxTemp, 0.0f, 0.0f, 1.0f);
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);

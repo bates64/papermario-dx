@@ -15,8 +15,6 @@ extern Addr entity_model_UltraBlock_ROM_END;
 extern Addr entity_model_UltraBlock_ROM_START;
 #endif
 
-extern EntityBlueprint Entity_SuperBlockContent;
-
 extern Gfx Entity_SuperBlock_Render[];
 extern Gfx Entity_UltraBlock_Render[];
 extern Gfx Entity_SuperBlockContent_Render[];

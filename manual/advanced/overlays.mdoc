@@ -36,17 +36,15 @@ ovl_unload(ovl);
 ## Source files
 
 Each [OverlayType] has a source glob. Files or directories matching the glob are each built as
-an overlay. Most use the stem of the match as the overlay name; source families that retain a
-legacy naming prefix define that prefix alongside their glob. If the match is a directory, all
+an overlay, with the stem of the match as the overlay name. If the match is a directory, all
 C/C++ files inside it (excluding `*.inc.c` and `*.inc.cpp`) are compiled and linked together.
-If the match is a single file, that file alone is the overlay. Overlay code is discovered this
-way rather than being declared as a resident segment in `layout.yaml`.
+If the match is a single file, that file alone is the overlay.
 
-For example, `src/world/area/kmr/kmr_02/` is a directory matching `src/world/area/*/*/`, so it
-becomes an [OVL_MAP] overlay named `kmr_02`. `src/battle/actor/goomba.c` matches
-`src/battle/actor/*`, so it becomes an [OVL_ACTOR] overlay named `goomba`.
+For example, `world/area/kmr/kmr_02/` is a directory matching `world/area/*/*/`, so it
+becomes an [OVL_MAP] overlay named `kmr_02`. `battle/actor/goomba.c` matches
+`battle/actor/*`, so it becomes an [OVL_ACTOR] overlay named `goomba`.
 
-Source files are resolved through the same `asset_stack` layers as other build inputs.
+Source files are sourced from both `src` and `assets` subdirectories.
 
 ## Importing and exporting
 

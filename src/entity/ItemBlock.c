@@ -37,16 +37,9 @@ extern StaticAnimatorNode* Entity_HitRedBlock_Mesh[];
 
 extern s32 D_802EA310[];
 
-extern EntityBlueprint Entity_HitGroundedYellowBlock;
-extern EntityBlueprint Entity_HitFloatingYellowBlock;
-extern EntityBlueprint Entity_HitRedBlock;
-
 BSS EffectInstance* TriggerBlockVanishEffect;
 
 f32 player_get_camera_facing_angle(void);
-void entity_inactive_block_hit_init(Entity*);
-void entity_inactive_block_hit_anim(Entity*);
-void entity_inactive_block_recoil_anim(Entity*);
 
 void entity_ItemBlock_idle(Entity* entity) {
     entity_base_block_idle(entity);
