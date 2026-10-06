@@ -66,15 +66,10 @@ void btl_state_update_normal_start(void) {
         battle = gOverrideBattlePtr;
     }
 
-    if (gCurrentStagePtr == nullptr) {
-        stage = battle->stage;
-    } else {
-        stage = gCurrentStagePtr->stage;
-    }
-
-    battleStatus->curStage = stage;
+    stage = battleStatus->curStage;
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
+            stage = load_battle_stage(gCurrentStagePtr == nullptr ? battle->stage : gCurrentStagePtr->stage);
             #if DX_DEBUG_MENU
             dx_debug_set_battle_info(gCurrentBattleID << 16 | (gCurrentStageID & 0xFFFF), stage->shape);
             #endif

@@ -3,13 +3,6 @@
 extern ActorBlueprint A(tubba_blubba);
 extern ActorBlueprint A(tubbas_heart);
 
-extern Stage A(arn_01);
-extern Stage A(arn_02);
-extern Stage A(arn_03);
-extern Stage A(arn_04);
-extern Stage A(arn_05);
-extern Stage A(arn_06);
-
 Formation A(Formation_00) = {
     OVL_ACTOR_BY_IDX("hyper_goomba", BTL_POS_GROUND_B, 10),
 };
@@ -108,32 +101,32 @@ Formation A(Formation_10) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(arn_01), "ハイパークリボー"),
-    BATTLE(A(Formation_01), A(arn_01), "ハイパークリボーx２"),
-    BATTLE(A(Formation_02), A(arn_01), "ハイパークリボーx３"),
-    BATTLE(A(Formation_03), A(arn_01), "ハイパークリボーx2,ハイパーパタクリボー"),
-    BATTLE(A(Formation_04), A(arn_01), "ハイパークリボーx3,ハイパーパタクリボー"),
-    BATTLE(A(Formation_05), A(arn_01), "ハイパークリボーx2,ハイパーパタクリボー,ハイパークリボー"),
-    BATTLE(A(Formation_06), A(arn_01), "ハイパーパタクリボー"),
-    BATTLE(A(Formation_07), A(arn_01), "ハイパーパタクリボーx2"),
-    BATTLE(A(Formation_08), A(arn_01), "ハイパーパタクリボーx3"),
-    BATTLE(A(Formation_09), A(arn_01), "ハイパーパタクリボーx4"),
-    BATTLE(A(Formation_0A), A(arn_01), "ハイパーシンエモン"),
-    BATTLE(A(Formation_0B), A(arn_01), "ハイパーシンエモンx2"),
-    BATTLE(A(Formation_0C), A(arn_01), "ハイパーシンエモンx3"),
-    BATTLE(A(Formation_0D), A(arn_01), "ハイパーシンエモン,ハイパークリボーx2"),
-    BATTLE(A(Formation_0E), A(arn_01), "ハイパーシンエモンx2,ハイパークリボーx2"),
-    BATTLE(A(Formation_0F), A(arn_06), "ドガボンしんぞう"),
-    BATTLE(A(Formation_10), A(arn_01), "ドガボン"),
+    BATTLE(A(Formation_00), "arn_01", "ハイパークリボー"),
+    BATTLE(A(Formation_01), "arn_01", "ハイパークリボーx２"),
+    BATTLE(A(Formation_02), "arn_01", "ハイパークリボーx３"),
+    BATTLE(A(Formation_03), "arn_01", "ハイパークリボーx2,ハイパーパタクリボー"),
+    BATTLE(A(Formation_04), "arn_01", "ハイパークリボーx3,ハイパーパタクリボー"),
+    BATTLE(A(Formation_05), "arn_01", "ハイパークリボーx2,ハイパーパタクリボー,ハイパークリボー"),
+    BATTLE(A(Formation_06), "arn_01", "ハイパーパタクリボー"),
+    BATTLE(A(Formation_07), "arn_01", "ハイパーパタクリボーx2"),
+    BATTLE(A(Formation_08), "arn_01", "ハイパーパタクリボーx3"),
+    BATTLE(A(Formation_09), "arn_01", "ハイパーパタクリボーx4"),
+    BATTLE(A(Formation_0A), "arn_01", "ハイパーシンエモン"),
+    BATTLE(A(Formation_0B), "arn_01", "ハイパーシンエモンx2"),
+    BATTLE(A(Formation_0C), "arn_01", "ハイパーシンエモンx3"),
+    BATTLE(A(Formation_0D), "arn_01", "ハイパーシンエモン,ハイパークリボーx2"),
+    BATTLE(A(Formation_0E), "arn_01", "ハイパーシンエモンx2,ハイパークリボーx2"),
+    BATTLE(A(Formation_0F), "arn_06", "ドガボンしんぞう"),
+    BATTLE(A(Formation_10), "arn_01", "ドガボン"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("arn_01", A(arn_01)),
-    STAGE("arn_02", A(arn_02)),
-    STAGE("arn_03", A(arn_03)),
-    STAGE("arn_04", A(arn_04)),
-    STAGE("arn_05", A(arn_05)),
-    STAGE("arn_06", A(arn_06)),
+    STAGE("arn_01", "arn_01"),
+    STAGE("arn_02", "arn_02"),
+    STAGE("arn_03", "arn_03"),
+    STAGE("arn_04", "arn_04"),
+    STAGE("arn_05", "arn_05"),
+    STAGE("arn_06", "arn_06"),
     {},
 };

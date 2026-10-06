@@ -2,11 +2,6 @@
 
 extern ActorBlueprint A(kent_c_koopa);
 
-extern Stage A(nok_01);
-extern Stage A(nok_02);
-extern Stage A(nok_03);
-extern Stage A(nok_04);
-
 Formation A(Formation_00) = {
     OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 9),
@@ -147,38 +142,38 @@ Formation A(Formation_18) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(nok_02), "クリボーx２"),
-    BATTLE(A(Formation_01), A(nok_02), "クリボー,トゲクリボー"),
-    BATTLE(A(Formation_02), A(nok_02), "パタクリボーx２"),
-    BATTLE(A(Formation_03), A(nok_02), "トゲクリボー、パタクリボー"),
-    BATTLE(A(Formation_04), A(nok_02), "トゲクリボーx２"),
-    BATTLE(A(Formation_05), A(nok_02), "トゲクリボー、クリボーx2"),
-    BATTLE(A(Formation_06), A(nok_02), "トゲクリボーx３"),
-    BATTLE(A(Formation_07), A(nok_02), "トゲクリボーx４"),
-    BATTLE(A(Formation_08), A(nok_02), "ノコノコ、クリボー"),
-    BATTLE(A(Formation_09), A(nok_02), "ノコノコx２"),
-    BATTLE(A(Formation_0A), A(nok_02), "ノコノコx３"),
-    BATTLE(A(Formation_0B), A(nok_02), "ノコノコ、トゲクリボー"),
-    BATTLE(A(Formation_0C), A(nok_02), "ノコノコx2、トゲクリ"),
-    BATTLE(A(Formation_0D), A(nok_02), "ノコノコ、トゲクリボーx2"),
-    BATTLE(A(Formation_0E), A(nok_02), "ノコノコ、パタクリボーx2"),
-    BATTLE(A(Formation_0F), A(nok_02), "ノコノコ、トゲクリボー,パタクリボー"),
-    BATTLE(A(Formation_10), A(nok_02), "ノコノコx2、トゲクリボー,パタクリボー"),
-    BATTLE(A(Formation_11), A(nok_02), "パタパタx2"),
-    BATTLE(A(Formation_12), A(nok_02), "パタパタ、ノコノコ"),
-    BATTLE(A(Formation_13), A(nok_02), "パタパタ、ノコノコ、トゲクリボー"),
-    BATTLE(A(Formation_14), A(nok_02), "パタパタ、ノコノコ、トゲクリボーx2"),
-    BATTLE(A(Formation_15), A(nok_02), "チョロボン"),
-    BATTLE(A(Formation_16), A(nok_02), "チョロボンx2"),
-    BATTLE(A(Formation_17), A(nok_02), "チョロボンx4"),
-    BATTLE(A(Formation_18), A(nok_02), "ゼニノコー"),
+    BATTLE(A(Formation_00), "nok_02", "クリボーx２"),
+    BATTLE(A(Formation_01), "nok_02", "クリボー,トゲクリボー"),
+    BATTLE(A(Formation_02), "nok_02", "パタクリボーx２"),
+    BATTLE(A(Formation_03), "nok_02", "トゲクリボー、パタクリボー"),
+    BATTLE(A(Formation_04), "nok_02", "トゲクリボーx２"),
+    BATTLE(A(Formation_05), "nok_02", "トゲクリボー、クリボーx2"),
+    BATTLE(A(Formation_06), "nok_02", "トゲクリボーx３"),
+    BATTLE(A(Formation_07), "nok_02", "トゲクリボーx４"),
+    BATTLE(A(Formation_08), "nok_02", "ノコノコ、クリボー"),
+    BATTLE(A(Formation_09), "nok_02", "ノコノコx２"),
+    BATTLE(A(Formation_0A), "nok_02", "ノコノコx３"),
+    BATTLE(A(Formation_0B), "nok_02", "ノコノコ、トゲクリボー"),
+    BATTLE(A(Formation_0C), "nok_02", "ノコノコx2、トゲクリ"),
+    BATTLE(A(Formation_0D), "nok_02", "ノコノコ、トゲクリボーx2"),
+    BATTLE(A(Formation_0E), "nok_02", "ノコノコ、パタクリボーx2"),
+    BATTLE(A(Formation_0F), "nok_02", "ノコノコ、トゲクリボー,パタクリボー"),
+    BATTLE(A(Formation_10), "nok_02", "ノコノコx2、トゲクリボー,パタクリボー"),
+    BATTLE(A(Formation_11), "nok_02", "パタパタx2"),
+    BATTLE(A(Formation_12), "nok_02", "パタパタ、ノコノコ"),
+    BATTLE(A(Formation_13), "nok_02", "パタパタ、ノコノコ、トゲクリボー"),
+    BATTLE(A(Formation_14), "nok_02", "パタパタ、ノコノコ、トゲクリボーx2"),
+    BATTLE(A(Formation_15), "nok_02", "チョロボン"),
+    BATTLE(A(Formation_16), "nok_02", "チョロボンx2"),
+    BATTLE(A(Formation_17), "nok_02", "チョロボンx4"),
+    BATTLE(A(Formation_18), "nok_02", "ゼニノコー"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("nok_01", A(nok_01)),
-    STAGE("nok_02", A(nok_02)),
-    STAGE("nok_03", A(nok_03)),
-    STAGE("nok_04", A(nok_04)),
+    STAGE("nok_01", "nok_01"),
+    STAGE("nok_02", "nok_02"),
+    STAGE("nok_03", "nok_03"),
+    STAGE("nok_04", "nok_04"),
     {},
 };

@@ -4,17 +4,6 @@ extern ActorBlueprint A(huff_n_puff);
 extern ActorBlueprint A(monty_mole_boss);
 extern ActorBlueprint A(spike);
 
-extern Stage A(flo_01);
-extern Stage A(flo_01b);
-extern Stage A(flo_01c);
-extern Stage A(flo_02);
-extern Stage A(flo_02b);
-extern Stage A(flo_02c);
-extern Stage A(flo_03);
-extern Stage A(flo_04);
-extern Stage A(flo_05);
-extern Stage A(flo_06);
-
 Vec3i A(huff_n_puff_pos) = { 80, 80, 0 };
 
 Formation A(Formation_01) = {
@@ -48,25 +37,25 @@ Formation A(Formation_06) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_01), A(flo_04), "オズモーン"),
-    BATTLE(A(Formation_02), A(flo_01), "フラワーチョロプー"),
-    BATTLE(A(Formation_03), A(flo_01), "フラワーチョロプーx２"),
-    BATTLE(A(Formation_04), A(flo_01), "フラワーチョロプーx３"),
-    BATTLE(A(Formation_05), A(flo_01), "フラワーチョロプーx４"),
-    BATTLE(A(Formation_06), A(flo_01), "ジョナサン？"),
+    BATTLE(A(Formation_01), "flo_04", "オズモーン"),
+    BATTLE(A(Formation_02), "flo_01", "フラワーチョロプー"),
+    BATTLE(A(Formation_03), "flo_01", "フラワーチョロプーx２"),
+    BATTLE(A(Formation_04), "flo_01", "フラワーチョロプーx３"),
+    BATTLE(A(Formation_05), "flo_01", "フラワーチョロプーx４"),
+    BATTLE(A(Formation_06), "flo_01", "ジョナサン？"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("flo_01", A(flo_01)),
-    STAGE("flo_01b", A(flo_01b)),
-    STAGE("flo_01c", A(flo_01c)),
-    STAGE("flo_02", A(flo_02)),
-    STAGE("flo_02b", A(flo_02b)),
-    STAGE("flo_02c", A(flo_02c)),
-    STAGE("flo_03", A(flo_03)),
-    STAGE("flo_04", A(flo_04)),
-    STAGE("flo_05", A(flo_05)),
-    STAGE("flo_06", A(flo_06)),
+    STAGE("flo_01", "flo_01"),
+    STAGE("flo_01b", "flo_01b"),
+    STAGE("flo_01c", "flo_01c"),
+    STAGE("flo_02", "flo_02"),
+    STAGE("flo_02b", "flo_02b"),
+    STAGE("flo_02c", "flo_02c"),
+    STAGE("flo_03", "flo_03"),
+    STAGE("flo_04", "flo_04"),
+    STAGE("flo_05", "flo_05"),
+    STAGE("flo_06", "flo_06"),
     {},
 };

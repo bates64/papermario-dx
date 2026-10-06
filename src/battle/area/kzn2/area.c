@@ -5,14 +5,6 @@
 extern ActorBlueprint A(lava_piranha);
 extern ActorBlueprint A(petit_piranha);
 
-extern Stage A(kzn_01);
-extern Stage A(kzn_01b);
-extern Stage A(kzn_02);
-extern Stage A(kzn_04);
-extern Stage A(kzn_04b);
-extern Stage A(kzn_04c);
-extern Stage A(kzn_05);
-
 Vec3i A(lava_piranha_pos) = { 60, 60, 0 };
 
 Formation A(Formation_00) = {
@@ -28,19 +20,19 @@ Formation A(Formation_01) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(kzn_05), "ファイアパックン"),
-    BATTLE(A(Formation_01), A(kzn_05), "プチパックン"),
+    BATTLE(A(Formation_00), "kzn_05", "ファイアパックン"),
+    BATTLE(A(Formation_01), "kzn_05", "プチパックン"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("kzn_01",  A(kzn_01)),
-    STAGE("kzn_01b", A(kzn_01b)),
-    STAGE("kzn_02",  A(kzn_02)),
-    STAGE("kzn_04",  A(kzn_04)),
-    STAGE("kzn_04b", A(kzn_04b)),
-    STAGE("kzn_04c", A(kzn_04c)),
-    STAGE("kzn_05",  A(kzn_05)),
+    STAGE("kzn_01",  "kzn_01"),
+    STAGE("kzn_01b", "kzn_01b"),
+    STAGE("kzn_02",  "kzn_02"),
+    STAGE("kzn_04",  "kzn_04"),
+    STAGE("kzn_04b", "kzn_04b"),
+    STAGE("kzn_04c", "kzn_04c"),
+    STAGE("kzn_05",  "kzn_05"),
     {},
 };
 

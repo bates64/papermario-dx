@@ -5,8 +5,6 @@ extern ActorBlueprint A(crystal_bit_cube);
 extern ActorBlueprint A(crystal_bit_sphere);
 extern ActorBlueprint A(crystal_bit_prism);
 
-extern Stage A(sam_04);
-
 Vec3i A(KingPos) = { 70, 0, 5 };
 
 Vec3i A(CrystalBitPos1) = {  10, 35,  -5 };
@@ -21,11 +19,11 @@ Formation A(Formation_01) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_01), A(sam_04), "パラレラー"),
+    BATTLE(A(Formation_01), "sam_04", "パラレラー"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("sam_04", A(sam_04)),
+    STAGE("sam_04", "sam_04"),
     {},
 };

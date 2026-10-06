@@ -2,13 +2,6 @@
 
 extern ActorBlueprint A(monstar);
 
-extern Stage A(sam_01);
-extern Stage A(sam_02);
-extern Stage A(sam_02b);
-extern Stage A(sam_02c);
-extern Stage A(sam_02d);
-extern Stage A(sam_03);
-
 Vec3i A(MonstarPos) = { 75, 16, 5 };
 
 Formation A(Formation_01) = {
@@ -21,17 +14,17 @@ Formation A(Formation_02) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_01), A(sam_03), "かいぶつ"),
-    BATTLE(A(Formation_02), A(sam_01), "パタクリ,グレイカメック（チェックよう）"),
+    BATTLE(A(Formation_01), "sam_03", "かいぶつ"),
+    BATTLE(A(Formation_02), "sam_01", "パタクリ,グレイカメック（チェックよう）"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("sam_01", A(sam_01)),
-    STAGE("sam_02", A(sam_02)),
-    STAGE("sam_02b", A(sam_02b)),
-    STAGE("sam_02c", A(sam_02c)),
-    STAGE("sam_02d", A(sam_02d)),
-    STAGE("sam_03", A(sam_03)),
+    STAGE("sam_01", "sam_01"),
+    STAGE("sam_02", "sam_02"),
+    STAGE("sam_02b", "sam_02b"),
+    STAGE("sam_02c", "sam_02c"),
+    STAGE("sam_02d", "sam_02d"),
+    STAGE("sam_03", "sam_03"),
     {},
 };

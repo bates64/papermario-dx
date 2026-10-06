@@ -115,6 +115,12 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
         .descStart = 0,
         .descCount = MAX_GENERAL_OVERLAYS,
     },
+    [OVL_STAGE] = {
+        .mode = OVL_STORAGE_RELOCATABLE,
+        .base = (u8*)RELOCATABLE_LINK_ADDR,
+        .descStart = 0,
+        .descCount = MAX_GENERAL_OVERLAYS,
+    },
 };
 
 #if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
@@ -140,6 +146,8 @@ static const char* get_type_name(OverlayType type) {
             return "battle_menu";
         case OVL_ENTITY:
             return "entity";
+        case OVL_STAGE:
+            return "stage";
         default:
             return "invalid";
     }

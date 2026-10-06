@@ -3,10 +3,6 @@
 extern ActorBlueprint A(goombario_tutor);
 extern ActorBlueprint A(magikoopa_flying);
 
-extern Stage A(hos_00);
-extern Stage A(hos_01);
-extern Stage A(hos_02);
-
 Formation A(Formation_00) = {
     ACTOR_BY_IDX(A(goombario_tutor), BTL_POS_GROUND_B, 10),
 };
@@ -27,16 +23,16 @@ Formation A(Formation_03) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(hos_02), "クリオ（ＡＣヘルプ）"),
-    BATTLE(A(Formation_01), A(hos_01), "エルモスx２"),
-    BATTLE(A(Formation_02), A(hos_01), "エルモスx３"),
-    BATTLE(A(Formation_03), A(hos_02), "カメック（ＡＣヘルプご）"),
+    BATTLE(A(Formation_00), "hos_02", "クリオ（ＡＣヘルプ）"),
+    BATTLE(A(Formation_01), "hos_01", "エルモスx２"),
+    BATTLE(A(Formation_02), "hos_01", "エルモスx３"),
+    BATTLE(A(Formation_03), "hos_02", "カメック（ＡＣヘルプご）"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("hos_00", A(hos_00)),
-    STAGE("hos_01", A(hos_01)),
-    STAGE("hos_02", A(hos_02)),
+    STAGE("hos_00", "hos_00"),
+    STAGE("hos_01", "hos_01"),
+    STAGE("hos_02", "hos_02"),
     {},
 };

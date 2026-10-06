@@ -6,8 +6,6 @@
 #include "battle/script_module.h"
 #include "game_modes.h"
 
-extern StageListRow* gCurrentStagePtr;
-
 enum {
     // BTL_SUBSTATE_INIT                    = 0,
     BTL_SUBSTATE_FADE_OUT                   = 1,
@@ -19,7 +17,6 @@ enum {
 void btl_state_update_end_battle(void) {
     EncounterStatus* encounterStatus = &gCurrentEncounter;
     BattleStatus* battleStatus = &gBattleStatus;
-    Battle* battle = gCurrentBattlePtr;
     Stage* stage;
     Evt* script;
     s16 areaID, mapID;
@@ -52,11 +49,7 @@ void btl_state_update_end_battle(void) {
         case BTL_SUBSTATE_EXEC_STAGE_SCRIPT:
             BattleScreenFadeAmt = 255;
             gBattleStatus.flags1 &= ~BS_FLAGS1_ACTORS_VISIBLE;
-            if (gCurrentStagePtr == nullptr) {
-                stage = battle->stage;
-            } else {
-                stage = gCurrentStagePtr->stage;
-            }
+            stage = battleStatus->curStage;
             if (stage->postBattle == nullptr) {
                 gBattleSubState = BTL_SUBSTATE_CLEANUP;
                 return;

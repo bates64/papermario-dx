@@ -75,6 +75,7 @@ OVL_TYPE_ACTION_CMD = 6
 OVL_TYPE_BATTLE_SCRIPT = 7
 OVL_TYPE_BATTLE_MENU = 8
 OVL_TYPE_ENTITY = 9
+OVL_TYPE_STAGE = 10
 
 BATTLE_MENU_SOURCES = (
     "battle/menus/btl_states_menus.c",
@@ -317,8 +318,9 @@ class NinjaWriter(ninja_syntax.Writer):
 def map_source_dir(name: str) -> Path:
     """Where Star Rod keeps a map's source within a layer: the path of the map's code under src.
 
-    Stages are named like kzn_bt05. A map is found in whichever area holds its
-    code, else in the area its name begins with.
+    Stage geometry is named like kzn_bt05 and stays in battle/common/stage;
+    multiple code overlays in battle/stage can share it. A world map is found
+    in whichever area holds its code, else in the area its name begins with.
     """
     area = name[:3].rstrip("_")
     if "_bt" in name:
@@ -913,6 +915,7 @@ class Configure:
                 ("battle", "action_cmd"),
                 ("battle", "move"),
                 ("battle", "actor"),
+                ("battle", "stage"),
             )
             or parts[:2] == ("world", "area") and len(parts) >= 5
         )
@@ -2158,6 +2161,7 @@ class Configure:
             (OVL_TYPE_BATTLE_SCRIPT, "battle/move/jump/*.c", "battle_move_"),
             (OVL_TYPE_BATTLE_SCRIPT, "battle/move/star_power/*.c", "battle_move_"),
             (OVL_TYPE_ENTITY, "entity/**/*.c", ""),
+            (OVL_TYPE_STAGE, "battle/stage/*", ""),
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -2407,6 +2411,9 @@ class Configure:
             elif type_index == OVL_TYPE_ENTITY:
                 require_resolved = "--require-resolved"
             elif type_index == OVL_TYPE_ACTOR:
+                require_resolved = "--require-resolved"
+            elif type_index == OVL_TYPE_STAGE:
+                force_export = "--force-export gBattleStage"
                 require_resolved = "--require-resolved"
 
             overlay_link_deps = [

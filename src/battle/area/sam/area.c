@@ -2,13 +2,6 @@
 
 extern ActorBlueprint A(duplighost);
 
-extern Stage A(sam_01);
-extern Stage A(sam_02);
-extern Stage A(sam_02b);
-extern Stage A(sam_02c);
-extern Stage A(sam_02d);
-extern Stage A(sam_03);
-
 Vec3i A(pos_rocks_1)[] = {
     { -35, 0, -52 },
     { -20, 0, -50 },
@@ -199,29 +192,29 @@ Formation A(Formation_0E) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_01), A(sam_01), "バケバケx2"),
-    BATTLE(A(Formation_02), A(sam_01), "ゴックンx2"),
-    BATTLE(A(Formation_03), A(sam_01), "ゴックンx3"),
-    BATTLE(A(Formation_04), A(sam_01), "ゴックンx2,アイスパックン"),
-    BATTLE(A(Formation_05), A(sam_01), "ゴックン,アイスパックン,ゴックン"),
-    BATTLE(A(Formation_06), A(sam_01), "ゴックン,アイスパックン,ゴックン,アイスパックン"),
-    BATTLE(A(Formation_07), A(sam_01), "アイスパックンx２"),
-    BATTLE(A(Formation_08), A(sam_01), "アイスパックンx４"),
-    BATTLE(A(Formation_09), A(sam_01), "アイスパックンx２,ゴックン"),
-    BATTLE(A(Formation_0A), A(sam_01), "アイスパックン,ゴックン,アイスパックン"),
-    BATTLE(A(Formation_0B), A(sam_01), "アイスパックン,ゴックン,アイスパックン,ゴックン"),
-    BATTLE(A(Formation_0C), A(sam_01), "ホワイトガボンx２"),
-    BATTLE(A(Formation_0D), A(sam_01), "ホワイトガボン,パックン,ガボン,パックン"),
-    BATTLE(A(Formation_0E), A(sam_01), "ホワイトガボン,パックン,ガボン,グレイカメック"),
+    BATTLE(A(Formation_01), "sam_01", "バケバケx2"),
+    BATTLE(A(Formation_02), "sam_01", "ゴックンx2"),
+    BATTLE(A(Formation_03), "sam_01", "ゴックンx3"),
+    BATTLE(A(Formation_04), "sam_01", "ゴックンx2,アイスパックン"),
+    BATTLE(A(Formation_05), "sam_01", "ゴックン,アイスパックン,ゴックン"),
+    BATTLE(A(Formation_06), "sam_01", "ゴックン,アイスパックン,ゴックン,アイスパックン"),
+    BATTLE(A(Formation_07), "sam_01", "アイスパックンx２"),
+    BATTLE(A(Formation_08), "sam_01", "アイスパックンx４"),
+    BATTLE(A(Formation_09), "sam_01", "アイスパックンx２,ゴックン"),
+    BATTLE(A(Formation_0A), "sam_01", "アイスパックン,ゴックン,アイスパックン"),
+    BATTLE(A(Formation_0B), "sam_01", "アイスパックン,ゴックン,アイスパックン,ゴックン"),
+    BATTLE(A(Formation_0C), "sam_01", "ホワイトガボンx２"),
+    BATTLE(A(Formation_0D), "sam_01", "ホワイトガボン,パックン,ガボン,パックン"),
+    BATTLE(A(Formation_0E), "sam_01", "ホワイトガボン,パックン,ガボン,グレイカメック"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("sam_01", A(sam_01)),
-    STAGE("sam_02", A(sam_02)),
-    STAGE("sam_02b", A(sam_02b)),
-    STAGE("sam_02c", A(sam_02c)),
-    STAGE("sam_02d", A(sam_02d)),
-    STAGE("sam_03", A(sam_03)),
+    STAGE("sam_01", "sam_01"),
+    STAGE("sam_02", "sam_02"),
+    STAGE("sam_02b", "sam_02b"),
+    STAGE("sam_02c", "sam_02c"),
+    STAGE("sam_02d", "sam_02d"),
+    STAGE("sam_03", "sam_03"),
     {},
 };

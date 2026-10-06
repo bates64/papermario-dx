@@ -2,15 +2,6 @@
 
 extern ActorBlueprint A(white_magikoopa);
 
-extern Stage A(jan_00);
-extern Stage A(jan_01);
-extern Stage A(jan_01b);
-extern Stage A(jan_02);
-extern Stage A(jan_03);
-extern Stage A(jan_03b);
-extern Stage A(jan_04);
-extern Stage A(jan_04b);
-
 Formation A(Formation_00) = {
     OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_B, 10),
 };
@@ -34,21 +25,21 @@ Formation A(Formation_03) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(jan_01), "ポイズンパックン"),
-    BATTLE(A(Formation_01), A(jan_01), "ポイズンパックンx２"),
-    BATTLE(A(Formation_02), A(jan_01), "ポイズンパックンx３"),
-    BATTLE(A(Formation_03), A(jan_01), "ポイズンパックンx３,ホワイトカメック"),
+    BATTLE(A(Formation_00), "jan_01", "ポイズンパックン"),
+    BATTLE(A(Formation_01), "jan_01", "ポイズンパックンx２"),
+    BATTLE(A(Formation_02), "jan_01", "ポイズンパックンx３"),
+    BATTLE(A(Formation_03), "jan_01", "ポイズンパックンx３,ホワイトカメック"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("jan_00", A(jan_00)),
-    STAGE("jan_01", A(jan_01)),
-    STAGE("jan_01b", A(jan_01b)),
-    STAGE("jan_02", A(jan_02)),
-    STAGE("jan_03", A(jan_03)),
-    STAGE("jan_03b", A(jan_03b)),
-    STAGE("jan_04", A(jan_04)),
-    STAGE("jan_04b", A(jan_04b)),
+    STAGE("jan_00", "jan_00"),
+    STAGE("jan_01", "jan_01"),
+    STAGE("jan_01b", "jan_01b"),
+    STAGE("jan_02", "jan_02"),
+    STAGE("jan_03", "jan_03"),
+    STAGE("jan_03b", "jan_03b"),
+    STAGE("jan_04", "jan_04"),
+    STAGE("jan_04b", "jan_04b"),
     {},
 };

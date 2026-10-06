@@ -2,10 +2,6 @@
 
 extern ActorBlueprint A(buzzar);
 
-extern Stage A(iwa_01);
-extern Stage A(iwa_01b);
-extern Stage A(iwa_02);
-
 Formation A(Formation_00) = {
     OVL_ACTOR_BY_IDX("cleft", BTL_POS_GROUND_B, 10),
 };
@@ -84,26 +80,26 @@ Formation A(Formation_0D) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(iwa_01), "シンエモン"),
-    BATTLE(A(Formation_01), A(iwa_01), "シンエモンx２"),
-    BATTLE(A(Formation_02), A(iwa_01), "シンエモンx３"),
-    BATTLE(A(Formation_03), A(iwa_01), "シンエモン,チョロプー"),
-    BATTLE(A(Formation_04), A(iwa_01), "シンエモン,チョロプーx２"),
-    BATTLE(A(Formation_05), A(iwa_01), "チョロプー"),
-    BATTLE(A(Formation_06), A(iwa_01), "チョロプーx２"),
-    BATTLE(A(Formation_07), A(iwa_01), "チョロプーx３"),
-    BATTLE(A(Formation_08), A(iwa_01), "チョロプーx４"),
-    BATTLE(A(Formation_09), A(iwa_01), "チョロプー,シンエモン"),
-    BATTLE(A(Formation_0A), A(iwa_01), "チョロプーx２,シンエモン"),
-    BATTLE(A(Formation_0B), A(iwa_01), "チョロプー,シンエモン,チョロプー"),
-    BATTLE(A(Formation_0C), A(iwa_02), "ゲーハー"),
-    BATTLE(A(Formation_0D), A(iwa_02), "コブロン"),
+    BATTLE(A(Formation_00), "iwa_01", "シンエモン"),
+    BATTLE(A(Formation_01), "iwa_01", "シンエモンx２"),
+    BATTLE(A(Formation_02), "iwa_01", "シンエモンx３"),
+    BATTLE(A(Formation_03), "iwa_01", "シンエモン,チョロプー"),
+    BATTLE(A(Formation_04), "iwa_01", "シンエモン,チョロプーx２"),
+    BATTLE(A(Formation_05), "iwa_01", "チョロプー"),
+    BATTLE(A(Formation_06), "iwa_01", "チョロプーx２"),
+    BATTLE(A(Formation_07), "iwa_01", "チョロプーx３"),
+    BATTLE(A(Formation_08), "iwa_01", "チョロプーx４"),
+    BATTLE(A(Formation_09), "iwa_01", "チョロプー,シンエモン"),
+    BATTLE(A(Formation_0A), "iwa_01", "チョロプーx２,シンエモン"),
+    BATTLE(A(Formation_0B), "iwa_01", "チョロプー,シンエモン,チョロプー"),
+    BATTLE(A(Formation_0C), "iwa_02", "ゲーハー"),
+    BATTLE(A(Formation_0D), "iwa_02", "コブロン"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("iwa_01", A(iwa_01)),
-    STAGE("iwa_01b", A(iwa_01b)),
-    STAGE("iwa_02", A(iwa_02)),
+    STAGE("iwa_01", "iwa_01"),
+    STAGE("iwa_01b", "iwa_01b"),
+    STAGE("iwa_02", "iwa_02"),
     {},
 };

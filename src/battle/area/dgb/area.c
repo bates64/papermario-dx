@@ -2,12 +2,6 @@
 
 extern ActorBlueprint A(tubba_blubba);
 
-extern Stage A(dgb_01);
-extern Stage A(dgb_02);
-extern Stage A(dgb_03);
-extern Stage A(dgb_04);
-extern Stage A(dgb_05);
-
 Formation A(Formation_00) = {
     OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_B, 10),
 };
@@ -41,20 +35,20 @@ Formation A(Formation_05) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(dgb_01), "ガボンへい"),
-    BATTLE(A(Formation_01), A(dgb_01), "ガボンへいx２"),
-    BATTLE(A(Formation_02), A(dgb_01), "ガボンへいx３"),
-    BATTLE(A(Formation_03), A(dgb_01), "ガボンへいx４"),
-    BATTLE(A(Formation_04), A(dgb_01), "むてきドガボン"),
-    BATTLE(A(Formation_05), A(dgb_01), "むてきドガボンせりふなし"),
+    BATTLE(A(Formation_00), "dgb_01", "ガボンへい"),
+    BATTLE(A(Formation_01), "dgb_01", "ガボンへいx２"),
+    BATTLE(A(Formation_02), "dgb_01", "ガボンへいx３"),
+    BATTLE(A(Formation_03), "dgb_01", "ガボンへいx４"),
+    BATTLE(A(Formation_04), "dgb_01", "むてきドガボン"),
+    BATTLE(A(Formation_05), "dgb_01", "むてきドガボンせりふなし"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("dgb_01", A(dgb_01)),
-    STAGE("dgb_02", A(dgb_02)),
-    STAGE("dgb_03", A(dgb_03)),
-    STAGE("dgb_04", A(dgb_04)),
-    STAGE("dgb_05", A(dgb_05)),
+    STAGE("dgb_01", "dgb_01"),
+    STAGE("dgb_02", "dgb_02"),
+    STAGE("dgb_03", "dgb_03"),
+    STAGE("dgb_04", "dgb_04"),
+    STAGE("dgb_05", "dgb_05"),
     {},
 };

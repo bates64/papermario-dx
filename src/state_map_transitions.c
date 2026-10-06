@@ -1,6 +1,7 @@
 #include "common.h"
 #include "nu/nusys.h"
 #include "game_modes.h"
+#include "battle/battle.h"
 
 BSS s16 gMapTransitionAlpha;
 BSS s16 gMapTransitionFadeRate;
@@ -233,6 +234,7 @@ void state_step_game_over(void) {
                 gGameStatusPtr->context = CONTEXT_WORLD;
                 gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
                 load_map_by_IDs(gGameStatusPtr->areaID, gGameStatusPtr->mapID, LOAD_FROM_MAP);
+                unload_battle_stage();
                 nuContRmbForceStopEnd();
                 gMapTransitionState++;
             }

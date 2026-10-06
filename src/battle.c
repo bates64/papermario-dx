@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include "game_modes.h"
 #include "battle/states/states.h"
+#include "dx/overlay.h"
 
 BSS StageListRow* gCurrentStagePtr;
 BSS s32 gBattleState;
@@ -18,6 +19,29 @@ BSS s32 gCurrentBattleID;
 BSS s32 gCurrentStageID;
 BSS Battle* gOverrideBattlePtr;
 BSS Battle* gCurrentBattlePtr;
+
+// Kept in resident code: the battle segment's BSS is not cleared on DMA load.
+static Overlay* LoadedBattleStageOverlay;
+
+Stage* load_battle_stage(const char* overlayName) {
+    Stage* stage;
+
+    ASSERT_MSG(overlayName != nullptr, "Battle has no stage overlay");
+    ASSERT_MSG(LoadedBattleStageOverlay == nullptr, "Previous battle stage was not unloaded");
+    LoadedBattleStageOverlay = ovl_load(overlayName, OVL_STAGE);
+    stage = ovl_import(LoadedBattleStageOverlay, BATTLE_STAGE_EXPORT_NAME);
+    ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, BATTLE_STAGE_EXPORT_NAME);
+    gBattleStatus.curStage = stage;
+    return stage;
+}
+
+void unload_battle_stage(void) {
+    // Stages can also own model graphics callbacks, not just scripts and actors.
+    // Callers wait until the renderer has switched away from battle models.
+    gBattleStatus.curStage = nullptr;
+    ovl_unload(LoadedBattleStageOverlay);
+    LoadedBattleStageOverlay = nullptr;
+}
 
 // standard battle area table entry
 #define BTL_AREA(id, debugName) { \

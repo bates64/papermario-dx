@@ -2,12 +2,6 @@
 
 extern ActorBlueprint A(tubba_blubba);
 
-extern Stage A(nok_04);
-extern Stage A(iwa_01b);
-extern Stage A(sbk_02);
-extern Stage A(omo_04);
-extern Stage A(dgb_05);
-
 extern EvtScript A(dig_01_script);
 extern EvtScript A(dig_02_script);
 extern EvtScript A(dig_03_script);
@@ -45,19 +39,19 @@ Formation A(Formation_04) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE_WITH_SCRIPT(A(Formation_00), A(nok_04), A(dig_01_script), "ダイジェスト０１"),
-    BATTLE_WITH_SCRIPT(A(Formation_01), A(iwa_01b), A(dig_02_script), "ダイジェスト０２"),
-    BATTLE_WITH_SCRIPT(A(Formation_02), A(sbk_02), A(dig_03_script), "ダイジェスト０３"),
-    BATTLE_WITH_SCRIPT(A(Formation_03), A(omo_04), A(dig_04_script), "ダイジェスト０４"),
-    BATTLE_WITH_SCRIPT(A(Formation_04), A(dgb_05), A(dig_05_script), "ダイジェスト０５"),
+    BATTLE_WITH_SCRIPT(A(Formation_00), "nok_04", A(dig_01_script), "ダイジェスト０１"),
+    BATTLE_WITH_SCRIPT(A(Formation_01), "iwa_01b", A(dig_02_script), "ダイジェスト０２"),
+    BATTLE_WITH_SCRIPT(A(Formation_02), "sbk_02", A(dig_03_script), "ダイジェスト０３"),
+    BATTLE_WITH_SCRIPT(A(Formation_03), "omo_04", A(dig_04_script), "ダイジェスト０４"),
+    BATTLE_WITH_SCRIPT(A(Formation_04), "dgb_05", A(dig_05_script), "ダイジェスト０５"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("dig_01", A(nok_04)),
-    STAGE("dig_02", A(iwa_01b)),
-    STAGE("dig_03", A(sbk_02)),
-    STAGE("dig_04", A(omo_04)),
-    STAGE("dig_05", A(dgb_05)),
+    STAGE("dig_01", "nok_04"),
+    STAGE("dig_02", "iwa_01b"),
+    STAGE("dig_03", "sbk_02"),
+    STAGE("dig_04", "omo_04"),
+    STAGE("dig_05", "dgb_05"),
     {},
 };

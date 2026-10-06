@@ -1,11 +1,5 @@
 #include "area.h"
 
-extern Stage A(tik_01);
-extern Stage A(tik_02);
-extern Stage A(tik_03);
-extern Stage A(tik_04);
-extern Stage A(tik_05);
-
 Formation A(Formation_00) = {
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 9),
@@ -157,39 +151,39 @@ Formation A(Formation_18) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(tik_01), "ヤミノコノコx２"),
-    BATTLE(A(Formation_01), A(tik_01), "ヤミノコノコx３"),
-    BATTLE(A(Formation_02), A(tik_01), "ヤミノコノコx４"),
-    BATTLE(A(Formation_03), A(tik_01), "ヤミノコノコ,ヤミパタパタx２"),
-    BATTLE(A(Formation_04), A(tik_01), "ヤミノコノコ,トゲメットx２"),
-    BATTLE(A(Formation_05), A(tik_01), "ヤミノコノコ,トゲメット,ヤミノコノコ"),
-    BATTLE(A(Formation_06), A(tik_01), "ヤミノコノコ,トゲゾーx２"),
-    BATTLE(A(Formation_07), A(tik_01), "ヤミノコノコ,トゲゾー,ヤミノコノコ,トゲゾー"),
-    BATTLE(A(Formation_08), A(tik_01), "ヤミパタパタx２"),
-    BATTLE(A(Formation_09), A(tik_01), "ヤミパタパタx３"),
-    BATTLE(A(Formation_0A), A(tik_01), "ヤミクリボーx２"),
-    BATTLE(A(Formation_0B), A(tik_01), "ヤミクリボーx４"),
-    BATTLE(A(Formation_0C), A(tik_01), "ヤミパタクリx３"),
-    BATTLE(A(Formation_0D), A(tik_01), "ヤミパタクリ,ヤミトゲクリ"),
-    BATTLE(A(Formation_0E), A(tik_01), "ヤミトゲクリx２"),
-    BATTLE(A(Formation_0F), A(tik_01), "ヤミトゲクリ,ヤミクリボーx２"),
-    BATTLE(A(Formation_10), A(tik_01), "ヤミトゲクリ,メットx２"),
-    BATTLE(A(Formation_11), A(tik_01), "ヤミトゲクリ,メット,ヤミトゲクリ,メット"),
-    BATTLE(A(Formation_12), A(tik_01), "ヤミトゲクリ,メット,ヤミパタクリ,メット"),
-    BATTLE(A(Formation_13), A(tik_01), "トゲメットx４"),
-    BATTLE(A(Formation_14), A(tik_01), "トゲメットx２"),
-    BATTLE(A(Formation_15), A(tik_01), "メット,ヤミトゲクリ,メット"),
-    BATTLE(A(Formation_16), A(tik_01), "トゲゾーx２"),
-    BATTLE(A(Formation_17), A(tik_01), "トゲゾーx３"),
-    BATTLE(A(Formation_18), A(tik_01), "トゲゾーx４"),
+    BATTLE(A(Formation_00), "tik_01", "ヤミノコノコx２"),
+    BATTLE(A(Formation_01), "tik_01", "ヤミノコノコx３"),
+    BATTLE(A(Formation_02), "tik_01", "ヤミノコノコx４"),
+    BATTLE(A(Formation_03), "tik_01", "ヤミノコノコ,ヤミパタパタx２"),
+    BATTLE(A(Formation_04), "tik_01", "ヤミノコノコ,トゲメットx２"),
+    BATTLE(A(Formation_05), "tik_01", "ヤミノコノコ,トゲメット,ヤミノコノコ"),
+    BATTLE(A(Formation_06), "tik_01", "ヤミノコノコ,トゲゾーx２"),
+    BATTLE(A(Formation_07), "tik_01", "ヤミノコノコ,トゲゾー,ヤミノコノコ,トゲゾー"),
+    BATTLE(A(Formation_08), "tik_01", "ヤミパタパタx２"),
+    BATTLE(A(Formation_09), "tik_01", "ヤミパタパタx３"),
+    BATTLE(A(Formation_0A), "tik_01", "ヤミクリボーx２"),
+    BATTLE(A(Formation_0B), "tik_01", "ヤミクリボーx４"),
+    BATTLE(A(Formation_0C), "tik_01", "ヤミパタクリx３"),
+    BATTLE(A(Formation_0D), "tik_01", "ヤミパタクリ,ヤミトゲクリ"),
+    BATTLE(A(Formation_0E), "tik_01", "ヤミトゲクリx２"),
+    BATTLE(A(Formation_0F), "tik_01", "ヤミトゲクリ,ヤミクリボーx２"),
+    BATTLE(A(Formation_10), "tik_01", "ヤミトゲクリ,メットx２"),
+    BATTLE(A(Formation_11), "tik_01", "ヤミトゲクリ,メット,ヤミトゲクリ,メット"),
+    BATTLE(A(Formation_12), "tik_01", "ヤミトゲクリ,メット,ヤミパタクリ,メット"),
+    BATTLE(A(Formation_13), "tik_01", "トゲメットx４"),
+    BATTLE(A(Formation_14), "tik_01", "トゲメットx２"),
+    BATTLE(A(Formation_15), "tik_01", "メット,ヤミトゲクリ,メット"),
+    BATTLE(A(Formation_16), "tik_01", "トゲゾーx２"),
+    BATTLE(A(Formation_17), "tik_01", "トゲゾーx３"),
+    BATTLE(A(Formation_18), "tik_01", "トゲゾーx４"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("tik_01", A(tik_01)),
-    STAGE("tik_02", A(tik_02)),
-    STAGE("tik_03", A(tik_03)),
-    STAGE("tik_04", A(tik_04)),
-    STAGE("tik_05", A(tik_05)),
+    STAGE("tik_01", "tik_01"),
+    STAGE("tik_02", "tik_02"),
+    STAGE("tik_03", "tik_03"),
+    STAGE("tik_04", "tik_04"),
+    STAGE("tik_05", "tik_05"),
     {},
 };

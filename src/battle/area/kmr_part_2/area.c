@@ -7,12 +7,6 @@ extern ActorBlueprint A(blue_goomba_2);
 extern ActorBlueprint A(goomba_king);
 extern ActorBlueprint A(goomnut_tree);
 
-extern Stage A(kmr_02);
-extern Stage A(kmr_03);
-extern Stage A(kmr_04);
-extern Stage A(kmr_05);
-extern Stage A(kmr_06);
-
 Vec3i A(BlueMinibossPos) = { 14, 0, -10 };
 Vec3i A(RedMinibossPos)  = { 54, 0,  32 };
 
@@ -34,16 +28,16 @@ Formation A(Formation_01) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_00), A(kmr_03), "クリレッド,クリブルー"),
-    BATTLE(A(Formation_01), A(kmr_06), "クリキング,クリレッド,クリブルー"),
+    BATTLE(A(Formation_00), "kmr_03", "クリレッド,クリブルー"),
+    BATTLE(A(Formation_01), "kmr_06", "クリキング,クリレッド,クリブルー"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("kmr_02", A(kmr_02)),
-    STAGE("kmr_03", A(kmr_03)),
-    STAGE("kmr_04", A(kmr_04)),
-    STAGE("kmr_05", A(kmr_05)),
-    STAGE("kmr_06", A(kmr_06)),
+    STAGE("kmr_02", "kmr_02"),
+    STAGE("kmr_03", "kmr_03"),
+    STAGE("kmr_04", "kmr_04"),
+    STAGE("kmr_05", "kmr_05"),
+    STAGE("kmr_06", "kmr_06"),
     {},
 };

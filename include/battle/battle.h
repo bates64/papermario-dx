@@ -152,12 +152,22 @@ typedef struct Stage {
     /* 0x24 */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
 } Stage; // size = 0x28
 
+#define BATTLE_STAGE_EXPORT_NAME "gBattleStage"
+
+/// Define the descriptor exported by a battle-stage overlay.
+#define BATTLE_STAGE_ENTRY export Stage gBattleStage
+
+Stage* load_battle_stage(const char* overlayName);
+
+/// Release only after battle scripts/actors are gone and the renderer has switched to the world.
+void unload_battle_stage(void);
+
 /// Zero-terminated.
 typedef struct Battle {
     /* 0x00 */ const char* name; ///< Debug SJIS name.
     /* 0x04 */ s32 formationSize;
     /* 0x08 */ Formation* formation;
-    /* 0x0C */ Stage* stage;
+    /* 0x0C */ const char* stage;         // stage overlay name
     /* 0x10 */ EvtScript* onBattleStart;    // sets BattleStatus::controlScript on battle start, overrides Stage::preBattle
 } Battle; // size = 0x14
 
@@ -166,7 +176,7 @@ typedef Battle BattleList[];
 /// Zero-terminated.
 typedef struct StageListRow {
     /* 0x00 */ const char* name; ///< Map ID.
-    /* 0x04 */ Stage* stage;
+    /* 0x04 */ const char* stage;         // stage overlay name (may differ from the list entry's name)
 } StageListRow; // size = 0x08
 
 typedef StageListRow StageList[];
@@ -184,8 +194,8 @@ typedef struct BattleArea {
 
 EXTERN_C BattleArea gBattleAreas[40];
 
-#define BATTLE(formation, stage, name) { name, ARRAY_COUNT(formation), (Formation*) formation, &stage }
-#define BATTLE_WITH_SCRIPT(formation, stage, script, name) { name, ARRAY_COUNT(formation), (Formation*) formation, &stage, &script }
+#define BATTLE(formation, stage, name) { name, ARRAY_COUNT(formation), (Formation*) formation, stage }
+#define BATTLE_WITH_SCRIPT(formation, stage, script, name) { name, ARRAY_COUNT(formation), (Formation*) formation, stage, &script }
 
 #define ACTOR_BY_IDX(_name, _idx, _priority, args...) { .actor = &_name, .home = { .index = _idx }, .priority = _priority, args }
 #define ACTOR_BY_POS(_name, _pos, _priority, args...) { .actor = &_name, .home = { .vec = &_pos }, .priority = _priority, args }
@@ -193,7 +203,7 @@ EXTERN_C BattleArea gBattleAreas[40];
 #define OVL_ACTOR_BY_IDX(_name, _idx, _priority, args...) { .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
 #define OVL_ACTOR_BY_POS(_name, _pos, _priority, args...) { .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
 
-#define STAGE(_name, _stage) { .name = _name, .stage = &_stage }
+#define STAGE(_name, _stage) { .name = _name, .stage = _stage }
 
 typedef struct ActorSounds {
     /* 0x00 */ s32 walk[2];

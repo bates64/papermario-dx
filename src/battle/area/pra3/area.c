@@ -3,13 +3,6 @@
 extern ActorBlueprint A(duplighost);
 extern ActorBlueprint A(red_magikoopa);
 
-extern Stage A(pra_01);
-extern Stage A(pra_02);
-extern Stage A(pra_03);
-extern Stage A(pra_03b);
-extern Stage A(pra_03c);
-extern Stage A(pra_04);
-
 Vec3i A(pos_swoopula)[] = {
     { 15, 133, -25 },
     { 55, 133, -25 },
@@ -88,27 +81,27 @@ Formation A(Formation_0C) = {
 };
 
 BattleList A(Formations) = {
-    BATTLE(A(Formation_01), A(pra_01), "バサバサチュルルx２,バケバケ"),
-    BATTLE(A(Formation_02), A(pra_01), "バケバケ"),
-    BATTLE(A(Formation_03), A(pra_01), "バケバケx2"),
-    BATTLE(A(Formation_04), A(pra_01), "バケバケx3"),
-    BATTLE(A(Formation_05), A(pra_01), "バケバケx4"),
-    BATTLE(A(Formation_06), A(pra_01), "バケバケx２,バサバサチュルル"),
-    BATTLE(A(Formation_07), A(pra_01), "バケバケ,バサバサチュルル,バケバケ"),
-    BATTLE(A(Formation_08), A(pra_01), "バケバケ,レッドカメック"),
-    BATTLE(A(Formation_09), A(pra_01), "バケバケx２,レッドカメック"),
-    BATTLE(A(Formation_0A), A(pra_01), "バケバケ,ホワイトガボン,バケバケ"),
-    BATTLE(A(Formation_0B), A(pra_01), "バケバケx２,グレイカメック,レッドカメック"),
-    BATTLE(A(Formation_0C), A(pra_01), "ホワイトガボンx２,バケバケ"),
+    BATTLE(A(Formation_01), "pra_01", "バサバサチュルルx２,バケバケ"),
+    BATTLE(A(Formation_02), "pra_01", "バケバケ"),
+    BATTLE(A(Formation_03), "pra_01", "バケバケx2"),
+    BATTLE(A(Formation_04), "pra_01", "バケバケx3"),
+    BATTLE(A(Formation_05), "pra_01", "バケバケx4"),
+    BATTLE(A(Formation_06), "pra_01", "バケバケx２,バサバサチュルル"),
+    BATTLE(A(Formation_07), "pra_01", "バケバケ,バサバサチュルル,バケバケ"),
+    BATTLE(A(Formation_08), "pra_01", "バケバケ,レッドカメック"),
+    BATTLE(A(Formation_09), "pra_01", "バケバケx２,レッドカメック"),
+    BATTLE(A(Formation_0A), "pra_01", "バケバケ,ホワイトガボン,バケバケ"),
+    BATTLE(A(Formation_0B), "pra_01", "バケバケx２,グレイカメック,レッドカメック"),
+    BATTLE(A(Formation_0C), "pra_01", "ホワイトガボンx２,バケバケ"),
     {},
 };
 
 StageList A(Stages) = {
-    STAGE("pra_01", A(pra_01)),
-    STAGE("pra_02", A(pra_02)),
-    STAGE("pra_03", A(pra_03)),
-    STAGE("pra_03b", A(pra_03b)),
-    STAGE("pra_03c", A(pra_03c)),
-    STAGE("pra_04", A(pra_04)),
+    STAGE("pra_01", "pra_01"),
+    STAGE("pra_02", "pra_02"),
+    STAGE("pra_03", "pra_03"),
+    STAGE("pra_03b", "pra_03b"),
+    STAGE("pra_03c", "pra_03c"),
+    STAGE("pra_04", "pra_04"),
     {},
 };
