@@ -41,10 +41,6 @@ static BattleList Formations = {
     BATTLE(bombshell_blaster_2, "kpa_01"),
     BATTLE(bombshell_blaster_2_koopatrol_1, "kpa_01"),
     BATTLE(bombshell_blaster_2_magikoopa_1, "kpa_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

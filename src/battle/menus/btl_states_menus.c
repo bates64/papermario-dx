@@ -814,4 +814,4 @@ static void battle_menu_draw(s32 state) {
     }
 }
 
-BATTLE_MENU_INTERFACE(battle_menu_update, battle_menu_draw);
+OVL_DEF_BATTLE_MENU(battle_menu_update, battle_menu_draw);

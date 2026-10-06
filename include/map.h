@@ -40,6 +40,9 @@ typedef struct MapSettings {
     /* 0x46 */ PAD(2);
 } MapSettings; // size = 0x48
 
+/// Define the descriptor exported by a map overlay.
+#define OVL_DEF_MAP() export MapSettings settings
+
 typedef struct AreaConfig {
     s32 mapCount;
     const char* const* maps;

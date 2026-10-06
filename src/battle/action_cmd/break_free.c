@@ -267,4 +267,4 @@ void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_OK]);
 }
 
-ACTION_COMMAND_ENTRY(ACTION_COMMAND_BREAK_FREE);
+OVL_DEF_ACTION_CMD(ACTION_COMMAND_BREAK_FREE);

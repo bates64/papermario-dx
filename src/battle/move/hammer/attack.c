@@ -353,7 +353,7 @@ EvtScript EVS_UseBerserker_Impl = {
     End
 };
 
-BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
     &EVS_UseMove,
     &EVS_FirstStrike,
     &EVS_UseBerserker,

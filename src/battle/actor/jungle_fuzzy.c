@@ -70,7 +70,7 @@ ActorPartBlueprint  ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_JUNGLE_FUZZY,
     .level = ACTOR_LEVEL_JUNGLE_FUZZY,
@@ -840,5 +840,5 @@ EvtScript EVS_TakeTurn = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation SummonFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 0),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 0),
 };

@@ -95,7 +95,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_MONTY_MOLE_BOSS,
     .level = ACTOR_LEVEL_MONTY_MOLE_BOSS,
@@ -197,11 +197,11 @@ ActorBlueprint hole = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation HoleFormation = {
-    ACTOR_BY_POS(hole, SummonPos, 0, false),
+    RAW_ACTOR_BY_POS(hole, SummonPos, 0, false),
 };
 
 Formation SmallHoleFormation = {
-    ACTOR_BY_POS(hole, SummonPos, 0, true),
+    RAW_ACTOR_BY_POS(hole, SummonPos, 0, true),
 };
 
 EvtScript EVS_CreateEmptyHole = {

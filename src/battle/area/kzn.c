@@ -149,10 +149,6 @@ static BattleList Formations = {
     BATTLE(putrid_piranha_2_spike_top_1, "kzn_01"),
     BATTLE(putrid_piranha_1_spike_top_1_putrid_piranha_1, "kzn_01"),
     BATTLE(putrid_piranha_1_mixed_14, "kzn_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

@@ -19,7 +19,6 @@ static Formation petit_piranha = {
 static BattleList Formations = {
     BATTLE(lava_piranha, "kzn_05"),
     BATTLE(petit_piranha, "kzn_05"),
-    {},
 };
 
 #define PIRANHA_DMA_ENTRY(name) \
@@ -67,9 +66,4 @@ static DmaTable dmaTable[] = {
     [VINE_ANIM_EXTRA_EMERGE]                PIRANHA_DMA_ENTRY(24),
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-    .dmaTable = dmaTable,
-    .dmaCount = ARRAY_COUNT(dmaTable),
-};
+OVL_DEF_BATTLE_AREA(Formations, dmaTable);

@@ -200,7 +200,7 @@ EntityScript Entity_BlueWarpPipe_Script = {
 
 EntityModelScript Entity_BlueWarpPipe_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BlueWarpPipe_RenderPipe, RENDER_MODE_SURFACE_OPA);
 
-ENTITY_IMPLEMENTATION(BlueWarpPipe) = {
+OVL_DEF_ENTITY(BlueWarpPipe) = {
     .flags = 0,
     .typeDataSize = sizeof(BlueWarpPipeData),
     .renderCommandList = Entity_BlueWarpPipe_RenderScript,

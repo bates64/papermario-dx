@@ -471,5 +471,5 @@ static EvtScript EVS_HandlePhase = {
 };
 
 Formation SushieFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 0)
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 0)
 };

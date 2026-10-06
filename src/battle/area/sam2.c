@@ -14,10 +14,6 @@ static Formation paragoomba_1_gray_magikoopa_1_test = {
 static BattleList Formations = {
     BATTLE(monstar, "sam_03"),
     BATTLE(paragoomba_1_gray_magikoopa_1_test, "sam_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

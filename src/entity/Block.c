@@ -224,7 +224,7 @@ EntityModelScript Entity_BrickBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(
 
 EntityModelScript Entity_PowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PowBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-ENTITY_IMPLEMENTATION(InertYellowBlock) = {
+OVL_DEF_ENTITY(InertYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_InertYellowBlock_RenderScript,
@@ -237,7 +237,7 @@ ENTITY_IMPLEMENTATION(InertYellowBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(InertRedBlock) = {
+OVL_DEF_ENTITY(InertRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_InertRedBlock_RenderScript,
@@ -250,7 +250,7 @@ ENTITY_IMPLEMENTATION(InertRedBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(BrickBlock) = {
+OVL_DEF_ENTITY(BrickBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_BrickBlock_RenderScript,
@@ -263,7 +263,7 @@ ENTITY_IMPLEMENTATION(BrickBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(MulticoinBlock) = {
+OVL_DEF_ENTITY(MulticoinBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_MulticoinBrick_RenderScript,
@@ -276,7 +276,7 @@ ENTITY_IMPLEMENTATION(MulticoinBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer1Block) = {
+OVL_DEF_ENTITY(Hammer1Block) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer1Block_RenderScript,
@@ -289,7 +289,7 @@ ENTITY_IMPLEMENTATION(Hammer1Block) = {
     .aabbSize = { 50, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer1BlockWideX) = {
+OVL_DEF_ENTITY(Hammer1BlockWideX) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer1Block_RenderScript,
@@ -302,7 +302,7 @@ ENTITY_IMPLEMENTATION(Hammer1BlockWideX) = {
     .aabbSize = { 100, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer1BlockWideZ) = {
+OVL_DEF_ENTITY(Hammer1BlockWideZ) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer1Block_RenderScript,
@@ -315,7 +315,7 @@ ENTITY_IMPLEMENTATION(Hammer1BlockWideZ) = {
     .aabbSize = { 50, 50, 100 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer1BlockTiny) = {
+OVL_DEF_ENTITY(Hammer1BlockTiny) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer1Block_RenderScript,
@@ -328,7 +328,7 @@ ENTITY_IMPLEMENTATION(Hammer1BlockTiny) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer2Block) = {
+OVL_DEF_ENTITY(Hammer2Block) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer2Block_RenderScript,
@@ -341,7 +341,7 @@ ENTITY_IMPLEMENTATION(Hammer2Block) = {
     .aabbSize = { 50, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer2BlockWideX) = {
+OVL_DEF_ENTITY(Hammer2BlockWideX) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer2Block_RenderScript,
@@ -354,7 +354,7 @@ ENTITY_IMPLEMENTATION(Hammer2BlockWideX) = {
     .aabbSize = { 100, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer2BlockWideZ) = {
+OVL_DEF_ENTITY(Hammer2BlockWideZ) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer2Block_RenderScript,
@@ -367,7 +367,7 @@ ENTITY_IMPLEMENTATION(Hammer2BlockWideZ) = {
     .aabbSize = { 50, 50, 100 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer2BlockTiny) = {
+OVL_DEF_ENTITY(Hammer2BlockTiny) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer2Block_RenderScript,
@@ -380,7 +380,7 @@ ENTITY_IMPLEMENTATION(Hammer2BlockTiny) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer3Block) = {
+OVL_DEF_ENTITY(Hammer3Block) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer3Block_RenderScript,
@@ -393,7 +393,7 @@ ENTITY_IMPLEMENTATION(Hammer3Block) = {
     .aabbSize = { 50, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer3BlockWideX) = {
+OVL_DEF_ENTITY(Hammer3BlockWideX) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer3Block_RenderScript,
@@ -406,7 +406,7 @@ ENTITY_IMPLEMENTATION(Hammer3BlockWideX) = {
     .aabbSize = { 100, 50, 50 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer3BlockWideZ) = {
+OVL_DEF_ENTITY(Hammer3BlockWideZ) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer3Block_RenderScript,
@@ -419,7 +419,7 @@ ENTITY_IMPLEMENTATION(Hammer3BlockWideZ) = {
     .aabbSize = { 50, 50, 100 }
 };
 
-ENTITY_IMPLEMENTATION(Hammer3BlockTiny) = {
+OVL_DEF_ENTITY(Hammer3BlockTiny) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer3Block_RenderScript,
@@ -432,7 +432,7 @@ ENTITY_IMPLEMENTATION(Hammer3BlockTiny) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(PushBlock) = {
+OVL_DEF_ENTITY(PushBlock) = {
     .flags = ENTITY_FLAG_4000,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_PushBlock_RenderScript,
@@ -445,7 +445,7 @@ ENTITY_IMPLEMENTATION(PushBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(PowBlock) = {
+OVL_DEF_ENTITY(PowBlock) = {
     .flags = ENTITY_FLAG_4000,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_PowBlock_RenderScript,

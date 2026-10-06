@@ -107,7 +107,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_BIG_LANTERN_GHOST,
     .level = ACTOR_LEVEL_BIG_LANTERN_GHOST,

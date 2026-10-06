@@ -1260,7 +1260,7 @@ EvtScript EVS_WorldLakilester_EnterMap = {
     End
 };
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = true,
     .init = init,
     .takeOut = &EVS_WorldLakilester_TakeOut,

@@ -63,7 +63,7 @@ static ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT(THIS_BLUEPRINT) = {
+OVL_DEF_ACTOR(THIS_BLUEPRINT) = {
     .flags = ACTOR_FLAG_NO_HEALTH_BAR | ACTOR_FLAG_NO_ATTACK,
     .type = THIS_ACTOR_TYPE,
     .level = THIS_LEVEL,

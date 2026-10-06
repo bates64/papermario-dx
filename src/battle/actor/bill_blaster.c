@@ -81,7 +81,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_BILL_BLASTER,
     .level = ACTOR_LEVEL_BILL_BLASTER,

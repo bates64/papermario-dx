@@ -143,7 +143,7 @@ ActorPartBlueprint PrismParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_FLYING | ACTOR_FLAG_NO_ATTACK,
     .type = ACTOR_TYPE_CRYSTAL_BIT,
     .level = ACTOR_LEVEL_CRYSTAL_BIT,
@@ -166,7 +166,7 @@ ACTOR_BLUEPRINT() = {
     .statusTextOffset = { 10, 20 },
 };
 
-ACTOR_BLUEPRINT(sphere) = {
+OVL_DEF_ACTOR(sphere) = {
     .flags = ACTOR_FLAG_FLYING | ACTOR_FLAG_NO_ATTACK,
     .type = ACTOR_TYPE_CRYSTAL_BIT,
     .level = ACTOR_LEVEL_CRYSTAL_BIT,
@@ -189,7 +189,7 @@ ACTOR_BLUEPRINT(sphere) = {
     .statusTextOffset = { 10, 20 },
 };
 
-ACTOR_BLUEPRINT(prism) = {
+OVL_DEF_ACTOR(prism) = {
     .flags = ACTOR_FLAG_FLYING | ACTOR_FLAG_NO_ATTACK,
     .type = ACTOR_TYPE_CRYSTAL_BIT,
     .level = ACTOR_LEVEL_CRYSTAL_BIT,

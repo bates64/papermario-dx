@@ -436,7 +436,7 @@ EntityModelScript Entity_HeartBlockContent_RenderScriptHit = STANDARD_ENTITY_MOD
 EntityModelScript Entity_HeartBlockContent_RenderScriptAfterHit = STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlockContent_RenderHeartHappy, RENDER_MODE_SURFACE_XLU_LAYER2);
 EntityModelScript Entity_HeartBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_HeartBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER3);
 
-ENTITY_IMPLEMENTATION(HeartBlockFrame) = {
+OVL_DEF_ENTITY(HeartBlockFrame) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HeartBlock_RenderScript,
@@ -449,7 +449,7 @@ ENTITY_IMPLEMENTATION(HeartBlockFrame) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(HeartBlockContent) = {
+OVL_DEF_ENTITY(HeartBlockContent) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(HeartBlockContentData),
     .renderCommandList = Entity_HeartBlockContent_RenderScriptIdle,
@@ -462,7 +462,7 @@ ENTITY_IMPLEMENTATION(HeartBlockContent) = {
     .aabbSize = { 18, 6, 18 }
 };
 
-ENTITY_IMPLEMENTATION(HeartBlock) = {
+OVL_DEF_ENTITY(HeartBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HeartBlock_RenderScript,

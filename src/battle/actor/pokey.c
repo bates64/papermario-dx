@@ -161,7 +161,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_POKEY,
     .level = ACTOR_LEVEL_POKEY,
@@ -909,7 +909,7 @@ EvtScript EVS_FindValidSummonPosition = {
 Vec3i SummonPos = { 400, -100, 0 };
 
 Formation SummonFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 100),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 100),
 };
 
 EvtScript EVS_SummonBackup = {

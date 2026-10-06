@@ -103,7 +103,7 @@ EvtScript EVS_UseMove = {
     End
 };
 
-BATTLE_SCRIPT_MODULE(BATTLE_SCRIPT_KIND_MOVE,
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
     &EVS_UseMove,
     &EVS_UseMove_Unimplemented,
 );

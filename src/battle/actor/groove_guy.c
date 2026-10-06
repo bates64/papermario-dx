@@ -92,7 +92,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_GROOVE_GUY,
     .level = ACTOR_LEVEL_GROOVE_GUY,
@@ -827,7 +827,7 @@ Formation ShyGuyFormation = {
 };
 
 Formation GrooveGuyFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 100),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 100),
 };
 
 Formation MediGuyFormation = {

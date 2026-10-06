@@ -198,10 +198,6 @@ static BattleList Formations = {
     BATTLE_WITH_SCRIPT(demo_03, "sbk_02", EVS_Demo03),
     BATTLE_WITH_SCRIPT(demo_04, "omo_04", EVS_Demo04),
     BATTLE_WITH_SCRIPT(demo_05, "dgb_05", EVS_Demo05),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

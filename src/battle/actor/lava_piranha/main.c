@@ -245,7 +245,7 @@ static ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_LAVA_PIRANHA_PHASE_1,
     .level = ACTOR_LEVEL_LAVA_PIRANHA_PHASE_1,
@@ -1154,11 +1154,11 @@ static EvtScript EVS_TakeTurn = {
 static Vec3i SummonPos = { 260, 0, 0 };
 
 static Formation LeftBudFormation = {
-    ACTOR_BY_POS(BudBlueprint, SummonPos, 80, 1, 0, 0, 0),
+    RAW_ACTOR_BY_POS(BudBlueprint, SummonPos, 80, 1, 0, 0, 0),
 };
 
 static Formation RightBudFormation = {
-    ACTOR_BY_POS(BudBlueprint, SummonPos, 70, 2, 50, 14, 20),
+    RAW_ACTOR_BY_POS(BudBlueprint, SummonPos, 70, 2, 50, 14, 20),
 };
 
 static EvtScript EVS_Attack_SpitFire = {

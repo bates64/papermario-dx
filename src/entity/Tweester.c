@@ -312,7 +312,7 @@ EntityScript Entity_Tweester_Script ={
 
 EntityModelScript Entity_Tweester_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Tweester_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-ENTITY_IMPLEMENTATION(Tweester) = {
+OVL_DEF_ENTITY(Tweester) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(TweesterData),
     .renderCommandList = Entity_Tweester_RenderScript,

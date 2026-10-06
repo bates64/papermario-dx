@@ -125,10 +125,6 @@ static BattleList Formations = {
     BATTLE(piranha_plant_1_forest_fuzzy_1_piranha_plant_1, "mim_01"),
     BATTLE(bzzap_2, "mim_01"),
     BATTLE(bzzap_3, "mim_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

@@ -146,7 +146,7 @@ EntityScript Entity_SpinningFlower_Script = {
 
 EntityModelScript Entity_SpinningFlower_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_SpinningFlower_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-ENTITY_IMPLEMENTATION(SpinningFlower) = {
+OVL_DEF_ENTITY(SpinningFlower) = {
     .flags = 0,
     .typeDataSize = sizeof(SpinningFlowerData),
     .renderCommandList = Entity_SpinningFlower_RenderScript,

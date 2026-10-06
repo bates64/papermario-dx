@@ -77,7 +77,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_NO_HEALTH_BAR,
     .type = ACTOR_TYPE_GOOMBARIO_TUTOR1,
     .level = ACTOR_LEVEL_GOOMBARIO_TUTOR1,

@@ -100,7 +100,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_THE_MASTER_2,
     .level = ACTOR_LEVEL_THE_MASTER_2,

@@ -156,10 +156,6 @@ static BattleList Formations = {
     BATTLE(buzzy_beetle_ceiling_3, "isk_05"),
     BATTLE(buzzy_beetle_ceiling_4, "isk_05"),
     BATTLE(buzzy_beetle_ceiling_2_swooper_1, "isk_05"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

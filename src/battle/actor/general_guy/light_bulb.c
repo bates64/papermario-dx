@@ -66,7 +66,7 @@ static ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT(light_bulb) = {
+OVL_DEF_ACTOR(light_bulb) = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_NO_TATTLE | ACTOR_FLAG_NO_HEALTH_BAR,
     .type = ACTOR_TYPE_LIGHT_BULB,
     .level = ACTOR_LEVEL_LIGHT_BULB,

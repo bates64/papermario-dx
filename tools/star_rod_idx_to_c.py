@@ -774,7 +774,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
             out += f" {entry[0]:.01f}f, {entry[1]:.01f}f, {entry[2]:.01f}f, {entry[3]:.01f}f }};\n"
 
         elif struct["type"] == "Header":
-            out += f"export MapSettings settings = {{\n"
+            out += f"OVL_DEF_MAP() = {{\n"
 
             bytes.read(0x10)
 
@@ -873,7 +873,8 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
                 num_bytes_remaining -= 4 * 5
 
                 if name == 0:
-                    out += "    {},\n"
+                    # Legacy tables have a sentinel; overlay descriptors carry the count.
+                    break
                 else:
                     formation = symbol_map[ptr][0][1]
                     stage = symbol_map[stage_ptr][0][1]
@@ -991,7 +992,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             out += f"}};\n"
         elif struct["type"] == "Actor":
-            out += f"ACTOR_BLUEPRINT() = {{\n"
+            out += f"OVL_DEF_ACTOR() = {{\n"
 
             d = unpack(">IxBBBhxxIIIBBBBBBBBbbbbbbbb", bytes.read(struct["length"]))
 
@@ -1020,7 +1021,7 @@ def disassemble(bytes, midx, symbol_map={}, comments=True, romstart=0, namespace
 
             pass
         elif struct["type"] == "Stage":
-            out += f"BATTLE_STAGE_ENTRY = {{\n"
+            out += f"OVL_DEF_STAGE() = {{\n"
 
             (
                 texture,

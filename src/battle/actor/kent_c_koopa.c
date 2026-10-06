@@ -226,7 +226,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_KENT_C_KOOPA,
     .level = ACTOR_LEVEL_KENT_C_KOOPA,

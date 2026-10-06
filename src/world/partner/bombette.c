@@ -688,7 +688,7 @@ void pre_battle(Npc* bombette) {
     }
 }
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = false,
     .init = init,
     .takeOut = &EVS_WorldBombette_TakeOut,

@@ -378,5 +378,5 @@ static EvtScript EVS_TakeTurn = {
 };
 
 Formation LakilesterFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 0),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 0),
 };

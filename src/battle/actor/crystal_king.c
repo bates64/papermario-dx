@@ -108,7 +108,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_CRYSTAL_KING,
     .level = ACTOR_LEVEL_CRYSTAL_KING,
@@ -1217,7 +1217,7 @@ ActorBlueprint clone = {
 Vec3i CloneSummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation CloneFormation = {
-    ACTOR_BY_POS(clone, CloneSummonPos, 0),
+    RAW_ACTOR_BY_POS(clone, CloneSummonPos, 0),
 };
 
 EvtScript EVS_Move_MakeClones = {

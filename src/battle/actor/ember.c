@@ -126,7 +126,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_EMBER,
     .level = ACTOR_LEVEL_EMBER,
@@ -297,7 +297,7 @@ EvtScript EVS_GetAvailableColumn = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation SummonFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 0),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 0),
 };
 
 EvtScript EVS_TrySplit = {

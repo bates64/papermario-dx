@@ -416,10 +416,6 @@ static BattleList Formations = {
     BATTLE(flying_magikoopa_1_dry_bones_2, "kpa_01"),
     BATTLE(flying_magikoopa_1_koopatrol_1_flying_magikoopa_1, "kpa_01"),
     BATTLE(flying_magikoopa_1_hammer_bro_2_flying_magikoopa_1, "kpa_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

@@ -34,7 +34,7 @@ s32 ForegroundModels[] = {
     STAGE_MODEL_LIST_END
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "omo_tex",
     .shape = "omo_bt04_shape",
     .hit = "omo_bt04_hit",
@@ -52,10 +52,10 @@ Vec3i slot_machine_pos3 = { 20, 56, -68 };
 Vec3i slot_machine_pos4 = { 53, 56, -68 };
 
 Formation fromation_slot_machine = {
-    ACTOR_BY_POS(slot_machine_start, slot_machine_pos1, 0, 0),
-    ACTOR_BY_POS(slot_machine_stop, slot_machine_pos2, 0, 1),
-    ACTOR_BY_POS(slot_machine_stop, slot_machine_pos3, 0, 2),
-    ACTOR_BY_POS(slot_machine_stop, slot_machine_pos4, 0, 3),
+    RAW_ACTOR_BY_POS(slot_machine_start, slot_machine_pos1, 0, 0),
+    RAW_ACTOR_BY_POS(slot_machine_stop, slot_machine_pos2, 0, 1),
+    RAW_ACTOR_BY_POS(slot_machine_stop, slot_machine_pos3, 0, 2),
+    RAW_ACTOR_BY_POS(slot_machine_stop, slot_machine_pos4, 0, 3),
 };
 
 #include "slot_machine.inc.c"

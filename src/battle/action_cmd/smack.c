@@ -298,4 +298,4 @@ void update(void) {
 
 #include "common/MashCommandFree.inc.c"
 
-ACTION_COMMAND_ENTRY(ACTION_COMMAND_SMACK);
+OVL_DEF_ACTION_CMD(ACTION_COMMAND_SMACK);

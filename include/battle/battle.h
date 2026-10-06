@@ -79,10 +79,10 @@ typedef struct ActorBlueprint {
     /* 0x26 */ Vec2b statusTextOffset;
 } ActorBlueprint; // size = 0x28
 
-/// Public actor-overlay entry points. Internal blueprints remain ordinary ActorBlueprint variables.
-/// ACTOR_BLUEPRINT() selects the default; ACTOR_BLUEPRINT(name) takes an identifier token.
-#define ACTOR_BLUEPRINT(...) export ActorBlueprint _ACTOR_BLUEPRINT_SYMBOL(__VA_ARGS__)
-#define _ACTOR_BLUEPRINT_SYMBOL(...) blueprint ## __VA_OPT__(_) ## __VA_ARGS__
+/// Define public actor-overlay descriptors. Internal blueprints remain ordinary ActorBlueprint variables.
+/// OVL_DEF_ACTOR() selects the default; OVL_DEF_ACTOR(name) takes an identifier token.
+#define OVL_DEF_ACTOR(...) export ActorBlueprint _OVL_DEF_ACTOR_SYMBOL(__VA_ARGS__)
+#define _OVL_DEF_ACTOR_SYMBOL(...) blueprint ## __VA_OPT__(_) ## __VA_ARGS__
 
 #define ACTOR_BLUEPRINT_EXPORT_NAME "blueprint"
 #define ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name) _ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name)
@@ -123,14 +123,14 @@ typedef struct Stage {
 #define BATTLE_STAGE_EXPORT_NAME "gBattleStage"
 
 /// Define the descriptor exported by a battle-stage overlay.
-#define BATTLE_STAGE_ENTRY export Stage gBattleStage
+#define OVL_DEF_STAGE() export Stage gBattleStage
 
 Stage* load_battle_stage(const char* overlayName);
 
 /// Release only after battle scripts/actors are gone and the renderer has switched to the world.
 void unload_battle_stage(void);
 
-/// Zero-terminated.
+/// A named formation and its default stage within a battle-area overlay.
 typedef struct Battle {
     /* 0x00 */ const char* name; ///< Stable formation key, unique within its area.
     /* 0x04 */ s32 formationSize;
@@ -141,7 +141,7 @@ typedef struct Battle {
 
 typedef Battle BattleList[];
 
-/// Exported by an area overlay, alongside any actors still bundled with it.
+/// Descriptor exported by a battle-area overlay. Tables use explicit counts, not terminators.
 typedef struct BattleArea {
     /* 0x00 */ BattleList* battles;
     /* 0x04 */ s32 battleCount;
@@ -150,7 +150,14 @@ typedef struct BattleArea {
 } BattleArea; // size = 0x10
 
 #define BATTLE_AREA_EXPORT_NAME "gBattleArea"
-#define BATTLE_AREA_ENTRY export const BattleArea gBattleArea
+
+/// Define a battle-area descriptor from its BattleList and optional DMA array, without terminators.
+#define OVL_DEF_BATTLE_AREA(battleList, ...) \
+    export const BattleArea gBattleArea = { \
+        .battles = &(battleList), \
+        .battleCount = ARRAY_COUNT(battleList), \
+        __VA_OPT__(.dmaTable = (__VA_ARGS__), .dmaCount = ARRAY_COUNT(__VA_ARGS__),) \
+    }
 
 #define BATTLE_REF_MAX 128
 #define BATTLE_KEY_MAX 64
@@ -165,13 +172,13 @@ void unload_battle_area(void);
 #define BATTLE(formation, stage) { #formation, ARRAY_COUNT(formation), (Formation*) formation, stage }
 #define BATTLE_WITH_SCRIPT(formation, stage, script) { #formation, ARRAY_COUNT(formation), (Formation*) formation, stage, &script }
 
-#define ACTOR_BY_IDX(_name, _idx, _priority, args...) { .actor = &_name, .home = { .index = _idx }, .priority = _priority, args }
-#define ACTOR_BY_POS(_name, _pos, _priority, args...) { .actor = &_name, .home = { .vec = &_pos }, .priority = _priority, args }
+#define RAW_ACTOR_BY_IDX(_name, _idx, _priority, args...) { .actor = &_name, .home = { .index = _idx }, .priority = _priority, args }
+#define RAW_ACTOR_BY_POS(_name, _pos, _priority, args...) { .actor = &_name, .home = { .vec = &_pos }, .priority = _priority, args }
 
 #define OVL_ACTOR_BY_IDX(_name, _idx, _priority, args...) { .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
 #define OVL_ACTOR_BY_POS(_name, _pos, _priority, args...) { .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
 
-/// Select a public variant or encounter member defined with ACTOR_BLUEPRINT(name).
+/// Select a public variant or encounter member defined with OVL_DEF_ACTOR(name).
 #define OVL_ACTOR_NAMED_BY_IDX(_name, _blueprint, _idx, _priority, args...) { .blueprint = ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(_blueprint), .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
 #define OVL_ACTOR_NAMED_BY_POS(_name, _blueprint, _pos, _priority, args...) { .blueprint = ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(_blueprint), .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
 

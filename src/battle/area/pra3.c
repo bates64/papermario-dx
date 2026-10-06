@@ -90,10 +90,6 @@ static BattleList Formations = {
     BATTLE(duplighost_1_white_clubba_1_duplighost_1, "pra_01"),
     BATTLE(duplighost_2_gray_magikoopa_1_red_magikoopa_1, "pra_01"),
     BATTLE(white_clubba_2_duplighost_1, "pra_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

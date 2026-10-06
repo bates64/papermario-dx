@@ -117,10 +117,6 @@ static BattleList Formations = {
     BATTLE(bandit_2_pokey_1, "sbk_02"),
     BATTLE(bandit_2_pokey_2, "sbk_02"),
     BATTLE(bandit_1_pokey_1_bandit_1, "sbk_02"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

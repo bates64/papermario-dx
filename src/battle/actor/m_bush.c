@@ -74,7 +74,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_M_BUSH,
     .level = ACTOR_LEVEL_M_BUSH,

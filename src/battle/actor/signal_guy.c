@@ -59,7 +59,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_NO_DMG_POPUP,
     .type = ACTOR_TYPE_SIGNAL_GUY,
     .level = ACTOR_LEVEL_SIGNAL_GUY,

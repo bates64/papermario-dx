@@ -16,10 +16,6 @@ static Formation crystal_king = {
 
 static BattleList Formations = {
     BATTLE(crystal_king, "sam_04"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

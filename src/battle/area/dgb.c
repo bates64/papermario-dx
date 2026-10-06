@@ -39,10 +39,6 @@ static BattleList Formations = {
     BATTLE(clubba_4, "dgb_01"),
     BATTLE(tubba_blubba, "dgb_01"),
     BATTLE(tubba_blubba_no_dialogue, "dgb_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

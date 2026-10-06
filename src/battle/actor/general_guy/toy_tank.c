@@ -135,7 +135,7 @@ static ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT(toy_tank) = {
+OVL_DEF_ACTOR(toy_tank) = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_NO_HEALTH_BAR,
     .type = ACTOR_TYPE_TOY_TANK,
     .level = ACTOR_LEVEL_TOY_TANK,

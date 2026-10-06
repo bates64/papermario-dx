@@ -8,10 +8,6 @@ static Formation tutankoopa = {
 
 static BattleList Formations = {
     BATTLE(tutankoopa, "isk_01"),
-    {},
 };
 
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

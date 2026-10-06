@@ -22,7 +22,7 @@ typedef struct BattleScriptRef {
 
 #define BATTLE_SCRIPT_EXPORT_NAME "gBattleScriptModule"
 
-#define BATTLE_SCRIPT_MODULE(moduleKind, ...) \
+#define OVL_DEF_BATTLE_SCRIPT(moduleKind, ...) \
     static EvtScript* const BattleScriptEntries[] = { __VA_ARGS__ }; \
     export const BattleScriptModule gBattleScriptModule = { \
         .kind = (moduleKind), \

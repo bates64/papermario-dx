@@ -65,7 +65,7 @@ enum {
 
 /// Define the runtime descriptor exported by an entity implementation overlay.
 /// The corresponding resident manifest is named Entity_<name>.
-#define ENTITY_IMPLEMENTATION(name) export EntityImplementation EntityImpl_##name
+#define OVL_DEF_ENTITY(name) export EntityImplementation EntityImpl_##name
 
 #define BLOCK_GRID_SIZE 25
 

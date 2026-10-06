@@ -349,4 +349,4 @@ void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_RIGHT_ON]);
 }
 
-ACTION_COMMAND_ENTRY(ACTION_COMMAND_SMASH);
+OVL_DEF_ACTION_CMD(ACTION_COMMAND_SMASH);
