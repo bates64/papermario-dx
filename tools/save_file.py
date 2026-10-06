@@ -178,7 +178,7 @@ def first_battle(area: str) -> str:
     source = area_source(area)
     if source is None:
         sys.exit(f"There's no battle area {area} in {BATTLE_AREAS}.")
-    # BATTLE(goomba_1, "kmr_04") or BATTLE_WITH_SCRIPT(fat_omb, "nok_04", script)
+    # BATTLE(goomba_1, "kmr_04") or BATTLE_WITH_SCRIPT(demo_01, "nok_04", EVS_Demo01)
     match = re.search(r"\bBATTLE(?:_WITH_SCRIPT)?\(\s*(\w+)\s*,", source)
     if match is None:
         sys.exit(f"Battle area {area} has no battles.")

@@ -1,6 +1,7 @@
 #include "dx/boot.h"
 #include "dx/config.h"
 #include "fio.h"
+#include "game_modes.h"
 #include <string.h>
 
 /// Whether the game booted into gSaveBootRecord.
@@ -210,6 +211,10 @@ const char* dx_boot_resolve_battle(const BattleArea* area, const char* formation
 
 #if DX_DEBUG_MENU
 
+/// Set to ask for a quick save once dx_can_quick_save allows. Cleared once
+/// it's made.
+u8 gQuickSaveRequested;
+
 /// The player's data at the battle's start, which a quick save in a battle saves.
 PlayerData BattleStartPlayerData;
 PlayerData BattleCurrentPlayerData;
@@ -273,6 +278,35 @@ void dx_quick_save(void) {
     // fio_save_game has just set the game to boot normally
     gSaveGlobals.bootTo = BOOT_TO_RECORD;
     fio_save_globals();
+}
+
+b32 dx_can_quick_save(void) {
+    PlayerStatus* playerStatus = &gPlayerStatus;
+    s32 actionState = playerStatus->actionState;
+
+    if (gGameStatusPtr->context == CONTEXT_BATTLE) {
+        // the battle restarts from its beginning, so only its start and end are unsafe
+        return get_game_mode() == GAME_MODE_BATTLE
+            && gBattleState >= BATTLE_STATE_FIRST_STRIKE
+            && gBattleState <= BATTLE_STATE_DEFEND;
+    }
+
+    // as for opening the pause menu, which only a player in control can do
+    return get_game_mode() == GAME_MODE_WORLD
+        && playerStatus->inputDisabledCount == 0
+        && !(playerStatus->animFlags & PA_FLAG_CHANGING_MAP)
+        && !(playerStatus->flags & (PS_FLAG_PAUSE_DISABLED | PS_FLAG_NO_STATIC_COLLISION))
+        && !(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_MENUS)
+        && !is_picking_up_item()
+        && gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE
+        && (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN);
+}
+
+void dx_boot_update(void) {
+    if (gQuickSaveRequested && dx_can_quick_save()) {
+        dx_quick_save();
+        gQuickSaveRequested = false;
+    }
 }
 
 #endif

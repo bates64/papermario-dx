@@ -42,8 +42,14 @@ const char* dx_boot_resolve_battle(const BattleArea* area, const char* formation
 /// battle.
 void dx_quick_save(void);
 
+/// Whether a quick save is safe: when the pause menu could open, or mid-battle.
+b32 dx_can_quick_save(void);
+
 /// Records the player's data as a battle begins, for a quick save during it.
 void dx_boot_on_battle_start(void);
+
+/// Quick saves once it's safe, if gQuickSaveRequested is set. Runs each frame.
+void dx_boot_update(void);
 #endif
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
