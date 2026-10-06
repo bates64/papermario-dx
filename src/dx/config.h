@@ -18,7 +18,7 @@
 #define DX_DEBUG_OVERLAY_LOADS 0
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
-#define DX_SKIP_LOGOS 1
+#define DX_SKIP_LOGOS 0
 
 /// Skips the introductory storybook.
 #define DX_SKIP_STORY 1
