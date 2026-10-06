@@ -63,7 +63,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_SPIKED_GOOMBA,
     .level = ACTOR_LEVEL_SPIKED_GOOMBA,

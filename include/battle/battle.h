@@ -123,9 +123,21 @@ typedef struct ActorBlueprint {
     /* 0x26 */ Vec2b statusTextOffset;
 } ActorBlueprint; // size = 0x28
 
+/// Public actor-overlay entry points. Internal blueprints remain ordinary ActorBlueprint variables.
+/// ACTOR_BLUEPRINT() selects the default; ACTOR_BLUEPRINT(name) takes an identifier token.
+#define ACTOR_BLUEPRINT(...) export ActorBlueprint _ACTOR_BLUEPRINT_SYMBOL(__VA_ARGS__)
+#define _ACTOR_BLUEPRINT_SYMBOL(...) blueprint ## __VA_OPT__(_) ## __VA_ARGS__
+
+#define ACTOR_BLUEPRINT_EXPORT_NAME "blueprint"
+#define ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name) _ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name)
+#define _ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(name) "blueprint_" #name
+
 typedef struct FormationRow {
-    /* 0x00 */ ActorBlueprint* actor;
-    /* 0x04 */ const char* overlay; ///< Overlay name, if `actor` is to be loaded dynamically.
+    /* 0x00 */ union {
+    /*      */     ActorBlueprint* actor; ///< Direct blueprint when `overlay` is NULL.
+    /*      */     const char* blueprint; ///< Export name when `overlay` is set; NULL selects the default.
+    /*      */ };
+    /* 0x04 */ const char* overlay; ///< Non-NULL selects an actor overlay instead of a direct blueprint.
     /* 0x08 */ union {
     /*      */     s32    index;
     /*      */     Vec3i* vec;
@@ -164,7 +176,7 @@ void unload_battle_stage(void);
 
 /// Zero-terminated.
 typedef struct Battle {
-    /* 0x00 */ const char* name; ///< Debug SJIS name.
+    /* 0x00 */ const char* name; ///< ASCII debug name.
     /* 0x04 */ s32 formationSize;
     /* 0x08 */ Formation* formation;
     /* 0x0C */ const char* stage;         // stage overlay name
@@ -214,6 +226,10 @@ void unload_battle_area(void);
 
 #define OVL_ACTOR_BY_IDX(_name, _idx, _priority, args...) { .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
 #define OVL_ACTOR_BY_POS(_name, _pos, _priority, args...) { .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
+
+/// Select a public variant or encounter member defined with ACTOR_BLUEPRINT(name).
+#define OVL_ACTOR_NAMED_BY_IDX(_name, _blueprint, _idx, _priority, args...) { .blueprint = ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(_blueprint), .overlay = _name, .home = { .index = _idx }, .priority = _priority, args }
+#define OVL_ACTOR_NAMED_BY_POS(_name, _blueprint, _pos, _priority, args...) { .blueprint = ACTOR_BLUEPRINT_NAMED_EXPORT_NAME(_blueprint), .overlay = _name, .home = { .vec = &_pos }, .priority = _priority, args }
 
 #define STAGE(_name, _stage) { .name = _name, .stage = _stage }
 

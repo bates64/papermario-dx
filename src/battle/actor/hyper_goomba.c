@@ -74,7 +74,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_HYPER_GOOMBA,
     .level = ACTOR_LEVEL_HYPER_GOOMBA,

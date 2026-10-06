@@ -10,8 +10,6 @@ enum ActorParams {
     DMG_HEADBONK        = 1,
 };
 
-#ifndef NESTED_GOOMBA_INCLUDE
-
 extern EvtScript EVS_Init;
 extern s32 DefaultAnims[];
 
@@ -64,7 +62,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_GOOMBA,
     .level = ACTOR_LEVEL_GOOMBA,
@@ -86,8 +84,6 @@ export ActorBlueprint blueprint = {
     .statusIconOffset = { -10, 20 },
     .statusTextOffset = { 10, 20 },
 };
-
-#endif // NESTED_GOOMBA_INCLUDE
 
 s32 DefaultAnims[] = {
     STATUS_KEY_NORMAL,    ANIM_Goomba_Idle,

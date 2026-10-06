@@ -98,7 +98,7 @@ MACRO_RE = re.compile(r"^\s*(\w+)")
 # EvtScript declaration that opens a block (multi-line body)
 EVT_OPEN_RE = re.compile(r"^(\s*EvtScript\b.*)=\s*\{\s*$")
 
-# Single-line EvtScript declaration (e.g. EvtScript N(x) = EVT_EXIT_WALK(...);)
+# Single-line EvtScript declaration (e.g. EvtScript EVS_Exit = EVT_EXIT_WALK(...);)
 EVT_SINGLE_LINE_RE = re.compile(r"^\s*EvtScript\b.*=\s*\S.*;\s*$")
 
 # Any multi-line initializer: line ends with = {

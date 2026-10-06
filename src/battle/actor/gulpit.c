@@ -116,7 +116,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_GULPIT,
     .level = ACTOR_LEVEL_GULPIT,
@@ -501,4 +501,3 @@ EvtScript EVS_TakeTurn = {
     Return
     End
 };
-

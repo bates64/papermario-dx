@@ -5,7 +5,7 @@
 #include "sprite/npc/ShyGuy.h"
 #include "sprite/npc/GeneralGuy.h"
 
-#include "battle/area/omo2/actor/boss_common.h"
+#include "battle/common/general_guy.h"
 
 extern s32 ShyGuyAnims[];
 extern EvtScript EVS_Init;
@@ -229,7 +229,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_STILT_GUY,
     .level = ACTOR_LEVEL_STILT_GUY,

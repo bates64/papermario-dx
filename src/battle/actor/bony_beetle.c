@@ -139,7 +139,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_BONY_BEETLE,
     .level = ACTOR_LEVEL_BONY_BEETLE,

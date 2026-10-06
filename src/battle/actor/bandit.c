@@ -130,7 +130,7 @@ ActorPartBlueprint CoinParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_BANDIT,
     .level = ACTOR_LEVEL_BANDIT,

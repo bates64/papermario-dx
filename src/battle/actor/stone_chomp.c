@@ -232,7 +232,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_STONE_CHOMP,
     .level = ACTOR_LEVEL_STONE_CHOMP,

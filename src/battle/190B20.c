@@ -1409,12 +1409,16 @@ Actor* create_actor(Formation formation) {
     }
 
     Overlay* ovl = nullptr;
-    if (formation->actor != nullptr) {
-        formationActor = formation->actor;
-    } else if (formation->overlay != nullptr) {
+    if (formation->overlay != nullptr) {
+        const char* blueprintName = formation->blueprint;
+        if (blueprintName == nullptr) {
+            blueprintName = ACTOR_BLUEPRINT_EXPORT_NAME;
+        }
         ovl = ovl_load(formation->overlay, OVL_ACTOR);
-        formationActor = ovl_import(ovl, "blueprint");
-        ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export 'blueprint'", formation->overlay);
+        formationActor = ovl_import(ovl, blueprintName);
+        ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export '%s'", formation->overlay, blueprintName);
+    } else if (formation->actor != nullptr) {
+        formationActor = formation->actor;
     } else {
         PANIC();
     }

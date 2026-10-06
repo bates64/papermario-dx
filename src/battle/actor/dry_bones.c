@@ -138,7 +138,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_DRY_BONES,
     .level = ACTOR_LEVEL_DRY_BONES,

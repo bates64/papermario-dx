@@ -160,7 +160,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_KOOPATROL,
     .level = ACTOR_LEVEL_KOOPATROL,

@@ -156,7 +156,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_POKEY_MUMMY,
     .level = ACTOR_LEVEL_POKEY_MUMMY,

@@ -16,7 +16,7 @@ enum {
     FAKE_GOOMBARIO_ARC_HEADBONK_HIGH = 4,
 };
 
-API_CALLABLE(N(FakeGoombarioJumpOnTarget)) {
+static API_CALLABLE(FakeGoombarioJumpOnTarget) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
     ActorState* state = &actor->state;

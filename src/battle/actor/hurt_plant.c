@@ -74,7 +74,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_HURT_PLANT,
     .level = ACTOR_LEVEL_HURT_PLANT,

@@ -92,7 +92,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_MONTY_MOLE,
     .level = ACTOR_LEVEL_MONTY_MOLE,

@@ -71,7 +71,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_TARGET_ONLY | ACTOR_FLAG_NO_HEALTH_BAR | ACTOR_FLAG_NO_ATTACK,
     .type = ACTOR_TYPE_GULPIT_ROCKS,
     .level = ACTOR_LEVEL_GULPIT_ROCKS,
@@ -188,4 +188,3 @@ EvtScript EVS_TakeTurn = {
     Return
     End
 };
-

@@ -127,7 +127,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_LAVA_BUBBLE,
     .level = ACTOR_LEVEL_LAVA_BUBBLE,

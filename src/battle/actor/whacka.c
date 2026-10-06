@@ -75,7 +75,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_NO_HEALTH_BAR,
     .type = ACTOR_TYPE_WHACKA,
     .level = ACTOR_LEVEL_WHACKA,

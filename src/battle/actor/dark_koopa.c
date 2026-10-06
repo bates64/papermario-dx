@@ -85,7 +85,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_DARK_KOOPA,
     .level = ACTOR_LEVEL_DARK_KOOPA,

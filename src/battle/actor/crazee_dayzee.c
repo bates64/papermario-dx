@@ -61,7 +61,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_CRAZEE_DAYZEE,
     .level = ACTOR_LEVEL_CRAZEE_DAYZEE,

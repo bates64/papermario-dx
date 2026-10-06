@@ -78,7 +78,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_FROST_PIRANHA,
     .level = ACTOR_LEVEL_FROST_PIRANHA,

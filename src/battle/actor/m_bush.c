@@ -74,7 +74,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_M_BUSH,
     .level = ACTOR_LEVEL_M_BUSH,

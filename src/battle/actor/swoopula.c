@@ -69,7 +69,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_UPSIDE_DOWN,
     .type = ACTOR_TYPE_SWOOPULA,
     .level = ACTOR_LEVEL_SWOOPULA,

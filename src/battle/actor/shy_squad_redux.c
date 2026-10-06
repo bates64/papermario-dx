@@ -3,7 +3,7 @@
 #include "effects.h"
 #include "sprite/npc/TankGuy.h"
 
-#include "battle/area/omo2/actor/boss_common.h"
+#include "battle/common/general_guy.h"
 
 extern s32 DarkAnims[];
 extern EvtScript EVS_Init;
@@ -294,7 +294,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_NO_SHADOW,
     .type = ACTOR_TYPE_SHY_SQUAD_REDUX,
     .level = ACTOR_LEVEL_SHY_SQUAD_REDUX,

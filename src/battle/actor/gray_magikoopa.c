@@ -143,7 +143,7 @@ ActorPartBlueprint FlyingParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_GRAY_MAGIKOOPA,
     .level = ACTOR_LEVEL_GRAY_MAGIKOOPA,

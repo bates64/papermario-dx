@@ -181,6 +181,14 @@ void dx_debug_draw_ascii(const char* text, s32 color, s32 posX, s32 posY) {
     draw_msg((s32)buf, posX, posY, 255, color, 0);
 }
 
+static s32 dx_debug_get_ascii_width(const char* text) {
+    MSG_BIN buf[128] = {
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+    };
+    dx_string_to_msg(&buf[4], text);
+    return get_msg_width((s32)buf, MSG_FONT_NORMAL);
+}
+
 void dx_debug_draw_ascii_with_effect(const char* text, s32 color, s32 posX, s32 posY, s32 effect) {
     MSG_BIN buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
@@ -947,7 +955,8 @@ s32 BattleDigitOffsets[] = {
 s32 DebugBattleColumn = 0;
 
 #define DEBUG_BATTLE_PREVIEW_ROWS       6
-#define DEBUG_BATTLE_PREVIEW_NAME_LEN   24
+#define DEBUG_BATTLE_PREVIEW_NAME_LEN   64
+#define DEBUG_BATTLE_PREVIEW_MIN_WIDTH  104
 s32 DebugBattlePreviewBattleCount;
 s32 DebugBattlePreviewStageCount;
 s32 DebugBattlePreviewLineCount;
@@ -1011,12 +1020,27 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
         actorRows = DEBUG_BATTLE_PREVIEW_ROWS - 1;
     }
     for (i = 0; i < actorRows; i++) {
-        const char* actorName = (*battle->formation)[i].overlay;
+        const FormationRow* actor = &(*battle->formation)[i];
+        const char* actorName = actor->overlay;
+
         if (actorName == nullptr) {
             actorName = "(anonymous)";
+        } else if (actor->blueprint != nullptr
+            && strcmp(actor->blueprint, ACTOR_BLUEPRINT_EXPORT_NAME) != 0
+        ) {
+            const char* prefix = ACTOR_BLUEPRINT_EXPORT_NAME "_";
+            s32 prefixLength = strlen(prefix);
+
+            actorName = actor->blueprint;
+            if (strncmp(actorName, prefix, prefixLength) == 0 && actorName[prefixLength] != '\0') {
+                actorName += prefixLength;
+            }
         }
         strncpy(DebugBattlePreviewNames[i], actorName, DEBUG_BATTLE_PREVIEW_NAME_LEN - 1);
         DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 1] = '\0';
+        if (strlen(actorName) >= DEBUG_BATTLE_PREVIEW_NAME_LEN) {
+            strcpy(&DebugBattlePreviewNames[i][DEBUG_BATTLE_PREVIEW_NAME_LEN - 4], "...");
+        }
     }
     DebugBattlePreviewLineCount = actorRows;
     if (battle->formationSize > DEBUG_BATTLE_PREVIEW_ROWS) {
@@ -1028,6 +1052,48 @@ void dx_debug_load_battle_preview(s32 areaID, s32 formationID) {
 done:
     if (area == nullptr || area != get_loaded_battle_area()) {
         ovl_unload(overlay);
+    }
+}
+
+void dx_debug_draw_battle_preview(void) {
+    char names[DEBUG_BATTLE_PREVIEW_ROWS][DEBUG_BATTLE_PREVIEW_NAME_LEN];
+    s32 boxWidth = DEBUG_BATTLE_PREVIEW_MIN_WIDTH;
+    s32 maxTextWidth = SCREEN_WIDTH - 4 * BoxOutsetX;
+    s32 boxX;
+    s32 i;
+
+    for (i = 0; i < DebugBattlePreviewLineCount; i++) {
+        s32 textWidth;
+        s32 length;
+
+        strcpy(names[i], DebugBattlePreviewNames[i]);
+        textWidth = dx_debug_get_ascii_width(names[i]);
+        length = strlen(names[i]);
+        // Only elide text when it cannot fit across the screen, not the old box.
+        while (textWidth > maxTextWidth && length > 3) {
+            length--;
+            strcpy(&names[i][length - 3], "...");
+            textWidth = dx_debug_get_ascii_width(names[i]);
+        }
+        boxWidth = MAX(boxWidth, textWidth + 2 * BoxOutsetX);
+    }
+    // Keep the usual anchor until expansion would run past the right edge.
+    boxX = MIN(SubBoxPosX, SCREEN_WIDTH - BoxOutsetX - boxWidth);
+    dx_debug_draw_box(
+        boxX,
+        SubBoxPosY + 4 * RowHeight,
+        boxWidth,
+        DebugBattlePreviewLineCount * RowHeight + 8,
+        WINDOW_STYLE_20,
+        192
+    );
+    for (i = 0; i < DebugBattlePreviewLineCount; i++) {
+        dx_debug_draw_ascii(
+            names[i],
+            DefaultColor,
+            boxX + BoxOutsetX,
+            SubmenuPosY + (i + 4) * RowHeight
+        );
     }
 }
 
@@ -1336,22 +1402,7 @@ void dx_debug_update_select_battle() {
         );
     }
 
-    dx_debug_draw_box(
-        SubBoxPosX,
-        SubBoxPosY + 4 * RowHeight,
-        104,
-        DebugBattlePreviewLineCount * RowHeight + 8,
-        WINDOW_STYLE_20,
-        192
-    );
-    for (idx = 0; idx < DebugBattlePreviewLineCount; idx++) {
-        dx_debug_draw_ascii(
-            DebugBattlePreviewNames[idx],
-            DefaultColor,
-            SubmenuPosX,
-            SubmenuPosY + (idx + 4) * RowHeight
-        );
-    }
+    dx_debug_draw_battle_preview();
 }
 
 // ----------------------------------------------------------------------------

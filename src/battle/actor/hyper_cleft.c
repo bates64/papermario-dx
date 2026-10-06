@@ -83,7 +83,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_HYPER_CLEFT,
     .level = ACTOR_LEVEL_HYPER_CLEFT,

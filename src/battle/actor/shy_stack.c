@@ -7,7 +7,7 @@
 #include "sprite/npc/GeneralGuy.h"
 #include "sprite/npc/ShyGuy.h"
 
-#include "battle/area/omo2/actor/boss_common.h"
+#include "battle/common/general_guy.h"
 
 extern s32 FourStackAnims[];
 extern s32 RockAnims[];
@@ -273,7 +273,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_SHY_STACK,
     .level = ACTOR_LEVEL_SHY_STACK,

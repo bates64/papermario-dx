@@ -59,7 +59,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = ACTOR_FLAG_NO_DMG_POPUP,
     .type = ACTOR_TYPE_SIGNAL_GUY,
     .level = ACTOR_LEVEL_SIGNAL_GUY,

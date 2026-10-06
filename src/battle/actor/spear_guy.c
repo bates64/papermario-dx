@@ -191,7 +191,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-export ActorBlueprint blueprint = {
+ACTOR_BLUEPRINT() = {
     .flags = 0,
     .type = ACTOR_TYPE_SPEAR_GUY,
     .level = ACTOR_LEVEL_SPEAR_GUY,
