@@ -10,6 +10,10 @@ b32 BootRecordActive;
 b32 BootEntranceUsed;
 /// Whether the boot record's battle has started.
 b32 BootBattleStarted;
+
+/// Set once the game reaches where gSaveBootRecord starts: its map, or its
+/// battle. Tools can read it to tell when booting is done.
+u8 gBootRecordStarted;
 /// Whether the battle loading is the boot record's.
 b32 BootBattleLoading;
 
@@ -172,7 +176,12 @@ b32 dx_boot_enters_battle(void) {
 }
 
 void dx_boot_start_battle(void) {
-    if (BootRecordActive && gSaveBootRecord.start == BOOT_START_BATTLE && !BootBattleStarted) {
+    if (!BootRecordActive) {
+        return;
+    }
+    if (gSaveBootRecord.start != BOOT_START_BATTLE) {
+        gBootRecordStarted = true;
+    } else if (!BootBattleStarted) {
         BootBattleStarted = true;
         boot_begin_battle();
     }
@@ -191,6 +200,7 @@ const char* dx_boot_resolve_battle(const BattleArea* area, const char* formation
         return formation;
     }
     BootBattleLoading = false;
+    gBootRecordStarted = true;
     if (gSaveBootRecord.battle[0] != '\0') {
         return formation;
     }
