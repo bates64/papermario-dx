@@ -39,7 +39,9 @@ int __printf_chk(int flag, const char* restrict fmt, ...) {
 }
 
 int puts(const char* s) {
-    printf("%s\n", s);
+    // printf("%s\n", s) would compile to a call to puts
+    is_debug_print(nullptr, s, strlen(s));
+    is_debug_print(nullptr, "\n", 1);
     return 0;
 }
 
