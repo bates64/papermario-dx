@@ -2403,13 +2403,9 @@ void destroy_enemy(Enemy* enemy) {
     enemy->scripts.aux.source = nullptr;
     enemy->scripts.defeat.source = nullptr;
 
-    #if DX_DEBUG_MENU
     if (enemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
         free_npc(get_npc_unsafe(enemy->npcID));
     }
-    #else
-    free_npc(get_npc_unsafe(enemy->npcID));
-    #endif
 
     for (j = 0; j < ARRAY_COUNT(encounter->enemy); j++) {
         if (encounter->enemy[j] == enemy) {

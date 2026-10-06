@@ -5,6 +5,18 @@
 void fio_deserialize_state();
 void fio_serialize_state();
 
+/// What the game shows when it powers on. Set by the debug menu's Quick Save
+/// and tools/save_file.py, and reset to BOOT_TO_DEFAULT by a normal save.
+enum BootTo {
+    BOOT_TO_DEFAULT     = 0, ///< As dx/config.h says, with DX_SKIP_LOGOS and DX_SKIP_STORY
+    BOOT_TO_LOGOS       = 1,
+    BOOT_TO_INTRO       = 2, ///< The story book, from the IntroParts value in SaveGlobals::bootScene
+    BOOT_TO_DEMO        = 3, ///< The attract demo, from the index into DemoScenes in SaveGlobals::bootScene
+    BOOT_TO_TITLE       = 4,
+    BOOT_TO_FILE_SELECT = 5,
+    BOOT_TO_RECORD      = 6, ///< Start as gSaveBootRecord says
+};
+
 typedef struct SaveGlobals {
     /* 0x00 */ char magicString[16]; // "Mario Story 006" string
     /* 0x10 */ char version[32]; // always zero for vanilla globals
@@ -12,8 +24,45 @@ typedef struct SaveGlobals {
     /* 0x34 */ s32 crc2;
     /* 0x38 */ s32 useMonoSound;
     /* 0x3C */ u32 lastFileSelected;
-    /* 0x40 */ u8 reserved[64]; // unused
+    /* 0x40 */ u8 bootTo; // see BootTo
+    /* 0x41 */ u8 bootScene;
+    /* 0x42 */ u8 reserved[62]; // unused
 } SaveGlobals; // size = 0x80
+
+/// Where play starts when the game boots into a SaveBootRecord.
+enum BootStart {
+    BOOT_START_SAVED    = 0, ///< Where the base file was saved
+    BOOT_START_ENTRANCE = 1, ///< At SaveBootRecord::entryID of SaveBootRecord::map
+    BOOT_START_BATTLE   = 2, ///< In the battle SaveBootRecord describes, from the base file's map
+};
+
+/// What happens when a battle started by a SaveBootRecord ends.
+enum BootBattleEnd {
+    BOOT_BATTLE_END_RETURN  = 0, ///< Return to the map, as after any battle
+    BOOT_BATTLE_END_RESTART = 1, ///< Start the same battle again
+};
+
+/// How the game starts when SaveGlobals::bootTo is BOOT_TO_RECORD: which file
+/// to load, or a new game, and where. It's stored beside the globals, so tools
+/// can edit it without touching the player's files.
+typedef struct SaveBootRecord {
+    /* 0x00 */ s32 crc1;
+    /* 0x04 */ s32 crc2;
+    /* 0x08 */ s8 baseSlot; ///< The file to load, or -1 for a new game, saved to the first empty file
+    /* 0x09 */ u8 start; // see BootStart
+    /* 0x0A */ u8 onBattleEnd; // see BootBattleEnd
+    /* 0x0B */ PAD(1);
+    /* 0x0C */ s16 entryID;
+    /* 0x0E */ PAD(2);
+    /* 0x10 */ char map[16]; ///< For BOOT_START_ENTRANCE, such as "kmr_20"
+    /* 0x20 */ char battleArea[32]; ///< The battle area overlay, such as "kmr_part_1"
+    /* 0x40 */ char battle[64]; ///< A battle's formation in the area, such as "goomba_2"; empty for #actor alone
+    /* 0x80 */ char stage[32]; ///< The stage overlay; empty for the battle's own, or the area's first battle's
+    /* 0xA0 */ char actor[32]; ///< With no #battle, the actor to fight alone, such as "bob_omb" or "koopa_bros:red"
+    /* 0xC0 */ PAD(0x40);
+} SaveBootRecord; // size = 0x100
+
+extern SaveBootRecord gSaveBootRecord;
 
 typedef struct VanillaSaveFileSummary {
     /* 0x00 */ s32 timePlayed;

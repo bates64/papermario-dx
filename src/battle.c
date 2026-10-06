@@ -6,6 +6,7 @@
 #include "game_modes.h"
 #include "battle/states/states.h"
 #include "dx/overlay.h"
+#include "dx/boot.h"
 
 BSS s32 gBattleState;
 BSS BattleStatus gBattleStatus;
@@ -130,6 +131,7 @@ void load_battle_section(void) {
     battleArea = ovl_import(LoadedBattleAreaOverlay, BATTLE_AREA_EXPORT_NAME);
     ASSERT_MSG(battleArea != nullptr, "Area overlay '%s' has no %s export", areaName, BATTLE_AREA_EXPORT_NAME);
     LoadedBattleArea = battleArea;
+    formation = dx_boot_resolve_battle(battleArea, formation);
     gCurrentBattlePtr = nullptr;
     for (i = 0; i < battleArea->battleCount; i++) {
         Battle* battle = &(*battleArea->battles)[i];

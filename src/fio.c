@@ -18,12 +18,17 @@ BSS SaveInfo PhysicalSaveInfo[6]; // 6 saves as represented on the EEPROM
 BSS s32 NextAvailablePhysicalSave;
 
 SaveGlobals gSaveGlobals ALIGNED8;
+// kept in the globals' sectors, on the flash pages after the globals
+SaveBootRecord gSaveBootRecord ALIGNED8;
+#define BOOT_RECORD_FIRST_PAGE 1
 SaveData gCurrentSaveFile ALIGNED8;
 
 char MagicSaveString[] = "Mario Story 006";
 
 b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
 b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
+b32 fio_read_flash_at(s32 pageNum, s32 firstPage, void* readBuffer, u32 numBytes);
+b32 fio_write_flash_at(s32 pageNum, s32 firstPage, s8* readBuffer, u32 numBytes);
 void fio_erase_flash(s32 pageNum);
 
 s32 get_spirits_rescued(void) {
@@ -72,7 +77,50 @@ b32 fio_validate_globals_checksums(void) {
     return fio_calc_globals_checksum() == header->crc1;
 }
 
+s32 fio_calc_boot_record_checksum(void) {
+    s32* it = (s32*)&gSaveBootRecord;
+    u32 sum = 0;
+    u32 i;
+
+    for (i = 0; i < sizeof(gSaveBootRecord) / sizeof(*it); i++) {
+        sum += *it++;
+    }
+    return sum;
+}
+
+b32 fio_validate_boot_record_checksums(void) {
+    s32 crc1 = gSaveBootRecord.crc1;
+    s32 crc2 = gSaveBootRecord.crc2;
+    b32 valid;
+
+    if (crc1 != ~crc2) {
+        return false;
+    }
+    gSaveBootRecord.crc1 = 0;
+    gSaveBootRecord.crc2 = ~0;
+    valid = fio_calc_boot_record_checksum() == crc1;
+    gSaveBootRecord.crc1 = crc1;
+    gSaveBootRecord.crc2 = crc2;
+    return valid;
+}
+
+void fio_load_boot_record(void) {
+    fio_read_flash_at(GLOBALS_PAGE_1, BOOT_RECORD_FIRST_PAGE, &gSaveBootRecord, sizeof(gSaveBootRecord));
+    if (fio_validate_boot_record_checksums()) {
+        return;
+    }
+
+    fio_read_flash_at(GLOBALS_PAGE_2, BOOT_RECORD_FIRST_PAGE, &gSaveBootRecord, sizeof(gSaveBootRecord));
+    if (fio_validate_boot_record_checksums()) {
+        return;
+    }
+
+    bzero(&gSaveBootRecord, sizeof(gSaveBootRecord));
+}
+
 b32 fio_load_globals(void) {
+    fio_load_boot_record();
+
     fio_read_flash(GLOBALS_PAGE_1, &gSaveGlobals, sizeof(gSaveGlobals));
     if (fio_validate_globals_checksums()) {
         return true;
@@ -96,10 +144,20 @@ b32 fio_save_globals(void) {
     checksum = fio_calc_globals_checksum();
     gSaveGlobals.crc1 = checksum;
     gSaveGlobals.crc2 = ~checksum;
+
+    gSaveBootRecord.crc1 = 0;
+    gSaveBootRecord.crc2 = ~gSaveBootRecord.crc1;
+    checksum = fio_calc_boot_record_checksum();
+    gSaveBootRecord.crc1 = checksum;
+    gSaveBootRecord.crc2 = ~checksum;
+
+    // erasing a sector erases the boot record beside the globals, so both are written back
     fio_erase_flash(GLOBALS_PAGE_1);
     fio_write_flash(GLOBALS_PAGE_1, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
+    fio_write_flash_at(GLOBALS_PAGE_1, BOOT_RECORD_FIRST_PAGE, (s8*)&gSaveBootRecord, sizeof(gSaveBootRecord));
     fio_erase_flash(GLOBALS_PAGE_2);
     fio_write_flash(GLOBALS_PAGE_2, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
+    fio_write_flash_at(GLOBALS_PAGE_2, BOOT_RECORD_FIRST_PAGE, (s8*)&gSaveBootRecord, sizeof(gSaveBootRecord));
     return true;
 }
 
@@ -164,6 +222,18 @@ b32 fio_fetch_saved_file_info(void) {
     return true;
 }
 
+s32 fio_find_empty_slot(void) {
+    s32 i;
+
+    fio_fetch_saved_file_info();
+    for (i = 0; i < ARRAY_COUNT(LogicalSaveInfo); i++) {
+        if (LogicalSaveInfo[i].slot == -1) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 b32 fio_load_game(s32 saveSlot) {
     gGameStatusPtr->saveSlot = saveSlot;
 
@@ -215,6 +285,12 @@ void fio_save_game(s32 saveSlot) {
 
     fio_erase_flash(NextAvailablePhysicalSave);
     fio_write_flash(NextAvailablePhysicalSave, (s8*)&gCurrentSaveFile, sizeof(SaveData));
+
+    // saving as the player does, such as at a save block, ends booting into a test save
+    if (gSaveGlobals.bootTo != BOOT_TO_DEFAULT) {
+        gSaveGlobals.bootTo = BOOT_TO_DEFAULT;
+        fio_save_globals();
+    }
 }
 
 void fio_erase_game(s32 saveSlot) {
@@ -234,6 +310,15 @@ void fio_init_flash(void) {
 }
 
 b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
+    return fio_read_flash_at(pageNum, 0, readBuffer, numBytes);
+}
+
+b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
+    return fio_write_flash_at(pageNum, 0, readBuffer, numBytes);
+}
+
+// reads from firstPage onward within the sector at pageNum
+b32 fio_read_flash_at(s32 pageNum, s32 firstPage, void* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
@@ -254,7 +339,7 @@ b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
             amt = numBytes;
         }
 
-        osFlashReadArray(&mb, 0, pageNum * sizeof(SaveGlobals) + i, buf, 1, &mesgQueue);
+        osFlashReadArray(&mb, 0, pageNum * sizeof(SaveGlobals) + firstPage + i, buf, 1, &mesgQueue);
         osRecvMesg(&mesgQueue, nullptr, 1);
         i++;
         numBytes -= amt;
@@ -263,7 +348,8 @@ b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
     return true;
 }
 
-b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
+// writes from firstPage onward within the sector at pageNum
+b32 fio_write_flash_at(s32 pageNum, s32 firstPage, s8* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
@@ -282,7 +368,7 @@ b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
         }
 
         osFlashWriteBuffer(&mb, 0, readBuffer, &mesgQueue);
-        osFlashWriteArray((pageNum * sizeof(SaveGlobals)) + i);
+        osFlashWriteArray((pageNum * sizeof(SaveGlobals)) + firstPage + i);
         osRecvMesg(&mesgQueue, nullptr, 1);
         i++;
         numBytes -= amt;

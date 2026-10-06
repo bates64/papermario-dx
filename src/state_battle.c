@@ -8,6 +8,7 @@
 #include "game_modes.h"
 #include "dx/overlay.h"
 #include "world/actions.h"
+#include "dx/boot.h"
 
 extern u16 gFrameBuf0[];
 extern u16 gFrameBuf1[];
@@ -29,6 +30,9 @@ extern ShapeFile gMapShapeData;
 
 void state_init_battle(void) {
     BattleTransitionDelay = 5;
+#if DX_DEBUG_MENU
+    dx_boot_on_battle_start();
+#endif
 }
 
 void state_step_battle(void) {
@@ -194,6 +198,7 @@ void state_step_end_battle(void) {
                     set_time_freeze_mode(SavedWorldFreezeMode);
                 }
                 set_game_mode(GAME_MODE_WORLD);
+                dx_boot_on_battle_end();
             }
         }
     }

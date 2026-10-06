@@ -1399,14 +1399,10 @@ void draw_encounters_pre_battle(void) {
     EncounterStatus* encounter = &gCurrentEncounter;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-#if DX_DEBUG_MENU
     Npc* npc = nullptr;
     if (encounter->curEnemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
         npc = get_npc_unsafe(encounter->curEnemy->npcID);
     }
-#else
-    Npc* npc = get_npc_unsafe(encounter->curEnemy->npcID);
-#endif
 
     if (encounter->substateDelay != 0) {
         f32 playerX, playerY, playerZ;
@@ -1429,7 +1425,6 @@ void draw_encounters_pre_battle(void) {
             playerY = playerStatus->pos.y;
             playerZ = playerStatus->pos.z;
 
-        #if DX_DEBUG_MENU
         if (npc != nullptr) {
             otherX = npc->pos.x;
             otherY = npc->pos.y;
@@ -1439,11 +1434,6 @@ void draw_encounters_pre_battle(void) {
             otherY = playerY;
             otherZ = playerZ;
         }
-        #else
-            otherX = npc->pos.x;
-            otherY = npc->pos.y;
-            otherZ = npc->pos.z;
-        #endif
             if (otherY < -990.0f) {
                 otherX = playerX;
                 otherY = playerY;
