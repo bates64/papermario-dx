@@ -79,6 +79,14 @@ OVL_TYPE_BATTLE_SCRIPT = 9
 OVL_TYPE_BATTLE_MENU = 10
 OVL_TYPE_ENTITY = 11
 
+# The size of a name, with its terminator: an overlay's (OVL_NAME_MAX in
+# src/dx/overlay.h) and one in the map filesystem (ASSET_NAME_MAX in
+# include/map.h). A map's or a stage's name has to fit the second as its
+# geometry's, as in w_kmr_02_shape.
+OVL_NAME_MAX = 64
+ASSET_NAME_MAX = 32
+MAP_NAME_MAX = ASSET_NAME_MAX - 1 - len("w__shape")
+
 BATTLE_MENU_SOURCES = (
     "battle/menus/btl_states_menus.c",
     "battle/menus/menu_moves.c",
@@ -2239,6 +2247,28 @@ class Configure:
             if seg.max_size is not None
         }
 
+    def check_names(self) -> None:
+        """Stops if a map, stage, or overlay has a name too long for the game, naming its directory or file."""
+        errors = {}
+        for name, path, _, type_index in self.find_overlays():
+            kind = {OVL_TYPE_MAP: "map", OVL_TYPE_STAGE: "stage"}.get(type_index, "overlay")
+            limit = MAP_NAME_MAX if kind != "overlay" else OVL_NAME_MAX - 1
+            if len(name) > limit:
+                errors[(kind, name)] = (path, limit)
+        for source in self.map_sources().values():
+            kind = "stage" if source.name == "stage.xml" else "map"
+            name = source.parent.name
+            if len(name) > MAP_NAME_MAX:
+                errors.setdefault((kind, name), (ROOT / source.parent, MAP_NAME_MAX))
+        for (kind, name), (path, limit) in sorted(errors.items()):
+            print(
+                f"{posix(path.relative_to(ROOT))}: error: {kind} names can be at most {limit} characters, "
+                f"and {name} is {len(name)}",
+                file=sys.stderr,
+            )
+        if errors:
+            sys.exit(1)
+
     def find_overlays(self) -> List[Tuple[str, Path, List[Path], int]]:
         overlay_types = [
             (OVL_TYPE_EFFECT, "effects/*.c", ""),
@@ -2844,6 +2874,7 @@ if __name__ == "__main__":
             configure.dump_maps()
         if not args.no_split_assets:
             configure.refresh_common_graphics()
+        configure.check_names()
         evt_validation_stamps.extend(
             configure.write_ninja(
                 ninja, skip_files, non_matching, args.evt_validation
