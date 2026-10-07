@@ -3,13 +3,15 @@
 
 #include "common.h"
 #include "dx/config.h"
-#if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
+
+/// The NPC ID of the stand-in enemy of a battle started with no enemy in the world.
+#define DX_DEBUG_DUMMY_ID 0xDEAD
+
+#if DX_DEBUG_MENU
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
 #endif
-
-#define DX_DEBUG_DUMMY_ID 0xDEAD
 
 typedef enum DebugCheat {
     DEBUG_CHEAT_GOD_MODE,

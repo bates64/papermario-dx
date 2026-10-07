@@ -6,6 +6,7 @@
 #include "overlay.h"
 #include "game_modes.h"
 #include "dx/profiling.h"
+#include "dx/boot.h"
 
 s32 gOverrideFlags;
 s32 gTimeFreezeMode;
@@ -54,6 +55,10 @@ void step_game_loop(void) {
 
     update_input();
     profiler_update(PROFILER_TIME_CONTROLLERS, 0);
+
+#if DX_DEBUG_MENU
+    dx_boot_update();
+#endif
 
     gGameStatusPtr->frameCounter++;
 

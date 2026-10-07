@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dx/boot.h"
 #include "ld_addrs.h"
 #include "npc.h"
 #include "hud_element.h"
@@ -29,7 +30,6 @@ typedef struct {
     /* 0x18 */ u32 decompressedLength;
 } AssetHeader; // size = 0x1C
 
-void fio_deserialize_state(void);
 void load_map_hit_asset(void);
 
 #if defined(SHIFT) || VERSION_IQUE
@@ -77,10 +77,14 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
             break;
         case LOAD_FROM_FILE_SELECT:
             fio_deserialize_state();
+            gGameStatusPtr->loadType = LOAD_FROM_FILE_SELECT;
+            if (dx_boot_use_entrance()) {
+                // the map's scripts place the player at the entrance as for any other map change
+                gGameStatusPtr->loadType = LOAD_FROM_MAP;
+            }
             areaID = gGameStatusPtr->areaID;
             mapID = gGameStatusPtr->mapID;
             gGameStatusPtr->prevArea = areaID;
-            gGameStatusPtr->loadType = LOAD_FROM_FILE_SELECT;
             break;
     }
 

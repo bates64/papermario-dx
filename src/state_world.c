@@ -3,17 +3,14 @@
 #include "game_modes.h"
 #include "dx/config.h"
 #include "dx/profiling.h"
+#include "dx/boot.h"
 
 void state_world_draw_aux_ui(void);
 
 void state_init_world(void) {
     set_game_mode_render_frontUI(state_world_draw_aux_ui);
 
-#ifdef DX_QUICK_LAUNCH_BATTLE
-    if (gGameStatus.loadType == LOAD_FROM_FILE_SELECT) {
-        dx_debug_begin_battle_with_ref(DX_QUICK_LAUNCH_BATTLE);
-    }
-#endif
+    dx_boot_start_battle();
 }
 
 void state_step_world(void) {

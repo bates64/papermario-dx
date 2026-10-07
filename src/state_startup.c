@@ -5,6 +5,63 @@
 #include "game_modes.h"
 #include "dx/config.h"
 #include "dx/versioning.h"
+#include "dx/boot.h"
+
+/// What to boot into when SaveGlobals::bootTo leaves it to dx/config.h.
+s32 startup_default_boot_to(void) {
+    #if !DX_SKIP_LOGOS
+        return BOOT_TO_LOGOS;
+    #elif DX_SKIP_STORY
+        return BOOT_TO_TITLE;
+    #else
+        return BOOT_TO_INTRO;
+    #endif
+}
+
+void startup_boot_to(s32 bootTo) {
+    if (bootTo == BOOT_TO_DEFAULT) {
+        bootTo = startup_default_boot_to();
+    }
+
+    switch (bootTo) {
+        case BOOT_TO_RECORD:
+            if (dx_boot_from_record()) {
+                set_game_mode(GAME_MODE_ENTER_WORLD);
+                gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
+                return;
+            }
+            startup_boot_to(startup_default_boot_to());
+            return;
+        case BOOT_TO_INTRO:
+            set_curtain_scale(1.0f);
+            set_curtain_fade(0.3f);
+            gGameStatus.introPart = gSaveGlobals.bootScene;
+            set_game_mode(GAME_MODE_INTRO);
+            return;
+        case BOOT_TO_DEMO:
+            gGameStatus.demoState = DEMO_STATE_ACTIVE;
+            gGameStatus.nextDemoScene = gSaveGlobals.bootScene < LAST_DEMO_SCENE_IDX ? gSaveGlobals.bootScene : 0;
+            set_game_mode(GAME_MODE_DEMO);
+            return;
+        case BOOT_TO_TITLE:
+            set_curtain_scale(1.0f);
+            set_curtain_fade(0.0f);
+            set_game_mode(GAME_MODE_TITLE_SCREEN);
+            return;
+        case BOOT_TO_FILE_SELECT:
+            // the map behind the file select menu, as the title screen sets it
+            gGameStatus.areaID = AREA_KMR;
+            gGameStatus.mapID = 0xB; //TODO hardcoded map IDs
+            gGameStatus.entryID = 0;
+            set_game_mode(GAME_MODE_FILE_SELECT);
+            return;
+        case BOOT_TO_LOGOS:
+        default:
+            set_game_mode(GAME_MODE_LOGOS);
+            return;
+    }
+}
+
 void state_init_startup(void) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
     gGameStatus.startupState = 3;
@@ -82,32 +139,7 @@ void state_step_startup(void) {
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
 
-    #if DX_QUICK_LAUNCH
-        // immediately jump into the world using last-used save file
-        gGameStatus.saveSlot = gSaveGlobals.lastFileSelected;
-        if (fio_load_game(gGameStatusPtr->saveSlot)) {
-            set_game_mode(GAME_MODE_ENTER_WORLD);
-            gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
-            return;
-        }
-    #endif
-
-    #if DX_SKIP_LOGOS
-        // go right to the story book or file select
-        #if DX_SKIP_STORY
-            set_curtain_scale(1.0f);
-            set_curtain_fade(0.0f);
-            set_game_mode(GAME_MODE_TITLE_SCREEN);
-        #else
-            set_curtain_scale(1.0f);
-            set_curtain_fade(0.3f);
-            gGameStatus.introPart = INTRO_PART_0;
-            set_game_mode(GAME_MODE_INTRO);
-        #endif
-    #else
-        // use vanilla startup process
-        set_game_mode(GAME_MODE_LOGOS);
-    #endif
+    startup_boot_to(gSaveGlobals.bootTo);
 }
 
 void state_drawUI_startup(void) {

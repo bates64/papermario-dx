@@ -129,7 +129,7 @@ static const OverlayStorage overlayStorage[OVL_NUM_TYPES] = {
     },
 };
 
-#if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
+#if DX_DEBUG_OVERLAY_LOADS && DX_DEBUG_MENU
 static const char* get_type_name(OverlayType type) {
     switch (type) {
         case OVL_EFFECT:
@@ -474,7 +474,7 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
         ovl->dtors[i] += delta;
     }
 
-#if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
+#if DX_DEBUG_OVERLAY_LOADS && DX_DEBUG_MENU
     if (allocate) {
         if (storage->mode == OVL_STORAGE_POOL) {
             debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X #%d",
@@ -543,7 +543,7 @@ Overlay* ovl_load(const char* name, OverlayType type) {
 void ovl_unload(Overlay* ovl) {
     if (ovl == nullptr || ovl->name[0] == '\0') return;
 
-#if DX_DEBUG_OVERLAY_LOADS && (DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE))
+#if DX_DEBUG_OVERLAY_LOADS && DX_DEBUG_MENU
     if (overlayStorage[ovl->type].mode == OVL_STORAGE_POOL) {
         debug_printf_always("\\rOVL-\\d %s/%s \\y%.32s\\d @%08X #%d",
                             get_type_name(ovl->type), get_storage_name(overlayStorage[ovl->type].mode),

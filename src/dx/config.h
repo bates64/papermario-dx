@@ -17,15 +17,8 @@
 /// Logs every overlay load and unload to the debug console
 #define DX_DEBUG_OVERLAY_LOADS 0
 
-/// Loads last used save file.
-#define DX_QUICK_LAUNCH 0
-
-/// Quick launch into this battle.
-/// Comment out to disable,
-//#define DX_QUICK_LAUNCH_BATTLE "nok:goomba_2", "nok_01"
-
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
-#define DX_SKIP_LOGOS 1
+#define DX_SKIP_LOGOS 0
 
 /// Skips the introductory storybook.
 #define DX_SKIP_STORY 1

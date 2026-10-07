@@ -2,6 +2,7 @@
 #include "nu/nusys.h"
 #include "game_modes.h"
 #include "battle/battle.h"
+#include "dx/boot.h"
 
 BSS s16 gMapTransitionAlpha;
 BSS s16 gMapTransitionFadeRate;
@@ -28,6 +29,10 @@ void state_init_enter_world(void) {
     gLoadedFromFileSelect = true;
     set_map_transition_effect(TRANSITION_ENTER_WORLD);
     init_enter_world_shared();
+    // the fade finishes at once, so the battle starts as soon as the world loads
+    if (dx_boot_enters_battle()) {
+        gMapTransitionAlpha = 0;
+    }
 }
 
 void init_enter_world_shared(void) {

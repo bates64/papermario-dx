@@ -1,7 +1,7 @@
 // #include "dx/debug_menu.h"
 #include "common.h"
 #include "libc/xstdio.h"
-#if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
+#if DX_DEBUG_MENU
 #include "game_modes.h"
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
@@ -15,6 +15,7 @@
 #include <string.h>
 #include "dx/utils.h"
 #include "dx/overlay.h"
+#include "dx/boot.h"
 #include "msg.h"
 #include "fio.h"
 
@@ -674,14 +675,11 @@ void dx_debug_draw_main_menu() {
 
 // ----------------------------------------------------------------------------
 // quick save
-// only restores previous player position on maps with save points, otherwise enters through most recent entry
+// see dx_quick_save
 
 void dx_debug_exec_quick_save() {
     sfx_play_sound(SOUND_MENU_SHOW_CHOICE);
-    gGameStatusPtr->savedPos.x = gPlayerStatusPtr->pos.x;
-    gGameStatusPtr->savedPos.y = gPlayerStatusPtr->pos.y;
-    gGameStatusPtr->savedPos.z = gPlayerStatusPtr->pos.z;
-    fio_save_game(gGameStatusPtr->saveSlot);
+    dx_quick_save();
     DebugMenuState = DBM_MAIN_MENU;
 }
 
@@ -1137,26 +1135,10 @@ void dx_debug_force_end_battle(void) {
     }
 }
 
-EnemyDrops DebugDummyDrops = NO_DROPS;
-
-Enemy DebugDummyEnemy = {
-    .npcID = DX_DEBUG_DUMMY_ID,
-    .drops = &DebugDummyDrops,
-};
-
-Encounter DebugDummyEncounter = {
-    .encounterID = DX_DEBUG_DUMMY_ID,
-    .enemy = { &DebugDummyEnemy },
-    .count = 0,
-    .battle = nullptr,
-    .stage = nullptr,
-};
-
 void dx_debug_begin_battle_with_ref(const char* battle, const char* stage) {
     static char battleRef[BATTLE_REF_MAX];
     static char stageName[OVL_NAME_MAX];
     char areaName[BATTLE_KEY_MAX];
-    EncounterStatus* es = &gCurrentEncounter;
     b32 restarting = gGameStatusPtr->context == CONTEXT_BATTLE;
 
     ASSERT(split_battle_ref(battle, areaName) != nullptr);
@@ -1169,39 +1151,7 @@ void dx_debug_begin_battle_with_ref(const char* battle, const char* stage) {
         stageName[0] = '\0';
     }
     dx_debug_force_end_battle();
-
-    DebugDummyEncounter.battle = battleRef;
-    DebugDummyEncounter.stage = stageName[0] == '\0' ? nullptr : stageName;
-
-    es->curEncounter = &DebugDummyEncounter;
-    es->curEnemy = &DebugDummyEnemy;
-    es->hitType = ENCOUNTER_TRIGGER_NONE;
-    es->firstStrikeType = FIRST_STRIKE_NONE;
-    es->forbidFleeing = false;
-    es->scriptedBattle = true;
-    es->songID = -1;
-    es->unk_18 = -1;
-    es->fadeOutAmount = 0;
-    es->substateDelay = 0;
-
-    // A replacement battle inherits the encounter's existing input locks.
-    // The final post-battle cleanup releases them once for the whole chain.
-    if (!restarting) {
-        disable_player_input();
-        partner_disable_input();
-    }
-
-    gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
-    gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
-    if (restarting) {
-        // Restoring world resources is necessary for teardown, but there is no
-        // need to show the world or push its music again between battles.
-        gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_RESTART;
-        es->fadeOutAmount = 255;
-        set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
-        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, 255.0f);
-    }
-    EncounterStateChanged = true;
+    dx_begin_battle(battleRef, stageName[0] == '\0' ? nullptr : stageName, restarting);
 }
 
 void dx_debug_begin_battle() {
