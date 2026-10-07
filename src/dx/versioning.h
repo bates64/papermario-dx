@@ -54,12 +54,12 @@ typedef struct SaveBootRecord {
     /* 0x0B */ PAD(1);
     /* 0x0C */ s16 entryID;
     /* 0x0E */ PAD(2);
-    /* 0x10 */ char map[16]; ///< For BOOT_START_ENTRANCE, such as "kmr_20"
-    /* 0x20 */ char battleArea[32]; ///< The battle area overlay, such as "kmr_part_1"
-    /* 0x40 */ char battle[64]; ///< A battle's formation in the area, such as "goomba_2"; empty for #actor alone
-    /* 0x80 */ char stage[32]; ///< The stage overlay; empty for the battle's own, or the area's first battle's
-    /* 0xA0 */ char actor[32]; ///< With no #battle, the actor to fight alone, such as "bob_omb" or "koopa_bros:red"
-    /* 0xC0 */ PAD(0x40);
+    /* 0x10 */ char map[32]; ///< For BOOT_START_ENTRANCE, such as "kmr_20"
+    /* 0x30 */ char battleArea[32]; ///< The battle area overlay, such as "kmr_part_1"
+    /* 0x50 */ char battle[64]; ///< A battle's formation in the area, such as "goomba_2"; empty for #actor alone
+    /* 0x90 */ char stage[32]; ///< The stage overlay; empty for the battle's own, or the area's first battle's
+    /* 0xB0 */ char actor[32]; ///< With no #battle, the actor to fight alone, such as "bob_omb" or "koopa_bros:red"
+    /* 0xD0 */ PAD(0x30);
 } SaveBootRecord; // size = 0x100
 
 extern SaveBootRecord gSaveBootRecord;

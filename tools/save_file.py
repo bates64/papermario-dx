@@ -56,11 +56,11 @@ RECORD_START = 0x09
 RECORD_ON_BATTLE_END = 0x0A
 RECORD_ENTRY_ID = 0x0C
 RECORD_NAMES = {
-    "map": (0x10, 16),
-    "battle_area": (0x20, 32),
-    "battle": (0x40, 64),
-    "stage": (0x80, 32),
-    "actor": (0xA0, 32),
+    "map": (0x10, 32),
+    "battle_area": (0x30, 32),
+    "battle": (0x50, 64),
+    "stage": (0x90, 32),
+    "actor": (0xB0, 32),
 }
 
 SAVE_SIZE = 0x1380
