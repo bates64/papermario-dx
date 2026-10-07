@@ -51,10 +51,14 @@ typedef struct AreaConfig {
 
 MapSettings* get_current_map_settings(void);
 
-extern char wMapTexName[];
-extern char wMapHitName[];
-extern char wMapShapeName[];
-extern char wMapBgName[];
+/// The size of a name in the map filesystem, with its terminator, such as w_kmr_02_shape. tools/build/mapfs/combine.py
+/// writes names this size.
+#define ASSET_NAME_MAX 32
+
+extern char wMapTexName[ASSET_NAME_MAX];
+extern char wMapHitName[ASSET_NAME_MAX];
+extern char wMapShapeName[ASSET_NAME_MAX];
+extern char wMapBgName[ASSET_NAME_MAX];
 extern const char* wMapName;
 
 /// Zero-terminated.

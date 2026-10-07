@@ -15,19 +15,19 @@
 BSS const char* wMapName;
 BSS MapSettings gMapSettings;
 
-char wMapHitName[0x18];
-char wMapShapeName[0x18];
-char wMapTexName[0x18];
-char wMapBgName[0x14];
+char wMapHitName[ASSET_NAME_MAX];
+char wMapShapeName[ASSET_NAME_MAX];
+char wMapTexName[ASSET_NAME_MAX];
+char wMapBgName[ASSET_NAME_MAX];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 typedef struct {
-    /* 0x00 */ char name[16];
-    /* 0x10 */ u32 offset;
-    /* 0x14 */ u32 compressedLength;
-    /* 0x18 */ u32 decompressedLength;
-} AssetHeader; // size = 0x1C
+    /* 0x00 */ char name[ASSET_NAME_MAX];
+    /* 0x20 */ u32 offset;
+    /* 0x24 */ u32 compressedLength;
+    /* 0x28 */ u32 decompressedLength;
+} AssetHeader; // size = 0x2C
 
 void fio_deserialize_state(void);
 void load_map_hit_asset(void);
