@@ -1,9 +1,6 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
-// perhaps extend to 0x200 and change animID fields for dx from SSSSPPAA --> SSSPPAAA
-#define MAX_SPRITE_ID 0xFF
-
 extern HeapNode heap_generalHead;
 extern HeapNode heap_spriteHead;
 
@@ -14,8 +11,6 @@ BSS SpriteAnimData* PlayerSprites[13];
 BSS s32 CurPlayerSpriteIndex;
 BSS s32 MaxPlayerSpriteComponents;
 BSS PlayerCurrentAnimInfo CurPlayerAnimInfo[3];
-BSS SpriteAnimData* NpcSpriteData[MAX_SPRITE_ID];
-BSS u8 NpcSpriteInstanceCount[MAX_SPRITE_ID];
 BSS SpriteInstance SpriteInstances[51];
 BSS Quad* SpriteQuadCache;
 BSS s32 SpriteQuadCacheInfo[22]; // upper bytes: width, height; lower 16 bits: time left
@@ -23,6 +18,18 @@ BSS s32 SpriteCurBaseRot[3];
 BSS s32 SpriteUpdateNotifyValue;
 
 SpriteComponent** spr_allocate_components(s32);
+
+/// The loaded data of an NPC sprite, which its instances share, or nullptr if no instance has it loaded.
+SpriteAnimData* spr_find_npc_sprite_data(s32 spriteIndex) {
+    s32 i;
+
+    for (i = 0; i <= MaxLoadedSpriteInstanceID; i++) {
+        if (SpriteInstances[i].spriteIndex == spriteIndex) {
+            return SpriteInstances[i].spriteData;
+        }
+    }
+    return nullptr;
+}
 
 /// Discards rasters not referenced by `limitAnimList` and compacts the sprite allocation.
 /// Animation data and palettes remain loaded.
@@ -813,11 +820,6 @@ void spr_init_sprites(s32 playerSpriteSet) {
         CurPlayerAnimInfo[i].animID = -1;
     }
 
-    for (i = 0; i < ARRAY_COUNT(NpcSpriteData); i++) {
-        NpcSpriteData[i] = nullptr;
-        NpcSpriteInstanceCount[i] = 0;
-    }
-
     for (i = 0; i < ARRAY_COUNT(SpriteInstances); i++) {
         SpriteInstances[i].spriteIndex = 0;
         SpriteInstances[i].componentList = nullptr;
@@ -1051,19 +1053,14 @@ s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList) {
         return -1;
     }
     listIndex = i;
-    if (NpcSpriteData[spriteIndex] != nullptr) {
-        NpcSpriteInstanceCount[spriteIndex]++;
-        header = NpcSpriteData[spriteIndex];
-        SpriteInstances[listIndex].spriteData = header;
-    } else {
-        NpcSpriteInstanceCount[spriteIndex] = 1;
+    header = spr_find_npc_sprite_data(spriteIndex);
+    if (header == nullptr) {
         header = spr_load_sprite(spriteIndex - 1, false, useTailAlloc);
-        SpriteInstances[listIndex].spriteData = header;
-        NpcSpriteData[spriteIndex] = header;
         if (limitAnimList != nullptr) {
             spr_npc_unload_unused_assets(header, limitAnimList);
         }
     }
+    SpriteInstances[listIndex].spriteData = header;
     compList = spr_allocate_components(header->maxComponents);
     SpriteInstances[listIndex].componentList = compList;
     while (*compList != PTR_LIST_END) {
@@ -1183,11 +1180,10 @@ s32 spr_free_sprite(s32 spriteInstanceID) {
     SpriteComponent** compList;
     s32 spriteIndex = sprite->spriteIndex;
 
-    if (spriteIndex == 0 || spriteIndex >= ARRAY_COUNT(NpcSpriteData)) {
+    if (spriteIndex == 0) {
         return spriteInstanceID;
     }
 
-    NpcSpriteInstanceCount[spriteIndex]--;
     spriteData = sprite->spriteData;
 
     compList = sprite->componentList;
@@ -1199,8 +1195,9 @@ s32 spr_free_sprite(s32 spriteInstanceID) {
 
     compList = SpriteInstances[spriteInstanceID].componentList;
 
-    if (NpcSpriteInstanceCount[spriteIndex] == 0) {
-        NpcSpriteData[spriteIndex] = nullptr;
+    // other instances of the sprite share its data, so it's only freed with the last one
+    sprite->spriteIndex = 0;
+    if (spr_find_npc_sprite_data(spriteIndex) == nullptr) {
         _heap_free(&heap_spriteHead, spriteData);
     }
 
@@ -1295,7 +1292,7 @@ s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, 
 }
 
 s32 spr_get_npc_raster_info(SpriteRasterInfo* out, s32 npcSpriteID, s32 rasterIndex) {
-    SpriteAnimData* sprite = NpcSpriteData[npcSpriteID];
+    SpriteAnimData* sprite = spr_find_npc_sprite_data(npcSpriteID);
     SpriteRasterEntry* cache;
     PAL_PTR* paletteOffsetCopy;
 
@@ -1312,7 +1309,7 @@ s32 spr_get_npc_raster_info(SpriteRasterInfo* out, s32 npcSpriteID, s32 rasterIn
 }
 
 PAL_PTR* spr_get_npc_palettes(s32 npcSpriteID) {
-    SpriteAnimData* sprite = NpcSpriteData[npcSpriteID];
+    SpriteAnimData* sprite = spr_find_npc_sprite_data(npcSpriteID);
 
     if (sprite != nullptr) {
         return sprite->palettesOffset;
@@ -1322,7 +1319,7 @@ PAL_PTR* spr_get_npc_palettes(s32 npcSpriteID) {
 }
 
 s32 spr_get_npc_color_variations(s32 npcSpriteID) {
-    SpriteAnimData* sprite = NpcSpriteData[npcSpriteID];
+    SpriteAnimData* sprite = spr_find_npc_sprite_data(npcSpriteID);
 
     if (sprite != nullptr) {
         return sprite->colorVariations;
