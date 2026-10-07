@@ -224,8 +224,8 @@ NpcData NpcData_Spiny_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Spiny_01, "flo:spiny_2", "flo_01c"),
-    NPC_GROUP(NpcData_Spiny_02, "flo:spiny_3", "flo_01c"),
+    NPC_GROUP(NpcData_Spiny_01, "flo:spiny_2", "flo_01:c"),
+    NPC_GROUP(NpcData_Spiny_02, "flo:spiny_3", "flo_01:c"),
     NPC_GROUP(NpcData_GateFlower),
     {}
 };

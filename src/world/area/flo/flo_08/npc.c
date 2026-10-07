@@ -390,11 +390,11 @@ NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_GateFlower),
     NPC_GROUP(NpcData_Dayzee_01, "flo:crazee_dayzee_1_bzzap_2", "flo_01"),
     NPC_GROUP(NpcData_Dayzee_02, "flo:crazee_dayzee_1", "flo_01"),
-    NPC_GROUP(NpcData_Dayzee_03, "flo:crazee_dayzee_1", "flo_01b"),
-    NPC_GROUP(NpcData_Dayzee_04, "flo:crazee_dayzee_1", "flo_01b"),
-    NPC_GROUP(NpcData_Dayzee_05, "flo:crazee_dayzee_1", "flo_01b"),
-    NPC_GROUP(NpcData_Dayzee_06, "flo:crazee_dayzee_1", "flo_01b"),
-    NPC_GROUP(NpcData_Dayzee_07, "flo:crazee_dayzee_4", "flo_01b"),
+    NPC_GROUP(NpcData_Dayzee_03, "flo:crazee_dayzee_1", "flo_01:b"),
+    NPC_GROUP(NpcData_Dayzee_04, "flo:crazee_dayzee_1", "flo_01:b"),
+    NPC_GROUP(NpcData_Dayzee_05, "flo:crazee_dayzee_1", "flo_01:b"),
+    NPC_GROUP(NpcData_Dayzee_06, "flo:crazee_dayzee_1", "flo_01:b"),
+    NPC_GROUP(NpcData_Dayzee_07, "flo:crazee_dayzee_4", "flo_01:b"),
     NPC_GROUP(NpcData_AmazyDayzee, "flo:amazy_dayzee_1", "flo_01"),
     {}
 };

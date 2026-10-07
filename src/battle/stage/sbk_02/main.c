@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/sbk_bt02_shape.h"
-
+#include "stage.xml.h"
 #include "effects.h"
 #include "model.h"
 
@@ -99,8 +98,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "sbk_tex",
-    .shape = "sbk_bt02_shape",
-    .hit = "sbk_bt02_hit",
     .bg = "sbk_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

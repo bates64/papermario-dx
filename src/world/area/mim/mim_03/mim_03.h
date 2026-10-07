@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mim.h"
-#include "mapfs/mim_03_shape.h"
-#include "mapfs/mim_03_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Oaklie                  = 0,

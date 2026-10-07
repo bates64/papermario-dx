@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mac.h"
-#include "mapfs/mac_04_shape.h"
-#include "mapfs/mac_04_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/ShyGuy.h"
 #include "sprite/npc/WorldGoombario.h"

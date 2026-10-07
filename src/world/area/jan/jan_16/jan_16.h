@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_16_shape.h"
-#include "mapfs/jan_16_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Raven.h"
 #include "sprite/npc/RaphaelRaven.h"

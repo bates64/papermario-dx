@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../osr.h"
-#include "mapfs/osr_02_shape.h"
-#include "mapfs/osr_02_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Twink.h"
 #include "sprite/npc/WorldEldstar.h"

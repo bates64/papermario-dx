@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/omo_bt03_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -17,9 +17,23 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "omo_tex",
-    .shape = "omo_bt03_shape",
-    .hit = "omo_bt03_hit",
     .bg = "omo_bg",
     .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
+};
+
+// omo_03:b
+
+EvtScript EVS_PreBattle_b = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(b) = {
+    .texture = "omo_tex",
+    .bg = "omo_bg",
+    .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
 };

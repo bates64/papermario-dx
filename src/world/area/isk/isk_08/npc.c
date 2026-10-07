@@ -26,6 +26,6 @@ NpcData NpcData_BuzzyBeetle = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BuzzyBeetle, "isk_part_1:buzzy_beetle_4", "isk_02b"),
+    NPC_GROUP(NpcData_BuzzyBeetle, "isk_part_1:buzzy_beetle_4", "isk_02:b"),
     {}
 };

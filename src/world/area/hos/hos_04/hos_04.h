@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_04_shape.h"
-#include "mapfs/hos_04_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Twink.h"
 

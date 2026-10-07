@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/hos_bt01_shape.h"
+#include "stage.xml.h"
 
 u16 StarPhaseAngles[16] = {};
 
@@ -257,8 +257,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "hos_tex",
-    .shape = "hos_bt01_shape",
-    .hit = "hos_bt01_hit",
     .bg = "hos_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

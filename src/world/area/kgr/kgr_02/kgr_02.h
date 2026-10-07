@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kgr.h"
-#include "mapfs/kgr_02_shape.h"
-#include "mapfs/kgr_02_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Fuzzipede.h"
 

@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/sam_bt03_shape.h"
-
+#include "stage.xml.h"
 #include "battle/stage/common/Snowflakes.inc.c"
 
 void EnableBackgroundWave(void) {
@@ -45,8 +44,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "sam_tex",
-    .shape = "sam_bt03_shape",
-    .hit = "sam_bt03_hit",
     .bg = "sam_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

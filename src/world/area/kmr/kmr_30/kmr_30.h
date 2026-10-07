@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_30_shape.h"
-#include "mapfs/kmr_30_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/ParadePeach.h"
 

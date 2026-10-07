@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../osr.h"
-#include "mapfs/osr_00_shape.h"
-#include "mapfs/osr_00_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Luigi                   = 0,

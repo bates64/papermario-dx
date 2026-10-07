@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_25_shape.h"
-#include "mapfs/flo_25_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_GateFlower              = 0,

@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/pra_bt04_shape.h"
-
+#include "stage.xml.h"
 #include "battle/stage/common/TexturePanner.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -29,8 +28,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "pra_tex",
-    .shape = "pra_bt04_shape",
-    .hit = "pra_bt04_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

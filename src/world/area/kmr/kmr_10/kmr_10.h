@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_10_shape.h"
-#include "mapfs/kmr_10_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Toad.h"
 

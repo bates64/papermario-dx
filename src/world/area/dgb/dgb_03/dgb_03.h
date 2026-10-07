@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_03_shape.h"
-#include "mapfs/dgb_03_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Clubba_Wander           = 0,

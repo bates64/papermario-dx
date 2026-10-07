@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mim.h"
-#include "mapfs/mim_09_shape.h"
-#include "mapfs/mim_09_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Fuzzy           = 0,

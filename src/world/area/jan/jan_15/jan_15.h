@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_15_shape.h"
-#include "mapfs/jan_15_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/LargePiranha.h"
 

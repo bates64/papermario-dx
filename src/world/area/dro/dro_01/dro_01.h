@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dro.h"
-#include "mapfs/dro_01_shape.h"
-#include "mapfs/dro_01_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Mouser.h"

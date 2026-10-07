@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_13_shape.h"
-#include "mapfs/jan_13_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_PuzzleProgress       = MapVar(0),

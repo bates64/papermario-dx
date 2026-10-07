@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_09_shape.h"
-#include "mapfs/pra_09_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Bombette_01             = 0,

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_06_shape.h"
-#include "mapfs/hos_06_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Merlow.h"
 #include "sprite/npc/Merluvlee.h"

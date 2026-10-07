@@ -25,14 +25,31 @@ static Overlay* LoadedBattleStageOverlay;
 static Overlay* LoadedBattleAreaOverlay;
 static const BattleArea* LoadedBattleArea;
 
-Stage* load_battle_stage(const char* overlayName) {
+char gBattleStageShapeName[ASSET_NAME_MAX];
+char gBattleStageHitName[ASSET_NAME_MAX];
+
+Stage* load_battle_stage(const char* ref) {
+    char overlayName[ACTOR_KEY_MAX];
+    char exportName[sizeof(BATTLE_STAGE_EXPORT_NAME) + ACTOR_KEY_MAX];
+    const char* variant;
     Stage* stage;
 
-    ASSERT_MSG(overlayName != nullptr, "Battle has no stage overlay");
+    ASSERT_MSG(ref != nullptr, "Battle has no stage overlay");
+    variant = split_actor_ref(ref, overlayName);
+    ASSERT_MSG(variant != nullptr, "Invalid stage reference '%s'", ref);
     ASSERT_MSG(LoadedBattleStageOverlay == nullptr, "Previous battle stage was not unloaded");
     LoadedBattleStageOverlay = ovl_load(overlayName, OVL_STAGE);
-    stage = ovl_import(LoadedBattleStageOverlay, BATTLE_STAGE_EXPORT_NAME);
-    ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, BATTLE_STAGE_EXPORT_NAME);
+    if (variant[0] == '\0') {
+        strcpy(exportName, BATTLE_STAGE_EXPORT_NAME);
+    } else {
+        sprintf(exportName, "%s_%s", BATTLE_STAGE_EXPORT_NAME, variant);
+    }
+    stage = ovl_import(LoadedBattleStageOverlay, exportName);
+    ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, exportName);
+    // named as tools/build/configure.py names a stage's geometry
+    ASSERT_MSG(strlen("b__shape") + strlen(overlayName) < ASSET_NAME_MAX, "Stage name '%s' is too long", overlayName);
+    sprintf(gBattleStageShapeName, "b_%s_shape", overlayName);
+    sprintf(gBattleStageHitName, "b_%s_hit", overlayName);
     gBattleStatus.curStage = stage;
     return stage;
 }

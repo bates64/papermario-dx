@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kmr_bt06_shape.h"
-
+#include "stage.xml.h"
 #include "battle/stage/common/MovingClouds.inc.c"
 
 API_CALLABLE(SetupFog) {
@@ -38,8 +37,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kmr_tex",
-    .shape = "kmr_bt06_shape",
-    .hit = "kmr_bt06_hit",
     .bg = "kmr_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

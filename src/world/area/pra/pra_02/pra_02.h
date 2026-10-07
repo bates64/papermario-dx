@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_02_shape.h"
-#include "mapfs/pra_02_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_WallPosOffset    = MapVar(0),

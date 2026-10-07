@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_46_shape.h"
-#include "mapfs/sbk_46_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Bandit.h"
 #include "sprite/npc/Pokey.h"

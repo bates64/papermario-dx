@@ -8,7 +8,6 @@
 #include "map.h"
 
 #include "../mgm.h"
-#include "mapfs/mgm_03_shape.h"
-#include "mapfs/mgm_03_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kkj.h"
-#include "mapfs/kkj_01_shape.h"
-#include "mapfs/kkj_01_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_ToadMinister        = 0,

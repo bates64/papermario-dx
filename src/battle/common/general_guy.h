@@ -1,7 +1,7 @@
 #ifndef _GENERAL_GUY_COMMON_H_
 #define _GENERAL_GUY_COMMON_H_
 
-#include "mapfs/omo_bt07_shape.h"
+#include "battle/stage/omo_07/stage.xml.h"
 
 enum BattleCommon {
     ACTOR_GENERAL       = ACTOR_ENEMY0,

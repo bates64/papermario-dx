@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_01_shape.h"
-#include "mapfs/hos_01_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldGoombario.h"
 

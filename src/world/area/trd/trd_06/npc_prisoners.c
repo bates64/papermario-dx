@@ -463,6 +463,6 @@ NpcData NpcData_Inmates[] = {
 NpcGroupList NpcGroup_Prisoners = {
     NPC_GROUP(NpcData_Bombette),
     NPC_GROUP(NpcData_Inmates),
-    NPC_GROUP(NpcData_Jailers, "trd_part_1:koopa_troopa_1_bob_omb_2", "trd_05d"),
+    NPC_GROUP(NpcData_Jailers, "trd_part_1:koopa_troopa_1_bob_omb_2", "trd_05:d"),
     {}
 };

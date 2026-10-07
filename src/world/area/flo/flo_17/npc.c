@@ -145,11 +145,11 @@ NpcData NpcData_Spiny_04 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Lakitu_01, "flo:lakitu_2_white_magikoopa_1", "flo_01c"),
-    NPC_GROUP(NpcData_Lakitu_02, "flo:lakitu_2_red_magikoopa_1", "flo_01c"),
-    NPC_GROUP(NpcData_Spiny_01, "flo:spiny_2", "flo_01c"),
-    NPC_GROUP(NpcData_Spiny_02, "flo:spiny_2", "flo_01c"),
-    NPC_GROUP(NpcData_Spiny_03, "flo:spiny_2", "flo_01c"),
-    NPC_GROUP(NpcData_Spiny_04, "flo:spiny_2", "flo_01c"),
+    NPC_GROUP(NpcData_Lakitu_01, "flo:lakitu_2_white_magikoopa_1", "flo_01:c"),
+    NPC_GROUP(NpcData_Lakitu_02, "flo:lakitu_2_red_magikoopa_1", "flo_01:c"),
+    NPC_GROUP(NpcData_Spiny_01, "flo:spiny_2", "flo_01:c"),
+    NPC_GROUP(NpcData_Spiny_02, "flo:spiny_2", "flo_01:c"),
+    NPC_GROUP(NpcData_Spiny_03, "flo:spiny_2", "flo_01:c"),
+    NPC_GROUP(NpcData_Spiny_04, "flo:spiny_2", "flo_01:c"),
     {}
 };

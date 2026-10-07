@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/mim_bt01_shape.h"
+#include "stage.xml.h"
 
 API_CALLABLE(SetupFog) {
     enable_world_fog();
@@ -27,8 +27,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "mim_tex",
-    .shape = "mim_bt01_shape",
-    .hit = "mim_bt01_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

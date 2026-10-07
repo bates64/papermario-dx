@@ -8,7 +8,6 @@
 #include "map.h"
 
 #include "../gv.h"
-#include "mapfs/gv_01_shape.h"
-#include "mapfs/gv_01_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_22_shape.h"
-#include "mapfs/pra_22_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_PlayerFloor  = MapVar(0),

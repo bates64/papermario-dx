@@ -323,7 +323,7 @@ NpcData NpcData_Buzzar = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Cleft, "iwa:cleft_2", "iwa_01b"),
+    NPC_GROUP(NpcData_Cleft, "iwa:cleft_2", "iwa_01:b"),
     NPC_GROUP(NpcData_Buzzar, "iwa:buzzar", "iwa_02"),
     {}
 };

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/isk_bt06_shape.h"
+#include "battle/stage/isk_06/stage.xml.h"
 #include "effects.h"
 
 BSS EffectInstance* TorchFlame;
@@ -31,8 +31,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "isk_tex",
-    .shape = "isk_bt08_shape",
-    .hit = "isk_bt08_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

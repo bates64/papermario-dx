@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_06_shape.h"
-#include "mapfs/dgb_06_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Boo     = 0,

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/isk_bt03_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -16,9 +16,15 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "isk_tex",
-    .shape = "isk_bt03_shape",
-    .hit = "isk_bt03_hit",
     .bg = "sbk3_bg",
+    .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
+};
+
+// isk_03:b
+
+OVL_DEF_STAGE(b) = {
+    .texture = "isk_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

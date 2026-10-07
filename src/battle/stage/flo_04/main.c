@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/flo_bt04_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_AnimateCloud = {
     Set(LVarA, LVar0)
@@ -80,8 +80,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "flo_tex",
-    .shape = "flo_bt04_shape",
-    .hit = "flo_bt04_hit",
     .bg = "sra_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

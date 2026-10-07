@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_29_shape.h"
-#include "mapfs/pra_29_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_BridgeExtendAmt      = MapVar(0),

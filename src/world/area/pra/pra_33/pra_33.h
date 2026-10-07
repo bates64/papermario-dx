@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_33_shape.h"
-#include "mapfs/pra_33_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_WallFlipped  = MapVar(0),

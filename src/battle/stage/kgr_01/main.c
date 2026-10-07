@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kgr_bt01_shape.h"
-
+#include "stage.xml.h"
 #include "battle/stage/common/WaterEffects.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -57,8 +56,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kgr_tex",
-    .shape = "kgr_bt01_shape",
-    .hit = "kgr_bt01_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,

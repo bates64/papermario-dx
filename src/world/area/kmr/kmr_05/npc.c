@@ -163,8 +163,8 @@ NpcData NpcData_Paragoomba = {
 NpcGroupList NpcsBefore = {
     NPC_GROUP(NpcData_Goomba_01, "kmr_part_1:goomba_1", "kmr_05"),
     NPC_GROUP(NpcData_Goomba_02, "kmr_part_1:goomba_1", "kmr_05"),
-    NPC_GROUP(NpcData_SpikedGoomba, "kmr_part_3:spiked_goomba_tutorial", "kmr_05b"),
-    NPC_GROUP(NpcData_Paragoomba, "kmr_part_3:paragoomba_tutorial", "kmr_05b"),
+    NPC_GROUP(NpcData_SpikedGoomba, "kmr_part_3:spiked_goomba_tutorial", "kmr_05:b"),
+    NPC_GROUP(NpcData_Paragoomba, "kmr_part_3:paragoomba_tutorial", "kmr_05:b"),
     {}
 };
 

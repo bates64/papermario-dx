@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_05_shape.h"
-#include "mapfs/tik_05_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_SpikedGoomba_01         = 0,

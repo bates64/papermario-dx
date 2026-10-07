@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../iwa.h"
-#include "mapfs/iwa_11_shape.h"
-#include "mapfs/iwa_11_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_TrainToad        = 0,

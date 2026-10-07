@@ -2,8 +2,7 @@
 
 export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
-    sprintf(wMapShapeName, "osr_03_shape");
-    sprintf(wMapHitName, "osr_03_hit");
+    use_map_geometry("osr_03");
     return false;
 }
 

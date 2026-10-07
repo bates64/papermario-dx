@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../nok.h"
-#include "mapfs/nok_13_shape.h"
-#include "mapfs/nok_13_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_UnusedFuzzy     = 1,

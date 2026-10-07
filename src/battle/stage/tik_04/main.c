@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/tik_bt04_shape.h"
-
+#include "stage.xml.h"
 #include "battle/stage/common/WaterEffects.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -43,8 +42,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "tik_tex",
-    .shape = "tik_bt04_shape",
-    .hit = "tik_bt04_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

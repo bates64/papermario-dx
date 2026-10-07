@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_34_shape.h"
-#include "mapfs/sbk_34_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Nomadimouse     = 0,

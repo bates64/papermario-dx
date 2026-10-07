@@ -8,7 +8,6 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_21_shape.h"
-#include "mapfs/kmr_21_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;

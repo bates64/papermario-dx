@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/flo_bt03_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_AnimateVines = {
     Set(LVarA, LVar0)
@@ -187,8 +187,6 @@ s32 ForegroundVineModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "flo_tex",
-    .shape = "flo_bt03_shape",
-    .hit = "flo_bt03_hit",
     .bg = "fla_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

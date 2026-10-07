@@ -116,9 +116,9 @@ NpcData NpcData_GrooveGuy = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_SpyGuy, "omo:spy_guy_1_medi_guy_1", "omo_05b"),
-    NPC_GROUP(NpcData_PyroGuy, "omo:pyro_guy_3", "omo_05b"),
-    NPC_GROUP(NpcData_GrooveGuy, "omo:groove_guy_1_blue_shy_guy_1_sky_guy_1", "omo_05b"),
+    NPC_GROUP(NpcData_SpyGuy, "omo:spy_guy_1_medi_guy_1", "omo_05:b"),
+    NPC_GROUP(NpcData_PyroGuy, "omo:pyro_guy_3", "omo_05:b"),
+    NPC_GROUP(NpcData_GrooveGuy, "omo:groove_guy_1_blue_shy_guy_1_sky_guy_1", "omo_05:b"),
     NPC_GROUP(NpcData_Conductor),
     {}
 };

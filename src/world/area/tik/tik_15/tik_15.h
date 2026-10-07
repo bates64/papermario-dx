@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_15_shape.h"
-#include "mapfs/tik_15_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_RipCheato               = 1,

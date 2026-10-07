@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/sam_bt02_shape.h"
-
+#include "stage.xml.h"
 #include "battle/stage/common/Snowflakes.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -43,10 +42,68 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "sam_tex",
-    .shape = "sam_bt02_shape",
-    .hit = "sam_bt02_hit",
     .bg = "yki_bg",
     .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};
+
+// sam_02:b
+
+EvtScript EVS_PreBattle_b = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetGroupVisibility, MODEL_p1, MODEL_GROUP_HIDDEN)
+    Call(SetGroupVisibility, MODEL_yuki, MODEL_GROUP_HIDDEN)
+    Exec(EVS_SpawnSnowfall)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(b) = {
+    .texture = "sam_tex",
+    .bg = "yki_bg",
+    .preBattle = &EVS_PreBattle_b,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};
+
+// sam_02:c
+
+EvtScript EVS_PreBattle_c = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetGroupVisibility, MODEL_p1, MODEL_GROUP_HIDDEN)
+    Call(SetGroupVisibility, MODEL_p2, MODEL_GROUP_HIDDEN)
+    Call(SetGroupVisibility, MODEL_yuki, MODEL_GROUP_HIDDEN)
+    Exec(EVS_SpawnSnowfall)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(c) = {
+    .texture = "sam_tex",
+    .bg = "yki_bg",
+    .preBattle = &EVS_PreBattle_c,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};
+
+// sam_02:d
+
+EvtScript EVS_PreBattle_d = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetGroupVisibility, MODEL_p1, MODEL_GROUP_HIDDEN)
+    Call(SetGroupVisibility, MODEL_p2, MODEL_GROUP_HIDDEN)
+    Call(SetGroupVisibility, MODEL_p3, MODEL_GROUP_HIDDEN)
+    Call(SetGroupVisibility, MODEL_yuki, MODEL_GROUP_HIDDEN)
+    Exec(EVS_SpawnSnowfall)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(d) = {
+    .texture = "sam_tex",
+    .bg = "yki_bg",
+    .preBattle = &EVS_PreBattle_d,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,
 };

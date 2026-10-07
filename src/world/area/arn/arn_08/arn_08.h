@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../arn.h"
-#include "mapfs/arn_08_shape.h"
-#include "mapfs/arn_08_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/TubbasHeart.h"
 #include "sprite/npc/Yakkey.h"

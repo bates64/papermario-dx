@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kzn.h"
-#include "mapfs/kzn_23_shape.h"
-#include "mapfs/kzn_23_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Kolorado    = 0,

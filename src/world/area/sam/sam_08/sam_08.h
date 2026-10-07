@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sam.h"
-#include "mapfs/sam_08_shape.h"
-#include "mapfs/sam_08_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldClubba.h"
 #include "sprite/npc/WorldKooper.h"

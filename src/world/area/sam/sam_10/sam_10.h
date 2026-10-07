@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sam.h"
-#include "mapfs/sam_10_shape.h"
-#include "mapfs/sam_10_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_FrostClubba         = 0,

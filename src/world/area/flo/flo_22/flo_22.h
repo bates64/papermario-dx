@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_22_shape.h"
-#include "mapfs/flo_22_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Bzzap.h"
 #include "sprite/npc/Dayzee.h"

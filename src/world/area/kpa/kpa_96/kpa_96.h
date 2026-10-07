@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_96_shape.h"
-#include "mapfs/kpa_96_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/SpikedGoomba.h"
 

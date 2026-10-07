@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_05_shape.h"
-#include "mapfs/jan_05_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_JungleFuzzy         = 0,

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_23_shape.h"
-#include "mapfs/tik_23_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Spiny_01                = 0,

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_22_shape.h"
-#include "mapfs/kmr_22_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Tutankoopa.h"
 #include "sprite/npc/ChainChomp.h"

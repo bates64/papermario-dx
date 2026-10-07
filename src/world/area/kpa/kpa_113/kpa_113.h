@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_113_shape.h"
-#include "mapfs/kpa_113_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_BonyBeetle      = 0,

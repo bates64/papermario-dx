@@ -268,8 +268,12 @@ def compile_probe(
         if include not in include_paths:
             include_paths.append(include)
 
+    # Lets a header include those generated for its directory, as configure.py's source_iquote does.
+    iquotes: list[str] = []
     for include in include_paths:
         code.append(f'#include "{include}"')
+        if include.startswith("src/"):
+            iquotes += ["-iquote", f"ver/us/build/include/{Path(include).parent.relative_to('src').as_posix()}"]
 
     code.append('const unsigned int __attribute__((used,section(".layout"))) layout_values[] = {')
 
@@ -311,6 +315,7 @@ def compile_probe(
             "-Iinclude",
             "-Isrc",
             "-Iassets/us",
+            *iquotes,
             "-D_FINALROM",
             "-DVERSION=us",
             "-DVERSION_US",

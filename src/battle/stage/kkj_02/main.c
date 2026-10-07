@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kkj_bt02_shape.h"
+#include "stage.xml.h"
 #include "effects.h"
 
 API_CALLABLE(SetLightningBoltPurple) {
@@ -77,8 +77,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "kkj_tex",
-    .shape = "kkj_bt02_shape",
-    .hit = "kkj_bt02_hit",
     .bg = "kpa_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

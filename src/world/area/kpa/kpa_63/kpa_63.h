@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_63_shape.h"
-#include "mapfs/kpa_63_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_Starship_PosY    = MapVar(10),

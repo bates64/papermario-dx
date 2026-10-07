@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_12_shape.h"
-#include "mapfs/jan_12_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_SpearGuy        = 0,

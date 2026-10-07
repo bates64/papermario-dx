@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_35_shape.h"
-#include "mapfs/pra_35_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Clubba          = 0,

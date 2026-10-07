@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_08_shape.h"
-#include "mapfs/kpa_08_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Magikoopa.h"
 

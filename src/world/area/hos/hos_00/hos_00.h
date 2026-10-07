@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_00_shape.h"
-#include "mapfs/hos_00_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/ToadKid.h"
 #include "sprite/npc/Toadette.h"

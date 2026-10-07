@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../omo.h"
-#include "mapfs/omo_15_shape.h"
-#include "mapfs/omo_15_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/GeneralGuy.h"
 

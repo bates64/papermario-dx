@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kpa_bt14_shape.h"
+#include "stage.xml.h"
 
 // blue torches
 EvtScript EVS_TexAnim_Fire = {
@@ -32,8 +32,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "kpa_tex",
-    .shape = "kpa_bt14_shape",
-    .hit = "kpa_bt14_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_05_shape.h"
-#include "mapfs/hos_05_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldEldstar.h"
 #include "sprite/npc/WorldMamar.h"

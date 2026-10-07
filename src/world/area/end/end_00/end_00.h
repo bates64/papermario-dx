@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../end.h"
-#include "mapfs/end_00_shape.h"
-#include "mapfs/end_00_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/ParadeLuigi.h"
 #include "sprite/npc/ParadePartner.h"

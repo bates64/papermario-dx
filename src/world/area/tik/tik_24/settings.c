@@ -1,8 +1,7 @@
 #include "tik_24.h"
 
 export s32 map_init(void) {
-    sprintf(wMapShapeName, "tik_18_shape");
-    sprintf(wMapHitName, "tik_18_hit");
+    use_map_geometry("tik_18");
     return false;
 }
 

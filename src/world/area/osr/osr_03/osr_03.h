@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../osr.h"
-#include "mapfs/osr_03_shape.h"
-#include "mapfs/osr_03_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldKammy.h"
 

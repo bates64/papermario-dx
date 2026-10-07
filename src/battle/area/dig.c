@@ -194,7 +194,7 @@ static Formation demo_05 = {
 
 static BattleList Formations = {
     BATTLE_WITH_SCRIPT(demo_01, "nok_04", EVS_Demo01),
-    BATTLE_WITH_SCRIPT(demo_02, "iwa_01b", EVS_Demo02),
+    BATTLE_WITH_SCRIPT(demo_02, "iwa_01:b", EVS_Demo02),
     BATTLE_WITH_SCRIPT(demo_03, "sbk_02", EVS_Demo03),
     BATTLE_WITH_SCRIPT(demo_04, "omo_04", EVS_Demo04),
     BATTLE_WITH_SCRIPT(demo_05, "dgb_05", EVS_Demo05),

@@ -352,8 +352,8 @@ NpcData NpcData_Whacka[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_MontyMole_GroundAmbush, "iwa:monty_mole_2", "iwa_01b"),
-    NPC_GROUP(NpcData_MontyMole_WallAmbush, "iwa:monty_mole_3", "iwa_01b"),
+    NPC_GROUP(NpcData_MontyMole_GroundAmbush, "iwa:monty_mole_2", "iwa_01:b"),
+    NPC_GROUP(NpcData_MontyMole_WallAmbush, "iwa:monty_mole_3", "iwa_01:b"),
     NPC_GROUP(NpcData_Whacka),
     {}
 };

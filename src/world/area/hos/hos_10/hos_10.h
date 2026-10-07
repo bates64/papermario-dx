@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_10_shape.h"
-#include "mapfs/hos_10_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Peach       = 0,

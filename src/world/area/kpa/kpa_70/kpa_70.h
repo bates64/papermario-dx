@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_70_shape.h"
-#include "mapfs/kpa_70_hit.h"
+#include "map.xml.h"
 
 #include "animation_script.h"
 

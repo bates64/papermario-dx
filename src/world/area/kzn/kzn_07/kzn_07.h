@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kzn.h"
-#include "mapfs/kzn_07_shape.h"
-#include "mapfs/kzn_07_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Bubble_01               = 0,

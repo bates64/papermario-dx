@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/iwa_bt01_shape.h"
+#include "stage.xml.h"
 
 // this (unused) whacka is part of the stage
 extern ActorBlueprint whacka;
@@ -26,8 +26,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "iwa_tex",
-    .shape = "iwa_bt01_shape",
-    .hit = "iwa_bt01_hit",
     .bg = "iwa_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
@@ -44,3 +42,20 @@ Formation WhackaFormation = {
 };
 
 #include "battle/stage/common/whacka.inc.c"
+
+// iwa_01:b
+
+EvtScript EVS_PreBattle_b = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetGroupVisibility, MODEL_a, MODEL_GROUP_HIDDEN)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(b) = {
+    .texture = "iwa_tex",
+    .bg = "iwa_bg",
+    .preBattle = &EVS_PreBattle_b,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};

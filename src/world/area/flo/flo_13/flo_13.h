@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_13_shape.h"
-#include "mapfs/flo_13_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/Lakitu.h"

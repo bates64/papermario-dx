@@ -136,17 +136,17 @@ static Formation buzzy_beetle_ceiling_2_swooper_1 = {
 };
 
 static BattleList Formations = {
-    BATTLE(pokey_mummy_2, "isk_02b"),
-    BATTLE(pokey_mummy_3, "isk_02b"),
+    BATTLE(pokey_mummy_2, "isk_02:b"),
+    BATTLE(pokey_mummy_3, "isk_02:b"),
     BATTLE(pokey_mummy_1_swooper_1, "isk_04"),
     BATTLE(pokey_mummy_2_swooper_1, "isk_04"),
     BATTLE(pokey_mummy_2_swooper_2, "isk_04"),
     BATTLE(swooper_2, "isk_04"),
     BATTLE(swooper_3, "isk_04"),
-    BATTLE(stone_chomp_2, "isk_02b"),
-    BATTLE(stone_chomp_3, "isk_02b"),
-    BATTLE(buzzy_beetle_2, "isk_02b"),
-    BATTLE(buzzy_beetle_4, "isk_02b"),
+    BATTLE(stone_chomp_2, "isk_02:b"),
+    BATTLE(stone_chomp_3, "isk_02:b"),
+    BATTLE(buzzy_beetle_2, "isk_02:b"),
+    BATTLE(buzzy_beetle_4, "isk_02:b"),
     BATTLE(buzzy_beetle_1_buzzy_beetle_ceiling_1_swooper_1, "isk_05"),
     BATTLE(buzzy_beetle_1_swooper_1, "isk_05"),
     BATTLE(buzzy_beetle_ceiling_1_buzzy_beetle_1, "isk_05"),

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_13_shape.h"
-#include "mapfs/dgb_13_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_LowerDrawerOpen       = MapVar(0),

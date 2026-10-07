@@ -433,6 +433,6 @@ NpcData NpcData_GrooveGuy = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_GourmetGuy),
-    NPC_GROUP(NpcData_GrooveGuy, "omo:groove_guy_2_pyro_guy_1", "omo_05b"),
+    NPC_GROUP(NpcData_GrooveGuy, "omo:groove_guy_2_pyro_guy_1", "omo_05:b"),
     {}
 };

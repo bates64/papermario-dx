@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_06_shape.h"
-#include "mapfs/kmr_06_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/SpikedGoomba.h"
 #include "sprite/npc/Paragoomba.h"

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mac.h"
-#include "mapfs/machi_shape.h"
-#include "mapfs/machi_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/GoombaKing.h"
 #include "sprite/npc/WorldMisstar.h"

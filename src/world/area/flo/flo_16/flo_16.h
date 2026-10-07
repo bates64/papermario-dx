@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_16_shape.h"
-#include "mapfs/flo_16_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/RuffPuff.h"
 

@@ -16,19 +16,19 @@
 BSS const char* wMapName;
 BSS MapSettings gMapSettings;
 
-char wMapHitName[0x18];
-char wMapShapeName[0x18];
-char wMapTexName[0x18];
-char wMapBgName[0x14];
+char wMapHitName[ASSET_NAME_MAX];
+char wMapShapeName[ASSET_NAME_MAX];
+char wMapTexName[ASSET_NAME_MAX];
+char wMapBgName[ASSET_NAME_MAX];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 typedef struct {
-    /* 0x00 */ char name[16];
-    /* 0x10 */ u32 offset;
-    /* 0x14 */ u32 compressedLength;
-    /* 0x18 */ u32 decompressedLength;
-} AssetHeader; // size = 0x1C
+    /* 0x00 */ char name[ASSET_NAME_MAX];
+    /* 0x20 */ u32 offset;
+    /* 0x24 */ u32 compressedLength;
+    /* 0x28 */ u32 decompressedLength;
+} AssetHeader; // size = 0x2C
 
 void load_map_hit_asset(void);
 
@@ -98,8 +98,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     dx_debug_set_map_info(mapName, gGameStatus.entryID);
     #endif
 
-    sprintf(wMapShapeName, "%s_shape", mapName);
-    sprintf(wMapHitName, "%s_hit", mapName);
+    use_map_geometry(mapName);
 
     wMapName = mapName;
     load_map_script_lib();
@@ -255,6 +254,13 @@ NODISCARD b32 get_map_IDs_by_hash(u32 hash, s16* areaID, s16* mapID) {
     }
 
     return false;
+}
+
+// named as tools/build/configure.py names a map's geometry
+void use_map_geometry(const char* mapName) {
+    ASSERT_MSG(strlen("w__shape") + strlen(mapName) < ASSET_NAME_MAX, "Map name '%.64s' is too long", mapName);
+    sprintf(wMapShapeName, "w_%s_shape", mapName);
+    sprintf(wMapHitName, "w_%s_hit", mapName);
 }
 
 void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID) {

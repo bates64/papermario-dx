@@ -5,6 +5,12 @@ from pathlib import Path
 import struct
 
 
+# Each table entry is a name, as long as ASSET_NAME_MAX in include/map.h, then the asset's offset, its size in the
+# ROM, and its size decompressed.
+NAME_SIZE = 0x20
+ENTRY_SIZE = NAME_SIZE + 0xC
+
+
 def next_multiple(pos, multiple):
     return pos + pos % multiple
 
@@ -30,15 +36,17 @@ def build_mapfs(out_bin, assets, version, pre_write_assets):
     with open(out_bin, "wb") as f:
         f.write(get_version_date(version).encode("ascii"))
 
-        next_data_pos = (len(assets) + 1) * 0x1C
+        next_data_pos = (len(assets) + 1) * ENTRY_SIZE
 
         asset_idx = 0
         lastname = ""
         for decompressed, compressed in assets:
-            toc_entry_pos = 0x20 + asset_idx * 0x1C
+            toc_entry_pos = 0x20 + asset_idx * ENTRY_SIZE
 
             # data for TOC entry
             name = decompressed.stem + "\0"
+            if len(name) > NAME_SIZE:
+                raise SystemExit(f"error: {decompressed}: the map filesystem's names can be at most {NAME_SIZE - 1} characters")
             offset = next_data_pos
             decompressed_size = decompressed.stat().st_size
             size = next_multiple(compressed.stat().st_size, 2) if compressed.exists() else decompressed_size
@@ -54,7 +62,7 @@ def build_mapfs(out_bin, assets, version, pre_write_assets):
             f.write(lastname.encode("ascii"))
 
             # write TOC entry.
-            f.seek(toc_entry_pos + 0x10)
+            f.seek(toc_entry_pos + NAME_SIZE)
             f.write(struct.pack(">III", offset, size, decompressed_size))
 
             # initial data to be overwritten back, provided by .raw.dat files
@@ -73,14 +81,14 @@ def build_mapfs(out_bin, assets, version, pre_write_assets):
             asset_idx += 1
 
         # the table ends with an entry that has an empty name
-        toc_entry_pos = 0x20 + asset_idx * 0x1C
+        toc_entry_pos = 0x20 + asset_idx * ENTRY_SIZE
 
         last_name_entry = "\0"
         f.seek(toc_entry_pos)
         lastname = last_name_entry + lastname[len(last_name_entry) :]
         f.write(lastname.encode("ascii"))
 
-        f.seek(toc_entry_pos + 0x18)
+        f.seek(toc_entry_pos + NAME_SIZE + 8)
         f.write((0x903F0000).to_bytes(4, byteorder="big"))  # TODO: figure out purpose
 
 

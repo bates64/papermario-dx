@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/jan_bt03_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -24,10 +24,26 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "jan_tex",
-    .shape = "jan_bt03_shape",
-    .hit = "jan_bt03_hit",
     .bg = "jan_bg",
     .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};
+
+// jan_03:b
+
+EvtScript EVS_PreBattle_b = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
+    Call(SetGroupVisibility, MODEL_g39, MODEL_GROUP_HIDDEN)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(b) = {
+    .texture = "jan_tex",
+    .bg = "jan_bg",
+    .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,
 };

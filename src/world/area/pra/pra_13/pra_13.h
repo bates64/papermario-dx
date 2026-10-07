@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_13_shape.h"
-#include "mapfs/pra_13_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBombette.h"
 #include "sprite/npc/Duplighost.h"
