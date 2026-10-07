@@ -1,8 +1,7 @@
 #include "kpa_101.h"
 
 export s32 map_init(void) {
-    sprintf(wMapShapeName, "kpa_119_shape");
-    sprintf(wMapHitName, "kpa_119_hit");
+    use_map_geometry("kpa_119");
     return false;
 }
 

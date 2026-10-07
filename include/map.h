@@ -61,6 +61,10 @@ extern char wMapShapeName[ASSET_NAME_MAX];
 extern char wMapBgName[ASSET_NAME_MAX];
 extern const char* wMapName;
 
+/// Loads the geometry of the map named mapName, such as kmr_02. A map that shares another's geometry calls this
+/// from its map_init.
+void use_map_geometry(const char* mapName);
+
 /// Zero-terminated.
 extern AreaConfig gAreas[];
 

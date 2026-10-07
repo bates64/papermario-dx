@@ -128,9 +128,9 @@ typedef struct Stage {
 /// Load a stage by reference, such as "trd_05" or the variant "trd_05:b".
 Stage* load_battle_stage(const char* ref);
 
-/// The loaded stage's model data in the map filesystem, such as trd_bt05_shape.
+/// The loaded stage's model data in the map filesystem, such as b_trd_05_shape.
 extern char gBattleStageShapeName[];
-/// The loaded stage's collision data in the map filesystem, such as trd_bt05_hit.
+/// The loaded stage's collision data in the map filesystem, such as b_trd_05_hit.
 extern char gBattleStageHitName[];
 
 /// Release only after battle scripts/actors are gone and the renderer has switched to the world.

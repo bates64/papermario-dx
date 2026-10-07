@@ -327,23 +327,19 @@ class NinjaWriter(ninja_syntax.Writer):
         )
 
 
-def stage_dir_name(geometry: str) -> str:
-    """The directory of a battle stage's code, which also holds its geometry: trd_05 for trd_bt05."""
-    return geometry.replace("_bt", "_", 1)
+def map_geometry_name(source: Path) -> str:
+    """The name of the geometry built from a map source, in the map filesystem and to Star Rod.
 
-
-def stage_geometry_name(stage: str) -> str:
-    """The geometry of the stage whose code is in battle/stage/<stage>: trd_bt05 for trd_05.
-
-    The _bt marks it as a stage's, and keeps it from colliding in the map
-    filesystem with the world map of the same name.
+    It is the source's directory with a prefix: w_kmr_02 for
+    world/area/kmr/kmr_02/map.xml, and b_kmr_04 for
+    battle/stage/kmr_04/stage.xml. The prefixes keep a world map and a stage
+    of the same name apart, as their geometry shares the map filesystem.
     """
-    first, separator, rest = stage.partition("_")
-    return f"{first}_bt{rest}" if separator else f"{stage}_bt"
+    return ("b_" if source.name == "stage.xml" else "w_") + source.parent.name
 
 
-def map_source_dir(name: str) -> Path:
-    """Where Star Rod keeps a map's source within a layer: the path of the map's code under src.
+def old_map_source_dir(name: str) -> Path:
+    """Where a map source with the game's own name, such as kmr_02 or kzn_bt05, is kept within a layer.
 
     A stage's geometry, named like kzn_bt05, is in its stage's directory,
     battle/stage/kzn_05. A world map is found in whichever area holds its
@@ -351,15 +347,15 @@ def map_source_dir(name: str) -> Path:
     """
     area = name[:3].rstrip("_")
     if "_bt" in name:
-        return Path("battle/stage") / stage_dir_name(name)
+        return Path("battle/stage") / name.replace("_bt", "_", 1)
     for code in (ROOT / "src/world/area").glob(f"*/{name}"):
         if code.is_dir():
             return code.relative_to(ROOT / "src")
     return Path("world/area") / area / name
 
 
-def map_source_file(name: str) -> str:
-    """The name of a map's source in its directory: stage.xml for a stage's geometry, else map.xml."""
+def old_map_source_file(name: str) -> str:
+    """The name of the source, in its directory, of a map with the game's own name."""
     return "stage.xml" if "_bt" in name else "map.xml"
 
 
@@ -500,7 +496,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"${{sccache}}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"${{sccache}}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags $iquote -include $pch_header -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -508,7 +504,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"${{sccache}}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include $pch_header -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"${{sccache}}{cxx_modern} {cxxflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags $iquote -include $pch_header -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -531,6 +527,12 @@ def write_ninja_rules(
         "bin",
         description="Extracting binary data from $in",
         command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out",
+    )
+
+    ninja.rule(
+        "map_source_header",
+        description="Generating $out",
+        command=f"$python {BUILD_TOOLS}/mapfs/source_header.py $out $name",
     )
 
     ninja.rule(
@@ -876,8 +878,13 @@ class Configure:
         """Decompile the dumped map binaries into map sources, replacing any earlier dump.
 
         Star Rod does the decompiling, so this is redone whenever its version
-        changes.
+        changes. The earlier dump's sources are deleted first, since a new
+        Star Rod might not write them all, or not in the same places.
         """
+        dumped = ROOT / self.asset_stack[-1]
+        for source in [*dumped.glob("world/area/*/*/map.xml"), *dumped.glob("battle/stage/*/stage.xml")]:
+            source.unlink()
+        shutil.rmtree(dumped / "battle" / "common" / "stage", ignore_errors=True)
         subprocess.run([star_rod(), "-DumpMaps"], check=True, cwd=ROOT)
         self.maps_dump_stamp().write_text(star_rod_version())
 
@@ -1243,16 +1250,14 @@ class Configure:
 
         A map's source sits at the path of its code under src, as in
         world/area/kmr/kmr_02/map.xml, and a stage's geometry beside its code,
-        as in battle/stage/kmr_04/stage.xml for kmr_bt04.
+        as in battle/stage/kmr_04/stage.xml.
         """
         found: Dict[str, Path] = {}
         for layer in self.asset_stack:
-            sources = [(path, path.parent.name) for path in (ROOT / layer).glob("world/area/*/*/map.xml")]
-            sources += [
-                (path, stage_geometry_name(path.parent.name))
-                for path in (ROOT / layer).glob("battle/stage/*/stage.xml")
-            ]
-            for path, name in sources:
+            sources = list((ROOT / layer).glob("world/area/*/*/map.xml"))
+            sources += (ROOT / layer).glob("battle/stage/*/stage.xml")
+            for path in sources:
+                name = map_geometry_name(path)
                 if name not in found and not assets.is_deleted(path, self.asset_stack):
                     found[name] = path.relative_to(ROOT)
         return dict(sorted(found.items()))
@@ -1274,14 +1279,26 @@ class Configure:
                 for old in sorted((ROOT / layer / "battle" / "common" / "stage").glob("area_*/*/map*.xml"))
             ]
             for old, name, copy in old_sources:
-                base = map_source_file(name).removesuffix(".xml")
-                new = ROOT / layer / map_source_dir(name) / ".".join([base, copy, "xml"] if copy else [base, "xml"])
+                base = old_map_source_file(name).removesuffix(".xml")
+                new = ROOT / layer / old_map_source_dir(name) / ".".join([base, copy, "xml"] if copy else [base, "xml"])
                 if new.exists():
                     print(f"warning: not moving {posix(old.relative_to(ROOT))}: {posix(new.relative_to(ROOT))} exists")
                     continue
                 new.parent.mkdir(parents=True, exist_ok=True)
                 old.rename(new)
                 print(f"Moved {posix(old.relative_to(ROOT))} to {posix(new.relative_to(ROOT))}")
+
+    def layer_relative(self, path: Path) -> Path:
+        """A path within its asset layer, such as world/area/kmr/kmr_02/main.c for src/world/area/kmr/kmr_02/main.c."""
+        absolute = path if path.is_absolute() else ROOT / path
+        for layer in self.asset_stack:
+            if absolute.is_relative_to(ROOT / layer):
+                return absolute.relative_to(ROOT / layer)
+        return absolute.relative_to(ROOT)
+
+    def source_iquote(self, source: Path) -> str:
+        """Lets a source include the headers generated for its directory by name, as map.xml.h."""
+        return "-iquote " + posix(self.build_path() / "include" / self.layer_relative(source).parent)
 
     def map_build_dir(self) -> Path:
         """Where compiled maps and their headers go, on the include path as mapfs/."""
@@ -1302,16 +1319,18 @@ class Configure:
             implicit_deps=[Path("include/model.h")],
         )
 
-        # A stage's code includes its geometry's headers by the stage's name,
-        # as mapfs/stage/kmr_04_shape.h, rather than the geometry's.
+        # The code includes a map's IDs as map.xml.h and a stage's as
+        # stage.xml.h, generated at the path of the source, as
+        # world/area/kmr/kmr_02/map.xml.h, so code elsewhere can include it by
+        # that path.
         for name, source in sources.items():
-            if source.name == "stage.xml":
-                for part in ["shape", "hit"]:
-                    build(
-                        self.map_build_dir() / "stage" / f"{source.parent.name}_{part}.h",
-                        [self.map_build_dir() / f"{name}_{part}.h"],
-                        "cp",
-                    )
+            build(
+                self.build_path() / "include" / self.layer_relative(source).with_suffix(".xml.h"),
+                [],
+                "map_source_header",
+                implicit_deps=[self.map_build_dir() / f"{name}_{part}.h" for part in ["shape", "hit"]],
+                variables={"name": name},
+            )
 
         src_paths = self.mapfs_contents()
 
@@ -1908,6 +1927,8 @@ class Configure:
                         variables = {**variables, "sccache": ""}
 
                 inputs = self.resolve_src_paths(src_paths)
+                if task in ["cc_modern", "cxx_modern"]:
+                    variables = {**variables, "iquote": self.source_iquote(Path(inputs[0]))}
                 for dir in asset_deps:
                     inputs.extend(self.get_asset_list(dir))
 
@@ -2124,6 +2145,7 @@ class Configure:
                     variables={
                         "cflags": self.source_cflags(src, segment, non_matching),
                         "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                        "iquote": self.source_iquote(src),
                     },
                 )
 
@@ -2412,6 +2434,7 @@ class Configure:
                     "version": self.version,
                     "pch_header": posix(pch_header),
                     "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                    "iquote": self.source_iquote(c_file),
                 }
                 if embedded:
                     variables["sccache"] = ""

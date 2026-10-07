@@ -24,19 +24,8 @@ static Overlay* LoadedBattleStageOverlay;
 static Overlay* LoadedBattleAreaOverlay;
 static const BattleArea* LoadedBattleArea;
 
-char gBattleStageShapeName[16];
-char gBattleStageHitName[16];
-
-static void set_stage_geometry_name(char* out, const char* stage, const char* part) {
-    const char* underscore = strchr(stage, '_');
-    s32 prefixLength = underscore != nullptr ? underscore - stage : strlen(stage);
-    const char* rest = underscore != nullptr ? underscore + 1 : "";
-
-    ASSERT_MSG(prefixLength + strlen("_bt") + strlen(rest) + 1 + strlen(part) < sizeof(gBattleStageShapeName),
-               "Stage name '%s' is too long for its geometry", stage);
-    memcpy(out, stage, prefixLength);
-    sprintf(out + prefixLength, "_bt%s_%s", rest, part);
-}
+char gBattleStageShapeName[ASSET_NAME_MAX];
+char gBattleStageHitName[ASSET_NAME_MAX];
 
 Stage* load_battle_stage(const char* ref) {
     char overlayName[ACTOR_KEY_MAX];
@@ -56,8 +45,10 @@ Stage* load_battle_stage(const char* ref) {
     }
     stage = ovl_import(LoadedBattleStageOverlay, exportName);
     ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, exportName);
-    set_stage_geometry_name(gBattleStageShapeName, overlayName, "shape");
-    set_stage_geometry_name(gBattleStageHitName, overlayName, "hit");
+    // named as tools/build/configure.py names a stage's geometry
+    ASSERT_MSG(strlen("b__shape") + strlen(overlayName) < ASSET_NAME_MAX, "Stage name '%s' is too long", overlayName);
+    sprintf(gBattleStageShapeName, "b_%s_shape", overlayName);
+    sprintf(gBattleStageHitName, "b_%s_hit", overlayName);
     gBattleStatus.curStage = stage;
     return stage;
 }

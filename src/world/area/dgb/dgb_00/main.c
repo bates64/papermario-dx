@@ -1,8 +1,7 @@
 #include "dgb_00.h"
 
 export s32 map_init(void) {
-    sprintf(wMapShapeName, "arn_20_shape");
-    sprintf(wMapHitName, "arn_20_hit");
+    use_map_geometry("arn_20");
     sprintf(wMapTexName, "arn_tex");
     return false;
 }
