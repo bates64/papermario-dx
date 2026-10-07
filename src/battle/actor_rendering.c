@@ -2023,7 +2023,7 @@ void func_unkA_draw_npc(ActorPart* part, s32 yaw, Matrix4f mtx) {
     }
 
     if (decorations->flashEnabled != FLASH_PAL_OFF) {
-        decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 0x10);
+        decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
         decorations->originalPalettesCount = 0;
         while (decorations->originalPalettesList[decorations->originalPalettesCount] != (PAL_PTR) -1) {
             decorations->originalPalettesCount++;
@@ -2092,7 +2092,7 @@ void func_unkA_draw_player(ActorPart* part, s32 yaw, Matrix4f mtx) {
     }
 
     if (decorations->flashEnabled != FLASH_PAL_OFF) {
-        decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+        decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
         decorations->originalPalettesCount = 0;
 
         while (decorations->originalPalettesList[decorations->originalPalettesCount] != (PAL_PTR) -1) {
@@ -2165,9 +2165,9 @@ void render_with_sleep_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matri
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
         }
 
         decorations->originalPalettesCount = 0;
@@ -2221,10 +2221,10 @@ void render_with_static_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
+            decorations->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
             decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
@@ -2334,10 +2334,10 @@ void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
             decorations->originalPalettesCount = 0;
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
             decorations->originalPalettesCount = 2;
         }
 
@@ -2401,10 +2401,10 @@ void render_with_poison_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
+            decorations->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
             decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
@@ -2456,9 +2456,9 @@ void render_with_paralyze_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Ma
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
         }
 
         decorations->originalPalettesCount = 0;
@@ -2553,9 +2553,9 @@ void render_with_berserk_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Mat
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
         }
 
         decorations->originalPalettesCount = 0;
@@ -2610,10 +2610,10 @@ void render_with_watt_idle_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, M
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
+            decorations->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
             decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
@@ -2719,10 +2719,10 @@ void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw,
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
+            decorations->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
             decorations->spriteColorVariations = SPR_PLAYER_COLOR_VARIATIONS;
         }
 
@@ -2827,10 +2827,10 @@ void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 ya
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
+            decorations->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
             if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
                 decorations->spriteColorVariations = SPR_PEACH_BTL_PAL_STRIDE;
             } else {
@@ -2953,9 +2953,9 @@ void render_with_pal_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 has
 
     if (decorations->resetPalAdjust != 0) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
         }
 
         decorations->originalPalettesCount = 0;
@@ -3124,10 +3124,10 @@ void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matr
     // copy palettes from sprite data
     if (decorations->resetPalAdjust != 0) {
         if (isNpcSprite) {
-            decorations->originalPalettesList = spr_get_npc_palettes(part->curAnimation >> 16);
-            decorations->spriteColorVariations = spr_get_npc_color_variations(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(part->curAnimation));
+            decorations->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(part->curAnimation));
         } else {
-            decorations->originalPalettesList = spr_get_player_palettes(part->curAnimation >> 16);
+            decorations->originalPalettesList = spr_get_player_palettes(SPR_UNPACK_SPR(part->curAnimation));
         }
 
         decorations->originalPalettesCount = 0;

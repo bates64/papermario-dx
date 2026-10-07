@@ -56,8 +56,8 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
-# The engine's NPC sprite tables hold IDs 1 to 0xFE.
-MAX_NPC_SPRITES = 0xFE
+# Animation IDs hold a 12-bit sprite ID, from 1. See SpriteIDFields in include/sprite.h.
+MAX_NPC_SPRITES = 0xFFF
 
 if shutil.which("n64crc"):
     CRC_TOOL = "n64crc"

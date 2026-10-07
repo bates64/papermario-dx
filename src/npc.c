@@ -1229,12 +1229,12 @@ void npc_reload_all(void) {
                 }
                 if (!(npc->flags & NPC_FLAG_USES_PLAYER_AUX_SPRITE)) {
                     if (!(npc->flags & NPC_FLAG_HAS_NO_SPRITE) && (npc->palSwapType != NPC_PAL_ADJUST_NONE)) {
-                        npc->originalPalettesList = spr_get_npc_palettes(npc->curAnim >> 16);
+                        npc->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(npc->curAnim));
                         npc->originalPalettesCount = 0;
                         while (npc->originalPalettesList[npc->originalPalettesCount] != (PAL_PTR) -1) {
                             npc->originalPalettesCount++;
                         }
-                        npc->spriteColorVariations = spr_get_npc_color_variations(npc->curAnim >> 16);
+                        npc->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(npc->curAnim));
                     }
                     if (!(npc->flags & NPC_FLAG_USES_PLAYER_AUX_SPRITE)) {
                         if (!(npc->flags & NPC_FLAG_HAS_NO_SPRITE)) {
@@ -1354,13 +1354,13 @@ void npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
     PAL_PTR dst;
 
     if (npc->resetPalAdjust != 0) {
-        npc->originalPalettesList = spr_get_npc_palettes(npc->curAnim >> 16);
+        npc->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(npc->curAnim));
         npc->originalPalettesCount = 0;
         while ((s32)npc->originalPalettesList[npc->originalPalettesCount] != -1) {
             npc->originalPalettesCount++;
         }
 
-        npc->spriteColorVariations = spr_get_npc_color_variations(npc->curAnim >> 16);
+        npc->spriteColorVariations = spr_get_npc_color_variations(SPR_UNPACK_SPR(npc->curAnim));
         for (i = 0; i < npc->originalPalettesCount; i++) {
             dst = npc->copiedPalettes[i];
             src = npc->originalPalettesList[i];
@@ -1462,7 +1462,7 @@ void npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentInte
     // copy palettes from sprite data
     if (npc->resetPalAdjust != 0) {
         if (!(npc->flags & NPC_FLAG_USES_PLAYER_AUX_SPRITE)) {
-            npc->originalPalettesList = spr_get_npc_palettes(npc->curAnim >> 16);
+            npc->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(npc->curAnim));
         }
 
         npc->originalPalettesCount = 0;
@@ -1598,7 +1598,7 @@ void npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
     // copy palettes from sprite data
     if (npc->resetPalAdjust != 0) {
         if (!(npc->flags & NPC_FLAG_USES_PLAYER_AUX_SPRITE)) {
-            npc->originalPalettesList = spr_get_npc_palettes(npc->curAnim >> 16);
+            npc->originalPalettesList = spr_get_npc_palettes(SPR_UNPACK_SPR(npc->curAnim));
         }
 
         npc->originalPalettesCount = 0;

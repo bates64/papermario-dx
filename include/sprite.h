@@ -6,15 +6,16 @@
 #define SPR_PLAYER_COLOR_VARIATIONS 6
 #define SPR_PEACH_BTL_PAL_STRIDE 4
 
-#define SPR_UNPACK_SPR(animID) (((animID) >> 16) & 0xFF)
+#define SPR_UNPACK_SPR(animID) (((animID) >> 16) & 0xFFF)
 #define SPR_UNPACK_PAL(animID) (((animID) >> 8) & 0xFF)
 #define SPR_UNPACK_ANIM(animID) ((animID) & 0xFF)
 
+// Bits 28 and 29 are reserved.
 enum SpriteIDFields {
     SPRITE_ID_ANIM_MASK         = 0x000000FF,
     SPRITE_ID_PAL_MASK          = 0x0000FF00,
-    SPRITE_ID_SPR_MASK          = 0x00FF0000,
-    SPRITE_ID_BACK_FACING       = 0x01000000,
+    SPRITE_ID_SPR_MASK          = 0x0FFF0000,
+    SPRITE_ID_BACK_FACING       = 0x40000000,
     SPRITE_ID_TAIL_ALLOCATE     = 0x80000000,
 };
 

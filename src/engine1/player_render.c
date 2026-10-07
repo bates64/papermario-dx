@@ -67,7 +67,7 @@ void player_update_sprite(void) {
 
     trueAnim = playerStatus->anim;
     if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
-        sprIndex = (playerStatus->anim >> 0x10) & 0xFF;
+        sprIndex = SPR_UNPACK_SPR(playerStatus->anim);
 
         if (playerStatus->actionState == ACTION_STATE_TORNADO_JUMP || playerStatus->flags & PS_FLAG_ROTATION_LOCKED) {
             if (!(playerStatus->flags & PS_FLAG_FACE_FORWARD)
@@ -101,7 +101,7 @@ void player_update_sprite(void) {
 }
 
 s32 get_player_back_anim(s32 anim) {
-    s32 sprIndex = (anim >> 16) & 0xff;
+    s32 sprIndex = SPR_UNPACK_SPR(anim);
     s32 outAnim = 0;
 
     if (sprIndex != SPR_Mario1) {
