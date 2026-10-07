@@ -1038,7 +1038,7 @@ s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList) {
     s32 listIndex;
     s32 i;
 
-    s32 spriteIndex = (animID >> 0x10) & 0x7FFF;
+    s32 spriteIndex = SPR_UNPACK_SPR(animID);
     s32 useTailAlloc = (u32)animID >> 0x1F;
 
     for (i = 0; i < ARRAY_COUNT(SpriteInstances); i++) {
