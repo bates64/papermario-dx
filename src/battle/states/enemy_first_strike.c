@@ -102,9 +102,9 @@ void btl_state_update_enemy_striking_first(void) {
                 BattleCanShowFirstStrike = true;
             }
 
-            // wait for current enemy TakeTurn script to finish
+            // wait for current enemy TakeTurn script to finish, unless it removed its own actor
             actor = battleStatus->curTurnEnemy;
-            if (is_bound_script_running(&actor->scripts.takeTurn)) {
+            if (actor != nullptr && is_bound_script_running(&actor->scripts.takeTurn)) {
                 break;
             }
 
