@@ -327,20 +327,40 @@ class NinjaWriter(ninja_syntax.Writer):
         )
 
 
+def stage_dir_name(geometry: str) -> str:
+    """The directory of a battle stage's code, which also holds its geometry: trd_05 for trd_bt05."""
+    return geometry.replace("_bt", "_", 1)
+
+
+def stage_geometry_name(stage: str) -> str:
+    """The geometry of the stage whose code is in battle/stage/<stage>: trd_bt05 for trd_05.
+
+    The _bt marks it as a stage's, and keeps it from colliding in the map
+    filesystem with the world map of the same name.
+    """
+    first, separator, rest = stage.partition("_")
+    return f"{first}_bt{rest}" if separator else f"{stage}_bt"
+
+
 def map_source_dir(name: str) -> Path:
     """Where Star Rod keeps a map's source within a layer: the path of the map's code under src.
 
-    Stage geometry is named like kzn_bt05 and stays in battle/common/stage;
-    multiple code overlays in battle/stage can share it. A world map is found
-    in whichever area holds its code, else in the area its name begins with.
+    A stage's geometry, named like kzn_bt05, is in its stage's directory,
+    battle/stage/kzn_05. A world map is found in whichever area holds its
+    code, else in the area its name begins with.
     """
     area = name[:3].rstrip("_")
     if "_bt" in name:
-        return Path("battle/common/stage") / f"area_{area}" / name
+        return Path("battle/stage") / stage_dir_name(name)
     for code in (ROOT / "src/world/area").glob(f"*/{name}"):
         if code.is_dir():
             return code.relative_to(ROOT / "src")
     return Path("world/area") / area / name
+
+
+def map_source_file(name: str) -> str:
+    """The name of a map's source in its directory: stage.xml for a stage's geometry, else map.xml."""
+    return "stage.xml" if "_bt" in name else "map.xml"
 
 
 def star_rod_version() -> str:
@@ -1222,28 +1242,40 @@ class Configure:
         """Every map's source, keyed by map name, from the highest layer holding it.
 
         A map's source sits at the path of its code under src, as in
-        world/area/kmr/kmr_02/map.xml.
+        world/area/kmr/kmr_02/map.xml, and a stage's geometry beside its code,
+        as in battle/stage/kmr_04/stage.xml for kmr_bt04.
         """
         found: Dict[str, Path] = {}
         for layer in self.asset_stack:
-            for pattern in ["world/area/*/*/map.xml", "battle/common/stage/*/*/map.xml"]:
-                for path in (ROOT / layer).glob(pattern):
-                    name = path.parent.name
-                    if name not in found and not assets.is_deleted(path, self.asset_stack):
-                        found[name] = path.relative_to(ROOT)
+            sources = [(path, path.parent.name) for path in (ROOT / layer).glob("world/area/*/*/map.xml")]
+            sources += [
+                (path, stage_geometry_name(path.parent.name))
+                for path in (ROOT / layer).glob("battle/stage/*/stage.xml")
+            ]
+            for path, name in sources:
+                if name not in found and not assets.is_deleted(path, self.asset_stack):
+                    found[name] = path.relative_to(ROOT)
         return dict(sorted(found.items()))
 
     def move_old_map_sources(self) -> None:
-        """Move map sources from mapfs/geom/<map>.xml to where Star Rod keeps them.
+        """Move map sources from where they used to be to where Star Rod keeps them.
 
-        Only hand-authored layers are moved; the dumped layer is redumped
-        instead. Star Rod's crash and backup copies, <map>.crash.xml and
-        <map>.backup.xml, move with the map as map.crash.xml and map.backup.xml.
+        Maps were in mapfs/geom/<map>.xml, and stage geometry in
+        battle/common/stage/area_<area>/<geometry>/map.xml. Only hand-authored
+        layers are moved; the dumped layer is redumped instead. Star Rod's crash
+        and backup copies, such as <map>.crash.xml, move with the source.
         """
         for layer in self.asset_stack[:-1]:
-            for old in sorted((ROOT / layer / "mapfs" / "geom").glob("*.xml")):
-                name, _, copy = old.stem.partition(".")
-                new = ROOT / layer / map_source_dir(name) / ".".join(["map", copy, "xml"] if copy else ["map", "xml"])
+            old_sources = [
+                (old, *old.stem.partition(".")[::2]) for old in sorted((ROOT / layer / "mapfs" / "geom").glob("*.xml"))
+            ]
+            old_sources += [
+                (old, old.parent.name, old.stem.partition(".")[2])
+                for old in sorted((ROOT / layer / "battle" / "common" / "stage").glob("area_*/*/map*.xml"))
+            ]
+            for old, name, copy in old_sources:
+                base = map_source_file(name).removesuffix(".xml")
+                new = ROOT / layer / map_source_dir(name) / ".".join([base, copy, "xml"] if copy else [base, "xml"])
                 if new.exists():
                     print(f"warning: not moving {posix(old.relative_to(ROOT))}: {posix(new.relative_to(ROOT))} exists")
                     continue
@@ -1269,6 +1301,17 @@ class Configure:
             # Star Rod checks battle stages against SHAPE_SIZE_LIMIT in model.h.
             implicit_deps=[Path("include/model.h")],
         )
+
+        # A stage's code includes its geometry's headers by the stage's name,
+        # as mapfs/stage/kmr_04_shape.h, rather than the geometry's.
+        for name, source in sources.items():
+            if source.name == "stage.xml":
+                for part in ["shape", "hit"]:
+                    build(
+                        self.map_build_dir() / "stage" / f"{source.parent.name}_{part}.h",
+                        [self.map_build_dir() / f"{name}_{part}.h"],
+                        "cp",
+                    )
 
         src_paths = self.mapfs_contents()
 
