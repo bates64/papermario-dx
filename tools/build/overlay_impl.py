@@ -391,6 +391,7 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
     # resolved_syms[(elf_idx, sym_idx)] = resolved_address
     resolved_syms = {}
     exports = []  # [(addr, name)]
+    export_symbols = {}  # export name -> symbol name
 
     for elf_idx, elf in enumerate(elfs):
         for sym_idx, sym in enumerate(elf.symbols):
@@ -416,7 +417,11 @@ def link_overlay(obj_paths, syms, link_addr, force_exports=(), require_resolved=
                     sym.visibility == STV_DEFAULT or sym.name in force_exports
                 ):
                     if sym.name and not sym.name.startswith("__"):
-                        exports.append((addr, sym.name))
+                        name = export_name(sym.name)
+                        if name in export_symbols:
+                            raise ValueError(f"exports '{export_symbols[name]}' and '{sym.name}' are both named '{name}'")
+                        export_symbols[name] = sym.name
+                        exports.append((addr, name))
 
     # Build global symbol table for cross-object resolution
     global_defined = {}  # name -> addr
