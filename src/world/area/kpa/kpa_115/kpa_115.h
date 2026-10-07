@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_115_shape.h"
-#include "mapfs/kpa_115_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_HammerBros          = 20,

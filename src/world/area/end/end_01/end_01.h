@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../end.h"
-#include "mapfs/end_01_shape.h"
-#include "mapfs/end_01_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/BattleEldstar.h"
 #include "sprite/npc/BattleMamar.h"

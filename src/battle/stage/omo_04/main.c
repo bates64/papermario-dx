@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/omo_04_shape.h"
+#include "stage.xml.h"
 
 extern Formation fromation_slot_machine;
 extern ActorBlueprint slot_machine_stop;

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_01_shape.h"
-#include "mapfs/pra_01_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldKalmar.h"
 

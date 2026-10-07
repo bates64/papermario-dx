@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../isk.h"
-#include "mapfs/isk_14_shape.h"
-#include "mapfs/isk_14_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/StoneChomp.h"
 

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_12_shape.h"
-#include "mapfs/tik_12_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/BuzzyBeetle.h"
 

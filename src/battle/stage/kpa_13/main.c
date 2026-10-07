@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/kpa_13_shape.h"
+#include "stage.xml.h"
 
 // blue torches
 EvtScript EVS_TexAnim_Fire = {

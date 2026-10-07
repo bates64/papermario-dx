@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/sam_01_shape.h"
+#include "stage.xml.h"
 #include "battle/stage/common/Snowflakes.inc.c"
 
 EvtScript EVS_PreBattle = {

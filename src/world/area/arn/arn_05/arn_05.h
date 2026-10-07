@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../arn.h"
-#include "mapfs/arn_05_shape.h"
-#include "mapfs/arn_05_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Boo_01          = 0,

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_11_shape.h"
-#include "mapfs/jan_11_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/YoshiKid.h"
 

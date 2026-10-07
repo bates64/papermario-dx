@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sam.h"
-#include "mapfs/sam_09_shape.h"
-#include "mapfs/sam_09_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_Socket1_ItemID       = MapVar(0),

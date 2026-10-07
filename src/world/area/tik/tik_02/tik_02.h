@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_02_shape.h"
-#include "mapfs/tik_02_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Blooper                 = 0,

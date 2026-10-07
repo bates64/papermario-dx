@@ -8,5 +8,4 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_50_shape.h"
-#include "mapfs/sbk_50_hit.h"
+#include "map.xml.h"

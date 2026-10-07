@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_18_shape.h"
-#include "mapfs/dgb_18_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldTubba.h"
 #include "sprite/npc/Yakkey.h"

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mac.h"
-#include "mapfs/mac_03_shape.h"
-#include "mapfs/mac_03_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/TrainToad.h"
 #include "sprite/npc/Toad.h"

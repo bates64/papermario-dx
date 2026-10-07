@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../omo.h"
-#include "mapfs/omo_11_shape.h"
-#include "mapfs/omo_11_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/PyroGuy.h"
 

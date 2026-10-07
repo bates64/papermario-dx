@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/kzn_05_shape.h"
+#include "stage.xml.h"
 #include "battle/stage/common/LavaDecorations.inc.c"
 
 EvtScript EVS_PreBattle = {

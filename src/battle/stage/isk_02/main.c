@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/isk_02_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_BTL_ISK)

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mim.h"
-#include "mapfs/mim_10_shape.h"
-#include "mapfs/mim_10_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Bootler.h"
 #include "sprite/npc/JrTroopa.h"

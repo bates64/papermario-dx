@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kkj.h"
-#include "mapfs/kkj_27_shape.h"
-#include "mapfs/kkj_27_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Twink.h"
 

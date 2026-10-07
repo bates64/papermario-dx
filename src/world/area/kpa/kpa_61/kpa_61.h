@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_61_shape.h"
-#include "mapfs/kpa_61_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Koopatrol_01                = 0,

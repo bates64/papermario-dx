@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_60_shape.h"
-#include "mapfs/kpa_60_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_EntityID_Padlock  = MapVar(0),

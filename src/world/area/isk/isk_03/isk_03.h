@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../isk.h"
-#include "mapfs/isk_03_shape.h"
-#include "mapfs/isk_03_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;

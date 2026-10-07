@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_30_shape.h"
-#include "mapfs/sbk_30_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Kolorado.h"

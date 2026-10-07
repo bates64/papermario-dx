@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_133_shape.h"
-#include "mapfs/kpa_133_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Dummy   = 0,

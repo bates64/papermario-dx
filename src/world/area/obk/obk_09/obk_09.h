@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../obk.h"
-#include "mapfs/obk_09_shape.h"
-#include "mapfs/obk_09_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBow.h"
 #include "sprite/npc/Bootler.h"

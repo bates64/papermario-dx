@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mac.h"
-#include "mapfs/mac_02_shape.h"
-#include "mapfs/mac_02_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/TayceT.h"
 #include "sprite/npc/WorldParakarry.h"

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../omo.h"
-#include "mapfs/omo_01_shape.h"
-#include "mapfs/omo_01_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_ShyGuy_01   = 0,

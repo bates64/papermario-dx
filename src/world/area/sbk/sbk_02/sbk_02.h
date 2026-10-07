@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_02_shape.h"
-#include "mapfs/sbk_02_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldMamar.h"
 #include "sprite/npc/Toad.h"

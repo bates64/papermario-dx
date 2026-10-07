@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sam.h"
-#include "mapfs/sam_12_shape.h"
-#include "mapfs/sam_12_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Merlar.h"
 

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_25_shape.h"
-#include "mapfs/tik_25_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_EntityID_SpringR     = MapVar(0),

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_17_shape.h"
-#include "mapfs/tik_17_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_SuperBlock   = MapVar(0),

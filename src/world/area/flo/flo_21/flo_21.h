@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_21_shape.h"
-#include "mapfs/flo_21_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_HuffNPuff_01            = 0,

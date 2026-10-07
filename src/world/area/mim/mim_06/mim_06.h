@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mim.h"
-#include "mapfs/mim_06_shape.h"
-#include "mapfs/mim_06_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/SmallPiranha.h"
 #include "sprite/npc/Fuzzy.h"

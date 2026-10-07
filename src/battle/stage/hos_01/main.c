@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/hos_01_shape.h"
+#include "stage.xml.h"
 
 u16 StarPhaseAngles[16] = {};
 

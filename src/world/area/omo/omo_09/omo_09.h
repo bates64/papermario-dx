@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../omo.h"
-#include "mapfs/omo_09_shape.h"
-#include "mapfs/omo_09_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldKammy.h"
 

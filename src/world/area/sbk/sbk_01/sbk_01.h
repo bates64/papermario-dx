@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_01_shape.h"
-#include "mapfs/sbk_01_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Pokey.h"
 

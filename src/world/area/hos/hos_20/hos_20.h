@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_20_shape.h"
-#include "mapfs/hos_20_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_Starship_PosX    = MapVar(10),

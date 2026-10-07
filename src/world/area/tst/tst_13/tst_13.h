@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tst.h"
-#include "mapfs/tst_13_shape.h"
-#include "mapfs/tst_13_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBombette.h"
 #include "sprite/npc/WorldParakarry.h"

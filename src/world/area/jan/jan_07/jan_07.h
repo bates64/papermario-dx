@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_07_shape.h"
-#include "mapfs/jan_07_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_YoshiKid                = 0,

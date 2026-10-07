@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mac.h"
-#include "mapfs/mac_06_shape.h"
-#include "mapfs/mac_06_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Kolorado.h"
 #include "sprite/npc/JrTroopa.h"

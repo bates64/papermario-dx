@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../nok.h"
-#include "mapfs/nok_02_shape.h"
-#include "mapfs/nok_02_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/KooperWithoutShell.h"

@@ -5,5 +5,4 @@
 #include "map.h"
 
 #include "../tst.h"
-#include "mapfs/tst_12_shape.h"
-#include "mapfs/tst_12_hit.h"
+#include "map.xml.h"

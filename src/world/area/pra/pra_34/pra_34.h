@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_34_shape.h"
-#include "mapfs/pra_34_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_FarPadlockEntityID   = MapVar(0),

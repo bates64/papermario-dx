@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_07_shape.h"
-#include "mapfs/kmr_07_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_GoombaBros_Red          = 0,

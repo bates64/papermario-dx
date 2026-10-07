@@ -254,7 +254,7 @@ NODISCARD b32 get_map_IDs_by_hash(u32 hash, s16* areaID, s16* mapID) {
 
 // named as tools/build/configure.py names a map's geometry
 void use_map_geometry(const char* mapName) {
-    ASSERT_MSG(strlen("w__shape") + strlen(mapName) < ASSET_NAME_MAX, "Map name '%s' is too long", mapName);
+    ASSERT_MSG(strlen("w__shape") + strlen(mapName) < ASSET_NAME_MAX, "Map name '%.64s' is too long", mapName);
     sprintf(wMapShapeName, "w_%s_shape", mapName);
     sprintf(wMapHitName, "w_%s_hit", mapName);
 }

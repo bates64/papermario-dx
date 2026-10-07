@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/iwa_02_shape.h"
+#include "stage.xml.h"
 
 // this (unused) whacka is part of the stage
 extern ActorBlueprint whacka;

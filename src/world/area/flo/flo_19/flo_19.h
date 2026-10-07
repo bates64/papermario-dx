@@ -9,8 +9,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_19_shape.h"
-#include "mapfs/flo_19_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Dummy_Partner   = 0,

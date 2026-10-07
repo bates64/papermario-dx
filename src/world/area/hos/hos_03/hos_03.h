@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../hos.h"
-#include "mapfs/hos_03_shape.h"
-#include "mapfs/hos_03_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_StarMan_01              = 0,

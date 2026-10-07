@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/isk_bt06_shape.h"
+#include "battle/stage/isk_06/stage.xml.h"
 #include "effects.h"
 
 BSS EffectInstance* TorchFlame;

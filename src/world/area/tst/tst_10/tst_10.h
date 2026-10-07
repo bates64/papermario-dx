@@ -8,5 +8,4 @@
 #include "map.h"
 
 #include "../tst.h"
-#include "mapfs/tst_10_shape.h"
-#include "mapfs/tst_10_hit.h"
+#include "map.xml.h"

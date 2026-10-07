@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kkj.h"
-#include "mapfs/kkj_00_shape.h"
-#include "mapfs/kkj_00_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Luigi.h"
 #include "sprite/npc/Toad.h"

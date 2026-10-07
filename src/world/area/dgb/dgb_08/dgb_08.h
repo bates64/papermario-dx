@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_08_shape.h"
-#include "mapfs/dgb_08_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldClubba.h"
 #include "sprite/npc/Sentinel.h"

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sbk.h"
-#include "mapfs/sbk_56_shape.h"
-#include "mapfs/sbk_56_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_SuperBlock   = MapVar(0),

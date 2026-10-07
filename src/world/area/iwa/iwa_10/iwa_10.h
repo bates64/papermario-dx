@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../iwa.h"
-#include "mapfs/iwa_10_shape.h"
-#include "mapfs/iwa_10_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/TrainToad.h"
 #include "sprite/npc/WorldParakarry.h"

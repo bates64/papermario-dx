@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../isk.h"
-#include "mapfs/isk_11_shape.h"
-#include "mapfs/isk_11_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_LockEntityID             = MapVar(0),

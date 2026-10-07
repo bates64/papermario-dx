@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../sam.h"
-#include "mapfs/sam_11_shape.h"
-#include "mapfs/sam_11_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/Penguin.h"

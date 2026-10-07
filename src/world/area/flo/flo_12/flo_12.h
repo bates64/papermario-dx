@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../flo.h"
-#include "mapfs/flo_12_shape.h"
-#include "mapfs/flo_12_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Rosie       = 0,

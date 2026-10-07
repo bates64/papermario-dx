@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/tik_03_shape.h"
+#include "stage.xml.h"
 #include "battle/stage/common/DripVolumes.inc.c"
 
 DripVolumeList DripVolumes = {

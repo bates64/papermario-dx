@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../nok.h"
-#include "mapfs/nok_14_shape.h"
-#include "mapfs/nok_14_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_KoopaTroopa_01          = 0,

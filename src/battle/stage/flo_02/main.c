@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/flo_02_shape.h"
+#include "stage.xml.h"
 #include "effects.h"
 #include "battle/stage/common/RandomFlowers.inc.c"
 #include "battle/stage/common/MakeSun.inc.c"

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../trd.h"
-#include "mapfs/trd_09_shape.h"
-#include "mapfs/trd_09_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/KoopaBros.h"
 #include "sprite/npc/BillBlaster.h"

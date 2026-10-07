@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kzn.h"
-#include "mapfs/kzn_01_shape.h"
-#include "mapfs/kzn_01_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_PutridPiranha   = 0,

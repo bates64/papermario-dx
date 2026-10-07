@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/flo_04_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_AnimateCloud = {
     Set(LVarA, LVar0)

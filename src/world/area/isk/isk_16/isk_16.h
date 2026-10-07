@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../isk.h"
-#include "mapfs/isk_16_shape.h"
-#include "mapfs/isk_16_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Tutankoopa.h"
 #include "sprite/npc/ChainChomp.h"

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/arn_02_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_RotateWindmill = {
     Set(LVarA, LVar0)

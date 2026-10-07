@@ -2,7 +2,7 @@
 #include "message_ids.h"
 #include "sprite/npc/GeneralGuy.h"
 #include "sprite/npc/TankGuy.h"
-#include "mapfs/omo_bt07_shape.h"
+#include "battle/stage/omo_07/stage.xml.h"
 
 static EvtScript EVS_Init;
 static EvtScript EVS_Idle;

@@ -8,7 +8,6 @@
 #include "map.h"
 
 #include "../kzn.h"
-#include "mapfs/kzn_05_shape.h"
-#include "mapfs/kzn_05_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;

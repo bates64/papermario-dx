@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kzn.h"
-#include "mapfs/kzn_10_shape.h"
-#include "mapfs/kzn_10_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_TrompPosX        = MapVar(0),

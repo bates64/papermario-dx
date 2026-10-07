@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../jan.h"
-#include "mapfs/jan_03_shape.h"
-#include "mapfs/jan_03_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Toad                = 0,

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/nok_04_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)

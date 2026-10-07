@@ -1,5 +1,5 @@
 #include "animation_script.h"
-#include "mapfs/omo_bt07_shape.h"
+#include "battle/stage/omo_07/stage.xml.h"
 
 static StaticAnimatorNode Node02 = {
     .pos = { 79.0f, 47.0f, 0.0f },

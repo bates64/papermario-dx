@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../iwa.h"
-#include "mapfs/iwa_03_shape.h"
-#include "mapfs/iwa_03_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Cleft_01                = 0,

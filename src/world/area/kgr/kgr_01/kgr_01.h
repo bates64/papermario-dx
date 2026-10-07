@@ -8,5 +8,4 @@
 #include "map.h"
 
 #include "../kgr.h"
-#include "mapfs/kgr_01_shape.h"
-#include "mapfs/kgr_01_hit.h"
+#include "map.xml.h"

@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../nok.h"
-#include "mapfs/nok_01_shape.h"
-#include "mapfs/nok_01_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBombette.h"
 

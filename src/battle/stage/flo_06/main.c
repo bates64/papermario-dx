@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/flo_06_shape.h"
+#include "stage.xml.h"
 #include "battle/stage/common/MakeSun.inc.c"
 
 EvtScript EVS_PreBattle = {

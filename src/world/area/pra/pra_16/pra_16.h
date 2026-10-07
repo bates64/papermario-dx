@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_16_shape.h"
-#include "mapfs/pra_16_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_SetupMusic;

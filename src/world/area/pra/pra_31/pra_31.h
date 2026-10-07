@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_31_shape.h"
-#include "mapfs/pra_31_hit.h"
+#include "map.xml.h"
 
 #include "animation_script.h"
 

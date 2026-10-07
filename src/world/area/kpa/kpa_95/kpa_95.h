@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_95_shape.h"
-#include "mapfs/kpa_95_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/ToadGuard.h"

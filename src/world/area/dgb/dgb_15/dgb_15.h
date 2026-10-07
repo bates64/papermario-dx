@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_15_shape.h"
-#include "mapfs/dgb_15_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldTubba.h"
 

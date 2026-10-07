@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_52_shape.h"
-#include "mapfs/kpa_52_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/HammerBros.h"
 

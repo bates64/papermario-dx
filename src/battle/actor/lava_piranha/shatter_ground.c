@@ -1,6 +1,6 @@
 #include "lava_piranha.h"
 #include "animation_script.h"
-#include "mapfs/kzn_bt05_shape.h"
+#include "battle/stage/kzn_05/stage.xml.h"
 
 static StaticAnimatorNode AnimNode11 = {
     .vertexStartOffset = -1,

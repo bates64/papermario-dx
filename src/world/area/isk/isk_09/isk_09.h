@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../isk.h"
-#include "mapfs/isk_09_shape.h"
-#include "mapfs/isk_09_hit.h"
+#include "map.xml.h"
 
 enum {
     MF_BlueStairsFlipped    = MapFlag(0),

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/nok_01_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_AnimateFlower = {
     Set(LVarA, LVar0)

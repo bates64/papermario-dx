@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/omo_06_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_UpdateMovingPlatforms = {
     Set(LVarA, LVar0) // modelID

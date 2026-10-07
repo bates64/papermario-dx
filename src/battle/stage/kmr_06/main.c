@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/kmr_06_shape.h"
+#include "stage.xml.h"
 #include "battle/stage/common/MovingClouds.inc.c"
 
 API_CALLABLE(SetupFog) {

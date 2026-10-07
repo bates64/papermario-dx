@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/omo_01_shape.h"
+#include "stage.xml.h"
 #include "model.h"
 
 // following part is very similar to RockingHorse.inc.c in world/area_omo,

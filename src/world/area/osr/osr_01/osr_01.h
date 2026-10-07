@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../osr.h"
-#include "mapfs/osr_01_shape.h"
-#include "mapfs/osr_01_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_Toad        = 0,

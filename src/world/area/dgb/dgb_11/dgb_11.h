@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "mapfs/dgb_11_shape.h"
-#include "mapfs/dgb_11_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_SpringEntityID   = MapVar(0),

@@ -1,6 +1,6 @@
 #include "koopa_bros.h"
 #include "sprite/npc/KoopaBros.h"
-#include "mapfs/trd_bt00_shape.h"
+#include "battle/stage/trd_00/stage.xml.h"
 
 static EvtScript EVS_Init;
 // first part of the battle

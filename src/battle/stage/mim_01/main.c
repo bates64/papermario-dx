@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/mim_01_shape.h"
+#include "stage.xml.h"
 
 API_CALLABLE(SetupFog) {
     enable_world_fog();

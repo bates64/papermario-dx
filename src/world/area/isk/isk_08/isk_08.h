@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../isk.h"
-#include "mapfs/isk_08_shape.h"
-#include "mapfs/isk_08_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/BuzzyBeetle.h"
 

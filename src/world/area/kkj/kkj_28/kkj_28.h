@@ -8,7 +8,6 @@
 #include "map.h"
 
 #include "../kkj.h"
-#include "mapfs/kkj_28_shape.h"
-#include "mapfs/kkj_28_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;

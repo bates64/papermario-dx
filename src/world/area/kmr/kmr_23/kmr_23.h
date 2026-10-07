@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kmr.h"
-#include "mapfs/kmr_23_shape.h"
-#include "mapfs/kmr_23_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldEldstar.h"
 #include "sprite/npc/WorldMamar.h"

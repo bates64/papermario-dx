@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../iwa.h"
-#include "mapfs/iwa_01_shape.h"
-#include "mapfs/iwa_01_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_MontyMole_01            = 0,

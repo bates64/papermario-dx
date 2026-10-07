@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_10_shape.h"
-#include "mapfs/pra_10_hit.h"
+#include "world/area/pra/pra_10/map.xml.h"
 
 enum {
     NPC_Swoopula_01     = 0,

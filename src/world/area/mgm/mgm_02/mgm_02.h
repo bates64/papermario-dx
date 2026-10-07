@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../mgm.h"
-#include "mapfs/mgm_02_shape.h"
-#include "mapfs/mgm_02_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/Toad.h"
 #include "sprite/npc/Fuzzy.h"

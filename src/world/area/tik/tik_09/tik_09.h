@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "mapfs/tik_09_shape.h"
-#include "mapfs/tik_09_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_KoopaTroopa_01          = 0,

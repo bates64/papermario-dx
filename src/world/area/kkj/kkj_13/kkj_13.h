@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kkj.h"
-#include "mapfs/kkj_13_shape.h"
-#include "mapfs/kkj_13_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBowser.h"
 #include "sprite/npc/WorldKammy.h"

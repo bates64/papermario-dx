@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../obk.h"
-#include "mapfs/obk_06_shape.h"
-#include "mapfs/obk_06_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_SetupMusic;

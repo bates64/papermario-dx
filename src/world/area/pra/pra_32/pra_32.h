@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../pra.h"
-#include "mapfs/pra_32_shape.h"
-#include "mapfs/pra_32_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_CrystalKing_01  = 0,

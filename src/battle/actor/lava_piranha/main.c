@@ -7,7 +7,7 @@
 #include "animation_script.h"
 #include "entity.h"
 #include "ld_addrs.h"
-#include "mapfs/kzn_bt05_shape.h"
+#include "battle/stage/kzn_05/stage.xml.h"
 #include "include_asset.h"
 
 enum ActorPartIDs {

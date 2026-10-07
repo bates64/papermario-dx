@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/flo_03_shape.h"
+#include "stage.xml.h"
 
 EvtScript EVS_AnimateVines = {
     Set(LVarA, LVar0)

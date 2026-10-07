@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_17_shape.h"
-#include "mapfs/kpa_17_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBombette.h"
 #include "sprite/npc/Toad.h"

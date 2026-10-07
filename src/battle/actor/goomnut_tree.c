@@ -2,7 +2,7 @@
 #include "script_api/battle.h"
 #include "effects.h"
 #include "sprite/npc/SpikyGoomnut.h"
-#include "mapfs/kmr_bt06_shape.h"
+#include "battle/stage/kmr_06/stage.xml.h"
 #include "battle/common/goomba_king.h"
 #include "foliage.h"
 

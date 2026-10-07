@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/stage/kkj_02_shape.h"
+#include "stage.xml.h"
 #include "effects.h"
 
 API_CALLABLE(SetLightningBoltPurple) {

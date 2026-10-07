@@ -8,8 +8,7 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "mapfs/kpa_111_shape.h"
-#include "mapfs/kpa_111_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/DryBones.h"
 #include "sprite/npc/ThrownBone.h"
