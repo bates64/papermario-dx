@@ -47,7 +47,7 @@ NpcData NpcData_Koopatrol_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Koopatrol_01, BTL_KPA_FORMATION_18, BTL_KPA_STAGE_02),
-    NPC_GROUP(NpcData_Koopatrol_02, BTL_KPA_FORMATION_19, BTL_KPA_STAGE_02),
+    NPC_GROUP(NpcData_Koopatrol_01, "kpa:koopatrol_2", "kpa_02"),
+    NPC_GROUP(NpcData_Koopatrol_02, "kpa:koopatrol_3", "kpa_02"),
     {}
 };

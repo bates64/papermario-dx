@@ -191,7 +191,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_SPEAR_GUY,
     .level = ACTOR_LEVEL_SPEAR_GUY,
@@ -750,11 +750,11 @@ EvtScript EVS_Move_SummonBackup = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation ForwardSpearFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 100, AVAL_State_SpearForward),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 100, AVAL_State_SpearForward),
 };
 
 Formation UpwardSpearFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 100, AVAL_State_SpearUpward),
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 100, AVAL_State_SpearUpward),
 };
 
 EvtScript EVS_BecomeShyGuy = {

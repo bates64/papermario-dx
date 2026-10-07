@@ -33,7 +33,7 @@ EvtScript EVS_PostBattle = {
     End
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "tik_tex",
     .shape = "tik_bt03_shape",
     .hit = "tik_bt03_hit",

@@ -19,7 +19,7 @@ NpcData NpcData_BuzzyBeetle_01 = {
         }
     },
     .initVarCount = 1,
-    .initVar = { .value = BTL_ISK_1_FORMATION_0E },
+    .initVar = { .value = Ref("isk_part_1:buzzy_beetle_1_buzzy_beetle_ceiling_1") },
     .settings = &NpcSettings_BuzzyBeetle_Ceiling,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = ISK_BUZZY_BEETLE_DROPS,
@@ -43,7 +43,7 @@ NpcData NpcData_BuzzyBeetle_02 = {
         }
     },
     .initVarCount = 1,
-    .initVar = { .value = BTL_ISK_1_FORMATION_0B },
+    .initVar = { .value = Ref("isk_part_1:buzzy_beetle_1_buzzy_beetle_ceiling_1_swooper_1") },
     .settings = &NpcSettings_BuzzyBeetle_Ceiling,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = ISK_BUZZY_BEETLE_DROPS,
@@ -73,8 +73,8 @@ NpcData NpcData_BuzzyBeetle_03 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BuzzyBeetle_01, BTL_ISK_1_FORMATION_0F, BTL_ISK_1_STAGE_08),
-    NPC_GROUP(NpcData_BuzzyBeetle_02, BTL_ISK_1_FORMATION_13, BTL_ISK_1_STAGE_08),
-    NPC_GROUP(NpcData_BuzzyBeetle_03, BTL_ISK_1_FORMATION_0C, BTL_ISK_1_STAGE_08),
+    NPC_GROUP(NpcData_BuzzyBeetle_01, "isk_part_1:buzzy_beetle_ceiling_2", "isk_05"),
+    NPC_GROUP(NpcData_BuzzyBeetle_02, "isk_part_1:buzzy_beetle_ceiling_2_swooper_1", "isk_05"),
+    NPC_GROUP(NpcData_BuzzyBeetle_03, "isk_part_1:buzzy_beetle_1_swooper_1", "isk_05"),
     {}
 };

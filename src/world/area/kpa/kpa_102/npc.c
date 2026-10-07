@@ -84,8 +84,8 @@ NpcData NpcData_HammerBros[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_24, BTL_KPA_STAGE_0A),
-    NPC_GROUP(NpcData_FlyingMagikoopa, BTL_KPA_FORMATION_32, BTL_KPA_STAGE_0A),
-    NPC_GROUP(NpcData_HammerBros, BTL_KPA_FORMATION_16, BTL_KPA_STAGE_0A),
+    NPC_GROUP(NpcData_Koopatrol, "kpa:koopatrol_2_magikoopa_1_flying_magikoopa_1", "kpa_09"),
+    NPC_GROUP(NpcData_FlyingMagikoopa, "kpa:flying_magikoopa_1_mixed_32", "kpa_09"),
+    NPC_GROUP(NpcData_HammerBros, "kpa:hammer_bro_3_flying_magikoopa_1", "kpa_09"),
     {}
 };

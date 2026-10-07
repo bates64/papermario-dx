@@ -239,7 +239,7 @@ DmaEntry Entity_MunchlesiaChewing_dma[] = { ENTITY_ROM(MunchlesiaChewing), ENTIT
 DmaEntry Entity_MunchlesiaSpitOut_dma[] = { ENTITY_ROM(MunchlesiaSpitOut), ENTITY_ANIM_ROM(MunchlesiaSpitOut) };
 DmaEntry Entity_MunchlesiaReset1_dma[] = { ENTITY_ROM(MunchlesiaReset1), ENTITY_ANIM_ROM(MunchlesiaReset1) };
 
-ENTITY_IMPLEMENTATION(Munchlesia) = {
+OVL_DEF_ENTITY(Munchlesia) = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(MunchlesiaData),
     .renderCommandList = Entity_RenderNone_Script,
@@ -252,7 +252,7 @@ ENTITY_IMPLEMENTATION(Munchlesia) = {
     .aabbSize = { 45, 20, 45 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaReset) = {
+OVL_DEF_ENTITY(MunchlesiaReset) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaReset_AnimationIdle,
@@ -265,7 +265,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaReset) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaGrab) = {
+OVL_DEF_ENTITY(MunchlesiaGrab) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaGrab_Animation,
@@ -278,7 +278,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaGrab) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaEnvelop) = {
+OVL_DEF_ENTITY(MunchlesiaEnvelop) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaEnvelop_Animation,
@@ -291,7 +291,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaEnvelop) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaBeginChew) = {
+OVL_DEF_ENTITY(MunchlesiaBeginChew) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaBeginChew_Animation,
@@ -304,7 +304,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaBeginChew) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaChewing) = {
+OVL_DEF_ENTITY(MunchlesiaChewing) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaChewing_Animation,
@@ -317,7 +317,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaChewing) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaSpitOut) = {
+OVL_DEF_ENTITY(MunchlesiaSpitOut) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaSpitOut_Animation,
@@ -330,7 +330,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaSpitOut) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaReset1) = {
+OVL_DEF_ENTITY(MunchlesiaReset1) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaReset1_Animation,
@@ -343,7 +343,7 @@ ENTITY_IMPLEMENTATION(MunchlesiaReset1) = {
     .aabbSize = { 40, 20, 40 }
 };
 
-ENTITY_IMPLEMENTATION(MunchlesiaReset2) = {
+OVL_DEF_ENTITY(MunchlesiaReset2) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(MunchlesiaData),
     .animScript = Entity_MunchlesiaReset_AnimationIdle,

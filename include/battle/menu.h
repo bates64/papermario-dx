@@ -11,7 +11,7 @@ typedef struct BattleMenuInterface {
     /* 0x04 */ BattleMenuCallback draw;
 } BattleMenuInterface; // size = 0x08
 
-#define BATTLE_MENU_INTERFACE(updateFunc, drawFunc) \
+#define OVL_DEF_BATTLE_MENU(updateFunc, drawFunc) \
     export const BattleMenuInterface gBattleMenu = { \
         .update = (updateFunc), \
         .draw = (drawFunc), \

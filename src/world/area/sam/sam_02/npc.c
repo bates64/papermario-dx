@@ -524,14 +524,14 @@ NpcData NpcData_ChuckQuizmo = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Townsfolk, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
-    NPC_GROUP(NpcData_MysteryOnly, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Townsfolk),
+    NPC_GROUP(NpcData_MysteryOnly),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };
 
 NpcGroupList MysteryNPCs = {
-    NPC_GROUP(NpcData_Townsfolk, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Townsfolk),
     NPC_GROUP(NpcData_ChuckQuizmo),
     {}
 };

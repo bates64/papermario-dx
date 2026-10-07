@@ -30,7 +30,7 @@ EvtScript EVS_PostBattle = {
     End
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "kpa_tex",
     .shape = "kpa_bt14_shape",
     .hit = "kpa_bt14_hit",

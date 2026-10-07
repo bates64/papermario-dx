@@ -11,8 +11,6 @@ BSS ActorPart* gSpeakingActorPart;
 
 #define ACTOR_TYPE_LIST_END 0xFF
 
-u8* gBattleDmaDest = nullptr;
-
 u8 ActorTypesGhost[] = {
     ACTOR_TYPE_DUPLIGHOST,
     ACTOR_TYPE_GHOST_GOOMBARIO,
@@ -301,29 +299,6 @@ API_CALLABLE(EnableBattleStatusBar) {
     } else {
         increment_status_bar_disabled();
     }
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(OverrideBattleDmaDest) {
-    gBattleDmaDest = (u8*) evt_get_variable(script, *script->ptrReadPos);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(LoadBattleDmaData) {
-    s32 dmaIndex = evt_get_variable(script, *script->ptrReadPos);
-    const BattleArea* battleArea = get_loaded_battle_area();
-    DmaTable* dmaEntry;
-
-    ASSERT_MSG(battleArea != nullptr && battleArea->dmaTable != nullptr, "Battle area has no animation DMA table");
-    ASSERT_MSG((u32)dmaIndex < battleArea->dmaCount, "Invalid battle animation %ld", dmaIndex);
-    dmaEntry = &battleArea->dmaTable[dmaIndex];
-
-    if (gBattleDmaDest == nullptr) {
-        dma_copy(dmaEntry->start, dmaEntry->end, dmaEntry->dest);
-    } else {
-        dma_copy(dmaEntry->start, dmaEntry->end, gBattleDmaDest);
-    }
-
     return ApiStatus_DONE2;
 }
 

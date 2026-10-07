@@ -6,7 +6,7 @@ EntryList Entrances = {
     [isk_03_ENTRY_2]    {  557.0, -155.0,  224.0,  209.0 },
 };
 
-export MapSettings settings = {
+OVL_DEF_MAP() = {
     .main = &EVS_Main,
     .entryList = &Entrances,
     .entryCount = ENTRY_COUNT(Entrances),

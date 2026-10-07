@@ -1,62 +1,47 @@
 #include "battle/battle.h"
 
-static Formation Formation_00 = {
+static Formation spiked_goomba_tutorial = {
     OVL_ACTOR_BY_IDX("tutorial_spiked_goomba", BTL_POS_GROUND_C, 0),
 };
 
-static Formation Formation_01 = {
+static Formation paragoomba_tutorial = {
     OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_B, 10),
     OVL_ACTOR_BY_IDX("tutorial_paragoomba", BTL_POS_AIR_C, 9),
 };
 
-static Formation Formation_02 = {
+static Formation jr_troopa_1 = {
     OVL_ACTOR_BY_IDX("jr_troopa", BTL_POS_GROUND_C, 0),
 };
 
-static Formation Formation_03 = {
+static Formation jr_troopa_2 = {
     OVL_ACTOR_BY_IDX("egg_jr_troopa", BTL_POS_GROUND_C, 0),
 };
 
-static Formation Formation_04 = {
+static Formation jr_troopa_4 = {
     OVL_ACTOR_BY_IDX("para_jr_troopa", BTL_POS_GROUND_C, 0),
 };
 
-static Formation Formation_05 = {
+static Formation jr_troopa_5 = {
     OVL_ACTOR_BY_IDX("spiked_para_jr_troopa", BTL_POS_GROUND_B, 0),
 };
 
-static Formation Formation_06 = {
+static Formation jr_troopa_6 = {
     OVL_ACTOR_BY_IDX("mage_jr_troopa", BTL_POS_GROUND_C, 0),
 };
 
-static Formation Formation_07 = {
+static Formation jr_troopa_7 = {
     OVL_ACTOR_BY_IDX("final_jr_troopa", BTL_POS_GROUND_C, 0),
 };
 
 static BattleList Formations = {
-    BATTLE(Formation_00, "kmr_03", "Spiked Goomba (Tutorial)"),
-    BATTLE(Formation_01, "kmr_03", "Paragoomba (Tutorial)"),
-    BATTLE(Formation_02, "kmr_05b", "Jr. Troopa 1"),
-    BATTLE(Formation_03, "nok_01", "Jr. Troopa 2"),
-    BATTLE(Formation_04, "mim_01", "Jr. Troopa 4"),
-    BATTLE(Formation_05, "mac_01", "Jr. Troopa 5"),
-    BATTLE(Formation_06, "sam_01", "Jr. Troopa 6"),
-    BATTLE(Formation_07, "kpa_13", "Jr. Troopa 7"),
-    {},
+    BATTLE(spiked_goomba_tutorial, "kmr_03"),
+    BATTLE(paragoomba_tutorial, "kmr_03"),
+    BATTLE(jr_troopa_1, "kmr_05b"),
+    BATTLE(jr_troopa_2, "nok_01"),
+    BATTLE(jr_troopa_4, "mim_01"),
+    BATTLE(jr_troopa_5, "mac_01"),
+    BATTLE(jr_troopa_6, "sam_01"),
+    BATTLE(jr_troopa_7, "kpa_13"),
 };
 
-static StageList Stages = {
-    STAGE("kmr_02", "kmr_02"),
-    STAGE("kmr_03", "kmr_03"),
-    STAGE("kmr_04", "kmr_04"),
-    STAGE("kmr_05", "kmr_05b"),
-    STAGE("kmr_06", "kmr_06"),
-    {},
-};
-
-BATTLE_AREA_ENTRY = {
-    .battles = &Formations,
-    .stages = &Stages,
-    .battleCount = ARRAY_COUNT(Formations) - 1,
-    .stageCount = ARRAY_COUNT(Stages) - 1,
-};
+OVL_DEF_BATTLE_AREA(Formations);

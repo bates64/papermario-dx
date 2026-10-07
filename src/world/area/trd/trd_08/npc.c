@@ -203,7 +203,7 @@ NpcData NpcData_FireBar2[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_FireBar1, BTL_KMR_1_FORMATION_06),
-    NPC_GROUP(NpcData_FireBar2, BTL_KMR_1_FORMATION_06),
+    NPC_GROUP(NpcData_FireBar1, "kmr_part_1:goomba_1_paragoomba_1_goomba_1_paragoomba_1"),
+    NPC_GROUP(NpcData_FireBar2, "kmr_part_1:goomba_1_paragoomba_1_goomba_1_paragoomba_1"),
     {}
 };

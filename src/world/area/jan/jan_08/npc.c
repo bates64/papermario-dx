@@ -214,10 +214,10 @@ NpcData NpcData_YoshiKid = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_01, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_HurtPlant, BTL_JAN_FORMATION_08, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_MBush_01, BTL_JAN_FORMATION_10, BTL_JAN_STAGE_01),
-    NPC_GROUP(NpcData_MBush_02, BTL_JAN_FORMATION_0E, BTL_JAN_STAGE_01),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_3", "jan_01"),
+    NPC_GROUP(NpcData_HurtPlant, "jan:hurt_plant_2", "jan_01"),
+    NPC_GROUP(NpcData_MBush_01, "jan:m_bush_4", "jan_01"),
+    NPC_GROUP(NpcData_MBush_02, "jan:m_bush_2", "jan_01"),
     NPC_GROUP(NpcData_HeartPlant_01),
     NPC_GROUP(NpcData_HeartPlant_02),
     NPC_GROUP(NpcData_YoshiKid),

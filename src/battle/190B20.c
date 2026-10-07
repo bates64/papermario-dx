@@ -1410,11 +1410,17 @@ Actor* create_actor(Formation formation) {
 
     Overlay* ovl = nullptr;
     if (formation->overlay != nullptr) {
-        const char* blueprintName = formation->blueprint;
-        if (blueprintName == nullptr) {
-            blueprintName = ACTOR_BLUEPRINT_EXPORT_NAME;
+        char overlayName[ACTOR_KEY_MAX];
+        char blueprintName[sizeof(ACTOR_BLUEPRINT_EXPORT_NAME) + ACTOR_KEY_MAX];
+        const char* variant = split_actor_ref(formation->overlay, overlayName);
+
+        ASSERT_MSG(variant != nullptr, "Invalid actor reference '%.127s'", formation->overlay);
+        if (variant[0] == '\0') {
+            strcpy(blueprintName, ACTOR_BLUEPRINT_EXPORT_NAME);
+        } else {
+            sprintf(blueprintName, ACTOR_BLUEPRINT_EXPORT_NAME "_%s", variant);
         }
-        ovl = ovl_load(formation->overlay, OVL_ACTOR);
+        ovl = ovl_load(overlayName, OVL_ACTOR);
         formationActor = ovl_import(ovl, blueprintName);
         ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export '%s'", formation->overlay, blueprintName);
     } else if (formation->actor != nullptr) {

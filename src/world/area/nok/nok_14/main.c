@@ -8,9 +8,9 @@ API_CALLABLE(UpdateEnounterStages) {
     s32 xMax = evt_get_variable(script, *args++);
     s32 zMin = evt_get_variable(script, *args++);
     s32 zMax = evt_get_variable(script, *args++);
-    s32 stageWithoutBridge = evt_get_variable(script, *args++);
-    s32 stageWithBridge = evt_get_variable(script, *args++);
-    s32 stage = stageWithoutBridge;
+    const char* stageWithoutBridge = (const char*)evt_get_variable(script, *args++);
+    const char* stageWithBridge = (const char*)evt_get_variable(script, *args++);
+    const char* stage = stageWithoutBridge;
     s32 i;
 
     if (xMin <= playerStatus->pos.x && playerStatus->pos.x <= xMax &&
@@ -83,7 +83,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_UpdateEnounterStages = {
     Label(0)
         IfGe(GB_StoryProgress, STORY_CH1_MADE_SECOND_BRIDGE)
-            Call(UpdateEnounterStages, -115, 110, -110, 999, BTL_NOK_STAGE_00, BTL_NOK_STAGE_02)
+            Call(UpdateEnounterStages, -115, 110, -110, 999, Ref("nok_01"), Ref("nok_03"))
         EndIf
         Wait(1)
         Goto(0)

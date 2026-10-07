@@ -26,6 +26,6 @@ NpcData NpcData_Pokey = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Pokey, BTL_SBK_FORMATION_03, BTL_SBK_STAGE_00),
+    NPC_GROUP(NpcData_Pokey, "sbk:pokey_4", "sbk_02"),
     {}
 };

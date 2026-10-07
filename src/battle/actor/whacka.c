@@ -75,7 +75,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_NO_SHADOW | ACTOR_FLAG_NO_HEALTH_BAR,
     .type = ACTOR_TYPE_WHACKA,
     .level = ACTOR_LEVEL_WHACKA,

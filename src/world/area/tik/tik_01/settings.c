@@ -8,7 +8,7 @@ EntryList Entrances = {
     [tik_01_ENTRY_4]    {  -50.0,   25.0,  -82.0,  180.0 },
 };
 
-export MapSettings settings = {
+OVL_DEF_MAP() = {
     .main = &EVS_Main,
     .entryList = &Entrances,
     .entryCount = ENTRY_COUNT(Entrances),

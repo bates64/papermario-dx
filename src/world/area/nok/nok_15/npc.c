@@ -51,7 +51,7 @@ NpcData NpcData_ParaTroopa = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaTroopa, BTL_NOK_FORMATION_0D, BTL_NOK_STAGE_00),
-    NPC_GROUP(NpcData_ParaTroopa, BTL_NOK_FORMATION_14, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_KoopaTroopa, "nok:koopa_troopa_1_spiked_goomba_2", "nok_01"),
+    NPC_GROUP(NpcData_ParaTroopa, "nok:paratroopa_1_koopa_troopa_1_spiked_goomba_2", "nok_01"),
     {}
 };

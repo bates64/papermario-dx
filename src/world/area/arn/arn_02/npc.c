@@ -73,8 +73,8 @@ NpcData NpcData_HyperGoomba = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_HyperCleft_01, BTL_ARN_FORMATION_0A, BTL_ARN_STAGE_00),
-    NPC_GROUP(NpcData_HyperCleft_02, BTL_ARN_FORMATION_0D, BTL_ARN_STAGE_00),
-    NPC_GROUP(NpcData_HyperGoomba, BTL_ARN_FORMATION_03, BTL_ARN_STAGE_00),
+    NPC_GROUP(NpcData_HyperCleft_01, "arn:hyper_cleft_1", "arn_01"),
+    NPC_GROUP(NpcData_HyperCleft_02, "arn:hyper_cleft_1_hyper_goomba_2", "arn_01"),
+    NPC_GROUP(NpcData_HyperGoomba, "arn:hyper_goomba_2_hyper_paragoomba_1", "arn_01"),
     {}
 };

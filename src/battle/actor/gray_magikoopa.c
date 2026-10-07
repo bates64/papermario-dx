@@ -143,7 +143,7 @@ ActorPartBlueprint FlyingParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_GRAY_MAGIKOOPA,
     .level = ACTOR_LEVEL_GRAY_MAGIKOOPA,

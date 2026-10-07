@@ -47,7 +47,7 @@ NpcData NpcData_Paragloomba_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Paragloomba_01, BTL_TIK_FORMATION_0C, BTL_TIK_STAGE_01),
-    NPC_GROUP(NpcData_Paragloomba_02, BTL_TIK_FORMATION_0D, BTL_TIK_STAGE_01),
+    NPC_GROUP(NpcData_Paragloomba_01, "tik:paragloomba_3", "tik_02"),
+    NPC_GROUP(NpcData_Paragloomba_02, "tik:paragloomba_1_spiked_gloomba_1", "tik_02"),
     {}
 };

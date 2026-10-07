@@ -201,7 +201,7 @@ NpcData NpcData_SpikeTop = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Kolorado),
-    NPC_GROUP(NpcData_Piranha, BTL_KZN_FORMATION_14, BTL_KZN_STAGE_00),
-    NPC_GROUP(NpcData_SpikeTop, BTL_KZN_FORMATION_0D, BTL_KZN_STAGE_00),
+    NPC_GROUP(NpcData_Piranha, "kzn:putrid_piranha_1_mixed_14", "kzn_01"),
+    NPC_GROUP(NpcData_SpikeTop, "kzn:spike_top_2_putrid_piranha_2", "kzn_01"),
     {}
 };

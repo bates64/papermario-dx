@@ -79,7 +79,7 @@ EvtScript EVS_WorldTwink_PutAway = {
     End
 };
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = true,
     .init = init,
     .takeOut = &EVS_WorldTwink_TakeOut,

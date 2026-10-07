@@ -503,7 +503,7 @@ void pre_battle(Npc* goombario) {
     partnerStatus->actingPartner = PARTNER_GOOMBARIO;
 }
 
-WORLD_PARTNER_ENTRY = {
+OVL_DEF_PARTNER() = {
     .isFlying = false,
     .init = init,
     .takeOut = &EVS_WorldGoombario_TakeOut,

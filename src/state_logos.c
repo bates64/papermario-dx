@@ -6,6 +6,7 @@
 #include "fio.h"
 #include "game_modes.h"
 #include "dx/versioning.h"
+#include <stdint.h>
 
 void appendGfx_intro_logos(void);
 
@@ -58,10 +59,6 @@ Gfx D_80077908[] = {
     gsSPEndDisplayList(),
 };
 
-extern Addr logos_logo_n64_png;
-extern Addr logos_logo_is_png;
-extern Addr logos_logo_nintendo_png;
-
 BSS u8* gLogosImages;
 BSS u8* gLogosImage3;
 BSS u8* gLogosImage1;
@@ -83,9 +80,9 @@ void state_init_logos(void) {
     gLogosImages = heap_malloc((u32)romEnd - (u32)romStart);
     dma_copy(romStart, romEnd, gLogosImages);
 
-    gLogosImage1 = gLogosImages + (logos_logo_n64_png - logos_VRAM);
-    gLogosImage3 = gLogosImages + (logos_logo_is_png - logos_VRAM);
-    gLogosImage2 = gLogosImages + (logos_logo_nintendo_png - logos_VRAM);
+    gLogosImage1 = gLogosImages + ((uintptr_t)logos_logo_n64_png - (uintptr_t)logos_VRAM);
+    gLogosImage3 = gLogosImages + ((uintptr_t)logos_logo_is_png - (uintptr_t)logos_VRAM);
+    gLogosImage2 = gLogosImages + ((uintptr_t)logos_logo_nintendo_png - (uintptr_t)logos_VRAM);
 
     nuContRmbForceStop();
     create_cameras();

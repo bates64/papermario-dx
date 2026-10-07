@@ -257,6 +257,6 @@ NpcData NpcData_Koopatrol = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Prisoners),
-    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_17, BTL_KPA_STAGE_0D),
+    NPC_GROUP(NpcData_Koopatrol, "kpa:koopatrol_1", "kpa_14"),
     {}
 };

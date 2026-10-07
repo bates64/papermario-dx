@@ -2142,13 +2142,13 @@ NpcData NpcData_Bobombs[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_AntiGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_Goombas, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_RedShyGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_BlueShyGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_GreenShyGuys, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_DarkTroopas, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_KoopaTroopas, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
-    NPC_GROUP(NpcData_Bobombs, BTL_KPA3_FORMATION_00, BTL_KPA3_STAGE_00),
+    NPC_GROUP(NpcData_AntiGuys, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_Goombas, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_RedShyGuys, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_BlueShyGuys, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_GreenShyGuys, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_DarkTroopas, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_KoopaTroopas, "kpa3:anti_guy_3", "kpa_01"),
+    NPC_GROUP(NpcData_Bobombs, "kpa3:anti_guy_3", "kpa_01"),
     {}
 };

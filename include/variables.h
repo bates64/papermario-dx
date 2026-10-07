@@ -25,8 +25,8 @@ extern s32 gLastDrawBattleState;
 extern s32 gDefeatedBattleSubstate;
 extern s32 gBattleSubState;
 extern s32 gDefeatedBattleState;
-extern s32 gCurrentBattleID;
-extern s32 gCurrentStageID;
+extern char gCurrentBattleName[];
+extern char gCurrentStageName[];
 extern struct Battle* gOverrideBattlePtr;
 
 extern Camera gCameras[4];

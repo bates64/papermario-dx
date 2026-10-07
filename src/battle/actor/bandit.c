@@ -130,7 +130,7 @@ ActorPartBlueprint CoinParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_BANDIT,
     .level = ACTOR_LEVEL_BANDIT,
@@ -179,7 +179,7 @@ ActorBlueprint coin = {
 Vec3i CoinPos = { NPC_DISPOSE_LOCATION };
 
 Formation CoinFormation = {
-    ACTOR_BY_POS(coin, CoinPos, 0),
+    RAW_ACTOR_BY_POS(coin, CoinPos, 0),
 };
 
 EvtScript EVS_Init = {

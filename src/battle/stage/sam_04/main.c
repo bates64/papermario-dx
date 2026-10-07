@@ -20,7 +20,7 @@ EvtScript EVS_PostBattle = {
     End
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "sam_tex",
     .shape = "sam_bt04_shape",
     .hit = "sam_bt04_hit",

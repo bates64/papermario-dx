@@ -36,7 +36,7 @@ s32 ForegroundModels[] = {
     STAGE_MODEL_LIST_END
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "arn_tex",
     .shape = "arn_bt02_shape",
     .hit = "arn_bt02_hit",

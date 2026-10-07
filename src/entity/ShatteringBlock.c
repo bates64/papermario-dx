@@ -30,7 +30,7 @@ void entity_shattering_block_init(Entity* entity);
 
 EntityModelScript Entity_ShatteringBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
 
-ENTITY_IMPLEMENTATION(ShatteringHammer1Block) = {
+OVL_DEF_ENTITY(ShatteringHammer1Block) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -43,7 +43,7 @@ ENTITY_IMPLEMENTATION(ShatteringHammer1Block) = {
     .aabbSize = {16, 16, 16}
 };
 
-ENTITY_IMPLEMENTATION(ShatteringHammer2Block) = {
+OVL_DEF_ENTITY(ShatteringHammer2Block) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -56,7 +56,7 @@ ENTITY_IMPLEMENTATION(ShatteringHammer2Block) = {
     .aabbSize = {16, 16, 16}
 };
 
-ENTITY_IMPLEMENTATION(ShatteringHammer3Block) = {
+OVL_DEF_ENTITY(ShatteringHammer3Block) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -69,7 +69,7 @@ ENTITY_IMPLEMENTATION(ShatteringHammer3Block) = {
     .aabbSize = {16, 16, 16}
 };
 
-ENTITY_IMPLEMENTATION(ShatteringHammer1BlockTiny) = {
+OVL_DEF_ENTITY(ShatteringHammer1BlockTiny) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -82,7 +82,7 @@ ENTITY_IMPLEMENTATION(ShatteringHammer1BlockTiny) = {
     .aabbSize = {8, 8, 8}
 };
 
-ENTITY_IMPLEMENTATION(ShatteringHammer2BlockTiny) = {
+OVL_DEF_ENTITY(ShatteringHammer2BlockTiny) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -95,7 +95,7 @@ ENTITY_IMPLEMENTATION(ShatteringHammer2BlockTiny) = {
     .aabbSize = {8, 8, 8}
 };
 
-ENTITY_IMPLEMENTATION(ShatteringHammer3BlockTiny) = {
+OVL_DEF_ENTITY(ShatteringHammer3BlockTiny) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,
@@ -108,7 +108,7 @@ ENTITY_IMPLEMENTATION(ShatteringHammer3BlockTiny) = {
     .aabbSize = {8, 8, 8}
 };
 
-ENTITY_IMPLEMENTATION(ShatteringBrickBlock) = {
+OVL_DEF_ENTITY(ShatteringBrickBlock) = {
     .flags = 0,
     .typeDataSize = sizeof(ShatteringBlockData),
     .renderCommandList = Entity_ShatteringBlock_RenderScript,

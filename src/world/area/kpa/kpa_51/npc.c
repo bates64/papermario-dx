@@ -82,8 +82,8 @@ NpcData NpcData_Koopatrol = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Magikoopa_01, BTL_KPA_FORMATION_2C, BTL_KPA_STAGE_00),
-    NPC_GROUP(NpcData_Magikoopa_02, BTL_KPA_FORMATION_29, BTL_KPA_STAGE_00),
-    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_24, BTL_KPA_STAGE_00),
+    NPC_GROUP(NpcData_Magikoopa_01, "kpa:magikoopa_1_bony_beetle_1_magikoopa_1", "kpa_01"),
+    NPC_GROUP(NpcData_Magikoopa_02, "kpa:magikoopa_2_flying_magikoopa_2", "kpa_01"),
+    NPC_GROUP(NpcData_Koopatrol, "kpa:koopatrol_2_magikoopa_1_flying_magikoopa_1", "kpa_01"),
     {}
 };

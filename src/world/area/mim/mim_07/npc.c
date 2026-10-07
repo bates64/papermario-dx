@@ -238,8 +238,8 @@ NpcData NpcData_JrTroopa = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Fuzzy_01, BTL_MIM_FORMATION_02, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_Fuzzy_02, BTL_MIM_FORMATION_06, BTL_MIM_STAGE_00),
-    NPC_GROUP(NpcData_JrTroopa, BTL_KMR_3_FORMATION_04),
+    NPC_GROUP(NpcData_Fuzzy_01, "mim:forest_fuzzy_4", "mim_01"),
+    NPC_GROUP(NpcData_Fuzzy_02, "mim:forest_fuzzy_3_piranha_plant_1", "mim_01"),
+    NPC_GROUP(NpcData_JrTroopa, "kmr_part_3:jr_troopa_4"),
     {}
 };

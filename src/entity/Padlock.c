@@ -237,7 +237,7 @@ EntityModelScript Entity_PadlockRedFrame_RenderScript = STANDARD_ENTITY_MODEL_SC
 EntityModelScript Entity_PadlockRedFace_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockRedFace_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_PadlockBlueFace_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PadlockBlueFace_Render, RENDER_MODE_SURFACE_OPA);
 
-ENTITY_IMPLEMENTATION(Padlock) = {
+OVL_DEF_ENTITY(Padlock) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_Padlock_RenderScript,
@@ -250,7 +250,7 @@ ENTITY_IMPLEMENTATION(Padlock) = {
     .aabbSize = { 30, 175, 10 }
 };
 
-ENTITY_IMPLEMENTATION(PadlockRedFrame) = {
+OVL_DEF_ENTITY(PadlockRedFrame) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_PadlockRedFrame_RenderScript,
@@ -263,7 +263,7 @@ ENTITY_IMPLEMENTATION(PadlockRedFrame) = {
     .aabbSize = { 30, 175, 10 }
 };
 
-ENTITY_IMPLEMENTATION(PadlockRedFace) = {
+OVL_DEF_ENTITY(PadlockRedFace) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_PadlockRedFace_RenderScript,
@@ -276,7 +276,7 @@ ENTITY_IMPLEMENTATION(PadlockRedFace) = {
     .aabbSize = { 30, 175, 10 }
  };
 
-ENTITY_IMPLEMENTATION(PadlockBlueFace) = {
+OVL_DEF_ENTITY(PadlockBlueFace) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_400 | ENTITY_FLAG_HAS_SHADOW,
     .typeDataSize = sizeof(PadlockData),
     .renderCommandList = Entity_PadlockBlueFace_RenderScript,

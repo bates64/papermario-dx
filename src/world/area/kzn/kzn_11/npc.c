@@ -304,7 +304,7 @@ NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_FireBar_01),
     NPC_GROUP(NpcData_FireBar_02),
     NPC_GROUP(NpcData_FireBar_03),
-    NPC_GROUP(NpcData_Bubble_01, BTL_KZN_FORMATION_00, BTL_KZN_STAGE_02),
-    NPC_GROUP(NpcData_Bubble_02, BTL_KZN_FORMATION_07, BTL_KZN_STAGE_02),
+    NPC_GROUP(NpcData_Bubble_01, "kzn:lava_bubble_2", "kzn_02"),
+    NPC_GROUP(NpcData_Bubble_02, "kzn:lava_bubble_2_spike_top_1", "kzn_02"),
     {}
 };

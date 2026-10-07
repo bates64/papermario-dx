@@ -259,8 +259,8 @@ NpcData NpcData_GrooveGuy = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_AntiGuy, BTL_OMO_FORMATION_2C, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_ShyGuy, BTL_OMO_FORMATION_03, BTL_OMO_STAGE_00),
-    NPC_GROUP(NpcData_GrooveGuy, BTL_OMO_FORMATION_25, BTL_OMO_STAGE_00),
+    NPC_GROUP(NpcData_AntiGuy, "omo:anti_guy", "omo_01"),
+    NPC_GROUP(NpcData_ShyGuy, "omo:yellow_shy_guy_3", "omo_01"),
+    NPC_GROUP(NpcData_GrooveGuy, "omo:groove_guy_2", "omo_01"),
     {}
 };

@@ -50,7 +50,7 @@ NpcData NpcData_Pokey = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Bandit, BTL_SBK_FORMATION_0C, BTL_SBK_STAGE_00),
-    NPC_GROUP(NpcData_Pokey, BTL_SBK_FORMATION_06, BTL_SBK_STAGE_00),
+    NPC_GROUP(NpcData_Bandit, "sbk:bandit_4", "sbk_02"),
+    NPC_GROUP(NpcData_Pokey, "sbk:pokey_2_bandit_2", "sbk_02"),
     {}
 };

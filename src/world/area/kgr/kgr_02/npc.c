@@ -297,6 +297,6 @@ NpcData NpcData_Fuzzipede = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Fuzzipede, BTL_KGR_FORMATION_00, BTL_KGR_STAGE_00),
+    NPC_GROUP(NpcData_Fuzzipede, "kgr:fuzzipede", "kgr_01"),
     {}
 };

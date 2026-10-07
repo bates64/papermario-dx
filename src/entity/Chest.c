@@ -489,7 +489,7 @@ EntityScript Entity_Chest_Script = {
 };
 EntityModelScript Entity_Chest_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Chest_RenderBox, RENDER_MODE_SURFACE_OPA);
 
-ENTITY_IMPLEMENTATION(GiantChest) = {
+OVL_DEF_ENTITY(GiantChest) = {
     .flags = ENTITY_FLAG_4000,
     .typeDataSize = sizeof(ChestData),
     .renderCommandList = Entity_Chest_RenderScript,
@@ -501,7 +501,7 @@ ENTITY_IMPLEMENTATION(GiantChest) = {
     .entityType = ENTITY_TYPE_CHEST,
     .aabbSize = { 50, 45, 46 }
 };
-ENTITY_IMPLEMENTATION(Chest) = {
+OVL_DEF_ENTITY(Chest) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000,
     .typeDataSize = sizeof(ChestData),
     .renderCommandList = Entity_Chest_RenderScript,

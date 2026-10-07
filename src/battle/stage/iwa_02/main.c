@@ -22,7 +22,7 @@ s32 ForegroundModels[] = {
     STAGE_MODEL_LIST_END
 };
 
-BATTLE_STAGE_ENTRY = {
+OVL_DEF_STAGE() = {
     .texture = "iwa_tex",
     .shape = "iwa_bt02_shape",
     .hit = "iwa_bt02_hit",
@@ -35,7 +35,7 @@ BATTLE_STAGE_ENTRY = {
 Vec3i OriginPos = { 0, 0, 0 };
 
 Formation WhackaFormation = {
-    ACTOR_BY_POS(whacka, OriginPos, 0),
+    RAW_ACTOR_BY_POS(whacka, OriginPos, 0),
 };
 
 #include "battle/stage/common/whacka.inc.c"

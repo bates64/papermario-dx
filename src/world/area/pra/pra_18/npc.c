@@ -408,8 +408,8 @@ NpcData NpcData_Clubba_03[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Clubba_01, BTL_PRA_FORMATION_0B, BTL_PRA_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_02, BTL_PRA_FORMATION_09, BTL_PRA_STAGE_02),
-    NPC_GROUP(NpcData_Clubba_03, BTL_PRA_FORMATION_0C, BTL_PRA_STAGE_03),
+    NPC_GROUP(NpcData_Clubba_01, "pra:white_clubba_1_gray_magikoopa_1", "pra_03"),
+    NPC_GROUP(NpcData_Clubba_02, "pra:white_clubba_2_white_magikoopa_1", "pra_03"),
+    NPC_GROUP(NpcData_Clubba_03, "pra:white_clubba_3_green_magikoopa_1", "pra_03b"),
     {}
 };

@@ -161,17 +161,17 @@ NpcData NpcData_Paragoomba = {
 };
 
 NpcGroupList NpcsBefore = {
-    NPC_GROUP(NpcData_Goomba_01, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(NpcData_Goomba_02, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(NpcData_SpikedGoomba, BTL_KMR_3_FORMATION_00, BTL_KMR_3_STAGE_03),
-    NPC_GROUP(NpcData_Paragoomba, BTL_KMR_3_FORMATION_01, BTL_KMR_3_STAGE_03),
+    NPC_GROUP(NpcData_Goomba_01, "kmr_part_1:goomba_1", "kmr_05"),
+    NPC_GROUP(NpcData_Goomba_02, "kmr_part_1:goomba_1", "kmr_05"),
+    NPC_GROUP(NpcData_SpikedGoomba, "kmr_part_3:spiked_goomba_tutorial", "kmr_05b"),
+    NPC_GROUP(NpcData_Paragoomba, "kmr_part_3:paragoomba_tutorial", "kmr_05b"),
     {}
 };
 
 NpcGroupList NpcsAfter = {
-    NPC_GROUP(NpcData_Goomba_01, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(NpcData_Goomba_02, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(NpcData_SpikedGoomba, BTL_KMR_1_FORMATION_0A, BTL_KMR_1_STAGE_03),
-    NPC_GROUP(NpcData_Paragoomba, BTL_KMR_1_FORMATION_08, BTL_KMR_1_STAGE_03),
+    NPC_GROUP(NpcData_Goomba_01, "kmr_part_1:goomba_1", "kmr_05"),
+    NPC_GROUP(NpcData_Goomba_02, "kmr_part_1:goomba_1", "kmr_05"),
+    NPC_GROUP(NpcData_SpikedGoomba, "kmr_part_1:spiked_goomba_1", "kmr_05"),
+    NPC_GROUP(NpcData_Paragoomba, "kmr_part_1:paragoomba_2", "kmr_05"),
     {}
 };

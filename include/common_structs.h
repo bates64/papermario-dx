@@ -148,12 +148,6 @@ typedef struct CameraRig {
     /* 0x10 */ Vec3f targetPos;
 } CameraRig; // size = 0x1C
 
-typedef struct DmaTable {
-    /* 0x00 */ u8* start;
-    /* 0x04 */ u8* end;
-    /* 0x08 */ u8* dest;
-} DmaTable;
-
 typedef struct HeapNode {
     /* 0x00 */ struct HeapNode* next;
     /* 0x04 */ u32 length;

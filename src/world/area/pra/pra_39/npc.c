@@ -34,6 +34,6 @@ NpcData NpcData_Duplighost = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Duplighost, BTL_PRA3_FORMATION_08, BTL_PRA3_STAGE_00),
+    NPC_GROUP(NpcData_Duplighost, "pra3:duplighost_2_red_magikoopa_1", "pra_01"),
     {}
 };

@@ -22,7 +22,7 @@
 
 /// Quick launch into this battle.
 /// Comment out to disable,
-//#define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
+//#define DX_QUICK_LAUNCH_BATTLE "nok:goomba_2", "nok_01"
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
 #define DX_SKIP_LOGOS 1

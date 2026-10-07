@@ -160,7 +160,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_KOOPATROL,
     .level = ACTOR_LEVEL_KOOPATROL,
@@ -1045,7 +1045,7 @@ EvtScript EVS_GetAvailableColumn = {
 Vec3i SummonPos = { NPC_DISPOSE_LOCATION };
 
 Formation BackupFormation = {
-    ACTOR_BY_POS(blueprint, SummonPos, 100)
+    RAW_ACTOR_BY_POS(blueprint, SummonPos, 100)
 };
 
 EvtScript EVS_Move_SummonBackup = {

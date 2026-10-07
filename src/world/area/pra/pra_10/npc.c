@@ -55,7 +55,7 @@ NpcData NpcData_Swoopula_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Swoopula_01, BTL_PRA_FORMATION_01, BTL_PRA_STAGE_00),
-    NPC_GROUP(NpcData_Swoopula_02, BTL_PRA_FORMATION_03, BTL_PRA_STAGE_00),
+    NPC_GROUP(NpcData_Swoopula_01, "pra:swoopula_3", "pra_01"),
+    NPC_GROUP(NpcData_Swoopula_02, "pra:swoopula_3_yellow_magikoopa_flying_1", "pra_01"),
     {}
 };

@@ -63,7 +63,7 @@ NpcData NpcData_JungleFuzzy_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_JungleFuzzy_01, BTL_JAN_FORMATION_0A, BTL_JAN_STAGE_04),
-    NPC_GROUP(NpcData_JungleFuzzy_02, BTL_JAN_FORMATION_0B, BTL_JAN_STAGE_04),
+    NPC_GROUP(NpcData_JungleFuzzy_01, "jan:jungle_fuzzy_2", "jan_03"),
+    NPC_GROUP(NpcData_JungleFuzzy_02, "jan:jungle_fuzzy_3", "jan_03"),
     {}
 };

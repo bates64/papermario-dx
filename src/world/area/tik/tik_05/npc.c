@@ -47,7 +47,7 @@ NpcData NpcData_SpikedGloomba_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_SpikedGloomba_01, BTL_TIK_FORMATION_10, BTL_TIK_STAGE_00),
-    NPC_GROUP(NpcData_SpikedGloomba_02, BTL_TIK_FORMATION_12, BTL_TIK_STAGE_00),
+    NPC_GROUP(NpcData_SpikedGloomba_01, "tik:spiked_gloomba_1_buzzy_beetle_2", "tik_01"),
+    NPC_GROUP(NpcData_SpikedGloomba_02, "tik:spiked_gloomba_1_mixed_12", "tik_01"),
     {}
 };

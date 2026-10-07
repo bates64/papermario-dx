@@ -337,6 +337,6 @@ NpcData NpcData_Eldstar = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_KoopaBros),
-    NPC_GROUP(NpcData_Eldstar, BTL_TRD_3_FORMATION_00),
+    NPC_GROUP(NpcData_Eldstar, "trd_part_3:star_spirit_tutorial"),
     {}
 };

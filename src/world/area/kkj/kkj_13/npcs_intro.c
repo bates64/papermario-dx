@@ -132,7 +132,7 @@ NpcData NpcData_Characters_Intro[] = {
 };
 
 NpcGroupList IntroNPCs = {
-    NPC_GROUP(NpcData_Bowser_Intro, BTL_KPA2_FORMATION_01),
+    NPC_GROUP(NpcData_Bowser_Intro, "kpa2:bowser_opening"),
     NPC_GROUP(NpcData_Characters_Intro),
     {}
 };

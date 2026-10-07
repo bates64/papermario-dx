@@ -120,8 +120,8 @@ NpcData NpcData_KoopaTroopa_03 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_TIK_FORMATION_02, BTL_TIK_STAGE_03),
-    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_TIK_FORMATION_01, BTL_TIK_STAGE_03),
-    NPC_GROUP(NpcData_KoopaTroopa_03, BTL_TIK_FORMATION_00, BTL_TIK_STAGE_03),
+    NPC_GROUP(NpcData_KoopaTroopa_01, "tik:dark_koopa_4", "tik_04"),
+    NPC_GROUP(NpcData_KoopaTroopa_02, "tik:dark_koopa_3", "tik_04"),
+    NPC_GROUP(NpcData_KoopaTroopa_03, "tik:dark_koopa_2", "tik_04"),
     {}
 };

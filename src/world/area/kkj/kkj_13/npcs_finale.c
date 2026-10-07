@@ -376,8 +376,8 @@ NpcData NpcData_CaptivePeach = {
 };
 
 NpcGroupList ChapterNPCs = {
-    NPC_GROUP(NpcData_Bowser_Body, BTL_KPA2_FORMATION_02),
-    NPC_GROUP(NpcData_Bowser_Prop, BTL_KPA2_FORMATION_02),
+    NPC_GROUP(NpcData_Bowser_Body, "kpa2:bowser_hallway"),
+    NPC_GROUP(NpcData_Bowser_Prop, "kpa2:bowser_hallway"),
     NPC_GROUP(NpcData_CaptivePeach),
     {}
 };

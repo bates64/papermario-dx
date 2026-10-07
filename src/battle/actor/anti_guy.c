@@ -88,7 +88,7 @@ ActorPartBlueprint ActorParts[] = {
 };
 
 // Shy Guy's Toy Box encounter.
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_ANTI_GUY_OMO,
     .level = ACTOR_LEVEL_ANTI_GUY_OMO,
@@ -112,7 +112,7 @@ ACTOR_BLUEPRINT() = {
 };
 
 // Bowser's Castle trio member: same moves, different type/status/escape data.
-ACTOR_BLUEPRINT(trio) = {
+OVL_DEF_ACTOR(trio) = {
     .flags = 0,
     .type = ACTOR_TYPE_ANTI_GUY_KPA,
     .level = ACTOR_LEVEL_ANTI_GUY_KPA,

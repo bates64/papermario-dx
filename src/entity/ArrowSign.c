@@ -53,7 +53,7 @@ EntityScript Entity_ArrowSign_Script = {
 
 EntityModelScript Entity_ArrowSign_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_ArrowSign_Render, RENDER_MODE_SURFACE_OPA);
 
-ENTITY_IMPLEMENTATION(ArrowSign) = {
+OVL_DEF_ENTITY(ArrowSign) = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(ArrowSignData),
     .renderCommandList = Entity_ArrowSign_RenderScript,

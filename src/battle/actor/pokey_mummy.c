@@ -156,7 +156,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = 0,
     .type = ACTOR_TYPE_POKEY_MUMMY,
     .level = ACTOR_LEVEL_POKEY_MUMMY,

@@ -639,6 +639,6 @@ NpcData NpcData_MachineGang[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_MachineGang, BTL_FLO_FORMATION_0B, BTL_FLO_STAGE_06),
+    NPC_GROUP(NpcData_MachineGang, "flo:lakitu_3_yellow_magikoopa_1", "flo_03"),
     {}
 };

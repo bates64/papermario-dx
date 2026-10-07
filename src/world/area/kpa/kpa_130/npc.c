@@ -362,19 +362,19 @@ NpcData NpcData_BombshellBill_19 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_19);
 NpcData NpcData_BombshellBill_20 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_20);
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BombshellBlaster_01, BTL_KPA4_FORMATION_02, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBlaster_03, BTL_KPA4_FORMATION_02, BTL_KPA4_STAGE_05),
-    NPC_GROUP(NpcData_BombshellBlaster_05, BTL_KPA4_FORMATION_03, BTL_KPA4_STAGE_05),
-    NPC_GROUP(NpcData_BombshellBlaster_07, BTL_KPA4_FORMATION_04, BTL_KPA4_STAGE_05),
-    NPC_GROUP(NpcData_BombshellBill_01, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_02, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_03, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_04, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_05, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_06, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_07, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_08, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_09, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
-    NPC_GROUP(NpcData_BombshellBill_10, BTL_KPA4_FORMATION_01, BTL_KPA4_STAGE_04),
+    NPC_GROUP(NpcData_BombshellBlaster_01, "kpa4:bombshell_blaster_2", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBlaster_03, "kpa4:bombshell_blaster_2", "kpa_04b"),
+    NPC_GROUP(NpcData_BombshellBlaster_05, "kpa4:bombshell_blaster_2_koopatrol_1", "kpa_04b"),
+    NPC_GROUP(NpcData_BombshellBlaster_07, "kpa4:bombshell_blaster_2_magikoopa_1", "kpa_04b"),
+    NPC_GROUP(NpcData_BombshellBill_01, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_02, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_03, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_04, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_05, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_06, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_07, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_08, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_09, "kpa4:bombshell_bill_3", "kpa_04"),
+    NPC_GROUP(NpcData_BombshellBill_10, "kpa4:bombshell_bill_3", "kpa_04"),
     {}
 };

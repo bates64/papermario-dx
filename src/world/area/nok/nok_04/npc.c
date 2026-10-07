@@ -1656,7 +1656,7 @@ NpcData NpcData_Miniboss = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Minigame, BTL_NOK_FORMATION_16, BTL_NOK_STAGE_03),
-    NPC_GROUP(NpcData_Miniboss, BTL_NOK_FORMATION_17, BTL_NOK_STAGE_03),
+    NPC_GROUP(NpcData_Minigame, "nok:fuzzy_2", "nok_04"),
+    NPC_GROUP(NpcData_Miniboss, "nok:fuzzy_4", "nok_04"),
     {}
 };

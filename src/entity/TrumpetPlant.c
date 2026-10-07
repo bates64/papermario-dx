@@ -75,7 +75,7 @@ EntityScript Entity_TrumpetPlant_Script = {
 
 DmaEntry Entity_TrumpetPlant_dma[] = { ENTITY_ROM(TrumpetPlant), ENTITY_ANIM_ROM(TrumpetPlant) };
 
-ENTITY_IMPLEMENTATION(TrumpetPlant) = {
+OVL_DEF_ENTITY(TrumpetPlant) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(TrumpetPlantData),
     .animScript = Entity_TrumpetPlant_AnimationIdle,

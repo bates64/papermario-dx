@@ -234,7 +234,7 @@ static ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT(fake_bowser) = {
+OVL_DEF_ACTOR(fake_bowser) = {
     .flags = ACTOR_FLAG_NO_SHADOW,
     .type = ACTOR_TYPE_FAKE_BOWSER,
     .level = ACTOR_LEVEL_FAKE_BOWSER,

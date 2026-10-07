@@ -317,4 +317,4 @@ void destroy(void) {
     hud_element_free(gActionCommandStatus.hudElemIDs[HIDX_BUBBLE]);
 }
 
-ACTION_COMMAND_ENTRY(ACTION_COMMAND_WHIRLWIND);
+OVL_DEF_ACTION_CMD(ACTION_COMMAND_WHIRLWIND);

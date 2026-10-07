@@ -102,9 +102,9 @@ NpcData NpcData_FlyingMagikoopa_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Koopatrol_01, BTL_KPA_FORMATION_23, BTL_KPA_STAGE_08),
-    NPC_GROUP(NpcData_Koopatrol_02, BTL_KPA_FORMATION_21, BTL_KPA_STAGE_08),
-    NPC_GROUP(NpcData_FlyingMagikoopa_01, BTL_KPA_FORMATION_35, BTL_KPA_STAGE_08),
-    NPC_GROUP(NpcData_FlyingMagikoopa_02, BTL_KPA_FORMATION_33, BTL_KPA_STAGE_08),
+    NPC_GROUP(NpcData_Koopatrol_01, "kpa:koopatrol_1_dry_bones_2", "kpa_07"),
+    NPC_GROUP(NpcData_Koopatrol_02, "kpa:koopatrol_1_bony_beetle_2", "kpa_07"),
+    NPC_GROUP(NpcData_FlyingMagikoopa_01, "kpa:flying_magikoopa_1_dry_bones_2", "kpa_07"),
+    NPC_GROUP(NpcData_FlyingMagikoopa_02, "kpa:flying_magikoopa_1_koopatrol_2", "kpa_07"),
     {}
 };

@@ -242,6 +242,6 @@ NpcData NpcData_StoneChomp = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_StoneChomp, BTL_ISK_1_FORMATION_07, BTL_ISK_1_STAGE_0B),
+    NPC_GROUP(NpcData_StoneChomp, "isk_part_1:stone_chomp_2", "isk_07"),
     {}
 };

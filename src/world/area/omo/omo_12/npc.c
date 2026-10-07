@@ -673,7 +673,7 @@ NpcData NpcData_LanternBottom = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BigLanternGhost, BTL_OMO3_FORMATION_00),
+    NPC_GROUP(NpcData_BigLanternGhost, "omo3:big_lantern_ghost"),
     NPC_GROUP(NpcData_Watt),
     NPC_GROUP(NpcData_LanternTop),
     NPC_GROUP(NpcData_LanternBottom),

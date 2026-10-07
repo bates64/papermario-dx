@@ -23,7 +23,7 @@ typedef struct WorldPartner {
 } WorldPartner; // size = 0x38
 
 #define WORLD_PARTNER_EXPORT_NAME "gWorldPartner"
-#define WORLD_PARTNER_ENTRY export WorldPartner gWorldPartner
+#define OVL_DEF_PARTNER() export WorldPartner gWorldPartner
 
 extern Npc* gPartnerNpc; // wPartnerNpc
 extern s32 WorldTattleInteractionID;

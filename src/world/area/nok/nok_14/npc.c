@@ -131,9 +131,9 @@ NpcData NpcData_KoopaTroopa_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaTroopa_01, BTL_NOK_FORMATION_0B, BTL_NOK_STAGE_00),
-    NPC_GROUP(NpcData_ParaTroopa, BTL_NOK_FORMATION_11, BTL_NOK_STAGE_02),
-    NPC_GROUP(NpcData_SpikedGoomba, BTL_NOK_FORMATION_06, BTL_NOK_STAGE_00),
-    NPC_GROUP(NpcData_KoopaTroopa_02, BTL_NOK_FORMATION_0C, BTL_NOK_STAGE_00),
+    NPC_GROUP(NpcData_KoopaTroopa_01, "nok:koopa_troopa_1_spiked_goomba_1", "nok_01"),
+    NPC_GROUP(NpcData_ParaTroopa, "nok:paratroopa_2", "nok_03"),
+    NPC_GROUP(NpcData_SpikedGoomba, "nok:spiked_goomba_3", "nok_01"),
+    NPC_GROUP(NpcData_KoopaTroopa_02, "nok:koopa_troopa_2_spiked_goomba_1", "nok_01"),
     {}
 };

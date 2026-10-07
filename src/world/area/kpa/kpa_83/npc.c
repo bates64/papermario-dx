@@ -566,6 +566,6 @@ NpcData NpcData_Enemies[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Enemies, BTL_KMR_3_FORMATION_07),
+    NPC_GROUP(NpcData_Enemies, "kmr_part_3:jr_troopa_7"),
     {}
 };

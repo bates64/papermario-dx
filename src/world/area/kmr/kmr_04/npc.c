@@ -277,7 +277,7 @@ NpcData NpcData_Goompa = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_JrTroopa, BTL_KMR_3_FORMATION_02),
+    NPC_GROUP(NpcData_JrTroopa, "kmr_part_3:jr_troopa_1"),
     NPC_GROUP(NpcData_Goompa),
     {}
 };

@@ -572,17 +572,17 @@ NpcData NpcData_KoopaBros[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_BillBlasters, BTL_TRD_1_FORMATION_17, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_01, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_02, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_03, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_04, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_05, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_06, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_07, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_08, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_09, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_10, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BillBlasters, "trd_part_1:bill_blaster_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_01, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_02, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_03, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_04, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_05, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_06, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_07, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_08, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_09, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_10, "trd_part_1:bullet_bill_3", "trd_03"),
     NPC_GROUP(NpcData_KoopaBros),
     {}
 };
@@ -728,10 +728,10 @@ NpcData NpcData_BulletBill_Demo5 = {
 };
 
 NpcGroupList DemoNPCs = {
-    NPC_GROUP(NpcData_BulletBill_Demo1, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_Demo2, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_Demo3, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_Demo4, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
-    NPC_GROUP(NpcData_BulletBill_Demo5, BTL_TRD_1_FORMATION_1A, BTL_TRD_1_STAGE_06),
+    NPC_GROUP(NpcData_BulletBill_Demo1, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_Demo2, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_Demo3, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_Demo4, "trd_part_1:bullet_bill_3", "trd_03"),
+    NPC_GROUP(NpcData_BulletBill_Demo5, "trd_part_1:bullet_bill_3", "trd_03"),
     {}
 };

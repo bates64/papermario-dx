@@ -348,7 +348,7 @@ EntityModelScript Entity_HiddenYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_
 EntityModelScript Entity_RedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_OPA);
 EntityModelScript Entity_HiddenRedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
 
-ENTITY_IMPLEMENTATION(YellowBlock) = {
+OVL_DEF_ENTITY(YellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_YellowBlock_RenderScript,
@@ -361,7 +361,7 @@ ENTITY_IMPLEMENTATION(YellowBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(HiddenYellowBlock) = {
+OVL_DEF_ENTITY(HiddenYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HiddenYellowBlock_RenderScript,
@@ -374,7 +374,7 @@ ENTITY_IMPLEMENTATION(HiddenYellowBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(RedBlock) = {
+OVL_DEF_ENTITY(RedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_RedBlock_RenderScript,
@@ -387,7 +387,7 @@ ENTITY_IMPLEMENTATION(RedBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(HiddenRedBlock) = {
+OVL_DEF_ENTITY(HiddenRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_HiddenRedBlock_RenderScript,
@@ -400,7 +400,7 @@ ENTITY_IMPLEMENTATION(HiddenRedBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(TriggerBlock) = {
+OVL_DEF_ENTITY(TriggerBlock) = {
     .flags = ENTITY_FLAG_8000 | ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitYellowBlock_AnimationIdle,
@@ -413,7 +413,7 @@ ENTITY_IMPLEMENTATION(TriggerBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(HitGroundedYellowBlock) = {
+OVL_DEF_ENTITY(HitGroundedYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitYellowBlock_AnimationIdle,
@@ -426,7 +426,7 @@ ENTITY_IMPLEMENTATION(HitGroundedYellowBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(HitFloatingYellowBlock) = {
+OVL_DEF_ENTITY(HitFloatingYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitFloatingYellowBlock_AnimationIdle,
@@ -439,7 +439,7 @@ ENTITY_IMPLEMENTATION(HitFloatingYellowBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(HitRedBlock) = {
+OVL_DEF_ENTITY(HitRedBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(BlockData),
     .animScript = Entity_HitRedBlock_AnimationHit,

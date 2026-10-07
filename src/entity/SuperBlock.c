@@ -237,7 +237,7 @@ EntityModelScript Entity_SuperBlockContent_RenderScript = STANDARD_ENTITY_MODEL_
 EntityModelScript Entity_UltraBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_UltraBlock_Render, RENDER_MODE_ALPHATEST);
 EntityModelScript Entity_UltraBlockContent_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
 
-ENTITY_IMPLEMENTATION(SuperBlock) = {
+OVL_DEF_ENTITY(SuperBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_SuperBlock_RenderScript,
@@ -250,7 +250,7 @@ ENTITY_IMPLEMENTATION(SuperBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(SuperBlockContent) = {
+OVL_DEF_ENTITY(SuperBlockContent) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(SuperBlockContentData),
     .renderCommandList = Entity_SuperBlockContent_RenderScript,
@@ -263,7 +263,7 @@ ENTITY_IMPLEMENTATION(SuperBlockContent) = {
     .aabbSize = { 18, 6, 18 }
 };
 
-ENTITY_IMPLEMENTATION(UltraBlock) = {
+OVL_DEF_ENTITY(UltraBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_UltraBlock_RenderScript,
@@ -276,7 +276,7 @@ ENTITY_IMPLEMENTATION(UltraBlock) = {
     .aabbSize = { 25, 25, 25 }
 };
 
-ENTITY_IMPLEMENTATION(UltraBlockContent) = {
+OVL_DEF_ENTITY(UltraBlockContent) = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(SuperBlockContentData),
     .renderCommandList = Entity_UltraBlockContent_RenderScript,

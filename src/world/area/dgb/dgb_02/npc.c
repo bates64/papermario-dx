@@ -57,7 +57,7 @@ NpcData NpcData_Clubba_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Clubba_01, BTL_DGB_FORMATION_02, BTL_DGB_STAGE_00),
-    NPC_GROUP(NpcData_Clubba_02, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Clubba_01, "dgb:clubba_3", "dgb_01"),
+    NPC_GROUP(NpcData_Clubba_02, "dgb:clubba_2", "dgb_01"),
     {}
 };

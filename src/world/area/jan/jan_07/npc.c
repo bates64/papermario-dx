@@ -363,8 +363,8 @@ NpcData NpcData_YoshiKid = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_SpearGuy, BTL_JAN_FORMATION_01, BTL_JAN_STAGE_03),
-    NPC_GROUP(NpcData_PutridPiranhas, BTL_JAN2_FORMATION_01, BTL_JAN2_STAGE_03),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_3", "jan_02"),
+    NPC_GROUP(NpcData_PutridPiranhas, "jan2:putrid_piranha_2", "jan_02"),
     NPC_GROUP(NpcData_YoshiKid),
     {}
 };

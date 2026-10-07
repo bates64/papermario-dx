@@ -226,6 +226,6 @@ NpcData NpcData_Door = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Door, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_00),
+    NPC_GROUP(NpcData_Door),
     {}
 };

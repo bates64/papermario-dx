@@ -134,7 +134,7 @@ EntityScript Entity_PinkFlowerLight_Script = {
 EntityModelScript Entity_PinkFlowerLight_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
 DmaEntry Entity_PinkFlower_dma[] = { ENTITY_ROM(PinkFlower), ENTITY_ANIM_ROM(PinkFlower) };
 
-ENTITY_IMPLEMENTATION(PinkFlower) = {
+OVL_DEF_ENTITY(PinkFlower) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_HAS_ANIMATED_MODEL,
     .typeDataSize = sizeof(PinkFlowerData),
     .animScript = Entity_PinkFlower_AnimationIdle,
@@ -147,7 +147,7 @@ ENTITY_IMPLEMENTATION(PinkFlower) = {
     .aabbSize = { 44, 100, 25 }
 };
 
-ENTITY_IMPLEMENTATION(PinkFlowerLight) = {
+OVL_DEF_ENTITY(PinkFlowerLight) = {
     .flags = ENTITY_FLAG_SHOWS_INSPECT_PROMPT | ENTITY_FLAG_DISABLE_COLLISION,
     .typeDataSize = sizeof(PinkFlowerData),
     .renderCommandList = Entity_PinkFlowerLight_RenderScript,

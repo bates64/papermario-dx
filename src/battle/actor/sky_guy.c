@@ -233,7 +233,7 @@ ActorPartBlueprint ActorParts[] = {
     },
 };
 
-ACTOR_BLUEPRINT() = {
+OVL_DEF_ACTOR() = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_SKY_GUY,
     .level = ACTOR_LEVEL_SKY_GUY,

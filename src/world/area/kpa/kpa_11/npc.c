@@ -111,7 +111,7 @@ NpcData NpcData_Prisoners[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Koopatrol, BTL_KPA_FORMATION_18, BTL_KPA_STAGE_02),
-    NPC_GROUP(NpcData_Prisoners, BTL_KMR_1_FORMATION_00, BTL_KMR_1_STAGE_02),
+    NPC_GROUP(NpcData_Koopatrol, "kpa:koopatrol_2", "kpa_02"),
+    NPC_GROUP(NpcData_Prisoners),
     {}
 };

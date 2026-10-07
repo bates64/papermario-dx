@@ -9,16 +9,16 @@
 extern "C" {
 #endif
 
-// battle and stage are optional in overloaded NPC_GROUP macros
+// Optional "area:formation" reference and stage-overlay override; nullptr uses the default stage.
 #define NPC_GROUP(args...) VFUNC(NPC_GROUP, args)
-#define NPC_GROUP1(npcs)                { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, 0, 0 }
-#define NPC_GROUP2(npcs, battle)        { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, battle, 0 }
-#define NPC_GROUP3(npcs, battle, stage) { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, battle, stage + 1 }
+#define NPC_GROUP1(npcs)                { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, nullptr, nullptr }
+#define NPC_GROUP2(npcs, battle)        { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, battle, nullptr }
+#define NPC_GROUP3(npcs, battle, stage) { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, battle, stage }
 
 #define NPC_GROUP_EXPLICIT_SIZE(args...) VFUNC(NPC_GROUP_EXPLICIT_SIZE, args)
-#define NPC_GROUP_EXPLICIT_SIZE3(npcs, start, count)                { count, (NpcData*) &npcs[start], 0, 0 }
-#define NPC_GROUP_EXPLICIT_SIZE4(npcs, start, count, battle)        { count, (NpcData*) &npcs[start], battle, 0 }
-#define NPC_GROUP_EXPLICIT_SIZE5(npcs, start, count, battle, stage) { count, (NpcData*) &npcs[start], battle, stage + 1 }
+#define NPC_GROUP_EXPLICIT_SIZE3(npcs, start, count)                { count, (NpcData*) &npcs[start], nullptr, nullptr }
+#define NPC_GROUP_EXPLICIT_SIZE4(npcs, start, count, battle)        { count, (NpcData*) &npcs[start], battle, nullptr }
+#define NPC_GROUP_EXPLICIT_SIZE5(npcs, start, count, battle, stage) { count, (NpcData*) &npcs[start], battle, stage }
 
 #define NO_DROPS { \
     .dropFlags = NPC_DROP_FLAG_80, \
@@ -269,9 +269,9 @@ typedef struct NpcData {
 typedef struct NpcGroup {
     /* 0x00 */ s32 npcCount;
     /* 0x04 */ NpcData* npcs;
-    /* 0x08 */ s16 battle;
-    /* 0x0A */ s16 stage;
-} NpcGroup; // size = 0x0C
+    /* 0x08 */ const char* battle;
+    /* 0x0C */ const char* stage;
+} NpcGroup; // size = 0x10
 
 typedef NpcGroup NpcGroupList[];
 
@@ -320,11 +320,11 @@ typedef struct Enemy {
 typedef struct Encounter {
     /* 0x00 */ s32 count;
     /* 0x04 */ Enemy* enemy[16];
-    /* 0x44 */ s16 battle;
-    /* 0x46 */ s16 stage;
-    /* 0x48 */ s16 encounterID;
-    /* 0x4A */ PAD(2);
-} Encounter; // size = 0x4C
+    /* 0x44 */ const char* battle;
+    /* 0x48 */ const char* stage;
+    /* 0x4C */ s16 encounterID;
+    /* 0x4E */ PAD(2);
+} Encounter; // size = 0x50
 
 typedef struct FieldStatus {
     /* 0x00 */ s8 status;

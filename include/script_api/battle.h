@@ -139,14 +139,6 @@ API_CALLABLE(EndActorSpeech);
 API_CALLABLE(ShowBattleChoice);
 
 /// @evtapi
-/// @param addr
-API_CALLABLE(OverrideBattleDmaDest);
-
-/// @evtapi
-/// @param index
-API_CALLABLE(LoadBattleDmaData);
-
-/// @evtapi
 /// @param enable
 API_CALLABLE(EnableBattleFloorReflections);
 

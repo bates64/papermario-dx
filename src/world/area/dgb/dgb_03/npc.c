@@ -95,8 +95,8 @@ NpcData NpcData_Clubba_Napping[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Clubba_Wander, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_01),
-    NPC_GROUP(NpcData_Clubba_Patrol, BTL_DGB_FORMATION_01, BTL_DGB_STAGE_01),
-    NPC_GROUP(NpcData_Clubba_Napping, BTL_DGB_FORMATION_03, BTL_DGB_STAGE_00),
+    NPC_GROUP(NpcData_Clubba_Wander, "dgb:clubba_2", "dgb_02"),
+    NPC_GROUP(NpcData_Clubba_Patrol, "dgb:clubba_2", "dgb_02"),
+    NPC_GROUP(NpcData_Clubba_Napping, "dgb:clubba_4", "dgb_01"),
     {}
 };
