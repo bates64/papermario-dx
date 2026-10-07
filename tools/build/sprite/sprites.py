@@ -19,7 +19,6 @@ from sprite_tables import (
     PALETTE_GROUPS_XML,
     HAS_BACK_XML,
     PALETTE_XML,
-    PLAYER_SPRITE_MEDADATA_XML_FILENAME,
     SPECIAL_RASTER,
     PlayerRaster,
     RasterTableEntry,
@@ -47,22 +46,8 @@ def pack_color(r, g, b, a) -> int:
     return (r << 11) | (g << 6) | (b << 1) | a
 
 
-def get_player_sprite_metadata(
-    asset_stack: Tuple[Path, ...],
-) -> Tuple[str, List[str], List[str]]:
-    orderings_tree = ET.parse(get_asset_path(Path("sprite") / PLAYER_SPRITE_MEDADATA_XML_FILENAME, asset_stack))
-
-    build_info = str(orderings_tree.getroot()[0].text)
-
-    sprite_order: List[str] = []
-    for sprite_tag in orderings_tree.getroot()[1]:
-        sprite_order.append(sprite_tag.attrib["name"])
-
-    raster_order: List[str] = []
-    for raster_tag in orderings_tree.getroot()[2]:
-        raster_order.append(raster_tag.attrib["name"])
-
-    return build_info, sprite_order, raster_order
+# The build date vanilla's sprite data starts with.
+BUILD_INFO = "00/07/03 15:47"
 
 
 @dataclass
@@ -549,7 +534,7 @@ def build_player_rasters(sprite_order: List[str], raster_order: List[str]) -> by
 
     separators_offset = 0x10
     infos_offset = separators_offset + (num_sheets + 1) * 4
-    rasters_offset = infos_offset + (len(rtes) + 1) * 4
+    rasters_offset = infos_offset + len(rtes) * 4
 
     # Align raster_offset_start to 0x10 offset
     rasters_offset = (rasters_offset + 0xF) & ~0xF
@@ -563,9 +548,6 @@ def build_player_rasters(sprite_order: List[str], raster_order: List[str]) -> by
         packed_info |= (rte.offset + rasters_offset) & 0xFFFFF
         packed_raster_data += struct.pack(">I", packed_info)
 
-    # This is the missing raster from before
-    packed_raster_data += struct.pack(">I", 0x06C9CD50)
-
     header = struct.pack(">IIII", separators_offset, infos_offset, rasters_offset, 0)
 
     ret = header + info_list_bytes + packed_raster_data
@@ -574,7 +556,7 @@ def build_player_rasters(sprite_order: List[str], raster_order: List[str]) -> by
     ret += b"\0" * ((0x10 - len(ret)) & 0xF)
 
     raster_bytes = b""
-    for raster_name in raster_order[:-1]:  # Skip last raster
+    for raster_name in raster_order:
         png_info = RASTER_CACHE[raster_name]
         raster_bytes += png_info.data
 
@@ -588,8 +570,9 @@ def build(
     build_dir: Path,
     asset_stack: Tuple[Path, ...],
     npc_sprite_order: List[str],
+    player_sprite_order: List[str],
+    player_raster_order: List[str],
 ) -> None:
-    build_info, player_sprite_order, player_raster_order = get_player_sprite_metadata(asset_stack)
 
     cache_player_rasters(player_raster_order, asset_stack)
 
@@ -599,7 +582,7 @@ def build(
         PLAYER_XML_CACHE[sprite_name] = sprite_xml
 
     # Encode build_info to bytes and pad to 0x10
-    build_info_bytes = build_info.encode("ascii")
+    build_info_bytes = BUILD_INFO.encode("ascii")
     build_info_bytes += b"\0" * (0x10 - len(build_info_bytes))
 
     player_sprite_bytes = build_player_sprites(player_sprite_order, build_dir / "player", asset_stack)
@@ -633,6 +616,8 @@ if __name__ == "__main__":
     parser.add_argument("build_dir")
     parser.add_argument("asset_stack")
     parser.add_argument("npc_sprites", help="NPC sprite names in ID order, separated by commas")
+    parser.add_argument("player_sprites", help="player sprite names in ID order, separated by commas")
+    parser.add_argument("player_rasters", help="player raster names in packing order, separated by commas")
     args = parser.parse_args()
 
     build(
@@ -641,4 +626,6 @@ if __name__ == "__main__":
         Path(args.build_dir),
         tuple(Path(d) for d in args.asset_stack.split(",")),
         args.npc_sprites.split(","),
+        args.player_sprites.split(","),
+        args.player_rasters.split(","),
     )
