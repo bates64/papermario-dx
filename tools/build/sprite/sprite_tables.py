@@ -90,7 +90,6 @@ PLAYER_PAL_TO_RASTER: Dict[str, int] = {
 
 
 PLAYER_SPRITE_MEDADATA_XML_FILENAME = "player.xml"
-NPC_SPRITE_MEDADATA_XML_FILENAME = "npc.xml"
 
 MAX_COMPONENTS_XML = "maxComponents"
 PALETTE_GROUPS_XML = "paletteGroups"
@@ -341,24 +340,6 @@ def write_player_metadata(
 
     xml = ET.ElementTree(Names)
     pretty_print_xml(xml, out_path / PLAYER_SPRITE_MEDADATA_XML_FILENAME)
-
-
-def write_npc_metadata(
-    out_path: Path,
-    cfg: Any,
-) -> None:
-    Names = ET.Element("Names")
-
-    Sprites = ET.SubElement(Names, "Sprites")
-    for sprite_name in cfg:
-        ET.SubElement(
-            Sprites,
-            "Sprite",
-            name=sprite_name,
-        )
-
-    xml = ET.ElementTree(Names)
-    pretty_print_xml(xml, out_path / NPC_SPRITE_MEDADATA_XML_FILENAME)
 
 
 def write_player_xmls(

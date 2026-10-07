@@ -16,7 +16,6 @@ from sprite_tables import (
     BACK_PALETTE_XML,
     LIST_END_BYTES,
     MAX_COMPONENTS_XML,
-    NPC_SPRITE_MEDADATA_XML_FILENAME,
     PALETTE_GROUPS_XML,
     HAS_BACK_XML,
     PALETTE_XML,
@@ -64,16 +63,6 @@ def get_player_sprite_metadata(
         raster_order.append(raster_tag.attrib["name"])
 
     return build_info, sprite_order, raster_order
-
-
-def get_npc_sprite_metadata(asset_stack: Tuple[Path, ...]) -> List[str]:
-    orderings_tree = ET.parse(get_asset_path(Path("sprite") / NPC_SPRITE_MEDADATA_XML_FILENAME, asset_stack))
-
-    sprite_order: List[str] = []
-    for sprite_tag in orderings_tree.getroot()[0]:
-        sprite_order.append(sprite_tag.attrib["name"])
-
-    return sprite_order
 
 
 @dataclass
@@ -598,9 +587,9 @@ def build(
     player_header_path: Path,
     build_dir: Path,
     asset_stack: Tuple[Path, ...],
+    npc_sprite_order: List[str],
 ) -> None:
     build_info, player_sprite_order, player_raster_order = get_player_sprite_metadata(asset_stack)
-    npc_sprite_order = get_npc_sprite_metadata(asset_stack)
 
     cache_player_rasters(player_raster_order, asset_stack)
 
@@ -643,6 +632,7 @@ if __name__ == "__main__":
     parser.add_argument("player_header_out")
     parser.add_argument("build_dir")
     parser.add_argument("asset_stack")
+    parser.add_argument("npc_sprites", help="NPC sprite names in ID order, separated by commas")
     args = parser.parse_args()
 
     build(
@@ -650,4 +640,5 @@ if __name__ == "__main__":
         Path(args.player_header_out),
         Path(args.build_dir),
         tuple(Path(d) for d in args.asset_stack.split(",")),
+        args.npc_sprites.split(","),
     )

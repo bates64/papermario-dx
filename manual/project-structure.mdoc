@@ -40,6 +40,18 @@ When the manual asks you to create a file, create it under `src/`.
 You should **only** create, modify, or delete content in `src/`. **Never** edit `assets/dx/` or `assets/us`.
 {% /aside %}
 
+### Removing content
+
+To remove something a lower layer provides, create a `.meta` file containing `delete: true` at the same path in `src/`.
+For a folder, put the `.meta` file inside it. For example, `src/sprite/npc/Goomba/.meta` removes the Goomba sprite.
+
+### Sprites
+
+Every NPC sprite folder in the layers, such as `sprite/npc/Goomba/`, is built into the game. To add one, create its
+folder under `src/sprite/npc/`. Refer to sprites and their animations by the names in their headers, such as
+`ANIM_Goomba_Idle` from `sprite/npc/Goomba.h`, never by number: sprite IDs follow the sprites' names in alphabetical
+order, so they change when you add or remove one.
+
 ## The `src` and `include` folders
 
 These folders contain C code for the game engine. You can edit it freely, just note that you may get merge conflicts

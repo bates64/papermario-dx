@@ -56,6 +56,8 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
+# The engine's NPC sprite tables hold IDs 1 to 0xFE.
+MAX_NPC_SPRITES = 0xFE
 
 if shutil.which("n64crc"):
     CRC_TOOL = "n64crc"
@@ -594,7 +596,7 @@ def write_ninja_rules(
     ninja.rule(
         "sprites",
         description="Packing sprites",
-        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack",
+        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack $npc_sprites",
     )
 
     ninja.rule(
@@ -1140,12 +1142,12 @@ class Configure:
 
     def write_sprite_rules(self, build, packed, version_assets, asset_stack) -> None:
         """Compress each NPC sprite, then pack them with the player's."""
-        import re
-
-        names = re.findall(
-            r'<Sprite name="([^"]+)"',
-            (ROOT / self.resolve_asset_path(version_assets / "sprite/npc.xml")).read_text(),
-        )
+        names = self.npc_sprite_names()
+        if len(names) > MAX_NPC_SPRITES:
+            raise SystemExit(
+                f"configure: {len(names)} NPC sprites, but sprite IDs only go up to {MAX_NPC_SPRITES}. "
+                "Delete unused ones with a .meta sidecar containing `delete: true`."
+            )
         sprite_dir = self.build_path() / version_assets / "sprite"
         compressed = []
         for sprite_id, name in enumerate(names, 1):
@@ -1182,6 +1184,8 @@ class Configure:
                 "header_out": player_header,
                 "build_dir": posix(sprite_dir),
                 "asset_stack": asset_stack,
+                # on the command line, so adding, removing, or renaming a sprite repacks them
+                "npc_sprites": ",".join(names),
             },
             implicit_outputs=[player_header],
             asset_deps=["sprite/player"],
@@ -1252,6 +1256,15 @@ class Configure:
         contents.append(mapfs / "title_data.bin")
         contents += [mapfs / "party" / n for n in names("party", "*.png")]
         return contents
+
+    def npc_sprite_names(self) -> List[str]:
+        """Every NPC sprite in the asset stack, sorted by name. A sprite's ID is its position here, from 1."""
+        found = set()
+        for layer in self.asset_stack:
+            for sheet in (ROOT / layer / "sprite/npc").glob("*/SpriteSheet.xml"):
+                if not assets.is_deleted(sheet.parent, self.asset_stack):
+                    found.add(sheet.parent.name)
+        return sorted(found)
 
     def map_sources(self) -> Dict[str, Path]:
         """Every map's source, keyed by map name, from the highest layer holding it.
