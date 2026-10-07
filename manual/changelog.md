@@ -22,6 +22,7 @@ First versioned release. The following changes are relative to [vanilla Paper Ma
 - `assets/star_rod_build` directory for Star Rod to write assets to.
 - Maps build from Star Rod map sources, which sit next to the map's code, such as `src/world/area/kmr/kmr_02/map.xml`.
 - NPC sprites are built from every sprite folder in the asset layers, so adding one only takes a folder. `sprite/npc.xml` is no longer used.
+- Player sprites and rasters are likewise built from the files in the asset layers. `sprite/player.xml` is no longer used.
 - Up to 4095 NPC sprites, up from 254. Animation IDs now hold a 12-bit sprite ID, and `SPRITE_ID_BACK_FACING` moved to bit 30.
 - Link with [libgcc_vr4300] to provide compiler intrinsics.
 - EVT script instructions `ExecOnActor` and `ExecWaitOnActor`, which are similar to `Exec` and `ExecWait` but execute the script as a specific actor.

@@ -18,7 +18,6 @@ from sprite_tables import (
     PlayerSpriteRasterSet,
     extract_raster_table_entries,
     extract_sprites,
-    write_player_metadata,
     write_player_palettes,
     write_player_rasters,
     write_player_xmls,
@@ -43,7 +42,7 @@ class N64SegPm_sprites(Segment):
     def out_path(self):
         return options.opts.asset_path / "sprite" / "sprites"
 
-    def split_player(self, build_date: str, player_raster_data: bytes, player_yay0_data: bytes) -> None:
+    def split_player(self, player_raster_data: bytes, player_yay0_data: bytes) -> None:
         player_sprite_cfg = self.player_cfg["player_sprites"]
         player_raster_names: List[str] = self.player_cfg["player_rasters"]
 
@@ -80,12 +79,6 @@ class N64SegPm_sprites(Segment):
         player_out_path = self.out_path().parent / "player"
 
         player_out_path.mkdir(parents=True, exist_ok=True)
-        write_player_metadata(
-            self.out_path().parent,
-            player_sprite_cfg,
-            player_raster_names,
-            build_date,
-        )
         write_player_xmls(
             player_out_path,
             player_sprite_cfg,
@@ -132,7 +125,6 @@ class N64SegPm_sprites(Segment):
 
     def split(self, rom_bytes) -> None:
         sprite_in_bytes = rom_bytes[self.rom_start : self.rom_end]
-        build_date = sprite_in_bytes[0:0x10].decode("ascii").rstrip("\0")
         player_raster_offset = int.from_bytes(sprite_in_bytes[0x10:0x14], "big") + 0x10
         player_yay0_offset = int.from_bytes(sprite_in_bytes[0x14:0x18], "big") + 0x10
         npc_yay0_offset = int.from_bytes(sprite_in_bytes[0x18:0x1C], "big") + 0x10
@@ -142,7 +134,7 @@ class N64SegPm_sprites(Segment):
         player_yay0_data: bytes = sprite_in_bytes[player_yay0_offset:npc_yay0_offset]
         npc_yay0_data: bytes = sprite_in_bytes[npc_yay0_offset:sprite_end_offset]
 
-        self.split_player(build_date, player_raster_data, player_yay0_data)
+        self.split_player(player_raster_data, player_yay0_data)
         self.split_npc(npc_yay0_data)
 
     def get_linker_entries(self):

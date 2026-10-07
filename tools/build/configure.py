@@ -596,7 +596,7 @@ def write_ninja_rules(
     ninja.rule(
         "sprites",
         description="Packing sprites",
-        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack $npc_sprites",
+        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack $npc_sprites $player_sprites $player_rasters",
     )
 
     ninja.rule(
@@ -1186,6 +1186,8 @@ class Configure:
                 "asset_stack": asset_stack,
                 # on the command line, so adding, removing, or renaming a sprite repacks them
                 "npc_sprites": ",".join(names),
+                "player_sprites": ",".join(self.layer_names("sprite/player/*.xml")),
+                "player_rasters": ",".join(self.layer_names("sprite/player/rasters/*.png")),
             },
             implicit_outputs=[player_header],
             asset_deps=["sprite/player"],
@@ -1256,6 +1258,15 @@ class Configure:
         contents.append(mapfs / "title_data.bin")
         contents += [mapfs / "party" / n for n in names("party", "*.png")]
         return contents
+
+    def layer_names(self, pattern: str) -> List[str]:
+        """The names, without extension, of the files matching pattern in any layer that aren't deleted, sorted."""
+        found = set()
+        for layer in self.asset_stack:
+            for path in (ROOT / layer).glob(pattern):
+                if not assets.is_deleted(path, self.asset_stack):
+                    found.add(path.stem)
+        return sorted(found)
 
     def npc_sprite_names(self) -> List[str]:
         """Every NPC sprite in the asset stack, sorted by name. A sprite's ID is its position here, from 1."""
