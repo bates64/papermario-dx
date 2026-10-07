@@ -12,12 +12,15 @@
 #      cc1/libexec keeps working unmodified).
 #   2. Symlinks every shared library found anywhere in that closure into a
 #      single flat lib/ directory.
-#   3. Ships a generated activate.sh that, given the toolchain's own
-#      (now-known) absolute install path, rewrites every binary's RPATH (and
-#      on Linux, the ELF interpreter) to point at that lib/ directory -
-#      patchelf on Linux (a static copy is bundled, since the target machine
-#      won't have one), install_name_tool + ad-hoc codesign on macOS (via the
-#      system copies from Xcode Command Line Tools).
+#   3. Points every binary at that lib/ directory. On macOS, a Mach-O file
+#      can name its libraries relative to its own location, so
+#      relocate-darwin.sh rewrites them all here (re-signing each one it
+#      changes), and the toolchain runs from wherever it's extracted. An ELF
+#      interpreter path can't be relative like that, so on Linux the
+#      archive ships a generated activate.sh that, given the toolchain's own
+#      (now-known) absolute install path, rewrites every binary's RPATH and
+#      ELF interpreter to point at lib/, using a bundled static patchelf
+#      (the target machine won't have one).
 {
   pkgs,
   nixpkgs-binutils-2_39,
@@ -105,7 +108,8 @@ let
   archive = pkgs.runCommand "papermario-dx-${platformTag}-toolchain"
     {
       nativeBuildInputs = [ pkgs.gnutar pkgs.xz pkgs.coreutils ]
-        ++ pkgs.lib.optional (!isDarwin) pkgs.pkgsStatic.patchelf;
+        ++ pkgs.lib.optional (!isDarwin) pkgs.pkgsStatic.patchelf
+        ++ pkgs.lib.optionals isDarwin [ pkgs.file pkgs.cctools ];
     }
     ''
       dir=papermario-dx-${platformTag}
@@ -200,16 +204,16 @@ let
 
       # Everything copied above came from read-only /nix/store paths. Make the
       # whole tree writable, without disturbing the executable bits that
-      # --no-preserve=mode would otherwise reset: activation rewrites the
+      # --no-preserve=mode would otherwise reset: relocation rewrites the
       # binaries in place, and a read-only directory anywhere in here would
       # also stop download_toolchain.sh removing the toolchain to update it.
       chmod -R u+w "$dir"
 
       # sccache identifies the compiler and the assembler it runs by their
-      # file contents, but activate.sh writes the install path into every
-      # binary, so no two installs would share a cache entry. Put a wrapper
-      # script in front of each instead: it's byte-identical wherever the
-      # toolchain is installed, and names its target's store path, so it
+      # file contents, but on Linux activate.sh writes the install path into
+      # every binary, so no two installs would share a cache entry. Put a
+      # wrapper script in front of each instead: it's byte-identical wherever
+      # the toolchain is installed, and names its target's store path, so it
       # still changes whenever the target does.
       wrap() {
         target=$(realpath -s --relative-to="$(dirname "$dir/$1")" "$dir/$2")
@@ -222,6 +226,11 @@ let
       wrap bin/mips-linux-gnu-gcc $gccStore/bin/mips-linux-gnu-gcc
       wrap bin/mips-linux-gnu-g++ $gccStore/bin/mips-linux-gnu-g++
       wrap $gccStore/mips-linux-gnu/bin/as $binutilsStore/bin/mips-linux-gnu-as
+
+      ${pkgs.lib.optionalString isDarwin ''
+        # Make the toolchain work from wherever it ends up installed.
+        SIGNING_UTILS=${pkgs.darwin.signingUtils} bash ${./relocate-darwin.sh} $dir
+      ''}
 
       ${pkgs.lib.optionalString (!isDarwin) ''
         cp ${pkgs.pkgsStatic.patchelf}/bin/patchelf $dir/bin/.patchelf
@@ -259,27 +268,8 @@ let
       ACTIVATE_EOF
       cat >> $dir/activate.sh << 'ACTIVATE_EOF2'
       ${if isDarwin then ''
-        find "$DIR/store" -type f | while read -r f; do
-          if file "$f" 2>/dev/null | grep -q 'Mach-O'; then
-            # Mach-O load commands embed the full dependency path (unlike
-            # ELF's bare DT_NEEDED names), so an rpath alone doesn't help -
-            # each /nix/store reference has to be rewritten explicitly.
-            otool -L "$f" 2>/dev/null | tail -n +2 | awk '{print $1}' | while read -r dep; do
-              case "$dep" in
-                /nix/store/*)
-                  install_name_tool -change "$dep" "$DIR/lib/$(basename "$dep")" "$f" >/dev/null 2>&1 || true
-                  ;;
-              esac
-            done
-            id=$(otool -D "$f" 2>/dev/null | tail -n +2)
-            case "$id" in
-              /nix/store/*)
-                install_name_tool -id "$DIR/lib/$(basename "$id")" "$f" >/dev/null 2>&1 || true
-                ;;
-            esac
-            codesign --force --sign - "$f" >/dev/null 2>&1 || true
-          fi
-        done
+        # Nothing to do on macOS: the build already rewrote every Mach-O file
+        # to find its libraries relative to its own location.
       '' else ''
         PATCHELF="$DIR/bin/.patchelf"
         cd "$DIR"

@@ -116,10 +116,6 @@ if [ "$NEED_DOWNLOAD" = "1" ]; then
   rm -f "$TOOLCHAIN_ARCHIVE"
 
   echo "Activating toolchain..." >&2
-  if [ "$OS" = "macos" ] && ! command -v install_name_tool >/dev/null 2>&1; then
-    echo "Error: install_name_tool is not installed. Install the Xcode Command Line Tools with: xcode-select --install" >&2
-    exit 1
-  fi
   "$TOOLCHAIN_DIR/activate.sh" "$TOOLCHAIN_DIR"
 
   echo "$HASH" > "$HASH_FILE"

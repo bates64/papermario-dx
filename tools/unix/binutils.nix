@@ -1,7 +1,7 @@
 # Build binutils for mips-linux-gnu, natively, from source. Building from
 # source (rather than using nixpkgs' auto-wrapped pkgsCross binutils) avoids
 # wrapper scripts that hardcode /nix/store paths, so the result can be
-# relocated by tools/unix/default.nix's activate.sh.
+# relocated by tools/unix/default.nix.
 {
   stdenv,
   buildCC,
