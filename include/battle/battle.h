@@ -108,8 +108,8 @@ typedef FormationRow Formation[];
 
 typedef struct Stage {
     /* 0x00 */ const char* texture;
-    /* 0x04 */ const char* shape;
-    /* 0x08 */ const char* hit;
+    /* 0x04 */ const char* shape;           // left out for the geometry in the stage's directory, stage.xml
+    /* 0x08 */ const char* hit;             // given with shape, if at all
     /* 0x0C */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
     /* 0x10 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
     /* 0x14 */ const char* bg;
@@ -121,10 +121,13 @@ typedef struct Stage {
 
 #define BATTLE_STAGE_EXPORT_NAME "gBattleStage"
 
-/// Define the descriptor exported by a battle-stage overlay.
-#define OVL_DEF_STAGE() export Stage gBattleStage
+/// Define the descriptors exported by a battle-stage overlay, one per variant of the stage.
+/// OVL_DEF_STAGE() is the default, and OVL_DEF_STAGE(name) the variant overlay:name.
+#define OVL_DEF_STAGE(...) export Stage _OVL_DEF_STAGE_SYMBOL(__VA_ARGS__)
+#define _OVL_DEF_STAGE_SYMBOL(...) gBattleStage ## __VA_OPT__(_) ## __VA_ARGS__
 
-Stage* load_battle_stage(const char* overlayName);
+/// Load a stage by reference, such as "trd_05" or the variant "trd_05:b".
+Stage* load_battle_stage(const char* ref);
 
 /// Release only after battle scripts/actors are gone and the renderer has switched to the world.
 void unload_battle_stage(void);

@@ -24,14 +24,46 @@ static Overlay* LoadedBattleStageOverlay;
 static Overlay* LoadedBattleAreaOverlay;
 static const BattleArea* LoadedBattleArea;
 
-Stage* load_battle_stage(const char* overlayName) {
+// The geometry in a stage's directory, named as tools/build/configure.py names it: trd_bt05_shape for trd_05.
+// The map filesystem's names are at most 15 characters.
+static char StageShapeName[16];
+static char StageHitName[16];
+
+static void set_stage_geometry_name(char* out, const char* stage, const char* part) {
+    const char* underscore = strchr(stage, '_');
+    s32 prefixLength = underscore != nullptr ? underscore - stage : strlen(stage);
+    const char* rest = underscore != nullptr ? underscore + 1 : "";
+
+    ASSERT_MSG(prefixLength + strlen("_bt") + strlen(rest) + 1 + strlen(part) < sizeof(StageShapeName),
+               "Stage name '%s' is too long for its geometry", stage);
+    memcpy(out, stage, prefixLength);
+    sprintf(out + prefixLength, "_bt%s_%s", rest, part);
+}
+
+Stage* load_battle_stage(const char* ref) {
+    char overlayName[ACTOR_KEY_MAX];
+    char exportName[sizeof(BATTLE_STAGE_EXPORT_NAME) + ACTOR_KEY_MAX];
+    const char* variant;
     Stage* stage;
 
-    ASSERT_MSG(overlayName != nullptr, "Battle has no stage overlay");
+    ASSERT_MSG(ref != nullptr, "Battle has no stage overlay");
+    variant = split_actor_ref(ref, overlayName);
+    ASSERT_MSG(variant != nullptr, "Invalid stage reference '%s'", ref);
     ASSERT_MSG(LoadedBattleStageOverlay == nullptr, "Previous battle stage was not unloaded");
     LoadedBattleStageOverlay = ovl_load(overlayName, OVL_STAGE);
-    stage = ovl_import(LoadedBattleStageOverlay, BATTLE_STAGE_EXPORT_NAME);
-    ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, BATTLE_STAGE_EXPORT_NAME);
+    if (variant[0] == '\0') {
+        strcpy(exportName, BATTLE_STAGE_EXPORT_NAME);
+    } else {
+        sprintf(exportName, "%s_%s", BATTLE_STAGE_EXPORT_NAME, variant);
+    }
+    stage = ovl_import(LoadedBattleStageOverlay, exportName);
+    ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, exportName);
+    if (stage->shape == nullptr) {
+        set_stage_geometry_name(StageShapeName, overlayName, "shape");
+        set_stage_geometry_name(StageHitName, overlayName, "hit");
+        stage->shape = StageShapeName;
+        stage->hit = StageHitName;
+    }
     gBattleStatus.curStage = stage;
     return stage;
 }
