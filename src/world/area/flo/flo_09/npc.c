@@ -148,9 +148,9 @@ NpcData NpcData_Bzzap_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Dayzee_01, "flo:crazee_dayzee_2", "flo_02b"),
-    NPC_GROUP(NpcData_Dayzee_02, "flo:crazee_dayzee_2_bzzap_1", "flo_02b"),
-    NPC_GROUP(NpcData_Bzzap_01, "flo:bzzap_2", "flo_01b"),
-    NPC_GROUP(NpcData_Bzzap_02, "flo:bzzap_2", "flo_01b"),
+    NPC_GROUP(NpcData_Dayzee_01, "flo:crazee_dayzee_2", "flo_02:b"),
+    NPC_GROUP(NpcData_Dayzee_02, "flo:crazee_dayzee_2_bzzap_1", "flo_02:b"),
+    NPC_GROUP(NpcData_Bzzap_01, "flo:bzzap_2", "flo_01:b"),
+    NPC_GROUP(NpcData_Bzzap_02, "flo:bzzap_2", "flo_01:b"),
     {}
 };

@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/omo_bt06_shape.h"
+#include "mapfs/stage/omo_06_shape.h"
 
 EvtScript EVS_UpdateMovingPlatforms = {
     Set(LVarA, LVar0) // modelID
@@ -61,8 +61,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "omo_tex",
-    .shape = "omo_bt06_shape",
-    .hit = "omo_bt06_hit",
     .bg = "omo_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/trd_bt04_shape.h"
-
+#include "mapfs/stage/trd_04_shape.h"
 #include "battle/stage/common/TexturePanner.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -28,8 +27,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "trd_tex",
-    .shape = "trd_bt04_shape",
-    .hit = "trd_bt04_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,

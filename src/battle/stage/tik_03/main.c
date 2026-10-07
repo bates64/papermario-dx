@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/tik_bt03_shape.h"
-
+#include "mapfs/stage/tik_03_shape.h"
 #include "battle/stage/common/DripVolumes.inc.c"
 
 DripVolumeList DripVolumes = {
@@ -35,8 +34,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "tik_tex",
-    .shape = "tik_bt03_shape",
-    .hit = "tik_bt03_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

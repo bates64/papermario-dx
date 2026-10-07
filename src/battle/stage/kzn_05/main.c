@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kzn_bt05_shape.h"
-
+#include "mapfs/stage/kzn_05_shape.h"
 #include "battle/stage/common/LavaDecorations.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -95,8 +94,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "kzn_tex",
-    .shape = "kzn_bt05_shape",
-    .hit = "kzn_bt05_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

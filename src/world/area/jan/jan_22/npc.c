@@ -1569,7 +1569,7 @@ NpcData NpcData_Misstar = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Kolorado),
-    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_2", "jan_04b"),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_2", "jan_04:b"),
     NPC_GROUP(NpcData_Misstar),
     {}
 };

@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/mac_bt01_shape.h"
-
+#include "mapfs/stage/mac_01_shape.h"
 #include "battle/stage/common/WaterEffects.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -33,8 +32,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "mac_tex",
-    .shape = "mac_bt01_shape",
-    .hit = "mac_bt01_hit",
     .bg = "nok_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

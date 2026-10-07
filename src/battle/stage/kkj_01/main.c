@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kkj_bt01_shape.h"
+#include "mapfs/stage/kkj_01_shape.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -22,8 +22,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kkj_tex",
-    .shape = "kkj_bt01_shape",
-    .hit = "kkj_bt01_hit",
     .bg = "kpa_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

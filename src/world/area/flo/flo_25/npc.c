@@ -227,8 +227,8 @@ NpcData NpcData_Bzzap = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_RuffPuff, "flo:ruff_puff_2_bzzap_1", "flo_02c"),
-    NPC_GROUP(NpcData_Bzzap, "flo:bzzap_1_ruff_puff_1", "flo_01b"),
+    NPC_GROUP(NpcData_RuffPuff, "flo:ruff_puff_2_bzzap_1", "flo_02:c"),
+    NPC_GROUP(NpcData_Bzzap, "flo:bzzap_1_ruff_puff_1", "flo_01:b"),
     NPC_GROUP(NpcData_GateFlower),
     {}
 };

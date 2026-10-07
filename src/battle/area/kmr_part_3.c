@@ -36,7 +36,7 @@ static Formation jr_troopa_7 = {
 static BattleList Formations = {
     BATTLE(spiked_goomba_tutorial, "kmr_03"),
     BATTLE(paragoomba_tutorial, "kmr_03"),
-    BATTLE(jr_troopa_1, "kmr_05b"),
+    BATTLE(jr_troopa_1, "kmr_05:b"),
     BATTLE(jr_troopa_2, "nok_01"),
     BATTLE(jr_troopa_4, "mim_01"),
     BATTLE(jr_troopa_5, "mac_01"),

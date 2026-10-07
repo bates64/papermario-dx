@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/nok_bt03_shape.h"
+#include "mapfs/stage/nok_03_shape.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -21,8 +21,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "nok_tex",
-    .shape = "nok_bt03_shape",
-    .hit = "nok_bt03_hit",
     .bg = "nok_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

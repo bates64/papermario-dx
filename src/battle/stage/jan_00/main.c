@@ -1,8 +1,7 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/jan_bt00_shape.h"
+#include "mapfs/stage/jan_00_shape.h"
 #include "effects.h"
-
 #include "battle/stage/common/BeachEffects.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -26,8 +25,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "jan_tex",
-    .shape = "jan_bt00_shape",
-    .hit = "jan_bt00_hit",
     .bg = "yos_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

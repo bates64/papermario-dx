@@ -52,8 +52,8 @@ NpcData NpcData_MBush_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_1_jungle_fuzzy_3", "jan_01b"),
-    NPC_GROUP(NpcData_MBush_01, "jan:m_bush_2", "jan_01b"),
-    NPC_GROUP(NpcData_MBush_02, "jan:m_bush_2", "jan_01b"),
+    NPC_GROUP(NpcData_SpearGuy, "jan:spear_guy_1_jungle_fuzzy_3", "jan_01:b"),
+    NPC_GROUP(NpcData_MBush_01, "jan:m_bush_2", "jan_01:b"),
+    NPC_GROUP(NpcData_MBush_02, "jan:m_bush_2", "jan_01:b"),
     {}
 };

@@ -290,9 +290,9 @@ NpcData NpcData_PutridPiranha[] = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_PassiveNPCs),
-    NPC_GROUP(NpcData_SpikeTop_01, "kzn:spike_top_2", "kzn_01b"),
-    NPC_GROUP(NpcData_SpikeTop_02, "kzn:spike_top_1_lava_bubble_1", "kzn_01b"),
-    NPC_GROUP(NpcData_SpikeTop_03, "kzn:spike_top_2_lava_bubble_1", "kzn_01b"),
-    NPC_GROUP(NpcData_PutridPiranha, "kzn:putrid_piranha_1_spike_top_1_putrid_piranha_1", "kzn_01b"),
+    NPC_GROUP(NpcData_SpikeTop_01, "kzn:spike_top_2", "kzn_01:b"),
+    NPC_GROUP(NpcData_SpikeTop_02, "kzn:spike_top_1_lava_bubble_1", "kzn_01:b"),
+    NPC_GROUP(NpcData_SpikeTop_03, "kzn:spike_top_2_lava_bubble_1", "kzn_01:b"),
+    NPC_GROUP(NpcData_PutridPiranha, "kzn:putrid_piranha_1_spike_top_1_putrid_piranha_1", "kzn_01:b"),
     {}
 };

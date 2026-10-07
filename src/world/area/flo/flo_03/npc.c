@@ -837,10 +837,10 @@ NpcData NpcData_MontyMole_04 = {
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_Petunia),
-    NPC_GROUP(NpcData_Dayzee, "flo:crazee_dayzee_1", "flo_01b"),
-    NPC_GROUP(NpcData_MontyMole_01, "flo2:monty_mole_2", "flo_01b"),
-    NPC_GROUP(NpcData_MontyMole_02, "flo2:monty_mole_1", "flo_01b"),
-    NPC_GROUP(NpcData_MontyMole_03, "flo2:monty_mole_3", "flo_01b"),
-    NPC_GROUP(NpcData_MontyMole_04, "flo2:monty_mole_4", "flo_01b"),
+    NPC_GROUP(NpcData_Dayzee, "flo:crazee_dayzee_1", "flo_01:b"),
+    NPC_GROUP(NpcData_MontyMole_01, "flo2:monty_mole_2", "flo_01:b"),
+    NPC_GROUP(NpcData_MontyMole_02, "flo2:monty_mole_1", "flo_01:b"),
+    NPC_GROUP(NpcData_MontyMole_03, "flo2:monty_mole_3", "flo_01:b"),
+    NPC_GROUP(NpcData_MontyMole_04, "flo2:monty_mole_4", "flo_01:b"),
     {}
 };

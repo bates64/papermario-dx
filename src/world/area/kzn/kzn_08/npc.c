@@ -30,6 +30,6 @@ NpcData NpcData_PutridPiranha[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_PutridPiranha, "kzn:putrid_piranha_1_lava_bubble_1_putrid_piranha_1", "kzn_04b"),
+    NPC_GROUP(NpcData_PutridPiranha, "kzn:putrid_piranha_1_lava_bubble_1_putrid_piranha_1", "kzn_04:b"),
     {}
 };

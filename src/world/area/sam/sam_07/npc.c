@@ -82,8 +82,8 @@ NpcData NpcData_FrostPiranha_02[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Gulpit, "sam:gulpit_2_frost_piranha_1", "sam_02b"),
-    NPC_GROUP(NpcData_FrostPiranha_01, "sam:frost_piranha_1_gulpit_1_frost_piranha_1", "sam_02b"),
-    NPC_GROUP(NpcData_FrostPiranha_02, "sam:frost_piranha_4", "sam_02b"),
+    NPC_GROUP(NpcData_Gulpit, "sam:gulpit_2_frost_piranha_1", "sam_02:b"),
+    NPC_GROUP(NpcData_FrostPiranha_01, "sam:frost_piranha_1_gulpit_1_frost_piranha_1", "sam_02:b"),
+    NPC_GROUP(NpcData_FrostPiranha_02, "sam:frost_piranha_4", "sam_02:b"),
     {}
 };

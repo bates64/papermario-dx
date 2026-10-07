@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kpa_bt01_shape.h"
+#include "mapfs/stage/kpa_01_shape.h"
 
 // blue torches
 EvtScript EVS_TexAnim_Fire = {
@@ -47,9 +47,29 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kpa_tex",
-    .shape = "kpa_bt01_shape",
-    .hit = "kpa_bt01_hit",
     .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};
+
+// kpa_01:b
+
+// blue torches
+EvtScript EVS_PreBattle_b = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
+    Call(SetGroupVisibility, MODEL_hasira, MODEL_GROUP_HIDDEN)
+    Set(LVar0, MODEL_o416)
+    Exec(EVS_TexAnim_Fire)
+    Set(LVar0, MODEL_o418)
+    Exec(EVS_TexAnim_Fire)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(b) = {
+    .texture = "kpa_tex",
+    .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,
 };

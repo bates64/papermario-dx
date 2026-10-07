@@ -50,7 +50,7 @@ NpcData NpcData_RuffPuff_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_RuffPuff_01, "flo:ruff_puff_2_yellow_magikoopa_flying_1", "flo_02c"),
-    NPC_GROUP(NpcData_RuffPuff_02, "flo:ruff_puff_4", "flo_02c"),
+    NPC_GROUP(NpcData_RuffPuff_01, "flo:ruff_puff_2_yellow_magikoopa_flying_1", "flo_02:c"),
+    NPC_GROUP(NpcData_RuffPuff_02, "flo:ruff_puff_4", "flo_02:c"),
     {}
 };

@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kpa_bt07_shape.h"
-
+#include "mapfs/stage/kpa_07_shape.h"
 #include "battle/stage/common/TexturePanner.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -38,8 +37,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kpa_tex",
-    .shape = "kpa_bt07_shape",
-    .hit = "kpa_bt07_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,

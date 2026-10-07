@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/dgb_bt03_shape.h"
+#include "mapfs/stage/dgb_03_shape.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -15,8 +15,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "dgb_tex",
-    .shape = "dgb_bt03_shape",
-    .hit = "dgb_bt03_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

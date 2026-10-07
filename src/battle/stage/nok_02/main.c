@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/nok_bt02_shape.h"
+#include "mapfs/stage/nok_02_shape.h"
 
 EvtScript EVS_AnimateFlower = {
     Set(LVarA, LVar0)
@@ -72,8 +72,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "nok_tex",
-    .shape = "nok_bt02_shape",
-    .hit = "nok_bt02_hit",
     .bg = "nok_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

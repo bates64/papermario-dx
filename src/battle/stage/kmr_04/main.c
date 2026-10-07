@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kmr_bt04_shape.h"
-
+#include "mapfs/stage/kmr_04_shape.h"
 #include "battle/stage/common/MovingClouds.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -29,8 +28,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kmr_tex",
-    .shape = "kmr_bt04_shape",
-    .hit = "kmr_bt04_hit",
     .bg = "kmr_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

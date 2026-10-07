@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/hos_bt02_shape.h"
+#include "mapfs/stage/hos_02_shape.h"
 
 EvtScript EVS_PreBattle = {
     Thread
@@ -93,8 +93,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "hos_tex",
-    .shape = "hos_bt02_shape",
-    .hit = "hos_bt02_hit",
     .bg = "nok_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

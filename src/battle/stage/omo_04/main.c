@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/omo_bt04_shape.h"
+#include "mapfs/stage/omo_04_shape.h"
 
 extern Formation fromation_slot_machine;
 extern ActorBlueprint slot_machine_stop;
@@ -36,8 +36,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "omo_tex",
-    .shape = "omo_bt04_shape",
-    .hit = "omo_bt04_hit",
     .bg = "omo_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

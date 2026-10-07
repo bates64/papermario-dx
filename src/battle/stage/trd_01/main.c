@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/trd_bt01_shape.h"
+#include "mapfs/stage/trd_01_shape.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -16,8 +16,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "trd_tex",
-    .shape = "trd_bt01_shape",
-    .hit = "trd_bt01_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

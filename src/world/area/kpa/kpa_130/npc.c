@@ -363,9 +363,9 @@ NpcData NpcData_BombshellBill_20 = BOMBSHELL_BILL_NPC(NPC_BombshellBill_20);
 
 NpcGroupList DefaultNPCs = {
     NPC_GROUP(NpcData_BombshellBlaster_01, "kpa4:bombshell_blaster_2", "kpa_04"),
-    NPC_GROUP(NpcData_BombshellBlaster_03, "kpa4:bombshell_blaster_2", "kpa_04b"),
-    NPC_GROUP(NpcData_BombshellBlaster_05, "kpa4:bombshell_blaster_2_koopatrol_1", "kpa_04b"),
-    NPC_GROUP(NpcData_BombshellBlaster_07, "kpa4:bombshell_blaster_2_magikoopa_1", "kpa_04b"),
+    NPC_GROUP(NpcData_BombshellBlaster_03, "kpa4:bombshell_blaster_2", "kpa_04:b"),
+    NPC_GROUP(NpcData_BombshellBlaster_05, "kpa4:bombshell_blaster_2_koopatrol_1", "kpa_04:b"),
+    NPC_GROUP(NpcData_BombshellBlaster_07, "kpa4:bombshell_blaster_2_magikoopa_1", "kpa_04:b"),
     NPC_GROUP(NpcData_BombshellBill_01, "kpa4:bombshell_bill_3", "kpa_04"),
     NPC_GROUP(NpcData_BombshellBill_02, "kpa4:bombshell_bill_3", "kpa_04"),
     NPC_GROUP(NpcData_BombshellBill_03, "kpa4:bombshell_bill_3", "kpa_04"),

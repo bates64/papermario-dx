@@ -30,6 +30,6 @@ NpcData NpcData_Magikoopa[] = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_Magikoopa, "kpa:magikoopa_2_dry_bones_1", "kpa_01b"),
+    NPC_GROUP(NpcData_Magikoopa, "kpa:magikoopa_2_dry_bones_1", "kpa_01:b"),
     {}
 };

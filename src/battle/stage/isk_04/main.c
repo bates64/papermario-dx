@@ -1,20 +1,18 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/isk_bt04_shape.h"
+#include "mapfs/stage/isk_04_shape.h"
 #include "effects.h"
 
 BSS EffectInstance* TorchFlameL;
-BSS EffectInstance* TorchFlameR;
-
 API_CALLABLE(CreateTorchFX) {
     fx_flame(FX_FLAME_RED, -133.0f, 72.0f, -143.0f, 0.3f, &TorchFlameL);
-    fx_flame(FX_FLAME_RED,  129.0f, 72.0f, -143.0f, 0.3f, &TorchFlameR);
+    fx_flame(FX_FLAME_RED,  129.0f, 72.0f, -143.0f, 0.3f, &TorchFlameL);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(DeleteTorchFX) {
     remove_effect(TorchFlameL);
-    remove_effect(TorchFlameR);
+    remove_effect(TorchFlameL);
     return ApiStatus_DONE2;
 }
 
@@ -40,8 +38,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "isk_tex",
-    .shape = "isk_bt04_shape",
-    .hit = "isk_bt04_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,

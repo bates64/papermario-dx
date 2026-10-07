@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/flo_bt06_shape.h"
-
+#include "mapfs/stage/flo_06_shape.h"
 #include "battle/stage/common/MakeSun.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -19,8 +18,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "flo_tex",
-    .shape = "flo_bt06_shape",
-    .hit = "flo_bt06_hit",
     .bg = "fla_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

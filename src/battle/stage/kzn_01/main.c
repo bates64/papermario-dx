@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/kzn_bt01_shape.h"
+#include "mapfs/stage/kzn_01_shape.h"
 
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
@@ -26,9 +26,23 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "kzn_tex",
-    .shape = "kzn_bt01_shape",
-    .hit = "kzn_bt01_hit",
     .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
+    .foregroundModelList = ForegroundModels,
+};
+
+// kzn_01:b
+
+EvtScript EVS_PreBattle_b = {
+    Call(SetSpriteShading, SHADING_NONE)
+    Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
+    Return
+    End
+};
+
+OVL_DEF_STAGE(b) = {
+    .texture = "kzn_tex",
+    .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,
 };

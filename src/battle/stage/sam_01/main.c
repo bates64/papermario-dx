@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/sam_bt01_shape.h"
-
+#include "mapfs/stage/sam_01_shape.h"
 #include "battle/stage/common/Snowflakes.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -41,8 +40,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "sam_tex",
-    .shape = "sam_bt01_shape",
-    .hit = "sam_bt01_hit",
     .bg = "yki_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

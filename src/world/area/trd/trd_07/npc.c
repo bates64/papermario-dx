@@ -105,8 +105,8 @@ NpcData NpcData_ParaTroopa_02 = {
 };
 
 NpcGroupList DefaultNPCs = {
-    NPC_GROUP(NpcData_KoopaTroopa, "trd_part_1:koopa_troopa_2", "trd_02b"),
-    NPC_GROUP(NpcData_ParaTroopa_01, "trd_part_1:paratroopa_2", "trd_02b"),
-    NPC_GROUP(NpcData_ParaTroopa_02, "trd_part_1:paratroopa_1_koopa_troopa_1", "trd_02b"),
+    NPC_GROUP(NpcData_KoopaTroopa, "trd_part_1:koopa_troopa_2", "trd_02:b"),
+    NPC_GROUP(NpcData_ParaTroopa_01, "trd_part_1:paratroopa_2", "trd_02:b"),
+    NPC_GROUP(NpcData_ParaTroopa_02, "trd_part_1:paratroopa_1_koopa_troopa_1", "trd_02:b"),
     {}
 };

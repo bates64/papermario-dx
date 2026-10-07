@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/omo_bt01_shape.h"
+#include "mapfs/stage/omo_01_shape.h"
 #include "model.h"
 
 // following part is very similar to RockingHorse.inc.c in world/area_omo,
@@ -96,8 +96,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "omo_tex",
-    .shape = "omo_bt01_shape",
-    .hit = "omo_bt01_hit",
     .bg = "omo_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

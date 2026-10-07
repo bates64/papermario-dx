@@ -31,8 +31,6 @@ EvtScript EVS_PostBattle = {
 
 OVL_DEF_STAGE() = {
     .texture = "isk_tex",
-    .shape = "isk_bt08_shape",
-    .hit = "isk_bt08_hit",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

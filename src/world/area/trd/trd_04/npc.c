@@ -103,13 +103,13 @@ NpcData NpcData_ParaTroopa = {
 };
 
 NpcGroupList NpcGroupAfter = {
-    NPC_GROUP(NpcData_KoopaTroopa_Wander, "trd_part_1:koopa_troopa_1_bob_omb_3", "trd_05e"),
-    NPC_GROUP(NpcData_ParaTroopa, "trd_part_1:paratroopa_1_bob_omb_2", "trd_02d"),
+    NPC_GROUP(NpcData_KoopaTroopa_Wander, "trd_part_1:koopa_troopa_1_bob_omb_3", "trd_05:e"),
+    NPC_GROUP(NpcData_ParaTroopa, "trd_part_1:paratroopa_1_bob_omb_2", "trd_02:d"),
     {}
 };
 
 NpcGroupList NpcGroupBefore = {
-    NPC_GROUP(NpcData_KoopaTroopa_Patrol, "trd_part_1:koopa_troopa_1_bob_omb_3", "trd_05e"),
-    NPC_GROUP(NpcData_ParaTroopa, "trd_part_1:paratroopa_1_bob_omb_2", "trd_02d"),
+    NPC_GROUP(NpcData_KoopaTroopa_Patrol, "trd_part_1:koopa_troopa_1_bob_omb_3", "trd_05:e"),
+    NPC_GROUP(NpcData_ParaTroopa, "trd_part_1:paratroopa_1_bob_omb_2", "trd_02:d"),
     {}
 };

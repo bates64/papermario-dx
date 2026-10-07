@@ -1,6 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
-#include "mapfs/arn_bt02_shape.h"
+#include "mapfs/stage/arn_02_shape.h"
 
 EvtScript EVS_RotateWindmill = {
     Set(LVarA, LVar0)
@@ -38,8 +38,6 @@ s32 ForegroundModels[] = {
 
 OVL_DEF_STAGE() = {
     .texture = "arn_tex",
-    .shape = "arn_bt02_shape",
-    .hit = "arn_bt02_hit",
     .bg = "arn_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
