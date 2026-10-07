@@ -106,18 +106,17 @@ typedef struct FormationRow {
 
 typedef FormationRow Formation[];
 
+/// A battle stage. Its geometry is the stage.xml in its directory.
 typedef struct Stage {
     /* 0x00 */ const char* texture;
-    /* 0x04 */ const char* shape;           // left out for the geometry in the stage's directory, stage.xml
-    /* 0x08 */ const char* hit;             // given with shape, if at all
-    /* 0x0C */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
-    /* 0x10 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
-    /* 0x14 */ const char* bg;
-    /* 0x18 */ s32* foregroundModelList;
-    /* 0x1C */ s32 stageEnemyCount;         // number of enemies in the stageFormation
-    /* 0x20 */ Formation* stageFormation;   // extra enemies native to this stage
-    /* 0x24 */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
-} Stage; // size = 0x28
+    /* 0x04 */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
+    /* 0x08 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
+    /* 0x0C */ const char* bg;
+    /* 0x10 */ s32* foregroundModelList;
+    /* 0x14 */ s32 stageEnemyCount;         // number of enemies in the stageFormation
+    /* 0x18 */ Formation* stageFormation;   // extra enemies native to this stage
+    /* 0x1C */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
+} Stage; // size = 0x20
 
 #define BATTLE_STAGE_EXPORT_NAME "gBattleStage"
 
@@ -128,6 +127,11 @@ typedef struct Stage {
 
 /// Load a stage by reference, such as "trd_05" or the variant "trd_05:b".
 Stage* load_battle_stage(const char* ref);
+
+/// The loaded stage's model data in the map filesystem, such as trd_bt05_shape.
+extern char gBattleStageShapeName[];
+/// The loaded stage's collision data in the map filesystem, such as trd_bt05_hit.
+extern char gBattleStageHitName[];
 
 /// Release only after battle scripts/actors are gone and the renderer has switched to the world.
 void unload_battle_stage(void);

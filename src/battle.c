@@ -24,17 +24,15 @@ static Overlay* LoadedBattleStageOverlay;
 static Overlay* LoadedBattleAreaOverlay;
 static const BattleArea* LoadedBattleArea;
 
-// The geometry in a stage's directory, named as tools/build/configure.py names it: trd_bt05_shape for trd_05.
-// The map filesystem's names are at most 15 characters.
-static char StageShapeName[16];
-static char StageHitName[16];
+char gBattleStageShapeName[16];
+char gBattleStageHitName[16];
 
 static void set_stage_geometry_name(char* out, const char* stage, const char* part) {
     const char* underscore = strchr(stage, '_');
     s32 prefixLength = underscore != nullptr ? underscore - stage : strlen(stage);
     const char* rest = underscore != nullptr ? underscore + 1 : "";
 
-    ASSERT_MSG(prefixLength + strlen("_bt") + strlen(rest) + 1 + strlen(part) < sizeof(StageShapeName),
+    ASSERT_MSG(prefixLength + strlen("_bt") + strlen(rest) + 1 + strlen(part) < sizeof(gBattleStageShapeName),
                "Stage name '%s' is too long for its geometry", stage);
     memcpy(out, stage, prefixLength);
     sprintf(out + prefixLength, "_bt%s_%s", rest, part);
@@ -58,12 +56,8 @@ Stage* load_battle_stage(const char* ref) {
     }
     stage = ovl_import(LoadedBattleStageOverlay, exportName);
     ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, exportName);
-    if (stage->shape == nullptr) {
-        set_stage_geometry_name(StageShapeName, overlayName, "shape");
-        set_stage_geometry_name(StageHitName, overlayName, "hit");
-        stage->shape = StageShapeName;
-        stage->hit = StageHitName;
-    }
+    set_stage_geometry_name(gBattleStageShapeName, overlayName, "shape");
+    set_stage_geometry_name(gBattleStageHitName, overlayName, "hit");
     gBattleStatus.curStage = stage;
     return stage;
 }
