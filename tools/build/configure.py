@@ -2055,18 +2055,11 @@ class Configure:
             },
         )
 
-        if self.version == "jp":
-            build(
-                self.build_path() / "include/recipes.inc.c",
-                [Path("src/registry/recipes_jp.yaml")],
-                "recipes",
-            )
-        else:
-            build(
-                self.build_path() / "include/recipes.inc.c",
-                [Path("src/registry/recipes.yaml")],
-                "recipes",
-            )
+        build(
+            self.build_path() / "include/recipes.inc.c",
+            [Path("src/registry/recipes.yaml")],
+            "recipes",
+        )
 
         build(
             [
@@ -2105,28 +2098,14 @@ class Configure:
             },
         )
 
-        if self.version == "jp":
-            build(
-                [
-                    self.build_path() / "include/battle/actor_types.inc.c",
-                    self.build_path() / "include/battle/actor_types.h",
-                ],
-                [
-                    Path("src/registry/actors_jp.yaml"),
-                ],
-                "actor_types",
-            )
-        else:
-            build(
-                [
-                    self.build_path() / "include/battle/actor_types.inc.c",
-                    self.build_path() / "include/battle/actor_types.h",
-                ],
-                [
-                    Path("src/registry/actors.yaml"),
-                ],
-                "actor_types",
-            )
+        build(
+            [
+                self.build_path() / "include/battle/actor_types.inc.c",
+                self.build_path() / "include/battle/actor_types.h",
+            ],
+            [Path("src/registry/actors.yaml")],
+            "actor_types",
+        )
 
         build(
             [precompiled_header_path],
