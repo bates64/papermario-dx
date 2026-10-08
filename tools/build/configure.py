@@ -2059,6 +2059,7 @@ class Configure:
             self.build_path() / "include/recipes.inc.c",
             [Path("src/registry/recipes.yaml")],
             "recipes",
+            implicit_deps=[BUILD_TOOLS / "recipes.py"],
         )
 
         build(
@@ -2068,6 +2069,7 @@ class Configure:
             ],
             [Path("src/registry/moves.yaml")],
             "move_data",
+            implicit_deps=[BUILD_TOOLS / "move_data.py"],
         )
 
         build(
@@ -2077,6 +2079,10 @@ class Configure:
             ],
             [Path("src/registry/items.yaml")],
             "item_data",
+            implicit_deps=[
+                BUILD_TOOLS / "item_data.py",
+                self.find_asset("icon/Icons.xml"),
+            ],
             variables={
                 "asset_stack": ",".join(self.asset_stack),
             },
@@ -2105,6 +2111,7 @@ class Configure:
             ],
             [Path("src/registry/actors.yaml")],
             "actor_types",
+            implicit_deps=[BUILD_TOOLS / "actor_types.py"],
         )
 
         build(
