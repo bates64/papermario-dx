@@ -56,6 +56,8 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
+# Animation IDs hold a 12-bit sprite ID, from 1. See SpriteIDFields in include/sprite.h.
+MAX_NPC_SPRITES = 0xFFF
 
 if shutil.which("n64crc"):
     CRC_TOOL = "n64crc"
@@ -594,7 +596,7 @@ def write_ninja_rules(
     ninja.rule(
         "sprites",
         description="Packing sprites",
-        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack",
+        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack $npc_sprites $player_sprites $player_rasters",
     )
 
     ninja.rule(
@@ -1140,12 +1142,12 @@ class Configure:
 
     def write_sprite_rules(self, build, packed, version_assets, asset_stack) -> None:
         """Compress each NPC sprite, then pack them with the player's."""
-        import re
-
-        names = re.findall(
-            r'<Sprite name="([^"]+)"',
-            (ROOT / self.resolve_asset_path(version_assets / "sprite/npc.xml")).read_text(),
-        )
+        names = self.npc_sprite_names()
+        if len(names) > MAX_NPC_SPRITES:
+            raise SystemExit(
+                f"configure: {len(names)} NPC sprites, but sprite IDs only go up to {MAX_NPC_SPRITES}. "
+                "Delete unused ones with a .meta sidecar containing `delete: true`."
+            )
         sprite_dir = self.build_path() / version_assets / "sprite"
         compressed = []
         for sprite_id, name in enumerate(names, 1):
@@ -1182,6 +1184,10 @@ class Configure:
                 "header_out": player_header,
                 "build_dir": posix(sprite_dir),
                 "asset_stack": asset_stack,
+                # on the command line, so adding, removing, or renaming a sprite repacks them
+                "npc_sprites": ",".join(names),
+                "player_sprites": ",".join(self.layer_names("sprite/player/*.xml")),
+                "player_rasters": ",".join(self.layer_names("sprite/player/rasters/*.png")),
             },
             implicit_outputs=[player_header],
             asset_deps=["sprite/player"],
@@ -1252,6 +1258,24 @@ class Configure:
         contents.append(mapfs / "title_data.bin")
         contents += [mapfs / "party" / n for n in names("party", "*.png")]
         return contents
+
+    def layer_names(self, pattern: str) -> List[str]:
+        """The names, without extension, of the files matching pattern in any layer that aren't deleted, sorted."""
+        found = set()
+        for layer in self.asset_stack:
+            for path in (ROOT / layer).glob(pattern):
+                if not assets.is_deleted(path, self.asset_stack):
+                    found.add(path.stem)
+        return sorted(found)
+
+    def npc_sprite_names(self) -> List[str]:
+        """Every NPC sprite in the asset stack, sorted by name. A sprite's ID is its position here, from 1."""
+        found = set()
+        for layer in self.asset_stack:
+            for sheet in (ROOT / layer / "sprite/npc").glob("*/SpriteSheet.xml"):
+                if not assets.is_deleted(sheet.parent, self.asset_stack):
+                    found.add(sheet.parent.name)
+        return sorted(found)
 
     def map_sources(self) -> Dict[str, Path]:
         """Every map's source, keyed by map name, from the highest layer holding it.
@@ -2031,18 +2055,12 @@ class Configure:
             },
         )
 
-        if self.version == "jp":
-            build(
-                self.build_path() / "include/recipes.inc.c",
-                [Path("src/registry/recipes_jp.yaml")],
-                "recipes",
-            )
-        else:
-            build(
-                self.build_path() / "include/recipes.inc.c",
-                [Path("src/registry/recipes.yaml")],
-                "recipes",
-            )
+        build(
+            self.build_path() / "include/recipes.inc.c",
+            [Path("src/registry/recipes.yaml")],
+            "recipes",
+            implicit_deps=[BUILD_TOOLS / "recipes.py"],
+        )
 
         build(
             [
@@ -2051,6 +2069,7 @@ class Configure:
             ],
             [Path("src/registry/moves.yaml")],
             "move_data",
+            implicit_deps=[BUILD_TOOLS / "move_data.py"],
         )
 
         build(
@@ -2060,6 +2079,10 @@ class Configure:
             ],
             [Path("src/registry/items.yaml")],
             "item_data",
+            implicit_deps=[
+                BUILD_TOOLS / "item_data.py",
+                self.find_asset("icon/Icons.xml"),
+            ],
             variables={
                 "asset_stack": ",".join(self.asset_stack),
             },
@@ -2081,28 +2104,15 @@ class Configure:
             },
         )
 
-        if self.version == "jp":
-            build(
-                [
-                    self.build_path() / "include/battle/actor_types.inc.c",
-                    self.build_path() / "include/battle/actor_types.h",
-                ],
-                [
-                    Path("src/registry/actors_jp.yaml"),
-                ],
-                "actor_types",
-            )
-        else:
-            build(
-                [
-                    self.build_path() / "include/battle/actor_types.inc.c",
-                    self.build_path() / "include/battle/actor_types.h",
-                ],
-                [
-                    Path("src/registry/actors.yaml"),
-                ],
-                "actor_types",
-            )
+        build(
+            [
+                self.build_path() / "include/battle/actor_types.inc.c",
+                self.build_path() / "include/battle/actor_types.h",
+            ],
+            [Path("src/registry/actors.yaml")],
+            "actor_types",
+            implicit_deps=[BUILD_TOOLS / "actor_types.py"],
+        )
 
         build(
             [precompiled_header_path],

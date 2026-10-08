@@ -89,8 +89,6 @@ PLAYER_PAL_TO_RASTER: Dict[str, int] = {
 }
 
 
-PLAYER_SPRITE_MEDADATA_XML_FILENAME = "player.xml"
-NPC_SPRITE_MEDADATA_XML_FILENAME = "npc.xml"
 
 MAX_COMPONENTS_XML = "maxComponents"
 PALETTE_GROUPS_XML = "paletteGroups"
@@ -310,55 +308,6 @@ def extract_sprites(yay0_data: bytes, raster_sets: List[PlayerSpriteRasterSet]) 
         sprite = PlayerSprite.from_bytes(sprite_data, raster_sets[i])
         ret.append(sprite)
     return ret
-
-
-def write_player_metadata(
-    out_path: Path,
-    cfg: Any,
-    raster_names: List[str],
-    build_date: str,
-) -> None:
-    Names = ET.Element("Names")
-
-    BuildDate = ET.SubElement(Names, "BuildDate")
-    BuildDate.text = build_date
-
-    Sprites = ET.SubElement(Names, "Sprites")
-    for sprite_name in cfg:
-        ET.SubElement(
-            Sprites,
-            "Sprite",
-            name=sprite_name,
-        )
-
-    Rasters = ET.SubElement(Names, "Rasters")
-    for raster_name in raster_names:
-        ET.SubElement(
-            Rasters,
-            "Raster",
-            name=raster_name,
-        )
-
-    xml = ET.ElementTree(Names)
-    pretty_print_xml(xml, out_path / PLAYER_SPRITE_MEDADATA_XML_FILENAME)
-
-
-def write_npc_metadata(
-    out_path: Path,
-    cfg: Any,
-) -> None:
-    Names = ET.Element("Names")
-
-    Sprites = ET.SubElement(Names, "Sprites")
-    for sprite_name in cfg:
-        ET.SubElement(
-            Sprites,
-            "Sprite",
-            name=sprite_name,
-        )
-
-    xml = ET.ElementTree(Names)
-    pretty_print_xml(xml, out_path / NPC_SPRITE_MEDADATA_XML_FILENAME)
 
 
 def write_player_xmls(

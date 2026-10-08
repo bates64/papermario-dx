@@ -41,7 +41,7 @@ s32 reflection_unk_resolve_anim(s32 playerAnim) {
 }
 
 s32 reflection_unk_change_anim_facing(s32 playerAnim) {
-    s32 sprIndex = (playerAnim >> 0x10) & 0xFF;
+    s32 sprIndex = SPR_UNPACK_SPR(playerAnim);
     u32 temp;
 
     switch (sprIndex) {

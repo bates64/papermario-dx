@@ -2,7 +2,6 @@
 """splat's sprite segment. The tables it reads live with the build tools."""
 
 import sys
-import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import List
 
@@ -14,15 +13,11 @@ from splat.util import options
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "build"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "build" / "sprite"))
-from common import get_asset_path
 from sprite_tables import (
-    NPC_SPRITE_MEDADATA_XML_FILENAME,
     NpcSprite,
     PlayerSpriteRasterSet,
     extract_raster_table_entries,
     extract_sprites,
-    write_npc_metadata,
-    write_player_metadata,
     write_player_palettes,
     write_player_rasters,
     write_player_xmls,
@@ -47,7 +42,7 @@ class N64SegPm_sprites(Segment):
     def out_path(self):
         return options.opts.asset_path / "sprite" / "sprites"
 
-    def split_player(self, build_date: str, player_raster_data: bytes, player_yay0_data: bytes) -> None:
+    def split_player(self, player_raster_data: bytes, player_yay0_data: bytes) -> None:
         player_sprite_cfg = self.player_cfg["player_sprites"]
         player_raster_names: List[str] = self.player_cfg["player_rasters"]
 
@@ -84,12 +79,6 @@ class N64SegPm_sprites(Segment):
         player_out_path = self.out_path().parent / "player"
 
         player_out_path.mkdir(parents=True, exist_ok=True)
-        write_player_metadata(
-            self.out_path().parent,
-            player_sprite_cfg,
-            player_raster_names,
-            build_date,
-        )
         write_player_xmls(
             player_out_path,
             player_sprite_cfg,
@@ -117,11 +106,6 @@ class N64SegPm_sprites(Segment):
     def split_npc(self, data: bytes) -> None:
         out_dir = self.out_path().parent / "npc"
 
-        write_npc_metadata(
-            self.out_path().parent,
-            self.npc_cfg,
-        )
-
         for i, sprite_name in enumerate(self.npc_cfg):
             sprite_dir = out_dir / sprite_name
             sprite_dir.mkdir(parents=True, exist_ok=True)
@@ -141,7 +125,6 @@ class N64SegPm_sprites(Segment):
 
     def split(self, rom_bytes) -> None:
         sprite_in_bytes = rom_bytes[self.rom_start : self.rom_end]
-        build_date = sprite_in_bytes[0:0x10].decode("ascii").rstrip("\0")
         player_raster_offset = int.from_bytes(sprite_in_bytes[0x10:0x14], "big") + 0x10
         player_yay0_offset = int.from_bytes(sprite_in_bytes[0x14:0x18], "big") + 0x10
         npc_yay0_offset = int.from_bytes(sprite_in_bytes[0x18:0x1C], "big") + 0x10
@@ -151,23 +134,14 @@ class N64SegPm_sprites(Segment):
         player_yay0_data: bytes = sprite_in_bytes[player_yay0_offset:npc_yay0_offset]
         npc_yay0_data: bytes = sprite_in_bytes[npc_yay0_offset:sprite_end_offset]
 
-        self.split_player(build_date, player_raster_data, player_yay0_data)
+        self.split_player(player_raster_data, player_yay0_data)
         self.split_npc(npc_yay0_data)
 
     def get_linker_entries(self):
         from splat.segtypes.linker_entry import LinkerEntry
-        import splat.scripts.split as split
 
         src_paths = [options.opts.asset_path / "sprite"]
-
-        # read npc.xml - we can't use self.npc_cfg because nonvanilla asset packs can change it
-        # for each sprite, add to src_paths
-        # splat.yaml names each layer by its directory under assets/.
-        asset_stack = tuple(Path("assets") / p for p in split.config["asset_stack"])
-        orderings_tree = ET.parse(get_asset_path(Path("sprite") / NPC_SPRITE_MEDADATA_XML_FILENAME, asset_stack))
-        for sprite_tag in orderings_tree.getroot()[0]:
-            name = sprite_tag.attrib["name"]
-            src_paths.append(options.opts.asset_path / "sprite" / "npc" / name)
+        src_paths += sorted(path.parent for path in (options.opts.asset_path / "sprite" / "npc").glob("*/SpriteSheet.xml"))
 
         return [LinkerEntry(self, src_paths, self.out_path(), self.get_linker_section(), self.get_linker_section())]
 

@@ -35,7 +35,7 @@ if __name__ == "__main__":
     with open(outfile, "w", encoding="utf-8") as f:
         # get sprite index
         s = int(s_in)
-        assert s >= 1
+        assert 1 <= s <= 0xFFF
 
         sprite = npc_from_dir(sprite_name, asset_stack, load_images=False)
 
@@ -68,8 +68,10 @@ if __name__ == "__main__":
             palette_name = palette_name.replace(" ", "_")
             for a, name in enumerate(sprite.animation_names):
                 name = name.replace(" ", "_")
+                assert p <= 0xFF and a <= 0xFF, f"{sprite_name} has too many palettes or animations"
+                anim_id = f"0x{s << 16 | p << 8 | a:06X}"
                 if palette_name == "Default":
-                    write_if_unique(f, f"ANIM_{sprite_name}_{name}", f"0x{s:02X}{p:02X}{a:02X}")
+                    write_if_unique(f, f"ANIM_{sprite_name}_{name}", anim_id)
                 else:
-                    write_if_unique(f, f"ANIM_{sprite_name}_{palette_name}_{name}", f"0x{s:02X}{p:02X}{a:02X}")
+                    write_if_unique(f, f"ANIM_{sprite_name}_{palette_name}_{name}", anim_id)
             f.write("\n")
