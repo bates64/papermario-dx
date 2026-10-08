@@ -70,6 +70,5 @@
     ],
     "search.useIgnoreFiles": false,
     "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix",
-    "workbench.editor.labelFormat": "short",
-    "editor.fontFamily": "'Monaspace Neon', monospace",
+    "workbench.editor.labelFormat": "short"
 }
