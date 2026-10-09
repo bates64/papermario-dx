@@ -448,39 +448,35 @@ class AnimComponent:
             elif cmd.tag == "Keyframe":
                 # treat keyframes as labels
                 labels[cmd.attrib[XML_ATTR_NAME]] = len(commands)
-                # check for non-default transformations
+                # transformations it sets, even to their defaults, which a keyframe of no duration sets for the next
                 duration = int(cmd.attrib[XML_ATTR_DURATION])
-                if duration > 0:
-                    if "pos" in cmd.attrib:
-                        dx, dy, dz = map(int, cmd.attrib["pos"].split(","))
-                        if dx != 0 or dy != 0 or dz != 0:
-                            commands.append(0x3000)
-                            commands.append(dx & 0xFFFF)
-                            commands.append(dy & 0xFFFF)
-                            commands.append(dz & 0xFFFF)
-                    if "rot" in cmd.attrib:
-                        rx, ry, rz = map(int, cmd.attrib["rot"].split(","))
-                        if rx != 0 or ry != 0 or rz != 0:
-                            commands.append(0x4000 + (rx & 0xFFF))
-                            commands.append(ry & 0xFFFF)
-                            commands.append(rz & 0xFFFF)
-                    if "scale" in cmd.attrib:
-                        sx, sy, sz = map(int, cmd.attrib["scale"].split(","))
-                        if sx != 100 or sy != 100 or sz != 100:
-                            # check for uniform scale before generating a command for each coord
-                            if sx == sy == sz:
-                                commands.append(0x5000)
-                                commands.append(sx)
-                            else:
-                                if sx != 100:
-                                    commands.append(0x5001)
-                                    commands.append(sx)
-                                if sy != 100:
-                                    commands.append(0x5002)
-                                    commands.append(sy)
-                                if sz != 100:
-                                    commands.append(0x5003)
-                                    commands.append(sz)
+                if "pos" in cmd.attrib:
+                    dx, dy, dz = map(int, cmd.attrib["pos"].split(","))
+                    commands.append(0x3000)
+                    commands.append(dx & 0xFFFF)
+                    commands.append(dy & 0xFFFF)
+                    commands.append(dz & 0xFFFF)
+                if "rot" in cmd.attrib:
+                    rx, ry, rz = map(int, cmd.attrib["rot"].split(","))
+                    commands.append(0x4000 + (rx & 0xFFF))
+                    commands.append(ry & 0xFFFF)
+                    commands.append(rz & 0xFFFF)
+                if "scale" in cmd.attrib:
+                    sx, sy, sz = map(int, cmd.attrib["scale"].split(","))
+                    # check for uniform scale before generating a command for each coord
+                    if sx == sy == sz:
+                        commands.append(0x5000)
+                        commands.append(sx)
+                    else:
+                        if sx != 100:
+                            commands.append(0x5001)
+                            commands.append(sx)
+                        if sy != 100:
+                            commands.append(0x5002)
+                            commands.append(sy)
+                        if sz != 100:
+                            commands.append(0x5003)
+                            commands.append(sz)
                 # check for img
                 img_name = cmd.attrib.get("img")
                 if img_name is not None:
@@ -507,8 +503,9 @@ class AnimComponent:
                     if palette == -1:
                         palette = 0xFFF
                     commands.append(0x6000 + (palette & 0xFFF))
-                # append wait command
-                commands.append(duration & 0xFFF)
+                # append wait command, unless it has no duration, as its commands run along with the next keyframe's
+                if duration > 0:
+                    commands.append(duration & 0xFFF)
             elif cmd.tag == "Command":  # old Star Rod compatibility
                 commands.append(int(cmd.attrib["val"], 16))
             else:
