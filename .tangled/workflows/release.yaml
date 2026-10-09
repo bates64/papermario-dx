@@ -1,0 +1,50 @@
+# Releases the latest commit of the branch it's run on (see tools/release.py).
+# Run it manually on main for a release, or on a release/YYYY-MM-DD branch for
+# a patch to that release. Pushing the release's tag starts
+# publish-toolchains.yaml. Mirrors .github/workflows/release.yaml.
+#
+# Pushing needs an SSH private key with push access to this repository,
+# stored as the TAG_SSH_KEY pipeline secret.
+
+when:
+  - event: manual
+
+engine: nixery
+
+clone:
+  skip: true
+
+dependencies:
+  nixpkgs:
+    - git
+    - openssh
+    - python3
+
+environment:
+  REPO: "did:plc:dfsxnyhzxwqpmykryrjtjabz"
+  GIT_AUTHOR_NAME: "Star Haven spindle"
+  GIT_AUTHOR_EMAIL: "spindle@starhaven.dev"
+  GIT_COMMITTER_NAME: "Star Haven spindle"
+  GIT_COMMITTER_EMAIL: "spindle@starhaven.dev"
+
+steps:
+  - name: "Release"
+    command: |
+      set -euo pipefail
+      branch="${TANGLED_REF_NAME:?Run this workflow on a branch.}"
+      # ssh refuses to run as a user /etc/passwd doesn't list, and the
+      # image's doesn't list root.
+      echo "root:x:0:0:root:$HOME:/bin/sh" >> /etc/passwd
+      key="$(mktemp)"
+      printf '%s\n' "$TAG_SSH_KEY" > "$key"
+      chmod 600 "$key"
+      export GIT_SSH_COMMAND="ssh -i $key -o StrictHostKeyChecking=accept-new"
+
+      # A fresh clone with full history and tags, rather than the revision
+      # the trigger saved, so the release lands on the branch as it is now.
+      git clone --filter=blob:none --branch "$branch" "git@$TANGLED_REPO_KNOT:$REPO" repo
+      cd repo
+
+      tag=$(python3 tools/release.py --branch "$branch")
+      git push --atomic origin "HEAD:refs/heads/$branch" "$tag"
+      echo "Released $(git rev-parse --short HEAD) as $tag"

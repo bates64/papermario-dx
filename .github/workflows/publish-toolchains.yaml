@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - main
+    # Each release's commit, which for a patch is only on its release branch.
+    tags:
+      - dx-*
 
 env:
   S3_ENDPOINT: https://fsn1.your-objectstorage.com
@@ -57,7 +60,7 @@ jobs:
             if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.$ext" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
               aws s3 cp "$file" "$bucket/toolchains/$hash.$ext" --endpoint-url "$S3_ENDPOINT"
             fi
-            echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/$key" --endpoint-url "$S3_ENDPOINT"
+            echo "$hash" | aws s3 cp - "$bucket/commits/$(git rev-parse HEAD)/$key" --endpoint-url "$S3_ENDPOINT"
           }
           publish result-windows-toolchain/papermario-dx-windows.zip windows zip
           publish result-clangd-index/papermario-dx.idx clangd-index idx
@@ -92,7 +95,7 @@ jobs:
           if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
             aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT"
           fi
-          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/linux-aarch64.tar.xz" --endpoint-url "$S3_ENDPOINT"
+          echo "$hash" | aws s3 cp - "$bucket/commits/$(git rev-parse HEAD)/linux-aarch64.tar.xz" --endpoint-url "$S3_ENDPOINT"
 
   mac:
     name: Publish (${{ matrix.platform }})
@@ -129,4 +132,4 @@ jobs:
           if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT" >/dev/null 2>&1; then
             aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$S3_ENDPOINT"
           fi
-          echo "$hash" | aws s3 cp - "$bucket/commits/${{ github.sha }}/${{ matrix.platform }}.tar.xz" --endpoint-url "$S3_ENDPOINT"
+          echo "$hash" | aws s3 cp - "$bucket/commits/$(git rev-parse HEAD)/${{ matrix.platform }}.tar.xz" --endpoint-url "$S3_ENDPOINT"

@@ -1,6 +1,9 @@
 when:
   - event: ["push"]
     branch: ["main"]
+  # Each release's commit, which for a patch is only on its release branch.
+  - event: ["push"]
+    tag: ["dx-*"]
 
 engine: nixery
 
@@ -9,6 +12,7 @@ dependencies:
     - nix
     - awscli2
     - curl
+    - git
 
 steps:
   - name: "Configure Nix caches"
@@ -47,7 +51,9 @@ steps:
       if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$endpoint" >/dev/null 2>&1; then
         aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$endpoint"
       fi
-      echo "$hash" | aws s3 cp - "$bucket/commits/$TANGLED_SHA/linux-aarch64.tar.xz" --endpoint-url "$endpoint"
+      # For a tag, TANGLED_SHA is the tag rather than the commit it points at.
+      commit=$(git rev-parse HEAD)
+      echo "$hash" | aws s3 cp - "$bucket/commits/$commit/linux-aarch64.tar.xz" --endpoint-url "$endpoint"
 
   - name: "Trigger the rest of the build on GitHub Actions"
     command: |
@@ -55,4 +61,4 @@ steps:
         -H "Authorization: Bearer $GHA_DISPATCH_TOKEN" \
         -H "Accept: application/vnd.github+json" \
         https://api.github.com/repos/star-haven/diorama64-gha/dispatches \
-        -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"sha\":\"$TANGLED_SHA\"}}"
+        -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"sha\":\"$(git rev-parse HEAD)\"}}"

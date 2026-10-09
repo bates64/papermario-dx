@@ -33,27 +33,35 @@ def uri_path(path: PurePath) -> str:
 def candidate_commits(root: Path):
     """Commits that might have a published index, newest first.
 
-    Indexes are only published for commits on dx's main branch, so this starts
-    where the current history meets main and walks back up to 20 commits, in
-    case CI failed for some of them. Mirrors tools/unix/download_toolchain.sh.
+    Indexes are only published for commits on dx's main branch and for dx
+    release tags, so this starts from the newest of them in the current
+    history and walks back up to 20 commits, in case CI failed for some of
+    them. Mirrors tools/unix/download_toolchain.sh.
     """
     if (root / ".jj").is_dir() and shutil.which("jj"):
         remotes = exec_shell(["jj", "git", "remote", "list"], cwd=root).splitlines()
         remote = next((r.split()[0] for r in remotes if "bates64/papermario-dx" in r), None)
         revset = "@"
         if remote:
-            exec_shell(["jj", "git", "fetch", "--quiet", "--remote", f"exact:{remote}", "--branch", "main"], cwd=root)
-            revset = f'fork_point(@ | remote_bookmarks(exact:"main", exact:"{remote}"))'
+            exec_shell(
+                ["jj", "git", "fetch", "--quiet", "--remote", f"exact:{remote}", "--branch", "main", "--tag", "dx-*"],
+                cwd=root,
+            )
+            revset = (
+                f'heads(::@ & ::(remote_bookmarks(exact:"main", exact:"{remote}")'
+                f' | remote_tags(glob:"dx-*", exact:"{remote}")))'
+            )
         return exec_shell(
             ["jj", "log", "--no-graph", "-r", f"ancestors({revset}, 20)", "-T", 'commit_id ++ "\n"'], cwd=root
         ).split()
     if shutil.which("git"):
-        base = exec_shell(["git", "rev-parse", "HEAD"], cwd=root).strip()
-        exec_shell(["git", "fetch", "--quiet", CANONICAL_URL, "main"], cwd=root)
+        base = current = exec_shell(["git", "rev-parse", "HEAD"], cwd=root).strip()
+        exec_shell(["git", "fetch", "--quiet", CANONICAL_URL, "main", "+refs/tags/dx-*:refs/tags/dx-*"], cwd=root)
         main = exec_shell(["git", "rev-parse", "FETCH_HEAD"], cwd=root).strip()
         if main:
             base = exec_shell(["git", "merge-base", base, main], cwd=root).strip() or base
-        return exec_shell(["git", "log", "--format=%H", "-n", "20", base], cwd=root).split()
+        release = exec_shell(["git", "describe", "--tags", "--match", "dx-*", "--abbrev=0", current], cwd=root).split()
+        return exec_shell(["git", "log", "--topo-order", "--format=%H", "-n", "20", base, *release], cwd=root).split()
     return []
 
 

@@ -1,0 +1,62 @@
+name: Release
+
+# Run manually, this releases the latest commit of the branch it's run on (see
+# tools/release.py): on main for a release, or on a release/YYYY-MM-DD branch
+# for a patch to that release. Pushing the release's tag runs this again, to
+# make the release's page, and starts publish-toolchains.yaml. Mirrors
+# .tangled/workflows/release.yaml.
+#
+# main only takes pull requests, except from admins, so pushing the release
+# commit needs a personal access token from an admin with read and write
+# access to this repository's contents, stored as the RELEASE_TOKEN secret.
+# The workflow's own token can't push to main, and its pushes don't start
+# other workflows.
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - dx-*
+
+jobs:
+  release:
+    name: Release
+    if: github.repository == 'bates64/papermario-dx' && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Release
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          tag=$(python3 tools/release.py --branch "$GITHUB_REF_NAME")
+          git push --atomic origin "HEAD:refs/heads/$GITHUB_REF_NAME" "$tag"
+          echo "Released $(git rev-parse --short HEAD) as $tag"
+
+  page:
+    name: Release page
+    if: github.repository == 'bates64/papermario-dx' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make the release's page from its tag's message
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="$GITHUB_REF_NAME"
+          gh release create "$tag" --verify-tag \
+            --title "$(git tag --list --format='%(contents:subject)' "$tag")" \
+            --notes "$(git tag --list --format='%(contents:body)' "$tag")"

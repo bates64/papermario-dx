@@ -15,13 +15,14 @@ set "HAVE_GIT=0"
 where git >nul 2>nul
 if not errorlevel 1 set "HAVE_GIT=1"
 
-:: Toolchains are only published for commits on dx's main branch. Since
-:: users branch away from main, walking back from the current commit alone
-:: would just walk through their own commits, none of which are published.
-:: Fetching main and taking the merge-base finds the point where their
-:: history actually meets dx's, wherever they've branched from. From there,
-:: list up to 20 commits to try - a commit's build can be missing if CI
-:: failed for it.
+:: Toolchains are only published for commits on dx's main branch and for dx
+:: release tags. Since users branch away from those, walking back from the
+:: current commit alone would just walk through their own commits, none of
+:: which are published. Fetching main and the release tags and taking the
+:: newest of them in the user's history finds where it actually meets dx's,
+:: wherever they've branched from. A patch release's tag is off main, so the
+:: fork point with main alone would miss it. From there, list up to 20
+:: commits to try - a commit's build can be missing if CI failed for it.
 set "CANDIDATES_FILE=%DX_DIR%\candidates.txt"
 if exist "%CANDIDATES_FILE%" del "%CANDIDATES_FILE%"
 if "%HAVE_JJ%"=="1" (
@@ -34,21 +35,23 @@ if "%HAVE_JJ%"=="1" (
     )
     set "REVSET=@"
     if defined REMOTE (
-        jj git fetch --quiet --remote "exact:!REMOTE!" --branch main >nul 2>nul
-        set "REVSET=fork_point(@ | remote_bookmarks(exact:main, exact:!REMOTE!))"
+        jj git fetch --quiet --remote "exact:!REMOTE!" --branch main --tag "dx-*" >nul 2>nul
+        set "REVSET=heads(::@ & ::(remote_bookmarks(exact:main, exact:!REMOTE!) | remote_tags(glob:dx-*, exact:!REMOTE!)))"
     )
     jj log --no-graph -r "ancestors(!REVSET!, 20)" -T "commit_id ++ \"\n\"" > "%CANDIDATES_FILE%" 2>nul
 ) else if "%HAVE_GIT%"=="1" (
     set "CURRENT="
     for /f "usebackq delims=" %%C in (`git rev-parse HEAD 2^>nul`) do set "CURRENT=%%C"
     set "BASE=!CURRENT!"
-    git fetch --quiet "%CANONICAL_URL%" main >nul 2>nul
+    git fetch --quiet "%CANONICAL_URL%" main "+refs/tags/dx-*:refs/tags/dx-*" >nul 2>nul
     set "MAIN_HASH="
     for /f "usebackq delims=" %%M in (`git rev-parse FETCH_HEAD 2^>nul`) do set "MAIN_HASH=%%M"
     if defined MAIN_HASH (
         for /f "usebackq delims=" %%B in (`git merge-base "!CURRENT!" "!MAIN_HASH!" 2^>nul`) do set "BASE=%%B"
     )
-    if defined BASE git log --format^=%%H -n 20 "!BASE!" > "%CANDIDATES_FILE%" 2>nul
+    set "RELEASE="
+    for /f "usebackq delims=" %%T in (`git describe --tags --match "dx-*" --abbrev^=0 "!CURRENT!" 2^>nul`) do set "RELEASE=%%T"
+    if defined BASE git log --topo-order --format^=%%H -n 20 "!BASE!" !RELEASE! > "%CANDIDATES_FILE%" 2>nul
 ) else (
     echo Error: this needs jj or git to find the toolchain version to download.
     echo Install jj ^(https://jj-vcs.github.io/jj/latest/install-and-setup/^) or git ^(https://git-scm.com/^).
@@ -82,7 +85,7 @@ del "%CANDIDATES_FILE%"
 
 if not defined HASH (
     echo Error: no published windows toolchain found near commit %BASE%.
-    echo The downloadable toolchain requires a build published from dx's main branch.
+    echo The downloadable toolchain requires a build published from dx's main branch or a dx release.
     exit /b 1
 )
 

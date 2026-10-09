@@ -34,32 +34,35 @@ PLATFORM="$OS-$ARCH"
 
 mkdir -p "$DX_DIR"
 
-# Toolchains are only published for commits on dx's main branch. Since users
-# branch away from main, walking back from the current commit alone would
-# just walk through their own commits, none of which are published. Fetching
-# main and taking the merge-base finds the point where their history
-# actually meets dx's, wherever they've branched from. From there, walk back
-# up to 20 commits until a published toolchain is found - a commit's build
-# can be missing if CI failed for it.
+# Toolchains are only published for commits on dx's main branch and for dx
+# release tags. Since users branch away from those, walking back from the
+# current commit alone would just walk through their own commits, none of
+# which are published. Fetching main and the release tags and taking the
+# newest of them in the user's history finds where it actually meets dx's,
+# wherever they've branched from. A patch release's tag is off main, so the
+# fork point with main alone would miss it. From there, walk back up to 20
+# commits until a published toolchain is found - a commit's build can be
+# missing if CI failed for it.
 if [ -d "$ROOT/.jj" ] && command -v jj >/dev/null 2>&1; then
   # jj can only fetch from a named remote, so use whichever one points at dx.
   REMOTE=$(jj -R "$ROOT" git remote list 2>/dev/null | awk '$2 ~ /bates64\/papermario-dx/ { print $1; exit }')
   REVSET="@"
   if [ -n "$REMOTE" ]; then
-    jj -R "$ROOT" git fetch --quiet --remote "exact:$REMOTE" --branch main >/dev/null 2>&1 || true
-    REVSET="fork_point(@ | remote_bookmarks(exact:\"main\", exact:\"$REMOTE\"))"
+    jj -R "$ROOT" git fetch --quiet --remote "exact:$REMOTE" --branch main --tag "dx-*" >/dev/null 2>&1 || true
+    REVSET="heads(::@ & ::(remote_bookmarks(exact:\"main\", exact:\"$REMOTE\") | remote_tags(glob:\"dx-*\", exact:\"$REMOTE\")))"
   fi
   CANDIDATES=$(jj -R "$ROOT" log --no-graph -r "ancestors($REVSET, 20)" -T 'commit_id ++ "\n"' 2>/dev/null || true)
 elif command -v git >/dev/null 2>&1; then
   CURRENT=$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || true)
   BASE="$CURRENT"
-  git -C "$ROOT" fetch --quiet "$CANONICAL_URL" main 2>/dev/null || true
+  git -C "$ROOT" fetch --quiet "$CANONICAL_URL" main "+refs/tags/dx-*:refs/tags/dx-*" 2>/dev/null || true
   MAIN_HASH=$(git -C "$ROOT" rev-parse FETCH_HEAD 2>/dev/null || true)
   if [ -n "$MAIN_HASH" ]; then
     MERGE_BASE=$(git -C "$ROOT" merge-base "$CURRENT" "$MAIN_HASH" 2>/dev/null || true)
     [ -n "$MERGE_BASE" ] && BASE="$MERGE_BASE"
   fi
-  CANDIDATES=$(git -C "$ROOT" log --format=%H -n 20 "$BASE" 2>/dev/null || echo "$BASE")
+  RELEASE=$(git -C "$ROOT" describe --tags --match "dx-*" --abbrev=0 "$CURRENT" 2>/dev/null || true)
+  CANDIDATES=$(git -C "$ROOT" log --topo-order --format=%H -n 20 "$BASE" $RELEASE 2>/dev/null || echo "$BASE")
 else
   echo "Error: this needs jj or git to find the toolchain version to download." >&2
   echo "Install jj (https://jj-vcs.github.io/jj/latest/install-and-setup/) or git (https://git-scm.com/)." >&2
@@ -85,7 +88,7 @@ done
 
 if [ -z "$HASH" ]; then
   echo "Error: no published $PLATFORM toolchain found near commit $BASE." >&2
-  echo "The downloadable toolchain requires a build published from dx's main branch." >&2
+  echo "The downloadable toolchain requires a build published from dx's main branch or a dx release." >&2
   exit 1
 fi
 
