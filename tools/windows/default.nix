@@ -44,6 +44,15 @@ let
     zlib = mingw.zlib;
   };
 
+  # The Unix toolchain's gdb is nixpkgs', which is this version.
+  mips-gdb-windows = mingw.callPackage ./gdb.nix {
+    buildCC = pkgs.stdenv.cc;
+    gdbSrc = pkgs.gdb.src;
+    gdbVersion = pkgs.gdb.version;
+    inherit python-windows;
+    inherit (pkgs) texinfo bison flex writeShellScript;
+  };
+
   mips-toolchain = pkgs.symlinkJoin {
     name = "mips-toolchain-windows";
     paths = [ mips-binutils-windows mips-gcc-windows ];
@@ -193,6 +202,12 @@ let
     mkdir -p $dir/mips-linux-gnu/include/c++/$gccVersion
     cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $dir/mips-linux-gnu/include/c++/$gccVersion/
 
+    # gdb, which finds its Python modules in ../share/gdb relative to itself
+    cp -L ${mips-gdb-windows}/bin/mips-linux-gnu-gdb.exe $dir/bin/gdb.exe
+    cp -Lf ${mips-gdb-windows}/bin/*.dll ${mips-gdb-windows}/bin/python313.zip $dir/bin/
+    mkdir -p $dir/share
+    cp -rL ${mips-gdb-windows}/share/gdb $dir/share/
+
     # Rust tools
     cp ${pigment64-windows}/bin/pigment64.exe $dir/bin/
     cp ${crunch64-windows}/bin/crunch64.exe $dir/bin/
@@ -252,7 +267,7 @@ let
 in
 zip // {
   passthru = {
-    inherit mips-toolchain python-windows ninja-windows sccache-windows n64crc-windows
+    inherit mips-toolchain mips-gdb-windows python-windows ninja-windows sccache-windows n64crc-windows
             pigment64-windows crunch64-windows evt-validate-windows llvm-windows wineRom pythonDeps pythonDepsWindows;
 
     tests.wine = pkgs.runCommand "mips-toolchain-windows-test" {
@@ -277,6 +292,13 @@ zip // {
       wine ${mips-toolchain}/bin/mips-linux-gnu-ld.exe \
         -e _start -o test.elf test.o
       file test.elf | grep -q 'ELF 32-bit MSB executable, MIPS'
+
+      echo "=== gdb ==="
+      wine ${mips-gdb-windows}/bin/mips-linux-gnu-gdb.exe -nx -batch \
+        -ex "python import gdb; print(gdb.VERSION)" \
+        -ex "file test.elf" \
+        -ex "info address _start" | tee gdb.log
+      grep -q 'Symbol "_start" is at' gdb.log
 
       echo "=== pigment64 ==="
       wine ${pigment64-windows}/bin/pigment64.exe --version
