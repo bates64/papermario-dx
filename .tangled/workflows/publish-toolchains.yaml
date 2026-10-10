@@ -1,3 +1,6 @@
+# Each step skips itself outside dx's own repository, such as in a mod, which
+# carries dx's history and so this workflow.
+
 when:
   - event: ["push"]
     branch: ["main"]
@@ -21,6 +24,7 @@ dependencies:
 steps:
   - name: "Configure Nix caches"
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
@@ -30,11 +34,13 @@ steps:
 
   - name: "Fix up FHS paths"
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       mkdir -p /usr/bin
       ln -sf "$(command -v env)" /usr/bin/env
 
   - name: "Fetch base ROM"
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
@@ -43,10 +49,13 @@ steps:
     # x86_64-linux, Windows, or macOS hardware is built by
     # star-haven/diorama64-gha on GitHub Actions instead (dispatched below),
     # rather than emulated here.
-    command: nix build .#unix-toolchain --out-link result-toolchain-aarch64-linux
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix build .#unix-toolchain --out-link result-toolchain-aarch64-linux
 
   - name: "Publish to S3"
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       set -e
       endpoint="https://fsn1.your-objectstorage.com"
       bucket="s3://starhaven/papermario-dx"
@@ -61,6 +70,7 @@ steps:
 
   - name: "Trigger the rest of the build on GitHub Actions"
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       curl -sf -X POST \
         -H "Authorization: Bearer $GHA_DISPATCH_TOKEN" \
         -H "Accept: application/vnd.github+json" \
@@ -68,4 +78,6 @@ steps:
         -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"sha\":\"$(git rev-parse HEAD)\"}}"
 
   - name: "Prune and index toolchains"
-    command: S3_ENDPOINT="https://fsn1.your-objectstorage.com" tools/index_toolchains.sh
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      S3_ENDPOINT="https://fsn1.your-objectstorage.com" tools/index_toolchains.sh

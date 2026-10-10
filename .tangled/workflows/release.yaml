@@ -6,6 +6,9 @@
 # Pushing needs an SSH private key with push access to this repository,
 # stored as the TAG_SSH_KEY pipeline secret.
 
+# Each step skips itself outside dx's own repository, such as in a mod, which
+# carries dx's history and so this workflow.
+
 when:
   - event: manual
 
@@ -30,6 +33,7 @@ environment:
 steps:
   - name: "Release"
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       set -euo pipefail
       branch="${TANGLED_REF_NAME:?Run this workflow on a branch.}"
       # ssh refuses to run as a user /etc/passwd doesn't list, and the

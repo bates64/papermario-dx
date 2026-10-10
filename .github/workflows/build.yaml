@@ -8,6 +8,7 @@ on:
 jobs:
   game:
     name: Game
+    if: github.repository == 'bates64/papermario-dx'
     runs-on: ubuntu-latest
     outputs:
       rom-sha256: ${{ steps.rom-sha.outputs.sha256 }}
@@ -98,6 +99,7 @@ jobs:
 
   windows-toolchain:
     name: Windows Toolchain
+    if: github.repository == 'bates64/papermario-dx'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -157,6 +159,7 @@ jobs:
           echo "sha256=$hash" >> $env:GITHUB_OUTPUT
   game-unix-toolchain:
     name: Game (Unix toolchain)
+    if: github.repository == 'bates64/papermario-dx'
     runs-on: ubuntu-latest
     outputs:
       rom-sha256: ${{ steps.unix-rom-sha.outputs.sha256 }}

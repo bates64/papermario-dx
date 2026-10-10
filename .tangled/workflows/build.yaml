@@ -1,3 +1,6 @@
+# Each step skips itself outside dx's own repository, such as in a mod, which
+# carries dx's history and so this workflow.
+
 when:
   - event: ["push"]
     branch: ["main"]
@@ -19,6 +22,7 @@ steps:
     # priority number - otherwise nix falls back to each cache's own
     # self-advertised priority, which doesn't reflect network distance.
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
@@ -31,6 +35,7 @@ steps:
     # #!/usr/bin/env shebang (used throughout the build, not just by us)
     # can't be exec'd directly. coreutils provides env, just not at that path.
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       mkdir -p /usr/bin
       ln -sf "$(command -v env)" /usr/bin/env
 
@@ -39,11 +44,14 @@ steps:
     # substituter for this path itself. Placing it in the local store first
     # (rather than relying on substitution) satisfies the check.
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
   - name: "Build shell"
-    command: nix develop --profile ./dev-profile --command true
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix develop --profile ./dev-profile --command true
 
   - name: "Push to Attic"
     # Attic skips pushing paths already signed by an "upstream cache" (e.g.
@@ -51,17 +59,24 @@ steps:
     # is wasted disk space. Since the whole point here is a local copy that
     # avoids re-fetching those same paths from the internet, override that.
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       attic login spindle "https://spindle-nix-cache.starhaven.dev" "$ATTIC_TOKEN"
       attic push --ignore-upstream-cache-filter spindle:papermario-dx ./dev-profile
 
   - name: "Push to Cachix"
-    command: cachix push papermario-dx ./dev-profile
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      cachix push papermario-dx ./dev-profile
 
   - name: "Configure"
-    command: nix develop --command ./tools/configure.sh
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix develop --command ./tools/configure.sh
 
   - name: "Build game"
-    command: nix develop --command tools/build_without_warnings.sh
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix develop --command tools/build_without_warnings.sh
 
   - name: "Check formatting"
     # spindle's checkout is a single-commit shallow clone with no shared
@@ -70,6 +85,7 @@ steps:
     # GitHub Actions equivalent this replaces - a formatting nit shouldn't
     # block a build.
     command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
         git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
         files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
@@ -79,7 +95,11 @@ steps:
       fi
 
   - name: "Run clang-tidy"
-    command: nix develop --command tools/clang_tidy_all.sh
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix develop --command tools/clang_tidy_all.sh
 
   - name: "Check struct offset comments"
-    command: nix develop --command python3 tools/audit_struct_layout.py --all
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix develop --command python3 tools/audit_struct_layout.py --all
