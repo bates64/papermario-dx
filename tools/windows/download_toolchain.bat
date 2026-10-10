@@ -47,8 +47,10 @@ if "%HAVE_JJ%"=="1" (
     echo Install jj ^(https://jj-vcs.github.io/jj/latest/install-and-setup/^) or git ^(https://git-scm.com/^).
     exit /b 1
 )
+:: Not /x: findstr only finds a line's end before a carriage return, which jj
+:: and git don't write. Every line is a whole hash, so /b matches exactly.
 set "COMMIT="
-for /f "usebackq delims=" %%L in (`findstr /l /x /g:"%PUBLISHED%" "%HISTORY%" 2^>nul`) do (
+for /f "usebackq delims=" %%L in (`findstr /l /b /g:"%PUBLISHED%" "%HISTORY%" 2^>nul`) do (
     if not defined COMMIT set "COMMIT=%%L"
 )
 del "%HISTORY%" "%PUBLISHED%"
