@@ -80,4 +80,6 @@ steps:
   - name: "Prune and index toolchains"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
-      S3_ENDPOINT="https://fsn1.your-objectstorage.com" tools/index_toolchains.sh
+      # Logs what it would delete, without deleting, until a run's log has been
+      # checked.
+      DRY_RUN=1 S3_ENDPOINT="https://fsn1.your-objectstorage.com" tools/index_toolchains.sh
