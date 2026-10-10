@@ -4,7 +4,6 @@
 # tools/windows/download_toolchain.bat.
 set -e
 
-CANONICAL_URL="https://github.com/bates64/papermario-dx.git"
 S3_BASE="https://fsn1.your-objectstorage.com/starhaven/papermario-dx"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 DX_DIR="$ROOT/.dx"
@@ -34,63 +33,41 @@ PLATFORM="$OS-$ARCH"
 
 mkdir -p "$DX_DIR"
 
-# Toolchains are only published for commits on dx's main branch and for dx
-# release tags. Since users branch away from those, walking back from the
-# current commit alone would just walk through their own commits, none of
-# which are published. Fetching main and the release tags and taking the
-# newest of them in the user's history finds where it actually meets dx's,
-# wherever they've branched from. A patch release's tag is off main, so the
-# fork point with main alone would miss it. From there, walk back up to 20
-# commits until a published toolchain is found - a commit's build can be
-# missing if CI failed for it.
+# The index lists every commit with published toolchains, with each one's
+# hash, so finding the toolchain needs no fetch and works in shallow clones.
+# The last copy downloaded is kept for building offline.
+INDEX="$DX_DIR/index.txt"
+if curl -fsL -o "$INDEX.new" "$S3_BASE/index.txt" 2>/dev/null; then
+  mv "$INDEX.new" "$INDEX"
+else
+  rm -f "$INDEX.new"
+fi
+if [ ! -f "$INDEX" ]; then
+  echo "Error: couldn't download the list of published toolchains from $S3_BASE/index.txt." >&2
+  exit 1
+fi
+PUBLISHED="$DX_DIR/published.txt"
+awk -v key="$PLATFORM.tar.xz" '$1 == "commit" && $3 == key { print $2 }' "$INDEX" > "$PUBLISHED"
+
+# The newest published commit in the current history is where it meets dx's,
+# wherever it's branched from. A commit CI failed for isn't in the index, so
+# this finds the one before it.
 if [ -d "$ROOT/.jj" ] && command -v jj >/dev/null 2>&1; then
-  # jj can only fetch from a named remote, so use whichever one points at dx.
-  REMOTE=$(jj -R "$ROOT" git remote list 2>/dev/null | awk '$2 ~ /bates64\/papermario-dx/ { print $1; exit }')
-  REVSET="@"
-  if [ -n "$REMOTE" ]; then
-    jj -R "$ROOT" git fetch --quiet --remote "exact:$REMOTE" --branch main --tag "dx-*" >/dev/null 2>&1 || true
-    REVSET="heads(::@ & ::(remote_bookmarks(exact:\"main\", exact:\"$REMOTE\") | remote_tags(glob:\"dx-*\", exact:\"$REMOTE\")))"
-  fi
-  CANDIDATES=$(jj -R "$ROOT" log --no-graph -r "ancestors($REVSET, 20)" -T 'commit_id ++ "\n"' 2>/dev/null || true)
+  COMMIT=$(jj -R "$ROOT" log --no-graph -r "::@" -T 'commit_id ++ "\n"' 2>/dev/null | grep -Fx -m 1 -f "$PUBLISHED" || true)
 elif command -v git >/dev/null 2>&1; then
-  CURRENT=$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || true)
-  BASE="$CURRENT"
-  git -C "$ROOT" fetch --quiet "$CANONICAL_URL" main "+refs/tags/dx-*:refs/tags/dx-*" 2>/dev/null || true
-  MAIN_HASH=$(git -C "$ROOT" rev-parse FETCH_HEAD 2>/dev/null || true)
-  if [ -n "$MAIN_HASH" ]; then
-    MERGE_BASE=$(git -C "$ROOT" merge-base "$CURRENT" "$MAIN_HASH" 2>/dev/null || true)
-    [ -n "$MERGE_BASE" ] && BASE="$MERGE_BASE"
-  fi
-  RELEASE=$(git -C "$ROOT" describe --tags --match "dx-*" --abbrev=0 "$CURRENT" 2>/dev/null || true)
-  CANDIDATES=$(git -C "$ROOT" log --topo-order --format=%H -n 20 "$BASE" $RELEASE 2>/dev/null || echo "$BASE")
+  COMMIT=$(git -C "$ROOT" rev-list --topo-order HEAD 2>/dev/null | grep -Fx -m 1 -f "$PUBLISHED" || true)
 else
   echo "Error: this needs jj or git to find the toolchain version to download." >&2
   echo "Install jj (https://jj-vcs.github.io/jj/latest/install-and-setup/) or git (https://git-scm.com/)." >&2
   exit 1
 fi
 
-if [ -z "$CANDIDATES" ]; then
-  echo "Error: could not determine the current commit." >&2
+if [ -z "$COMMIT" ]; then
+  echo "Error: no commit in this history has a published $PLATFORM toolchain." >&2
+  echo "Toolchains are kept for every dx release and dx's newest commits on main. Merge a dx release, then build again." >&2
   exit 1
 fi
-BASE=$(echo "$CANDIDATES" | head -n 1)
-
-HASH=""
-COMMIT=""
-for commit in $CANDIDATES; do
-  candidate=$(curl -fsL "$S3_BASE/commits/$commit/$PLATFORM.tar.xz" 2>/dev/null || true)
-  if [ -n "$candidate" ]; then
-    HASH="$candidate"
-    COMMIT="$commit"
-    break
-  fi
-done
-
-if [ -z "$HASH" ]; then
-  echo "Error: no published $PLATFORM toolchain found near commit $BASE." >&2
-  echo "The downloadable toolchain requires a build published from dx's main branch or a dx release." >&2
-  exit 1
-fi
+HASH=$(awk -v commit="$COMMIT" -v key="$PLATFORM.tar.xz" '$1 == "commit" && $2 == commit && $3 == key { print $4; exit }' "$INDEX")
 
 NEED_DOWNLOAD=0
 if [ ! -x "$TOOLCHAIN_DIR/bin/mips-linux-gnu-gcc" ]; then

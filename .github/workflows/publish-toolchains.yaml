@@ -135,15 +135,15 @@ jobs:
           echo "$hash" | aws s3 cp - "$bucket/commits/$(git rev-parse HEAD)/${{ matrix.platform }}.tar.xz" --endpoint-url "$S3_ENDPOINT"
 
   prune:
-    name: Prune old toolchains
+    name: Prune and index toolchains
     if: github.repository == 'bates64/papermario-dx'
     needs: [linux, linux-aarch64, mac]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prune old toolchains
+      - name: Prune and index toolchains
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: tools/prune_toolchains.sh
+        run: tools/index_toolchains.sh

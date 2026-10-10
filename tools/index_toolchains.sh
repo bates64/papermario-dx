@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
-# Deletes published toolchains that no mod should need any more. It keeps the
-# toolchains of every dx-* release and of the newest commits on main, deletes
-# every other commit's record of its toolchains, then deletes the toolchains
-# no remaining record names.
+# Deletes published toolchains that no mod should need any more, then writes
+# index.txt, which the download scripts use to find a mod's toolchain.
 #
-# Toolchains uploaded in the last day are always kept: another job may have
-# uploaded one and not yet recorded which commit it's for.
+# It keeps the toolchains of every dx-* release and of the newest commits on
+# main, deletes every other commit's record of its toolchains, then deletes the
+# toolchains no remaining record names. Toolchains uploaded in the last day are
+# always kept: another job may have uploaded one and not yet recorded which
+# commit it's for.
+#
+# Each line of the index is either `commit <commit> <file> <hash>`, for each
+# toolchain a kept commit has, or `release <tag> <commit>`, for each release.
 #
 # Run it from a clone of dx, with S3_ENDPOINT and AWS credentials set. Set
-# DRY_RUN=1 to only print what it would delete.
+# DRY_RUN=1 to print what it would delete instead of deleting it. It writes the
+# index either way, since the download scripts can't work without it.
 set -euo pipefail
 
 KEEP_MAIN=50
@@ -57,3 +62,19 @@ aws s3 ls "$BUCKET/toolchains/" | while read -r day _ _ name; do
     delete "$BUCKET/toolchains/$name"
   fi
 done
+
+index=$(
+  for commit in $keep; do
+    [ -d "$records/$commit" ] || continue
+    for record in "$records/$commit"/*; do
+      echo "commit $commit ${record##*/} $(cat "$record")"
+    done
+  done
+  git tag --list "dx-*" | while read -r tag; do
+    commit=$(git rev-parse "$tag^{commit}")
+    if [ -d "$records/$commit" ]; then
+      echo "release $tag $commit"
+    fi
+  done
+)
+echo "$index" | aws s3 cp --quiet - "$BUCKET/index.txt" --content-type text/plain --cache-control no-cache

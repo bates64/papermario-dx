@@ -1,6 +1,5 @@
 @echo off
 
-set "CANONICAL_URL=https://github.com/bates64/papermario-dx.git"
 set "S3_BASE=https://fsn1.your-objectstorage.com/starhaven/papermario-dx"
 
 :: Ensure .dx directory exists
@@ -15,78 +14,53 @@ set "HAVE_GIT=0"
 where git >nul 2>nul
 if not errorlevel 1 set "HAVE_GIT=1"
 
-:: Toolchains are only published for commits on dx's main branch and for dx
-:: release tags. Since users branch away from those, walking back from the
-:: current commit alone would just walk through their own commits, none of
-:: which are published. Fetching main and the release tags and taking the
-:: newest of them in the user's history finds where it actually meets dx's,
-:: wherever they've branched from. A patch release's tag is off main, so the
-:: fork point with main alone would miss it. From there, list up to 20
-:: commits to try - a commit's build can be missing if CI failed for it.
-set "CANDIDATES_FILE=%DX_DIR%\candidates.txt"
-if exist "%CANDIDATES_FILE%" del "%CANDIDATES_FILE%"
+:: The index lists every commit with published toolchains, with each one's
+:: hash, so finding the toolchain needs no fetch and works in shallow clones.
+:: The last copy downloaded is kept for building offline.
+set "INDEX=%DX_DIR%\index.txt"
+curl -fsL -o "%INDEX%.new" "%S3_BASE%/index.txt" 2>nul
+if not errorlevel 1 (
+    move /y "%INDEX%.new" "%INDEX%" >nul
+) else (
+    del "%INDEX%.new" 2>nul
+)
+if not exist "%INDEX%" (
+    echo Error: couldn't download the list of published toolchains from %S3_BASE%/index.txt.
+    exit /b 1
+)
+set "PUBLISHED=%DX_DIR%\published.txt"
+type nul > "%PUBLISHED%"
+for /f "usebackq tokens=1-3" %%A in ("%INDEX%") do (
+    if "%%A"=="commit" if "%%C"=="windows" echo %%B>>"%PUBLISHED%"
+)
+
+:: The newest published commit in the current history is where it meets dx's,
+:: wherever it's branched from. A commit CI failed for isn't in the index, so
+:: this finds the one before it.
+set "HISTORY=%DX_DIR%\history.txt"
 if "%HAVE_JJ%"=="1" (
-    rem jj can only fetch from a named remote, so use whichever one points at dx.
-    set "REMOTE="
-    for /f "usebackq tokens=1,2" %%A in (`jj git remote list 2^>nul`) do (
-        if not defined REMOTE (
-            echo %%B | findstr /c:"bates64/papermario-dx" >nul && set "REMOTE=%%A"
-        )
-    )
-    set "REVSET=@"
-    if defined REMOTE (
-        jj git fetch --quiet --remote "exact:!REMOTE!" --branch main --tag "dx-*" >nul 2>nul
-        set "REVSET=heads(::@ & ::(remote_bookmarks(exact:main, exact:!REMOTE!) | remote_tags(glob:dx-*, exact:!REMOTE!)))"
-    )
-    jj log --no-graph -r "ancestors(!REVSET!, 20)" -T "commit_id ++ \"\n\"" > "%CANDIDATES_FILE%" 2>nul
+    jj log --no-graph -r "::@" -T "commit_id ++ \"\n\"" > "%HISTORY%" 2>nul
 ) else if "%HAVE_GIT%"=="1" (
-    set "CURRENT="
-    for /f "usebackq delims=" %%C in (`git rev-parse HEAD 2^>nul`) do set "CURRENT=%%C"
-    set "BASE=!CURRENT!"
-    git fetch --quiet "%CANONICAL_URL%" main "+refs/tags/dx-*:refs/tags/dx-*" >nul 2>nul
-    set "MAIN_HASH="
-    for /f "usebackq delims=" %%M in (`git rev-parse FETCH_HEAD 2^>nul`) do set "MAIN_HASH=%%M"
-    if defined MAIN_HASH (
-        for /f "usebackq delims=" %%B in (`git merge-base "!CURRENT!" "!MAIN_HASH!" 2^>nul`) do set "BASE=%%B"
-    )
-    set "RELEASE="
-    for /f "usebackq delims=" %%T in (`git describe --tags --match "dx-*" --abbrev^=0 "!CURRENT!" 2^>nul`) do set "RELEASE=%%T"
-    if defined BASE git log --topo-order --format^=%%H -n 20 "!BASE!" !RELEASE! > "%CANDIDATES_FILE%" 2>nul
+    git rev-list --topo-order HEAD > "%HISTORY%" 2>nul
 ) else (
     echo Error: this needs jj or git to find the toolchain version to download.
     echo Install jj ^(https://jj-vcs.github.io/jj/latest/install-and-setup/^) or git ^(https://git-scm.com/^).
     exit /b 1
 )
-
-set "BASE="
-if exist "%CANDIDATES_FILE%" set /p BASE=<"%CANDIDATES_FILE%"
-if not defined BASE (
-    echo Error: could not determine the current commit.
-    exit /b 1
-)
-
-set "HASH="
 set "COMMIT="
-for /f "usebackq delims=" %%L in ("%CANDIDATES_FILE%") do (
-    if not defined HASH (
-        set "CANDIDATE="
-        curl -fsL -o "%TEMP%\dx-manifest.txt" "%S3_BASE%/commits/%%L/windows" 2>nul
-        if not errorlevel 1 (
-            set /p CANDIDATE=<"%TEMP%\dx-manifest.txt"
-            if defined CANDIDATE (
-                set "HASH=!CANDIDATE!"
-                set "COMMIT=%%L"
-            )
-        )
-        del "%TEMP%\dx-manifest.txt" 2>nul
-    )
+for /f "usebackq delims=" %%L in (`findstr /l /x /g:"%PUBLISHED%" "%HISTORY%" 2^>nul`) do (
+    if not defined COMMIT set "COMMIT=%%L"
 )
-del "%CANDIDATES_FILE%"
+del "%HISTORY%" "%PUBLISHED%"
 
-if not defined HASH (
-    echo Error: no published windows toolchain found near commit %BASE%.
-    echo The downloadable toolchain requires a build published from dx's main branch or a dx release.
+if not defined COMMIT (
+    echo Error: no commit in this history has a published windows toolchain.
+    echo Toolchains are kept for every dx release and dx's newest commits on main. Merge a dx release, then build again.
     exit /b 1
+)
+set "HASH="
+for /f "usebackq tokens=1-4" %%A in ("%INDEX%") do (
+    if "%%A"=="commit" if "%%B"=="%COMMIT%" if "%%C"=="windows" set "HASH=%%D"
 )
 
 :: Check if toolchain needs downloading

@@ -67,5 +67,5 @@ steps:
         https://api.github.com/repos/star-haven/diorama64-gha/dispatches \
         -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"sha\":\"$(git rev-parse HEAD)\"}}"
 
-  - name: "Prune old toolchains"
-    command: S3_ENDPOINT="https://fsn1.your-objectstorage.com" tools/prune_toolchains.sh
+  - name: "Prune and index toolchains"
+    command: S3_ENDPOINT="https://fsn1.your-objectstorage.com" tools/index_toolchains.sh
