@@ -13,6 +13,7 @@ dependencies:
     - nix
     - cachix
     - attic-client
+    - xz
 
 
 steps:
