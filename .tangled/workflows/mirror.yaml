@@ -23,6 +23,7 @@ dependencies:
   nixpkgs:
     - git
     - openssh
+    - cacert
 
 environment:
   REPO: "did:plc:dfsxnyhzxwqpmykryrjtjabz"
@@ -42,6 +43,6 @@ steps:
 
       # The pipeline's checkout is one shallow revision. A mirror clone has
       # the full history, with every branch and tag as its own ref.
-      git clone --mirror "git@$TANGLED_REPO_KNOT:$REPO" repo.git
+      git clone --mirror "https://$TANGLED_REPO_KNOT/$REPO" repo.git
       cd repo.git
       git push --mirror git@github.com:bates64/papermario-dx.git
