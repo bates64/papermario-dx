@@ -12,4 +12,3 @@ EvtScript EVS_MakeEntities = {
     Return
     End
 };
-

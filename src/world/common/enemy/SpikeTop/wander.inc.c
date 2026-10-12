@@ -101,7 +101,7 @@ API_CALLABLE(BuzzyBeetle_AwaitLanding) {
 
     if (npc->flags & NPC_FLAG_GROUNDED) {
         currentEncounter->encounterList[enemy->encounterIndex]->battle =
-            (const char*)enemy->varTable[EVAR_BUZZY_BEETLE_CEILING_BATTLE];
+            (const char*) enemy->varTable[EVAR_BUZZY_BEETLE_CEILING_BATTLE];
         return ApiStatus_DONE2;
     }
 

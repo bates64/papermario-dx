@@ -51,7 +51,7 @@ b32 evt_is_label_char(char ch) {
 }
 
 b32 evt_try_read_label_name(Bytecode label, char* out, s32 outSize) {
-    const char* src = (const char*)label;
+    const char* src = (const char*) label;
     s32 len = 0;
     char ch;
 
@@ -106,8 +106,12 @@ b32 evt_label_values_match(Bytecode lhs, Bytecode rhs) {
             char lhsName[EVT_MAX_LABEL_NAME_LEN];
             char rhsName[EVT_MAX_LABEL_NAME_LEN];
 
-            ASSERT_MSG(evt_try_read_label_name(lhs, lhsName, sizeof(lhsName)), "Invalid string label value: 0x%08lX", (u32) lhs);
-            ASSERT_MSG(evt_try_read_label_name(rhs, rhsName, sizeof(rhsName)), "Invalid string label value: 0x%08lX", (u32) rhs);
+            ASSERT_MSG(
+                evt_try_read_label_name(lhs, lhsName, sizeof(lhsName)), "Invalid string label value: 0x%08lX", (u32) lhs
+            );
+            ASSERT_MSG(
+                evt_try_read_label_name(rhs, rhsName, sizeof(rhsName)), "Invalid string label value: 0x%08lX", (u32) rhs
+            );
             return strcmp(lhsName, rhsName) == 0;
         }
         default:
@@ -129,9 +133,7 @@ Bytecode evt_float_to_fixed_var(f32 value) {
 
 static ALWAYS_INLINE void evt_assert_valid_arg_var(Evt* script, s32 argIndex) {
     ASSERT_MSG(
-        argIndex >= 0 && argIndex < script->argCount,
-        "ArgVar(%ld) read with only %ld arg(s)",
-        argIndex,
+        argIndex >= 0 && argIndex < script->argCount, "ArgVar(%ld) read with only %ld arg(s)", argIndex,
         script->argCount
     );
 }
@@ -193,7 +195,7 @@ ApiStatus evt_handle_loop(Evt* script) {
 
     ASSERT(loopDepth < EVT_MAX_LOOP_DEPTH);
 
-    script->loopStartTable[loopDepth] = (s32)args;
+    script->loopStartTable[loopDepth] = (s32) args;
     script->loopCounterTable[loopDepth] = var;
     script->loopTypeTable[loopDepth] = EVT_LOOP_TYPE_BASIC;
 
@@ -210,7 +212,7 @@ ApiStatus evt_handle_end_loop(Evt* script) {
     loopCounter = script->loopCounterTable[loopDepth];
 
     if (loopCounter == 0) {
-        script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
+        script->ptrNextLine = (Bytecode*) script->loopStartTable[loopDepth];
         return ApiStatus_NEXT;
     }
 
@@ -223,7 +225,7 @@ ApiStatus evt_handle_end_loop(Evt* script) {
     }
 
     if (loopCounter != 0) {
-        script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
+        script->ptrNextLine = (Bytecode*) script->loopStartTable[loopDepth];
         return ApiStatus_NEXT;
     } else {
         script->loopDepth--;
@@ -248,8 +250,7 @@ ApiStatus evt_handle_break_loop(Evt* script) {
 ApiStatus evt_handle_continue_loop(Evt* script) {
     ASSERT(script->loopDepth >= 0);
     ASSERT_MSG(
-        script->loopTypeTable[script->loopDepth] != EVT_LOOP_TYPE_LERP,
-        "ContinueLoop is not allowed inside Lerp"
+        script->loopTypeTable[script->loopDepth] != EVT_LOOP_TYPE_LERP, "ContinueLoop is not allowed inside Lerp"
     );
     evt_skip_to_loop_end(script);
     return ApiStatus_NEXT;
@@ -259,12 +260,9 @@ ApiStatus evt_handle_retry_loop(Evt* script) {
     s32 loopDepth = script->loopDepth;
 
     ASSERT(loopDepth >= 0);
-    ASSERT_MSG(
-        script->loopTypeTable[loopDepth] != EVT_LOOP_TYPE_LERP,
-        "RetryLoop is not allowed inside Lerp"
-    );
+    ASSERT_MSG(script->loopTypeTable[loopDepth] != EVT_LOOP_TYPE_LERP, "RetryLoop is not allowed inside Lerp");
     evt_skip_to_loop_end(script);
-    script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
+    script->ptrNextLine = (Bytecode*) script->loopStartTable[loopDepth];
     return ApiStatus_NEXT;
 }
 
@@ -282,7 +280,7 @@ ApiStatus evt_handle_lerp(Evt* script) {
     ASSERT_MSG(duration >= 0, "Lerp duration must be >= 0");
     ASSERT_MSG(!script->lerpActive, "nested Lerp is not allowed");
 
-    script->loopStartTable[loopDepth] = (s32)args;
+    script->loopStartTable[loopDepth] = (s32) args;
     script->loopTypeTable[loopDepth] = EVT_LOOP_TYPE_LERP;
 
     script->lerpActive = true;
@@ -315,14 +313,10 @@ ApiStatus evt_handle_end_lerp(Evt* script) {
     }
 
     state->elapsed++;
-    evt_set_float_variable(script, state->outVar, update_lerp(
-        state->easing,
-        state->start,
-        state->end,
-        state->elapsed,
-        state->duration
-    ));
-    script->ptrNextLine = (Bytecode*)script->loopStartTable[loopDepth];
+    evt_set_float_variable(
+        script, state->outVar, update_lerp(state->easing, state->start, state->end, state->elapsed, state->duration)
+    );
+    script->ptrNextLine = (Bytecode*) script->loopStartTable[loopDepth];
     return ApiStatus_YIELD;
 }
 
@@ -1312,11 +1306,7 @@ ApiStatus evt_handle_peek_buf_float(Evt* script) {
 }
 
 s32 evt_get_mem_type_size(EvtMemType kind) {
-    ASSERT_MSG(
-        kind >= EVT_MEM_U8 && kind <= EVT_MEM_F32,
-        "Unknown Evt memory type: %ld",
-        (s32)kind
-    );
+    ASSERT_MSG(kind >= EVT_MEM_U8 && kind <= EVT_MEM_F32, "Unknown Evt memory type: %ld", (s32) kind);
 
     switch (kind) {
         case EVT_MEM_U8:
@@ -1345,13 +1335,9 @@ void* evt_get_mem_address(Evt* script, Bytecode baseAddress, Bytecode index, Evt
     ASSERT_MSG(baseAddress != 0, "Evt memory access used a null address");
 
     typeSize = evt_get_mem_type_size(kind);
-    address = (u8*)baseAddress + evt_get_variable(script, index) * typeSize;
+    address = (u8*) baseAddress + evt_get_variable(script, index) * typeSize;
 
-    ASSERT_MSG(
-        ((u32)address & (typeSize - 1)) == 0,
-        "Evt memory access is not %ld-byte aligned",
-        typeSize
-    );
+    ASSERT_MSG(((u32) address & (typeSize - 1)) == 0, "Evt memory access is not %ld-byte aligned", typeSize);
     return address;
 }
 
@@ -1365,28 +1351,28 @@ ApiStatus evt_handle_mem_get(Evt* script) {
 
     switch (kind) {
         case EVT_MEM_U8:
-            evt_set_variable(script, outVar, *(u8*)address);
+            evt_set_variable(script, outVar, *(u8*) address);
             break;
         case EVT_MEM_S8:
-            evt_set_variable(script, outVar, *(s8*)address);
+            evt_set_variable(script, outVar, *(s8*) address);
             break;
         case EVT_MEM_U16:
-            evt_set_variable(script, outVar, *(u16*)address);
+            evt_set_variable(script, outVar, *(u16*) address);
             break;
         case EVT_MEM_S16:
-            evt_set_variable(script, outVar, *(s16*)address);
+            evt_set_variable(script, outVar, *(s16*) address);
             break;
         case EVT_MEM_U32:
-            evt_set_variable(script, outVar, (s32)*(u32*)address);
+            evt_set_variable(script, outVar, (s32) *(u32*) address);
             break;
         case EVT_MEM_S32:
-            evt_set_variable(script, outVar, *(s32*)address);
+            evt_set_variable(script, outVar, *(s32*) address);
             break;
         case EVT_MEM_F32:
-            evt_set_float_variable(script, outVar, *(f32*)address);
+            evt_set_float_variable(script, outVar, *(f32*) address);
             break;
         default:
-            PANIC_MSG("Unknown Evt memory type: %ld", (s32)kind);
+            PANIC_MSG("Unknown Evt memory type: %ld", (s32) kind);
     }
 
     return ApiStatus_NEXT;
@@ -1402,40 +1388,40 @@ ApiStatus evt_handle_mem_set(Evt* script) {
 
     switch (kind) {
         case EVT_MEM_U8:
-            *(u8*)address = (u8)evt_get_variable(script, value);
+            *(u8*) address = (u8) evt_get_variable(script, value);
             break;
         case EVT_MEM_S8:
-            *(s8*)address = (s8)evt_get_variable(script, value);
+            *(s8*) address = (s8) evt_get_variable(script, value);
             break;
         case EVT_MEM_U16:
-            *(u16*)address = (u16)evt_get_variable(script, value);
+            *(u16*) address = (u16) evt_get_variable(script, value);
             break;
         case EVT_MEM_S16:
-            *(s16*)address = (s16)evt_get_variable(script, value);
+            *(s16*) address = (s16) evt_get_variable(script, value);
             break;
         case EVT_MEM_U32:
-            *(u32*)address = (u32)evt_get_variable(script, value);
+            *(u32*) address = (u32) evt_get_variable(script, value);
             break;
         case EVT_MEM_S32:
-            *(s32*)address = evt_get_variable(script, value);
+            *(s32*) address = evt_get_variable(script, value);
             break;
         case EVT_MEM_F32:
-            *(f32*)address = evt_get_float_variable(script, value);
+            *(f32*) address = evt_get_float_variable(script, value);
             break;
         default:
-            PANIC_MSG("Unknown Evt memory type: %ld", (s32)kind);
+            PANIC_MSG("Unknown Evt memory type: %ld", (s32) kind);
     }
 
     return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_array(Evt* script) {
-    script->array = (s32*)evt_get_variable(script, *script->ptrReadPos);
+    script->array = (s32*) evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_NEXT;
 }
 
 ApiStatus evt_handle_set_flag_array(Evt* script) {
-    script->flagArray = (s32*)evt_get_variable(script, *script->ptrReadPos);
+    script->flagArray = (s32*) evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_NEXT;
 }
 
@@ -1444,8 +1430,8 @@ ApiStatus evt_handle_allocate_array(Evt* script) {
     s32 size = evt_get_variable(script, *args++);
     Bytecode var = *args++;
 
-    script->array = (s32*)heap_malloc(size * 4);
-    evt_set_variable(script, var, (s32)script->array);
+    script->array = (s32*) heap_malloc(size * 4);
+    evt_set_variable(script, var, (s32) script->array);
     return ApiStatus_NEXT;
 }
 
@@ -1503,19 +1489,19 @@ s32 evt_call_eval_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
 
     switch (argc) {
         case 0:
-            return ((EvtEval0Func)func)();
+            return ((EvtEval0Func) func)();
         case 1:
-            return ((EvtEval1Func)func)(argv[0]);
+            return ((EvtEval1Func) func)(argv[0]);
         case 2:
-            return ((EvtEval2Func)func)(argv[0], argv[1]);
+            return ((EvtEval2Func) func)(argv[0], argv[1]);
         case 3:
-            return ((EvtEval3Func)func)(argv[0], argv[1], argv[2]);
+            return ((EvtEval3Func) func)(argv[0], argv[1], argv[2]);
         case 4:
-            return ((EvtEval4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            return ((EvtEval4Func) func)(argv[0], argv[1], argv[2], argv[3]);
         case 5:
-            return ((EvtEval5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            return ((EvtEval5Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
         case 6:
-            return ((EvtEval6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            return ((EvtEval6Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
     }
 
     PANIC();
@@ -1536,19 +1522,19 @@ f32 evt_call_evalF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) {
 
     switch (argc) {
         case 0:
-            return ((EvtEvalF0Func)func)();
+            return ((EvtEvalF0Func) func)();
         case 1:
-            return ((EvtEvalF1Func)func)(argv[0]);
+            return ((EvtEvalF1Func) func)(argv[0]);
         case 2:
-            return ((EvtEvalF2Func)func)(argv[0], argv[1]);
+            return ((EvtEvalF2Func) func)(argv[0], argv[1]);
         case 3:
-            return ((EvtEvalF3Func)func)(argv[0], argv[1], argv[2]);
+            return ((EvtEvalF3Func) func)(argv[0], argv[1], argv[2]);
         case 4:
-            return ((EvtEvalF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            return ((EvtEvalF4Func) func)(argv[0], argv[1], argv[2], argv[3]);
         case 5:
-            return ((EvtEvalF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            return ((EvtEvalF5Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
         case 6:
-            return ((EvtEvalF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            return ((EvtEvalF6Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
     }
 
     PANIC();
@@ -1569,25 +1555,25 @@ void evt_call_invoke_func(Evt* script, Bytecode func, Bytecode* args, s32 argc) 
 
     switch (argc) {
         case 0:
-            ((EvtInvoke0Func)func)();
+            ((EvtInvoke0Func) func)();
             return;
         case 1:
-            ((EvtInvoke1Func)func)(argv[0]);
+            ((EvtInvoke1Func) func)(argv[0]);
             return;
         case 2:
-            ((EvtInvoke2Func)func)(argv[0], argv[1]);
+            ((EvtInvoke2Func) func)(argv[0], argv[1]);
             return;
         case 3:
-            ((EvtInvoke3Func)func)(argv[0], argv[1], argv[2]);
+            ((EvtInvoke3Func) func)(argv[0], argv[1], argv[2]);
             return;
         case 4:
-            ((EvtInvoke4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            ((EvtInvoke4Func) func)(argv[0], argv[1], argv[2], argv[3]);
             return;
         case 5:
-            ((EvtInvoke5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            ((EvtInvoke5Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
             return;
         case 6:
-            ((EvtInvoke6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            ((EvtInvoke6Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
             return;
     }
 
@@ -1608,25 +1594,25 @@ void evt_call_invokeF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc)
 
     switch (argc) {
         case 0:
-            ((EvtInvokeF0Func)func)();
+            ((EvtInvokeF0Func) func)();
             return;
         case 1:
-            ((EvtInvokeF1Func)func)(argv[0]);
+            ((EvtInvokeF1Func) func)(argv[0]);
             return;
         case 2:
-            ((EvtInvokeF2Func)func)(argv[0], argv[1]);
+            ((EvtInvokeF2Func) func)(argv[0], argv[1]);
             return;
         case 3:
-            ((EvtInvokeF3Func)func)(argv[0], argv[1], argv[2]);
+            ((EvtInvokeF3Func) func)(argv[0], argv[1], argv[2]);
             return;
         case 4:
-            ((EvtInvokeF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            ((EvtInvokeF4Func) func)(argv[0], argv[1], argv[2], argv[3]);
             return;
         case 5:
-            ((EvtInvokeF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            ((EvtInvokeF5Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
             return;
         case 6:
-            ((EvtInvokeF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            ((EvtInvokeF6Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
             return;
     }
 
@@ -1647,19 +1633,19 @@ s32 evt_call_if_evalF_func(Evt* script, Bytecode func, Bytecode* args, s32 argc)
 
     switch (argc) {
         case 0:
-            return ((EvtPredicateF0Func)func)();
+            return ((EvtPredicateF0Func) func)();
         case 1:
-            return ((EvtPredicateF1Func)func)(argv[0]);
+            return ((EvtPredicateF1Func) func)(argv[0]);
         case 2:
-            return ((EvtPredicateF2Func)func)(argv[0], argv[1]);
+            return ((EvtPredicateF2Func) func)(argv[0], argv[1]);
         case 3:
-            return ((EvtPredicateF3Func)func)(argv[0], argv[1], argv[2]);
+            return ((EvtPredicateF3Func) func)(argv[0], argv[1], argv[2]);
         case 4:
-            return ((EvtPredicateF4Func)func)(argv[0], argv[1], argv[2], argv[3]);
+            return ((EvtPredicateF4Func) func)(argv[0], argv[1], argv[2], argv[3]);
         case 5:
-            return ((EvtPredicateF5Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
+            return ((EvtPredicateF5Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4]);
         case 6:
-            return ((EvtPredicateF6Func)func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+            return ((EvtPredicateF6Func) func)(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
     }
 
     PANIC();
@@ -1755,7 +1741,7 @@ ApiStatus evt_handle_call(Evt* script) {
         func = script->callFunction;
         ret = func(script, isInitialCall);
     } else {
-        script->callFunction = (ApiFunc)evt_get_variable(script, *args++);
+        script->callFunction = (ApiFunc) evt_get_variable(script, *args++);
         script->ptrReadPos = args;
         script->curArgc--;
         script->blocked = true;
@@ -1830,7 +1816,7 @@ void evt_set_script_args(Evt* newScript, Evt* caller, Bytecode* args, s32 argCou
 
 ApiStatus evt_handle_exec1(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    EvtScript* newSource = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* newSource = (EvtScript*) evt_get_variable(script, *args++);
     Evt* newScript;
     s32 i;
 
@@ -1856,7 +1842,7 @@ ApiStatus evt_handle_exec1(Evt* script) {
 
 ApiStatus evt_handle_exec1_get_id(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    EvtScript* newSource = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* newSource = (EvtScript*) evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
     Evt* newScript;
     s32 i;
@@ -1885,7 +1871,7 @@ ApiStatus evt_handle_exec1_get_id(Evt* script) {
 
 ApiStatus evt_handle_exec_wait(Evt* script) {
     Bytecode* args = script->ptrReadPos;
-    EvtScript* newSource = (EvtScript*)evt_get_variable(script, *args++);
+    EvtScript* newSource = (EvtScript*) evt_get_variable(script, *args++);
     Evt* newScript = start_child_script(script, newSource, 0);
 
     evt_set_script_args(newScript, script, args, script->curArgc - 1);
@@ -1929,7 +1915,7 @@ s32 evt_trigger_on_activate_exec_script(Trigger* trigger) {
 ApiStatus evt_handle_bind(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Trigger* trigger;
-    Bytecode* triggerScript = (Bytecode*)evt_get_variable(script, *args++);
+    Bytecode* triggerScript = (Bytecode*) evt_get_variable(script, *args++);
     Bytecode triggerType = *args++;
     Bytecode colliderIDVar = *args++;
     Bytecode hasInteractPrompt = *args++;
@@ -1944,7 +1930,7 @@ ApiStatus evt_handle_bind(Evt* script) {
     bp.onActivateFunc = evt_trigger_on_activate_exec_script;
 
     trigger = create_trigger(&bp);
-    trigger->script.source = (EvtScript*)triggerScript;
+    trigger->script.source = (EvtScript*) triggerScript;
     clear_bound_script(&trigger->script);
     trigger->priority = script->priority;
     trigger->varTable[0] = evt_get_variable(script, script->varTable[0]);
@@ -1952,14 +1938,14 @@ ApiStatus evt_handle_bind(Evt* script) {
     trigger->varTable[2] = evt_get_variable(script, script->varTable[2]);
 
     if (triggerOut != 0) {
-        evt_set_variable(script, triggerOut, (s32)trigger);
+        evt_set_variable(script, triggerOut, (s32) trigger);
     }
 
     return ApiStatus_NEXT;
 }
 
 API_CALLABLE(DeleteTrigger) {
-    delete_trigger((Trigger*)evt_get_variable(script, *script->ptrReadPos));
+    delete_trigger((Trigger*) evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_NEXT;
 }
 
@@ -2065,10 +2051,10 @@ s32 evt_trigger_on_activate_lock(Trigger* trigger) {
 ApiStatus evt_handle_bind_lock(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Trigger* trigger;
-    Bytecode* triggerScript = (Bytecode*)evt_get_variable(script, *args++);
+    Bytecode* triggerScript = (Bytecode*) evt_get_variable(script, *args++);
     Bytecode triggerType = *args++;
     Bytecode colliderIDVar = *args++;
-    s32* itemList = (s32*)evt_get_variable(script, *args++);
+    s32* itemList = (s32*) evt_get_variable(script, *args++);
     Bytecode triggerOut = *args++;
     s32 hasInteractPrompt = *args++;
     TriggerBlueprint bp;
@@ -2082,7 +2068,7 @@ ApiStatus evt_handle_bind_lock(Evt* script) {
     bp.hasPlayerInteractPrompt = hasInteractPrompt;
 
     trigger = create_trigger(&bp);
-    trigger->script.source = (EvtScript*)triggerScript;
+    trigger->script.source = (EvtScript*) triggerScript;
     clear_bound_script(&trigger->script);
     trigger->priority = script->priority;
     trigger->varTable[0] = evt_get_variable(script, script->varTable[0]);
@@ -2114,7 +2100,8 @@ Bytecode* evt_find_thread_block_end(Bytecode* startLine, s32 endOpcode) {
             continue;
         }
         if ((endOpcode == EVT_OP_END_THREAD && opcode == EVT_OP_THREAD)
-            || (endOpcode == EVT_OP_END_CHILD_THREAD && opcode == EVT_OP_CHILD_THREAD)) {
+            || (endOpcode == EVT_OP_END_CHILD_THREAD && opcode == EVT_OP_CHILD_THREAD))
+        {
             nestedDepth++;
         }
     }
@@ -2128,7 +2115,9 @@ ApiStatus evt_handle_thread(Evt* script) {
     Bytecode* endLine = evt_find_thread_block_end(startLine, EVT_OP_END_THREAD);
 
     script->ptrNextLine = endLine;
-    newScript = start_script_in_group((EvtScript*)startLine, script->priority, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD, script->groupFlags);
+    newScript = start_script_in_group(
+        (EvtScript*) startLine, script->priority, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD, script->groupFlags
+    );
     newScript->owner1.actorID = script->owner1.actorID;
     newScript->owner2.npcID = script->owner2.npcID;
     newScript->array = script->array;
@@ -2282,9 +2271,9 @@ ApiStatus evt_handle_print_debug_var(Evt* script) {
 }
 
 ApiStatus evt_handle_debug_breakpoint(Evt* script) {
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     script->debugPaused = true;
-    #endif
+#endif
     return ApiStatus_NEXT;
 }
 
@@ -2328,13 +2317,12 @@ s32 evt_execute_next_command(Evt* script) {
         s32 executedOpcode;
         b32 wasFinalizing;
 
-        #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
         if (script->debugPaused && script->curOpcode != EVT_OP_INTERNAL_FETCH) {
             switch (script->debugStep) {
                 case DEBUG_EVT_STEP_NONE:
                     ASSERT_MSG(
-                        script->terminationState != EVT_TERMINATION_FINALIZING,
-                        "Finally block attempted to pause"
+                        script->terminationState != EVT_TERMINATION_FINALIZING, "Finally block attempted to pause"
                     );
                     return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
                 case DEBUG_EVT_STEP_ONCE:
@@ -2345,12 +2333,12 @@ s32 evt_execute_next_command(Evt* script) {
                     break;
             }
         }
-        #endif
+#endif
 
         commandsExecuted++;
         if (commandsExecuted >= 10000) {
             char scriptName[0x80];
-            backtrace_address_to_string((u32)script->ptrFirstLine, scriptName, -1);
+            backtrace_address_to_string((u32) script->ptrFirstLine, scriptName, -1);
             PANIC_MSG("Script %s is blocking for ages (infinite loop?)", scriptName);
         }
 
@@ -2358,8 +2346,7 @@ s32 evt_execute_next_command(Evt* script) {
         executedOpcode = script->curOpcode;
 
         ASSERT_MSG(
-            !wasFinalizing || !evt_opcode_forbidden_in_finally(executedOpcode),
-            "Command is not allowed inside Finally"
+            !wasFinalizing || !evt_opcode_forbidden_in_finally(executedOpcode), "Command is not allowed inside Finally"
         );
 
         switch (script->curOpcode) {
@@ -2752,8 +2739,7 @@ s32 evt_execute_next_command(Evt* script) {
         // only End may finish a Finally block
         if (wasFinalizing && script->terminationState != EVT_TERMINATION_FINALIZING) {
             ASSERT_MSG(
-                executedOpcode == EVT_OP_END
-                    || executedOpcode == EVT_OP_END_THREAD
+                executedOpcode == EVT_OP_END || executedOpcode == EVT_OP_END_THREAD
                     || executedOpcode == EVT_OP_END_CHILD_THREAD,
                 "Finally block ended before reaching its terminator"
             );
@@ -2761,26 +2747,20 @@ s32 evt_execute_next_command(Evt* script) {
 
         // stop here while children terminate or this script waits to be destroyed
         if (script->terminationState == EVT_TERMINATION_AWAITING_CHILDREN
-            || script->terminationState == EVT_TERMINATION_DESTROY_PENDING
-        ) {
+            || script->terminationState == EVT_TERMINATION_DESTROY_PENDING)
+        {
             return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
         }
 
         // FINISH stops here without advancing to another command
         if (status == VmStatus_FINISH) {
-            ASSERT_MSG(
-                !wasFinalizing,
-                "Finally block ended before reaching its terminator"
-            );
+            ASSERT_MSG(!wasFinalizing, "Finally block ended before reaching its terminator");
             return evt_finish_execution(script, EVT_CMD_RESULT_YIELD);
         }
 
         // report errors after marking this script as no longer executing
         if (status < 0) {
-            ASSERT_MSG(
-                !wasFinalizing,
-                "Command in Finally returned an error"
-            );
+            ASSERT_MSG(!wasFinalizing, "Command in Finally returned an error");
             return evt_finish_execution(script, EVT_CMD_RESULT_ERROR);
         }
 
@@ -2797,12 +2777,12 @@ s32 evt_execute_next_command(Evt* script) {
             continue;
         }
 
-        #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
         // pause again now that the current command is done blocking
         if (script->debugStep == DEBUG_EVT_STEP_OVER) {
             script->debugStep = DEBUG_EVT_STEP_NONE;
         }
-        #endif
+#endif
 
         // advance to the next command on the next scheduled update
         if (status == ApiStatus_YIELD) {
@@ -2842,7 +2822,7 @@ s32 evt_get_variable(Evt* script, EvtVar var) {
         var = EVT_INDEX_OF_ARRAY_VAR(var);
         var = script->array[var];
         if (var > EVT_LIMIT) {
-            if (var <= EVT_FIXED_CUTOFF){
+            if (var <= EVT_FIXED_CUTOFF) {
                 var = evt_fixed_var_to_float(var);
             }
         }
@@ -2875,7 +2855,7 @@ s32 evt_get_variable(Evt* script, EvtVar var) {
         var = gMapVars[var];
         if (var > EVT_LIMIT) {
             temp = EVT_FIXED_CUTOFF;
-            if (var <= temp){
+            if (var <= temp) {
                 var = evt_fixed_var_to_float(var);
             }
         }
@@ -2888,12 +2868,12 @@ s32 evt_get_variable(Evt* script, EvtVar var) {
         var = script->varTable[var];
         if (var > EVT_LIMIT) {
             temp = EVT_FIXED_CUTOFF;
-            if (var <= temp){
+            if (var <= temp) {
                 var = evt_fixed_var_to_float(var);
             }
         }
     }
-        return var;
+    return var;
 }
 
 s32 evt_get_variable_index(s32 var) {

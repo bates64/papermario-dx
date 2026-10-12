@@ -244,7 +244,6 @@ EvtScript EVS_802A39C8 = {
     End
 };
 
-
 EvtScript EVS_802A3D1C = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
@@ -296,7 +295,6 @@ EvtScript EVS_802A3D1C = {
     Return
     End
 };
-
 
 EvtScript EVS_802A4070 = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
@@ -350,7 +348,4 @@ EvtScript EVS_802A4070 = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove0,
-    &EVS_UseMove1,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove0, &EVS_UseMove1, );

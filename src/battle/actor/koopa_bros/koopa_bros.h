@@ -34,7 +34,7 @@ extern EvtScript EVS_HandleCommand_Red;
  *
  * The current state of the tower is stored in fake_bowser's actor var AVAR_Boss_TowerState
  * The state of each Koopa is stored in their actor var AVAR_Koopa_State
-*/
+ */
 
 // Keep this order in the area formation: green, yellow, black, red, fake_bowser.
 enum {

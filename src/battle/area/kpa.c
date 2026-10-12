@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Formation bony_beetle_2 = {
     OVL_ACTOR_BY_IDX("bony_beetle", BTL_POS_GROUND_B, 10, 1),
     OVL_ACTOR_BY_IDX("bony_beetle", BTL_POS_GROUND_C, 9),

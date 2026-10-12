@@ -43,7 +43,6 @@ static API_CALLABLE(UnkLightningBoltFxFunc1) {
             effectState->radius = 10.0f;
             effectState->yaw = i * 120;
             effectState->angularSpeed = 15.0f;
-
         }
         return ApiStatus_BLOCK;
     }

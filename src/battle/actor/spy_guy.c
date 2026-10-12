@@ -435,7 +435,6 @@ EvtScript EVS_Attack_Slingshot = {
 
 #include "battle/common/CheckPlayerCanLoseCommand.inc.c"
 
-
 EvtScript EVS_ManageItemMotion = {
     Label(0)
         Call(GetActorVar, ACTOR_SELF, AVAR_ItemState, LVarA)

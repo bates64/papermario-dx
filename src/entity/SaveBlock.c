@@ -186,7 +186,8 @@ EntityScript Entity_SaveBlock_ScriptResume = {
     es_End
 };
 
-EntityModelScript Entity_SaveBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_SaveBlock_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER3);
+EntityModelScript Entity_SaveBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_SaveBlock_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER3);
 
 OVL_DEF_ENTITY(SavePoint) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

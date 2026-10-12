@@ -33,21 +33,15 @@ void worker_draw_letter(void) {
         LetterAlpha = 255;
     }
 
-    draw_ci_image_with_clipping(LetterImgData[0].raster,
-        LetterImgData[0].width, LetterImgData[0].height,
-        LetterImgData[0].format, LetterImgData[0].bitDepth,
-        LetterImgData[0].palette,
-        85, 97,
-        0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
-        LetterAlpha);
+    draw_ci_image_with_clipping(
+        LetterImgData[0].raster, LetterImgData[0].width, LetterImgData[0].height, LetterImgData[0].format,
+        LetterImgData[0].bitDepth, LetterImgData[0].palette, 85, 97, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, LetterAlpha
+    );
 
-    draw_ci_image_with_clipping(LetterImgData[1].raster,
-        LetterImgData[1].width, LetterImgData[1].height,
-        LetterImgData[1].format, LetterImgData[1].bitDepth,
-        LetterImgData[1].palette,
-        160, 102,
-        0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
-        LetterAlpha);
+    draw_ci_image_with_clipping(
+        LetterImgData[1].raster, LetterImgData[1].width, LetterImgData[1].height, LetterImgData[1].format,
+        LetterImgData[1].bitDepth, LetterImgData[1].palette, 160, 102, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, LetterAlpha
+    );
 }
 
 s32 LetterStoryRequirements[] = {
@@ -112,12 +106,12 @@ IMG_PTR LetterDmaOffsets[] = {
     charset_letter_content_12_OFFSET, (IMG_PTR) charset_letter_content_12_pal_OFFSET,
 };
 
-API_CALLABLE(InitLetters){
+API_CALLABLE(InitLetters) {
     script->functionTemp[3] = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(ReadLetters){
+API_CALLABLE(ReadLetters) {
     PopupMenu* menu = &ChooseDocumentPopupMenu;
     s32 temp;
     s32 userIndex;
@@ -222,12 +216,14 @@ API_CALLABLE(ReadLetters){
                     evt_set_variable(nullptr, GF_KMR20_ReadThankYouLetterFromKoopaVillage, true);
                 }
 
-                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[0],
-                         charset_ROM_START + (s32) LetterDmaOffsets[0] + sizeof(LetterBackgroundImg),
-                         LetterBackgroundImg);
-                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[1],
-                         charset_ROM_START + (s32) LetterDmaOffsets[1] + sizeof(LetterBackgroundPal),
-                         LetterBackgroundPal);
+                dma_copy(
+                    charset_ROM_START + (s32) LetterDmaOffsets[0],
+                    charset_ROM_START + (s32) LetterDmaOffsets[0] + sizeof(LetterBackgroundImg), LetterBackgroundImg
+                );
+                dma_copy(
+                    charset_ROM_START + (s32) LetterDmaOffsets[1],
+                    charset_ROM_START + (s32) LetterDmaOffsets[1] + sizeof(LetterBackgroundPal), LetterBackgroundPal
+                );
 
                 LetterImgData[0].raster = LetterBackgroundImg;
                 LetterImgData[0].palette = LetterBackgroundPal;
@@ -236,12 +232,16 @@ API_CALLABLE(ReadLetters){
                 LetterImgData[0].format = G_IM_FMT_CI;
                 LetterImgData[0].bitDepth = G_IM_SIZ_4b;
 
-                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 2],
-                         charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 2] + sizeof(LetterPhotoImg),
-                         LetterPhotoImg);
-                dma_copy(charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 3],
-                         charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 3] + sizeof(LetterPhotoPal),
-                         LetterPhotoPal);
+                dma_copy(
+                    charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 2],
+                    charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 2] + sizeof(LetterPhotoImg),
+                    LetterPhotoImg
+                );
+                dma_copy(
+                    charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 3],
+                    charset_ROM_START + (s32) LetterDmaOffsets[(userIndex * 2) + 3] + sizeof(LetterPhotoPal),
+                    LetterPhotoPal
+                );
 
                 LetterImgData[1].raster = LetterPhotoImg;
                 LetterImgData[1].palette = LetterPhotoPal;
@@ -259,7 +259,7 @@ API_CALLABLE(ReadLetters){
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(CleanupLetters){
+API_CALLABLE(CleanupLetters) {
     free_worker(LetterWorkerID);
     return ApiStatus_DONE2;
 }
@@ -326,12 +326,12 @@ s32 DiaryEntryStringIDs[] = {
     MSG_Document_LuigisDiary_12,
 };
 
-API_CALLABLE(InitDiary){
+API_CALLABLE(InitDiary) {
     script->functionTemp[3] = 0;
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(ReadDiary){
+API_CALLABLE(ReadDiary) {
     PopupMenu* menu = &ChooseDocumentPopupMenu;
     s32 userIndex;
     s32 numEntries;
@@ -405,7 +405,7 @@ API_CALLABLE(ReadDiary){
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(MuteAmbienceVolume_Documents){
+API_CALLABLE(MuteAmbienceVolume_Documents) {
     snd_ambient_set_volume(0, 1000, 1);
     return ApiStatus_DONE2;
 }

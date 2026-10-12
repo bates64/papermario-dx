@@ -492,7 +492,6 @@ EvtScript EVS_Flying_TakeTurn = {
     End
 };
 
-
 EvtScript EVS_KnockDown = {
     Call(HideHealthBar, ACTOR_SELF)
     Call(SetPartFlags, ACTOR_SELF, PRT_FLYING, ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_NO_SHADOW | ACTOR_PART_FLAG_NO_TARGET)

@@ -44,7 +44,6 @@ extern HudScript HES_StatusSPShine;
 extern HudScript HES_StatusSPEmptyIncrement;
 extern HudScript HES_StatusStarEmpty;
 
-
 extern HudScript HES_StatusSlash;
 
 void status_bar_start_blinking_coins(void);
@@ -730,11 +729,10 @@ void update_status_bar(void) {
     s32 spBars;
     s32 maxStarPower;
 
-    if (gGameStatusPtr->introPart >= INTRO_PART_0
-        || gGameStatusPtr->demoState != DEMO_STATE_NONE
+    if (gGameStatusPtr->introPart >= INTRO_PART_0 || gGameStatusPtr->demoState != DEMO_STATE_NONE
         || (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH)
-        || evt_get_variable(nullptr, GB_StoryProgress) >= STORY_EPILOGUE
-    ) {
+        || evt_get_variable(nullptr, GB_StoryProgress) >= STORY_EPILOGUE)
+    {
         return;
     }
 
@@ -897,8 +895,14 @@ void update_status_bar(void) {
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, SCREEN_XMIN, SCREEN_YMIN, SCREEN_XMAX, SCREEN_YMAX);
     x = statusBar->drawPosX;
     y = statusBar->drawPosY;
-    draw_box(0, WINDOW_STYLE_5, x,       y, 0, 174, 35, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
-    draw_box(0, WINDOW_STYLE_6, x + 174, y, 0, 122, 25, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(
+        0, WINDOW_STYLE_5, x, y, 0, 174, 35, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
+        SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
+    draw_box(
+        0, WINDOW_STYLE_6, x + 174, y, 0, 122, 25, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
+        SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+    );
 
     if (statusBar->hpBlinkTimeLeft > 0) {
         statusBar->hpBlinkTimeLeft--;
@@ -1103,13 +1107,41 @@ void update_status_bar(void) {
             s32 limit = statusBar->powBarsToBlink * 8;
             if (sp50 < limit) {
                 while (true) {
-                    i++; s1++; if (i >= limit) { break; }
-                    i++; s1++; if (i >= limit) { break; }
-                    i++; s1++; if (i >= limit) { break; }
-                    i++; s1++; if (i >= limit) { break; }
-                    i++; s1++; if (i >= limit) { break; }
-                    i++; s1++; if (i >= limit) { break; }
-                    i++; s1++; if (i >= limit) { break; }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
+                    i++;
+                    s1++;
+                    if (i >= limit) {
+                        break;
+                    }
                     i++;
                     s1 = 0;
                     sp50++;
@@ -1309,7 +1341,10 @@ void coin_counter_draw_content(void* data, s32 posX, s32 posY) {
     hud_element_set_render_pos(iconIndex, posX + 15, posY + 11);
     hud_element_draw_clipped(iconIndex);
 
-    draw_number(statusBar->displayCoins, posX + 58, posY + 4, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+    draw_number(
+        statusBar->displayCoins, posX + 58, posY + 4, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, 255,
+        DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+    );
 }
 
 void update_coin_counter(void) {
@@ -1339,7 +1374,7 @@ void update_coin_counter(void) {
             return;
         }
 
-        set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_hidden_window_update);
+        set_window_update(WIN_CURRENCY_COUNTER, (s32) basic_hidden_window_update);
         statusBar->coinCountDisposeTime = 15;
         ShowingCoinCounter = false;
         HidingCoinCounter = true;
@@ -1372,8 +1407,10 @@ void show_coin_counter(void) {
     }
 
     if (statusBar->coinCounterHideDelay == 0) {
-        set_window_properties(WIN_CURRENCY_COUNTER, 32, 164, 64, 20, WINDOW_PRIORITY_21, coin_counter_draw_content, 0, -1);
-        set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_window_update);
+        set_window_properties(
+            WIN_CURRENCY_COUNTER, 32, 164, 64, 20, WINDOW_PRIORITY_21, coin_counter_draw_content, 0, -1
+        );
+        set_window_update(WIN_CURRENCY_COUNTER, (s32) basic_window_update);
         statusBar->coinCountTimesHID = hid = hud_element_create(HES_MenuTimes);
         hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
         hud_element_set_tint(hid, 255, 255, 255);
@@ -1421,9 +1458,9 @@ void draw_status_ui(void) {
     update_status_bar();
     update_coin_counter();
 
-    #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
     dx_debug_menu_main();
-    #endif
+#endif
 }
 
 void open_status_bar_slowly(void) {

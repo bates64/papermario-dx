@@ -24,7 +24,7 @@ void partner_init_put_away(Npc* partner) {
 }
 
 s32 partner_put_away(Npc* partner) {
-    switch (PutAwayState){
+    switch (PutAwayState) {
         case PUT_AWAY_INIT:
             partner->flags &= ~(NPC_FLAG_GRAVITY | NPC_FLAG_FLYING);
             partner->moveToPos.x = gPlayerStatus.pos.x;
@@ -38,7 +38,8 @@ s32 partner_put_away(Npc* partner) {
             partner->duration = 15;
             partner->jumpScale = 1.6f;
             partner->moveSpeed = partner->planarFlyDist / partner->duration;
-            partner->jumpVel = calc_projectile_v0(partner->pos.y, partner->moveToPos.y, partner->jumpScale, partner->duration);
+            partner->jumpVel =
+                calc_projectile_v0(partner->pos.y, partner->moveToPos.y, partner->jumpScale, partner->duration);
             partner->curAnim = gPartnerAnimations[CurrentPartnerID].jump;
             enable_npc_blur(partner);
             PutAwayState = PUT_AWAY_ARC;
@@ -105,13 +106,14 @@ s32 partner_get_out(Npc* partner) {
                 testZ = moveToZ;
                 add_vec2D_polar(&testX, &testZ, 2.0f, gCameras[gCurrentCameraID].curYaw);
                 hitDepth = 1000.0f;
-                if (npc_raycast_down_around(COLLIDER_FLAG_IGNORE_PLAYER, &testX, &testY, &testZ, &hitDepth,
-                        partner->yaw, partner->collisionDiameter)
-                ) {
+                if (npc_raycast_down_around(
+                        COLLIDER_FLAG_IGNORE_PLAYER, &testX, &testY, &testZ, &hitDepth, partner->yaw,
+                        partner->collisionDiameter
+                    ))
+                {
                     s32 surfaceType = get_collider_flags(NpcHitQueryColliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
-                    badLocation = ((hitDepth > 100.0f)
-                        || surfaceType == SURFACE_TYPE_SPIKES
-                        || surfaceType == SURFACE_TYPE_LAVA);
+                    badLocation =
+                        ((hitDepth > 100.0f) || surfaceType == SURFACE_TYPE_SPIKES || surfaceType == SURFACE_TYPE_LAVA);
                 } else {
                     badLocation = true;
                 }

@@ -4,8 +4,7 @@
 #include "../common/MoveBush.inc.c"
 #include "../common/MoveBushTemplates.h"
 
-EvtScript EVS_MoveBushes_Separate = EVT_MOVE_BUSHES(COLLIDER_o64,
-    MODEL_o64, MODEL_o65, MV_BushOffsetL, MV_BushOffsetR);
+EvtScript EVS_MoveBushes_Separate = EVT_MOVE_BUSHES(COLLIDER_o64, MODEL_o64, MODEL_o65, MV_BushOffsetL, MV_BushOffsetR);
 
 EvtScript EVS_MoveBushes = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o64, COLLIDER_FLAGS_UPPER_MASK)

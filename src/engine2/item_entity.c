@@ -137,8 +137,8 @@ s32 sparkle_script_step(ItemEntity* item) {
             return true;
         case SPARKLE_OP_SetCI:
             item->sparkleNextUpdate = *readPos++;
-            item->sparkleRaster  = (IMG_PTR)*readPos++;
-            item->sparklePalette = (PAL_PTR)*readPos++;
+            item->sparkleRaster = (IMG_PTR) *readPos++;
+            item->sparklePalette = (PAL_PTR) *readPos++;
             item->sparkleWidth = *readPos++;
             item->sparkleHeight = *readPos++;
             item->sparkleReadPos = readPos;
@@ -155,7 +155,8 @@ s32 sparkle_script_step(ItemEntity* item) {
 void sparkle_script_update(ItemEntity* item) {
     item->sparkleNextUpdate--;
     if (item->sparkleNextUpdate <= 0) {
-        while (sparkle_script_step(item)) {}
+        while (sparkle_script_step(item)) {
+        }
     }
 }
 
@@ -180,9 +181,15 @@ void draw_coin_sparkles(ItemEntity* item) {
     guMtxCatF(sp98, sp58, spD8);
     guMtxF2L(spD8, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-    gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+    gSPClearGeometryMode(
+        gMainGfxPos++,
+        G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+            | G_SHADING_SMOOTH
+    );
     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
     gSPSetLights1(gMainGfxPos++, ItemEntityLights);
     gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
@@ -314,12 +321,12 @@ void item_entity_load(ItemEntity* item) {
                         entry->data = &gHudElementCacheBuffer[*gHudElementCacheSize];
 
                         ASSERT(*gHudElementCacheSize + size < 0x11000);
-                        nuPiReadRom((s32)icon_ROM_START + raster, entry->data, size);
+                        nuPiReadRom((s32) icon_ROM_START + raster, entry->data, size);
                         *gHudElementCacheSize += size;
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         pos++;
                         break;
@@ -329,11 +336,11 @@ void item_entity_load(ItemEntity* item) {
                             if (gGameStatusPtr->context == CONTEXT_WORLD) {
                                 *pos = i;
                             } else {
-                                *pos = (u16)(*pos) | (i << 16);
+                                *pos = (u16) (*pos) | (i << 16);
                             }
                             pos++;
                             break;
-                       }
+                        }
                     }
                     entry++;
                     i++;
@@ -347,12 +354,12 @@ void item_entity_load(ItemEntity* item) {
                         entry->id = palette;
                         entry->data = &gHudElementCacheBuffer[*gHudElementCacheSize];
                         ASSERT(*gHudElementCacheSize + 0x20 < 0x11000);
-                        nuPiReadRom((s32)icon_ROM_START + palette, entry->data, 0x20);
+                        nuPiReadRom((s32) icon_ROM_START + palette, entry->data, 0x20);
                         *gHudElementCacheSize += 0x20;
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         pos++;
                         break;
@@ -360,7 +367,7 @@ void item_entity_load(ItemEntity* item) {
                         if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
-                            *pos = (u16)(*pos) | (i << 16);
+                            *pos = (u16) (*pos) | (i << 16);
                         }
                         pos++;
                         break;
@@ -375,7 +382,9 @@ void item_entity_load(ItemEntity* item) {
     item_entity_update(item);
 }
 
-s32 make_item_entity(s32 itemID, f32 x, f32 y, f32 z, s32 itemSpawnMode, s32 pickupDelay, s32 angle, s32 pickupFlagIndex) {
+s32 make_item_entity(
+    s32 itemID, f32 x, f32 y, f32 z, s32 itemSpawnMode, s32 pickupDelay, s32 angle, s32 pickupFlagIndex
+) {
     s32 i;
     s32 id;
     ItemEntity* item;
@@ -772,7 +781,7 @@ void item_entity_update(ItemEntity* entity) {
 
     do {
         args = entity->readPos;
-        switch(*args++) {
+        switch (*args++) {
             case ITEM_SCRIPT_OP_End:
                 entity->nextUpdate = 60;
                 return;
@@ -781,10 +790,10 @@ void item_entity_update(ItemEntity* entity) {
                 args++;
                 args++;
                 if (gGameStatusPtr->context == CONTEXT_WORLD) {
-                    entity->lookupRasterIndex  = *args++;
+                    entity->lookupRasterIndex = *args++;
                     entity->lookupPaletteIndex = *args++;
                 } else {
-                    entity->lookupRasterIndex  = *args++ >> 16;
+                    entity->lookupRasterIndex = *args++ >> 16;
                     entity->lookupPaletteIndex = *args++ >> 16;
                 }
                 entity->readPos = args;
@@ -896,7 +905,7 @@ void update_item_entities(void) {
 }
 
 void appendGfx_item_entity(void* data) {
-    ItemEntity* item = (ItemEntity*)data;
+    ItemEntity* item = (ItemEntity*) data;
     Mtx mtxTransform;
     Matrix4f mtxTranslate, mtxRotY, mtxScale;
     s32 alpha = 255;
@@ -938,8 +947,9 @@ void appendGfx_item_entity(void* data) {
 
     gDisplayContext->matrixStack[gMatrixListPos] = mtxTransform;
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-              G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     if (gSpriteShadingProfile->flags != 0) {
         gSPDisplayList(gMainGfxPos++, Gfx_RM2_ALPHATEST);
@@ -951,14 +961,19 @@ void appendGfx_item_entity(void* data) {
 
     if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
         if (gSpriteShadingProfile->flags != 0) {
-            gDPSetRenderMode(gMainGfxPos++, AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | G_RM_PASS,
-                             AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL |
-                             GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+            gDPSetRenderMode(
+                gMainGfxPos++, AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | G_RM_PASS,
+                AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+                    | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+            );
         } else {
-            gDPSetRenderMode(gMainGfxPos++, AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL |
-                             GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
-                             AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL |
-                             GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+            gDPSetRenderMode(
+                gMainGfxPos++,
+                AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+                    | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
+                AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+                    | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+            );
             gDPSetCombineMode(gMainGfxPos++, PM_CC_2F, PM_CC_32);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
         }
@@ -967,19 +982,29 @@ void appendGfx_item_entity(void* data) {
     if (!(item->flags & ITEM_ENTITY_FLAG_FULLSIZE)) {
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, gHudElementCacheTablePalette[item->lookupPaletteIndex].data);
         if (gSpriteShadingProfile->flags != 0) {
-            gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR |
-                       G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTextureImage(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPLoadSync(gMainGfxPos++);
             gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x002E, 0x005C);
             gDPPipeSync(gMainGfxPos++);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
-                       G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, 1, 0x0400, 0x0400, 0x045C, 0x045C);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                       G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
 
             if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
@@ -988,33 +1013,49 @@ void appendGfx_item_entity(void* data) {
                 setup_item_entity_shading(mtxTranslate, 0, 0, 24, 24, 255);
             }
         } else {
-            gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTextureImage(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPLoadSync(gMainGfxPos++);
             gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x002E, 0x005C);
             gDPPipeSync(gMainGfxPos++);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0x0400, 0x0400, 0x045C, 0x045C);
         }
         gSPDisplayList(gMainGfxPos++, D_8014C678);
     } else {
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, gHudElementCacheTablePalette[item->lookupPaletteIndex].data);
         if (gSpriteShadingProfile->flags != 0) {
-            gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTextureImage(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPLoadSync(gMainGfxPos++);
             gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x003E, 0x007C);
             gDPPipeSync(gMainGfxPos++);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                       8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD,
+                G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, 1, 0x0400, 0x0400, 0x047C, 0x047C);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                       G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
             if (item->flags & (ITEM_ENTITY_FLAG_HIDING | ITEM_ENTITY_FLAG_TRANSPARENT)) {
                 setup_item_entity_shading(mtxTranslate, 0, 0, 32, 32, alpha);
@@ -1022,14 +1063,20 @@ void appendGfx_item_entity(void* data) {
                 setup_item_entity_shading(mtxTranslate, 0, 0, 32, 32, 255);
             }
         } else {
-            gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTextureImage(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data
+            );
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPLoadSync(gMainGfxPos++);
             gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x003E, 0x007C);
             gDPPipeSync(gMainGfxPos++);
-            gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0,
-                       G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+            gDPSetTile(
+                gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8,
+                G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+            );
             gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0x0400, 0x0400, 0x047C, 0x047C);
         }
         gSPDisplayList(gMainGfxPos++, D_8014C6A0);
@@ -1051,11 +1098,8 @@ void draw_item_entities(void) {
     for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
         ItemEntity* item = gCurrentItemEntities[i];
 
-        if (item != nullptr
-            && item->flags != 0
-            && !(item->flags & ITEM_ENTITY_FLAG_HIDDEN)
-            && (item->flags & (1 << gCurrentCamID))
-            && !(item->flags & ITEM_ENTITY_FLAG_INVISIBLE)
+        if (item != nullptr && item->flags != 0 && !(item->flags & ITEM_ENTITY_FLAG_HIDDEN)
+            && (item->flags & (1 << gCurrentCamID)) && !(item->flags & ITEM_ENTITY_FLAG_INVISIBLE)
             && (item->renderGroup == -1 || ItemEntityRenderGroup == item->renderGroup))
         {
             if (!(item->flags & ITEM_ENTITY_FLAG_TRANSPARENT)) {
@@ -1127,7 +1171,8 @@ void render_item_entities(void) {
                             offsetY = 0;
                         }
 
-                        if (item->itemID == ITEM_COIN || item->itemID == ITEM_STAR_POINT || item->itemID == ITEM_HEART) {
+                        if (item->itemID == ITEM_COIN || item->itemID == ITEM_STAR_POINT || item->itemID == ITEM_HEART)
+                        {
                             offsetY = 0;
                             item->scale = 1.0f;
                         }
@@ -1142,7 +1187,10 @@ void render_item_entities(void) {
                         guMtxCatF(sp98, sp58, sp58);
                         guMtxF2L(sp58, &sp18);
                         gDisplayContext->matrixStack[gMatrixListPos] = sp18;
-                        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPMatrix(
+                            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                            G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+                        );
 
                         if (gSpriteShadingProfile->flags != 0) {
                             gSPDisplayList(gMainGfxPos++, Gfx_RM2_ALPHATEST);
@@ -1163,11 +1211,19 @@ void render_item_entities(void) {
                             }
                             if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
                                 if (gSpriteShadingProfile->flags != 0) {
-                                    gDPSetRenderMode(gMainGfxPos++, AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | G_RM_PASS,
-                                        AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+                                    gDPSetRenderMode(
+                                        gMainGfxPos++, AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | G_RM_PASS,
+                                        AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+                                            | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+                                    );
                                 } else {
-                                    gDPSetRenderMode(gMainGfxPos++, AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
-                                                                    AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
+                                    gDPSetRenderMode(
+                                        gMainGfxPos++,
+                                        AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+                                            | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
+                                        AA_EN | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL
+                                            | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)
+                                    );
                                     gDPSetCombineMode(gMainGfxPos++, PM_CC_2F, PM_CC_32);
                                     gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, alpha);
                                 }
@@ -1175,17 +1231,35 @@ void render_item_entities(void) {
                         }
 
                         if (!(item->flags & ITEM_ENTITY_FLAG_FULLSIZE)) {
-                            gDPLoadTLUT_pal16(gMainGfxPos++, 0, gHudElementCacheTablePalette[item->lookupPaletteIndex].data);
+                            gDPLoadTLUT_pal16(
+                                gMainGfxPos++, 0, gHudElementCacheTablePalette[item->lookupPaletteIndex].data
+                            );
                             if (gSpriteShadingProfile->flags != 0) {
-                                gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTextureImage(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12,
+                                    gHudElementCacheTableRaster[item->lookupRasterIndex].data
+                                );
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPLoadSync(gMainGfxPos++);
                                 gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x002E, 0x005C);
                                 gDPPipeSync(gMainGfxPos++);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPSetTileSize(gMainGfxPos++, 1, 0x0400, 0x0400, 0x045C, 0x045C);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMASK, G_TX_NOLOD
+                                );
                                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
                                 if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
                                     setup_item_entity_shading(sp58, 0, 0, 24, 24, alpha);
@@ -1193,27 +1267,54 @@ void render_item_entities(void) {
                                     setup_item_entity_shading(sp58, 0, 0, 24, 24, 255);
                                 }
                             } else {
-                                gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTextureImage(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 12,
+                                    gHudElementCacheTableRaster[item->lookupRasterIndex].data
+                                );
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPLoadSync(gMainGfxPos++);
                                 gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x002E, 0x005C);
                                 gDPPipeSync(gMainGfxPos++);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0x0400, 0x0400, 0x045C, 0x045C);
                             }
                             gSPDisplayList(gMainGfxPos++, D_8014C678);
                         } else {
-                            gDPLoadTLUT_pal16(gMainGfxPos++, 0, gHudElementCacheTablePalette[item->lookupPaletteIndex].data);
+                            gDPLoadTLUT_pal16(
+                                gMainGfxPos++, 0, gHudElementCacheTablePalette[item->lookupPaletteIndex].data
+                            );
                             if (gSpriteShadingProfile->flags != 0) {
-                                gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTextureImage(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16,
+                                    gHudElementCacheTableRaster[item->lookupRasterIndex].data
+                                );
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPLoadSync(gMainGfxPos++);
                                 gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x003E, 0x007C);
                                 gDPPipeSync(gMainGfxPos++);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, 1, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPSetTileSize(gMainGfxPos++, 1, 0x0400, 0x0400, 0x047C, 0x047C);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 1,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMASK, G_TX_NOLOD
+                                );
                                 gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 0x00FC, 0);
                                 if (item->flags & (ITEM_ENTITY_FLAG_TRANSPARENT | ITEM_ENTITY_FLAG_HIDING)) {
                                     setup_item_entity_shading(sp58, 0, 0, 32, 32, alpha);
@@ -1221,12 +1322,21 @@ void render_item_entities(void) {
                                     setup_item_entity_shading(sp58, 0, 0, 32, 32, 255);
                                 }
                             } else {
-                                gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16, gHudElementCacheTableRaster[item->lookupRasterIndex].data);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTextureImage(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 16,
+                                    gHudElementCacheTableRaster[item->lookupRasterIndex].data
+                                );
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_8b, 2, 0x0000, G_TX_LOADTILE, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPLoadSync(gMainGfxPos++);
                                 gDPLoadTile(gMainGfxPos++, G_TX_LOADTILE, 0, 0, 0x003E, 0x007C);
                                 gDPPipeSync(gMainGfxPos++);
-                                gDPSetTile(gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD);
+                                gDPSetTile(
+                                    gMainGfxPos++, G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0x0000, G_TX_RENDERTILE, 0,
+                                    G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_CLAMP, 8, G_TX_NOLOD
+                                );
                                 gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, 0x0400, 0x0400, 0x047C, 0x047C);
                             }
                             gSPDisplayList(gMainGfxPos++, D_8014C6A0);
@@ -1372,9 +1482,7 @@ b32 test_item_player_collision(ItemEntity* item) {
         return false;
     }
 
-    if (
-        (actionState == ACTION_STATE_USE_SPINNING_FLOWER
-         || actionState == ACTION_STATE_USE_MUNCHLESIA
+    if ((actionState == ACTION_STATE_USE_SPINNING_FLOWER || actionState == ACTION_STATE_USE_MUNCHLESIA
          || actionState == ACTION_STATE_USE_TWEESTER)
         && item->itemID != ITEM_COIN)
     {
@@ -1420,7 +1528,7 @@ b32 test_item_player_collision(ItemEntity* item) {
     itemY = item->pos.y;
     itemZ = item->pos.z;
 
-     itemPickupRadius = 13.5f;
+    itemPickupRadius = 13.5f;
 
     // check for player collision
     dx = itemX - playerX;
@@ -1472,13 +1580,13 @@ s32 test_item_entity_position(f32 x, f32 y, f32 z, f32 dist) {
     f32 dx, dy, dz;
     s32 i;
 
-    if (is_starting_conversation() || isPickingUpItem || get_time_freeze_mode() != 0 ||
-        gOverrideFlags & GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
+    if (is_starting_conversation() || isPickingUpItem || get_time_freeze_mode() != 0
+        || gOverrideFlags & GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS)
     {
         return -1;
     }
 
-    for (i = 0; i < MAX_ITEM_ENTITIES; i++){
+    for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
         item = gCurrentItemEntities[i];
 
         if (item == nullptr) {
@@ -1620,27 +1728,34 @@ void update_item_entity_collectable(ItemEntity* item) {
                             break;
                         case ITEM_COIN:
                             if (rand_int(10000) < 5000) {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(120) - 60.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(120) - 60.0f);
                             } else {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(120) - 60.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(120) - 60.0f);
                             }
                             break;
                         case ITEM_KOOPA_FORTRESS_KEY:
                             if (rand_int(10000) >= 5000) {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(120) - 60.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(120) - 60.0f);
                             } else {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(120) - 60.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(120) - 60.0f);
                             }
                             break;
                         case ITEM_STAR_POINT:
                             if (item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1) {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(120) - 60.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(120) - 60.0f);
                                 break;
                             }
                             if (rand_int(10000) < 5000) {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(60) - 30.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(60) - 30.0f);
                             } else {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(60) - 30.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(60) - 30.0f);
                             }
                             break;
                         case ITEM_HEART_POINT:
@@ -1648,9 +1763,11 @@ void update_item_entity_collectable(ItemEntity* item) {
                             break;
                         case ITEM_STAR_PIECE:
                             if (rand_int(10000) < 5000) {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(60) - 30.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw + 90.0f + rand_int(60) - 30.0f);
                             } else {
-                                physData->moveAngle = clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(60) - 30.0f);
+                                physData->moveAngle =
+                                    clamp_angle(gCameras[camID].curYaw - 90.0f + rand_int(60) - 30.0f);
                             }
                             break;
                         case ITEM_HEART_PIECE:
@@ -1739,10 +1856,9 @@ void update_item_entity_collectable(ItemEntity* item) {
 
             // test for pickup
             if (item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS
-                && item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1
-                && physData->useSimplePhysics
-                && test_item_player_collision(item)
-            ) {
+                && item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1 && physData->useSimplePhysics
+                && test_item_player_collision(item))
+            {
                 item->state = ITEM_PHYSICS_STATE_TOUCH;
                 break;
             }
@@ -1750,8 +1866,8 @@ void update_item_entity_collectable(ItemEntity* item) {
             // check for expiration
             if (!(item->flags & ITEM_ENTITY_FLAG_NEVER_VANISH)
                 && !(gOverrideFlags & (GLOBAL_OVERRIDES_200 | GLOBAL_OVERRIDES_DISABLE_BATTLES))
-                && !(item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING)
-            ) {
+                && !(item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING))
+            {
                 physData->timeLeft--;
                 if (physData->timeLeft < 0) {
                     item->state = ITEM_PHYSICS_STATE_DEAD;
@@ -1773,9 +1889,7 @@ void update_item_entity_collectable(ItemEntity* item) {
             }
 
             // handle auto-collection from multi-coin bricks
-            if (item->spawnType == ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS
-                && physData->verticalVel <= 0.0f
-            ) {
+            if (item->spawnType == ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS && physData->verticalVel <= 0.0f) {
                 item->state = ITEM_PHYSICS_STATE_TOUCH;
                 break;
             }
@@ -1783,9 +1897,8 @@ void update_item_entity_collectable(ItemEntity* item) {
             // if the item has upward velocity, try moving it up
             if (!(item->flags & (ITEM_ENTITY_FLAG_DONE_FALLING | ITEM_ENTITY_FLAG_NO_MOTION))
                 && item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS
-                && item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1
-                && physData->verticalVel > 0.0f
-            ) {
+                && item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1 && physData->verticalVel > 0.0f)
+            {
                 temp = physData->constVel;
                 outX = item->pos.x;
                 outY = item->pos.y;
@@ -1807,17 +1920,22 @@ void update_item_entity_collectable(ItemEntity* item) {
             // if the item has non-zero lateral velocity, try moving it laterally
             if (!(item->flags & (ITEM_ENTITY_FLAG_DONE_FALLING | ITEM_ENTITY_FLAG_NO_MOTION))
                 && item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS
-                && item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1
-                && (physData->velX != 0.0f || physData->velZ != 0.0f)
-            ) {
+                && item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1 && (physData->velX != 0.0f || physData->velZ != 0.0f))
+            {
                 outX = item->pos.x;
                 outY = item->pos.y;
                 outZ = item->pos.z;
 
                 if (!physData->useSimplePhysics) {
-                    hit = npc_test_move_complex_with_slipping(COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, 0.0f, physData->moveAngle, physData->constVel, physData->collisionRadius);
+                    hit = npc_test_move_complex_with_slipping(
+                        COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, 0.0f, physData->moveAngle, physData->constVel,
+                        physData->collisionRadius
+                    );
                 } else {
-                    hit = npc_test_move_simple_with_slipping(COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, 0.0f, physData->moveAngle, physData->constVel, physData->collisionRadius);
+                    hit = npc_test_move_simple_with_slipping(
+                        COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, 0.0f, physData->moveAngle, physData->constVel,
+                        physData->collisionRadius
+                    );
                 }
 
                 if (hit) {
@@ -1836,9 +1954,8 @@ void update_item_entity_collectable(ItemEntity* item) {
 
             // if the item has downward velocity, try moving it down
             if (!(item->flags & ITEM_ENTITY_FLAG_NO_MOTION)
-                && item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS
-                && physData->verticalVel <= 0.0
-            ) {
+                && item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS && physData->verticalVel <= 0.0)
+            {
                 physData->useSimplePhysics = true;
                 if (item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1) {
                     outX = item->pos.x;
@@ -1848,7 +1965,9 @@ void update_item_entity_collectable(ItemEntity* item) {
                     if (!physData->useSimplePhysics) {
                         hit = npc_raycast_down_sides(COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, &outDepth);
                     } else {
-                        hit = npc_raycast_down_around(COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, &outDepth, 180.0f, 20.0f);
+                        hit = npc_raycast_down_around(
+                            COLLIDER_FLAG_IGNORE_NPC, &outX, &outY, &outZ, &outDepth, 180.0f, 20.0f
+                        );
                     }
                 } else {
                     outX = item->pos.x;
@@ -1874,34 +1993,55 @@ void update_item_entity_collectable(ItemEntity* item) {
                         item->flags |= ITEM_ENTITY_FLAG_DONE_FALLING;
                     } else {
                         if (item_is_badge(item->itemID)) {
-                            sfx_play_sound_at_position(SOUND_BADGE_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                            sfx_play_sound_at_position(
+                                SOUND_BADGE_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                            );
                         } else if (item_is_consumable(item->itemID) || item_is_key(item->itemID)) {
-                            sfx_play_sound_at_position(SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                            sfx_play_sound_at_position(
+                                SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                            );
                         } else {
                             switch (item->itemID) {
                                 case ITEM_HEART:
-                                    sfx_play_sound_at_position(SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                                 case ITEM_COIN:
-                                    sfx_play_sound_at_position(SOUND_COIN_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_COIN_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                                 case ITEM_KOOPA_FORTRESS_KEY:
-                                    sfx_play_sound_at_position(SOUND_COIN_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_COIN_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                                 case ITEM_HEART_PIECE:
-                                    sfx_play_sound_at_position(SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                                 case ITEM_STAR_POINT:
-                                    sfx_play_sound_at_position(SOUND_COIN_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_COIN_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                                 case ITEM_HEART_POINT:
-                                    sfx_play_sound_at_position(SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                                 case ITEM_STAR_PIECE:
-                                    sfx_play_sound_at_position(SOUND_STAR_PIECE_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_STAR_PIECE_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y,
+                                        item->pos.z
+                                    );
                                     break;
                                 case ITEM_FLOWER_POINT:
-                                    sfx_play_sound_at_position(SOUND_FLOWER_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                                    sfx_play_sound_at_position(
+                                        SOUND_FLOWER_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                                    );
                                     break;
                             }
                         }
@@ -1939,53 +2079,81 @@ void update_item_entity_collectable(ItemEntity* item) {
             switch (item->itemID) {
                 case ITEM_HEART:
                     if (playerData->curHP < playerData->curMaxHP) {
-                        fx_recover(0, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, 1);
-                        sfx_play_sound_at_position(SOUND_RECOVER, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                        fx_recover(
+                            0, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight,
+                            playerStatus->pos.z, 1
+                        );
+                        sfx_play_sound_at_position(
+                            SOUND_RECOVER, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                        );
                     }
                     playerData->curHP++;
                     if (playerData->curHP > playerData->curMaxHP) {
                         playerData->curHP = playerData->curMaxHP;
                     }
-                    sfx_play_sound_at_position(SOUND_HEART_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
-                    fx_sparkles(4, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, 30.0f);
+                    sfx_play_sound_at_position(
+                        SOUND_HEART_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                    );
+                    fx_sparkles(
+                        4, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z,
+                        30.0f
+                    );
                     break;
                 case ITEM_FLOWER_POINT:
                     if (playerData->curFP < playerData->curMaxFP) {
-                        fx_recover(1, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, 1);
-                        sfx_play_sound_at_position(SOUND_RECOVER, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                        fx_recover(
+                            1, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight,
+                            playerStatus->pos.z, 1
+                        );
+                        sfx_play_sound_at_position(
+                            SOUND_RECOVER, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                        );
                     }
                     playerData->curFP++;
                     if (playerData->curFP > playerData->curMaxFP) {
                         playerData->curFP = playerData->curMaxFP;
                     }
-                    sfx_play_sound_at_position(SOUND_FLOWER_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
-                    fx_sparkles(4, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, 30.0f);
+                    sfx_play_sound_at_position(
+                        SOUND_FLOWER_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                    );
+                    fx_sparkles(
+                        4, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z,
+                        30.0f
+                    );
                     break;
                 case ITEM_COIN:
                     playerData->coins++;
                     if (playerData->coins > 999) {
                         playerData->coins = 999;
                     }
-                    sfx_play_sound_at_position(SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                    );
                     playerData->totalCoinsEarned++;
                     if (playerData->totalCoinsEarned > 99999) {
                         playerData->totalCoinsEarned = 99999;
                     }
                     break;
                 case ITEM_KOOPA_FORTRESS_KEY:
-                    sfx_play_sound_at_position(SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                    );
                     break;
                 case ITEM_STAR_POINT:
                     playerData->starPoints++;
                     if (playerData->starPoints > 100) {
                         playerData->starPoints = 100;
                     }
-                    sfx_play_sound_at_position(SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                    );
                     break;
                 case ITEM_HEART_POINT:
                     playerData->curHP = playerData->curMaxHP;
                     playerData->curFP = playerData->curMaxFP;
-                    sfx_play_sound_at_position(SOUND_HEART_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_HEART_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z
+                    );
                     break;
             }
             isPartnerPickingUpItem = false;
@@ -2021,7 +2189,9 @@ void draw_ui_item_entity_collectable(ItemEntity* item) {
         if (item->spawnType != ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS) {
             if (item->spawnType != ITEM_SPAWN_MODE_TOSS_FADE1) {
                 if (physicsData->timeLeft < 60) {
-                    if ((item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING) || ((gGameStatusPtr->frameCounter + flag) & 1)) {
+                    if ((item->flags & ITEM_ENTITY_FLAG_PARTNER_COLLECTING)
+                        || ((gGameStatusPtr->frameCounter + flag) & 1))
+                    {
                         item->flags &= ~ITEM_ENTITY_FLAG_HIDDEN;
                     } else {
                         item->flags |= ITEM_ENTITY_FLAG_HIDDEN;
@@ -2086,16 +2256,14 @@ void update_item_entity_pickup(ItemEntity* item) {
                 // list of action state conditions which allow item pickup
                 // remain in this state (via break) until one of these is true
                 s32 actionState = playerStatus->actionState;
-                if (!(
-                    playerStatus->animFlags & PA_FLAG_NO_OOB_RESPAWN
-                    || ((playerStatus->timeInAir != 0 || actionState == ACTION_STATE_JUMP || actionState == ACTION_STATE_FALLING)
-                        && playerStatus->enableCollisionOverlapsCheck
-                        && playerStatus->inputDisabledCount != 0)
-                    || actionState == ACTION_STATE_LAUNCH
-                    || actionState == ACTION_STATE_RIDE
-                    || actionState == ACTION_STATE_IDLE
-                    || (actionState == ACTION_STATE_USE_SPINNING_FLOWER && playerStatus->actionSubstate == 1)
-                )) {
+                if (!(playerStatus->animFlags & PA_FLAG_NO_OOB_RESPAWN
+                      || ((playerStatus->timeInAir != 0 || actionState == ACTION_STATE_JUMP
+                           || actionState == ACTION_STATE_FALLING)
+                          && playerStatus->enableCollisionOverlapsCheck && playerStatus->inputDisabledCount != 0)
+                      || actionState == ACTION_STATE_LAUNCH || actionState == ACTION_STATE_RIDE
+                      || actionState == ACTION_STATE_IDLE
+                      || (actionState == ACTION_STATE_USE_SPINNING_FLOWER && playerStatus->actionSubstate == 1)))
+                {
                     break;
                 }
             }
@@ -2183,7 +2351,7 @@ void update_item_entity_pickup(ItemEntity* item) {
                 }
             }
 
-block_47: // TODO required to match
+        block_47: // TODO required to match
             if (item->flags & ITEM_ENTITY_FLAG_SAVE_ON_RECEIPT) {
                 set_global_flag(item->boundVar);
             }
@@ -2199,13 +2367,11 @@ block_47: // TODO required to match
 
         case ITEM_PICKUP_STATE_SHOW_GOT_ITEM:
             if (ItemPickupStateDelay == 9) {
-                if (   (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
-                    || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY)
-                    || (item->itemID == ITEM_STAR_PIECE)
+                if ((gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
+                    || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY) || (item->itemID == ITEM_STAR_PIECE)
                     || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR)
-                    || (item->flags & ITEM_ENTITY_FLAG_4000000)
-                    || (item->pickupMsgFlags & ITEM_PICKUP_FLAG_NO_ANIMS)
-                ) {
+                    || (item->flags & ITEM_ENTITY_FLAG_4000000) || (item->pickupMsgFlags & ITEM_PICKUP_FLAG_NO_ANIMS))
+                {
                     item->pos.x = playerStatus->pos.x;
                     item->pos.y = playerStatus->pos.y + playerStatus->colliderHeight;
                     item->pos.z = playerStatus->pos.z;
@@ -2213,37 +2379,26 @@ block_47: // TODO required to match
                 }
 
                 if (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR) {
-                    fx_got_item_outline(
-                        1,
-                        item->pos.x,
-                        item->pos.y + 8.0f,
-                        item->pos.z,
-                        1.0f,
-                        &ItemPickupGotOutline
-                    );
+                    fx_got_item_outline(1, item->pos.x, item->pos.y + 8.0f, item->pos.z, 1.0f, &ItemPickupGotOutline);
                 }
             }
 
             if (ItemPickupStateDelay < 9) {
-                if (   (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
-                    || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY)
-                    || (item->itemID == ITEM_STAR_PIECE)
+                if ((gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
+                    || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY) || (item->itemID == ITEM_STAR_PIECE)
                     || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR)
-                    || (item->flags & ITEM_ENTITY_FLAG_4000000)
-                    || (item->pickupMsgFlags & ITEM_PICKUP_FLAG_NO_ANIMS)
-                ) {
+                    || (item->flags & ITEM_ENTITY_FLAG_4000000) || (item->pickupMsgFlags & ITEM_PICKUP_FLAG_NO_ANIMS))
+                {
                     suggest_player_anim_always_forward(ANIM_MarioW1_Lift);
                 }
             }
 
             if (ItemPickupStateDelay == 7) {
-                if (   (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
-                    || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY)
-                    || (item->itemID == ITEM_STAR_PIECE)
+                if ((gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
+                    || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY) || (item->itemID == ITEM_STAR_PIECE)
                     || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR)
-                    || (item->flags & ITEM_ENTITY_FLAG_4000000)
-                    || (item->pickupMsgFlags & ITEM_PICKUP_FLAG_NO_ANIMS)
-                ) {
+                    || (item->flags & ITEM_ENTITY_FLAG_4000000) || (item->pickupMsgFlags & ITEM_PICKUP_FLAG_NO_ANIMS))
+                {
                     item->flags &= ~ITEM_ENTITY_FLAG_HIDDEN;
                 }
             }
@@ -2262,14 +2417,13 @@ block_47: // TODO required to match
             }
 
             // wait for input
-            if (gGameStatusPtr->pressedButtons[0] &
-                (BUTTON_STICK_RIGHT | BUTTON_STICK_LEFT | BUTTON_STICK_DOWN | BUTTON_STICK_UP | BUTTON_A | BUTTON_B))
+            if (gGameStatusPtr->pressedButtons[0]
+                & (BUTTON_STICK_RIGHT | BUTTON_STICK_LEFT | BUTTON_STICK_DOWN | BUTTON_STICK_UP | BUTTON_A | BUTTON_B))
             {
                 hide_item_entity(item);
-                if (is_player_dismounted()
-                    && playerStatus->actionState != ACTION_STATE_USE_SPINNING_FLOWER
-                    && !(playerStatus->animFlags & PA_FLAG_NO_OOB_RESPAWN)
-                ) {
+                if (is_player_dismounted() && playerStatus->actionState != ACTION_STATE_USE_SPINNING_FLOWER
+                    && !(playerStatus->animFlags & PA_FLAG_NO_OOB_RESPAWN))
+                {
                     set_action_state(ACTION_STATE_IDLE);
                 }
 
@@ -2282,15 +2436,15 @@ block_47: // TODO required to match
             }
             break;
         case ITEM_PICKUP_STATE_HIDE_GOT_ITEM:
-            if (!(gWindows[WIN_PICKUP_HEADER].flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                !(gWindows[WIN_POPUP_DESC].flags & WINDOW_FLAG_INITIAL_ANIMATION))
+            if (!(gWindows[WIN_PICKUP_HEADER].flags & WINDOW_FLAG_INITIAL_ANIMATION)
+                && !(gWindows[WIN_POPUP_DESC].flags & WINDOW_FLAG_INITIAL_ANIMATION))
             {
                 item->state = ITEM_PICKUP_STATE_CHECK_TUTORIALS;
             }
             break;
         case ITEM_PICKUP_STATE_CHECK_TUTORIALS:
-            if ((gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_CONSUMABLE) &&
-                !evt_get_variable(nullptr, GF_Tutorial_GotItem))
+            if ((gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_CONSUMABLE)
+                && !evt_get_variable(nullptr, GF_Tutorial_GotItem))
             {
                 evt_set_variable(nullptr, GF_Tutorial_GotItem, true);
                 item->state = ITEM_PICKUP_STATE_SHOW_TUTORIAL;
@@ -2369,9 +2523,9 @@ block_47: // TODO required to match
             }
             break;
         case ITEM_PICKUP_STATE_HIDE_TOO_MANY:
-            if (!(gWindows[WIN_PICKUP_HEADER].flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                !(gWindows[WIN_POPUP_TITLE_B].flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                !(gWindows[WIN_POPUP_DESC].flags & WINDOW_FLAG_INITIAL_ANIMATION))
+            if (!(gWindows[WIN_PICKUP_HEADER].flags & WINDOW_FLAG_INITIAL_ANIMATION)
+                && !(gWindows[WIN_POPUP_TITLE_B].flags & WINDOW_FLAG_INITIAL_ANIMATION)
+                && !(gWindows[WIN_POPUP_DESC].flags & WINDOW_FLAG_INITIAL_ANIMATION))
             {
                 item->state = ITEM_PICKUP_STATE_AWAIT_THROW_AWAY;
             }
@@ -2393,14 +2547,11 @@ block_47: // TODO required to match
                 ThrowAwayItemID = menu->userIndex[ThrowAwayMenuIdx - 1];
                 hud_element_set_script(ItemPickupIconHID, menu->ptrIcon[ThrowAwayMenuIdx - 1]);
 
-                get_item_entity(
-                    make_item_entity_delayed(
-                        ThrowAwayItemID,
-                        playerStatus->pos.x,
-                        playerStatus->pos.y + playerStatus->colliderHeight,
-                        playerStatus->pos.z, 3, 0, 0
-                    )
-                )->renderGroup = -1;
+                get_item_entity(make_item_entity_delayed(
+                                    ThrowAwayItemID, playerStatus->pos.x,
+                                    playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, 3, 0, 0
+                                ))
+                    ->renderGroup = -1;
 
                 if (ThrowAwayMenuIdx >= 2) {
                     playerData->invItems[ThrowAwayMenuIdx - 2] = ITEM_NONE;
@@ -2421,9 +2572,9 @@ block_47: // TODO required to match
             }
             break;
         case ITEM_PICKUP_STATE_HIDE_THREW_AWAY:
-            if (!(gWindows[WIN_PICKUP_HEADER].flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                !(gWindows[WIN_POPUP_TITLE_B].flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                !(gWindows[WIN_POPUP_DESC].flags & WINDOW_FLAG_INITIAL_ANIMATION))
+            if (!(gWindows[WIN_PICKUP_HEADER].flags & WINDOW_FLAG_INITIAL_ANIMATION)
+                && !(gWindows[WIN_POPUP_TITLE_B].flags & WINDOW_FLAG_INITIAL_ANIMATION)
+                && !(gWindows[WIN_POPUP_DESC].flags & WINDOW_FLAG_INITIAL_ANIMATION))
             {
                 item->state = ITEM_PICKUP_STATE_THROW_AWAY_DONE;
             }
@@ -2490,10 +2641,10 @@ void func_801363A0(ItemEntity* item) {
 
                 set_message_text_var(itemData->nameMsg, 0);
 
-                if (!(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY) &&
-                    item->itemID != ITEM_STAR_PIECE &&
-                    !(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR) &&
-                    !(item->pickupMsgFlags & (ITEM_PICKUP_FLAG_1_COIN | ITEM_PICKUP_FLAG_3_STAR_PIECES))) {
+                if (!(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY) && item->itemID != ITEM_STAR_PIECE
+                    && !(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR)
+                    && !(item->pickupMsgFlags & (ITEM_PICKUP_FLAG_1_COIN | ITEM_PICKUP_FLAG_3_STAR_PIECES)))
+                {
                     width = get_msg_width(itemMsg, 0) + WD_VAR1;
                 } else {
                     width = get_msg_width(itemMsg, 0) + WD_VAR2;
@@ -2530,28 +2681,41 @@ void func_801363A0(ItemEntity* item) {
             } else {
                 offsetY = 0;
             }
-            if (   !(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY)
+            if (!(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY)
                 && !(gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR)
-                && !(item->pickupMsgFlags & (ITEM_PICKUP_FLAG_1_COIN | ITEM_PICKUP_FLAG_3_STAR_PIECES)
-                && item->itemID != ITEM_STAR_PIECE)
-            ) {
-                set_window_properties(WIN_PICKUP_HEADER, posX, posY - 24 + offsetY, width,
-                                    HT_VAR1, WINDOW_PRIORITY_0, draw_content_pickup_item_header, item, -1);
-            } else if (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_WORLD_USABLE){
-                set_window_properties(WIN_PICKUP_HEADER, posX, posY - 24 + offsetY, width,
-                                    HT_VAR1, WINDOW_PRIORITY_0, draw_content_pickup_item_header, item, -1);
+                && !(
+                    item->pickupMsgFlags & (ITEM_PICKUP_FLAG_1_COIN | ITEM_PICKUP_FLAG_3_STAR_PIECES)
+                    && item->itemID != ITEM_STAR_PIECE
+                ))
+            {
+                set_window_properties(
+                    WIN_PICKUP_HEADER, posX, posY - 24 + offsetY, width, HT_VAR1, WINDOW_PRIORITY_0,
+                    draw_content_pickup_item_header, item, -1
+                );
+            } else if (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_WORLD_USABLE) {
+                set_window_properties(
+                    WIN_PICKUP_HEADER, posX, posY - 24 + offsetY, width, HT_VAR1, WINDOW_PRIORITY_0,
+                    draw_content_pickup_item_header, item, -1
+                );
             } else {
-                set_window_properties(WIN_PICKUP_HEADER, posX, posY - 24 + offsetY, width,
-                                    HT_VAR1, WINDOW_PRIORITY_0, draw_content_pickup_item_header, item, -1);
+                set_window_properties(
+                    WIN_PICKUP_HEADER, posX, posY - 24 + offsetY, width, HT_VAR1, WINDOW_PRIORITY_0,
+                    draw_content_pickup_item_header, item, -1
+                );
             }
             if (item->itemID != ITEM_STAR_PIECE && item->itemID != ITEM_COIN) {
                 posX = X_VAR1;
-                set_window_properties(WIN_POPUP_DESC, posX, 186, WD_VAR4, 32, WINDOW_PRIORITY_0, draw_content_pickup_item_desc, item, -1);
+                set_window_properties(
+                    WIN_POPUP_DESC, posX, 186, WD_VAR4, 32, WINDOW_PRIORITY_0, draw_content_pickup_item_desc, item, -1
+                );
             }
             if (item->state != ITEM_PICKUP_STATE_SHOW_GOT_ITEM) {
                 width = get_msg_width(MSG_Menus_0060, 0) + 24;
                 posX = 160 - width / 2;
-                set_window_properties(WIN_POPUP_TITLE_B, 160 - width / 2, 36, width, 40, WINDOW_PRIORITY_0, draw_content_cant_carry_more, item, -1);
+                set_window_properties(
+                    WIN_POPUP_TITLE_B, 160 - width / 2, 36, width, 40, WINDOW_PRIORITY_0, draw_content_cant_carry_more,
+                    item, -1
+                );
             }
             break;
         case ITEM_PICKUP_STATE_AWAIT_THROW_AWAY:
@@ -2562,7 +2726,10 @@ void func_801363A0(ItemEntity* item) {
             width = get_msg_width(MSG_Menus_005F, 0) + 54;
 #endif
             posX = 160 - width / 2;
-            set_window_properties(WIN_PICKUP_HEADER, 160 - width / 2, 76, width, 40, WINDOW_PRIORITY_0, draw_content_pickup_item_header, item, -1);
+            set_window_properties(
+                WIN_PICKUP_HEADER, 160 - width / 2, 76, width, 40, WINDOW_PRIORITY_0, draw_content_pickup_item_header,
+                item, -1
+            );
             break;
     }
 }
@@ -2635,11 +2802,10 @@ void draw_content_pickup_item_header(ItemEntity* item, s32 posX, s32 posY) {
 #endif
 
             if ((gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_BADGE)
-                || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY)
-                || item->itemID == ITEM_STAR_PIECE
+                || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_KEY) || item->itemID == ITEM_STAR_PIECE
                 || (gItemTable[item->itemID].typeFlags & ITEM_TYPE_FLAG_GEAR)
-                || (item->pickupMsgFlags & (ITEM_PICKUP_FLAG_1_COIN | ITEM_PICKUP_FLAG_3_STAR_PIECES))
-            ) {
+                || (item->pickupMsgFlags & (ITEM_PICKUP_FLAG_1_COIN | ITEM_PICKUP_FLAG_3_STAR_PIECES)))
+            {
                 draw_msg(itemMsg, posX + X_PICKUP_ITEM_1, posY + Y_PICKUP_ITEM_1, 255, MSG_PAL_2F, 0);
             } else {
                 draw_msg(itemMsg, posX + X_PICKUP_ITEM_2, posY + Y_PICKUP_ITEM_2, 255, MSG_PAL_2F, 0);

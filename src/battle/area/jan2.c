@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Formation putrid_piranha_1 = {
     OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_B, 10),
 };

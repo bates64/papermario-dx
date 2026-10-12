@@ -327,7 +327,7 @@ EvtScript EVS_CheckToppleAnim = {
     End
 };
 
-s32 FlipPosOffsets[] = { 7, 13, 17, 21, 23, 24, 23, 21, 17, 13, 7, 0,  4,  7,  6,  4,  0,  2,  0 };
+s32 FlipPosOffsets[] = { 7, 13, 17, 21, 23, 24, 23, 21, 17, 13, 7, 0, 4, 7, 6, 4, 0, 2, 0 };
 
 EvtScript EVS_HandleEvent = {
     Call(UseIdleAnimation, ACTOR_SELF, false)

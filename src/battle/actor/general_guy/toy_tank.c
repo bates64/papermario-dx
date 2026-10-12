@@ -40,7 +40,7 @@ enum ActorParams {
 };
 
 static API_CALLABLE(UpdateBulbGlowPos) {
-    Bytecode *args = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
 
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
@@ -358,12 +358,12 @@ static EvtScript EVS_ShakeTank = {
 };
 
 static EvtScript EVS_ManageTroopWaves = {
-    #define LBL_SQUAD_PHASE 0
-    #define LBL_PHASE_STILT 1
-    #define LBL_PHASE_STACK 2
-    #define LBL_PHASE_BROKEN 3
-    #define LBL_PHASE_UNUSED 10
-    #define LBL_DONE 99
+#define LBL_SQUAD_PHASE 0
+#define LBL_PHASE_STILT 1
+#define LBL_PHASE_STACK 2
+#define LBL_PHASE_BROKEN 3
+#define LBL_PHASE_UNUSED 10
+#define LBL_DONE 99
     // monitor the shy squad phase, waiting for them to be defeated
     Label(LBL_SQUAD_PHASE)
         Call(ActorExists, ACTOR_TANK, LVar0)

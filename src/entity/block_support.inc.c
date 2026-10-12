@@ -136,7 +136,7 @@ void entity_inactive_block_hit_anim(Entity* entity) {
 
     entity_MulticoinBlock_update_timer(entity);
     currentY = entity->pos.y;
-    entity->pos.y = currentY + ((f64)sin_rad(DEG_TO_RAD(data->recoilInterpPhase)) * 2);
+    entity->pos.y = currentY + ((f64) sin_rad(DEG_TO_RAD(data->recoilInterpPhase)) * 2);
     data->recoilInterpPhase += 60.0f;
     if (data->recoilInterpPhase > 450.0f) {
         data->recoilInterpPhase = clamp_angle(data->recoilInterpPhase);
@@ -150,7 +150,7 @@ void entity_inactive_block_recoil_anim(Entity* entity) {
 
     entity_MulticoinBlock_update_timer(entity);
     currentY = entity->pos.y;
-    entity->pos.y = currentY + ((f64)sin_rad(DEG_TO_RAD(data->recoilInterpPhase)));
+    entity->pos.y = currentY + ((f64) sin_rad(DEG_TO_RAD(data->recoilInterpPhase)));
     data->recoilInterpPhase += 60.0f;
     if (data->recoilInterpPhase >= 360.0f) {
         data->recoilInterpPhase = 0.0f;
@@ -162,9 +162,8 @@ void entity_inactive_block_recoil_anim(Entity* entity) {
 void entity_block_hit_init_scale(Entity* entity) {
     s32 type = get_entity_type(entity->listIndex);
 
-    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY ||
-        type == ENTITY_TYPE_HAMMER2_BLOCK_TINY ||
-        type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
+    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY
+        || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
     {
         entity->scale.y = 0.23f;
         entity->scale.x = 1.04f;
@@ -180,9 +179,8 @@ void entity_block_hit_init_scale(Entity* entity) {
 void entity_block_hit_animate_scale(Entity* entity) {
     s32 type = get_entity_type(entity->listIndex);
 
-    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY ||
-        type == ENTITY_TYPE_HAMMER2_BLOCK_TINY ||
-        type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
+    if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY
+        || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY)
     {
         entity->scale.x -= 0.09;
         entity->scale.z -= 0.09;
@@ -224,7 +222,7 @@ void entity_breakable_block_create_shattering_entity(Entity* entity) {
     }
 
     if (bp != nullptr) {
-        create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, 0, MAKE_ENTITY_END);
+        create_entity(bp, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, 0, MAKE_ENTITY_END);
     }
 }
 
@@ -282,8 +280,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 case ENTITY_TYPE_HAMMER1_BLOCK:
                 case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
                     set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-                    sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT,
-                                               entity->pos.x, entity->pos.y, entity->pos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+                    );
                     return true;
             }
         }
@@ -293,22 +292,21 @@ s32 entity_block_handle_collision(Entity* entity) {
 
     breakBlock = false;
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
-        if (playerStatus->actionState == ACTION_STATE_SPIN_JUMP ||
-            playerStatus->actionState == ACTION_STATE_TORNADO_JUMP)
+        if (playerStatus->actionState == ACTION_STATE_SPIN_JUMP
+            || playerStatus->actionState == ACTION_STATE_TORNADO_JUMP)
         {
             return false;
         }
 
-        if (playerStatus->actionState == ACTION_STATE_SPIN_POUND ||
-            playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
+        if (playerStatus->actionState == ACTION_STATE_SPIN_POUND
+            || playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
         {
             breakBlock = true;
         } else {
             return true;
         }
     } else {
-        if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_HAMMER) ||
-            !(playerStatus->flags & PS_FLAG_HAMMER_CHECK))
+        if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_HAMMER) || !(playerStatus->flags & PS_FLAG_HAMMER_CHECK))
         {
             return true;
         }
@@ -337,8 +335,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-            sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT,
-                                       entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             break;
         case ENTITY_TYPE_HAMMER2_BLOCK:
         case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
@@ -353,8 +352,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-            sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_2, SOUND_SPACE_DEFAULT,
-                                       entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_SMASH_HAMER_BLOCK_2, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             break;
         case ENTITY_TYPE_HAMMER3_BLOCK:
         case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
@@ -362,8 +362,9 @@ s32 entity_block_handle_collision(Entity* entity) {
                 return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
-            sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_3, SOUND_SPACE_DEFAULT,
-                                       entity->pos.x, entity->pos.y, entity->pos.z);
+            sfx_play_sound_at_position(
+                SOUND_SMASH_HAMER_BLOCK_3, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+            );
             break;
         case ENTITY_TYPE_MULTI_TRIGGER_BLOCK:
         case ENTITY_TYPE_HEALING_BLOCK:

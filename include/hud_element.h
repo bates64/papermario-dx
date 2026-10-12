@@ -425,7 +425,10 @@ void hud_element_load_script(HudElement* hudElement, HudScriptPtr script);
 
 /// `clamp` selects the wrap mode: 0 = repeat, 1 = clamp.
 /// `dropShadow` controls whether to render a drop shadow.
-void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s16 drawSizeX, s16 drawSizeY, s16 offsetX, s16 offsetY, s32 clamp, s32 dropShadow);
+void hud_element_draw_rect(
+    HudElement* hudElement, s16 texSizeX, s16 texSizeY, s16 drawSizeX, s16 drawSizeY, s16 offsetX, s16 offsetY,
+    s32 clamp, s32 dropShadow
+);
 
 void hud_element_clear_cache(void);
 

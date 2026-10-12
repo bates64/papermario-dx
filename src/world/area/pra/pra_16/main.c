@@ -7,16 +7,16 @@
 // doors on right wall
 s32 NearRightDoorModelsL[] = { MODEL_o772, MODEL_o844, -1 };
 s32 NearRightDoorModelsR[] = { MODEL_o768, MODEL_o846, -1 };
-s32 FarRightDoorModelsL[]  = { MODEL_o859, MODEL_o860, -1 };
-s32 FarRightDoorModelsR[]  = { MODEL_o861, MODEL_o862, -1 };
+s32 FarRightDoorModelsL[] = { MODEL_o859, MODEL_o860, -1 };
+s32 FarRightDoorModelsR[] = { MODEL_o861, MODEL_o862, -1 };
 s32 BothRightDoorModelsL[] = { MODEL_o772, MODEL_o844, MODEL_o859, MODEL_o860, -1 };
 s32 BothRightDoorModelsR[] = { MODEL_o768, MODEL_o846, MODEL_o861, MODEL_o862, -1 };
 
 // doors on left wall
 s32 NearLeftDoorModelsL[] = { MODEL_o874, MODEL_o875, -1 };
 s32 NearLeftDoorModelsR[] = { MODEL_o876, MODEL_o877, -1 };
-s32 FarLeftDoorModelsL[]  = { MODEL_o880, MODEL_o881, -1 };
-s32 FarLeftDoorModelsR[]  = { MODEL_o878, MODEL_o879, -1 };
+s32 FarLeftDoorModelsL[] = { MODEL_o880, MODEL_o881, -1 };
+s32 FarLeftDoorModelsR[] = { MODEL_o878, MODEL_o879, -1 };
 s32 BothLeftDoorModelsL[] = { MODEL_o874, MODEL_o875, MODEL_o880, MODEL_o881, -1 };
 s32 BothLeftDoorModelsR[] = { MODEL_o876, MODEL_o877, MODEL_o878, MODEL_o879, -1 };
 

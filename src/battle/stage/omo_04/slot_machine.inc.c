@@ -2,7 +2,6 @@
 #include "script_api/battle.h"
 #include "stage.xml.h"
 
-
 extern EvtScript EVS_Init;
 extern EvtScript EVS_Idle;
 extern EvtScript EVS_TakeTurn;
@@ -55,7 +54,7 @@ enum ActorVars {
 #define SYM_COIN   2
 
 s32 ReelSymbols1[] = { SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN };
-s32 ReelSymbols2[] = { SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_STAR,   SYM_COIN, SYM_SHYGUY, SYM_COIN };
+s32 ReelSymbols2[] = { SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_STAR, SYM_COIN, SYM_SHYGUY, SYM_COIN };
 s32 ReelSymbols3[] = { SYM_SHYGUY, SYM_STAR, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN, SYM_SHYGUY, SYM_COIN };
 
 s32 DefenseTable[] = {

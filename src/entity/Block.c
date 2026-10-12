@@ -90,16 +90,21 @@ void entity_MulticoinBlock_spawn_coin(Entity* entity) {
             itemSpawnMode = ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS;
             flagIndex = 0;
         }
-        make_item_entity_nodelay(ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z,
-            itemSpawnMode, flagIndex);
+        make_item_entity_nodelay(
+            ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z, itemSpawnMode, flagIndex
+        );
         data->coinsLeft--;
     }
 
     if ((data->coinsLeft == 0) || (data->timeLeft == 0)) {
         data->empty = true;
-        set_entity_commandlist(get_entity_by_index(create_entity(&Entity_InertYellowBlock,
-            (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z,
-            (s32)entity->rot.y, MAKE_ENTITY_END)), Entity_CreatedInertBlock_Script);
+        set_entity_commandlist(
+            get_entity_by_index(create_entity(
+                &Entity_InertYellowBlock, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z,
+                (s32) entity->rot.y, MAKE_ENTITY_END
+            )),
+            Entity_CreatedInertBlock_Script
+        );
         entity->flags |= (ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_PENDING_INSTANCE_DELETE);
     }
 }
@@ -114,7 +119,10 @@ void entity_MulticoinBlock_idle(Entity* entity) {
     entity_MulticoinBlock_update_timer(entity);
     entity_base_block_idle(entity);
     if (data->empty) {
-        create_entity(&Entity_InertYellowBlock, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END);
+        create_entity(
+            &Entity_InertYellowBlock, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z,
+            (s32) entity->rot.y, MAKE_ENTITY_END
+        );
         entity->flags |= (ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_PENDING_INSTANCE_DELETE);
     }
 }
@@ -124,7 +132,10 @@ void entity_MulticoinBlock_check_if_inactive(Entity* entity) {
 
     if (data->gameFlagIndex != 0xFFFF) {
         if (get_global_flag(data->gameFlagIndex) != 0) {
-            create_entity(&Entity_InertYellowBlock, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END);
+            create_entity(
+                &Entity_InertYellowBlock, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z,
+                (s32) entity->rot.y, MAKE_ENTITY_END
+            );
             entity->flags |= (ENTITY_FLAG_DISABLE_COLLISION | ENTITY_FLAG_PENDING_INSTANCE_DELETE);
         }
     }
@@ -206,23 +217,32 @@ EntityScript Entity_MulticoinBlock_Script = {
     es_End
 };
 
-EntityModelScript Entity_InertYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertYellowBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_InertYellowBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertYellowBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_InertRedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertRedBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_InertRedBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_InertRedBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_MulticoinBrick_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_MulticoinBrick_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_Hammer1Block_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer1Block_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Hammer1Block_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer1Block_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_Hammer2Block_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer2Block_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Hammer2Block_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer2Block_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_Hammer3Block_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer3Block_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_Hammer3Block_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_Hammer3Block_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_PushBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PushBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PushBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PushBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_BrickBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_BrickBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_BrickBlock_Render, RENDER_MODE_SURFACE_OPA);
 
-EntityModelScript Entity_PowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_PowBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_PowBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_PowBlock_Render, RENDER_MODE_SURFACE_OPA);
 
 OVL_DEF_ENTITY(InertYellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

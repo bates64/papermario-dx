@@ -7,8 +7,7 @@
 #ifdef __cplusplus
 #include <type_traits>
 
-template <typename Actual, typename Expected>
-struct EvtFuncSignatureMatches {
+template <typename Actual, typename Expected> struct EvtFuncSignatureMatches {
     static_assert(std::is_same_v<Actual, Expected>, "EVT_BAD_SIGNATURE");
 };
 #endif
@@ -60,7 +59,7 @@ extern "C" {
 #define EVT_ARG_INT_MARKER      (EVT_LIMIT - 1)
 #define EVT_ARG_FLOAT_MARKER    (EVT_LIMIT - 2)
 
- // This fixes an issue with fixed point numbers not being correct. Potentially a truncation vs round difference.
+// This fixes an issue with fixed point numbers not being correct. Potentially a truncation vs round difference.
 #define FLOAT_ROUND(x) ((x) >=0 ? (f64)((x) + 0.9) : (f64)(x))
 #define Float(DOUBLE)  ((Bytecode)FLOAT_ROUND(((DOUBLE) * 1024.0f)) - EVT_FIXED_OFFSET)
 
@@ -302,7 +301,8 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define End                                 EVT_CMD(EVT_OP_END),
 
 /// Kills the current EVT script.
-/// A script missing a return will live - but do nothing - forever, or until something else kills it (e.g. leaving the map).
+/// A script missing a return will live - but do nothing - forever, or until something else kills it (e.g. leaving the
+/// map).
 #define Return                              EVT_CMD(EVT_OP_RETURN),
 
 /// Marks the start of a synchronous cleanup tail for the script.
@@ -375,7 +375,6 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 
 /// Blocks for the given number of frames.
 #define Wait(NUM_FRAMES)                    EVT_CMD(EVT_OP_WAIT_FRAMES, NUM_FRAMES),
-
 
 /// Blocks for the given number of seconds.
 #define WaitSecs(NUM_SECONDS)               EVT_CMD(EVT_OP_WAIT_SECS, NUM_SECONDS),
@@ -1132,13 +1131,10 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define __NARG_I_(args...) \
     __ARG_N(args)
 #define __ARG_N( \
-      _1, _2, _3, _4, _5, _6, _7, _8, _9,_10, \
-     _11,_12,_13,_14,_15,_16,_17,_18,_19,_20, \
-     _21,_22,_23,_24,_25,_26,_27,_28,_29,_30, \
-     _31,_32,_33,_34,_35,_36,_37,_38,_39,_40, \
-     _41,_42,_43,_44,_45,_46,_47,_48,_49,_50, \
-     _51,_52,_53,_54,_55,_56,_57,_58,_59,_60, \
-     _61,_62,_63,N,...) N
+    _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, \
+    _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, \
+    _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, N, ... \
+) N
 #define __RSEQ_N() \
      63,62,61,60,                   \
      59,58,57,56,55,54,53,52,51,50, \

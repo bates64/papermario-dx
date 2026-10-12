@@ -97,7 +97,6 @@ API_CALLABLE(start) {
     return ApiStatus_DONE2;
 }
 
-
 void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
@@ -237,7 +236,6 @@ void update(void) {
                 battleStatus->actionQuality = AC_QUALITY_FAILED;
             } else {
                 battleStatus->actionQuality = fillLevel / ONE_PCT_MASH;
-
             }
 
             cutoff = acs->mashMeterCutoffs[acs->mashMeterNumIntervals - 1];

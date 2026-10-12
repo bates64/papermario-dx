@@ -81,12 +81,14 @@ API_CALLABLE(AnimateBoomLengthPostHeist) {
     if (isInitialCall) {
         CurrentBoomLengthPost = CamSettings_PostHeist.boomLength;
     }
-    interp_value_with_easing(INTRO_MATH_EASING_SIN_OUT, CamSettings_PostHeist.boomLength, 700.0f,
-        TargetBoomLengthPost, 70.0f, &CurrentBoomLengthPost);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_SIN_OUT, CamSettings_PostHeist.boomLength, 700.0f, TargetBoomLengthPost, 70.0f,
+        &CurrentBoomLengthPost
+    );
     camera->panActive = true;
     camera->overrideSettings.boomLength = CurrentBoomLengthPost;
     TargetBoomLengthPost++;
-    if (TargetBoomLengthPost < (s32)(70 * DT)) {
+    if (TargetBoomLengthPost < (s32) (70 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
@@ -101,12 +103,13 @@ API_CALLABLE(AnimateViewPitchPostHeist) {
     if (isInitialCall) {
         CurrentViewPitch = CamSettings_PostHeist.viewPitch;
     }
-    interp_value_with_easing(INTRO_MATH_EASING_5, CamSettings_PostHeist.viewPitch, -80.0f,
-        TargetViewPitch, 200.0f, &CurrentViewPitch);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_5, CamSettings_PostHeist.viewPitch, -80.0f, TargetViewPitch, 200.0f, &CurrentViewPitch
+    );
     camera->panActive = true;
     camera->overrideSettings.viewPitch = CurrentViewPitch;
     TargetViewPitch++;
-    if (TargetViewPitch == (s32)(200 * DT)) {
+    if (TargetViewPitch == (s32) (200 * DT)) {
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;

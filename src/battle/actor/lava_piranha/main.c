@@ -345,11 +345,13 @@ API_CALLABLE(LoadVineAnim) {
     s32 vineIndex = evt_get_variable(script, *args++);
     u32 size;
 
-    ASSERT_MSG((u32)animIndex < ARRAY_COUNT(VineAnims), "Invalid vine animation %ld", animIndex);
-    ASSERT_MSG((u32)vineIndex < ARRAY_COUNT(VineBuffers), "Invalid vine buffer %ld", vineIndex);
-    size = (u32)VineAnims[animIndex].end - (u32)VineAnims[animIndex].start;
-    ASSERT_MSG(size > 0 && size <= VineBuffers[vineIndex].capacity,
-        "Vine animation %ld (%lu bytes) does not fit buffer %ld", animIndex, size, vineIndex);
+    ASSERT_MSG((u32) animIndex < ARRAY_COUNT(VineAnims), "Invalid vine animation %ld", animIndex);
+    ASSERT_MSG((u32) vineIndex < ARRAY_COUNT(VineBuffers), "Invalid vine buffer %ld", vineIndex);
+    size = (u32) VineAnims[animIndex].end - (u32) VineAnims[animIndex].start;
+    ASSERT_MSG(
+        size > 0 && size <= VineBuffers[vineIndex].capacity, "Vine animation %ld (%lu bytes) does not fit buffer %ld",
+        animIndex, size, vineIndex
+    );
 
     dma_copy(VineAnims[animIndex].start, VineAnims[animIndex].end, VineBuffers[vineIndex].data);
     return ApiStatus_DONE2;
@@ -514,7 +516,7 @@ static void appendGfx_vines(void* data) {
         // here and leave space behind for the gSPBranchList command followed by two vertices
         // for each point in numPoints
 
-        vtxBuffer = (Vtx_t*)(gMainGfxPos + 1);
+        vtxBuffer = (Vtx_t*) (gMainGfxPos + 1);
         gSPBranchList(gMainGfxPos, &gMainGfxPos[1 + 2 * (2 * numPoints)]);
         vtx = (Vtx_t*) (++gMainGfxPos);
         gMainGfxPos = &gMainGfxPos[2 * (2 * numPoints)];
@@ -526,7 +528,7 @@ static void appendGfx_vines(void* data) {
 
             alphaCoord = ((f32) j * boneCount) / numPoints;
             nearest = (s32) alphaCoord;
-            alphaFrac = alphaCoord - (f32)nearest;
+            alphaFrac = alphaCoord - (f32) nearest;
 
             if (nearest + 1 >= boneCount) {
                 angle = vine->boneRot[boneCount - 1];
@@ -542,7 +544,7 @@ static void appendGfx_vines(void* data) {
                 angle = ((nextAngle - curAngle2) * alphaFrac) + curAngle2;
             }
 
-            deltaX =  sin_deg(angle) * boneLength;
+            deltaX = sin_deg(angle) * boneLength;
             deltaY = -cos_deg(angle) * boneLength;
 
             vtx->ob[0] = posX + deltaX;
@@ -567,7 +569,7 @@ static void appendGfx_vines(void* data) {
         }
 
         for (j = 0; j < numPoints - 1; j++) {
-            gSPVertex(gMainGfxPos++, &vtxBuffer[2*j], 4, 0);
+            gSPVertex(gMainGfxPos++, &vtxBuffer[2 * j], 4, 0);
             gSP2Triangles(gMainGfxPos++, 1, 0, 2, 0, 1, 2, 3, 0);
         }
     }

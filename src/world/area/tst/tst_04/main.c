@@ -28,7 +28,7 @@ API_CALLABLE(PushGoompaTest) {
 }
 
 API_CALLABLE(PushPartnerTest) {
-    Npc *npc = get_npc_safe(NPC_PARTNER);
+    Npc* npc = get_npc_safe(NPC_PARTNER);
     f32 angle, sinAngle, cosAngle;
     f32 dist;
     f32 x0, x1;

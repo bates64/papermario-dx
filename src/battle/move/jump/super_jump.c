@@ -67,7 +67,6 @@ EvtScript EVS_UseMove_Basic = {
     End
 };
 
-
 EvtScript EVS_UseMove_Super = {
     ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
@@ -123,6 +122,4 @@ EvtScript EVS_UseMove_Ultra = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove, );

@@ -1,6 +1,7 @@
 #include "kpa_121.h"
 
-EvtScript EVS_ExitDoors_kpa_83_1 = EVT_EXIT_DOUBLE_DOOR(kpa_121_ENTRY_0, "kpa_83", kpa_83_ENTRY_1, COLLIDER_deilitw, MODEL_o348, MODEL_o356);
+EvtScript EVS_ExitDoors_kpa_83_1 =
+    EVT_EXIT_DOUBLE_DOOR(kpa_121_ENTRY_0, "kpa_83", kpa_83_ENTRY_1, COLLIDER_deilitw, MODEL_o348, MODEL_o356);
 
 EvtScript EVS_ExitDoor_osr_02_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)

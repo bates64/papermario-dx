@@ -1,7 +1,7 @@
 #include "flo_08.h"
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o133);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o133);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o132);
 
 FoliageDropList Tree1_Drops = {

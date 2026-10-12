@@ -20,7 +20,9 @@ API_CALLABLE(func_802A1280_72A9D0) {
     Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target;
 
-    sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z);
+    sfx_play_sound_at_position(
+        SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z
+    );
     target = get_actor(enemy->targetActorID);
     dispatch_event_actor(target, EVENT_SCARE_AWAY);
 
@@ -149,6 +151,4 @@ EvtScript EVS_UseItem = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM,
-    &EVS_UseItem,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM, &EVS_UseItem, );

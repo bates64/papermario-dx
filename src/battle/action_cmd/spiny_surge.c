@@ -167,11 +167,13 @@ void update(void) {
             // check for meter-filling input
             if (!acs->isMeterFilled) {
                 if (battleStatus->curButtonsPressed & BUTTON_STICK_LEFT) {
-                    acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                    acs->meterFillLevel +=
+                        SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                 }
                 // right stick inputs actively drain the meter
                 if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
-                    acs->meterFillLevel -= SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+                    acs->meterFillLevel -=
+                        SCALE_BY_PCT(METER_FILL_TICK, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                 }
             }
 
@@ -195,10 +197,9 @@ void update(void) {
             if (PrevButtons & BUTTON_STICK_RIGHT) {
                 acs->spinySurge.tossState = SPINY_SURGE_RESET;
             }
-            if (!(PrevButtons & BUTTON_STICK_LEFT)
-                && !(battleStatus->curButtonsDown & BUTTON_STICK_RIGHT)
-                && acs->spinySurge.tossState == SPINY_SURGE_HOLD
-            ) {
+            if (!(PrevButtons & BUTTON_STICK_LEFT) && !(battleStatus->curButtonsDown & BUTTON_STICK_RIGHT)
+                && acs->spinySurge.tossState == SPINY_SURGE_HOLD)
+            {
                 acs->spinySurge.tossState = SPINY_SURGE_THROW;
             }
             battleStatus->actionQuality = acs->meterFillLevel / ONE_PCT_MASH;

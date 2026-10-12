@@ -207,7 +207,9 @@ void update(void) {
             }
 
             acs->stateTimer = 0;
-            if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT) && battleStatus->actionCommandMode < AC_MODE_TUTORIAL) {
+            if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT)
+                && battleStatus->actionCommandMode < AC_MODE_TUTORIAL)
+            {
                 acs->hammerMissedStart = true;
             }
             acs->state = AC_STATE_ACTIVE;
@@ -262,17 +264,16 @@ void update(void) {
                     acs->stateTimer = acs->duration - 4;
                 }
             }
-            inputWindow = battleStatus->actionCmdDifficultyTable[acs->difficulty] - (acs->duration - acs->stateTimer) + 3;
+            inputWindow =
+                battleStatus->actionCmdDifficultyTable[acs->difficulty] - (acs->duration - acs->stateTimer) + 3;
             if (inputWindow < 0) {
                 inputWindow = 0;
             }
 
             // has the stick been release too early?
-            if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT)
-                && inputWindow == 0
-                && acs->autoSucceed == 0
-                && battleStatus->actionCommandMode < AC_MODE_TUTORIAL
-            ) {
+            if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT) && inputWindow == 0 && acs->autoSucceed == 0
+                && battleStatus->actionCommandMode < AC_MODE_TUTORIAL)
+            {
                 battleStatus->actionQuality = AC_QUALITY_FAILED;
                 battleStatus->actionResult = ACTION_RESULT_EARLY;
                 action_command_free();

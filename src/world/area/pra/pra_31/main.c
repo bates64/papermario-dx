@@ -2,10 +2,10 @@
 
 s32 NearLeftDoorModelsL[] = { MODEL_o772, -1 };
 s32 NearLeftDoorModelsR[] = { MODEL_o768, -1 };
-s32 RightDoorModelsL[]    = { MODEL_o955, -1 };
-s32 RightDoorModelsR[]    = { MODEL_o957, -1 };
-s32 FarLeftDoorModelsL[]  = { MODEL_o859, -1 };
-s32 FarLeftDoorModelsR[]  = { MODEL_o861, -1 };
+s32 RightDoorModelsL[] = { MODEL_o955, -1 };
+s32 RightDoorModelsR[] = { MODEL_o957, -1 };
+s32 FarLeftDoorModelsL[] = { MODEL_o859, -1 };
+s32 FarLeftDoorModelsR[] = { MODEL_o861, -1 };
 
 EvtScript EVS_ExitDoors_pra_34_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)

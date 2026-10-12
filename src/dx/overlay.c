@@ -244,29 +244,29 @@ static __attribute__((noinline)) void ovl_debug_changed(void) {
 
 static u32 link_addr(OverlayType type) {
     if (overlayStorage[type].mode == OVL_STORAGE_FIXED) {
-        return (u32)overlayStorage[type].base;
+        return (u32) overlayStorage[type].base;
     }
     return RELOCATABLE_LINK_ADDR;
 }
 
 static void apply_relocs(u8* base, OverlayHeader* hdr, u32 rom, u32 linkedAt) {
-    u32 load = (u32)base;
+    u32 load = (u32) base;
     u32 delta = load - linkedAt;
 
     if (hdr->r32Count > 0) {
         ALIGNED(8) u32 r32[hdr->r32Count];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->r32Count * sizeof(u32)), r32);
+        dma_copy((u8*) rom, (u8*) (rom + hdr->r32Count * sizeof(u32)), r32);
         for (u32 i = 0; i < hdr->r32Count; i++) {
-            *(u32*)(load + r32[i]) += delta;
+            *(u32*) (load + r32[i]) += delta;
         }
     }
     rom += hdr->r32Count * sizeof(u32);
 
     if (hdr->r26Count > 0) {
         ALIGNED(8) u32 r26[hdr->r26Count];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->r26Count * sizeof(u32)), r26);
+        dma_copy((u8*) rom, (u8*) (rom + hdr->r26Count * sizeof(u32)), r26);
         for (u32 i = 0; i < hdr->r26Count; i++) {
-            u32* loc = (u32*)(load + r26[i]);
+            u32* loc = (u32*) (load + r26[i]);
             u32 target = (((*loc & 0x03FFFFFFu) << 2) + delta);
             *loc = (*loc & 0xFC000000u) | ((target & 0x0FFFFFFCu) >> 2);
         }
@@ -275,12 +275,13 @@ static void apply_relocs(u8* base, OverlayHeader* hdr, u32 rom, u32 linkedAt) {
 
     if (hdr->hi16Count > 0) {
         ALIGNED(8) u32 hi16[hdr->hi16Count * 2];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->hi16Count * 2 * sizeof(u32)), hi16);
+        dma_copy((u8*) rom, (u8*) (rom + hdr->hi16Count * 2 * sizeof(u32)), hi16);
         for (u32 i = 0; i < hdr->hi16Count; i++) {
-            u32* hiLoc = (u32*)(load + hi16[i * 2]);
+            u32* hiLoc = (u32*) (load + hi16[i * 2]);
             u32 addr = hi16[i * 2 + 1] + delta;
-            u16 newHi = (u16)(addr >> 16);
-            if (addr & 0x8000u) newHi++;
+            u16 newHi = (u16) (addr >> 16);
+            if (addr & 0x8000u)
+                newHi++;
             *hiLoc = (*hiLoc & 0xFFFF0000u) | newHi;
         }
     }
@@ -288,10 +289,10 @@ static void apply_relocs(u8* base, OverlayHeader* hdr, u32 rom, u32 linkedAt) {
 
     if (hdr->lo16Count > 0) {
         ALIGNED(8) u32 lo16[hdr->lo16Count];
-        dma_copy((u8*)rom, (u8*)(rom + hdr->lo16Count * sizeof(u32)), lo16);
+        dma_copy((u8*) rom, (u8*) (rom + hdr->lo16Count * sizeof(u32)), lo16);
         for (u32 i = 0; i < hdr->lo16Count; i++) {
-            u32* loLoc = (u32*)(load + lo16[i]);
-            *loLoc = (*loLoc & 0xFFFF0000u) | (u16)((*loLoc & 0xFFFF) + (u16)delta);
+            u32* loLoc = (u32*) (load + lo16[i]);
+            *loLoc = (*loLoc & 0xFFFF0000u) | (u16) ((*loLoc & 0xFFFF) + (u16) delta);
         }
     }
     rom += hdr->lo16Count * sizeof(u32);
@@ -303,25 +304,29 @@ static u8* allocate_storage(Overlay* ovl, u32 footprint) {
     ovl->storageSlot = -1;
     switch (storage->mode) {
         case OVL_STORAGE_FIXED:
-            ASSERT_MSG(footprint <= storage->slotSize,
-                       "Overlay '%s' footprint 0x%X exceeds fixed storage size 0x%X",
-                       ovl->name, (unsigned int)footprint, (unsigned int)storage->slotSize);
+            ASSERT_MSG(
+                footprint <= storage->slotSize, "Overlay '%s' footprint 0x%X exceeds fixed storage size 0x%X",
+                ovl->name, (unsigned int) footprint, (unsigned int) storage->slotSize
+            );
             for (s32 i = 0; i < MAX_OVERLAYS; i++) {
-                ASSERT_MSG(&overlays[i] == ovl || overlays[i].name[0] == '\0' || overlays[i].type != ovl->type,
-                           "Fixed overlay storage for type %d is already occupied", ovl->type);
+                ASSERT_MSG(
+                    &overlays[i] == ovl || overlays[i].name[0] == '\0' || overlays[i].type != ovl->type,
+                    "Fixed overlay storage for type %d is already occupied", ovl->type
+                );
             }
             return storage->base;
 
         case OVL_STORAGE_POOL:
-            ASSERT_MSG(footprint <= storage->slotSize,
-                       "Overlay '%s' footprint 0x%X exceeds pool slot size 0x%X",
-                       ovl->name, (unsigned int)footprint, (unsigned int)storage->slotSize);
+            ASSERT_MSG(
+                footprint <= storage->slotSize, "Overlay '%s' footprint 0x%X exceeds pool slot size 0x%X", ovl->name,
+                (unsigned int) footprint, (unsigned int) storage->slotSize
+            );
             for (s32 slot = 0; slot < storage->slotCount; slot++) {
                 b32 inUse = false;
 
                 for (s32 i = 0; i < MAX_OVERLAYS; i++) {
-                    if (overlays[i].name[0] != '\0' && overlays[i].type == ovl->type &&
-                        overlays[i].storageSlot == slot) {
+                    if (overlays[i].name[0] != '\0' && overlays[i].type == ovl->type && overlays[i].storageSlot == slot)
+                    {
                         inUse = true;
                         break;
                     }
@@ -335,7 +340,7 @@ static u8* allocate_storage(Overlay* ovl, u32 footprint) {
             return nullptr;
 
         case OVL_STORAGE_RELOCATABLE:
-            return (u8*)malloc(footprint);
+            return (u8*) malloc(footprint);
     }
 
     PANIC();
@@ -352,10 +357,11 @@ s32 ovl_get_count(OverlayType type) {
     ALIGNED(8) u32 header[2];
     u32 address;
 
-    ASSERT((u32)type < OVL_NUM_TYPES);
+    ASSERT((u32) type < OVL_NUM_TYPES);
     address = ovlDirectoryRomAddr[type];
-    if (address == 0) return 0;
-    dma_copy((u8*)address, (u8*)(address + sizeof(header)), header);
+    if (address == 0)
+        return 0;
+    dma_copy((u8*) address, (u8*) (address + sizeof(header)), header);
     return header[1];
 }
 
@@ -365,9 +371,10 @@ b32 ovl_get_name(OverlayType type, s32 index, char name[OVL_NAME_MAX]) {
     u32 address;
 
     name[0] = '\0';
-    if (index < 0 || index >= count) return false;
+    if (index < 0 || index >= count)
+        return false;
     address = ovlDirectoryRomAddr[type] + 8 + index * sizeof(entry);
-    dma_copy((u8*)address, (u8*)(address + sizeof(entry)), &entry);
+    dma_copy((u8*) address, (u8*) (address + sizeof(entry)), &entry);
     memcpy(name, entry.name, OVL_NAME_MAX);
     name[OVL_NAME_MAX - 1] = '\0';
     return true;
@@ -375,17 +382,18 @@ b32 ovl_get_name(OverlayType type, s32 index, char name[OVL_NAME_MAX]) {
 
 static b32 find_in_directory(OverlayType type, const char* name, OverlayDirectoryEntry* out) {
     u32 dirAddr = ovlDirectoryRomAddr[type];
-    if (dirAddr == 0) return false;
+    if (dirAddr == 0)
+        return false;
 
     ALIGNED(8) u32 header[2];
-    dma_copy((u8*)dirAddr, (u8*)(dirAddr + sizeof(header)), header);
+    dma_copy((u8*) dirAddr, (u8*) (dirAddr + sizeof(header)), header);
     u32 count = header[1];
 
     ALIGNED(8) OverlayDirectoryEntry entry;
     u32 entriesAddr = dirAddr + sizeof(header);
     for (u32 i = 0; i < count; i++) {
         u32 entryAddr = entriesAddr + i * sizeof(OverlayDirectoryEntry);
-        dma_copy((u8*)entryAddr, (u8*)(entryAddr + sizeof(OverlayDirectoryEntry)), &entry);
+        dma_copy((u8*) entryAddr, (u8*) (entryAddr + sizeof(OverlayDirectoryEntry)), &entry);
         if (strcmp(entry.name, name) == 0) {
             *out = entry;
             return true;
@@ -394,8 +402,7 @@ static b32 find_in_directory(OverlayType type, const char* name, OverlayDirector
     return false;
 }
 
-static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirectoryEntry* entry,
-                             b32 allocate) {
+static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirectoryEntry* entry, b32 allocate) {
     const OverlayStorage* storage = &overlayStorage[type];
     const char* name = entry->name;
 
@@ -406,7 +413,7 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
 
     // Read header
     ALIGNED(8) OverlayHeader hdr;
-    dma_copy((u8*)entry->romStart, (u8*)(entry->romStart + sizeof(OverlayHeader)), &hdr);
+    dma_copy((u8*) entry->romStart, (u8*) (entry->romStart + sizeof(OverlayHeader)), &hdr);
     ASSERT_MSG(hdr.magic == MOD_MAGIC, "Invalid overlay %s", name);
 
     // Compute file offsets
@@ -415,11 +422,8 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
     u32 metaSz = hdr.exportCount * sizeof(OverlayExport) + strtabPadded + hdr.dtorCount * sizeof(u32);
     u32 metaOff = loadOff + hdr.loadSize;
     u32 relocOff = metaOff + metaSz;
-    u32 ctorOff = relocOff
-                  + hdr.r32Count * sizeof(u32)
-                  + hdr.r26Count * sizeof(u32)
-                  + hdr.hi16Count * 2 * sizeof(u32)
-                  + hdr.lo16Count * sizeof(u32);
+    u32 ctorOff = relocOff + hdr.r32Count * sizeof(u32) + hdr.r26Count * sizeof(u32) + hdr.hi16Count * 2 * sizeof(u32)
+        + hdr.lo16Count * sizeof(u32);
 
     // Allocate: [text+data][bss][alignment][exports|strtab|dtors]
     u32 metaMemOff = (hdr.loadSize + hdr.bssSize + 7) & ~7;
@@ -427,19 +431,17 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
     if (allocate) {
         ovl->base = allocate_storage(ovl, footprint);
     } else {
-        ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED,
-                   "Only fixed overlays may be restored in place (type %d)", type);
-        ASSERT_MSG(footprint <= storage->slotSize,
-                   "Overlay '%s' footprint 0x%X exceeds fixed storage size 0x%X",
-                   name, (unsigned int)footprint, (unsigned int)storage->slotSize);
-        ASSERT_MSG(ovl->base == storage->base,
-                   "Overlay '%s' is not at its fixed storage address", name);
+        ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED, "Only fixed overlays may be restored in place (type %d)", type);
+        ASSERT_MSG(
+            footprint <= storage->slotSize, "Overlay '%s' footprint 0x%X exceeds fixed storage size 0x%X", name,
+            (unsigned int) footprint, (unsigned int) storage->slotSize
+        );
+        ASSERT_MSG(ovl->base == storage->base, "Overlay '%s' is not at its fixed storage address", name);
     }
     ASSERT_MSG(ovl->base != nullptr, "Could not allocate storage for overlay '%s'", name);
 
     // DMA text+data
-    dma_copy((u8*)(entry->romStart + loadOff),
-             (u8*)(entry->romStart + loadOff + hdr.loadSize), ovl->base);
+    dma_copy((u8*) (entry->romStart + loadOff), (u8*) (entry->romStart + loadOff + hdr.loadSize), ovl->base);
 
     // Zero BSS
     if (hdr.bssSize > 0) {
@@ -449,18 +451,17 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
     // DMA exports+strtab+dtors after BSS
     u8* metaBase = ovl->base + metaMemOff;
     if (metaSz > 0) {
-        dma_copy((u8*)(entry->romStart + metaOff),
-                 (u8*)(entry->romStart + metaOff + metaSz), metaBase);
+        dma_copy((u8*) (entry->romStart + metaOff), (u8*) (entry->romStart + metaOff + metaSz), metaBase);
     }
 
     // Set up pointers into loaded region
     ovl->textSize = hdr.textSize;
     ovl->loadSize = hdr.loadSize;
     ovl->exportCount = hdr.exportCount;
-    ovl->exports = (OverlayExport*)metaBase;
-    ovl->strtab = (const char*)(metaBase + hdr.exportCount * sizeof(OverlayExport));
+    ovl->exports = (OverlayExport*) metaBase;
+    ovl->strtab = (const char*) (metaBase + hdr.exportCount * sizeof(OverlayExport));
     ovl->dtorCount = hdr.dtorCount;
-    ovl->dtors = (u32*)((u8*)ovl->strtab + strtabPadded);
+    ovl->dtors = (u32*) ((u8*) ovl->strtab + strtabPadded);
 
     // Apply relocations
     osWritebackDCache(ovl->base, footprint);
@@ -469,7 +470,7 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
     osInvalICache(ovl->base, footprint);
 
     // Pre-adjust destructors with delta
-    u32 delta = (u32)ovl->base - link_addr(type);
+    u32 delta = (u32) ovl->base - link_addr(type);
     for (u32 i = 0; i < hdr.dtorCount; i++) {
         ovl->dtors[i] += delta;
     }
@@ -477,13 +478,15 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
 #if DX_DEBUG_OVERLAY_LOADS && DX_DEBUG_MENU
     if (allocate) {
         if (storage->mode == OVL_STORAGE_POOL) {
-            debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X #%d",
-                                get_type_name(ovl->type), get_storage_name(storage->mode), ovl->name,
-                                (unsigned int)ovl->base, (unsigned int)footprint, ovl->storageSlot);
+            debug_printf_always(
+                "\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X #%d", get_type_name(ovl->type), get_storage_name(storage->mode),
+                ovl->name, (unsigned int) ovl->base, (unsigned int) footprint, ovl->storageSlot
+            );
         } else {
-            debug_printf_always("\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X",
-                                get_type_name(ovl->type), get_storage_name(storage->mode), ovl->name,
-                                (unsigned int)ovl->base, (unsigned int)footprint);
+            debug_printf_always(
+                "\\gOVL+\\d %s/%s \\y%.32s\\d @%08X +%X", get_type_name(ovl->type), get_storage_name(storage->mode),
+                ovl->name, (unsigned int) ovl->base, (unsigned int) footprint
+            );
         }
     }
 #endif
@@ -493,8 +496,9 @@ static void populate_overlay(Overlay* ovl, OverlayType type, const OverlayDirect
     // Run constructors
     if (hdr.ctorCount > 0) {
         ALIGNED(8) u32 ctors[hdr.ctorCount];
-        dma_copy((u8*)(entry->romStart + ctorOff),
-                 (u8*)(entry->romStart + ctorOff + hdr.ctorCount * sizeof(u32)), ctors);
+        dma_copy(
+            (u8*) (entry->romStart + ctorOff), (u8*) (entry->romStart + ctorOff + hdr.ctorCount * sizeof(u32)), ctors
+        );
         for (u32 i = 0; i < hdr.ctorCount; i++) {
             void (*fn)(void) = (void (*)(void))(ctors[i] + delta);
             fn();
@@ -514,8 +518,9 @@ static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entr
         }
     }
 
-    ASSERT_MSG(ovl != nullptr, "Too many overlays loaded for type %d (descriptor budget %d)",
-               type, (int)storage->descCount);
+    ASSERT_MSG(
+        ovl != nullptr, "Too many overlays loaded for type %d (descriptor budget %d)", type, (int) storage->descCount
+    );
 
     populate_overlay(ovl, type, entry, true);
 
@@ -523,13 +528,12 @@ static Overlay* load_overlay(OverlayType type, const OverlayDirectoryEntry* entr
 }
 
 Overlay* ovl_load(const char* name, OverlayType type) {
-    ASSERT((u32)type < OVL_NUM_TYPES);
+    ASSERT((u32) type < OVL_NUM_TYPES);
 
     const OverlayStorage* storage = &overlayStorage[type];
     s32 descriptorEnd = storage->descStart + storage->descCount;
     for (s32 i = storage->descStart; i < descriptorEnd; i++) {
-        if (overlays[i].name[0] != '\0' && overlays[i].type == type &&
-            strcmp(overlays[i].name, name) == 0) {
+        if (overlays[i].name[0] != '\0' && overlays[i].type == type && strcmp(overlays[i].name, name) == 0) {
             return &overlays[i];
         }
     }
@@ -541,23 +545,26 @@ Overlay* ovl_load(const char* name, OverlayType type) {
 }
 
 void ovl_unload(Overlay* ovl) {
-    if (ovl == nullptr || ovl->name[0] == '\0') return;
+    if (ovl == nullptr || ovl->name[0] == '\0')
+        return;
 
 #if DX_DEBUG_OVERLAY_LOADS && DX_DEBUG_MENU
     if (overlayStorage[ovl->type].mode == OVL_STORAGE_POOL) {
-        debug_printf_always("\\rOVL-\\d %s/%s \\y%.32s\\d @%08X #%d",
-                            get_type_name(ovl->type), get_storage_name(overlayStorage[ovl->type].mode),
-                            ovl->name, (unsigned int)ovl->base, ovl->storageSlot);
+        debug_printf_always(
+            "\\rOVL-\\d %s/%s \\y%.32s\\d @%08X #%d", get_type_name(ovl->type),
+            get_storage_name(overlayStorage[ovl->type].mode), ovl->name, (unsigned int) ovl->base, ovl->storageSlot
+        );
     } else {
-        debug_printf_always("\\rOVL-\\d %s/%s \\y%.32s\\d @%08X",
-                            get_type_name(ovl->type), get_storage_name(overlayStorage[ovl->type].mode),
-                            ovl->name, (unsigned int)ovl->base);
+        debug_printf_always(
+            "\\rOVL-\\d %s/%s \\y%.32s\\d @%08X", get_type_name(ovl->type),
+            get_storage_name(overlayStorage[ovl->type].mode), ovl->name, (unsigned int) ovl->base
+        );
     }
 #endif
 
     // Run destructors
     for (u32 i = 0; i < ovl->dtorCount; i++) {
-        void (*fn)(void) = (void (*)(void))ovl->dtors[i];
+        void (*fn)(void) = (void (*)(void)) ovl->dtors[i];
         fn();
     }
 
@@ -576,11 +583,10 @@ void ovl_unload_type(OverlayType type) {
 }
 
 void ovl_restore_type(OverlayType type) {
-    ASSERT((u32)type < OVL_NUM_TYPES);
+    ASSERT((u32) type < OVL_NUM_TYPES);
 
     const OverlayStorage* storage = &overlayStorage[type];
-    ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED,
-               "Only fixed overlays may be restored in place (type %d)", type);
+    ASSERT_MSG(storage->mode == OVL_STORAGE_FIXED, "Only fixed overlays may be restored in place (type %d)", type);
 
     s32 descriptorEnd = storage->descStart + storage->descCount;
     for (s32 i = storage->descStart; i < descriptorEnd; i++) {
@@ -604,7 +610,7 @@ void* ovl_import(const Overlay* ovl, const char* name) {
 }
 
 static const char* name_for_addr(const Overlay* ovl, u32 addr) {
-    u32 off = addr - (u32)ovl->base;
+    u32 off = addr - (u32) ovl->base;
 
     const char* best = nullptr;
     u32 bestOff = 0;
@@ -619,14 +625,15 @@ static const char* name_for_addr(const Overlay* ovl, u32 addr) {
 }
 
 static b32 contains(const Overlay* ovl, u32 addr) {
-    if (ovl->name[0] == '\0') return false;
-    u32 b = (u32)ovl->base;
+    if (ovl->name[0] == '\0')
+        return false;
+    u32 b = (u32) ovl->base;
     return addr >= b && addr < b + ovl->loadSize;
 }
 
-const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
-                             u32* outDebugRomStart, u32* outDebugRomEnd,
-                             u32* outOverlayBase) {
+const char* ovl_resolve_addr(
+    u32 addr, const char** outOverlayName, u32* outDebugRomStart, u32* outDebugRomEnd, u32* outOverlayBase
+) {
     for (s32 i = 0; i < MAX_OVERLAYS; i++) {
         Overlay* ovl = &overlays[i];
 
@@ -639,7 +646,7 @@ const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
             if (outDebugRomEnd)
                 *outDebugRomEnd = ovl->debugRomEnd;
             if (outOverlayBase)
-                *outOverlayBase = (u32)ovl->base;
+                *outOverlayBase = (u32) ovl->base;
             return sym != nullptr ? sym : "";
         }
     }

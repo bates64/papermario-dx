@@ -7,8 +7,8 @@
 
 s32 NearRightDoorModelsL[] = { MODEL_o772, -1 };
 s32 NearRightDoorModelsR[] = { MODEL_o768, -1 };
-s32 FarRightDoorModelsL[]  = { MODEL_o859, -1 };
-s32 FarRightDoorModelsR[]  = { MODEL_o861, -1 };
+s32 FarRightDoorModelsL[] = { MODEL_o859, -1 };
+s32 FarRightDoorModelsR[] = { MODEL_o861, -1 };
 s32 BothRightDoorModelsL[] = { MODEL_o772, MODEL_o859, -1 };
 s32 BothRightDoorModelsR[] = { MODEL_o768, MODEL_o861, -1 };
 

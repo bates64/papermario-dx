@@ -46,9 +46,9 @@ typedef struct SymbolTable {
  *
  * Returns number of call frames walked (at most, `size`).
  */
-int backtrace(void **buffer, int size);
+int backtrace(void** buffer, int size);
 
-int backtrace_thread(void **buffer, int size, OSThread *thread);
+int backtrace_thread(void** buffer, int size, OSThread* thread);
 
 /** Print a backtrace. */
 void debug_backtrace(void);

@@ -55,7 +55,7 @@ s32 get_spirits_rescued(void) {
 }
 
 s32 fio_calc_globals_checksum(void) {
-    s32* it = (s32*)&gSaveGlobals;
+    s32* it = (s32*) &gSaveGlobals;
     u32 sum = 0;
     u32 i;
 
@@ -78,7 +78,7 @@ b32 fio_validate_globals_checksums(void) {
 }
 
 s32 fio_calc_boot_record_checksum(void) {
-    s32* it = (s32*)&gSaveBootRecord;
+    s32* it = (s32*) &gSaveBootRecord;
     u32 sum = 0;
     u32 i;
 
@@ -153,16 +153,16 @@ b32 fio_save_globals(void) {
 
     // erasing a sector erases the boot record beside the globals, so both are written back
     fio_erase_flash(GLOBALS_PAGE_1);
-    fio_write_flash(GLOBALS_PAGE_1, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
-    fio_write_flash_at(GLOBALS_PAGE_1, BOOT_RECORD_FIRST_PAGE, (s8*)&gSaveBootRecord, sizeof(gSaveBootRecord));
+    fio_write_flash(GLOBALS_PAGE_1, (s8*) &gSaveGlobals, sizeof(gSaveGlobals));
+    fio_write_flash_at(GLOBALS_PAGE_1, BOOT_RECORD_FIRST_PAGE, (s8*) &gSaveBootRecord, sizeof(gSaveBootRecord));
     fio_erase_flash(GLOBALS_PAGE_2);
-    fio_write_flash(GLOBALS_PAGE_2, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
-    fio_write_flash_at(GLOBALS_PAGE_2, BOOT_RECORD_FIRST_PAGE, (s8*)&gSaveBootRecord, sizeof(gSaveBootRecord));
+    fio_write_flash(GLOBALS_PAGE_2, (s8*) &gSaveGlobals, sizeof(gSaveGlobals));
+    fio_write_flash_at(GLOBALS_PAGE_2, BOOT_RECORD_FIRST_PAGE, (s8*) &gSaveBootRecord, sizeof(gSaveBootRecord));
     return true;
 }
 
 s32 fio_calc_file_checksum(SaveData* saveData) {
-    s32* it = (s32*)saveData;
+    s32* it = (s32*) saveData;
     u32 sum = 0;
     u32 i;
 
@@ -284,7 +284,7 @@ void fio_save_game(s32 saveSlot) {
     gCurrentSaveFile.crc2 = ~gCurrentSaveFile.crc1;
 
     fio_erase_flash(NextAvailablePhysicalSave);
-    fio_write_flash(NextAvailablePhysicalSave, (s8*)&gCurrentSaveFile, sizeof(SaveData));
+    fio_write_flash(NextAvailablePhysicalSave, (s8*) &gCurrentSaveFile, sizeof(SaveData));
 
     // saving as the player does, such as at a save block, ends booting into a test save
     if (gSaveGlobals.bootTo != BOOT_TO_DEFAULT) {
@@ -322,11 +322,11 @@ b32 fio_read_flash_at(s32 pageNum, s32 firstPage, void* readBuffer, u32 numBytes
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
-    s8* buf = (s8*)readBuffer;
+    s8* buf = (s8*) readBuffer;
     s32 amt;
     u16 i;
 
-    ASSERT_MSG(((u32)buf & 7) == 0, "fio_read_flash: dest not 8-byte aligned");
+    ASSERT_MSG(((u32) buf & 7) == 0, "fio_read_flash: dest not 8-byte aligned");
 
     osInvalDCache(buf, numBytes);
     osCreateMesgQueue(&mesgQueue, &mesg, 1);

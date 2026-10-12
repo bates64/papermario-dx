@@ -38,8 +38,7 @@ b32 startup_fade_screen_out(s16 addAlpha) {
 
 void startup_fade_screen_update(void) {
     set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, gGameStatusPtr->screenColorA);
-    set_screen_overlay_color(SCREEN_LAYER_FRONT,
-        gGameStatusPtr->screenColorR,
-        gGameStatusPtr->screenColorG,
-        gGameStatusPtr->screenColorB);
+    set_screen_overlay_color(
+        SCREEN_LAYER_FRONT, gGameStatusPtr->screenColorR, gGameStatusPtr->screenColorG, gGameStatusPtr->screenColorB
+    );
 }

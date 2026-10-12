@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Formation action_command_tutorial = {
     OVL_ACTOR_BY_IDX("goombario_tutor", BTL_POS_GROUND_B, 10),
 };

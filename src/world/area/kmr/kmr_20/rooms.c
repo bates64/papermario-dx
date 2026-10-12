@@ -1,11 +1,11 @@
 #include "kmr_20.h"
 
-API_CALLABLE(SetAmbienceVolumeHalf_Rooms){
+API_CALLABLE(SetAmbienceVolumeHalf_Rooms) {
     snd_ambient_set_volume(0, 1000, 63);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(SetAmbienceVolumeFull_Rooms){
+API_CALLABLE(SetAmbienceVolumeFull_Rooms) {
     snd_ambient_set_volume(0, 1000, 127);
     return ApiStatus_DONE2;
 }

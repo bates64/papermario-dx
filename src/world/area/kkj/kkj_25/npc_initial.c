@@ -27,10 +27,8 @@ EvtScript EVS_NpcIdle_Bowser_Npc1 = {
     End
 };
 
-EvtScript EVS_NpcDefeat_Bowser_Npc1 = {    Call(PlaySound, SOUND_LRAW_KPA_ARENA_ACTIVE)
-    Exec(EVS_Scene_PeachBreaksFree)
-    Return
-    End};
+EvtScript EVS_NpcDefeat_Bowser_Npc1 = { Call(PlaySound, SOUND_LRAW_KPA_ARENA_ACTIVE) Exec(EVS_Scene_PeachBreaksFree)
+                                            Return End };
 
 EvtScript EVS_NpcInit_Bowser_Npc1 = {
     Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bowser_Npc1))

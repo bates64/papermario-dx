@@ -50,13 +50,13 @@ EvtScript EVS_Main = {
         Call(SetModelTexVariant, MODEL_o, LVar0)
         Call(SetModelTexVariant, MODEL_n, LVar0)
 #endif
-    Call(MakeNpcs, true, Ref(DefaultNPCs))
-    ExecWait(EVS_MakeEntities)
-    ExecWait(EVS_SetupGizmos)
-    ExecWait(EVS_SetupMusic)
-    ExecWait(EVS_SetupTrain)
-    Exec(EVS_EnterMap)
-    Wait(1)
-    Return
-    End
+        Call(MakeNpcs, true, Ref(DefaultNPCs))
+        ExecWait(EVS_MakeEntities)
+        ExecWait(EVS_SetupGizmos)
+        ExecWait(EVS_SetupMusic)
+        ExecWait(EVS_SetupTrain)
+        Exec(EVS_EnterMap)
+        Wait(1)
+        Return
+        End
 };

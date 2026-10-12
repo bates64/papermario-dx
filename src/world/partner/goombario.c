@@ -60,10 +60,9 @@ s32 get_trigger_tattle(s32 tattleColliderID) {
     for (i = 0; i < MAX_TRIGGERS; i++) {
         Trigger* trigger = get_trigger_by_id(i);
 
-        if (trigger != nullptr
-            && trigger->flags & TRIGGER_WALL_PRESS_A
-            && trigger->location.colliderID == tattleColliderID
-        ) {
+        if (trigger != nullptr && trigger->flags & TRIGGER_WALL_PRESS_A
+            && trigger->location.colliderID == tattleColliderID)
+        {
             return trigger->tattleMsg;
         }
     }
@@ -128,7 +127,8 @@ API_CALLABLE(Update) {
             TweesterPhysicsPtr->angularVel = 6.0f;
             TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
             TweesterPhysicsPtr->countdown = 120;
-            npc->flags |= NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
+            npc->flags |= NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION
+                | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
             npc->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
@@ -188,7 +188,7 @@ void try_cancel_tweester(Npc* goombario) {
         TweesterTouchingPartner = nullptr;
         goombario->flags = TweesterPhysicsPtr->prevFlags;
         TweesterPhysicsPtr->state = TWEESTER_PARTNER_INIT;
-        partner_clear_player_tracking (goombario);
+        partner_clear_player_tracking(goombario);
     }
 }
 
@@ -219,9 +219,9 @@ API_CALLABLE(SelectTattleMsg) {
     s32 enemyTattleMsg;
     s32 i;
 
-    #define USE_STATE functionTemp[0]
-    #define VAR_MSG   varTable[0]
-    #define VAR_SKIP  varTable[1]
+#define USE_STATE functionTemp[0]
+#define VAR_MSG   varTable[0]
+#define VAR_SKIP  varTable[1]
     enum {
         USE_TATTLE_INIT         = 40,
         USE_TATTLE_DELAY        = 41,
@@ -364,7 +364,7 @@ API_CALLABLE(SelectTattleMsg) {
                 if (enemyTattleMsg != 0) {
                     msgID = enemyTattleMsg;
                     if (msgID < EVT_LIMIT) {
-                        script->VAR_MSG = ((s32(*)(void))msgID)();
+                        script->VAR_MSG = ((s32 (*)(void)) msgID)();
                     } else {
                         script->VAR_MSG = msgID;
                         script->VAR_SKIP = false;
@@ -392,7 +392,7 @@ API_CALLABLE(SelectTattleMsg) {
                 if (msgID != 0) {
                     if (msgID < EVT_LIMIT) {
                         // map uses a get_tattle function
-                        script->VAR_MSG = ((s32(*)(void))msgID)();
+                        script->VAR_MSG = ((s32 (*)(void)) msgID)();
                     } else {
                         script->VAR_MSG = msgID;
                         script->VAR_SKIP = false;
@@ -410,7 +410,7 @@ API_CALLABLE(SelectTattleMsg) {
             msgID = get_current_map_settings()->tattle.msgID;
             if (msgID != 0) {
                 if (msgID < EVT_LIMIT) {
-                    script->VAR_MSG = ((s32(*)(void))msgID)();
+                    script->VAR_MSG = ((s32 (*)(void)) msgID)();
                 } else {
                     script->VAR_MSG = msgID;
                     script->VAR_SKIP = false;

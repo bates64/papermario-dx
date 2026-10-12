@@ -5,7 +5,6 @@
 
 #include "sprite/npc/Luigi.h"
 
-
 API_CALLABLE(SetModelRemapTint) {
     Bytecode* args = script->ptrReadPos;
     s32 primR = *args++;
@@ -28,14 +27,14 @@ API_CALLABLE(LoadPeachLetterImage) {
     u8* rasterOffset = charset_peach_letter_OFFSET;
     u16* paletteOffset = charset_peach_letter_pal_OFFSET;
 
-    dma_copy(romStart + (s32)rasterOffset, romStart + (s32)rasterOffset + sizeof(PeachLetterImg), &PeachLetterImg);
-    dma_copy(romStart + (s32)paletteOffset, romStart + (s32)paletteOffset + sizeof(PeachLetterPal), &PeachLetterPal);
+    dma_copy(romStart + (s32) rasterOffset, romStart + (s32) rasterOffset + sizeof(PeachLetterImg), &PeachLetterImg);
+    dma_copy(romStart + (s32) paletteOffset, romStart + (s32) paletteOffset + sizeof(PeachLetterPal), &PeachLetterPal);
 
-    MsgImage.raster   = PeachLetterImg;
-    MsgImage.palette  = PeachLetterPal;
-    MsgImage.width    = charset_peach_letter_png_width;
-    MsgImage.height   = charset_peach_letter_png_height;
-    MsgImage.format   = G_IM_FMT_CI;
+    MsgImage.raster = PeachLetterImg;
+    MsgImage.palette = PeachLetterPal;
+    MsgImage.width = charset_peach_letter_png_width;
+    MsgImage.height = charset_peach_letter_png_height;
+    MsgImage.format = G_IM_FMT_CI;
     MsgImage.bitDepth = G_IM_SIZ_8b;
     set_message_images(&MsgImage);
     return ApiStatus_DONE2;

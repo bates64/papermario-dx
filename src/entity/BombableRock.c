@@ -71,7 +71,9 @@ void entity_BombableRock_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
 
 void entity_BombableRock_init(Entity* entity) {
     entity->dataBuf.bombableRock->inititalY = entity->pos.y;
-    entity_BombableRock_init_fragments(entity, Entity_BombableRock_FragmentsRender, Entity_BombableRock_FragmentMatrices);
+    entity_BombableRock_init_fragments(
+        entity, Entity_BombableRock_FragmentsRender, Entity_BombableRock_FragmentMatrices
+    );
 }
 
 void entity_BombableRock_update_fragments(Entity* entity) {
@@ -145,7 +147,10 @@ void entity_BombableRock_update_fragments(Entity* entity) {
             hitX = data->fragmentPosX[i];
             hitY = data->fragmentPosY[i];
             hitZ = data->fragmentPosZ[i];
-            if (npc_test_move_taller_with_slipping(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, yawRad, 8.0f, 8.0f)) {
+            if (npc_test_move_taller_with_slipping(
+                    COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, yawRad, 8.0f, 8.0f
+                ))
+            {
                 data->fragmentPosX[i] = hitX;
                 data->fragmentPosY[i] = hitY;
                 data->fragmentPosZ[i] = hitZ;
@@ -155,14 +160,15 @@ void entity_BombableRock_update_fragments(Entity* entity) {
                 lateralSpeed = 8.0f;
                 data->fragmentPosX[i] += lateralSpeed * sin_rad(moveAngle);
                 data->fragmentPosZ[i] += lateralSpeed * cos_rad(moveAngle);
-
             }
 
             hitX = data->fragmentPosX[i];
             hitY = data->fragmentPosY[i];
             hitZ = data->fragmentPosZ[i];
             hitDepth = fabsf(data->fragmentFallSpeed[i]);
-            if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth) || hitY < data->inititalY - 200.0f) {
+            if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth)
+                || hitY < data->inititalY - 200.0f)
+            {
                 data->fragmentRebounds[i]++;
                 data->fragmentPosY[i] = hitY + fabsf(data->fragmentFallSpeed[i]);
                 data->fragmentFallSpeed[i] = reboundSpeed;
@@ -236,7 +242,8 @@ void entity_BombableRock_idle(Entity* entity) {
     }
 }
 
-EntityModelScript Entity_BombableRock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_BombableRock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
 
 EntityScript Entity_BombableRock_Script = {
     es_SetCallback(entity_BombableRock_idle, 0)

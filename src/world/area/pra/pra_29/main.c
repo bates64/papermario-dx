@@ -7,15 +7,15 @@
 
 s32 NearLeftDoorModelsL[] = { MODEL_o772, -1 };
 s32 NearLeftDoorModelsR[] = { MODEL_o768, -1 };
-s32 FarLeftDoorModelsL[]  = { MODEL_o859, -1 };
-s32 FarLeftDoorModelsR[]  = { MODEL_o861, -1 };
+s32 FarLeftDoorModelsL[] = { MODEL_o859, -1 };
+s32 FarLeftDoorModelsR[] = { MODEL_o861, -1 };
 s32 BothLeftDoorModelsL[] = { MODEL_o772, MODEL_o859, -1 };
 s32 BothLeftDoorModelsR[] = { MODEL_o768, MODEL_o861, -1 };
 
 s32 NearRightDoorModelsL[] = { MODEL_o995, -1 };
 s32 NearRightDoorModelsR[] = { MODEL_o997, -1 };
-s32 FarRightDoorModelsL[]  = { MODEL_o1096, -1 };
-s32 FarRightDoorModelsR[]  = { MODEL_o1094, -1 };
+s32 FarRightDoorModelsL[] = { MODEL_o1096, -1 };
+s32 FarRightDoorModelsR[] = { MODEL_o1094, -1 };
 s32 BothRightDoorModelsL[] = { MODEL_o995, MODEL_o1096, -1 };
 s32 BothRightDoorModelsR[] = { MODEL_o997, MODEL_o1094, -1 };
 

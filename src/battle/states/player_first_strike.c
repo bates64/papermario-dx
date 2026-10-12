@@ -172,7 +172,9 @@ void btl_state_update_first_strike(void) {
                     if (target != nullptr) {
                         if (target->scripts.handleEvent.source != nullptr) {
                             target->lastEventType = EVENT_END_FIRST_STRIKE;
-                            script = start_script(target->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+                            script = start_script(
+                                target->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY
+                            );
                             assign_bound_script(&target->scripts.handleEvent, script);
                             script->owner1.actorID = target->actorID;
                         }

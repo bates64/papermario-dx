@@ -2,7 +2,6 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Whacka.h"
 
-
 extern EvtScript EVS_Init;
 extern EvtScript EVS_Idle;
 extern EvtScript EVS_TakeTurn;

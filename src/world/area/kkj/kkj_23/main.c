@@ -12,10 +12,11 @@ EvtScript EVS_EndPeachChapter6 = {
     End
 };
 
-EvtScript EVS_ExitDoors_kkj_22_1 = EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_0, "kkj_22", kkj_22_ENTRY_1,
-    COLLIDER_tte, MODEL_o5, MODEL_o4);
+EvtScript EVS_ExitDoors_kkj_22_1 =
+    EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_0, "kkj_22", kkj_22_ENTRY_1, COLLIDER_tte, MODEL_o5, MODEL_o4);
 
-EvtScript EVS_ExitDoors_kkj_24_0 = EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_1, "kkj_24", kkj_24_ENTRY_0, COLLIDER_ttw, MODEL_o9, MODEL_o10);
+EvtScript EVS_ExitDoors_kkj_24_0 =
+    EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_1, "kkj_24", kkj_24_ENTRY_0, COLLIDER_ttw, MODEL_o9, MODEL_o10);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)

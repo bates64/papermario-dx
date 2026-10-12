@@ -111,9 +111,9 @@ API_CALLABLE(CreateMapRoom) {
     room->flags = roomFlags & (ROOM_FLAGS_MASK | ROOM_FLAGS_DOOR_TYPE_MASK);
     room->newItemVisGroup = (roomFlags & ROOM_FLAGS_VISGROUP_MASK) >> 0xC;
     room->prevItemVisGroup = VIS_GROUP_0;
-    openDoorScript  = (EvtScript*) evt_get_variable(script, *args++);
+    openDoorScript = (EvtScript*) evt_get_variable(script, *args++);
     moveWallsScript = (EvtScript*) evt_get_variable(script, *args++);
-    dropDoorScript  = (EvtScript*) evt_get_variable(script, *args++);
+    dropDoorScript = (EvtScript*) evt_get_variable(script, *args++);
     stateListenerScript = (EvtScript*) evt_get_variable(script, *args++);
     room->colliderID = colliderID = evt_get_variable(script, *args++);
     triggerColliderID = evt_get_variable(script, *args++);

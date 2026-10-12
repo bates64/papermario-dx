@@ -7,7 +7,6 @@
 
 #include "battle/common/move/HammerSupport.inc.c"
 
-
 INCLUDE_IMG("battle/move/hammer/dusty_hammer.png", battle_move_hammer_throw_dusty_hammer_png);
 INCLUDE_PAL("battle/move/hammer/dusty_hammer.pal", battle_move_hammer_throw_dusty_hammer_pal);
 
@@ -27,10 +26,14 @@ INCLUDE_PAL("battle/move/hammer/ultra_hammer.pal", battle_move_hammer_throw_ultr
 #include "battle/move/hammer/super_hammer.gfx.inc.c"
 #include "battle/move/hammer/ultra_hammer.gfx.inc.c"
 
-EntityModelScript EMS_DustyHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_dusty_hammer_gfx, RENDER_MODE_ALPHATEST);
-EntityModelScript EMS_BasicHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_basic_hammer_gfx, RENDER_MODE_ALPHATEST);
-EntityModelScript EMS_SuperHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_super_hammer_gfx, RENDER_MODE_ALPHATEST);
-EntityModelScript EMS_UltraHammer = STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_ultra_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_DustyHammer =
+    STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_dusty_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_BasicHammer =
+    STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_basic_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_SuperHammer =
+    STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_super_hammer_gfx, RENDER_MODE_ALPHATEST);
+EntityModelScript EMS_UltraHammer =
+    STANDARD_ENTITY_MODEL_SCRIPT(battle_move_hammer_throw_ultra_hammer_gfx, RENDER_MODE_ALPHATEST);
 
 extern EvtScript EVS_UseMove_Impl;
 
@@ -57,7 +60,6 @@ EvtScript EVS_UseMove = {
     Return
     End
 };
-
 
 EvtScript EVS_802A3E5C = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
@@ -427,6 +429,4 @@ EvtScript EVS_UseMove_Impl = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove, );

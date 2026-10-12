@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Vec3i pos_swoopula[] = {
     { 15, 133, -25 },
     { 55, 133, -25 },

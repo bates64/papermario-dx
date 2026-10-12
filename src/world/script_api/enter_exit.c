@@ -120,7 +120,7 @@ API_CALLABLE(PlayerMoveToDoor) {
 API_CALLABLE(GetEntryCoords) {
     Bytecode* args = script->ptrReadPos;
     MapSettings* mapSettings = get_current_map_settings();
-    Vec4f* entryList = (Vec4f*)mapSettings->entryList;
+    Vec4f* entryList = (Vec4f*) mapSettings->entryList;
     s32 index = evt_get_variable(script, *args++);
 
     evt_set_variable(script, *args++, entryList[index].x);

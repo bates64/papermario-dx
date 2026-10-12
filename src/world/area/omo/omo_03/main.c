@@ -60,20 +60,20 @@ EvtScript EVS_Main = {
         Call(SetModelTexVariant, MODEL_o, LVar0)
         Call(SetModelTexVariant, MODEL_n, LVar0)
 #endif
-    Set(AF_OMO03_ToggleDialogue_Conductor, false)
-    Set(GF_MAP_ShyGuysToybox, true)
-    Call(GetEntryID, LVar0)
-    IfNe(LVar0, omo_03_ENTRY_5)
-        Call(MakeNpcs, true, Ref(DefaultNPCs))
-    Else
-        Call(MakeNpcs, true, Ref(EpilogueNPCs))
-    EndIf
-    ExecWait(EVS_MakeEntities)
-    ExecWait(EVS_SetupGizmos)
-    ExecWait(EVS_SetupMusic)
-    ExecWait(EVS_SetupTrain)
-    Exec(EVS_EnterMap)
-    Wait(1)
-    Return
-    End
+        Set(AF_OMO03_ToggleDialogue_Conductor, false)
+        Set(GF_MAP_ShyGuysToybox, true)
+        Call(GetEntryID, LVar0)
+        IfNe(LVar0, omo_03_ENTRY_5)
+            Call(MakeNpcs, true, Ref(DefaultNPCs))
+        Else
+            Call(MakeNpcs, true, Ref(EpilogueNPCs))
+        EndIf
+        ExecWait(EVS_MakeEntities)
+        ExecWait(EVS_SetupGizmos)
+        ExecWait(EVS_SetupMusic)
+        ExecWait(EVS_SetupTrain)
+        Exec(EVS_EnterMap)
+        Wait(1)
+        Return
+        End
 };

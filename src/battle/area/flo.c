@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Formation lakitu_2 = {
     OVL_ACTOR_BY_IDX("lakitu", BTL_POS_AIR_B, 10),
     OVL_ACTOR_BY_IDX("lakitu", BTL_POS_AIR_C, 9),

@@ -39,14 +39,9 @@ API_CALLABLE(EvtTest_Record) {
 }
 
 API_CALLABLE(EvtTest_ExpectTrace) {
-    const char* expected = (const char*)*script->ptrReadPos;
+    const char* expected = (const char*) *script->ptrReadPos;
 
-    ASSERT_MSG(
-        strcmp(EvtTestTrace, expected) == 0,
-        "EVT test expected trace %s but got %s",
-        expected,
-        EvtTestTrace
-    );
+    ASSERT_MSG(strcmp(EvtTestTrace, expected) == 0, "EVT test expected trace %s but got %s", expected, EvtTestTrace);
     return ApiStatus_DONE2;
 }
 
@@ -429,7 +424,7 @@ EvtScript EVS_EvtTestNaturalFinally = {
     ChildThread
         Finally
             Call(EvtTest_Record, 'C')
-        EndChildThread
+    EndChildThread
     Return
     Finally
         Call(EvtTest_Record, 'P')
@@ -441,7 +436,7 @@ EvtScript EVS_EvtTestForcedFinally = {
         Wait(100)
         Finally
             Call(EvtTest_Record, 'C')
-        EndChildThread
+    EndChildThread
     Wait(100)
     Finally
         Call(EvtTest_Record, 'P')

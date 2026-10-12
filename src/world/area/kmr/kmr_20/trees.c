@@ -1,7 +1,7 @@
 #include "kmr_20.h"
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o325);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o325);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o326);
 
 FoliageVectorList Tree1_Effects = {

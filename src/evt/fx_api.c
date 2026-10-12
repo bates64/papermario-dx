@@ -52,10 +52,8 @@ API_CALLABLE(func_802D7690) {
     sinA = sin_rad(DEG_TO_RAD(angle));
     cosA = cos_rad(DEG_TO_RAD(angle));
     fx_cloud_trail(
-        posX + ((sinA * magnitude * script->functionTemp[0]) / duration) + offsetX,
-        posY + 15.5f + offsetY,
-        posZ + ((-cosA * magnitude * script->functionTemp[0]) / duration) + offsetZ,
-        0.0f
+        posX + ((sinA * magnitude * script->functionTemp[0]) / duration) + offsetX, posY + 15.5f + offsetY,
+        posZ + ((-cosA * magnitude * script->functionTemp[0]) / duration) + offsetZ, 0.0f
     );
 
     script->functionTemp[0]++;
@@ -84,7 +82,7 @@ API_CALLABLE(ShowEmote) {
     switch (emoterType) {
         case EMOTER_PLAYER:
             // show emote from player
-            npc = (Npc*)-1;
+            npc = (Npc*) -1;
             x = 0.0f;
             y = (gPlayerStatus.colliderHeight * 2) / 3;
             z = 0.0f;
@@ -118,13 +116,13 @@ API_CALLABLE(ShowEmote) {
 API_CALLABLE(RemoveEffect) {
     Bytecode* args = script->ptrReadPos;
 
-    remove_effect((EffectInstance*)evt_get_variable(script, *args++));
+    remove_effect((EffectInstance*) evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(DismissEffect) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     effect->flags |= FX_INSTANCE_FLAG_DISMISS;
     return ApiStatus_DONE2;
@@ -132,7 +130,7 @@ API_CALLABLE(DismissEffect) {
 
 API_CALLABLE(DismissItemOutline) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     effect->data.gotItemOutline->timeLeft = 10;
     return ApiStatus_DONE2;
@@ -292,13 +290,13 @@ API_CALLABLE(ShowSleepBubble) {
     }
 
     fx_sleep_bubble(type, x, y, z, r, pitch, &effectHandle);
-    evt_set_variable(script, outVar, (s32)effectHandle);
+    evt_set_variable(script, outVar, (s32) effectHandle);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(SetSleepBubbleTimeLeft) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     s32 value = evt_get_variable(script, *args++);
 
     effect->data.sleepBubble->timeLeft = value;
@@ -320,10 +318,7 @@ API_CALLABLE(PlayEffect_impl) {
     ASSERT_MSG((u32) effectIndex < EFFECT_COUNT, "Invalid effect ID %lX", effectIndex);
     expectedArgCount = gEffectArgCounts[effectIndex];
     ASSERT_MSG(
-        script->curArgc == expectedArgCount + 1,
-        "PlayEffect %lX argc %d != %ld",
-        effectIndex,
-        script->curArgc - 1,
+        script->curArgc == expectedArgCount + 1, "PlayEffect %lX argc %d != %ld", effectIndex, script->curArgc - 1,
         expectedArgCount
     );
 
@@ -368,7 +363,9 @@ API_CALLABLE(PlayEffect_impl) {
             fx_star(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8]);
             break;
         case EFFECT_EMOTE:
-            fx_emote(iVars[1], (Npc*) rawVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], &effectOut);
+            fx_emote(
+                iVars[1], (Npc*) rawVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], &effectOut
+            );
             evt_set_variable(script, rawVars[9], (s32) effectOut);
             break;
         case EFFECT_SPARKLES:
@@ -490,7 +487,9 @@ API_CALLABLE(PlayEffect_impl) {
             effectRet = fx_lightning(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6]);
             break;
         case EFFECT_FIRE_BREATH:
-            effectRet = fx_fire_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9], iVars[10]);
+            effectRet = fx_fire_breath(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9], iVars[10]
+            );
             break;
         case EFFECT_SHIMMER_BURST:
             fx_shimmer_burst(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
@@ -556,10 +555,14 @@ API_CALLABLE(PlayEffect_impl) {
             effectRet = fx_balloon(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FLOATING_ROCK:
-            effectRet = fx_floating_rock(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
+            effectRet = fx_floating_rock(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]
+            );
             break;
         case EFFECT_CHOMP_DROP:
-            effectRet = fx_chomp_drop(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], fVars[9], iVars[10]);
+            effectRet = fx_chomp_drop(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], fVars[9], iVars[10]
+            );
             break;
         case EFFECT_QUIZMO_STAGE:
             effectRet = fx_quizmo_stage(iVars[1], fVars[2], fVars[3], fVars[4]);
@@ -586,7 +589,8 @@ API_CALLABLE(PlayEffect_impl) {
             effectRet = fx_thunderbolt_ring(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_SQUIRT:
-            effectRet = fx_squirt(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
+            effectRet =
+                fx_squirt(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
             break;
         case EFFECT_WATER_BLOCK:
             effectRet = fx_water_block(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
@@ -601,7 +605,9 @@ API_CALLABLE(PlayEffect_impl) {
             effectRet = fx_underwater(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_LIGHTNING_BOLT:
-            effectRet = fx_lightning_bolt(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
+            effectRet = fx_lightning_bolt(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]
+            );
             break;
         case EFFECT_WATER_SPLASH:
             effectRet = fx_water_splash(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
@@ -616,10 +622,14 @@ API_CALLABLE(PlayEffect_impl) {
             effectRet = fx_stop_watch(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_63:
-            effectRet = fx_effect_63(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9], iVars[10]);
+            effectRet = fx_effect_63(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9], iVars[10]
+            );
             break;
         case EFFECT_THROW_SPINY:
-            effectRet = fx_throw_spiny(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
+            effectRet = fx_throw_spiny(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]
+            );
             break;
         case EFFECT_65:
             effectRet = fx_effect_65(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
@@ -646,31 +656,41 @@ API_CALLABLE(PlayEffect_impl) {
             effectRet = fx_shiny_flare(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_HUFF_PUFF_BREATH:
-            effectRet = fx_huff_puff_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8]);
+            effectRet =
+                fx_huff_puff_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8]);
             break;
         case EFFECT_COLD_BREATH:
             effectRet = fx_cold_breath(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_EMBERS:
-            effectRet = fx_embers(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9], fVars[10], fVars[11]);
+            effectRet = fx_embers(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9], fVars[10],
+                fVars[11]
+            );
             break;
         case EFFECT_HIEROGLYPHS:
             effectRet = fx_hieroglyphs(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_MISC_PARTICLES:
-            effectRet = fx_misc_particles(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9]);
+            effectRet = fx_misc_particles(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], iVars[8], iVars[9]
+            );
             break;
         case EFFECT_STATIC_STATUS:
             effectRet = fx_static_status(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6], iVars[7]);
             break;
         case EFFECT_MOVING_CLOUD:
-            effectRet = fx_moving_cloud(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], fVars[9]);
+            effectRet = fx_moving_cloud(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], fVars[9]
+            );
             break;
         case EFFECT_75:
             effectRet = fx_effect_75(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
         case EFFECT_FIREWORK_ROCKET:
-            effectRet = fx_firework_rocket(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]);
+            effectRet = fx_firework_rocket(
+                iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], fVars[6], fVars[7], fVars[8], iVars[9]
+            );
             break;
         case EFFECT_PEACH_STAR_BEAM:
             effectRet = fx_peach_star_beam(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);

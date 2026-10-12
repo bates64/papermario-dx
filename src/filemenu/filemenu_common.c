@@ -46,7 +46,7 @@ s16 D_80249CE0[10] = { -1, -3, -7, -12, -17, -22, -27, -32, -37, -42 };
 s16 D_80249CF4[16] = { 180, 173, 161, 148, 134, 120, 105, 91, 77, 62, 48, 34, 21, 9, 2, 0 };
 s16 D_80249D14[16] = { 0, 2, 9, 21, 34, 48, 62, 77, 91, 105, 120, 134, 148, 161, 173, 180 };
 s16 D_80249D34[10] = { 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
-s16 D_80249D48[10] = { 0, 5, 17, 37, 60, 85, 110, 135, 160, 185};
+s16 D_80249D48[10] = { 0, 5, 17, 37, 60, 85, 110, 135, 160, 185 };
 
 Vp D_80249D60 = {
     .vp = {
@@ -151,8 +151,8 @@ void filemenu_draw_rect(s32 ulx, s32 uly, s32 lrx, s32 lry, s32 tileIdx, s32 uls
 void filemenu_set_selected(MenuPanel* menu, s32 col, s32 row) {
     menu->col = col;
     menu->row = row;
-    menu->selected = menu->gridData[(menu->state * menu->numCols * menu->numRows) +
-                                    (menu->numCols * menu->row) + menu->col];
+    menu->selected =
+        menu->gridData[(menu->state * menu->numCols * menu->numRows) + (menu->numCols * menu->row) + menu->col];
 }
 
 void filemenu_set_cursor_alpha(s32 alpha) {
@@ -171,7 +171,8 @@ void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
                 Window* window = &gWindows[i];
                 s8 parent = window->parent;
 
-                if ((parent == WIN_NONE || parent == WIN_FILES_MAIN) && (window->flags & WINDOW_FLAG_INITIAL_ANIMATION)) {
+                if ((parent == WIN_NONE || parent == WIN_FILES_MAIN) && (window->flags & WINDOW_FLAG_INITIAL_ANIMATION))
+                {
                     break;
                 }
             }
@@ -183,8 +184,9 @@ void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
         filemenu_cursor_posX = posX;
         filemenu_cursor_targetY = posY;
         filemenu_cursor_posY = posY;
-    } else if (!(window->flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                (window->parent == WIN_NONE || !(gWindows[window->parent].flags & WINDOW_FLAG_INITIAL_ANIMATION))) {
+    } else if (!(window->flags & WINDOW_FLAG_INITIAL_ANIMATION)
+               && (window->parent == WIN_NONE || !(gWindows[window->parent].flags & WINDOW_FLAG_INITIAL_ANIMATION)))
+    {
         filemenu_cursor_targetX = posX;
         filemenu_cursor_targetY = posY;
     }
@@ -262,8 +264,8 @@ void filemenu_update(void) {
     s32 i;
 
     for (i = WIN_FILES_MAIN; i < ARRAY_COUNT(gWindows); i++) {
-        if ((gWindows[i].parent == WIN_NONE || gWindows[i].parent == WIN_FILES_MAIN) &&
-            (gWindows[i].flags & WINDOW_FLAG_INITIAL_ANIMATION))
+        if ((gWindows[i].parent == WIN_NONE || gWindows[i].parent == WIN_FILES_MAIN)
+            && (gWindows[i].flags & WINDOW_FLAG_INITIAL_ANIMATION))
         {
             break;
         }
@@ -303,13 +305,8 @@ void filemenu_update(void) {
 }
 
 void func_8024330C(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -327,13 +324,8 @@ void func_8024330C(
 }
 
 void filemenu_update_show_name_input(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -351,13 +343,8 @@ void filemenu_update_show_name_input(
 }
 
 void filemenu_update_show_options_left(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -375,13 +362,8 @@ void filemenu_update_show_options_left(
 }
 
 void filemenu_update_show_options_right(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -399,13 +381,8 @@ void filemenu_update_show_options_right(
 }
 
 void filemenu_update_show_options_bottom(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -423,13 +400,8 @@ void filemenu_update_show_options_bottom(
 }
 
 void filemenu_update_show_title(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -447,13 +419,8 @@ void filemenu_update_show_title(
 }
 
 void func_802435C4(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -468,13 +435,8 @@ void func_802435C4(
 }
 
 void filemenu_update_hidden_name_input(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -489,13 +451,8 @@ void filemenu_update_hidden_name_input(
 }
 
 void filemenu_update_hidden_options_left(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -510,13 +467,8 @@ void filemenu_update_hidden_options_left(
 }
 
 void filemenu_update_hidden_options_right(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -531,13 +483,8 @@ void filemenu_update_hidden_options_right(
 }
 
 void filemenu_update_hidden_title(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -552,13 +499,8 @@ void filemenu_update_hidden_title(
 }
 
 void filemenu_update_hidden_options_bottom(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -573,13 +515,8 @@ void filemenu_update_hidden_options_bottom(
 }
 
 void filemenu_update_show_with_rotation(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -598,13 +535,8 @@ void filemenu_update_show_with_rotation(
 }
 
 void filemenu_update_hidden_with_rotation(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -620,13 +552,8 @@ void filemenu_update_hidden_with_rotation(
 }
 
 void filemenu_update_select_file(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     Window* parent = &gWindows[window->parent];
@@ -646,13 +573,8 @@ void filemenu_update_select_file(
 }
 
 void filemenu_update_deselect_file(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -669,13 +591,8 @@ void filemenu_update_deselect_file(
 }
 
 void filemenu_update_show_name_confirm(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -709,13 +626,8 @@ void filemenu_update_show_name_confirm(
 }
 
 void filemenu_update_hidden_name_confirm(
-    s32 windowIdx,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
+    s32 windowIdx, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
 ) {
     Window* window = &gWindows[windowIdx];
     s32 updateCounter = window->updateCounter;
@@ -749,9 +661,9 @@ void filemenu_draw_cursor(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 
     }
 }
 
-void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity,
-                                       s32 darkening)
-{
+void filemenu_draw_contents_copy_arrow(
+    MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening
+) {
     Matrix4f transformMtx, tempMtx;
     f32 startX, startZ;
     f32 endX, endZ;
@@ -821,8 +733,9 @@ void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s3
     guOrthoF(transformMtx, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, -100.0f, 100.0f, 1.0f);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
     gSPDisplayList(gMainGfxPos++, filemenu_dl_copyarrow);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, 128);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, 0);
@@ -834,19 +747,25 @@ void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s3
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_8024B6F0);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
-    guTranslateF(tempMtx, CopyArrowAnimOffsets[gGameStatusPtr->frameCounter % ARRAY_COUNT(CopyArrowAnimOffsets)], 0.0f, 0.0f);
+    guTranslateF(
+        tempMtx, CopyArrowAnimOffsets[gGameStatusPtr->frameCounter % ARRAY_COUNT(CopyArrowAnimOffsets)], 0.0f, 0.0f
+    );
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gDPSetTileSize(gMainGfxPos++, 1, (gGameStatusPtr->frameCounter * 8) % 512, 0,
-                                        ((gGameStatusPtr->frameCounter * 8) % 512) + 60, 0);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
+    gDPSetTileSize(
+        gMainGfxPos++, 1, (gGameStatusPtr->frameCounter * 8) % 512, 0, ((gGameStatusPtr->frameCounter * 8) % 512) + 60,
+        0
+    );
     gSPDisplayList(gMainGfxPos++, D_8024B708);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 230, 230, 230, 255);
@@ -859,19 +778,25 @@ void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s3
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gSPDisplayList(gMainGfxPos++, D_8024B6F0);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 
-    guTranslateF(tempMtx, CopyArrowAnimOffsets[(gGameStatusPtr->frameCounter % ARRAY_COUNT(CopyArrowAnimOffsets))], 0.0f, 0.0f);
+    guTranslateF(
+        tempMtx, CopyArrowAnimOffsets[(gGameStatusPtr->frameCounter % ARRAY_COUNT(CopyArrowAnimOffsets))], 0.0f, 0.0f
+    );
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gDPSetTileSize(gMainGfxPos++, 1, (gGameStatusPtr->frameCounter * 8) % 512, 0,
-                                        ((gGameStatusPtr->frameCounter * 8) % 512) + 60, 0);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
+    gDPSetTileSize(
+        gMainGfxPos++, 1, (gGameStatusPtr->frameCounter * 8) % 512, 0, ((gGameStatusPtr->frameCounter * 8) % 512) + 60,
+        0
+    );
     gSPDisplayList(gMainGfxPos++, D_8024B708);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
@@ -905,7 +830,9 @@ void filemenu_init(s32 mode) {
                 gSaveSlotSummary[i] = gCurrentSaveFile.summary;
                 gSaveSlotMetadata[i].hasData = true;
                 gSaveSlotMetadata[i].validData = strcmp(gCurrentSaveFile.modName, DX_MOD_NAME) == 0;
-                memcpy(gSaveSlotMetadata[i].modName, gCurrentSaveFile.modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName));
+                memcpy(
+                    gSaveSlotMetadata[i].modName, gCurrentSaveFile.modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName)
+                );
             } else {
                 gSaveSlotMetadata[i].hasData = false;
                 gSaveSlotMetadata[i].validData = false;
@@ -958,16 +885,15 @@ void filemenu_cleanup(void) {
 }
 
 s32 filemenu_get_exit_mode() {
-    if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE
-        && filemenu_currentMenu == FILE_MENU_CONFIRM
-        && filemenu_menus[FILE_MENU_CONFIRM]->selected == 0
-    ) {
+    if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE && filemenu_currentMenu == FILE_MENU_CONFIRM
+        && filemenu_menus[FILE_MENU_CONFIRM]->selected == 0)
+    {
         return 2;
     }
 
     if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE
-        && filemenu_menus[FILE_MENU_MAIN]->selected <= FM_MAIN_OPT_FILE_4
-    ) {
+        && filemenu_menus[FILE_MENU_MAIN]->selected <= FM_MAIN_OPT_FILE_4)
+    {
         return 1;
     }
 

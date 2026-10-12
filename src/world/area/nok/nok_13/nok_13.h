@@ -19,4 +19,3 @@ extern EvtScript EVS_SetupMusic;
 extern EvtScript EVS_SetupMusicalHill;
 extern EvtScript EVS_MakeEntities;
 extern NpcGroupList DefaultNPCs;
-

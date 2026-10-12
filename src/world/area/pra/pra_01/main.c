@@ -6,8 +6,8 @@
 
 s32 NearDoorModelsL[] = { MODEL_o946, -1 };
 s32 NearDoorModelsR[] = { MODEL_o948, -1 };
-s32 FarDoorModelsL[]  = { MODEL_o952, -1 };
-s32 FarDoorModelsR[]  = { MODEL_o950, -1 };
+s32 FarDoorModelsL[] = { MODEL_o952, -1 };
+s32 FarDoorModelsR[] = { MODEL_o950, -1 };
 s32 BothDoorModelsL[] = { MODEL_o946, MODEL_o952, -1 };
 s32 BothDoorModelsR[] = { MODEL_o948, MODEL_o950, -1 };
 

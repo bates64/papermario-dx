@@ -90,7 +90,8 @@ void boot_main(void* data) {
     gRandSeed += osGetCount();
     nuGfxDisplayOn();
 
-    while (true) {}
+    while (true) {
+    }
 }
 
 void gfxRetrace_Callback(s32 gfxTaskNum) {
@@ -160,8 +161,10 @@ void appendGfx_reset_tile_pattern(void) {
     gDPSetCombineMode(gMainGfxPos++, PM_CC_RESET_TILES, PM_CC_RESET_TILES);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_THRESHOLD);
     gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 127);
-    gDPLoadTextureTile_4b(gMainGfxPos++, ResetTilesImg, G_IM_FMT_I, 128, 8, 0, 0, 127, 7, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureTile_4b(
+        gMainGfxPos++, ResetTilesImg, G_IM_FMT_I, 128, 8, 0, 0, 127, 7, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+    );
 
     for (i = 0; i < 20; i++) {
         for (j = 0; j < 15; j++) {
@@ -173,37 +176,32 @@ void appendGfx_reset_tile_pattern(void) {
             if (t < 0) {
                 continue;
             }
-            gSPTextureRectangle(gMainGfxPos++, ((i * 8) + 160) * 4,
-                                                 ((j * 8)) * 4,
-                                                 ((i * 8) + 168) * 4,
-                                                 ((j * 8) + 8) * 4,
-                                                 G_TX_RENDERTILE,
-                                                 (t * 8) * 32, 0, 0x0400, 0x0400);
-            gSPTextureRectangle(gMainGfxPos++, ((i * 8) + 160) * 4,
-                                                 (232 - (j * 8)) * 4,
-                                                 ((i * 8) + 168) * 4,
-                                                 (240 - (j * 8)) * 4,
-                                                 G_TX_RENDERTILE,
-                                                 (t * 8) * 32, 7 * 32, 0x0400, -0x0400);
-            gSPTextureRectangle(gMainGfxPos++, (152 - (i * 8)) * 4,
-                                                 ((j * 8)) * 4,
-                                                 (160 - (i * 8)) * 4,
-                                                 ((j * 8) + 8) * 4,
-                                                 G_TX_RENDERTILE,
-                                                 (t * 8 + 7) * 32, 0, -0x0400, 0x0400);
-            gSPTextureRectangle(gMainGfxPos++, (152 - (i * 8)) * 4,
-                                                 (232 - (j * 8)) * 4,
-                                                 (160 - (i * 8)) * 4,
-                                                 (240 - (j * 8)) * 4,
-                                                 G_TX_RENDERTILE,
-                                                 (t * 8 + 7) * 32, 7 * 32, -0x0400, -0x0400);
+            gSPTextureRectangle(
+                gMainGfxPos++, ((i * 8) + 160) * 4, ((j * 8)) * 4, ((i * 8) + 168) * 4, ((j * 8) + 8) * 4,
+                G_TX_RENDERTILE, (t * 8) * 32, 0, 0x0400, 0x0400
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, ((i * 8) + 160) * 4, (232 - (j * 8)) * 4, ((i * 8) + 168) * 4, (240 - (j * 8)) * 4,
+                G_TX_RENDERTILE, (t * 8) * 32, 7 * 32, 0x0400, -0x0400
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, (152 - (i * 8)) * 4, ((j * 8)) * 4, (160 - (i * 8)) * 4, ((j * 8) + 8) * 4,
+                G_TX_RENDERTILE, (t * 8 + 7) * 32, 0, -0x0400, 0x0400
+            );
+            gSPTextureRectangle(
+                gMainGfxPos++, (152 - (i * 8)) * 4, (232 - (j * 8)) * 4, (160 - (i * 8)) * 4, (240 - (j * 8)) * 4,
+                G_TX_RENDERTILE, (t * 8 + 7) * 32, 7 * 32, -0x0400, -0x0400
+            );
         }
     }
 
     ResetTileDrawTime++;
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);
-    nuGfxTaskStart(gDisplayContext->mainGfx, (u32)(gMainGfxPos - gDisplayContext->mainGfx) * sizeof(Gfx), NU_GFX_UCODE_F3DEX, NU_SC_TASK_LODABLE);
+    nuGfxTaskStart(
+        gDisplayContext->mainGfx, (u32) (gMainGfxPos - gDisplayContext->mainGfx) * sizeof(Gfx), NU_GFX_UCODE_F3DEX,
+        NU_SC_TASK_LODABLE
+    );
     gCurrentDisplayContextIndex ^= 1;
 }
 

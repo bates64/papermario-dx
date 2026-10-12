@@ -1,7 +1,7 @@
 #include "jan_22.h"
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o133);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o133);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o134);
 
 FoliageVectorList Tree1_Effects = {
@@ -30,7 +30,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o93);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o93);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o78);
 
 ShakeTreeConfig ShakeTree_Tree2 = {

@@ -11,8 +11,9 @@ extern StaticAnimatorNode* Entity_TrumpetPlant_Mesh[];
 #define TRUMPET_PLANT_MAX_COINS 3
 
 void entity_TrumpetPlant_idle(Entity* entity) {
-    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) &&
-        (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL))) {
+    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE)
+        && (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL)))
+    {
         exec_entity_commandlist(entity);
         play_model_animation(entity->virtualModelIndex, Entity_TrumpetPlant_AnimationUse);
     }
@@ -24,7 +25,10 @@ void entity_TrumpetPlant_create_effect(Entity* entity) {
     angle = DEG_TO_RAD(clamp_angle(entity->rot.y));
     xOffset = -26.0 * cos_rad(angle);
     zOffset = 6.0 * sin_rad(angle);
-    fx_stars_burst(0, entity->pos.x + xOffset, entity->pos.y + 62.0f, entity->pos.z + zOffset, clamp_angle(entity->rot.y - 90.0), 54.0f, 2);
+    fx_stars_burst(
+        0, entity->pos.x + xOffset, entity->pos.y + 62.0f, entity->pos.z + zOffset, clamp_angle(entity->rot.y - 90.0),
+        54.0f, 2
+    );
 }
 
 void entity_TrumpetPlant_spawn_coin(Entity* entity) {
@@ -41,12 +45,10 @@ void entity_TrumpetPlant_spawn_coin(Entity* entity) {
         if (rand_int(32) > 16) {
             f32 facingAngle = entity->rot.y - 110.0f + (data->numCoins % 3) * 30;
             data->numCoins++;
-            make_item_entity(ITEM_COIN,
-                             entity->pos.x + xOffset,
-                             entity->pos.y + 62.0f,
-                             entity->pos.z + zOffset,
-                             ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0,
-                             facingAngle, 0);
+            make_item_entity(
+                ITEM_COIN, entity->pos.x + xOffset, entity->pos.y + 62.0f, entity->pos.z + zOffset,
+                ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS, 0, facingAngle, 0
+            );
         }
     }
 }

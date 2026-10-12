@@ -126,8 +126,8 @@ void action_update_idle_peach(void) {
         switch (playerStatus->actionSubstate) {
             case SUBSTATE_IDLE_DEFAULT:
                 if (!(playerStatus->flags & (PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_INPUT_DISABLED))
-                    && (playerStatus->peachItemHeld == PEACH_BAKING_NONE)
-                ) {
+                    && (playerStatus->peachItemHeld == PEACH_BAKING_NONE))
+                {
                     if (playerStatus->curStateTime > 1800) {
                         // begin first yawm
                         playerStatus->actionSubstate++;

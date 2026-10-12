@@ -67,10 +67,7 @@ API_CALLABLE(AwaitPlayerApproach) {
         *distanceRequired = evt_get_variable(script, *args++);
     }
 
-    distance = dist2D(
-        playerStatus->pos.x, playerStatus->pos.z,
-        *targetX, *targetZ
-    );
+    distance = dist2D(playerStatus->pos.x, playerStatus->pos.z, *targetX, *targetZ);
 
     if (distance < *distanceRequired) {
         return ApiStatus_DONE2;
@@ -97,10 +94,7 @@ API_CALLABLE(IsPlayerWithin) {
         outVar = *args++;
     }
 
-    distance = dist2D(
-        playerStatus->pos.x, playerStatus->pos.z,
-        *targetX, *targetZ
-    );
+    distance = dist2D(playerStatus->pos.x, playerStatus->pos.z, *targetX, *targetZ);
 
     evt_set_variable(script, outVar, 0);
     if (distance < *distanceRequired) {
@@ -126,10 +120,7 @@ API_CALLABLE(AwaitPlayerLeave) {
         *distanceRequired = evt_get_variable(script, *ptrReadPos++);
     }
 
-    distance = dist2D(
-        playerStatus->pos.x, playerStatus->pos.z,
-        *targetX, *targetZ
-    );
+    distance = dist2D(playerStatus->pos.x, playerStatus->pos.z, *targetX, *targetZ);
 
     if (distance > *distanceRequired) {
         return ApiStatus_DONE2;

@@ -40,7 +40,7 @@ void load_obfuscation_shims(void) {
     prevInsn = 0;
 
     for (it = battle_heap_create_obfuscated_ROM_START; it < battle_heap_create_obfuscated_ROM_END; it += 4) {
-        readFunc(nuPiCartHandle, (u32)it, &thisInsn);
+        readFunc(nuPiCartHandle, (u32) it, &thisInsn);
         hash += LOWER(thisInsn) + UPPER(thisInsn);
 
         if (OPCODE(prevInsn) == LUI && (OPCODE(thisInsn) == ADDIU || OPCODE(thisInsn) == LW)) {
@@ -67,7 +67,7 @@ void load_obfuscation_shims(void) {
     prevInsn = 0;
 
     for (it = obfuscation_shims_ROM_START; it < obfuscation_shims_ROM_END; it += 4) {
-        readFunc2(nuPiCartHandle, (u32)it, &thisInsn2);
+        readFunc2(nuPiCartHandle, (u32) it, &thisInsn2);
         hash += LOWER(thisInsn2) + UPPER(thisInsn2);
 
         if (OPCODE(prevInsn) == LUI && (OPCODE(thisInsn2) == ADDIU || OPCODE(thisInsn2) == LW)) {

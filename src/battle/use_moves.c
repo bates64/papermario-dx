@@ -83,23 +83,28 @@ EvtScript* load_battle_script(const BattleScriptRef* ref) {
         LoadedBattleScriptOverlay = ovl_load(ref->overlayName, OVL_BATTLE_SCRIPT);
         LoadedBattleScriptName = ref->overlayName;
         LoadedBattleScriptModule = ovl_import(LoadedBattleScriptOverlay, BATTLE_SCRIPT_EXPORT_NAME);
-        ASSERT_MSG(LoadedBattleScriptModule != nullptr,
-                   "Battle script overlay '%s' has no %s export",
-                   ref->overlayName, BATTLE_SCRIPT_EXPORT_NAME);
-        ASSERT_MSG(LoadedBattleScriptModule->entryCount > 0 &&
-                   LoadedBattleScriptModule->entryScripts != nullptr,
-                   "Battle script overlay '%s' has no entries", ref->overlayName);
+        ASSERT_MSG(
+            LoadedBattleScriptModule != nullptr, "Battle script overlay '%s' has no %s export", ref->overlayName,
+            BATTLE_SCRIPT_EXPORT_NAME
+        );
+        ASSERT_MSG(
+            LoadedBattleScriptModule->entryCount > 0 && LoadedBattleScriptModule->entryScripts != nullptr,
+            "Battle script overlay '%s' has no entries", ref->overlayName
+        );
     }
 
-    ASSERT_MSG(LoadedBattleScriptModule->kind == ref->kind,
-               "Battle script overlay '%s' has kind %d, expected %d",
-               ref->overlayName, (int)LoadedBattleScriptModule->kind, (int)ref->kind);
-    ASSERT_MSG((u32)ref->entryIndex < (u32)LoadedBattleScriptModule->entryCount,
-               "Battle script overlay '%s' has no entry %d",
-               ref->overlayName, (int)ref->entryIndex);
-    ASSERT_MSG(LoadedBattleScriptModule->entryScripts[ref->entryIndex] != nullptr,
-               "Battle script overlay '%s' entry %d is null",
-               ref->overlayName, (int)ref->entryIndex);
+    ASSERT_MSG(
+        LoadedBattleScriptModule->kind == ref->kind, "Battle script overlay '%s' has kind %d, expected %d",
+        ref->overlayName, (int) LoadedBattleScriptModule->kind, (int) ref->kind
+    );
+    ASSERT_MSG(
+        (u32) ref->entryIndex < (u32) LoadedBattleScriptModule->entryCount,
+        "Battle script overlay '%s' has no entry %d", ref->overlayName, (int) ref->entryIndex
+    );
+    ASSERT_MSG(
+        LoadedBattleScriptModule->entryScripts[ref->entryIndex] != nullptr,
+        "Battle script overlay '%s' entry %d is null", ref->overlayName, (int) ref->entryIndex
+    );
     return LoadedBattleScriptModule->entryScripts[ref->entryIndex];
 }
 
@@ -107,11 +112,14 @@ API_CALLABLE(LoadMoveScript) {
     BattleStatus* battleStatus = &gBattleStatus;
     const BattleScriptRef* moveScript;
 
-    ASSERT_MSG((u32)battleStatus->selectedMoveID < ARRAY_COUNT(gMoveScriptTable),
-               "Invalid move ID %d", (int)battleStatus->selectedMoveID);
+    ASSERT_MSG(
+        (u32) battleStatus->selectedMoveID < ARRAY_COUNT(gMoveScriptTable), "Invalid move ID %d",
+        (int) battleStatus->selectedMoveID
+    );
     moveScript = &gMoveScriptTable[battleStatus->selectedMoveID];
-    ASSERT_MSG(moveScript->overlayName != nullptr,
-               "Move ID %d has no battle script", (int)battleStatus->selectedMoveID);
+    ASSERT_MSG(
+        moveScript->overlayName != nullptr, "Move ID %d has no battle script", (int) battleStatus->selectedMoveID
+    );
     script->varTablePtr[0] = load_battle_script(moveScript);
 
     deduct_current_move_fp();

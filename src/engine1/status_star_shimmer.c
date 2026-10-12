@@ -163,7 +163,9 @@ void star_power_shimmer_draw(void) {
     guOrthoF(viewMtx, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, -100.0f, 100.0f, 1.0f);
     guMtxF2L(viewMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+    );
     gSPDisplayList(gMainGfxPos++, D_80109710); // setup texture
     gDPSetEnvColor(gMainGfxPos++, 127, 127, 127, 127);
 
@@ -176,13 +178,20 @@ void star_power_shimmer_draw(void) {
             particle = &emitter->particles[1];
             for (j = 1; j < ARRAY_COUNT(emitter->particles); j++, particle++) {
                 if (particle->animTime >= 0) {
-                    guPositionF(transformMtx, 0.0f, 0.0f, gGameStatusPtr->frameCounter * 10, particle->scale * emitterScale,
-                                particle->pos.x, particle->pos.y, 0.0f);
+                    guPositionF(
+                        transformMtx, 0.0f, 0.0f, gGameStatusPtr->frameCounter * 10, particle->scale * emitterScale,
+                        particle->pos.x, particle->pos.y, 0.0f
+                    );
                     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-                    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
-                              G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                    gDPSetPrimColor(gMainGfxPos++, 0, 80 - particle->animTime, particle->rgba.r, particle->rgba.g, particle->rgba.b, particle->rgba.a);
+                    gSPMatrix(
+                        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
+                        G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW
+                    );
+                    gDPSetPrimColor(
+                        gMainGfxPos++, 0, 80 - particle->animTime, particle->rgba.r, particle->rgba.g, particle->rgba.b,
+                        particle->rgba.a
+                    );
                     gSPDisplayList(gMainGfxPos++, D_801097D8); // draw particle
                     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
                 }

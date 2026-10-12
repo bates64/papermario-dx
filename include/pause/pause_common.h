@@ -98,7 +98,7 @@ extern WindowStyleCustom gPauseWS_26;
 extern WindowStyleCustom gPauseWS_27;
 extern WindowStyleCustom gPauseWS_28;
 
-//bss
+// bss
 extern s32 gPauseHeldButtons;
 extern s32 gPausePressedButtons;
 extern s32 gPauseCurrentDescMsg;
@@ -106,20 +106,34 @@ extern HudScriptPtr gPauseCurrentDescIconScript;
 extern HudElemID gPauseCursorHID;
 extern s8 gPauseMenuCurrentTab;
 
-void pause_update_tab_default(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void pause_update_tab_active(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void pause_update_tab_inactive(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void pause_update_page_active_next(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void pause_update_page_inactive_next(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void pause_update_page_active_prev(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
-void pause_update_page_inactive_prev(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                   f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+void pause_update_tab_default(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void pause_update_tab_active(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void pause_update_tab_inactive(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void pause_update_page_active_next(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void pause_update_page_inactive_next(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void pause_update_page_active_prev(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
+void pause_update_page_inactive_prev(
+    s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY, f32* rotX, f32* rotY,
+    f32* rotZ, s32* darkening, s32* opacity
+);
 
 void pause_set_cursor_pos(s32 windowID, s32 posX, s32 posY);
 void pause_set_cursor_pos_immediate(s32 windowID, s32 posX, s32 posY);
@@ -129,7 +143,7 @@ s32 pause_get_total_equipped_bp_cost(void);
 void pause_draw_rect(s32 ulx, s32 uly, s32 lrx, s32 lry, s32 tileIdx, s32 uls, s32 ult, s32 dsdx, s32 dtdy);
 s32 pause_get_menu_msg(s32 index);
 s32 pause_interp_vertical_scroll(s32 deltaBefore);
-void pause_sort_item_list(s16* arr, s32 len, s32 (*compare)(s16*, s16 *));
+void pause_sort_item_list(s16* arr, s32 len, s32 (*compare)(s16*, s16*));
 
 enum PauseMenuLabels {
     PAUSE_LBL_HP        = 0,

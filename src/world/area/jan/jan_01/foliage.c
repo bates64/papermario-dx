@@ -2,7 +2,7 @@
 
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o99);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o99);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o98);
 
 ShakeTreeConfig ShakeTree_Tree1 = {
@@ -15,7 +15,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o85, MODEL_o86);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o85, MODEL_o86);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o84);
 
 FoliageDropList Tree2_Drops = {
@@ -41,7 +41,7 @@ BombTrigger BombPos_Tree2 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o79, MODEL_o80);
+FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o79, MODEL_o80);
 FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o78);
 
 FoliageDropList Tree3_Drops = {
@@ -67,7 +67,7 @@ BombTrigger BombPos_Tree3 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree4_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o82, MODEL_o83);
+FoliageModelList Tree4_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o82, MODEL_o83);
 FoliageModelList Tree4_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o81);
 
 FoliageDropList Tree4_Drops = {
@@ -93,7 +93,7 @@ BombTrigger BombPos_Tree4 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree5_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o88, MODEL_o89);
+FoliageModelList Tree5_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o88, MODEL_o89);
 FoliageModelList Tree5_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o87);
 
 FoliageDropList Tree5_Drops = {
@@ -119,7 +119,7 @@ BombTrigger BombPos_Tree5 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree6_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o104, MODEL_o105);
+FoliageModelList Tree6_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o104, MODEL_o105);
 FoliageModelList Tree6_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o103);
 
 FoliageDropList Tree6_Drops = {
@@ -145,7 +145,7 @@ BombTrigger BombPos_Tree6 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree7_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o113, MODEL_o114);
+FoliageModelList Tree7_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o113, MODEL_o114);
 FoliageModelList Tree7_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o112);
 
 FoliageDropList Tree7_DropsA = {

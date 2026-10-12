@@ -26,14 +26,7 @@ void spirit_card_update(EffectInstance* effect);
 void spirit_card_render(EffectInstance* effect);
 void spirit_card_appendGfx(void* effect);
 
-EffectInstance* spirit_card_main(
-    s32 arg0,
-    f32 arg1,
-    f32 arg2,
-    f32 arg3,
-    f32 arg4,
-    s32 arg5)
-{
+EffectInstance* spirit_card_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint bp;
     EffectInstance* effect;
     SpiritCardFXData* data;
@@ -70,8 +63,7 @@ EffectInstance* spirit_card_main(
     }
 
     if (arg0 < 2) {
-        data->child = fx_misc_particles(3, arg1, arg2 - arg4 * 30.0f, arg3, arg4 * 30.0f,
-                                        arg4 * 50.0f, 1.0f, 16, 0);
+        data->child = fx_misc_particles(3, arg1, arg2 - arg4 * 30.0f, arg3, arg4 * 30.0f, arg4 * 50.0f, 1.0f, 16, 0);
     } else {
         data->child = nullptr;
     }
@@ -141,15 +133,17 @@ void func_E0112330(s32 arg0, SpiritCardFXData* data) {
     guMtxCatF(sp60, sp20, sp20);
     guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 }
 
 void spirit_card_appendGfx(void* effect) {
-    SpiritCardFXData* data = ((EffectInstance*)effect)->data.spiritCard;
+    SpiritCardFXData* data = ((EffectInstance*) effect)->data.spiritCard;
     s32 unk_00 = data->unk_00;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_090042E0_3FE790);
     gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, 255);
 

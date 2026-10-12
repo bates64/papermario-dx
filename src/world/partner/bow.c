@@ -65,7 +65,7 @@ API_CALLABLE(Update) {
         return ApiStatus_BLOCK;
     }
 
-    switch (TweesterPhysicsPtr->state){
+    switch (TweesterPhysicsPtr->state) {
         case TWEESTER_PARTNER_INIT:
             TweesterPhysicsPtr->state = TWEESTER_PARTNER_ATTRACT;
             TweesterPhysicsPtr->prevFlags = bow->flags;
@@ -74,7 +74,8 @@ API_CALLABLE(Update) {
             TweesterPhysicsPtr->angularVel = 6.0f;
             TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
             TweesterPhysicsPtr->countdown = 120;
-            bow->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+            bow->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION
+                | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
             bow->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
@@ -146,7 +147,7 @@ s32 check_for_treadmill_overlaps(void) {
     f32 x, y, z;
     f32 yaw;
 
-    //TODO hardcoded map IDs
+    // TODO hardcoded map IDs
     if (gGameStatusPtr->areaID != AREA_OMO) {
         return NO_COLLIDER;
     }
@@ -161,7 +162,9 @@ s32 check_for_treadmill_overlaps(void) {
     z = playerStatus->pos.z;
 
     add_vec2D_polar(&x, &z, playerStatus->colliderDiameter * 0.5f, clamp_angle(yaw + 180.0f));
-    return player_test_lateral_overlap(PLAYER_COLLISION_0, playerStatus, &x, &y, &z, playerStatus->colliderDiameter, yaw);
+    return player_test_lateral_overlap(
+        PLAYER_COLLISION_0, playerStatus, &x, &y, &z, playerStatus->colliderDiameter, yaw
+    );
 }
 
 API_CALLABLE(UseAbility) {
@@ -171,7 +174,7 @@ API_CALLABLE(UseAbility) {
     Npc* bow = script->owner2.npc;
     f32 stickInputMag;
 
-    #define USE_STATE functionTemp[0]
+#define USE_STATE functionTemp[0]
     enum {
         // first two states lock input for a few frames, during which the ability can be canceled
         OUTTA_SIGHT_INIT        = 40,
@@ -212,9 +215,8 @@ API_CALLABLE(UseAbility) {
             break;
         case OUTTA_SIGHT_DELAY:
             if ((!partner_can_continue_ability(PARTNER_BOW) || is_starting_conversation())
-                && script->functionTemp[2] < playerStatus->inputDisabledCount
-                && LockingPlayerInput
-            ) {
+                && script->functionTemp[2] < playerStatus->inputDisabledCount && LockingPlayerInput)
+            {
                 enable_player_input();
                 LockingPlayerInput = false;
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
@@ -325,11 +327,9 @@ API_CALLABLE(UseAbility) {
             bow->pos.z = playerStatus->pos.z - OuttaSightPosZ;
 
             stickInputMag = dist2D(0.0f, 0.0f, partnerStatus->stickX, partnerStatus->stickY);
-            if ((collisionStatus->curFloor <= NO_COLLIDER)
-                || stickInputMag > 10.0f
-                || partnerStatus->pressedButtons & (BUTTON_B | BUTTON_C_DOWN)
-                || playerStatus->flags & PS_FLAG_HIT_FIRE
-            ) {
+            if ((collisionStatus->curFloor <= NO_COLLIDER) || stickInputMag > 10.0f
+                || partnerStatus->pressedButtons & (BUTTON_B | BUTTON_C_DOWN) || playerStatus->flags & PS_FLAG_HIT_FIRE)
+            {
                 // prevent exiting from the ground while underneath a wall
                 if (check_for_treadmill_overlaps() <= NO_COLLIDER) {
                     script->USE_STATE++; // OUTTA_SIGHT_REAPPEAR

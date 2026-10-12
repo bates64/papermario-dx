@@ -7,7 +7,7 @@
 void init(Npc*);
 s32 test_first_strike(Npc*, Npc*);
 s32 can_use_ability(Npc* npc);
-s32 can_open_menus(Npc* );
+s32 can_open_menus(Npc*);
 void pre_battle(Npc*);
 
 extern EvtScript EVS_WorldBombette_TakeOut;

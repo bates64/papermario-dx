@@ -68,7 +68,9 @@ void virtual_entity_list_render_world(void) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentVirtualEntityListPtr); i++) {
         virtualEntity = (*gCurrentVirtualEntityListPtr)[i];
         if (virtualEntity != nullptr) {
-            if (!(virtualEntity->entityModelIndex < 0 || get_entity_model(virtualEntity->entityModelIndex)->flags & ENTITY_MODEL_FLAG_CAM3)) {
+            if (!(virtualEntity->entityModelIndex < 0
+                  || get_entity_model(virtualEntity->entityModelIndex)->flags & ENTITY_MODEL_FLAG_CAM3))
+            {
                 guTranslateF(translation, virtualEntity->pos.x, virtualEntity->pos.y, virtualEntity->pos.z);
                 guRotateF(xRot, virtualEntity->rot.x, 1.0f, 0.0f, 0.0f);
                 guRotateF(yRot, virtualEntity->rot.y, 0.0f, 1.0f, 0.0f);
@@ -101,7 +103,9 @@ void virtual_entity_list_render_UI(void) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentVirtualEntityListPtr); i++) {
         virtualEntity = (*gCurrentVirtualEntityListPtr)[i];
         if (virtualEntity != nullptr) {
-            if (!(virtualEntity->entityModelIndex < 0 || !(get_entity_model(virtualEntity->entityModelIndex)->flags & ENTITY_MODEL_FLAG_CAM3))) {
+            if (!(virtualEntity->entityModelIndex < 0
+                  || !(get_entity_model(virtualEntity->entityModelIndex)->flags & ENTITY_MODEL_FLAG_CAM3)))
+            {
                 guTranslateF(translation, virtualEntity->pos.x, virtualEntity->pos.y, virtualEntity->pos.z);
                 guRotateF(xRot, virtualEntity->rot.x, 1.0f, 0.0f, 0.0f);
                 guRotateF(yRot, virtualEntity->rot.y, 0.0f, 1.0f, 0.0f);
@@ -151,7 +155,7 @@ API_CALLABLE(CreateVirtualEntityAt) {
 API_CALLABLE(CreateVirtualEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
-    EntityModelScriptPtr cmdList = (EntityModelScriptPtr)evt_get_variable(script, *args++);
+    EntityModelScriptPtr cmdList = (EntityModelScriptPtr) evt_get_variable(script, *args++);
     VirtualEntity* virtualEntity;
     s32 i;
 
@@ -410,8 +414,8 @@ API_CALLABLE(VirtualEntityJumpTo) {
             virtualEntity->moveSpeed = virtualEntity->moveDist / virtualEntity->moveTime;
         }
 
-        virtualEntity->jumpVel = (virtualEntity->jumpGravity * virtualEntity->moveTime / 2) +
-                                      (yTemp / virtualEntity->moveTime);
+        virtualEntity->jumpVel =
+            (virtualEntity->jumpGravity * virtualEntity->moveTime / 2) + (yTemp / virtualEntity->moveTime);
         script->functionTemp[0] = 1;
     }
 

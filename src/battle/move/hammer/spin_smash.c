@@ -181,7 +181,6 @@ EvtScript EVS_UseMoveBasic_Impl = {
     End
 };
 
-
 EvtScript EVS_UseMoveSuper_Impl = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
@@ -304,7 +303,6 @@ EvtScript EVS_UseMoveSuper_Impl = {
     End
 };
 
-
 EvtScript EVS_UseMoveUltra_Impl = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(InitActionCommand)
@@ -425,6 +423,4 @@ EvtScript EVS_UseMoveUltra_Impl = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove, );

@@ -56,13 +56,13 @@ API_CALLABLE(Update) {
         case TWEESTER_PARTNER_INIT:
             TweesterPhysicsPtr->state = TWEESTER_PARTNER_ATTRACT;
             TweesterPhysicsPtr->prevFlags = goompa->flags;
-            TweesterPhysicsPtr->radius = fabsf(dist2D(goompa->pos.x, goompa->pos.z,
-                                                    entity->pos.x, entity->pos.z));
+            TweesterPhysicsPtr->radius = fabsf(dist2D(goompa->pos.x, goompa->pos.z, entity->pos.x, entity->pos.z));
             TweesterPhysicsPtr->angle = atan2(entity->pos.x, entity->pos.z, goompa->pos.x, goompa->pos.z);
             TweesterPhysicsPtr->angularVel = 6.0f;
             TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
             TweesterPhysicsPtr->countdown = 120;
-            goompa->flags |= NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
+            goompa->flags |= NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CHAR_COLLISION
+                | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
             goompa->flags &= ~NPC_FLAG_GRAVITY;
         case TWEESTER_PARTNER_ATTRACT:
             sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);

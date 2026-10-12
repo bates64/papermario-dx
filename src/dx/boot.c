@@ -233,7 +233,8 @@ void dx_boot_on_battle_start(void) {
     BattleStartPlayerData = gPlayerData;
 }
 
-// stores a name in a boot record field, which holds it without a terminator when it fills the field; false if it's too long
+// stores a name in a boot record field, which holds it without a terminator when it fills the field; false if it's too
+// long
 static b32 store_record_name(char* field, s32 size, const char* name) {
     s32 length = strlen(name);
 
@@ -257,9 +258,9 @@ void boot_record_current_battle(void) {
     } else {
         stored = store_record_name(battle.battle, sizeof(battle.battle), formation);
     }
-    if (stored
-        && store_record_name(battle.battleArea, sizeof(battle.battleArea), area)
-        && store_record_name(battle.stage, sizeof(battle.stage), gCurrentStageName)) {
+    if (stored && store_record_name(battle.battleArea, sizeof(battle.battleArea), area)
+        && store_record_name(battle.stage, sizeof(battle.stage), gCurrentStageName))
+    {
         battle.start = BOOT_START_BATTLE;
         gSaveBootRecord = battle;
     }
@@ -296,18 +297,15 @@ b32 dx_can_quick_save(void) {
 
     if (gGameStatusPtr->context == CONTEXT_BATTLE) {
         // the battle restarts from its beginning, so only its start and end are unsafe
-        return get_game_mode() == GAME_MODE_BATTLE
-            && gBattleState >= BATTLE_STATE_FIRST_STRIKE
+        return get_game_mode() == GAME_MODE_BATTLE && gBattleState >= BATTLE_STATE_FIRST_STRIKE
             && gBattleState <= BATTLE_STATE_DEFEND;
     }
 
     // as for opening the pause menu, which only a player in control can do
-    return get_game_mode() == GAME_MODE_WORLD
-        && playerStatus->inputDisabledCount == 0
+    return get_game_mode() == GAME_MODE_WORLD && playerStatus->inputDisabledCount == 0
         && !(playerStatus->animFlags & PA_FLAG_CHANGING_MAP)
         && !(playerStatus->flags & (PS_FLAG_PAUSE_DISABLED | PS_FLAG_NO_STATIC_COLLISION))
-        && !(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_MENUS)
-        && !is_picking_up_item()
+        && !(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_MENUS) && !is_picking_up_item()
         && gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE
         && (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN);
 }

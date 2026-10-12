@@ -1,7 +1,7 @@
 #include "jan_14.h"
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o61, MODEL_o62, MODEL_o63);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o61, MODEL_o62, MODEL_o63);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o60);
 
 FoliageVectorList Tree1_Effects = {
@@ -23,7 +23,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o65, MODEL_o67);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o65, MODEL_o67);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o64);
 
 FoliageVectorList Tree2_Effects = {
@@ -45,7 +45,7 @@ BombTrigger BombPos_Tree2 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o69, MODEL_o70, MODEL_o71);
+FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o69, MODEL_o70, MODEL_o71);
 FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o68);
 
 FoliageVectorList Tree3_Effects = {
@@ -67,7 +67,7 @@ BombTrigger BombPos_Tree3 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree4_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o57, MODEL_o58, MODEL_o59);
+FoliageModelList Tree4_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o57, MODEL_o58, MODEL_o59);
 FoliageModelList Tree4_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o56);
 
 FoliageVectorList Tree4_Effects = {
@@ -89,7 +89,7 @@ BombTrigger BombPos_Tree4 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree5_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o73, MODEL_o75);
+FoliageModelList Tree5_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o73, MODEL_o75);
 FoliageModelList Tree5_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o72);
 
 FoliageVectorList Tree5_Effects = {

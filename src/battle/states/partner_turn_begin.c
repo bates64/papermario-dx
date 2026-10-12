@@ -21,7 +21,9 @@ void btl_state_update_begin_partner_turn(void) {
         if (partner == nullptr) {
             BattleSkipActorTurn = true;
             gBattleSubState = BTL_SUBSTATE_END_DELAY;
-        } else if ((battleStatus->flags2 & (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) == (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) {
+        } else if ((battleStatus->flags2 & (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED))
+                   == (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED))
+        {
             btl_set_state(BATTLE_STATE_TRANSFER_TURN);
             return;
         } else if (partner->flags & ACTOR_FLAG_NO_ATTACK) {

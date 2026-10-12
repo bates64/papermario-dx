@@ -43,8 +43,7 @@ typedef enum {
 /// - No overlay named `name` exists for the given `type`.
 /// - All overlay slots are occupied.
 /// - The overlay data is corrupt.
-__attribute__((returns_nonnull))
-Overlay* ovl_load(const char* name, OverlayType type);
+__attribute__((returns_nonnull)) Overlay* ovl_load(const char* name, OverlayType type);
 
 /// Enumerate the ROM catalog without loading overlays. Names are copied to the caller.
 s32 ovl_get_count(OverlayType type);
@@ -73,9 +72,9 @@ void* ovl_import(const Overlay* ovl, const char* name);
 /// Returns an empty string (not nullptr) if the address is in an overlay but has
 /// no matching export, so the caller can still use the debug symbol table.
 /// Returns nullptr if the address is not in any loaded overlay.
-const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
-                             u32* outDebugRomStart, u32* outDebugRomEnd,
-                             u32* outOverlayBase);
+const char* ovl_resolve_addr(
+    u32 addr, const char** outOverlayName, u32* outDebugRomStart, u32* outDebugRomEnd, u32* outOverlayBase
+);
 
 #ifdef __cplusplus
 }

@@ -115,7 +115,6 @@ EvtScript EVS_UseMove_Basic = {
     End
 };
 
-
 EvtScript EVS_UseMove_Super = {
     ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
@@ -386,7 +385,6 @@ EvtScript EVS_UseBerserker_Normal = {
     End
 };
 
-
 EvtScript EVS_UseBerserker_Super = {
     ExecWait(EVS_JumpSupport_ApproachAndJump)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
@@ -571,8 +569,4 @@ EvtScript EVS_UseMove_Tutorial = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove,
-    &EVS_FirstStrike,
-    &EVS_UseBerserker,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove, &EVS_FirstStrike, &EVS_UseBerserker, );
