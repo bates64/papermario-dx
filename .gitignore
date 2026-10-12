@@ -58,6 +58,7 @@ build/
 
 # Star Rod
 .starrod
+/star_rod.cfg
 /ver/us/dump
 *.backup
 *.crash

@@ -1,0 +1,72 @@
+---
+title: Add a song
+description: Add a song made in Mamar to your mod and play it with a SONG constant.
+sidebar:
+  order: 4
+---
+
+A song is a `.bgm` file plus an entry in `audio/songs.xml`. You compose the `.bgm` file in [Mamar](https://mamar.bates64.com), a music editor for Paper Mario, and the build gives the entry a `SONG_` constant.
+
+Songs can use the game's instruments, which are the instruments in the game's own sound banks. Mamar's instrument list covers those banks only, so a song can't use instruments from a bank that your mod adds.
+
+## Add the song
+
+1. In Mamar, compose your song, or open one of the game's songs, such as `audio/songs/pleasant_path.bgm`, as a starting point. Save the result as a `.bgm` file, such as `meadow_theme.bgm`.
+
+2. Copy the file to `audio/songs/meadow_theme.bgm`.
+
+3. Create `audio/songs.xml` if it doesn't exist, and add a `Song` entry. The file lists only your entries, and the build merges it with the game's.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<SongList>
+	<Song name="MeadowTheme" bgm="meadow_theme.bgm"/>
+</SongList>
+```
+
+The `bgm` value is the file name in `audio/songs/`, including the extension.
+
+4. Rebuild the ROM. The build gives the entry the lowest free song ID and the constant `SONG_MEADOW_THEME`.
+
+## Play the song
+
+Use the constant in a map's music script:
+
+```c
+Call(SetMusic, 0, SONG_MEADOW_THEME, 0, VOL_LEVEL_FULL)
+```
+
+Load the map in the game to hear the song.
+
+## Load extra sound banks with a song
+
+Songs play instruments from the sound banks that are loaded when the song starts. A song can name up to three additional banks with `bk1`, `bk2`, and `bk3`, and the engine loads them along with the song. In the game's `audio/songs.xml`, `ToadTown` has `bk1="SPC0.bk"`, and `JadeJungle` has `bk1="PS11.bk" bk2="STG5.bk"`.
+
+```xml
+<Song name="MeadowTheme" bgm="meadow_theme.bgm" bk1="SPC0.bk"/>
+```
+
+Each name is a bank folder in `audio/bank/` plus `.bk`. It's a bank that isn't listed in `audio/banks.xml`. To load a bank of your own, see [Add an instrument or a sound bank](/papermario-dx/audio/instruments).
+
+## Replace a game song
+
+To replace a song, add an entry with the same `name`. It keeps the ID of the original, so every map that plays it uses your version. Your entry replaces the game's entry whole, so repeat the banks the song needs.
+
+```xml
+<Song name="ToadTown" bgm="toad_town_remix.bgm" bk1="SPC0.bk"/>
+```
+
+If you leave out `bk1`, the song loads without the `SPC0` bank, so its instruments aren't available.
+
+## Remove a song
+
+To remove a song, add `<Song name="MeadowTheme" delete="true"/>`. Its constant no longer exists, so the build fails if code still uses it. See [Fix audio build errors](/papermario-dx/audio/troubleshooting#compiler-errors-after-a-deletion).
+
+## Limits
+
+Song IDs run from `00` to `FF`. If none are free, the build reports `there are no free IDs`. Delete a song you don't use with `delete="true"` to free its ID.
+
+## Related pages
+
+- [Custom audio](/papermario-dx/audio) explains how layers merge and how names become constants.
+- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common `audio/songs.xml` errors.

@@ -492,7 +492,7 @@ static EvtScript EVS_BeginWave_StiltGuys = {
     EndIf
     Call(SummonEnemy, Ref(SignalGuyFormation), true)
     Wait(60)
-    Call(PlaySoundAtPart, ACTOR_GENERAL, PRT_MAIN, SOUND_TOY_TANK_MOVE1)
+    Call(PlaySoundAtPart, ACTOR_GENERAL, PRT_MAIN, SOUND_TOY_TANK_MOVE_1)
     Wait(5)
     Call(PlayModelAnimation, 0, Ref(AS_ToyTank_MoveForward))
     Call(SetAnimatedModelRootPosition, 0, 20, 0, 0)
@@ -506,7 +506,7 @@ static EvtScript EVS_BeginWave_StiltGuys = {
     Wait(16)
     Call(SetAnimation, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_BowHead)
     Wait(16)
-    Call(PlaySoundAtPart, ACTOR_GENERAL, PRT_MAIN, SOUND_TOY_TANK_MOVE2)
+    Call(PlaySoundAtPart, ACTOR_GENERAL, PRT_MAIN, SOUND_TOY_TANK_MOVE_2)
     Wait(4)
     Call(SetAnimation, ACTOR_GENERAL, PRT_MAIN, ANIM_GeneralGuy_Idle)
     Wait(20)

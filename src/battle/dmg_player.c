@@ -1408,9 +1408,9 @@ API_CALLABLE(PlayerRunToGoal) {
         player->footStepCounter++;
         playerState->dist = 0.0f;
         if ((player->footStepCounter % 2) != 0) {
-            sfx_play_sound_at_position(SOUND_STEP_NORMAL1, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
+            sfx_play_sound_at_position(SOUND_STEP_NORMAL_1, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
         } else {
-            sfx_play_sound_at_position(SOUND_STEP_NORMAL2, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
+            sfx_play_sound_at_position(SOUND_STEP_NORMAL_2, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
         }
     }
 
@@ -1483,9 +1483,9 @@ API_CALLABLE(CancelablePlayerRunToGoal) {
         player->footStepCounter++;
         playerState->dist = 0.0f;
         if ((player->footStepCounter % 2) != 0) {
-            sfx_play_sound_at_position(SOUND_STEP_NORMAL1, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
+            sfx_play_sound_at_position(SOUND_STEP_NORMAL_1, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
         } else {
-            sfx_play_sound_at_position(SOUND_STEP_NORMAL2, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
+            sfx_play_sound_at_position(SOUND_STEP_NORMAL_2, SOUND_SPACE_DEFAULT, player->curPos.x, player->curPos.y, player->curPos.z);
         }
     }
 

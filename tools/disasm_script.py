@@ -162,6 +162,7 @@ def get_constants():
         "ActorIDs",
         "Events",
         "SoundIDs",
+        "SoundIDsTyped",
         "SongIDs",
         "Locations",
         "AmbientSounds",
@@ -207,6 +208,10 @@ def get_constants():
     browse_header(valid_enums, enums)
     enums = Path(include_path / "effects.h").read_text().splitlines()
     browse_header(valid_enums, enums)
+    audio_path = include_path.parent / "ver" / "current" / "build" / "include" / "audio"
+    for header in ["song_ids.h", "ambient_ids.h", "sound_ids.h"]:
+        browse_header(valid_enums, (audio_path / header).read_text().splitlines())
+    CONSTANTS["SoundIDs"].update(CONSTANTS.pop("SoundIDsTyped"))
 
     include_path = Path(Path(__file__).resolve().parent.parent / "src" / "battle")
     enums = Path(include_path / "battle.h").read_text().splitlines()
