@@ -129,9 +129,8 @@ steps:
   - name: "Check formatting"
     # spindle's checkout is a single-commit shallow clone with no shared
     # history with the target branch, so this diffs trees directly (two-dot)
-    # rather than from a merge base (three-dot). advisory only, like the
-    # GitHub Actions equivalent this replaces - a formatting nit shouldn't
-    # block a build.
+    # rather than from a merge base (three-dot). It is advisory only, since a
+    # formatting nit shouldn't block a build.
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
