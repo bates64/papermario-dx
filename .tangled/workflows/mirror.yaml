@@ -1,0 +1,47 @@
+# Mirrors this repository to GitHub on every push. GitHub's copy ends up
+# identical to this one, so anything that exists only on GitHub, such as a
+# branch pushed there directly, is deleted.
+#
+# Pushing needs a deploy key with write access to the GitHub repository,
+# stored as the GITHUB_MIRROR_SSH_KEY pipeline secret.
+
+# The step skips itself outside dx's own repository. A mod or fork carries
+# dx's history and so this workflow, but must not push to dx's GitHub.
+
+when:
+  - event: ["push"]
+    branch: ["**"]
+  - event: ["push"]
+    tag: ["**"]
+
+engine: nixery
+
+clone:
+  skip: true
+
+dependencies:
+  nixpkgs:
+    - git
+    - openssh
+
+environment:
+  REPO: "did:plc:dfsxnyhzxwqpmykryrjtjabz"
+
+steps:
+  - name: "Mirror to GitHub"
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      set -euo pipefail
+      # ssh refuses to run as a user /etc/passwd doesn't list, and the
+      # image's doesn't list root.
+      echo "root:x:0:0:root:$HOME:/bin/sh" >> /etc/passwd
+      key="$(mktemp)"
+      printf '%s\n' "$GITHUB_MIRROR_SSH_KEY" > "$key"
+      chmod 600 "$key"
+      export GIT_SSH_COMMAND="ssh -i $key -o StrictHostKeyChecking=accept-new"
+
+      # The pipeline's checkout is one shallow revision. A mirror clone has
+      # the full history, with every branch and tag as its own ref.
+      git clone --mirror "git@$TANGLED_REPO_KNOT:$REPO" repo.git
+      cd repo.git
+      git push --mirror git@github.com:bates64/papermario-dx.git
