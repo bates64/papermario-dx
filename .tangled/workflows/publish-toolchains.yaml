@@ -1,3 +1,9 @@
+# Builds every platform's toolchain on this one Linux host and publishes them
+# to S3, where the download scripts find them (see tools/index_toolchains.sh).
+# The Windows and macOS toolchains are cross-compiled. The x86_64 Linux one,
+# and the clangd index that needs it, build under this host's x86_64
+# emulation.
+#
 # Each step skips itself outside dx's own repository, such as in a mod, which
 # carries dx's history and so this workflow.
 
@@ -13,8 +19,8 @@ engine: nixery
 dependencies:
   nixpkgs:
     - nix
+    - attic-client
     - awscli2
-    - curl
     - git
     - bash
     - coreutils
@@ -22,13 +28,14 @@ dependencies:
     - gnugrep
 
 steps:
-  - name: "Configure Nix caches"
+  - name: "Configure Nix"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
       extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
+      extra-platforms = x86_64-linux
       download-buffer-size = 536870912
       EOF
 
@@ -44,38 +51,33 @@ steps:
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
-  - name: "Build aarch64-linux toolchain"
-    # This is the only artifact native to this host. Everything that needs
-    # x86_64-linux, Windows, or macOS hardware is built by
-    # star-haven/diorama64-gha on GitHub Actions instead (dispatched below),
-    # rather than emulated here.
+  - name: "Build and publish the toolchains"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
-      nix build .#unix-toolchain --out-link result-toolchain-aarch64-linux
+      set -euo pipefail
+      # Caches each Nix build as it finishes, so a run that fails later still
+      # saves the next one rebuilding it.
+      attic login spindle https://spindle-nix-cache.starhaven.dev "$ATTIC_TOKEN"
+      attic watch-store spindle:papermario-dx &
 
-  - name: "Publish to S3"
-    command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
-      set -e
-      endpoint="https://fsn1.your-objectstorage.com"
-      bucket="s3://starhaven/papermario-dx"
-      file=$(echo result-toolchain-aarch64-linux/papermario-dx-*.tar.xz)
-      hash=$(sha256sum "$file" | cut -d' ' -f1)
-      if ! aws s3api head-object --bucket starhaven --key "papermario-dx/toolchains/$hash.tar.xz" --endpoint-url "$endpoint" >/dev/null 2>&1; then
-        aws s3 cp "$file" "$bucket/toolchains/$hash.tar.xz" --endpoint-url "$endpoint"
-      fi
-      # For a tag, TANGLED_SHA is the tag rather than the commit it points at.
-      commit=$(git rev-parse HEAD)
-      echo "$hash" | aws s3 cp - "$bucket/commits/$commit/linux-aarch64.tar.xz" --endpoint-url "$endpoint"
+      export S3_ENDPOINT="https://fsn1.your-objectstorage.com"
 
-  - name: "Trigger the rest of the build on GitHub Actions"
-    command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
-      curl -sf -X POST \
-        -H "Authorization: Bearer $GHA_DISPATCH_TOKEN" \
-        -H "Accept: application/vnd.github+json" \
-        https://api.github.com/repos/star-haven/diorama64-gha/dispatches \
-        -d "{\"event_type\":\"papermario-dx-release\",\"client_payload\":{\"sha\":\"$(git rev-parse HEAD)\"}}"
+      nix build .#unix-toolchain --out-link result-linux-aarch64
+      tools/publish_toolchain.sh result-linux-aarch64/papermario-dx-linux-aarch64.tar.xz linux-aarch64.tar.xz tar.xz
+
+      nix build .#windows-toolchain --out-link result-windows
+      tools/publish_toolchain.sh result-windows/papermario-dx-windows.zip windows zip
+
+      for arch in aarch64 x86_64; do
+        nix build ".#macos-$arch-toolchain" --out-link "result-macos-$arch"
+        tools/publish_toolchain.sh "result-macos-$arch/papermario-dx-macos-$arch.tar.xz" "macos-$arch.tar.xz" tar.xz
+      done
+
+      nix build .#packages.x86_64-linux.unix-toolchain --out-link result-linux-x86_64
+      tools/publish_toolchain.sh result-linux-x86_64/papermario-dx-linux-x86_64.tar.xz linux-x86_64.tar.xz tar.xz
+
+      nix build .#packages.x86_64-linux.clangd-index --out-link result-clangd-index
+      tools/publish_toolchain.sh result-clangd-index/papermario-dx.idx clangd-index idx
 
   - name: "Prune and index toolchains"
     command: |

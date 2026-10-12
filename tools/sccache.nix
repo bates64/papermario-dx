@@ -3,6 +3,7 @@
 {
   fetchurl,
   stdenvNoCC,
+  system ? stdenvNoCC.hostPlatform.system,
 }:
 
 let
@@ -13,7 +14,7 @@ let
     "aarch64-linux" = "aarch64-unknown-linux-musl";
     "x86_64-darwin" = "x86_64-apple-darwin";
     "aarch64-darwin" = "aarch64-apple-darwin";
-  }.${stdenvNoCC.hostPlatform.system} or (throw "tools/sccache.nix: unsupported system ${stdenvNoCC.hostPlatform.system}");
+  }.${system} or (throw "tools/sccache.nix: unsupported system ${system}");
 
   sha256 = {
     "x86_64-unknown-linux-musl" = "12fcd96wrzh9liyawqlddhhi5lkxcxqfylg3plvk07i3przl9wa5";

@@ -75,6 +75,11 @@
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
 
+        macosToolchain = arch: import ./tools/macos {
+          inherit pkgs arch nixpkgs-binutils-2_39 starRodJar llvmVersion pythonDeps;
+          mipsCrossGcc = pkgsCross.stdenv.cc;
+        };
+
         # Runs on this machine and debugs MIPS, so it comes from the cross
         # package set's build packages rather than pkgs.
         mipsGdb = pkgsCross.buildPackages.gdb;
@@ -192,8 +197,14 @@
         packages = {
           default = linuxRom;
           unix-toolchain = unixToolchain;
-        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+        } // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+          # Cross-compiled, so the one Linux machine that publishes toolchains
+          # builds every platform's.
           windows-toolchain = windowsToolchain;
+          macos-aarch64-toolchain = macosToolchain "aarch64";
+          macos-x86_64-toolchain = macosToolchain "x86_64";
+          macos-aarch64-gcc = (macosToolchain "aarch64").passthru.mips-gcc;
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           windows-rom = windowsToolchain.passthru.wineRom;
           clangd-index = clangdIndex;
         };

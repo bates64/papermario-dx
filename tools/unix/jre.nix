@@ -4,10 +4,9 @@
 # /nix/store paths, which break once the toolchain is relocated outside Nix)
 # — these are the same raw upstream archives, giving real ELF/Mach-O binaries
 # compatible with default.nix's generic RPATH-relocation.
-{ pkgs }:
+{ pkgs, system ? pkgs.stdenv.hostPlatform.system }:
 
 let
-  system = pkgs.stdenv.hostPlatform.system;
   releaseTag = "jdk-17.0.20.1%2B1";
   topDir = "jdk-17.0.20.1+1-jre";
 
@@ -46,7 +45,7 @@ pkgs.stdenvNoCC.mkDerivation {
 
   installPhase = ''
     mkdir -p $out
-    tar -xzf ${jreTarball} -C $out
+    tar -xzf ${jreTarball} -C $out${pkgs.lib.optionalString (system != pkgs.stdenv.hostPlatform.system) " --no-same-permissions"}
     cp -rL "$out/${topDir}/${sources.home}/." $out/
     rm -rf "$out/${topDir}"
   '';

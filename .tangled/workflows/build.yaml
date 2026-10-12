@@ -81,6 +81,51 @@ steps:
   - name: "Verify audio"
     command: nix develop --command ninja verify_audio
 
+  - name: "Build the toolchains"
+    # The Windows and macOS toolchains are cross-compiled, and this host is
+    # aarch64 Linux, so building them here also checks that they still build
+    # on the machine that publishes them. Paths from earlier runs come from
+    # the cache.
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      # Caches each build as it finishes, so a run that fails later still saves
+      # the next one rebuilding it.
+      attic watch-store spindle:papermario-dx &
+      nix build .#unix-toolchain --out-link result-toolchain
+      nix build .#windows-toolchain --out-link result-windows
+      nix build .#macos-aarch64-toolchain --out-link result-macos-aarch64
+      nix build .#macos-x86_64-toolchain --out-link result-macos-x86_64
+
+  - name: "Push the toolchains to Attic"
+    # So the next run, and the publish workflow, get them from the cache
+    # instead of compiling GCC again. The dev shell step above logged in.
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      attic push spindle:papermario-dx result-toolchain result-windows result-macos-aarch64 result-macos-x86_64
+
+  - name: "Build the game with the Linux toolchain"
+    # Builds the game again, in a clean copy, with the downloadable toolchain
+    # instead of the development shell. The ROM must be the same.
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      set -euo pipefail
+      expected=$(sha256sum ver/us/build/papermario.z64 | cut -d' ' -f1)
+      rm -rf ../toolchain-check
+      git clone --quiet "file://$PWD" ../toolchain-check
+      cd ../toolchain-check
+      cp /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64 ver/us/baserom.z64
+      mkdir -p .dx
+      tar -xJf "$OLDPWD"/result-toolchain/papermario-dx-linux-aarch64.tar.xz -C .dx
+      mv .dx/papermario-dx-linux-aarch64 .dx/unix
+      .dx/unix/activate.sh "$PWD/.dx/unix"
+      export PATH="$PWD/.dx/unix/bin:$PATH" PYTHONPATH="$PWD/.dx/unix/python"
+      python3 tools/build/configure.py
+      ninja
+      actual=$(sha256sum ver/us/build/papermario.z64 | cut -d' ' -f1)
+      echo "Development shell ROM: $expected"
+      echo "Toolchain ROM:         $actual"
+      [ "$expected" = "$actual" ]
+
   - name: "Check formatting"
     # spindle's checkout is a single-commit shallow clone with no shared
     # history with the target branch, so this diffs trees directly (two-dot)

@@ -1,9 +1,9 @@
 # clangd, clang-tidy, and clang-format from an LLVM release, with clang's
 # built-in headers.
-{ lib, stdenv, fetchurl, autoPatchelfHook, unzip, zlib, version }:
+{ lib, stdenv, fetchurl, autoPatchelfHook, unzip, zlib, version, system ? stdenv.hostPlatform.system }:
 
 let
-  system = stdenv.hostPlatform.system;
+  isLinux = lib.hasSuffix "-linux" system;
 
   # Only the tools and headers are unpacked, so the release archive itself,
   # which is over a gigabyte, never reaches the store.
@@ -45,15 +45,15 @@ let
     x86_64-darwin = clangdMac;
   };
 in
-stdenv.mkDerivation {
+stdenv.mkDerivation ({
   pname = "llvm-tools";
   inherit version;
 
   src = sources.${system} or (throw "llvm: unsupported system ${system}");
 
   nativeBuildInputs = lib.optionals isIntelMac [ unzip ]
-    ++ lib.optionals stdenv.isLinux [ autoPatchelfHook ];
-  buildInputs = lib.optionals stdenv.isLinux [ stdenv.cc.cc.lib zlib ];
+    ++ lib.optionals isLinux [ autoPatchelfHook ];
+  buildInputs = lib.optionals isLinux [ stdenv.cc.cc.lib zlib ];
 
   installPhase = ''
     mkdir -p $out
@@ -71,3 +71,5 @@ stdenv.mkDerivation {
     platforms = builtins.attrNames sources;
   };
 }
+# Binaries for another system are left as released.
+// lib.optionalAttrs (system != stdenv.hostPlatform.system) { dontFixup = true; })

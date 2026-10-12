@@ -1,7 +1,7 @@
 # Releases the latest commit of the branch it's run on (see tools/release.py).
 # Run it manually on main for a release, or on a release/YYYY-MM-DD branch for
 # a patch to that release. Pushing the release's tag starts
-# publish-toolchains.yaml. Mirrors .github/workflows/release.yaml.
+# publish-toolchains.yaml.
 #
 # Pushing needs an SSH private key with push access to this repository,
 # stored as the TAG_SSH_KEY pipeline secret.
