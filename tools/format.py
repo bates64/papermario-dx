@@ -67,12 +67,15 @@ INDENT = "    "
 
 # Paths left unformatted, relative to the repository root: generated map
 # headers, vendored libultra and nusys, animation data (which clang-format can
-# take gigabytes of memory to format), and a vendored host tool.
+# take gigabytes of memory to format), entity model data (whose 4x4 matrices
+# are laid out as grids), and a vendored host tool.
 EXCLUDED_PATHS = (
     "include/mapfs/",
     "include/PR/",
     "include/nu/",
     "src/os/",
+    "src/entity/model/",
+    "src/world/area/dgb/dgb_01/smash_bridges/mtx.inc.c",
     "src/world/model_anim/",
     "src/battle/area/omo2/actor/animation.inc.c",
     "src/world/area/dgb/dgb_01/smash_bridges/anim.inc.c",
@@ -132,6 +135,9 @@ STRUCT_OPEN_RE = re.compile(r"^\s*(typedef\s+)?(struct|union)\b[^;=(]*\{\s*$")
 # An offset comment followed by more indentation, which shows nesting after
 # the offset column: /* 0x10 */     struct {
 NESTED_AFTER_OFFSET_RE = re.compile(r"^\s*/\*[^*]*\*/\s{2,}\S")
+
+# A matrix written as a grid, whose call opens on this line
+RDP_MATRIX_OPEN_RE = re.compile(r"^[^#]*\bRDP_MATRIX\(\s*$")
 
 # String and character literals, which may hold parentheses
 LITERAL_RE = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'')
@@ -199,7 +205,8 @@ def collect_block(lines: list[str], start: int) -> tuple[list[str], int]:
 
 def protect_blocks(source: str) -> str:
     """Insert // clang-format off/on around EvtScript blocks, initializer lists,
-    and struct bodies that show nesting after their offset comments."""
+    matrices written as grids, and struct bodies that show nesting after their
+    offset comments."""
     lines = source.split("\n")
     result = []
     i = 0
@@ -208,6 +215,15 @@ def protect_blocks(source: str) -> str:
         if EVT_SINGLE_LINE_RE.match(line):
             result.append(line)
             i += 1
+            continue
+        if RDP_MATRIX_OPEN_RE.match(line):
+            end = i + 1
+            while end < len(lines) and not lines[end].lstrip().startswith(")"):
+                end += 1
+            result.append("// clang-format off")
+            result.extend(lines[i : end + 1])
+            result.append("// clang-format on")
+            i = end + 1
             continue
         is_struct = STRUCT_OPEN_RE.match(line)
         if INIT_OPEN_RE.match(line) or is_struct:
