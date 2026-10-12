@@ -20,7 +20,7 @@ EvtScript EVS_OnShakeTree1 = {
     End
 };
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o59, MODEL_o60, MODEL_o61, MODEL_o62, MODEL_o63);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o59, MODEL_o60, MODEL_o61, MODEL_o62, MODEL_o63);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o58);
 
 FoliageVectorList Tree1_Effects = {

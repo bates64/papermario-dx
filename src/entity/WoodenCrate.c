@@ -139,7 +139,10 @@ void entity_WoodenCrate_update_fragments(Entity* entity) {
             hitX = data->fragmentPosX[i];
             hitY = data->fragmentPosY[i];
             hitZ = data->fragmentPosZ[i];
-            if (npc_test_move_taller_with_slipping(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, yawRad, 8.0f, 8.0f)) {
+            if (npc_test_move_taller_with_slipping(
+                    COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, lateralSpeed, yawRad, 8.0f, 8.0f
+                ))
+            {
                 data->fragmentPosX[i] = hitX;
                 data->fragmentPosY[i] = hitY;
                 data->fragmentPosZ[i] = hitZ;
@@ -149,14 +152,15 @@ void entity_WoodenCrate_update_fragments(Entity* entity) {
                 lateralSpeed = 8.0f;
                 data->fragmentPosX[i] += lateralSpeed * sin_rad(moveAngle);
                 data->fragmentPosZ[i] += lateralSpeed * cos_rad(moveAngle);
-
             }
 
             hitX = data->fragmentPosX[i];
             hitY = data->fragmentPosY[i] + 8.0f;
             hitZ = data->fragmentPosZ[i];
             hitDepth = fabsf(data->fragmentFallSpeed[i]);
-            if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth) || hitY < data->basePosY - 200.0f) {
+            if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth)
+                || hitY < data->basePosY - 200.0f)
+            {
                 data->fragmentRebounds[i]++;
                 data->fragmentPosY[i] = hitY + fabsf(data->fragmentFallSpeed[i]);
                 data->fragmentFallSpeed[i] = reboundSpeed;
@@ -228,7 +232,8 @@ s32 entity_WoodenCrate_idle(Entity* entity) {
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if ((playerStatus->actionState == ACTION_STATE_SPIN_POUND)
-            || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND)) {
+            || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND))
+        {
             set_action_state(ACTION_STATE_FALLING);
             shouldBreak = true;
         }
@@ -260,14 +265,18 @@ void entity_WoodenCrate_shatter(Entity* entity, f32 arg1) {
         }
 
         if (flag) {
-            make_item_entity(data->itemID, entity->pos.x, entity->pos.y + 33.0, entity->pos.z,
-                ITEM_SPAWN_MODE_ITEM_BLOCK_ITEM, 0, player_get_camera_facing_angle(), data->globalFlagIndex);
+            make_item_entity(
+                data->itemID, entity->pos.x, entity->pos.y + 33.0, entity->pos.z, ITEM_SPAWN_MODE_ITEM_BLOCK_ITEM, 0,
+                player_get_camera_facing_angle(), data->globalFlagIndex
+            );
         }
     }
 }
 
-EntityModelScript Entity_WoodenCrate_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_WoodenCrate_Render, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_WoodenCrate_RenderShatteredScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_WoodenCrate_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_WoodenCrate_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_WoodenCrate_RenderShatteredScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER1);
 
 EntityScript Entity_WoodenCrate_Script = {
     es_SetCallback(entity_WoodenCrate_idle, 0)

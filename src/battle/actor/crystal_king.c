@@ -16,7 +16,6 @@ extern EvtScript EVS_Attack_CloneBreath;
 extern EvtScript EVS_Attack_SpitBits;
 extern EvtScript EVS_Move_Recover;
 
-
 enum ActorPartIDs {
     PRT_MAIN        = 1,
 };
@@ -147,7 +146,6 @@ EvtScript EVS_Init = {
     End
 };
 
-
 API_CALLABLE(GetActorPartOpacity) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
@@ -215,7 +213,7 @@ API_CALLABLE(CalculateAngle) {
 
 API_CALLABLE(MakeSuctionPath) {
     Bytecode* args = script->ptrReadPos;
-    Vec3f* path = (Vec3f*)evt_get_variable(script, *args++);
+    Vec3f* path = (Vec3f*) evt_get_variable(script, *args++);
 
     path[0].x = evt_get_variable(script, *args++);
     path[0].y = evt_get_variable(script, *args++);
@@ -987,7 +985,7 @@ EvtScript EVS_Attack_IcyBreath = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfNotFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -1097,7 +1095,7 @@ EvtScript EVS_Attack_IceBolt = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetStatusFlags, ACTOR_SELF, LVar3)
@@ -1669,7 +1667,7 @@ EvtScript EVS_Attack_CloneBreath = {
             Call(UseIdleAnimation, LVarA, true)
             Call(UseIdleAnimation, LVarB, true)
             Return
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     Call(GetActorFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, ACTOR_FLAG_FLYING)
@@ -1933,7 +1931,7 @@ EvtScript EVS_Attack_SpitBits = {
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             Call(UseIdleAnimation, ACTOR_SELF, true)
             Return
-    EndCaseGroup
+        EndCaseGroup
     EndSwitch
     Call(GetActorVar, ACTOR_SELF, AVAR_King_CubeBitID, LVar0)
     Call(ActorExists, LVar0, LVar1)

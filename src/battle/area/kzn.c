@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Formation lava_bubble_2 = {
     OVL_ACTOR_BY_IDX("lava_bubble", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("lava_bubble", BTL_POS_GROUND_C, 9),

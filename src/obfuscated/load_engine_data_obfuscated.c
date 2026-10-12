@@ -13,26 +13,28 @@ void load_engine_data_obfuscated(void) {
 void load_engine_data_obfuscated(void) {
     s32 seed = 0x3C01A775;
     u32 thisInsn = 0xB0018FFC;
-    HeapNode*(*load_engine_data)(void) = (HeapNode* (*)(void)) obfuscated_load_engine_data; // load_engine_data - ????????
+    HeapNode* (*load_engine_data)(void) =
+        (HeapNode * (*) (void) ) obfuscated_load_engine_data; // load_engine_data - ????????
     s32 hash = 0;
     u32 prevInsn;
     u32* it;
 
-    while (IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY));
+    while (IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY))
+        ;
     seed -= IO_READ(thisInsn + 0xFFFE7508);
 
     prevInsn = 0;
 
-    for (it = (u32*) create_audio_system_obfuscated_ROM_START; it < (u32*) create_audio_system_obfuscated_ROM_END; it++) {
-        while (IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY));
+    for (it = (u32*) create_audio_system_obfuscated_ROM_START; it < (u32*) create_audio_system_obfuscated_ROM_END; it++)
+    {
+        while (IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY))
+            ;
         thisInsn = IO_READ(it + 0x4000000); // ???
 
         hash += LOWER(thisInsn) + UPPER(thisInsn);
 
-        if (OPCODE(prevInsn) == LUI &&
-            OPCODE(thisInsn) == ADDIU &&
-            GET_RS(thisInsn) == GET_RT(prevInsn) &&
-            GET_RS(thisInsn) == GET_RT(thisInsn))
+        if (OPCODE(prevInsn) == LUI && OPCODE(thisInsn) == ADDIU && GET_RS(thisInsn) == GET_RT(prevInsn)
+            && GET_RS(thisInsn) == GET_RT(thisInsn))
         {
             hash -= LOWER(thisInsn);
             hash -= LOWER(prevInsn);

@@ -147,14 +147,17 @@ void bgm_update_music_control(void) {
                         // this reserves return values from 0 to 0xFFFF for AuResult codes.
                         if (music->songName > 0xFFFFU) {
                             if ((music->flags & MUSIC_FLAG_FADE_IN_NEXT)) {
-                                snd_song_request_fade_in(music->songName, music->variation,
-                                    music->fadeInTime, music->fadeStartVolume, music->fadeEndVolume);
+                                snd_song_request_fade_in(
+                                    music->songName, music->variation, music->fadeInTime, music->fadeStartVolume,
+                                    music->fadeEndVolume
+                                );
                                 music->flags &= ~MUSIC_FLAG_FADE_IN_NEXT;
                             } else {
                                 // if we aren't fading in, just start at the default volume level
                                 bgm_set_target_volume(MusicDefaultVolume);
                             }
-                            /// @bug this is called even if we are trying to fade in, immediately overriding any fade parameters
+                            /// @bug this is called even if we are trying to fade in, immediately overriding any fade
+                            /// parameters
                             if (snd_song_request_play(music->songName, music->variation) == AU_RESULT_OK) {
                                 music->flags |= MUSIC_FLAG_PLAYING;
                                 music->state = MUSIC_STATE_IDLE;
@@ -228,7 +231,9 @@ s32 bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s1
     return _bgm_set_song(playerIndex, songID, variation, fadeOutTime, volume);
 }
 
-b32 bgm_fade_in_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 fadeStartVolume, s16 fadeEndVolume) {
+b32 bgm_fade_in_song(
+    s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 fadeStartVolume, s16 fadeEndVolume
+) {
     MusicControlData* music;
     s32 mapSongVariation;
 

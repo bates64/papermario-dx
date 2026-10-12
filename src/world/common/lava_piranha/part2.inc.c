@@ -211,7 +211,7 @@ void appendGfx_piranha_vines(void* data) {
         // here and leave space behind for the gSPBranchList command followed by two vertices
         // for each point in numPoints
 
-        vtxBuffer = (Vtx_t*)(gMainGfxPos + 1);
+        vtxBuffer = (Vtx_t*) (gMainGfxPos + 1);
         gSPBranchList(gMainGfxPos, &gMainGfxPos[1 + 2 * (2 * numPoints)]);
         vtx = (Vtx_t*) (++gMainGfxPos);
         gMainGfxPos = &gMainGfxPos[2 * (2 * numPoints)];
@@ -223,7 +223,7 @@ void appendGfx_piranha_vines(void* data) {
 
             alphaCoord = ((f32) j * boneCount) / numPoints;
             nearest = (s32) alphaCoord;
-            alphaFrac = alphaCoord - (f32)nearest;
+            alphaFrac = alphaCoord - (f32) nearest;
 
             if (nearest + 1 >= boneCount) {
                 angle = vine->boneRot[boneCount - 1];
@@ -239,7 +239,7 @@ void appendGfx_piranha_vines(void* data) {
                 angle = ((nextAngle - curAngle2) * alphaFrac) + curAngle2;
             }
 
-            deltaX =  sin_deg(angle) * boneLength;
+            deltaX = sin_deg(angle) * boneLength;
             deltaY = -cos_deg(angle) * boneLength;
 
             vtx->ob[0] = posX + deltaX;
@@ -264,7 +264,7 @@ void appendGfx_piranha_vines(void* data) {
         }
 
         for (j = 0; j < numPoints - 1; j++) {
-            gSPVertex(gMainGfxPos++, &vtxBuffer[2*j], 4, 0);
+            gSPVertex(gMainGfxPos++, &vtxBuffer[2 * j], 4, 0);
             gSP2Triangles(gMainGfxPos++, 1, 0, 2, 0, 1, 2, 3, 0);
         }
     }

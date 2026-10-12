@@ -105,4 +105,3 @@ void update_camera_unused_leading(Camera* camera) {
     camera->lookAtPitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAtEye.x, camera->lookAtEye.z, camera->lookAtObj.x, camera->lookAtObj.z);
 }
-

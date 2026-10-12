@@ -2,7 +2,7 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-API_CALLABLE(SetupBeginGameTransition){
+API_CALLABLE(SetupBeginGameTransition) {
     set_map_transition_effect(TRANSITION_BEGIN_OR_END_GAME);
     return ApiStatus_DONE2;
 }

@@ -12,8 +12,7 @@ EvtScript EVS_GotoMap_mac_02_4 = {
     End
 };
 
-EvtScript EVS_OnEnterPipe_Upward = EVT_EXIT_PIPE_HORIZONTAL(tik_06_ENTRY_3,
-    COLLIDER_o89, EVS_GotoMap_mac_02_4);
+EvtScript EVS_OnEnterPipe_Upward = EVT_EXIT_PIPE_HORIZONTAL(tik_06_ENTRY_3, COLLIDER_o89, EVS_GotoMap_mac_02_4);
 
 EvtScript EVS_GotoMap_tik_08_3 = {
     Call(GotoMap, Ref("tik_08"), tik_08_ENTRY_3)
@@ -22,8 +21,7 @@ EvtScript EVS_GotoMap_tik_08_3 = {
     End
 };
 
-EvtScript EVS_OnEnterPipe_Downward = EVT_EXIT_PIPE_VERTICAL(tik_06_ENTRY_2,
-    COLLIDER_o57, EVS_GotoMap_tik_08_3);
+EvtScript EVS_OnEnterPipe_Downward = EVT_EXIT_PIPE_VERTICAL(tik_06_ENTRY_2, COLLIDER_o57, EVS_GotoMap_tik_08_3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(Ref(EVS_ExitWalk_tik_01_0), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

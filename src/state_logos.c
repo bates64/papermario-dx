@@ -77,12 +77,12 @@ void state_init_logos(void) {
 
     romEnd = logos_ROM_END;
     romStart = logos_ROM_START;
-    gLogosImages = heap_malloc((u32)romEnd - (u32)romStart);
+    gLogosImages = heap_malloc((u32) romEnd - (u32) romStart);
     dma_copy(romStart, romEnd, gLogosImages);
 
-    gLogosImage1 = gLogosImages + ((uintptr_t)logos_logo_n64_png - (uintptr_t)logos_VRAM);
-    gLogosImage3 = gLogosImages + ((uintptr_t)logos_logo_is_png - (uintptr_t)logos_VRAM);
-    gLogosImage2 = gLogosImages + ((uintptr_t)logos_logo_nintendo_png - (uintptr_t)logos_VRAM);
+    gLogosImage1 = gLogosImages + ((uintptr_t) logos_logo_n64_png - (uintptr_t) logos_VRAM);
+    gLogosImage3 = gLogosImages + ((uintptr_t) logos_logo_is_png - (uintptr_t) logos_VRAM);
+    gLogosImage2 = gLogosImages + ((uintptr_t) logos_logo_nintendo_png - (uintptr_t) logos_VRAM);
 
     nuContRmbForceStop();
     create_cameras();
@@ -143,17 +143,17 @@ void state_step_logos(void) {
         }
     } else {
         if ((gGameStatusPtr->startupState == LOGOS_STATE_N64_HOLD
-            || gGameStatusPtr->startupState == LOGOS_STATE_N64_FADE_OUT
-            || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_FADE_IN
-            || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_HOLD
-            || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_FADE_OUT
-            || gGameStatusPtr->startupState == LOGOS_STATE_IS_FADE_IN
-            || gGameStatusPtr->startupState == LOGOS_STATE_IS_HOLD_1
-            || gGameStatusPtr->startupState == LOGOS_STATE_IS_HOLD_2
-            || gGameStatusPtr->startupState == LOGOS_STATE_IS_FADE_OUT
-            || gGameStatusPtr->startupState == LOGOS_STATE_CURTAINS_APPEAR)
-            && (pressedButtons & (BUTTON_START | BUTTON_Z | BUTTON_A))
-        ) {
+             || gGameStatusPtr->startupState == LOGOS_STATE_N64_FADE_OUT
+             || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_FADE_IN
+             || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_HOLD
+             || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_FADE_OUT
+             || gGameStatusPtr->startupState == LOGOS_STATE_IS_FADE_IN
+             || gGameStatusPtr->startupState == LOGOS_STATE_IS_HOLD_1
+             || gGameStatusPtr->startupState == LOGOS_STATE_IS_HOLD_2
+             || gGameStatusPtr->startupState == LOGOS_STATE_IS_FADE_OUT
+             || gGameStatusPtr->startupState == LOGOS_STATE_CURTAINS_APPEAR)
+            && (pressedButtons & (BUTTON_START | BUTTON_Z | BUTTON_A)))
+        {
             startup_set_fade_screen_color(208);
             gGameStatusPtr->skipLogos = true;
         }
@@ -274,10 +274,14 @@ void appendGfx_intro_logos(void) {
         case LOGOS_STATE_N64_FADE_OUT:
             gSPDisplayList(gMainGfxPos++, D_80077908);
             for (i = 0; i < 7; i++) {
-                gDPLoadTextureTile(gMainGfxPos++, gLogosImage1 + i * 0x1000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 112,
-                                   0, 0, 127, 15, 0,
-                                   G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                gSPTextureRectangle(gMainGfxPos++, 96 * 4, (64 + i * 16) * 4, 224 * 4, (80 + i * 16) * 4, G_TX_RENDERTILE, 0, 0, 1024, 1024);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, gLogosImage1 + i * 0x1000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 112, 0, 0, 127, 15, 0,
+                    G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+                );
+                gSPTextureRectangle(
+                    gMainGfxPos++, 96 * 4, (64 + i * 16) * 4, 224 * 4, (80 + i * 16) * 4, G_TX_RENDERTILE, 0, 0, 1024,
+                    1024
+                );
                 gDPPipeSync(gMainGfxPos++);
             }
             break;
@@ -293,14 +297,14 @@ void appendGfx_intro_logos(void) {
 #endif
             gSPDisplayList(gMainGfxPos++, D_80077908);
             for (i = 0; i < 6; i++) {
-                gDPLoadTextureTile(gMainGfxPos++, gLogosImage2 + i * 0x1000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 48,
-                                   0, 0, 255, 7, 0,
-                                   G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, gLogosImage2 + i * 0x1000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 48, 0, 0, 255, 7, 0,
+                    G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+                );
                 gSPTextureRectangle(
-                        gMainGfxPos++,
-                        32 * 4, (LOGO_1_Y + i * 8) * 4,
-                        288 * 4, (LOGO_1_Y + 8 + i * 8) * 4,
-                        G_TX_RENDERTILE, 0, 0, 1024, 1024);
+                    gMainGfxPos++, 32 * 4, (LOGO_1_Y + i * 8) * 4, 288 * 4, (LOGO_1_Y + 8 + i * 8) * 4, G_TX_RENDERTILE,
+                    0, 0, 1024, 1024
+                );
                 gDPPipeSync(gMainGfxPos++);
             }
 #if !VERSION_JP
@@ -312,13 +316,14 @@ void appendGfx_intro_logos(void) {
             gSPDisplayList(gMainGfxPos++, D_80077908);
 #endif
             for (i = 0; i < 14; i++) {
-                gDPLoadTextureTile(gMainGfxPos++, gLogosImage3 + i * 0x1000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 112,
-                                   0, 0, 255, 7, 0,
-                                   G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                gSPTextureRectangle(gMainGfxPos++,
-                                    32 * 4, (LOGO_2_Y + i * 8) * 4,
-                                    288 * 4, (LOGO_2_Y + 8 + i * 8) * 4,
-                                    G_TX_RENDERTILE, 0, 0, 1024, 1024);
+                gDPLoadTextureTile(
+                    gMainGfxPos++, gLogosImage3 + i * 0x1000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 112, 0, 0, 255, 7, 0,
+                    G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+                );
+                gSPTextureRectangle(
+                    gMainGfxPos++, 32 * 4, (LOGO_2_Y + i * 8) * 4, 288 * 4, (LOGO_2_Y + 8 + i * 8) * 4, G_TX_RENDERTILE,
+                    0, 0, 1024, 1024
+                );
                 gDPPipeSync(gMainGfxPos++);
             }
             break;

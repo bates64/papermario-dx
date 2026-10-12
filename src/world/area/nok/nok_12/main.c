@@ -8,13 +8,13 @@ API_CALLABLE(UpdateEnounterStages) {
     s32 xMax = evt_get_variable(script, *args++);
     s32 zMin = evt_get_variable(script, *args++);
     s32 zMax = evt_get_variable(script, *args++);
-    const char* stageWithoutBridge = (const char*)evt_get_variable(script, *args++);
-    const char* stageWithBridge = (const char*)evt_get_variable(script, *args++);
+    const char* stageWithoutBridge = (const char*) evt_get_variable(script, *args++);
+    const char* stageWithBridge = (const char*) evt_get_variable(script, *args++);
     const char* stage = stageWithoutBridge;
     s32 i;
 
-    if (xMin <= playerStatus->pos.x && playerStatus->pos.x <= xMax &&
-        zMin <= playerStatus->pos.z && playerStatus->pos.z <= zMax)
+    if (xMin <= playerStatus->pos.x && playerStatus->pos.x <= xMax && zMin <= playerStatus->pos.z
+        && playerStatus->pos.z <= zMax)
     {
         stage = stageWithBridge;
     }

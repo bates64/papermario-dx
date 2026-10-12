@@ -146,7 +146,6 @@ static s32 BasicToppledAnims[] = {
     STATUS_END,
 };
 
-
 static BSS PlayerStatus DummyPlayerStatus;
 
 static API_CALLABLE(SpawnSpinEffect) {

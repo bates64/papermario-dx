@@ -288,11 +288,11 @@ BSS MessageImageData HeartBlockMsgImg;
 #include "world/area/kmr/kmr_02/heart_block.png.h"
 
 API_CALLABLE(LoadHeartBlockMsgImg) {
-    HeartBlockMsgImg.raster   = kmr_02_heart_block_img;
-    HeartBlockMsgImg.palette  = kmr_02_heart_block_pal;
-    HeartBlockMsgImg.width    = kmr_02_heart_block_img_width;
-    HeartBlockMsgImg.height   = kmr_02_heart_block_img_height;
-    HeartBlockMsgImg.format   = G_IM_FMT_CI;
+    HeartBlockMsgImg.raster = kmr_02_heart_block_img;
+    HeartBlockMsgImg.palette = kmr_02_heart_block_pal;
+    HeartBlockMsgImg.width = kmr_02_heart_block_img_width;
+    HeartBlockMsgImg.height = kmr_02_heart_block_img_height;
+    HeartBlockMsgImg.format = G_IM_FMT_CI;
     HeartBlockMsgImg.bitDepth = G_IM_SIZ_4b;
     set_message_images(&HeartBlockMsgImg);
     return ApiStatus_DONE1;
@@ -1332,10 +1332,11 @@ API_CALLABLE(UpdateModelRemapTintParams) {
         oldPrimR + ((newPrimR - oldPrimR) * script->functionTemp[0]) / duration,
         oldPrimG + ((newPrimG - oldPrimG) * script->functionTemp[0]) / duration,
         oldPrimB + ((newPrimB - oldPrimB) * script->functionTemp[0]) / duration,
-        oldEnvR  + ( (newEnvR - oldEnvR) * script->functionTemp[0]) / duration,
-        oldEnvG  + ( (newEnvG - oldEnvG) * script->functionTemp[0]) / duration,
-        oldEnvB  + ( (newEnvB - oldEnvB) * script->functionTemp[0]) / duration);
-        script->functionTemp[0]++;
+        oldEnvR + ((newEnvR - oldEnvR) * script->functionTemp[0]) / duration,
+        oldEnvG + ((newEnvG - oldEnvG) * script->functionTemp[0]) / duration,
+        oldEnvB + ((newEnvB - oldEnvB) * script->functionTemp[0]) / duration
+    );
+    script->functionTemp[0]++;
 
     if (duration < script->functionTemp[0]) {
         return ApiStatus_DONE2;

@@ -245,17 +245,16 @@ static API_CALLABLE(SetWorldColorParams) {
     }
 
     if (duration > 0) {
-        if(time >= duration) {
+        if (time >= duration) {
             return ApiStatus_DONE2;
         }
         time++;
         mdl_set_remap_tint_params(
             (oldPrimR + ((newPrimR - oldPrimR) * time) / duration),
             (oldPrimG + ((newPrimG - oldPrimG) * time) / duration),
-            (oldPrimB + ((newPrimB - oldPrimB) * time) / duration),
-            (oldEnvR  + ( (newEnvR - oldEnvR)  * time) / duration),
-            (oldEnvG  + ( (newEnvG - oldEnvG)  * time) / duration),
-            (oldEnvB  + ( (newEnvB - oldEnvB)  * time) / duration));
+            (oldPrimB + ((newPrimB - oldPrimB) * time) / duration), (oldEnvR + ((newEnvR - oldEnvR) * time) / duration),
+            (oldEnvG + ((newEnvG - oldEnvG) * time) / duration), (oldEnvB + ((newEnvB - oldEnvB) * time) / duration)
+        );
         if (time >= duration) {
             return ApiStatus_DONE2;
         }
@@ -354,11 +353,16 @@ API_CALLABLE(InitializeStoryCamera) {
     }
     ColorBufPtr = nuGfxCfb_ptr;
     lerp_value_with_max_step(250.0f, 0.0f, StoryCameraAngle, 0.5f, &StoryCameraAngle);
-    interp_value_with_easing(INTRO_MATH_EASING_SIN_OUT_DELAYED,
-        130.4f, IntroCamSettings2.boomLength, 0.0f,
-        470.0f, &IntroCamStateA_BoomLength);
-    lerp_value_with_max_step(12.4f, IntroCamSettings2.boomPitch, IntroCamStateA_BoomPitch, 0.05f, &IntroCamStateA_BoomPitch);
-    lerp_value_with_max_step(-16.8f, IntroCamSettings2.viewPitch, IntroCamStateA_ViewPitch, 0.05f, &IntroCamStateA_ViewPitch);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, IntroCamSettings2.boomLength, 0.0f, 470.0f,
+        &IntroCamStateA_BoomLength
+    );
+    lerp_value_with_max_step(
+        12.4f, IntroCamSettings2.boomPitch, IntroCamStateA_BoomPitch, 0.05f, &IntroCamStateA_BoomPitch
+    );
+    lerp_value_with_max_step(
+        -16.8f, IntroCamSettings2.viewPitch, IntroCamStateA_ViewPitch, 0.05f, &IntroCamStateA_ViewPitch
+    );
     lerp_value_with_max_step(62.0f, 49.0f, IntroCamStateA_Vfov, 0.1f, &IntroCamStateA_Vfov);
     adjust_cam_vfov(CAM_DEFAULT, IntroCamStateA_Vfov);
     camera->overrideSettings.boomLength = IntroCamStateA_BoomLength;
@@ -387,9 +391,16 @@ API_CALLABLE(UnusedInitializeStoryCamera) {
     }
     ColorBufPtr = nuGfxCfb_ptr;
     lerp_value_with_max_step(250.0f, 0.0f, StoryCameraAngle, 0.5f, &StoryCameraAngle);
-    interp_value_with_easing(INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, IntroCamSettings2.boomLength, UnusedLerpTime, 470.0f, &IntroCamStateB_BoomLength);
-    lerp_value_with_max_step(12.4f, IntroCamSettings2.boomPitch, IntroCamStateB_BoomPitch, 0.05f, &IntroCamStateB_BoomPitch);
-    lerp_value_with_max_step(-16.8f, IntroCamSettings2.viewPitch, IntroCamStateB_ViewPitch, 0.05f, &IntroCamStateB_ViewPitch);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_SIN_OUT_DELAYED, 130.4f, IntroCamSettings2.boomLength, UnusedLerpTime, 470.0f,
+        &IntroCamStateB_BoomLength
+    );
+    lerp_value_with_max_step(
+        12.4f, IntroCamSettings2.boomPitch, IntroCamStateB_BoomPitch, 0.05f, &IntroCamStateB_BoomPitch
+    );
+    lerp_value_with_max_step(
+        -16.8f, IntroCamSettings2.viewPitch, IntroCamStateB_ViewPitch, 0.05f, &IntroCamStateB_ViewPitch
+    );
     lerp_value_with_max_step(62.0f, 49.0f, IntroCamStateB_Vfov, 0.1f, &IntroCamStateB_Vfov);
     adjust_cam_vfov(CAM_DEFAULT, IntroCamStateB_Vfov);
     camera->overrideSettings.boomLength = IntroCamStateB_BoomLength;
@@ -419,10 +430,9 @@ API_CALLABLE(StoryCameraShake1) {
     if (isInitialCall) {
         camera->flags |= CAMERA_FLAG_SHAKING;
     }
-    guTranslateF(camera->mtxViewShaking,
-        StoryCameraShake1Scale * sin_deg(StoryCameraShake1Angle * 486),
-        StoryCameraShake1Scale * cos_deg(StoryCameraShake1Angle * 254),
-        0.0f
+    guTranslateF(
+        camera->mtxViewShaking, StoryCameraShake1Scale * sin_deg(StoryCameraShake1Angle * 486),
+        StoryCameraShake1Scale * cos_deg(StoryCameraShake1Angle * 254), 0.0f
     );
     StoryCameraShake1Angle++;
     StoryCameraShake1Scale += (12.0f - StoryCameraShake1Scale) * 0.2;
@@ -702,17 +712,13 @@ API_CALLABLE(CamPushIn_BowserInhale) {
         f32 temp_f4 = resolve_npc(script, NPC_Bowser_Body)->pos.y - 150.0f;
 
         fx_fire_breath(
-            1, script->varTable[0],
-            script->varTable[1] + temp_f4,
-            script->varTable[2],
-            script->varTable[3] - 5,
-            script->varTable[4] + temp_f4,
-            script->varTable[5] - 30, 0, 5, 20
+            1, script->varTable[0], script->varTable[1] + temp_f4, script->varTable[2], script->varTable[3] - 5,
+            script->varTable[4] + temp_f4, script->varTable[5] - 30, 0, 5, 20
         );
     }
 
     CamMoveInhaleTime++;
-    if (CamMoveInhaleTime <= (s32)(40 * DT)) {
+    if (CamMoveInhaleTime <= (s32) (40 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
@@ -728,7 +734,7 @@ API_CALLABLE(CamPullBack_BowserExhale) {
     camera->panActive = true;
     camera->overrideSettings.boomLength = BoomLengthExhale;
     CamMoveExhaleTime++;
-    if (CamMoveExhaleTime < (s32)(21 * DT)) {
+    if (CamMoveExhaleTime < (s32) (21 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
@@ -747,8 +753,12 @@ API_CALLABLE(BowserFlyToStarRod) {
         FlyToStarRodStartX = bowserMain->pos.x;
         FlyToStarRodStartZ = bowserMain->pos.z;
     }
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToStarRodStartX, 0.0f, FlyToStarRodTime, 40.0f, &bowserMain->pos.x);
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToStarRodStartZ, 0.0f, FlyToStarRodTime, 40.0f, &bowserMain->pos.z);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, FlyToStarRodStartX, 0.0f, FlyToStarRodTime, 40.0f, &bowserMain->pos.x
+    );
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, FlyToStarRodStartZ, 0.0f, FlyToStarRodTime, 40.0f, &bowserMain->pos.z
+    );
     bowserProp->pos.x = bowserMain->pos.x;
     bowserProp->pos.z = bowserMain->pos.z;
     bowserMain->colliderPos.x = bowserMain->pos.x;
@@ -757,7 +767,7 @@ API_CALLABLE(BowserFlyToStarRod) {
     bowserProp->colliderPos.z = bowserProp->pos.z;
 
     FlyToStarRodTime++;
-    if (FlyToStarRodTime <= (s32)(40 * DT)) {
+    if (FlyToStarRodTime <= (s32) (40 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
@@ -805,11 +815,11 @@ BSS StoryGraphicData StoryGraphics;
 API_CALLABLE(CamPullBack_BowserHoldingStarRod) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    interp_value_with_easing(INTRO_MATH_EASING_4,  35.0f,  35.0f, HoldStarRodTime, 80.0f, &HoldStarRodFov);
+    interp_value_with_easing(INTRO_MATH_EASING_4, 35.0f, 35.0f, HoldStarRodTime, 80.0f, &HoldStarRodFov);
     interp_value_with_easing(INTRO_MATH_EASING_4, 130.0f, 270.0f, HoldStarRodTime, 80.0f, &HoldStarRodBoomLength);
-    interp_value_with_easing(INTRO_MATH_EASING_4,  30.0f,   0.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamX);
+    interp_value_with_easing(INTRO_MATH_EASING_4, 30.0f, 0.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamX);
     interp_value_with_easing(INTRO_MATH_EASING_4, 232.0f, 177.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamY);
-    interp_value_with_easing(INTRO_MATH_EASING_4,   0.0f,   0.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamZ);
+    interp_value_with_easing(INTRO_MATH_EASING_4, 0.0f, 0.0f, HoldStarRodTime, 80.0f, &HoldStarRodCamZ);
     adjust_cam_vfov(CAM_DEFAULT, HoldStarRodFov);
     camera->panActive = true;
     camera->overrideSettings.boomLength = HoldStarRodBoomLength;
@@ -818,7 +828,7 @@ API_CALLABLE(CamPullBack_BowserHoldingStarRod) {
     camera->movePos.z = HoldStarRodCamZ;
 
     HoldStarRodTime++;
-    if (HoldStarRodTime <= (s32)(90 * DT)) {
+    if (HoldStarRodTime <= (s32) (90 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
@@ -835,7 +845,9 @@ API_CALLABLE(CamPanAcrossRoom) {
 
     interp_value_with_easing(INTRO_MATH_EASING_LINEAR, 40.0f, -130.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomCamX);
     interp_value_with_easing(INTRO_MATH_EASING_LINEAR, -40.0f, 130.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomCamZ);
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 45.0f, 25.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomAngle);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, 45.0f, 25.0f, PanAcrossRoomTime, 170.0f, &PanAcrossRoomAngle
+    );
     camera->panActive = true;
     camera->movePos.x = PanAcrossRoomCamX;
     camera->movePos.z = PanAcrossRoomCamZ;
@@ -843,7 +855,7 @@ API_CALLABLE(CamPanAcrossRoom) {
     camera->overrideSettings.points.two.Bz = cos_deg(PanAcrossRoomAngle) * 500.0f;
 
     PanAcrossRoomTime++;
-    if (PanAcrossRoomTime == (s32)(170 * DT)) {
+    if (PanAcrossRoomTime == (s32) (170 * DT)) {
         return ApiStatus_DONE1;
     }
     return ApiStatus_BLOCK;
@@ -858,9 +870,11 @@ s32 OrbitKammyTime = 0;
 API_CALLABLE(CamMove_OrbitKammy) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,  25.0f, 200.0f, OrbitKammyTime, 120.0f, &OrbitKammyAngle);
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,  50.0f,  35.0f, OrbitKammyTime, 30.0f, &OrbitKammyFov);
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 246.1f, 180.0f, OrbitKammyTime, 30.0f, &OrbitKammyBoomLength);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 25.0f, 200.0f, OrbitKammyTime, 120.0f, &OrbitKammyAngle);
+    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 50.0f, 35.0f, OrbitKammyTime, 30.0f, &OrbitKammyFov);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, 246.1f, 180.0f, OrbitKammyTime, 30.0f, &OrbitKammyBoomLength
+    );
     interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, 200.0f, 220.0f, OrbitKammyTime, 30.0f, &OrbitKammyCamY);
     camera->overrideSettings.points.two.Bx = sin_deg(OrbitKammyAngle) * 500.0f;
     camera->overrideSettings.points.two.Bz = cos_deg(OrbitKammyAngle) * 500.0f;
@@ -870,7 +884,7 @@ API_CALLABLE(CamMove_OrbitKammy) {
     camera->movePos.y = OrbitKammyCamY;
 
     OrbitKammyTime++;
-    if (OrbitKammyTime <= (s32)(120 * DT)) {
+    if (OrbitKammyTime <= (s32) (120 * DT)) {
         return ApiStatus_BLOCK;
     } else {
         return ApiStatus_DONE1;
@@ -901,7 +915,7 @@ API_CALLABLE(BuildSpiritCapturePath) {
     path->startPoint.z = evt_get_float_variable(script, LVar2);
 
     // set endPoint
-    path->endPoint.x = effect->data.somethingRotating->pos.x + sin_deg(pitch) * radius * radial ;
+    path->endPoint.x = effect->data.somethingRotating->pos.x + sin_deg(pitch) * radius * radial;
     path->endPoint.y = effect->data.somethingRotating->pos.y + cos_deg(roll) * radius;
     path->endPoint.z = effect->data.somethingRotating->pos.z + cos_deg(pitch) * radius * radial;
 
@@ -1119,8 +1133,10 @@ f32 FinalCamMoveBoomLength = 130.0;
 API_CALLABLE(CamPullBack_Final) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    lerp_value_with_max_step(IntroCamSettings15.boomLength, IntroCamSettings16.boomLength,
-        FinalCamMoveBoomLength, 1.0f, &FinalCamMoveBoomLength);
+    lerp_value_with_max_step(
+        IntroCamSettings15.boomLength, IntroCamSettings16.boomLength, FinalCamMoveBoomLength, 1.0f,
+        &FinalCamMoveBoomLength
+    );
     camera->panActive = true;
     camera->overrideSettings.boomLength = FinalCamMoveBoomLength;
     if (FinalCamMoveBoomLength == 700.0f) {
@@ -1139,22 +1155,24 @@ API_CALLABLE(KammyFlyToBowser) {
         FlyToBowserStartZ = kammy->pos.z;
     }
 
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToBowserStartX, -95.0f, FlyToBowserTime, 40.0f, &kammy->pos.x);
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT, FlyToBowserStartZ, 20.0f, FlyToBowserTime, 40.0f, &kammy->pos.z);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, FlyToBowserStartX, -95.0f, FlyToBowserTime, 40.0f, &kammy->pos.x
+    );
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, FlyToBowserStartZ, 20.0f, FlyToBowserTime, 40.0f, &kammy->pos.z
+    );
     kammy->colliderPos.x = kammy->pos.x;
     kammy->colliderPos.z = kammy->pos.z;
 
     FlyToBowserTime++;
-    if (FlyToBowserTime <= (s32)(40 * DT)) {
+    if (FlyToBowserTime <= (s32) (40 * DT)) {
         return ApiStatus_BLOCK;
     }
     return ApiStatus_DONE1;
 }
 
 void appendGfx_image_strips(
-    s32 baseX, s32 baseY,
-    IMG_PTR img, PAL_PTR pal,
-    s32 alpha, s32 width, s32 height, s32 lineHeight
+    s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 alpha, s32 width, s32 height, s32 lineHeight
 );
 
 // when the spirits leap back in shock, their radial position is multiplied by these; xz by the first, y by the second
@@ -1199,14 +1217,14 @@ void draw_foreground_bowser_silhouette(void) {
 
     if (StoryGraphicsPtr->workerID != 0) {
         appendGfx_image_strips(
-            x >> 0x10, y >> 0x10,
-            StoryGraphicsPtr->imgBowser, StoryGraphicsPtr->palBowser,
-            255, 128, 128, 16
+            x >> 0x10, y >> 0x10, StoryGraphicsPtr->imgBowser, StoryGraphicsPtr->palBowser, 255, 128, 128, 16
         );
     }
 }
 
-void appendGfx_image_strips(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 alpha, s32 width, s32 height, s32 lineHeight) {
+void appendGfx_image_strips(
+    s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 alpha, s32 width, s32 height, s32 lineHeight
+) {
     u8 overlayType;
     f32 overlayAlphaBack;
     f32 overlayAlphaFront;
@@ -1239,11 +1257,15 @@ void appendGfx_image_strips(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 
     gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
 
     for (i = 0; i < height / lineHeight; i++) {
-        gDPLoadTextureTile(gMainGfxPos++, img, pal != nullptr ? G_IM_FMT_CI : G_IM_FMT_IA, G_IM_SIZ_8b, width, height,
-                        0, i * lineHeight, width - 1, i * lineHeight + lineHeight - 1, 0,
-                        G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPScisTextureRectangle(gMainGfxPos++, baseX * 4, (baseY + i * lineHeight) * 4, (baseX + width) * 4,
-                        (baseY + i * lineHeight + lineHeight) * 4, G_TX_RENDERTILE, 0, (i * lineHeight) * 32, 1024, 1024);
+        gDPLoadTextureTile(
+            gMainGfxPos++, img, pal != nullptr ? G_IM_FMT_CI : G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0,
+            i * lineHeight, width - 1, i * lineHeight + lineHeight - 1, 0, G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK,
+            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
+        gSPScisTextureRectangle(
+            gMainGfxPos++, baseX * 4, (baseY + i * lineHeight) * 4, (baseX + width) * 4,
+            (baseY + i * lineHeight + lineHeight) * 4, G_TX_RENDERTILE, 0, (i * lineHeight) * 32, 1024, 1024
+        );
     }
 
     gDPPipeSync(gMainGfxPos++);
@@ -1251,8 +1273,7 @@ void appendGfx_image_strips(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s32 
 
 void draw_background_tape(void) {
     appendGfx_image_strips(
-        StoryGraphicsPtr->tapePosX, StoryGraphicsPtr->tapePosY,
-        StoryGraphicsPtr->imgTape, nullptr,
+        StoryGraphicsPtr->tapePosX, StoryGraphicsPtr->tapePosY, StoryGraphicsPtr->imgTape, nullptr,
         StoryGraphicsPtr->tapeAlpha, 128, 128, 32
     );
 }
@@ -1264,18 +1285,24 @@ void appendGfx_image_ci(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal) {
     gDPPipeSync(gMainGfxPos++);
     gDPLoadTLUT_pal256(gMainGfxPos++, pal);
     for (i = 0; i < 23; i++) {
-        gDPLoadTextureTile(gMainGfxPos++, img, G_IM_FMT_CI, G_IM_SIZ_8b, 264, 162,
-                           0, i * 7, 263, i * 7 + 7 - 1, 0,
-                           G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPScisTextureRectangle(gMainGfxPos++, baseX * 4, (baseY + i * 7) * 4, (baseX + 264) * 4, (baseY + i * 7 + 7) * 4,
-                                G_TX_RENDERTILE, 0, (i * 7) << 5, 1024, 1024);
+        gDPLoadTextureTile(
+            gMainGfxPos++, img, G_IM_FMT_CI, G_IM_SIZ_8b, 264, 162, 0, i * 7, 263, i * 7 + 7 - 1, 0, G_TX_WRAP,
+            G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
+        gSPScisTextureRectangle(
+            gMainGfxPos++, baseX * 4, (baseY + i * 7) * 4, (baseX + 264) * 4, (baseY + i * 7 + 7) * 4, G_TX_RENDERTILE,
+            0, (i * 7) << 5, 1024, 1024
+        );
     }
     if (m != 0) {
-        gDPLoadTextureTile(gMainGfxPos++, img, G_IM_FMT_CI, G_IM_SIZ_8b, 264, 0,
-                           0, i * 7, 263, i * 7 + m - 1, 0,
-                           G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSPScisTextureRectangle(gMainGfxPos++, baseX * 4, (baseY + i * 7) * 4, (baseX + 264) * 4, (baseY + i * 7 + m) * 4,
-                                G_TX_RENDERTILE, 0, (i * 7) << 5, 1024, 1024);
+        gDPLoadTextureTile(
+            gMainGfxPos++, img, G_IM_FMT_CI, G_IM_SIZ_8b, 264, 0, 0, i * 7, 263, i * 7 + m - 1, 0, G_TX_WRAP, G_TX_WRAP,
+            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD
+        );
+        gSPScisTextureRectangle(
+            gMainGfxPos++, baseX * 4, (baseY + i * 7) * 4, (baseX + 264) * 4, (baseY + i * 7 + m) * 4, G_TX_RENDERTILE,
+            0, (i * 7) << 5, 1024, 1024
+        );
     }
     gDPPipeSync(gMainGfxPos++);
 }
@@ -1307,28 +1334,20 @@ void worker_draw_story_graphics(void) {
 
     if (StoryGraphicsPtr->flipOrder) {
         appendGfx_image_ci(
-            vpX + StoryGraphicsPtr->frontImgPosX,
-            vpY + StoryGraphicsPtr->frontImgPosY,
-            StoryGraphicsPtr->imgFront,
+            vpX + StoryGraphicsPtr->frontImgPosX, vpY + StoryGraphicsPtr->frontImgPosY, StoryGraphicsPtr->imgFront,
             StoryGraphicsPtr->palFront
         );
         appendGfx_image_ci(
-            vpX + StoryGraphicsPtr->backImgPosX,
-            vpY + StoryGraphicsPtr->backImgPosY,
-            StoryGraphicsPtr->imgBack,
+            vpX + StoryGraphicsPtr->backImgPosX, vpY + StoryGraphicsPtr->backImgPosY, StoryGraphicsPtr->imgBack,
             StoryGraphicsPtr->palBack
         );
     } else {
         appendGfx_image_ci(
-            vpX + StoryGraphicsPtr->backImgPosX,
-            vpY + StoryGraphicsPtr->backImgPosY,
-            StoryGraphicsPtr->imgBack,
+            vpX + StoryGraphicsPtr->backImgPosX, vpY + StoryGraphicsPtr->backImgPosY, StoryGraphicsPtr->imgBack,
             StoryGraphicsPtr->palBack
         );
         appendGfx_image_ci(
-            vpX + StoryGraphicsPtr->frontImgPosX,
-            vpY + StoryGraphicsPtr->frontImgPosY,
-            StoryGraphicsPtr->imgFront,
+            vpX + StoryGraphicsPtr->frontImgPosX, vpY + StoryGraphicsPtr->frontImgPosY, StoryGraphicsPtr->imgFront,
             StoryGraphicsPtr->palFront
         );
     }
@@ -1356,14 +1375,12 @@ void load_story_image(s32 loadBackImage, s32 imageIdx) {
     if (!loadBackImage) {
         dma_copy(
             title_bg_1_ROM_START + imageIdx * (STORY_IMG_SIZE + PAL_256_SIZE),
-            title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE),
-            StoryGraphicsPtr->imgFront
+            title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE), StoryGraphicsPtr->imgFront
         );
     } else {
         dma_copy(
             title_bg_1_ROM_START + imageIdx * (STORY_IMG_SIZE + PAL_256_SIZE),
-            title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE),
-            StoryGraphicsPtr->imgBack
+            title_bg_1_ROM_START + (imageIdx + 1) * (STORY_IMG_SIZE + PAL_256_SIZE), StoryGraphicsPtr->imgBack
         );
     }
 }
@@ -1375,10 +1392,9 @@ API_CALLABLE(InitializeStoryGraphicsData) {
 
     StoryGraphicsPtr->workerID = create_worker_frontUI(nullptr, worker_draw_story_graphics);
     StoryGraphicsPtr->imgFront = pos = mdl_get_next_texture_address(
-        (STORY_IMG_SIZE + PAL_256_SIZE) +
-        (STORY_IMG_SIZE + PAL_256_SIZE) +
-        TAPE_IMG_SIZE +
-        (BOWSER_IMG_SIZE + PAL_256_SIZE));
+        (STORY_IMG_SIZE + PAL_256_SIZE) + (STORY_IMG_SIZE + PAL_256_SIZE) + TAPE_IMG_SIZE
+        + (BOWSER_IMG_SIZE + PAL_256_SIZE)
+    );
     pos += STORY_IMG_SIZE;
     StoryGraphicsPtr->palFront = (u16*) pos;
     pos += PAL_256_SIZE;
@@ -1426,7 +1442,7 @@ enum {
 
 s32 StoryPageState = STORY_PAGE_STATE_BEGIN;
 s32 CurrentStoryPageIdx = 0;
-s32 CurrentStoryPageTime= 0;
+s32 CurrentStoryPageTime = 0;
 u32 BowserSilhouetteTime = 0;
 
 s32 StoryPageDuration[] = {
@@ -1560,10 +1576,12 @@ API_CALLABLE(AnimateStorybookPages) {
             if (CurrentStoryPageTime != 0) {
                 CurrentStoryPageTime--;
                 if (!StoryGraphicsPtr->flipOrder) {
-                    StoryGraphicsPtr->frontImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->frontImgPosX =
+                        NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
                     StoryGraphicsPtr->frontImgPosY = 0;
                 } else {
-                    StoryGraphicsPtr->backImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->backImgPosX =
+                        NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
                     StoryGraphicsPtr->backImgPosY = 0;
                 }
             } else {
@@ -1626,10 +1644,12 @@ API_CALLABLE(AnimateStorybookPages) {
             if (CurrentStoryPageTime != 0) {
                 CurrentStoryPageTime--;
                 if (!StoryGraphicsPtr->flipOrder) {
-                    StoryGraphicsPtr->backImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->backImgPosX =
+                        NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
                     StoryGraphicsPtr->backImgPosY = 0;
                 } else {
-                    StoryGraphicsPtr->frontImgPosX = NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
+                    StoryGraphicsPtr->frontImgPosX =
+                        NextPageAnimOffsetsX[ARRAY_COUNT(NextPageAnimOffsetsX) - 1 - CurrentStoryPageTime];
                     StoryGraphicsPtr->frontImgPosY = 0;
                 }
             } else {
@@ -1702,7 +1722,7 @@ API_CALLABLE(UpdateCapturedSpiritsWithKammy) {
     startZ = CapturedSpiritStartZ;
     startY = CapturedSpiritStartY;
     startX = CapturedSpiritStartX;
-    for (; i < ARRAY_COUNT(CapturedSpiritStartX); ) {
+    for (; i < ARRAY_COUNT(CapturedSpiritStartX);) {
         spirit = resolve_npc(script, i);
         i++;
         spirit->pos.x = *startX++ + deltaX;
@@ -1762,16 +1782,15 @@ API_CALLABLE(AnimBowser_FlyOff) {
     if (isInitialCall) {
         AnimBowser_FlyOff_InitialY = bowserMain->pos.y;
     }
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,
-        AnimBowser_FlyOff_InitialY,
-        AnimBowser_FlyOff_InitialY + 500.0f,
-        AnimBowser_FlyOff_Time,
-        40.0f, &bowserMain->pos.y);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, AnimBowser_FlyOff_InitialY, AnimBowser_FlyOff_InitialY + 500.0f,
+        AnimBowser_FlyOff_Time, 40.0f, &bowserMain->pos.y
+    );
     bowserProp->pos.y = bowserMain->pos.y;
     bowserMain->colliderPos.y = bowserMain->pos.y;
     bowserProp->colliderPos.y = bowserProp->pos.y;
     AnimBowser_FlyOff_Time++;
-    if (AnimBowser_FlyOff_Time > (int)(40 * DT)) {
+    if (AnimBowser_FlyOff_Time > (int) (40 * DT)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;
@@ -1786,14 +1805,13 @@ API_CALLABLE(AnimKammy_FlyOff) {
     if (isInitialCall) {
         AnimKammy_FlyOff_InitialY = kammy->pos.y;
     }
-    interp_value_with_easing(INTRO_MATH_EASING_COS_IN_OUT,
-        AnimKammy_FlyOff_InitialY,
-        AnimKammy_FlyOff_InitialY + 500.0f,
-        AnimKammy_FlyOff_Time,
-        40.0f, &kammy->pos.y);
+    interp_value_with_easing(
+        INTRO_MATH_EASING_COS_IN_OUT, AnimKammy_FlyOff_InitialY, AnimKammy_FlyOff_InitialY + 500.0f,
+        AnimKammy_FlyOff_Time, 40.0f, &kammy->pos.y
+    );
     kammy->colliderPos.y = kammy->pos.y;
     AnimKammy_FlyOff_Time++;
-    if (AnimKammy_FlyOff_Time > (int)(40 * DT)) {
+    if (AnimKammy_FlyOff_Time > (int) (40 * DT)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;

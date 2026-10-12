@@ -17,13 +17,15 @@ API_CALLABLE(LoadAnimationFromTable) {
     u32 end;
     u32 size;
 
-    ASSERT_MSG((u32)type < ARRAY_COUNT(buffers), "Invalid vine buffer %ld", type);
-    ASSERT_MSG((u32)index < ARRAY_COUNT(VineAnimationsDmaTable) / 3, "Invalid vine animation %ld", index);
-    start = (u32)VineAnimationsDmaTable[3 * index + 0];
-    end = (u32)VineAnimationsDmaTable[3 * index + 1];
+    ASSERT_MSG((u32) type < ARRAY_COUNT(buffers), "Invalid vine buffer %ld", type);
+    ASSERT_MSG((u32) index < ARRAY_COUNT(VineAnimationsDmaTable) / 3, "Invalid vine animation %ld", index);
+    start = (u32) VineAnimationsDmaTable[3 * index + 0];
+    end = (u32) VineAnimationsDmaTable[3 * index + 1];
     size = end - start;
-    ASSERT_MSG(end > start && size <= buffers[type].capacity,
-        "Vine animation %ld (%lu bytes) does not fit buffer %ld", index, size, type);
+    ASSERT_MSG(
+        end > start && size <= buffers[type].capacity, "Vine animation %ld (%lu bytes) does not fit buffer %ld", index,
+        size, type
+    );
 
     dma_copy((u8*) start, (u8*) end, buffers[type].data);
     return ApiStatus_DONE2;

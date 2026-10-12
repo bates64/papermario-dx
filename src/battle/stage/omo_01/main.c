@@ -34,7 +34,7 @@ API_CALLABLE(UpdateRockingHorse) {
 
         for (i = 0; i == 0; i++, horse++) {
             horse->modelID = RockingHorseModels[i];
-            horse->unk_14 = ((s32*)EVS_UpdateRockingHorse)[i]; // WTF ???
+            horse->unk_14 = ((s32*) EVS_UpdateRockingHorse)[i]; // WTF ???
             model = get_model_from_list_index(get_model_list_index_from_tree_index(horse->modelID));
             horse->offsetX = 0.0f;
             horse->offsetZ = 0.0f;

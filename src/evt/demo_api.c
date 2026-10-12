@@ -44,18 +44,18 @@ API_CALLABLE(SetSpriteShading) {
     }
 
     // load shading group data
-    romBase = (s32)sprite_shading_profiles_ROM_START;
-    dma_copy((u8*)shadingGroupOffset + romBase, (u8*)shadingGroupOffset + romBase + 8, ShadingOffsetsBuffer);
+    romBase = (s32) sprite_shading_profiles_ROM_START;
+    dma_copy((u8*) shadingGroupOffset + romBase, (u8*) shadingGroupOffset + romBase + 8, ShadingOffsetsBuffer);
 
     // load offset to shading data
-    romBase = (s32)sprite_shading_profiles_ROM_START + shadingProfileOffset;
+    romBase = (s32) sprite_shading_profiles_ROM_START + shadingProfileOffset;
     groupStart = ShadingOffsetsBuffer[0];
     groupProfiles = ShadingOffsetsBuffer[1];
-    dma_copy((u8*)groupProfiles + romBase, (u8*)groupProfiles + romBase + 4, ShadingOffsetsBuffer);
+    dma_copy((u8*) groupProfiles + romBase, (u8*) groupProfiles + romBase + 4, ShadingOffsetsBuffer);
 
     // load shading profile
     profileStart = ShadingOffsetsBuffer[0];
-    dataOffset = (s32)sprite_shading_profiles_data_ROM_START + groupStart + profileStart;
+    dataOffset = (s32) sprite_shading_profiles_data_ROM_START + groupStart + profileStart;
     dma_copy((u8*) dataOffset, (u8*) dataOffset + sizeof(PackedShadingData), &PackedShadingData);
 
     profile = gSpriteShadingProfile;

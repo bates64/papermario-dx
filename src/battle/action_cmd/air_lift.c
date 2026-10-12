@@ -21,7 +21,7 @@ s32 DrainRateTable[] = { 0, 25, 50, 75, 75 };
 BSS b32 HasStarted;
 
 API_CALLABLE(init) {
-    s32 *args = script->ptrReadPos;
+    s32* args = script->ptrReadPos;
     BattleStatus* battleStatus = &gBattleStatus;
     ActionCommandStatus* acs = &gActionCommandStatus;
     HudElemID hid;
@@ -176,7 +176,8 @@ void update(void) {
             }
 
             // check for meter-filling input
-            if (battleStatus->actionCommandMode != AC_MODE_NOT_LEARNED && (battleStatus->curButtonsPressed & BUTTON_A)) {
+            if (battleStatus->actionCommandMode != AC_MODE_NOT_LEARNED && (battleStatus->curButtonsPressed & BUTTON_A))
+            {
                 if (acs->escapeChance != 0) {
                     // fill rate = 820 multiplied by two values expressed as percentages
                     s32 difficultyPct = battleStatus->actionCmdDifficultyTable[acs->difficulty];

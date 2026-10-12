@@ -3,5 +3,5 @@
 EvtScript EVS_ChildThreadWithoutEndChildThread = {
     ChildThread
         Wait(1)
-    End
+        End
 };

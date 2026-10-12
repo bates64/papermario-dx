@@ -11,4 +11,3 @@
 #include "map.xml.h"
 
 extern EvtScript EVS_Main;
-

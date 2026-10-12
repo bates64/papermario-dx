@@ -445,7 +445,7 @@ API_CALLABLE(ShowGotItem) {
     if (script->functionTemp[0]) {
         if (get_item_entity(script->functionTemp[1]) == nullptr) {
             return ApiStatus_DONE2;
-         }
+        }
     } else {
         itemID = evt_get_variable(script, *args++);
         unkCond = evt_get_variable(script, *args++);

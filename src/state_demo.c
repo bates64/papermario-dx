@@ -272,5 +272,4 @@ void state_step_demo(void) {
 }
 
 void state_drawUI_demo(void) {
-
 }

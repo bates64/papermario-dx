@@ -50,8 +50,9 @@ EvtScript EVS_CloseAirshipDockDoor = {
     End
 };
 
-EvtScript EVS_ExitDoor_kpa_70_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kpa_60_ENTRY_0, "kpa_70", kpa_70_ENTRY_0,
-    COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL);
+EvtScript EVS_ExitDoor_kpa_70_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
+    kpa_60_ENTRY_0, "kpa_70", kpa_70_ENTRY_0, COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL
+);
 
 EvtScript EVS_ExitWalk_kpa_1X_Upper = {
     SetGroup(EVT_GROUP_EXIT_MAP)

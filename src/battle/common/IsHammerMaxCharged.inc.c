@@ -10,4 +10,3 @@ API_CALLABLE(IsHammerMaxCharged) {
 
     return ApiStatus_DONE2;
 }
-

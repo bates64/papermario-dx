@@ -118,9 +118,8 @@ API_CALLABLE(GetRussHintMessage) {
             count = 0;
 
             for (i = hasHintMessage; i < ARRAY_COUNT(RussTLore); i++, entry++) {
-                if (evt_get_variable(script, entry->isAvailableFlag) &&
-                    !evt_get_variable(script, entry->hasBeenGivenFlag) &&
-                    count++ >= chosenHint)
+                if (evt_get_variable(script, entry->isAvailableFlag)
+                    && !evt_get_variable(script, entry->hasBeenGivenFlag) && count++ >= chosenHint)
                 {
                     break;
                 }

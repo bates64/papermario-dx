@@ -1,16 +1,16 @@
 #include "battle/battle.h"
 
 static Vec3i BlueMinibossPos = { 14, 0, -10 };
-static Vec3i RedMinibossPos  = { 54, 0,  32 };
+static Vec3i RedMinibossPos = { 54, 0, 32 };
 
 static Formation goomba_bros = {
     OVL_ACTOR_BY_POS("blue_goomba_1", BlueMinibossPos, 10),
     OVL_ACTOR_BY_POS("red_goomba_1",  RedMinibossPos,  10),
 };
 
-static Vec3i KingBossPos = {  10, 0,  10 };
-static Vec3i RedBossPos  = {  70, 0,  30 };
-static Vec3i BlueBossPos = { 125, 0,  20 };
+static Vec3i KingBossPos = { 10, 0, 10 };
+static Vec3i RedBossPos = { 70, 0, 30 };
+static Vec3i BlueBossPos = { 125, 0, 20 };
 static Vec3i TreeBossPos = { -40, 0, -45 };
 
 static Formation goomba_king = {

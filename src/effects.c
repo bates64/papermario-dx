@@ -140,7 +140,8 @@ void render_effects_UI(void) {
                 if (effectInstance->flags & FX_INSTANCE_FLAG_HAS_UPDATED) {
                     void (*renderUI)(EffectInstance* effect);
 
-                    if (gGameStatusPtr->context != CONTEXT_WORLD && !(effectInstance->flags & FX_INSTANCE_FLAG_BATTLE)) {
+                    if (gGameStatusPtr->context != CONTEXT_WORLD && !(effectInstance->flags & FX_INSTANCE_FLAG_BATTLE))
+                    {
                         continue;
                     }
 
@@ -155,22 +156,25 @@ void render_effects_UI(void) {
 
                             gDPPipeSync(gMainGfxPos++);
                             gSPViewport(gMainGfxPos++, &camera->vp);
-                            gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG |
-                                                G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD |
-                                                G_SHADING_SMOOTH | G_CLIPPING | 0x40F9FA);
+                            gSPClearGeometryMode(
+                                gMainGfxPos++,
+                                G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN
+                                    | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x40F9FA
+                            );
                             gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
-                            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE,
-                                              camera->viewportStartX,
-                                              camera->viewportStartY,
-                                              camera->viewportStartX + camera->viewportW,
-                                              camera->viewportStartY + camera->viewportH);
+                            gDPSetScissor(
+                                gMainGfxPos++, G_SC_NON_INTERLACE, camera->viewportStartX, camera->viewportStartY,
+                                camera->viewportStartX + camera->viewportW, camera->viewportStartY + camera->viewportH
+                            );
                             gSPClipRatio(gMainGfxPos++, FRUSTRATIO_2);
 
                             cond = false;
                             if (!(camera->flags & CAMERA_FLAG_ORTHO)) {
                                 gSPPerspNormalize(gMainGfxPos++, camera->perspNorm);
-                                gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
-                                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+                                gSPMatrix(
+                                    gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
+                                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION
+                                );
                             }
                         }
 
@@ -277,8 +281,8 @@ void remove_all_effects(void) {
 }
 
 void* load_effect(s32 effectIndex) {
-    if ((u32)effectIndex >= ARRAY_COUNT(gEffectTable) || gEffectTable[effectIndex].overlayName == nullptr) {
-        PANIC_MSG("Invalid effect index %d", (int)effectIndex);
+    if ((u32) effectIndex >= ARRAY_COUNT(gEffectTable) || gEffectTable[effectIndex].overlayName == nullptr) {
+        PANIC_MSG("Invalid effect index %d", (int) effectIndex);
         return nullptr;
     }
 
@@ -315,8 +319,10 @@ void* load_effect(s32 effectIndex) {
     // load and relocate the implementation into the dedicated effect pool
     effectEntry->overlay = ovl_load(effectEntry->overlayName, OVL_EFFECT);
     effectEntry->entryPoint = ovl_import(effectEntry->overlay, effectEntry->entryPointName);
-    ASSERT_MSG(effectEntry->entryPoint != nullptr, "Effect '%s' does not export '%s'",
-               effectEntry->overlayName, effectEntry->entryPointName);
+    ASSERT_MSG(
+        effectEntry->entryPoint != nullptr, "Effect '%s' does not export '%s'", effectEntry->overlayName,
+        effectEntry->entryPointName
+    );
 
     // If there's graphics data for the effect, allocate space and copy into the new space
     if (effectEntry->graphicsDmaStart != nullptr) {

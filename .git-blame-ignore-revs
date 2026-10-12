@@ -3,3 +3,6 @@
 
 # Clean trailing whitespace (#1038)
 30aa49d4a88bc3b08af57d21715efa080c9d3ab2
+
+# Format everything with tools/format.py (#210)
+841b7fb1f0020ef2109749babdc8f6bc52a68544

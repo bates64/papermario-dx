@@ -11,17 +11,13 @@ API_CALLABLE(SpawnShootingStarFX) {
     s32 z = rand_int(40);
 
     if ((script->varTable[0] % 4) != 0) {
-        fx_star(FX_STAR_LARGE_BOUNCING, x, y, z,
-            x - (rand_int(100) + y),
-            0.0f,
-            z + 50 - rand_int(100),
-            rand_int(10) + 7);
+        fx_star(
+            FX_STAR_LARGE_BOUNCING, x, y, z, x - (rand_int(100) + y), 0.0f, z + 50 - rand_int(100), rand_int(10) + 7
+        );
     } else {
-        fx_star(FX_STAR_SMALL_BOUNCING, x, y, z,
-            x - (rand_int(100) + y),
-            0.0f,
-            z + 50 - rand_int(100),
-            rand_int(10) + 7);
+        fx_star(
+            FX_STAR_SMALL_BOUNCING, x, y, z, x - (rand_int(100) + y), 0.0f, z + 50 - rand_int(100), rand_int(10) + 7
+        );
     }
     return ApiStatus_DONE2;
 }
@@ -144,6 +140,4 @@ EvtScript EVS_UseItem = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM,
-    &EVS_UseItem,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM, &EVS_UseItem, );

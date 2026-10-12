@@ -20,8 +20,7 @@ export void action_update_ride(void) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_RIDING_PARTNER) {
-        if (partnerStatus->actingPartner == PARTNER_LAKILESTER
-            || partnerStatus->actingPartner == PARTNER_SUSHIE) {
+        if (partnerStatus->actingPartner == PARTNER_LAKILESTER || partnerStatus->actingPartner == PARTNER_SUSHIE) {
             partner_sync_player_position();
         }
     }
@@ -96,7 +95,11 @@ export void action_update_state_23(void) {
     outY = playerStatus->pos.y;
     outZ = playerStatus->pos.z;
     outLength = 5.0f;
-    if (player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz, &hitDirX, &hitDirZ) >= 0) {
+    if (player_raycast_below_cam_relative(
+            playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz, &hitDirX, &hitDirZ
+        )
+        >= 0)
+    {
         playerStatus->pos.y = outY;
     }
 

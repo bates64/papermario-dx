@@ -125,7 +125,6 @@ EvtScript EVS_EnterFalling = {
     End
 };
 
-
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)

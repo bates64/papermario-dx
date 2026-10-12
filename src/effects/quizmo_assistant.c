@@ -97,7 +97,7 @@ void quizmo_assistant_render(EffectInstance* effect) {
 }
 
 void quizmo_assistant_appendGfx(void* effect) {
-    QuizmoAssistantFXData* data = ((EffectInstance*)effect)->data.quizmoAssistant;
+    QuizmoAssistantFXData* data = ((EffectInstance*) effect)->data.quizmoAssistant;
     s32 lifetime = data->lifetime;
     s32 fadeInAmt = data->fadeInAmt;
     s32 idx;
@@ -105,7 +105,7 @@ void quizmo_assistant_appendGfx(void* effect) {
     Matrix4f sp58;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*) effect)->shared->graphics));
 
     guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
     guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -116,7 +116,9 @@ void quizmo_assistant_appendGfx(void* effect) {
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     gDPSetPrimColor(gMainGfxPos++, 0, 0, fadeInAmt, fadeInAmt, fadeInAmt, 255);
     gSPDisplayList(gMainGfxPos++, D_E011C514[0]);
 

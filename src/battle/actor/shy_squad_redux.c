@@ -428,14 +428,14 @@ EvtScript EVS_Init = {
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_15, SWARM_OFFSET_X, 20)
     Call(SetPartMovementVar, ACTOR_SELF, PRT_MEMBER_15, SWARM_OFFSET_Z, 0)
     LOOP_MEMBERS(LVar0)
-        Call(SetPartPos, ACTOR_SELF, LVar0, 185, 0, 47)
-        Add(LVar0, 1)
+    Call(SetPartPos, ACTOR_SELF, LVar0, 185, 0, 47)
+    Add(LVar0, 1)
     EndLoop
     Call(ForceHomePos, ACTOR_SELF, 20, 0, -10)
     Call(HPBarToHome, ACTOR_SELF)
     LOOP_MEMBERS(LVar0)
-        Call(CreatePartShadow, ACTOR_SELF, LVar0)
-        Add(LVar0, 1)
+    Call(CreatePartShadow, ACTOR_SELF, LVar0)
+    Add(LVar0, 1)
     EndLoop
     Set(LVar0, PRT_MEMBER_01)
     Set(LVar1, ANIM_TankGuy_Flee)
@@ -472,14 +472,14 @@ EvtScript EVS_Idle = {
         IfEq(LVar0, PARTNER_WATT)
             Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(BrightAnims))
             LOOP_MEMBERS(LVar0)
-                Call(SetIdleAnimations, ACTOR_SELF, LVar0, Ref(BrightAnims))
-                Add(LVar0, 1)
+            Call(SetIdleAnimations, ACTOR_SELF, LVar0, Ref(BrightAnims))
+            Add(LVar0, 1)
             EndLoop
         Else
             Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(DarkAnims))
             LOOP_MEMBERS(LVar0)
-                Call(SetIdleAnimations, ACTOR_SELF, LVar0, Ref(DarkAnims))
-                Add(LVar0, 1)
+            Call(SetIdleAnimations, ACTOR_SELF, LVar0, Ref(DarkAnims))
+            Add(LVar0, 1)
             EndLoop
         EndIf
         Wait(1)
@@ -780,13 +780,13 @@ EvtScript EVS_HandleEvent = {
             SetConst(LVar1, ANIM_TankGuy_BurnHurt)
             ExecWait(EVS_ReduceCrowdSize)
             LOOP_MEMBERS(LVar0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_TankGuy_BurnHurt)
-                Add(LVar0, 1)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_TankGuy_BurnHurt)
+            Add(LVar0, 1)
             EndLoop
             Wait(20)
             LOOP_MEMBERS(LVar0)
-                Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_TankGuy_BurnHurt)
-                Add(LVar0, 1)
+            Call(SetAnimation, ACTOR_SELF, LVar0, ANIM_TankGuy_BurnHurt)
+            Add(LVar0, 1)
             EndLoop
             Wait(15)
             IfEq(LVar0, 36)
@@ -1129,21 +1129,21 @@ EvtScript EVS_Attack_Swarm = {
     Call(SetGoalPos, ACTOR_SELF, LVar2, 0, LVar3)
     Call(RunToGoal, ACTOR_SELF, 30, false)
     LOOP_MEMBERS(LVar0)
-        Call(GetActorPos, ACTOR_PLAYER, LVar4, LVar5, LVar6)
-        Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
-        IfLt(LVar1, LVar4)
-            Call(SetPartYaw, ACTOR_SELF, LVar0, 180)
-        Else
-            Call(SetPartYaw, ACTOR_SELF, LVar0, 0)
-        EndIf
-        Call(RandInt, 100, LVar7)
-        IfLt(LVar7, 50)
-            Set(LVar7, ANIM_TankGuy_Hurt)
-        Else
-            Set(LVar7, ANIM_TankGuy_Excited)
-        EndIf
-        Call(SetAnimation, ACTOR_SELF, LVar0, LVar7)
-        Add(LVar0, 1)
+    Call(GetActorPos, ACTOR_PLAYER, LVar4, LVar5, LVar6)
+    Call(GetPartOffset, ACTOR_SELF, LVar0, LVar1, LVar2, LVar3)
+    IfLt(LVar1, LVar4)
+        Call(SetPartYaw, ACTOR_SELF, LVar0, 180)
+    Else
+        Call(SetPartYaw, ACTOR_SELF, LVar0, 0)
+    EndIf
+    Call(RandInt, 100, LVar7)
+    IfLt(LVar7, 50)
+        Set(LVar7, ANIM_TankGuy_Hurt)
+    Else
+        Set(LVar7, ANIM_TankGuy_Excited)
+    EndIf
+    Call(SetAnimation, ACTOR_SELF, LVar0, LVar7)
+    Add(LVar0, 1)
     EndLoop
     Call(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVarA)

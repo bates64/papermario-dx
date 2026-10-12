@@ -17,7 +17,7 @@ EvtScript EVS_ThreadFinally = {
         EndIf
         Finally
             Set(LVar0, 1)
-        EndThread
+    EndThread
     End
 };
 
@@ -28,7 +28,7 @@ EvtScript EVS_ChildThreadFinally = {
         EndIf
         Finally
             Set(LVar0, 1)
-        EndChildThread
+    EndChildThread
     End
 };
 

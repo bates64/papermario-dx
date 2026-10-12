@@ -88,7 +88,7 @@ API_CALLABLE(SetNpcShadowScale) {
 
 API_CALLABLE(AddScrollToNpcPos) {
     Bytecode* args = script->ptrReadPos;
-    Npc** npc = (Npc**)&script->functionTempPtr[1];
+    Npc** npc = (Npc**) &script->functionTempPtr[1];
 
     if (isInitialCall) {
         *npc = get_npc_unsafe(evt_get_variable(script, *args++));

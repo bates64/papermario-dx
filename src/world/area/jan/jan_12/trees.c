@@ -1,7 +1,7 @@
 #include "jan_12.h"
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o6, MODEL_o62, MODEL_o63);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o6, MODEL_o62, MODEL_o63);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o35);
 
 FoliageDropList Tree1_Drops = {

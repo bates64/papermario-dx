@@ -87,10 +87,10 @@ void entity_SpinningFlower_idle(Entity* entity) {
 
     data->rot.y = clamp_angle(data->rot.y + data->spinSpeed);
 
-    if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) &&
-        (playerStatus->animFlags & PA_FLAG_SPINNING) &&
-        fabs(dist2D(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z)) < SPINNING_FLOWER_LAUNCH_TRIGGER_RADIUS)
-        {
+    if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) && (playerStatus->animFlags & PA_FLAG_SPINNING)
+        && fabs(dist2D(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z))
+            < SPINNING_FLOWER_LAUNCH_TRIGGER_RADIUS)
+    {
         exec_entity_commandlist(entity);
     }
 }
@@ -127,7 +127,9 @@ void entity_SpinningFlower_init(Entity* entity) {
 }
 
 void entity_SpinningFlower_start_spin_sound(Entity* entity) {
-    sfx_play_sound_at_position(SOUND_LOOP_SPINNING_FLOWER, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+    sfx_play_sound_at_position(
+        SOUND_LOOP_SPINNING_FLOWER, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z
+    );
 }
 
 void entity_SpinningFlower_stop_spin_sound(Entity* entity) {
@@ -144,7 +146,8 @@ EntityScript Entity_SpinningFlower_Script = {
     es_End
 };
 
-EntityModelScript Entity_SpinningFlower_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_SpinningFlower_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
+EntityModelScript Entity_SpinningFlower_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_SpinningFlower_Render, RENDER_MODE_SURFACE_XLU_LAYER1);
 
 OVL_DEF_ENTITY(SpinningFlower) = {
     .flags = 0,

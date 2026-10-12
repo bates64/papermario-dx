@@ -1811,7 +1811,9 @@ static API_CALLABLE(PlayLandOnTowerFX) {
     s32 actorID = evt_get_variable(script, *args++);
     Actor* actor = get_actor(actorID);
 
-    play_movement_dust_effects(2, actor->state.goalPos.x - 15.0f, actor->state.goalPos.y, actor->state.goalPos.z, actor->state.angle);
+    play_movement_dust_effects(
+        2, actor->state.goalPos.x - 15.0f, actor->state.goalPos.y, actor->state.goalPos.z, actor->state.angle
+    );
     return ApiStatus_DONE2;
 }
 
@@ -1819,8 +1821,8 @@ static API_CALLABLE(PlayLandOnTowerFX) {
 // (in) Var1 : expected tower height
 // (in) Var2 : tower index (height - 1, height - 2, ..., 0)
 static EvtScript EVS_BuildTowerWithKoopa = {
-    #define VAR_TOWER_HEIGHT LVarB
-    #define VAR_CUR_TOWER_IDX LVarC
+#define VAR_TOWER_HEIGHT LVarB
+#define VAR_CUR_TOWER_IDX LVarC
     IfEq(LVar2, TOWER_TOP)
         Call(SetActorVar, ACTOR_SELF, AVAR_Boss_LeadKoopaID, LVar0)
     EndIf
@@ -2174,8 +2176,8 @@ static EvtScript EVS_BuildTowerWithKoopa = {
     EndSwitch
     Return
     End
-    #undef VAR_TOWER_HEIGHT
-    #undef VAR_CUR_TOWER_IDX
+#undef VAR_TOWER_HEIGHT
+#undef VAR_CUR_TOWER_IDX
 };
 
 // (in) Var0 : koopa bros actorID
@@ -2402,7 +2404,7 @@ static EvtScript EVS_UpdateTowerWithKoopa = {
 
 static EvtScript EVS_TryFormingTower = {
     // count the number of standing koopa bros
-    #define VAR_STANDING_COUNT LVarA
+#define VAR_STANDING_COUNT LVarA
     Set(VAR_STANDING_COUNT, 0)
     Call(CreateCurrentPosTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
@@ -2436,7 +2438,7 @@ static EvtScript EVS_TryFormingTower = {
     Set(LFlag0, false)
     // have each koopa join the tower from front to back
     // the index ranges from (height - 1) for the bottom koopa to 0 for the top
-    #define VAR_CUR_KOOPA_IDX LVarB
+#define VAR_CUR_KOOPA_IDX LVarB
     Set(VAR_CUR_KOOPA_IDX, VAR_STANDING_COUNT)
     Sub(VAR_CUR_KOOPA_IDX, 1)
     Call(CreateCurrentPosTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
@@ -2483,13 +2485,13 @@ static EvtScript EVS_TryFormingTower = {
     Call(SetActorVar, ACTOR_SELF, AVAR_Boss_TowerState, AVAL_Boss_TowerState_Stable)
     Return
     End
-    #undef VAR_STANDING_COUNT
-    #undef VAR_CUR_KOOPA_IDX
+#undef VAR_STANDING_COUNT
+#undef VAR_CUR_KOOPA_IDX
 };
 
 // count the number of standing koopa bros
 static EvtScript EVS_TryJoiningTower = {
-    #define VAR_STANDING_COUNT LVarA
+#define VAR_STANDING_COUNT LVarA
     Set(VAR_STANDING_COUNT, 0)
     Call(CreateCurrentPosTargetList, TARGET_FLAG_2 | TARGET_FLAG_PRIMARY_ONLY)
     Call(InitTargetIterator)
@@ -2576,7 +2578,7 @@ static EvtScript EVS_TryJoiningTower = {
     Call(SetActorVar, ACTOR_SELF, AVAR_Boss_TowerState, AVAL_Boss_TowerState_Stable)
     Return
     End
-    #undef VAR_STANDING_COUNT
+#undef VAR_STANDING_COUNT
 };
 
 static EvtScript EVS_Broadcast_TowerUnstable = {

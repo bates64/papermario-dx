@@ -118,8 +118,7 @@ HudScriptList SPIncrementHudScripts = {
 };
 
 HudScriptList SPStarHudScripts = { HES_StatusStar1, HES_StatusStar3, HES_StatusStar2, HES_StatusStar4,
-    HES_StatusStar5, HES_StatusStar6, HES_StatusStar7
-};
+                                   HES_StatusStar5, HES_StatusStar6, HES_StatusStar7 };
 
 s32 StatusBarSPIncrementOffsets[] = { -1, 1, 2, 4, 5, 7, 8, 0, 0, 0 };
 
@@ -300,10 +299,9 @@ b32 partner_can_continue_ability(s32 partnerID) {
     }
 
     // any partner
-    if (playerActionState == ACTION_STATE_IDLE
-     || playerActionState == ACTION_STATE_WALK
-     || playerActionState == ACTION_STATE_RUN
-    ) {
+    if (playerActionState == ACTION_STATE_IDLE || playerActionState == ACTION_STATE_WALK
+        || playerActionState == ACTION_STATE_RUN)
+    {
         ret = true;
     }
 
@@ -313,11 +311,9 @@ b32 partner_can_continue_ability(s32 partnerID) {
             ret = true;
         }
     } else if (partnerID == PARTNER_PARAKARRY) {
-        if (playerActionState == ACTION_STATE_RIDE
-         || playerActionState == ACTION_STATE_IDLE
-         || playerActionState == ACTION_STATE_WALK
-         || playerActionState == ACTION_STATE_RUN
-        ) {
+        if (playerActionState == ACTION_STATE_RIDE || playerActionState == ACTION_STATE_IDLE
+            || playerActionState == ACTION_STATE_WALK || playerActionState == ACTION_STATE_RUN)
+        {
             ret = true;
         }
     }
@@ -330,8 +326,9 @@ b32 partner_is_flying(void) {
 }
 
 void partner_clear_collision_flags(Npc* partner) {
-    partner->flags &= ~(NPC_FLAG_COLLIDING_WITH_NPC | NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD
-        | NPC_FLAG_COLLIDING_WITH_WORLD | NPC_FLAG_GROUNDED | NPC_FLAG_JUMPING);
+    partner->flags &=
+        ~(NPC_FLAG_COLLIDING_WITH_NPC | NPC_FLAG_COLLIDING_FORWARD_WITH_WORLD | NPC_FLAG_COLLIDING_WITH_WORLD
+          | NPC_FLAG_GROUNDED | NPC_FLAG_JUMPING);
 }
 
 void unload_world_partner(void) {
@@ -344,15 +341,18 @@ void create_partner_npc(void) {
     const char* overlayName;
     NpcBlueprint blueprint;
 
-    ASSERT_MSG(CurrentPartnerID > PARTNER_NONE && CurrentPartnerID < ARRAY_COUNT(WorldPartnerOverlayNames),
-               "Invalid world partner ID %d", (int)CurrentPartnerID);
+    ASSERT_MSG(
+        CurrentPartnerID > PARTNER_NONE && CurrentPartnerID < ARRAY_COUNT(WorldPartnerOverlayNames),
+        "Invalid world partner ID %d", (int) CurrentPartnerID
+    );
     overlayName = WorldPartnerOverlayNames[CurrentPartnerID];
-    ASSERT_MSG(overlayName != nullptr, "World partner ID %d has no overlay", (int)CurrentPartnerID);
+    ASSERT_MSG(overlayName != nullptr, "World partner ID %d has no overlay", (int) CurrentPartnerID);
 
     ActivePartnerOverlay = ovl_load(overlayName, OVL_PARTNER);
     ActivePartner = ovl_import(ActivePartnerOverlay, WORLD_PARTNER_EXPORT_NAME);
-    ASSERT_MSG(ActivePartner != nullptr, "World partner overlay '%s' has no %s export",
-               overlayName, WORLD_PARTNER_EXPORT_NAME);
+    ASSERT_MSG(
+        ActivePartner != nullptr, "World partner overlay '%s' has no %s export", overlayName, WORLD_PARTNER_EXPORT_NAME
+    );
 
     blueprint.flags = NPC_FLAG_PARTNER | NPC_FLAG_IGNORE_CHAR_COLLISION;
     blueprint.initialAnim = ActivePartner->idle;

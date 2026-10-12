@@ -152,7 +152,7 @@ void update(void) {
             if (!acs->isMeterFilled) {
                 if (acs->statusChance != 0) {
                     s32 maxFillLevel = acs->mashMeterCutoffs[acs->mashMeterNumIntervals];
-                    acs->meterFillLevel -= GET_DRAIN_RATE (acs->meterFillLevel / maxFillLevel);
+                    acs->meterFillLevel -= GET_DRAIN_RATE(acs->meterFillLevel / maxFillLevel);
                     if (acs->meterFillLevel < 0) {
                         acs->meterFillLevel = 0;
                     }
@@ -207,7 +207,6 @@ void update(void) {
                 battleStatus->actionQuality = AC_QUALITY_FAILED;
             } else {
                 battleStatus->actionQuality = fillLevel / ONE_PCT_MASH;
-
             }
 
             cutoff = acs->mashMeterCutoffs[acs->mashMeterNumIntervals - 1];

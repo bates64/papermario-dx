@@ -29,4 +29,6 @@ extern EvtScript EVS_OnEnterPipe_JumpAttack;
 extern EvtScript EVS_OnEnterPipe_SmashAttack;
 extern NpcGroupList DefaultNPCs;
 
-void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);
+void msg_draw_frame(
+    s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha
+);

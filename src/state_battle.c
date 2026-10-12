@@ -66,8 +66,7 @@ void state_step_battle(void) {
 
         sfx_clear_env_sounds(0);
 
-        if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH ||
-            strcmp(gCurrentBattleName, "kkj:kammy_koopa") == 0) {
+        if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH || strcmp(gCurrentBattleName, "kkj:kammy_koopa") == 0) {
             gGameStatusPtr->peachFlags |= PEACH_FLAG_IS_PEACH;
             spr_init_sprites(PLAYER_SPRITES_PEACH_BATTLE);
         } else {
@@ -185,8 +184,9 @@ void state_step_end_battle(void) {
                     load_map_bg(wMapBgName);
                     set_background(&gBackgroundImage);
                 } else {
-                    set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-                        SCREEN_INSET_X, SCREEN_INSET_Y);
+                    set_background_size(
+                        SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN, SCREEN_INSET_X, SCREEN_INSET_Y
+                    );
                 }
 
                 mdl_load_all_textures(mapSettings->modelTreeRoot, get_asset_offset(wMapTexName, &sizeTemp), sizeTemp);

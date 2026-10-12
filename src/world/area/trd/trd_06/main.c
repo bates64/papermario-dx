@@ -9,8 +9,8 @@ extern EvtScript EVS_SetupMusic;
 extern EvtScript EVS_Scene_FallIntoCell;
 extern EvtScript EVS_Scene_ImprisonedKoopaBros;
 
-EvtScript EVS_ExitDoors_trd_04_5 = EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5,
-    COLLIDER_ttw, MODEL_o93, MODEL_o94);
+EvtScript EVS_ExitDoors_trd_04_5 =
+    EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5, COLLIDER_ttw, MODEL_o93, MODEL_o94);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)

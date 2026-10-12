@@ -37,7 +37,6 @@ extern TrainPath TrainPath_Idle[];
 #error TRAIN_RIGHT_ENTRY is not defined!
 #endif
 
-
 EvtScript EVS_Train_DepartRight = {
     Call(FadeOutMusic, 0, 3000)
     Call(DisablePlayerInput, true)

@@ -143,7 +143,6 @@ EvtScript EVS_HandlePhase = {
     End
 };
 
-
 EvtScript EVS_Move_Charge = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)

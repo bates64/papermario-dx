@@ -131,7 +131,8 @@ void btl_state_update_partner_striking_first(void) {
                 if (actor != nullptr) {
                     if (actor->scripts.handleEvent.source != nullptr) {
                         actor->lastEventType = EVENT_END_FIRST_STRIKE;
-                        script = start_script(actor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
+                        script =
+                            start_script(actor->scripts.handleEvent.source, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
                         assign_bound_script(&actor->scripts.handleEvent, script);
                         script->owner1.actorID = actor->actorID;
                     }

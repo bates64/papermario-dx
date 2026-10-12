@@ -76,7 +76,9 @@ void au_bgm_begin_video_frame(BGMPlayer* player) {
                     }
                     player->bgmFile = bgmFile;
                     bgmData = &bgmFile->info;
-                    au_bgm_set_tick_resolution(player, BGM_DEFAULT_UPDATE_STEP, BgmTicksRates[*(player->tickRatePtr) & 7]);
+                    au_bgm_set_tick_resolution(
+                        player, BGM_DEFAULT_UPDATE_STEP, BgmTicksRates[*(player->tickRatePtr) & 7]
+                    );
 
                     compOffset = bgmData->compositions[compID];
                     if (compOffset == 0) {
@@ -301,7 +303,8 @@ AuResult au_bgm_process_fade_out(SongFadeOutRequest* request) {
                         if (!player->paused) {
                             player->fadeInfo.baseTarget = volume;
                             player->fadeInfo.baseTicks = (duration * 1000) / AU_FRAME_USEC;
-                            player->fadeInfo.baseStep = ((volume << 0x10) - player->fadeInfo.baseVolume) / player->fadeInfo.baseTicks;
+                            player->fadeInfo.baseStep =
+                                ((volume << 0x10) - player->fadeInfo.baseVolume) / player->fadeInfo.baseTicks;
                             player->fadeInfo.onCompleteCallback = request->doneCallback;
                             if (request->onPush == 1) {
                                 player->pushSongName = songName;
@@ -452,7 +455,7 @@ AuResult au_bgm_process_resume(SongResumeRequest* request) {
                     status = AU_ERROR_6;
                 }
             } else {
-               status = AU_ERROR_INVALID_SONG_DURATION;
+                status = AU_ERROR_INVALID_SONG_DURATION;
             }
         } else {
             player = au_bgm_get_player_with_song_name(songName);
@@ -510,8 +513,7 @@ AuResult au_bgm_adjust_volume(SongStartRequest* request) {
         player = au_bgm_get_player_with_song_name(request->songName);
         if (player != nullptr) {
             au_fade_calc_envelope(&player->fadeInfo, request->duration, request->finalVolume);
-        }
-        else {
+        } else {
             status = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
@@ -554,7 +556,7 @@ void au_bgm_player_init(BGMPlayer* player, s32 priority, s32 busID, AuGlobals* g
     player->masterState = BGM_PLAY_STATE_IDLE;
     player->priority = priority;
     player->busID = busID;
-    *(s32*)player->compLoopCounters = 0;
+    *(s32*) player->compLoopCounters = 0;
     player->unused_222 = 0;
     player->conditionalLoopFlags = 0;
     player->playbackRate = 1.0f;
@@ -645,10 +647,7 @@ void au_bgm_update_fade(BGMPlayer* player) {
 }
 
 void au_bgm_update_bus_volumes(BGMPlayer* player) {
-    u16 volume = (
-            ((u32)player->fadeInfo.baseVolume >> 16) *
-            ((u32)player->fadeInfo.envelopeVolume >> 16)
-        ) >> 15;
+    u16 volume = (((u32) player->fadeInfo.baseVolume >> 16) * ((u32) player->fadeInfo.envelopeVolume >> 16)) >> 15;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(player->effectIndices); i++) {
@@ -707,8 +706,10 @@ s32 au_bgm_player_audio_frame_update(BGMPlayer* player) {
     s32 retVal = false;
 
     // update pseudorandom numbers with fast 'good enough' method
-    player->randomValue1 = (player->randomValue1 & 0xFFFF) + (player->songPlayingCounter & 0xFFFF) + (player->frameCounter & 0xFFFF);
-    player->randomValue2 = (player->randomValue2 & 0xFFFF) + ((player->songPlayingCounter << 4) & 0xFFFF) + ((player->frameCounter >> 4) & 0xFFFF);
+    player->randomValue1 =
+        (player->randomValue1 & 0xFFFF) + (player->songPlayingCounter & 0xFFFF) + (player->frameCounter & 0xFFFF);
+    player->randomValue2 = (player->randomValue2 & 0xFFFF) + ((player->songPlayingCounter << 4) & 0xFFFF)
+        + ((player->frameCounter >> 4) & 0xFFFF);
     do {
         switch (player->masterState) {
             case BGM_PLAY_STATE_IDLE:
@@ -756,7 +757,8 @@ void au_bgm_player_initialize(BGMPlayer* player) {
     for (i = 0; i < ARRAY_COUNT(player->tracks); i++) {
         BGMPlayerTrack* track = &player->tracks[i];
         track->instrument = NO_INSTRUMENT;
-        track->insVolume = AU_MAX_VOLUME_16 << 16; // @bug? incorrect format for 8.24 fixed, should be (AU_MAX_VOLUME_8 << 24)
+        track->insVolume = AU_MAX_VOLUME_16
+            << 16; // @bug? incorrect format for 8.24 fixed, should be (AU_MAX_VOLUME_8 << 24)
         track->insPan = 0x40;
         track->insReverb = 0;
         track->patch = 0;
@@ -823,7 +825,7 @@ void au_bgm_player_initialize(BGMPlayer* player) {
     player->compActiveLoopEndPos[2] = nullptr;
     player->compActiveLoopEndPos[1] = nullptr;
     player->compActiveLoopEndPos[0] = nullptr;
-    *(s32*)player->compLoopCounters = 0;
+    *(s32*) player->compLoopCounters = 0;
     player->compLoopDepth = 0;
     player->unused_222 = 0;
     player->conditionalLoopFlags = 0;
@@ -1020,7 +1022,7 @@ void au_bgm_load_phrase(BGMPlayer* player, u32 cmd) {
                         track->firstVoice = linkedTrack->firstVoice;
                         track->lastVoice = linkedTrack->lastVoice;
 
-                        track->bgmReadPos = (track->bgmReadPos + (s32)player->phraseStartPos);
+                        track->bgmReadPos = (track->bgmReadPos + (s32) player->phraseStartPos);
                         track->delayTime = 1;
 
                         track->linkedTrackID = linkedID;
@@ -1038,7 +1040,7 @@ void au_bgm_load_phrase(BGMPlayer* player, u32 cmd) {
                     curVoice += count;
                     track->lastVoice = curVoice;
 
-                    track->bgmReadPos = (track->bgmReadPos + (s32)player->phraseStartPos);
+                    track->bgmReadPos = (track->bgmReadPos + (s32) player->phraseStartPos);
                     track->delayTime = 1;
                 }
             } else {
@@ -1078,7 +1080,7 @@ if (track->detourLength != 0) {\
 }
 
 /// play next tick
-void au_bgm_player_update_playing(BGMPlayer *player) {
+void au_bgm_player_update_playing(BGMPlayer* player) {
     s32 bVolumeFading;
     u8 sp1F;
     s16 notePitch;
@@ -1138,8 +1140,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                     au_BGMCmd_F6_InstrumentVolumeLerp(player, track);
                 }
             }
-        }
-        else {
+        } else {
             // clearing track volumes
             s32 lenLimit = 16;
             while (lenLimit-- != 0) {
@@ -1222,7 +1223,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                             noteLength = *(track->bgmReadPos++);
                             POST_BGM_READ();
                             if (!(noteLength < 0xC0)) {
-                                noteLength = (((u8)noteLength & ~0xC0) << 8) + *(track->bgmReadPos++) + 0xC0;
+                                noteLength = (((u8) noteLength & ~0xC0) << 8) + *(track->bgmReadPos++) + 0xC0;
                                 POST_BGM_READ();
                             }
                             bAcquiredVoiceIdx = false;
@@ -1250,7 +1251,8 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                         }
                                         // try stealing a voice with equal priority and zero note length
                                         if (!bAcquiredVoiceIdx) {
-                                            for (voiceIdx = track->firstVoice; voiceIdx < track->lastVoice; voiceIdx++) {
+                                            for (voiceIdx = track->firstVoice; voiceIdx < track->lastVoice; voiceIdx++)
+                                            {
                                                 voice = &player->globals->voices[voiceIdx];
                                                 if (voice->priority == player->priority) {
                                                     note = &player->notes[voiceIdx];
@@ -1314,9 +1316,15 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                     } else {
                                         drumInfo = player->drums[notePitch - 72]; // = 6 * 12
                                     }
-                                    note->ins = au_get_instrument(player->globals, drumInfo->bankPatch >> 8, drumInfo->bankPatch & 0xFF, &voice->envelope);
+                                    note->ins = au_get_instrument(
+                                        player->globals, drumInfo->bankPatch >> 8, drumInfo->bankPatch & 0xFF,
+                                        &voice->envelope
+                                    );
                                     if (drumInfo->randVolume != 0) {
-                                        note->volume = note->velocity * au_bgm_get_random_vol(player->randomValue1, drumInfo->volume, drumInfo->randVolume);
+                                        note->volume = note->velocity
+                                            * au_bgm_get_random_vol(
+                                                           player->randomValue1, drumInfo->volume, drumInfo->randVolume
+                                            );
                                     } else {
                                         note->volume = note->velocity * drumInfo->volume;
                                     }
@@ -1327,19 +1335,18 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                     // now for the second step with whole:
                                     //  10.0 * 7.0 * 15.0 --> 32.0
                                     // and a final shift by 16 transforms 32.0 --> 16.16
-                                    voice->clientVolume = ((
-                                        ((player->masterVolume >> 21)       // 7.24 --> 7.3
-                                        * (track->insVolume >> 21)     // 7.24 --> 7.3
-                                        * (track->proxVolume >> 21)) >> 20) // 15.16 --> 10.0 (fractional part truncated?)
-                                        * (track->volume * note->volume)) >> 16;
-                                    note->detune =
-                                        drumInfo->keyBase
-                                        + track->insCoarseDetune
-                                        + track->insFineDetune
+                                    voice->clientVolume = ((((player->masterVolume >> 21) // 7.24 --> 7.3
+                                                             * (track->insVolume >> 21) // 7.24 --> 7.3
+                                                             * (track->proxVolume >> 21))
+                                                            >> 20) // 15.16 --> 10.0 (fractional part truncated?)
+                                                           * (track->volume * note->volume))
+                                        >> 16;
+                                    note->detune = drumInfo->keyBase + track->insCoarseDetune + track->insFineDetune
                                         - note->ins->keyBase;
                                     temp = (note->detune + track->detune) + player->detune;
                                     if (drumInfo->randTune != 0) {
-                                        note->randDetune = au_bgm_get_random_pitch(player->randomValue1, temp, drumInfo->randTune);
+                                        note->randDetune =
+                                            au_bgm_get_random_pitch(player->randomValue1, temp, drumInfo->randTune);
                                         temp = note->randDetune;
                                     }
                                     note->pitchRatio = au_compute_pitch_ratio(temp) * note->ins->pitchRatio;
@@ -1349,7 +1356,9 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                         voice->pan = drumInfo->pan;
                                     }
                                     if (drumInfo->randReverb != 0) {
-                                        voice->reverb = au_bgm_get_random_reverb(player->randomValue1, drumInfo->reverb, drumInfo->randReverb);
+                                        voice->reverb = au_bgm_get_random_reverb(
+                                            player->randomValue1, drumInfo->reverb, drumInfo->randReverb
+                                        );
                                     } else {
                                         voice->reverb = drumInfo->reverb;
                                     }
@@ -1361,33 +1370,31 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                     // now for the second step with whole:
                                     //  10.0 * 7.0 * 7.0 --> 24.0
                                     // and a final shift by 9 transforms 24.0 --> 15.16
-                                    voice->clientVolume = note->volume = ((
-                                        ((player->masterVolume >> 21)       // 7.24 --> 7.3
-                                        * (track->insVolume >> 21)     // 7.24 --> 7.3
-                                        * (track->proxVolume >> 21)) >> 20) // 15.16 --> 10.0 (fractional part truncated?)
-                                        * (track->volume * note->velocity)) >> 9;
+                                    voice->clientVolume = note->volume =
+                                        ((((player->masterVolume >> 21) // 7.24 --> 7.3
+                                           * (track->insVolume >> 21) // 7.24 --> 7.3
+                                           * (track->proxVolume >> 21))
+                                          >> 20) // 15.16 --> 10.0 (fractional part truncated?)
+                                         * (track->volume * note->velocity))
+                                        >> 9;
                                     note->ins = track->instrument;
-                                    note->detune =
-                                        (notePitch * 100)
-                                        + track->insCoarseDetune
-                                        + player->masterPitchShift
-                                        + track->insFineDetune
-                                        - note->ins->keyBase;
-                                    note->pitchRatio = au_compute_pitch_ratio(
-                                        note->detune
-                                        + track->detune
-                                        + player->detune)
+                                    note->detune = (notePitch * 100) + track->insCoarseDetune + player->masterPitchShift
+                                        + track->insFineDetune - note->ins->keyBase;
+                                    note->pitchRatio =
+                                        au_compute_pitch_ratio(note->detune + track->detune + player->detune)
                                         * track->instrument->pitchRatio;
 
                                     if (track->randomPanAmount != 0) {
-                                        voice->pan = au_bgm_get_random_pan(player, track->insPan, track->randomPanAmount);
+                                        voice->pan =
+                                            au_bgm_get_random_pan(player, track->insPan, track->randomPanAmount);
                                     } else {
                                         voice->pan = track->insPan;
                                     }
                                     voice->reverb = track->insReverb;
 
                                     if (track->pressOverride != 0) {
-                                        voice->envelope.cmdListPress = (u8*) player->customPressEnvelopes[track->pressOverride - 1];
+                                        voice->envelope.cmdListPress =
+                                            (u8*) player->customPressEnvelopes[track->pressOverride - 1];
                                     } else {
                                         voice->envelope.cmdListPress = track->envelope.cmdListPress;
                                     }
@@ -1407,7 +1414,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 }
                             }
                         } else {
-                            //TODO variable is nargs, but reusing temp is required to match
+                            // TODO variable is nargs, but reusing temp is required to match
                             temp = SeqCmdArgCounts[opcode - 0xE0];
                             if (temp != 0) {
                                 player->seqCmdArgs.raw[0] = *(track->bgmReadPos++);
@@ -1431,7 +1438,7 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                 player->seqCmdArgs.raw[3] = *(track->bgmReadPos++);
                                 POST_BGM_READ();
                             }
-                            bgm_args_done:
+                        bgm_args_done:
 #ifdef MAMAR_WASM
                             dx_mamar_swap_seq_args(&player->seqCmdArgs, opcode);
 #endif
@@ -1456,7 +1463,11 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                             }
                             if (track->isDrumTrack) {
                                 if (track->changed.tune || (player->detune != 0)) {
-                                    note->pitchRatio = au_compute_pitch_ratio(((note->detune + note->randDetune) + track->detune) + player->detune) * note->ins->pitchRatio;
+                                    note->pitchRatio =
+                                        au_compute_pitch_ratio(
+                                            ((note->detune + note->randDetune) + track->detune) + player->detune
+                                        )
+                                        * note->ins->pitchRatio;
                                     if (voice->pitchRatio != note->pitchRatio) {
                                         voice->pitchRatio = note->pitchRatio;
                                         voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
@@ -1470,11 +1481,12 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                     // now for the second step with whole:
                                     //  10.0 * 7.0 * 15.0 --> 32.0
                                     // and a final shift by 16 transforms 32.0 --> 16.16
-                                    voice->clientVolume = (
-                                        ((((player->masterVolume >> 21)     // 7.24 --> 7.3
-                                        * (track->insVolume >> 21))    // 7.24 --> 7.3
-                                        * (track->proxVolume >> 21)) >> 20) // 15.16 --> 10.0 (fractional part truncated?)
-                                        * (track->volume * note->volume)) >> 16;
+                                    voice->clientVolume = (((((player->masterVolume >> 21) // 7.24 --> 7.3
+                                                              * (track->insVolume >> 21)) // 7.24 --> 7.3
+                                                             * (track->proxVolume >> 21))
+                                                            >> 20) // 15.16 --> 10.0 (fractional part truncated?)
+                                                           * (track->volume * note->volume))
+                                        >> 16;
                                     voice->envelopeFlags |= AU_VOICE_ENV_FLAG_VOL_CHANGED;
                                 }
                             } else {
@@ -1508,7 +1520,11 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                         }
 
                                         // Apply pitch detune from tremolo
-                                        note->pitchRatio = au_compute_pitch_ratio(tremoloDetune + ((note->detune + track->detune) + player->detune)) * note->ins->pitchRatio;
+                                        note->pitchRatio =
+                                            au_compute_pitch_ratio(
+                                                tremoloDetune + ((note->detune + track->detune) + player->detune)
+                                            )
+                                            * note->ins->pitchRatio;
                                         if (voice->pitchRatio != note->pitchRatio) {
                                             voice->pitchRatio = note->pitchRatio;
                                             voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
@@ -1516,7 +1532,9 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                     }
                                 } else if (track->changed.tune || (player->detune != 0)) {
 
-                                    note->pitchRatio = au_compute_pitch_ratio((note->detune + track->detune) + player->detune) * note->ins->pitchRatio;
+                                    note->pitchRatio =
+                                        au_compute_pitch_ratio((note->detune + track->detune) + player->detune)
+                                        * note->ins->pitchRatio;
                                     if (voice->pitchRatio != note->pitchRatio) {
                                         voice->pitchRatio = note->pitchRatio;
                                         voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
@@ -1530,11 +1548,12 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
                                     // now for the second step with whole:
                                     //  10.0 * 7.0 * 7.0 --> 24.0
                                     // and a final shift by 9 transforms 24.0 --> 15.16
-                                    note->volume = ((
-                                        (player->masterVolume >> 21)            // 7.24 --> 7.3
-                                        * (track->insVolume >> 21)         // 7.24 --> 7.3
-                                        * (track->proxVolume >> 21)) >> 20)
-                                        * (track->volume * note->velocity) >> 9;
+                                    note->volume = (((player->masterVolume >> 21) // 7.24 --> 7.3
+                                                     * (track->insVolume >> 21) // 7.24 --> 7.3
+                                                     * (track->proxVolume >> 21))
+                                                    >> 20)
+                                            * (track->volume * note->velocity)
+                                        >> 9;
                                     voice->clientVolume = note->volume;
                                     voice->envelopeFlags |= AU_VOICE_ENV_FLAG_VOL_CHANGED;
                                     voice->pan = track->insPan;
@@ -1558,7 +1577,6 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
         player->masterState = BGM_PLAY_STATE_FETCH;
     }
 }
-
 
 void au_BGMCmd_E0_MasterTempo(BGMPlayer* player, BGMPlayerTrack* track) {
     u32 bpm = player->seqCmdArgs.masterTempo.value;
@@ -1604,7 +1622,7 @@ void au_BGMCmd_E1_MasterVolume(BGMPlayer* player, BGMPlayerTrack* track) {
 }
 
 void au_BGMCmd_E2_MasterDetune(BGMPlayer* player, BGMPlayerTrack* track) {
-    player->masterPitchShift = (s8)player->seqCmdArgs.masterPitchShift.cent * 100;
+    player->masterPitchShift = (s8) player->seqCmdArgs.masterPitchShift.cent * 100;
 }
 
 void au_BGMCmd_E3(BGMPlayer* player, BGMPlayerTrack* track) {
@@ -1657,7 +1675,8 @@ void au_BGMCmd_E5_MasterVolumeFade(BGMPlayer* player, BGMPlayerTrack* track) {
 
 void au_BGMCmd_E8_TrackOverridePatch(BGMPlayer* player, BGMPlayerTrack* track) {
     track->patch = player->seqCmdArgs.overridePatch.patch;
-    track->instrument = au_get_instrument(player->globals, player->seqCmdArgs.overridePatch.bank, track->patch, &track->envelope);
+    track->instrument =
+        au_get_instrument(player->globals, player->seqCmdArgs.overridePatch.bank, track->patch, &track->envelope);
 }
 
 void au_BGMCmd_E9_InstrumentVolume(BGMPlayer* arg0, BGMPlayerTrack* track) {
@@ -1765,7 +1784,7 @@ void au_BGMCmd_F5_UseInstrument(BGMPlayer* player, BGMPlayerTrack* track) {
         }
     }
     bank = instrument->bankPatch >> 8;
-    patch = (u8)instrument->bankPatch;
+    patch = (u8) instrument->bankPatch;
     volume = instrument->volume & 0x7F;
     track->patch = patch;
     track->instrument = au_get_instrument(player->globals, bank, patch, &track->envelope);
@@ -1859,12 +1878,14 @@ void au_BGMCmd_FF_Special(BGMPlayer* player, BGMPlayerTrack* track) {
 
     switch (type) {
         case BGM_SPECIAL_SET_STEREO_DELAY:
-            if ((arg1 < ARRAY_COUNT(player->effectIndices)) && ((s8)player->effectIndices[arg1] >= 0)) {
+            if ((arg1 < ARRAY_COUNT(player->effectIndices)) && ((s8) player->effectIndices[arg1] >= 0)) {
                 player->globals->channelDelayBusID = player->effectIndices[arg1];
                 if (arg2 != 0) {
                     delayTime = arg2 & 0xF;
                     delaySide = ((arg2 >> 4) & 1) + 1;
-                    if ((player->globals->channelDelayTime != delayTime) || (player->globals->channelDelaySide != delaySide)) {
+                    if ((player->globals->channelDelayTime != delayTime)
+                        || (player->globals->channelDelaySide != delaySide))
+                    {
                         player->globals->channelDelayTime = delayTime;
                         player->globals->channelDelaySide = delaySide;
                         player->globals->channelDelayPending = true;
@@ -1913,10 +1934,10 @@ void au_BGMCmd_FF_Special(BGMPlayer* player, BGMPlayerTrack* track) {
                     if ((player->soundManager->bgmSounds[i].index) == 0) {
                         player->soundManager->bgmSounds[i].index = arg1;
                         player->soundManager->bgmSounds[i].volume =
-                            ((s32)(
-                                ((u32)player->fadeInfo.baseVolume >> 16) *
-                                ((u32)player->fadeInfo.envelopeVolume >> 16)
-                            ) + AU_MAX_VOLUME_16) >> 0x17;
+                            ((s32) (((u32) player->fadeInfo.baseVolume >> 16)
+                                    * ((u32) player->fadeInfo.envelopeVolume >> 16))
+                             + AU_MAX_VOLUME_16)
+                            >> 0x17;
                         break;
                     }
                 }
@@ -1990,7 +2011,7 @@ static s16 au_bgm_get_random_pitch(s32 seed, s32 pitch, u8 amplitude) {
     s32 tap4 = seed >> 4;
     s32 tap1 = seed >> 1;
     s32 parity = (tap4 + tap1) & 1;
-    s32 lo = (seed >> 6) & 0xF;  // bitmask 0x3C0
+    s32 lo = (seed >> 6) & 0xF; // bitmask 0x3C0
     s32 hi = (seed << 2) & 0xF0; // bitmask 0x03C
     s32 random = lo + hi;
     s32 retVal;
@@ -2022,7 +2043,7 @@ Uses bit masks:
 001F = 0000 0000 0001 1111 -> 1111 1000
 */
 static u8 au_bgm_get_random_reverb(s32 seed, u8 reverb, u8 amplitude) {
-    s32 lo = (seed >> 7) & 7;    // bitmask 0x380
+    s32 lo = (seed >> 7) & 7; // bitmask 0x380
     s32 hi = (seed << 3) & 0xF8; // bitmask 0x01F
     s32 random = lo + hi;
 

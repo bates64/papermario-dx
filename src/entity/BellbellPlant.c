@@ -8,8 +8,9 @@ extern AnimScript Entity_BellbellPlant_AnimationUse;
 extern StaticAnimatorNode* Entity_BellbellPlant_Mesh[];
 
 void entity_BellbellPlant_idle(Entity* entity) {
-    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) &&
-        (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL))) {
+    if ((gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE)
+        && (entity->collisionFlags & (ENTITY_COLLISION_PLAYER_HAMMER | ENTITY_COLLISION_PLAYER_TOUCH_WALL)))
+    {
         exec_entity_commandlist(entity);
         play_model_animation(entity->virtualModelIndex, Entity_BellbellPlant_AnimationUse);
     }

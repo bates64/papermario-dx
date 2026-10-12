@@ -4,7 +4,7 @@ EvtScript EVS_SwitchGroups = {
     Switch(LVar0)
         CaseOrEq(0)
         CaseOrEq(1)
-            EndCaseGroup
+        EndCaseGroup
         CaseEq(2)
             BreakSwitch
         CaseDefault

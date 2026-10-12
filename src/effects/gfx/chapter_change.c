@@ -58,7 +58,7 @@ INCLUDE_IMG("effects/gfx/world/chapter_rainbow.png", D_0900BD40_3F7BA0);
 #include "effects/gfx/D_0900C240_3F80A0.gfx.inc.c"
 
 // TODO allow splat to output the reference to halfway into the texture
-//#include "effects/gfx/D_0900C328_3F8188.gfx.inc.c"
+// #include "effects/gfx/D_0900C328_3F8188.gfx.inc.c"
 Gfx D_0900C328_3F8188[] = {
     gsDPSetTextureLUT(G_TT_NONE),
     gsDPLoadTextureTile(&D_09002A80_3EE8E0[0x820], G_IM_FMT_IA, G_IM_SIZ_8b, 104, 0, 0, 0, 103, 19, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 7, 6, G_TX_NOLOD, G_TX_NOLOD),

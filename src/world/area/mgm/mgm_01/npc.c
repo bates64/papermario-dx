@@ -93,9 +93,9 @@ extern EvtScript EVS_OnBreakBlock_10;
 
 extern EvtScript EVS_InitializePanels;
 
-void appendGfx_score_display (void* renderData) {
+void appendGfx_score_display(void* renderData) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
-    JumpGameData* data = (JumpGameData*)scorekeeper->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) scorekeeper->varTable[JUMP_DATA_VAR_IDX];
     HudElemID hid;
     s32 diff;
 
@@ -116,7 +116,10 @@ void appendGfx_score_display (void* renderData) {
     }
 
     if (data->scoreWindowPosX < SCREEN_WIDTH + 1) {
-        draw_box(0, WINDOW_STYLE_9, data->scoreWindowPosX, 28, 0, 72, 20, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+        draw_box(
+            0, WINDOW_STYLE_9, data->scoreWindowPosX, 28, 0, 72, 20, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr,
+            nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+        );
         hid = data->hudElemID;
         hud_element_set_render_pos(hid, data->scoreWindowPosX + 15, 39);
         hud_element_draw_clipped(hid);
@@ -142,9 +145,11 @@ void appendGfx_score_display (void* renderData) {
                 data->curScore++;
             }
             sfx_play_sound_with_params(SOUND_COIN_PICKUP, 0, 0x40, 0x32);
-
         }
-        draw_number(data->curScore, data->scoreWindowPosX + 63, 32, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+        draw_number(
+            data->curScore, data->scoreWindowPosX + 63, 32, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255,
+            DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT
+        );
     }
 }
 
@@ -172,7 +177,7 @@ API_CALLABLE(EnableMenus) {
 }
 
 API_CALLABLE(GetPanelInfo) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
@@ -185,7 +190,7 @@ API_CALLABLE(GetPanelInfo) {
 }
 
 API_CALLABLE(SetPanelState) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
     s32 value = evt_get_variable(script, *args++);
@@ -196,7 +201,7 @@ API_CALLABLE(SetPanelState) {
 }
 
 API_CALLABLE(InitPanelEmergeFromBlock) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
     s32 blockPosIndex;
@@ -228,25 +233,29 @@ API_CALLABLE(InitPanelEmergeFromBlock) {
 }
 
 API_CALLABLE(UpdatePanelEmergeFromBlock) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
-    data->panels[index].curPos.x = update_lerp(EASING_QUADRATIC_OUT,
-        data->panels[index].startPos.x, data->panels[index].endPos.x,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curPos.x = update_lerp(
+        EASING_QUADRATIC_OUT, data->panels[index].startPos.x, data->panels[index].endPos.x,
+        data->panels[index].lerpElapsed, data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curPos.y = update_lerp(EASING_QUADRATIC_OUT,
-        data->panels[index].startPos.y, data->panels[index].endPos.y,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curPos.y = update_lerp(
+        EASING_QUADRATIC_OUT, data->panels[index].startPos.y, data->panels[index].endPos.y,
+        data->panels[index].lerpElapsed, data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curPos.z = update_lerp(EASING_QUADRATIC_OUT,
-        data->panels[index].startPos.z, data->panels[index].endPos.z,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curPos.z = update_lerp(
+        EASING_QUADRATIC_OUT, data->panels[index].startPos.z, data->panels[index].endPos.z,
+        data->panels[index].lerpElapsed, data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curScale = update_lerp(EASING_LINEAR,
-        data->panels[index].startScale, data->panels[index].endScale,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curScale = update_lerp(
+        EASING_LINEAR, data->panels[index].startScale, data->panels[index].endScale, data->panels[index].lerpElapsed,
+        data->panels[index].lerpDuration
+    );
 
     data->panels[index].lerpElapsed++;
 
@@ -260,7 +269,7 @@ API_CALLABLE(UpdatePanelEmergeFromBlock) {
 }
 
 API_CALLABLE(InitPanelHoldAboveBlock) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
@@ -271,7 +280,7 @@ API_CALLABLE(InitPanelHoldAboveBlock) {
 }
 
 API_CALLABLE(UpdatetPanelHoldAboveBlock) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
@@ -286,7 +295,7 @@ API_CALLABLE(UpdatetPanelHoldAboveBlock) {
 }
 
 API_CALLABLE(InitPanelMoveToTally) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
     f32 dist;
@@ -315,7 +324,8 @@ API_CALLABLE(InitPanelMoveToTally) {
 
     dist = dist3D(
         data->panels[index].startPos.x, data->panels[index].startPos.y, data->panels[index].startPos.z,
-        data->panels[index].endPos.x, data->panels[index].endPos.y, data->panels[index].endPos.z);
+        data->panels[index].endPos.x, data->panels[index].endPos.y, data->panels[index].endPos.z
+    );
     if (data->panels[index].type != PANEL_BOWSER) {
         data->panels[index].lerpDuration = (dist * 0.125) + 0.5;
     } else {
@@ -326,31 +336,36 @@ API_CALLABLE(InitPanelMoveToTally) {
 }
 
 API_CALLABLE(UpdatePanelMoveToTally) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
     data->panels[index].lerpElapsed++;
 
-    data->panels[index].curPos.x = update_lerp(EASING_QUADRATIC_OUT,
-        data->panels[index].startPos.x, data->panels[index].endPos.x,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curPos.x = update_lerp(
+        EASING_QUADRATIC_OUT, data->panels[index].startPos.x, data->panels[index].endPos.x,
+        data->panels[index].lerpElapsed, data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curPos.y = update_lerp(EASING_QUADRATIC_OUT,
-        data->panels[index].startPos.y, data->panels[index].endPos.y,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curPos.y = update_lerp(
+        EASING_QUADRATIC_OUT, data->panels[index].startPos.y, data->panels[index].endPos.y,
+        data->panels[index].lerpElapsed, data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curPos.z = update_lerp(EASING_LINEAR,
-        data->panels[index].startPos.z, data->panels[index].endPos.z,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curPos.z = update_lerp(
+        EASING_LINEAR, data->panels[index].startPos.z, data->panels[index].endPos.z, data->panels[index].lerpElapsed,
+        data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curAngle = update_lerp(EASING_LINEAR,
-        data->panels[index].startAngle, data->panels[index].endAngle,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curAngle = update_lerp(
+        EASING_LINEAR, data->panels[index].startAngle, data->panels[index].endAngle, data->panels[index].lerpElapsed,
+        data->panels[index].lerpDuration
+    );
 
-    data->panels[index].curScale = update_lerp(EASING_LINEAR,
-        data->panels[index].startScale, data->panels[index].endScale,
-        data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
+    data->panels[index].curScale = update_lerp(
+        EASING_LINEAR, data->panels[index].startScale, data->panels[index].endScale, data->panels[index].lerpElapsed,
+        data->panels[index].lerpDuration
+    );
 
     if (data->panels[index].lerpElapsed >= data->panels[index].lerpDuration) {
         evt_set_variable(script, LVar3, true);
@@ -362,7 +377,7 @@ API_CALLABLE(UpdatePanelMoveToTally) {
 }
 
 API_CALLABLE(EndPanelAnimation) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
@@ -372,7 +387,7 @@ API_CALLABLE(EndPanelAnimation) {
 }
 
 API_CALLABLE(UpdateRecords) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     PlayerData* player = &gPlayerData;
 
     player->jumpGameTotal += data->curScore;
@@ -388,7 +403,7 @@ API_CALLABLE(UpdateRecords) {
 }
 
 API_CALLABLE(GiveCoinWinnings) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
 
@@ -421,7 +436,7 @@ API_CALLABLE(GiveCoinWinnings) {
 }
 
 API_CALLABLE(DoubleScore) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 score = 2 * data->curScore;
     data->curScore = score;
     data->targetScore = score;
@@ -430,7 +445,7 @@ API_CALLABLE(DoubleScore) {
 }
 
 API_CALLABLE(EndBowserPanelAnimation) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(data->panels); i++) {
@@ -451,7 +466,7 @@ API_CALLABLE(EndBowserPanelAnimation) {
 }
 
 API_CALLABLE(GetPanelPos) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
@@ -465,7 +480,7 @@ API_CALLABLE(GetPanelPos) {
 }
 
 API_CALLABLE(DestroyBlockEntities) {
-    JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(data->panels); i++) {
@@ -482,7 +497,7 @@ API_CALLABLE(DestroyBlockEntities) {
 
 API_CALLABLE(OnBreakBlock) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
-    JumpGameData* data = (JumpGameData*)scorekeeper->varTable[JUMP_DATA_VAR_IDX];
+    JumpGameData* data = (JumpGameData*) scorekeeper->varTable[JUMP_DATA_VAR_IDX];
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
     s32 blockType = data->type[index];
@@ -495,10 +510,19 @@ API_CALLABLE(OnBreakBlock) {
 
     for (i = 0; i < historyPos + 1; i++) {
         switch (data->breakHistory[i]) {
-            case PANEL_1_COIN:  coins += 1; break;
-            case PANEL_5_COINS: coins += 5; break;
-            case PANEL_TIMES_5: coins *= 5; break;
-            case PANEL_BOWSER:  sfx_play_sound(SOUND_MENU_ERROR); coins = 0; break;
+            case PANEL_1_COIN:
+                coins += 1;
+                break;
+            case PANEL_5_COINS:
+                coins += 5;
+                break;
+            case PANEL_TIMES_5:
+                coins *= 5;
+                break;
+            case PANEL_BOWSER:
+                sfx_play_sound(SOUND_MENU_ERROR);
+                coins = 0;
+                break;
         }
     }
 
@@ -506,10 +530,10 @@ API_CALLABLE(OnBreakBlock) {
 
     for (i = 0; i < ARRAY_COUNT(data->panels); i++) {
         if (blockType == data->panels[i].type && data->panels[i].state == PANEL_STATE_START_ANIM) {
-                data->panels[i].state = PANEL_STATE_EMERGE_INIT;
-                data->panels[i].blockPosIndex = index;
-                data->panels[i].tallyPosIndex = historyPos;
-                break;
+            data->panels[i].state = PANEL_STATE_EMERGE_INIT;
+            data->panels[i].blockPosIndex = index;
+            data->panels[i].tallyPosIndex = historyPos;
+            break;
         }
     }
 
@@ -528,9 +552,9 @@ API_CALLABLE(CreateBlockEntities) {
     s32 i;
 
     EvtScript* scriptArray[] = {
-        &EVS_OnBreakBlock_0, &EVS_OnBreakBlock_1, &EVS_OnBreakBlock_2, &EVS_OnBreakBlock_3,
-        &EVS_OnBreakBlock_4, &EVS_OnBreakBlock_5, &EVS_OnBreakBlock_6, &EVS_OnBreakBlock_7,
-        &EVS_OnBreakBlock_8, &EVS_OnBreakBlock_9, &EVS_OnBreakBlock_10
+    &EVS_OnBreakBlock_0, &EVS_OnBreakBlock_1, &EVS_OnBreakBlock_2, &EVS_OnBreakBlock_3,
+    &EVS_OnBreakBlock_4, &EVS_OnBreakBlock_5, &EVS_OnBreakBlock_6, &EVS_OnBreakBlock_7,
+    &EVS_OnBreakBlock_8, &EVS_OnBreakBlock_9, &EVS_OnBreakBlock_10
     };
 
     if (isInitialCall) {
@@ -559,18 +583,15 @@ API_CALLABLE(CreateBlockEntities) {
     script->functionTemp[0]--;
     if (script->functionTemp[0] <= 0) {
         curBlockIdx = script->functionTemp[1];
-        entityIndex = create_entity(&Entity_BrickBlock,
-            BlockPosX[curBlockIdx],
-            BlockPosY[curBlockIdx],
-            BlockPosZ[curBlockIdx],
-            0, 0, 0, 0, MAKE_ENTITY_END);
+        entityIndex = create_entity(
+            &Entity_BrickBlock, BlockPosX[curBlockIdx], BlockPosY[curBlockIdx], BlockPosZ[curBlockIdx], 0, 0, 0, 0,
+            MAKE_ENTITY_END
+        );
         data->panels[curBlockIdx].entityIndex = entityIndex;
         get_entity_by_index(entityIndex)->script.source = scriptArray[curBlockIdx];
-        fx_sparkles(FX_SPARKLES_3,
-            BlockPosX[curBlockIdx],
-            BlockPosY[curBlockIdx] + 13,
-            BlockPosZ[curBlockIdx] + 5,
-            23.0f);
+        fx_sparkles(
+            FX_SPARKLES_3, BlockPosX[curBlockIdx], BlockPosY[curBlockIdx] + 13, BlockPosZ[curBlockIdx] + 5, 23.0f
+        );
         sfx_play_sound(SOUND_HEART_PICKUP);
         script->functionTemp[0] = 3;
         script->functionTemp[1]++;
@@ -662,7 +683,7 @@ API_CALLABLE(SetMsgVars_BlocksRemaining) {
 #if VERSION_PAL
     evt_set_variable(script, LVarD, remaining);
 #else
-    set_message_text_var((remaining == 1) ? (s32)&MessageSingular : (s32)&MessagePlural, 1);
+    set_message_text_var((remaining == 1) ? (s32) &MessageSingular : (s32) &MessagePlural, 1);
 #endif
 
     return ApiStatus_DONE2;

@@ -39,10 +39,8 @@ API_CALLABLE(SetSquirtAngle) {
     partner->state.curPos.y = partner->curPos.y + 16.0f;
     partner->state.curPos.z = partner->curPos.z;
 
-    partner->state.angle = atan2(
-        partner->state.curPos.x, partner->state.curPos.y,
-        partner->state.goalPos.x, partner->state.goalPos.y
-    );
+    partner->state.angle =
+        atan2(partner->state.curPos.x, partner->state.curPos.y, partner->state.goalPos.x, partner->state.goalPos.y);
 
     partner->rot.z = (partner->state.angle - 90.0f) * 0.25f;
 
@@ -160,7 +158,8 @@ API_CALLABLE(ApplyWaterBlock) {
     if (battleStatus->waterBlockTurnsLeft < var) {
         battleStatus->waterBlockTurnsLeft = var;
         battleStatus->waterBlockAmount = 1;
-        battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_WATER_BLOCK].turnsLeft = battleStatus->waterBlockTurnsLeft;
+        battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_WATER_BLOCK].turnsLeft =
+            battleStatus->waterBlockTurnsLeft;
     }
 
     return ApiStatus_DONE2;
@@ -171,7 +170,10 @@ API_CALLABLE(PlaySquirtFX) {
     Actor* partnerActor = battleStatus->partnerActor;
     Actor* playerActor = battleStatus->playerActor;
 
-    sEffect = fx_squirt(1, partnerActor->curPos.x - 5.5, partnerActor->curPos.y + 15.5, partnerActor->curPos.z + 5, playerActor->curPos.x, playerActor->curPos.y, playerActor->curPos.z, (rand_int(10) * 0.1) + 1, 30);
+    sEffect = fx_squirt(
+        1, partnerActor->curPos.x - 5.5, partnerActor->curPos.y + 15.5, partnerActor->curPos.z + 5,
+        playerActor->curPos.x, playerActor->curPos.y, playerActor->curPos.z, (rand_int(10) * 0.1) + 1, 30
+    );
 
     return ApiStatus_DONE2;
 }
@@ -213,7 +215,8 @@ API_CALLABLE(ProcessTidalWave) {
             state->speed = 32.0f;
             script->functionTemp[1] = 0;
             script->functionTemp[2] = 0;
-            sEffect = fx_water_fountain(FX_FOUNTAIN_TYPE_WATER, state->curPos.x, state->curPos.y, state->curPos.z, 1.0f, 0);
+            sEffect =
+                fx_water_fountain(FX_FOUNTAIN_TYPE_WATER, state->curPos.x, state->curPos.y, state->curPos.z, 1.0f, 0);
             sEffect->data.waterFountain->angle = state->angle;
             sEffect->data.waterFountain->scaleX = partner->scale.x;
             sEffect->data.waterFountain->scaleY = partner->scale.x;
@@ -253,9 +256,13 @@ API_CALLABLE(ProcessTidalWave) {
                 } while (0); // TODO macro?
 
                 if (script->functionTemp[2] != 0) {
-                    sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_B, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_TIDAL_WAVE_LEAP_B, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z
+                    );
                 }
                 script->functionTemp[2] = 1 - script->functionTemp[2];
             }
@@ -277,9 +284,13 @@ API_CALLABLE(ProcessTidalWave) {
                 } while (0); // TODO macro?
 
                 if (script->functionTemp[2] != 0) {
-                    sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_B, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_TIDAL_WAVE_LEAP_B, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z
+                    );
                 }
                 script->functionTemp[2] = 1 - script->functionTemp[2];
             }
@@ -301,9 +312,13 @@ API_CALLABLE(ProcessTidalWave) {
                 } while (0); // TODO macro?
 
                 if (script->functionTemp[2] != 0) {
-                    sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z
+                    );
                 } else {
-                    sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_B, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);
+                    sfx_play_sound_at_position(
+                        SOUND_TIDAL_WAVE_LEAP_B, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z
+                    );
                 }
                 script->functionTemp[2] = 1 - script->functionTemp[2];
             }

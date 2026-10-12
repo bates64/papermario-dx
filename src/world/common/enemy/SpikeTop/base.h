@@ -46,7 +46,6 @@
     .anim_F = ANIM_BuzzyBeetle_Still, \
 }
 
-
 #define SPIKE_TOP_DROPS \
 { \
     .dropFlags = NPC_DROP_FLAG_80, \

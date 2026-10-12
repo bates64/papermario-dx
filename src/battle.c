@@ -88,21 +88,18 @@ const char* split_actor_ref(const char* ref, char overlay[ACTOR_KEY_MAX]) {
         return nullptr;
     }
     for (p = ref; p < ref + overlayLength; p++) {
-        if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')
-            || (*p >= '0' && *p <= '9') || *p == '_')) {
+        if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == '_')) {
             return nullptr;
         }
     }
     variant = ref + overlayLength;
     if (separator != nullptr) {
         variant = separator + 1;
-        if (variant[0] == '\0' || strlen(variant) >= ACTOR_KEY_MAX
-            || (variant[0] >= '0' && variant[0] <= '9')) {
+        if (variant[0] == '\0' || strlen(variant) >= ACTOR_KEY_MAX || (variant[0] >= '0' && variant[0] <= '9')) {
             return nullptr;
         }
         for (p = variant; *p != '\0'; p++) {
-            if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z')
-                || (*p >= '0' && *p <= '9') || *p == '_')) {
+            if (!((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z') || (*p >= '0' && *p <= '9') || *p == '_')) {
                 return nullptr;
             }
         }
@@ -121,13 +118,13 @@ const char* split_battle_ref(const char* ref, char area[BATTLE_KEY_MAX]) {
         return nullptr;
     }
     areaLength = separator - ref;
-    if (areaLength == 0 || areaLength >= BATTLE_KEY_MAX
-        || separator[1] == '\0' || strlen(separator + 1) >= BATTLE_KEY_MAX) {
+    if (areaLength == 0 || areaLength >= BATTLE_KEY_MAX || separator[1] == '\0'
+        || strlen(separator + 1) >= BATTLE_KEY_MAX)
+    {
         return nullptr;
     }
     for (p = ref; *p != '\0'; p++) {
-        if (p != separator && !((*p >= 'a' && *p <= 'z')
-            || (*p >= '0' && *p <= '9') || *p == '_')) {
+        if (p != separator && !((*p >= 'a' && *p <= 'z') || (*p >= '0' && *p <= '9') || *p == '_')) {
             return nullptr;
         }
     }
@@ -179,8 +176,7 @@ void load_battle(const char* battle, const char* stage) {
     char area[BATTLE_KEY_MAX];
 
     ASSERT_MSG(split_battle_ref(battle, area) != nullptr, "Invalid battle reference");
-    ASSERT_MSG(stage == nullptr || (stage[0] != '\0' && strlen(stage) < BATTLE_KEY_MAX),
-               "Invalid stage override");
+    ASSERT_MSG(stage == nullptr || (stage[0] != '\0' && strlen(stage) < BATTLE_KEY_MAX), "Invalid stage override");
     // memmove also permits restarting the current battle using these buffers.
     memmove(gCurrentBattleName, battle, strlen(battle) + 1);
     if (stage != nullptr) {

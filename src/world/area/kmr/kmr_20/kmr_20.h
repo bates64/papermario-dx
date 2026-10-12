@@ -58,4 +58,6 @@ extern NpcGroupList DefaultNPCs;
 
 API_CALLABLE(HideWorldOutsideMariosHouse);
 API_CALLABLE(Pipe_GetEntryPos);
-void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);
+void msg_draw_frame(
+    s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha
+);

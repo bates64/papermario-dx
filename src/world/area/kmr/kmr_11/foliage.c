@@ -44,7 +44,7 @@ SearchBushConfig SearchBush_Bush4 = {
     .vectors = &Bush4_Effects,
 };
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o349);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o349);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o352);
 
 FoliageDropList Tree1_Drops = {
@@ -80,7 +80,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o458);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o458);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o461);
 
 FoliageDropList Tree2_Drops = {

@@ -81,15 +81,19 @@ void entity_ItemBlock_spawn_item(Entity* entity) {
     entity->flags |= ENTITY_FLAG_USED;
 
     if (data->item == ITEM_COIN) {
-        make_item_entity(ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z,
-            ITEM_SPAWN_MODE_ITEM_BLOCK_COIN, 0, angle, data->gameFlagIndex);
+        make_item_entity(
+            ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z, ITEM_SPAWN_MODE_ITEM_BLOCK_COIN, 0, angle,
+            data->gameFlagIndex
+        );
     } else {
         angle += 360;
-        make_item_entity(data->item, entity->pos.x, entity->pos.y + 20.0, entity->pos.z,
-            (gItemTable[data->item].typeFlags & ITEM_TYPE_FLAG_BADGE) ? ITEM_SPAWN_MODE_ITEM_BLOCK_BADGE : ITEM_SPAWN_MODE_ITEM_BLOCK_ITEM,
-            0, angle, data->gameFlagIndex);
+        make_item_entity(
+            data->item, entity->pos.x, entity->pos.y + 20.0, entity->pos.z,
+            (gItemTable[data->item].typeFlags & ITEM_TYPE_FLAG_BADGE) ? ITEM_SPAWN_MODE_ITEM_BLOCK_BADGE
+                                                                      : ITEM_SPAWN_MODE_ITEM_BLOCK_ITEM,
+            0, angle, data->gameFlagIndex
+        );
     }
-
 }
 
 void entity_TriggerBlock_start_bound_script_2(Entity* entity) {
@@ -132,7 +136,9 @@ void entity_ItemBlock_check_if_inactive(Entity* entity) {
         } else {
             bp = &Entity_InertRedBlock;
         }
-        create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END);
+        create_entity(
+            bp, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, (s32) entity->rot.y, MAKE_ENTITY_END
+        );
         set_entity_commandlist(entity, D_802EA310);
     } else {
         exec_entity_commandlist(entity);
@@ -159,7 +165,9 @@ void entity_ItemBlock_replace_with_inactive(Entity* entity) {
     }
 
     // this child entity is the inert block
-    childEntityIndex = create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END);
+    childEntityIndex = create_entity(
+        bp, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, (s32) entity->rot.y, MAKE_ENTITY_END
+    );
     childEntity = get_entity_by_index(childEntityIndex);
     childEntity->flags |= ENTITY_FLAG_HIDDEN;
 
@@ -185,7 +193,9 @@ void entity_ItemBlock_replace_with_inactive(Entity* entity) {
     }
 
     // child entity is now the animated block which appears before it turns inert
-    childEntity = get_entity_by_index(create_entity(bp, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y, MAKE_ENTITY_END));
+    childEntity = get_entity_by_index(create_entity(
+        bp, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, (s32) entity->rot.y, MAKE_ENTITY_END
+    ));
     childEntity->alpha = entity->alpha;
     if ((entity->flags & ENTITY_FLAG_HIDDEN) || (entity->alpha < 255)) {
         childEntity->alpha = 32;
@@ -340,13 +350,18 @@ EntityScript Entity_TriggerBlock_Script = {
 };
 
 DmaEntry Entity_HitYellowBlock_dma[] = { ENTITY_ROM(HitYellowBlock), ENTITY_ANIM_ROM(HitYellowBlock) };
-DmaEntry Entity_HitFloatinYellowBlock_dma[] = { ENTITY_ROM(HitFloatingYellowBlock), ENTITY_ANIM_ROM(HitFloatingYellowBlock) };
+DmaEntry Entity_HitFloatinYellowBlock_dma[] = { ENTITY_ROM(HitFloatingYellowBlock),
+                                                ENTITY_ANIM_ROM(HitFloatingYellowBlock) };
 DmaEntry Entity_HitRedBlock_dma[] = { ENTITY_ROM(HitRedBlock), ENTITY_ANIM_ROM(HitRedBlock) };
 
-EntityModelScript Entity_YellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_HiddenYellowBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
-EntityModelScript Entity_RedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_OPA);
-EntityModelScript Entity_HiddenRedBlock_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_YellowBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_HiddenYellowBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_YellowBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_RedBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_OPA);
+EntityModelScript Entity_HiddenRedBlock_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RedBlock_Render, RENDER_MODE_SURFACE_XLU_LAYER2);
 
 OVL_DEF_ENTITY(YellowBlock) = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE,

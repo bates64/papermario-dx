@@ -125,7 +125,7 @@ void btl_state_update_end_player_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_DONE) {
         // dont bother with command loss if all enemies are defeated
-        if(btl_check_enemies_defeated()) {
+        if (btl_check_enemies_defeated()) {
             return;
         }
 

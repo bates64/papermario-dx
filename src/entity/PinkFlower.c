@@ -31,7 +31,7 @@ void entity_PinkFlowerLight_setupGfx(s32 entityIndex) {
     guMtxCatF(sp18, sp58, sp18);
     guRotateF(sp58, data->flowerYaw, 0.0f, 1.0f, 0.0f);
     guMtxCatF(sp18, sp58, sp18);
-    guTranslateF(sp58, entity->pos.x + 16.0f * sinAngle, entity->pos.y , entity->pos.z - 16.0f * cosAngle);
+    guTranslateF(sp58, entity->pos.x + 16.0f * sinAngle, entity->pos.y, entity->pos.z - 16.0f * cosAngle);
     guMtxCatF(sp18, sp58, sp18);
     gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
     gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, entity->alpha);
@@ -46,7 +46,8 @@ void entity_PinkFlower_idle(Entity* entity) {
     PinkFlowerData* data = entity->dataBuf.pinkFlower;
 
     if (gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE
-            && entity->collisionFlags & (ENTITY_COLLISION_PLAYER_TOUCH_WALL | ENTITY_COLLISION_PLAYER_HAMMER)) {
+        && entity->collisionFlags & (ENTITY_COLLISION_PLAYER_TOUCH_WALL | ENTITY_COLLISION_PLAYER_HAMMER))
+    {
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
             entity->flags &= ~ENTITY_FLAG_SHOWS_INSPECT_PROMPT;
             data = get_entity_by_index(data->linkedEntityIndex)->dataBuf.pinkFlower;
@@ -65,7 +66,9 @@ void entity_PinkFlower_init(Entity* entity) {
     s32 entityIndex;
 
     get_animator_by_index(entity->virtualModelIndex)->renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
-    entityIndex = create_entity(&Entity_PinkFlowerLight, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, 0, MAKE_ENTITY_END);
+    entityIndex = create_entity(
+        &Entity_PinkFlowerLight, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, 0, MAKE_ENTITY_END
+    );
     data->linkedEntityIndex = entityIndex;
     newEntity = get_entity_by_index(entityIndex);
     data = newEntity->dataBuf.pinkFlower;
@@ -131,7 +134,8 @@ EntityScript Entity_PinkFlowerLight_Script = {
     es_End
 };
 
-EntityModelScript Entity_PinkFlowerLight_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
+EntityModelScript Entity_PinkFlowerLight_RenderScript =
+    STANDARD_ENTITY_MODEL_SCRIPT(Entity_RenderNone, RENDER_MODE_SURFACE_XLU_LAYER2);
 DmaEntry Entity_PinkFlower_dma[] = { ENTITY_ROM(PinkFlower), ENTITY_ANIM_ROM(PinkFlower) };
 
 OVL_DEF_ENTITY(PinkFlower) = {

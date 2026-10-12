@@ -31,8 +31,8 @@ API_CALLABLE(PreventFalling) {
 s32 DoorModelsL[] = { MODEL_o1001, -1 };
 s32 DoorModelsR[] = { MODEL_o1002, -1 };
 
-EvtScript EVS_ExitDoors_pra_20_4 = EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_20", pra_20_ENTRY_4,
-    COLLIDER_deilittssw, MODEL_o1085, DOOR_SWING_OUT);
+EvtScript EVS_ExitDoors_pra_20_4 =
+    EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_20", pra_20_ENTRY_4, COLLIDER_deilittssw, MODEL_o1085, DOOR_SWING_OUT);
 
 EvtScript EVS_ExitDoors_pra_37_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)

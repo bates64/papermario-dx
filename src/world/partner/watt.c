@@ -145,7 +145,8 @@ API_CALLABLE(Update) {
                 TweesterPhysicsPtr->angularVel = 6.0f;
                 TweesterPhysicsPtr->liftoffVelPhase = 50.0f;
                 TweesterPhysicsPtr->countdown = 120;
-                watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
+                watt->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_CHAR_COLLISION
+                    | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
                 watt->flags &= ~NPC_FLAG_GRAVITY;
             case TWEESTER_PARTNER_ATTRACT:
                 sin_cos_rad(DEG_TO_RAD(TweesterPhysicsPtr->angle), &sinAngle, &cosAngle);
@@ -270,10 +271,9 @@ API_CALLABLE(UseAbility) {
         case SHINING_STATE_DELAY:
             if (script->functionTemp[1] == 0) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount
-                    || playerStatus->animFlags & PA_FLAG_CHANGING_MAP
-                    || !partner_can_continue_ability(PARTNER_WATT)
-                    || is_starting_conversation()
-                ) {
+                    || playerStatus->animFlags & PA_FLAG_CHANGING_MAP || !partner_can_continue_ability(PARTNER_WATT)
+                    || is_starting_conversation())
+                {
                     return ApiStatus_DONE2;
                 }
                 AbilityState = SHINING_STATE_BEGIN;
@@ -351,29 +351,27 @@ API_CALLABLE(UseAbility) {
             }
             // allow stop-holding input
             actionState = playerStatus->actionState;
-            if ((actionState == ACTION_STATE_IDLE
-                    || actionState == ACTION_STATE_WALK
-                    || actionState == ACTION_STATE_RUN
-                    || actionState == ACTION_STATE_LAND)
-                && partnerStatus->pressedButtons & BUTTON_B
-                || playerStatus->flags & PS_FLAG_HIT_FIRE
-            ) {
-        case SHINING_STATE_RELEASE:
-                playerStatus->animFlags &= ~(PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
-                npc->curAnim = ANIM_WorldWatt_Idle;
-                partner_clear_player_tracking(npc);
-                IsPlayerHolding = false;
-                partnerStatus->actingPartner = PARTNER_NONE;
-                partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
-                gGameStatusPtr->keepUsingPartnerOnMapChange = false;
-                AbilityState = SHINING_STATE_BEGIN;
-                npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_NONE);
-                if (!(playerStatus->flags & PS_FLAG_HIT_FIRE)) {
-                    set_action_state(ACTION_STATE_IDLE);
-                } else {
-                    set_action_state(ACTION_STATE_HIT_LAVA);
-                }
-                return ApiStatus_DONE1;
+            if ((actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN
+                 || actionState == ACTION_STATE_LAND)
+                    && partnerStatus->pressedButtons & BUTTON_B
+                || playerStatus->flags & PS_FLAG_HIT_FIRE)
+            {
+                case SHINING_STATE_RELEASE:
+                    playerStatus->animFlags &= ~(PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
+                    npc->curAnim = ANIM_WorldWatt_Idle;
+                    partner_clear_player_tracking(npc);
+                    IsPlayerHolding = false;
+                    partnerStatus->actingPartner = PARTNER_NONE;
+                    partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
+                    gGameStatusPtr->keepUsingPartnerOnMapChange = false;
+                    AbilityState = SHINING_STATE_BEGIN;
+                    npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_NONE);
+                    if (!(playerStatus->flags & PS_FLAG_HIT_FIRE)) {
+                        set_action_state(ACTION_STATE_IDLE);
+                    } else {
+                        set_action_state(ACTION_STATE_HIT_LAVA);
+                    }
+                    return ApiStatus_DONE1;
             }
 #else
             // immediately cancel state on touching fire
@@ -391,12 +389,10 @@ API_CALLABLE(UseAbility) {
             }
             // allow stop-holding input
             actionState = playerStatus->actionState;
-            if ((actionState == ACTION_STATE_IDLE
-                    || actionState == ACTION_STATE_WALK
-                    || actionState == ACTION_STATE_RUN
-                    || actionState == ACTION_STATE_LAND)
-                && partnerStatus->pressedButtons & BUTTON_B
-            ) {
+            if ((actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN
+                 || actionState == ACTION_STATE_LAND)
+                && partnerStatus->pressedButtons & BUTTON_B)
+            {
                 AbilityState = SHINING_STATE_RELEASE;
             }
 #endif
@@ -504,8 +500,8 @@ API_CALLABLE(EnterMap) {
             }
 
             script->functionTemp[1] = script->varTable[4];
-            playerStatus->targetYaw = atan2(playerStatus->pos.x, playerStatus->pos.z,
-                    script->varTable[1], script->varTable[3]);
+            playerStatus->targetYaw =
+                atan2(playerStatus->pos.x, playerStatus->pos.z, script->varTable[1], script->varTable[3]);
             playerStatus->heading = playerStatus->targetYaw;
             move_player(script->functionTemp[1], playerStatus->heading, script->varTableF[5]);
             sync_held_position();

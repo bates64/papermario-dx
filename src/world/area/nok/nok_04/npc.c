@@ -20,7 +20,7 @@ typedef struct FuzzyThread {
     /* 0x3C */ f32 angleStep;
     /* 0x40 */ Npc* frontNpc;
     /* 0x44 */ Npc* backNpc;
-} FuzzyThread; //size = 0x48
+} FuzzyThread; // size = 0x48
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/LoadPartyImage.inc.c"
@@ -128,9 +128,9 @@ API_CALLABLE(SetThreadTargetLengthAngle) {
     s32 temp_s0_3 = evt_get_variable(script, *args++);
     s32 duration = evt_get_variable(script, *args++);
 
-    FuzzyThread* thread = &ThreadData; //needed to match
+    FuzzyThread* thread = &ThreadData; // needed to match
     ThreadData.targetAngle = temp_s0_3 / NUM_THREAD_SEGMENTS;
-    ThreadData.targetLength = (f32)goal / NUM_THREAD_SEGMENTS;
+    ThreadData.targetLength = (f32) goal / NUM_THREAD_SEGMENTS;
     ThreadData.duration = duration;
     ThreadData.time = 0.0f;
 
@@ -180,7 +180,7 @@ API_CALLABLE(AttachThreadBackNpc) {
 }
 
 API_CALLABLE(GetTreeHidingSpotPos) {
-    Bytecode *args = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
     s32 treeIdx = evt_get_variable(script, *args++) * 3;
     s32 outVarX = *args++;
     s32 outVarY = *args++;
@@ -275,7 +275,8 @@ void build_gfx_thread(void) {
             ThreadData.overshootVel += (ThreadData.targetLength - ThreadData.curLength) * 0.5f;
         }
         ThreadData.time += 1.0f;
-        ThreadData.overshootAngleVel = (ThreadData.overshootAngleVel + (ThreadData.targetAngle - ThreadData.curAngle) / 10.0f) * 0.92;
+        ThreadData.overshootAngleVel =
+            (ThreadData.overshootAngleVel + (ThreadData.targetAngle - ThreadData.curAngle) / 10.0f) * 0.92;
         ThreadData.curAngle += ThreadData.angleStep;
         if (ThreadData.duration <= ThreadData.time) {
             ThreadData.duration = 0.0f;
@@ -286,31 +287,41 @@ void build_gfx_thread(void) {
         if (ThreadData.targetLength < ThreadData.curLength) {
             ThreadData.overshootVel += (ThreadData.targetLength - ThreadData.curLength) * 0.5f;
         }
-        ThreadData.overshootAngleVel = (ThreadData.overshootAngleVel + (ThreadData.targetAngle - ThreadData.curAngle) / 10.0f) * 0.92;
+        ThreadData.overshootAngleVel =
+            (ThreadData.overshootAngleVel + (ThreadData.targetAngle - ThreadData.curAngle) / 10.0f) * 0.92;
         ThreadData.curAngle += ThreadData.overshootAngleVel;
     }
     ThreadData.overshootVel *= 0.5;
 
     gSPDisplayList(gMainGfxPos++, ThreadGfx);
-    guTranslate(&gDisplayContext->matrixStack[gMatrixListPos], ThreadData.anchorPos.x, ThreadData.anchorPos.y, ThreadData.anchorPos.z);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    guTranslate(
+        &gDisplayContext->matrixStack[gMatrixListPos], ThreadData.anchorPos.x, ThreadData.anchorPos.y,
+        ThreadData.anchorPos.z
+    );
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
 
     segAngle = ThreadData.curAngle;
     segLength = -ThreadData.curLength;
     x += -segLength * sin_rad(ThreadData.curAngle * 0 / 180.0f * PI);
-    y +=  segLength * cos_rad(ThreadData.curAngle * 0 / 180.0f * PI);
+    y += segLength * cos_rad(ThreadData.curAngle * 0 / 180.0f * PI);
 
     guPosition(&gDisplayContext->matrixStack[gMatrixListPos], 0.0f, 0.0f, segAngle, 1.0f, 0.0f, segLength, 0.0f);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+    );
 
     for (i = 1; i < NUM_THREAD_SEGMENTS; i++) {
         segAngle = ThreadData.curAngle;
         segLength = -ThreadData.curLength;
         x += -segLength * sin_rad(ThreadData.curAngle * i / 180.0f * PI);
-        y +=  segLength * cos_rad(ThreadData.curAngle * i / 180.0f * PI);
+        y += segLength * cos_rad(ThreadData.curAngle * i / 180.0f * PI);
         gSPVertex(gMainGfxPos++, ThreadSegmentVertices, 2, 0);
         guPosition(&gDisplayContext->matrixStack[gMatrixListPos], 0.0f, 0.0f, segAngle, 1.0f, 0.0f, segLength, 0.0f);
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW
+        );
         gSPVertex(gMainGfxPos++, ThreadSegmentVertices, 2, 2);
         gSP2Triangles(gMainGfxPos++, 0, 2, 1, 0, 2, 3, 1, 0);
     }

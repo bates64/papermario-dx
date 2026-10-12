@@ -83,7 +83,10 @@ void func_802A123C_72C7EC(void) {
 
     if (D_802A25E4 < 6) {
         if (D_802A25E4 > 0) {
-            draw_box(0, WINDOW_STYLE_7, 106, 86, 0, 36, 36, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+            draw_box(
+                0, WINDOW_STYLE_7, 106, 86, 0, 36, 36, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
+                SCREEN_WIDTH, SCREEN_HEIGHT, nullptr
+            );
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 108, 90, 139, 118);
 
             for (i = 0; i < ARRAY_COUNT(D_802A25C8); i++) {
@@ -277,6 +280,4 @@ EvtScript EVS_UseItem = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM,
-    &EVS_UseItem,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM, &EVS_UseItem, );

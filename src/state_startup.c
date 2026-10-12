@@ -9,13 +9,13 @@
 
 /// What to boot into when SaveGlobals::bootTo leaves it to dx/config.h.
 s32 startup_default_boot_to(void) {
-    #if !DX_SKIP_LOGOS
-        return BOOT_TO_LOGOS;
-    #elif DX_SKIP_STORY
-        return BOOT_TO_TITLE;
-    #else
-        return BOOT_TO_INTRO;
-    #endif
+#if !DX_SKIP_LOGOS
+    return BOOT_TO_LOGOS;
+#elif DX_SKIP_STORY
+    return BOOT_TO_TITLE;
+#else
+    return BOOT_TO_INTRO;
+#endif
 }
 
 void startup_boot_to(s32 bootTo) {
@@ -51,7 +51,7 @@ void startup_boot_to(s32 bootTo) {
         case BOOT_TO_FILE_SELECT:
             // the map behind the file select menu, as the title screen sets it
             gGameStatus.areaID = AREA_KMR;
-            gGameStatus.mapID = 0xB; //TODO hardcoded map IDs
+            gGameStatus.mapID = 0xB; // TODO hardcoded map IDs
             gGameStatus.entryID = 0;
             set_game_mode(GAME_MODE_FILE_SELECT);
             return;

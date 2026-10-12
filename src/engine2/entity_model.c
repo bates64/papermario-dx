@@ -104,7 +104,8 @@ s32 load_entity_model(EntityModelScriptPtr cmdList) {
 
     ASSERT(newEntityModel != nullptr);
 
-    newEntityModel->flags = (ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_ENABLED);
+    newEntityModel->flags =
+        (ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_ENABLED);
     newEntityModel->renderMode = 1;
     newEntityModel->gfx.displayList = nullptr;
     if (cmdList == nullptr) {
@@ -144,7 +145,9 @@ s32 ALT_load_entity_model(EntityModelScriptPtr cmdList) {
     newEntityModel->gfx.imageData = imageData = heap_malloc(sizeof(*imageData));
     ASSERT(imageData != nullptr);
 
-    newEntityModel->flags = (ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_ENABLED | ENTITY_MODEL_FLAG_USE_IMAGE);
+    newEntityModel->flags =
+        (ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_ENABLED
+         | ENTITY_MODEL_FLAG_USE_IMAGE);
     newEntityModel->renderMode = 1;
     if (cmdList == nullptr) {
         newEntityModel->cmdListReadPos = EMS_DoNothing;
@@ -175,7 +178,8 @@ void exec_entity_model_commandlist(s32 idx) {
                     entityModel->flags &= ~ENTITY_MODEL_FLAG_100;
                     entityModel->nextFrameTime -= entityModel->timeScale;
                     if (entityModel->nextFrameTime <= 0.0f) {
-                        while (step_entity_model_commandlist(entityModel));
+                        while (step_entity_model_commandlist(entityModel))
+                            ;
                     }
                 }
             }
@@ -217,7 +221,7 @@ s32 step_entity_model_commandlist(EntityModel* entityModel) {
         case ENTITY_MODEL_SCRIPT_OP_DrawImage: // set image data
             imageData = entityModel->gfx.imageData;
             entityModel->nextFrameTime = *curPos++;
-            imageData->raster = (u8*)*curPos++;
+            imageData->raster = (u8*) *curPos++;
             imageData->defaultPal = (PAL_PTR) *curPos++;
             imageData->width = *curPos++;
             imageData->height = *curPos++;
@@ -242,7 +246,9 @@ void appendGfx_entity_model(EntityModel* model) {
     Matrix4f imgfxMtx;
 
     gDisplayContext->matrixStack[gMatrixListPos] = model->transform;
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     if (!(model->flags & ENTITY_MODEL_FLAG_USE_IMAGE)) {
         if (!(model->flags & ENTITY_MODEL_FLAG_10000)) {
             gDPPipeSync(gMainGfxPos++);
@@ -250,7 +256,11 @@ void appendGfx_entity_model(EntityModel* model) {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, 255);
             gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
             gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-            gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE);
+            gSPSetOtherMode(
+                gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18,
+                G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+                    | G_TP_NONE | G_CYC_1CYCLE
+            );
 
             if (entity_fog_enabled && !(model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
                 switch (model->renderMode) {
@@ -364,18 +374,28 @@ void appendGfx_entity_model(EntityModel* model) {
         guMtxCatF(mtx, mtx2, mtx);
         guMtxF2L(mtx, &model->transform);
         gDisplayContext->matrixStack[gMatrixListPos] = model->transform;
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, model->gfx.displayList);
     } else {
         SpriteRasterInfo* imageData;
 
         gDPPipeSync(gMainGfxPos++);
-        gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+        gSPClearGeometryMode(
+            gMainGfxPos++,
+            G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+                | G_SHADING_SMOOTH
+        );
         gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
         gSPSetLights1(gMainGfxPos++, EntityModelLights);
         gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
         gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-        gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE);
+        gSPSetOtherMode(
+            gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18,
+            G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+                | G_TP_PERSP | G_CYC_1CYCLE
+        );
 
         imageData = model->gfx.imageData;
         ifxImg.raster = imageData->raster;
@@ -420,8 +440,8 @@ void draw_entity_model_A(s32 modelIdx, Mtx* transformMtx) {
                             transform_point(camera->mtxPerspective, inX, inY, inZ, 1.0f, &x, &y, &z, &w);
                             rtPtr->renderMode = model->renderMode;
                             rtPtr->appendGfxArg = model;
-                            rtPtr->appendGfx = (void(*)(void*))appendGfx_entity_model;
-                            rtPtr->dist = ((u32)(model->flags & 0xF000) >> 8) + inZ;
+                            rtPtr->appendGfx = (void (*)(void*)) appendGfx_entity_model;
+                            rtPtr->dist = ((u32) (model->flags & 0xF000) >> 8) + inZ;
                             queue_render_task(rtPtr);
                         }
                     }
@@ -459,8 +479,8 @@ void draw_entity_model_B(s32 modelIdx, Mtx* transformMtx, s32 vertexSegment, Vec
                             transform_point(camera->mtxPerspective, inX, inY, inZ, 1.0f, &x, &y, &z, &w);
                             rtPtr->renderMode = model->renderMode;
                             rtPtr->appendGfxArg = model;
-                            rtPtr->appendGfx = (void(*)(void*))appendGfx_entity_model;
-                            rtPtr->dist = ((u32)(model->flags & 0xF000) >> 8) + inZ;
+                            rtPtr->appendGfx = (void (*)(void*)) appendGfx_entity_model;
+                            rtPtr->dist = ((u32) (model->flags & 0xF000) >> 8) + inZ;
                             queue_render_task(rtPtr);
                         }
                     }
@@ -489,8 +509,8 @@ void draw_entity_model_C(s32 modelIdx, Mtx* transformMtx) {
                             model->vertexArray = nullptr;
                             rtPtr->renderMode = model->renderMode;
                             rtPtr->appendGfxArg = model;
-                            rtPtr->appendGfx = (void(*)(void*))appendGfx_entity_model;
-                            rtPtr->dist = (u32)(model->flags & 0xF000) >> 8;
+                            rtPtr->appendGfx = (void (*)(void*)) appendGfx_entity_model;
+                            rtPtr->dist = (u32) (model->flags & 0xF000) >> 8;
                             queue_render_task(rtPtr);
                         }
                     }
@@ -520,8 +540,8 @@ void draw_entity_model_D(s32 modelIdx, Mtx* transformMtx, s32 arg2, Vec3s* verte
                             model->vertexArray = vertexArray;
                             rtPtr->renderMode = model->renderMode;
                             rtPtr->appendGfxArg = model;
-                            rtPtr->appendGfx = (void(*)(void*))appendGfx_entity_model;
-                            rtPtr->dist = (u32)(model->flags & 0xF000) >> 8;
+                            rtPtr->appendGfx = (void (*)(void*)) appendGfx_entity_model;
+                            rtPtr->dist = (u32) (model->flags & 0xF000) >> 8;
                             queue_render_task(rtPtr);
                         }
                     }
@@ -560,7 +580,9 @@ void draw_entity_model_E(s32 modelIdx, Mtx* transformMtx) {
     model->transform = *transformMtx;
     model->vertexArray = nullptr;
     gDisplayContext->matrixStack[gMatrixListPos] = model->transform;
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(
+        gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+    );
     if (!(model->flags & ENTITY_MODEL_FLAG_USE_IMAGE)) {
         if (entity_fog_enabled && !(model->flags & ENTITY_MODEL_FLAG_FOG_DISABLED)) {
             switch (model->renderMode) {
@@ -665,18 +687,28 @@ void draw_entity_model_E(s32 modelIdx, Mtx* transformMtx) {
         guMtxCatF(mtx, mtx2, mtx);
         guMtxF2L(mtx, &model->transform);
         gDisplayContext->matrixStack[gMatrixListPos] = model->transform;
-        gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(
+            gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW
+        );
         gSPDisplayList(gMainGfxPos++, model->gfx.displayList);
     } else {
         SpriteRasterInfo* imageData;
 
         gDPPipeSync(gMainGfxPos++);
-        gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
+        gSPClearGeometryMode(
+            gMainGfxPos++,
+            G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD
+                | G_SHADING_SMOOTH
+        );
         gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
         gSPSetLights1(gMainGfxPos++, EntityModelLights);
         gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
         gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-        gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE);
+        gSPSetOtherMode(
+            gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18,
+            G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP
+                | G_TP_PERSP | G_CYC_1CYCLE
+        );
 
         imageData = model->gfx.imageData;
         ifxImg.raster = imageData->raster;
@@ -776,7 +808,10 @@ void func_80122F8C(s32 idx, s32 newFlags) {
 void func_80122FB8(s32 idx, s32 newFlags) {
     EntityModel* entityModel = gCurrentEntityModelList[idx & ~BATTLE_ENTITY_ID_BIT];
 
-    entityModel->flags = (entityModel->flags & ~(ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_CAM3)) | newFlags;
+    entityModel->flags =
+        (entityModel->flags
+         & ~(ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_CAM3))
+        | newFlags;
 }
 
 void enable_entity_fog(void) {

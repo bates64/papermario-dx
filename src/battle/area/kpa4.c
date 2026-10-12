@@ -1,6 +1,5 @@
 #include "battle/battle.h"
 
-
 static Formation bombshell_bill_2 = {
     OVL_ACTOR_BY_IDX("bombshell_bill", BTL_POS_GROUND_B, 10),
     OVL_ACTOR_BY_IDX("bombshell_bill", BTL_POS_GROUND_C, 9),

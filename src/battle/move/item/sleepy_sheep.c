@@ -264,10 +264,10 @@ EntityModelScript modelCommandList = {
 
 EntityModelScript modelCommandList2 = {
     ems_SetRenderMode(RENDER_MODE_ALPHATEST)
-    ems_Draw(frame2_displayList,3)
-    ems_Draw(frame1_displayList,2)
-    ems_Draw(frame3_displayList,2)
-    ems_Draw(frame1_displayList,2)
+    ems_Draw(frame2_displayList, 3)
+    ems_Draw(frame1_displayList, 2)
+    ems_Draw(frame3_displayList, 2)
+    ems_Draw(frame1_displayList, 2)
     ems_Restart
     ems_End
 };
@@ -460,6 +460,4 @@ EntityModelScriptList D_802A3F28_721578 = {
     modelCommandList
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM,
-    &EVS_UseItem,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_ITEM, &EVS_UseItem, );

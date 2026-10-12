@@ -855,7 +855,7 @@ EvtScript EVS_Move_HealOne = {
             Goto(0)
         EndIf
         IfNe(LV_LowestActor, 0)
-        Goto(100)
+            Goto(100)
     EndIf
     // try to find any actor in danger of being killed by the player
     Set(LV_LowestActor, 0)

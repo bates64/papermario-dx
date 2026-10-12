@@ -58,7 +58,7 @@ void dma_write_block(Addr dramAddr, u32 devAddr, s32 size);
 u32 hash_string(const char* str) {
     u32 hash = 0x811c9dc5;
     while (*str) {
-        hash ^= (u8)*str++;
+        hash ^= (u8) *str++;
         hash *= 0x01000193;
     }
     return hash;
@@ -70,11 +70,11 @@ f32 length2D(f32 x, f32 y) {
 
 HeapNode* _heap_create(HeapNode* addr, u32 size) {
     if (size < 32) {
-        return (HeapNode*)-1;
+        return (HeapNode*) -1;
     } else {
-        HeapNode* heapNode = (HeapNode*)ALIGN16((u32)addr);
+        HeapNode* heapNode = (HeapNode*) ALIGN16((u32) addr);
 
-        size -= ((u8*)heapNode - (u8*)addr);
+        size -= ((u8*) heapNode - (u8*) addr);
         heapNode->next = nullptr;
         heapNode->length = size - sizeof(HeapNode);
         heapNode->allocated = 0;
@@ -104,7 +104,7 @@ void* _heap_malloc(HeapNode* head, u32 size) {
     nextHeapNode = nullptr;
 
     // find the smallest block we can fit into in the free list
-    for (curHeapNode = head; ; curHeapNode = curHeapNode->next) {
+    for (curHeapNode = head;; curHeapNode = curHeapNode->next) {
         if (!curHeapNode->allocated) {
             curBlockLength = curHeapNode->length;
             if ((curBlockLength >= size) && (curBlockLength < smallestBlockFound || !smallestBlockFound)) {
@@ -125,7 +125,7 @@ void* _heap_malloc(HeapNode* head, u32 size) {
     if (smallestBlockFound) {
         if (smallestBlockFound >= newBlockSize) {
             // update previous to the proper size for the block being returned
-            pPrevHeapNode->next = (HeapNode*)((u8*)pPrevHeapNode + newBlockSize);
+            pPrevHeapNode->next = (HeapNode*) ((u8*) pPrevHeapNode + newBlockSize);
             pPrevHeapNode->length = size;
 
             // update the entry id on allocation
@@ -151,7 +151,7 @@ void* _heap_malloc(HeapNode* head, u32 size) {
             heap_nextMallocID = heapEntryID2 + 1;
             pPrevHeapNode->entryID = heapEntryID2;
         }
-        return (u8*)pPrevHeapNode + sizeof(HeapNode);
+        return (u8*) pPrevHeapNode + sizeof(HeapNode);
     }
     debug_printf("warning: out of memory\n");
     return nullptr;
@@ -177,7 +177,7 @@ void* _heap_malloc_tail(HeapNode* head, u32 size) {
     nextNode = nullptr;
 
     // find the smallest block we can fit into
-    for (curNode = head; ; curNode = curNode->next) {
+    for (curNode = head;; curNode = curNode->next) {
         if (!curNode->allocated) {
             if (curNode->length >= size) {
                 foundNode = curNode;
@@ -201,7 +201,7 @@ void* _heap_malloc_tail(HeapNode* head, u32 size) {
             // add a free block before this one
             // this is where this function differs from heap_malloc, it returns
             // the end of the block instead of the beginning when splitting it up
-            curNode->next = (HeapNode*)((u8*)curNode + foundNodeLength - size);
+            curNode->next = (HeapNode*) ((u8*) curNode + foundNodeLength - size);
             curNode->length = foundNodeLength - newNodeSize;
             curNode->allocated = false;
 
@@ -217,7 +217,7 @@ void* _heap_malloc_tail(HeapNode* head, u32 size) {
             curNode->allocated = true;
         }
 
-        return (u8*)curNode + sizeof(HeapNode);
+        return (u8*) curNode + sizeof(HeapNode);
     }
 
     // did not find a block
@@ -238,7 +238,7 @@ u32 _heap_free(HeapNode* heapNodeList, void* addrToFree) {
     }
 
     // if we are not allocated then ignore this request
-    nodeToFreeHeader = (HeapNode*)((u8*)addrToFree - sizeof(HeapNode));
+    nodeToFreeHeader = (HeapNode*) ((u8*) addrToFree - sizeof(HeapNode));
     if (!nodeToFreeHeader->allocated) {
         return true;
     }
@@ -298,7 +298,7 @@ void* _heap_realloc(HeapNode* heapNodeList, void* addr, u32 newSize) {
     u32 newNodeLength;
     HeapNode* nodeToUpdate;
 
-    curHeapAlloc = (HeapNode*)((u8*)addr - sizeof(HeapNode));
+    curHeapAlloc = (HeapNode*) ((u8*) addr - sizeof(HeapNode));
     newSizeAligned = ALIGN16(newSize);
 
     // check if the realloc is on an allocated node otherwise fail
@@ -337,7 +337,7 @@ void* _heap_realloc(HeapNode* heapNodeList, void* addr, u32 newSize) {
     // see if there is room to add a new free block after us
     if (newSizeAligned + sizeof(HeapNode) < newNodeLength) {
         // room for a free block, create it
-        newFreeBlock = (HeapNode*)((u8*)addr + newSizeAligned);
+        newFreeBlock = (HeapNode*) ((u8*) addr + newSizeAligned);
 
         // update current node
         nodeToUpdate->next = newFreeBlock;
@@ -452,18 +452,18 @@ u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest) {
     u32 length = romEnd - romStart;
     s32 i;
 
-    ASSERT_MSG(((u32)vramDest & 7) == 0, "dest %08lX not 8-byte aligned", (u32)vramDest);
-    ASSERT_MSG(((u32)romStart & 1) == 0, "romStart %08lX not 2-byte aligned", (u32)romStart);
-    ASSERT_MSG(((u32)romEnd & 1) == 0, "romEnd %08lX not 2-byte aligned", (u32)romEnd);
+    ASSERT_MSG(((u32) vramDest & 7) == 0, "dest %08lX not 8-byte aligned", (u32) vramDest);
+    ASSERT_MSG(((u32) romStart & 1) == 0, "romStart %08lX not 2-byte aligned", (u32) romStart);
+    ASSERT_MSG(((u32) romEnd & 1) == 0, "romEnd %08lX not 2-byte aligned", (u32) romEnd);
 
     osInvalICache(vramDest, length);
 
     for (i = 0; i + ROM_CHUNK_SIZE < length; i += ROM_CHUNK_SIZE) {
-        nuPiReadRom((u32)romStart + i, vramDest + i, ROM_CHUNK_SIZE);
+        nuPiReadRom((u32) romStart + i, vramDest + i, ROM_CHUNK_SIZE);
     }
 
     if (i != length) {
-        nuPiReadRom((u32)romStart + i, vramDest + i, length - i);
+        nuPiReadRom((u32) romStart + i, vramDest + i, length - i);
     }
 
     return length;
@@ -474,11 +474,11 @@ s32 dma_write(Addr romStart, Addr romEnd, void* vramDest) {
     s32 i;
 
     for (i = 0; i + ROM_CHUNK_SIZE < length; i += ROM_CHUNK_SIZE) {
-        dma_write_block(romStart + i, (u32)vramDest + i, ROM_CHUNK_SIZE);
+        dma_write_block(romStart + i, (u32) vramDest + i, ROM_CHUNK_SIZE);
     }
 
     if (i != length) {
-        dma_write_block(romStart + i, (u32)vramDest + i, length - i);
+        dma_write_block(romStart + i, (u32) vramDest + i, length - i);
     }
 
     return length;
@@ -582,9 +582,9 @@ f32 signF(f32 val) {
 
 s32 round(f32 x) {
     if (!(x >= 0.0f)) {
-        return -(s32)(0.5 - x);
+        return -(s32) (0.5 - x);
     } else {
-        return (s32)(0.5 + x);
+        return (s32) (0.5 + x);
     }
 }
 
@@ -708,7 +708,7 @@ u16 _wrap_trig_lookup_value(f32 theta) {
 
     if (theta >= 0x100000 || theta <= -0x100000) {
         ret = theta / 0x100000;
-        ret = theta - (f32)(s32)ret * 0x100000;
+        ret = theta - (f32) (s32) ret * 0x100000;
     }
 
     return (s32) ret;
@@ -761,11 +761,15 @@ f32 update_lerp(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration) {
         case EASING_QUARTIC_IN:
             return start + QUART(elapsed) * (end - start) / QUART(duration);
         case EASING_COS_SLOW_OVERSHOOT:
-            return end - ((end - start) * cos_rad(((f32)elapsed / duration) * PI_D * 4.0) * (duration - elapsed) *
-                    (duration - elapsed)) / SQ((f32)duration);
+            return end
+                - ((end - start) * cos_rad(((f32) elapsed / duration) * PI_D * 4.0) * (duration - elapsed)
+                   * (duration - elapsed))
+                / SQ((f32) duration);
         case EASING_COS_FAST_OVERSHOOT:
-            return end - ((end - start) * cos_rad((((f32)SQ(elapsed) / duration) * PI_D * 4.0) / 15.0) * (duration - elapsed) *
-                    (duration - elapsed)) / SQ((f32)duration);
+            return end
+                - ((end - start) * cos_rad((((f32) SQ(elapsed) / duration) * PI_D * 4.0) / 15.0) * (duration - elapsed)
+                   * (duration - elapsed))
+                / SQ((f32) duration);
         case EASING_QUADRATIC_OUT:
             timeLeft = duration - elapsed;
             return start + (end - start) - ((SQ(timeLeft) * (end - start))) / SQ(duration);
@@ -776,18 +780,18 @@ f32 update_lerp(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration) {
             timeLeft = duration - elapsed;
             return start + (end - start) - ((QUART(timeLeft) * (end - start))) / QUART(duration);
         case EASING_COS_BOUNCE:
-            absMag = cos_rad((((f32)SQ(elapsed) / duration) * PI_D * 4.0) / 40.0) * (duration - elapsed) *
-                    (duration - elapsed) / SQ((f32)duration);
+            absMag = cos_rad((((f32) SQ(elapsed) / duration) * PI_D * 4.0) / 40.0) * (duration - elapsed)
+                * (duration - elapsed) / SQ((f32) duration);
             if (absMag < 0.0f) {
                 absMag = -absMag;
             }
             return end - (end - start) * absMag;
         case EASING_COS_IN_OUT:
-            return start + (end - start) * (1.0 - cos_rad(((f32)elapsed * PI_D) / (f32)duration)) * 0.5;
+            return start + (end - start) * (1.0 - cos_rad(((f32) elapsed * PI_D) / (f32) duration)) * 0.5;
         case EASING_SIN_OUT:
-            return start + (end - start) * sin_rad(((f32)elapsed * (PI_D / 2)) / (f32)duration);
+            return start + (end - start) * sin_rad(((f32) elapsed * (PI_D / 2)) / (f32) duration);
         case EASING_COS_IN:
-            return start + (end - start) * (1.0 - cos_rad(((f32)elapsed * (PI_D / 2)) / (f32)duration));
+            return start + (end - start) * (1.0 - cos_rad(((f32) elapsed * (PI_D / 2)) / (f32) duration));
     }
 
     return 0.0f;

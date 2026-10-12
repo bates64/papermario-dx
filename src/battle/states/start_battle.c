@@ -69,9 +69,9 @@ void btl_state_update_normal_start(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
             stage = load_battle_stage(gCurrentStageName[0] == '\0' ? battle->stage : gCurrentStageName);
-            #if DX_DEBUG_MENU
+#if DX_DEBUG_MENU
             dx_debug_set_battle_info(gCurrentBattleName, gBattleStageShapeName);
-            #endif
+#endif
 
             BattleEnemiesCreated = battle->formationSize;
             set_screen_overlay_params_back(OVERLAY_NONE, -1.0f);
@@ -200,13 +200,17 @@ void btl_state_update_normal_start(void) {
                 if (i == 0) {
                     actor->instigatorValue = currentEncounter->instigatorValue;
                     if (currentEncounter->dizzyAttack.status == STATUS_KEY_DIZZY) {
-                        inflict_status_set_duration(actor, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY, currentEncounter->dizzyAttack.duration);
+                        inflict_status_set_duration(
+                            actor, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY, currentEncounter->dizzyAttack.duration
+                        );
                     }
                 }
             }
 
             if (stage->stageEnemyCount != 0) {
-                if (stage->stageEnemyChance == 0 || (stage->stageEnemyChance > 0 && (rand_int(stage->stageEnemyChance) == 0))) {
+                if (stage->stageEnemyChance == 0
+                    || (stage->stageEnemyChance > 0 && (rand_int(stage->stageEnemyChance) == 0)))
+                {
                     BattleEnemiesCreated += stage->stageEnemyCount;
                     for (j = 0; i < BattleEnemiesCreated; i++, j++) {
                         create_actor(&(*stage->stageFormation)[j]);
@@ -215,10 +219,12 @@ void btl_state_update_normal_start(void) {
                         if (i == 0) {
                             actor->instigatorValue = 0;
                             if (currentEncounter->dizzyAttack.status == STATUS_KEY_DIZZY) {
-                                inflict_status_set_duration(actor, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY, currentEncounter->dizzyAttack.duration);
+                                inflict_status_set_duration(
+                                    actor, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY,
+                                    currentEncounter->dizzyAttack.duration
+                                );
                             }
                         }
-
                     }
                 }
             }
@@ -294,8 +300,8 @@ void btl_state_update_normal_start(void) {
 
                     if (currentEncounter->curEnemy != nullptr
                         && currentEncounter->curEnemy->encountered == ENCOUNTER_TRIGGER_SPIN
-                        && is_ability_active(ABILITY_DIZZY_ATTACK)
-                    ) {
+                        && is_ability_active(ABILITY_DIZZY_ATTACK))
+                    {
                         actor = battleStatus->enemyActors[0];
                         script = start_script(&EVS_ApplyDizzyAttack, EVT_PRIORITY_A, 0);
                         assign_bound_script(&actor->scripts.takeTurn, script);

@@ -1,11 +1,10 @@
 #include "battle/battle.h"
 
-
 static Vec3i KingPos = { 70, 0, 5 };
 
-static Vec3i CrystalBitPos1 = {  10, 35,  -5 };
-static Vec3i CrystalBitPos2 = { 112, 52,  -5 };
-static Vec3i CrystalBitPos3 = {  42, 85, -10 };
+static Vec3i CrystalBitPos1 = { 10, 35, -5 };
+static Vec3i CrystalBitPos2 = { 112, 52, -5 };
+static Vec3i CrystalBitPos3 = { 42, 85, -10 };
 
 static Formation crystal_king = {
     OVL_ACTOR_BY_POS("crystal_king", KingPos, 10),

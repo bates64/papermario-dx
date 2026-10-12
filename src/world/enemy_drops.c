@@ -82,7 +82,9 @@ void spawn_drops(Enemy* enemy) {
         }
 
         if (itemToDrop != ITEM_NONE) {
-            make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0);
+            make_item_entity(
+                itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0
+            );
             spawnCounter++;
             pickupDelay += 2;
             angle += 30.0;
@@ -100,7 +102,9 @@ void spawn_drops(Enemy* enemy) {
 
     if (encounter->dropWhackaBump) {
         encounter->dropWhackaBump = false;
-        make_item_entity(ITEM_WHACKAS_BUMP, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0);
+        make_item_entity(
+            ITEM_WHACKAS_BUMP, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0
+        );
         spawnCounter++;
         pickupDelay += 2;
         angle += 30.0;
@@ -117,10 +121,10 @@ void spawn_drops(Enemy* enemy) {
     itemToDrop = ITEM_NONE;
     fraction = gPlayerData.curHP / (f32) gPlayerData.curMaxHP;
 
-    for (i = 0; i <  ARRAY_COUNT(drops->heartDrops); i++) {
-        attempts  = drops->heartDrops[i].cutoff;
+    for (i = 0; i < ARRAY_COUNT(drops->heartDrops); i++) {
+        attempts = drops->heartDrops[i].cutoff;
         threshold = drops->heartDrops[i].generalChance;
-        attempts  /= 32767.0f;
+        attempts /= 32767.0f;
         threshold /= 32767.0f;
 
         if (fraction <= attempts && rand_int(100) <= threshold * 100.0f) {
@@ -182,10 +186,10 @@ void spawn_drops(Enemy* enemy) {
         fraction = 0.0;
     }
 
-    for (i = 0; i <  ARRAY_COUNT(drops->flowerDrops); i++) {
-        attempts  = drops->flowerDrops[i].cutoff;
+    for (i = 0; i < ARRAY_COUNT(drops->flowerDrops); i++) {
+        attempts = drops->flowerDrops[i].cutoff;
         threshold = drops->flowerDrops[i].generalChance;
-        attempts  /= 32767.0f;
+        attempts /= 32767.0f;
         threshold /= 32767.0f;
 
         if (fraction <= attempts && rand_int(100) <= threshold * 100.0f) {

@@ -28,4 +28,3 @@ enum AreaFlagsDRO {
     AF_DRO02_ToggleDialogue_Mouser2         = AreaFlag(0x05),
     // AF_DRO_06 - AF_DRO_FF unused
 };
-

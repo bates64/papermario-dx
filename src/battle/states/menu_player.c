@@ -338,10 +338,14 @@ void btl_state_update_player_menu(void) {
             break;
         case BTL_SUBSTATE_PERFORM_SWAP:
             if (partnerActor->state.moveTime != 0) {
-                partnerActor->curPos.x += (partnerActor->state.goalPos.x - partnerActor->curPos.x) / partnerActor->state.moveTime;
-                partnerActor->curPos.z += (partnerActor->state.goalPos.z - partnerActor->curPos.z) / partnerActor->state.moveTime;
-                playerActor->curPos.x += (partnerActor->state.curPos.x - playerActor->curPos.x) / partnerActor->state.moveTime;
-                playerActor->curPos.z += (partnerActor->state.curPos.z - playerActor->curPos.z) / partnerActor->state.moveTime;
+                partnerActor->curPos.x +=
+                    (partnerActor->state.goalPos.x - partnerActor->curPos.x) / partnerActor->state.moveTime;
+                partnerActor->curPos.z +=
+                    (partnerActor->state.goalPos.z - partnerActor->curPos.z) / partnerActor->state.moveTime;
+                playerActor->curPos.x +=
+                    (partnerActor->state.curPos.x - playerActor->curPos.x) / partnerActor->state.moveTime;
+                playerActor->curPos.z +=
+                    (partnerActor->state.curPos.z - playerActor->curPos.z) / partnerActor->state.moveTime;
             }
             partnerActor->curPos.z -= sin_rad(DEG_TO_RAD(partnerActor->state.angle)) * 16.0f;
             partnerActor->yaw = clamp_angle(-partnerActor->state.angle);
@@ -394,7 +398,8 @@ void btl_state_update_player_menu(void) {
             WheelOptionEnabled[entryIdx] = true;
             WheelOptionHudScript[entryIdx] = StrategiesHudScripts.enabled;
             WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_STRATEGIES];
-            if (battleStatus->actionCommandMode == AC_MODE_TUTORIAL || gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) {
+            if (battleStatus->actionCommandMode == AC_MODE_TUTORIAL || gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE)
+            {
                 WheelOptionName[entryIdx] = MSG_Menus_EndTraining_Centered;
             }
             WheelOptionError[entryIdx] = 0;
@@ -415,7 +420,7 @@ void btl_state_update_player_menu(void) {
                 WheelOptionEnabled[entryIdx] = true;
                 WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_ITEMS];
 
-                if(battleStatus->menuStatus[0] == 0) {
+                if (battleStatus->menuStatus[0] == 0) {
                     WheelOptionHudScript[entryIdx] = ItemsHudScripts.disabled;
                     WheelOptionEnabled[entryIdx] = false;
                     WheelOptionError[entryIdx] = BTL_MSG_NO_ITEM_TARGET;
@@ -533,13 +538,18 @@ void btl_state_update_player_menu(void) {
             submenuResult = btl_main_menu_update();
             if (BattleMenu_SwapDelay != 0) {
                 BattleMenu_SwapDelay--;
-            } else if (!(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) && (gGameStatusPtr->pressedButtons[0] & BUTTON_Z)) {
+            } else if (!(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE)
+                       && (gGameStatusPtr->pressedButtons[0] & BUTTON_Z))
+            {
                 if (btl_partner_can_act() && battleStatus->hustleTurns != 1) {
                     sfx_play_sound(SOUND_PARTNER_SWAP_BATTLE_POS);
-                    battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] = WheelOptionSubmenu[BattleMenu_CurPos + BattleMenu_HomePos];
+                    battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] =
+                        WheelOptionSubmenu[BattleMenu_CurPos + BattleMenu_HomePos];
                     btl_main_menu_destroy();
                     btl_set_state(BATTLE_STATE_SWITCH_TO_PARTNER);
-                } else if (partnerActor != nullptr && !(partnerActor->flags & BS_FLAGS1_YIELD_TURN) && battleStatus->hustleTurns != 1) {
+                } else if (partnerActor != nullptr && !(partnerActor->flags & BS_FLAGS1_YIELD_TURN)
+                           && battleStatus->hustleTurns != 1)
+                {
                     sfx_play_sound(SOUND_MENU_ERROR);
                     gBattleSubState = BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP;
                 }
@@ -556,7 +566,8 @@ void btl_state_update_player_menu(void) {
             }
 
             set_actor_anim(ACTOR_PLAYER, 0, ANIM_Mario1_Walk);
-            battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] = battleStatus->curSubmenu = WheelOptionSubmenu[submenuResult - 1];
+            battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] = battleStatus->curSubmenu =
+                WheelOptionSubmenu[submenuResult - 1];
             for (i = 0; i < ARRAY_COUNT(battleStatus->submenuMoves); i++) {
                 battleStatus->submenuMoves[i] = MOVE_NONE;
                 battleStatus->submenuIcons[i] = ITEM_NONE;
@@ -704,7 +715,9 @@ void btl_state_update_player_menu(void) {
             }
 
             if (currentSubmenu == BTL_MENU_TYPE_STRATEGIES) {
-                if (battleStatus->actionCommandMode != AC_MODE_TUTORIAL && !(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE)) {
+                if (battleStatus->actionCommandMode != AC_MODE_TUTORIAL
+                    && !(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE))
+                {
                     gBattleSubState = BTL_SUBSTATE_STRATEGIES_BUILD_MENU;
                     btl_state_update_player_menu();
                     btl_state_update_player_menu();
@@ -795,7 +808,6 @@ void btl_state_update_player_menu(void) {
                 MovesOptionEnabled[i] = battleStatus->submenuStatus[i];
                 MovesOptionNames[i] = moveData->nameMsg;
                 MovesOptionDesc[i] = moveData->shortDescMsg;
-
             }
             UsingSpiritsSubmenu = false;
             MovesOptionCount = battleStatus->submenuMoveCount;
@@ -859,7 +871,8 @@ void btl_state_update_player_menu(void) {
             battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CANCEL;
             battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN;
             battleStatus->selectedMoveID = battleStatus->submenuMoves[battleStatus->lastSelectedAbility];
-            battleStatus->curTargetListFlags = gMoveTable[battleStatus->submenuMoves[battleStatus->lastSelectedAbility]].flags;
+            battleStatus->curTargetListFlags =
+                gMoveTable[battleStatus->submenuMoves[battleStatus->lastSelectedAbility]].flags;
             currentSubmenu = battleStatus->curSubmenu;
             switch (currentSubmenu) {
                 case BTL_MENU_TYPE_JUMP:
@@ -1043,7 +1056,8 @@ void btl_state_update_player_menu(void) {
                     battleStatus->lastSelectedItem = popup->userIndex[popup->result - 1];
                     battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
                     battleStatus->moveArgument = battleStatus->lastSelectedItem;
-                    battleStatus->curTargetListFlags = gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
+                    battleStatus->curTargetListFlags =
+                        gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
                     battleStatus->curAttackElement = 0;
                     battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_DIP] = popup->result - 1;
                     hide_popup_menu();
@@ -1126,7 +1140,7 @@ void btl_state_update_player_menu(void) {
             gBattleSubState = BTL_SUBSTATE_ITEMS_CHOOSING;
             break;
         case BTL_SUBSTATE_ITEMS_CHOOSING:
-            switch(popup->result) {
+            switch (popup->result) {
                 case POPUP_RESULT_CHOOSING:
                     // do nothing while player is choosing from popup menu
                     break;
@@ -1145,7 +1159,8 @@ void btl_state_update_player_menu(void) {
                     battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
                     battleStatus->moveArgument = battleStatus->lastSelectedItem;
                     battleStatus->selectedMoveID = MOVE_ITEMS;
-                    battleStatus->curTargetListFlags = gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
+                    battleStatus->curTargetListFlags =
+                        gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
                     battleStatus->curAttackElement = 0;
                     battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_DIP] = popup->result - 1;
                     hide_popup_menu();
@@ -1201,9 +1216,11 @@ void btl_state_update_player_menu(void) {
                     MovesOptionError[i] = BTL_MSG_CANT_SELECT_NOW;
                 }
 
-                MovesOptionHudScripts[i] = StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].enabled;
+                MovesOptionHudScripts[i] =
+                    StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].enabled;
                 if (battleStatus->submenuStatus[i] == 0) {
-                    MovesOptionHudScripts[i] = StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].disabled;
+                    MovesOptionHudScripts[i] =
+                        StarPowerMovesHudScripts[STAR_POWER_INDEX(battleStatus->submenuMoves[i])].disabled;
                 }
                 MovesOptionDisplayCosts[i] = moveData->costFP;
                 MovesOptionBPCosts[i] = moveData->costBP;
@@ -1227,7 +1244,7 @@ void btl_state_update_player_menu(void) {
             break;
         case BTL_SUBSTATE_STAR_SPIRITS_CHOOSING:
             submenuResult = btl_submenu_moves_update();
-            switch(submenuResult) {
+            switch (submenuResult) {
                 case POPUP_RESULT_CHOOSING:
                     // do nothing while player is choosing from menu
                     break;
@@ -1262,7 +1279,8 @@ void btl_state_update_player_menu(void) {
                 battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_STAR_SPIRITS_TARGET_CHOSEN;
                 battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
                 battleStatus->selectedMoveID = battleStatus->submenuMoves[battleStatus->lastSelectedAbility];
-                battleStatus->curTargetListFlags = gMoveTable[battleStatus->submenuMoves[battleStatus->lastSelectedAbility]].flags;
+                battleStatus->curTargetListFlags =
+                    gMoveTable[battleStatus->submenuMoves[battleStatus->lastSelectedAbility]].flags;
                 battleStatus->moveArgument = battleStatus->lastSelectedAbility;
                 if (playerData->starBeamLevel == 2 && battleStatus->moveArgument == 8) {
                     battleStatus->moveArgument++;
@@ -1349,7 +1367,7 @@ void btl_state_update_player_menu(void) {
             }
             break;
         case BTL_SUBSTATE_NEXT_DIP_CHOOSING:
-            switch(popup->result) {
+            switch (popup->result) {
                 case POPUP_RESULT_CHOOSING:
                     // do nothing while player is choosing from menu
                     break;
@@ -1363,7 +1381,8 @@ void btl_state_update_player_menu(void) {
                     battleStatus->lastSelectedItem = popup->userIndex[popup->result - 1];
                     battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
                     battleStatus->moveArgument = battleStatus->lastSelectedItem;
-                    battleStatus->curTargetListFlags = gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
+                    battleStatus->curTargetListFlags =
+                        gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
                     battleStatus->curAttackElement = 0;
                     battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_DIP] = popup->result - 1;
                     hide_popup_menu();
@@ -1490,7 +1509,7 @@ void btl_state_update_player_menu(void) {
             break;
         case BTL_SUBSTATE_STRATEGIES_CHOOSING:
             submenuResult = btl_submenu_strats_update();
-            switch(submenuResult) {
+            switch (submenuResult) {
                 case POPUP_RESULT_CHOOSING:
                     // do nothing while player is choosing from menu
                     break;
@@ -1518,7 +1537,7 @@ void btl_state_update_player_menu(void) {
                         gBattleSubState = BTL_SUBSTATE_STRATEGIES_HANDOVER;
                     }
                     break;
-                }
+            }
             break;
         case BTL_SUBSTATE_STRATEGIES_HANDOVER:
             submenuResult = btl_submenu_strats_update();
@@ -1613,7 +1632,7 @@ void btl_state_update_player_menu(void) {
             gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
             break;
         case BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING:
-            switch(popup->result) {
+            switch (popup->result) {
                 case POPUP_RESULT_CHOOSING:
                     // do nothing while player is choosing from menu
                     break;

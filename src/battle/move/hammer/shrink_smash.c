@@ -29,7 +29,6 @@ EvtScript EVS_UseMove = {
     End
 };
 
-
 EvtScript EVS_UseMove_Impl = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
@@ -128,6 +127,4 @@ EvtScript EVS_UseMove_Impl = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove, );

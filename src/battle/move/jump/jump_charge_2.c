@@ -54,7 +54,6 @@ EvtScript EVS_UseMove_Unimplemented = {
     End
 };
 
-
 EvtScript EVS_UseMove = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     Wait(10)
@@ -111,7 +110,4 @@ EvtScript EVS_UseMove = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE,
-    &EVS_UseMove,
-    &EVS_UseMove_Unimplemented,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove, &EVS_UseMove_Unimplemented, );

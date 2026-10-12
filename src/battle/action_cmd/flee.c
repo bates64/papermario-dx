@@ -161,8 +161,10 @@ void update(void) {
             // fallthrough
         case AC_STATE_ACTIVE:
             // check for meter-filling input
-            if (battleStatus->actionCommandMode != AC_MODE_NOT_LEARNED && (battleStatus->curButtonsPressed & BUTTON_A)) {
-                acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
+            if (battleStatus->actionCommandMode != AC_MODE_NOT_LEARNED && (battleStatus->curButtonsPressed & BUTTON_A))
+            {
+                acs->meterFillLevel +=
+                    SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
             }
 
             // handle meter reaching 100%

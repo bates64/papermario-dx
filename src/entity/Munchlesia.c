@@ -30,8 +30,10 @@ extern StaticAnimatorNode* Entity_MunchlesiaReset1_Mesh[];
 #define MUNCHLESIA_CHEW_FRAMES              44
 
 void entity_Munchlesia_init(Entity* entity) {
-    make_item_entity_nodelay(ITEM_COIN, entity->pos.x, entity->pos.y + 30.0f, entity->pos.z,
-        ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS_NEVER_VANISH, 0);
+    make_item_entity_nodelay(
+        ITEM_COIN, entity->pos.x, entity->pos.y + 30.0f, entity->pos.z, ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS_NEVER_VANISH,
+        0
+    );
 }
 
 void entity_Munchlesia_idle(Entity* entity) {
@@ -54,10 +56,9 @@ void entity_MunchlesiaReset_begin(Entity* entity) {
 
 void entity_MunchlesiaGrab_prepare_player_pull(Entity* entity) {
     MunchlesiaData* data = entity->dataBuf.munchlesia;
-    data->playerPullDistance = fabs(dist2D(entity->pos.x, entity->pos.z,
-        gPlayerStatus.pos.x, gPlayerStatus.pos.z) * 0.25);
-    data->playerPullAngle = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z,
-        entity->pos.x, entity->pos.z);
+    data->playerPullDistance =
+        fabs(dist2D(entity->pos.x, entity->pos.z, gPlayerStatus.pos.x, gPlayerStatus.pos.z) * 0.25);
+    data->playerPullAngle = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, entity->pos.x, entity->pos.z);
 }
 
 void entity_MunchlesiaGrab_pull_player(Entity* entity) {
@@ -66,12 +67,11 @@ void entity_MunchlesiaGrab_pull_player(Entity* entity) {
     gCameras[CAM_DEFAULT].targetPos.x = gPlayerStatus.pos.x;
     gCameras[CAM_DEFAULT].targetPos.y = gPlayerStatus.pos.y;
     gCameras[CAM_DEFAULT].targetPos.z = gPlayerStatus.pos.z;
-    add_vec2D_polar(&gPlayerStatus.pos.x, &gPlayerStatus.pos.z,
-        data->playerPullDistance, data->playerPullAngle);
+    add_vec2D_polar(&gPlayerStatus.pos.x, &gPlayerStatus.pos.z, data->playerPullDistance, data->playerPullAngle);
 }
 
 s32 entity_Munchlesia_create_child(Entity* entity, EntityBlueprint* blueprint) {
-    return create_entity(blueprint, (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z, (s32)entity->rot.y);
+    return create_entity(blueprint, (s32) entity->pos.x, (s32) entity->pos.y, (s32) entity->pos.z, (s32) entity->rot.y);
 }
 
 void entity_Munchlesia_spawn_reset(Entity* entity) {
@@ -128,8 +128,7 @@ void entity_MunchlesiaChewing_init(Entity* entity) {
 
 void entity_MunchlesiaChewing_update_player(Entity* entity) {
     MunchlesiaData* data = entity->dataBuf.munchlesia;
-    gPlayerStatus.pos.y = data->playerBaseY
-        + (sin_rad(DEG_TO_RAD(data->chewPhase)) * MUNCHLESIA_CHEW_BOB_AMPLITUDE);
+    gPlayerStatus.pos.y = data->playerBaseY + (sin_rad(DEG_TO_RAD(data->chewPhase)) * MUNCHLESIA_CHEW_BOB_AMPLITUDE);
 
     data->chewPhase += MUNCHLESIA_CHEW_PHASE_STEP;
     if (data->chewPhase > 360.0f) {

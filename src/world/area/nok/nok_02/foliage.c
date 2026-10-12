@@ -103,7 +103,7 @@ SearchBushConfig SearchBush_Bush6 = {
     .drops = &Bush6_Drops,
 };
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o284);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o284);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o283);
 
 EvtScript EVS_OnShakeTree1 = {

@@ -2,7 +2,7 @@
 
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki);
 
 FoliageDropList Tree1_Drops = {
@@ -29,7 +29,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki);
 
 FoliageDropList Tree2_Drops = {
@@ -56,7 +56,7 @@ BombTrigger BombPos_Tree2 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o52);
+FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o52);
 FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_y_miki);
 
 FoliageDropList Tree3_Drops = {
@@ -82,7 +82,7 @@ BombTrigger BombPos_Tree3 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree4_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_y_ha);
+FoliageModelList Tree4_LeafModels = FOLIAGE_MODEL_LIST(MODEL_y_ha);
 FoliageModelList Tree4_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o51);
 
 ShakeTreeConfig ShakeTree_Tree4 = {
@@ -95,7 +95,7 @@ BombTrigger BombPos_Tree4 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree5_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o54);
+FoliageModelList Tree5_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o54);
 FoliageModelList Tree5_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o53);
 
 ShakeTreeConfig ShakeTree_Tree5 = {
@@ -108,7 +108,7 @@ BombTrigger BombPos_Tree5 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree6_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o56);
+FoliageModelList Tree6_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o56);
 FoliageModelList Tree6_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o55);
 
 ShakeTreeConfig ShakeTree_Tree6 = {
@@ -121,7 +121,7 @@ BombTrigger BombPos_Tree6 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree7_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o58);
+FoliageModelList Tree7_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o58);
 FoliageModelList Tree7_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o57);
 
 ShakeTreeConfig ShakeTree_Tree7 = {
@@ -134,7 +134,7 @@ BombTrigger BombPos_Tree7 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree8_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o60);
+FoliageModelList Tree8_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o60);
 FoliageModelList Tree8_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o59);
 
 ShakeTreeConfig ShakeTree_Tree8 = {
@@ -147,7 +147,7 @@ BombTrigger BombPos_Tree8 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree9_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o62);
+FoliageModelList Tree9_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o62);
 FoliageModelList Tree9_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o61);
 
 FoliageDropList Tree9_Drops = {
@@ -173,7 +173,7 @@ BombTrigger BombPos_Tree9 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree10_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o64);
+FoliageModelList Tree10_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o64);
 FoliageModelList Tree10_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o63);
 
 ShakeTreeConfig ShakeTree_Tree10 = {

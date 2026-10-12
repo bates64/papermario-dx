@@ -13,10 +13,9 @@ BSS f32 SavedPlayerFacingAngle;
 
 void entity_CymbalPlant_prepare_player_pull(Entity* entity) {
     CymbalPlantData* data = entity->dataBuf.cymbalPlant;
-    data->playerPullDistance = fabs(dist2D(entity->pos.x - 2.0f, entity->pos.z - 2.0f,
-        gPlayerStatus.pos.x, gPlayerStatus.pos.z) * 0.25);
-    data->playerPullAngle = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z,
-        entity->pos.x - 2.0f, entity->pos.z - 2.0f);
+    data->playerPullDistance =
+        fabs(dist2D(entity->pos.x - 2.0f, entity->pos.z - 2.0f, gPlayerStatus.pos.x, gPlayerStatus.pos.z) * 0.25);
+    data->playerPullAngle = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, entity->pos.x - 2.0f, entity->pos.z - 2.0f);
 }
 
 void entity_CymbalPlant_pull_player(Entity* entity) {
@@ -24,8 +23,7 @@ void entity_CymbalPlant_pull_player(Entity* entity) {
     gCameras[CAM_DEFAULT].targetPos.x = gPlayerStatus.pos.x;
     gCameras[CAM_DEFAULT].targetPos.y = gPlayerStatus.pos.y;
     gCameras[CAM_DEFAULT].targetPos.z = gPlayerStatus.pos.z;
-    add_vec2D_polar(&gPlayerStatus.pos.x, &gPlayerStatus.pos.z,
-        data->playerPullDistance, data->playerPullAngle);
+    add_vec2D_polar(&gPlayerStatus.pos.x, &gPlayerStatus.pos.z, data->playerPullDistance, data->playerPullAngle);
 }
 
 void entity_CymbalPlant_idle(Entity* entity) {
@@ -97,7 +95,9 @@ void entity_CymbalPlant_idle(Entity* entity) {
             }
             break;
         case 6:
-            if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) && partnerStatus->partnerActionState == PARTNER_ACTION_NONE) {
+            if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)
+                && partnerStatus->partnerActionState == PARTNER_ACTION_NONE)
+            {
                 data->state = 0;
                 enable_partner_ai();
                 phys_adjust_cam_on_landing();

@@ -2,7 +2,7 @@
 
 #include "foliage.h"
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki_ha);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki_ha);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_ki_miki);
 
 FoliageDropList Tree1_Drops = {

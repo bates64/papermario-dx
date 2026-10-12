@@ -15,7 +15,7 @@ API_CALLABLE(TakeOut) {
         partner_init_get_out(twink);
     }
 
-    if(partner_get_out(twink)) {
+    if (partner_get_out(twink)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;
@@ -48,7 +48,7 @@ API_CALLABLE(PutAway) {
         partner_init_put_away(twink);
     }
 
-    if(partner_put_away(twink)) {
+    if (partner_put_away(twink)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;

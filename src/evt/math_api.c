@@ -144,13 +144,13 @@ API_CALLABLE(MakeLerp) {
 }
 
 API_CALLABLE(UpdateLerp) {
-    evt_set_variable(script, LocalVar(LERP_VAR_0), update_lerp(
-        script->varTable[LERP_VAR_B],
-        script->varTable[LERP_VAR_C],
-        script->varTable[LERP_VAR_D],
-        script->varTable[LERP_VAR_E],
-        script->varTable[LERP_VAR_F]
-    ));
+    evt_set_variable(
+        script, LocalVar(LERP_VAR_0),
+        update_lerp(
+            script->varTable[LERP_VAR_B], script->varTable[LERP_VAR_C], script->varTable[LERP_VAR_D],
+            script->varTable[LERP_VAR_E], script->varTable[LERP_VAR_F]
+        )
+    );
 
     if (script->varTable[LERP_VAR_E] >= script->varTable[LERP_VAR_F]) {
         script->varTable[LERP_VAR_1] = false; // finished
@@ -179,9 +179,11 @@ API_CALLABLE(CosInterpMinMax) {
         evt_set_variable(script, outVarTime, duration);
     }
 
-    evt_set_float_variable(script, outValue,
+    evt_set_float_variable(
+        script, outValue,
         (min + delta) // average value
-        - (delta * cos_rad(((time * PI) / duration) + phaseOffset))); // perturbation
+            - (delta * cos_rad(((time * PI) / duration) + phaseOffset))
+    ); // perturbation
 
     return ApiStatus_DONE2;
 }
@@ -195,29 +197,29 @@ void calc_spline_path(s32 num, f32* normalizedLengths, Vec3f* pathPositions, Vec
     // compute the distance of each vector along the path and map to the range [0,1]
     normalizedLengths[0] = 0.0f;
     for (i = 1; i < num; i++) {
-        f32 dx = pathPositions[i].x - pathPositions[i-1].x;
-        f32 dy = pathPositions[i].y - pathPositions[i-1].y;
-        f32 dz = pathPositions[i].z - pathPositions[i-1].z;
+        f32 dx = pathPositions[i].x - pathPositions[i - 1].x;
+        f32 dy = pathPositions[i].y - pathPositions[i - 1].y;
+        f32 dz = pathPositions[i].z - pathPositions[i - 1].z;
         f32 length = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
-        normalizedLengths[i] = normalizedLengths[i-1] + length;
+        normalizedLengths[i] = normalizedLengths[i - 1] + length;
     }
     for (i = 1; i < num; i++) {
-        normalizedLengths[i] /= normalizedLengths[num-1];
+        normalizedLengths[i] /= normalizedLengths[num - 1];
     }
 
     // end points
     outVectors[0].x = 0.0f;
     outVectors[0].y = 0.0f;
     outVectors[0].z = 0.0f;
-    outVectors[num-1].x = 0.0f;
-    outVectors[num-1].y = 0.0f;
-    outVectors[num-1].z = 0.0f;
+    outVectors[num - 1].x = 0.0f;
+    outVectors[num - 1].y = 0.0f;
+    outVectors[num - 1].z = 0.0f;
 
     for (i = 0; i < num - 1; i++) {
-        lenBuf[i] = normalizedLengths[i+1] - normalizedLengths[i];
-        vecBuf[i+1].x = (pathPositions[i+1].x - pathPositions[i].x) / lenBuf[i];
-        vecBuf[i+1].y = (pathPositions[i+1].y - pathPositions[i].y) / lenBuf[i];
-        vecBuf[i+1].z = (pathPositions[i+1].z - pathPositions[i].z) / lenBuf[i];
+        lenBuf[i] = normalizedLengths[i + 1] - normalizedLengths[i];
+        vecBuf[i + 1].x = (pathPositions[i + 1].x - pathPositions[i].x) / lenBuf[i];
+        vecBuf[i + 1].y = (pathPositions[i + 1].y - pathPositions[i].y) / lenBuf[i];
+        vecBuf[i + 1].z = (pathPositions[i + 1].z - pathPositions[i].z) / lenBuf[i];
     }
 
     // n = 1
@@ -233,30 +235,32 @@ void calc_spline_path(s32 num, f32* normalizedLengths, Vec3f* pathPositions, Vec
         f32 sx = lenBuf[i] / vecBuf[i].x;
         f32 sy = lenBuf[i] / vecBuf[i].y;
         f32 sz = lenBuf[i] / vecBuf[i].z;
-        outVectors[i+1].x = (vecBuf[i+2].x - vecBuf[i+1].x) - outVectors[i].x * sx;
-        outVectors[i+1].y = (vecBuf[i+2].y - vecBuf[i+1].y) - outVectors[i].y * sy;
-        outVectors[i+1].z = (vecBuf[i+2].z - vecBuf[i+1].z) - outVectors[i].z * sz;
-        vecBuf[i+1].x = 2.0f * (normalizedLengths[i+2] - normalizedLengths[i]) - lenBuf[i] * sx;
-        vecBuf[i+1].y = 2.0f * (normalizedLengths[i+2] - normalizedLengths[i]) - lenBuf[i] * sy;
-        vecBuf[i+1].z = 2.0f * (normalizedLengths[i+2] - normalizedLengths[i]) - lenBuf[i] * sz;
+        outVectors[i + 1].x = (vecBuf[i + 2].x - vecBuf[i + 1].x) - outVectors[i].x * sx;
+        outVectors[i + 1].y = (vecBuf[i + 2].y - vecBuf[i + 1].y) - outVectors[i].y * sy;
+        outVectors[i + 1].z = (vecBuf[i + 2].z - vecBuf[i + 1].z) - outVectors[i].z * sz;
+        vecBuf[i + 1].x = 2.0f * (normalizedLengths[i + 2] - normalizedLengths[i]) - lenBuf[i] * sx;
+        vecBuf[i + 1].y = 2.0f * (normalizedLengths[i + 2] - normalizedLengths[i]) - lenBuf[i] * sy;
+        vecBuf[i + 1].z = 2.0f * (normalizedLengths[i + 2] - normalizedLengths[i]) - lenBuf[i] * sz;
     }
 
     // n = N - 2
-    outVectors[num-2].x -= (lenBuf[num-2] * outVectors[num-1].x);
-    outVectors[num-2].y -= (lenBuf[num-2] * outVectors[num-1].y);
-    outVectors[num-2].z -= (lenBuf[num-2] * outVectors[num-1].z);
+    outVectors[num - 2].x -= (lenBuf[num - 2] * outVectors[num - 1].x);
+    outVectors[num - 2].y -= (lenBuf[num - 2] * outVectors[num - 1].y);
+    outVectors[num - 2].z -= (lenBuf[num - 2] * outVectors[num - 1].z);
 
     for (i = num - 2; i > 0; i--) {
-        outVectors[i].x = (outVectors[i].x - (lenBuf[i] * outVectors[i+1].x)) / vecBuf[i].x;
-        outVectors[i].y = (outVectors[i].y - (lenBuf[i] * outVectors[i+1].y)) / vecBuf[i].y;
-        outVectors[i].z = (outVectors[i].z - (lenBuf[i] * outVectors[i+1].z)) / vecBuf[i].z;
+        outVectors[i].x = (outVectors[i].x - (lenBuf[i] * outVectors[i + 1].x)) / vecBuf[i].x;
+        outVectors[i].y = (outVectors[i].y - (lenBuf[i] * outVectors[i + 1].y)) / vecBuf[i].y;
+        outVectors[i].z = (outVectors[i].z - (lenBuf[i] * outVectors[i + 1].z)) / vecBuf[i].z;
     }
 
     heap_free(lenBuf);
     heap_free(vecBuf);
 }
 
-void sample_spline_path(f32 alpha, Vec3f* outPos, s32 numVectors, f32* normalizedLengths, Vec3f* pathPoints, Vec3f* vectors) {
+void sample_spline_path(
+    f32 alpha, Vec3f* outPos, s32 numVectors, f32* normalizedLengths, Vec3f* pathPoints, Vec3f* vectors
+) {
     s32 limit = numVectors - 1;
     f32 curLength;
     f32 curProgress;
@@ -278,22 +282,22 @@ void sample_spline_path(f32 alpha, Vec3f* outPos, s32 numVectors, f32* normalize
         i--;
     }
 
-    curLength = normalizedLengths[i+1] - normalizedLengths[i];
+    curLength = normalizedLengths[i + 1] - normalizedLengths[i];
     curProgress = alpha - normalizedLengths[i];
 
-    dx = (pathPoints[i+1].x - pathPoints[i].x) / curLength;
-    ax = (((vectors[i+1].x - vectors[i].x) * curProgress / curLength) + (3.0f * vectors[i].x)) * curProgress;
-    bx = dx - (((2.0f * vectors[i].x) + vectors[i+1].x) * curLength);
+    dx = (pathPoints[i + 1].x - pathPoints[i].x) / curLength;
+    ax = (((vectors[i + 1].x - vectors[i].x) * curProgress / curLength) + (3.0f * vectors[i].x)) * curProgress;
+    bx = dx - (((2.0f * vectors[i].x) + vectors[i + 1].x) * curLength);
     outPos->x = ((ax + bx) * curProgress) + pathPoints[i].x;
 
-    dy = (pathPoints[i+1].y - pathPoints[i].y) / curLength;
-    ay = (((vectors[i+1].y - vectors[i].y) * curProgress / curLength) + (3.0f * vectors[i].y)) * curProgress;
-    by = dy - (((2.0f * vectors[i].y) + vectors[i+1].y) * curLength);
+    dy = (pathPoints[i + 1].y - pathPoints[i].y) / curLength;
+    ay = (((vectors[i + 1].y - vectors[i].y) * curProgress / curLength) + (3.0f * vectors[i].y)) * curProgress;
+    by = dy - (((2.0f * vectors[i].y) + vectors[i + 1].y) * curLength);
     outPos->y = ((ay + by) * curProgress) + pathPoints[i].y;
 
-    dz = (pathPoints[i+1].z - pathPoints[i].z) / curLength;
-    az = (((vectors[i+1].z - vectors[i].z) * curProgress / curLength) + (3.0f * vectors[i].z)) * curProgress;
-    bz = dz - (((2.0f * vectors[i].z) + vectors[i+1].z) * curLength);
+    dz = (pathPoints[i + 1].z - pathPoints[i].z) / curLength;
+    az = (((vectors[i + 1].z - vectors[i].z) * curProgress / curLength) + (3.0f * vectors[i].z)) * curProgress;
+    bz = dz - (((2.0f * vectors[i].z) + vectors[i + 1].z) * curLength);
     outPos->z = ((az + bz) * curProgress) + pathPoints[i].z;
 }
 
@@ -379,7 +383,7 @@ f32 sin_lookup_table[] = {
 
 u32 calc_vector_rot_impl(f32 dx, f32 dy) {
     // use trig identity to get sin(theta) = dy / hypot
-    f32 sinAngle = abs((s32)dy) / length2D(dx, dy);
+    f32 sinAngle = abs((s32) dy) / length2D(dx, dy);
     u16 minAngle = 0;
     u16 maxAngle = 90;
     u16 ret;

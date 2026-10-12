@@ -64,8 +64,8 @@ API_CALLABLE(ShouldTargetBeCaptured) {
     }
 
     if (targetActor->actorBlueprint->upAndAwayChance != 0
-        && rand_int(100) <= targetActor->actorBlueprint->upAndAwayChance
-    ) {
+        && rand_int(100) <= targetActor->actorBlueprint->upAndAwayChance)
+    {
         script->varTable[0] = true;
     }
 
@@ -179,6 +179,4 @@ EvtScript EVS_UsePower = {
     End
 };
 
-OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_STAR_POWER,
-    &EVS_UsePower,
-);
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_STAR_POWER, &EVS_UsePower, );

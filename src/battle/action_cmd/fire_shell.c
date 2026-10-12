@@ -103,7 +103,6 @@ API_CALLABLE(start) {
     return ApiStatus_DONE2;
 }
 
-
 void update(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
@@ -208,7 +207,9 @@ void update(void) {
                     if (battleStatus->actionProgress >= BasicThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && (battleStatus->actionProgress < BasicThresholds[battleStatus->resultTier - 1])) {
+                    if (battleStatus->resultTier > 0
+                        && (battleStatus->actionProgress < BasicThresholds[battleStatus->resultTier - 1]))
+                    {
                         battleStatus->resultTier--;
                     }
                     break;
@@ -216,7 +217,9 @@ void update(void) {
                     if (battleStatus->actionProgress >= SuperThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && (battleStatus->actionProgress < SuperThresholds[battleStatus->resultTier - 1])) {
+                    if (battleStatus->resultTier > 0
+                        && (battleStatus->actionProgress < SuperThresholds[battleStatus->resultTier - 1]))
+                    {
                         battleStatus->resultTier--;
                     }
                     break;
@@ -224,7 +227,9 @@ void update(void) {
                     if (battleStatus->actionProgress >= UltraThresholds[battleStatus->resultTier]) {
                         battleStatus->resultTier++;
                     }
-                    if (battleStatus->resultTier > 0 && (battleStatus->actionProgress < UltraThresholds[battleStatus->resultTier - 1])) {
+                    if (battleStatus->resultTier > 0
+                        && (battleStatus->actionProgress < UltraThresholds[battleStatus->resultTier - 1]))
+                    {
                         battleStatus->resultTier--;
                     }
                     break;

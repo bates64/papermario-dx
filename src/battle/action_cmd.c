@@ -47,7 +47,9 @@ Difficulty1D actionCmdTableSmack = { 130, 120, 110, 100, 90, 80, 70, 60 };
 Difficulty1D actionCmdTableSpinySurge = { 130, 120, 110, 100, 90, 80, 70, 60 };
 Difficulty1D actionCmdTableHurricane = { 130, 120, 110, 100, 90, 80, 70, 60 };
 Difficulty1D actionCmdTableSpook = { 130, 120, 110, 100, 90, 80, 70, 60 };
-Difficulty2D actionCmdTableWaterBlock = { {6, 3}, {5, 3}, {4, 3}, {2, 3}, {1, 3}, {0, 3}, {0, 2}, {0, 1} };
+Difficulty2D actionCmdTableWaterBlock = {
+    { 6, 3 }, { 5, 3 }, { 4, 3 }, { 2, 3 }, { 1, 3 }, { 0, 3 }, { 0, 2 }, { 0, 1 }
+};
 Difficulty1D actionCmdTableTidalWave = { 130, 120, 110, 100, 90, 80, 70, 60 };
 
 static const char* ActionCommandOverlayNames[] = {
@@ -94,8 +96,7 @@ void reset_action_command_overlay(void) {
 }
 
 void unload_action_command(void) {
-    if (LoadedActionCommand != nullptr &&
-        gActionCommandStatus.actionCommandID != ACTION_COMMAND_NONE) {
+    if (LoadedActionCommand != nullptr && gActionCommandStatus.actionCommandID != ACTION_COMMAND_NONE) {
         action_command_free();
     }
 
@@ -109,24 +110,27 @@ API_CALLABLE(LoadActionCommand) {
     s32 cmd = evt_get_variable(script, *args++);
     const char* overlayName;
 
-    ASSERT_MSG((u32)cmd < ARRAY_COUNT(ActionCommandOverlayNames),
-               "Invalid action command ID %d", (int)cmd);
+    ASSERT_MSG((u32) cmd < ARRAY_COUNT(ActionCommandOverlayNames), "Invalid action command ID %d", (int) cmd);
     overlayName = ActionCommandOverlayNames[cmd];
-    ASSERT_MSG(overlayName != nullptr, "Action command ID %d has no overlay", (int)cmd);
+    ASSERT_MSG(overlayName != nullptr, "Action command ID %d has no overlay", (int) cmd);
 
     unload_action_command();
     LoadedActionCommandOverlay = ovl_load(overlayName, OVL_ACTION_CMD);
     LoadedActionCommand = ovl_import(LoadedActionCommandOverlay, ACTION_COMMAND_EXPORT_NAME);
-    ASSERT_MSG(LoadedActionCommand != nullptr,
-               "Action command overlay '%s' has no %s export",
-               overlayName, ACTION_COMMAND_EXPORT_NAME);
-    ASSERT_MSG(LoadedActionCommand->id == cmd,
-               "Action command overlay '%s' has ID %d, expected %d",
-               overlayName, (int)LoadedActionCommand->id, (int)cmd);
-    ASSERT_MSG(LoadedActionCommand->init != nullptr && LoadedActionCommand->start != nullptr &&
-               LoadedActionCommand->update != nullptr && LoadedActionCommand->draw != nullptr &&
-               LoadedActionCommand->free != nullptr,
-               "Action command overlay '%s' has an incomplete interface", overlayName);
+    ASSERT_MSG(
+        LoadedActionCommand != nullptr, "Action command overlay '%s' has no %s export", overlayName,
+        ACTION_COMMAND_EXPORT_NAME
+    );
+    ASSERT_MSG(
+        LoadedActionCommand->id == cmd, "Action command overlay '%s' has ID %d, expected %d", overlayName,
+        (int) LoadedActionCommand->id, (int) cmd
+    );
+    ASSERT_MSG(
+        LoadedActionCommand->init != nullptr && LoadedActionCommand->start != nullptr
+            && LoadedActionCommand->update != nullptr && LoadedActionCommand->draw != nullptr
+            && LoadedActionCommand->free != nullptr,
+        "Action command overlay '%s' has an incomplete interface", overlayName
+    );
 
     return ApiStatus_DONE2;
 }
@@ -192,7 +196,7 @@ void draw_mash_meter(s32 posX, s32 posY, s32 fillValue, s32 colorMode) {
         }
     }
 
-    //difference between current and previous filled value
+    // difference between current and previous filled value
     offsetX = width - acs->meterFillWidth;
     if (abs(offsetX) >= MashMeterSmoothDivisor * 100) {
         acs->meterFillWidth += offsetX / MashMeterSmoothDivisor;
@@ -212,7 +216,9 @@ void draw_mash_meter(s32 posX, s32 posY, s32 fillValue, s32 colorMode) {
             r = mashMeter_cutOffColors[3 * i + 0];
             g = mashMeter_cutOffColors[3 * i + 1];
             b = mashMeter_cutOffColors[3 * i + 2];
-            startup_draw_prim_rect_COPY(posX + offsetX + width - 1, posY, posX + offsetX + width, posY + 5, r, g, b, 255);
+            startup_draw_prim_rect_COPY(
+                posX + offsetX + width - 1, posY, posX + offsetX + width, posY + 5, r, g, b, 255
+            );
             offsetX += width;
         } else {
             break;
@@ -229,7 +235,7 @@ void draw_mash_meter(s32 posX, s32 posY, s32 fillValue, s32 colorMode) {
             r = 224;
             g = 63;
             b = 0;
-        } else if (gGameStatusPtr->frameCounter % 2 != 0){
+        } else if (gGameStatusPtr->frameCounter % 2 != 0) {
             r = mashMeter_fillColors[3 * i + 0];
             g = mashMeter_fillColors[3 * i + 1];
             b = mashMeter_fillColors[3 * i + 2];
@@ -382,12 +388,15 @@ s32 check_block_input(s32 buttonMask) {
 
     battleStatus->blockResult = BLOCK_RESULT_FAIL;
 
-    if (battleStatus->actionCommandMode == AC_MODE_TUTORIAL_BLOCK && (battleStatus->flags1 & BS_FLAGS1_TUTORIAL_BATTLE)) {
+    if (battleStatus->actionCommandMode == AC_MODE_TUTORIAL_BLOCK && (battleStatus->flags1 & BS_FLAGS1_TUTORIAL_BATTLE))
+    {
         battleStatus->blockResult = BLOCK_RESULT_SUCCESS;
         return true;
     }
 
-    if (battleStatus->actionCommandMode == AC_MODE_NOT_LEARNED || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED)) {
+    if (battleStatus->actionCommandMode == AC_MODE_NOT_LEARNED
+        || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED))
+    {
         return false;
     }
 
@@ -474,7 +483,7 @@ s32 check_block_input(s32 buttonMask) {
 
 void increment_action_command_attempt_count(void) {
     PlayerData* playerData = &gPlayerData;
-    ActionCommandStatus *acs = &gActionCommandStatus;
+    ActionCommandStatus* acs = &gActionCommandStatus;
 
     if (!acs->autoSucceed) {
         if (playerData->actionCommandAttempts < 9999) {

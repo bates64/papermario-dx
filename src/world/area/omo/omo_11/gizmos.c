@@ -78,7 +78,8 @@ API_CALLABLE(UpdatePlatformShadows) {
         script->functionTempPtr[0] = shadowIDs = heap_malloc(sizeof(*shadowIDs));
         for (i = 0; i < ARRAY_COUNT(PlatformFloorModels); i++) {
             model = get_model_from_list_index(get_model_list_index_from_tree_index(PlatformFloorModels[i]));
-            (*shadowIDs)[i] = create_shadow_type(SHADOW_VARYING_CIRCLE, model->center.x, model->center.y - 100.0f, model->center.z);
+            (*shadowIDs)[i] =
+                create_shadow_type(SHADOW_VARYING_CIRCLE, model->center.x, model->center.y - 100.0f, model->center.z);
         }
     }
 
@@ -182,8 +183,8 @@ API_CALLABLE(UpdateRotatingPlatforms) {
         guMtxCatF(loopModel->userTransformMtx, sp60, loopModel->userTransformMtx);
         update_collider_transform(RotatingPlatformColliders[i]);
         guMtxXFMF(loopModel->userTransformMtx, 0.0f, 0.0f, 0.0f, &ox, &oy, &oz);
-        if (gCollisionStatus.curFloor == RotatingPlatformColliders[i] ||
-            gCollisionStatus.lastTouchedFloor == RotatingPlatformColliders[i])
+        if (gCollisionStatus.curFloor == RotatingPlatformColliders[i]
+            || gCollisionStatus.lastTouchedFloor == RotatingPlatformColliders[i])
         {
             playerStatus->pushVel.x = ox - it->lastRelativePos.x;
             playerStatus->pushVel.y = oy - it->lastRelativePos.y;
@@ -215,8 +216,8 @@ API_CALLABLE(UpdateRotatingPlatforms) {
                 gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
                 gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
             }
-            if (playerStatus->actionState == ACTION_STATE_SPIN_POUND ||
-                playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
+            if (playerStatus->actionState == ACTION_STATE_SPIN_POUND
+                || playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
             {
                 isPounding = true;
             }

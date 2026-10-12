@@ -46,7 +46,7 @@ API_CALLABLE(CheckItemExists) {
     s32 outVar = *args++;
     ItemEntity* itemEntity = get_item_entity(itemIdx);
 
-    evt_set_variable(script, outVar, (s32)itemEntity);
+    evt_set_variable(script, outVar, (s32) itemEntity);
     return ApiStatus_DONE2;
 }
 
@@ -103,7 +103,7 @@ EvtScript EVS_OnShakeTree2 = {
     End
 };
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki1);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki1);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki1);
 
 ShakeTreeConfig ShakeTree_Tree1 = {
@@ -123,7 +123,7 @@ ShakeTreeConfig ShakeTree_Tree2 = {
     .callback = &EVS_OnShakeTree2,
 };
 
-FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki3);
+FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki3);
 FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki3);
 
 ShakeTreeConfig ShakeTree_Tree3 = {
@@ -136,7 +136,7 @@ BombTrigger BombPos_Tree3 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree4_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki4);
+FoliageModelList Tree4_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki4);
 FoliageModelList Tree4_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki4);
 
 ShakeTreeConfig ShakeTree_Tree4 = {
@@ -149,7 +149,7 @@ BombTrigger BombPos_Tree4 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree5_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki5);
+FoliageModelList Tree5_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki5);
 FoliageModelList Tree5_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_mili5);
 
 ShakeTreeConfig ShakeTree_Tree5 = {
@@ -162,7 +162,7 @@ BombTrigger BombPos_Tree5 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree6_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_ki6);
+FoliageModelList Tree6_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki6);
 FoliageModelList Tree6_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_miki6);
 
 ShakeTreeConfig ShakeTree_Tree6 = {

@@ -80,7 +80,7 @@ Trigger* create_trigger(TriggerBlueprint* bp) {
 
     trigger->onActivateFunc = bp->onActivateFunc;
     if (trigger->onActivateFunc == nullptr) {
-        trigger->onActivateFunc = (s32 (*) (Trigger*)) default_trigger_on_activate;
+        trigger->onActivateFunc = (s32 (*)(Trigger*)) default_trigger_on_activate;
     }
 
     return trigger;
@@ -154,8 +154,9 @@ void update_triggers(void) {
         }
 
         if (listTrigger->flags & TRIGGER_FLOOR_PRESS_A) {
-            if ((listTrigger->location.colliderID != collisionStatus->curFloor) ||
-                !(gGameStatusPtr->pressedButtons[0] & BUTTON_A) || (gPlayerStatus.flags & PS_FLAG_INPUT_DISABLED)) {
+            if ((listTrigger->location.colliderID != collisionStatus->curFloor)
+                || !(gGameStatusPtr->pressedButtons[0] & BUTTON_A) || (gPlayerStatus.flags & PS_FLAG_INPUT_DISABLED))
+            {
                 continue;
             }
         }
@@ -199,9 +200,10 @@ void update_triggers(void) {
             }
 
             bombPos = listTrigger->location.blast;
-            dist = dist3D(bombPos->pos.x, bombPos->pos.y, bombPos->pos.z,
-                                collisionStatus->bombetteExplosionPos.x, collisionStatus->bombetteExplosionPos.y,
-                                collisionStatus->bombetteExplosionPos.z);
+            dist = dist3D(
+                bombPos->pos.x, bombPos->pos.y, bombPos->pos.z, collisionStatus->bombetteExplosionPos.x,
+                collisionStatus->bombetteExplosionPos.y, collisionStatus->bombetteExplosionPos.z
+            );
 
             if ((bombPos->diameter * 0.5f) + 50.0f < dist) {
                 continue;
@@ -288,11 +290,9 @@ s32 should_collider_allow_interact(s32 colliderID) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentTriggerListPtr); i++) {
         Trigger* trigger = (*gCurrentTriggerListPtr)[i];
 
-        if (trigger != nullptr
-            && trigger->hasPlayerInteractPrompt != 0
-            && trigger->location.colliderID == colliderID
-            && trigger->flags & TRIGGER_WALL_PRESS_A
-        ) {
+        if (trigger != nullptr && trigger->hasPlayerInteractPrompt != 0 && trigger->location.colliderID == colliderID
+            && trigger->flags & TRIGGER_WALL_PRESS_A)
+        {
             return true;
         }
     }

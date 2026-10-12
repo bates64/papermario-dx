@@ -23,19 +23,6 @@ enum BattleMenuStates {
     BTL_MENU_STATE_ERROR_DONE           = 101,
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 extern HudScript HES_Kooper;
 extern HudScript HES_Bombette;
 extern HudScript HES_Partner0;
@@ -107,14 +94,6 @@ extern HudScript HES_MoveRedOrbDisabled;
 
 extern HudScript HES_HandPointDownLoop;
 extern HudScript HES_HandPointLeftLoop;
-
-
-
-
-
-
-
-
 
 IconHudScriptPair ItemsHudScripts = { HES_MenuItem, HES_MenuItemDisabled };
 
@@ -446,13 +425,13 @@ s32 btl_main_menu_update(void) {
             } else {
                 BattleMenu_PrevPos = BattleMenu_CurPos;
                 if (!BattleMenu_WheelMoving) {
-                    if ((battleStatus->curButtonsHeld & (BUTTON_STICK_LEFT | BUTTON_STICK_UP)) &&
-                        BattleMenu_MinIdx < BattleMenu_CurPos)
+                    if ((battleStatus->curButtonsHeld & (BUTTON_STICK_LEFT | BUTTON_STICK_UP))
+                        && BattleMenu_MinIdx < BattleMenu_CurPos)
                     {
                         BattleMenu_CurPos--;
                     }
-                    if ((battleStatus->curButtonsHeld & (BUTTON_STICK_RIGHT | BUTTON_STICK_DOWN)) &&
-                        BattleMenu_CurPos < BattleMenu_MaxIdx)
+                    if ((battleStatus->curButtonsHeld & (BUTTON_STICK_RIGHT | BUTTON_STICK_DOWN))
+                        && BattleMenu_CurPos < BattleMenu_MaxIdx)
                     {
                         BattleMenu_CurPos++;
                     }
@@ -601,7 +580,9 @@ void btl_main_menu_draw(void) {
             theta = (BattleMenu_WheelBase - BattleMenu_CurPos) * WHEEL_SPACING;
 
             // calculate beam narrowing
-            scale = (fabsf((f32)(fabsf((f32)((BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING))) - 22.5)) / 22.5) + 0.01;
+            scale =
+                (fabsf((f32) (fabsf((f32) ((BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING))) - 22.5)) / 22.5)
+                + 0.01;
             if (wheelDoneMoving) {
                 scale = 1.0f;
             }
@@ -733,7 +714,9 @@ b32 btl_partner_can_act(void) {
     s8 partnerDebuff;
     s32 partnerCantMove;
 
-    if (battleStatus->flags2 & BS_FLAGS2_PARTNER_TURN_USED || partner == PARTNER_NONE || partner->flags & ACTOR_FLAG_NO_ATTACK) {
+    if (battleStatus->flags2 & BS_FLAGS2_PARTNER_TURN_USED || partner == PARTNER_NONE
+        || partner->flags & ACTOR_FLAG_NO_ATTACK)
+    {
         return false;
     }
 
@@ -788,7 +771,7 @@ static void battle_menu_update(s32 state) {
             btl_state_update_select_target();
             break;
         default:
-            PANIC_MSG("Invalid battle menu update state %d", (int)state);
+            PANIC_MSG("Invalid battle menu update state %d", (int) state);
     }
 }
 
@@ -810,7 +793,7 @@ static void battle_menu_draw(s32 state) {
             btl_state_draw_select_target();
             break;
         default:
-            PANIC_MSG("Invalid battle menu draw state %d", (int)state);
+            PANIC_MSG("Invalid battle menu draw state %d", (int) state);
     }
 }
 

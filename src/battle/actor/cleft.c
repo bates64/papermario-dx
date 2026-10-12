@@ -127,7 +127,6 @@ s32 ToppledAnims[] = {
 
 #include "common/SetSpinSmashable.inc.c"
 
-
 EvtScript EVS_Init = {
     Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))
     Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))

@@ -127,8 +127,9 @@ void btl_state_update_partner_move(void) {
             }
             decrement_status_bar_disabled();
             if (playerData->curPartner == PARTNER_GOOMBARIO
-                    && battleStatus->moveCategory == BTL_MENU_TYPE_CHANGE_PARTNER
-                    && battleStatus->selectedMoveID != MOVE_CHARGE) {
+                && battleStatus->moveCategory == BTL_MENU_TYPE_CHANGE_PARTNER
+                && battleStatus->selectedMoveID != MOVE_CHARGE)
+            {
                 partner->isGlowing = false;
                 gBattleStatus.flags1 &= ~BS_FLAGS1_GOOMBARIO_CHARGED;
             }

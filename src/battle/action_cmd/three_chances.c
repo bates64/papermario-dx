@@ -93,7 +93,7 @@ API_CALLABLE(init) {
     HudElemID hid;
 
     battleStatus->maxActionQuality = 5;
-    battleStatus->actionCmdDifficultyTable = (s32*)actionCmdTableWaterBlock;
+    battleStatus->actionCmdDifficultyTable = (s32*) actionCmdTableWaterBlock;
 
     if (battleStatus->actionCommandMode == AC_MODE_NOT_LEARNED) {
         battleStatus->actionQuality = 0;
@@ -363,10 +363,8 @@ void update(void) {
             // a verdict and wait until the full 20 frame state lifetime is complete before beginning the next one.
 
             // first six frames, if no input has been received
-            if (!(acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)
-                && acs->threeChances.time >= -5
-            ) {
-                s32 (*difficultyVec)[2] = (s32 (*)[2])battleStatus->actionCmdDifficultyTable;
+            if (!(acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming) && acs->threeChances.time >= -5) {
+                s32 (*difficultyVec)[2] = (s32 (*)[2]) battleStatus->actionCmdDifficultyTable;
                 window = difficultyVec[acs->difficulty][0] + difficultyVec[acs->difficulty][1] + ANTI_MASH_TIME;
                 pos = battleStatus->inputBufferPos;
                 pos -= window;
@@ -386,7 +384,9 @@ void update(void) {
                         acs->wrongButtonPressed = true;
                     }
 
-                    if (((battleStatus->pushInputBuffer[pos] & BUTTON_A) && !acs->wrongButtonPressed) || acs->autoSucceed) {
+                    if (((battleStatus->pushInputBuffer[pos] & BUTTON_A) && !acs->wrongButtonPressed)
+                        || acs->autoSucceed)
+                    {
                         acs->threeChances.hadCorrectTiming = true;
                         battleStatus->actionProgress++;
                         break;
@@ -395,9 +395,7 @@ void update(void) {
             }
 
             // if an input is received, show an early verdict
-            if ((acs->threeChances.time > -5)
-                && (acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)
-            ) {
+            if ((acs->threeChances.time > -5) && (acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)) {
                 hid = acs->hudElemIDs[HIDX_RATING_1];
                 if (acs->threeChances.hadCorrectTiming) {
                     hud_element_set_script(hid, HES_TimingOK);
@@ -446,10 +444,8 @@ void update(void) {
             // a verdict and wait until the full 20 frame state lifetime is complete before beginning the next one.
 
             // first six frames, if no input has been received
-            if (!(acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)
-                && acs->threeChances.time >= -5
-            ) {
-                s32 (*difficultyVec)[2] = (s32 (*)[2])battleStatus->actionCmdDifficultyTable;
+            if (!(acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming) && acs->threeChances.time >= -5) {
+                s32 (*difficultyVec)[2] = (s32 (*)[2]) battleStatus->actionCmdDifficultyTable;
                 window = difficultyVec[acs->difficulty][0] + difficultyVec[acs->difficulty][1] + ANTI_MASH_TIME - 1;
                 if (window < 6) {
                     window = 6;
@@ -474,7 +470,9 @@ void update(void) {
                         }
                     }
 
-                    if (((battleStatus->pushInputBuffer[pos] & BUTTON_A) && !acs->wrongButtonPressed) || acs->autoSucceed) {
+                    if (((battleStatus->pushInputBuffer[pos] & BUTTON_A) && !acs->wrongButtonPressed)
+                        || acs->autoSucceed)
+                    {
                         acs->threeChances.hadCorrectTiming = true;
                         battleStatus->actionProgress++;
                         break;
@@ -483,9 +481,7 @@ void update(void) {
             }
 
             // if an input is received, show an early verdict
-            if ((acs->threeChances.time > -5)
-                && (acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)
-            ) {
+            if ((acs->threeChances.time > -5) && (acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)) {
                 hid = acs->hudElemIDs[HIDX_RATING_2];
                 if (acs->threeChances.hadCorrectTiming) {
                     hud_element_set_script(hid, HES_TimingOK);
@@ -534,10 +530,8 @@ void update(void) {
             // a verdict and begin wrapping up the action command.
 
             // first six frames, if no input has been received
-            if (!(acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)
-                && acs->threeChances.time >= -5
-            ) {
-                s32 (*difficultyVec)[2] = (s32 (*)[2])battleStatus->actionCmdDifficultyTable;
+            if (!(acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming) && acs->threeChances.time >= -5) {
+                s32 (*difficultyVec)[2] = (s32 (*)[2]) battleStatus->actionCmdDifficultyTable;
                 window = difficultyVec[acs->difficulty][0] + difficultyVec[acs->difficulty][1] + ANTI_MASH_TIME - 2;
                 if (window < 6) {
                     window = 6;
@@ -562,8 +556,9 @@ void update(void) {
                         }
                     }
 
-                    if (((battleStatus->pushInputBuffer[pos] & BUTTON_A) && !acs->wrongButtonPressed) ||
-                        acs->autoSucceed) {
+                    if (((battleStatus->pushInputBuffer[pos] & BUTTON_A) && !acs->wrongButtonPressed)
+                        || acs->autoSucceed)
+                    {
                         acs->threeChances.hadCorrectTiming = true;
                         battleStatus->actionProgress++;
                         break;
@@ -572,9 +567,7 @@ void update(void) {
             }
 
             // if an input is received, show an early verdict
-            if ((acs->threeChances.time > -5)
-                && (acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)
-            ) {
+            if ((acs->threeChances.time > -5) && (acs->wrongButtonPressed || acs->threeChances.hadCorrectTiming)) {
                 hid = acs->hudElemIDs[HIDX_RATING_3];
                 if (acs->threeChances.hadCorrectTiming) {
                     hud_element_set_script(hid, HES_TimingOK);

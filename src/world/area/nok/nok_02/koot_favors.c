@@ -330,7 +330,7 @@ API_CALLABLE(SetFavorComplete) {
 ITEM_LIST(FavorItemList, ITEM_NONE);
 
 API_CALLABLE(AdjustFavorItemList) {
-    Bytecode *args = script->ptrReadPos;
+    Bytecode* args = script->ptrReadPos;
     s32 favorIdx = evt_get_variable(script, *args++) - 1;
     s32 itemID = KootFavorData[favorIdx].requiredItem;
     s16* typeFlags = &gItemTable[itemID].typeFlags;

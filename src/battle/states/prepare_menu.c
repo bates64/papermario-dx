@@ -15,15 +15,15 @@ void load_battle_menu(void) {
         return;
     }
 
-    ASSERT_MSG(LoadedBattleMenuOverlay == nullptr,
-               "Battle menu overlay loaded without an interface");
+    ASSERT_MSG(LoadedBattleMenuOverlay == nullptr, "Battle menu overlay loaded without an interface");
 
     LoadedBattleMenuOverlay = ovl_load("battle_menu", OVL_BATTLE_MENU);
     LoadedBattleMenu = ovl_import(LoadedBattleMenuOverlay, BATTLE_MENU_EXPORT_NAME);
-    ASSERT_MSG(LoadedBattleMenu != nullptr,
-               "Battle menu overlay has no %s export", BATTLE_MENU_EXPORT_NAME);
-    ASSERT_MSG(LoadedBattleMenu->update != nullptr && LoadedBattleMenu->draw != nullptr,
-               "Battle menu overlay has an incomplete interface");
+    ASSERT_MSG(LoadedBattleMenu != nullptr, "Battle menu overlay has no %s export", BATTLE_MENU_EXPORT_NAME);
+    ASSERT_MSG(
+        LoadedBattleMenu->update != nullptr && LoadedBattleMenu->draw != nullptr,
+        "Battle menu overlay has an incomplete interface"
+    );
 }
 
 void unload_battle_menu(void) {

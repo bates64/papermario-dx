@@ -124,14 +124,20 @@ static API_CALLABLE(WattFXUpdate) {
         wattEffectData->bouncePhase = 0;
         wattEffectData->isActive = true;
         wattEffectData->currentEffectIndex = 0;
-        wattEffectData->effect1 = fx_static_status(0, actor->curPos.x, actor->curPos.y, actor->curPos.z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
-        wattEffectData->effect2 = fx_static_status(1, actor->curPos.x, NPC_DISPOSE_POS_Y, actor->curPos.z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
+        wattEffectData->effect1 = fx_static_status(
+            0, actor->curPos.x, actor->curPos.y, actor->curPos.z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5,
+            0
+        );
+        wattEffectData->effect2 = fx_static_status(
+            1, actor->curPos.x, NPC_DISPOSE_POS_Y, actor->curPos.z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f,
+            5, 0
+        );
         wattEffectData->initialized = true;
         wattEffectData->debuff = actor->debuff;
     }
 
     wattEffectData = state->varTablePtr[3];
-    if (!wattEffectData->initialized)  {
+    if (!wattEffectData->initialized) {
         return ApiStatus_DONE2;
     }
 
@@ -142,14 +148,16 @@ static API_CALLABLE(WattFXUpdate) {
     actor->verticalRenderOffset = sin_rad(DEG_TO_RAD(wattEffectData->bouncePhase)) * 3.0f;
 
     x = actor->curPos.x + actor->headOffset.x;
-    y = actor->curPos.y + actor->headOffset.y + actor->verticalRenderOffset + (actor->debuff != STATUS_KEY_SHRINK ? 12.0 : 4.800000000000001); // 4.8 doesn't match
+    y = actor->curPos.y + actor->headOffset.y + actor->verticalRenderOffset
+        + (actor->debuff != STATUS_KEY_SHRINK ? 12.0 : 4.800000000000001); // 4.8 doesn't match
     z = actor->curPos.z + actor->headOffset.z;
 
     if (wattEffectData->isActive) {
         switch (wattEffectData->currentEffectIndex) {
             case 0:
                 if (wattEffectData->effect1 == nullptr) {
-                    wattEffectData->effect1 = fx_static_status(0, x, y, z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
+                    wattEffectData->effect1 =
+                        fx_static_status(0, x, y, z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
                 }
 
                 if (wattEffectData->effect2 != nullptr) {
@@ -166,8 +174,8 @@ static API_CALLABLE(WattFXUpdate) {
                     wattEffectData->effect1 = nullptr;
                 }
                 if (wattEffectData->effect2 == nullptr) {
-                    wattEffectData->effect2 = fx_static_status(1, x, y, z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
-
+                    wattEffectData->effect2 =
+                        fx_static_status(1, x, y, z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
                 }
                 wattEffectData->effect2->data.staticStatus->pos.x = x;
                 wattEffectData->effect2->data.staticStatus->pos.y = y;
@@ -206,7 +214,7 @@ static EvtScript EVS_Idle = {
 };
 
 static API_CALLABLE(WattFXRemove) {
-    WattEffectData* wattEffectData = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
+    WattEffectData* wattEffectData = (WattEffectData*) get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffectData->initialized = false;
 
@@ -223,7 +231,7 @@ static API_CALLABLE(WattFXRemove) {
 
 static API_CALLABLE(WattFXSetBouncing) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
+    WattEffectData* wattEffects = (WattEffectData*) get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffects->isBouncing = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
@@ -231,7 +239,7 @@ static API_CALLABLE(WattFXSetBouncing) {
 
 static API_CALLABLE(WattFXSetActive) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
+    WattEffectData* wattEffects = (WattEffectData*) get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffects->isActive = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
@@ -239,7 +247,7 @@ static API_CALLABLE(WattFXSetActive) {
 
 static API_CALLABLE(WattFXSetEffect) {
     Bytecode* args = script->ptrReadPos;
-    WattEffectData* wattEffects = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
+    WattEffectData* wattEffects = (WattEffectData*) get_actor(script->owner1.actorID)->state.varTable[3];
 
     wattEffects->currentEffectIndex = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;

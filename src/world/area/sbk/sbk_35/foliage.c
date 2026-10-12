@@ -2,7 +2,7 @@
 
 #include "foliage.h"
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o57);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o57);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o56);
 
 FoliageDropList Tree1_Drops = {
@@ -28,7 +28,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o59);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o59);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o58);
 
 ShakeTreeConfig ShakeTree_Tree2 = {
@@ -41,7 +41,7 @@ BombTrigger BombPos_Tree2 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o61);
+FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o61);
 FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o60);
 
 ShakeTreeConfig ShakeTree_Tree3 = {

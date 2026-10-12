@@ -491,7 +491,7 @@ static API_CALLABLE(OpenTattleWindow) {
 
 static UNUSED API_CALLABLE(HideTattleWindow) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     effect->data.tattleWindow->pos.y = NPC_DISPOSE_POS_Y;
     return ApiStatus_DONE2;
@@ -499,7 +499,7 @@ static UNUSED API_CALLABLE(HideTattleWindow) {
 
 static API_CALLABLE(CloseTattleWindow) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
 
     effect->data.tattleWindow->pos.y = 144.0f;
     effect->flags |= FX_INSTANCE_FLAG_DISMISS;

@@ -322,7 +322,7 @@ SearchBushConfig SearchBush_Bush9 = {
     .vectors = &Bush9_Effects,
 };
 
-FoliageModelList Tree1_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o237);
+FoliageModelList Tree1_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o237);
 FoliageModelList Tree1_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o236);
 
 FoliageDropList Tree1_Drops = {
@@ -357,7 +357,7 @@ BombTrigger BombPos_Tree1 = {
     .diameter = 0.0f
 };
 
-FoliageModelList Tree2_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o194);
+FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o194);
 FoliageModelList Tree2_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o193);
 
 FoliageDropList Tree2_Drops = {
@@ -423,7 +423,7 @@ EvtScript EVS_OnShakeTree3 = {
     End
 };
 
-FoliageModelList Tree3_LeafModels  = FOLIAGE_MODEL_LIST(MODEL_o192);
+FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o192);
 FoliageModelList Tree3_TrunkModels = FOLIAGE_MODEL_LIST(MODEL_o191);
 
 FoliageVectorList Tree3_Effects = {

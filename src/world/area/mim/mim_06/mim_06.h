@@ -26,4 +26,3 @@ extern EvtScript EVS_SetupGates;
 extern EvtScript EVS_SetupMusic;
 extern EvtScript EVS_SetupFlowerHints;
 extern NpcGroupList DefaultNPCs;
-

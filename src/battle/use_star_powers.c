@@ -106,8 +106,7 @@ API_CALLABLE(LoadStarPowerScript) {
 
     playerData->starPower -= gMoveTable[battleStatus->selectedMoveID].costFP * SP_PER_BAR;
     starPowerIdx = battleStatus->moveArgument;
-    ASSERT_MSG((u32)starPowerIdx < ARRAY_COUNT(StarPowersTable),
-               "Invalid star power index %d", (int)starPowerIdx);
+    ASSERT_MSG((u32) starPowerIdx < ARRAY_COUNT(StarPowersTable), "Invalid star power index %d", (int) starPowerIdx);
     script->varTablePtr[0] = load_battle_script(&StarPowersTable[starPowerIdx]);
     return ApiStatus_DONE2;
 }

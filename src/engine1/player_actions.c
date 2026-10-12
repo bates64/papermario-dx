@@ -31,19 +31,16 @@ void unload_player_action(void) {
 }
 
 static void load_player_action(Action* action) {
-    ASSERT_MSG(action->entry != nullptr, "Action state %d has no entry point",
-               (int)gPlayerStatus.actionState);
+    ASSERT_MSG(action->entry != nullptr, "Action state %d has no entry point", (int) gPlayerStatus.actionState);
 
-    if (CurrentActionOverlay == nullptr ||
-        strcmp(CurrentActionFamily, action->family) != 0) {
+    if (CurrentActionOverlay == nullptr || strcmp(CurrentActionFamily, action->family) != 0) {
         unload_player_action();
         CurrentActionOverlay = ovl_load(action->family, OVL_ACTION);
         CurrentActionFamily = action->family;
     }
 
     CurrentActionUpdate = ovl_import(CurrentActionOverlay, action->entry);
-    ASSERT_MSG(CurrentActionUpdate != nullptr, "Action overlay '%s' has no export '%s'",
-               action->family, action->entry);
+    ASSERT_MSG(CurrentActionUpdate != nullptr, "Action overlay '%s' has no export '%s'", action->family, action->entry);
 }
 
 void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
@@ -66,7 +63,9 @@ s32 phys_adjust_cam_on_landing(void) {
         } else {
             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
         }
-    } else if (gPartnerStatus.actingPartner == PARTNER_PARAKARRY && gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
+    } else if (gPartnerStatus.actingPartner == PARTNER_PARAKARRY
+               && gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)
+    {
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_NO_INTERP_Y;
     } else {
         gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
@@ -167,7 +166,9 @@ void phys_update_action_state(void) {
                 cond = false;
             }
 
-            if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
+            if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED)
+                && cond)
+            {
                 set_action_state(ACTION_STATE_TALK);
             }
             check_input_spin();
@@ -371,14 +372,13 @@ b32 check_input_jump(void) {
         return false;
     }
 
-    surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+    surfaceType = get_collider_flags((u16) gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
         return false;
     }
 
-    if (collisionStatus->touchingWallTrigger != 0 ||
-        (playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE |
-                                    PA_FLAG_INTERACT_PROMPT_AVAILABLE)))
+    if (collisionStatus->touchingWallTrigger != 0
+        || (playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE | PA_FLAG_INTERACT_PROMPT_AVAILABLE)))
     {
         return false;
     }
@@ -388,9 +388,8 @@ b32 check_input_jump(void) {
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
             if ((entity->script.source == nullptr) || (entity->flags & ENTITY_FLAG_4000)) {
-                if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
-                    entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
-                    entity->type == ENTITY_TYPE_TRUMPET_PLANT)
+                if (entity->type == ENTITY_TYPE_PINK_FLOWER || entity->type == ENTITY_TYPE_BELLBELL_PLANT
+                    || entity->type == ENTITY_TYPE_TRUMPET_PLANT)
                 {
                     return false;
                 }

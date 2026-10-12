@@ -234,7 +234,7 @@ API_CALLABLE(HuffPuffBreath) {
     s32 var8 = evt_get_variable(script, *args++);
     EffectInstance* effect = fx_huff_puff_breath(var1, var2, var3, var4, var5, var6, var7, var8);
 
-    evt_set_variable(script, *args++, (s32)effect);
+    evt_set_variable(script, *args++, (s32) effect);
     return ApiStatus_DONE2;
 }
 
@@ -255,7 +255,7 @@ API_CALLABLE(MakeSnakingStatic) {
 
 API_CALLABLE(SetSnakingStaticPos) {
     Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
     f32 posX = evt_get_float_variable(script, *args++);
     f32 posY = evt_get_float_variable(script, *args++);
     f32 posZ = evt_get_float_variable(script, *args++);
@@ -1630,10 +1630,10 @@ EvtScript EVS_Move_HealOrSlam = {
 
     Label(0)
     IsScriptRunning(LVar7, LVar0)
-        Wait(1)
-        IfEq(LVar0, 1)
-            Goto(0)
-        EndIf
+    Wait(1)
+    IfEq(LVar0, 1)
+        Goto(0)
+    EndIf
     Call(RemoveEffect, LVar8)
     Call(StopSound, SOUND_HUFF_N_PUFF_INHALE)
     Call(StopSound, SOUND_BIG_POWER_UP)
