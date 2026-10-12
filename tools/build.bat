@@ -14,17 +14,17 @@ set "AWS_SHARED_CREDENTIALS_FILE=%ROOT%\.dx\sccache-credentials"
 set "SCCACHE_BASEDIRS=%ROOT%"
 set "SCCACHE_SKIP_CACHE_CHECK=1"
 
-:: Set up PATH
+rem Set up PATH
 set "PATH=%TOOLCHAIN_DIR%\bin;%TOOLCHAIN_DIR%\python;%PATH%"
 set "PYTHONUTF8=1"
 
-:: Configure if needed
+rem Configure if needed
 if not exist build.ninja (
     echo Running configure...
     python.exe tools\build\configure.py
     if errorlevel 1 exit /b 1
 )
 
-:: Build
+rem Build
 echo Building...
 ninja.exe %*
