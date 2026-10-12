@@ -4,10 +4,17 @@
 # made for releases only. The configure script uses the newest commit's index
 # that exists, so other commits use their release's.
 #
+# A release is pushed as a branch and a tag together, which starts only one
+# pipeline, so this runs for every push to main or a release branch and each
+# step does nothing unless the commit is tagged as a release. Run it by hand to
+# make the index for any commit.
+#
 # Each step skips itself outside dx's own repository, such as in a mod, which
 # carries dx's history and so this workflow.
 
 when:
+  - event: ["push"]
+    branch: ["main", "release/*"]
   - event: ["push"]
     tag: ["dx-*"]
   - event: ["manual"]
@@ -27,6 +34,7 @@ steps:
   - name: "Configure Nix"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      [ "${TANGLED_PIPELINE_KIND:-}" = manual ] || [ -n "$(git tag --points-at HEAD --list 'dx-*')" ] || exit 0
       cat >> /etc/nix/nix.conf <<EOT
       accept-flake-config = true
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
@@ -40,12 +48,14 @@ steps:
   - name: "Fetch base ROM"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      [ "${TANGLED_PIPELINE_KIND:-}" = manual ] || [ -n "$(git tag --points-at HEAD --list 'dx-*')" ] || exit 0
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
   - name: "Build and publish the clangd index"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      [ "${TANGLED_PIPELINE_KIND:-}" = manual ] || [ -n "$(git tag --points-at HEAD --list 'dx-*')" ] || exit 0
       set -euo pipefail
       nix build .#packages.x86_64-linux.clangd-index --out-link result-clangd-index
       S3_ENDPOINT="https://fsn1.your-objectstorage.com" \

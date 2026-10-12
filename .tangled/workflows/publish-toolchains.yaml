@@ -8,9 +8,10 @@
 # carries dx's history and so this workflow.
 
 when:
+  # A release is pushed as a branch and a tag together, which starts only one
+  # pipeline, so its patch branches are listed as well as its tags.
   - event: ["push"]
-    branch: ["main"]
-  # Each release's commit, which for a patch is only on its release branch.
+    branch: ["main", "release/*"]
   - event: ["push"]
     tag: ["dx-*"]
 
