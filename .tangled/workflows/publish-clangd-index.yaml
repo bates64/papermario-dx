@@ -1,0 +1,52 @@
+# Builds the clangd index for a release and publishes it to S3, where the
+# configure script finds it. The index comes from a full build of the game on
+# x86_64, which this host only has under emulation, so it takes hours and is
+# made for releases only. The configure script uses the newest commit's index
+# that exists, so other commits use their release's.
+#
+# Each step skips itself outside dx's own repository, such as in a mod, which
+# carries dx's history and so this workflow.
+
+when:
+  - event: ["push"]
+    tag: ["dx-*"]
+  - event: ["manual"]
+
+engine: nixery
+
+dependencies:
+  nixpkgs:
+    - nix
+    - attic-client
+    - awscli2
+    - git
+    - bash
+    - coreutils
+
+steps:
+  - name: "Configure Nix"
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      cat >> /etc/nix/nix.conf <<EOT
+      accept-flake-config = true
+      extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
+      extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
+      extra-platforms = x86_64-linux
+      download-buffer-size = 536870912
+      EOT
+      mkdir -p /usr/bin
+      ln -sf "$(command -v env)" /usr/bin/env
+
+  - name: "Fetch base ROM"
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
+        /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
+
+  - name: "Build and publish the clangd index"
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      set -euo pipefail
+      nix build .#packages.x86_64-linux.clangd-index --out-link result-clangd-index
+      S3_ENDPOINT="https://fsn1.your-objectstorage.com" \
+        tools/publish_toolchain.sh result-clangd-index/papermario-dx.idx clangd-index idx
