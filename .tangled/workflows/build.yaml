@@ -4,7 +4,9 @@
 when:
   - event: ["push"]
     branch: ["main"]
+  # A pull_request trigger matches only the target branches it names.
   - event: ["pull_request"]
+    branch: ["main", "release/*"]
 
 engine: nixery
 
