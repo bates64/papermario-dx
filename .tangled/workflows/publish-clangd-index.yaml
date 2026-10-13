@@ -1,8 +1,9 @@
 # Builds the clangd index for a release and publishes it to S3, where the
-# configure script finds it. The index comes from a full build of the game on
-# x86_64, which this host only has under emulation, so it takes hours and is
-# made for releases only. The configure script uses the newest commit's index
-# that exists, so other commits use their release's.
+# configure script finds it. The index comes from a full build of the game, with
+# no build cache, so it takes a while and is made for releases only. The
+# configure script uses the newest commit's index that exists, so other commits
+# use their release's. The first run also builds clangd-indexer from source,
+# which takes hours; Attic keeps it after that.
 #
 # A release is pushed as a branch and a tag together, which starts only one
 # pipeline, so this runs for every push to main or a release branch and each
@@ -39,7 +40,6 @@ steps:
       accept-flake-config = true
       extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
       extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
-      extra-platforms = x86_64-linux
       download-buffer-size = 536870912
       EOT
       mkdir -p /usr/bin
@@ -52,11 +52,22 @@ steps:
       nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
+  - name: "Build clangd-indexer"
+    # Its own step, so the cache has it even if the index build fails.
+    command: |
+      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
+      [ "${TANGLED_PIPELINE_KIND:-}" = manual ] || [ -n "$(git tag --points-at HEAD --list 'dx-*')" ] || exit 0
+      set -euo pipefail
+      attic login spindle https://spindle-nix-cache.starhaven.dev "$ATTIC_TOKEN"
+      attic watch-store spindle:papermario-dx &
+      nix build .#clangd-indexer --out-link result-clangd-indexer
+      attic push spindle:papermario-dx result-clangd-indexer
+
   - name: "Build and publish the clangd index"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       [ "${TANGLED_PIPELINE_KIND:-}" = manual ] || [ -n "$(git tag --points-at HEAD --list 'dx-*')" ] || exit 0
       set -euo pipefail
-      nix build .#packages.x86_64-linux.clangd-index --out-link result-clangd-index
+      nix build .#clangd-index --out-link result-clangd-index
       S3_ENDPOINT="https://fsn1.your-objectstorage.com" \
         tools/publish_toolchain.sh result-clangd-index/papermario-dx.idx clangd-index idx

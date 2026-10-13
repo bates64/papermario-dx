@@ -143,7 +143,12 @@
         # clangd only loads indexes built by the same version of clangd-indexer.
         llvmVersion = "21.1.8";
         llvmTools = pkgs.callPackage ./tools/llvm.nix { version = llvmVersion; };
-        clangdIndexingTools = pkgs.callPackage ./tools/clangd.nix { version = llvmVersion; archive = "clangd_indexing_tools"; };
+        # clangd's release has these for x86_64 only; elsewhere they are built.
+        clangdIndexer = pkgs.callPackage ./tools/clangd-indexer.nix { version = llvmVersion; };
+        clangdIndexingTools =
+          if system == "x86_64-linux"
+          then pkgs.callPackage ./tools/clangd.nix { version = llvmVersion; archive = "clangd_indexing_tools"; }
+          else clangdIndexer;
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
           nativeBuildInputs = [
             pkgsCross.stdenv.cc
@@ -201,12 +206,13 @@
           # Cross-compiled, so the one Linux machine that publishes toolchains
           # builds every platform's.
           windows-toolchain = windowsToolchain;
+          clangd-index = clangdIndex;
+          clangd-indexer = clangdIndexer;
           macos-aarch64-toolchain = macosToolchain "aarch64";
           macos-x86_64-toolchain = macosToolchain "x86_64";
           macos-aarch64-gcc = (macosToolchain "aarch64").passthru.mips-gcc;
         } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           windows-rom = windowsToolchain.passthru.wineRom;
-          clangd-index = clangdIndex;
         };
 
         checks = pkgs.lib.optionalAttrs (system == "x86_64-linux") {
