@@ -75,7 +75,6 @@ def compile_command(compiler: str, version: str, source_rel: Path, object_path: 
         "-Wno-builtin-declaration-mismatch",
         f"-Iver/{version}/include",
         f"-Iver/{version}/build/include",
-        "-Iinclude",
         "-Isrc",
         f"-Iassets/{version}",
         "-D_FINALROM",

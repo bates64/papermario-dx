@@ -13,8 +13,6 @@ Here are the important files and folders in a Paper Mario DX mod.
     - … 
   - us Assets dumped from the baserom (**do not edit**)
     - …
-- include C headers
-  - …
 - src Your mod's code and assets
   - dx
     - **config.h** Mod configuration
@@ -52,9 +50,9 @@ folder under `src/sprite/npc/`. Refer to sprites and their animations by the nam
 `ANIM_Goomba_Idle` from `sprite/npc/Goomba.h`, never by number: sprite IDs follow the sprites' names in alphabetical
 order, so they change when you add or remove one.
 
-## The `src` and `include` folders
+## The `src` folder
 
-These folders contain C code for the game engine. You can edit it freely, just note that you may get merge conflicts
+This folder contains C code for the game engine. You can edit it freely, just note that you may get merge conflicts
 when updating to a new version of DX.
 
 ## The `dx/config.h` file

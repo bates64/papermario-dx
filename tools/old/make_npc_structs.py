@@ -24,7 +24,7 @@ def get_constants():
         CONSTANTS[enum] = {}
     CONSTANTS["NPC_SPRITE"] = {}
 
-    include_path = Path(Path(__file__).resolve().parent.parent / "include")
+    include_path = Path(Path(__file__).resolve().parent.parent / "src")
     enums = Path(include_path / "enums.h").read_text().splitlines()
 
     # defines
@@ -206,8 +206,8 @@ def parse_file(filename):
 
 
 def get_structs():
-    parse_file(Path(Path(__file__).parent.parent / "include" / "map.h"))
-    parse_file(Path(Path(__file__).parent.parent / "include" / "common_structs.h"))
+    parse_file(Path(Path(__file__).parent.parent / "src" / "map.h"))
+    parse_file(Path(Path(__file__).parent.parent / "src" / "common_structs.h"))
 
 
 def get_vals(fd, offset, var):

@@ -55,7 +55,6 @@ def main() -> int:
         "-DDEBUG",
         "-Iver/us/include",
         "-Iver/us/build/include",
-        "-Iinclude",
         "-Isrc",
         "-Iassets/us",
         "-include",

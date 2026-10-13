@@ -143,7 +143,7 @@ def browse_header(valid_enums, enums):
     return
 
 
-# Grab CONSTANTS from the include/ folder to save manual work
+# Grab CONSTANTS from the src/ folder to save manual work
 CONSTANTS = {}
 SWITCH_TYPES = []
 LOCAL_WORDS = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -203,7 +203,7 @@ def get_constants():
 
     [SAVE_VARS.add(x) for x in ["GB_WorldLocation", "GB_StoryProgress"]]
 
-    include_path = Path(Path(__file__).resolve().parent.parent / "include")
+    include_path = Path(Path(__file__).resolve().parent.parent / "src")
     enums = Path(include_path / "enums.h").read_text().splitlines()
     browse_header(valid_enums, enums)
     enums = Path(include_path / "effects.h").read_text().splitlines()

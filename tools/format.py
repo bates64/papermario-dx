@@ -65,14 +65,13 @@ class BlockKind(Enum):
 
 INDENT = "    "
 
-# Paths left unformatted, relative to the repository root: generated map
-# headers, vendored libultra and nusys, animation data (which clang-format can
+# Paths left unformatted, relative to the repository root: vendored libultra
+# and nusys, animation data (which clang-format can
 # take gigabytes of memory to format), entity model data (whose 4x4 matrices
 # are laid out as grids), and a vendored host tool.
 EXCLUDED_PATHS = (
-    "include/mapfs/",
-    "include/PR/",
-    "include/nu/",
+    "src/PR/",
+    "src/nu/",
     "src/os/",
     "src/entity/model/",
     "src/world/area/dgb/dgb_01/smash_bridges/mtx.inc.c",

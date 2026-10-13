@@ -192,7 +192,7 @@ let
     # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot
     mkdir -p $dir/mips-linux-gnu/sys-include
     cp -rL ${mipsGlibcDev}/include/* $dir/mips-linux-gnu/sys-include/
-    # libstdc++ headers (type_traits, etc.) needed by include/common.hpp. The
+    # libstdc++ headers (type_traits, etc.) needed by src/common.hpp. The
     # Windows GCC is a Canadian cross and cannot build target libraries itself,
     # so take them from the native cross-compiler, which is the same GCC for
     # the same target. They go in GCC's C++ search path,

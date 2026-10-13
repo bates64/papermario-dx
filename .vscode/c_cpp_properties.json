@@ -6,12 +6,10 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "${workspaceFolder}/include",
                     "${workspaceFolder}/src"
                 ]
             },
             "includePath": [
-                "${workspaceFolder}/include",
                 "${workspaceFolder}/ver/us/build/include",
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/assets/us"

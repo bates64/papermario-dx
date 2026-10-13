@@ -241,9 +241,8 @@ def find_structs(names: list[str], paths: list[Path]) -> dict[str, list[StructIn
 
 def source_paths() -> list[Path]:
     paths: list[Path] = []
-    for dirname in ["include", "src"]:
-        paths.extend((root_dir / dirname).rglob("*.h"))
-        paths.extend((root_dir / dirname).rglob("*.c"))
+    for suffix in ("*.h", "*.c"):
+        paths.extend((root_dir / "src").rglob(suffix))
     return sorted(set(paths))
 
 
@@ -312,7 +311,6 @@ def compile_probe(
             "-I.",
             "-Iver/us/include",
             "-Iver/us/build/include",
-            "-Iinclude",
             "-Isrc",
             "-Iassets/us",
             *iquotes,
@@ -457,7 +455,7 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tup
 
 
 # Vendored headers, whose comments come from their SDKs.
-AUDIT_ALL_EXCLUDED = ("include/PR/", "include/nu/")
+AUDIT_ALL_EXCLUDED = ("src/PR/", "src/nu/")
 
 
 def audit_all(args) -> int:
@@ -510,7 +508,7 @@ def main() -> int:
         help="audit every struct with offset or size comments in a header, printing only problems",
     )
     parser.add_argument("--include", action="append", default=[], help="extra file to include in the probe")
-    parser.add_argument("--file", action="append", default=[], help="source/header file to search instead of all include/src files")
+    parser.add_argument("--file", action="append", default=[], help="source/header file to search instead of all src files")
     parser.add_argument("--no-compare", action="store_true", help="only print compiler layout values")
     parser.add_argument("--cc", default="mips-linux-gnu-gcc", help="compiler to use")
     parser.add_argument("--objcopy", default="mips-linux-gnu-objcopy", help="objcopy to use")

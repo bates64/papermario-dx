@@ -56,7 +56,7 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
-# Animation IDs hold a 12-bit sprite ID, from 1. See SpriteIDFields in include/sprite.h.
+# Animation IDs hold a 12-bit sprite ID, from 1. See SpriteIDFields in src/sprite.h.
 MAX_NPC_SPRITES = 0xFFF
 
 if shutil.which("n64crc"):
@@ -64,7 +64,7 @@ if shutil.which("n64crc"):
 else:
     CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
-SOURCE_DIRS = ["src", "include", "assets"]
+SOURCE_DIRS = ["src", "assets"]
 
 # Serialized overlay type indices. These must match OverlayType in
 # src/dx/overlay.h.
@@ -83,7 +83,7 @@ OVL_TYPE_ENTITY = 11
 
 # The size of a name, with its terminator: an overlay's (OVL_NAME_MAX in
 # src/dx/overlay.h) and one in the map filesystem (ASSET_NAME_MAX in
-# include/map.h). A map's or a stage's name has to fit the second as its
+# src/map.h). A map's or a stage's name has to fit the second as its
 # geometry's, as in w_kmr_02_shape.
 OVL_NAME_MAX = 64
 ASSET_NAME_MAX = 32
@@ -238,7 +238,7 @@ IGNORED_ASSET_NAMES = {
     "map.backup.xml",
 }
 # Files in an asset layer that are code or configuration rather than assets.
-NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".hpp", ".ld", ".yaml", ".md")
+NOT_ASSETS = (".c", ".cpp", ".s", ".h", ".hpp", ".inc", ".ld", ".yaml", ".md")
 
 
 def _repo_paths(entries) -> List[str]:
@@ -441,7 +441,7 @@ def write_ninja_rules(
     BFDNAME = "elf32-tradbigmips"
 
     CPPFLAGS_COMMON = (
-        "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_FINALROM "
+        "-Iver/$version/include -Iver/$version/build/include -Isrc -Iassets/$version -D_FINALROM "
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
     )
 
@@ -1404,7 +1404,7 @@ class Configure:
                 posix(self.map_build_dir() / f"{name}_{part}.h") for name in sources for part in ["shape", "hit"]
             ],
             # Star Rod checks battle stages against SHAPE_SIZE_LIMIT in model.h.
-            implicit_deps=[Path("include/model.h")],
+            implicit_deps=[Path("src/model.h")],
         )
 
         # The code includes a map's IDs as map.xml.h and a stage's as
@@ -1935,7 +1935,7 @@ class Configure:
         cxx_precompiled_header_path = self.build_path() / "pch" / "common.hpp.gch"
         for pch in [precompiled_header_path, cxx_precompiled_header_path]:
             forwarder = ROOT / pch.with_suffix("")
-            target = os.path.relpath(ROOT / "include" / forwarder.name, forwarder.parent)
+            target = os.path.relpath(ROOT / "src" / forwarder.name, forwarder.parent)
             text = f'#include "{posix(target)}"\n'
             # Rewriting it unchanged would rebuild every object on each reconfigure.
             if not forwarder.exists() or forwarder.read_text() != text:
@@ -1996,7 +1996,7 @@ class Configure:
                         if object_paths[0] == pch:
                             # Not the forwarder, which would pick up the
                             # previous build of this precompiled header.
-                            pch_header = Path("include") / pch.stem
+                            pch_header = Path("src") / pch.stem
                             # sccache keys on preprocessed output, which hides
                             # line endings and comments, but the precompiled
                             # header records each header's exact bytes to honor
@@ -2511,7 +2511,7 @@ class Configure:
                     # The C++ precompiled header is built without -fvisibility=hidden,
                     # so the types it declares would be more visible than the overlay's
                     # own, which GCC warns about in C++. Include the header as text.
-                    pch_header = Path("include") / "common.hpp"
+                    pch_header = Path("src") / "common.hpp"
                     pch_deps = []
                 else:
                     task = "cc_modern"
@@ -3007,7 +3007,7 @@ if __name__ == "__main__":
 
     configure_deps = configure_input_paths(versions)
 
-    for top in ["src", "include", "assets"]:
+    for top in SOURCE_DIRS:
         for dirpath, dirnames, filenames in os.walk(ROOT / top):
             directory = posix(
                 Path(dirpath).relative_to(ROOT)

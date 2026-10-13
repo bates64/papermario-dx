@@ -1,4 +1,4 @@
-// Keep these values and argument counts in sync with include/evt.h.
+// Keep these values and argument counts in sync with src/evt.h.
 
 pub const MAX_ARGC: u8 = 0xFF;
 pub const MAX_EVAL_ARGS: u8 = 6;

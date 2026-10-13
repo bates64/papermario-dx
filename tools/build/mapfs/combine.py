@@ -5,7 +5,7 @@ from pathlib import Path
 import struct
 
 
-# Each table entry is a name, as long as ASSET_NAME_MAX in include/map.h, then the asset's offset, its size in the
+# Each table entry is a name, as long as ASSET_NAME_MAX in src/map.h, then the asset's offset, its size in the
 # ROM, and its size decompressed.
 NAME_SIZE = 0x20
 ENTRY_SIZE = NAME_SIZE + 0xC

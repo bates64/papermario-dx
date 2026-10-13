@@ -110,7 +110,6 @@ def run_probe(
             "-I.",
             "-Iver/us/include",
             "-Iver/us/build/include",
-            "-Iinclude",
             "-Isrc",
             "-Iassets/us",
             "-D_FINALROM",
@@ -419,7 +418,7 @@ def unified_diff(path: Path, old_lines: list[str], new_lines: list[str]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Format one struct definition using compiler-verified layout values.")
     parser.add_argument("struct", help="struct typedef/tag name to format, e.g. Camera")
-    parser.add_argument("--file", action="append", default=[], help="source/header file to search instead of all include/src files")
+    parser.add_argument("--file", action="append", default=[], help="source/header file to search instead of all src files")
     parser.add_argument("--include", action="append", default=[], help='emit extra #include "..." lines before probing layout')
     parser.add_argument("--skip-padding", action="store_true", help="leave implicit padding gaps alone")
     parser.add_argument("--print", action="store_true", dest="print_struct", help="print the formatted struct instead of modifying the source file")

@@ -9,7 +9,6 @@ from ahocorasick_rs import *
 script_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.join(script_dir, "..")
 src_dir = os.path.join(root_dir, "src")
-include_dir = os.path.join(root_dir, "include")
 asm_dir = os.path.join(root_dir, "ver", "us", "asm")
 
 renames = {}
@@ -87,14 +86,6 @@ def apply_renames(file_path: str):
     for f_path in tqdm(c_files):
         if f_path.endswith(".c") or f_path.endswith(".h") or f_path.endswith(".yaml"):
             handle_file(f_path, True)
-
-    # Walk through include files and rename stuff
-    print("Walking through include files")
-    for root, dirs, files in os.walk(include_dir):
-        for f_name in files:
-            f_path = os.path.join(root, f_name)
-
-            handle_file(f_path)
 
     # Delete old versions of newly saved files
     print("Deleting old files")

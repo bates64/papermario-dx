@@ -5,16 +5,15 @@
         120
     ],
     "clang-tidy.compilerArgs": [
-        "-Iinclude",
-        "-Iinclude/PR",
-        "-Iver/current/build/include",
         "-Isrc",
+        "-Isrc/PR",
+        "-Iver/current/build/include",
         "-D_LANGUAGE_C",
         "-Wall"
     ],
     "clang-tidy.blacklist": [
-        "include/PR",
-        "include/gcc"
+        "src/PR",
+        "src/gcc"
     ],
     "git.ignoreLimitWarning": true,
     "search.exclude": {

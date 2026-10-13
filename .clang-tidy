@@ -62,6 +62,6 @@ CheckOptions:
   - key: readability-identifier-naming.MemberIgnoredRegexp
     value: '^((unk|pad|unused)_.*|anim_[0-9A-F]|[A-Z]{1,2}[0-9]?[a-z]{0,2})$'
 
-# Ignore include/PR/ (libultra) and include/nu/ (nusys)
-HeaderFilterRegex: '(src|include)/.*\.h'
-ExcludeHeaderFilterRegex: 'include/(PR|nu)/'
+# Ignore src/PR/ (libultra) and src/nu/ (nusys)
+HeaderFilterRegex: 'src/.*\.h'
+ExcludeHeaderFilterRegex: 'src/(PR|nu)/'
