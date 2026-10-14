@@ -75,6 +75,13 @@ steps:
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       cachix push papermario-dx ./dev-profile
 
+  - name: "Check formatting"
+    # Needs only the development shell, so a formatting failure shows up
+    # before the slow build steps run.
+    command: |
+      git ls-files -z '*.c' '*.cpp' '*.h' '*.hpp' |
+        nix develop --command xargs -0 -n 100 -P "$(nproc)" python3 tools/format.py --check
+
   - name: "Configure"
     command: |
       nix develop --command ./tools/configure.sh
@@ -130,20 +137,6 @@ steps:
       echo "Development shell ROM: $expected"
       echo "Toolchain ROM:         $actual"
       [ "$expected" = "$actual" ]
-
-  - name: "Check formatting"
-    # spindle's checkout is a single-commit shallow clone with no shared
-    # history with the target branch, so this diffs trees directly (two-dot)
-    # rather than from a merge base (three-dot). It is advisory only, since a
-    # formatting nit shouldn't block a build.
-    command: |
-      if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
-        git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
-        files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
-        if [ -n "$files" ]; then
-          nix develop --command bash -c 'echo "$1" | xargs python3 tools/format.py --check' _ "$files" || true
-        fi
-      fi
 
   - name: "Run clang-tidy"
     command: |
