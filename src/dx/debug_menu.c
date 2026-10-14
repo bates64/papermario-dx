@@ -49,7 +49,9 @@ enum DebugMenuStates {
     DBM_SELECT_BATTLE,
     DBM_SET_STORY,
     DBM_SOUND_PLAYER,
-        DBM_SELECT_SOUND,
+        DBM_SOUND_EFFECTS,
+            DBM_SELECT_SOUND,
+        DBM_SELECT_MUSIC,
     DBM_EDIT_PARTNERS,
     DBM_EDIT_INVENTORY,
         DBM_INV_EDIT_ITEMS,
@@ -511,6 +513,8 @@ void dx_debug_update_select_entry();
 void dx_debug_update_select_battle();
 void dx_debug_update_edit_progress();
 void dx_debug_update_sound_player();
+void dx_debug_update_sound_effects();
+void dx_debug_update_select_music();
 void dx_debug_update_select_sound();
 void dx_debug_update_edit_partners();
 void dx_debug_update_edit_inventory();
@@ -560,8 +564,8 @@ void dx_debug_menu_main() {
     }
 
     if (DebugMenuState != DBM_NONE) {
-        // main menu is always drawn if the debug menu is open at all
-        if (DebugMenuState < DBM_EVT_MAIN) {
+        // Hide the main menu behind full-width browsers.
+        if (DebugMenuState < DBM_EVT_MAIN && DebugMenuState != DBM_SELECT_MUSIC) {
             dx_debug_draw_main_menu();
         }
 
@@ -591,6 +595,12 @@ void dx_debug_menu_main() {
                 break;
             case DBM_SOUND_PLAYER:
                 dx_debug_update_sound_player();
+                break;
+            case DBM_SOUND_EFFECTS:
+                dx_debug_update_sound_effects();
+                break;
+            case DBM_SELECT_MUSIC:
+                dx_debug_update_select_music();
                 break;
             case DBM_SELECT_SOUND:
                 dx_debug_update_select_sound();
@@ -1297,6 +1307,27 @@ void dx_debug_update_edit_progress() {
 // ----------------------------------------------------------------------------
 // sound player
 
+static s32 AudioSectionMenuPos = 0;
+
+void dx_debug_update_sound_player() {
+    AudioSectionMenuPos = dx_debug_menu_nav_1D_vertical(AudioSectionMenuPos, 0, 1, false);
+    if (RELEASED(BUTTON_L)) {
+        DebugMenuState = DBM_MAIN_MENU;
+    } else if (RELEASED(BUTTON_R)) {
+        DebugMenuState = AudioSectionMenuPos == 0 ? DBM_SOUND_EFFECTS : DBM_SELECT_MUSIC;
+    }
+
+    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 75, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
+    dx_debug_draw_ascii(
+        "Sound", AudioSectionMenuPos == 0 ? HighlightColor : DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight
+    );
+    dx_debug_draw_ascii(
+        "Music", AudioSectionMenuPos == 1 ? HighlightColor : DefaultColor, SubmenuPosX, SubmenuPosY + 2 * RowHeight
+    );
+}
+
+#include "debug_music.inc.c"
+
 DebugMenuEntry DebugSoundPlayerMenu[] = {
     { "Play Sound", nullptr, DBM_SELECT_SOUND },
     { "Stop Sound", nullptr, DBM_SELECT_SOUND },
@@ -1321,12 +1352,12 @@ void dx_debug_draw_sound_player(b32 activeMenu) {
     }
 }
 
-void dx_debug_update_sound_player() {
+void dx_debug_update_sound_effects() {
     // handle input
     SoundPlayerMenuPos =
         dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
-        DebugMenuState = DBM_MAIN_MENU;
+        DebugMenuState = DBM_SOUND_PLAYER;
     } else if (RELEASED(BUTTON_R)) {
         DebugMenuState = DBM_SELECT_SOUND;
     }
@@ -1344,7 +1375,7 @@ DebugEditableNumber DebugSoundID = {
 void dx_debug_update_select_sound() {
     // handle input
     if (RELEASED(BUTTON_L)) {
-        DebugMenuState = DBM_SOUND_PLAYER;
+        DebugMenuState = DBM_SOUND_EFFECTS;
     } else if (RELEASED(BUTTON_R)) {
         if (SoundPlayerMenuPos == 0) {
             sfx_play_sound(dx_debug_get_editable_num(&DebugSoundID) & 0xFFFF);

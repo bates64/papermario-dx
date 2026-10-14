@@ -12,6 +12,9 @@
   - `copy_27FEE22.bin`
 - Overlays are stored more efficiently, saving 0.91 MB of ROM space.
 - Formatting a `.c`, `.h`, `.cpp` or `.hpp` file fixes its struct offset and size comments, once the project has been built.
+- The debug Sound Player now includes a named Music browser with play/stop and
+  paging controls. Its catalog follows the generated song IDs. Existing sound
+  effect controls are available under Sound.
 
 ## 2026-10-12
 

@@ -755,6 +755,22 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "check_debug_music",
+        description="Testing the debug music catalog and browser",
+        command=(
+            "$python tools/test/debug_music_catalog.py && "
+            '$python tools/test/debug_music_browser.py --include-dir "$include_dir" $vanilla'
+        ),
+    )
+
+    ninja.rule(
+        "debug_music_catalog",
+        description="Generating debug music catalog",
+        command=f"$python {BUILD_TOOLS}/debug_music_catalog.py $in $out",
+        restat=True,
+    )
+
+    ninja.rule(
         "flips",
         description="Creating patch file",
         command=f"$python -c \"import subprocess;subprocess.run(['flips','$baserom','$in','$out'])\"",
@@ -1175,6 +1191,12 @@ class Configure:
             ],
             implicit_deps=audio_sources,
         )
+        build(
+            audio_dir / "debug_music_catalog.h",
+            [audio_dir / "song_ids.h"],
+            "debug_music_catalog",
+            implicit_deps=[BUILD_TOOLS / "debug_music_catalog.py"],
+        )
         audio_obj = self.build_path() / version_assets / "audio.sbn.o"
         build(audio_obj, [audio_sbn], "bin")
         self.register_asset(audio_obj)
@@ -1187,8 +1209,23 @@ class Configure:
                 "baserom": posix(self.baserom_path()),
             },
         )
-        # Only an unmodified build's audio matches the baserom's.
-        ninja.build("verify_audio", "phony", posix(self.build_path() / "audio_verified.stamp"))
+        # These test targets deliberately produce no file, so each invocation
+        # recompiles the host harness against the current production sources.
+        # Keep native compiler/sanitizer requirements out of normal ROM builds.
+        for target, vanilla in [("test_debug_music", ""), ("verify_debug_music", "--vanilla")]:
+            ninja.build(
+                target,
+                "check_debug_music",
+                order_only=["generated_code_" + self.version],
+                variables={"include_dir": posix(audio_dir.parent), "vanilla": vanilla},
+            )
+        # Only an unmodified build's audio matches the baserom's. CI invokes
+        # this target, including the browser tests with vanilla catalog checks.
+        ninja.build(
+            "verify_audio",
+            "phony",
+            [posix(self.build_path() / "audio_verified.stamp"), "verify_debug_music"],
+        )
 
         # Each animation is reached by name from a table in the engine, so the
         # order these are emitted in only decides where they sit.
