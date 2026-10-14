@@ -1,5 +1,7 @@
-# Each step skips itself outside dx's own repository, such as in a mod, which
-# carries dx's history and so this workflow.
+# Pulls from forks run here too. They get only the FORK_* secrets, so they read
+# the Attic cache with FORK_ATTIC_TOKEN, which can't push. The steps that push
+# to a cache skip themselves outside dx's own repository, including in a mod on
+# this spindle, which carries dx's history and so this workflow.
 
 when:
   - event: ["push"]
@@ -31,10 +33,9 @@ steps:
     # priority number - otherwise nix falls back to each cache's own
     # self-advertised priority, which doesn't reflect network distance.
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       cat >> /etc/nix/nix.conf <<EOF
       accept-flake-config = true
-      extra-substituters = https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
+      extra-substituters = https://spindle:${FORK_ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx?priority=1
       extra-trusted-public-keys = papermario-dx:CnZCdSGA4n/b2AtneJYjPd/yAvfLPAdtlvkIs8sjrQQ=
       download-buffer-size = 536870912
       EOF
@@ -44,7 +45,6 @@ steps:
     # #!/usr/bin/env shebang (used throughout the build, not just by us)
     # can't be exec'd directly. coreutils provides env, just not at that path.
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       mkdir -p /usr/bin
       ln -sf "$(command -v env)" /usr/bin/env
 
@@ -53,13 +53,11 @@ steps:
     # substituter for this path itself. Placing it in the local store first
     # (rather than relying on substitution) satisfies the check.
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
-      nix copy --from "https://spindle:${ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
+      nix copy --from "https://spindle:${FORK_ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx" \
         /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64
 
   - name: "Build shell"
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix develop --profile ./dev-profile --command true
 
   - name: "Push to Attic"
@@ -79,12 +77,10 @@ steps:
 
   - name: "Configure"
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix develop --command ./tools/configure.sh
 
   - name: "Build game"
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix develop --command tools/build_without_warnings.sh
 
   - name: "Verify audio"
@@ -96,10 +92,11 @@ steps:
     # on the machine that publishes them. Paths from earlier runs come from
     # the cache.
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       # Caches each build as it finishes, so a run that fails later still saves
       # the next one rebuilding it.
-      attic watch-store spindle:papermario-dx &
+      if [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ]; then
+        attic watch-store spindle:papermario-dx &
+      fi
       nix build .#unix-toolchain --out-link result-toolchain
       nix build .#windows-toolchain --out-link result-windows
       nix build .#macos-aarch64-toolchain --out-link result-macos-aarch64
@@ -116,7 +113,6 @@ steps:
     # Builds the game again, in a clean copy, with the downloadable toolchain
     # instead of the development shell. The ROM must be the same.
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       set -euo pipefail
       expected=$(sha256sum ver/us/build/papermario.z64 | cut -d' ' -f1)
       rm -rf ../toolchain-check
@@ -141,7 +137,6 @@ steps:
     # rather than from a merge base (three-dot). It is advisory only, since a
     # formatting nit shouldn't block a build.
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       if [ "$TANGLED_PIPELINE_KIND" = "pull_request" ]; then
         git fetch origin "$TANGLED_PIPELINE_TARGET_BRANCH"
         files=$(git diff --name-only "origin/$TANGLED_PIPELINE_TARGET_BRANCH" HEAD -- '*.c' '*.cpp' '*.h' '*.hpp')
@@ -152,10 +147,8 @@ steps:
 
   - name: "Run clang-tidy"
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix develop --command tools/clang_tidy_all.sh
 
   - name: "Check struct offset comments"
     command: |
-      [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
       nix develop --command python3 tools/audit_struct_layout.py --all
