@@ -1792,9 +1792,7 @@ class Configure:
     def source_cflags(self, src: Path, segment: str, non_matching: bool) -> str:
         parts = src.parts
         libultra = "nusys" in parts or "os" in parts
-        cflags = self.sources_config.cflags(src)
-        if cflags is None:
-            cflags = "" if libultra else "-fforce-addr"
+        cflags = self.sources_config.cflags(src) or ""
         if libultra:
             cflags += (
                 " -Wno-maybe-uninitialized -Wno-inline -Wno-pointer-to-int-cast"
@@ -2496,7 +2494,7 @@ class Configure:
 
     def effect_cflags(self, src_path: Path) -> str:
         """Return the cflags attached to an effect in layout.yaml."""
-        cflags = self.sources_config.cflags(Path(src_path)) or "-fforce-addr"
+        cflags = self.sources_config.cflags(Path(src_path)) or ""
         return cflags.replace("gcc_modern", "").replace("gcc_272", "").strip()
 
     def write_overlays(
