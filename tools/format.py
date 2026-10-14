@@ -40,6 +40,16 @@ Three kinds of code are formatted differently:
 
       - Trailing whitespace stripped
       - Space ensured after commas
+
+  Struct offset and size comments
+    In C and C++ files and headers, wrong /* 0x10 */ offset comments and
+    // size = 0x10 comments are rewritten to match the layout the MIPS
+    compiler gives. A file that doesn't compile on its own, such as any
+    file before the project's first build or a fragment included by
+    another file, keeps its comments as written. --check reports the
+    same changes, so it skips offsets in an unbuilt checkout:
+    tools/audit_struct_layout.py --all fails on a header that doesn't
+    compile instead.
 """
 
 import argparse
@@ -48,6 +58,9 @@ import re
 import subprocess
 import sys
 from enum import Enum, auto
+from pathlib import Path
+
+import audit_struct_layout
 
 
 class BlockKind(Enum):
@@ -631,7 +644,10 @@ def main():
             continue
         with open(path, "r", encoding="utf-8") as f:
             source = f.read()
-        result = format_source(source, path)
+        result = source
+        if path.endswith((".c", ".cpp", ".h", ".hpp")):
+            result = audit_struct_layout.fix_offsets(Path(path), result)
+        result = format_source(result, path)
         if result != source:
             any_changed = True
             if args.check:
