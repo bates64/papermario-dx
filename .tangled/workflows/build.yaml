@@ -102,10 +102,17 @@ steps:
 
   - name: "Check formatting"
     # Needs only the development shell, so a formatting failure shows up
-    # before the slow build steps run.
+    # before the slow build steps run. A pull checks only the files it changes
+    # that still exist, unless it changes how files are formatted.
     command: |
-      git ls-files -z '*.c' '*.cpp' '*.h' '*.hpp' |
-        nix develop --command xargs -0 -n 100 -P "$(nproc)" python3 tools/format.py --check
+      if [ -f /tmp/changed-files ] && ! grep -qxE 'tools/format\.py|\.clang-format|flake\.(nix|lock)' /tmp/changed-files; then
+        grep -E '\.(c|cpp|h|hpp)$' /tmp/changed-files | while IFS= read -r file; do
+          if [ -f "$file" ]; then printf '%s\0' "$file"; fi
+        done
+      else
+        git ls-files -z '*.c' '*.cpp' '*.h' '*.hpp'
+      fi |
+        nix develop --command xargs -0 -r -n 100 -P "$(nproc)" python3 tools/format.py --check
 
   - name: "Configure"
     command: |
