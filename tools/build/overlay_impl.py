@@ -884,9 +884,7 @@ def elf_to_overlay(input_path, output_path):
 
 
 # Overlay directory layout (must match overlay.c)
-OVL_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + debugRomStart + debugRomEnd
-OVL_DIR_CAPACITY = 1024
-OVL_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
+OVL_DIR_MAGIC = 0x4D4F4444  # "MODD"
 
 
 def parse_syms(syms_path):
@@ -984,88 +982,50 @@ def cmd_gen_syms(args):
     write_if_changed(args.script, ("\n".join(lines) + "\n").encode("utf-8"))
 
 
-def get_or_create_overlay_directory(syms, rom_data, type_index=0):
-    """Get or create the overlay directory in the ROM, returning its ROM offset.
-
-    rom_data is a bytearray that is modified in-place.
-
-    ovlDirectoryRomAddr is an array of u32 pointers keyed by overlay type.
-    type_index selects which element to use.
-
-    On first invocation (the pointer is zero), creates the directory at the end
-    of the ROM and patches the pointer. Subsequent invocations read the existing
-    pointer.
-    """
+def overlay_directory_pointer(syms, type_index):
+    """The ROM offset of ovlDirectoryRomAddr[type_index], which holds the ROM
+    address of that overlay type's directory."""
     for name in ("ovlDirectoryRomAddr", "main_VRAM", "main_ROM_START"):
         if name not in syms:
             print(f"error: '{name}' not found in syms file", file=sys.stderr)
             sys.exit(1)
     vma = syms["ovlDirectoryRomAddr"] + type_index * 4
-    base = syms["main_VRAM"]
-    rom_start = syms["main_ROM_START"]
-    ptr_rom_offset = vma - base + rom_start
-
-    dir_rom_addr = struct.unpack(">I", rom_data[ptr_rom_offset : ptr_rom_offset + 4])[0]
-
-    if dir_rom_addr == 0:
-        rom_end = len(rom_data)
-        dir_rom_addr = (rom_end + 15) & ~15
-        padding = dir_rom_addr - rom_end
-
-        rom_data.extend(b"\x00" * padding)
-        rom_data.extend(struct.pack(">II", 0x4D4F4444, 0))  # MODD magic, count=0
-        rom_data.extend(b"\x00" * (OVL_DIR_ENTRY_SIZE * OVL_DIR_CAPACITY))
-
-        struct.pack_into(">I", rom_data, ptr_rom_offset, dir_rom_addr)
-
-    return dir_rom_addr
+    return vma - syms["main_VRAM"] + syms["main_ROM_START"]
 
 
-def apply_overlay(overlay_data, rom_data, name, dir_rom_offset, debug_blob=None):
-    """Apply an overlay to rom_data (bytearray), modifying it in-place.
+def write_overlay_directory(syms, rom_data, type_index, entries):
+    """Appends a directory holding exactly `entries`, which maps each overlay's
+    name to its (romStart, romEnd, debugRomStart, debugRomEnd) in directory
+    order, and points the overlay type at it."""
+    dir_rom_addr = _align(len(rom_data), 16)
+    rom_data.extend(b"\x00" * (dir_rom_addr - len(rom_data)))
+    rom_data.extend(struct.pack(">II", OVL_DIR_MAGIC, len(entries)))
+    for name, ranges in entries.items():
+        if len(name) >= 64:
+            print(f"error: overlay name '{name}' exceeds 63 characters", file=sys.stderr)
+            sys.exit(1)
+        rom_data.extend(name.encode("ascii").ljust(64, b"\x00"))
+        rom_data.extend(struct.pack(">IIII", *ranges))
+    struct.pack_into(">I", rom_data, overlay_directory_pointer(syms, type_index), dir_rom_addr)
+
+
+def append_overlay(rom_data, overlay_data, debug_blob=None):
+    """Appends an overlay and its debug symbols to rom_data (bytearray),
+    returning its directory entry's (romStart, romEnd, debugRomStart, debugRomEnd).
 
     debug_blob is a SYMS blob built with rom_base=0.  String offsets are
     fixed up to the actual placement address.
     """
-    if len(name) >= 64:
-        print(f"error: overlay name '{name}' exceeds 63 characters", file=sys.stderr)
-        sys.exit(1)
-
-    count = struct.unpack(">I", rom_data[dir_rom_offset + 4 : dir_rom_offset + 8])[0]
-    entries_offset = dir_rom_offset + OVL_DIR_HEADER_SIZE
-
-    existing_slot = None
-    for i in range(count):
-        entry_off = entries_offset + i * OVL_DIR_ENTRY_SIZE
-        entry_name = rom_data[entry_off : entry_off + 64]
-        entry_name = entry_name.split(b"\x00", 1)[0].decode("ascii")
-        if entry_name == name:
-            existing_slot = i
-            break
-
-    if existing_slot is not None:
-        slot = existing_slot
-    else:
-        if count >= OVL_DIR_CAPACITY:
-            print("error: max overlays of this type reached", file=sys.stderr)
-            sys.exit(1)
-        slot = count
-        count += 1
-
-    rom_end = len(rom_data)
-    ovl_rom_start = (rom_end + 15) & ~15
-    padding = ovl_rom_start - rom_end
-
-    rom_data.extend(b"\x00" * padding)
+    ovl_rom_start = _align(len(rom_data), 16)
+    rom_data.extend(b"\x00" * (ovl_rom_start - len(rom_data)))
     rom_data.extend(overlay_data)
     overlay_rom_end = ovl_rom_start + len(overlay_data)
 
     debug_rom_start = 0
     debug_rom_end = 0
     if debug_blob:
-        debug_rom_start = (overlay_rom_end + 15) & ~15
-        debug_padding = debug_rom_start - overlay_rom_end
-        rom_data.extend(b"\x00" * debug_padding)
+        debug_rom_start = _align(overlay_rom_end, 16)
+        rom_data.extend(b"\x00" * (debug_rom_start - overlay_rom_end))
         # Fix up string offsets: each symbol entry is 12 bytes (addr, nameOff, fileOff)
         # starting after the 8-byte header.  Add rom_base to non-zero offsets.
         blob = bytearray(debug_blob)
@@ -1080,14 +1040,7 @@ def apply_overlay(overlay_data, rom_data, name, dir_rom_offset, debug_blob=None)
         rom_data.extend(blob)
         debug_rom_end = debug_rom_start + len(blob)
 
-    struct.pack_into(">I", rom_data, dir_rom_offset + 4, count)
-
-    entry_off = entries_offset + slot * OVL_DIR_ENTRY_SIZE
-    name_bytes = name.encode("ascii")
-    rom_data[entry_off : entry_off + 64] = name_bytes + b"\x00" * (64 - len(name_bytes))
-    struct.pack_into(">IIII", rom_data, entry_off + 64,
-                     ovl_rom_start, overlay_rom_end,
-                     debug_rom_start, debug_rom_end)
+    return (ovl_rom_start, overlay_rom_end, debug_rom_start, debug_rom_end)
 
 
 def parse_debug_line(elf):
@@ -1661,32 +1614,6 @@ def write_debug_linker_script(path, obj_paths, elfs, section_map):
         f.write("\n".join(lines) + "\n")
 
 
-def cmd_apply(args):
-    """Subcommand: apply an overlay to a ROM (non-mutating)."""
-
-    syms = parse_syms(args.syms)
-
-    with open(args.input_rom, "rb") as f:
-        rom_data = bytearray(f.read())
-
-    dir_offset = get_or_create_overlay_directory(syms, rom_data, args.type_index)
-
-    with open(args.overlay_file, "rb") as f:
-        overlay_data = f.read()
-
-    debug_blob = None
-    if args.elf:
-        debug_blob = extract_debug_blob(args.elf)
-
-    apply_overlay(overlay_data, rom_data, args.name, dir_offset, debug_blob)
-
-    with open(args.output_rom, "wb") as f:
-        f.write(rom_data)
-
-    n64crc = shutil.which("n64crc") or str(SCRIPT_DIR / "rom" / "n64crc")
-    subprocess.run([n64crc, args.output_rom], check=True)
-
-
 def cmd_apply_all(args):
     """Subcommand: apply all overlays listed in a manifest to a ROM."""
     import json
@@ -1703,18 +1630,13 @@ def cmd_apply_all(args):
     with open(args.input_rom, "rb") as f:
         rom_data = bytearray(f.read())
 
-    dir_offsets = {}
+    directories = {}
     for entry in entries:
         name = entry["name"]
         type_index = entry["type_index"]
         ovl_path = entry["ovl"]
         debug_syms_path = entry.get("debug_syms")
         elf_path = entry.get("elf")
-
-        if type_index not in dir_offsets:
-            dir_offsets[type_index] = get_or_create_overlay_directory(
-                syms, rom_data, type_index
-            )
 
         with open(ovl_path, "rb") as f:
             overlay_data = f.read()
@@ -1729,10 +1651,11 @@ def cmd_apply_all(args):
         elif elf_path:
             debug_blob = extract_debug_blob(elf_path)
 
-        apply_overlay(
-            overlay_data, rom_data,
-            name, dir_offsets[type_index], debug_blob,
-        )
+        directories.setdefault(type_index, {})[name] = append_overlay(rom_data, overlay_data, debug_blob)
+
+    # Written last, so each directory holds exactly its overlays.
+    for type_index, directory in directories.items():
+        write_overlay_directory(syms, rom_data, type_index, directory)
 
     with open(args.output_rom, "wb") as f:
         f.write(rom_data)
@@ -1777,16 +1700,6 @@ def main():
     )
     p_link.add_argument("objects", nargs="+", help="Input .o files")
     p_link.set_defaults(func=cmd_link)
-
-    p_apply = subparsers.add_parser("apply", help="Apply an overlay to a ROM")
-    p_apply.add_argument("input_rom", help="Input ROM file (not modified)")
-    p_apply.add_argument("output_rom", help="Output ROM file")
-    p_apply.add_argument("syms", help="Symbol file (syms.ld)")
-    p_apply.add_argument("name", help="Overlay name")
-    p_apply.add_argument("overlay_file", help="Overlay file (.ovl)")
-    p_apply.add_argument("--type-index", type=int, default=0, help="Overlay type index")
-    p_apply.add_argument("--elf", help="ELF file for debug symbol extraction")
-    p_apply.set_defaults(func=cmd_apply)
 
     p_apply_all = subparsers.add_parser("apply-all", help="Apply all overlays from a manifest")
     p_apply_all.add_argument("input_rom", help="Input ROM file (not modified)")
