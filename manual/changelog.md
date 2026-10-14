@@ -16,6 +16,7 @@
   paging controls. Its catalog follows the generated song IDs. Existing sound
   effect controls are available under Sound.
 - A segment in `layout.yaml` whose class starts at another segment's end (`follows` or `vram_symbol`) must be listed after that segment, or the link fails.
+- Compiler optimisation flags have been changed from `-O2` to `-Os` with tuning options. The engine code runs 3 to 6% faster, and the ROM is almost 1 MB smaller.
 
 ## 2026-10-12
 

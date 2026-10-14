@@ -451,7 +451,13 @@ def write_ninja_rules(
     # SCCACHE_BASEDIRS strips the checkout path from this flag before hashing.
     prefix_map = f'"-ffile-prefix-map={os.getcwd()}=/papermario-dx"'
 
-    modern_flags = f"-c -G0 -O2 -g1 -gdwarf -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
+    size_tuning = (
+        "--param case-values-threshold=20 --param max-completely-peeled-insns=10 "
+        "--param max-unrolled-insns=10 -freorder-blocks-algorithm=simple "
+        "-finline-limit=1 -fno-inline-functions"
+    )
+
+    modern_flags = f"-c -G0 -Os -gdwarf {size_tuning} -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {prefix_map}"
     cflags_modern = f"{modern_flags} {extra_cflags}"
     cxxflags_modern = f"{modern_flags} {extra_cxxflags}"
 
@@ -3124,7 +3130,15 @@ if __name__ == "__main__":
                     args = args[1:]
                 if not args or args[0] not in clang_args:
                     continue
-                entry["arguments"] = clang_args[args[0]] + [a for a in args[1:] if not strip_re.fullmatch(a)]
+                # GCC's `--param name=value` is two arguments, and clang would read the value as a file.
+                kept = []
+                rest = iter(args[1:])
+                for a in rest:
+                    if a == "--param":
+                        next(rest, None)
+                    elif not strip_re.fullmatch(a):
+                        kept.append(a)
+                entry["arguments"] = clang_args[args[0]] + kept
                 clang_entries.append(entry)
             entries = clang_entries
             (ROOT / "compile_commands.json").write_text(
