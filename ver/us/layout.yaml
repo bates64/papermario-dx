@@ -189,16 +189,9 @@ cflags:
     src/os: -O3
     src/os/nusys: ''
   files:
-    src/effects/aura.c: -Os
-    src/effects/energy_in_out.c: -Os
-    src/effects/firework_rocket.c: -Os
-    src/effects/light_rays.c: -Os
-    src/effects/stars_shimmer.c: -Os
-    src/effects/tubba_heart_attack.c: -Os
-    src/is_debug.c: -g -fforce-addr
+    src/is_debug.c: -g
     src/os/createmesgqueue.c: ''
     src/os/memset.c: -O1
-    src/os/nusys/nugfxtaskmgr.c: -fforce-addr
     src/os/osFlash.c: ''
     src/os/osSiDeviceBusy.c: ''
     src/os/sqrtf.c: -ffast-math
