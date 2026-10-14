@@ -97,15 +97,9 @@ segments:
   - { each: src/entity/model, class: entity_model }
   - { each: src/entity/anim, class: entity_model_anim }
   - { name: sbn }
-  - { name: copy_1942C40 }
   - { name: sprites }
-  - { name: pad_1B82208 }
-  - { name: copy_1B8220C }
   - { name: msg }
-  - { name: unk_1C84D30 }
-  - { name: copy_1E00000 }
   - { name: mapfs }
-  - { name: copy_27FEE22, subalign: 2 }
 
 # Which segment links each asset object, matched by the directory it sits in.
 # A directory marked "each" gives every file its own segment, named by the
@@ -124,10 +118,6 @@ assets:
   files:
     ver/us/asm/header.s: header
     assets/us/audio.sbn: sbn
-    assets/us/copy_1942C40.bin: copy_1942C40
-    assets/us/copy_1B8220C.bin: copy_1B8220C
-    assets/us/copy_1E00000.bin: copy_1E00000
-    assets/us/copy_27FEE22.bin: copy_27FEE22
     assets/us/gspF3DEX2kawase_fifo_data.bin: main
     assets/us/gspF3DEX2kawase_fifo_text.bin: main
     assets/us/icons.bin: icon
@@ -136,10 +126,8 @@ assets:
     assets/us/msg: msg
     assets/us/n_aspMain_data.bin: main
     assets/us/n_aspMain_text.bin: main
-    assets/us/pad_1B82208.bin: pad_1B82208
     assets/us/rspboot_font.bin: boot
     assets/us/sprite_shading_profiles.bin: sprite_shading_profiles
-    assets/us/unk_1C84D30.bin: unk_1C84D30
 
 # Directories whose images are packed into a larger blob rather than being
 # textures in their own right.

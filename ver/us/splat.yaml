@@ -14576,10 +14576,10 @@ segments:
       - [0xE9E690, palette, BombableRock]
       - [0xE9E6B0]
   - [0xF00000, pm_sbn, audio]
-  - [0x1942C40, bin, copy_1942C40] # copy of 0x1642C40 - 0x1643000
+  - [0x1942C40, pad, copy_1942C40] # copy of 0x1642C40 - 0x1643000
   - { start: 0x1943000, align: 8, type: pm_sprites, name: sprites }
-  - [0x1B82208, bin, pad_1B82208] # zeros
-  - [0x1B8220C, bin, copy_1B8220C] # copy of 0x188220C - 0x1883000
+  - [0x1B82208, pad, pad_1B82208] # zeros
+  - [0x1B8220C, pad, copy_1B8220C] # copy of 0x188220C - 0x1883000
   - start: 0x1B83000
     type: pm_msg
     files:
@@ -14630,8 +14630,7 @@ segments:
       - 2C_QuizQuestions
       - 2D_QuizChoices
       - 2E_Credits
-  - [0x1C84D30, bin, unk_1C84D30] # junk(?)
-  - [0x1E00000, bin, copy_1E00000] # copy of 0x1943000 - 0x1983000
+  - [0x1C84D30, pad, unk_1C84D30] # junk(?)
+  - [0x1E00000, pad, copy_1E00000] # copy of 0x1943000 - 0x1983000
   - [0x1E40000, pm_map_data, mapfs]
-  - { name: copy_27FEE22, type: bin, start: 0x27FEE22, subalign: 2 } # copy of 0x232EE22 - 0x2330000
-  - [0x2800000]
+  - [0x27FEE22] # the rest of the ROM is a copy of 0x232EE22 - 0x2330000
