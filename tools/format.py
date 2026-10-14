@@ -138,6 +138,11 @@ NESTED_AFTER_OFFSET_RE = re.compile(r"^\s*/\*[^*]*\*/\s{2,}\S")
 # A matrix written as a grid, whose call opens on this line
 RDP_MATRIX_OPEN_RE = re.compile(r"^[^#]*\bRDP_MATRIX\(\s*$")
 
+# A function-like macro whose parameters start on the next line. Its whole
+# definition, body included, is left as written, since such macros lay out
+# their parameters or body by hand, such as RDP_MATRIX's grid.
+MACRO_PARAMS_OPEN_RE = re.compile(r"^\s*#\s*define\s+\w+\(\s*\\$")
+
 # String and character literals, which may hold parentheses
 LITERAL_RE = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'')
 
@@ -204,7 +209,8 @@ def collect_block(lines: list[str], start: int) -> tuple[list[str], int]:
 
 def protect_blocks(source: str) -> str:
     """Insert // clang-format off/on around EvtScript blocks, initializer lists,
-    matrices written as grids, and struct bodies that show nesting after their
+    matrices written as grids, whole definitions of macros whose parameters
+    start on the next line, and struct bodies that show nesting after their
     offset comments."""
     lines = source.split("\n")
     result = []
@@ -214,6 +220,15 @@ def protect_blocks(source: str) -> str:
         if EVT_SINGLE_LINE_RE.match(line):
             result.append(line)
             i += 1
+            continue
+        if MACRO_PARAMS_OPEN_RE.match(line):
+            end = i
+            while end + 1 < len(lines) and lines[end].rstrip().endswith("\\"):
+                end += 1
+            result.append("// clang-format off")
+            result.extend(lines[i : end + 1])
+            result.append("// clang-format on")
+            i = end + 1
             continue
         if RDP_MATRIX_OPEN_RE.match(line):
             end = i + 1
@@ -620,7 +635,7 @@ def main():
         if result != source:
             any_changed = True
             if args.check:
-                print(f"::warning file={path},title=File not formatted::This file was changed, but it isn't formatted correctly. Run treefmt to format this file.")
+                print(f"::warning file={path},title=File not formatted::This file isn't formatted correctly. Run treefmt to format it.")
             else:
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(result)
