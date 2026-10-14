@@ -44,18 +44,29 @@ def main():
     ]
     with tempfile.TemporaryDirectory(prefix='debug_music_browser_', dir='/tmp') as temp_dir:
         temp = Path(temp_dir)
-        objects = []
-        for source in [ROOT / 'src/engine2/bgm_control.c', TEST_DIR / 'runtime_test.c']:
-            obj = temp / (source.stem + '.o')
-            subprocess.run([cc, '-c', *flags, str(source), '-o', str(obj)], cwd=ROOT, check=True)
-            objects.append(str(obj))
-        executable = temp / 'runtime_test'
-        subprocess.run([cc, '-no-pie', '-O1', '-flto', '-fwhole-program', '-Wl,--gc-sections', '-fsanitize=address,undefined',
-                        *objects, '-lm', '-o', str(executable)], cwd=ROOT, check=True)
         env = os.environ.copy()
         env['ASAN_OPTIONS'] = 'detect_leaks=0'
         env['UBSAN_OPTIONS'] = 'halt_on_error=1:print_stacktrace=1'
-        subprocess.run([str(executable), *(['--vanilla'] if args.vanilla else [])], env=env, check=True)
+        # config.h defines DX_DEBUG_MENU unconditionally, so -D alone cannot
+        # disable it. Load the real config, then override only this switch before
+        # common.h and the production sources see it. Never edit the checkout.
+        disabled_config = temp / 'disabled_config.h'
+        disabled_config.write_text('#include "dx/config.h"\n#undef DX_DEBUG_MENU\n#define DX_DEBUG_MENU 0\n')
+        for name, config_flags in [('configured', []), ('disabled', ['-include', str(disabled_config)])]:
+            objects = []
+            for source in [ROOT / 'src/engine2/bgm_control.c', TEST_DIR / 'runtime_test.c']:
+                obj = temp / f'{name}_{source.stem}.o'
+                subprocess.run([cc, '-c', *config_flags, *flags, str(source), '-o', str(obj)], cwd=ROOT, check=True)
+                objects.append(str(obj))
+            executable = temp / f'runtime_test_{name}'
+            subprocess.run([cc, '-no-pie', '-O1', '-flto', '-fwhole-program', '-Wl,--gc-sections', '-fsanitize=address,undefined',
+                            *objects, '-lm', '-o', str(executable)], cwd=ROOT, check=True)
+            result = subprocess.run([str(executable), *(['--vanilla'] if args.vanilla else [])], env=env, check=True,
+                                    text=True, stdout=subprocess.PIPE if name == 'disabled' else None)
+            if name == 'disabled':
+                if result.stdout != 'SKIP: debug music browser tests (DX_DEBUG_MENU=0)\n':
+                    raise RuntimeError(f'Disabled-menu harness did not report a skip: {result.stdout!r}')
+                print(result.stdout, end='')
 
 
 if __name__ == '__main__':

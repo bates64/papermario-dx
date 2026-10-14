@@ -39,6 +39,13 @@ fanfare finishes but remains requested: the controller must queue a restart,
 retain the old playback handle until stopped, preserve saved music, and issue a
 fresh play request. These checks do not prove native playback or appearance.
 
+The harness respects `DX_DEBUG_MENU` in `src/dx/config.h`: when it is `0`, the
+browser checks print a skip message and succeed. Every run also compiles and runs
+a disabled-menu variant, using a temporary forced include to override that one
+switch without editing the checkout. This guards the `verify_audio` integration
+even when CI builds with the debug menu enabled. Catalog and audio roundtrip
+checks still run when the menu is disabled.
+
 For native testing, use an isolated emulator profile and a fresh or copied save:
 
 1. Load a map, press D-left, and select Sound Player with R, then Music with R.

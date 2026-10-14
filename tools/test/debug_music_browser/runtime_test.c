@@ -8,6 +8,8 @@
 // Include the real menu so tests can inspect its retained static selection.
 #include "dx/debug_menu.c"
 
+#if DX_DEBUG_MENU
+
 GameStatus gTestGameStatus;
 GameStatus* gGameStatusPtr = &gTestGameStatus;
 static MapSettings TestMapSettings;
@@ -297,3 +299,12 @@ int main(int argc, char** argv) {
     printf("PASS: %ld production browser/navigation/routing/replay cases; %ld configured songs\n", checks, count);
     return 0;
 }
+
+#else
+
+int main(void) {
+    puts("SKIP: debug music browser tests (DX_DEBUG_MENU=0)");
+    return 0;
+}
+
+#endif
