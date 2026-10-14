@@ -48,6 +48,31 @@ steps:
       mkdir -p /usr/bin
       ln -sf "$(command -v env)" /usr/bin/env
 
+  - name: "List changed files"
+    # For a pull, lists the files it changes in /tmp/changed-files, so the slow
+    # checks below can skip what it can't affect. A push gets no list, and
+    # every check runs in full. spindle's checkout is a single-commit shallow
+    # clone with no shared history with the target branch, so this diffs trees
+    # directly (two-dot) rather than from a merge base (three-dot). If the
+    # target branch has moved on, the list also has the files it changed since,
+    # which only makes the checks do more.
+    #
+    # The target branch is fetched from dx's repository by URL, since in a
+    # pull from a fork, origin is the fork. If it can't be fetched, such as in
+    # a mod whose branch dx doesn't have, there's no list either.
+    command: |
+      [ "$TANGLED_PIPELINE_KIND" = "pull_request" ] || exit 0
+      set -euo pipefail
+      if ! git fetch --depth=1 https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz "$TANGLED_PIPELINE_TARGET_BRANCH"; then
+        echo "Couldn't fetch the target branch, so every check runs in full."
+        exit 0
+      fi
+      # Written aside and moved into place, so a failed diff can't leave a
+      # partial list behind.
+      git diff --name-only FETCH_HEAD HEAD > /tmp/changed-files.partial
+      mv /tmp/changed-files.partial /tmp/changed-files
+      cat /tmp/changed-files
+
   - name: "Fetch base ROM"
     # pkgs.requireFile sets allowSubstitutes = false, so it will never ask a
     # substituter for this path itself. Placing it in the local store first
@@ -96,38 +121,52 @@ steps:
   - name: "Build the toolchains"
     # The Windows and macOS toolchains are cross-compiled, and this host is
     # aarch64 Linux, so building them here also checks that they still build
-    # on the machine that publishes them. Paths from earlier runs come from
-    # the cache.
+    # on the machine that publishes them. A toolchain the cache already has
+    # was built by an earlier run, so it isn't downloaded or built again.
     command: |
+      set -euo pipefail
       # Caches each build as it finishes, so a run that fails later still saves
       # the next one rebuilding it.
       if [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ]; then
         attic watch-store spindle:papermario-dx &
       fi
-      nix build .#unix-toolchain --out-link result-toolchain
-      nix build .#windows-toolchain --out-link result-windows
-      nix build .#macos-aarch64-toolchain --out-link result-macos-aarch64
-      nix build .#macos-x86_64-toolchain --out-link result-macos-x86_64
+      cache="https://spindle:${FORK_ATTIC_TOKEN}@spindle-nix-cache.starhaven.dev/papermario-dx"
+      for toolchain in unix windows macos-aarch64 macos-x86_64; do
+        if nix path-info --store "$cache" "$(nix eval --raw ".#$toolchain-toolchain.outPath")" >/dev/null 2>&1; then
+          echo "The cache has the $toolchain toolchain."
+        else
+          nix build ".#$toolchain-toolchain" --out-link "result-$toolchain"
+        fi
+      done
 
   - name: "Push the toolchains to Attic"
     # So the next run, and the publish workflow, get them from the cache
     # instead of compiling GCC again. The dev shell step above logged in.
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
-      attic push spindle:papermario-dx result-toolchain result-windows result-macos-aarch64 result-macos-x86_64
+      set -- result-*
+      [ -e "$1" ] || exit 0
+      attic push spindle:papermario-dx "$@"
 
   - name: "Build the game with the Linux toolchain"
     # Builds the game again, in a clean copy, with the downloadable toolchain
-    # instead of the development shell. The ROM must be the same.
+    # instead of the development shell. The ROM must be the same. A pull that
+    # changes neither the toolchain nor the build can't make them differ, so
+    # it skips this.
     command: |
       set -euo pipefail
+      if [ -f /tmp/changed-files ] && ! grep -qE '^(flake\.(nix|lock)|tools/|\.tangled/workflows/build\.yaml)' /tmp/changed-files; then
+        echo "This pull changes neither the toolchain nor the build."
+        exit 0
+      fi
+      nix build .#unix-toolchain --out-link result-unix
       expected=$(sha256sum ver/us/build/papermario.z64 | cut -d' ' -f1)
       rm -rf ../toolchain-check
       git clone --quiet "file://$PWD" ../toolchain-check
       cd ../toolchain-check
       cp /nix/store/vjr3l1g2smjzp3i2qwlm2v5fymhfzpmi-papermario.us.z64 ver/us/baserom.z64
       mkdir -p .dx
-      tar -xJf "$OLDPWD"/result-toolchain/papermario-dx-linux-aarch64.tar.xz -C .dx
+      tar -xJf "$OLDPWD"/result-unix/papermario-dx-linux-aarch64.tar.xz -C .dx
       mv .dx/papermario-dx-linux-aarch64 .dx/unix
       .dx/unix/activate.sh "$PWD/.dx/unix"
       export PATH="$PWD/.dx/unix/bin:$PATH" PYTHONPATH="$PWD/.dx/unix/python"
