@@ -99,8 +99,31 @@ let
     jre
     starRodJar
     llvmTools
+  ]
+  # What Star Rod's editors load to open a window and draw in it on Linux.
+  # Java finds them through the toolchain's own loader, which only searches
+  # lib/, so they have to be bundled even on a computer that has them.
+  ++ pkgs.lib.optionals (!isDarwin) [
+    pkgs.xorg.libX11
+    pkgs.xorg.libXext
+    pkgs.xorg.libXrender
+    pkgs.xorg.libXtst
+    pkgs.xorg.libXi
+    pkgs.fontconfig.lib
+    pkgs.libglvnd
   ];
   closure = pkgs.closureInfo { rootPaths = closureRoots; };
+
+  # How Star Rod's wrapper starts Java. On Linux, libglvnd's libGL hands each
+  # call to the OpenGL driver for the computer's GPU, which can't be bundled,
+  # so the loader also searches where NixOS and other distributions keep it.
+  # lib/ comes first, so the toolchain's own libraries, such as its libc, win
+  # over the host's. The loader takes the path as an option rather than from
+  # LD_LIBRARY_PATH, which the programs Star Rod starts, such as xdg-open,
+  # would inherit, and fail to run with the toolchain's libc.
+  starRodJava =
+    if isDarwin then ''"$DIR/bin/java"''
+    else ''"$DIR/lib/${interpName}" --library-path "$DIR/lib:/run/opengl-driver/lib:/usr/lib/$(uname -m)-linux-gnu:/usr/lib64:/usr/lib" "$DIR/bin/java"'';
 
   archive = pkgs.runCommand "papermario-dx-${platformTag}-toolchain"
     {
@@ -176,7 +199,7 @@ let
       cat > $dir/bin/star-rod << 'STARROD_EOF'
       #!/bin/sh
       DIR="$(cd "$(dirname "$0")/.." && pwd)"
-      exec "$DIR/bin/java" -cp "$DIR/share/java/StarRod.jar" app.StarRodMain "$@"
+      exec ${starRodJava} -cp "$DIR/share/java/StarRod.jar" app.StarRodMain "$@"
       STARROD_EOF
       chmod +x $dir/bin/star-rod
 
