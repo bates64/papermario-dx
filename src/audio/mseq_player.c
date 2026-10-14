@@ -351,7 +351,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
     AuGlobals* globals;
     u8 fadeVolChanged;
     AmbienceVoiceState* voiceState;
-    AuVoice* voice;
+    AuVoice* voice = nullptr;
     BGMDrumInfo* drum;
     u32 trackIdx;
     s32 voiceSelector;
@@ -759,7 +759,7 @@ void au_mseq_save_voices(AmbienceManager* manager, AmbiencePlayer* player) {
 
 void au_mseq_restore_voices(AmbienceManager* manager, AmbiencePlayer* player) {
     AuGlobals* globals;
-    AuVoice* voice;
+    AuVoice* voice = nullptr;
     AmbienceSavedVoice* savedVoice;
     AmbienceVoiceState* voiceState;
     AmbienceTrack* track;
