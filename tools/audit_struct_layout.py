@@ -124,12 +124,16 @@ def version_branch_holds(line: str) -> bool | None:
     return holds != bool(negated)
 
 
+# An offset comment, /* 0x10 */, and the declaration after it
+OFFSET_RE = re.compile(r"/\*\s*0x([0-9A-Fa-f]+)\s*\*/\s*(.*)")
+# A size comment after a struct's closing brace, } Name; // size = 0x10
+SIZE_RE = re.compile(r"}\s*([A-Za-z_]\w*)?\s*;\s*(?://|/\*)\s*(?:size|sizeof)\s*=\s*(?:0x)?([0-9A-Fa-f]+)", re.I)
+
+
 def parse_structs(path: Path) -> list[StructInfo]:
     text = path.read_text(errors="ignore").splitlines()
     structs: list[StructInfo] = []
     start_re = re.compile(r"\b(?:typedef\s+)?struct\s*([A-Za-z_]\w*)?\s*\{")
-    offset_re = re.compile(r"/\*\s*0x([0-9A-Fa-f]+)\s*\*/\s*(.*)")
-    size_re = re.compile(r"}\s*([A-Za-z_]\w*)?\s*;\s*(?://|/\*)\s*(?:size|sizeof)\s*=\s*(?:0x)?([0-9A-Fa-f]+)", re.I)
 
     index = 0
     while index < len(text):
@@ -160,7 +164,7 @@ def parse_structs(path: Path) -> list[StructInfo]:
             continue
         c_name = typedef_name or f"struct {tag_name}"
 
-        size_match = size_re.search(close_line)
+        size_match = SIZE_RE.search(close_line)
         size_annotation = int(size_match.group(2), 16) if size_match else None
 
         fields: list[Field] = []
@@ -190,7 +194,7 @@ def parse_structs(path: Path) -> list[StructInfo]:
             if not all(branch[0] for branch in branches):
                 item += 1
                 continue
-            offset_match = offset_re.search(line)
+            offset_match = OFFSET_RE.search(line)
 
             if depth == 1:
                 annotation = int(offset_match.group(1), 16) if offset_match else None
@@ -226,6 +230,18 @@ def parse_structs(path: Path) -> list[StructInfo]:
     return structs
 
 
+def annotated_structs(path: Path) -> list[StructInfo]:
+    """The structs of a file that have offset or size comments, one per name."""
+    infos = []
+    names = set()
+    for info in parse_structs(path):
+        annotated = info.size_annotation is not None or any(f.annotation is not None for f in info.fields)
+        if annotated and info.name not in names:
+            names.add(info.name)
+            infos.append(info)
+    return infos
+
+
 def find_structs(names: list[str], paths: list[Path]) -> dict[str, list[StructInfo]]:
     found = {name: [] for name in names}
     for path in paths:
@@ -244,6 +260,10 @@ def source_paths() -> list[Path]:
     for suffix in ("*.h", "*.c"):
         paths.extend((root_dir / "src").rglob(suffix))
     return sorted(set(paths))
+
+
+class ProbeError(Exception):
+    """The layout probe failed to compile, with the tool's error output."""
 
 
 def compile_probe(
@@ -331,20 +351,18 @@ def compile_probe(
         ]
         result = subprocess.run(cc_cmd, cwd=root_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if result.returncode != 0:
-            print(result.stderr, file=sys.stderr)
-            raise SystemExit(result.returncode)
+            raise ProbeError(result.stderr)
 
         objcopy_cmd = [objcopy, "-O", "binary", "-j", ".layout", str(obj), str(binary)]
         result = subprocess.run(objcopy_cmd, cwd=root_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if result.returncode != 0:
-            print(result.stderr, file=sys.stderr)
-            raise SystemExit(result.returncode)
+            raise ProbeError(result.stderr)
 
         data = binary.read_bytes()
 
     values = [struct.unpack(">I", data[index : index + 4])[0] for index in range(0, len(data), 4)]
     if len(values) != len(labels):
-        raise SystemExit(f"probe returned {len(values)} values for {len(labels)} labels")
+        raise ProbeError(f"probe returned {len(values)} values for {len(labels)} labels")
 
     return dict(zip(labels, values))
 
@@ -371,7 +389,19 @@ def next_named_field_index(info: StructInfo, start_index: int) -> int | None:
     return None
 
 
-def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tuple[int, int]:
+@dataclass
+class Layout:
+    rows: list[LayoutRow]
+    size_actual: int
+    size_bad: bool
+    bad_count: int
+    warning_count: int
+
+
+def compare_layout(info: StructInfo, values: dict[str, int]) -> Layout:
+    """Compare a struct's offset and size comments with the compiler's layout.
+    A row marked "x" has a wrong comment, and one marked "?" has padding the
+    comments don't account for."""
     size_actual = values[f"{info.name}.__sizeof"]
     size_bad = info.size_annotation is not None and info.size_annotation != size_actual
     bad_count = 1 if size_bad else 0
@@ -386,7 +416,7 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tup
             if start is not None:
                 prev_end = start + (field.pad_size or 0)
 
-                if compare and field.annotation is not None and field.annotation != start:
+                if field.annotation is not None and field.annotation != start:
                     marker = "x"
                     bad_count += 1
 
@@ -396,7 +426,7 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tup
                     next_align = values.get(f"{info.name}.{next_field.name}.__alignof", 1)
                     natural_gap = align_up(start, next_align) - start
                     explicit_gap = max(0, (field.pad_size or 0) - natural_gap)
-                    if compare and explicit_gap and marker != "x":
+                    if explicit_gap and marker != "x":
                         marker = "?"
                         warning_count += 1
             else:
@@ -417,41 +447,45 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tup
             continue
 
         if prev_end is not None and actual > prev_end:
-            marker = "?" if compare else ""
-            rows.append(LayoutRow(f"<implicit PAD({actual - prev_end})>", prev_end, None, field.line, marker))
-            if compare:
-                warning_count += 1
+            rows.append(LayoutRow(f"<implicit PAD({actual - prev_end})>", prev_end, None, field.line, "?"))
+            warning_count += 1
 
-        bad = compare and field.annotation is not None and field.annotation != actual
-        marker = "x" if bad else ""
+        bad = field.annotation is not None and field.annotation != actual
         bad_count += 1 if bad else 0
-        rows.append(LayoutRow(field.name, actual, field.annotation, field.line, marker))
+        rows.append(LayoutRow(field.name, actual, field.annotation, field.line, "x" if bad else ""))
         prev_end = actual + size
 
     if prev_end is not None and size_actual > prev_end:
-        marker = "?" if compare else ""
-        rows.append(LayoutRow(f"<implicit tail PAD({size_actual - prev_end})>", prev_end, None, info.close_line, marker))
-        if compare:
-            warning_count += 1
+        rows.append(LayoutRow(f"<implicit tail PAD({size_actual - prev_end})>", prev_end, None, info.close_line, "?"))
+        warning_count += 1
+
+    return Layout(rows, size_actual, size_bad, bad_count, warning_count)
+
+
+def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tuple[int, int]:
+    layout = compare_layout(info, values)
 
     rel = info.path.relative_to(root_dir)
     print(f"{info.name} ({rel}:{info.line})")
     print("  field                         actual   annotated  line  bad")
     print("  ----------------------------  -------  ---------  ----  ---")
 
-    for row in rows:
+    for row in layout.rows:
         line = "-" if row.line is None else str(row.line)
-        print(f"  {row.name:<28}  {fmt(row.actual):>7}  {fmt(row.annotation):>9}  {line:>4}  {row.marker}")
+        marker = row.marker if compare else ""
+        print(f"  {row.name:<28}  {fmt(row.actual):>7}  {fmt(row.annotation):>9}  {line:>4}  {marker}")
 
     print()
     if compare:
-        marker = "x" if size_bad else ""
-        print(f"  {'sizeof:':<28}  {fmt(size_actual):>7}  {fmt(info.size_annotation):>9}  {'':>4}  {marker}")
+        marker = "x" if layout.size_bad else ""
+        print(f"  {'sizeof:':<28}  {fmt(layout.size_actual):>7}  {fmt(info.size_annotation):>9}  {'':>4}  {marker}")
     else:
-        print(f"  {'sizeof:':<28}  {fmt(size_actual):>7}")
+        print(f"  {'sizeof:':<28}  {fmt(layout.size_actual):>7}")
 
     print()
-    return bad_count, warning_count
+    if not compare:
+        return 0, 0
+    return layout.bad_count, layout.warning_count
 
 
 # Vendored headers, whose comments come from their SDKs.
@@ -466,19 +500,14 @@ def audit_all(args) -> int:
         rel = path.relative_to(root_dir).as_posix()
         if path.suffix != ".h" or rel.startswith(AUDIT_ALL_EXCLUDED):
             continue
-        infos = []
-        names = set()
-        for info in parse_structs(path):
-            annotated = info.size_annotation is not None or any(f.annotation is not None for f in info.fields)
-            if annotated and info.name not in names:
-                names.add(info.name)
-                infos.append(info)
+        infos = annotated_structs(path)
         if not infos:
             continue
 
         try:
             values = compile_probe(infos, args.include, args.cc, args.objcopy)
-        except SystemExit:
+        except ProbeError as error:
+            print(error, file=sys.stderr)
             print(f"{rel}: the layout probe doesn't compile")
             bad_count += 1
             continue
@@ -536,7 +565,11 @@ def main() -> int:
             return 1
         selected.append(matches[0])
 
-    values = compile_probe(selected, args.include, args.cc, args.objcopy)
+    try:
+        values = compile_probe(selected, args.include, args.cc, args.objcopy)
+    except ProbeError as error:
+        print(error, file=sys.stderr)
+        return 1
 
     bad_count = 0
     warning_count = 0
