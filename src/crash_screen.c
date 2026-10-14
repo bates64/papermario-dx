@@ -734,6 +734,12 @@ OSThread* crash_screen_get_faulted_thread(void) {
     return nullptr;
 }
 
+// A function to breakpoint on to catch crashes after the crash screen is done drawing. The asm keeps
+// the compiler from removing the call.
+__attribute__((noinline)) static void crash_screen_halted(OSThread* faultedThread) {
+    __asm__ volatile("" : : "r"(faultedThread) : "memory");
+}
+
 void crash_screen_thread_entry(void* unused) {
     OSMesg mesg;
     OSThread* faultedThread;
@@ -748,6 +754,9 @@ void crash_screen_thread_entry(void* unused) {
 
     osStopThread(faultedThread);
     crash_screen_draw(faultedThread);
+    // Give the video interface time to show the screen before a debugger stops the game.
+    crash_screen_sleep(100);
+    crash_screen_halted(faultedThread);
 
     while (true) {
     }
