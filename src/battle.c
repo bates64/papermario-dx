@@ -25,6 +25,8 @@ static Overlay* LoadedBattleStageOverlay;
 static Overlay* LoadedBattleAreaOverlay;
 static const BattleArea* LoadedBattleArea;
 
+#define STAGE_NAME_MAX (ASSET_NAME_MAX - (int) sizeof("b__shape"))
+
 char gBattleStageShapeName[ASSET_NAME_MAX];
 char gBattleStageHitName[ASSET_NAME_MAX];
 
@@ -47,9 +49,9 @@ Stage* load_battle_stage(const char* ref) {
     stage = ovl_import(LoadedBattleStageOverlay, exportName);
     ASSERT_MSG(stage != nullptr, "Stage overlay '%s' has no %s export", overlayName, exportName);
     // named as tools/build/configure.py names a stage's geometry
-    ASSERT_MSG(strlen("b__shape") + strlen(overlayName) < ASSET_NAME_MAX, "Stage name '%s' is too long", overlayName);
-    sprintf(gBattleStageShapeName, "b_%s_shape", overlayName);
-    sprintf(gBattleStageHitName, "b_%s_hit", overlayName);
+    ASSERT_MSG(strlen(overlayName) <= STAGE_NAME_MAX, "Stage name '%s' is too long", overlayName);
+    snprintf(gBattleStageShapeName, ASSET_NAME_MAX, "b_%.*s_shape", STAGE_NAME_MAX, overlayName);
+    snprintf(gBattleStageHitName, ASSET_NAME_MAX, "b_%.*s_hit", STAGE_NAME_MAX, overlayName);
     gBattleStatus.curStage = stage;
     return stage;
 }
