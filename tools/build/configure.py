@@ -871,7 +871,6 @@ class Configure:
                     "vtx_common",
                     "gfx",
                     "gfx_common",
-                    "pm_map_data",
                     "pm_icons",
                     "pm_msg",
                     "pm_sprites",
@@ -899,17 +898,31 @@ class Configure:
             self.dump_audio()
 
     def dump_maps(self) -> None:
-        """Decompile the dumped map binaries into map sources, replacing any earlier dump.
+        """Split the map filesystem out of the baserom and decompile its geometry into map sources.
 
         Star Rod does the decompiling, so this is redone whenever its version
-        changes. The earlier dump's sources are deleted first, since a new
-        Star Rod might not write them all, or not in the same places.
+        changes. splat's cache would skip the segment, so it is bypassed. The
+        earlier dump's sources are deleted first, since a new Star Rod might
+        not write them all, or not in the same places. The build compiles the
+        sources back into geometry, so the split geometry is deleted after.
         """
+        import splat.scripts.split as split
+
+        split.main(
+            [self.version_path / "splat.yaml"],
+            ["ld", "pm_map_data"],
+            verbose=False,
+            use_cache=False,
+        )
         dumped = ROOT / self.asset_stack[-1]
         for source in [*dumped.glob("world/area/*/*/map.xml"), *dumped.glob("battle/stage/*/stage.xml")]:
             source.unlink()
         shutil.rmtree(dumped / "battle" / "common" / "stage", ignore_errors=True)
         subprocess.run([star_rod(), "-DumpMaps"], check=True, cwd=ROOT)
+        # Star Rod's editor decompiles the maps itself on launch unless this
+        # sentinel exists, which would fail without the split geometry.
+        (dumped / ".star_rod_extracted").touch()
+        shutil.rmtree(dumped / "mapfs" / "geom")
         self.maps_dump_stamp().write_text(star_rod_version())
 
     def refresh_common_graphics(self) -> None:
