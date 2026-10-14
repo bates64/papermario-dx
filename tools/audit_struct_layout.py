@@ -126,8 +126,10 @@ def version_branch_holds(line: str) -> bool | None:
 
 # An offset comment, /* 0x10 */, and the declaration after it
 OFFSET_RE = re.compile(r"/\*\s*0x([0-9A-Fa-f]+)\s*\*/\s*(.*)")
+OFFSET_HEX_RE = re.compile(r"/\*\s*0x([0-9A-Fa-f]+)\s*\*/")
 # A size comment after a struct's closing brace, } Name; // size = 0x10
 SIZE_RE = re.compile(r"}\s*([A-Za-z_]\w*)?\s*;\s*(?://|/\*)\s*(?:size|sizeof)\s*=\s*(?:0x)?([0-9A-Fa-f]+)", re.I)
+SIZE_HEX_RE = re.compile(r"(?:size|sizeof)\s*=\s*(?:0x)?([0-9A-Fa-f]+)", re.I)
 
 
 def parse_structs(path: Path) -> list[StructInfo]:
@@ -255,9 +257,10 @@ def find_structs(names: list[str], paths: list[Path]) -> dict[str, list[StructIn
     return found
 
 
-def source_paths() -> list[Path]:
+def source_paths(cxx: bool = False) -> list[Path]:
+    """The C sources and headers under src, and the C++ ones if cxx."""
     paths: list[Path] = []
-    for suffix in ("*.h", "*.c"):
+    for suffix in ("*.h", "*.c", *(("*.hpp", "*.cpp") if cxx else ())):
         paths.extend((root_dir / "src").rglob(suffix))
     return sorted(set(paths))
 
@@ -266,16 +269,33 @@ class ProbeError(Exception):
     """The layout probe failed to compile, with the tool's error output."""
 
 
+@dataclass
+class ProbeLanguage:
+    compiler: str
+    flags: list[str]
+    common_header: str
+    suffix: str
+
+
 def compile_probe(
     infos: list[StructInfo],
     extra_includes: list[str],
     cc: str,
+    cxx: str,
     objcopy: str,
 ) -> dict[str, int]:
+    """Compile the structs' sizes and offsets into a probe and read them back.
+    The probe is C++, as the build compiles it, if any of the structs is in a
+    C++ file."""
+    if any(info.path.suffix in (".cpp", ".hpp") for info in infos):
+        language = ProbeLanguage(cxx, ["-std=c++20", "-D_LANGUAGE_C_PLUS_PLUS"], "common.hpp", ".cpp")
+    else:
+        language = ProbeLanguage(cc, ["-std=gnu99", "-D_LANGUAGE_C"], "common.h", ".c")
+
     labels: list[str] = []
     code: list[str] = [
         "#include <stddef.h>",
-        '#include "common.h"',
+        f'#include "{language.common_header}"',
     ]
 
     include_paths: list[str] = []
@@ -317,15 +337,15 @@ def compile_probe(
 
     with tempfile.TemporaryDirectory(prefix="struct-layout-") as tmp:
         tmp_path = Path(tmp)
-        source = tmp_path / "probe.c"
+        source = tmp_path / f"probe{language.suffix}"
         obj = tmp_path / "probe.o"
         binary = tmp_path / "layout.bin"
         source.write_text("\n".join(code))
 
         cc_cmd = [
-            cc,
+            language.compiler,
             "-c",
-            "-std=gnu99",
+            *language.flags,
             "-w",
             "-g0",
             "-I.",
@@ -342,9 +362,8 @@ def compile_probe(
             "-DNON_MATCHING",
             "-DDEBUG",
             "-DSHIFT",
-            "-D_LANGUAGE_C",
             "-include",
-            "common.h",
+            language.common_header,
             str(source),
             "-o",
             str(obj),
@@ -488,6 +507,49 @@ def print_struct(info: StructInfo, values: dict[str, int], compare: bool) -> tup
     return layout.bad_count, layout.warning_count
 
 
+def replace_hex(match: re.Match, value: int) -> str:
+    """Write value in place of a matched hex number, keeping its digit count."""
+    text = match.group(0)
+    start, end = match.start(1) - match.start(0), match.end(1) - match.start(0)
+    return text[:start] + f"{value:0{end - start}X}" + text[end:]
+
+
+def fix_offsets(
+    path: Path,
+    source: str,
+    cc: str = "mips-linux-gnu-gcc",
+    cxx: str = "mips-linux-gnu-g++",
+    objcopy: str = "mips-linux-gnu-objcopy",
+) -> str:
+    """Return source, the contents of path, with the wrong offset and size
+    comments of its structs rewritten to match the compiler's layout. A file
+    that the probe can't compile, such as one being edited, one that includes
+    files the build hasn't generated, or a fragment included by another file,
+    comes back unchanged."""
+    path = path.resolve()
+    if not path.is_relative_to(root_dir) or path.relative_to(root_dir).as_posix().startswith(AUDIT_ALL_EXCLUDED):
+        return source
+    infos = annotated_structs(path)
+    if not infos:
+        return source
+    try:
+        values = compile_probe(infos, [], cc, cxx, objcopy)
+    except (ProbeError, OSError):
+        return source
+
+    lines = source.split("\n")
+    for info in infos:
+        layout = compare_layout(info, values)
+        for row in layout.rows:
+            if row.marker == "x":
+                index = row.line - 1
+                lines[index] = OFFSET_HEX_RE.sub(lambda m: replace_hex(m, row.actual), lines[index], count=1)
+        if layout.size_bad:
+            index = info.close_line - 1
+            lines[index] = SIZE_HEX_RE.sub(lambda m: replace_hex(m, layout.size_actual), lines[index], count=1)
+    return "\n".join(lines)
+
+
 # Vendored headers, whose comments come from their SDKs.
 AUDIT_ALL_EXCLUDED = ("src/PR/", "src/nu/")
 
@@ -496,16 +558,16 @@ def audit_all(args) -> int:
     """Audit the annotated structs of each header, in a probe of its own."""
     bad_count = 0
     warning_count = 0
-    for path in source_paths():
+    for path in source_paths(cxx=True):
         rel = path.relative_to(root_dir).as_posix()
-        if path.suffix != ".h" or rel.startswith(AUDIT_ALL_EXCLUDED):
+        if path.suffix not in (".h", ".hpp") or rel.startswith(AUDIT_ALL_EXCLUDED):
             continue
         infos = annotated_structs(path)
         if not infos:
             continue
 
         try:
-            values = compile_probe(infos, args.include, args.cc, args.objcopy)
+            values = compile_probe(infos, args.include, args.cc, args.cxx, args.objcopy)
         except ProbeError as error:
             print(error, file=sys.stderr)
             print(f"{rel}: the layout probe doesn't compile")
@@ -539,7 +601,8 @@ def main() -> int:
     parser.add_argument("--include", action="append", default=[], help="extra file to include in the probe")
     parser.add_argument("--file", action="append", default=[], help="source/header file to search instead of all src files")
     parser.add_argument("--no-compare", action="store_true", help="only print compiler layout values")
-    parser.add_argument("--cc", default="mips-linux-gnu-gcc", help="compiler to use")
+    parser.add_argument("--cc", default="mips-linux-gnu-gcc", help="C compiler to use")
+    parser.add_argument("--cxx", default="mips-linux-gnu-g++", help="C++ compiler to use, for structs in C++ files")
     parser.add_argument("--objcopy", default="mips-linux-gnu-objcopy", help="objcopy to use")
     args = parser.parse_args()
 
@@ -548,7 +611,7 @@ def main() -> int:
     if not args.struct:
         parser.error("name a struct to audit, or pass --all")
 
-    paths = [root_dir / path for path in args.file] if args.file else source_paths()
+    paths = [root_dir / path for path in args.file] if args.file else source_paths(cxx=True)
     found = find_structs(args.struct, paths)
 
     selected: list[StructInfo] = []
@@ -566,7 +629,7 @@ def main() -> int:
         selected.append(matches[0])
 
     try:
-        values = compile_probe(selected, args.include, args.cc, args.objcopy)
+        values = compile_probe(selected, args.include, args.cc, args.cxx, args.objcopy)
     except ProbeError as error:
         print(error, file=sys.stderr)
         return 1

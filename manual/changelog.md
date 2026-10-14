@@ -11,6 +11,7 @@
   - `copy_1E00000.bin`
   - `copy_27FEE22.bin`
 - Overlays are stored more efficiently, saving 0.91 MB of ROM space.
+- Formatting a `.c`, `.h`, `.cpp` or `.hpp` file fixes its struct offset and size comments, once the project has been built.
 
 ## 2026-10-12
 
