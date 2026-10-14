@@ -15,6 +15,7 @@
 - The debug Sound Player now includes a named Music browser with play/stop and
   paging controls. Its catalog follows the generated song IDs. Existing sound
   effect controls are available under Sound.
+- A segment in `layout.yaml` whose class starts at another segment's end (`follows` or `vram_symbol`) must be listed after that segment, or the link fails.
 
 ## 2026-10-12
 

@@ -2246,6 +2246,7 @@ class Configure:
             segments,
             self.layout.follows,
             self.layout.class_vrams,
+            self.layout.vram_symbols,
         )
         linker.write_symbol_header(
             ROOT / self.build_path() / "include/ld_addrs.h", segments

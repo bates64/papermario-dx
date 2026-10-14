@@ -105,11 +105,39 @@ def _class_vram(
     return emit
 
 
+def _overlap_checks(
+    segments: List[Segment],
+    follows: Dict[str, List[str]],
+    vram_symbols: Dict[str, str],
+) -> List[str]:
+    """Linker script assertions that each class starts above the classes it follows and its start symbol."""
+    members: Dict[str, List[str]] = {}
+    for seg in segments:
+        members.setdefault(seg.vram_class, []).append(seg.name)
+
+    out = []
+    for cls, floors in follows.items():
+        for seg in members.get(cls, []):
+            for other in (s for c in floors for s in members.get(c, [])):
+                out.append(
+                    f'ASSERT({seg}_VRAM >= {other}_VRAM_END, '
+                    f'"{seg} starts below the end of {other}, so they overlap in RAM");'
+                )
+    for cls, symbol in vram_symbols.items():
+        for seg in members.get(cls, []):
+            out.append(
+                f'ASSERT({seg}_VRAM >= {symbol}, '
+                f'"{seg} starts below {symbol}, so it overlaps what comes before it in RAM");'
+            )
+    return out
+
+
 def write_script(
     path: Path,
     segments: List[Segment],
     follows: Optional[Dict[str, List[str]]] = None,
     class_vrams: Optional[Dict[str, int]] = None,
+    vram_symbols: Optional[Dict[str, str]] = None,
 ) -> None:
     class_vram = _class_vram(segments, follows or {}, class_vrams or {})
     out = ["SECTIONS", "{", "    __romPos = 0;", ""]
@@ -148,6 +176,8 @@ def write_script(
         out.append(f"    {section} 0 : {{ *({section}) }}")
 
     out += ["    /DISCARD/ :", "    {", "        *(*);", "    }", "}", ""]
+    out += _overlap_checks(segments, follows or {}, vram_symbols or {})
+    out.append("")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(out))
 

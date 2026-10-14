@@ -118,6 +118,11 @@ class Layout:
         return {c.name: c.follows for c in self.classes.values() if c.follows}
 
     @property
+    def vram_symbols(self) -> Dict[str, str]:
+        """Start symbol for each class that has one."""
+        return {c.name: c.vram_symbol for c in self.classes.values() if c.vram_symbol}
+
+    @property
     def class_vrams(self) -> Dict[str, int]:
         """Minimum address for each symbolic class."""
         return {
