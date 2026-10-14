@@ -178,8 +178,14 @@ steps:
       [ "$expected" = "$actual" ]
 
   - name: "Run clang-tidy"
+    # A pull checks the files it changes, or every file if it changes one that
+    # can affect others (see tools/clang_tidy.sh). A push checks every file.
     command: |
-      nix develop --command tools/clang_tidy_all.sh
+      if [ -f /tmp/changed-files ]; then
+        nix develop --command bash -c 'mapfile -t files < /tmp/changed-files && tools/clang_tidy.sh "${files[@]}"'
+      else
+        nix develop --command tools/clang_tidy.sh
+      fi
 
   - name: "Check struct offset comments"
     command: |
