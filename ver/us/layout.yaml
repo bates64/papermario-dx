@@ -55,11 +55,6 @@ segments:
   - { name: engine2, class: engine2 }
   - { name: heaps, class: heaps, subalign: 4096 }
   - { name: heaps_legacy, class: heaps_legacy }
-  - { name: evt, class: evt }
-  - { name: engine4, class: engine4 }
-  - { name: entity, class: entity }
-  - { name: font_width, class: font_width }
-  - { name: heaps3, class: heaps3 }
   - { name: charset, vram: 0x0 }
   - { name: menu_hud_scripts, class: menu_hud_scripts }
   - { name: pause, class: filemenu_pause }
@@ -80,20 +75,25 @@ segments:
   - { name: general_heap_create_obfuscated, vram: 0x802AE000 }
   - { name: battle_heap_create_obfuscated, vram: 0x802AE000 }
   - { name: obfuscation_shims, vram: 0x802B2000 }
-  - { name: world_use_item, class: world_use_item }
   - { each: src/effects/gfx, class: effect_gfx }
   - { name: level_up, class: battle_move }
   - { name: starpoint, class: battle_move }
   - { each: src/world/model_anim/kzn, class: world_model_anim }
+  - { name: heaps2, class: heaps2 }
   - { name: world_script_api, class: world_script_api }
   - { name: texture_memory, class: texture_memory }
   - { name: dgb_01_smash_bridges, class: dgb_01_smash_bridges }
-  - { name: heaps2, class: heaps2 }
   - { name: inspect_icon, class: indicator_icon }
   - { name: speech_bubble, class: indicator_icon }
   - { name: pulse_stone, class: indicator_icon }
   - { name: i_spy, class: indicator_icon }
   - { name: model_clear_render_tasks, class: model_clear_render_tasks }
+  - { name: world_use_item, class: world_use_item }
+  - { name: evt, class: evt }
+  - { name: engine4, class: engine4 }
+  - { name: entity, class: entity }
+  - { name: font_width, class: font_width }
+  - { name: heaps3, class: heaps3 }
   - { each: src/entity/model, class: entity_model }
   - { each: src/entity/anim, class: entity_model_anim }
   - { name: sbn }
