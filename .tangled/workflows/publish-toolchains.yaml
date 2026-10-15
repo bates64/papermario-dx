@@ -77,6 +77,10 @@ steps:
       nix build .#packages.x86_64-linux.unix-toolchain --out-link result-linux-x86_64
       tools/publish_toolchain.sh result-linux-x86_64/papermario-dx-linux-x86_64.tar.xz linux-x86_64.tar.xz tar.xz
 
+      # watch-store is killed when this step ends, which can be before it has
+      # uploaded the last toolchain.
+      attic push spindle:papermario-dx result-*
+
   - name: "Prune and index toolchains"
     command: |
       [ "${TANGLED_REPO_REPO_DID:-}" = did:plc:dfsxnyhzxwqpmykryrjtjabz ] || exit 0
