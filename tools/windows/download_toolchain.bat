@@ -105,15 +105,15 @@ if "%NEED_DOWNLOAD%"=="1" (
         rem mingw/git bash's tar command works differently to windows' builtin one so we're using unzip instead
         unzip -qo "%TOOLCHAIN_ZIP%" -d "%DX_DIR%"
     ) else (
-        rem Using windows' tar command
-        where tar >nul 2>nul
-        if errorlevel 1 (
+        rem Windows' own tar, named in full: a tar from MSYS2, Cygwin, or Git for
+        rem Windows earlier on PATH reads the drive letter in a path as a host.
+        if not exist "%SystemRoot%\System32\tar.exe" (
             echo msgbox "tar is not available on this system (Windows 7)." ^& vbCrLf ^& vbCrLf ^& "Please manually extract:" ^& vbCrLf ^& "%TOOLCHAIN_ZIP%" ^& vbCrLf ^& vbCrLf ^& "To the following directory:" ^& vbCrLf ^& "%DX_DIR%\windows" ^& vbCrLf ^& vbCrLf ^& "Then run tools\build.bat again.", vbOKOnly, "papermario-dx" > "%TEMP%\dx-notar.vbs"
             wscript "%TEMP%\dx-notar.vbs"
             del "%TEMP%\dx-notar.vbs"
             exit /b 1
         )
-        tar -xf "%TOOLCHAIN_ZIP%" -C "%DX_DIR%"
+        "%SystemRoot%\System32\tar.exe" -xf "%TOOLCHAIN_ZIP%" -C "%DX_DIR%"
         if errorlevel 1 (
             echo Error: failed to extract toolchain.
             exit /b 1
