@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2026-10-15
+
 ### `include/` merged into `src/` ([Alex](https://starhaven.dev/bates64.com))
 
 The `include/` directory has been merged into `src/`, so headers now sit next to the sources that use them. Move any headers in `include/` into `src/`.
