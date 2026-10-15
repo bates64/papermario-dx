@@ -31,6 +31,9 @@ dependencies:
     - bash
     - coreutils
 
+environment:
+  TQDM_DISABLE: "1"
+
 steps:
   - name: "Configure Nix"
     command: |

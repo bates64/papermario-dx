@@ -25,6 +25,8 @@ dependencies:
     - coreutils
     - bash
 
+environment:
+  TQDM_DISABLE: "1"
 
 steps:
   - name: "Configure Nix caches"
