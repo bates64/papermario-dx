@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2026-10-12.2
+
 Fixed build errors on some Windows machines where a broken version of `tar` was installed. ([Alex](https://starhaven.dev/bates64.com))
 
 ## 2026-10-12.1
