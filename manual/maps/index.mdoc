@@ -108,11 +108,10 @@ Star Rod saves the map to `map.xml` in the map folder, next to `main.c`. The nex
 
 ### Refer to the map from the overlay
 
-The build names each model, collider, and zone in the map, such as `MODEL_o101`, `COLLIDER_deilie`, and `ZONE_1`, so the overlay can refer to them. To use the names, include the map's headers:
+The build names each model, collider, and zone in the map, such as `MODEL_o101`, `COLLIDER_deilie`, and `ZONE_1`, so the overlay can refer to them. To use the names, include the map's header:
 
 ```c
-#include "mapfs/house_of_fun_shape.h"
-#include "mapfs/house_of_fun_hit.h"
+#include "map.xml.h"
 ```
 
 ## Test the map
