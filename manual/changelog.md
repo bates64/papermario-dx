@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- clang-tidy now flags structs with padding that reordering their fields would remove, so mod code might show warnings it didn't before. Reorder the fields as the warning suggests. If the padding is deliberate, write it as a member such as `PAD(2)`, or suppress the warning with `// NOLINTNEXTLINE(clang-analyzer-optin.performance.Padding)`. ([Alex](https://starhaven.dev/bates64.com))
+
 ## 2026-10-15.1
 
 Fixed build errors on some Windows machines where a broken version of `tar` was installed. ([Alex](https://starhaven.dev/bates64.com))
