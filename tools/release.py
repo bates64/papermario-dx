@@ -10,6 +10,11 @@ its name without the dx- prefix, such as 2026-10-07, under a new, empty
 Unreleased section. This is committed, and the commit is tagged with the
 release's name. The tag's message is the release notes: its subject is the
 release's name, and its body is the release's section of the changelog.
+
+A patch's section also goes into main's changelog, in a commit on the local
+main branch, just above the release it patches. Main listed the patch's notes
+under Unreleased when its fixes landed there, so the commit removes them from
+that section.
 """
 
 import argparse
@@ -17,9 +22,11 @@ import datetime
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
-CHANGELOG = Path(__file__).parent.parent / "manual" / "changelog.md"
+ROOT = Path(__file__).parent.parent
+CHANGELOG = ROOT / "manual" / "changelog.md"
 UNRELEASED = "## Unreleased\n"
 
 
@@ -57,6 +64,42 @@ def split_changelog(changelog: str) -> tuple[str, str, str]:
     return changelog[:start], changelog[body_start:end], changelog[end:]
 
 
+def add_patch_to_main_changelog(changelog: str, version: str, section: str) -> str:
+    """Puts a patch's section above the release it patches, or that release's
+    latest patch, and removes the patch's lines from the Unreleased section."""
+    before, unreleased, after = split_changelog(changelog)
+
+    lines = unreleased.splitlines()
+    for line in section.splitlines():
+        if not line.strip():
+            continue
+        if line in lines:
+            lines.remove(line)
+        else:
+            print(f"warning: main's Unreleased section doesn't list this, so it stays as it is: {line}", file=sys.stderr)
+    unreleased = re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
+    unreleased = f"\n{unreleased}\n\n" if unreleased else "\n"
+
+    patched = re.escape(version.split(".")[0])
+    match = re.search(rf"^## {patched}(\.\d+)?$", after, re.MULTILINE)
+    if not match:
+        sys.exit(f"main's {CHANGELOG.name} has no section for {version.split('.')[0]}.")
+    after = f"{after[:match.start()]}## {version}\n\n{section}\n\n{after[match.start():]}"
+    return f"{before}{UNRELEASED}{unreleased}{after}"
+
+
+def commit_patch_to_main(tag: str, section: str):
+    with tempfile.TemporaryDirectory() as tmp:
+        worktree = Path(tmp) / "main"
+        git("worktree", "add", "--quiet", str(worktree), "main")
+        try:
+            changelog = worktree / CHANGELOG.relative_to(ROOT)
+            changelog.write_text(add_patch_to_main_changelog(changelog.read_text(), tag.removeprefix("dx-"), section))
+            git("-C", str(worktree), "commit", "--quiet", "--message", f"list {tag} in the changelog", "--", str(changelog))
+        finally:
+            git("worktree", "remove", "--force", str(worktree))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--branch", required=True, help="the branch being released: main, or release/YYYY-MM-DD")
@@ -84,6 +127,8 @@ def main():
     CHANGELOG.write_text(f"{before}{UNRELEASED}\n## {version}\n\n{section}\n\n{after}".rstrip("\n") + "\n")
     git("commit", "--quiet", "--message", f"release {tag}", "--", str(CHANGELOG))
     git("tag", "--annotate", "--cleanup=verbatim", "--file=-", tag, input=message)
+    if args.branch != "main":
+        commit_patch_to_main(tag, section)
     print(tag)
 
 

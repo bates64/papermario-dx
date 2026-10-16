@@ -49,6 +49,14 @@ steps:
       git clone --filter=blob:none --branch "$branch" "git@$TANGLED_REPO_KNOT:$REPO" repo
       cd repo
 
+      # A patch also lists itself in main's changelog, on the local main
+      # branch.
+      main=""
+      if [ "$branch" != main ]; then
+        git branch main origin/main
+        main=main
+      fi
+
       tag=$(python3 tools/release.py --branch "$branch")
-      git push --atomic origin "HEAD:refs/heads/$branch" "$tag"
+      git push --atomic origin "HEAD:refs/heads/$branch" $main "$tag"
       echo "Released $(git rev-parse --short HEAD) as $tag"
