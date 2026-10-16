@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects_internal.h"
 
+// NOLINTNEXTLINE(clang-analyzer-optin.performance.Padding)
 typedef struct WaterBlockVtxData {
     /* 0x00 */ Vec3b pos;
     // Implicit padding avoids a dummy initializer column.

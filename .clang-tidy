@@ -8,6 +8,7 @@ Checks: >
   -clang-analyzer-core.FixedAddressDereference,
   clang-analyzer-security.*,
   -clang-analyzer-security.insecureAPI.*,
+  clang-analyzer-optin.performance.Padding,
   bugprone-suspicious-semicolon,
   bugprone-suspicious-missing-comma,
   bugprone-bool-pointer-implicit-conversion,
@@ -61,6 +62,11 @@ CheckOptions:
     value: camelBack
   - key: readability-identifier-naming.MemberIgnoredRegexp
     value: '^((unk|pad|unused)_.*|anim_[0-9A-F]|[A-Z]{1,2}[0-9]?[a-z]{0,2})$'
+
+  # Flag any padding that reordering a struct's fields would remove. Padding
+  # written as explicit members, such as PAD(), isn't flagged.
+  - key: clang-analyzer-optin.performance.Padding:AllowedPad
+    value: 0
 
 # Ignore src/PR/ (libultra) and src/nu/ (nusys)
 HeaderFilterRegex: 'src/.*\.h'
