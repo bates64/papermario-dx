@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2026-10-15.1
+
 Fixed build errors on some Windows machines where a broken version of `tar` was installed. ([Alex](https://starhaven.dev/bates64.com))
 
 ## 2026-10-15
@@ -36,6 +38,10 @@ Formatting a file now corrects struct offset and size comments, such as `/* 0x04
 
 - In `layout.yaml`, a segment whose class starts at another segment's end, through `follows` or `vram_symbol`, must now be listed after that segment. ([Alex](https://starhaven.dev/bates64.com))
 - `snprintf` is now available. ([Alex](https://starhaven.dev/bates64.com))
+
+## 2026-10-12.2
+
+Fixed build errors on some Windows machines where a broken version of `tar` was installed. ([Alex](https://starhaven.dev/bates64.com))
 
 ## 2026-10-12.1
 
