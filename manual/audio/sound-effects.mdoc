@@ -28,7 +28,7 @@ The entry uses these attributes:
 | Attribute | Meaning |
 | --- | --- |
 | `name` | Becomes the `SOUND_SHOP_BELL` constant. |
-| `wav` | The sample to play. It's the name of an instrument in a bank listed in `audio/banks.xml`, without `.wav`. |
+| `wav` | The sample to play. It's the name of an instrument in an always-loaded bank, without `.wav`. |
 | `volume` | The volume in hexadecimal, from `00` to `FF`. |
 | `lockVolume`, `lockPitch` | Keep your values when game code plays the sound with its own volume or pitch. `lockPan` and `lockReverb` work the same way. |
 | `pan`, `reverb`, `pitch`, `randomPitch`, `envelope` | Optional. If you leave them out, the defaults apply. |

@@ -31,9 +31,11 @@ Load the map in the game to hear the song.
 
 ## Load extra sound banks with a song
 
-Songs play instruments from the sound banks that are loaded when the song starts. Besides the banks that are always loaded, a song can load up to three song banks, which are banks that aren't listed in `audio/banks.xml`. For example, Toad Town's song loads `SPC0`.
+Songs play instruments from the sound banks that are loaded when the song starts. Besides the banks that are always loaded, a song can load up to three song banks. A bank that any song loads is a song bank, and the game loads it only while such a song plays. For example, Toad Town's song loads `SPC0`.
 
 To use an instrument from a song bank, choose it in Mamar's instrument list. Mamar loads the bank with the song and saves its name in the `.bgm` file, and the game loads the bank whenever it plays the song. If you start from one of the game's songs, its file already names the banks it needs.
+
+A bank that a song loads isn't always loaded, so sound effects and ambient sounds can't play its samples. Mamar also lists the game's sound effect banks, such as `SYS0`, but if a song loads one of them, the build stops at the first sound effect that uses its samples. Choose instruments from the game's song banks, or from a bank you add for your songs.
 
 ## Replace a game song
 

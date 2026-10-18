@@ -30,10 +30,10 @@ The engine loads banks in two ways:
 
 | Kind | How you set it up | When it's loaded |
 | --- | --- | --- |
-| Always-loaded | List the bank in `audio/banks.xml` | When the game starts |
-| Song bank | Leave the bank out of `audio/banks.xml`, and choose its instruments for a song in Mamar. See [Load extra sound banks with a song](/papermario-dx/audio/songs#load-extra-sound-banks-with-a-song). | When that song loads |
+| Always-loaded | Put the bank in `audio/bank/`. Every bank that no song loads is always loaded. | When the game starts |
+| Song bank | Choose the bank's instruments for a song in Mamar. See [Load extra sound banks with a song](/papermario-dx/audio/songs#load-extra-sound-banks-with-a-song). | When that song loads |
 
-Sound effects and ambient sequences look up samples in the always-loaded banks, so a sample must be in one of those banks to play from them. Use a song bank for samples that only one song needs.
+Sound effects and ambient sequences look up samples in the always-loaded banks, so they can't play samples from a bank that a song loads. Use a song bank for samples that only one song needs.
 
 ## Create a bank
 
@@ -77,18 +77,7 @@ The `Instrument` attributes are:
 
 The order of instruments is their index in the bank, so add new instruments at the end of an existing bank.
 
-4. Create `audio/banks.xml` and list the bank as always loaded.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<BankList>
-	<Bank name="MOD1.bk"/>
-</BankList>
-```
-
-The build puts the bank in the first free slot. To choose the slot yourself, add both `group` (from `2` to `6`) and `index` (from `0` to `F`). The engine loads at most 79 always-loaded banks.
-
-5. Rebuild the ROM. The build log shows the encoding step.
+4. Rebuild the ROM. No song loads the bank, so it's always loaded. The build log shows the encoding step.
 
 ```text
 encoded MOD1/chime: new codebook
@@ -96,7 +85,7 @@ encoded MOD1/chime: new codebook
 
 That line means the build compressed your sample into the game's audio format.
 
-6. Use the instrument in a sound effect. Add this entry to `audio/sound_effects.xml`, as described in [Add a sound effect](/papermario-dx/audio/sound-effects).
+5. Use the instrument in a sound effect. Add this entry to `audio/sound_effects.xml`, as described in [Add a sound effect](/papermario-dx/audio/sound-effects).
 
 ```xml
 	<Sound name="ShopBell">
@@ -149,6 +138,7 @@ The loop repeats forever. To repeat it a fixed number of times, add `loopCount`.
 
 - A bank holds 16 instruments at most.
 - A sample name can appear in only one bank.
+- The engine loads at most 79 always-loaded banks.
 - A song bank can hold fewer instruments and envelopes than an always-loaded bank. The build reports an error if the bank is too big.
 - Your audio must fit in the space the engine can address. The build reports an error if it doesn't. Use shorter samples or lower sample rates.
 

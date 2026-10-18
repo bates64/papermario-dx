@@ -14,14 +14,13 @@ The game's own audio is split from your ROM the first time you build, as source 
 | Path | What it holds |
 | --- | --- |
 | `audio/sound_effects.xml` | Every sound effect, either as a one-shot or as a pointer to a file in `audio/sfx/` |
-| `audio/banks.xml` | The sound banks that are always loaded |
 | `audio/presets.xml`, `audio/drums.xml` | Instruments and drums that songs select by ID |
 | `audio/songs/` | The songs, as `.bgm` files that you edit in [Mamar](https://mamar.bates64.com), each named after its song |
-| `audio/bank/NAME/` | A sound bank: a `sound_bank.xml` file and a WAV file for each sample |
+| `audio/bank/NAME/` | A sound bank: a `sound_bank.xml` file and a WAV file for each sample. It's always loaded unless a song or the radio loads it. |
 | `audio/sfx/` | Sequenced sound effects, and `envelopes.xml` with the envelopes they share |
 | `audio/mseq/` | The ambient sounds, as MSEQ files named after their sounds, and the radio's four stations |
 
-The XML files that list entries (`audio/sound_effects.xml`, `audio/banks.xml`, `audio/presets.xml`, `audio/drums.xml`, and `audio/sfx/envelopes.xml`) are called **tables**. Each entry in a table has a `name`, such as `MenuShowChoice`.
+The XML files that list entries (`audio/sound_effects.xml`, `audio/presets.xml`, `audio/drums.xml`, and `audio/sfx/envelopes.xml`) are called **tables**. Each entry in a table has a `name`, such as `MenuShowChoice`.
 
 [Star Rod](/papermario-dx/star-rod) has an Audio Booth that previews samples, sound effects, and ambient sequences, including the ones your mod adds.
 
