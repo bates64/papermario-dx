@@ -85,13 +85,14 @@ encoded MOD1/chime: new codebook
 
 That line means the build compressed your sample into the game's audio format.
 
-5. Use the instrument in a sound effect. Add this entry to `audio/sound_effects.xml`, as described in [Add a sound effect](/papermario-dx/audio/sound-effects).
+5. Use the instrument in a sound effect. Create `audio/sfx/shop_bell.xml`, as described in [Add a sound effect](/papermario-dx/audio/sound-effects).
 
 ```xml
-	<Sound name="ShopBell">
-		<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
-		<OneShot wav="chime" volume="70" lockVolume="true" lockPitch="true"/>
-	</Sound>
+<?xml version="1.0" encoding="UTF-8"?>
+<SoundEffect>
+	<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
+	<OneShot wav="chime" volume="70" lockVolume="true" lockPitch="true"/>
+</SoundEffect>
 ```
 
 Rebuild, play `SOUND_SHOP_BELL` in the game, and check that you hear your sample. The Audio Booth in [Star Rod](/papermario-dx/star-rod) also previews samples.

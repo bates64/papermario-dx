@@ -5,39 +5,37 @@ sidebar:
   order: 6
 ---
 
-The build checks your audio files and stops at the first problem. It prints a line in the form `file: message`, so the file name tells you where to look. Messages about a table entry start with the kind of entry and its name, such as `Sound 'ShopBell': ...`. This page lists the common messages, grouped by the file you're editing.
+The build checks your audio files and stops at the first problem. It prints a line in the form `file: message`, so the file name tells you where to look. Messages about a table entry start with the kind of entry and its name, such as `Instrument 'Preset00': ...`. This page lists the common messages, grouped by the file you're editing.
 
 ## File names
 
 | Message | Cause and fix |
 | --- | --- |
-| `...: this file must be named presets.xml` | Audio files use snake case names. Rename `Presets.xml` to `presets.xml`. The same message appears for `sound_effects.xml`, `drums.xml`, `sfx/envelopes.xml`, and `bank/NAME/sound_bank.xml`, each with the new name. |
-| `tables merge by entry; delete entries with delete="true"` | A `.meta` file tries to delete a table file. Delete the entries with `delete="true"` instead. |
+| `...: this file must be named presets.xml` | Audio files use snake case names. Rename `Presets.xml` to `presets.xml`. The same message appears for `drums.xml` and `bank/NAME/sound_bank.xml`, each with the new name. |
+| `the file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores` | Sound effects, envelopes, songs, and ambient sounds get their names from their files. Rename the file, such as `Shop-Bell.xml` to `shop_bell.xml` or `Meadow-Theme.bgm` to `meadow_theme.bgm`. |
 | `Instrument 'NAME': this file replaces the game's whole file, so leave the entry out instead of deleting it` | `audio/presets.xml` and `audio/drums.xml` replace the game's files whole, so `delete="true"` has nothing to remove. Leave the entry out of your copy. The message starts with `Drum` for `audio/drums.xml`. |
 | `songs aren't listed in a table: ...` | Songs come from their files, not from `audio/songs.xml`. Rename each of your `.bgm` files after its song, so `<Song name="MeadowTheme" bgm="meadow.bgm"/>` becomes `audio/songs/meadow_theme.bgm`. If an entry had `bk1`, `bk2`, or `bk3`, open the song in Mamar and choose its instruments from those banks again. Then delete `audio/songs.xml`. |
 | `ambient sounds aren't listed in a table: ...` | Ambient sounds come from their files, not from `audio/ambient_sounds.xml`. Rename each of your MSEQ files after its sound, so `<AmbientSound name="Rain" mseq="rain_loop"/>` becomes `audio/mseq/rain.xml`. Then delete `audio/ambient_sounds.xml`. |
 | `banks aren't listed in a table: ...` | Every bank in `audio/bank/` is always loaded unless a song or the radio loads it, and the build picks each bank's slot. Delete `audio/banks.xml`. |
+| `sound effects aren't listed in a table: ...` | Sound effects come from their files, not from `audio/sound_effects.xml`. Move each `Sound` entry into `audio/sfx/<name>.xml`, named after the sound in snake case, so `ShopBell` becomes `audio/sfx/shop_bell.xml`. Put the entry's `Routing` and `OneShot` inside a `SoundEffect` element, or for an entry with `src`, add its `Routing` to the top of that file and rename the file. Then delete `audio/sound_effects.xml`. |
+| `envelopes aren't listed in a table: ...` | Move each `Envelope` entry into `audio/sfx/envelopes/<name>.xml`, as an `Envelope` element without a `name`. Then delete `audio/sfx/envelopes.xml`. |
 
-## Any table
+## Presets and drums
 
 | Message | Cause and fix |
 | --- | --- |
 | `the name must start with a letter and contain only letters, digits, and underscores` | Rename the entry. A hyphen or space isn't allowed. |
-| `Sound 'NAME' is listed more than once` | The same file has two entries with one name. Keep one. |
+| `Instrument 'NAME' is listed more than once` | The file has two entries with one name. Keep one. The message starts with `Drum` for `audio/drums.xml`. |
 | `Drum 'NAME': ID 2 is already used by 'OTHER'` | Two entries use the same `id`. Remove the `id` attribute from your entry to let the build pick a free one. |
-| `NAME and OTHER both become SOUND_NAME` | Two names produce the same constant, such as `ShopBell` and `Shop_Bell`. Rename one. |
 
 ## Sound effects
 
 | Message | Cause and fix |
 | --- | --- |
 | `OneShot: no always-loaded bank has an instrument named NAME` | The `wav` name doesn't match an instrument in an always-loaded bank. Check the spelling, and check that no song loads the sample's bank. `SetInstrument` in a sequence or in an ambient sequence gives the same message with its own name in front. Samples in a song bank aren't available to sound effects. |
-| `Sound 'NAME': a sound must have exactly one of src, empty, or OneShot` | A `Sound` entry needs one of `src="sfx/..."`, `empty="true"`, or a `OneShot` child. |
-| `Sound 'NAME': a sequence needs a Routing element` | An entry with `src` needs a `Routing` child. |
-| `Sound 'NAME': there is no sfx/NAME.xml file in any layer` | The `src` path doesn't match a file in any layer. |
-| `Sound 'NAME': ID 0009 is already used by 'MenuShowChoice'` | Two sounds use the same `id`. Remove the `id` attribute from your entry. |
-| `Sound 'NAME': ID 00C5 is a direct slot, but the sound has Routing` | The `id` you pinned is a slot that can't hold a sound with `Routing`. Remove the `id` attribute. |
-| `Sound 'NAME': there are no free routed sound slots` | The game has no free ID of the kind the sound needs. Delete a sound you don't use. |
+| `SoundEffect: SoundEffect must have exactly one of OneShot or Tracks, or nothing for a silent sound` | Give the sound either a `OneShot` element or a `Tracks` element. |
+| `SoundEffect: a sequence needs a Routing element` | A sound with `Tracks` needs a `Routing` element. |
+| `there are no free routed sound slots` | The game has no room for more sounds of this kind. Delete a sound you don't use. |
 
 ## Banks and samples
 
@@ -60,7 +58,6 @@ The build checks your audio files and stops at the first problem. It prints a li
 
 | Message | Cause and fix |
 | --- | --- |
-| `the file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores` | Rename the `.bgm` or MSEQ file, such as `Meadow-Theme.bgm` to `meadow_theme.bgm`. |
 | `Song 'NAME': there is no bank/NAME directory or bank/NAME.bk file in any layer` | The song loads a bank that doesn't exist. Open the song in Mamar and choose its instruments from the game's banks. |
 | `the Mamar metadata at ... can't be read: ...` | The end of the `.bgm` file is damaged. Open the song in Mamar and save it again. |
 | `there are more than 256 songs` | Delete a song you don't use. |

@@ -11,7 +11,7 @@
     # jar using its own pinned nixpkgs/Gradle, since its offline dependency
     # resolution (gradle/verification-metadata.xml) is pinned to that exact
     # Gradle version.
-    star-rod.url = "git+https://tangled.org/starhaven.dev/star-rod?rev=2b8a79551116693188f8878cceb4b431d7705bb4";
+    star-rod.url = "git+https://tangled.org/starhaven.dev/star-rod?rev=fe317bbcd52c9534c29a6d92817338e11b1c43b3";
   };
   nixConfig = {
     extra-substituters = [

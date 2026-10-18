@@ -51,6 +51,7 @@ For native testing, use an isolated emulator profile and a fresh or copied save:
    Check the displayed total against the configured songs and repeat navigation
    and playback checks, including any catalog with fewer than nine songs.
 5. Back out with L and re-enter; verify retained selection. Back out to Sound,
-   play/stop coin sound 0211, and verify each back-navigation level.
+   play/stop the ID of `SOUND_COIN_PICKUP` from `ver/us/build/include/audio/sound_ids.h`, and verify
+   each back-navigation level.
 6. Leave the debug menu, change maps, and enter/leave a battle. Verify normal
    music resumes under game control and the browser still works on re-entry.
