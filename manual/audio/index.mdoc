@@ -28,7 +28,7 @@ The XML files that list entries (`audio/sound_effects.xml`, `audio/presets.xml`,
 
 Audio uses the layers that [Project structure](/papermario-dx/project-structure) describes. Paths on these pages are relative to the layers, and the files you create go in your mod's layer, which takes priority over the game's. Audio follows four rules.
 
-**Tables merge by entry.** Your table file lists only the entries you add or change. Entries match by `name`, and an entry in your layer replaces the whole entry of the same name in the game's table. It doesn't inherit attributes from the entry it replaces.
+**Tables merge by entry.** Your table file lists only the entries you add or change. Entries match by `name`, and an entry in your layer replaces the whole entry of the same name in the game's table. It doesn't inherit attributes from the entry it replaces. `audio/presets.xml` and `audio/drums.xml` don't merge: your copy replaces the game's file whole, so copy the game's file and change it.
 
 **`delete="true"` removes an entry.** The entry's constant no longer exists, and its ID becomes free.
 
