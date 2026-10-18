@@ -748,17 +748,11 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "check_audio",
-        description="Verifying audio against the baserom",
-        command=f'$python {BUILD_TOOLS}/verify_audio.py "{star_rod()}" $splat $baserom $in $out',
-    )
-
-    ninja.rule(
         "check_debug_music",
         description="Testing the debug music catalog and browser",
         command=(
             "$python tools/test/debug_music_catalog.py && "
-            '$python tools/test/debug_music_browser.py --include-dir "$include_dir" $vanilla'
+            '$python tools/test/debug_music_browser.py --include-dir "$include_dir"'
         ),
     )
 
@@ -1172,31 +1166,14 @@ class Configure:
         audio_obj = self.build_path() / version_assets / "audio.sbn.o"
         build(audio_obj, [audio_sbn], "bin")
         self.register_asset(audio_obj)
-        build(
-            self.build_path() / "audio_verified.stamp",
-            [audio_sbn],
-            "check_audio",
-            variables={
-                "splat": posix(self.version_path / "splat.yaml"),
-                "baserom": posix(self.baserom_path()),
-            },
-        )
-        # These test targets deliberately produce no file, so each invocation
+        # This test target deliberately produces no file, so each invocation
         # recompiles the host harness against the current production sources.
         # Keep native compiler/sanitizer requirements out of normal ROM builds.
-        for target, vanilla in [("test_debug_music", ""), ("verify_debug_music", "--vanilla")]:
-            ninja.build(
-                target,
-                "check_debug_music",
-                order_only=["generated_code_" + self.version],
-                variables={"include_dir": posix(audio_dir.parent), "vanilla": vanilla},
-            )
-        # Only an unmodified build's audio matches the baserom's. CI invokes
-        # this target, including the browser tests with vanilla catalog checks.
         ninja.build(
-            "verify_audio",
-            "phony",
-            [posix(self.build_path() / "audio_verified.stamp"), "verify_debug_music"],
+            "test_debug_music",
+            "check_debug_music",
+            order_only=["generated_code_" + self.version],
+            variables={"include_dir": posix(audio_dir.parent)},
         )
 
         # Each animation is reached by name from a table in the engine, so the

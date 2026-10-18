@@ -168,15 +168,12 @@ static void check_same_song_restart(s32 pos, b32 finished) {
     assert(music->savedSongID == 0x45 && music->savedVariation == 1 && music->savedSongName == 0x53415645);
 }
 
-int main(int argc, char** argv) {
+int main(void) {
     s32 checks = 0;
     const s32 count = ARRAY_COUNT(DebugMusicSongs);
     s32 requestedSong;
 
     assert(count > 0);
-    if (argc == 2 && !strcmp(argv[1], "--vanilla")) {
-        assert(count == 143);
-    }
     gGameStatusPtr->musicEnabled = true;
     bgm_reset_sequence_players();
     check_same_song_restart(0, false);

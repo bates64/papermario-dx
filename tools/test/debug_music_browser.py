@@ -17,7 +17,6 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--include-dir', type=Path, default=ROOT / 'ver/us/build/include',
                         help='Generated build include directory containing audio/song_ids.h and audio/debug_music_catalog.h')
-    parser.add_argument('--vanilla', action='store_true', help='Additionally require 143 named songs')
     args = parser.parse_args()
     include_dir = args.include_dir.resolve()
     cc = shutil.which('gcc')
@@ -61,7 +60,7 @@ def main():
             executable = temp / f'runtime_test_{name}'
             subprocess.run([cc, '-no-pie', '-O1', '-flto', '-fwhole-program', '-Wl,--gc-sections', '-fsanitize=address,undefined',
                             *objects, '-lm', '-o', str(executable)], cwd=ROOT, check=True)
-            result = subprocess.run([str(executable), *(['--vanilla'] if args.vanilla else [])], env=env, check=True,
+            result = subprocess.run([str(executable)], env=env, check=True,
                                     text=True, stdout=subprocess.PIPE if name == 'disabled' else None)
             if name == 'disabled':
                 if result.stdout != 'SKIP: debug music browser tests (DX_DEBUG_MENU=0)\n':

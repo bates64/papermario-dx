@@ -17,17 +17,8 @@ different build, pass its generated include directory:
 python3 tools/test/debug_music_browser.py --include-dir path/to/build/include
 ```
 
-For an unmodified audio catalog, run the upstream audio checks:
-
-```sh
-ninja verify_audio
-```
-
-`verify_audio` retains the audio roundtrip check and runs the browser test with
-`--vanilla`, which additionally requires 143 named songs. The upstream Tangled
-build already invokes this target. For additions, deletions, or a smaller
-catalog, use `test_debug_music` or run the Python browser test without
-`--vanilla`. Regenerate the headers after changing songs.
+The Tangled build runs `test_debug_music`. Regenerate the headers after
+changing songs.
 
 The catalog tests exercise added/deleted songs, short catalogs, bounded labels,
 and invalid IDs. The C harness includes the production debug menu and links the
@@ -42,17 +33,17 @@ fresh play request. These checks do not prove native playback or appearance.
 The harness respects `DX_DEBUG_MENU` in `src/dx/config.h`: when it is `0`, the
 browser checks print a skip message and succeed. Every run also compiles and runs
 a disabled-menu variant, using a temporary forced include to override that one
-switch without editing the checkout. This guards the `verify_audio` integration
-even when CI builds with the debug menu enabled. Catalog and audio roundtrip
-checks still run when the menu is disabled.
+switch without editing the checkout, so CI checks the disabled menu even though
+it builds with the menu enabled. Catalog checks still run when the menu is
+disabled.
 
 For native testing, use an isolated emulator profile and a fresh or copied save:
 
 1. Load a map, press D-left, and select Sound Player with R, then Music with R.
 2. Check Up at the first entry, Down at the last, and Left/Right paging at both
    ends. Check that the highlighted entry stays visible and labels fit.
-3. With vanilla songs, play Toad Town (00), Normal Battle (02), Master Battle
-   (2C), and Flower Fields Sunny (31). Press R again while the same song plays
+3. Play Toad Town, Normal Battle, Master Battle, and Flower Fields Sunny.
+   Press R again while the same song plays
    and listen for a restart without pressing Z. Stop with Z, then replay with R.
    Play a nonlooping fanfare, wait for it to finish, then press R again without
    pressing Z or selecting another song; verify the fanfare plays again.

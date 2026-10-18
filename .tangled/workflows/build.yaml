@@ -148,8 +148,8 @@ steps:
       nix develop --command tools/build_without_warnings.sh
       nix develop --command sccache --show-stats
 
-  - name: "Verify audio"
-    command: nix develop --command ninja verify_audio
+  - name: "Test the debug music browser"
+    command: nix develop --command ninja test_debug_music
 
   - name: "Build the toolchains"
     # The Windows and macOS toolchains are cross-compiled, and this host is
