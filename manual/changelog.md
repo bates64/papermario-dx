@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+### Automatic audio file discovery ([Alex](https://starhaven.dev/bates64.com))
+
+Sound effects, songs, and ambient sounds aren't listed in XML tables anymore. The build finds them from their files: each file in `audio/sfx/`, `audio/songs/`, or `audio/mseq/` is one sound, and its constant comes from the file name, so `audio/sfx/shop_bell.xml` becomes `SOUND_SHOP_BELL`. You add, replace, and delete them the way you do any other asset: add a file, save one with the same name in your layer, or create a `.meta` file containing `delete: true`. Banks work the same way, and a bank is always loaded unless a song or the radio loads it. `presets.xml` and `drums.xml` are still tables, but your copy replaces the game's whole file instead of merging with it.
+
+To update your mod:
+
+- Delete `songs.xml`, `ambient_sounds.xml`, `banks.xml`, `sound_effects.xml`, and `sfx/envelopes.xml`, and name each file after its sound in snake case.
+- Move each `Sound` entry into its own file in `audio/sfx/`, with its `Routing` and either its `OneShot` or its `Tracks`. Give each envelope its own file in `audio/sfx/envelopes/`.
+- If a song's entry had `bk1`, `bk2`, or `bk3`, open the song in Mamar and choose its instruments again, so that Mamar saves the banks in the `.bgm` file.
+- If a song loads a bank that your sound effects or ambient sounds also play, move those samples to a bank that no song loads.
+- Apply your changes to `presets.xml` and `drums.xml` to a copy of the game's file.
+- Replace `AMBIENT_SEA` with `AMBIENT_BEACH`, which plays the same sequence.
+- Replace any raw sound, song, or ambient sound numbers with their constants.
+
+### Other changes
+
 - Icons aren't listed in `icon/Icons.xml` anymore. The build finds every PNG file under `icon/`, and a CI4 icon with a `<name>.disabled.png` beside it gets a disabled palette. If you have an `Icons.xml` in `src/icon/`, delete it. ([Alex](https://starhaven.dev/bates64.com))
 
 ## 2026-10-15.1
