@@ -14,15 +14,14 @@ The game's own audio is split from your ROM the first time you build, as source 
 | Path | What it holds |
 | --- | --- |
 | `audio/sound_effects.xml` | Every sound effect, either as a one-shot or as a pointer to a file in `audio/sfx/` |
-| `audio/ambient_sounds.xml` | The ambient sounds and the radio |
 | `audio/banks.xml` | The sound banks that are always loaded |
 | `audio/presets.xml`, `audio/drums.xml` | Instruments and drums that songs select by ID |
 | `audio/songs/` | The songs, as `.bgm` files that you edit in [Mamar](https://mamar.bates64.com), each named after its song |
 | `audio/bank/NAME/` | A sound bank: a `sound_bank.xml` file and a WAV file for each sample |
 | `audio/sfx/` | Sequenced sound effects, and `envelopes.xml` with the envelopes they share |
-| `audio/mseq/` | Ambient sequences |
+| `audio/mseq/` | The ambient sounds, as MSEQ files named after their sounds, and the radio's four stations |
 
-The XML files that list entries (`audio/sound_effects.xml`, `audio/ambient_sounds.xml`, `audio/banks.xml`, `audio/presets.xml`, `audio/drums.xml`, and `audio/sfx/envelopes.xml`) are called **tables**. Each entry in a table has a `name`, such as `MenuShowChoice`.
+The XML files that list entries (`audio/sound_effects.xml`, `audio/banks.xml`, `audio/presets.xml`, `audio/drums.xml`, and `audio/sfx/envelopes.xml`) are called **tables**. Each entry in a table has a `name`, such as `MenuShowChoice`.
 
 [Star Rod](/papermario-dx/star-rod) has an Audio Booth that previews samples, sound effects, and ambient sequences, including the ones your mod adds.
 
@@ -55,18 +54,17 @@ A `.meta` file can't delete a table file. Delete entries with `delete="true"` in
 
 ## Names, IDs, and constants
 
-Every sound and ambient sound has a numeric ID. Entries in the game's tables keep their IDs. A new entry without an `id` attribute gets the lowest free ID, and the build assigns them in name order, so an ID can change when you add another entry. Use the constants instead of numbers. Add `id="..."` (in hexadecimal, without `0x`) only when something outside the build needs a fixed number.
+Every sound has a numeric ID. Entries in the game's tables keep their IDs. A new entry without an `id` attribute gets the lowest free ID, and the build assigns them in name order, so an ID can change when you add another entry. Use the constants instead of numbers. Add `id="..."` (in hexadecimal, without `0x`) only when something outside the build needs a fixed number.
 
 The build turns an entry's PascalCase name into a constant by splitting it into words and numbers, uppercasing it, and adding a prefix:
 
 | Table | Prefix | Example |
 | --- | --- | --- |
 | `sound_effects.xml` | `SOUND_` | `CoinPickup` becomes `SOUND_COIN_PICKUP` |
-| `ambient_sounds.xml` | `AMBIENT_` | `Lava1` becomes `AMBIENT_LAVA_1` |
 
 Names must start with a letter and use only letters, digits, and underscores. If two names produce the same constant, the build fails.
 
-A song is named after its file instead, so `toad_town.bgm` becomes `SONG_TOAD_TOWN`.
+Songs and ambient sounds are named after their files instead, so `toad_town.bgm` becomes `SONG_TOAD_TOWN` and `lava_1.xml` becomes `AMBIENT_LAVA_1`.
 
 ## Next steps
 

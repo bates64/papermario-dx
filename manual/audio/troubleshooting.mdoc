@@ -11,18 +11,18 @@ The build checks your audio files and stops at the first problem. It prints a li
 
 | Message | Cause and fix |
 | --- | --- |
-| `...: this file must be named banks.xml` | Audio files use snake case names. Rename `Banks.xml` to `banks.xml`. The same message appears for `ambient_sounds.xml`, `sound_effects.xml`, `presets.xml`, `drums.xml`, `sfx/envelopes.xml`, and `bank/NAME/sound_bank.xml`, each with the new name. |
+| `...: this file must be named banks.xml` | Audio files use snake case names. Rename `Banks.xml` to `banks.xml`. The same message appears for `sound_effects.xml`, `presets.xml`, `drums.xml`, `sfx/envelopes.xml`, and `bank/NAME/sound_bank.xml`, each with the new name. |
 | `tables merge by entry; delete entries with delete="true"` | A `.meta` file tries to delete a table file. Delete the entries with `delete="true"` instead. |
 | `songs aren't listed in a table: ...` | Songs come from their files, not from `audio/songs.xml`. Rename each of your `.bgm` files after its song, so `<Song name="MeadowTheme" bgm="meadow.bgm"/>` becomes `audio/songs/meadow_theme.bgm`. If an entry had `bk1`, `bk2`, or `bk3`, open the song in Mamar and choose its instruments from those banks again. Then delete `audio/songs.xml`. |
+| `ambient sounds aren't listed in a table: ...` | Ambient sounds come from their files, not from `audio/ambient_sounds.xml`. Rename each of your MSEQ files after its sound, so `<AmbientSound name="Rain" mseq="rain_loop"/>` becomes `audio/mseq/rain.xml`. Then delete `audio/ambient_sounds.xml`. |
 
 ## Any table
 
 | Message | Cause and fix |
 | --- | --- |
 | `the name must start with a letter and contain only letters, digits, and underscores` | Rename the entry. A hyphen or space isn't allowed. |
-| `Sound 'NAME' is listed more than once` | The same file has two entries with one name. Keep one. The message starts with `AmbientSound` or `Bank` for those tables. |
-| `AmbientSound 'NAME': ID 2 is already used by 'OTHER'` | Two entries use the same `id`. Remove the `id` attribute from your entry to let the build pick a free one. |
-| `AmbientSound 'NAME': there are no free IDs` | All ambient sound IDs are used. Delete an ambient sound you don't use. |
+| `Sound 'NAME' is listed more than once` | The same file has two entries with one name. Keep one. The message starts with `Bank` for that table. |
+| `Drum 'NAME': ID 2 is already used by 'OTHER'` | Two entries use the same `id`. Remove the `id` attribute from your entry to let the build pick a free one. |
 | `NAME and OTHER both become SOUND_NAME` | Two names produce the same constant, such as `ShopBell` and `Shop_Bell`. Rename one. |
 
 ## Sound effects
@@ -60,11 +60,14 @@ The build checks your audio files and stops at the first problem. It prints a li
 
 | Message | Cause and fix |
 | --- | --- |
-| `a song's file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores` | Rename the `.bgm` file, such as `Meadow-Theme.bgm` to `meadow_theme.bgm`. |
+| `the file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores` | Rename the `.bgm` or MSEQ file, such as `Meadow-Theme.bgm` to `meadow_theme.bgm`. |
 | `Song 'NAME': there is no bank/NAME directory or bank/NAME.bk file in any layer` | The song loads a bank that doesn't exist. Open the song in Mamar and choose its instruments from the game's banks. |
 | `the Mamar metadata at ... can't be read: ...` | The end of the `.bgm` file is damaged. Open the song in Mamar and save it again. |
 | `there are more than 256 songs` | Delete a song you don't use. |
-| `AmbientSound 'NAME': there is no mseq/NAME.xml or mseq/NAME.mseq file in any layer` | The `mseq` attribute must match a file in `audio/mseq/`, without the extension. |
+| `mseq: the radio needs all of radio_0 to radio_3, but some are missing` | The radio has four stations, and the game's code uses the radio, so it can't be removed. Restore the missing stations. |
+| `the radio's stations must all play samples from one bank, but they play samples from ...` | Change the `SetInstrument` commands in `audio/mseq/radio_0.xml` to `radio_3.xml` to use samples from one bank. |
+| `the radio's stations must be XML files, so the build can find the bank they play` | Replace each radio station's `.mseq` file with an `.xml` file. |
+| `radio is the name of the radio; rename the file` | `audio/mseq/radio.xml` would give a second `AMBIENT_RADIO`. Rename the file. |
 | `command 12, EndLoop: loop 0 repeats forever without a Delay` | Add a `Delay` inside the loop in the MSEQ file. |
 
 ## Compiler errors after a deletion
