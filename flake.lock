@@ -110,16 +110,16 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1792138627,
-        "narHash": "sha256-V0IH4+c7kiipbkJV1kFUM+YmzQap2lzszYrsFJqk9y8=",
+        "lastModified": 1792363289,
+        "narHash": "sha256-M6Ed8iIdAGps1kTtv0z46la1PktdIk23nafvs4UiE14=",
         "ref": "refs/heads/main",
-        "rev": "e19ea873e24227a7f3bce02e3d6aa450a5554095",
-        "revCount": 111,
+        "rev": "2010ea0099aa1936afee91da01731085ef42efce",
+        "revCount": 112,
         "type": "git",
         "url": "https://tangled.org/starhaven.dev/star-rod"
       },
       "original": {
-        "rev": "e19ea873e24227a7f3bce02e3d6aa450a5554095",
+        "rev": "2010ea0099aa1936afee91da01731085ef42efce",
         "type": "git",
         "url": "https://tangled.org/starhaven.dev/star-rod"
       }

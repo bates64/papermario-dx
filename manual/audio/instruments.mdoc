@@ -31,7 +31,7 @@ The engine loads banks in two ways:
 | Kind | How you set it up | When it's loaded |
 | --- | --- | --- |
 | Always-loaded | List the bank in `audio/banks.xml` | When the game starts |
-| Song bank | Name the bank in `bk1`, `bk2`, or `bk3` of a `Song` entry, without listing it in `audio/banks.xml` | When that song loads |
+| Song bank | Leave the bank out of `audio/banks.xml`, and choose its instruments for a song in Mamar. See [Load extra sound banks with a song](/papermario-dx/audio/songs#load-extra-sound-banks-with-a-song). | When that song loads |
 
 Sound effects and ambient sequences look up samples in the always-loaded banks, so a sample must be in one of those banks to play from them. Use a song bank for samples that only one song needs.
 
@@ -149,7 +149,7 @@ The loop repeats forever. To repeat it a fixed number of times, add `loopCount`.
 
 - A bank holds 16 instruments at most.
 - A sample name can appear in only one bank.
-- A bank that a song loads with `bk1`, `bk2`, or `bk3` can hold fewer instruments and envelopes than an always-loaded bank. The build reports an error if the bank is too big.
+- A song bank can hold fewer instruments and envelopes than an always-loaded bank. The build reports an error if the bank is too big.
 - Your audio must fit in the space the engine can address. The build reports an error if it doesn't. Use shorter samples or lower sample rates.
 
 ## Related pages
