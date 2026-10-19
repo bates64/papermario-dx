@@ -5,8 +5,7 @@ import yaml
 import argparse
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
-from common import get_asset_path
-import xml.etree.ElementTree as ET
+from icons import find_icons
 from io import TextIOWrapper
 
 
@@ -49,26 +48,9 @@ def read_items_yaml(in_yaml: Path) -> List[ItemEntry]:
     return items
 
 
-def read_icons_xml(asset_stack: Tuple[Path, ...]) -> Dict[str, bool]:
-    pair_map: Dict[str, bool] = {}
-
-    xml = ET.parse(get_asset_path(Path("icon/Icons.xml"), asset_stack))
-    IconList = xml.getroot()
-
-    for Icon in IconList.findall("Icon"):
-        type = Icon.attrib["type"]
-        name = Icon.attrib["name"]
-
-        if name is None:
-            raise Exception("Icon is missing attribute: 'name'")
-
-        if type is None:
-            raise Exception("Icon is missing attribute: 'type'")
-
-        name = re.sub("\\W", "_", name)
-        pair_map[name] = type == "pair"
-
-    return pair_map
+def read_icon_pairs(asset_stack: Tuple[Path, ...]) -> Dict[str, bool]:
+    """Whether each icon, by its symbol name, has a disabled palette."""
+    return {re.sub("\\W", "_", name): disabled is not None for name, disabled in find_icons(asset_stack).items()}
 
 
 def generate_item_table(fout: TextIOWrapper, items: List[ItemEntry]):
@@ -322,7 +304,7 @@ if __name__ == "__main__":
     asset_stack = tuple(Path(d) for d in args.asset_stack.split(","))
 
     items = read_items_yaml(args.items_yaml)
-    icons = read_icons_xml(asset_stack)
+    icons = read_icon_pairs(asset_stack)
 
     with open(args.out_data, "w", encoding="utf-8") as fout:
         fout.write("/* This file is auto-generated. Do not edit. */\n")

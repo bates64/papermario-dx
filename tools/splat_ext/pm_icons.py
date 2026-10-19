@@ -1,5 +1,5 @@
 import os
-import re
+import shutil
 from pathlib import Path
 from splat.segtypes.segment import Segment
 import n64img.image
@@ -7,34 +7,8 @@ from splat.util.color import unpack_color
 from common import iter_in_groups
 from splat.util import options
 import yaml as yaml_loader
-import xml.etree.ElementTree as ET
 
 script_dir = Path(os.path.dirname(os.path.realpath(__file__)))
-
-
-def indent(elem, level=0):
-    i = "\n" + level * "    "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "    "
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-        for elem in elem:
-            indent(elem, level + 1)
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
-
-
-def pretty_print_xml(tree: ET.ElementTree, path: Path):
-    root = tree.getroot()
-    indent(root)
-    xml_str = ET.tostring(root, encoding="unicode")
-    xml_str = re.sub(" />", "/>", xml_str)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(xml_str)
 
 
 def parse_palette(data):
@@ -53,6 +27,9 @@ class N64SegPm_icons(Segment):
         with open(script_dir / "icon.yaml", "r", encoding="utf-8") as f:
             self.icons = yaml_loader.load(f.read(), Loader=yaml_loader.SafeLoader)
 
+        # The build packs every PNG here, so files from an earlier dump must not linger.
+        shutil.rmtree(self.out_dir, ignore_errors=True)
+
         data = rom_bytes[self.rom_start : self.rom_end]
         pos = 0
         self.files = []
@@ -62,8 +39,6 @@ class N64SegPm_icons(Segment):
             os.makedirs(os.path.dirname(out_file), exist_ok=True)
             img.write(out_file)
             self.files.append(out_file)
-
-        IconList = ET.Element("Icons")
 
         for _, icon in enumerate(self.icons):
             # read yaml entry
@@ -98,25 +73,13 @@ class N64SegPm_icons(Segment):
                 img = n64img.image.RGBA16(data=img_bytes, width=w, height=h)
                 write_img(name, img)
 
-            ET.SubElement(
-                IconList,
-                "Icon",
-                {
-                    "type": f"{fmt}",
-                    "name": f"{name}",
-                },
-            )
-
-            xml = ET.ElementTree(IconList)
-            pretty_print_xml(xml, self.out_dir / "Icons.xml")
-
     def get_linker_entries(self):
         from splat.segtypes.linker_entry import LinkerEntry
 
         return [
             LinkerEntry(
                 self,
-                [options.opts.asset_path / "icon" / "Icons.xml"],
+                [options.opts.asset_path / "icon"],
                 options.opts.asset_path / "icons.bin",
                 self.get_linker_section(),
                 self.get_linker_section(),

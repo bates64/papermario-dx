@@ -1134,10 +1134,10 @@ class Configure:
         packed(
             "icons.bin",
             "icons",
-            [version_assets / "icon/Icons.xml"],
+            [],
             variables={"header_path": icon_header, "asset_stack": asset_stack},
             implicit_outputs=[icon_header],
-            asset_deps=["icon"],
+            implicit_deps=self.layer_tree("icon"),
         )
 
         shading_header = posix(
@@ -1151,15 +1151,7 @@ class Configure:
             implicit_outputs=[shading_header],
         )
 
-        # Adding a file or directory changes a directory's mtime, which audio.d
-        # can't list ahead of time, so every one under audio/ is a dependency.
         audio_dir = self.build_path() / "include" / "audio"
-        audio_sources = [
-            posix(path)
-            for layer in self.asset_stack
-            for path in [Path(layer) / "audio", *(Path(layer) / "audio").glob("**/*")]
-            if path.exists()
-        ]
         audio_sbn = audio_dir / "audio.sbn"
         build(
             audio_sbn,
@@ -1169,7 +1161,7 @@ class Configure:
             implicit_outputs=[
                 posix(audio_dir / header) for header in ["song_ids.h", "ambient_ids.h", "sound_ids.h", "audio_config.h"]
             ],
-            implicit_deps=audio_sources,
+            implicit_deps=self.layer_tree("audio"),
         )
         build(
             audio_dir / "debug_music_catalog.h",
@@ -1849,6 +1841,19 @@ class Configure:
 
         return out
 
+    def layer_tree(self, directory: str) -> List[str]:
+        """A directory and everything under it, in every layer.
+
+        Adding or removing a file changes its directory's mtime, so a packer
+        that finds its inputs by looking depends on every directory too.
+        """
+        return [
+            posix(path)
+            for layer in self.asset_stack
+            for path in [Path(layer) / directory, *(Path(layer) / directory).glob("**/*")]
+            if path.exists()
+        ]
+
     # Given a directory within an asset layer, return a list of all assets in the
     # directory for all layers of the asset stack
     def get_asset_list(self, asset_dir: str) -> List[str]:
@@ -2165,7 +2170,8 @@ class Configure:
             "item_data",
             implicit_deps=[
                 BUILD_TOOLS / "item_data.py",
-                self.find_asset("icon/Icons.xml"),
+                BUILD_TOOLS / "icons.py",
+                self.build_path() / "include/icon_offsets.h",
             ],
             variables={
                 "asset_stack": ",".join(self.asset_stack),

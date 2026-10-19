@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Icons aren't listed in `icon/Icons.xml` anymore. The build finds every PNG file under `icon/`, and a CI4 icon with a `<name>.disabled.png` beside it gets a disabled palette. If you have an `Icons.xml` in `src/icon/`, delete it. ([Alex](https://starhaven.dev/bates64.com))
+
 ## 2026-10-15.1
 
 Fixed build errors on some Windows machines where a broken version of `tar` was installed. ([Alex](https://starhaven.dev/bates64.com))
