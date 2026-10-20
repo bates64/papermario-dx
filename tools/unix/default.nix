@@ -129,6 +129,8 @@ let
     {
       nativeBuildInputs = [ pkgs.gnutar pkgs.xz pkgs.coreutils ]
         ++ pkgs.lib.optional (!isDarwin) pkgs.pkgsStatic.patchelf;
+      # The development shell compiles with these, so it builds the same ROM as the toolchain.
+      passthru = { inherit mips-gcc mips-binutils; };
     }
     ''
       dir=papermario-dx-${platformTag}
@@ -206,15 +208,6 @@ let
       # MIPS glibc headers (string.h, stdio.h, etc.) in the sysroot.
       mkdir -p $dir/mips-linux-gnu/sys-include
       cp -rL ${mipsGlibcDev}/include/* $dir/mips-linux-gnu/sys-include/
-
-      # libstdc++ headers, borrowed from the reference cross-compiler for the
-      # same target. GCC derives its C++ search path from the prefix it is run
-      # from, which is its own copy under store/, so they belong in there
-      # rather than alongside it.
-      gccPrefix=$dir/store/$(basename ${mips-gcc})
-      gccVersion=$(ls ${mips-gcc}/lib/gcc/mips-linux-gnu)
-      mkdir -p $gccPrefix/mips-linux-gnu/include/c++/$gccVersion
-      cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $gccPrefix/mips-linux-gnu/include/c++/$gccVersion/
 
       # Python packages (requirements.txt), found via
       # PYTHONPATH rather than baked into the interpreter's own store copy.

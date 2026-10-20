@@ -35,7 +35,6 @@
         };
         pkgs = import nixpkgs { inherit system; };
         pkgsCross = import nixpkgs { inherit system crossSystem; };
-        binutils2_39 = (import nixpkgs-binutils-2_39 { inherit system crossSystem; }).buildPackages.binutilsNoLibc;
         baseRom = pkgs.requireFile {
           name = "papermario.us.z64";
           message = ''
@@ -96,10 +95,10 @@
           inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar llvmTools;
           mipsCrossGcc = pkgsCross.stdenv.cc;
         };
+        # The toolchain's own compiler and binutils, so every build of the game uses the same ones.
+        mipsTools = [ unixToolchain.passthru.mips-gcc unixToolchain.passthru.mips-binutils ];
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
-          nativeBuildInputs = [
-            pkgsCross.stdenv.cc
-            binutils2_39
+          nativeBuildInputs = mipsTools ++ [
             pkgs.python3
             pkgs.python3Packages.pip
             pkgs.python3Packages.virtualenv
@@ -113,10 +112,6 @@
             evtValidatePkg
             starRodPkg
           ] ++ pkgs.lib.optional pkgs.stdenv.isLinux pkgs.flips;
-          # Disable nixpkgs hardening flags (zerocallusedregs, fortify, etc.)
-          # that the cross-compiler wrapper injects. The build system manages
-          # its own flags and we want output identical to the Windows toolchain.
-          NIX_HARDENING_ENABLE = "";
         } ''
           cp -r --no-preserve=mode ${self} build
           chmod -R u+w build
@@ -130,7 +125,6 @@
           source venv/bin/activate
           pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
-          export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
           python3 tools/build/configure.py --no-sccache
           ninja
 
@@ -150,9 +144,7 @@
           then pkgs.callPackage ./tools/clangd.nix { version = llvmVersion; archive = "clangd_indexing_tools"; }
           else clangdIndexer;
         clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
-          nativeBuildInputs = [
-            pkgsCross.stdenv.cc
-            binutils2_39
+          nativeBuildInputs = mipsTools ++ [
             pkgs.python3
             pkgs.python3Packages.pip
             pkgs.python3Packages.virtualenv
@@ -167,7 +159,6 @@
             starRodPkg
             clangdIndexingTools
           ];
-          NIX_HARDENING_ENABLE = "";
         } ''
           cp -r --no-preserve=mode ${self} build
           chmod -R u+w build
@@ -181,7 +172,6 @@
           source venv/bin/activate
           pip install --no-index --find-links=${pythonDeps} -r tools/requirements.txt --quiet
 
-          export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
           python3 tools/build/configure.py --no-sccache
           ninja
 
@@ -229,14 +219,10 @@
           '';
         };
 
-        devShells.default = pkgsCross.mkShell {
+        devShells.default = pkgs.mkShell {
           name = "papermario-dx";
           venvDir = "./venv";
-          # Disable nixpkgs hardening flags (stackprotector, fortify, pic, etc.)
-          # that the cross-compiler wrapper injects. These change MIPS code
-          # generation and would cause Linux builds to differ from Windows.
-          NIX_HARDENING_ENABLE = "";
-          packages = with pkgs; [
+          packages = mipsTools ++ (with pkgs; [
             ninja
             zlib
             libyaml
@@ -252,11 +238,9 @@
             starRodPkg
             llvmTools
             treefmt
-          ] ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
+          ]) ++ [ mipsGdb ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
-            export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
-
             export SCCACHE_CONF="$PWD/.dx/sccache-config.toml"
             export AWS_SHARED_CREDENTIALS_FILE="$PWD/.dx/sccache-credentials"
             export SCCACHE_BASEDIRS="$PWD"
@@ -264,20 +248,12 @@
 
             virtualenv venv --quiet
             source venv/bin/activate
-            # This shell's CC is the MIPS o32 cross-compiler (for the game
-            # itself), not a host compiler. pip normally never notices,
-            # since it only needs one to build pygfxd's C extension from
-            # source - but that means whenever it does, it silently uses
-            # the cross-compiler and produces a 32-bit MIPS .so that the
-            # host Python can't load. Point it at a real host compiler for
-            # this one install so a from-source build is possible at all.
-            #
-            # pygfxd also has no manylinux aarch64 wheel on PyPI (only
+            # pygfxd has no manylinux aarch64 wheel on PyPI (only
             # x86_64), so on that platform pip would otherwise silently
             # install the incompatible x86_64 build; force a source build
             # there. Elsewhere the prebuilt wheel is already correct and
             # faster to install.
-            CC=${pkgs.stdenv.cc}/bin/cc pip install ${
+            pip install ${
               pkgs.lib.optionalString (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isAarch64)
                 "--no-binary pygfxd"
             } -r ${./tools/requirements.txt} --quiet

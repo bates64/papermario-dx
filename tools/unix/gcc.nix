@@ -97,6 +97,13 @@ stdenv.mkDerivation {
     # but remove libraries we don't need.
     find $out/lib -name '*.a' -delete 2>/dev/null || true
     find $out/lib -name '*.la' -delete 2>/dev/null || true
+
+    # libstdc++ headers, borrowed from the reference cross-compiler for the
+    # same target. GCC derives its C++ search path from the prefix it is run
+    # from, so they belong in its own tree.
+    gccVersion=$(ls $out/lib/gcc/mips-linux-gnu)
+    mkdir -p $out/mips-linux-gnu/include/c++/$gccVersion
+    cp -rL ${mipsCrossGcc.cc}/include/c++/*/* $out/mips-linux-gnu/include/c++/$gccVersion/
     runHook postInstall
   '';
 }
