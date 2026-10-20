@@ -28,6 +28,20 @@ dependencies:
 environment:
   TQDM_DISABLE: "1"
 
+# The assets split from the baserom, and configure's stamps saying they're
+# current, so configure doesn't split them again.
+cache:
+  - key: baserom-split
+    fallback: true
+    hash:
+      - tools
+      - ver/us/splat.yaml
+    paths:
+      - assets/us
+      - ver/us/build/assets_dumped.stamp
+      - ver/us/build/maps_dumped.stamp
+      - ver/us/build/audio_dumped.stamp
+
 steps:
   - name: "Configure Nix caches"
     # Attic runs on this same host, so it's listed ahead of cache.nixos.org
@@ -49,6 +63,15 @@ steps:
     command: |
       mkdir -p /usr/bin
       ln -sf "$(command -v env)" /usr/bin/env
+
+  # Otherwise builds run as root, and can change the store paths they read.
+  - name: "Add Nix build users"
+    command: |
+      echo "nixbld:x:30000:$(seq -s, -f nixbld%g 1 8)" >> /etc/group
+      for i in $(seq 1 8); do
+        echo "nixbld$i:x:$((30000 + i)):30000::/var/empty:/bin/false" >> /etc/passwd
+      done
+      echo "build-users-group = nixbld" >> /etc/nix/nix.conf
 
   - name: "List changed files"
     # For a pull, lists the files it changes in /tmp/changed-files, so the slow
@@ -123,6 +146,7 @@ steps:
   - name: "Build game"
     command: |
       nix develop --command tools/build_without_warnings.sh
+      nix develop --command sccache --show-stats
 
   - name: "Verify audio"
     command: nix develop --command ninja verify_audio
@@ -187,8 +211,8 @@ steps:
       [ "$expected" = "$actual" ]
 
   - name: "Run clang-tidy"
-    # A pull checks the files it changes, or every file if it changes one that
-    # can affect others (see tools/clang_tidy.sh). A push checks every file.
+    # A pull checks the sources its changes can affect (see tools/clang_tidy.sh).
+    # A push checks every file.
     command: |
       if [ -f /tmp/changed-files ]; then
         nix develop --command bash -c 'mapfile -t files < /tmp/changed-files && tools/clang_tidy.sh "${files[@]}"'
