@@ -41,12 +41,6 @@ CONFIGURE_MODULES = [
     "segments.py",
 ]
 
-# These extractors emit C included by multiple independently linked maps.
-COMMON_GRAPHICS_GENERATORS = [
-    Path("tools/splat_ext/gfx_common.py"),
-    Path("tools/splat_ext/vtx_common.py"),
-]
-
 # Configuration:
 VERSIONS = ["us"]
 
@@ -268,7 +262,6 @@ def splat_extension_paths() -> List[Path]:
 def configure_input_paths(versions: List[str]) -> List[str]:
     """Every file configure reads to decide what build.ninja should contain."""
     paths = [posix(BUILD_TOOLS / module) for module in CONFIGURE_MODULES]
-    paths.extend(posix(path) for path in COMMON_GRAPHICS_GENERATORS)
     paths.extend(posix(path) for path in splat_extension_paths())
     for version in versions:
         paths.append(f"ver/{version}/layout.yaml")
@@ -946,25 +939,6 @@ class Configure:
         (dumped / ".star_rod_extracted").touch()
         shutil.rmtree(dumped / "mapfs" / "geom")
         self.maps_dump_stamp().write_text(star_rod_version())
-
-    def refresh_common_graphics(self) -> None:
-        """Refresh extracted common graphics when their C generator changes."""
-        stamp = self.build_path() / "common_graphics_dumped.stamp"
-        generators = [ROOT / path for path in COMMON_GRAPHICS_GENERATORS]
-        if stamp.exists() and all(
-            path.stat().st_mtime_ns <= stamp.stat().st_mtime_ns for path in generators
-        ):
-            return
-        import splat.scripts.split as split
-
-        # Only the common subclasses should be re-extracted. Splat's cache
-        # checks their generator version; scanning needs the parent modes too.
-        split.main(
-            [self.version_path / "splat.yaml"],
-            ["gfx", "vtx", "gfx_common", "vtx_common"],
-            verbose=False,
-        )
-        stamp.touch()
 
     @staticmethod
     def source_relative_path(path: Path) -> Union[Path, None]:
@@ -2994,8 +2968,6 @@ if __name__ == "__main__":
                 configure.dump_maps()
             if not configure.audio_dump_stamp().exists() or configure.audio_dump_stamp().read_text() != version:
                 configure.dump_audio()
-        if not args.no_split_assets:
-            configure.refresh_common_graphics()
         configure.check_names()
         evt_validation_stamps.extend(
             configure.write_ninja(
