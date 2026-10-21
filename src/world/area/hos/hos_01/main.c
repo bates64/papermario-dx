@@ -141,7 +141,7 @@ EvtScript EVS_Main = {
                 Exec(EVS_BindExitTriggers)
             EndThread
     EndSwitch
-    IfEq(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfEq(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Exec(EVS_Scene_StarWayOpened)
     EndIf
     Return

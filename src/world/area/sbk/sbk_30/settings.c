@@ -2,7 +2,7 @@
 
 s32 get_tattle(void) {
     s32 tattle;
-    if (evt_get_variable(nullptr, GB_StoryProgress) > STORY_CH2_STAR_SPRIT_DEPARTED) {
+    if (evt_get_variable(nullptr, GB_StoryProgress) > STORY_CH2_STAR_SPIRIT_DEPARTED) {
         tattle = MSG_MapTattle_sbk_30_after;
     } else {
         tattle = MSG_MapTattle_sbk_30_before;

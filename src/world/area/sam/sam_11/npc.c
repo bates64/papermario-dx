@@ -215,9 +215,9 @@ EvtScript EVS_NpcInteract_Herringway = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D3)
         CaseLt(STORY_CH7_DEFEATED_JR_TROOPA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D5)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D6)
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D7)
     EndSwitch
     Return
@@ -406,7 +406,7 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
             Call(SpeakToPlayer, NPC_Toadette_02, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 5, MSG_CH7_00C2)
             Wait(10)
             Call(SpeakToPlayer, NPC_Toadette_03, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 5, MSG_CH7_00C3)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_Toadette_01, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 5, MSG_CH7_00C4)
             Wait(10)
             Call(SpeakToPlayer, NPC_Toadette_02, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 5, MSG_CH7_00C5)
@@ -515,7 +515,7 @@ EvtScript EVS_NpcInit_Penguin_06 = {
 };
 
 EvtScript EVS_NpcInit_Toadette_01 = {
-    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_01))
     Else
         Call(RemoveNpc, NPC_SELF)
@@ -525,7 +525,7 @@ EvtScript EVS_NpcInit_Toadette_01 = {
 };
 
 EvtScript EVS_NpcInit_Toadette_02 = {
-    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_02))
     Else
         Call(RemoveNpc, NPC_SELF)
@@ -535,7 +535,7 @@ EvtScript EVS_NpcInit_Toadette_02 = {
 };
 
 EvtScript EVS_NpcInit_Toadette_03 = {
-    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toadette_03))
     Else
         Call(RemoveNpc, NPC_SELF)

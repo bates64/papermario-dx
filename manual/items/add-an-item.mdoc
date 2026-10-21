@@ -1,0 +1,152 @@
+---
+title: Items
+description: Add an item to registry/items.yaml, decide what it does when it's used, and give it to the player.
+sidebar:
+  order: 1
+---
+
+Every item, badge, and key item is an entry in `registry/items.yaml`. The examples on this page make a Mint Candy that restores 3 HP and 3 FP; use your own item's name and values in their place.
+
+## Adding the item
+
+{% steps %}
+1. Add an entry to the end of `registry/items.yaml`, named after your item in PascalCase. You can copy a similar item's entry, such as the Honey Candy's, and change it:
+
+   ```yaml
+   - MintCandy:
+       nameMsg: MSG_ItemName_MintCandy
+       fullDescMsg: MSG_ItemFullDesc_MintCandy
+       shortDescMsg: MSG_ItemShortDesc_MintCandy
+       icon: food/HoneyCandy
+       itemEntityTemplate: STANDARD
+       hudElementTemplate: ITEM
+       sellValue: 5
+       sortValue: 0
+       targetFlags: [ TARGET_FLAG_SELECT_ONE, TARGET_FLAG_PLAYER ]
+       typeFlags: [ ITEM_TYPE_FLAG_WORLD_USABLE, ITEM_TYPE_FLAG_BATTLE_USABLE, ITEM_TYPE_FLAG_CONSUMABLE, ITEM_TYPE_FLAG_FOOD_OR_DRINK, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+       moveID: MOVE_NONE
+       potencyA: 3
+       potencyB: 3
+   ```
+
+   An entry's position in the file is its ID, and save files store items by ID, so always add new entries at the end. The entry's name decides its constant: `MintCandy` becomes `ITEM_MINT_CANDY`.
+
+2. Add the item's name to `msg/26_ItemNames.msg`, named to match `nameMsg` without its `MSG_`:
+
+   ```
+   #message:26:(ItemName_MintCandy) {
+   	Mint Candy[End]
+   }
+   ```
+
+3. Add its descriptions the same way: the short one to `msg/23_ShortItemDesc.msg`, and the full one to `msg/25_FullItemDesc.msg`:
+
+   ```
+   #message:23:(ItemShortDesc_MintCandy) {
+   	A cool, refreshing candy.[BR]
+   	Restores 3 HP and 3 FP.[End]
+   }
+   ```
+
+   Battles, shops, and the item menu in the world show the short description. The pause menu shows the full one.
+
+4. To give the item its own icon, add a PNG to `icon/`, such as `icon/food/MintCandy.png`, and set `icon` to `food/MintCandy`. See [Item icons](/papermario-dx/graphics/icons/#item-icons).
+{% /steps %}
+
+To try the item, add it to the player's inventory from the [debug menu](/papermario-dx/debug/debug-menu/#edit-inventory).
+
+## Item fields
+
+| Field | What it sets |
+| --- | --- |
+| `nameMsg` | The message with the item's name. |
+| `shortDescMsg`, `fullDescMsg` | The messages with its short and full descriptions. |
+| `icon` | The icon's path in `icon/`, without `.png`. |
+| `itemEntityTemplate`, `hudElementTemplate` | How the item and its icon are drawn. Use `STANDARD` and `ITEM`. |
+| `sellValue` | How many coins a shop pays for the item, unless the shop sets its own price. |
+| `sortValue` | Where a badge appears in the pause menu's list of badges, from lowest to highest. Other items ignore it. |
+| `targetFlags` | Who the player can use the item on in battle. Copy them from an item that targets the same way: the Mushroom's target the player, and the Pebble's let the player choose an enemy. |
+| `typeFlags` | What kind of item it is and where it can be used. See [Type flags](#type-flags). |
+| `moveID` | For a badge, its move. See [Add a badge](/papermario-dx/items/add-a-badge/). Other items use `MOVE_NONE`. |
+| `potencyA`, `potencyB` | Numbers the item's EVT scripts read. Food and drink restore `potencyA` HP and `potencyB` FP, and the game's attack items read their damage from `potencyA` with `GetItemPower`. Each is from -128 to 127. |
+
+### Type flags
+
+| Flag | Meaning |
+| --- | --- |
+| `ITEM_TYPE_FLAG_CONSUMABLE` | It goes in the player's items, and is used up when it's used. |
+| `ITEM_TYPE_FLAG_BADGE` | It's a badge. |
+| `ITEM_TYPE_FLAG_KEY` | It's a key item. |
+| `ITEM_TYPE_FLAG_WORLD_USABLE` | The player can use it from the item menu in the world. |
+| `ITEM_TYPE_FLAG_BATTLE_USABLE` | The player can use it in battles. |
+| `ITEM_TYPE_FLAG_FOOD_OR_DRINK` | It's food or drink, which the player eats in battles. |
+| `ITEM_TYPE_FLAG_USE_DRINK_ANIMATION` | The player drinks it instead of eating it. |
+| `ITEM_TYPE_FLAG_ENTITY_FULLSIZE` | It's drawn at full size when it's in the world. Almost every item has it. |
+
+## Choosing what the item does
+
+In the world, the player opens the item menu with **C-Left**. Every item the player can use there restores `potencyA` HP and `potencyB` FP, so food and drink need no code. The EVT script that runs is `EVS_World_UseItem`, in `world_use_item/world_use_item.c`.
+
+In battles, each item runs a battle EVT script. An item without its own uses the food EVT script if it has `ITEM_TYPE_FLAG_FOOD_OR_DRINK`, and the Mushroom's if not. Both restore `potencyA` HP and `potencyB` FP, so the Mint Candy works in battles as it is.
+
+### Writing a battle EVT script for the item
+
+To make an item do something else in battles:
+
+{% steps %}
+1. In the Filesystem, right-click `battle/move/item` and select **New > Move**.
+2. Enter a name for the file, such as `mint_candy`, and select **OK**.
+3. In `battle/use_items.c`, add the item's ID to the end of `ItemKeys`, before `ITEM_NONE`, and add the file's name to the end of `gBattleItemTable`. The two lists go together, so the item and its file must be at the same position in each:
+
+   ```c
+   s32 ItemKeys[] = {
+       // ...
+       ITEM_KOOKY_COOKIE,
+       ITEM_MINT_CANDY,
+       ITEM_NONE
+   };
+
+   static const BattleScriptRef gBattleItemTable[] = {
+       // ...
+       ITEM_SCRIPT("strange_cake"),
+       ITEM_SCRIPT("mint_candy"),
+   };
+   ```
+
+4. In the new file, replace `ITEM_MUSHROOM` with the item's ID, and add what the item does after `UseItemWithEffect`, which shows the player holding up the item. End with `PlayerGoHome` to send the player back to their place:
+
+   ```c
+   EvtScript EVS_UseItem = {
+       SetConst(LVarA, ITEM_MINT_CANDY)
+       ExecWait(UseItemWithEffect)
+       Call(AddFP, 3)
+       ExecWait(PlayerGoHome)
+       Return
+       End
+   };
+   ```
+{% /steps %}
+
+For more examples, see the game's own items in `battle/move/item/`, such as `pow_block.c`.
+
+## Giving the item to the player
+
+To give the player the item with a "You got" message, use `EVT_GIVE_REWARD` in an EVT script:
+
+```c
+EVT_GIVE_REWARD(ITEM_MINT_CANDY)
+```
+
+To add it without a message, call `AddItem`. It puts the inventory slot that the item went in into the variable you give it, or `-1` if the player has no room:
+
+```c
+Call(AddItem, ITEM_MINT_CANDY, LVar0)
+```
+
+To place it in a map for the player to pick up, call `MakeItemEntity` from the map's EVT scripts, with the item, its position, how it appears, and a [game flag](/papermario-dx/save-data/game-flags/) to remember that the player picked it up:
+
+```c
+Call(MakeItemEntity, ITEM_MINT_CANDY, 510, 0, -340, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR02_Item_MintCandy)
+```
+
+The player picks it up by touching it. Once they have, the game sets the flag and doesn't place the item again.

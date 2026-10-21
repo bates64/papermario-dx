@@ -32,7 +32,7 @@ typedef struct LetterDelivery {
     /* 0x0C */ MsgID msgGreeting;
     /* 0x10 */ MsgID msgCancelled;
     /* 0x14 */ MsgID msgDelivered;
-    /* 0x18 */ MsgID msgRecieved;
+    /* 0x18 */ MsgID msgReceived;
     /* 0x1C */ union {
     /*      */   s32 letters[4];
     /*      */   s32* list;

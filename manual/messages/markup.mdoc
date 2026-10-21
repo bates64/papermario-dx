@@ -1,0 +1,153 @@
+---
+title: Message markup
+sidebar:
+  order: 4
+---
+
+Tag names and their arguments aren't case sensitive. Numbers can be decimal or hexadecimal, such as `10` or `0x0A`. A tag that isn't on this page is an error.
+
+## Printing
+
+| Tag | What it does |
+| --- | --- |
+| `[BR]` | Ends the line. |
+| `[Wait]` | Waits for the player to press A. |
+| `[Next]` | Moves on to a new page of the box. |
+| `[Scroll 2]` | Scrolls the text up by 2 lines. |
+| `[Pause 10]` | Pauses for 10 frames. |
+| `[End]` | Ends the message, and closes the box. |
+| `[Yield]` | Hands control back to the EVT script that showed the message, and keeps the box open. Comes before `[End]`. |
+| `[Speed delay=2 chars=1]` | Prints 1 character every 2 frames. |
+| `[DelayOff]`, `[DelayOn]` | Prints the text after `[DelayOff]` all at once, until `[DelayOn]`. |
+| `[InputOff]`, `[InputOn]` | Ignores the player's buttons, until `[InputOn]`. |
+| `[EnableCDownNext]` | Lets the player press C-Down to move on to the next page. |
+| `[RewindOn]`, `[RewindOff]` | No known use. |
+
+## Box styles
+
+`[Style ...]` sets how the box looks, and usually comes first.
+
+| Tag | Box |
+| --- | --- |
+| `[Style right]` | A speech bubble, with its tail on the right |
+| `[Style left]` | A speech bubble, with its tail on the left |
+| `[Style center]` | A speech bubble, with its tail in the middle |
+| `[Style tattle]` | A tattle |
+| `[Style choice pos=120,90 size=75,46]` | A list of options, at a position on the screen, at a size. See [Choices](/papermario-dx/messages/choices). |
+| `[Style inspect]` | A gray box, used when the player inspects something |
+| `[Style sign]` | A sign |
+| `[Style lamppost height=72]` | A lamppost sign, with the given height |
+| `[Style postcard index=0]` | A postcard, showing the given image |
+| `[Style popup]` | A small box, such as for getting a partner's shell |
+| `[Style popup2]` | Another small box, with no known use |
+| `[Style upgrade pos=40,35 size=240,42]` | A box for an upgrade block, at a position on the screen, at a size |
+| `[Style narrate]` | Narration, such as "You got a Mushroom!" |
+| `[Style epilogue]` | The text at the end of a chapter, with no box |
+
+## Choices
+
+| Tag | What it does |
+| --- | --- |
+| `[Cursor 0]` | Puts the cursor for option `0` here. |
+| `[Option 0]` | Starts the text of option `0`. `[Option 255]` comes after the last option. |
+| `[SetCancel 1]` | Picks option `1` when the player presses B. |
+| `[EndChoice 2]` | Ends a list of 2 options. |
+
+`[BeginChoice]` numbers the options for you. After it, each `[Option]` with no number puts the cursor and starts the next option, and `[EndChoice cancel=1]` ends the list and picks option `1` when the player presses B:
+
+```
+[Style choice pos=120,90 size=75,46]
+[BeginChoice]
+[Option]Yes[BR]
+[Option]No[BR]
+[EndChoice cancel=1][End]
+```
+
+## Text
+
+| Tag | What it does |
+| --- | --- |
+| `[Font standard]` | Sets the font: `standard`, `menu`, `menu2`, `title`, or `subtitle`. |
+| `[Color red]` | Sets the color of the text, by name or by number, such as `[Color 0x0A]`. |
+| `[SaveColor]`, `[RestoreColor]` | Saves the color, and goes back to the saved one. |
+| `[Size 32,32]` | Sets the width and height of the characters. |
+| `[SizeReset]` | Sets the size of the characters back to normal. |
+| `[CharWidth 8]` | Gives every character the same width. `[CharWidth 0]` turns it off. |
+| `[FullSpace]`, `[HalfSpace]` | Prints a wide or a narrow space. |
+
+The color names depend on the box's `[Style]`:
+
+| Style | Colors |
+| --- | --- |
+| `inspect` | `dark` |
+| `sign` | `normal`, `red`, `blue`, and `green` |
+| `popup` | `normal`, `red`, `pink`, `purple`, `blue`, `teal`, `green`, and `yellow` |
+| Any other | `normal`, `red`, `pink`, `purple`, `blue`, `cyan`, `green`, and `yellow` |
+
+## Position
+
+| Tag | What it does |
+| --- | --- |
+| `[SetPosX 40]`, `[SetPosY 15]` | Moves where the text prints to. |
+| `[Right 8]`, `[Down 6]`, `[Up 6]` | Moves where the text prints by a number of pixels. |
+| `[CenterX 159]` | Centers the text around a position. `[CenterX 0]` turns it off. |
+| `[SavePos]`, `[RestorePos]` | Saves where the text prints, and goes back to the saved place. |
+
+## Effects
+
+An effect applies to the text after it, until its closing tag, such as `[Wave]Hello![/Wave]`. `[/FX]` closes the most recent effect.
+
+| Tag | What it does |
+| --- | --- |
+| `[Shake]` | Shakes each character. |
+| `[Wave]` | Moves each character in a wave. |
+| `[Rainbow]` | Colors each character in turn. |
+| `[PrintRising]` | Prints each character rising into place. |
+| `[PrintGrowing]` | Prints each character growing into place. |
+| `[SizeJitter]` | Changes the size of each character at random. |
+| `[SizeWave]` | Changes the size of each character in a wave. |
+| `[DropShadow]` | Draws a shadow under the text. |
+| `[NoiseOutline]` | Draws the text with a noisy outline. |
+| `[Static 50]` | Draws static over the text, by an amount. |
+| `[Blur dir=xy]` | Blurs the text, in `x`, `y`, or `xy`. |
+| `[DitherFade 217]` | Fades the text, by an amount. |
+
+## Images
+
+The image tags show images that an EVT script sets with `SetMessageImages`, by their index in its list.
+
+| Tag | What it does |
+| --- | --- |
+| `[InlineImage index=0]` | Shows a small image where the text prints. |
+| `[Image index=0 pos=85,97 hasBorder=1 alpha=255 fadeAmount=15]` | Shows an image at a position, fading it in. |
+| `[HideImage fadeAmount=15]` | Fades the image out by an amount each frame. `[HideImage]` hides it at once. |
+| `[ItemIcon itemID=0x0057]` | Shows an item's icon. |
+| `[AnimSprite spriteID=0x0039 raster=30]` | Shows a sprite's raster, as a frame of an animation. |
+| `[AnimDelay index=0 delay=14]` | Sets how many frames frame `0` of the animation lasts. |
+| `[AnimLoop 0 0]` | Repeats the animation. |
+| `[AnimDone 0]` | Ends the animation. |
+
+## Inserted text
+
+| Tag | What it does |
+| --- | --- |
+| `[Var 0]` | Inserts text or a number that an EVT script sets with `SetMessageText` or `SetMessageValue`, from `0` to `2`. |
+
+## Sound
+
+| Tag | What it does |
+| --- | --- |
+| `[Voice normal]` | Sets the sound the text makes as it prints: `normal`, `bowser`, or `star` (also written `spirit`). |
+| `[Volume 50]` | Sets the volume of the text's sound. |
+
+## Special characters
+
+These print a symbol: `[NOTE]`, `[HEART]`, `[STAR]`, `[UP]`, `[DOWN]`, `[LEFT]`, `[RIGHT]`, `[CIRCLE]`, `[CROSS]`, and the button symbols `[A]`, `[B]`, `[L]`, `[R]`, `[Z]`, `[C-UP]`, `[C-DOWN]`, `[C-LEFT]`, `[C-RIGHT]`, and `[START]`.
+
+Each button symbol prints in its button's color. To pick another color, add `color=` to any of them except `[A]` and `[Z]`: `blue`, `green`, `red`, `yellow`, or `gray`, such as `[START color=blue]`. To print a button symbol in the text's color, put `~` before its name, such as `[~A]`.
+
+## Raw bytes
+
+`[Raw 0xFF 0x06]` puts bytes into the message as they are. Use it for message codes that have no tag, such as `0xFF 0x06`, which ignores the player's buttons for the rest of the message.
+
+Don't use `[SetCursorPos]` or `[CustomVoice]`. They have bugs that cause errors.

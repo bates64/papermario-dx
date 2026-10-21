@@ -263,7 +263,7 @@ EvtScript EVS_ItemPrompt_Mailbag = {
 };
 
 EvtScript EVS_NpcInteract_Postmaster = {
-    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         IfEq(GF_MAC01_MailbagReturned, false)
             ExecWait(EVS_ItemPrompt_Mailbag)
             Return
@@ -358,10 +358,10 @@ EvtScript EVS_NpcInit_Postmaster = {
         Set(GF_MAC01_UnlockedLetter_00, true)
     EndIf
     Set(GF_MAC01_UnlockedLetter_02, true)
-    IfGe(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Set(GF_MAC01_UnlockedLetter_05, true)
     EndIf
-    IfGe(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_DEPARTED)
         Set(GF_MAC01_UnlockedLetter_04, true)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
@@ -376,7 +376,7 @@ EvtScript EVS_NpcInit_Postmaster = {
     IfGe(GB_StoryProgress, STORY_CH7_RAISED_FROZEN_STAIRS)
         Set(GF_MAC01_UnlockedLetter_07, true)
     EndIf
-    IfGe(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_DEPARTED)
         Set(GF_MAC01_UnlockedLetter_09, true)
     EndIf
     IfGe(GB_IWA00_Whacka_HitCount, 2)
@@ -385,10 +385,10 @@ EvtScript EVS_NpcInit_Postmaster = {
     IfGe(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
         Set(GF_MAC01_UnlockedLetter_0B, true)
     EndIf
-    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Set(GF_MAC01_UnlockedLetter_0C, true)
     EndIf
-    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Set(GF_MAC01_UnlockedLetter_0D, true)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
@@ -403,7 +403,7 @@ EvtScript EVS_NpcInit_Postmaster = {
     IfGe(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
         Set(GF_MAC01_UnlockedLetter_12, true)
     EndIf
-    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Set(GF_MAC01_UnlockedLetter_11, true)
     EndIf
     Return
@@ -470,7 +470,7 @@ EvtScript EVS_PostOfficeShyGuy_Escape = {
 };
 
 EvtScript EVS_Scene_MailbagTheft = {
-    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     IfGt(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_RESCUED)

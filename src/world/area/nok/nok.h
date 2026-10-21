@@ -35,7 +35,7 @@ enum AreaFlagsNOK {
     AF_NOK01_ToggleDialogue_Bobomb1         = AreaFlag(0x0B),
     AF_NOK01_ToggleDialogue_Bobomb2         = AreaFlag(0x0C),
     // AF_NOK_0D unused
-    AF_NOK01_RecievedBobombSalute           = AreaFlag(0x0E),
+    AF_NOK01_ReceivedBobombSalute           = AreaFlag(0x0E),
     AF_NOK02_DeclinedBobombInvite           = AreaFlag(0x0F),
     AF_NOK02_InsideKoopersHouse             = AreaFlag(0x10),
     AF_NOK02_PauseBobombFight               = AreaFlag(0x11),

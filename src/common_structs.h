@@ -719,7 +719,7 @@ typedef struct StatusBar {
     /* 0x34 */ s16 drawPosX; // base position of the whole bar
     /* 0x36 */ s16 drawPosY; // base position of the whole bar, animated when it appears
     /* 0x38 */ s16 showTimer;
-    /* 0x3A */ b8 hidden; // current state of the status bar's visiblity
+    /* 0x3A */ b8 hidden; // current state of the status bar's visibility
     /* 0x3B */ b8 unk_3B;
     /* 0x3C */ b8 unk_3C;
     /* 0x3D */ s8 displayHP;

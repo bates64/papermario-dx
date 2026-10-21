@@ -1,0 +1,105 @@
+---
+title: Variables
+sidebar:
+  order: 2
+---
+
+Every running EVT script has 16 **local variables**, `LVar0` to `LVarF`, and 96 **local flags**, `LocalFlag(0)` to `LocalFlag(95)`. The first 16 local flags have short names, `LFlag0` to `LFlagF`. Use them for values only that EVT script needs. For a value that has to last longer, or that other EVT scripts read, use one with the lifetime you need:
+
+| Variable | Lasts | Saved |
+| --- | --- | --- |
+| `LVar0` to `LVarF`, `LocalFlag(0)` to `LocalFlag(95)` | Until the EVT script ends | No |
+| `MapVar(0)` to `MapVar(15)`, `MapFlag(0)` to `MapFlag(95)` | Until the player leaves the map | No |
+| `AreaFlag(n)`, `AreaByte(n)` | Until the player leaves the area | Yes |
+| `GameFlag(n)`, `GameByte(n)` | For the whole save file | Yes |
+
+Game flags and bytes have names, such as `GF_KMR02_WarpPipe` for whether the warp pipe in `kmr_02` is open, and `GB_StoryProgress` for how far through the story the player is. Use the names. To add your own, see [Saved flags and bytes](/papermario-dx/save-data/game-flags).
+
+Some commands use local variables for their own work. `SpeakToPlayer`, `SpeakToNpc`, `ContinueSpeech`, and `EndSpeech` overwrite `LVarC` to `LVarF`. `ShowChoice`, `ShowMessageAtScreenPos`, `ShowMessageAtWorldPos`, `SwitchMessage`, and `CloseMessage` put the option the player picked in `LVar0`, overwriting it.
+
+## Arithmetic
+
+Each command changes the variable it's given first. Commands ending in `F` work with decimal numbers, written with `Float`:
+
+```c
+Set(LVar0, 5)
+Add(LVar0, 1)           // LVar0 is 6
+SetF(LVar1, Float(1.5))
+```
+
+| Command | What it does |
+| --- | --- |
+| `Set(VAR, A)` | `VAR = A` |
+| `SetF(VAR, A)` | `VAR = A`, as a decimal number |
+| `SetConst(VAR, A)` | `VAR = A`, using `A` as written, without reading it as a variable |
+| `Add(VAR, A)`, `AddF` | `VAR += A`. With more arguments, `VAR = A + B + ...` |
+| `Sub(VAR, A)`, `SubF` | `VAR -= A`. With three arguments, `VAR = A - B` |
+| `Mul(VAR, A)`, `MulF` | `VAR *= A`. With more arguments, `VAR = A * B * ...` |
+| `Div(VAR, A)`, `DivF` | `VAR /= A`. With three arguments, `VAR = A / B` |
+| `Mod(VAR, A)` | `VAR %= A`. With three arguments, `VAR = A % B` |
+| `Neg(VAR)`, `NegF` | `VAR = -VAR`. With two arguments, `VAR = -A` |
+| `Abs(VAR)`, `AbsF` | `VAR = abs(VAR)`. With two arguments, `VAR = abs(A)` |
+| `Sign(VAR)`, `SignF` | `VAR` becomes -1, 0, or 1 by the sign of `VAR`. With two arguments, by the sign of `A` |
+| `Min(VAR, A)`, `MinF` | `VAR = min(VAR, A)`. With more arguments, `VAR = min(A, B, ...)` |
+| `Max(VAR, A)`, `MaxF` | `VAR = max(VAR, A)`. With more arguments, `VAR = max(A, B, ...)` |
+| `Clamp(VAR, MIN, MAX)`, `ClampF` | Keeps `VAR` between `MIN` and `MAX`. With four arguments, `VAR = clamp(A, MIN, MAX)` |
+| `BitwiseAnd(VAR, A)` | Keeps only the bits of `VAR` that are also set in `A` |
+| `BitwiseOr(VAR, A)` | Sets the bits of `A` in `VAR` |
+| `BitwiseAndConst(VAR, A)`, `BitwiseOrConst` | As above, using `A` as written |
+
+## Vectors
+
+A position is often kept in three variables in a row, such as `LVar0`, `LVar1`, and `LVar2` from `GetPlayerPos`. The vector commands treat variables in a row as one vector, named by its first variable. This finds how far the player is from an NPC:
+
+```c
+Call(GetPlayerPos, LVar0, LVar1, LVar2)
+Call(GetNpcPos, NPC_Goompa, LVar3, LVar4, LVar5)
+EVT_VEC3I_VSUB(LVar0, LVar3)   // LVar0-LVar2 = player position - NPC position
+```
+
+Each command comes in four forms: `2I` and `3I` for two or three whole numbers, and `2F` and `3F` for decimal numbers, such as `EVT_VEC3F_ADD`.
+
+| Command | What it does |
+| --- | --- |
+| `EVT_VEC3I_SET(VEC, X, Y, Z)` | Sets each part of `VEC`. |
+| `EVT_VEC3I_ADD(VEC, X, Y, Z)` | Adds to each part of `VEC`. |
+| `EVT_VEC3I_SUB(VEC, X, Y, Z)` | Subtracts from each part of `VEC`. |
+| `EVT_VEC3I_VSET(VEC, OTHER)` | Copies the vector `OTHER` into `VEC`. |
+| `EVT_VEC3I_VADD(VEC, OTHER)` | Adds the vector `OTHER` to `VEC`. |
+| `EVT_VEC3I_VSUB(VEC, OTHER)` | Subtracts the vector `OTHER` from `VEC`. |
+| `EVT_AS_VEC3(VEC)` | Expands to the vector's variables, for passing them to a command, such as `Call(SetPlayerPos, EVT_AS_VEC3(LVar0))`. `EVT_AS_VEC2` does the same for two. |
+| `EVT_VEC_X(VEC)`, `EVT_VEC_Y`, `EVT_VEC_Z` | One part of the vector, such as `EVT_VEC_Y(LVar0)` for `LVar1`. |
+
+
+## Arrays and buffers
+
+An EVT script can work through a C array, either by index with `ArrayVar` or in order with a buffer:
+
+| Command | What it does |
+| --- | --- |
+| `UseArray(ARRAY)` | Lets this EVT script read and write a C `s32` array with `ArrayVar(0)`, `ArrayVar(1)`, and so on. |
+| `UseFlagArray(ARRAY)` | Lets this EVT script read and write bits of a C array with `ArrayFlag(0)`, `ArrayFlag(1)`, and so on. |
+| `MallocArray(SIZE, VAR)` | Creates an array for `ArrayVar` and stores where it is in `VAR`. It's freed for you. |
+| `UseBuf(ARRAY)` | Starts reading a C `s32` array, in order, with `BufRead`. |
+| `BufRead(VAR, ...)` | Reads the next values from the buffer into one or more variables. |
+| `BufPeek(VAR, OFFSET)` | Reads the value at an offset in the buffer, without moving past it. |
+| `UseFBuf(ARRAY)` | Starts reading an array of `Float` values with `FBufRead`. |
+| `FBufRead(VAR, ...)` | Reads the next decimal values from the buffer into one or more variables. |
+| `FBufPeek(VAR, OFFSET)` | Reads the decimal value at an offset, without moving past it. |
+
+## C variables
+
+These commands read and write C variables directly, using the variable's own type. Nothing checks that an index is in range.
+
+```c
+MemGet(LVar0, gPlayerData.coins)
+Add(LVar0, 10)
+MemSet(gPlayerData.coins, LVar0)
+```
+
+| Command | What it does |
+| --- | --- |
+| `MemGet(VAR, SOURCE)` | Reads the C variable `SOURCE` into `VAR`. |
+| `MemSet(DESTINATION, A)` | Writes `A` to the C variable `DESTINATION`. |
+| `MemGetIndex(VAR, ARRAY, INDEX)` | Reads `ARRAY[INDEX]` into `VAR`. `ARRAY` must be a C array, not a pointer. |
+| `MemSetIndex(ARRAY, INDEX, A)` | Writes `A` to `ARRAY[INDEX]`. |

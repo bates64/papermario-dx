@@ -188,7 +188,7 @@ void whirlwind_appendGfx(void* effect) {
     // set the current position we're writing gfx commands to past the vertex buffer
     gMainGfxPos = &gMainGfxPos[65];
 
-    // fill the vertex buffer; 2 sets of 16 verticies
+    // fill the vertex buffer; 2 sets of 16 vertices
     for (i = 0; i <= (360 / 24); i++) {
         Vtx* vtx = &vertexBuffer[i];
         vtx->v.ob[0] = cos_deg(i * (360 / 15)) * 100.0f;
@@ -275,7 +275,7 @@ void whirlwind_appendGfx(void* effect) {
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE, spB0 + i * 16, 0, (spB0 + i * 16 + 63) << 2, 31 << 2);
         gDPSetTileSize(gMainGfxPos++, G_TX_RENDERTILE + 1, spB4 + i * 8, 0, (spB4 + i * 8 + 63) << 2, 31 << 2);
 
-        // Call the display list to create triangles from the verticies
+        // Call the display list to create triangles from the vertices
         gSPDisplayList(gMainGfxPos++, triangleDisplayList);
     }
 

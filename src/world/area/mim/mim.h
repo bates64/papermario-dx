@@ -3,7 +3,7 @@
 
 // TODO this is very confusing, along with AB_MIM_GateTraversal
 // All the names are likely wrong but the purpose of each and
-// their interations are unclear.
+// their interactions are unclear.
 enum ForestGateStates {
     MIM_USEGATE_SIDE_A  = 0,
     MIM_USEGATE_INNER  = 1,

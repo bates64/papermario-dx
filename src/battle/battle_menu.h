@@ -19,7 +19,7 @@ void btl_main_menu_resume_choose(void);
 void btl_main_menu_restore_choose(void);
 
 // restore main menu (wheel) to a visible, but locked state (e.g., canceling target selection to reopen a submenu)
-// use this when the menu should be visibile, but in the background of another menu
+// use this when the menu should be visible, but in the background of another menu
 void btl_main_menu_restore_submenu(void);
 
 void btl_main_menu_destroy(void);

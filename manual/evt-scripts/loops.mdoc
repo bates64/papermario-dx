@@ -1,0 +1,48 @@
+---
+title: Loops
+sidebar:
+  order: 4
+---
+
+## Loop
+
+`Loop` repeats the commands up to its `EndLoop`, as many times as you give it. `Loop(0)` repeats forever, so give it a `Wait` or something else that takes time, and a way out with `BreakLoop`. This loop waits until the player is past the point where X is 100:
+
+```c
+Loop(0)
+    Call(GetPlayerPos, LVar0, LVar1, LVar2)
+    IfGt(LVar0, 100)
+        BreakLoop
+    EndIf
+    Wait(1)
+EndLoop
+```
+
+| Command | What it does |
+| --- | --- |
+| `Loop(TIMES)` | Repeats the commands up to `EndLoop` a number of times. `Loop(0)` repeats until something leaves the loop. |
+| `EndLoop` | Ends the loop. |
+| `BreakLoop` | Leaves the innermost loop. |
+| `ContinueLoop` | Skips to the next repeat of the innermost loop. |
+| `RetryLoop` | Starts the current repeat of the innermost loop again, without counting it. |
+
+An EVT script can have up to 8 `Loop` and `Lerp` blocks active at once.
+
+## Lerp
+
+`Lerp` moves a variable from one value to another over a number of frames, running its commands once a frame with the new value. Use it to animate something, such as fading in an NPC:
+
+```c
+Lerp(LVar0, 0, 255, 30, EASING_LINEAR)
+    Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+EndLerp
+```
+
+`EASING` sets how the value speeds up and slows down, such as `EASING_LINEAR` or `EASING_QUADRATIC_OUT`. `START` and `END` can be whole or decimal numbers.
+
+| Command | What it does |
+| --- | --- |
+| `Lerp(VAR, START, END, FRAMES, EASING)` | Repeats once a frame, setting `VAR` to a value moving from `START` to `END`. |
+| `EndLerp` | Ends a `Lerp`, and waits a frame before the next repeat. |
+
+The commands run for each frame from 0 to `FRAMES`, so you don't need a `Wait`. `BreakLoop` leaves a `Lerp` early, but `ContinueLoop` and `RetryLoop` can't be used inside one, and one `Lerp` can't be inside another.

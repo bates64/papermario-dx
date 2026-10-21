@@ -238,7 +238,7 @@ void interact_inspect_update(void) {
                 InspectIconPtr->alpha = 0;
             }
             if ((angle >= 70.0f && angle <= 110.0f) || (angle >= 250.0f && angle <= 290.0f)) {
-                // only dimiss when the icon is rotated away from view
+                // only dismiss when the icon is rotated away from view
                 InteractNotificationCallback = interact_inspect_dismiss;
             }
             brightness = GetIconBrightnessForAngle(angle);

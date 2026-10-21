@@ -24,14 +24,14 @@ LetterDelivery LetterDelivery_MrE = {
     .msgGreeting = MSG_CH2_0095,
     .msgCancelled = MSG_CH2_0096,
     .msgDelivered = MSG_CH2_0097,
-    .msgRecieved = MSG_CH2_0098,
+    .msgReceived = MSG_CH2_0098,
     .letters = { ITEM_LETTER_CHAIN_MR_E },
     .reward = ITEM_LETTER_CHAIN_MISS_T,
 };
 
 EvtScript EVS_NpcInteract_Archeologist = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_SBK30_Kolorado_SharedRumorAboutMoustafa, true)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Archeologist_Talk, ANIM_Archeologist_Idle, 0, MSG_CH2_00B2)
             Else
@@ -65,13 +65,13 @@ EvtScript EVS_NpcInit_Archeologist = {
 
 EvtScript EVS_NpcInteract_MrE = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_DRO02_Sheek_AskedAboutDesert, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0091)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0092)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0093)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0094)
@@ -90,7 +90,7 @@ EvtScript EVS_NpcInit_MrE = {
 
 EvtScript EVS_NpcInteract_Dryite_02 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Dryite2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A1)
                 Set(AF_DRO02_ToggleDialogue_Dryite2, true)
@@ -98,7 +98,7 @@ EvtScript EVS_NpcInteract_Dryite_02 = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A2)
                 Set(AF_DRO02_ToggleDialogue_Dryite2, false)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A3)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_00A4)
@@ -127,7 +127,7 @@ EvtScript EVS_NpcInit_Dryite_03 = {
 
 EvtScript EVS_NpcInteract_Mouser_01 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Mouser1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A5)
                 Set(AF_DRO02_ToggleDialogue_Mouser1, true)
@@ -135,7 +135,7 @@ EvtScript EVS_NpcInteract_Mouser_01 = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A6)
                 Set(AF_DRO02_ToggleDialogue_Mouser1, false)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Mouser1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00A7)
                 Set(AF_DRO02_ToggleDialogue_Mouser1, true)
@@ -164,7 +164,7 @@ EvtScript EVS_NpcInit_Mouser_01 = {
 
 EvtScript EVS_NpcInteract_Mouser_02 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO02_ToggleDialogue_Mouser2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AB)
                 Set(AF_DRO02_ToggleDialogue_Mouser2, true)
@@ -172,7 +172,7 @@ EvtScript EVS_NpcInteract_Mouser_02 = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AC)
                 Set(AF_DRO02_ToggleDialogue_Mouser2, false)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AD)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_00AE)

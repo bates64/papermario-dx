@@ -541,7 +541,7 @@ EvtScript EVS_Scene_SkolarRescued = {
     Call(ResetCam, CAM_DEFAULT, 3)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Set(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
     Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

@@ -21,7 +21,7 @@ EvtScript EVS_Wisterwood_Exit = {
     Call(SetPartnerForcedFollowMode, 1)
     Call(PlayerMoveTo, 0, -310, 30)
     Call(SetPartnerForcedFollowMode, 0)
-    IfEq(GB_StoryProgress, STORY_CH6_STAR_SPRIT_DEPARTED)
+    IfEq(GB_StoryProgress, STORY_CH6_STAR_SPIRIT_DEPARTED)
         Set(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
     EndIf
     Call(MakeLerp, -100, 0, 30, EASING_QUADRATIC_IN)

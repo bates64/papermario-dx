@@ -283,7 +283,7 @@ EvtScript EVS_Scene_EscapeFromTubba = {
     Exec(EVS_CloseDoors)
     Exec(EVS_BoosBraceDoor)
     Wait(20 * DT)
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(6.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-15.0))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)

@@ -212,7 +212,7 @@
   args: s32, f32, f32, f32, f32, s32
 - name: energy_orb_wave
   args: s32, f32, f32, f32, f32, s32
-- name: merlin_house_stars
+- name: merlon_house_stars
   args: s32, f32, f32, f32
 - name: quizmo_audience
   args: s32, f32, f32, f32

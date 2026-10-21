@@ -22,7 +22,7 @@ EvtScript EVS_NpcInteract_Bubulb = {
             CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
                 Set(LVar0, MSG_CH3_0011)
                 Set(LVar1, MSG_CH3_0012)
-            CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+            CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
                 Set(LVar0, MSG_CH3_0013)
                 Set(LVar1, MSG_CH3_0014)
             CaseDefault

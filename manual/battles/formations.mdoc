@@ -1,0 +1,75 @@
+---
+title: Formations
+sidebar:
+  order: 2
+---
+
+Actors appear in battles through **formations**, which list the actors in a battle and where they stand. Formations live in **battle area** files in `battle/area/`. Each battle area has a `BattleList` that pairs each formation with the stage it's fought on, and a formation only becomes a battle once it's in that list.
+
+## Creating a battle area
+
+{% steps %}
+1. In the Filesystem, right-click `battle/area` and select **New > Battle Area**.
+2. Enter a name for the battle area, such as `frost_cave`.
+3. Select **OK**.
+{% /steps %}
+
+The new file has an example formation and a `BattleList` with a battle for it. Replace the example with your own formation, and list a battle for it:
+
+```c
+#include "battle/battle.h"
+
+Formation frost_goombas = {
+    OVL_ACTOR_BY_IDX("frost_goomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("frost_goomba", BTL_POS_GROUND_C, 9),
+};
+
+BattleList Formations = {
+    BATTLE(frost_goombas, "kmr_04"),
+};
+
+OVL_DEF_BATTLE_AREA(Formations);
+```
+
+`BATTLE` takes the formation and the name of the stage the battle takes place on. `OVL_DEF_BATTLE_AREA` tells the battle system which list holds the area's battles.
+
+To add more battles to the area, add a formation for each one and a `BATTLE` line for it in the `BattleList`.
+
+A battle is named after its area and formation, such as `frost_cave:frost_goombas`. The game uses this name to start the battle, so name formations with lowercase letters, digits, and underscores only.
+
+## Placing actors
+
+`OVL_ACTOR_BY_IDX` places an actor at one of the predefined battle positions. Its first argument is the actor's name, which is its file's name without `.c`. The third argument is **priority**: actors with higher priority take their turns first.
+
+If an actor file defines variants with `OVL_DEF_ACTOR(name)`, select one by writing the actor's name and the variant's name separated by a colon, such as `"anti_guy:trio"`.
+
+For a custom position, use `OVL_ACTOR_BY_POS` with a position vector:
+
+```c
+Vec3i frost_goomba_pos = { 50, 0, -10 };
+
+Formation frost_goomba_solo = {
+    OVL_ACTOR_BY_POS("frost_goomba", frost_goomba_pos, 10),
+};
+```
+
+<details>
+    <summary>Battle position constants</summary>
+
+Each tier has four positions, from `A` at the front to `D` at the back.
+
+| Constant | Tier |
+|----------|------|
+| `BTL_POS_GROUND_A` to `BTL_POS_GROUND_D` | Ground |
+| `BTL_POS_AIR_A` to `BTL_POS_AIR_D` | Air |
+| `BTL_POS_HIGH_A` to `BTL_POS_HIGH_D` | High |
+| `BTL_POS_TOP_A` to `BTL_POS_TOP_D` | Top, near the ceiling |
+| `BTL_POS_CENTER` | Ground, in the middle of the enemy side |
+
+</details>
+
+## Testing the battle
+
+In the battle area's file, each `BATTLE(...)` line has a play button next to its line number. Select it to start that battle. To start the area's first battle, select **Game > Play** with the file open.
+
+You can also start any battle with **Battle Select** in the [debug menu](/papermario-dx/debug/debug-menu).

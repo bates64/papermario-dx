@@ -11,7 +11,7 @@ LetterDelivery LetterDelivery_Mayor = {
     .msgGreeting = MSG_CH7_0041,
     .msgCancelled = MSG_CH7_0042,
     .msgDelivered = MSG_CH7_0043,
-    .msgRecieved = MSG_CH7_0044,
+    .msgReceived = MSG_CH7_0044,
     .letters = { ITEM_LETTER_TO_MAYOR_PENGUIN },
     .reward = ITEM_STAR_PIECE,
 };

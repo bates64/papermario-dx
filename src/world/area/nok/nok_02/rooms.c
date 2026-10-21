@@ -288,7 +288,7 @@ s32 InteriorNPCs_KootHouse[] = {
 };
 
 EvtScript EVS_SetupRooms = {
-    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         // kolorado house
         Call(CreateMapRoom,
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),

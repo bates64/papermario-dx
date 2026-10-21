@@ -1490,7 +1490,7 @@ void au_bgm_player_update_playing(BGMPlayer* player) {
                                     voice->envelopeFlags |= AU_VOICE_ENV_FLAG_VOL_CHANGED;
                                 }
                             } else {
-                                // Modulate pitch using a triange wave for tremolo effect
+                                // Modulate pitch using a triangle wave for tremolo effect
                                 if (note->tremoloDepth != 0) {
                                     if (note->tremoloDelay != 0) {
                                         note->tremoloDelay--;

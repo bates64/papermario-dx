@@ -1,0 +1,54 @@
+---
+title: Save file
+sidebar:
+  order: 2
+---
+
+For most things your mod needs to remember, a [saved flag or byte](/papermario-dx/save-data/game-flags) is enough. When it isn't, such as for a number bigger than 127 or a list of values, you can add a field to the save file itself.
+
+The save file is the `SaveData` struct in `dx/versioning.h`. The game writes it to the save slot exactly as it's laid out in memory, and reads it back the same way. If you move or resize a field, a save from before the change reads its data into the wrong fields.
+
+## Adding a field
+
+`SaveData` ends with unused padding, `PAD(0x7C)`. Take your field's space from it, so every other field stays where it was:
+
+```c
+    /* 0x12EC */ SaveFileSummary summary;
+    /* 0x1304 */ s32 fishCaught; // [!code ++]
+    /* 0x1308 */ PAD(0x78); // [!code ++]
+} SaveData; // size = 0x1380
+```
+
+The padding is zero in existing saves, so in a save from before the change, the new field starts at `0`.
+
+Read and write the field through `gCurrentSaveFile`, such as `gCurrentSaveFile.fishCaught++`. It's saved whenever the player saves.
+
+Starting a new game doesn't clear the field by itself, so a value from a file loaded earlier would carry over. To reset it, add a line such as `saveFile->fishCaught = 0;` to `clear_saved_variables` in `engine2/vars_access.c`.
+
+### Player data
+
+`PlayerData` in `common_structs.h`, which holds the player's stats and inventory, also ends with unused space, `u8 reserved[0xE8]`. You can take a field's space from it the same way:
+
+```c
+    /* 0x33E */ PAD(2);
+    /* 0x340 */ s32 racesWon; // [!code ++]
+    /* 0x344 */ u8 reserved[0xE4]; // [!code ++]
+} PlayerData; // size = 0x428
+```
+
+The game copies `gPlayerData` into the save when the player saves, and copies the save's `PlayerData` back into `gPlayerData` when a save loads. Read and write the field through `gPlayerData`, such as `gPlayerData.racesWon++`. To reset it when a new game starts, set it in `clear_player_data` in `engine1/inventory.c`.
+
+## Changing the layout
+
+Some changes can't keep the layout, such as making an existing array bigger, like the `invItems` array in `PlayerData`, or reordering items. For these, increase `DX_MOD_VER_MAJOR` in `dx/config.h`. Every save records the version of your mod that wrote it, and `fio_deserialize_state` in `dx/versioning.c` checks it when a save loads:
+
+```c
+} else if (saveData->majorVersion != DX_MOD_VER_MAJOR) {
+    // handle breaking changes between major versions here
+    ver_deserialize_standard(saveData);
+}
+```
+
+By default, an older save loads as if nothing had changed. To keep older saves working, replace that call with code that copies each field from the old layout to the new one. `ver_deserialize_vanilla_save` in the same file does this for saves from the original game, so you can use it as a model.
+
+If your mod hasn't been released yet, no one has older saves, so you can change the layout freely.

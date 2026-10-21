@@ -144,7 +144,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Set(LVar0, Ref(NpcSetA))
         CaseLt(STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
             Set(LVar0, Ref(NpcSetB))

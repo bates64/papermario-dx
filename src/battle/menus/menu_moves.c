@@ -245,7 +245,7 @@ void btl_submenu_moves_restore_choose(void) {
 
 // reopen submenu in a locked/selected state
 // sets state to LOCK; next update switches to SELECT (grayed out and non-interactive)
-// use this when the menu should be visibile, but in the background of another menu
+// use this when the menu should be visible, but in the background of another menu
 void btl_submenu_moves_restore_locked(void) {
     set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
     MovesMenuState = BTL_SUBMENU_STATE_LOCK;

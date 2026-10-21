@@ -121,7 +121,7 @@ EvtScript EVS_NpcIdle_Bootler = {
 };
 
 EvtScript EVS_NpcInit_Bootler = {
-    IfEq(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    IfEq(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Call(EnableNpcShadow, NPC_SELF, false)
         Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Bootler))
     Else

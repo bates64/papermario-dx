@@ -1349,7 +1349,7 @@ API_CALLABLE(SetPlayerPos);
 /// @param diameter
 API_CALLABLE(SetPlayerCollisionSize);
 
-/// Sets the move speed of the player for subequent [`PlayerMoveTo`] calls.
+/// Sets the move speed of the player for subsequent [`PlayerMoveTo`] calls.
 /// @evtapi
 /// @param speed
 /// See [`SetNpcSpeed`].

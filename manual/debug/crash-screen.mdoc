@@ -1,0 +1,15 @@
+---
+title: Crash screen
+sidebar:
+  order: 4
+---
+
+When the game crashes, it stops and shows the crash screen, which lists what went wrong and what was running:
+
+- **The first line** says what went wrong. A failed `ASSERT` shows the assertion. Other crashes name the fault, such as `Attempt to read from nullptr` or `Segfault: write to 0x80001234`.
+- **The cyan lines** are the C functions that were running, innermost first, each followed by its file and line. The first is where the game crashed. Unless an assertion failed, the machine instructions around the crash follow it, with `>` marking the one that crashed.
+- **The yellow lines**, if any, are the EVT scripts that were running, innermost first, each followed by its file and line. They appear when the crash happened while an EVT script was running, such as inside an API function it called.
+
+To find the cause, start at the first cyan line and look at what that line uses. For example, `Attempt to read from nullptr` means a pointer it reads through was `nullptr`. If yellow lines follow, the first one is the EVT script line that called into the code that crashed.
+
+When the game crashes in Diorama64, the debugger also pauses it, so you can inspect the crash as you would at a [breakpoint](/papermario-dx/debug/breakpoints): the editor opens the line that crashed, and the **Game** panel shows the variables and the call stack.

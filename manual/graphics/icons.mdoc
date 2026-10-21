@@ -1,0 +1,28 @@
+---
+title: Icons
+description: Add and replace the icons that items and menus show.
+sidebar:
+  order: 2
+---
+
+Icons are PNG files in `icon/`, such as `icon/food/Cake.png`. Every PNG in `icon/` is an icon, so to add one, add a PNG there. Save each icon as an indexed PNG with at most 16 colors, or as an RGBA PNG with no more than 32 levels in each color channel and no partly transparent pixels. An icon that has a [disabled version](#disabled-icons) must be an indexed PNG with at most 16 colors.
+
+## Item icons
+
+An item uses the icon that its `icon` field in `registry/items.yaml` names, which is the icon's path without `.png`:
+
+```yaml
+    icon: food/Cake
+```
+
+The game shows that icon everywhere it draws the item, such as in menus, in the world, and in text boxes, so the `icon` field is all an item needs. To show an item's icon from your own code, create a [HUD element](/papermario-dx/graphics/hud-elements) from its HudScript in `gItemHudScripts`. Only the battle and pause menu headers declare `gItemHudScripts`, so in other code, declare it yourself:
+
+```c
+extern IconHudScriptPair gItemHudScripts[];
+
+HudElemID hid = hud_element_create(gItemHudScripts[gItemTable[ITEM_CAKE].hudElemID].enabled);
+```
+
+### Disabled icons
+
+Menus show an item's disabled icon when you can't use the item. To give an icon one, save a second PNG beside it named `<name>.disabled.png`, such as `food/Cake.disabled.png`. It must be the same image with a different palette, because the game draws the main icon's pixels with the disabled icon's colors.

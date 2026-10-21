@@ -73,7 +73,7 @@ EvtScript EVS_Main = {
         Call(MakeNpcs, false, Ref(WishSceneNPCs))
     Else
         Switch(GB_StoryProgress)
-            CaseLt(STORY_CH3_STAR_SPRIT_DEPARTED)
+            CaseLt(STORY_CH3_STAR_SPIRIT_DEPARTED)
                 Call(MakeNpcs, false, Ref(DefaultNPCs))
             CaseLt(STORY_CH4_BEGAN_PEACH_MISSION)
                 Call(MakeNpcs, false, Ref(Chapter4NPCs))

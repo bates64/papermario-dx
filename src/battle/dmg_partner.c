@@ -95,7 +95,7 @@ HitResult calc_partner_test_enemy(void) {
 
     // check partner contacting fiery enemy
     if (!(battleStatus->curAttackElement & (DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_SMASH))
-        && (part->eventFlags & ACTOR_EVENT_FLAG_FIREY)
+        && (part->eventFlags & ACTOR_EVENT_FLAG_FIERY)
         && !(battleStatus->curAttackEventSuppression & SUPPRESS_EVENT_BURN_CONTACT))
     {
         sfx_play_sound_at_position(
@@ -150,7 +150,7 @@ HitResult calc_partner_test_enemy(void) {
 
         // check partner airlifting fiery enemy
         if (!(battleStatus->curAttackElement & (DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_SMASH))
-            && (part->eventFlags & ACTOR_EVENT_FLAG_FIREY)
+            && (part->eventFlags & ACTOR_EVENT_FLAG_FIERY)
             && !(battleStatus->curAttackEventSuppression & SUPPRESS_EVENT_BURN_CONTACT))
         {
             sfx_play_sound_at_position(
@@ -274,7 +274,7 @@ HitResult calc_partner_damage_enemy(void) {
 
         // check touching fiery enemy
         if (!(battleStatus->curAttackElement & (DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_SMASH))
-            && targetPart->eventFlags & ACTOR_EVENT_FLAG_FIREY
+            && targetPart->eventFlags & ACTOR_EVENT_FLAG_FIERY
             && !(battleStatus->curAttackEventSuppression & SUPPRESS_EVENT_BURN_CONTACT))
         {
             sfx_play_sound_at_position(

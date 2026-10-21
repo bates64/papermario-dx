@@ -48,7 +48,7 @@ EvtScript EVS_SetFloorCracked = {
 
 EvtScript EVS_UpdateEruption = {
     Set(AF_KZN_BossRoomFloorBroken, false)
-    IfGe(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH5_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_MT_LAVA_LAVA_ERUPTING)

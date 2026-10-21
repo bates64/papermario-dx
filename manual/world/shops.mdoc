@@ -1,0 +1,224 @@
+---
+title: Shops
+sidebar:
+  order: 8
+---
+
+A shop is a row of items on display and a shopkeeper NPC. When the player stands in front of an item, the shop shows every item's price, plus the name and description of the item in front of them. Pressing A there asks the shopkeeper to sell it. Talking to the shopkeeper opens a menu with **To buy**, **To sell**, **To check**, and **To claim**:
+
+| Option | What happens |
+| --- | --- |
+| **To buy** | The shopkeeper explains how to buy. |
+| **To sell** | The player picks an item from their inventory and sells it for coins. |
+| **To check** | The player leaves an item with the shopkeeper. |
+| **To claim** | The player takes back an item they left. |
+
+Checked items go into one storage space that every shop shares, so the player can check an item in one shop and claim it in another.
+
+The examples on this page are the shop in Koopa Village, from `world/area/nok/nok_01/shop.c`.
+
+## Placing the items in the map
+
+Each item on display needs two objects in the map:
+
+- A model that marks where the item sits. The game hides the model and shows the item 6 units above the model's center.
+- A floor collider in front of the item, for the player to stand on.
+
+List the pairs in a `ShopItemLocation` array, in the same order as the items you'll sell:
+
+```c
+ShopItemLocation ItemPositions[] = {
+    { .posModelID = MODEL_o213, .triggerColliderID = COLLIDER_o343 },
+    { .posModelID = MODEL_o214, .triggerColliderID = COLLIDER_o344 },
+    { .posModelID = MODEL_o215, .triggerColliderID = COLLIDER_o345 },
+    { .posModelID = MODEL_o216, .triggerColliderID = COLLIDER_o346 },
+    { .posModelID = MODEL_o217, .triggerColliderID = COLLIDER_o347 },
+    { .posModelID = MODEL_o218, .triggerColliderID = COLLIDER_o348 },
+};
+```
+
+## List the items for sale
+
+Write a `ShopItemData` array with each item, its price in coins, and the message the shop shows as its description. End the array with `{}`:
+
+```c
+ShopItemData Inventory[] = {
+    { .itemID = ITEM_DIZZY_DIAL,  .price = 10, .descMsg = MSG_ItemShopDesc_DizzyDial },
+    { .itemID = ITEM_POW_BLOCK,   .price =  4, .descMsg = MSG_ItemShopDesc_POWBlock },
+    { .itemID = ITEM_FIRE_FLOWER, .price =  8, .descMsg = MSG_ItemShopDesc_FireFlower },
+    { .itemID = ITEM_HONEY_SYRUP, .price =  8, .descMsg = MSG_ItemShopDesc_HoneySyrup },
+    { .itemID = ITEM_VOLT_SHROOM, .price = 15, .descMsg = MSG_ItemShopDesc_VoltShroom },
+    { .itemID = ITEM_MUSHROOM,    .price =  4, .descMsg = MSG_ItemShopDesc_Mushroom },
+    {}
+};
+```
+
+Each item goes at the location in the same position in `ItemPositions`, so give `ItemPositions` at least as many entries as `Inventory`. The game's own descriptions are in `msg/24_ShopItemDesc.msg`. To sell your own item, see [Add an item](/papermario-dx/items/add-an-item/).
+
+The player can buy each item as many times as they like. Items don't sell out.
+
+## Setting what the shop pays for items
+
+When the player sells an item, the shop pays the item's `sellValue` from `registry/items.yaml`. To pay a different amount in this shop, list the item in a `ShopSellPriceData` array, ending with `{}`:
+
+```c
+ShopSellPriceData PriceList[] = {
+    { .itemID = ITEM_KOOPASTA,      .sellPrice = 12 },
+    { .itemID = ITEM_KOOPA_TEA,     .sellPrice =  4 },
+    { .itemID = ITEM_KOOKY_COOKIE,  .sellPrice = 15 },
+    { .itemID = ITEM_SPECIAL_SHAKE, .sellPrice = 12 },
+    { .itemID = ITEM_BLAND_MEAL,    .sellPrice = 12 },
+    { .itemID = ITEM_SUPER_SODA,    .sellPrice =  5 },
+    { .itemID = ITEM_LIFE_SHROOM,   .sellPrice = 30 },
+    {}
+};
+```
+
+If every item can sell for its `sellValue`, pass `nullptr` instead of a list.
+
+## Writing the shopkeeper's messages
+
+The shopkeeper says a different message at each step of buying, selling, checking, and claiming. List them in an array indexed by the `SHOP_MSG_` constants. The array needs all 23:
+
+```c
+s32 ShopMessages[] = {
+    [SHOP_MSG_BUY_CONFIRM      ] MSG_Shop_00_NOK01,
+    [SHOP_MSG_NOT_ENOUGH_COINS ] MSG_Shop_01_NOK01,
+    [SHOP_MSG_NOT_ENOUGH_ROOM  ] MSG_Shop_02_NOK01,
+    [SHOP_MSG_BUY_THANK_YOU    ] MSG_Shop_03_NOK01,
+    [SHOP_MSG_GREETING         ] MSG_Shop_04_NOK01,
+    [SHOP_MSG_INSTRUCTIONS     ] MSG_Shop_05_NOK01,
+    [SHOP_MSG_NOTHING_TO_SELL  ] MSG_Shop_06_NOK01,
+    [SHOP_MSG_SELL_WHICH       ] MSG_Shop_07_NOK01,
+    [SHOP_MSG_SELL_CONFIRM     ] MSG_Shop_08_NOK01,
+    [SHOP_MSG_SELL_CANCEL      ] MSG_Shop_09_NOK01,
+    [SHOP_MSG_SELL_MORE        ] MSG_Shop_0A_NOK01,
+    [SHOP_MSG_SELL_THANKS      ] MSG_Shop_0B_NOK01,
+    [SHOP_MSG_NOTHING_TO_CHECK ] MSG_Shop_0C_NOK01,
+    [SHOP_MSG_NO_CHECK_ROOM    ] MSG_Shop_0D_NOK01,
+    [SHOP_MSG_CHECK_WHICH      ] MSG_Shop_0E_NOK01,
+    [SHOP_MSG_CHECK_ACCEPTED   ] MSG_Shop_0F_NOK01,
+    [SHOP_MSG_CHECK_MORE       ] MSG_Shop_10_NOK01,
+    [SHOP_MSG_NOTHING_TO_CLAIM ] MSG_Shop_11_NOK01,
+    [SHOP_MSG_NO_CLAIM_ROOM    ] MSG_Shop_12_NOK01,
+    [SHOP_MSG_CLAIM_WHICH      ] MSG_Shop_13_NOK01,
+    [SHOP_MSG_CLAIM_ACCEPTED   ] MSG_Shop_14_NOK01,
+    [SHOP_MSG_CLAIM_MORE       ] MSG_Shop_15_NOK01,
+    [SHOP_MSG_FAREWELL         ] MSG_Shop_16_NOK01,
+};
+```
+
+You can reuse another shop's messages. To write your own, copy a set from `msg/27_Shops.msg` and change the text, keeping each message's tags at the start and end. The messages that come before a choice, such as `SHOP_MSG_GREETING` and `SHOP_MSG_BUY_CONFIRM`, end with `[Yield][End]` so the choice appears in the same box. For how to write messages, see [Write messages](/papermario-dx/messages/edit-messages/).
+
+Some messages show values the shop fills in:
+
+| Message | `[Var 0]` | `[Var 1]` | `[Var 2]` |
+| --- | --- | --- | --- |
+| `SHOP_MSG_BUY_CONFIRM` | The item's name | The price | `s` if the price isn't 1 coin. For a badge, the BP it costs to equip instead. |
+| `SHOP_MSG_SELL_CONFIRM` | The item's name | What the shop pays | `s` if it isn't 1 coin |
+| `SHOP_MSG_CHECK_WHICH` | How many items the player can still check | `s` if that isn't 1 | |
+
+## Making the shopkeeper
+
+The shopkeeper is an ordinary NPC. For how to add one, see [NPCs](/papermario-dx/world/npcs/). To open the shop's menu when the player talks to it, run `EVS_ShopOwnerDialog` from its interact EVT script:
+
+```c
+EvtScript EVS_NpcInteract_Koopa_ShopOwner = {
+    ExecWait(EVS_ShopOwnerDialog)
+    Return
+    End
+};
+
+EvtScript EVS_NpcInit_Koopa_ShopOwner = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Koopa_ShopOwner))
+    Return
+    End
+};
+```
+
+Then describe the shopkeeper to the shop with a `ShopOwner`:
+
+```c
+ShopOwner Owner = {
+    .npcID = NPC_Koopa_ShopOwner,
+    .idleAnim = ANIM_Koopa_Idle,
+    .talkAnim = ANIM_Koopa_Talk,
+    .onBuyEvt = &EVS_OnBuy,
+    .shopMsgIDs = ShopMessages,
+};
+```
+
+| Field | What it sets |
+| --- | --- |
+| `.npcID` | The shopkeeper NPC's ID. |
+| `.idleAnim`, `.talkAnim` | The animations the shopkeeper plays while it listens and while it talks. |
+| `.onBuyEvt` | Optional. An EVT script that runs after each purchase. See [Run an EVT script after a purchase](#running-an-evt-script-after-a-purchase). |
+| `.onTalkEvt` | Optional. An EVT script that runs when the player closes the shopkeeper's menu. |
+| `.shopMsgIDs` | The shopkeeper's messages. |
+
+## Making the shop
+
+Make the shop with `MakeShop`, then give it its shopkeeper with `MakeShopOwner`. Call them in that order, because `MakeShop` clears the shopkeeper:
+
+```c
+EvtScript EVS_SetupShop = {
+    Call(MakeShop, Ref(ItemPositions), Ref(Inventory), Ref(PriceList), 0)
+    Call(MakeShopOwner, Ref(Owner))
+    Return
+    End
+};
+```
+
+Run `EVS_SetupShop` from the map's main EVT script, such as with `Exec(EVS_SetupShop)` after `MakeNpcs`. A map has one shop at a time, so call `MakeShop` once.
+
+The last argument to `MakeShop` sets which visibility group the items belong to. Pass `0` for a shop outdoors. If the shop is inside a [room](/papermario-dx/world/rooms/), pass the building's group, such as `ITEM_VIS_GROUP(ITEM_NONE, VIS_GROUP_1)`, so the items only show while the player is inside. Koopa Village's shop passes `ITEM_ENTITY_FLAG_TOSS_LOWER`, which has the same value.
+
+## Running an EVT script after a purchase
+
+The shopkeeper's `.onBuyEvt` runs at the end of every purchase conversation, after the shopkeeper finishes talking, whether or not the player bought the item. It gets:
+
+- `LVar0`: what happened, such as `SHOP_BUY_RESULT_OK`, `SHOP_BUY_RESULT_CANCEL`, `SHOP_BUY_RESULT_NOT_ENOUGH_COINS`, or `SHOP_BUY_RESULT_NOT_ENOUGH_ROOM`.
+- `LVar1`: the item's ID.
+- `LVar2`: the item's position in `Inventory`, from `0`.
+
+This EVT script sets a game flag when the player buys a Volt Shroom. You define `GF_MyShop_BoughtVoltShroom` yourself, as described in [Game flags](/papermario-dx/save-data/game-flags/):
+
+```c
+EvtScript EVS_OnBuy = {
+    IfEq(LVar0, SHOP_BUY_RESULT_OK)
+        IfEq(LVar1, ITEM_VOLT_SHROOM)
+            Set(GF_MyShop_BoughtVoltShroom, true)
+        EndIf
+    EndIf
+    Return
+    End
+};
+```
+
+## Changing what's for sale during the story
+
+The shop's stock is set when the map loads. To sell different items later in the story, write an inventory for each point in the story and pass the one you want to `MakeShop`. `InventoryEarly` and `InventoryLate` are names you choose:
+
+```c
+EvtScript EVS_SetupShop = {
+    IfLt(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
+        Set(LVar0, Ref(InventoryEarly))
+    Else
+        Set(LVar0, Ref(InventoryLate))
+    EndIf
+    Call(MakeShop, Ref(ItemPositions), LVar0, Ref(PriceList), 0)
+    Call(MakeShopOwner, Ref(Owner))
+    Return
+    End
+};
+```
+
+Check a [game flag](/papermario-dx/save-data/game-flags/) the same way to change the stock after an event. Give each inventory the same number of items. If one has fewer, the locations it doesn't use still show their marker models, and standing in front of them does nothing.
+
+## Limits
+
+- To buy an item that isn't a badge, the player needs a free slot in their 10-slot item inventory. This includes key items. If they have no room, the shopkeeper says `SHOP_MSG_NOT_ENOUGH_ROOM`.
+- Badges skip the room check. Buying a badge from any shop sets `GF_MAC01_BoughtBadgeFromRowf`, which the base game uses to unlock a letter in the player's house.
+- The player can only sell, check, and claim items from their item inventory. Badges and key items never appear in those menus.
+- Storage holds 32 items, shared between every shop.
+- The items on display ignore the player while a partner is using its ability, unless that partner is Kooper or Bombette.

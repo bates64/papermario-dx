@@ -344,7 +344,7 @@ HitResult calc_player_damage_enemy(void) {
                 return HIT_RESULT_BACKFIRE;
             }
 
-            if (targetPart->eventFlags & ACTOR_EVENT_FLAG_FIREY
+            if (targetPart->eventFlags & ACTOR_EVENT_FLAG_FIERY
                 && !(battleStatus->curAttackEventSuppression & SUPPRESS_EVENT_BURN_CONTACT)
                 && !(player_team_is_ability_active(player, ABILITY_FIRE_SHIELD))
                 && !(player_team_is_ability_active(player, ABILITY_ICE_POWER)))

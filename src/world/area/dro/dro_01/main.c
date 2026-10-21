@@ -102,7 +102,7 @@ EvtScript EVS_Main = {
         Set(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
     EndIf
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH2_STAR_SPRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
+        CaseRange(STORY_CH2_STAR_SPIRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
             Call(MakeNpcs, false, Ref(Chapter3NPCs))
         CaseDefault
             Call(MakeNpcs, false, Ref(DefaultNPCs))

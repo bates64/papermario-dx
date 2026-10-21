@@ -1,34 +1,27 @@
 ---
-title: Getting Started
+title: Introduction
 prev: false
 sidebar:
   order: 1
 ---
 
-Paper Mario has two dominant modding tools: **Star Rod Classic** and **Paper Mario DX**.
-
-Because the way all of the game's code and assets are laid out and how you approach modding the game are very different between eachother, most documentation will be split from here on.
+There are two main ways to mod Paper Mario: **Star Rod Classic** and **Diorama64**. They work so differently that most of the documentation from here on applies to only one of them, so choose one before you start.
 
 {% linkcard
-   title="Use Star Rod Classic"
+   title="Continue with Star Rod Classic"
    href="/star-rod-classic/"
-   description="Easier to get started with, but does not allow modding all of the game's code and assets, a lot of things are not documented with it, and a lot of more complex things require reading and/or modifying assembly. No longer recieves major updates." /%}
+   description="A well-established set of tools for editing Paper Mario. Deeper changes to the game can need assembly code, and it no longer gets major updates." /%}
 
 {% linkcard
-   title="Use Paper Mario DX"
-   href="/papermario-dx/dx"
-   description="More experimental but it is an exhaustive and pretty well-documented resource of everything in the game. Code is in C rather than assembly, making everything (aside from scripts) much more easily readable and modifiable. In active development." /%}
+   title="Continue with Diorama64"
+   href="/papermario-dx/install"
+   description="An editor for Paper Mario DX, a base for making mods that is built on the Paper Mario decompilation. The game is C code instead of assembly, so deeper changes are often easier. It's alpha software, so expect bugs, and fewer people can help." /%}
 
-## Recommendations if you are unsure
+## Which to choose
 
-Star Rod Classic has both a lower skill floor and a lower skill ceiling. It is easier to use, but it limits the types of mods you can make without writing a ton of assembly code.
+Both can make large mods. Star Rod Classic is mature, and more people know it well enough to help you. Mods made with it go well beyond the base game, but the further a mod moves from the game's own mechanics, the more assembly it takes.
 
-Paper Mario DX is more complex but it allows you to do anything that Star Rod Classic does, and a lot more.
-Because you're working in the actual source code, you can change *anything* - new partners, new status effects, new overworld abiilites,
-or things nobody's thought of yet.
+Diorama64 makes changes that would need complex assembly in Star Rod Classic much easier, such as new partners, status effects, or abilities in the world. Updating your mod to a newer version of Paper Mario DX can mean resolving conflicts by hand.
 
-- If you are on Windows 7 or 8, use Star Rod Classic (DX is not supported).
-- If you are sure you will never want to write any custom code (e.g. make new mechanics), use Star Rod Classic.
-- If you want to make cutting-edge mods, use Paper Mario DX.
-- If you are a programmer, use Paper Mario DX.
-- If you will be working on your mod for a long time, consider Paper Mario DX because as it becomes easier to use, it will become the primary method for modding.
+- If you want a mature tool that many modders know, Star Rod Classic is a good fit.
+- If you want to change how the game works, or you already know C, Diorama64 is a good fit.

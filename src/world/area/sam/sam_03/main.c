@@ -18,7 +18,7 @@ EvtScript EVS_Main = {
     Set(GF_MAP_ShiverSnowfield, true)
     Call(EnableModel, MODEL_o44, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o44, COLLIDER_FLAGS_UPPER_MASK)
-    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Call(MakeNpcs, false, Ref(BeforeNPCs))
     Else
         Call(MakeNpcs, false, Ref(AfterNPCs))

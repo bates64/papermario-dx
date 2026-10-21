@@ -23,7 +23,7 @@ LetterDelivery LetterDelivery_Koover1 = {
     .msgGreeting = MSG_CH1_0009,
     .msgCancelled = MSG_CH1_000A,
     .msgDelivered = MSG_CH1_000B,
-    .msgRecieved = MSG_CH1_000C,
+    .msgReceived = MSG_CH1_000C,
     .letters = { ITEM_LETTER_CHAIN_KOOVER_1 },
     .reward = ITEM_LETTER_CHAIN_FISHMAEL,
 };
@@ -35,7 +35,7 @@ LetterDelivery LetterDelivery_Koover2 = {
     .msgGreeting = MSG_CH1_000D,
     .msgCancelled = MSG_CH1_000E,
     .msgDelivered = MSG_CH1_000F,
-    .msgRecieved = MSG_CH1_0010,
+    .msgReceived = MSG_CH1_0010,
     .letters = { ITEM_LETTER_CHAIN_KOOVER_2 },
     .reward = ITEM_LETTER_CHAIN_MR_E,
 };
@@ -47,7 +47,7 @@ LetterDelivery LetterDelivery_MortT = {
     .msgGreeting = MSG_CH1_0039,
     .msgCancelled = MSG_CH1_003A,
     .msgDelivered = MSG_CH1_003B,
-    .msgRecieved = MSG_CH1_003C,
+    .msgReceived = MSG_CH1_003C,
     .letters = { ITEM_LETTER_TO_MORT_T },
     .reward = ITEM_STAR_PIECE,
 };
@@ -352,7 +352,7 @@ EvtScript EVS_NpcInteract_RelaxedKoopa = {
         EndIf
         Return
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0023)
         Return
     EndIf

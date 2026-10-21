@@ -33,9 +33,9 @@ EvtScript EVS_NpcInteract_Boo_01 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0095)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0096)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0097)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0098)
     EndSwitch
     Return
@@ -62,9 +62,9 @@ EvtScript EVS_NpcInteract_Boo_02 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009C)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009D)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009E)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009F)
     EndSwitch
     Return
@@ -82,9 +82,9 @@ EvtScript EVS_NpcInteract_Boo_03 = {
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00A9)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             IfEq(GF_ARN05_GaveGiftAdvice, true)
                 IfEq(AF_ARN05_Boo3GaveRecentAdvice, true)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Wave, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00AE)
@@ -126,9 +126,9 @@ EvtScript EVS_NpcInteract_Boo_04 = {
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B1)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B2)
     EndSwitch
     Return
@@ -149,9 +149,9 @@ EvtScript EVS_NpcInteract_Boo_05 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B6)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B7)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B8)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B9)
     EndSwitch
     Return
@@ -192,8 +192,8 @@ EvtScript EVS_NpcInit_Boo_03 = {
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Call(RemoveNpc, NPC_SELF)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
     EndSwitch
     Return
     End
@@ -210,8 +210,8 @@ EvtScript EVS_NpcInit_Boo_04 = {
             Call(RemoveNpc, NPC_SELF)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(RemoveNpc, NPC_SELF)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
     EndSwitch
     Return
     End
@@ -339,7 +339,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Sub(LVar4, LVar1)
     Sub(LVar5, LVar2)
     Call(NpcMoveTo, NPC_Boo_03, LVar3, LVar5, 30)
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -417,7 +417,7 @@ EvtScript EVS_Scene_TubbaRaid = {
     Call(ForceUsePartner)
     Wait(60 * DT)
     Call(SetMusic, 0, SONG_TUBBAS_MANOR, BGM_VARIATION_1, VOL_LEVEL_FULL)
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, true)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.5))
     Call(SetCamDistance, CAM_DEFAULT, 450)

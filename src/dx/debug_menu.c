@@ -2066,7 +2066,7 @@ void dx_debug_draw_collision() {
         return;
     }
 
-    // find all collider trianges
+    // find all collider triangles
     DebugTriPos = 0;
     for (i = 0; i < gCollisionData.numColliders; i++) {
         Collider* collider = &gCollisionData.colliderList[i];

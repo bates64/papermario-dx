@@ -1,23 +1,15 @@
 ---
-title: Add an ambient sound
+title: Ambient sounds
 description: Edit an ambient sequence, or add a new ambient sound to your mod, and play it with an AMBIENT constant.
 sidebar:
   order: 5
 ---
 
-An ambient sound is a looping background sequence, such as wind or birdsong, that maps play with `PlayAmbientSounds`. Each one is an MSEQ file in `audio/mseq/`, and the build names its `AMBIENT_` constant after the file, so `spooky.xml` becomes `AMBIENT_SPOOKY`.
+An ambient sound is a looping background sequence, such as wind or birdsong, that maps play with `PlayAmbientSounds`. Each one is an MSEQ file in `audio/mseq/`, and its `AMBIENT_` constant is named after the file, so `spooky.xml` becomes `AMBIENT_SPOOKY`.
 
-## Edit an ambient sequence
+## Editing an ambient sequence
 
-To change how a game ambient sound plays, replace its MSEQ file. `AMBIENT_SPOOKY` plays `audio/mseq/spooky.xml`.
-
-1. Copy the game's `audio/mseq/spooky.xml` to `audio/mseq/spooky.xml` in your layer.
-
-2. In your copy, change the `volume` of the first `PlaySound` command from `6D` to `40`.
-
-3. Rebuild the ROM and load a map that plays `AMBIENT_SPOOKY`. The first sound is quieter.
-
-Your file replaces the game's file at the same path, and the sound keeps its constant.
+To change how one of the game's ambient sounds plays, edit its MSEQ file. `AMBIENT_SPOOKY` plays `audio/mseq/spooky.xml`.
 
 An MSEQ file has a header and a list of commands:
 
@@ -34,36 +26,27 @@ An MSEQ file has a header and a list of commands:
 </Mseq>
 ```
 
-- `SetInstrument` picks a sample by name for a track. The sample must be in an always-loaded bank.
+- `SetInstrument` picks a sample by name for a track. The sample must be in an always-loaded bank, unless the sequence is one of the radio's stations.
 - `PlaySound` and `StopSound` start and stop a note. `Delay` waits for `duration` ticks.
 - `StartLoop` and `EndLoop` repeat the commands between them. An `EndLoop` with `count="0"` repeats forever, and the loop must contain a `Delay`.
 - `SetVolume`, `SetPan`, and `SetReverb` set values for a track. `volume` is in hexadecimal.
 
 The game's files in `audio/mseq/` show every command. Copy the one closest to what you want.
 
-## Add a new ambient sound
+## Adding a new ambient sound
 
-1. Copy one of the game's MSEQ files to `audio/mseq/rain.xml` and edit it. Set its `code` to a label of one to four characters, such as `RN1`.
+{% steps %}
+1. In the Filesystem, copy one of the game's MSEQ files in `audio/mseq`, paste it into the same folder, and rename the copy after your sound, such as `rain.xml`.
+2. Edit the copy. Set its `code` to a label of one to four characters, such as `RN1`.
+3. Play the sound from a map's EVT script:
 
-    The file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores.
-
-2. Rebuild the ROM. The build gives the sound the constant `AMBIENT_RAIN`.
-
-3. Play the sound from a map script:
-
-```c
-Call(PlayAmbientSounds, AMBIENT_RAIN)
-```
-
-## Remove an ambient sound
-
-To remove an ambient sound, create `audio/mseq/rain.xml.meta` containing `delete: true`. The sound's constant no longer exists, so the build fails if code still uses it.
+    ```c
+    Call(PlayAmbientSounds, AMBIENT_RAIN)
+    ```
+{% /steps %}
 
 ## The radio
 
-`audio/mseq/radio_0.xml` to `radio_3.xml` aren't ambient sounds of their own. They're the four stations of `AMBIENT_RADIO`. All four must play samples from the same bank, which the build finds from their `SetInstrument` commands. The game's stations use `SPC3`. Replace a station by its file name, the same way as any other ambient sequence.
+`audio/mseq/radio_0.xml` to `radio_3.xml` aren't ambient sounds of their own. They're the four stations of `AMBIENT_RADIO`. All four must play samples from the same bank, through their `SetInstrument` commands.
 
-## Related pages
-
-- [Add an instrument or a sound bank](/papermario-dx/audio/instruments) shows how to add samples for your sequence.
-- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common ambient sound errors.
+While the radio plays, the game loads its stations' bank, as it does for a song's banks, so the stations don't need an always-loaded bank. The game's stations play samples from `SPC3`. A bank that the radio loads isn't always loaded, so other ambient sounds and sound effects can't play its samples.

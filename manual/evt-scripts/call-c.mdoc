@@ -1,0 +1,92 @@
+---
+title: C functions
+sidebar:
+  order: 6
+---
+
+## Ordinary C functions
+
+`Invoke` calls an ordinary C function with the values of its arguments, and `Eval` also stores what it returns:
+
+```c
+void heal_player(s32 amount) {
+    gPlayerData.curHP += amount;
+}
+
+s32 double_it(s32 value) {
+    return value * 2;
+}
+
+EvtScript EVS_Example = {
+    Invoke(heal_player, 5)
+    Eval(LVar0, double_it, LVar1)   // LVar0 = double_it(LVar1)
+    Return
+    End
+};
+```
+
+The function must finish immediately. Its parameters must match the arguments exactly, and it can take up to 6. To branch on what a function returns, use `IfEval` or `IfNotEval`; see [Conditions](/papermario-dx/evt-scripts/conditions).
+
+## API functions
+
+`Call` runs an **API function**: a C function written for EVT scripts, which can read its arguments as variables and keep the EVT script waiting over several frames. The game has hundreds, such as `SpeakToPlayer`, `GetPlayerPos`, and `PlaySound`. To find one, look in the [API reference](/papermario-dx/reference/script_api/common) or at how the game does something similar.
+
+To write your own, define it with `API_CALLABLE`:
+
+```c
+API_CALLABLE(GiveStarPoints) {
+    Bytecode* args = script->ptrReadPos;
+    s32 amount = evt_get_variable(script, *args++);
+
+    gPlayerData.starPoints += amount;
+    return ApiStatus_DONE2;
+}
+```
+
+`evt_get_variable` reads an argument's value, whether the EVT script passed a number or a variable. For a decimal number, use `evt_get_float_variable`. Returning `ApiStatus_DONE2` tells the EVT script to carry on.
+
+To keep the EVT script waiting, return `ApiStatus_BLOCK`, and the function runs again on the next frame. `isInitialCall` is `true` only the first time, so set up there. Values that must last between frames go in `script->functionTemp`, which has 4 slots. Give each slot you use a name with a pointer at the top of the function, such as `s32* frames = &script->functionTemp[0];`, and use the name from then on. For an `f32` or a pointer, point into `functionTempF` or `functionTempPtr` instead. All three share the same 4 slots, so each slot holds one kind of value. To give a result back, write it to a variable argument with `evt_set_variable` or `evt_set_float_variable`.
+
+This function waits until the player presses **A**, then stores how many frames that took:
+
+```c
+API_CALLABLE(TimeButtonPress) {
+    Bytecode* args = script->ptrReadPos;
+    s32* frames = &script->functionTemp[0];
+
+    if (isInitialCall) {
+        *frames = 0;
+    }
+
+    if (!(gGameStatusPtr->pressedButtons[0] & BUTTON_A)) {
+        (*frames)++;
+        return ApiStatus_BLOCK;
+    }
+
+    evt_set_variable(script, *args++, *frames);
+    return ApiStatus_DONE2;
+}
+```
+
+```c
+Call(TimeButtonPress, LVar0)
+```
+
+## Starting an EVT script from C
+
+`start_script` starts an EVT script from C and returns it, so you can set its local variables in `varTable` before it runs:
+
+```c
+Evt* evt = start_script(&EVS_Celebrate, EVT_PRIORITY_1, 0);
+evt->varTable[0] = coinsWon;
+```
+
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `Invoke(FUNC, ARGS...)` | Runs an ordinary C function that takes `s32` arguments and returns nothing. |
+| `InvokeF(FUNC, ARGS...)` | As `Invoke`, for a function that takes `f32` arguments. |
+| `Eval(VAR, FUNC, ARGS...)` | Runs a C function that takes `s32` arguments and returns an `s32`, and stores the result in `VAR`. |
+| `EvalF(VAR, FUNC, ARGS...)` | As `Eval`, with `f32` arguments and result. |
+| `Call(FUNC, ARGS...)` | Runs an API function. |

@@ -68,7 +68,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_PleasantPath, true)
-    IfEq(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    IfEq(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(MakeNpcs, false, Ref(JrTroopaNPCs))
     Else
         IfGe(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)

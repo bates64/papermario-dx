@@ -33,9 +33,9 @@ enum StoryProgress {
     STORY_CH0_BEGAN_PEACH_MISSION               = -105,
     STORY_CH0_TWINK_GAVE_LUCKY_STAR             = -104,
     STORY_CH0_RETURNED_TO_TOAD_TOWN             = -103,
-    STORY_CH1_SPOKE_WITH_MERLIN                 = -102,
-    STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS      = -101,
-    STORY_CH1_MERLIN_REVEALED_KOOPA_BROS        = -100,
+    STORY_CH1_SPOKE_WITH_MERLON                 = -102,
+    STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS      = -101,
+    STORY_CH1_MERLON_REVEALED_KOOPA_BROS        = -100,
     STORY_CH1_KNOCKED_SWITCH_FROM_TREE          = -99,
     STORY_CH1_MADE_FIRST_BRIDGE                 = -98,
     STORY_CH1_ARRIVED_AT_KOOPA_VILLAGE          = -97,
@@ -60,7 +60,7 @@ enum StoryProgress {
     STORY_CH1_DEFEATED_KOOPA_BROS               = -78,
     STORY_CH1_STAR_SPIRIT_RESCUED               = -77,
     STORY_CH1_BEGAN_PEACH_MISSION               = -76,
-    STORY_CH1_STAR_SPRIT_DEPARTED               = -75,
+    STORY_CH1_STAR_SPIRIT_DEPARTED               = -75,
     STORY_CH1_DEFEATED_JR_TROOPA                = -74,
     STORY_CH1_RETURNED_TO_TOAD_TOWN             = -73,
     STORY_CH2_ARRIVED_AT_MT_RUGGED              = -72,
@@ -82,7 +82,7 @@ enum StoryProgress {
     STORY_CH2_DEFEATED_TUTANKOOPA               = -56,
     STORY_CH2_STAR_SPIRIT_RESCUED               = -55,
     STORY_CH2_BEGAN_PEACH_MISSION               = -54,
-    STORY_CH2_STAR_SPRIT_DEPARTED               = -53,
+    STORY_CH2_STAR_SPIRIT_DEPARTED               = -53,
     STORY_UNUSED_FFFFFFCC                       = -52,
     STORY_CH3_SAW_BOO_ENTER_FOREST              = -51,
     STORY_CH3_INVITED_TO_BOOS_MANSION           = -50,
@@ -122,7 +122,7 @@ enum StoryProgress {
     STORY_CH3_DEFEATED_TUBBA_BLUBBA             = -16,
     STORY_CH3_STAR_SPIRIT_RESCUED               = -15,
     STORY_CH3_BEGAN_PEACH_MISSION               = -14,
-    STORY_CH3_STAR_SPRIT_DEPARTED               = -13,
+    STORY_CH3_STAR_SPIRIT_DEPARTED               = -13,
     STORY_CH4_FRYING_PAN_STOLEN                 = -12,
     STORY_CH4_MET_WITH_TWINK                    = -11,
     STORY_CH4_FOUND_HIDDEN_DOOR                 = -10,
@@ -142,7 +142,7 @@ enum StoryProgress {
     STORY_CH4_DEFEATED_GENERAL_GUY              = 4,
     STORY_CH4_STAR_SPIRIT_RESCUED               = 5,
     STORY_CH4_BEGAN_PEACH_MISSION               = 6,
-    STORY_CH4_STAR_SPRIT_DEPARTED               = 7,
+    STORY_CH4_STAR_SPIRIT_DEPARTED               = 7,
     STORY_CH5_WHALE_MOUTH_OPEN                  = 8,
     STORY_CH5_ENTERED_WHALE                     = 9,
     STORY_CH5_DEFEATED_FUZZIPEDE                = 10,
@@ -174,7 +174,7 @@ enum StoryProgress {
     STORY_CH5_MT_LAVA_LAVA_ERUPTING             = 36,
     STORY_CH5_OPENED_ESCAPE_ROUTE               = 37,
     STORY_CH5_BEGAN_PEACH_MISSION               = 38,
-    STORY_CH5_STAR_SPRIT_DEPARTED               = 39,
+    STORY_CH5_STAR_SPIRIT_DEPARTED               = 39,
     STORY_CH5_TRADED_VASE_FOR_SEED              = 40,
     STORY_CH5_RETURNED_TO_TOAD_TOWN             = 41,
     STORY_CH6_FLOWER_GATE_OPEN                  = 42,
@@ -194,7 +194,7 @@ enum StoryProgress {
     STORY_CH6_DEFEATED_HUFF_N_PUFF              = 56,
     STORY_CH6_STAR_SPIRIT_RESCUED               = 57,
     STORY_CH6_BEGAN_PEACH_MISSION               = 58,
-    STORY_CH6_STAR_SPRIT_DEPARTED               = 59,
+    STORY_CH6_STAR_SPIRIT_DEPARTED               = 59,
     STORY_CH6_RETURNED_TO_TOAD_TOWN             = 60,
     STORY_CH7_INVITED_TO_STARBORN_VALLEY        = 61,
     STORY_CH7_ARRIVED_AT_SHIVER_CITY            = 62,
@@ -224,7 +224,7 @@ enum StoryProgress {
     STORY_CH7_DEFEATED_CRYSTAL_KING             = 86,
     STORY_CH7_STAR_SPIRIT_RESCUED               = 87,
     STORY_CH7_BEGAN_PEACH_MISSION               = 88,
-    STORY_CH7_STAR_SPRIT_DEPARTED               = 89,
+    STORY_CH7_STAR_SPIRIT_DEPARTED               = 89,
     STORY_CH8_OPENED_PATH_TO_STAR_WAY           = 90,
     STORY_CH8_REACHED_STAR_HAVEN                = 91,
     STORY_CH8_STAR_SHIP_ACTIVATED               = 92,
@@ -784,8 +784,8 @@ typedef enum HitResult {
 
 typedef enum ActionResult {
     ACTION_RESULT_NONE              = 127,
-    ACTION_RESULT_METER_BELOW_HALF  = -4, // certain mashing comamnds fail with this value
-    ACTION_RESULT_METER_NOT_ENOUGH  = -2, // certain mashing comamnds fail with this value
+    ACTION_RESULT_METER_BELOW_HALF  = -4, // certain mashing commands fail with this value
+    ACTION_RESULT_METER_NOT_ENOUGH  = -2, // certain mashing commands fail with this value
     ACTION_RESULT_EARLY             = -1, // timing commands too early fail with this value
     ACTION_RESULT_FAIL              = 0,  // simple failure to complete action command
     ACTION_RESULT_SUCCESS           = 1,
@@ -1685,7 +1685,7 @@ enum PartnerIDs {
     PARTNER_TWINK               = 0x0000000B,
 };
 
-enum EventSupressFlags {
+enum EventSuppressFlags {
     SUPPRESS_EVENT_SPIKY_TOP        = 0x1,
     SUPPRESS_EVENT_EXPLODE_CONTACT  = 0x2,
     SUPPRESS_EVENT_SPIKY_FRONT      = 0x4,
@@ -1896,7 +1896,7 @@ enum PlayerStatusAnimFlags {
     PA_FLAG_PARTNER_USAGE_FORCED             = 0x00200000,
     PA_FLAG_RIDING_PARTNER                   = 0x00400000,
     PA_FLAG_ABORT_PUSHING_BLOCK              = 0x00800000,
-    /* Changes how Mario is rendered. Seems to be intended to make Mario's depth render properly when using Bow behind a switch (two translucent objects on top of eachother), but it doesn't actually work. */
+    /* Changes how Mario is rendered. Seems to be intended to make Mario's depth render properly when using Bow behind a switch (two translucent objects on top of each other), but it doesn't actually work. */
     PA_FLAG_MAP_HAS_SWITCH                   = 0x01000000,
     /* Usually, if Mario falls for too long, he eventually gets reset to his last safe position. This prevents that. Used by some scripts. */
     PA_FLAG_NO_OOB_RESPAWN                   = 0x10000000,
@@ -2150,7 +2150,7 @@ enum ActorPartFlags {
 
 enum ActorEventFlags {
     ACTOR_EVENT_FLAGS_NONE                  = 0x00000000,
-    ACTOR_EVENT_FLAG_FIREY                  = 0x00000002, ///< Player takes burn damage upon contact.
+    ACTOR_EVENT_FLAG_FIERY                  = 0x00000002, ///< Player takes burn damage upon contact.
     ACTOR_EVENT_FLAG_ICY                    = 0x00000008, ///< No known effect, but is used.
     ACTOR_EVENT_FLAG_SPIKY_TOP              = 0x00000010, ///< Player takes spike damage from jump attacks.
     ACTOR_EVENT_FLAG_ILLUSORY               = 0x00000020, ///< Player attacks pass through and miss.
@@ -2363,7 +2363,7 @@ enum BattleStatusFlags1 {
     BS_FLAGS1_FREE_ACTION_COMMAND           = 0x00008000,
     BS_FLAGS1_10000                         = 0x00010000,
     BS_FLAGS1_DISABLE_CELEBRATION           = 0x00020000,
-    BS_FLAGS1_BATTLE_FLED                   = 0x00040000, // used both when the player flees sucessfully or an enemy flees
+    BS_FLAGS1_BATTLE_FLED                   = 0x00040000, // used both when the player flees successfully or an enemy flees
     BS_FLAGS1_PARTNER_ACTING                = 0x00080000,
     BS_FLAGS1_PLAYER_IN_BACK                = 0x00100000,
     BS_FLAGS1_YIELD_TURN                    = 0x00200000, // moves end either when their script is finished or this flag is set by calling YieldTurn
@@ -2612,7 +2612,7 @@ enum DebugEnemyContactModes {
     DEBUG_CONTACT_NONE              = 0, // contact with enemies behaves normally
     DEBUG_CONTACT_CANT_TOUCH        = 1, // enemies pass through the player and cannot start battles
     DEBUG_CONTACT_DIE_ON_TOUCH      = 2, // enemies die on contact in the overworld
-    DEBUG_CONTACT_DIE_IN_BATTLE     = 3, // all enemies wll die during BATTLE_STATE_BEGIN_TURN
+    DEBUG_CONTACT_DIE_IN_BATTLE     = 3, // all enemies will die during BATTLE_STATE_BEGIN_TURN
     DEBUG_CONTACT_AUTO_FLEE         = 4, // the player flees during BATTLE_STATE_BEGIN_TURN
 };
 
@@ -3001,7 +3001,7 @@ enum CameraFlags {
     CAMERA_FLAG_NO_DRAW             = 0x00000080,
     CAMERA_FLAG_RENDER_ENTITIES     = 0x00000200,
     CAMERA_FLAG_RENDER_MODELS       = 0x00000400,
-    CAMERA_FLAG_SUPRESS_LEADING     = 0x00001000,
+    CAMERA_FLAG_SUPPRESS_LEADING     = 0x00001000,
 };
 
 enum CameraMoveFlags {
@@ -3070,7 +3070,7 @@ enum CameraControlType {
     // flag 1 = Constrain to Fixed Radius
     CAM_CONTROL_LOOK_AT_POINT       = 1,
 
-    // Camera is contrained to a point along the line segment BC.
+    // Camera is constrained to a point along the line segment BC.
     // Use these near exits to stop camera movement.
     // Uses: A/B/C as 2D points
     // The target position is found by projecting player position onto BC along a line orthogonal to AB.
@@ -3087,11 +3087,11 @@ enum CameraControlType {
 
     // Look Toward Point, Constrain to Line
     // flag 1 = Freeze Target at Point
-    CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE  = 5,
+    CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE  = 5,
 
-    // Camera position is contrained to a line segment, with yaw perpendicular to the line segment.
+    // Camera position is constrained to a line segment, with yaw perpendicular to the line segment.
     // flag 1 = Disable Forward Motion
-    CAM_CONTROL_CONSTAIN_BETWEEN_POINTS         = 6,
+    CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS         = 6,
 };
 
 enum BattleCamPreset {
@@ -3130,7 +3130,7 @@ enum BattleCamPreset {
     BTL_CAM_PLAYER_CHARGE_UP                = 0x20,
     BTL_CAM_PLAYER_STATUS_AFFLICTED         = 0x21,
     BTL_CAM_PLAYER_JUMP_MIDAIR              = 0x22, // move through the air with the player mid-jump
-    BTL_CAM_PLAYER_JUMP_FINISH              = 0x23, // after a sucessful action command
+    BTL_CAM_PLAYER_JUMP_FINISH              = 0x23, // after a successful action command
     BTL_CAM_PLAYER_JUMP_FINISH_CLOSE        = 0x24, // unused
     BTL_CAM_PLAYER_SUPER_JUMP_MIDAIR        = 0x25, // alternate BTL_CAM_PLAYER_JUMP_MIDAIR associated with an unused script for Super Jump
     BTL_CAM_PLAYER_ULTRA_JUMP_MIDAIR        = 0x26, // alternate BTL_CAM_PLAYER_JUMP_MIDAIR associated with an unused script for Ultra Jump
@@ -3140,7 +3140,7 @@ enum BattleCamPreset {
     BTL_CAM_PRESET_UNUSED_2A                = 0x2A, // unused
     BTL_CAM_PLAYER_AIM_HAMMER               = 0x2B,
     BTL_CAM_PLAYER_HAMMER_STRIKE            = 0x2C,
-    BTL_CAM_PRESET_UNUSED_2D                = 0x2D, // unused, alterative to BTL_CAM_PLAYER_HAMMER_QUAKE
+    BTL_CAM_PRESET_UNUSED_2D                = 0x2D, // unused, alternative to BTL_CAM_PLAYER_HAMMER_QUAKE
     BTL_CAM_PLAYER_HAMMER_QUAKE             = 0x2E, // slowly pan over the enemy side
     BTL_CAM_PARTNER_APPROACH                = 0x2F, // used by Goombario and Watt (power shock only)
     BTL_CAM_CLOSER_PARTNER_APPROACH         = 0x30,
@@ -3410,7 +3410,7 @@ typedef enum ImgFXType {
     IMGFX_COLOR_BUF_SET_MULTIPLY    = 0xB,
     IMGFX_COLOR_BUF_SET_MODULATE    = 0xC,    // used for color cycling on Monstar's outline
     IMGFX_HOLOGRAM                  = 0xD,    // ghostly star spirits and merlar (args: ???, staticAmt, ???, alphaAmt)
-    IMGFX_FILL_COLOR                = 0xE,    // used to create boss silhouettes in chapter introduction sceens
+    IMGFX_FILL_COLOR                = 0xE,    // used to create boss silhouettes in chapter introduction scenes
     IMGFX_OVERLAY                   = 0xF,
     IMGFX_OVERLAY_XLU               = 0x10,   // unused?
     IMGFX_ALLOC_COLOR_BUF           = 0x11,   // (args: count) creates buffer to set color of 'count' vertices
@@ -3540,7 +3540,7 @@ enum WindowID {
     WIN_CURRENCY_COUNTER                    = 20,
     WIN_POPUP_PROMPT                        = 21,
     WIN_PAUSE_MAIN                          = 22,
-    WIN_PAUSE_DECRIPTION                    = 23,
+    WIN_PAUSE_DESCRIPTION                    = 23,
     WIN_FILES_CURSOR                        = 23, // same as previous
     WIN_PAUSE_TUTORIAL                      = 24,
     WIN_FILES_COPYARROW                     = 24, // same as previous

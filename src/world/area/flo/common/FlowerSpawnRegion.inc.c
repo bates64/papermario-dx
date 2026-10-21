@@ -22,7 +22,7 @@ EvtScript EVS_FlowerSpawnRegion = {
     Set(LVar5, 200)
     Div(LVar5, LVarF)
     Add(LVar5, 1)
-    // spawn intial flowers
+    // spawn initial flowers
     Loop(LVar5)
         Call(RandInt, LVarC, LVar0)
         Call(RandInt, LVarD, LVar1)

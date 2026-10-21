@@ -108,7 +108,7 @@ EvtScript EVS_NpcInteract_ShyGuy_02 = {
 
 EvtScript EVS_NpcInit_ShyGuy_02 = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
                 Set(GF_MAC01_ShyGuyTookOverShop, true)
                 Call(SetNpcPos, NPC_SELF, 430, 20, -373)
@@ -123,7 +123,7 @@ EvtScript EVS_NpcInit_ShyGuy_02 = {
 
 EvtScript EVS_NpcInit_GardenShyGuy1 = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono1, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono2, COLLIDER_FLAGS_UPPER_MASK)
@@ -158,7 +158,7 @@ EvtScript EVS_NpcInteract_Toad_02 = {
 
 EvtScript EVS_NpcInit_Toad_01 = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
                 Call(SetNpcPos, NPC_Toad_01, NPC_DISPOSE_LOCATION)
             EndIf
@@ -170,7 +170,7 @@ EvtScript EVS_NpcInit_Toad_01 = {
 
 EvtScript EVS_NpcInit_Toad_02 = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
                 Call(SetNpcPos, NPC_SELF, 105, 0, -40)
                 Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad_02))

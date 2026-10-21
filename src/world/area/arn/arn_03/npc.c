@@ -20,9 +20,9 @@ EvtScript EVS_NpcInteract_Boo_01 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0075)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0076)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0077)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0078)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
             Wait(10)
@@ -120,7 +120,7 @@ EvtScript EVS_NpcInteract_Boo_02 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0081)
             EVT_GIVE_REWARD(ITEM_KOOT_PACKAGE)
             Set(MV_Koot_Time, 0)
-            Set(GF_ARN03_RecievedPackage, true)
+            Set(GF_ARN03_ReceivedPackage, true)
             Set(GF_ARN03_WaitingForPackage, false)
             Return
         Else
@@ -141,12 +141,12 @@ EvtScript EVS_NpcInteract_Boo_02 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007B)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007C)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007D)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007E)
     EndSwitch
-    IfEq(GF_ARN03_RecievedPackage, false)
+    IfEq(GF_ARN03_ReceivedPackage, false)
         IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH7_2)
             ExecWait(EVS_MarioSalute)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007F)
@@ -282,7 +282,7 @@ EvtScript EVS_NpcInteract_Boo_03 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0084)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0085)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(DisablePartnerAI, false)
             Call(DisablePlayerPhysics, true)
             Thread
@@ -301,7 +301,7 @@ EvtScript EVS_NpcInteract_Boo_03 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0088)
             Call(DisablePlayerPhysics, false)
             Call(EnablePartnerAI)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(DisablePartnerAI, false)
             Call(DisablePlayerPhysics, true)
             Thread
@@ -345,9 +345,9 @@ EvtScript EVS_NpcInteract_Boo_04 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008E)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008F)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0090)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0091)
     EndSwitch
     Return

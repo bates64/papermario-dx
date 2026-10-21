@@ -1,0 +1,111 @@
+---
+title: Spiky actors
+sidebar:
+  order: 5
+---
+
+Spiky actors hurt the player or their partner when they use contact attacks. Event flags on the actor's parts control which attacks the spikes hurt.
+
+The Spike Shield badge protects the player from top, front, and Spiny spikes.
+
+## Top spikes
+
+Set `ACTOR_EVENT_FLAG_SPIKY_TOP` on a part's `.eventFlags` to hurt attackers that jump on the actor:
+
+```c
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_MAIN,
+        // ...
+        .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP,
+    },
+};
+```
+
+Cleft and Spike Top use top spikes.
+
+## Front spikes
+
+Set `ACTOR_EVENT_FLAG_SPIKY_FRONT` to hurt attackers that use any contact attack other than a jump, such as a hammer. Attacks with `DAMAGE_TYPE_NO_CONTACT` don't touch front spikes.
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_SPIKY_FRONT,
+```
+
+Spear Guy uses front spikes for its spear.
+
+You can combine both flags to make an actor spiky from all angles:
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_SPIKY_FRONT,
+```
+
+## Spiny spikes
+
+`ACTOR_EVENT_FLAG_ALT_SPIKY` hurts the player when they jump on the actor, but not when they use the hammer. It hurts a partner that uses any contact attack, unless the actor has `ACTOR_FLAG_UPSIDE_DOWN`. Spiny and Pokey use it.
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_ALT_SPIKY,
+```
+
+## The spike taunt
+
+When the player or their partner gets hurt by attacking a spiky actor, the actor receives `EVENT_SPIKE_TAUNT`. You can handle it in `EVS_HandleEvent` to play a taunt animation:
+
+```c
+CaseEq(EVENT_SPIKE_TAUNT)
+    Call(SetAnimation,
+        ACTOR_SELF, PRT_MAIN, ANIM_Cleft_Laugh)
+    Wait(30)
+```
+
+## Toggling spikes at runtime
+
+You can turn spikes on and off at runtime with `SetPartEventBits`, such as for an actor that loses its spikes while it's flipped over:
+
+```c
+// turn off top spikes when the actor is flipped over
+Call(SetPartEventBits,
+    ACTOR_SELF, PRT_MAIN,
+    ACTOR_EVENT_FLAG_SPIKY_TOP, false)
+
+// turn them back on when it gets back up
+Call(SetPartEventBits,
+    ACTOR_SELF, PRT_MAIN,
+    ACTOR_EVENT_FLAG_SPIKY_TOP, true)
+```
+
+## Flipable actors
+
+A part with `ACTOR_EVENT_FLAG_FLIPABLE` can be flipped over by jump, POW, and quake attacks. When one of those attacks hits it, the actor receives `EVENT_FLIP_TRIGGER` in place of `EVENT_HIT`. Combine the flag with spiky flags to make an enemy that's only vulnerable when flipped:
+
+```c
+.eventFlags = ACTOR_EVENT_FLAG_ALT_SPIKY | ACTOR_EVENT_FLAG_FLIPABLE,
+```
+
+When you handle `EVENT_FLIP_TRIGGER`, you usually:
+
+- Turn off the spiky flags.
+- Swap to a different defense table with lower defense.
+- Change the actor's animations.
+- Set `ACTOR_FLAG_FLIPPED` on the actor.
+
+For a flipable spiky actor that gets back up, see `battle/actor/spiny.c`.
+
+To flip an actor with other attacks, check the attack's element in `EVS_HandleEvent` and flip it yourself. Cleft doesn't have `ACTOR_EVENT_FLAG_FLIPABLE`. It uses `GetLastElement` to flip over when an explosion hits it:
+
+```c
+CaseOrEq(EVENT_HIT_COMBO)
+CaseOrEq(EVENT_HIT)
+    Call(GetLastElement, LVar0)
+    Switch(LVar0)
+        CaseFlag(DAMAGE_TYPE_BLAST)
+            ExecWait(EVS_FlipOver)
+        CaseDefault
+            // play the usual hit reaction
+    EndSwitch
+EndCaseGroup
+```
+
+For the full example, see `battle/actor/cleft.c`.

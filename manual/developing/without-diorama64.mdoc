@@ -1,0 +1,191 @@
+---
+title: Working without Diorama64
+sidebar:
+  order: 1
+---
+
+Diorama64 sets up, builds, runs, and updates your mod for you. You can do all of that yourself instead, with any text editor and a terminal.
+
+## Setting up a project
+
+You need your own copy of Paper Mario (US) as a ROM in `.z64` format. If your ROM is in another format, such as `.n64` or `.v64`, convert it with [Hack64's ROM byte-order converter](https://hack64.net/tools/swapper.php). To make a ROM from your cartridge, see the [dumping guide](https://dumping.guide/carts/nintendo/n64#methods).
+
+{% tabs %}
+{% tabitem label="Windows" %}
+  {% steps %}
+  1. Install [Git for Windows](https://git-scm.com/download/win), keeping all the installer's default options.
+  2. Open a terminal and run `git clone https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz papermario-dx`, then `cd papermario-dx`.
+  3. Rename your ROM to `baserom.z64`, and put it in the `ver\us` folder inside the project.
+  {% /steps %}
+{% /tabitem %}
+{% tabitem label="macOS" %}
+  {% steps %}
+  1. Open Terminal and run `xcode-select --install` to install the Xcode Command Line Tools, which provide `git`. Follow the prompts, then wait for the install to finish.
+  2. Run `git clone https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz papermario-dx && cd papermario-dx`.
+  3. Rename your ROM to `baserom.z64`, and put it in the `ver/us` folder inside the project.
+  {% /steps %}
+{% /tabitem %}
+{% tabitem label="Linux" %}
+  {% steps %}
+  1. Install `git` and `curl` using your distribution's package manager. For example, on Ubuntu or Debian, run `sudo apt install git curl`.
+  2. Run `git clone https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz papermario-dx && cd papermario-dx`.
+  3. Rename your ROM to `baserom.z64`, and put it in the `ver/us` folder inside the project.
+  {% /steps %}
+{% /tabitem %}
+{% tabitem label="Nix" %}
+  {% steps %}
+  1. Install [Nix](https://nixos.org/download), using the default (multi-user) installer options.
+  2. Rename your ROM to `papermario.us.z64`, then run `nix-store --add-fixed sha256 papermario.us.z64` to add it to the Nix store.
+  3. Run `git clone https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz papermario-dx && cd papermario-dx`.
+  4. Run `nix --extra-experimental-features "flakes nix-command" develop --profile .nix-profile --accept-flake-config`. This downloads every dependency and copies the ROM into the project, so it can take a while the first time. Run the commands on the rest of this page from the shell it opens.
+  {% /steps %}
+{% /tabitem %}
+{% /tabs %}
+
+## Where your files go
+
+Diorama64 shows your mod as a single set of files. On disk, those files come from three layers, each a folder with the same layout:
+
+{% filetree %}
+- assets
+  - dx Assets DX adds or changes (**do not edit**)
+  - us Assets from your copy of the game (**do not edit**)
+- src Your mod's code and assets
+  - dx
+    - config.h Mod settings
+{% /filetree %}
+
+When more than one layer has a file at the same path, the build uses the highest one: `src/` first, then `assets/dx/`, then `assets/us/`. To change a file from the game, copy it to the same path in `src/` and edit the copy. For example, to change the messages in `assets/us/msg/0C_Chapter1.msg`, copy it to `src/msg/0C_Chapter1.msg`.
+
+The paths in this manual are relative to the layers. For example, `battle/actor/goomba.c` means the file at that path in whichever layer has it, and when the manual asks you to create a file, create it under `src/`.
+
+To remove something a lower layer provides, create a `.meta` file containing `delete: true` at the same path in `src/`. For a folder, put the `.meta` file inside it. For example, `src/sprite/npc/Goomba/.meta` removes the Goomba sprite.
+
+{% aside type="caution" %}
+Only create, change, or delete files in `src/`. Never edit `assets/dx/` or `assets/us/`.
+{% /aside %}
+
+## Building
+
+Build from the project folder:
+
+{% tabs %}
+{% tabitem label="Windows" %}
+```
+.\tools\build.bat
+```
+{% /tabitem %}
+{% tabitem label="Unix" %}
+```sh
+./tools/build.sh
+```
+{% /tabitem %}
+{% /tabs %}
+
+The first build downloads the compiler toolchain. The output ROM is `ver/us/build/papermario.z64`.
+
+If the build fails in a way that doesn't make sense, such as after you update DX, run `./tools/configure.sh --clean` (`.\tools\configure.bat --clean` on Windows) to delete the files from earlier builds, then build again.
+
+## Running
+
+Load `ver/us/build/papermario.z64` in an emulator. Use [ares](https://ares-emu.net), which is accurate enough to show the problems real hardware would. To play on a console, copy the ROM to a flashcart.
+
+{% aside type="caution" %}
+If you don't test with ares or real hardware regularly, your mod might not work for other people.
+{% /aside %}
+
+## Editing maps and sprites
+
+Diorama64 opens the right editor when you open a map or sprite. Without it, use [Star Rod](https://github.com/z64a/star-rod), which DX downloads with its toolchain. To open it, run `./tools/star-rod.sh` (`.\tools\star-rod.bat` on Windows), or `star-rod` in a Nix shell.
+
+To create a map:
+
+1. Create a folder for the map in its area's folder, such as `src/world/area/cool_city/house_of_fun/`. To start a new area, create the area's folder too.
+1. In the map's folder, create `main.c`:
+
+   ```c
+   #include "map.h"
+   #include "map.xml.h"
+
+   EntryList Entrances = {
+       { 0.0, 0.0, 0.0, 90.0 },
+   };
+
+   EvtScript EVS_BindExitTriggers = {
+       Return
+       End
+   };
+
+   EvtScript EVS_Main = {
+       Call(SetSpriteShading, SHADING_NONE)
+       EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
+       Set(LVar0, Ref(EVS_BindExitTriggers))
+       Exec(EnterWalk)
+       Return
+       End
+   };
+
+   OVL_DEF_MAP() = {
+       .main = &EVS_Main,
+       .entryList = &Entrances,
+       .entryCount = ENTRY_COUNT(Entrances),
+       .textureArchive = "kmr",
+   };
+   ```
+
+1. In Star Rod's Map Editor, select **Create**. For **Name**, enter the map folder's name, such as `house_of_fun`. Star Rod finds the folder and fills in its **Area**.
+1. Make the map, and save. Star Rod saves it as `map.xml` in the map's folder.
+
+## Updating DX
+
+Paper Mario DX publishes releases. Each one is a Git tag that ends in a date, in the form `dx-YYYY-MM-DD`, and a fix for an older release adds a number after the date, as in `dx-YYYY-MM-DD.1`. To update your project, merge a release into your `main` branch. Run these commands from the project folder.
+
+### Adding DX as a remote
+
+The first time you update, add Paper Mario DX as a remote named `papermario-dx`:
+
+```sh
+git remote add papermario-dx https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz
+```
+
+If one of your remotes already points at Paper Mario DX, such as `origin` because you cloned your project from it, rename that remote instead and point it at the address above:
+
+```sh
+git remote rename origin papermario-dx
+git remote set-url papermario-dx https://knot.starhaven.dev/did:plc:dfsxnyhzxwqpmykryrjtjabz
+```
+
+### See what's new
+
+Fetch the releases and list them, newest first:
+
+```sh
+git fetch papermario-dx --tags
+git tag --list 'dx-*' --sort=-creatordate
+```
+
+Before you merge, read the [changelog](/papermario-dx/changelog) for each release newer than the one you have. It says what you need to change in your own project.
+
+### Merging a release
+
+```sh
+git checkout main
+git merge dx-YYYY-MM-DD
+```
+
+Replace `dx-YYYY-MM-DD` with the release you want. If your project is on an older release, merge the newest release rather than each one in turn. A release includes everything before it.
+
+If git reports merge conflicts, it marks each conflicting section in the file with `<<<<<<<`, `=======`, and `>>>>>>>` lines. Edit each file to keep the code you want and remove the markers, then run `git add` on it. When you've resolved them all, run `git commit` to finish the merge.
+
+Then [build](#building) as usual. The first build after an update downloads the toolchain for that release.
+
+### Merging main instead
+
+If you need a change that isn't in a release yet, you can merge `papermario-dx/main`:
+
+```sh
+git fetch papermario-dx
+git merge papermario-dx/main
+```
+
+`main` can hold unfinished work, and its changes aren't in the changelog's release notes until the next release. A toolchain is published for every release but only for the newest commits on `main`. If you merge an older `main` commit, the build can fail with an error that no commit in your history has a published toolchain. Merge a release to fix it.

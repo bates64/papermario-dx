@@ -148,7 +148,7 @@ EvtScript EVS_RoomListener_Waterfront = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Switch(GB_StoryProgress)
-                CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
+                CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_BEGAN_PEACH_MISSION)
                     Exec(EVS_WaterfrontHouse_DoorLocked)
                     Set(LVar0, -1)
                 CaseDefault

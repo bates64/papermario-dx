@@ -1399,7 +1399,7 @@ typedef struct EnergyOrbWaveFXData {
     /* 0x34 */ f32 scaleDelta;
 } EnergyOrbWaveFXData; // size = 0x38
 
-typedef struct MerlinHouseStarsFXData {
+typedef struct MerlonHouseStarsFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
@@ -1415,7 +1415,7 @@ typedef struct MerlinHouseStarsFXData {
     /* 0x30 */ f32 unk_30;
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ f32 unk_38;
-} MerlinHouseStarsFXData; // size = 0x3C
+} MerlonHouseStarsFXData; // size = 0x3C
 
 #define MAX_QUIZMO_AUDIENCE 10
 
@@ -2538,7 +2538,7 @@ typedef union {
     void* quizmoAnswer;
     struct MotionBlurFlameFXData* motionBlurFlame;
     struct EnergyOrbWaveFXData* energyOrbWave;
-    struct MerlinHouseStarsFXData* merlinHouseStars;
+    struct MerlonHouseStarsFXData* merlonHouseStars;
     struct QuizmoAudienceFXData* quizmoAudience;
     struct ButterfliesFXData* butterflies;
     struct StatChangeFXData* statChange;

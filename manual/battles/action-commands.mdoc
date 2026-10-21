@@ -1,0 +1,85 @@
+---
+title: Action commands
+sidebar:
+  order: 4
+---
+
+An **action command** is the button input that makes a move stronger, such as pressing **A** right before the player lands a jump. Each action command is a C file in `battle/action_cmd/`, and a [move](/papermario-dx/battles/moves/) loads and starts it from its EVT script.
+
+The examples on this page make an action command called Quick Press. Use your own action command's name in its place.
+
+## Creating the action command
+
+{% steps %}
+1. In the Filesystem, right-click `battle/action_cmd` and select **New > Action Command**.
+2. Enter a name for the action command, such as `quick_press`.
+3. Select **OK**.
+{% /steps %}
+
+The new action command shows the **A** button, and succeeds if the player presses **A** within a set number of frames of the button going down. Its functions are:
+
+| Function | What it does |
+| --- | --- |
+| `init` | Runs when a move calls `InitActionCommand`. Creates the action command's HUD elements. |
+| `start` | Runs when a move calls `StartActionCommand`, and reads that call's arguments. |
+| `update` | Runs every frame, and checks the player's input. |
+| `draw` | Draws the HUD elements. |
+| `destroy` | Frees the HUD elements. |
+
+If the player hasn't got the Lucky Star, `init` and `start` don't show anything, and the action command fails.
+
+## Registering the action command
+
+{% steps %}
+1. In `enums.h`, add an ID to the end of `enum ActionCommand`, one higher than the last:
+
+   ```c
+   ACTION_COMMAND_TIDAL_WAVE                = 0x00000017,
+   ACTION_COMMAND_QUICK_PRESS               = 0x00000018,
+   ```
+
+2. In `battle/action_cmd.c`, add the ID and the file's name to `ActionCommandOverlayNames`:
+
+   ```c
+   [ACTION_COMMAND_QUICK_PRESS]   = "quick_press",
+   ```
+
+3. In the action command's file, set `THIS_ACTION_COMMAND` to the ID:
+
+   ```c
+   #define THIS_ACTION_COMMAND ACTION_COMMAND_QUICK_PRESS
+   ```
+{% /steps %}
+
+## Starting the action command from a move
+
+A move's EVT script loads the action command, initializes it, and starts it when the player should press the button:
+
+```c
+Call(ShowActionHud, true)
+Call(LoadActionCommand, ACTION_COMMAND_QUICK_PRESS)
+Call(InitActionCommand)
+// the move's wind-up goes here
+Call(StartActionCommand, 10, 15, AC_DIFFICULTY_3)
+Wait(30)
+Call(GetPlayerActionQuality, LVar0)
+IfGt(LVar0, 0)
+    // the player succeeded
+EndIf
+```
+
+Each action command reads its own `StartActionCommand` arguments. The new one reads three:
+
+| Argument | What it is |
+| --- | --- |
+| 1 | How many frames to wait before the button goes down and the player can press **A**. |
+| 2 | How many frames the player has to press **A**. |
+| 3 | A difficulty from `AC_DIFFICULTY_0` (easiest) to `AC_DIFFICULTY_7` (hardest). The new action command stores it but doesn't use it. |
+
+`StartActionCommand` doesn't wait for the player, so wait until the action command has finished before you read its result. `GetPlayerActionQuality` gives `1` if the player succeeded, and `0` if they didn't. In a partner's move, use `GetPartnerActionQuality` instead.
+
+`ShowActionHud` decides whether the action command shows its HUD at all. To show the player how to do the action command, set the move's `actionTip` in `registry/moves.yaml`, such as `BTL_MSG_ACTION_TIP_PRESS_WITH_TIMING`.
+
+## Testing the action command
+
+Start a battle with **Battle Select** in the [debug menu](/papermario-dx/debug/debug-menu/), and use a move that starts the action command. To try it with a new move, see [Test the move](/papermario-dx/battles/moves/#testing-the-move).

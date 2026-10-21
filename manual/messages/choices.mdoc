@@ -1,0 +1,39 @@
+---
+title: Choices
+sidebar:
+  order: 3
+---
+
+`ShowChoice` asks the player to pick from a list of options, and puts the number of the one they picked in `LVar0`. Options count from `0`.
+
+Show the question first, with a message that ends with `[Yield][End]` so its box stays open, then answer with `ContinueSpeech`:
+
+```c
+Call(SpeakToPlayer, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0098)
+Call(ShowChoice, MSG_Choice_0011)
+IfEq(LVar0, 0)
+    Call(ContinueSpeech, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_009A)
+Else
+    Call(ContinueSpeech, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0099)
+EndIf
+```
+
+The options are a message too. `msg/1E_Choices.msg` has the game's, such as `Choice_0011`, which is Yes or No:
+
+```
+#message:1E:(Choice_0011) {
+	[Style choice pos=120,90 size=75,46]
+	[DelayOff]
+	[Cursor 0][Option 0]Yes[BR]
+	[Cursor 1][Option 1]No[BR]
+	[Option 255][DelayOn]
+	[SetCancel 1][EndChoice 2][End]
+}
+```
+
+To write your own, copy one with the same number of options and change its text:
+
+- `[Cursor n][Option n]` comes before option `n`.
+- `[SetCancel 1]` picks option `1` when the player presses B.
+- `[EndChoice 2]` is the number of options.
+- `pos` and `size` in `[Style choice]` set where the box is and how big it is.

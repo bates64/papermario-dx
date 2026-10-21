@@ -21,7 +21,7 @@ void entity_BombableRock_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
     data->fragmentsGfx = ENTITY_ADDR(entity, Gfx**, dlists);
     entity->renderSetupFunc = entity_BombableRock_setupGfx;
     entity->alpha = 255;
-    entity->pos.y = data->inititalY;
+    entity->pos.y = data->initialY;
     guTranslateF(mtxTrans, entity->pos.x, entity->pos.y, entity->pos.z);
 
     for (i = 0; i < 5; i++) {
@@ -70,7 +70,7 @@ void entity_BombableRock_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
 }
 
 void entity_BombableRock_init(Entity* entity) {
-    entity->dataBuf.bombableRock->inititalY = entity->pos.y;
+    entity->dataBuf.bombableRock->initialY = entity->pos.y;
     entity_BombableRock_init_fragments(
         entity, Entity_BombableRock_FragmentsRender, Entity_BombableRock_FragmentMatrices
     );
@@ -167,7 +167,7 @@ void entity_BombableRock_update_fragments(Entity* entity) {
             hitZ = data->fragmentPosZ[i];
             hitDepth = fabsf(data->fragmentFallSpeed[i]);
             if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth)
-                || hitY < data->inititalY - 200.0f)
+                || hitY < data->initialY - 200.0f)
             {
                 data->fragmentRebounds[i]++;
                 data->fragmentPosY[i] = hitY + fabsf(data->fragmentFallSpeed[i]);

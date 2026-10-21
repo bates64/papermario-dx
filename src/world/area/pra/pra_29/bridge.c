@@ -1,7 +1,7 @@
 #include "pra_29.h"
 #include "effects.h"
 
-void set_bride_vertex_positions(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVerticies, s32 extendAmt) {
+void set_bride_vertex_positions(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVertices, s32 extendAmt) {
     s32 temp_t3;
     s32 var_t2;
     s32 temp_t5;
@@ -14,7 +14,7 @@ void set_bride_vertex_positions(Vtx* arg0, Vtx* arg1, Vtx* dest, s32 numVerticie
     }
     temp_t5 = 255 - var_t2;
 
-    for (i = 0; i < numVerticies; i++) {
+    for (i = 0; i < numVertices; i++) {
         dest[i].v.ob[0] = ((arg0[i].v.ob[0] * temp_t3) + (arg1[i].v.ob[0] * extendAmt)) / 255;
         dest[i].v.ob[1] = ((arg0[i].v.ob[1] * temp_t3) + (arg1[i].v.ob[1] * extendAmt)) / 255;
         dest[i].v.ob[2] = ((arg0[i].v.ob[2] * temp_t3) + (arg1[i].v.ob[2] * extendAmt)) / 255;

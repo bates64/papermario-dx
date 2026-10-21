@@ -1,0 +1,172 @@
+---
+title: Entries and exits
+sidebar:
+  order: 2
+---
+
+An **entry** is a place where the player can arrive on a map. An **exit** is a [trigger](/papermario-dx/world/triggers/) that sends the player to an entry on another map. To connect two maps, give each one an entry and an exit that leads to the other's entry.
+
+## Adding an entry
+
+A new map's header lists its entries, starting with `<map>_ENTRY_0`. To add one, give it the next number:
+
+```c
+enum {
+    kmr_99_ENTRY_0 = 0,
+    kmr_99_ENTRY_1 = 1,
+};
+```
+
+Base-game maps list their entries in `world/entrances.h` instead.
+
+Then add the entry's position to the `Entrances` list in the map's `main.c`. Base-game maps keep this list in `settings.c`. Each entry is an X, Y, and Z position and a direction, in degrees, that the player faces as they arrive. `0` faces away from the camera, `90` faces right, `180` faces toward the camera, and `270` faces left:
+
+```c
+EntryList Entrances = {
+    [kmr_99_ENTRY_0] { -180.0, 0.0, 0.0,  90.0 },
+    [kmr_99_ENTRY_1] {  180.0, 0.0, 0.0, 270.0 },
+};
+```
+
+To use another map's entry names in an exit, include that map's header, such as `#include "../kmr_98/kmr_98.h"`.
+
+## Choosing how the player arrives
+
+When a map loads, its main EVT script brings the player in at the entry they came through, then binds the map's exits. A new map walks the player in at every entry:
+
+```c
+Set(LVar0, Ref(EVS_BindExitTriggers))
+Exec(EnterWalk)
+```
+
+`EnterWalk` starts the player a short way behind the entry, walks them onto it, and then starts the EVT script in `LVar0`. Binding exits only after the player arrives stops them from walking straight back out. `EnterWalkShort` is the same with a shorter walk.
+
+If entries need different arrivals, such as one through a door, check the entry with `GetEntryID` in an EVT script that the main EVT script starts:
+
+```c
+EvtScript EVS_EnterMap = {
+    Call(GetEntryID, LVar0)
+    Switch(LVar0)
+        CaseEq(kmr_99_ENTRY_1)
+            Set(LVar2, MODEL_door)
+            Set(LVar3, DOOR_SWING_OUT)
+            ExecWait(EnterSingleDoor)
+            Exec(EVS_BindExitTriggers)
+        CaseDefault
+            Set(LVar0, Ref(EVS_BindExitTriggers))
+            Exec(EnterWalk)
+    EndSwitch
+    Return
+    End
+};
+```
+
+In `EVS_Main`, replace the lines that start `EnterWalk` with `Exec(EVS_EnterMap)`.
+
+### Arriving from a save
+
+When the player saves at a save block, the game saves the map, the entry the player came through, and the player's position. Loading the save loads that map with that entry, and `GetLoadType` gives `LOAD_FROM_FILE_SELECT`.
+
+`EnterWalk` and the door enter EVT scripts check for this: instead of walking the player in, they put the player where they saved. The pipe entries don't, so if a map with a save block has a pipe entry, check first, as `kmr_02` does:
+
+```c
+EvtScript EVS_EnterMap = {
+    Call(GetLoadType, LVar1)
+    IfEq(LVar1, LOAD_FROM_FILE_SELECT)
+        Exec(EnterSavePoint)
+        Exec(EVS_BindExitTriggers)
+        Return
+    EndIf
+    // ...
+};
+```
+
+A save stores the map by its name. If you rename a map, saves made in it start at the new game's map, `NEW_GAME_MAP_ID` in `dx/config.h`.
+
+## Edge exits
+
+The most common exit is walking off the edge of a map. Make the exit EVT script with `EVT_EXIT_WALK`, and bind it to a collider at the edge with `TRIGGER_FLOOR_ABOVE`:
+
+```c
+EvtScript EVS_ExitWalk_kmr_05_1 = EVT_EXIT_WALK(60, kmr_02_ENTRY_2, "kmr_05", kmr_05_ENTRY_1);
+
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitWalk_kmr_05_1), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, true, 0)
+    Return
+    End
+};
+```
+
+`EVT_EXIT_WALK` takes how far the player walks, the entry on this map beside the exit, the map to go to, and the entry there. The player walks out the opposite way to that entry's direction, so put an entry at each edge exit, facing into the map. Players arrive at an edge entry with `EnterWalk`.
+
+## Doors
+
+A door exit opens the door, walks the player through it, and goes to the other map. Bind it to the door's collider with `TRIGGER_WALL_PRESS_A`:
+
+```c
+EvtScript EVS_ExitDoor_arn_12_0 =
+    EVT_EXIT_SINGLE_DOOR(arn_10_ENTRY_1, "arn_12", arn_12_ENTRY_0, COLLIDER_tte, MODEL_o37, DOOR_SWING_OUT);
+
+EvtScript EVS_BindExitTriggers = {
+    BindTrigger(Ref(EVS_ExitDoor_arn_12_0), TRIGGER_WALL_PRESS_A, COLLIDER_tte, true, 0)
+    Return
+    End
+};
+```
+
+The first argument is the entry in front of the door, facing away from it into the room. The player walks out through the door, the opposite way. The door swings with `DOOR_SWING_IN` or `DOOR_SWING_OUT`. If it swings the wrong way, use the other one.
+
+To bring the player in through a door, set the door's models in local variables and run the matching enter EVT script, as in [Choose how the player arrives](#choosing-how-the-player-arrives):
+
+| Door | Exit | Enter | Set before entering |
+| --- | --- | --- | --- |
+| One model | `EVT_EXIT_SINGLE_DOOR` | `EnterSingleDoor` | `LVar2`: the model. `LVar3`: the swing. |
+| Split into a top and bottom model | `EVT_EXIT_SPLIT_SINGLE_DOOR` | `EnterSplitSingleDoor` | `LVar2`: the top model. `LVar4`: the bottom model. `LVar3`: the swing. |
+| A pair of doors | `EVT_EXIT_DOUBLE_DOOR` | `EnterDoubleDoor` | `LVar2`: the left model. `LVar3`: the right model. |
+
+For other door sounds, such as a creaky door, use `EVT_EXIT_SINGLE_DOOR_SET_SOUNDS` or `EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS`, which take a `DOOR_SOUNDS_` value, such as `DOOR_SOUNDS_CREAKY`, as their last argument.
+
+## Pipes
+
+The pipe exits and entries are in `world/common/entity/Pipe.inc.c`, which the map's `main.c` includes:
+
+```c
+#include "world/common/entity/Pipe.inc.c"
+```
+
+A pipe exit runs an EVT script of yours once the player is inside the pipe. That EVT script goes to the other map with `GotoMap`:
+
+```c
+EvtScript EVS_GotoMap_tik_12_0 = {
+    Call(GotoMap, Ref("tik_12"), tik_12_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
+
+EvtScript EVS_ExitPipe_tik_12_0 = EVT_EXIT_PIPE_VERTICAL(tik_04_ENTRY_3, COLLIDER_ttd2, EVS_GotoMap_tik_12_0);
+```
+
+| Pipe | Exit | Bind the exit with | Enter |
+| --- | --- | --- | --- |
+| Vertical, entered by pressing down on the Control Stick | `EVT_EXIT_PIPE_VERTICAL` | `TRIGGER_FLOOR_TOUCH` on the pipe's top | `EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)` |
+| Horizontal, entered by walking into it | `EVT_EXIT_PIPE_HORIZONTAL` | `TRIGGER_WALL_PUSH` on the pipe's opening | `EVT_ENTER_PIPE_HORIZONTAL(COLLIDER, EVS_BindExitTriggers)` |
+
+The exit's first argument is the pipe's own entry on this map. The player lines up on it before going down the pipe, and arrives at it when they come out of the pipe. Use the enter macros in place of `Exec(EnterWalk)`, such as in a `CaseEq` for the pipe's entry. If the map has a save block, check for [arriving from a save](#arriving-from-a-save) first.
+
+## Changing maps from an EVT script
+
+To send the player to another map without an exit, such as at the end of a [scene](/papermario-dx/world/scenes/), call `GotoMap` with the map's name and entry:
+
+```c
+Call(GotoMap, Ref("kmr_02"), kmr_02_ENTRY_4)
+Wait(100)
+```
+
+The `Wait(100)` keeps the EVT script from carrying on while the screen fades out. For a different screen transition, use `GotoMapSpecial`, which takes a `TRANSITION_` value as its third argument, such as `TRANSITION_SLOW_FADE_TO_WHITE`.
+
+## Testing entries and exits
+
+Select **Game > Play** with the map's `main.c` open, and the game starts at the map's first entry, or where you last saved if that was on the map.
+
+To start at a different entry, select the play button next to the entry's line number in `Entrances`. A line that exits to another map's entry, such as an `EVT_EXIT_WALK` line, has a play button too, which starts on the other map at that entry.

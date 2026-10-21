@@ -438,7 +438,7 @@ EvtScript EVS_NpcInteract_KoopaKoot = {
     EndIf
     Call(FindNextFavor, GB_KootFavor_Current)
     IfEq(LVar0, 0)
-        IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+        IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A5)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00A6)
@@ -488,16 +488,16 @@ EvtScript EVS_SetupKootFavors = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Goto(80)
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Goto(75)
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Goto(70)
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Goto(60)
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_DEPARTED)
         Goto(50)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)

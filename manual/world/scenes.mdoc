@@ -1,0 +1,74 @@
+---
+title: Scenes
+sidebar:
+  order: 9
+---
+
+A scene is an EVT script that takes control from the player to tell part of the story: NPCs move and talk, and the camera moves to show them. This example plays the first time the player enters a map. An NPC walks up to the player while the camera follows, says a message, and the scene saves a game flag so it never plays again.
+
+The example uses Goompa's sprite and a message from the base game. `NPC_Goompa` is an NPC you add to the map, as [NPCs](/papermario-dx/world/npcs/) describes, and `GF_KMR99_MetGoompa` is a game flag you add, as [Saved flags and bytes](/papermario-dx/save-data/game-flags/) describes.
+
+## Writing a scene
+
+```c
+EvtScript EVS_Scene_MeetGoompa = {
+    Call(DisablePlayerInput, true)
+    Wait(10)
+    // the camera moves to where Goompa will stop, while he walks there
+    Thread
+        Call(UseSettingsFrom, CAM_DEFAULT, 60, 0, 0)
+        Call(SetPanTarget, CAM_DEFAULT, 60, 0, 0)
+        Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+        Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
+    EndThread
+    Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Walk)
+    Call(SetNpcSpeed, NPC_Goompa, Float(2.0))
+    Call(NpcMoveTo, NPC_Goompa, 60, 0, 0)
+    Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Idle)
+    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    // talk
+    Call(PlayerFaceNpc, NPC_Goompa, 0)
+    Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001C)
+    // give the camera back
+    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Set(GF_KMR99_MetGoompa, true)
+    Call(DisablePlayerInput, false)
+    Return
+    End
+};
+```
+
+Step by step, the scene:
+
+1. Stops the player from moving with `DisablePlayerInput`, so they can't walk away or open menus during the scene.
+2. Starts the camera panning in a `Thread`, so it moves while Goompa walks. To do more things at once, see [Threads](/papermario-dx/evt-scripts/threads/).
+3. Walks Goompa to a point with `NpcMoveTo`, which takes an X and Z position, and how many frames the walk takes. With `0` frames, Goompa walks at the speed from `SetNpcSpeed`. Moving an NPC doesn't change its animation, so the scene sets his walking animation before the walk and his idle animation after it.
+4. Waits until the camera arrives with `WaitForCam`.
+5. Turns the player to face Goompa, and has Goompa speak with `SpeakToPlayer`, which waits until the player closes the message. For more ways to show messages, see [Speech](/papermario-dx/messages/speech/).
+6. Pans the camera back to the player and gives it back to the map's zones with `ResetCam`. For more about moving the camera, see [Camera](/papermario-dx/world/camera/).
+7. Sets the game flag, then gives control back to the player.
+
+## Playing the scene when the player enters the map
+
+Start the scene after the player walks in, if the flag isn't set:
+
+```c
+EvtScript EVS_EnterMap = {
+    Set(LVar0, Ref(EVS_BindExitTriggers))
+    ExecWait(EnterWalk)
+    IfEq(GF_KMR99_MetGoompa, false)
+        Exec(EVS_Scene_MeetGoompa)
+    EndIf
+    Return
+    End
+};
+```
+
+In `EVS_Main`, replace the `Set(LVar0, Ref(EVS_BindExitTriggers))` and `Exec(EnterWalk)` lines with `Exec(EVS_EnterMap)`. `ExecWait` waits until the player has walked in, so the scene doesn't start while they're still walking. For more about entering a map, see [Entries and exits](/papermario-dx/world/entries-and-exits/).
+
+If the scene is part of the main story, check and set `GB_StoryProgress` instead of a flag of its own, as [Saved flags and bytes](/papermario-dx/save-data/game-flags/#story-progress) describes.
+
+## Testing the scene
+
+With the map's `main.c` open, select **Game > Play**. The scene plays unless the save you play from already has the flag set, such as when you saved after the scene played.

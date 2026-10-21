@@ -165,7 +165,7 @@ void btl_submenu_strats_restore_choose(void) {
 
 // reopen submenu in a locked/selected state
 // sets state to LOCK; next update switches to SELECT (grayed out and non-interactive)
-// use this when the menu should be visibile, but in the background of another menu
+// use this when the menu should be visible, but in the background of another menu
 void btl_submenu_strats_restore_locked(void) {
     set_window_update(WIN_BTL_STRATS_MENU, WINDOW_UPDATE_TRANSPARENT);
     set_window_update(WIN_BTL_STRATS_TITLE, WINDOW_UPDATE_TRANSPARENT);

@@ -13,10 +13,10 @@
 /** Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
 
-/** Function alignment enfored by the compiler (-falign-functions). */
+/** Function alignment enforced by the compiler (-falign-functions). */
 #define FUNCTION_ALIGNMENT      32
 
-/** The "type" of funciton as categorized by the backtrace heuristic (__bt_analyze_func) */
+/** The "type" of function as categorized by the backtrace heuristic (__bt_analyze_func) */
 typedef enum {
     BT_FUNCTION,                ///< Regular function with a stack frame
     BT_FUNCTION_FRAMEPOINTER,   ///< The function uses the register fp as frame pointer (normally, this happens only when the function uses alloca)
@@ -533,7 +533,7 @@ void debug_backtrace(void) {
  * code of a function in memory instruction by instruction, trying to find out whether the function
  * uses a stack frame or not, whether it uses a frame pointer, and where the return address is stored.
  *
- * Since we do not have DWARF informations or similar metadata, we can just do educated guesses. A
+ * Since we do not have DWARF information or similar metadata, we can just do educated guesses. A
  * mistake in the heuristic will result probably in a wrong backtrace from this point on.
  *
  * The heuristic works as follows:

@@ -126,7 +126,7 @@ EvtScript EVS_BindExitTriggers = {
     End
 };
 
-// hide parts of the map not visibile from ground level. these include princess peach's castle,
+// hide parts of the map not visible from ground level. these include princess peach's castle,
 // the castle grounds, and the large clown head hemisphere
 EvtScript EVS_HideDistalGeometry = {
     Call(EnableGroup, MODEL_g390, false)

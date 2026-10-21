@@ -1,0 +1,120 @@
+---
+title: The Paper Mario engine
+sidebar:
+  order: 5
+---
+
+Paper Mario doesn't keep the whole game in memory. An always-loaded core runs the systems every part of the game shares, and the code it loads from the ROM decides what the game is doing at any moment.
+
+## Game modes
+
+The game runs one frame at a time. Each frame, it reads the controller, updates shared systems such as EVT scripts, messages, and HUD elements, then updates the current **game mode**, and then updates entities, music, and sound. A game mode is the game's top-level state, such as the title screen, the world, a battle, or the pause menu, and it has its own update and drawing code. Within a mode, more state machines can take over: in a battle, one runs the order of turns and actions.
+
+Switching modes unloads, keeps, or rebuilds the systems the next mode needs, sometimes through a short mode in between. The two switches you'll meet most are:
+
+```text
+WORLD → CHANGE_MAP → WORLD
+WORLD → BATTLE → END_BATTLE → WORLD
+```
+
+The code that's loaded depends on the mode, so some things only exist in one of them. The world and battles each have their own EVT scripts, map variables, and HUD elements, kept apart while the other mode runs.
+
+## C code and EVT scripts
+
+The engine is C code. It handles systems that need to be fast or that run every frame, such as input, rendering, collision, and audio.
+
+Most of the game's events are **EVT scripts**, which the engine runs with its own interpreter: [scenes](/papermario-dx/world/scenes/), the player's moves, enemy turns, and many other sequences. An EVT script doesn't run from start to finish in one frame. Each running EVT script records where it is, its local variables, what owns it, and the EVT scripts it started. Each frame, the interpreter runs every EVT script until it finishes, waits, or calls something that keeps it waiting, so many EVT scripts can run alongside each other.
+
+EVT scripts have commands for decisions, loops, arithmetic, variables, and starting and waiting on other EVT scripts. For everything else, they call C [**API functions**](/papermario-dx/evt-scripts/call-c/), which can finish at once or keep the EVT script waiting while something takes several frames. Some API functions only work in the world and others only in battles.
+
+You write EVT scripts in C files too, with macros such as `Call` and `Wait`; see [EVT scripts](/papermario-dx/evt-scripts/).
+
+## Overlays and assets
+
+The N64 can't hold all of the game's code and data in memory at once, so the engine copies code from the ROM into memory only while it's needed. Each piece that loads this way is an **overlay**. Every map, actor, battle area, stage, partner, effect, and entity is its own overlay.
+
+Overlays share memory, so loading one can replace another. A battle can't use a map's EVT scripts, and one map can't use another map's, because they're never loaded at the same time. For the details, see [Overlays](/papermario-dx/developing/overlays/).
+
+Not everything the game loads is an overlay. Map geometry, textures, sprites, messages, and audio are **assets**, which have their own loading systems. A map's code and its geometry belong to the same map, but they're stored and loaded separately.
+
+## World
+
+| Term | Meaning |
+| --- | --- |
+| **Model** | Geometry you see in a map |
+| **Collider** | Invisible, solid geometry that the player stands on and bumps into |
+| [**Zone**](/papermario-dx/world/camera/#camera-zones) | Invisible geometry that controls the camera |
+| [**Entry**](/papermario-dx/world/entries-and-exits/) | A position and direction where the player can arrive on a map |
+| [**Exit**](/papermario-dx/world/entries-and-exits/) | A way off a map, which leads to an entry on another map |
+| [**NPC**](/papermario-dx/world/npcs/) | A character drawn with a sprite, including townsfolk, enemies, and the partner following the player |
+| [**Entity**](/papermario-dx/world/entities/) | A reusable object such as a block, chest, sign, or spring |
+| [**Item entity**](/papermario-dx/items/add-an-item/#giving-the-item-to-the-player) | An item placed in the world, such as a coin |
+| [**Trigger**](/papermario-dx/world/triggers/) | Something that starts an EVT script, such as pressing **A** at a wall |
+
+The world is divided into **areas**, and each area holds one or more [**maps**](/papermario-dx/world/create-a-map/). An area groups maps for technical reasons: they usually share textures and the same area flags, and they don't have to be one place in the story.
+
+When a map loads, the engine loads its code and assets and starts its main EVT script, set as `.main` in its `OVL_DEF_MAP()`. The main EVT script sets up everything else on the map: its NPCs, entities, exits, and anything else it needs. Before the map's geometry loads, an optional `map_init` C function can choose different geometry or textures.
+
+NPCs are placed in groups, and each group has an [**encounter**](/papermario-dx/world/npcs/#enemies). For enemies, the encounter chooses which battle starts when they touch the player. Most NPCs move with C **AI** functions, which enemies use to notice and chase the player, and other NPCs use to wander.
+
+## Battles
+
+| Term | Meaning |
+| --- | --- |
+| [**Encounter**](/papermario-dx/world/npcs/#enemies) | In the world, which battle an NPC group starts |
+| [**Formation**](/papermario-dx/battles/formations/) | The enemies in a battle, where they stand, and the order they act in |
+| **Stage** | Where a battle takes place: its background and geometry, and any EVT scripts it runs |
+| [**Actor**](/papermario-dx/battles/actors/) | Anyone fighting: the player, their partner, or an enemy |
+| [**Part**](/papermario-dx/battles/actors/parts/) | A piece of an actor with its own animations and targeting, such as a Paragoomba's wing |
+| [**Battle area**](/papermario-dx/battles/formations/#creating-a-battle-area) | A group of formations, and the stages they use, built as one overlay |
+
+When a battle starts, the engine pauses the world's EVT scripts and loads the battle area. When it ends, the engine reloads what the battle replaced, returns to the same map, and the world's EVT scripts carry on. The world's map variables are kept through the battle, because battles use their own.
+
+An encounter names a formation, and each formation has a default stage, which the encounter can replace. The formation supplies the enemies, and the battle system adds the player and their partner.
+
+The battle system runs the order of turns and actions. EVT scripts decide what each actor does: its attacks, how it reacts to being hit, and the player's and partner's [moves](/papermario-dx/battles/moves/). C code handles the rest of the fighting, such as damage, targeting, status effects, and [action commands](/papermario-dx/battles/action-commands/).
+
+Areas and battle areas are organized separately. A map in one area can start a battle from any battle area.
+
+## What the game remembers
+
+EVT scripts store values for different lengths of time, and only some of them are saved. For how to use them, see [Variables](/papermario-dx/evt-scripts/variables/) and [Saved flags and bytes](/papermario-dx/save-data/game-flags/):
+
+| Kept | Examples |
+| --- | --- |
+| While one EVT script runs | Local variables and flags, such as `LVar0` |
+| While the player is on one map, or for one battle | Map variables and flags, such as `MapVar(0)` |
+| While the player is in one area, and saved | Area flags and bytes, such as `AreaFlag(0)` |
+| For the whole save file | Game flags and bytes, such as `GF_KMR02_WarpPipe` and `GB_StoryProgress` |
+
+Story progress and many one-off events, such as which chests the player has opened, are game or area flags and bytes. The player's stats, inventory, and [partners](/papermario-dx/partners/) are saved separately, and EVT scripts change them through API functions.
+
+## Names, not numbers
+
+The game refers to almost everything by a number: maps, items, messages, animations, models, NPCs, actors, sounds. In DX, most of those numbers come from names. A [sprite](/papermario-dx/graphics/sprites/)'s animations are named in its header, such as `ANIM_Goomba_Idle`. A message gets its ID from its name, such as `MSG_EnemyName_Goomba`. A map's models and colliders get theirs from `map.xml`, such as `MODEL_g197` and `COLLIDER_tt2`.
+
+Always use the names. The numbers behind them can change whenever something is added or removed, so a number that works today can point to something else after your next change.
+
+The same kind of number can mean different things in different places, too. An NPC ID isn't an actor ID, NPC 0 on one map isn't NPC 0 on another, and a model ID from a map means nothing on a battle stage.
+
+Many of the engine's limits come from fixed-size tables, such as how many EVT scripts, NPCs, or effects can exist at once.
+
+## Messages
+
+**Messages** are the game's text, such as dialogue, signs, and item descriptions. EVT scripts and tables refer to a message by its ID, and the engine loads it when it's shown.
+
+A message holds more than text. Its tags choose the box's style, format the text, pause, break pages, insert values and images, and present choices. The same system draws a speech bubble, a sign, a notice, and a choice box.
+
+Showing a message takes several frames: the engine opens the box, prints the text, and waits for the player when the message says to. API functions such as `SpeakToPlayer` attach the message to a speaker and keep the EVT script waiting until the player closes it. A choice gives the EVT script the option the player picked. See [Messages](/papermario-dx/messages/edit-messages/).
+
+## Effects
+
+**Effects** are short-lived visuals such as dust, smoke, sparks, explosions, and weather. They're separate from models, sprites, and HUD elements. Each effect the engine shows is an instance that it updates and draws until the effect ends or something removes it.
+
+EVT scripts start effects with `PlayEffect`; see [Effects](/papermario-dx/graphics/effects/). Each kind of effect takes its own arguments and can have several variations. Effects that can be changed after they start store the new instance in `LVarF`, so the EVT script can change or remove it later.
+
+## HUD elements
+
+**HUD elements** are 2D images on the screen, such as the status bar, menu icons, and the battle menu. Most are drawn over the scene, but they can also be placed in the world.
+
+A HUD element draws from a **HudScript**, a short program that chooses its images and when to show them. A HudScript isn't an EVT script. Each HUD element has an ID, which code uses to set its position, size, transparency, and color. The world and battles have separate lists of HUD elements, so a HUD element's ID only means something in the mode that made it. See [HUD elements](/papermario-dx/graphics/hud-elements).

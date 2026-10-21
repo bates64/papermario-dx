@@ -1,0 +1,33 @@
+---
+title: Speech
+sidebar:
+  order: 2
+---
+
+To have an NPC say a message to the player, call `SpeakToPlayer` from an EVT script:
+
+```c
+Call(SpeakToPlayer, NPC_SELF, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH0_0103)
+```
+
+The NPC turns to face the player, and the EVT script waits until the message closes.
+
+These calls show messages in other ways:
+
+| Call | What it does |
+| --- | --- |
+| `SpeakToNpc` | Like `SpeakToPlayer`, but to another NPC |
+| `ShowMessageAtScreenPos` | Shows a message that no one speaks, such as a sign, at a point on the screen |
+| `ShowMessageAtWorldPos` | Shows a message that no one speaks at a point in the world |
+
+## Keeping the box open
+
+To do something between two messages without closing the box, end the first with `[Yield][End]` instead of `[Wait][End]`. The EVT script carries on while the box stays open. Then show the next message in the same box with `ContinueSpeech`, or close the box with `EndSpeech`:
+
+```c
+Call(SpeakToPlayer, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0098)
+// ...
+Call(ContinueSpeech, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_009A)
+```
+
+A message that continues the box starts with `[Next]`.

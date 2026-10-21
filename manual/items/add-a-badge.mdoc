@@ -1,0 +1,111 @@
+---
+title: Badges
+description: Add a badge, give it an ability, and check for that ability in code.
+sidebar:
+  order: 2
+---
+
+A badge is an [item](/papermario-dx/items/add-an-item/) that the player equips with BP. Every badge has an entry in `moves.yaml` that holds its BP cost, and badges come in two kinds:
+
+- Badges that add a move to the battle menu, such as Power Jump. Their move has a category, such as `MOVE_TYPE_JUMP`, and a battle EVT script. To make one, see [Moves](/papermario-dx/battles/moves/#giving-the-move-to-the-player-with-a-badge).
+- Badges that change how the game works, such as Speedy Spin, which makes the player's spin faster. Their move has the category `MOVE_TYPE_NONE` and holds only the BP cost. What they do comes from an ability.
+
+The examples on this page make a Brute Force badge of the second kind, which adds 1 to the damage of the player's own attacks, such as jumps and hammers. Use your own badge's name and values in their place.
+
+## Abilities
+
+An **ability** is a named effect, such as `ABILITY_SPEEDY_SPIN`, that the game's code checks for wherever a badge makes a difference. `is_ability_active` returns how many equipped badges have the ability, so it's `0` when the player has none. The player's spin in `world/action/spin.c` checks for Speedy Spin this way:
+
+```c
+if (is_ability_active(ABILITY_SPEEDY_SPIN)) {
+    playerSpinState->initialSpinTime = 30;
+    playerSpinState->spinRate = 40.0f;
+    // ...
+}
+```
+
+A badge has an ability through its move, so badges that share a move share an ability. The game's three Power Plus badges, `PowerPlusA`, `PowerPlusB`, and `PowerPlusX`, all use `MOVE_POWER_PLUS`, so each one counts toward `ABILITY_POWER_PLUS`.
+
+## Adding the badge
+
+{% steps %}
+1. Add an entry to the end of `registry/moves.yaml`, named after your badge in PascalCase. Set `costBP` to how much BP the badge takes to equip:
+
+   ```yaml
+   - BruteForce:
+       nameMsg: MSG_ItemName_BruteForce
+       fullDescMsg: MSG_ItemFullDesc_BruteForce
+       shortDescMsg: MSG_ItemShortDesc_BruteForce
+       flags: []
+       category: MOVE_TYPE_NONE
+       actionTip: NONE
+       costFP: 0
+       costBP: 3
+   ```
+
+   An entry's position in the file is its ID, so always add new entries at the end. `BruteForce` becomes `MOVE_BRUTE_FORCE`.
+
+2. Add an entry with the same name to the end of `registry/items.yaml`. Give it `ITEM_TYPE_FLAG_BADGE`, and set `moveID` to the move:
+
+   ```yaml
+   - BruteForce:
+       nameMsg: MSG_ItemName_BruteForce
+       fullDescMsg: MSG_ItemFullDesc_BruteForce
+       shortDescMsg: MSG_ItemShortDesc_BruteForce
+       icon: badge/PowerPlus
+       itemEntityTemplate: STANDARD
+       hudElementTemplate: ITEM
+       sellValue: 100
+       sortValue: 118
+       targetFlags: []
+       typeFlags: [ ITEM_TYPE_FLAG_BADGE, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+       moveID: MOVE_BRUTE_FORCE
+       potencyA: 0
+       potencyB: 0
+   ```
+
+   `sortValue` sets where the badge appears in the pause menu's list of badges. The game's own badges use values up to `117`.
+
+3. Add the badge's name and descriptions to `msg/26_ItemNames.msg`, `msg/23_ShortItemDesc.msg`, and `msg/25_FullItemDesc.msg`, as you would for [any other item](/papermario-dx/items/add-an-item/#adding-the-item).
+{% /steps %}
+
+The player can collect and equip the badge, but it doesn't do anything until you give it an ability.
+
+## Giving the badge an ability
+
+{% steps %}
+1. In `enums.h`, add the ability to the end of `enum Abilities`:
+
+   ```c
+   ABILITY_HEALTHY_HEALTHY         = 0x00000037,
+   ABILITY_BRUTE_FORCE             = 0x00000038,
+   ```
+
+2. In `engine1/inventory.c`, add a `case` for it to the `switch` in `is_ability_active`, which links each ability to its badge's move:
+
+   ```c
+   case ABILITY_BRUTE_FORCE:
+       if (badgeMoveID == MOVE_BRUTE_FORCE) {
+           ret++;
+       }
+       break;
+   ```
+{% /steps %}
+
+## Checking for the ability
+
+In battles, use `player_team_is_ability_active` instead, and give it the actor that's acting. It returns `0` for the partner, and in battles where the player is Peach.
+
+The damage of the player's attacks is worked out in `calc_player_damage_enemy`, in `battle/dmg_player.c`. To make Brute Force add 1 per equipped copy, add this beside the check for `ABILITY_BERSERKER`:
+
+```c
+if (player_team_is_ability_active(player, ABILITY_BERSERKER)) {
+    currentAttackDamage += 2;
+}
+
+currentAttackDamage += player_team_is_ability_active(player, ABILITY_BRUTE_FORCE);
+```
+
+To find where the game checks a similar badge, search for its ability, such as `ABILITY_DEFEND_PLUS` for the damage the player takes.
+
+To try the badge, add it from the [debug menu](/papermario-dx/debug/debug-menu/#edit-inventory), and then equip it in the pause menu.

@@ -1,0 +1,80 @@
+---
+title: Summoning actors
+sidebar:
+  order: 8
+---
+
+Actors can summon other actors during battle. Magikoopa uses this to make clones, and Bill Blaster uses it to fire Bullet Bills.
+
+## SummonEnemy
+
+Use `SummonEnemy` to summon an actor from a formation in the summoner's file. `SummonEnemy` spawns the actor in the formation's first row, and ignores any other rows. It waits for the summoned actor's `EVS_Init` to finish, and then puts the actor's ID in `LVar0`.
+
+```c
+Formation CloneFormation = {
+    OVL_ACTOR_BY_IDX("frost_goomba", BTL_POS_GROUND_C, 10),
+};
+
+EvtScript EVS_TakeTurn = {
+    // ...
+    Call(SummonEnemy, Ref(CloneFormation), false)
+    // LVar0 holds the new actor's ID
+    // ...
+};
+```
+
+The second argument is `true` to put the summoned actor last in the turn order. Most actors pass `false`.
+
+To summon more than one actor, call `SummonEnemy` once for each, with a formation for each.
+
+## Storing the summoned actor's ID
+
+To refer to the summoned actor later, save its ID in an [actor variable](/papermario-dx/battles/actors/actor-variables/):
+
+```c
+enum ActorVars {
+    AVAR_SpawnedActorID = 0,
+};
+
+EvtScript EVS_TakeTurn = {
+    // ...
+    Call(SummonEnemy, Ref(CloneFormation), false)
+    Call(SetActorVar,
+        ACTOR_SELF, AVAR_SpawnedActorID, LVar0)
+    // ...
+};
+```
+
+## Passing data to summoned actors
+
+The summoned actor's `EVS_Init` runs before `SummonEnemy` returns, so it can't see variables you set after summoning. To give it values that `EVS_Init` reads, set them in the formation's `.var0`, `.var1`, `.var2`, and `.var3` fields, which become the actor's variables 0 to 3:
+
+```c
+Formation CloneFormation = {
+    OVL_ACTOR_BY_IDX("frost_goomba", BTL_POS_GROUND_C, 10, .var0 = true),
+};
+```
+
+If a value is only known at runtime, such as the summoner's actor ID, write it to the formation from C before summoning. Bill Blaster does this with an API function, so each Bullet Bill knows which blaster fired it:
+
+```c
+API_CALLABLE(SetBulletInitVars) {
+    BulletFormation[0].var0 = true;
+    BulletFormation[0].var1 = script->owner1.actorID;
+
+    return ApiStatus_DONE2;
+}
+
+EvtScript EVS_Move_FireBullet = {
+    // ...
+    Call(SetBulletInitVars)
+    Call(SummonEnemy, Ref(BulletFormation), false)
+    // ...
+};
+```
+
+If the summoned actor reads a variable only after `EVS_Init`, such as in its `EVS_TakeTurn`, you can also set it with `SetActorVar` after summoning, using the ID in `LVar0`.
+
+For more on variables, see [Actor variables](/papermario-dx/battles/actors/actor-variables/).
+
+For complete examples, see `battle/actor/magikoopa.c` (cloning) and `battle/actor/bill_blaster.c` (summoning projectiles).

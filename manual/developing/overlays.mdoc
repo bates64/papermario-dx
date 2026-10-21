@@ -1,0 +1,90 @@
+---
+title: Overlays
+sidebar:
+  order: 3
+---
+
+An overlay is a piece of compiled code that's stored in ROM apart from the main binary. The game loads an overlay into RAM when it needs it, and unloads it to free the memory. Maps and battle actors are overlays, so the game only keeps the ones in use in memory.
+
+<details>
+    <summary>Comparison with vanilla</summary>
+
+Vanilla didn't have this abstraction. It copied code from ROM into RAM with `dma_copy()`, and linked its overlays statically to fixed addresses. DX links most overlays dynamically instead. Some other N64 games, such as Ocarina of Time, also use dynamic linking.
+
+</details>
+
+## Usage
+
+```c
+// Load the overlay battle/actor/my_actor
+Overlay* ovl = ovl_load("my_actor", OVL_ACTOR);
+
+// Run an exported function
+void (*fn)(void) = ovl_import(ovl, "my_function");
+fn();
+
+// Use an exported global variable
+int* var = ovl_import(ovl, "my_variable");
+*var += 5;
+
+// Unload the overlay when you're done with it (this frees memory)
+ovl_unload(ovl);
+```
+
+## Source files
+
+Each `OverlayType` has a source glob. The build makes an overlay from each file or folder that matches the glob, named after the match's stem. If the match is a folder, the build compiles and links every C and C++ file in it, except `*.inc.c` and `*.inc.cpp` files. If the match is a file, that file alone is the overlay.
+
+For example, `world/area/kmr/kmr_02/` is a folder that matches `world/area/*/*/`, so it becomes an `OVL_MAP` overlay named `kmr_02`. `battle/actor/goomba.c` matches `battle/actor/*`, so it becomes an `OVL_ACTOR` overlay named `goomba`.
+
+The build looks for matches in `src/` and in each asset layer.
+
+## Importing and exporting symbols
+
+`ovl_import()` can find any symbol marked with the `export` macro. For example:
+
+```c
+// Export a function
+export void my_function(void) { /* ... */ }
+
+// Export a global variable
+export int my_variable = 10;
+```
+
+## Overlays are singletons
+
+Loading the same name and type more than once returns the same overlay:
+
+```c
+Overlay* first  = ovl_load("my_overlay", OVL_ACTOR);
+Overlay* second = ovl_load("my_overlay", OVL_ACTOR);
+ASSERT(first == second);
+```
+
+This means that **variables are shared** if a single overlay is loaded multiple times.
+
+## How many can load at once
+
+Each overlay type stores its overlays in one of three ways:
+
+| Storage | Types | How many can load at once |
+| --- | --- | --- |
+| Dynamically linked | `OVL_ACTION`, `OVL_PARTNER`, `OVL_BATTLE_AREA`, `OVL_STAGE`, `OVL_ACTOR`, and `OVL_ENTITY` | Many, loaded to any address in the heap |
+| Slots | `OVL_EFFECT` | 16 |
+| Slots | `OVL_BATTLE_PARTNER`, `OVL_ACTION_CMD`, `OVL_BATTLE_SCRIPT`, and `OVL_BATTLE_MENU` | One of each type |
+| Fixed address | `OVL_MAP` | One |
+
+Apart from effects, at most 64 overlays can be loaded at once, across all types.
+
+To load an overlay into a type that's full, unload one first. Loading a second map while one is loaded fails the assertion "Fixed overlay storage for type 1 is already occupied". Loading into a full slot type fails the assertion "No free pool slots for overlay".
+
+## Adding an overlay type
+
+To add a new dynamically linked overlay type:
+
+{% steps %}
+1. In `src/dx/overlay.h`, add a variant to `OverlayType` before `OVL_NUM_TYPES`.
+2. In `src/dx/overlay.c`, add an entry for it to the `overlayStorage` table. Copy the `OVL_ACTOR` entry, which uses `OVL_STORAGE_RELOCATABLE`.
+3. In `tools/build/configure.py`, add an `OVL_TYPE_` constant with the same value as the new variant. The constants must match `OverlayType`.
+4. In `find_overlays()` in `tools/build/configure.py`, add a tuple to `overlay_types` with the new constant, the type's source glob, and a prefix for its overlays' names, or `""` for no prefix.
+{% /steps %}

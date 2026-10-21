@@ -147,7 +147,7 @@ EvtScript EVS_NpcIdle_Door = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, -150, LVar2, 0)
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, false)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS, false)
     Set(LVar6, Float(3.0 / DT))
     ExecWait(EVS_FocusCam_LookAtDoor)
     Set(MF_DoneIntroMessage, false)

@@ -197,7 +197,7 @@ s32 func_800328A4(CameraControlSettings* camSettings, f32 Px, f32 Pz) {
     if (camSettings == nullptr) {
         return 0;
     }
-    if (camSettings->type != CAM_CONTROL_CONSTAIN_BETWEEN_POINTS) {
+    if (camSettings->type != CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS) {
         return 0;
     }
 
@@ -226,7 +226,7 @@ s32 func_800328A4(CameraControlSettings* camSettings, f32 Px, f32 Pz) {
 }
 
 void update_camera_lead_amount(Camera* camera, f32 candidateLeadAmount) {
-    s32 ignoreStickInput = camera->flags & CAMERA_FLAG_SUPRESS_LEADING;
+    s32 ignoreStickInput = camera->flags & CAMERA_FLAG_SUPPRESS_LEADING;
     f32 stickX;
     f32 deltaLeadAmount;
 
@@ -344,7 +344,7 @@ void apply_constraints_to_lead_amount(Camera* camera) {
 
     if (settings != nullptr) {
         if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
-            || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
+            || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE
             || (s2 = func_800328A4(settings, camera->targetPos.x, camera->targetPos.z)) != 0)
         {
             if (camera->needsInitialConstrainDir) {
@@ -372,7 +372,7 @@ void apply_constraints_to_lead_amount(Camera* camera) {
                 if (leadSettings == nullptr
                     || !(
                         leadSettings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
-                        || leadSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
+                        || leadSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE
                         || func_800328A4(settings, camera->prevLeadPosX, camera->prevLeadPosZ) != 0
                     ))
                 {
@@ -418,16 +418,16 @@ void apply_constraints_to_lead_amount(Camera* camera) {
         return;
     }
 
-    if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
+    if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE
         || func_800328A4(camera->prevLeadSettings, newPosX, newPosZ) != 0)
     {
         f32 intX, intZ, intDistSq;
         f32 minDistSq = SQ(1000.0f);
         b32 constrainToZoneTriangles = true;
 
-        // clamp lead amount to the points when using CAM_CONTROL_CONSTAIN_BETWEEN_POINTS
+        // clamp lead amount to the points when using CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS
         if (camera->prevLeadSettings != nullptr
-            && camera->prevLeadSettings->type == CAM_CONTROL_CONSTAIN_BETWEEN_POINTS)
+            && camera->prevLeadSettings->type == CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS)
         {
             settings = camera->prevLeadSettings;
             constrainToZoneTriangles = false;

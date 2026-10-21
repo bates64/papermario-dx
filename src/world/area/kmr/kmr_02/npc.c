@@ -44,7 +44,7 @@ LetterDelivery LetterDelivery_GoompapaTrade = {
     .msgGreeting = MSG_CH0_006F,
     .msgCancelled = MSG_CH0_0070,
     .msgDelivered = MSG_CH0_0071,
-    .msgRecieved = MSG_CH0_0072,
+    .msgReceived = MSG_CH0_0072,
     .letters = { ITEM_LETTER_CHAIN_GOOMPAPA_1 },
     .reward = ITEM_LETTER_CHAIN_MUSS_T,
 };
@@ -56,7 +56,7 @@ LetterDelivery LetterDelivery_Goompapa = {
     .msgGreeting = MSG_CH0_0073,
     .msgCancelled = MSG_CH0_0074,
     .msgDelivered = MSG_CH0_0075,
-    .msgRecieved = MSG_CH0_0076,
+    .msgReceived = MSG_CH0_0076,
     .letters = { ITEM_LETTER_CHAIN_GOOMPAPA_2 },
     .reward = ITEM_LUCKY_DAY,
 };
@@ -68,7 +68,7 @@ LetterDelivery LetterDelivery_Goompa = {
     .msgGreeting = MSG_CH0_0045,
     .msgCancelled = MSG_CH0_0046,
     .msgDelivered = MSG_CH0_0047,
-    .msgRecieved = MSG_CH0_0048,
+    .msgReceived = MSG_CH0_0048,
     .letters = { ITEM_LETTER_TO_GOOMPA },
     .reward = ITEM_STAR_PIECE,
 };
@@ -226,7 +226,7 @@ EvtScript EVS_NpcInteract_Goombaria = {
             Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_008D)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_008E)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_008F)
@@ -237,7 +237,7 @@ EvtScript EVS_NpcInteract_Goombaria = {
                 Call(SpeakToNpc, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, NPC_PARTNER, MSG_CH0_0091)
                 Call(EnablePartnerAI)
             EndIf
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0092)
@@ -267,11 +267,11 @@ EvtScript EVS_NpcInit_Goombaria = {
             Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_SwitchedWander))
         CaseLt(STORY_CH0_GOOMBARIO_JOINED_PARTY)
             Call(SetNpcPos, NPC_SELF, 94, 0, -109)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(RemoveNpc, NPC_SELF)
             Return
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
         CaseDefault
     EndSwitch
     Return
@@ -845,14 +845,14 @@ EvtScript EVS_NpcInteract_Goompa = {
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_003E)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_003F)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_0040)
             Else
                 Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_0041)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_0042)
@@ -994,14 +994,14 @@ EvtScript EVS_NpcInteract_Goompapa = {
             Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_0069)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_006A)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_006B)
             Else
                 Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_006C)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_006D)
@@ -1086,7 +1086,7 @@ EvtScript EVS_NpcInteract_Goomama = {
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goomama, MSG_CH0_0082)
                 Call(EnablePartnerAI)
             EndIf
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goomama, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_CH0_0083)
@@ -1096,7 +1096,7 @@ EvtScript EVS_NpcInteract_Goomama = {
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goomama, MSG_CH0_0085)
                 Call(EnablePartnerAI)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Goomama, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_CH0_0086)
@@ -1123,9 +1123,9 @@ EvtScript EVS_NpcInit_Goomama = {
             Wait(1)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
             Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomama))
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Goomama))
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(RemoveNpc, NPC_SELF)
             Return
         CaseDefault
@@ -1172,14 +1172,14 @@ EvtScript EVS_NpcInteract_Gooma = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Call(SpeakToPlayer, NPC_Gooma, ANIM_Gooma_Talk, ANIM_Gooma_Idle, 0, MSG_CH0_00A1)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Gooma, ANIM_Gooma_Talk, ANIM_Gooma_Idle, 0, MSG_CH0_00A2)
             Else
                 Call(SpeakToPlayer, NPC_Gooma, ANIM_Gooma_Talk, ANIM_Gooma_Idle, 0, MSG_CH0_00A3)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(GetCurrentPartnerID, LVar0)
             IfNe(LVar0, PARTNER_GOOMBARIO)
                 Call(SpeakToPlayer, NPC_Gooma, ANIM_Gooma_Talk, ANIM_Gooma_Idle, 0, MSG_CH0_00A4)

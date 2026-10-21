@@ -103,7 +103,7 @@ LetterDelivery LetterDelivery_ShopOwner = {
     .msgGreeting = MSG_CH2_0089,
     .msgCancelled = MSG_CH2_008A,
     .msgDelivered = MSG_CH2_008B,
-    .msgRecieved = MSG_CH2_008C,
+    .msgReceived = MSG_CH2_008C,
     .letters = { ITEM_LETTER_CHAIN_LITTLE_MOUSER },
     .reward = ITEM_LETTER_CHAIN_FRANKY,
 };

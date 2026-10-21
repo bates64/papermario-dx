@@ -1,0 +1,176 @@
+---
+title: Rooms
+sidebar:
+  order: 7
+---
+
+A room is a building that the player walks into without leaving the map, such as the houses in Toad Town. When the player presses A at the door, the camera moves to it, the rest of the map fades to black, the front walls swing out of the way, and the door opens to let the player and their partner in. Leaving plays the same steps in reverse.
+
+If a door leads to another map, use a door exit instead, as described in [Entries and exits](/papermario-dx/world/entries-and-exits/).
+
+The examples on this page come from Tayce T.'s house in `mac_02`. Its EVT scripts are in `world/area/mac/mac_02/rooms.c`.
+
+## Building the room in the map
+
+A room is made of ordinary models and colliders from the map. Their names become constants such as `MODEL_cooking` and `COLLIDER_deilit1u`, as described in [Create a map](/papermario-dx/world/create-a-map/). Tayce T.'s house has:
+
+- `cooking`, a model group for the whole building. While the player is inside, every model outside this group fades to black, so put everything that must stay lit in it, including the walls, roof, and door that move.
+- `cook_in`, a model group inside `cooking` that holds the furniture. The map hides it while the player is outside.
+- The door `c_door`, the front walls `ck1`, `ck2`, and `ck3`, and the roof pieces `cy1`, `cy2`, and `cy3`, which swing open.
+- Two wall colliders across the doorway: `deilit1u`, which the player faces from outside, and `deilit1`, which they face from inside.
+
+The game works out where the player walks from the outside collider: its center, and the direction its faces point. Make the outside collider's faces point out of the building, toward where the player stands to open the door.
+
+## Swinging the door and walls
+
+The game opens the door by counting an angle from 0 to 90 degrees and running your door EVT script on each frame with the angle in `LVar0`. Closing counts back from 90 to 0. Rotate the door model by that angle, around whichever axis makes it swing the right way:
+
+```c
+EvtScript EVS_SetDoorRot_TayceT = {
+    Call(RotateModel, MODEL_c_door, LVar0, 0, -1, 0)
+    Return
+    End
+};
+```
+
+The walls work the same way: the angle goes from 0 to 90 as the player enters and from 90 to 0 as they leave. Tayce T.'s house tips its front walls and roof out of the way:
+
+```c
+EvtScript EVS_SetWallRot_TayceT = {
+    Set(LVar1, LVar0)
+    Call(RotateModel, MODEL_ck1, LVar1, 1, 0, 0)
+    Call(RotateModel, MODEL_ck2, LVar1, 1, 0, 0)
+    Call(RotateModel, MODEL_ck3, LVar1, 1, 0, 0)
+    Call(RotateModel, MODEL_cy1, LVar1, -1, 0, 0)
+    Call(RotateModel, MODEL_cy2, LVar1, -1, 0, 0)
+    Call(RotateModel, MODEL_cy3, LVar1, -1, 0, 0)
+    Return
+    End
+};
+```
+
+To animate the walls with your own timing, add `ROOM_FLAG_CUSTOM_ANIM_WALL_ROT` to the room's flags. The game then runs your wall EVT script once, with `LVar0` set to `ROOM_MOVE_WALL_OPEN` or `ROOM_MOVE_WALL_CLOSE`, and the EVT script moves the walls itself, as the houses in `nok_01` do. `ROOM_FLAG_CUSTOM_ANIM_OPEN_DOOR` does the same for the door, with `LVar0` set to `ROOM_MOVE_DOOR_ENTER_OPEN`, `ROOM_MOVE_DOOR_ENTER_CLOSE`, `ROOM_MOVE_DOOR_EXIT_OPEN`, or `ROOM_MOVE_DOOR_EXIT_CLOSE`. A custom door animation doesn't play the door sounds, so play them yourself.
+
+## Showing the inside
+
+The game fades the outside of the map and the background to black by itself. To show and hide the room's contents, write a listener EVT script. The game runs it with `LVar0` set to one of these:
+
+| Value | When |
+| --- | --- |
+| `ROOM_UPDATE_ENTER_BEGIN` | The player pressed A at the door from outside, before anything moves |
+| `ROOM_UPDATE_ENTER_DONE` | The player has walked in, and the door is closing |
+| `ROOM_UPDATE_EXIT_BEGIN` | The player used the door from inside, before anything moves |
+| `ROOM_UPDATE_EXIT_END` | The player is outside and the door has closed |
+
+Tayce T.'s house shows its furniture as the player starts to enter and hides it once they're back outside. It also sets an area flag that the map's music listens for:
+
+```c
+EvtScript EVS_RoomListener_TayceT = {
+    Switch(LVar0)
+        CaseEq(ROOM_UPDATE_ENTER_BEGIN)
+            Call(SetGroupVisibility, MODEL_cook_in, MODEL_GROUP_VISIBLE)
+            Set(MF_MusicMixTrigger1, true)
+        CaseEq(ROOM_UPDATE_EXIT_END)
+            Call(SetGroupVisibility, MODEL_cook_in, MODEL_GROUP_HIDDEN)
+            Set(MF_MusicMixTrigger1, false)
+    EndSwitch
+    Return
+    End
+};
+```
+
+While the player is inside, every NPC fades out with the rest of the map, except the player's partner and the NPCs in the room's NPC list. List the NPCs that live in the room, and end the list with `-1`:
+
+```c
+s32 InsideNPCs_TayceT[] = {
+    NPC_TayceT,
+    -1
+};
+```
+
+## Creating the room
+
+Call `CreateMapRoom` from an EVT script that the map's main EVT script starts, such as with `Exec(EVS_SetupRooms)`:
+
+```c
+EvtScript EVS_SetupRooms = {
+    Call(CreateMapRoom,
+        PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT), // item group and flags
+        Ref(EVS_SetDoorRot_TayceT),   // door
+        Ref(EVS_SetWallRot_TayceT),   // walls, or nullptr
+        nullptr,                      // dropping door, or nullptr
+        Ref(EVS_RoomListener_TayceT), // listener, or nullptr
+        COLLIDER_deilit1u,            // doorway collider, faced from outside
+        COLLIDER_deilit1,             // doorway collider, faced from inside
+        MODEL_cooking,                // the whole building
+        Ref(InsideNPCs_TayceT))       // NPCs that stay visible inside, or nullptr
+    Set(LVar0, ROOM_UPDATE_EXIT_END)
+    Exec(EVS_RoomListener_TayceT)
+    Return
+    End
+};
+```
+
+`CreateMapRoom` doesn't run the listener, so the last two lines run it with `ROOM_UPDATE_EXIT_END` to hide the furniture when the map loads.
+
+The door type in the flags tells the game which side the door's hinge is on and which way it swings, so it can walk the player out of the door's way before it opens. It doesn't move the door; your door EVT script does that.
+
+| Door type | Door |
+| --- | --- |
+| `ROOM_DOOR_RIGHT_HINGE_OPENS_OUT` | Hinged on the right, swings out of the building |
+| `ROOM_DOOR_RIGHT_HINGE_OPENS_IN` | Hinged on the right, swings into the building |
+| `ROOM_DOOR_LEFT_HINGE_OPENS_OUT` | Hinged on the left, swings out of the building |
+| `ROOM_DOOR_LEFT_HINGE_OPENS_IN` | Hinged on the left, swings into the building |
+| `ROOM_DOOR_STRAIGHT_THROUGH` | The player walks straight through without stepping aside |
+| `ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT` | A wide door, hinged on the right, swings out |
+| `ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_IN` | A wide door, hinged on the right, swings in |
+| `ROOM_LARGE_DOOR_LEFT_HINGE_OPENS_OUT` | A wide door, hinged on the left, swings out |
+
+## Locking the door
+
+To stop the door from opening, set `LVar0` to `ROOM_UPDATE_REQUEST_CANCEL` in the listener when it gets `ROOM_UPDATE_ENTER_BEGIN` or `ROOM_UPDATE_EXIT_BEGIN`, and return. The blue house in `mac_02` stays locked until the player unlocks it:
+
+```c
+CaseEq(ROOM_UPDATE_ENTER_BEGIN)
+    IfEq(GF_MAC02_UnlockedHouse, false)
+        Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_LockedFromInside, 160, 40)
+        Set(LVar0, ROOM_UPDATE_REQUEST_CANCEL)
+        Return
+    EndIf
+    Call(SetGroupVisibility, MODEL_souko_in, MODEL_GROUP_VISIBLE)
+```
+
+If the room uses an item group other than `VIS_GROUP_0`, don't lock it this way. Cancelling leaves the room's item group in use, so items outside stay hidden. Create the room once the player unlocks it instead, as the storeroom in `mac_04` does.
+
+## Dropping the door behind the player
+
+Some rooms, such as Club 64 in `mac_05`, lay the door flat after the player enters, and the player leaves by pushing against the doorway instead of pressing A. To do this, pass a dropping door EVT script as the fourth argument. Like the door EVT script, it gets an angle from 0 to 90 in `LVar0` as the door falls and from 90 to 0 as it rises:
+
+```c
+EvtScript EVS_DropDoor_Club64 = {
+    Call(RotateModel, MODEL_o80, LVar0, 1, 0, 0)
+    Return
+    End
+};
+```
+
+## Showing items only inside
+
+The first argument to `PACK_ROOM_FLAGS` is an item group. While the player is inside, the game draws only items in that group and items in `VIS_GROUP_5`, which always show. Items you make with a plain item ID are in `VIS_GROUP_0`. To put an item in another group, make it with `ITEM_VIS_GROUP`, as the storeroom in `mac_04` does:
+
+```c
+Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_VOLT_SHROOM, VIS_GROUP_2), 50, 40, -370, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_VoltShroom)
+```
+
+A room with `VIS_GROUP_2` shows that item while the player is inside it and hides items in `VIS_GROUP_0`.
+
+## Troubleshooting
+
+- If pressing A at the door does nothing, check that the player is standing, walking, or running, because the door doesn't open otherwise. Then check that you passed the outside collider before the inside one.
+- If the player walks the wrong way at the door, the outside collider's faces point into the building. Turn them to point out.
+- If the walls or door fade out with the rest of the map, move them into the model group you passed to `CreateMapRoom`.
+- Every room needs a door EVT script. The game runs it without checking for `nullptr`, unlike the other EVT scripts.
+- If every NPC fades out inside, check the NPC list: an empty list, `{ -1 }`, fades out every NPC. To leave all NPCs visible, pass `nullptr` instead of a list.
+- If the furniture shows from outside when the map loads, run the listener with `ROOM_UPDATE_EXIT_END` after `CreateMapRoom`.
+
+To start an EVT script when the player presses A at something other than a room's door, see [Triggers](/papermario-dx/world/triggers/).

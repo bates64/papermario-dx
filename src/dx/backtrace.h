@@ -28,7 +28,7 @@ typedef struct SymbolTable {
  * Walk the stack and return the current call stack
  *
  * This function will analyze the current execution context,
- * walking the stack and returning informations on the active
+ * walking the stack and returning information on the active
  * call frames.
  *
  * This function adheres to POSIX specification. It does not

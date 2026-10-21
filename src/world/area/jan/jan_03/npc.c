@@ -26,7 +26,7 @@ LetterDelivery LetterDelivery_RedYoshiKid = {
     .msgGreeting = MSG_CH5_0079,
     .msgCancelled = MSG_CH5_007A,
     .msgDelivered = MSG_CH5_007B,
-    .msgRecieved = MSG_CH5_007C,
+    .msgReceived = MSG_CH5_007C,
     .letters = { ITEM_LETTER_CHAIN_YOSHI_KID },
     .reward = ITEM_LETTER_CHAIN_DANE_T_2,
 };
@@ -38,7 +38,7 @@ LetterDelivery LetterDelivery_Kolorado = {
     .msgGreeting = MSG_CH5_001D,
     .msgCancelled = MSG_CH5_001E,
     .msgDelivered = MSG_CH5_001F,
-    .msgRecieved = MSG_CH5_0020,
+    .msgReceived = MSG_CH5_0020,
     .letters = { ITEM_LETTER_TO_KOLORADO },
     .reward = ITEM_STAR_PIECE,
 };
@@ -230,7 +230,7 @@ EvtScript EVS_NpcInteract_Yoshi_02 = {
             EndIf
         CaseLe(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_Talk, ANIM_Yoshi_Green_Idle, 0, MSG_CH5_005F)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_Talk, ANIM_Yoshi_Green_Idle, 0, MSG_CH5_0060)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_Talk, ANIM_Yoshi_Green_Idle, 0, MSG_CH5_0061)
@@ -267,7 +267,7 @@ EvtScript EVS_NpcInit_Yoshi_02 = {
 };
 
 EvtScript EVS_NpcInteract_Yoshi_03 = {
-    IfGe(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH5_STAR_SPIRIT_DEPARTED)
         Call(CountFoodItems, LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006C)
@@ -301,7 +301,7 @@ EvtScript EVS_NpcInteract_Yoshi_03 = {
             EndIf
         CaseLe(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_0068)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_0069)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006A)
@@ -357,7 +357,7 @@ EvtScript EVS_NpcInteract_YoshiKid_01 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0, MSG_CH5_006F)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0, MSG_CH5_0070)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0, MSG_CH5_0071)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0, MSG_CH5_0072)
@@ -374,7 +374,7 @@ EvtScript EVS_NpcInteract_YoshiKid_02 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0074)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0075)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0076)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0077)
@@ -393,7 +393,7 @@ EvtScript EVS_NpcInteract_YoshiKid_03 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Blue_Talk, ANIM_YoshiKid_Blue_Idle, 0, MSG_CH5_007D)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Blue_Talk, ANIM_YoshiKid_Blue_Idle, 0, MSG_CH5_007E)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Blue_Talk, ANIM_YoshiKid_Blue_Idle, 0, MSG_CH5_007F)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Blue_Talk, ANIM_YoshiKid_Blue_Idle, 0, MSG_CH5_0080)
@@ -410,7 +410,7 @@ EvtScript EVS_NpcInteract_YoshiKid_04 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0, MSG_CH5_0082)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0, MSG_CH5_0083)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0, MSG_CH5_0084)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0, MSG_CH5_0085)
@@ -427,7 +427,7 @@ EvtScript EVS_NpcInteract_YoshiKid_05 = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Purple_Talk, ANIM_YoshiKid_Purple_Idle, 0, MSG_CH5_0087)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Purple_Talk, ANIM_YoshiKid_Purple_Idle, 0, MSG_CH5_0088)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Purple_Talk, ANIM_YoshiKid_Purple_Idle, 0, MSG_CH5_0089)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Purple_Talk, ANIM_YoshiKid_Purple_Idle, 0, MSG_CH5_008A)
@@ -444,7 +444,7 @@ EvtScript EVS_NpcInit_YoshiKid_01 = {
             Call(RemoveNpc, NPC_SELF)
             Return
         Else
-            IfEq(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
+            IfEq(GB_StoryProgress, STORY_CH5_STAR_SPIRIT_DEPARTED)
                 Call(SetNpcPos, NPC_SELF, -490, 0, -90)
             Else
                 Call(SetNpcPos, NPC_SELF, -450, 0, -190)
@@ -581,7 +581,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
             EndIf
             Set(LVar0, Ref(LetterDelivery_Kolorado))
             ExecWait(EVS_TryLetterDelivery)
-        CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseEq(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(FindItem, ITEM_VOLCANO_VASE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0016)
@@ -634,7 +634,7 @@ EvtScript EVS_NpcInit_Kolorado = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
             Set(LVar0, 1)
-        CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseEq(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, -433, 0, -205)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
             Set(LVar0, 1)

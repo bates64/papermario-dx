@@ -1,33 +1,42 @@
 ---
-title: Add a sound effect
-description: Add a one-shot or sequenced sound effect to your mod and play it with a SOUND constant.
+title: Sound effects
+description: Make a sound effect from a WAV file, or write a sequence, and play it with a SOUND constant.
 sidebar:
   order: 2
 ---
 
-A sound effect is a file in `audio/sfx/`, and the build names its `SOUND_` constant after the file, so `shop_bell.xml` becomes `SOUND_SHOP_BELL`. A sound either plays one sample (a one-shot) or runs a short script that plays several notes (a sequence). In this guide, you add one of each using samples that the game already has, then play them from code. To use your own recording, first [add an instrument to a sound bank](/papermario-dx/audio/instruments).
+A sound effect is a file in `audio/sfx/`, and its `SOUND_` constant is named after the file, so `shop_bell.xml` becomes `SOUND_SHOP_BELL`. A sound either plays one sample (a one-shot) or plays several notes in order (a sequence).
 
-## Add a one-shot
+## Making a sound effect from a WAV file
 
-1. Create `audio/sfx/shop_bell.xml`.
+{% steps %}
+1. In the Filesystem, right-click `audio/sfx` and select **New > Sound Effect**.
+2. Choose your WAV file.
+3. Enter a name for the sound. Diorama64 suggests one from the WAV file's name. The name can't be one that another sound effect or a sample in any bank already has.
+4. Select **OK**.
+{% /steps %}
 
-    The file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores.
+Diorama64 writes `audio/sfx/<name>.xml` as a one-shot that plays your sample. It adds the sample to the first of your mod's sound banks, `SFX1` to `SFX9`, that has room, and creates the bank if it doesn't exist. The sample is converted to mono, and to 32 kHz if its sample rate is higher.
+
+The sample then opens in the Sound editor, where you can trim it and set its tuning and loop. See [Edit an instrument](/papermario-dx/audio/instruments/#editing-an-instrument).
+
+## Changing a one-shot
+
+A one-shot's file looks like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <SoundEffect>
-	<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
-	<OneShot wav="open_popup" volume="70" lockVolume="true" lockPitch="true"/>
+    <Routing allocation="dynamic" maxPlayer="7" priority="0"/>
+    <OneShot wav="shop_bell" volume="70" lockVolume="true" lockPitch="true"/>
 </SoundEffect>
 ```
-
-2. Rebuild. The build gives the sound the constant `SOUND_SHOP_BELL`, which you use as described in [Play the sound](#play-the-sound).
 
 `OneShot` uses these attributes:
 
 | Attribute | Meaning |
 | --- | --- |
-| `wav` | The sample to play. It's the name of an instrument in an always-loaded bank, without `.wav`. |
+| `wav` | The sample to play. It's the name of an instrument in an always-loaded bank, without `.wav`. To play a sample the game already has, such as `open_popup`, change this name. |
 | `volume` | The volume in hexadecimal, from `00` to `FF`. |
 | `lockVolume`, `lockPitch` | Keep your values when game code plays the sound with its own volume or pitch. `lockPan` and `lockReverb` work the same way. |
 | `pan`, `reverb`, `pitch`, `randomPitch`, `envelope` | Optional. If you leave them out, the defaults apply. |
@@ -36,50 +45,46 @@ A sound effect is a file in `audio/sfx/`, and the build names its `SOUND_` const
 
 | Attribute | Meaning |
 | --- | --- |
-| `allocation="dynamic"` | The engine picks a player when the sound starts. Use `allocation="fixed"` with a `player` value to always use one player. |
-| `maxPlayer` | The highest player number the engine can pick, from `0` to `7`. |
+| `allocation="dynamic"` | The game picks a player when the sound starts. Use `allocation="fixed"` with a `player` value to always use one player. |
+| `maxPlayer` | The highest player number the game can pick, from `0` to `7`. |
 | `priority` | From `0` (lowest) to `3` (highest). A sound can replace a playing sound of equal or lower priority. |
 
 If you copy the `Routing` line from a similar sound in the game's `audio/sfx/`, the new sound behaves the same way.
 
-## Add a sequence
+## Writing a sequence
 
-Use a sequence when the sound needs several notes, timing, loops, or more than one track. A sequence has `Tracks` instead of a `OneShot`, and it needs a `Routing` element.
-
-1. Create `audio/sfx/shop_jingle.xml`.
+Use a sequence when the sound needs several notes, timing, loops, or more than one track. A sequence has `Tracks` instead of a `OneShot`, and it needs a `Routing` element:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <SoundEffect>
-	<Routing allocation="dynamic" maxPlayer="7" priority="0"/>
-	<Tracks>
-		<Track slot="0">
-			<Sequence lockVolume="true" lockPitch="true">
-				<SetVolume volume="69"/>
-				<SetReverb reverb="5"/>
-				<SetInstrument wav="menu_show_choice"/>
-				<Play pitch="60" velocity="110" length="4"/>
-				<Delay ticks="12"/>
-				<Play pitch="64" velocity="110" length="4"/>
-				<Delay ticks="12"/>
-				<Play pitch="67" velocity="110" length="19"/>
-				<Delay ticks="48"/>
-				<End/>
-			</Sequence>
-		</Track>
-	</Tracks>
+    <Routing allocation="dynamic" maxPlayer="7" priority="0"/>
+    <Tracks>
+        <Track slot="0">
+            <Sequence lockVolume="true" lockPitch="true">
+                <SetVolume volume="69"/>
+                <SetReverb reverb="5"/>
+                <SetInstrument wav="menu_show_choice"/>
+                <Play pitch="60" velocity="110" length="4"/>
+                <Delay ticks="12"/>
+                <Play pitch="64" velocity="110" length="4"/>
+                <Delay ticks="12"/>
+                <Play pitch="67" velocity="110" length="19"/>
+                <Delay ticks="48"/>
+                <End/>
+            </Sequence>
+        </Track>
+    </Tracks>
 </SoundEffect>
 ```
 
-2. Rebuild. The build gives the sound the constant `SOUND_SHOP_JINGLE`.
+`Play` starts a note. `pitch` is a note number, `velocity` runs from `0` to `127`, and `length` is in ticks. `Delay` waits for the given number of ticks before the next command. `End` finishes the sequence. The game's sequences in `audio/sfx/` show the other commands, such as `StartLoop`, `EndLoop`, and `PitchSweep`.
 
-`Play` starts a note. `pitch` is a note number, `velocity` runs from `0` to `127`, and `length` is in ticks. `Delay` waits for the given number of ticks before the next command. `End` finishes the sequence. The game's sequences in `audio/sfx/` show the other commands, such as `StartLoop`, `EndLoop`, and `PitchSweep`. Copy one that behaves like the sound you want, such as the game's `audio/sfx/menu_show_choice.xml`, and change it.
+To start a sequence, make a sound effect with **New > Sound Effect** and replace its `OneShot` with `Tracks`, or copy one of the game's sequences that behaves like the sound you want, such as `audio/sfx/menu_show_choice.xml`, and change the copy.
 
-A sequence can pick a press envelope with `<SetPressEnvelope ref="envelope03"/>`. Each envelope is a file in `audio/sfx/envelopes/`, named after the envelope, so you add one by creating `audio/sfx/envelopes/<name>.xml`.
+A sequence can pick a press envelope with `<SetPressEnvelope ref="envelope03"/>`. Each envelope is a file in `audio/sfx/envelopes/`, named after the envelope.
 
-## Play the sound
-
-Use the constant anywhere you play a sound.
+## Playing the sound
 
 In C:
 
@@ -87,23 +92,12 @@ In C:
 sfx_play_sound(SOUND_SHOP_BELL);
 ```
 
-In an EVT script:
+In EVT:
 
 ```c
 Call(PlaySound, SOUND_SHOP_BELL)
 ```
 
-Rebuild, then run the code in the game to hear the sound. The Audio Booth in [Star Rod](/papermario-dx/star-rod) also previews a sound effect from its source files.
+## Silence a sound
 
-## Replace or remove a game sound
-
-To replace a sound, save your version with the same file name in your layer, such as `audio/sfx/chime_begin_ambush.xml`. It keeps the sound's constant, so existing code plays your version.
-
-To remove a sound, create `audio/sfx/chime_begin_ambush.xml.meta` containing `delete: true`. The constant `SOUND_CHIME_BEGIN_AMBUSH` then no longer exists, so remove or change the code that uses it first.
-
-A `SoundEffect` with no children is silent. The game's `audio/sfx/hit_silent.xml` is one.
-
-## Related pages
-
-- [Custom audio](/papermario-dx/audio) explains how your files replace the game's and how names become constants.
-- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common sound effect errors.
+A `SoundEffect` with no children is silent. To silence one of the game's sounds but keep its constant, remove everything inside its `SoundEffect`. The game's `audio/sfx/hit_silent.xml` is one.

@@ -1,0 +1,24 @@
+---
+title: Breakpoints
+sidebar:
+  order: 3
+---
+
+When your code doesn't do what you expect, a breakpoint lets you see why. It pauses the game when it reaches a line of C code, so you can check the values the code is working with and run it one line at a time.
+
+To set a breakpoint, click to the left of the line's number in the editor, and then play the game. You can add and remove breakpoints while the game runs.
+
+When the game reaches the line, it pauses. The editor opens the line, and the **Game** panel shows **Variables**, with the values of the function's variables, and **Call Stack**, with the functions that called it.
+
+While the game is paused, the toolbar's buttons step through the code:
+
+| Button | What it does |
+| --- | --- |
+| **Step Over** | Runs the current line, and pauses at the next one |
+| **Step Into** | Pauses at the start of the function the current line calls |
+| **Step Out** | Runs until the current function returns |
+| **Continue** | Runs the game until it reaches the next breakpoint |
+
+The game is built with optimizations, so stepping can jump between lines out of order, and some variables show as optimized out.
+
+A breakpoint in the editor doesn't pause an EVT script, because an EVT script is data, not C code. To pause an EVT script at a command, put a `BreakPoint` command in it, and use the [EVT script debugger](/papermario-dx/debug/debug-menu/#evt-script-debugger) to step through it. To pause the game in the C code an EVT script runs, set a breakpoint in an API function it calls.

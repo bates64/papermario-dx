@@ -174,7 +174,7 @@ EvtScript EVS_NpcInteract_Bubulb = {
 
 EvtScript EVS_NpcInit_Bubulb = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH5_STAR_SPRIT_DEPARTED, STORY_CH6_FLOWER_GATE_OPEN)
+        CaseRange(STORY_CH5_STAR_SPIRIT_DEPARTED, STORY_CH6_FLOWER_GATE_OPEN)
             Call(SetNpcPos, NPC_SELF, 200, 20, 500)
             Call(SetNpcYaw, NPC_SELF, 270)
             Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bubulb))
@@ -454,7 +454,7 @@ EvtScript EVS_NpcInteract_MinhT = {
             Set(LVar1, MSG_MAC_Plaza_0065)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar2, 1)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Set(LVar0, GF_MAC01_ChasedShyGuysFromGardenA)
             Add(LVar0, GF_MAC01_ChasedShyGuysFromGardenB)
             IfEq(LVar0, 2)
@@ -472,7 +472,7 @@ EvtScript EVS_NpcInteract_MinhT = {
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Set(LVar0, MSG_MAC_Plaza_0071)
             Set(LVar1, MSG_MAC_Plaza_0071)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_0072)
             Set(LVar1, MSG_MAC_Plaza_0072)
         CaseLt(STORY_EPILOGUE)
@@ -488,7 +488,7 @@ EvtScript EVS_NpcInteract_MinhT = {
         Add(LVar3, GF_MAC01_Planted_MagicalSeed3)
         Add(LVar3, GF_MAC01_Planted_MagicalSeed4)
         Switch(GB_StoryProgress)
-            CaseRange(STORY_CH5_STAR_SPRIT_DEPARTED, STORY_CH5_RETURNED_TO_TOAD_TOWN)
+            CaseRange(STORY_CH5_STAR_SPIRIT_DEPARTED, STORY_CH5_RETURNED_TO_TOAD_TOWN)
                 Set(LVar4, GF_MAC02_Gift_MagicalSeed1)
                 Add(LVar4, GF_IWA02_Gift_MagicalSeed2)
                 Add(LVar4, GF_MIM04_Gift_MagicalSeed3)
@@ -608,7 +608,7 @@ EvtScript EVS_NpcIdle_MinhT = {
 
 EvtScript EVS_NpcInit_MinhT = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Set(GF_MAC01_ShyGuysTramplingGarden, true)
             Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
             Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_MinhT))

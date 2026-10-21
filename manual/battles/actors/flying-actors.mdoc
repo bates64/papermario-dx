@@ -1,0 +1,116 @@
+---
+title: Flying and ceiling actors
+sidebar:
+  order: 7
+---
+
+Actors can fly in the air or hang from the ceiling. Both need flags on the blueprint and their own movement functions.
+
+## Flying actors
+
+Set `ACTOR_FLAG_FLYING` on the blueprint to make the actor airborne:
+
+```c
+OVL_DEF_ACTOR() = {
+    .flags = ACTOR_FLAG_FLYING,
+    // ...
+};
+```
+
+Place a flying actor at an air position, such as `BTL_POS_AIR_B`, in its [formation](/papermario-dx/battles/formations/).
+
+Flying actors use different movement functions than ground actors:
+
+| Ground function | Flying equivalent |
+|----------------|-------------------|
+| `RunToGoal` | `FlyToGoal` |
+| `IdleRunToGoal` | `IdleFlyToGoal` |
+
+```c
+// flying movement (in EVS_Idle or EVS_TakeTurn)
+Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+Call(FlyToGoal,
+    ACTOR_SELF, 0, -4, EASING_LINEAR)
+```
+
+The second argument to `FlyToGoal` is how many frames the move takes; `0` works it out from the actor's speed. The third is the height of the arc the actor flies along, and a negative height makes it dip downward. The fourth is the easing function.
+
+### Knockdown
+
+A jump or a POW attack can knock a flying actor to the ground, if the part it hits has `ACTOR_EVENT_FLAG_GROUNDABLE` in its `.eventFlags`:
+
+```c
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_FLYING,
+        // ...
+        .eventFlags = ACTOR_EVENT_FLAG_GROUNDABLE,
+    },
+};
+```
+
+When such an attack hits that part, the actor receives `EVENT_FALL_TRIGGER` in place of `EVENT_HIT`. Handle it in `EVS_HandleEvent` to start a knockdown:
+
+```c
+CaseEq(EVENT_FALL_TRIGGER)
+    SetConst(LVar0, PRT_FLYING)
+    SetConst(LVar1, ANIM_Paragoomba_Hurt)
+    ExecWait(EVS_Enemy_Hit)
+    ExecWait(EVS_KnockDown)
+```
+
+A knockdown usually involves:
+
+- Swapping visible [parts](/papermario-dx/battles/actors/parts/), such as hiding the flying body and showing the grounded body.
+- Clearing the `ACTOR_FLAG_FLYING` flag.
+- Changing the status table.
+- Moving the actor's home position to the ground tier.
+- Binding EVT scripts for the downed actor.
+
+For a complete flying-to-grounded transition, see `battle/actor/paragoomba.c`.
+
+## Ceiling actors
+
+Set `ACTOR_FLAG_UPSIDE_DOWN` to make an actor hang from the ceiling:
+
+```c
+OVL_DEF_ACTOR() = {
+    .flags = ACTOR_FLAG_UPSIDE_DOWN,
+    // ...
+    .statusIconOffset = { -10, -20 },
+    .statusTextOffset = { 10, -20 },
+};
+```
+
+Place a ceiling actor at a top position, such as `BTL_POS_TOP_B`, in its formation. The status offsets in this example are Swooper's, which put its status icons below it. Choose offsets that suit your actor's sprite.
+
+You can clear the flag at runtime when the actor drops from the ceiling:
+
+```c
+// drop from the ceiling
+Call(SetActorFlagBits,
+    ACTOR_SELF, ACTOR_FLAG_UPSIDE_DOWN, false)
+```
+
+### Ceiling and spiky
+
+Ceiling actors are often [spiky](/papermario-dx/battles/actors/spiky-actors/). For example, Spike Top's blueprint uses both `ACTOR_FLAG_UPSIDE_DOWN` and `ACTOR_EVENT_FLAG_SPIKY_TOP`:
+
+```c
+OVL_DEF_ACTOR() = {
+    .flags = ACTOR_FLAG_UPSIDE_DOWN,
+    // ...
+};
+
+ActorPartBlueprint ActorParts[] = {
+    {
+        // ...
+        .eventFlags = ACTOR_EVENT_FLAG_SPIKY_TOP | ACTOR_EVENT_FLAG_FLIPABLE,
+    },
+};
+```
+
+Spike Top can start on the ceiling or on the ground, depending on its formation's `.var0`. Its `EVS_Init` reads that variable, and if Spike Top starts on the ground, clears `ACTOR_FLAG_UPSIDE_DOWN`. On the ceiling, it clears `ACTOR_EVENT_FLAG_FLIPABLE`, so it can only be flipped on the ground.
+
+For ceiling actor examples, see `battle/actor/swooper.c` and `battle/actor/spike_top.c`.

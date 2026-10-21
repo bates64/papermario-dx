@@ -1,0 +1,274 @@
+---
+title: NPCs
+sidebar:
+  order: 5
+---
+
+An NPC is a character in a map, such as a Toad who talks to the player or a Goomba that starts a battle. A map makes its NPCs when the player enters it, from data you write in the map's code. The examples on this page make a Toad who wanders, talks, and has something new to say once the player opens a gate.
+
+## NPC IDs
+
+Each NPC in a map has an ID that no other NPC in that map uses. List the IDs in the map's header:
+
+```c
+enum {
+    NPC_Toad = 0,
+};
+```
+
+EVT scripts refer to the NPC by this ID, such as in `Call(SetNpcPos, NPC_Toad, 0, 0, 0)`. In an EVT script that belongs to the NPC, `NPC_SELF` means the NPC itself.
+
+## NPC data
+
+In the map's `main.c`, above `EVS_Main`, describe the NPC with an `NpcData`:
+
+```c
+#include "world/common/npc/Toad/wander.inc.c"
+
+NpcData NpcData_Toad = {
+    .id = NPC_Toad,
+    .pos = { 100.0f, 0.0f, 50.0f },
+    .yaw = 270,
+    .territory = {
+        .wander = {
+            .isFlying = true,
+            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
+            .wanderShape = SHAPE_CYLINDER,
+            .centerPos  = { 100, 0, 50 },
+            .wanderSize = { 50 },
+            .detectShape = SHAPE_CYLINDER,
+            .detectPos  = { 100, 0, 50 },
+            .detectSize = { 50 },
+        }
+    },
+    .init = &EVS_NpcInit_Toad,
+    .settings = &NpcSettings_Toad_Wander,
+    .flags = COMMON_PASSIVE_FLAGS,
+    .drops = NO_DROPS,
+    .animations = TOAD_RED_ANIMS,
+};
+```
+
+| Field | What it sets |
+| --- | --- |
+| `.id` | The NPC's ID from the map's header. |
+| `.pos` | Where the NPC stands when the map loads, as x, y, and z. |
+| `.yaw` | The direction the NPC faces, in degrees. |
+| `.territory` | Where the NPC's AI moves it. See [Wander in an area](#wandering-in-an-area). |
+| `.init` | An EVT script that runs when the NPC is made. See [Add dialogue](#dialogue). |
+| `.settings` | An `NpcSettings`, which sets the NPC's size and its AI. |
+| `.flags` | `ENEMY_FLAG_` values. `COMMON_PASSIVE_FLAGS` makes a friendly NPC that the player can talk to, which doesn't start a battle when touched. |
+| `.drops` | What the NPC drops when the player defeats it. Friendly NPCs use `NO_DROPS`. |
+| `.animations` | The NPC's animations, which also choose its sprite. |
+| `.tattle` | Optional. The message the player's partner says when it tattles on the NPC. |
+
+## Choosing a sprite
+
+The NPC uses the sprite of the animations in `.animations`. The game has a list for each of its characters, such as `TOAD_RED_ANIMS` in `world/common/npc/Toad/base.h`. To use a different sprite, write a list like it with that sprite's animations:
+
+```c
+#define TOAD_RED_ANIMS \
+{ \
+    .idle   = ANIM_Toad_Red_Idle, \
+    .walk   = ANIM_Toad_Red_Walk, \
+    .run    = ANIM_Toad_Red_Run, \
+    .chase  = ANIM_Toad_Red_Run, \
+    .alert  = ANIM_Toad_Red_Idle, \
+    .unused = ANIM_Toad_Red_Idle, \
+    .death  = ANIM_Toad_Red_Disappointed, \
+    .hit    = ANIM_Toad_Red_Disappointed, \
+    .anim_8 = ANIM_Toad_Red_Run, \
+    .anim_9 = ANIM_Toad_Red_Run, \
+    .anim_A = ANIM_Toad_Red_Run, \
+    .anim_B = ANIM_Toad_Red_Run, \
+    .anim_C = ANIM_Toad_Red_Run, \
+    .anim_D = ANIM_Toad_Red_Run, \
+    .anim_E = ANIM_Toad_Red_Run, \
+    .anim_F = ANIM_Toad_Red_Run, \
+}
+```
+
+The NPC starts with its `.idle` animation, and its AI plays the others, such as `.walk` while it moves. For where animation names come from and how to make a sprite, see [Sprites](/papermario-dx/graphics/sprites).
+
+## Groups
+
+A map makes its NPCs in **groups**. Each group is one encounter: every NPC in it shares the battle that the group starts, and winning that battle defeats the whole group. A group that starts no battle is only a list of NPCs, so all of a map's friendly NPCs can go in one group.
+
+Keep friendly NPCs out of an enemy's group, because winning the battle removes every NPC in the group, friendly ones included. For enemies, see [Add an enemy](#enemies).
+
+List the map's groups in an `NpcGroupList`, with one `NPC_GROUP` for each and `{}` at the end:
+
+```c
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Toad),
+    {}
+};
+```
+
+To put several NPCs in one group, make their `NpcData` an array, such as `NpcData NpcData_Toads[] = { { ... }, { ... } };`, and pass the array to `NPC_GROUP`.
+
+Then make the NPCs from the map's main EVT script with `MakeNpcs`, before `EnterWalk`:
+
+```c
+EvtScript EVS_Main = {
+    Call(SetSpriteShading, SHADING_NONE)
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
+    Call(MakeNpcs, false, Ref(DefaultNPCs))
+    Set(LVar0, Ref(EVS_BindExitTriggers))
+    Exec(EnterWalk)
+    Return
+    End
+};
+```
+
+To have different NPCs at different points in the story, write an `NpcGroupList` for each, and choose one in `EVS_Main` by checking a game flag or `GB_StoryProgress`.
+
+## Dialogue
+
+The NPC's `.init` EVT script runs when the NPC is made. Use it to bind an interact EVT script, which runs each time the player talks to the NPC:
+
+```c
+EvtScript EVS_NpcInteract_Toad = {
+    Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_GateToad_Closed)
+    Return
+    End
+};
+
+EvtScript EVS_NpcInit_Toad = {
+    Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Toad))
+    Return
+    End
+};
+```
+
+Write these EVT scripts above the `NpcData` that uses them. For the messages, see [Write messages](/papermario-dx/messages/edit-messages) and [Speech](/papermario-dx/messages/speech).
+
+The `.init` EVT script can also set the NPC up for the point in the story, such as moving it with `SetNpcPos` or removing it with `RemoveNpc`.
+
+## Changing dialogue after an event
+
+To give the NPC something new to say after an event, check a [game flag](/papermario-dx/save-data/game-flags) in its interact EVT script. This Toad says one message until the player opens the gate, and another after:
+
+```c
+EvtScript EVS_NpcInteract_Toad = {
+    IfEq(GF_KMR02_OpenedGate, false)
+        Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_GateToad_Closed)
+    Else
+        Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_GateToad_Open)
+    EndIf
+    Return
+    End
+};
+```
+
+Whatever opens the gate sets the flag with `Set(GF_KMR02_OpenedGate, true)`.
+
+## Wandering in an area
+
+The NPC's AI moves it. `NpcSettings_Toad_Wander` comes from `world/common/npc/Toad/wander.inc.c`, which the game uses for its wandering Toads:
+
+```c
+MobileAISettings AISettings_Toad_Wander = {
+    .moveSpeed = 1.5f,
+    .moveTime = 60,
+    .waitTime = 30,
+    .playerSearchInterval = -1,
+    .loiterMode = 1,
+};
+
+EvtScript EVS_NpcAI_Toad_Wander = {
+    Call(BasicAI_Main, Ref(AISettings_Toad_Wander))
+    Return
+    End
+};
+
+NpcSettings NpcSettings_Toad_Wander = {
+    .height = 30,
+    .radius = 24,
+    .level = ACTOR_LEVEL_NONE,
+    .doAI = &EVS_NpcAI_Toad_Wander,
+    .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
+};
+```
+
+`BasicAI_Main` walks the NPC at `.moveSpeed` for `.moveTime` frames, then waits for `.waitTime` frames, and repeats. A `.playerSearchInterval` of `-1` means the NPC never looks for the player. To change how an NPC moves, copy these three into your map with new names and change the values.
+
+The NPC wanders inside the `.wander` territory in its `NpcData`:
+
+- `.centerPos` is the middle of the area it wanders in.
+- `.wanderSize` is the area's radius for `SHAPE_CYLINDER`, or its width and depth for `SHAPE_RECT`, such as `{ 30, 20 }`.
+- `.detectPos`, `.detectSize`, and `.detectShape` are the area in which the NPC can notice the player. They only matter for an NPC that looks for the player, such as an enemy.
+- `.isFlying = true` keeps the NPC at its height. With `false`, it falls to the floor.
+
+Other NPCs in the game have their own AI in `world/common/npc/` and `world/common/enemy/`, each with a `.inc.c` file to include.
+
+### Patrolling between points
+
+To have the NPC walk between points in order instead, use `NpcSettings_Toad_Patrol` from `world/common/npc/Toad/patrol.inc.c`, and give it a `.patrol` territory with up to 10 points:
+
+```c
+.territory = {
+    .patrol = {
+        .isFlying = true,
+        .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
+        .numPoints  = 2,
+        .points  = {
+            { 40, 0, -300 },
+            { -40, 0, -300 },
+        },
+        .detectShape = SHAPE_CYLINDER,
+        .detectPos  = { 0, 0, 0 },
+        .detectSize = { 10 },
+    }
+},
+.settings = &NpcSettings_Toad_Patrol,
+```
+
+## Enemies
+
+An enemy is an NPC that starts a battle when it touches the player, or the player touches it. To make one, leave `ENEMY_FLAG_PASSIVE` out of its flags, use enemy settings and drops, and give its group a battle. This Goomba, with the ID `NPC_Goomba` in the map's header, uses the game's own Goomba data from `world/common/enemy/Goomba/`:
+
+```c
+#include "world/common/enemy/Goomba/wander.inc.c"
+
+NpcData NpcData_Goomba = {
+    .id = NPC_Goomba,
+    .pos = { 305.0f, 50.0f, -13.0f },
+    .yaw = 90,
+    .territory = {
+        .wander = {
+            .isFlying = false,
+            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
+            .wanderShape = SHAPE_RECT,
+            .centerPos  = { 305, 50, -13 },
+            .wanderSize = { 30, 20 },
+            .detectShape = SHAPE_RECT,
+            .detectPos  = { 330, 50, 20 },
+            .detectSize = { 120, 130 },
+        }
+    },
+    .settings = &NpcSettings_Goomba_Wander,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
+    .drops = GOOMBA_DROPS,
+    .animations = GOOMBA_ANIMS,
+    .aiDetectFlags = AI_DETECT_SIGHT,
+};
+
+NpcGroupList DefaultNPCs = {
+    NPC_GROUP(NpcData_Toad),
+    NPC_GROUP(NpcData_Goomba, "kmr_part_1:goomba_1"),
+    {}
+};
+```
+
+`NPC_GROUP`'s second argument is the battle to start, named after its battle area and formation, such as `"kmr_part_1:goomba_1"` for the formation `goomba_1` in `battle/area/kmr_part_1.c`. For how to make your own, see [Put an actor in a battle](/papermario-dx/battles/formations/).
+
+The battle takes place on the stage its `BattleList` gives it. To fight it on a different stage, such as one that looks like this map, pass the stage's name as a third argument:
+
+```c
+NPC_GROUP(NpcData_Goomba, "kmr_part_1:goomba_1", "kmr_05"),
+```
+
+Every NPC in the group shares this battle, so touching any of them starts it, and winning it defeats them all. To give each enemy its own battle, give each its own group.
+
+The first argument of `MakeNpcs` sets when defeated enemies come back. With `false`, they come back once the player has been to two other maps. With `true`, they stay gone until the player leaves the area.

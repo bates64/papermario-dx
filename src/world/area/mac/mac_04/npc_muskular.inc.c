@@ -204,7 +204,7 @@ EvtScript EVS_Scene_RescuedMuskular = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(NpcFlyTo, NPC_Twink, -600, 200, 350, 0, -10, EASING_LINEAR)
     Call(SetNpcPos, NPC_Twink, NPC_DISPOSE_LOCATION)
-    Set(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
+    Set(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_DEPARTED)
     Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

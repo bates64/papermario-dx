@@ -532,7 +532,7 @@ void imgfx_update(s32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             if (type == state->lastColorCmd && imgfxArg1 == (s32) state->ints.overlay.pattern
                 && imgfxArg2 == state->ints.overlay.alpha)
             {
-                // no paramaters have changed
+                // no parameters have changed
                 return;
             }
             break;
@@ -540,7 +540,7 @@ void imgfx_update(s32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             if (state->lastAnimCmd == type && state->ints.anim.type == imgfxArg1
                 && state->ints.anim.interval == imgfxArg2 && state->ints.anim.step == imgfxArg3)
             {
-                // no paramaters have changed
+                // no parameters have changed
                 return;
             }
             break;
@@ -980,8 +980,8 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
             case IMGFX_RENDER_HOLOGRAM:
                 if (state->ints.hologram.mode == IMGFX_HOLOGRAM_NOISE) {
                     primAlpha = state->ints.hologram.alphaAmt * ifxImgAlpha;
-                    // color: blend texure and noise
-                    // alpha: texure * prim
+                    // color: blend texture and noise
+                    // alpha: texture * prim
                     gDPSetCombineMode(gMainGfxPos++, PM_CC_IMGFX_HOLOGRAM, PM_CC_IMGFX_HOLOGRAM);
                     gDPSetPrimColor(
                         gMainGfxPos++, 0, 0, state->ints.hologram.noiseAmt, state->ints.hologram.noiseAmt,
@@ -1670,7 +1670,7 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
             s32 lrIdx = firstVtxIdx + (i + 1) * (state->subdivX + 1) + j + 1;
             if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
-                    // (?) bugfix: was ImgFXInstances[0].arrayIdx != 0, chaning this lets Kolorado on kzn_17 recieve
+                    // (?) bugfix: was ImgFXInstances[0].arrayIdx != 0, chaning this lets Kolorado on kzn_17 receive
                     // sprite shading
                     && state->arrayIdx != 0 && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
                     && (state->renderType == IMGFX_RENDER_DEFAULT || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA

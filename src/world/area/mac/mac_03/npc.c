@@ -56,7 +56,7 @@ LetterDelivery LetterDelivery_ToadKid1A = {
     .msgGreeting = MSG_MAC_Station_0049,
     .msgCancelled = MSG_MAC_Station_004A,
     .msgDelivered = MSG_MAC_Station_004B,
-    .msgRecieved = MSG_MAC_Station_004C,
+    .msgReceived = MSG_MAC_Station_004C,
     .letters = { ITEM_LETTER_CHAIN_DANE_T_1 },
     .reward = ITEM_LETTER_CHAIN_YOSHI_KID,
     .deferReward = true,
@@ -69,7 +69,7 @@ LetterDelivery LetterDelivery_ToadKid1B = {
     .msgGreeting = MSG_MAC_Station_004E,
     .msgCancelled = MSG_MAC_Station_004F,
     .msgDelivered = MSG_MAC_Station_0050,
-    .msgRecieved = MSG_MAC_Station_0051,
+    .msgReceived = MSG_MAC_Station_0051,
     .letters = { ITEM_LETTER_CHAIN_DANE_T_2 },
     .reward = ITEM_LETTER_CHAIN_FROST_T,
     .deferReward = true,
@@ -81,7 +81,7 @@ EvtScript EVS_NpcInteract_TrainToad_01 = {
         Return
     EndIf
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             IfEq(GF_MAC03_ShyGuyChasedOff, false)
                 Call(SpeakToPlayer, NPC_TrainToad_01, ANIM_TrainToad_White_SadTalk, ANIM_TrainToad_White_SadIdle, 0, MSG_MAC_Station_0007)
                 Return
@@ -130,12 +130,12 @@ EvtScript EVS_NpcInteract_Toad_01 = {
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Station_0067)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Station_0068)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_0069)
 #endif
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Station_000A)
             Else
@@ -143,7 +143,7 @@ EvtScript EVS_NpcInteract_Toad_01 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Station_000C)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_ShyGuyBlockingTracks, false)
                 Set(LVar0, MSG_MAC_Station_000D)
             Else
@@ -155,7 +155,7 @@ EvtScript EVS_NpcInteract_Toad_01 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Station_0010)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_0011)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Station_0012)
@@ -163,7 +163,7 @@ EvtScript EVS_NpcInteract_Toad_01 = {
             Set(LVar0, MSG_MAC_Station_0013)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Station_0014)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_0015)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Station_0016)
@@ -184,12 +184,12 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Station_006A)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Station_006B)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_006C)
 #endif
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Station_0017)
             Else
@@ -197,7 +197,7 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Station_0019)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_ShyGuyBlockingTracks, false)
                 Set(LVar0, MSG_MAC_Station_001A)
             Else
@@ -209,7 +209,7 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Station_001D)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_001E)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Station_001F)
@@ -217,7 +217,7 @@ EvtScript EVS_NpcInteract_Toadette_01 = {
             Set(LVar0, MSG_MAC_Station_0020)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Station_0021)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_0022)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Station_0023)
@@ -238,12 +238,12 @@ EvtScript EVS_NpcInteract_Toad_02 = {
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Station_006D)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Station_006E)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_006F)
 #endif
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Station_0024)
             Else
@@ -251,7 +251,7 @@ EvtScript EVS_NpcInteract_Toad_02 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Station_0026)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_ShyGuyBlockingTracks, false)
                 Set(LVar0, MSG_MAC_Station_0027)
             Else
@@ -263,7 +263,7 @@ EvtScript EVS_NpcInteract_Toad_02 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Station_002A)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_002B)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Station_002C)
@@ -271,7 +271,7 @@ EvtScript EVS_NpcInteract_Toad_02 = {
             Set(LVar0, MSG_MAC_Station_002D)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Station_002E)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_002F)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Station_0030)
@@ -301,14 +301,14 @@ EvtScript EVS_NpcInteract_ToadKid_02 = {
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Station_0070)
             Set(LVar1, MSG_MAC_Station_0071)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Station_0072)
             Set(LVar1, MSG_MAC_Station_0073)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_0074)
             Set(LVar1, MSG_MAC_Station_0075)
 #endif
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Station_0031)
                 Set(LVar1, MSG_MAC_Station_0032)
@@ -319,7 +319,7 @@ EvtScript EVS_NpcInteract_ToadKid_02 = {
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Station_0035)
             Set(LVar1, MSG_MAC_Station_0036)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_ShyGuyBlockingTracks, false)
 #if VERSION_JP
                 Set(LVar0, MSG_MAC_Station_0076)
@@ -337,7 +337,7 @@ EvtScript EVS_NpcInteract_ToadKid_02 = {
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Station_003B)
             Set(LVar1, MSG_MAC_Station_003C)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_003D)
             Set(LVar1, MSG_MAC_Station_003E)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
@@ -349,7 +349,7 @@ EvtScript EVS_NpcInteract_ToadKid_02 = {
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Station_0043)
             Set(LVar1, MSG_MAC_Station_0044)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Station_0045)
             Set(LVar1, MSG_MAC_Station_0046)
         CaseLt(STORY_EPILOGUE)
@@ -566,7 +566,7 @@ EvtScript EVS_NpcHit_ShyGuy = {
 
 EvtScript EVS_NpcInit_ShyGuy = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(GetEntryID, LVar0)
             IfEq(LVar0, mac_03_ENTRY_1)
                 Set(GF_MAC03_ShyGuyBlockingTracks, true)

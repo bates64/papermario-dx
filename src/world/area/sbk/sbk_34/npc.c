@@ -8,7 +8,7 @@ LetterDelivery LetterDelivery_Nomadimouse = {
     .msgGreeting = MSG_CH2_005B,
     .msgCancelled = MSG_CH2_005C,
     .msgDelivered = MSG_CH2_005D,
-    .msgRecieved = MSG_CH2_005E,
+    .msgReceived = MSG_CH2_005E,
     .letters = { ITEM_LETTER_TO_NOMADIMOUSE },
     .reward = ITEM_STAR_PIECE,
 };

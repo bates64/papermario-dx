@@ -10,7 +10,7 @@
 #include "world/common/npc/Quizmo/quiz.inc.c"
 
 EvtScript EVS_NpcInteract_Mouser_01 = {
-    IfGe(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0062)
         Return
     EndIf
@@ -37,7 +37,7 @@ EvtScript EVS_NpcInit_Mouser_01 = {
 
 EvtScript EVS_NpcInteract_Dryite_01 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
                 IfEq(AB_DRO01_DialogueState_Dryite1, 2)
                     Set(AB_DRO01_DialogueState_Dryite1, 0)
@@ -54,7 +54,7 @@ EvtScript EVS_NpcInteract_Dryite_01 = {
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0065)
                     Set(AB_DRO01_DialogueState_Dryite1, 0)
             EndSwitch
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0066)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0067)

@@ -1,0 +1,30 @@
+---
+title: Sprites
+sidebar:
+  order: 1
+---
+
+Sprites are the animated characters of the world and of battles, such as Goombas and Toads. Each sprite is a folder in `sprite/npc/`, such as `sprite/npc/Goomba/`. To add one, right-click `sprite/npc` in the Filesystem and select **New > Sprite**.
+
+To edit a sprite, open its `SpriteSheet.xml`. The sprite editor's **Outline** lists the sprite's animations, rasters, and palettes.
+
+## Rasters
+
+A raster is one of the sprite's images, such as a frame of its walk. Rasters are PNG files in the sprite's `rasters/` folder, and each one must be an indexed PNG with at most 16 colors.
+
+To add a raster:
+
+1. Add its image to the sprite's `rasters/` folder. Copying one of the sprite's existing rasters and editing the copy keeps its colors in the same order as the sprite's palettes.
+2. In the Outline, right-click and select **New Raster**.
+
+## Palettes
+
+A palette is a set of 16 colors that the sprite's rasters are drawn with. Palettes are PNG files in the sprite's `palettes/` folder. Each raster has a palette it's drawn with, and other palettes recolor the same rasters, such as for the Red Goomba and Hyper Goomba.
+
+To add a palette, add its PNG to the sprite's `palettes/` folder, then right-click in the Outline and select **New Palette**.
+
+If you change a raster's or palette's PNG outside the sprite editor, right-click in the Outline and select **Reload Images** to see the change.
+
+## Using a sprite
+
+Refer to a sprite's animations by the names in its header, such as `ANIM_Goomba_Idle` from `sprite/npc/Goomba.h`. Sprite IDs follow the sprites' names in alphabetical order, so they change when you add or remove a sprite.

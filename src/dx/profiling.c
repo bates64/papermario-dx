@@ -5,7 +5,7 @@
 #include "game_modes.h"
 #include "PR/os_internal_reg.h"
 
-#ifdef USE_PROFILER
+#if USE_PROFILER
 
 #define RDP_CYCLE_CONV(x) ((10 * (x)) / 625) // 62.5 million cycles per frame
 

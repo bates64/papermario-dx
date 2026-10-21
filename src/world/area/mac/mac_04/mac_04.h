@@ -1,7 +1,7 @@
 #pragma once
 
 /// @file mac_04.h
-/// @brief Toad Town - Residental District
+/// @brief Toad Town - Residential District
 
 #include "common.h"
 #include "message_ids.h"

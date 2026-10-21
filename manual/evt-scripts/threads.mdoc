@@ -1,0 +1,70 @@
+---
+title: Threads
+sidebar:
+  order: 5
+---
+
+An EVT script can start another EVT script, or a block of its own commands, to run alongside it:
+
+| Command | Waits for it to finish | Stops when this EVT script stops |
+| --- | --- | --- |
+| `Exec(EVS_Other)` | No | No |
+| `ExecWait(EVS_Other)` | Yes | Yes |
+| `Thread` ... `EndThread` | No | No |
+| `ChildThread` ... `EndChildThread` | No | Yes |
+
+The new EVT script starts with a copy of the caller's local variables. After `ExecWait`, the caller gets the variables back as the other EVT script left them. The other commands don't copy them back.
+
+For example, in an NPC's EVT script, this makes the NPC walk for a second while the partner talks:
+
+```c
+Thread
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Goombaria_Walk)
+    Call(NpcMoveTo, NPC_SELF, 50, 0, 30)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_Goombaria_Idle)
+EndThread
+Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001C)
+```
+
+| Command | What it does |
+| --- | --- |
+| `Exec(SCRIPT, ARGS...)` | Starts another EVT script and carries on without waiting. |
+| `ExecGetID(VAR, SCRIPT, ARGS...)` | Like `Exec`, and stores the new EVT script's ID in `VAR`. |
+| `ExecWait(SCRIPT, ARGS...)` | Starts another EVT script and waits for it to finish. |
+| `Thread` ... `EndThread` | Runs the commands in between as a separate EVT script, alongside this one. |
+| `ChildThread` ... `EndChildThread` | Like `Thread`, but the commands stop when this EVT script stops. |
+| `AwaitChildren` | Waits until this EVT script's child threads have finished. |
+| `KillScript(ID)` | Stops an EVT script. |
+| `SuspendScript(ID)` | Pauses an EVT script. |
+| `ResumeScript(ID)` | Unpauses an EVT script. |
+| `IsScriptRunning(ID, VAR)` | Sets `VAR` to whether the EVT script still exists. |
+| `AwaitScript(ID)` | Waits until an EVT script no longer exists. |
+| `ExpectArgs(COUNT)` | Stops the game with an error unless this EVT script was given exactly `COUNT` arguments. |
+| `SetPriority(PRIORITY)` | Sets the order EVT scripts run in each frame. Higher priorities run first. |
+| `SetTimescale(SCALE)` | Speeds up or slows down this EVT script's `Wait` commands. |
+| `SetGroup(GROUP)` | Puts this EVT script in a group. |
+| `SuspendGroup(GROUP)`, `ResumeGroup` | Pauses or unpauses every EVT script in a group. |
+| `SuspendOthers(GROUP)`, `ResumeOthers` | As above, except for this EVT script. |
+
+## Arguments
+
+`Exec`, `ExecGetID`, and `ExecWait` can pass arguments to the EVT script they start, which reads them as `ArgVar0`, `ArgVar1`, and so on. An EVT script can't change its arguments, and the EVT scripts it starts don't inherit them.
+
+An argument is passed exactly as written, so a variable is passed as the variable itself rather than its value. To pass a variable's value at the moment the EVT script starts, wrap it in `ARG_INT` or `ARG_FLOAT`:
+
+```c
+EvtScript EVS_Jump = {
+    ExpectArgs(2)
+    Call(SetNpcJumpscale, ArgVar0, Float(1.0))
+    Call(NpcJump0, ArgVar0, ArgVar1, 0, 0, 20)
+    Return
+    End
+};
+
+EvtScript EVS_Example = {
+    Set(LVar0, 100)
+    ExecWait(EVS_Jump, NPC_PARTNER, ARG_INT(LVar0))
+    Return
+    End
+};
+```

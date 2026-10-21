@@ -9,7 +9,7 @@ LetterDelivery LetterDelivery_Igor = {
     .msgGreeting = MSG_CH3_005D,
     .msgCancelled = MSG_CH3_005E,
     .msgDelivered = MSG_CH3_005F,
-    .msgRecieved = MSG_CH3_0060,
+    .msgReceived = MSG_CH3_0060,
     .letters = { ITEM_LETTER_TO_IGOR },
     .reward = ITEM_STAR_PIECE,
 };

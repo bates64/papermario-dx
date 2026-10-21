@@ -1,0 +1,90 @@
+---
+title: Partners
+sidebar:
+  order: 12
+---
+
+Each partner has a world file in `world/partner/`, such as `world/partner/kooper.c`, and a battle file in `battle/partner/`, such as `battle/partner/kooper.c`.
+
+## How a partner's field ability works
+
+A world file ends with `OVL_DEF_PARTNER()`, which lists what the partner does in the world:
+
+| Field | What it is |
+| --- | --- |
+| `init` | A C function that runs when the partner appears, and sets it up, such as its collision size. |
+| `takeOut` | The EVT script that runs while the partner comes out. |
+| `update` | The EVT script that runs while the partner follows the player. |
+| `useAbility` | The EVT script that runs when the player presses **C-Down**. When it ends, `update` starts again. |
+| `putAway` | The EVT script that runs while the partner goes away, such as when the player switches partners. |
+| `canUseAbility` | A C function that returns whether the player can use the ability. Without one, the player always can. |
+| `canPlayerOpenMenus` | A C function that returns whether the player can open menus, such as while the ability is in use. |
+| `isFlying` | Whether the partner flies. |
+| `idle` | The partner's idle animation. |
+
+Some partners also set `testFirstStrike`, `preBattle`, `postBattle`, `onEnterMap`, or `syncPlayerPosition` for what they do around battles and map changes.
+
+Each of these EVT scripts calls [API functions](/papermario-dx/evt-scripts/call-c/) that do the work in C over several frames. For most partners, the field ability is in an API function called `UseAbility`, such as in `world/partner/kooper.c`.
+
+## How a partner's battle moves work
+
+A battle file defines the partner like an [actor](/papermario-dx/battles/actors/), with a blueprint, parts, and tables. On the partner's turn, its `EVS_ExecuteAction` gets the move the player chose with `GetMenuSelection`, and runs that move's EVT script:
+
+```c
+Switch(LVar2)
+    CaseEq(MOVE_HEADBONK1)
+        ExecWait(EVS_Attack_Headbonk1)
+    CaseEq(MOVE_TATTLE)
+        ExecWait(EVS_Move_Tattle)
+    // ...
+EndSwitch
+```
+
+Each partner has six moves in `registry/moves.yaml`, in this order:
+
+| Position | Offered | Goombario's |
+| --- | --- | --- |
+| 1 | At normal rank | Headbonk (`Headbonk1`) |
+| 2 | At Super rank | Headbonk (`Headbonk2`) |
+| 3 | At Ultra rank | Headbonk (`Headbonk3`) |
+| 4 | Always | Tattle |
+| 5 | From Super rank | Charge |
+| 6 | From Ultra rank | Multibonk |
+
+The battle menu finds a partner's moves by their position, so you can change a partner's moves but not add more. A move's entry sets its name, FP cost, and targets, and its EVT script deals damage with `PartnerDamageEnemy`. See [Moves](/papermario-dx/battles/moves/) for what the fields and arguments mean.
+
+## Changing a partner's move
+
+This example makes Goombario's normal-rank Headbonk deal 2 damage per hit instead of 1.
+
+{% steps %}
+1. Open `battle/partner/goombario.c`, and find `EVS_Attack_Headbonk1`.
+2. Before each `PartnerDamageEnemy` in it, change `Add(LVar0, 1)` to `Add(LVar0, 2)`. There are three: two for the first hit, and one for the second.
+
+   ```c
+   Call(GetChargeAmount)
+   Add(LVar0, 2)
+   Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, LVar0, BS_FLAGS1_NICE_HIT | BS_FLAGS1_INCLUDE_POWER_UPS)
+   ```
+
+   `LVar0` starts as the damage that Charge added, and `Add` puts the base damage on top.
+{% /steps %}
+
+To change a move's FP cost, change its `costFP` in `registry/moves.yaml`. For example, to make Power Shell cost 2 FP, set `costFP: 2` in the `PowerShell` entry.
+
+To test a change, open the [debug menu](/papermario-dx/debug/debug-menu/), use **Edit Partners** to add the partner at the rank you changed, then start a battle with **Battle Select**.
+
+## Giving the player a partner
+
+In a map, `ChangeNpcToPartner` turns one of the map's NPCs into a partner, adds the partner to the party, and makes it the active partner. Include it in the map's file, then call it with the NPC and the partner:
+
+```c
+#include "world/common/util/ChangeNpcToPartner.inc.c"
+
+EvtScript EVS_KooperJoins = {
+    // ...
+    Call(ChangeNpcToPartner, NPC_Kooper, PARTNER_KOOPER)
+    Return
+    End
+};
+```

@@ -418,7 +418,7 @@ API_CALLABLE(GetDoorPtr) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_RoomContentVisiblityToggle = {
+EvtScript EVS_RoomContentVisibilityToggle = {
     Call(RoomVisibilityToggleImpl)
     Return
     End
@@ -641,7 +641,7 @@ EvtScript EVS_EnterRoomDoor = {
     Set(LVar0, ROOM_VISIBILITY_SHOW)
     Call(GetDoorPtr)
     IfNe(ROOM_DATA_MODEL_ID, 0)
-        ExecGetTID(EVS_RoomContentVisiblityToggle, LVar5)
+        ExecGetTID(EVS_RoomContentVisibilityToggle, LVar5)
         Call(SaveUseDoorScript, ROOM_SCRIPT_IDX_0, LVar5)
     EndIf
     Call(SetEntityHideMode1)
@@ -863,7 +863,7 @@ EvtScript EVS_ExitRoomDoor = {
     // hide room interior and reveal world
     Set(LVar0, ROOM_VISIBILITY_HIDE)
     IfNe(ROOM_DATA_MODEL_ID, 0)
-        ExecGetTID(EVS_RoomContentVisiblityToggle, LVar5)
+        ExecGetTID(EVS_RoomContentVisibilityToggle, LVar5)
     EndIf
     IfNe(ROOM_DATA_MODEL_ID, 0)
         Call(SaveUseDoorScript, ROOM_SCRIPT_IDX_2, LVar5)

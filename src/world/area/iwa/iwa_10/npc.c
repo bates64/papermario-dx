@@ -71,7 +71,7 @@ EvtScript EVS_NpcInit_Toadette_02 = {
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
-    IfGe(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Call(RemoveNpc, NPC_SELF)
     EndIf
     Return
@@ -80,7 +80,7 @@ EvtScript EVS_NpcInit_Toadette_02 = {
 
 EvtScript EVS_NpcInteract_Dryite = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(AF_IWA_SpokeWIthDryite, false)
                 Set(LVar0, MSG_CH2_0005)
                 Set(AF_IWA_SpokeWIthDryite, true)
@@ -88,7 +88,7 @@ EvtScript EVS_NpcInteract_Dryite = {
                 Set(LVar0, MSG_CH2_0006)
                 Set(AF_IWA_SpokeWIthDryite, true)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_CH2_0007)
         CaseDefault
             Set(LVar0, MSG_CH2_0008)

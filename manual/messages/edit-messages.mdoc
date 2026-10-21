@@ -1,0 +1,38 @@
+---
+title: Messages
+sidebar:
+  order: 1
+---
+
+Messages are the game's text, such as dialogue, signs, and item descriptions. They're in `.msg` files in `msg/`, such as `msg/0C_Chapter1.msg`:
+
+```
+#message:0C:(CH1_0001) {
+	[Style right]
+	[Wave]Oh, no! Stupid Fuzzy![BR]
+	Get back here with my shell![Wait][End]
+}
+```
+
+Each message starts with `#message:`, its section, and its name in parentheses. Its constant is `MSG_` and its name, such as `MSG_CH1_0001`, which your code shows it with. No two messages can share a name.
+
+To find the code that shows a message, Ctrl+click its name (Cmd+click on macOS).
+
+## Adding a message
+
+Add a new message to a `.msg` file, with a name no other message uses. To start a new file, right-click `msg` in the Filesystem and select **New > Message Section**. Diorama64 gives the new file a section number one higher than the highest section any message uses.
+
+## Tags
+
+The text in square brackets is tags, which control how the message prints:
+
+| Tag | What it does |
+| --- | --- |
+| `[BR]` | Ends the line. The game doesn't wrap lines, so end each one with `[BR]`. |
+| `[Wait]` | Waits for the player to press A. |
+| `[Next]` | Moves on to a new page of the box. |
+| `[Pause 10]` | Pauses for 10 frames. |
+| `[End]` | Ends the message, and closes the box. |
+| `[Style right]` | Sets the box's style, such as a speech bubble. |
+
+For every tag, see [Message markup](/papermario-dx/messages/markup).

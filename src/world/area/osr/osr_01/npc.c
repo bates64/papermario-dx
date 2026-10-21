@@ -31,7 +31,7 @@ LetterDelivery LetterDelivery_MussT = {
     .msgGreeting = MSG_OSR_0010,
     .msgCancelled = MSG_OSR_0011,
     .msgDelivered = MSG_OSR_0012,
-    .msgRecieved = MSG_OSR_0013,
+    .msgReceived = MSG_OSR_0013,
     .letters = { ITEM_LETTER_CHAIN_MUSS_T },
     .reward = ITEM_LETTER_CHAIN_KOOVER_1,
 };
@@ -40,11 +40,11 @@ EvtScript EVS_NpcInteract_Toad = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_OSR_0000)
-        CaseLt(STORY_CH1_SPOKE_WITH_MERLIN)
+        CaseLt(STORY_CH1_SPOKE_WITH_MERLON)
             Set(LVar0, MSG_OSR_0001)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_OSR_0002)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_OSR_0003)
             Else
@@ -52,7 +52,7 @@ EvtScript EVS_NpcInteract_Toad = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_OSR_0005)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC01_MailbagStolen, false)
                 Set(LVar0, MSG_OSR_0006)
             Else
@@ -64,7 +64,7 @@ EvtScript EVS_NpcInteract_Toad = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_OSR_0009)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_OSR_000A)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_OSR_000B)
@@ -72,7 +72,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Set(LVar0, MSG_OSR_000C)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_OSR_000D)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_OSR_000E)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_OSR_000F)

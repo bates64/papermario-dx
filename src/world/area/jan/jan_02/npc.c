@@ -128,7 +128,7 @@ EvtScript EVS_NpcInteract_VillageLeader = {
             EndIf
         CaseLt(STORY_CH5_ENTERED_MT_LAVA_LAVA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_0030)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_0031)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_0032)
@@ -184,7 +184,7 @@ EvtScript EVS_NpcInteract_Councillor = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0, MSG_CH5_0038)
         CaseLt(STORY_CH5_ENTERED_MT_LAVA_LAVA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0, MSG_CH5_0039)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0, MSG_CH5_003A)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0, MSG_CH5_003B)
@@ -230,7 +230,7 @@ EvtScript EVS_NpcInteract_Yoshi_01 = {
             EndIf
         CaseLe(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_Talk, ANIM_Yoshi_Red_Idle, 0, MSG_CH5_0042)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_Talk, ANIM_Yoshi_Red_Idle, 0, MSG_CH5_0043)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_Talk, ANIM_Yoshi_Red_Idle, 0, MSG_CH5_0044)
@@ -285,7 +285,7 @@ EvtScript EVS_NpcInteract_Yoshi_02 = {
             EndIf
         CaseLe(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_Talk, ANIM_Yoshi_Blue_Idle, 0, MSG_CH5_004B)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_Talk, ANIM_Yoshi_Blue_Idle, 0, MSG_CH5_004C)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_Talk, ANIM_Yoshi_Blue_Idle, 0, MSG_CH5_004D)
@@ -340,7 +340,7 @@ EvtScript EVS_NpcInteract_Yoshi_03 = {
             EndIf
         CaseLe(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_Talk, ANIM_Yoshi_Purple_Idle, 0, MSG_CH5_0054)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_Talk, ANIM_Yoshi_Purple_Idle, 0, MSG_CH5_0055)
         CaseLt(STORY_CH6_FLOWER_GATE_OPEN)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_Talk, ANIM_Yoshi_Purple_Idle, 0, MSG_CH5_0056)

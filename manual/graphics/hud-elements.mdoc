@@ -1,0 +1,68 @@
+---
+title: HUD elements
+description: Show icons and other images on screen with HUD elements and their HudScripts.
+sidebar:
+  order: 3
+---
+
+Menus and other parts of the game's interface draw images with HUD elements. Each HUD element runs a `HudScript`, which says which images to show, for how long, and at what size.
+
+## Writing a HudScript
+
+Most HudScripts show [icons](/papermario-dx/graphics/icons). `hs_SetIcon` names an icon by its path, with `/` replaced by `_`, so `icon/key/Gift.png` is `key_Gift`.
+
+This HudScript shows `icon/key/Gift.png` at 32×32:
+
+```c
+#include "hud_element.h"
+
+HudScript HES_Gift = HES_TEMPLATE_ITEM(key_Gift);
+```
+
+To animate an icon, list its frames between `hs_Loop` and `hs_Restart`. The first argument of `hs_SetIcon` is how many frames to show that icon for:
+
+```c
+HudScript HES_Pointer = {
+    hs_SetVisible
+    hs_SetTileSize(HUD_ELEMENT_SIZE_24x24)
+    hs_Loop
+        hs_SetIcon(8, anim_hand_0)
+        hs_SetIcon(8, anim_hand_1)
+    hs_Restart
+    hs_End
+};
+```
+
+## Showing a HudScript
+
+To show a HudScript, create a HUD element from it and set where it's drawn. Free the element when you no longer need it:
+
+```c
+HudElemID hid = hud_element_create(HES_Pointer);
+hud_element_set_render_pos(hid, 160, 120);
+
+// Later:
+hud_element_free(hid);
+```
+
+## HudScript commands
+
+| Command | What it does |
+| --- | --- |
+| `hs_SetVisible` | Draws the images after it as indexed images. Start every HudScript that shows icons with it. Despite its name, it doesn't make the element visible. |
+| `hs_SetTileSize(size)` | Sets the icon's size, such as `HUD_ELEMENT_SIZE_32x32`. `hud_element.h` lists the sizes. |
+| `hs_SetCustomSize(width, height)` | Sets a size that has no `HUD_ELEMENT_SIZE_` value. |
+| `hs_SetIcon(frames, icon)` | Shows `icon` for `frames` frames. |
+| `hs_Loop` | Marks where `hs_Restart` goes back to. |
+| `hs_Restart` | Goes back to `hs_Loop`. |
+| `hs_RandomRestart(max, chance)` | Goes back to `hs_Loop` with a probability of `chance` in `max + 1`, and otherwise carries on. |
+| `hs_RandomDelay(min, max)` | Waits a random number of frames, from `min` to `max`. |
+| `hs_SetTexelOffset(x, y)` | Draws the icon `x` and `y` pixels from the element's position. |
+| `hs_AddTexelOffsetX(x)`, `hs_AddTexelOffsetY(y)` | Adds to the offset. |
+| `hs_SetScale(scale)` | Scales the icon, such as `hs_SetScale(1.5)`. |
+| `hs_SetAlpha(alpha)` | Sets the opacity, from `0` (invisible) to `255` (opaque). |
+| `hs_PlaySound(sound)` | Plays a sound effect, such as `SOUND_MENU_CHANGE_SELECTION`. |
+| `hs_End` | Stops the HudScript, and keeps showing the last icon. |
+| `hs_Delete` | Stops the HudScript, and frees the element. |
+
+`hud_element.h` has more commands, for images that aren't icons and for effects that the game sets up from code.

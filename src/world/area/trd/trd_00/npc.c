@@ -275,7 +275,7 @@ EvtScript EVS_Scene_RescuedEldstar = {
     Call(ResetCam, CAM_DEFAULT, 3)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Set(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    Set(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
     Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

@@ -1,0 +1,131 @@
+---
+title: Attacks
+sidebar:
+  order: 3
+---
+
+The `EVS_TakeTurn` EVT script runs when it's the actor's turn to attack. A typical attack approaches the target, checks whether the attack hits, deals damage, and then returns home.
+
+## Testing the target
+
+Before dealing damage, use `EnemyTestTarget` to check whether the attack hits. This accounts for the player's evasion badges, such as Close Call, and for targets that can't be hit, such as a transparent one.
+
+```c
+Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
+Call(EnemyTestTarget,
+    ACTOR_SELF, LVar0, 0, 0,
+    1, BS_FLAGS1_INCLUDE_POWER_UPS)
+Switch(LVar0)
+    CaseOrEq(HIT_RESULT_MISS)
+    CaseOrEq(HIT_RESULT_LUCKY)
+        // play miss animation, then return home
+        Call(YieldTurn)
+        Return
+    EndCaseGroup
+EndSwitch
+```
+
+The third argument is the attack's [damage type flags](#damage-type-flags), and the fifth is its damage, which doesn't affect the result. The result in `LVar0` is one of these:
+
+| Result | Meaning |
+|--------|---------|
+| `HIT_RESULT_HIT` | The attack hits. |
+| `HIT_RESULT_MISS` | The attack misses, such as against a transparent target or because of Cloud Nine. |
+| `HIT_RESULT_LUCKY` | The player dodges with a badge, such as Close Call, Pretty Lucky, or Lucky Day. |
+| `HIT_RESULT_IMMUNE` | The target is stone, so the attack can't hurt it. |
+| `HIT_RESULT_HIT_STATIC` | The attack hits, but the target is electrified. A contact attack shocks the attacker. |
+
+## Dealing damage
+
+If the attack hits, use `EnemyDamageTarget` to deal its damage:
+
+```c
+Call(SetGoalToTarget, ACTOR_SELF)
+Call(EnemyDamageTarget,
+    ACTOR_SELF, LVar0, 0, 0,
+    0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+```
+
+The third argument is the [damage type flags](#damage-type-flags). Use `0` for a normal attack. The sixth argument (`2` here) is the damage the attack deals. The result in `LVar0` is one of these:
+
+| Result | Meaning |
+|--------|---------|
+| `HIT_RESULT_HIT` | The attack hits. |
+| `HIT_RESULT_NO_DAMAGE` | The attack hits but deals no damage, such as because of the target's defense or a flying target hit by an earthquake. |
+| `HIT_RESULT_MISS` | The attack misses, such as against a transparent or buried target. |
+
+If a contact attack touches an electrified target, the attacker gets shocked and `LVar0` keeps its previous value.
+
+## Melee attack example
+
+This attack runs up to the player, hits, and runs back:
+
+```c
+EvtScript EVS_TakeTurn = {
+    Call(UseIdleAnimation, ACTOR_SELF, false)
+    Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
+    Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
+    Call(BattleCamTargetActor, ACTOR_SELF)
+    // run towards the player
+    Call(SetAnimation,
+        ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
+    Call(SetGoalToTarget, ACTOR_SELF)
+    Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
+    Call(SetActorSpeed, ACTOR_SELF, Float(6.0))
+    Call(RunToGoal, ACTOR_SELF, 0, false)
+    // test if the attack hits
+    Call(EnemyTestTarget,
+        ACTOR_SELF, LVar0, 0, 0,
+        2, BS_FLAGS1_INCLUDE_POWER_UPS)
+    Switch(LVar0)
+        CaseOrEq(HIT_RESULT_MISS)
+        CaseOrEq(HIT_RESULT_LUCKY)
+            // missed, so return home
+            Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
+            Call(YieldTurn)
+            Call(SetAnimation,
+                ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
+            Call(SetGoalToHome, ACTOR_SELF)
+            Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+            Call(RunToGoal,
+                ACTOR_SELF, 0, false)
+            Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+            Call(UseIdleAnimation, ACTOR_SELF, true)
+            Return
+        EndCaseGroup
+    EndSwitch
+    // attack connects
+    Call(SetGoalToTarget, ACTOR_SELF)
+    Call(EnemyDamageTarget,
+        ACTOR_SELF, LVar0, 0, 0,
+        0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+    // return home
+    Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
+    Wait(5)
+    Call(YieldTurn)
+    Call(SetAnimation,
+        ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Run)
+    Call(SetGoalToHome, ACTOR_SELF)
+    Call(SetActorSpeed, ACTOR_SELF, Float(8.0))
+    Call(RunToGoal, ACTOR_SELF, 0, false)
+    Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    Call(UseIdleAnimation, ACTOR_SELF, true)
+    Return
+    End
+};
+```
+
+For a jump attack with arc rotation, see `battle/actor/gloomba.c`. For a dive attack, see `battle/actor/paragoomba.c`.
+
+## Damage type flags
+
+The third argument to `EnemyDamageTarget` is a bitmask of `DAMAGE_TYPE_` flags. Element flags, such as `DAMAGE_TYPE_FIRE`, set the [attack's elements](/papermario-dx/battles/actors/elemental-attacks/), and you can combine several of them. Modifier flags change how the attack works:
+
+| Flag | Effect |
+|------|--------|
+| `DAMAGE_TYPE_NO_CONTACT` | The attack doesn't touch the target, so an electrified target doesn't shock the attacker. Use it for ranged attacks, such as projectiles. |
+| `DAMAGE_TYPE_IGNORE_DEFENSE` | Ignores the target's defense, unless the target is immune to the attack. |
+| `DAMAGE_TYPE_UNBLOCKABLE` | The player can't block the attack. |
+
+Pass `0` for a normal contact attack.

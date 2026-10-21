@@ -1377,7 +1377,7 @@ EvtScript EVS_Scene_Misstar = {
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     KillThread(LVar9)
-    Set(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
+    Set(GB_StoryProgress, STORY_CH5_STAR_SPIRIT_DEPARTED)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Kolorado_02, ANIM_Kolorado_TalkSad, ANIM_Kolorado_IdleSad, 0, MSG_CH5_00D9)
     Wait(5 * DT)

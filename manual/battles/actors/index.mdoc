@@ -1,0 +1,194 @@
+---
+title: Actors
+sidebar:
+  order: 1
+---
+
+In the battle system, the characters on screen are called **actors**. This includes enemies, bosses, and even objects like Gulpit Rocks.
+
+Each actor is a C file in `battle/actor/`, and the file's name is the actor's name. The examples on this page make a Frost Goomba; use your own actor's name and values in their place.
+
+## Creating the actor
+
+{% steps %}
+1. In the Filesystem, right-click `battle/actor` and select **New > Actor**.
+2. Enter a name for the actor, such as `frost_goomba`. No two actors can share a name.
+3. Select **OK**.
+{% /steps %}
+
+Your mod now has the actor, with nothing to register. It starts as a Goomba that runs up to the player, jumps on them for 1 damage, and runs back.
+
+Each actor is built as its own [overlay](/papermario-dx/engine#overlays-and-assets), so names inside the file, such as `EVS_TakeTurn`, don't clash with other actors'.
+
+## Fight it
+
+With the actor's file open, select **Game > Play**. The game starts in a battle against the actor, which looks, fights, and is named like a Goomba until you change it.
+
+{% aside %}
+Until you [put the actor in a battle](/papermario-dx/battles/formations/), the test battle takes place in the first battle area in alphabetical order, so the background might not suit it.
+{% /aside %}
+
+## Changing the actor's stats
+
+Make these changes in the actor's file:
+
+1. In the blueprint, which starts with `OVL_DEF_ACTOR()`, set `.maxHP` to the actor's HP, such as `.maxHP = 4`.
+1. In `EVS_TakeTurn`, find `EnemyDamageTarget` and change its damage, the `1` before `BS_FLAGS1_TRIGGER_EVENTS`, to how much the attack deals, such as `2`.
+1. In the defense table, add a line for each element the actor resists or is weak to. To make a Frost Goomba weak to fire:
+
+   ```c
+   s32 DefenseTable[] = {
+       ELEMENT_NORMAL,   0,
+       ELEMENT_FIRE,    -1,
+       ELEMENT_END,
+   };
+   ```
+
+   A negative defense means the actor takes that much extra damage from the element. For the other values you can use, see [Elemental damage](/papermario-dx/battles/actors/elemental-attacks/).
+
+## Giving the actor its own name
+
+The actor's name, its tattle, and its sounds come from its **actor type**. A new actor uses the Goomba's type, `ACTOR_TYPE_GOOMBA`. To give the actor its own name, create a type for it:
+
+1. Add an entry to the end of `registry/actors.yaml`, named after your actor in PascalCase, such as `FrostGoomba`. You can copy the Goomba's entry and change its name and `nameMsg`:
+
+   ```yaml
+   - FrostGoomba:
+       level: 5
+       nameMsg: MSG_EnemyName_FrostGoomba
+       tattleMsg: MSG_EnemyTattle_Goomba
+       walkSound: [ SOUND_GOOMBA_STEP, SOUND_GOOMBA_STEP ]
+       flySound: [ SOUND_GOOMBA_STEP, SOUND_GOOMBA_STEP ]
+       jumpSound: SOUND_ACTOR_JUMP
+       hurtSound: SOUND_ACTOR_HURT
+       stepDelay: [ 30, 30 ]
+       tattleCamOffset: [ 0, 5, 0 ]
+       shadowOffset: 0
+   ```
+
+   An entry's position in the file is its ID, so always add new entries at the end. The entry's name decides its constants: `FrostGoomba` becomes `ACTOR_TYPE_FROST_GOOMBA` and `ACTOR_LEVEL_FROST_GOOMBA`.
+
+1. Add a message for the name to `msg/29_EnemyNames.msg`, named to match `nameMsg` without its `MSG_`:
+
+   ```
+   #message:29:(EnemyName_FrostGoomba) {
+   	Frost Goomba[End]
+   }
+   ```
+
+   This entry keeps the Goomba's tattle. To write one of its own, add a message to `msg/1C_EnemyTattles.msg` the same way, and set `tattleMsg` to it.
+
+1. In the blueprint, use the new type and level:
+
+   ```c
+   .type = ACTOR_TYPE_FROST_GOOMBA,
+   .level = ACTOR_LEVEL_FROST_GOOMBA,
+   ```
+
+## How an actor file fits together
+
+### Defense table
+
+The defense table lists how much damage the actor blocks from each element. Each actor part points to a defense table, so a multi-part actor can have a weak spot.
+
+```c
+s32 DefenseTable[] = {
+    ELEMENT_NORMAL,   0,
+    ELEMENT_END,
+};
+```
+
+### Status table
+
+The status table sets how likely each status effect is to work on the actor, out of 100, and how many turns to add to or remove from its usual duration. `STATUS_KEY_DEFAULT` and `STATUS_TURN_MOD_DEFAULT` apply to every status the table doesn't list, so a new actor is vulnerable to everything:
+
+```c
+s32 StatusTable[] = {
+    STATUS_KEY_NORMAL,        0,
+    STATUS_KEY_DEFAULT,     100,
+    STATUS_TURN_MOD_DEFAULT,  0,
+    STATUS_END,
+};
+```
+
+To make it resist a status, add an entry for that status, such as `STATUS_KEY_SLEEP, 50,` before `STATUS_END`.
+
+### Parts
+
+An actor is made of one or more **parts**, each with its own animations, defense table, and position. A new actor has one. The player targets the part flagged `ACTOR_PART_FLAG_PRIMARY_TARGET`.
+
+```c
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_MAIN,
+        .targetOffset = { 0, 20 },
+        .opacity = 255,
+        .idleAnimations = DefaultAnims,
+        .defenseTable = DefenseTable,
+        .projectileTargetOffset = { 0, -10 },
+    },
+};
+```
+
+To give an actor more parts, such as wings that can be knocked off, see [Parts](/papermario-dx/battles/actors/parts/).
+
+### Blueprint
+
+The blueprint holds the actor's stats: its type, HP, and parts, how likely moves like Hurricane and Air Lift are to work on it, and how many coins it drops. `OVL_DEF_ACTOR()` declares it so the battle system can find it when it loads the actor.
+
+```c
+OVL_DEF_ACTOR() = {
+    .type = ACTOR_TYPE_GOOMBA,
+    .level = ACTOR_LEVEL_GOOMBA,
+    .maxHP = 2,
+    .partCount = ARRAY_COUNT(ActorParts),
+    .partsData = ActorParts,
+    .initScript = &EVS_Init,
+    .statusTable = StatusTable,
+    .escapeChance = 90,
+    .airLiftChance = 100,
+    .hurricaneChance = 90,
+    .spookChance = 100,
+    .upAndAwayChance = 95,
+    .powerBounceChance = 100,
+    .coinReward = 1,
+    .size = { 24, 24 },
+    .statusIconOffset = { -10, 20 },
+    .statusTextOffset = { 10, 20 },
+};
+```
+
+### Animations
+
+An animation table picks the animation a part plays for each status, using the names from the sprite's header, such as `ANIM_Goomba_Idle` from `sprite/npc/Goomba.h`. To give the actor a different look, include another sprite's header and use its animations.
+
+```c
+s32 DefaultAnims[] = {
+    STATUS_KEY_NORMAL,    ANIM_Goomba_Idle,
+    STATUS_KEY_STONE,     ANIM_Goomba_Still,
+    STATUS_KEY_SLEEP,     ANIM_Goomba_Sleep,
+    // ...
+    STATUS_END,
+};
+```
+
+The EVT scripts below also name animations, such as `ANIM_Goomba_Run`, so change those too.
+
+### EVT scripts
+
+The blueprint's `initScript` runs when the actor spawns. It binds the EVT scripts that control the actor for the rest of the battle:
+
+```c
+EvtScript EVS_Init = {
+    Call(BindTakeTurn, ACTOR_SELF, Ref(EVS_TakeTurn))
+    Call(BindHandleEvent, ACTOR_SELF, Ref(EVS_HandleEvent))
+    Return
+    End
+};
+```
+
+- **`EVS_TakeTurn`** is the actor's AI, and runs on its turn. See [Attacks](/papermario-dx/battles/actors/attacks/).
+- **`EVS_HandleEvent`** responds to things that happen to the actor, such as being hit or defeated. See [Handle events](/papermario-dx/battles/actors/handling-events/).
+
+To make the actor move while it waits for its turn, such as the Goomba shuffling back and forth, write an idle EVT script and bind it with `Call(BindIdle, ACTOR_SELF, Ref(EVS_Idle))`. For an example, see `battle/actor/goomba.c`.

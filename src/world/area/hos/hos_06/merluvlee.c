@@ -22,11 +22,11 @@ typedef struct BadgeHint {
 #define BADGE_REQ_MERLOW_SHOP 10002
 
 BadgeHint BadgeHintData[] = {
-    { MSG_MerluvleeHint_JumpCharge,       ITEM_JUMP_CHARGE,   STORY_CH3_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_JumpCharge,       ITEM_JUMP_CHARGE,   STORY_CH3_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_SuperJumpCharge,  ITEM_S_JUMP_CHG,     STORY_CH6_ARRIVED_AT_FLOWER_FIELDS },
     { MSG_MerluvleeHint_ShrinkStomp,      ITEM_SHRINK_STOMP,   STORY_CH1_DEFEATED_JR_TROOPA },
     { MSG_MerluvleeHint_Multibounce,      ITEM_MULTIBOUNCE,    STORY_CH1_DEFEATED_JR_TROOPA },
-    { MSG_MerluvleeHint_SleepStomp,       ITEM_SLEEP_STOMP,    STORY_CH2_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_SleepStomp,       ITEM_SLEEP_STOMP,    STORY_CH2_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_DDownJump,        ITEM_D_DOWN_JUMP,    STORY_CH3_SAW_TUBBA_EAT_BOO },
     { MSG_MerluvleeHint_PowerBounce,      ITEM_POWER_BOUNCE,   STORY_CH1_SPOTTED_BY_KOOPA_BROS },
     { MSG_MerluvleeHint_DizzyStomp,       ITEM_DIZZY_STOMP,    STORY_CH5_ENTERED_MT_LAVA_LAVA },
@@ -34,18 +34,18 @@ BadgeHint BadgeHintData[] = {
     { MSG_MerluvleeHint_PowerSmash,       ITEM_POWER_SMASH,    STORY_CH2_GOT_SUPER_HAMMER },
     { MSG_MerluvleeHint_SmashCharge,      ITEM_SMASH_CHARGE,   STORY_CH1_SPOTTED_BY_KOOPA_BROS },
     { MSG_MerluvleeHint_SuperSmashCharge, ITEM_S_SMASH_CHG,    STORY_CH5_RETURNED_TO_TOAD_TOWN },
-    { MSG_MerluvleeHint_SpinSmash,        ITEM_SPIN_SMASH,     STORY_CH3_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_SpinSmash,        ITEM_SPIN_SMASH,     STORY_CH3_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_HammerThrow,      ITEM_HAMMER_THROW,   STORY_REQ_ANY_TIME },
     { MSG_MerluvleeHint_QuakeHammer,      ITEM_QUAKE_HAMMER,   STORY_CH2_SPOKE_WITH_PARAKARRY },
     { MSG_MerluvleeHint_PowerQuake,       ITEM_POWER_QUAKE,    STORY_CH5_REACHED_LAVA_LAVA_ISLAND },
     { MSG_MerluvleeHint_MegaQuake,        ITEM_MEGA_QUAKE,     STORY_CH5_RETURNED_TO_TOAD_TOWN },
     { MSG_MerluvleeHint_DDownPound,       ITEM_D_DOWN_POUND,   STORY_CH1_DEFEATED_JR_TROOPA },
     { MSG_MerluvleeHint_MegaSmash,        ITEM_MEGA_SMASH,     STORY_CH6_ARRIVED_AT_FLOWER_FIELDS },
-    { MSG_MerluvleeHint_DoubleDip,        ITEM_DOUBLE_DIP,     STORY_CH2_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_DoubleDip,        ITEM_DOUBLE_DIP,     STORY_CH2_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_QuickChange,      ITEM_QUICK_CHANGE,   STORY_CH3_GOT_SUPER_BOOTS },
     { MSG_MerluvleeHint_Refund,           ITEM_REFUND,         STORY_CH1_SPOTTED_BY_KOOPA_BROS },
     { MSG_MerluvleeHint_TripleDip,        ITEM_TRIPLE_DIP,     STORY_CH7_RAISED_FROZEN_STAIRS },
-    { MSG_MerluvleeHint_DeepFocus1,       ITEM_DEEP_FOCUS_A,   STORY_CH2_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_DeepFocus1,       ITEM_DEEP_FOCUS_A,   STORY_CH2_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_DeepFocus2,       ITEM_DEEP_FOCUS_B,   STORY_CH4_FOUND_HIDDEN_DOOR },
     { MSG_MerluvleeHint_DeepFocus3,       ITEM_DEEP_FOCUS_C,   STORY_CH8_REACHED_BOWSERS_CASTLE },
     { MSG_MerluvleeHint_HPPlus1,          ITEM_HP_PLUS_A,      STORY_CH3_INVITED_TO_BOOS_MANSION },
@@ -58,10 +58,10 @@ BadgeHint BadgeHintData[] = {
     { MSG_MerluvleeHint_HappyFlower2,     ITEM_HAPPY_FLOWER_B, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS },
     { MSG_MerluvleeHint_FlowerSaver1,     ITEM_FLOWER_SAVER_A, BADGE_REQ_MERLOW_SHOP },
     { MSG_MerluvleeHint_FlowerSaver2,     ITEM_FLOWER_SAVER_B, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS },
-    { MSG_MerluvleeHint_DodgeMaster,      ITEM_DODGE_MASTER,   STORY_CH2_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_DodgeMaster,      ITEM_DODGE_MASTER,   STORY_CH2_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_PdownDup,         ITEM_P_DOWN_D_UP,    STORY_CH7_RAISED_FROZEN_STAIRS },
     { MSG_MerluvleeHint_PupDdown,         ITEM_P_UP_D_DOWN,    STORY_CH7_RAISED_FROZEN_STAIRS },
-    { MSG_MerluvleeHint_AllorNothing,     ITEM_ALLOR_NOTHING,  STORY_CH4_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_AllorNothing,     ITEM_ALLOR_NOTHING,  STORY_CH4_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_PowerPlus1,       ITEM_POWER_PLUS_A,   BADGE_REQ_MERLOW_SHOP },
     { MSG_MerluvleeHint_PowerPlus2,       ITEM_POWER_PLUS_B,   STORY_CH4_FOUND_HIDDEN_DOOR },
     { MSG_MerluvleeHint_HPDrain,          ITEM_HP_DRAIN,       BADGE_REQ_MERLOW_SHOP },
@@ -70,8 +70,8 @@ BadgeHint BadgeHintData[] = {
     { MSG_MerluvleeHint_FireShield,       ITEM_FIRE_SHIELD,    STORY_CH5_ENTERED_MT_LAVA_LAVA },
     { MSG_MerluvleeHint_SpikeShield,      ITEM_SPIKE_SHIELD,   STORY_CH2_UNCOVERED_DRY_DRY_RUINS },
     { MSG_MerluvleeHint_CloseCall,        ITEM_CLOSE_CALL,     STORY_REQ_ANY_TIME },
-    { MSG_MerluvleeHint_LastStand,        ITEM_LAST_STAND,     STORY_CH3_STAR_SPRIT_DEPARTED },
-    { MSG_MerluvleeHint_PowerRush,        ITEM_POWER_RUSH,     STORY_CH2_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_LastStand,        ITEM_LAST_STAND,     STORY_CH3_STAR_SPIRIT_DEPARTED },
+    { MSG_MerluvleeHint_PowerRush,        ITEM_POWER_RUSH,     STORY_CH2_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_MegaRush,         ITEM_MEGA_RUSH,      STORY_CH3_SAW_TUBBA_EAT_BOO },
     { MSG_MerluvleeHint_FeelingFine,      ITEM_FEELING_FINE,   BADGE_REQ_MERLOW_SHOP },
     { MSG_MerluvleeHint_DamageDodge1,     ITEM_DAMAGE_DODGE_A, STORY_CH5_RETURNED_TO_TOAD_TOWN },
@@ -93,14 +93,14 @@ BadgeHint BadgeHintData[] = {
     { MSG_MerluvleeHint_FirstAttack,      ITEM_FIRST_ATTACK,   STORY_CH1_DEFEATED_JR_TROOPA },
     { MSG_MerluvleeHint_SpinAttack,       ITEM_SPIN_ATTACK,    STORY_CH2_PARAKARRY_JOINED_PARTY },
     { MSG_MerluvleeHint_BumpAttack,       ITEM_BUMP_ATTACK,    STORY_CH5_SUSHIE_JOINED_PARTY },
-    { MSG_MerluvleeHint_GroupFocus,       ITEM_GROUP_FOCUS,    STORY_CH3_STAR_SPRIT_DEPARTED },
-    { MSG_MerluvleeHint_AttackFXD,        ITEM_ATTACK_FX_D,    STORY_CH2_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_GroupFocus,       ITEM_GROUP_FOCUS,    STORY_CH3_STAR_SPIRIT_DEPARTED },
+    { MSG_MerluvleeHint_AttackFXD,        ITEM_ATTACK_FX_D,    STORY_CH2_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_AttackFXB,        ITEM_ATTACK_FX_B,    STORY_REQ_ANY_TIME },
     { MSG_MerluvleeHint_AttackFXE,        ITEM_ATTACK_FX_E,    STORY_CH7_MAYOR_MURDER_MYSTERY },
     { MSG_MerluvleeHint_AttackFXC,        ITEM_ATTACK_FX_C,    STORY_CH2_PARAKARRY_JOINED_PARTY },
     { MSG_MerluvleeHint_Peekaboo,         ITEM_PEEKABOO,       BADGE_REQ_MERLOW_SHOP },
-    { MSG_MerluvleeHint_HPPlus3,          ITEM_HP_PLUS_C,      STORY_CH4_STAR_SPRIT_DEPARTED },
-    { MSG_MerluvleeHint_FPPlus3,          ITEM_FP_PLUS_C,      STORY_CH4_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_HPPlus3,          ITEM_HP_PLUS_C,      STORY_CH4_STAR_SPIRIT_DEPARTED },
+    { MSG_MerluvleeHint_FPPlus3,          ITEM_FP_PLUS_C,      STORY_CH4_STAR_SPIRIT_DEPARTED },
 };
 
 typedef struct GameFlagHint {
@@ -116,7 +116,7 @@ GameFlagHint SuperBlockHintData[] = {
     { MSG_MerluvleeHint_SuperBlock_04, GF_TIK17_SuperBlock, STORY_CH7_INVITED_TO_STARBORN_VALLEY },
     { MSG_MerluvleeHint_SuperBlock_05, GF_TIK19_SuperBlock, STORY_CH5_SUSHIE_JOINED_PARTY },
     { MSG_MerluvleeHint_SuperBlock_06, GF_IWA10_SuperBlock, STORY_CH2_GOT_SUPER_HAMMER },
-    { MSG_MerluvleeHint_SuperBlock_07, GF_SBK56_SuperBlock, STORY_CH1_STAR_SPRIT_DEPARTED },
+    { MSG_MerluvleeHint_SuperBlock_07, GF_SBK56_SuperBlock, STORY_CH1_STAR_SPIRIT_DEPARTED },
     { MSG_MerluvleeHint_SuperBlock_08, GF_ISK10_SuperBlock, STORY_CH2_UNCOVERED_DRY_DRY_RUINS },
     { MSG_MerluvleeHint_SuperBlock_09, GF_DGB04_SuperBlock, STORY_UNUSED_FFFFFFE1 },
     { MSG_MerluvleeHint_SuperBlock_10, GF_OMO11_SuperBlock, STORY_CH4_FOUND_HIDDEN_DOOR },
@@ -611,7 +611,7 @@ EvtScript EVS_PerformHintRitual = {
     Call(SetCamPitch, CAM_DEFAULT, LVar0, LVar1)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    PlayEffect(EFFECT_MERLIN_HOUSE_STARS, 0, -298, 21, -330)
+    PlayEffect(EFFECT_MERLON_HOUSE_STARS, 0, -298, 21, -330)
     Set(ArrayVar(2), LVarF)
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)

@@ -63,10 +63,10 @@ extern "C" {
 #define FLOAT_ROUND(x) ((x) >=0 ? (f64)((x) + 0.9) : (f64)(x))
 #define Float(DOUBLE)  ((Bytecode)FLOAT_ROUND(((DOUBLE) * 1024.0f)) - EVT_FIXED_OFFSET)
 
-/// Progammatically converts Float --> f32
+/// Programmatically converts Float --> f32
 #define EVT_FIXED_TO_FLOAT(x) ({f32 var = (x) + EVT_FIXED_OFFSET; var /= 1024.0f; var;})
 
-/// Progammatically converts f32 --> Float
+/// Programmatically converts f32 --> Float
 #define FLOAT_TO_FIXED(x) ((s32)((x) * 1024.0f) - EVT_FIXED_OFFSET)
 
 /// Address/pointer constant.

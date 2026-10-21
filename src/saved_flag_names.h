@@ -1016,7 +1016,7 @@ enum GameFlags {
     GF_Unused_ARN_0B                            = GameFlag(0x3F4),
     GF_Unused_ARN_0C                            = GameFlag(0x3F5),
     GF_ARN05_GaveGiftAdvice                     = GameFlag(0x3F6),
-    GF_ARN03_RecievedPackage                    = GameFlag(0x3F7),
+    GF_ARN03_ReceivedPackage                    = GameFlag(0x3F7),
     GF_ARN10_Defeated_Goomba                    = GameFlag(0x3F8),
     GF_ARN12_Defeated_Goomba                    = GameFlag(0x3F9),
     GF_ARN13_Defeated_Goomba                    = GameFlag(0x3FA),

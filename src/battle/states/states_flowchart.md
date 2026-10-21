@@ -37,7 +37,7 @@ A battle ends when one of the following conditions is met:
 3. Run Away is successful (Flee)
 
 The first two conditions are checked at certain points during multiple battle states; typically when an actor begins or
-their turn, finishes using a move, or when control is being transfered to another actor. A full table of which states
+their turn, finishes using a move, or when control is being transferred to another actor. A full table of which states
 may trigger which ending is presented here:
 
 | State | Checks Victory | Checks Defeat |

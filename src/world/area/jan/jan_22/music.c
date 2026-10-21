@@ -7,7 +7,7 @@ EvtScript EVS_SetupMusic = {
         Thread
             Loop(0)
                 Wait(1)
-                IfGe(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
+                IfGe(GB_StoryProgress, STORY_CH5_STAR_SPIRIT_DEPARTED)
                     BreakLoop
                 EndIf
             EndLoop

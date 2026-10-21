@@ -573,8 +573,8 @@ API_CALLABLE(PlayEffect_impl) {
         case EFFECT_ENERGY_ORB_WAVE:
             effectRet = fx_energy_orb_wave(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);
             break;
-        case EFFECT_MERLIN_HOUSE_STARS:
-            effectRet = fx_merlin_house_stars(iVars[1], fVars[2], fVars[3], fVars[4]);
+        case EFFECT_MERLON_HOUSE_STARS:
+            effectRet = fx_merlon_house_stars(iVars[1], fVars[2], fVars[3], fVars[4]);
             break;
         case EFFECT_MOTION_BLUR_FLAME:
             effectRet = fx_motion_blur_flame(iVars[1], fVars[2], fVars[3], fVars[4], fVars[5], iVars[6]);

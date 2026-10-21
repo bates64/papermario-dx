@@ -1,0 +1,19 @@
+---
+title: New game
+sidebar:
+  order: 3
+---
+
+These settings in `dx/config.h` decide where a new game starts:
+
+```c
+#define NEW_GAME_MAP_ID "kmr_20"
+#define NEW_GAME_ENTRY_ID kmr_20_ENTRY_0
+#define NEW_GAME_STORY_PROGRESS STORY_INTRO
+```
+
+| Setting | What it sets |
+| --- | --- |
+| `NEW_GAME_MAP_ID` | The map the player starts in |
+| `NEW_GAME_ENTRY_ID` | The entry in that map where the player appears |
+| `NEW_GAME_STORY_PROGRESS` | How far through the story the new game starts |

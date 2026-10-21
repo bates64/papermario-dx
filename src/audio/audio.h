@@ -387,7 +387,7 @@ typedef enum BankSet {
     BANK_SET_6          = 6, // loaded during INIT
 } BankSet;
 
-/// The bank indices used by audio assets when choosing an intrument. These are similar to values in BankSet,
+/// The bank indices used by audio assets when choosing an instrument. These are similar to values in BankSet,
 /// but not identical
 typedef enum BankSetIndex {
     BANK_SET_IDX_0      = 0, // BANK_SET_AUX
@@ -802,7 +802,7 @@ typedef struct SoundManager {
     /* 0x008 */ u8* sefData;
     /* 0x00C */ s32* normalSounds[16]; ///< Sections 0-7, then extended sections 8-15 (null when absent)
     /* 0x04C */ s32* extraSounds;
-    /* 0x050 */ s32 frameCounter; ///< Number of video frame updates, used to update random numnber
+    /* 0x050 */ s32 frameCounter; ///< Number of video frame updates, used to update random number
     /* 0x054 */ s32 nextUpdateStep;
     /* 0x058 */ s32 nextUpdateInterval;
     /* 0x05C */ s32 nextUpdateCounter;
@@ -926,7 +926,7 @@ typedef struct BGMInstrumentInfo {
 } BGMInstrumentInfo; // size = 0x8
 
 typedef struct AUFileMetadata {
-    /* 0x00 */ s32 signature; // file type identifer: 'SBN ', 'SEF ', etc
+    /* 0x00 */ s32 signature; // file type identifier: 'SBN ', 'SEF ', etc
     /* 0x04 */ s32 size; // full file size, including header and data
 } AUFileMetadata;
 
@@ -944,7 +944,7 @@ typedef struct SBNFileEntry {
 } SBNFileEntry; // size = 0x8
 
 typedef struct SBNHeader {
-    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SBN '
+    /* 0x00 */ AUFileMetadata mdata; // uses identifier 'SBN '
     /* 0x08 */ PAD(8);
     /* 0x10 */ s32 fileListOffset; // offset in the SBN file of the file table (== sizeof(SBNHeader))
     /* 0x14 */ s32 numEntries; // number of entries in the SBN file table
@@ -957,7 +957,7 @@ typedef struct SBNHeader {
 } SBNHeader; // size = 0x40
 
 typedef struct SEFHeader {
-    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SEF '
+    /* 0x00 */ AUFileMetadata mdata; // uses identifier 'SEF '
     /* 0x08 */ s32 name;
     /* 0x0C */ PAD(2);
     /* 0x0E */ u8 hasExtraSection; // 1 = extra section has 0x140 entries, 2 = extra section has up to 0x200 entries
@@ -968,7 +968,7 @@ typedef struct SEFHeader {
 } SEFHeader; // size = 0x34
 
 typedef struct INITHeader {
-    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'INIT'
+    /* 0x00 */ AUFileMetadata mdata; // uses identifier 'INIT'
     /* 0x08 */ u16 bankListOffset;
     /* 0x0A */ u16 bankListSize;
     /* 0x0C */ u16 songListOffset;
@@ -992,7 +992,7 @@ typedef struct InitBankEntry {
 #define INIT_BANK_BUFFER_SIZE 80
 
 typedef struct PERHeader {
-    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'PER ' or 'PRG '
+    /* 0x00 */ AUFileMetadata mdata; // uses identifier 'PER ' or 'PRG '
     /* 0x08 */ PAD(8);
 } PERHeader; // size = 0x10
 

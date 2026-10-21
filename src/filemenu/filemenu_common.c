@@ -855,7 +855,7 @@ void filemenu_init(s32 mode) {
             menu->fpInit(menu);
         }
     }
-    update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
+    update_window_hierarchy(WIN_PAUSE_DESCRIPTION, 64);
 }
 
 void filemenu_cleanup(void) {
@@ -880,7 +880,7 @@ void filemenu_cleanup(void) {
     }
 
     set_window_update(WIN_PAUSE_TUTORIAL, WINDOW_UPDATE_HIDE);
-    set_window_update(WIN_PAUSE_DECRIPTION, WINDOW_UPDATE_HIDE);
+    set_window_update(WIN_PAUSE_DESCRIPTION, WINDOW_UPDATE_HIDE);
     filemenu_get_exit_mode(); // part of a conditional that optimized out?
 }
 

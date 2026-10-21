@@ -12,7 +12,7 @@ LetterDelivery LetterDelivery_Kolorado1 = {
     .msgGreeting = MSG_CH5_00E4,
     .msgCancelled = MSG_CH5_00E5,
     .msgDelivered = MSG_CH5_00E6,
-    .msgRecieved = MSG_CH5_00E7,
+    .msgReceived = MSG_CH5_00E7,
     .letters = { ITEM_LETTER_TO_KOLORADO },
     .reward = ITEM_STAR_PIECE,
 };
@@ -24,7 +24,7 @@ LetterDelivery LetterDelivery_Kolorado2 = {
     .msgGreeting = MSG_CH5_00E8,
     .msgCancelled = MSG_CH5_00E9,
     .msgDelivered = MSG_CH5_00EA,
-    .msgRecieved = MSG_CH5_00EB,
+    .msgReceived = MSG_CH5_00EB,
     .letters = { ITEM_LETTER_TO_KOLORADO },
     .reward = ITEM_STAR_PIECE,
 };

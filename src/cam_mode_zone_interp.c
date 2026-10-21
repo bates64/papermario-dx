@@ -127,7 +127,7 @@ void update_camera_from_controller(
                         curRig->targetPos.z = z;
                     }
                     break;
-                case CAM_CONTROL_CONSTAIN_BETWEEN_POINTS: {
+                case CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS: {
                     f32 Ax = curSettings->points.two.Ax;
                     f32 Az = curSettings->points.two.Az;
                     f32 Bx = curSettings->points.two.Bx;
@@ -191,7 +191,7 @@ void update_camera_from_controller(
                     }
                     break;
                 case CAM_CONTROL_CONSTRAIN_TO_LINE:
-                case CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE:
+                case CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE:
                     *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
                     break;
             }
@@ -280,7 +280,7 @@ void update_camera_from_controller(
                     }
                 }
                 break;
-            case CAM_CONTROL_CONSTAIN_BETWEEN_POINTS: {
+            case CAM_CONTROL_CONSTRAIN_BETWEEN_POINTS: {
                 f32 Ax = curSettings->points.two.Ax;
                 f32 Az = curSettings->points.two.Az;
                 f32 Bx = curSettings->points.two.Bx;
@@ -466,7 +466,7 @@ void update_camera_from_controller(
                 }
                 *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
             } break;
-            case CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE: {
+            case CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE: {
                 // target position is projected onto a line defined by BC, while the yaw faces point A
                 f32 Ax = curSettings->points.three.Ax;
                 f32 Az = curSettings->points.three.Az;
@@ -526,7 +526,7 @@ void update_camera_from_controller(
         }
 
         if (changingZone
-            && ((curSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE)
+            && ((curSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTRAIN_TO_LINE)
                 || (prevRig->boomYaw != newRig->boomYaw))
             && (fabsf(prevRig->boomYaw - newRig->boomYaw) < 3.0f)
             && (fabsf(prevRig->boomLength - newRig->boomLength) < 10.0f)

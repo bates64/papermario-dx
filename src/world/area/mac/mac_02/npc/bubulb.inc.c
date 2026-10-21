@@ -16,7 +16,7 @@ EvtScript EVS_NpcInteract_Bubulb = {
         Call(SetTattleMessage, NPC_Bubulb, MSG_NpcTattle_MAC_Bubulb_Revealed)
     Else
         Switch(GB_StoryProgress)
-            CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+            CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
 #if VERSION_JP
                 Set(LVar0, MSG_MAC_Bridge_00A6)
 #endif
@@ -24,13 +24,13 @@ EvtScript EVS_NpcInteract_Bubulb = {
                 Set(LVar0, MSG_MAC_Bridge_0088)
             CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
                 Set(LVar0, MSG_MAC_Bridge_0089)
-            CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+            CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
                 Set(LVar0, MSG_MAC_Bridge_008A)
-            CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+            CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
                 Set(LVar0, MSG_MAC_Bridge_008B)
             CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
                 Set(LVar0, MSG_MAC_Bridge_008C)
-            CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+            CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
                 Set(LVar0, MSG_MAC_Bridge_008D)
             CaseLt(STORY_EPILOGUE)
                 Set(LVar0, MSG_MAC_Bridge_008E)

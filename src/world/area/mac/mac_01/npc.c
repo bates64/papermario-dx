@@ -51,7 +51,7 @@ LetterDelivery LetterDelivery_Merlon = {
     .msgGreeting = MSG_MAC_Plaza_0043,
     .msgCancelled = MSG_MAC_Plaza_0044,
     .msgDelivered = MSG_MAC_Plaza_0045,
-    .msgRecieved = MSG_MAC_Plaza_0046,
+    .msgReceived = MSG_MAC_Plaza_0046,
     .letters = { ITEM_LETTER_TO_MERLON },
     .reward = ITEM_STAR_PIECE,
     .deferReward = true,
@@ -64,7 +64,7 @@ LetterDelivery LetterDelivery_MinhT = {
     .msgGreeting = MSG_MAC_Plaza_0078,
     .msgCancelled = MSG_MAC_Plaza_0079,
     .msgDelivered = MSG_MAC_Plaza_007A,
-    .msgRecieved = MSG_MAC_Plaza_007B,
+    .msgReceived = MSG_MAC_Plaza_007B,
     .letters = { ITEM_LETTER_TO_MINH_T },
     .reward = ITEM_STAR_PIECE,
 };
@@ -76,7 +76,7 @@ LetterDelivery LetterDelivery_Kolorado = {
     .msgGreeting = MSG_MAC_Plaza_00E0,
     .msgCancelled = MSG_MAC_Plaza_00E1,
     .msgDelivered = MSG_MAC_Plaza_00E2,
-    .msgRecieved = MSG_MAC_Plaza_00E3,
+    .msgReceived = MSG_MAC_Plaza_00E3,
     .letters = { ITEM_LETTER_TO_KOLORADO },
     .reward = ITEM_STAR_PIECE,
 };
@@ -463,7 +463,7 @@ EvtScript EVS_MerlonBargeOut = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0025)
-    Set(GB_StoryProgress, STORY_CH1_SPOKE_WITH_MERLIN)
+    Set(GB_StoryProgress, STORY_CH1_SPOKE_WITH_MERLON)
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o336, COLLIDER_FLAGS_UPPER_MASK)
@@ -707,7 +707,7 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o335, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o336, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt, COLLIDER_FLAGS_UPPER_MASK)
-    Set(GB_StoryProgress, STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+    Set(GB_StoryProgress, STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
     Set(AF_MAC01_Unread_0E, false)
     Set(AF_MAC01_Unread_0F, false)
     Set(AF_MAC01_Unread_10, false)
@@ -722,12 +722,12 @@ EvtScript EVS_Scene_KoopaBrosUnmasked = {
 
 EvtScript EVS_NpcInteract_Merlon = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
+        CaseLt(STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS)
             IfEq(GF_MAC01_Merlon_HintFromDarkToads, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_0026)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0027)
-                Set(GB_StoryProgress, STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
+                Set(GB_StoryProgress, STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS)
                 ChildThread
                     Loop(0)
                         Call(PlayerFaceNpc, NPC_Merlon, false)
@@ -769,7 +769,7 @@ EvtScript EVS_NpcInteract_Merlon = {
                 Call(SetNpcYaw, NPC_Merlon, 90)
                 Exec(EVS_Merlon_WalkToDarkToads)
             EndIf
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_0028)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 16, MSG_MAC_Plaza_0035)
@@ -779,7 +779,7 @@ EvtScript EVS_NpcInteract_Merlon = {
             IfEq(GF_MAC01_Merlon_HeardAboutDream, false)
                 Set(LVar0, MSG_MAC_Plaza_003E)
                 IfGe(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
-                    IfLt(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
+                    IfLt(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_DEPARTED)
                         Set(LVar0, MSG_MAC_Plaza_003D)
                     EndIf
                 EndIf
@@ -858,7 +858,7 @@ EvtScript EVS_NpcInteract_Merlon = {
 EvtScript EVS_NpcInit_Merlon = {
     Call(InterpNpcYaw, NPC_SELF, 133, 1)
     Switch(GB_StoryProgress)
-        CaseEq(STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
+        CaseEq(STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS)
             Call(SetNpcPos, NPC_SELF, 410, 0, 0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o335, COLLIDER_FLAGS_UPPER_MASK)
         CaseRange(STORY_CH6_RETURNED_TO_TOAD_TOWN, STORY_CH7_INVITED_TO_STARBORN_VALLEY)
@@ -886,7 +886,7 @@ EvtScript EVS_NpcInteract_DarkToad_01 = {
             Call(SpeakToPlayer, NPC_DarkToad_02, ANIM_DarkToad_Black_Talk, ANIM_DarkToad_Black_Idle, 0, MSG_MAC_Plaza_004E)
             Call(SpeakToPlayer, NPC_DarkToad_03, ANIM_DarkToad_Yellow_Talk, ANIM_DarkToad_Yellow_Idle, 0, MSG_MAC_Plaza_004F)
             Call(SpeakToPlayer, NPC_DarkToad_04, ANIM_DarkToad_Green_Talk, ANIM_DarkToad_Green_Idle, 0, MSG_MAC_Plaza_0050)
-        CaseLt(STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
+        CaseLt(STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS)
             Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), 0, 300, Float(15.0), Float(-7.5))
             Call(SpeakToPlayer, NPC_DarkToad_01, ANIM_DarkToad_Red_Talk, ANIM_DarkToad_Red_Idle, 0, MSG_MAC_Plaza_0051)
             Call(SpeakToPlayer, NPC_DarkToad_02, ANIM_DarkToad_Black_Talk, ANIM_DarkToad_Black_Idle, 0, MSG_MAC_Plaza_0052)
@@ -905,7 +905,7 @@ EvtScript EVS_NpcInteract_DarkToad_01 = {
 
 EvtScript EVS_NpcIdle_DarkToad_01 = {
     Loop(0)
-        IfGe(GB_StoryProgress, STORY_CH1_TOLD_MERLIN_ABOUT_DARK_TOADS)
+        IfGe(GB_StoryProgress, STORY_CH1_TOLD_MERLON_ABOUT_DARK_TOADS)
             Set(LVar0, 0)
             Call(GetPlayerPos, LVar1, LVar2, LVar3)
             Switch(LVar1)
@@ -1152,11 +1152,11 @@ EvtScript EVS_NpcInteract_Toad_04 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_007C)
-        CaseLt(STORY_CH1_SPOKE_WITH_MERLIN)
+        CaseLt(STORY_CH1_SPOKE_WITH_MERLON)
             Set(LVar0, MSG_MAC_Plaza_007D)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_007E)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Plaza_007F)
             Else
@@ -1164,7 +1164,7 @@ EvtScript EVS_NpcInteract_Toad_04 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Plaza_0081)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC01_MailbagStolen, false)
                 Set(LVar0, MSG_MAC_Plaza_0082)
             Else
@@ -1176,7 +1176,7 @@ EvtScript EVS_NpcInteract_Toad_04 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Plaza_0085)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_0086)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Plaza_0087)
@@ -1184,7 +1184,7 @@ EvtScript EVS_NpcInteract_Toad_04 = {
             Set(LVar0, MSG_MAC_Plaza_0088)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Plaza_0089)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_008A)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Plaza_008B)
@@ -1210,11 +1210,11 @@ EvtScript EVS_NpcInteract_Toad_05 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_008C)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Plaza_008D)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_008E)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Plaza_008F)
             Else
@@ -1222,7 +1222,7 @@ EvtScript EVS_NpcInteract_Toad_05 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Plaza_0091)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC01_MailbagStolen, false)
                 Set(LVar0, MSG_MAC_Plaza_0092)
             Else
@@ -1234,7 +1234,7 @@ EvtScript EVS_NpcInteract_Toad_05 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Plaza_0095)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_0096)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Plaza_0097)
@@ -1242,7 +1242,7 @@ EvtScript EVS_NpcInteract_Toad_05 = {
             Set(LVar0, MSG_MAC_Plaza_0098)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Plaza_0099)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_009A)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Plaza_009B)
@@ -1288,11 +1288,11 @@ EvtScript EVS_NpcInteract_Toad_06 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_009C)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Plaza_009D)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_009E)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Plaza_009F)
             Else
@@ -1300,7 +1300,7 @@ EvtScript EVS_NpcInteract_Toad_06 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Plaza_00A1)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC01_MailbagStolen, false)
                 Set(LVar0, MSG_MAC_Plaza_00A2)
             Else
@@ -1312,7 +1312,7 @@ EvtScript EVS_NpcInteract_Toad_06 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Plaza_00A5)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00A6)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Plaza_00A7)
@@ -1320,7 +1320,7 @@ EvtScript EVS_NpcInteract_Toad_06 = {
             Set(LVar0, MSG_MAC_Plaza_00A8)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Plaza_00A9)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00AA)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Plaza_00AB)
@@ -1352,11 +1352,11 @@ EvtScript EVS_NpcInteract_Toad_07 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_00AC)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Plaza_00AD)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00AE)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Plaza_00AF)
             Else
@@ -1364,7 +1364,7 @@ EvtScript EVS_NpcInteract_Toad_07 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Plaza_00B1)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC01_MailbagStolen, false)
                 Set(LVar0, MSG_MAC_Plaza_00B2)
             Else
@@ -1376,7 +1376,7 @@ EvtScript EVS_NpcInteract_Toad_07 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Plaza_00B5)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00B6)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Plaza_00B7)
@@ -1384,7 +1384,7 @@ EvtScript EVS_NpcInteract_Toad_07 = {
             Set(LVar0, MSG_MAC_Plaza_00B8)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Plaza_00B9)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00BA)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Plaza_00BB)
@@ -1430,11 +1430,11 @@ EvtScript EVS_NpcInteract_Toad_08 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_00BC)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Plaza_00BD)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00BE)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Plaza_00BF)
             Else
@@ -1442,7 +1442,7 @@ EvtScript EVS_NpcInteract_Toad_08 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Plaza_00C1)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC01_ShyGuysTramplingGarden, false)
 #if VERSION_JP
                 Set(LVar0, MSG_MAC_Plaza_00EE)
@@ -1458,7 +1458,7 @@ EvtScript EVS_NpcInteract_Toad_08 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Plaza_00C4)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00C5)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Plaza_00C6)
@@ -1466,7 +1466,7 @@ EvtScript EVS_NpcInteract_Toad_08 = {
             Set(LVar0, MSG_MAC_Plaza_00C7)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Plaza_00C8)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00C9)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Plaza_00CA)
@@ -1488,11 +1488,11 @@ EvtScript EVS_NpcInteract_Toad_09 = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Plaza_00CB)
-        CaseLt(STORY_CH1_MERLIN_REVEALED_KOOPA_BROS)
+        CaseLt(STORY_CH1_MERLON_REVEALED_KOOPA_BROS)
             Set(LVar0, MSG_MAC_Plaza_00CC)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00CD)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC03_BombedRock, false)
                 Set(LVar0, MSG_MAC_Plaza_00CE)
             Else
@@ -1500,7 +1500,7 @@ EvtScript EVS_NpcInteract_Toad_09 = {
             EndIf
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Plaza_00D0)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_MAC00_DictionaryStolen, false)
                 Set(LVar0, MSG_MAC_Plaza_00D1)
             Else
@@ -1512,7 +1512,7 @@ EvtScript EVS_NpcInteract_Toad_09 = {
             EndIf
         CaseLt(STORY_CH5_DEFEATED_FUZZIPEDE)
             Set(LVar0, MSG_MAC_Plaza_00D4)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00D5)
         CaseLt(STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
             Set(LVar0, MSG_MAC_Plaza_00D6)
@@ -1520,7 +1520,7 @@ EvtScript EVS_NpcInteract_Toad_09 = {
             Set(LVar0, MSG_MAC_Plaza_00D7)
         CaseLt(STORY_CH7_INVITED_TO_STARBORN_VALLEY)
             Set(LVar0, MSG_MAC_Plaza_00D8)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Plaza_00D9)
         CaseLt(STORY_EPILOGUE)
             Set(LVar0, MSG_MAC_Plaza_00DA)
@@ -1584,7 +1584,7 @@ EvtScript EVS_Scene_CalculatorStolen = {
 };
 
 EvtScript EVS_NpcInit_ShyGuy_01 = {
-    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     IfGt(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_RESCUED)
@@ -1684,7 +1684,7 @@ EvtScript EVS_NpcInit_ToadHouseKeeper = {
     EndIf
     IfEq(GF_MAC01_ChasedShyGuyFromToadHouse, false)
         Switch(GB_StoryProgress)
-            CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+            CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
                 Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper_A))
             CaseDefault
                 Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_ToadHouseKeeper))

@@ -405,7 +405,7 @@ EvtScript EVS_TayceT_Cook = {
 };
 
 EvtScript EVS_NpcInteract_TayceT = {
-    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         IfLt(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
             ExecWait(EVS_TayceT_FryingPanAndCake)
             Return
@@ -426,7 +426,7 @@ EvtScript EVS_NpcInit_TayceT = {
     Call(InterpNpcYaw, NPC_SELF, 45, 0)
     Call(SetNpcPos, NPC_SELF, -236, 20, -318)
     Call(SetNpcAnimation, NPC_SELF, ANIM_TayceT_Idle)
-    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         IfLt(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
             IfNe(GF_MAC02_TayceT_HoldingCake, true)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_TayceT_IdleSad)

@@ -25,7 +25,7 @@ LetterDelivery LetterDelivery_FrostT = {
     .msgGreeting = MSG_CH7_00FE,
     .msgCancelled = MSG_CH7_00FF,
     .msgDelivered = MSG_CH7_0100,
-    .msgRecieved = MSG_CH7_0101,
+    .msgReceived = MSG_CH7_0101,
     .letters = { ITEM_LETTER_CHAIN_FROST_T },
     .reward = ITEM_LETTER_CHAIN_GOOMPAPA_2,
 };
@@ -34,9 +34,9 @@ EvtScript EVS_NpcInteract_Merle = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
             Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F4)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F5)
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             IfEq(GF_SAM06_Merle_HeardLongerMessage, false)
                 Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F6)
                 Set(GF_SAM06_Merle_HeardLongerMessage, true)

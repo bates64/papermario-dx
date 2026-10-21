@@ -7,7 +7,7 @@ LetterDelivery LetterDelivery_FiceT = {
     .msgGreeting = MSG_MAC_Bridge_0036,
     .msgCancelled = MSG_MAC_Bridge_0037,
     .msgDelivered = MSG_MAC_Bridge_0038,
-    .msgRecieved = MSG_NONE,
+    .msgReceived = MSG_NONE,
     .letters = { ITEM_LETTER_TO_FICE_T },
     .reward = ITEM_STAR_PIECE,
     .deferReward = true,
@@ -19,25 +19,25 @@ EvtScript EVS_NpcInteract_FiceT = {
 #if VERSION_JP
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
             Set(LVar0, MSG_MAC_Bridge_0094)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Bridge_0095)
 #endif
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Bridge_0021)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
             Set(LVar3, 1)
             Set(LVar0, MSG_MAC_Bridge_002A)
             Set(LVar1, MSG_MAC_Bridge_002B)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Bridge_002C)
             Set(LVar1, MSG_MAC_Bridge_002D)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Bridge_002E)
             Set(LVar1, MSG_MAC_Bridge_002F)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MAC_Bridge_0030)
             Set(LVar1, MSG_MAC_Bridge_0031)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Set(LVar0, MSG_MAC_Bridge_0032)
             Set(LVar1, MSG_MAC_Bridge_0033)
         CaseLt(STORY_EPILOGUE)
@@ -68,7 +68,7 @@ EvtScript EVS_NpcInteract_FiceT = {
 };
 
 EvtScript EVS_NpcInit_FiceT = {
-    IfEq(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    IfEq(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Call(SetNpcAnimation, NPC_SELF, ANIM_FiceT_Afraid)
     Else
         Call(SetNpcPos, NPC_SELF, 390, 0, -50)

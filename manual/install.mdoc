@@ -1,0 +1,50 @@
+---
+title: Installing Diorama64
+sidebar:
+  order: 2
+---
+
+You need a Paper Mario (US) ROM. To dump one from a cartridge, see the [dumping guide](https://dumping.guide/carts/nintendo/n64#methods). Diorama64 accepts `.z64`, `.n64`, and `.v64` files.
+
+If you'd rather use your own editor and a terminal, see [Working without Diorama64](/papermario-dx/developing/without-diorama64).
+
+## Download and install
+
+{% tabs %}
+{% tabitem label="Windows" %}
+  {% steps %}
+  1. [Download Diorama64 for Windows](https://diorama64.starhaven.dev/download/windows).
+  2. Run the installer.
+  {% /steps %}
+{% /tabitem %}
+{% tabitem label="macOS" %}
+  {% steps %}
+  1. [Download Diorama64 for macOS](https://diorama64.starhaven.dev/download/macos). It runs on both Intel and Apple silicon Macs.
+  2. Open the downloaded `.dmg` file, and drag **Diorama64** to the **Applications** folder.
+  3. Open Diorama64 from your **Applications** folder.
+  {% /steps %}
+{% /tabitem %}
+{% tabitem label="Linux" %}
+  {% steps %}
+  1. [Download Diorama64 for Linux](https://diorama64.starhaven.dev/download/linux). It's an AppImage for x86_64.
+  2. Make the file executable, such as by running `chmod +x Diorama64-*.AppImage`.
+  3. Run the AppImage.
+  {% /steps %}
+{% /tabitem %}
+{% tabitem label="Nix" %}
+  Run Diorama64 straight from its repository:
+
+  ```sh
+  nix run git+https://tangled.org/starhaven.dev/diorama64
+  ```
+{% /tabitem %}
+{% /tabs %}
+
+## Creating a mod
+
+{% steps %}
+1. Select **Mod > New Mod...**.
+2. Enter a **Mod name**. Diorama64 names the mod's folder after it. To keep the mod somewhere else, select **Browse…** and choose a folder.
+3. Select **Create**.
+4. The first time you create a mod, Diorama64 asks for your ROM. Select **Choose ROM…**, then choose your ROM and select **Use ROM**. Diorama64 keeps the ROM on your computer for every mod you make later.
+{% /steps %}

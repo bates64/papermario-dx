@@ -164,7 +164,7 @@ MenuWindowBP gPauseCommonWindowsBPs[] = {
         .style = { .customStyle = &gPauseWS_2 }
     },
     {
-        .windowID = WIN_PAUSE_DECRIPTION,
+        .windowID = WIN_PAUSE_DESCRIPTION,
         .pos = { .x = 20, .y = 164 },
         .width = 256,
         .height = 32,

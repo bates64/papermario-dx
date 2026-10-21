@@ -117,7 +117,7 @@ EvtScript EVS_NpcInteract_HintDryite = {
         EndIf
     EndIf
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO01_ToggleDialogue_HintDryite, false)
                 Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_006C)
                 Call(SpeakToPlayer, NPC_Dryite_04, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_006D)
@@ -129,7 +129,7 @@ EvtScript EVS_NpcInteract_HintDryite = {
                 Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_0071)
                 Set(AF_DRO01_ToggleDialogue_HintDryite, false)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_0072)
             Call(SpeakToPlayer, NPC_Dryite_04, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_0073)
             Call(SpeakToPlayer, NPC_Dryite_03, ANIM_Dryite_Green_Talk, ANIM_Dryite_Green_Idle, 0, MSG_CH2_0074)

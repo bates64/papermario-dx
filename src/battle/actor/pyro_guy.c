@@ -75,7 +75,7 @@ ActorPartBlueprint ActorParts[] = {
         .opacity = 255,
         .idleAnimations = DefaultAnims,
         .defenseTable = DefenseTable,
-        .eventFlags = ACTOR_EVENT_FLAG_FIREY,
+        .eventFlags = ACTOR_EVENT_FLAG_FIERY,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { -1, -10 },
     },

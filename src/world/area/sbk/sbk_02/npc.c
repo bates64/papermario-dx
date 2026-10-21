@@ -165,7 +165,7 @@ EvtScript EVS_Scene_RescuedMamar = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Set(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    Set(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
     Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

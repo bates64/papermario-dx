@@ -1,0 +1,79 @@
+---
+title: Effects
+description: Play effects such as smoke, sparkles, and snow from EVT scripts, and add new kinds of effect.
+sidebar:
+  order: 4
+---
+
+Effects are short-lived visuals such as smoke, sparkles, explosions, and snow. Each kind of effect has an `EFFECT_` ID, and EVT scripts play one with `PlayEffect`, its ID, and its arguments. This puff of smoke appears where the player stands:
+
+```c
+Call(GetPlayerPos, LVar0, LVar1, LVar2)
+PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2)
+```
+
+The `EFFECT_` IDs are in `effects.h`. Battle files that include `script_api/battle.h` already have it. In other files, such as a map's, add `#include "effects.h"`.
+
+## Finding an effect's arguments
+
+`registry/effects.yaml` lists every effect. Its `name` gives the effect's ID: `big_smoke_puff` is `EFFECT_BIG_SMOKE_PUFF`. Its `args` lists the types of the arguments, in order:
+
+```yaml
+- name: energy_orb_wave
+  args: s32, f32, f32, f32, f32, s32
+```
+
+`PlayEffect` must have exactly that many arguments after the ID. An `f32` can be a whole number, a variable, or a decimal number written with `Float`, such as `Float(0.5)`.
+
+To learn what each argument means, open the effect's file in `effects/`, such as `effects/energy_orb_wave.c`. Its function named after the effect, with `_main` on the end, names the arguments:
+
+```c
+EffectInstance* energy_orb_wave_main(s32 type, f32 x, f32 y, f32 z, f32 scale, s32 duration)
+```
+
+Many effects take a variation first, often named `type`. For some effects, `effects.h` names the variations, such as `FX_ENERGY_ORB_WAVE_PINK_ORB`. For the rest, try the numbers the game's own EVT scripts use.
+
+## Removing an effect
+
+Most effects end by themselves. Some put the effect they started in `LVarF`, so that the EVT script can change or remove it. `EFFECT_SNOWFALL` lasts until something removes it, so to stop the snow, call `RemoveEffect` with the effect:
+
+```c
+PlayEffect(EFFECT_SNOWFALL, 0, 10)
+// ...
+Call(RemoveEffect, LVarF)
+```
+
+The next `PlayEffect` that stores an effect overwrites `LVarF`, so to keep the effect, copy it to another variable. To remove it from a different EVT script, copy it to a variable that both can read, such as a `MapVar`.
+
+To check whether an effect stores itself in `LVarF`, find its `case` in `evt/fx_api.c`. It does if the case sets `effectRet`.
+
+`RemoveEffect` makes the effect disappear at once. Some effects can end more gradually, such as by fading out. To ask one to, call `DismissEffect` instead. An effect that doesn't support this ignores it.
+
+To remove an effect even if the EVT script that started it is stopped first, call `RemoveEffect` after `Finally`. See [Clean up when an EVT script stops](/papermario-dx/evt-scripts/#cleaning-up-when-an-evt-script-stops).
+
+## Adding a new kind of effect
+
+Each kind of effect is an [overlay](/papermario-dx/engine/#overlays-and-assets) in `effects/`, listed in `registry/effects.yaml`. Every effect in the list needs a file, and every file needs an entry in the list.
+
+{% steps %}
+1. Add an entry to the end of `registry/effects.yaml`. Its `name` is the effect's file name without `.c`, and `args` lists the types of its arguments:
+
+   ```yaml
+   - name: magic_glow
+     args: s32, f32, f32, f32, f32, s32
+   ```
+
+   The name decides the effect's constants: `magic_glow` becomes `EFFECT_MAGIC_GLOW`, and C code can start it with `fx_magic_glow()`. If the effect's `_main` function doesn't return its `EffectInstance*`, add `void: True`.
+
+2. Set where the effect's graphics come from with `gfx`:
+
+   - Without `gfx`, the effect loads its own graphics from `effects/gfx/` with the same name, such as `effects/gfx/magic_glow.c`. Use the game's files there as examples.
+   - To share another effect's graphics, name that effect, as `pink_sparkles` does with `gfx: sparkles`.
+   - If the effect loads no graphics, use `gfx: None`.
+
+3. In the Filesystem, right-click `effects` and select **New > C Source**. Name the file after the effect, such as `magic_glow`.
+
+4. In the file, include `effects_internal.h` and write the effect's `_main` function, such as `magic_glow_main`, with the arguments from `effects.yaml`. It creates the effect with `create_effect_instance` from an `EffectBlueprint`, whose `effectID` is the effect's ID and whose functions update and draw it. When the effect is done, its update function calls `remove_effect`. Start from a similar effect's file, such as `effects/sparkles.c`.
+
+5. To play the effect from EVT scripts, add a `case` for it to `PlayEffect_impl` in `evt/fx_api.c`, like the other effects' cases. Pass `iVars` for `s32` arguments and `fVars` for `f32` ones. To store the effect in `LVarF`, set `effectRet` to what the effect returns.
+{% /steps %}

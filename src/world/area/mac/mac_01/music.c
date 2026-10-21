@@ -6,7 +6,7 @@ EvtScript EVS_SetupMusic = {
             Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_FULL)
         CaseEq(STORY_EPILOGUE)
             Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, 0, VOL_LEVEL_FULL)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_FULL)
         CaseDefault
             Exec(EVS_SetupMusicMix)
@@ -23,7 +23,7 @@ EvtScript EVS_PlaySpellcastSong = {
 
 EvtScript EVS_ResetMusicAfterFortune = {
     Switch(GB_StoryProgress)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_FULL)
         CaseDefault
             Call(SetMusic, 0, SONG_TOAD_TOWN, 0, VOL_LEVEL_FULL)

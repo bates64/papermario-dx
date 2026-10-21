@@ -12,7 +12,7 @@ LetterDelivery LetterDelivery_Franky = {
     .msgGreeting = MSG_CH3_0067,
     .msgCancelled = MSG_CH3_0068,
     .msgDelivered = MSG_CH3_0069,
-    .msgRecieved = MSG_CH3_006A,
+    .msgReceived = MSG_CH3_006A,
     .letters = { ITEM_LETTER_CHAIN_FRANKY },
     .reward = ITEM_LETTER_CHAIN_DANE_T_1,
 };
@@ -129,9 +129,9 @@ EvtScript EVS_NpcInteract_UpstairsBoo = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0061)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0062)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0063)
     EndSwitch
     Return
@@ -142,9 +142,9 @@ EvtScript EVS_NpcInteract_Franky = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0064)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0065)
-        CaseGe(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0066)
     EndSwitch
     Set(LVar0, Ref(LetterDelivery_Franky))

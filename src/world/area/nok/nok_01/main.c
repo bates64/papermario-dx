@@ -95,7 +95,7 @@ EvtScript EVS_Main = {
     Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
     Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
     Set(AF_NOK01_ToggleDialogue_Bobomb2, false)
-    Set(AF_NOK01_RecievedBobombSalute, false)
+    Set(AF_NOK01_ReceivedBobombSalute, false)
     Set(GF_NOK01_Bush4_KoopaLeaf, false)
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Set(GF_NOK01_RecoveredShellA, true)

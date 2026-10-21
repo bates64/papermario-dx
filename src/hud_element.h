@@ -96,7 +96,7 @@ enum HudElementFlags {
     HUD_ELEMENT_FLAG_MEMOFFSET          = 0x00400000,
     HUD_ELEMENT_FLAG_ANTIALIASING       = 0x00800000,
     HUD_ELEMENT_VARIABLE_MASK           = 0x0F000000, // users and scripts can read/write a value at this nibble
-    HUD_ELEMENT_FLAG_HIDDEN             = 0x10000000, // same effect as HUD_ELEMENT_FLAG_INVISIBLE, allows two independent controls over visiblity
+    HUD_ELEMENT_FLAG_HIDDEN             = 0x10000000, // same effect as HUD_ELEMENT_FLAG_INVISIBLE, allows two independent controls over visibility
     HUD_ELEMENT_FLAG_DROP_SHADOW        = 0x20000000,
     HUD_ELEMENT_FLAG_BATTLE_CAM         = 0x40000000,
 };

@@ -69,7 +69,7 @@ API_CALLABLE(SetTradeEventStartTime) {
 EvtScript EVS_InitiateTradingEvent = {
     Switch(GB_TradingEvent_Count)
         CaseEq(0)
-            IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+            IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
                 IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
                     Call(SwitchMessage, MSG_CH1_0028)
                 Else
@@ -89,7 +89,7 @@ EvtScript EVS_InitiateTradingEvent = {
                 Call(SetTradeEventStartTime)
             EndIf
         CaseEq(2)
-            IfLt(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
+            IfLt(GB_StoryProgress, STORY_CH5_STAR_SPIRIT_DEPARTED)
                 Call(SwitchMessage, MSG_CH1_002E)
             Else
                 Call(SwitchMessage, MSG_CH1_002C)

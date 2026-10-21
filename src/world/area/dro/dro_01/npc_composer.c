@@ -23,7 +23,7 @@ EvtScript EVS_NpcInteract_Composer = {
         EndIf
     EndIf
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO01_ToggleDialogue_Composer, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007C)
                 Set(AF_DRO01_ToggleDialogue_Composer, true)
@@ -31,7 +31,7 @@ EvtScript EVS_NpcInteract_Composer = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007D)
                 Set(AF_DRO01_ToggleDialogue_Composer, false)
             EndIf
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             IfEq(AF_DRO01_ToggleDialogue_Composer, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007E)
                 Set(AF_DRO01_ToggleDialogue_Composer, true)

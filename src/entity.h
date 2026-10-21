@@ -64,7 +64,7 @@ enum {
 #define ENTITY_ANIM_ROM(name) { entity_anim_##name##_ROM_START, entity_anim_##name##_ROM_END }
 
 /// Define the runtime descriptor exported by an entity implementation overlay.
-/// The corresponding resident manifest is named Entity_<name>.
+/// The corresponding resident manifest is named `Entity_<name>`.
 #define OVL_DEF_ENTITY(name) export EntityImplementation EntityImpl_##name
 
 #define BLOCK_GRID_SIZE 25
@@ -221,7 +221,7 @@ typedef struct ChestData {
 } ChestData; // size = 0x38
 
 typedef struct BlueWarpPipeData {
-    /* 0x00 */ s32 unk_00; // proably flags
+    /* 0x00 */ s32 unk_00; // probably flags
     /* 0x04 */ s32 timer;
     /* 0x08 */ b32 isRaised;
     /* 0x0C */ s32 entryID;
@@ -278,7 +278,7 @@ typedef struct PadlockData {
 
 typedef struct BoardedFloorData {
     /* 0x000 */ Gfx** fragmentsGfx;
-    /* 0x004 */ f32 inititalY;
+    /* 0x004 */ f32 initialY;
     /* 0x008 */ s8 fragmentRebounds[FRAGMENT_BUF_SIZE];
     /* 0x015 */ u8 fragmentMoveAngle[FRAGMENT_BUF_SIZE];
     /* 0x022 */ u8 fragmentRotX[FRAGMENT_BUF_SIZE];
@@ -294,7 +294,7 @@ typedef struct BoardedFloorData {
 
 typedef struct BombableRockData {
     /* 0x00 */ Gfx** fragmentsGfx;
-    /* 0x04 */ f32 inititalY;
+    /* 0x04 */ f32 initialY;
     /* 0x08 */ s8 fragmentRebounds[6];
     /* 0x0E */ u8 fragmentMoveAngle[6];
     /* 0x14 */ u8 fragmentRotX[6];

@@ -221,7 +221,7 @@ static API_CALLABLE(UnpackLetterDelivery) {
     script->varTable[7] = delivery->msgGreeting;
     script->varTable[8] = delivery->msgCancelled;
     script->varTable[9] = delivery->msgDelivered;
-    script->varTable[10] = delivery->msgRecieved;
+    script->varTable[10] = delivery->msgReceived;
 
     script->varTablePtr[11] = letterList;
 

@@ -163,7 +163,7 @@ EvtScript EVS_Scene_RescuedKalmar = {
 #endif
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Set(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    Set(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
     Exec(EVS_SetupMusic)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

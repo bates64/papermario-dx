@@ -6,7 +6,7 @@
 /// WARNING: name must not exceed 27 characters!
 #define DX_MOD_NAME "New Mod"
 #define DX_MOD_VER_MAJOR 1 /// Increase this when you make breaking changes to the savefile format (like reordering items)
-#define DX_MOD_VER_MINOR 0 /// Increase this when adding new features or other enchancements
+#define DX_MOD_VER_MINOR 0 /// Increase this when adding new features or other enhancements
 #define DX_MOD_VER_PATCH 0 /// Increase this when fixing bugs
 
 /// Enables the debug menu.

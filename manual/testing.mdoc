@@ -1,0 +1,23 @@
+---
+title: Testing
+sidebar:
+  order: 3
+---
+
+To build your mod and run it, select **Game > Play**. Diorama64 builds the mod, then runs it in the **Game** panel. While the game runs, **Game > Restart** builds the mod again and restarts it, and **Game > Stop** stops it.
+
+## Where the game starts
+
+The file you have open decides where the game starts, so you can test a change without playing through the game to reach it:
+
+| Open file | Where the game starts |
+| --- | --- |
+| Any file in a map's folder, such as its `main.c` or `map.xml` | In that map: where you last saved, if that was in the map, or else at its first entry |
+| An actor's `.c` file in `battle/actor/`, such as `battle/actor/my_actor.c` | In a battle against that actor alone |
+| A battle area's `.c` file in `battle/area/`, such as `battle/area/my_area.c` | In the area's first battle |
+| A game mode: `state_logos.c`, `state_intro.c`, `state_demo.c`, `state_title_screen.c`, or `state_file_select.c` | At that screen |
+| Any other file | Where you last saved |
+
+A file inside a folder in `battle/actor/` or `battle/area/`, such as one in `battle/area/arn/`, counts as any other file.
+
+With no file open, the game starts as `dx/config.h` sets it, such as at the title screen.

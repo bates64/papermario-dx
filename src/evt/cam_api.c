@@ -412,14 +412,14 @@ API_CALLABLE(DisableCameraFollowPlayerY) {
 API_CALLABLE(EnableCameraLeadingPlayer) {
     Camera* camera = &gCameras[CAM_DEFAULT];
 
-    camera->flags &= ~CAMERA_FLAG_SUPRESS_LEADING;
+    camera->flags &= ~CAMERA_FLAG_SUPPRESS_LEADING;
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(DisableCameraLeadingPlayer) {
     Camera* camera = &gCameras[CAM_DEFAULT];
 
-    camera->flags |= CAMERA_FLAG_SUPRESS_LEADING;
+    camera->flags |= CAMERA_FLAG_SUPPRESS_LEADING;
     return ApiStatus_DONE2;
 }
 

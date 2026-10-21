@@ -23,7 +23,7 @@ LetterDelivery LetterDelivery_Kolorado = {
     .msgGreeting = MSG_CH1_0097,
     .msgCancelled = MSG_CH1_0098,
     .msgDelivered = MSG_CH1_0099,
-    .msgRecieved = MSG_CH1_009A,
+    .msgReceived = MSG_CH1_009A,
     .letters = { ITEM_LETTER_TO_KOLORADO },
     .reward = ITEM_STAR_PIECE,
 };
@@ -524,7 +524,7 @@ EvtScript EVS_KoloradoWife_FetchKoopaLegends = {
     Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0090)
     Call(SetNpcAnimation, NPC_KoloradoWife, ANIM_KoloradoWife_Walk)
-    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         ExecWait(EVS_KoloradoWife_FetchFromHouse)
     Else
         IfEq(GF_NOK11_Defeated_KentC, true)
@@ -550,21 +550,21 @@ EvtScript EVS_NpcInteract_KoloradoWife = {
                 Return
             EndIf
             Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0089)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008A)
-        CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008B)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008C)
-        CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008D)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             IfEq(GF_NOK11_Defeated_KentC, false)
                 Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008E)
             Else
                 Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008F)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_008F)
     EndSwitch
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH1_2)
@@ -580,7 +580,7 @@ EvtScript EVS_NpcInteract_KoloradoWife = {
 
 EvtScript EVS_NpcInit_KoloradoWife = {
     Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_KoloradoWife))
-    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, -338, 0, -85)
         Return
     EndIf

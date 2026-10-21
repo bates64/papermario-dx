@@ -1,55 +1,48 @@
 ---
-title: Add a song
-description: Add a song made in Mamar to your mod and play it with a SONG constant.
+title: Songs
+description: Make a song from a MIDI file, edit it in the Song Editor, and play it with a SONG constant.
 sidebar:
   order: 4
 ---
 
-A song is a `.bgm` file in `audio/songs/`. You compose it in [Mamar](https://mamar.bates64.com), a music editor for Paper Mario, and the build names its `SONG_` constant after the file, so `meadow_theme.bgm` becomes `SONG_MEADOW_THEME`.
+A song is a `.bgm` file in `audio/songs/`, and its `SONG_` constant is named after the file, so `meadow_theme.bgm` becomes `SONG_MEADOW_THEME`. A `.bgm` file opens in the Song Editor.
 
-Mamar lists the instruments in the ROM you give it. To use instruments from a bank that your mod adds, build your mod and give Mamar `ver/us/build/papermario.z64` instead of the game's ROM.
+## Making a song from a MIDI file
 
-## Add the song
+{% steps %}
+1. In the Filesystem, right-click `audio/songs` and select **New > Song**.
+2. Choose your MIDI file.
+3. Choose the soundfont the MIDI file was made for. Most MIDI files use **General MIDI**, and each of their instruments plays the closest of the game's samples. Choose **Paper Mario** for a file made with the Paper Mario soundfont, whose instruments are the game's own samples.
+4. Enter a name for the song. Diorama64 suggests one from the MIDI file's name.
+5. Select **OK**.
+{% /steps %}
 
-1. In Mamar, compose your song, or open one of the game's songs, such as `audio/songs/pleasant_path.bgm`, as a starting point. Save the result as a `.bgm` file, such as `meadow_theme.bgm`.
+The new song opens in the Song Editor.
 
-    The file name must start with a lowercase letter and contain only lowercase letters, digits, and underscores.
+To start from one of the game's songs instead, copy its file, such as `audio/songs/pleasant_path.bgm`, paste it into `audio/songs`, and rename the copy.
 
-2. Copy the file to `audio/songs/meadow_theme.bgm`.
+## Reimport the MIDI file
 
-3. Rebuild the ROM. The build gives the song the constant `SONG_MEADOW_THEME`.
+If you change the MIDI file that a song was made from, open the song and select **Song > Reimport MIDI**. The changes you made in the Song Editor are kept. To reimport from a different MIDI file, select **Song > Reimport MIDI From...** instead.
 
-## Play the song
+## Playing the song
 
-Use the constant in a map's music script:
+Use the constant in the EVT script that sets a map's music:
 
 ```c
 Call(SetMusic, 0, SONG_MEADOW_THEME, 0, VOL_LEVEL_FULL)
 ```
 
-Load the map in the game to hear the song.
+## Loading extra sound banks with a song
 
-## Load extra sound banks with a song
+The Song Editor lists the instruments in your mod as it was the last time you played it. If you add an instrument, select **Game > Play** before you open the song.
 
 Songs play instruments from the sound banks that are loaded when the song starts. Besides the banks that are always loaded, a song can load up to three song banks. A bank that any song loads is a song bank, and the game loads it only while such a song plays. For example, Toad Town's song loads `SPC0`.
 
-To use an instrument from a song bank, choose it in Mamar's instrument list. Mamar loads the bank with the song and saves its name in the `.bgm` file, and the game loads the bank whenever it plays the song. If you start from one of the game's songs, its file already names the banks it needs.
+To use an instrument from a song bank, choose it in the Song Editor's instrument list. The Song Editor saves the bank's name in the `.bgm` file, and the game loads the bank whenever it plays the song. If you start from one of the game's songs, its file already names the banks it needs.
 
-A bank that a song loads isn't always loaded, so sound effects and ambient sounds can't play its samples. Mamar also lists the game's sound effect banks, such as `SYS0`, but if a song loads one of them, the build stops at the first sound effect that uses its samples. Choose instruments from the game's song banks, or from a bank you add for your songs.
-
-## Replace a game song
-
-To replace a song, save your version with the same file name in your layer, such as `audio/songs/toad_town.bgm`. It keeps the song's constant, so every map that plays the song uses your version.
-
-## Remove a song
-
-To remove a song, create `audio/songs/meadow_theme.bgm.meta` containing `delete: true`. The song's constant no longer exists, so the build fails if code still uses it. See [Fix audio build errors](/papermario-dx/audio/troubleshooting#compiler-errors-after-a-deletion).
+A bank that a song loads isn't always loaded, so sound effects and ambient sounds can't play its samples. The Song Editor also lists sound effect banks, such as `SYS0` and your `SFX` banks, so don't choose instruments from those for a song. Choose instruments from the game's song banks, or from [a bank you add for your songs](/papermario-dx/audio/instruments/#adding-an-instrument-for-songs).
 
 ## Limits
 
-The game has room for 256 songs, and the build reports `there are more than 256 songs` if you add more.
-
-## Related pages
-
-- [Custom audio](/papermario-dx/audio) explains how your files replace the game's and how names become constants.
-- [Fix audio build errors](/papermario-dx/audio/troubleshooting) lists common song errors.
+The game has room for 256 songs.

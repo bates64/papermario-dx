@@ -5,7 +5,7 @@ EvtScript EVS_MakeEntities = {
     IfEq(GF_KKJ25_Defeated_Bowser, true)
         Return
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 180, 60, -15, 0, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)

@@ -4,7 +4,7 @@ EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH5_WHALE_MOUTH_OPEN, STORY_CH5_ENTERED_WHALE)
             Call(SetMusic, 0, SONG_WHALE_THEME, 0, VOL_LEVEL_FULL)
-        CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
+        CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(SetMusic, 0, SONG_SHY_GUY_INVASION, 0, VOL_LEVEL_FULL)
         CaseDefault
             Call(FadeOutMusic, 0, 3000)

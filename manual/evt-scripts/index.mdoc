@@ -1,0 +1,66 @@
+---
+title: EVT scripts
+sidebar:
+  order: 1
+---
+
+Most of what happens in Paper Mario, from scenes to enemy attacks, is written as **EVT scripts**. An EVT script runs over many frames: it can wait, run other EVT scripts alongside it, and call C functions to do the work.
+
+## Writing an EVT script
+
+You write EVT scripts in C files, as an `EvtScript` made of commands:
+
+```c
+EvtScript EVS_PartnerComments = {
+    Call(DisablePlayerInput, true)
+    Wait(10)
+    Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001C)
+    Call(DisablePlayerInput, false)
+    Return
+    End
+};
+```
+
+Each command is a macro, so there are no commas or semicolons between them. Every EVT script ends with `Return`, which stops it, and then `End`, which marks the end of its data.
+
+`Wait(10)` pauses the EVT script for 10 frames, a third of a second. While one EVT script waits, the others keep running. `Call` runs a C function, and some functions take more than one frame too: `SpeakToPlayer` keeps the EVT script at that line until the player closes the message.
+
+Unless a command says otherwise, each argument can be a number, a constant, or a variable, and a variable is read for its value. An argument named `VAR` is a variable that the command changes.
+
+| Command | What it does |
+| --- | --- |
+| `Return` | Stops the EVT script. An EVT script without one keeps existing, doing nothing, until something else stops it. |
+| `End` | Marks the end of the EVT script's data. Every EVT script needs one, after its `Return`. |
+| `Finally` | Starts commands that run when the EVT script stops for any reason. See [Clean up when an EVT script stops](#cleaning-up-when-an-evt-script-stops). |
+| `Wait(FRAMES)` | Pauses for a number of frames. There are 30 frames in a second. |
+| `WaitSecs(SECONDS)` | Pauses for a number of seconds. |
+| `Label(ID)` | Marks a place to jump to with `Goto`. |
+| `Goto(ID)` | Jumps to the matching `Label`. |
+| `Jump(SCRIPT)` | Carries on running a different EVT script's commands, in this EVT script. |
+
+## Cleaning up when an EVT script stops
+
+The commands after `Finally` run when the EVT script stops, whether it reaches `Return` or `End` or another EVT script stops it with `KillScript`. Use it to undo what the EVT script changed, so nothing is left half-done:
+
+```c
+EvtScript EVS_Scene = {
+    Call(DisablePlayerInput, true)
+    Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001C)
+    Return
+    Finally
+        Call(DisablePlayerInput, false)
+    End
+};
+```
+
+The commands after `Finally` run all at once, so they can't wait, loop, jump, or start a thread or child EVT script. They can use `Exec` and `KillScript`.
+
+## Where EVT scripts live
+
+An EVT script runs while the overlay that holds it is loaded. A map's EVT scripts run while the player is on that map, and an actor's run during its battle. A map's main EVT script, set as `.main` in its `OVL_DEF_MAP()`, starts every other EVT script on the map. For more about what's loaded when, see [How Paper Mario works](/papermario-dx/engine).
+
+## Debugging an EVT script
+
+When the [debug menu](/papermario-dx/debug/debug-menu) is on, press **D-Pad Right** in the game to open the EVT script debugger. Select **Attach** to choose a running EVT script, then **Break** to pause it, **Step Once** or **Step Over** to run it a command at a time, and **Resume** to carry on. While attached, the EVT script debugger shows the EVT script's variables.
+
+To pause an EVT script at a set place, add `BreakPoint(TEXT)`. When the debug menu is on, the EVT script pauses after that command. The game doesn't show `TEXT`, so use it as a note for whoever reads the code.

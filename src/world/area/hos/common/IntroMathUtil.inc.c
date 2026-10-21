@@ -29,35 +29,35 @@ void lerp_value_with_max_step(f32 start, f32 end, f32 current, f32 maximum, f32*
     }
 }
 
-void interp_value_with_easing(s32 easingMode, f32 start, f32 end, f32 curent, f32 max, f32* out) {
+void interp_value_with_easing(s32 easingMode, f32 start, f32 end, f32 current, f32 max, f32* out) {
     f32 alpha;
 
-    if (curent > max) {
-        curent = max;
+    if (current > max) {
+        current = max;
     }
 
     switch (easingMode) {
         case INTRO_MATH_EASING_SIN_OUT:
-            alpha = sin_deg((curent / max) * 90.0f);
+            alpha = sin_deg((current / max) * 90.0f);
             break;
         case INTRO_MATH_EASING_SIN_OUT_DELAYED:
-            if (curent < 30.0f) {
+            if (current < 30.0f) {
                 alpha = 0.0f;
             } else {
-                alpha = sin_deg((((curent - 30.0f) / (max - 30.0f)) * 90.0f) + -90.0f) + 1.0f;
+                alpha = sin_deg((((current - 30.0f) / (max - 30.0f)) * 90.0f) + -90.0f) + 1.0f;
             }
             break;
         case INTRO_MATH_EASING_COS_IN_OUT:
-            alpha = (sin_deg(((curent / max) * 180.0f) - 90.0f) + 1.0f) * 0.5;
+            alpha = (sin_deg(((current / max) * 180.0f) - 90.0f) + 1.0f) * 0.5;
             break;
         case INTRO_MATH_EASING_4:
-            alpha = sin_deg(((curent / max) * 90.0f) - 90.0f) + 1.0f;
+            alpha = sin_deg(((current / max) * 90.0f) - 90.0f) + 1.0f;
             break;
         case INTRO_MATH_EASING_5:
-            alpha = (2.0 * (sin_deg(((curent / max) * 60.0f) - 60.0f) + 0.8660254f)) / 1.7320507764816284;
+            alpha = (2.0 * (sin_deg(((current / max) * 60.0f) - 60.0f) + 0.8660254f)) / 1.7320507764816284;
             break;
         default:
-            alpha = curent / max;
+            alpha = current / max;
             break;
     }
     *out = start + ((end - start) * alpha);

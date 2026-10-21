@@ -33,7 +33,7 @@ BulletinBoardEntry BulletinBoardData[] = {
     { MSG_NewsBoard_0000, MSG_GossipBoard_0000, STORY_INTRO },
     { MSG_NewsBoard_0001, MSG_GossipBoard_0001, STORY_CH0_MET_STAR_SPIRITS },
     { MSG_NewsBoard_0002, MSG_GossipBoard_0002, STORY_CH1_ARRIVED_AT_KOOPA_VILLAGE },
-    { MSG_NewsBoard_0003, MSG_GossipBoard_0003, STORY_CH1_STAR_SPRIT_DEPARTED },
+    { MSG_NewsBoard_0003, MSG_GossipBoard_0003, STORY_CH1_STAR_SPIRIT_DEPARTED },
     { MSG_NewsBoard_0004, MSG_GossipBoard_0004, STORY_CH2_SHADY_MOUSE_LEFT_SHOP },
     { MSG_NewsBoard_0005, MSG_GossipBoard_0005, STORY_CH2_GOT_SUPER_HAMMER },
     { MSG_NewsBoard_0006, MSG_GossipBoard_0006, STORY_UNUSED_FFFFFFCC },

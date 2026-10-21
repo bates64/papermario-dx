@@ -60,9 +60,9 @@ EvtScript EVS_Main = {
             Call(MakeNpcs, false, Ref(CrisisNPCs))
         CaseLt(STORY_CH5_ZIP_LINE_READY)
             Call(MakeNpcs, false, Ref(ChapterNPCs))
-        CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseEq(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(MakeNpcs, false, Ref(ChapterNPCs))
-        CaseGt(STORY_CH5_STAR_SPRIT_DEPARTED)
+        CaseGt(STORY_CH5_STAR_SPIRIT_DEPARTED)
             Call(MakeNpcs, false, Ref(AfterNPCs))
         CaseDefault
             Call(MakeNpcs, false, Ref(DefaultNPCs))

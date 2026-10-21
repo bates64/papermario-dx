@@ -22,7 +22,7 @@ LetterDelivery LetterDelivery_Merlow = {
     .msgGreeting = MSG_HOS_0058,
     .msgCancelled = MSG_HOS_0059,
     .msgDelivered = MSG_HOS_005A,
-    .msgRecieved = MSG_HOS_005B,
+    .msgReceived = MSG_HOS_005B,
     .letters = { ITEM_LETTER_TO_MERLOW },
     .reward = ITEM_STAR_PIECE,
 };

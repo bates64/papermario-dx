@@ -85,7 +85,7 @@ EvtScript EVS_StarSpirit_HoverBobbing = {
     End
 };
 
-EvtScript EVS_Scene_RecieveStarBeam = {
+EvtScript EVS_Scene_ReceiveStarBeam = {
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar2, 85)
@@ -303,7 +303,7 @@ EvtScript EVS_NpcInit_StarSpirit = {
                     Exec(EVS_StarSpirit_HoverBobbing)
                     Call(GetSelfNpcID, LVar0)
                     IfEq(LVar0, NPC_Eldstar)
-                        Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_RecieveStarBeam))
+                        Call(BindNpcIdle, NPC_SELF, Ref(EVS_Scene_ReceiveStarBeam))
                     EndIf
                 CaseGe(STORY_CH8_STAR_SHIP_ACTIVATED)
                     Exec(EVS_StarSpirit_HoverBobbing)

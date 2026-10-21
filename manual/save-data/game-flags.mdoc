@@ -1,0 +1,70 @@
+---
+title: Saved flags and bytes
+sidebar:
+  order: 1
+---
+
+To remember something about the player's progress, such as whether they opened a door or how many times they talked to an NPC, use a saved flag or byte. A flag is `true` or `false`, and a byte holds a number from -128 to 127.
+
+| Kind | How many | Lasts |
+| --- | --- | --- |
+| Game flags, `GF_` | 2048 | For the whole save file |
+| Game bytes, `GB_` | 512 | For the whole save file |
+| Area flags, `AF_` | 256 | Until the player enters a different area |
+| Area bytes, `AB_` | 16 | Until the player enters a different area |
+
+Use an area flag or byte for something the player can redo after they leave, such as a puzzle that resets. For EVT variables that aren't saved, see [Variables](/papermario-dx/evt-scripts/variables).
+
+## Story progress
+
+`GB_StoryProgress` records how far through the story the player is, as a value from the `STORY_` list in `enums.h`, such as `STORY_CH1_SPOKE_WITH_MERLON`. The values are in story order, so an EVT script can check whether the player has reached a point:
+
+```c
+IfGe(GB_StoryProgress, STORY_CH1_SPOKE_WITH_MERLON)
+    Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001C)
+EndIf
+```
+
+To move the story on, set it with `Set(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)`. To add a point in the story, add a value to the `STORY_` list.
+
+When you test a scene, the debug menu's **Set Story Byte** option lets you jump to any point in the story.
+
+## Adding a game flag or byte
+
+Game flags are listed in `saved_flag_names.h`, and game bytes in `saved_byte_names.h`. Each unused one has a name such as `GF_Unused_7F0`. To add your own, rename an unused one:
+
+```c
+GF_KMR02_OpenedGate                         = GameFlag(0x7F0),
+```
+
+Name it after the map it belongs to and what it records, like the game's own flags. Then use the name in EVT scripts:
+
+```c
+IfEq(GF_KMR02_OpenedGate, false)
+    Set(GF_KMR02_OpenedGate, true)
+EndIf
+```
+
+Once players have saves of your mod, don't change the number in an existing flag's `GameFlag()` or byte's `GameByte()`, because their saves store each flag by its number.
+
+## Adding an area flag or byte
+
+Area flags and bytes are listed in the area's header, such as `world/area/kmr/kmr.h`. Add a name with `AreaFlag()` or `AreaByte()` and a number that no other name in that area uses:
+
+```c
+enum AreaFlagsKMR {
+    AF_KMR02_GatePuzzleSolved                = AreaFlag(0x08),
+};
+```
+
+Each area has its own 256 area flags and 16 area bytes, so two areas can use the same number for different things.
+
+## Reading and writing flags in C
+
+`evt_get_variable` and `evt_set_variable` work with saved flags and bytes when you pass `nullptr` as the EVT script:
+
+```c
+if (evt_get_variable(nullptr, GF_KMR02_OpenedGate)) {
+    evt_set_variable(nullptr, GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS);
+}
+```

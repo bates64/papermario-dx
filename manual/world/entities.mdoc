@@ -1,0 +1,158 @@
+---
+title: Entities
+sidebar:
+  order: 6
+---
+
+Entities are the objects the player hits, opens, and uses in a map, such as blocks, chests, springs, and switches. Make one with `MakeEntity` in an EVT script that the map's main EVT script runs, such as with `ExecWait(EVS_MakeEntities)`. Entity blueprints are declared in `entity.h`, so include it in the map's code:
+
+```c
+#include "entity.h"
+
+EvtScript EVS_MakeEntities = {
+    Call(MakeEntity, Ref(Entity_SavePoint), 250, 60, 75, -15, MAKE_ENTITY_END)
+    Return
+    End
+};
+```
+
+`MakeEntity` takes the entity's blueprint, its x, y, and z position, and the angle it faces in degrees. Some blueprints take more arguments after the angle, such as the item in a block. End the arguments with `MAKE_ENTITY_END`.
+
+After `MakeEntity`, `LVar0` holds the entity's index, which other calls such as `SetEntityPosition` take. To use the entity after the EVT script ends, save the index to a [map variable](/papermario-dx/evt-scripts/variables/).
+
+## Common entities
+
+| Blueprint | What it is | Arguments after the angle |
+| --- | --- | --- |
+| `Entity_SavePoint` | A save block | None |
+| `Entity_HeartBlock` | A heart block, which refills the player's HP and FP | None |
+| `Entity_BrickBlock` | A brick block, which breaks when hit | None |
+| `Entity_MulticoinBlock` | A brick block that gives coins each time it's hit, for a short time | None |
+| `Entity_YellowBlock` | A yellow item block | The item, such as `ITEM_COIN` |
+| `Entity_RedBlock` | A red item block, which the game uses for badges | The item |
+| `Entity_HiddenYellowBlock` | A yellow item block that's invisible until the player hits it | The item |
+| `Entity_HiddenRedBlock` | A red item block that's invisible until the player hits it | The item |
+| `Entity_Chest` | A chest | `0`. See [Chests](#chests). |
+| `Entity_SimpleSpring` | A spring that launches the player upward | How hard it launches them, such as `60` |
+| `Entity_ScriptSpring` | A spring whose EVT script moves the player when they land on it | None |
+| `Entity_BlueSwitch` | A switch that disappears once the player presses it | None |
+| `Entity_RedSwitch` | A switch the player can press again and again | None |
+| `Entity_Signpost` | A sign | None |
+
+The game places blocks and save blocks 60 units above the floor, so the player can jump and hit them from below:
+
+```c
+Call(MakeEntity, Ref(Entity_YellowBlock), 400, 60, -15, 0, ITEM_COIN, MAKE_ENTITY_END)
+Call(MakeEntity, Ref(Entity_BrickBlock), 450, 60, -15, 0, MAKE_ENTITY_END)
+Call(MakeEntity, Ref(Entity_SimpleSpring), 345, 75, -250, 0, 100, MAKE_ENTITY_END)
+```
+
+## Running an EVT script from an entity
+
+`AssignScript` gives the entity that `MakeEntity` last made an EVT script to run when the player uses it, such as reading a sign, pressing a switch, or breaking a brick block. Call it right after `MakeEntity`:
+
+```c
+EvtScript EVS_ReadSign = {
+    Call(IsStartingConversation, LVar0)
+    IfEq(LVar0, true)
+        Return
+    EndIf
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
+    Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
+    Call(DisablePlayerInput, true)
+    Call(ShowMessageAtScreenPos, MSG_Menus_Sign_GoombaKingsFortress, 160, 40)
+    Call(DisablePlayerInput, false)
+    Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+    Return
+    End
+};
+
+EvtScript EVS_MakeEntities = {
+    Call(MakeEntity, Ref(Entity_Signpost), 436, 0, -42, 0, MAKE_ENTITY_END)
+    Call(AssignScript, Ref(EVS_ReadSign))
+    Return
+    End
+};
+```
+
+The sign's EVT script runs when the player presses A while facing it. It does nothing if the player is starting a battle or a conversation with an NPC at the same moment.
+
+Some entities, such as padlocks, start EVT scripts through a trigger instead. See [Triggers](/papermario-dx/world/triggers/).
+
+## Saving what the player did with a game flag
+
+Without a saved flag, an entity is back the way it started each time the player enters the map. To keep a chest open or a block empty, give the entity a [game flag](/papermario-dx/save-data/game-flags/) right after `MakeEntity`:
+
+| Call | Entities | The flag is set when |
+| --- | --- | --- |
+| `AssignBlockFlag` | Item blocks, hidden item blocks, and `Entity_MulticoinBlock` | The player gets the block's item, or its first coin |
+| `AssignChestFlag` | `Entity_Chest` | The chest's EVT script sets it |
+| `AssignSwitchFlag` | Switches | The player presses the switch. It takes an area flag. |
+
+If the flag is already set when the map loads, a block appears empty, a chest appears open, and a switch doesn't appear.
+
+```c
+Call(MakeEntity, Ref(Entity_YellowBlock), -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
+Call(AssignBlockFlag, GF_KMR10_ItemBlock_SleepySheep)
+```
+
+### Chests
+
+A chest gives its item through its EVT script, so the game passes `0` as the chest's argument. `EVT_OPEN_CHEST`, from `world/common/entity/Chest.inc.c`, makes one that gives the player an item and sets the chest's flag:
+
+```c
+#include "world/common/entity/Chest.inc.c"
+
+EvtScript EVS_OpenChest_HammerThrow = EVT_OPEN_CHEST(ITEM_HAMMER_THROW, GF_KMR10_Chest_HammerThrow);
+
+EvtScript EVS_MakeEntities = {
+    Call(MakeEntity, Ref(Entity_Chest), 633, 142, 119, 0, 0, MAKE_ENTITY_END)
+    Call(AssignChestFlag, GF_KMR10_Chest_HammerThrow)
+    Call(AssignScript, Ref(EVS_OpenChest_HammerThrow))
+    Return
+    End
+};
+```
+
+### Switches
+
+`AssignSwitchFlag` takes an [area flag](/papermario-dx/save-data/game-flags/#adding-an-area-flag-or-byte), wrapped in `EVT_INDEX_OF_AREA_FLAG`. To make something happen when the player presses the switch, bind a `TRIGGER_AREA_FLAG_SET` [trigger](/papermario-dx/world/triggers/) to the same flag:
+
+```c
+Call(MakeEntity, Ref(Entity_BlueSwitch), -960, -120, -37, 0, MAKE_ENTITY_END)
+Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_SAM08_ImposterSwitchPressed))
+BindTrigger(Ref(EVS_Scene_ImposterAppears), TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, true, 0)
+```
+
+### Brick blocks
+
+A brick block has no flag of its own. To keep one broken, [add a game flag](/papermario-dx/save-data/game-flags/#adding-a-game-flag-or-byte) such as `GF_KMR02_BrokeBrick`, set it in the block's EVT script, and only make the block while the flag isn't set:
+
+```c
+EvtScript EVS_BreakBlock = {
+    Set(GF_KMR02_BrokeBrick, true)
+    Return
+    End
+};
+
+EvtScript EVS_MakeEntities = {
+    IfEq(GF_KMR02_BrokeBrick, false)
+        Call(MakeEntity, Ref(Entity_BrickBlock), 230, 50, -160, 15, MAKE_ENTITY_END)
+        Call(AssignScript, Ref(EVS_BreakBlock))
+    EndIf
+    Return
+    End
+};
+```
+
+## Making a new kind of entity
+
+{% steps %}
+1. In the Filesystem, right-click `entity` and select **New > Entity**.
+2. Enter a name for the entity, such as `Crystal`.
+3. Select **OK**.
+{% /steps %}
+
+The new file is an entity that does nothing and is drawn with the sign's model. Its notes say what to register for the game to make it: add an `ENTITY_BLUEPRINT` line for it to `entity/blueprints.inc.c`, and replace `ENTITY_TYPE_SIGNPOST` with an `ENTITY_TYPE_` value of its own, which you add to `EntityTypes` in `enums.h`.
+
+The blueprint is named `Entity_` followed by the entity's name, such as `Entity_Crystal`. To pass it to `MakeEntity` from a map, declare it there with `extern EntityBlueprint Entity_Crystal;`.

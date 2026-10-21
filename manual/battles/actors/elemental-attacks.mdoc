@@ -1,0 +1,97 @@
+---
+title: Elemental damage
+sidebar:
+  order: 6
+---
+
+An attack's **elements** decide which of the target's defenses apply to it, and some elements change how the target reacts, such as fire making it play a burn animation.
+
+Elements have two sets of names:
+
+- An attack uses `DAMAGE_TYPE_` flags, such as `DAMAGE_TYPE_FIRE`. These are bits, so one attack can have several elements.
+- A defense table uses `ELEMENT_` keys, such as `ELEMENT_FIRE`, to list a defense for each element.
+
+Each `DAMAGE_TYPE_` element flag in the table below matches the `ELEMENT_` key with the same name. An attack with no element flags is a normal attack, and uses the `ELEMENT_NORMAL` defense.
+
+## Element types
+
+| Element | Description |
+|---------|-------------|
+| `ELEMENT_NORMAL` | Attacks with no element flags. There's no `DAMAGE_TYPE_NORMAL`. |
+| `ELEMENT_FIRE` | Fire damage. Triggers `EVENT_BURN_HIT` and `EVENT_BURN_DEATH`. |
+| `ELEMENT_WATER` | Water damage, such as Sushie's attacks. |
+| `ELEMENT_ICE` | Ice damage. |
+| `ELEMENT_MAGIC` | Magic damage, such as Kammy Koopa's magic. |
+| `ELEMENT_SMASH` | Hammer damage. |
+| `ELEMENT_JUMP` | Jump damage. |
+| `ELEMENT_COSMIC` | Star damage, such as Star Storm. |
+| `ELEMENT_BLAST` | Explosion damage, such as Bombette's attacks. Triggers `EVENT_BURN_HIT` and `EVENT_BURN_DEATH`, like fire. |
+| `ELEMENT_SHOCK` | Electric damage. |
+| `ELEMENT_QUAKE` | Earthquake damage, such as Quake Hammer. Hits buried actors, which other attacks miss. |
+| `ELEMENT_THROW` | Thrown damage, such as Hammer Throw. |
+| `ELEMENT_MYSTERY` | Unused. Some defense tables list it, but no attack uses it, so its value has no effect. |
+
+`ELEMENT_END` marks the end of a [defense table](#defense-tables), and isn't an element.
+
+## Dealing elemental damage
+
+To make an attack deal elemental damage, pass the element's `DAMAGE_TYPE_` flag to `EnemyDamageTarget`. You can combine it with other element flags and with [modifier flags](/papermario-dx/battles/actors/attacks/#damage-type-flags):
+
+```c
+// fire breath, which doesn't make contact
+Call(EnemyDamageTarget, ACTOR_SELF, LVar0,
+    DAMAGE_TYPE_FIRE | DAMAGE_TYPE_NO_CONTACT,
+    0, 0, 4, BS_FLAGS1_TRIGGER_EVENTS)
+```
+
+If an attack has several element flags, the target uses whichever of its defenses against those elements is lowest.
+
+For the rest of an attack, see [Attacks](/papermario-dx/battles/actors/attacks/).
+
+## Defense tables
+
+A `DefenseTable` maps elements to defense values. A positive value reduces damage, a negative value increases it, and `99` makes the actor immune.
+
+```c
+s32 DefenseTable[] = {
+    ELEMENT_NORMAL,   1,   // 1 point of defense against normal attacks
+    ELEMENT_FIRE,    99,   // immune to fire
+    ELEMENT_WATER,   -2,   // takes 2 extra damage from water
+    ELEMENT_ICE,     -2,   // takes 2 extra damage from ice
+    ELEMENT_END,
+};
+```
+
+If an element isn't in the table, the actor uses its `ELEMENT_NORMAL` defense against it.
+
+Each part of an actor has its own defense table, set in its `ActorPartBlueprint`. For how to define parts, see [Parts](/papermario-dx/battles/actors/parts/).
+
+## Element immunity flags
+
+A part's `.elementImmunityFlags` field makes it immune to the elements it lists. It takes `DAMAGE_TYPE_` flags, combined with `|`:
+
+```c
+ActorPartBlueprint ActorParts[] = {
+    {
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_MAIN,
+        // ...
+        .elementImmunityFlags = DAMAGE_TYPE_FIRE,
+    },
+};
+```
+
+When an attack with one of those elements hits the part, the actor loses no HP and the game doesn't show a damage number. The actor still receives the hit's event in its [event handler](/papermario-dx/battles/actors/handling-events/), so it can react to the attack.
+
+## Elemental events
+
+Fire and blast attacks send burn events to [the event handler](/papermario-dx/battles/actors/handling-events/) in place of the usual hit and death events:
+
+| Usual event | Fire or blast event |
+|-------------|---------------------|
+| `EVENT_HIT` | `EVENT_BURN_HIT` |
+| `EVENT_DEATH` | `EVENT_BURN_DEATH` |
+
+To play the burn animations, handle these events with `EVS_Enemy_BurnHit`.
+
+When an actor's contact attack touches an electrified target, such as the player under the Static status, the attacker gets hurt and receives `EVENT_SHOCK_HIT`, or `EVENT_SHOCK_DEATH` if the shock defeats it. Handle these events with `EVS_Enemy_ShockHit`.

@@ -36,13 +36,13 @@ EvtScript EVS_NpcInteract_Koopa_01_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0057)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0058)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0059)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_005A)
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_005B)
     EndSwitch
     Return
@@ -59,13 +59,13 @@ EvtScript EVS_NpcInteract_Koopa_02_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_005F)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0060)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0061)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0062)
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0063)
     EndSwitch
     Return
@@ -99,13 +99,13 @@ EvtScript EVS_NpcInteract_Koopa_03_Normal = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0064)
             ExecWait(EVS_Koopa_03_CircleSprint)
             Call(ContinueSpeech, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0065)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0066)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0067)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0068)
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0069)
     EndSwitch
     Return
@@ -122,13 +122,13 @@ EvtScript EVS_NpcInteract_Koopa_04_Normal = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_006A)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_006B)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_006C)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_006D)
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_006E)
     EndSwitch
     Return
@@ -232,7 +232,7 @@ EvtScript EVS_Scene_ConfrontBobombs = {
 
 EvtScript EVS_NpcInteract_Bobomb_01 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(AF_NOK02_DeclinedBobombInvite, false)
                 Call(GetCurrentPartnerID, LVar0)
                 IfEq(LVar0, PARTNER_BOMBETTE)
@@ -250,7 +250,7 @@ EvtScript EVS_NpcInteract_Bobomb_01 = {
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_0072)
             EndIf
-        CaseGe(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_NOK02_ConfrontedBobombs, false)
                 ExecWait(EVS_Scene_ConfrontBobombs)
             Else
@@ -264,16 +264,16 @@ EvtScript EVS_NpcInteract_Bobomb_01 = {
 
 EvtScript EVS_NpcInteract_Bobomb_02 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0083)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             IfEq(GF_NOK02_ConfrontedBobombs, false)
                 ExecWait(EVS_Scene_ConfrontBobombs)
             Else
                 Set(AF_NOK02_PauseBobombFight, true)
                 Call(SpeakToNpc, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_0080)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0084)
     EndSwitch
     Return
@@ -282,15 +282,15 @@ EvtScript EVS_NpcInteract_Bobomb_02 = {
 
 EvtScript EVS_NpcInteract_Bobomb_03 = {
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0085)
-        CaseLt(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
             IfEq(GF_NOK02_ConfrontedBobombs, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0086)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0087)
             EndIf
-        CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH7_STAR_SPIRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0087)
     EndSwitch
     Return
@@ -299,7 +299,7 @@ EvtScript EVS_NpcInteract_Bobomb_03 = {
 
 EvtScript EVS_NpcInit_Bobomb_01 = {
     Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_01))
-    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
     Return
@@ -309,9 +309,9 @@ EvtScript EVS_NpcInit_Bobomb_01 = {
 EvtScript EVS_NpcInit_Bobomb_02 = {
     Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_02))
     Switch(GB_StoryProgress)
-        CaseLt(STORY_CH1_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-        CaseGe(STORY_CH4_STAR_SPRIT_DEPARTED)
+        CaseGe(STORY_CH4_STAR_SPIRIT_DEPARTED)
             IfEq(GF_NOK02_ConfrontedBobombs, true)
                 Return
             EndIf
@@ -324,7 +324,7 @@ EvtScript EVS_NpcInit_Bobomb_02 = {
 
 EvtScript EVS_NpcInit_Bobomb_03 = {
     Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Bobomb_03))
-    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_DEPARTED)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndIf
     Return
@@ -398,7 +398,7 @@ EvtScript EVS_NpcInteract_Kolorado = {
 
 EvtScript EVS_NpcInit_Kolorado = {
     Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Kolorado))
-    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     IfEq(GF_NOK11_Defeated_KentC, true)

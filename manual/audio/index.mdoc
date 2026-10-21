@@ -1,34 +1,26 @@
 ---
 title: Custom audio
-description: How Paper Mario DX organizes audio files, how your mod overrides them, and how names in those files become constants in your code.
+description: How audio files are organized, and how their names become constants in your code.
 sidebar:
   order: 1
 ---
 
-You add or replace sound effects, instruments, songs, and ambient sounds by putting files in your mod's `audio` folder. When you build, DX combines your files with the game's audio, and gives each sound, song, and ambient sound a constant, such as `SOUND_SHOP_BELL`, that your code uses to play it.
+Each sound effect, song, and ambient sound is a file in `audio/`, with a constant, such as `SOUND_SHOP_BELL`, that your code plays it with.
 
 ## What is in the audio folder
-
-The game's own audio is split from your ROM the first time you build, as source files you can read and copy. Your mod uses the same layout.
 
 | Path | What it holds |
 | --- | --- |
 | `audio/sfx/` | The sound effects, a file each, named after their sounds |
 | `audio/sfx/envelopes/` | The press envelopes that sequenced sound effects share, a file each |
-| `audio/songs/` | The songs, as `.bgm` files that you edit in [Mamar](https://mamar.bates64.com), each named after its song |
+| `audio/songs/` | The songs, as `.bgm` files that open in the Song Editor, each named after its song |
 | `audio/mseq/` | The ambient sounds, as MSEQ files named after their sounds, and the radio's four stations |
-| `audio/bank/NAME/` | A sound bank: a `sound_bank.xml` file and a WAV file for each sample. It's always loaded unless a song or the radio loads it. |
+| `audio/bank/NAME/` | A sound bank: a `sound_bank.xml` file and a WAV file for each sample, which you edit in the Sound editor. The bank is always loaded unless a song or the radio loads it. |
 | `audio/presets.xml`, `audio/drums.xml` | Instruments and drums that songs select by ID |
-
-[Star Rod](/papermario-dx/star-rod) has an Audio Booth that previews samples, sound effects, and ambient sequences, including the ones your mod adds.
-
-## How your files override the game's
-
-Audio uses the layers that [Project structure](/papermario-dx/project-structure) describes. A file in your layer replaces the game's file at the same path, and a new file in `audio/sfx/`, `audio/songs/`, or `audio/mseq/` adds a sound, song, or ambient sound. To delete a file, put `delete: true` in `<file>.meta` next to it. To delete a directory, such as a bank, put it in `.meta` inside the directory.
 
 ## Names and constants
 
-Sounds, songs, and ambient sounds are named after their files. The build uppercases the file name and adds a prefix:
+Sounds, songs, and ambient sounds are named after their files. A constant is the file name in uppercase, with a prefix:
 
 | Folder | Prefix | Example |
 | --- | --- | --- |
@@ -38,11 +30,4 @@ Sounds, songs, and ambient sounds are named after their files. The build upperca
 
 File names must start with a lowercase letter and contain only lowercase letters, digits, and underscores.
 
-## Next steps
-
-- [Add a sound effect](/papermario-dx/audio/sound-effects)
-- [Add an instrument or a sound bank](/papermario-dx/audio/instruments)
-- [Add a song](/papermario-dx/audio/songs)
-- [Add an ambient sound](/papermario-dx/audio/ambient-sounds)
-- [Fix audio build errors](/papermario-dx/audio/troubleshooting)
-- [Audio functions](/develop/reference/audio) lists the C functions that play sounds and songs
+If you delete one of the game's sounds, songs, or ambient sounds, its constant no longer exists, so change the code that uses it first.

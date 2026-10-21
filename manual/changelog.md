@@ -2,23 +2,37 @@
 
 ## Unreleased
 
-### Automatic audio file discovery ([Alex](https://starhaven.dev/bates64.com))
+### Icon files replace `Icons.xml` ([Alex](https://starhaven.dev/bates64.com))
 
-Sound effects, songs, and ambient sounds aren't listed in XML tables anymore. The build finds them from their files: each file in `audio/sfx/`, `audio/songs/`, or `audio/mseq/` is one sound, and its constant comes from the file name, so `audio/sfx/shop_bell.xml` becomes `SOUND_SHOP_BELL`. You add, replace, and delete them the way you do any other asset: add a file, save one with the same name in your layer, or create a `.meta` file containing `delete: true`. Banks work the same way, and a bank is always loaded unless a song or the radio loads it. `presets.xml` and `drums.xml` are still tables, but your copy replaces the game's whole file instead of merging with it.
+Every PNG in `icon/` is now an [icon](https://docs.starhaven.dev/papermario-dx/graphics/icons/), so to add one, add a PNG there. No need to list it in an XML table.
 
-To update your mod:
+### Audio files replace the XML tables ([Alex](https://starhaven.dev/bates64.com))
 
-- Delete `songs.xml`, `ambient_sounds.xml`, `banks.xml`, `sound_effects.xml`, and `sfx/envelopes.xml`, and name each file after its sound in snake case.
-- Move each `Sound` entry into its own file in `audio/sfx/`, with its `Routing` and either its `OneShot` or its `Tracks`. Give each envelope its own file in `audio/sfx/envelopes/`.
+Each sound effect, song, ambient sound, and bank is its own file, with no need to list them in XML tables. A file's name becomes its constant, so `audio/sfx/shop_bell.xml` becomes `SOUND_SHOP_BELL`.
+
+If your mod adds or changes audio, update it:
+
+- Give each sound effect its own file in `audio/sfx/`, and each envelope its own file in `audio/sfx/envelopes/`. Then delete your copies of the old XML tables.
+- Rename each song and ambient sound file after its sound in snake case, such as `audio/songs/meadow_theme.bgm`.
 - If a song's entry had `bk1`, `bk2`, or `bk3`, open the song in Mamar and choose its instruments again, so that Mamar saves the banks in the `.bgm` file.
-- If a song loads a bank that your sound effects or ambient sounds also play, move those samples to a bank that no song loads.
-- Apply your changes to `presets.xml` and `drums.xml` to a copy of the game's file.
-- Replace `AMBIENT_SEA` with `AMBIENT_BEACH`, which plays the same sequence.
-- Replace any raw sound, song, or ambient sound numbers with their constants.
+- Replace raw sound, song, and ambient sound numbers with their constants, and `AMBIENT_SEA` with `AMBIENT_BEACH`.
 
-### Other changes
+If the build then fails, [Fix audio build errors](https://docs.starhaven.dev/papermario-dx/audio/troubleshooting/) explains each message.
 
-- Icons aren't listed in `icon/Icons.xml` anymore. The build finds every PNG file under `icon/`, and a CI4 icon with a `<name>.disabled.png` beside it gets a disabled palette. If you have an `Icons.xml` in `src/icon/`, delete it. ([Alex](https://starhaven.dev/bates64.com))
+### Fixed typos in names ([Alex](https://starhaven.dev/bates64.com))
+
+Fixed some typos in enum variants and struct field names.
+To update your mod, open a terminal in your mod's folder, such as with **Help > Open Terminal** in Diorama64, and run:
+
+```sh
+python3 tools/rename.py tools/renames/8_typos.txt
+```
+
+On Windows, run `python` instead of `python3`.
+
+### Fixed `USE_PROFILER` ([Alex](https://starhaven.dev/bates64.com))
+
+`USE_PROFILER` in `dx/config.h` had no effect: the profiler was built in whether it was `0` or `1`. This is fixed, so the default of `0` turns the profiler off. To keep using the profiler, set `USE_PROFILER` to `1`.
 
 ## 2026-10-15.1
 

@@ -292,7 +292,7 @@ typedef struct Enemy {
     /* 0x07 */ s8 firstStrikeActive; // when set, contact will trigger a first strike
     /* 0x08 */ s16 npcID;
     /* 0x0A */ Vec3s spawnPos;
-    /* 0x10 */ Vec3s attackOriginPos; // intial position when firstStrikeActive is set
+    /* 0x10 */ Vec3s attackOriginPos; // initial position when firstStrikeActive is set
     /* 0x16 */ PAD(2);
     /* 0x18 */ NpcSettings* npcSettings;
     /* 0x1C */ union {

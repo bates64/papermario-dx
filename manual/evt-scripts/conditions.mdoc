@@ -1,0 +1,74 @@
+---
+title: Conditions
+sidebar:
+  order: 3
+---
+
+## If
+
+Each `If` command runs the commands up to its matching `Else` or `EndIf` only when its condition is true. `Else` is optional:
+
+```c
+IfEq(GF_KMR02_WarpPipe, false)
+    Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001C)
+Else
+    Wait(10)
+EndIf
+```
+
+| Command | Runs when |
+| --- | --- |
+| `IfEq(A, B)` | `A == B` |
+| `IfNe(A, B)` | `A != B` |
+| `IfLt(A, B)` | `A < B` |
+| `IfGt(A, B)` | `A > B` |
+| `IfLe(A, B)` | `A <= B` |
+| `IfGe(A, B)` | `A >= B` |
+| `IfRange(A, MIN, MAX)` | `MIN <= A <= MAX` |
+| `IfNotRange(A, MIN, MAX)` | `A < MIN` or `A > MAX` |
+| `IfTrue(A)` | `A != 0` |
+| `IfFalse(A)` | `A == 0` |
+| `IfFlag(A, BITS)` | Any of `BITS` are set in `A` |
+| `IfNotFlag(A, BITS)` | None of `BITS` are set in `A` |
+| `IfEval(FUNC, ARGS...)` | The C function returns something other than zero. See [Call C functions](/papermario-dx/evt-scripts/call-c). |
+| `IfNotEval(FUNC, ARGS...)` | The C function returns zero. |
+| `IfEvalF(FUNC, ARGS...)` | As `IfEval`, for a function that takes decimal numbers. |
+| `IfNotEvalF(FUNC, ARGS...)` | As `IfNotEval`, for a function that takes decimal numbers. |
+| `Else` | Starts the commands that run when the condition is false. |
+| `EndIf` | Ends the `If`. |
+
+## Switch
+
+To choose between several values, use a `Switch`. `Switch(A)` compares `A` against each case in turn and runs the first case that matches:
+
+```c
+Call(GetEntryID, LVar0)
+Switch(LVar0)
+    CaseEq(kmr_02_ENTRY_0)
+        Exec(EVS_ArriveFromVillage)
+    CaseEq(kmr_02_ENTRY_1)
+        Exec(EVS_ArriveFromForest)
+    CaseDefault
+        Exec(EVS_ArriveSomewhereElse)
+EndSwitch
+```
+
+Unlike in C, a case doesn't continue into the next one. Switches can be nested up to 8 deep.
+
+| Command | Matches when |
+| --- | --- |
+| `CaseEq(B)` | `A == B` |
+| `CaseNe(B)` | `A != B` |
+| `CaseLt(B)` | `A < B` |
+| `CaseGt(B)` | `A > B` |
+| `CaseLe(B)` | `A <= B` |
+| `CaseGe(B)` | `A >= B` |
+| `CaseRange(MIN, MAX)` | `MIN <= A <= MAX` |
+| `CaseFlag(BITS)` | Any of `BITS` are set in `A` |
+| `CaseDefault` | Always. Put it last. |
+| `CaseOrEq(B)` | `A == B`. Consecutive `CaseOrEq` cases share the commands that follow them, up to `EndCaseGroup`. |
+| `CaseAndEq(B)` | `A == B`, like `CaseOrEq`, but stops the group when it doesn't match. |
+| `EndCaseGroup` | Ends a group of `CaseOrEq` or `CaseAndEq` cases. |
+| `BreakSwitch` | Leaves the switch. |
+| `EndSwitch` | Ends the switch. |
+| `SwitchConst(A)` | Like `Switch`, but uses `A` as written, without reading it as a variable. |

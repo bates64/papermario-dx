@@ -599,7 +599,7 @@ EvtScript EVS_NpcInit_Rowf = {
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
             Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_A))
             Call(BindNpcIdle, NPC_SELF, Ref(EVS_NpcIdle_Rowf))
-        CaseLt(STORY_CH3_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH3_STAR_SPIRIT_DEPARTED)
             Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rowf_B))
             Set(AF_MAC01_BadgeShopAccessible, true)
         CaseDefault
@@ -671,7 +671,7 @@ EvtScript EVS_NpcInit_Rhuff = {
                 Call(SetNpcPos, NPC_SELF, -305, 0, 330)
                 Call(SetNpcYaw, NPC_SELF, 90)
             EndIf
-        CaseLt(STORY_CH3_STAR_SPRIT_DEPARTED)
+        CaseLt(STORY_CH3_STAR_SPIRIT_DEPARTED)
             Call(BindNpcInteract, NPC_SELF, Ref(EVS_NpcInteract_Rhuff_C))
             Call(BindNpcIdle, NPC_SELF, Ref(EVS_UpdateRhuffAnims))
         CaseDefault

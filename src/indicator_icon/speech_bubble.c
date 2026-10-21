@@ -126,7 +126,7 @@ void interact_speech_update(void) {
             }
             SpeechBubblePtr->yaw = yaw;
             if ((yaw >= 70.0f && yaw <= 110.0f) || (yaw >= 250.0f && yaw <= 290.0f)) {
-                // only dimiss when the icon is rotated away from view
+                // only dismiss when the icon is rotated away from view
                 TalkNotificationCallback = nullptr;
                 playerStatus->encounteredNPC = nullptr;
                 playerStatus->animFlags &= ~PA_FLAG_SPEECH_PROMPT_AVAILABLE;

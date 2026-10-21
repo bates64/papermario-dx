@@ -1,0 +1,56 @@
+---
+title: Title screen
+sidebar:
+  order: 2
+---
+
+## Setting the mod name and version
+
+The file select menu shows your mod's name and version. Set them in `dx/config.h`:
+
+```c
+#define DX_MOD_NAME "My Cool Mod"
+#define DX_MOD_VER_MAJOR 1
+#define DX_MOD_VER_MINOR 0
+#define DX_MOD_VER_PATCH 0
+```
+
+When you create a mod, Diorama64 sets `DX_MOD_NAME` to the name you enter. The mod name can be up to 27 characters.
+
+## Skipping the intro and demo
+
+These settings in `dx/config.h` skip scenes that play on their own, which saves time while you test:
+
+| Setting | Default | What it skips when `1` |
+| --- | --- | --- |
+| `DX_SKIP_LOGOS` | `0` | The logo screens, such as the Nintendo and Intelligent Systems logos |
+| `DX_SKIP_STORY` | `1` | The opening storybook |
+| `DX_SKIP_DEMO` | `1` | The demo reel that plays if the player waits at the title screen |
+
+To show players the full intro and demo, set `DX_SKIP_LOGOS`, `DX_SKIP_STORY`, and `DX_SKIP_DEMO` to `0` before you release your mod.
+
+## Replacing the title screen images
+
+The title screen draws these images, from `mapfs/title/`:
+
+| File | What it shows | Size |
+| --- | --- | --- |
+| `logotype.png` | The Paper Mario logo | 200 × 112 |
+| `press_start.png` | The "PRESS START" text, in grayscale with transparency | 128 × 32 |
+| `copyright.png` | The copyright notice, in grayscale with transparency | 144 × 32 |
+
+The background behind them is `mapfs/bg/title_bg.png`.
+
+To replace an image, replace its file with your own PNG of the same size.
+
+## Replacing the storybook pictures
+
+The opening storybook uses these images, from `title/`:
+
+| File | What it shows | Size |
+| --- | --- | --- |
+| `bg_1.png` to `bg_4.png` | The storybook's pictures | 264 × 162 |
+| `tape.png` | The storybook's tape | 128 × 128 |
+| `bowser_silhouette.png` | Bowser's silhouette | 128 × 128 |
+
+Keep each replacement the same size as the original.

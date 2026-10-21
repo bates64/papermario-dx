@@ -23,6 +23,8 @@ SaveBootRecord gSaveBootRecord ALIGNED8;
 #define BOOT_RECORD_FIRST_PAGE 1
 SaveData gCurrentSaveFile ALIGNED8;
 
+_Static_assert(sizeof(DX_MOD_NAME) <= ARRAY_COUNT(gCurrentSaveFile.modName), "DX_MOD_NAME is too long to fit in a save file");
+
 char MagicSaveString[] = "Mario Story 006";
 
 b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
@@ -265,9 +267,6 @@ void fio_save_game(s32 saveSlot) {
     gCurrentSaveFile.summary = gSaveSlotSummary[gGameStatusPtr->saveSlot];
 
     strcpy(gCurrentSaveFile.magicString, MagicSaveString);
-
-    // adding 1 accounts for null terminator
-    ASSERT(1 + strlen(DX_MOD_NAME) < ARRAY_COUNT(gCurrentSaveFile.modName));
 
     strcpy(gCurrentSaveFile.modName, DX_MOD_NAME);
     gCurrentSaveFile.majorVersion = DX_MOD_VER_MAJOR;

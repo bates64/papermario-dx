@@ -141,7 +141,7 @@ EvtScript EVS_RoomListener_MerlonHouse = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Switch(GB_StoryProgress)
-                CaseLt(STORY_CH1_SPOKE_WITH_MERLIN)
+                CaseLt(STORY_CH1_SPOKE_WITH_MERLON)
                     ExecWait(EVS_MerlonShooAway)
                     Set(LVar0, -1)
                     Return

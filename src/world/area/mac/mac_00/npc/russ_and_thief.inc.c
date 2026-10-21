@@ -7,7 +7,7 @@ LetterDelivery LetterDelivery_RussT = {
     .msgGreeting = MSG_MAC_Gate_0011,
     .msgCancelled = MSG_MAC_Gate_0012,
     .msgDelivered = MSG_MAC_Gate_0013,
-    .msgRecieved = MSG_MAC_Gate_0014,
+    .msgReceived = MSG_MAC_Gate_0014,
     .letters = { ITEM_LETTER_TO_RUSS_T },
     .reward = ITEM_STAR_PIECE,
 };
@@ -224,7 +224,7 @@ EvtScript EVS_ShyGuy_StealDictionary = {
 };
 
 EvtScript EVS_NpcInit_ShyGuyThief = {
-    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     IfGt(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
@@ -344,7 +344,7 @@ EvtScript EVS_ItemPrompt_Documents = {
 };
 
 EvtScript EVS_NpcInteract_RussT = {
-    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfGe(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         IfEq(GF_MAC00_DictionaryReturned, false)
             ExecWait(EVS_ItemPrompt_Dictionary)
             Set(LVar0, Ref(LetterDelivery_RussT))

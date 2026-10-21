@@ -30,7 +30,7 @@ void worker_update_partner_reflection_wall(void);
 s32 reflection_unk_resolve_anim(s32 playerAnim) {
     AnimID temp;
 
-    // TODO write with sensibile logic based on spriteIDs
+    // TODO write with sensible logic based on spriteIDs
     playerAnim &= ~SPRITE_ID_BACK_FACING;
     temp = playerAnim + ~ANIM_MarioW1_LandWatt;
     if (temp < 16 && temp & 1) {

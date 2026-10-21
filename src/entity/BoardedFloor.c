@@ -18,7 +18,7 @@ void Entity_BoardedFloor_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
     data->fragmentsGfx = ENTITY_ADDR(entity, Gfx**, dlists);
     entity->renderSetupFunc = Entity_BoardedFloor_setupGfx;
     entity->alpha = 255;
-    entity->pos.y = data->inititalY;
+    entity->pos.y = data->initialY;
     guTranslateF(mtxTrans, entity->pos.x, entity->pos.y, entity->pos.z);
 
     for (i = 0; i < FRAGMENT_BUF_SIZE - 1; i++) {
@@ -45,7 +45,7 @@ void Entity_BoardedFloor_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
 }
 
 void Entity_BoardedFloor_init(Entity* entity) {
-    entity->dataBuf.boardedFloor->inititalY = entity->pos.y;
+    entity->dataBuf.boardedFloor->initialY = entity->pos.y;
     Entity_BoardedFloor_init_fragments(
         entity, Entity_BoardedFloor_FragmentsRender, Entity_BoardedFloor_FragmentMatrices
     );
@@ -142,7 +142,7 @@ void Entity_BoardedFloor_update_fragments(Entity* entity) {
             hitZ = data->fragmentPosZ[i];
             hitDepth = fabsf(data->fragmentFallSpeed[i]);
             if (npc_raycast_down_sides(COLLISION_IGNORE_ENTITIES, &hitX, &hitY, &hitZ, &hitDepth)
-                || hitY < data->inititalY - 200.0f)
+                || hitY < data->initialY - 200.0f)
             {
                 data->fragmentRebounds[i]++;
                 data->fragmentPosY[i] = hitY + fabsf(data->fragmentFallSpeed[i]);

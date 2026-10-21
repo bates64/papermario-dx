@@ -1,0 +1,77 @@
+---
+title: Camera
+sidebar:
+  order: 4
+---
+
+As the player moves around a map, the camera follows them using the settings of the **zone** below them. You set up zones in the map editor, and you can take over the camera from an EVT script, such as to show the player something in a [scene](/papermario-dx/world/scenes/).
+
+## Camera zones
+
+A new map has one zone, `floor`, under the whole floor, which follows the player from the front. To give part of the map a different camera, add a zone there with its own settings.
+
+{% steps %}
+1. In the **Objects** view, select a zone under **Zones**. To add a zone, right-click **Zones** and select **New Primitive...**, or right-click a collider and select **Convert to Zone**.
+2. In the zone's properties, select **Controls the camera**.
+3. Choose a **Type**, which decides how the camera moves:
+
+   | Type | What the camera does |
+   | --- | --- |
+   | **0 Fixed Orientation** | Follows the player, always facing the same way. |
+   | **1 Look Toward Point** | Faces toward a point, with the player in the middle of the view. With a negative **Boom length**, it faces away from the point. |
+   | **2 Boundary Camera** | Stops at a line, such as near an exit, so the camera doesn't show past the edge of the map. |
+   | **3 Follow Player** | Follows the player, facing whichever way it already faced. |
+   | **4 Fixed Position and Orientation** | Stays in one place, facing one way. |
+   | **5 Look Toward Point, Constrain to Line** | Faces toward a point, and stays on a line. |
+   | **6 Constrain between Points** | Stays on the line between **Point A** and **Point B**, facing straight across it. |
+
+4. Set how far the camera is from the player with **Boom length**, how far above the player it looks down from with **Boom pitch**, and how far its view tilts with **View pitch**. Set the points that the type uses, such as **Point A** and **Point B**. Some types also have a checkbox, such as **Disable Forward Motion**.
+{% /steps %}
+
+To try the camera without starting the game, select **Map > Play in Editor > Simulate**. The player appears at the 3D cursor. Move with W, A, S, and D, and jump with J. The camera switches zones as the player moves, as it does in the game. To see the lines and points of the zone the player is in, select **Map > Play in Editor > Show Current Zone Lines**.
+
+## Moving the camera from an EVT script
+
+An EVT script moves the camera by giving it settings to use in place of the zones', then panning to them. Every camera call takes the camera first. In the world, that's `CAM_DEFAULT`.
+
+{% steps %}
+1. Copy the settings of the zone below a point with `UseSettingsFrom`, as a starting point.
+2. Set the point to look at with `SetPanTarget`.
+3. Change any settings you need, such as the distance with `SetCamDistance` or the angles with `SetCamPitch`, which takes the boom pitch and then the view pitch.
+4. Set how fast the camera moves with `SetCamSpeed`. Higher is faster. `Float(1.0)` is a slow pan, and the base game uses `Float(90.0)` to cut almost at once.
+5. Start the pan with `PanToTarget(CAM_DEFAULT, 0, true)`.
+6. To wait until the camera arrives, call `WaitForCam(CAM_DEFAULT, Float(1.0))`.
+{% /steps %}
+
+The camera stays where you put it until you give control back to the zones with `PanToTarget(CAM_DEFAULT, 0, false)`. If you do that while the camera is away from the player, it pans back to them slowly, at speed `1.0`. To choose the speed, pan to the player first as you would to any point, or call `ResetCam` with a speed, such as `ResetCam(CAM_DEFAULT, Float(4.0))`, which pans back to the player, waits until it arrives, and gives control back.
+
+## Panning the camera to a door
+
+This EVT script pans to a door, holds there for a second, and pans back to the player. `MODEL_door` stands for the door's model in your map:
+
+```c
+EvtScript EVS_ShowDoor = {
+    Call(DisablePlayerInput, true)
+    // look at the door
+    Call(GetModelCenter, MODEL_door)
+    Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
+    Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Wait(30)
+    // look back at the player
+    Call(GetPlayerPos, LVar0, LVar1, LVar2)
+    Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(DisablePlayerInput, false)
+    Return
+    End
+};
+```
+
+`GetModelCenter` puts the middle of the model in `LVar0`, `LVar1`, and `LVar2`. Calling `UseSettingsFrom` at the player's position on the way back resets the distance, so the camera ends where the player's zone would put it.

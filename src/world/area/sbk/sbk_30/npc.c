@@ -11,7 +11,7 @@ LetterDelivery LetterDelivery_Kolorado = {
     .msgGreeting = MSG_CH2_004A,
     .msgCancelled = MSG_CH2_004B,
     .msgDelivered = MSG_CH2_004C,
-    .msgRecieved = MSG_CH2_004D,
+    .msgReceived = MSG_CH2_004D,
     .letters = { ITEM_LETTER_TO_KOLORADO },
     .reward = ITEM_STAR_PIECE,
 };

@@ -1,0 +1,171 @@
+---
+title: Debug menu
+sidebar:
+  order: 2
+---
+
+The debug menu lets you warp to any map, start any battle, and edit the player's inventory, stats, and partners while the game runs. It also has a EVT script debugger for pausing and stepping through EVT scripts.
+
+## Turning the debug menu on or off
+
+The debug menu is on by default. To turn it off, such as for a release, set `DX_DEBUG_MENU` to `0` in `dx/config.h`:
+
+```c
+#define DX_DEBUG_MENU 0
+```
+
+While the debug menu is on, a line at the bottom of the screen shows the map and entry the player came in through, and the player's position. In a battle, it shows the battle and the stage instead.
+
+## Controls
+
+While the game runs, press **D-Pad Left** to open the debug menu.
+
+| Button | Action |
+| --- | --- |
+| **D-Pad Up** and **D-Pad Down** | Move between options |
+| **D-Pad Left** and **D-Pad Right** | Change the selected value, or move between digits of a number |
+| **R** | Select an option, or apply your changes |
+| **L** | Go back to the previous menu |
+| **D-Pad Right** | In the main menu, select an option |
+| **D-Pad Left** or **L** | In the main menu, close the debug menu |
+
+When you edit a number, **D-Pad Up** raises the selected digit and **D-Pad Down** lowers it.
+
+In Diorama64, the keyboard plays the N64 controller's buttons. By default, **W**, **A**, **S**, and **D** are the D-Pad, **Q** is **L**, **E** is **R**, and **C** is **Z**. To see or change the keys, select **Game > Remap Controls...**.
+
+## Main menu
+
+| Option | What it does |
+| --- | --- |
+| **Full Restore** | Refills the player's HP, FP, and star power. |
+| **Save/Load** | **Quick Save** saves the game to the current save slot, and **Quick Load** loads it. |
+| **Map Select** | Warps to a map. Choose an area, then a map, then an entry number, and press **R**. |
+| **Battle Select** | Starts a battle. See [Battle Select](#battle-select). |
+| **Set Story Byte** | Sets the story progress, as a two-digit hexadecimal number. Press **R** to apply it. |
+| **Sound Player** | Plays sound effects and music. See [Sound Player](#sound-player). |
+| **Edit Partners** | Adds and removes partners and sets their levels. See [Edit Partners](#edit-partners). |
+| **Edit Inventory** | Edits the player's items, equipment, and stats. See [Edit Inventory](#edit-inventory). |
+| **View Collision** | Draws the map's collision. See [View Collision](#view-collision). |
+| **Cheats** | Turns cheats on and off. See [Cheats](#cheats). |
+
+If `DX_DEBUG_EVT_TESTS` is `1` in `dx/config.h`, the main menu also has **EVT Tests**, which runs DX's own tests of the EVT script interpreter.
+
+## Battle Select
+
+**Battle Select** has three rows. Press **D-Pad Up** or **D-Pad Down** to choose a row, and **D-Pad Left** or **D-Pad Right** to change it:
+
+- The first row is the battle area.
+- The second row is the formation in that area. The box below lists the formation's actors.
+- The third row is the stage. **(auto)** uses the formation's own stage.
+
+Press **R** to start the battle. A red row has nothing valid to choose, such as the formation row for an area with no formations, and **R** doesn't start a battle until you fix it.
+
+## Sound Player
+
+Select **Sound** to play sound effects by ID. Choose **Play Sound** or **Stop Sound**, enter a four-digit hexadecimal sound ID, then press **R** to play or stop that sound.
+
+Select **Music** to browse songs by name. **D-Pad Up** and **D-Pad Down** move one song at a time, and wrap around at the ends of the list. **D-Pad Left** and **D-Pad Right** move nine songs at a time, and stop at the ends. Press **R** to play or restart the selected song, **Z** to stop the music, and **L** to go back.
+
+## Edit Partners
+
+Each partner has a number before its name:
+
+| Number | Meaning |
+| --- | --- |
+| `-1` | Not in the party |
+| `0` | In the party, at its normal rank |
+| `1` | Super rank |
+| `2` | Ultra rank |
+
+Press **D-Pad Left** or **D-Pad Right** to change the selected partner's number. Press **R** to apply every partner's change. If the selected partner is in the party, it becomes the active partner.
+
+## Edit Inventory
+
+| Option | What it edits |
+| --- | --- |
+| **Items** | The player's items |
+| **Badges** | The player's badges |
+| **Key Items** | The player's key items |
+| **Equipment** | **Boots**, **Hammer**, **Lucky Star** (whether the player has action commands), and **Star Beam** |
+| **Stats** | **Max HP**, **Max FP**, **Max BP**, **Level**, and **Spirits** (the number of star power bars) |
+| **Coins** | The player's coins |
+| **Star Points** | The player's star points |
+| **Star Pieces** | The player's star pieces |
+
+In **Items**, **Badges**, and **Key Items**, each row is an inventory slot with a three-digit hexadecimal item ID. Select a slot and press **R** to edit its ID, then press **R** again to save the list. Press **L** to stop editing.
+
+In **Equipment** and **Stats**, press **R** to apply your changes. Applying **Stats** also refills HP, FP, and star power.
+
+## View Collision
+
+Press **D-Pad Left** or **D-Pad Right** to turn an option on or off.
+
+| Option | What it does |
+| --- | --- |
+| **Show Collision** | Draws the map's collision, colored by the direction each triangle faces. |
+| **Cull Back** | Hides the back of one-sided collision triangles. |
+| **Show Disabled** | Also draws collision that doesn't block the player. |
+| **Hide Models** | Hides the map's models, so you only see the collision. |
+| **Extrude Faces** | Draws each triangle pushed out slightly along the direction it faces. |
+| **Highlight Floor** | Highlights the floor the player stands on. |
+| **Highlight Wall** | Highlights the wall the player is touching. |
+| **Near Fade Dist** | Fades out collision near the camera. `0` turns fading off, and higher numbers fade more of it. |
+
+## Cheats
+
+Press **D-Pad Left** or **D-Pad Right** to turn a cheat on or off.
+
+| Cheat | What it does |
+| --- | --- |
+| **God Mode** | In battle, the player's and partner's attacks deal 99 damage, and enemies' attacks deal none. |
+| **Speed Mode** | The player walks and runs three times as fast, and enemies in the world can't touch the player. |
+| **Fly With L** | Hold **L** to rise into the air. |
+| **High Jump** | The player jumps higher. |
+| **Ignore Walls** | The player walks through walls. |
+
+## EVT script debugger
+
+The EVT script debugger pauses EVT scripts and runs them one command at a time. To open it, press **D-Pad Right** while the debug menu is closed. To close it, press **D-Pad Right** or **L**.
+
+The list on the left shows every EVT script that's running. **Grp** is the EVT script's group, **Start** is the address of its first command, and **Current** is how far the current command is from the start. A paused EVT script is red.
+
+The menu on the right has these options:
+
+| Option | What it does |
+| --- | --- |
+| **Attach** | Choose an EVT script from the list to inspect and step through. |
+| **Break** | Choose an EVT script from the list to pause. |
+| **Resume** | Choose a paused EVT script from the list to carry on. |
+| **Break All** | Pauses every EVT script. |
+| **Resume All** | Carries on every EVT script. |
+
+For **Attach**, **Break**, and **Resume**, press **D-Pad Up** or **D-Pad Down** to choose an EVT script from the list, then press **R**.
+
+### Stepping through an EVT script
+
+When you attach to an EVT script, the menu changes:
+
+| Option | What it does |
+| --- | --- |
+| **Detach** | Stops inspecting the EVT script, and goes back to the list. |
+| **Break** or **Resume** | Pauses the EVT script, or carries it on. |
+| **Step Once** | Runs the current command for one frame, then pauses. |
+| **Step Over** | Runs the current command until it finishes, then pauses. Use it for a command that takes more than one frame, such as `Wait`. |
+| **Vars** | Changes how the box shows variables: **Int**, **Fixed**, **Float**, or **Raw** (hexadecimal). |
+
+The box on the left shows **Vars** or **Disasm**. Press **D-Pad Left** or **D-Pad Right** to switch between them:
+
+- **Vars** shows the EVT script's local variables, `LVar0` to `LVarF`, and its four function temporaries. A value that changed since the last step is green.
+- **Disasm** shows the EVT script's commands, numbered, with the current command in green.
+
+To pause an EVT script at a particular command, put a `BreakPoint` command in it. When the EVT script reaches it, the EVT script pauses, and you can attach to it in the EVT script debugger.
+
+## Performance profiler
+
+To turn on the performance profiler, set `USE_PROFILER` to `1` in `dx/config.h`:
+
+```c
+#define USE_PROFILER 1
+```
+
+In the game, press **L** and **D-Pad Up** together to show or hide it.

@@ -1,0 +1,55 @@
+---
+title: Triggers
+sidebar:
+  order: 3
+---
+
+A trigger starts an EVT script when the player does something in a map, such as walking into a doorway, pressing A at a sign, or hammering a tree. Bind one with `BindTrigger`, usually from the map's main EVT script:
+
+```c
+BindTrigger(Ref(EVS_ReadSign), TRIGGER_WALL_PRESS_A, COLLIDER_sign, true, 0)
+```
+
+The trigger starts its EVT script every time it happens, but never while the EVT script is still running from last time. To stop the trigger, use `Unbind` in the EVT script it started.
+
+| Trigger | Starts the EVT script when |
+| --- | --- |
+| `TRIGGER_FLOOR_TOUCH` | The player stands on the collider |
+| `TRIGGER_FLOOR_ABOVE` | The player is on or above the collider, such as at a map's exit |
+| `TRIGGER_FLOOR_JUMP` | The player jumps onto the collider |
+| `TRIGGER_FLOOR_PRESS_A` | The player presses A while standing on the collider |
+| `TRIGGER_WALL_TOUCH` | The player walks into the collider |
+| `TRIGGER_WALL_PUSH` | The player keeps pushing against the collider |
+| `TRIGGER_WALL_PRESS_A` | The player presses A while facing the collider |
+| `TRIGGER_WALL_HAMMER` | The player hammers the collider |
+| `TRIGGER_CEILING_TOUCH` | The player hits the collider from below |
+| `TRIGGER_POINT_BOMB` | Bombette explodes near a point. Instead of a collider, pass a `BombTrigger` with the point. |
+| `TRIGGER_GAME_FLAG_SET` | A game flag is set, whatever set it. While the flag stays set, the trigger starts the EVT script again each time it finishes, until it uses `Unbind`. Instead of a collider, pass the flag, such as `GF_KMR02_WarpPipe`. |
+| `TRIGGER_AREA_FLAG_SET` | An area flag is set, whatever set it. It repeats like `TRIGGER_GAME_FLAG_SET`. Instead of a collider, pass the flag. |
+
+## Sharing an EVT script between triggers
+
+The EVT script a trigger starts gets the values `LVar0`, `LVar1`, and `LVar2` had when the trigger was bound. That lets one EVT script serve several triggers, such as for every bush in a map:
+
+```c
+Set(LVar0, Ref(SearchBush_Bush1))
+BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o356, true, 0)
+Set(LVar0, Ref(SearchBush_Bush2))
+BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o357, true, 0)
+```
+
+## Ask for an item
+
+To ask the player to choose an item, such as a key for a locked door, bind the trigger with `BindItemPrompt` instead. It takes the same first three arguments as `BindTrigger`, then the items the player can choose, as a list made with `ITEM_LIST`, a message for the partner to show when it tattles on the collider (or `0` for none), and whether the player sees a prompt when they can interact:
+
+```c
+ITEM_LIST(KeyList, ITEM_MYSTICAL_KEY);
+
+EvtScript EVS_BindKeyPrompt = {
+    BindItemPrompt(Ref(EVS_UnlockDoor), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(KeyList), 0, true)
+    Return
+    End
+};
+```
+
+`EVT_ENTITY_INDEX(0)` binds the trigger to the first entity the map created, such as a padlock, instead of a collider. The EVT script shows the item choice itself, with `ShowKeyChoicePopup` or `ShowConsumableChoicePopup`.

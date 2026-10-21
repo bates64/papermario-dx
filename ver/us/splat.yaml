@@ -4027,25 +4027,25 @@ segments:
       - [0x3A54F0, gfx, D_090011D0_3A54F0]
       - [0x3A5510, gfx, D_090011F0_3A5510]
       - [0x3A5530, gfx, D_09001210_3A5530]
-  - name: effect_merlin_house_stars
+  - name: effect_merlon_house_stars
     dir: effects
     type: code
     start: 0x3A5550
     vram: 0xE00A6000
     max_size: 0x1000
     subsegments:
-    - [auto, c, merlin_house_stars]
-  - name: effect_gfx_merlin_house_stars
+    - [auto, c, merlon_house_stars]
+  - name: effect_gfx_merlon_house_stars
     dir: effects/gfx
     type: code
     start: 0x3A5BE0
     vram_class: effect_gfx
     symbol_name_format: $VRAM_$ROM
     subsegments:
-    - [auto, c, merlin_house_stars]
+    - [auto, c, merlon_house_stars]
     - start: 0x3A5BE0
       type: .data
-      name: merlin_house_stars
+      name: merlon_house_stars
       subsegments:
       - [0x3A5BE0, i4, D_09000000_3A5BE0, 64, 64]
       - [0x3A63E0, i4, D_09000800_3A63E0, 64, 64]

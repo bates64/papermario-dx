@@ -1552,7 +1552,7 @@ EvtScript EVS_Enemy_BurnHit = {
     Switch(LVar1)
         CaseEq(EVENT_BURN_HIT)
             Call(GetPartEventFlags, ACTOR_SELF, LVar0, LVar1)
-            IfNotFlag(LVar1, ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION | ACTOR_EVENT_FLAG_FIREY)
+            IfNotFlag(LVar1, ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION | ACTOR_EVENT_FLAG_FIERY)
                 Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 Call(GetActorSize, ACTOR_SELF, LVar3, LVar4)
                 Call(GetStatusFlags, ACTOR_SELF, LVar5)

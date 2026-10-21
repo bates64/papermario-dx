@@ -1,0 +1,192 @@
+---
+title: Moves
+sidebar:
+  order: 3
+---
+
+A **move** is something the player or a partner does on their turn, such as Power Jump or Headbonk. Each move has an entry in `registry/moves.yaml`, which sets its name, its cost, and what it can target, and an EVT script that plays it out. Each of the player's moves is its own file in `battle/move/`. A partner's moves are in its battle file instead; see [Partners](/papermario-dx/partners/).
+
+The examples on this page make a jump move called Heavy Stomp, which the player gets from a badge. Use your own move's name and values in their place.
+
+## Creating the move
+
+Moves are grouped by category, with a folder for each:
+
+| Folder | Holds | EVT script table |
+| --- | --- | --- |
+| `battle/move/jump` | Jump moves, such as Power Jump | `gMoveScriptTable` in `battle/use_moves.c` |
+| `battle/move/hammer` | Hammer moves, such as Power Smash | `gMoveScriptTable` in `battle/use_moves.c` |
+| `battle/move/star_power` | Star powers, such as Refresh | `StarPowersTable` in `battle/use_star_powers.c` |
+| `battle/move/item` | What items do in battle, such as the Mushroom | `gBattleItemTable` in `battle/use_items.c` |
+
+{% steps %}
+1. In the Filesystem, right-click a category's folder in `battle/move`, such as `jump`, and select **New > Move**.
+2. Enter a name for the move, such as `heavy_stomp`.
+3. Select **OK**.
+{% /steps %}
+
+The new file has an empty `EVS_UseMove`, which runs when the player uses the move. The comment at the top of the file says which EVT script table the category uses. An item's file registers in `registry/items.yaml` and `gBattleItemTable` instead, as [Write a battle EVT script for the item](/papermario-dx/items/add-an-item/#writing-a-battle-evt-script-for-the-item) describes, so the rest of this page is about jump and hammer moves.
+
+## Registering the move
+
+{% steps %}
+1. Add an entry to the end of `registry/moves.yaml`, named after your move in PascalCase:
+
+   ```yaml
+   - HeavyStomp:
+       nameMsg: MSG_PlayerMoveName_HeavyStomp
+       fullDescMsg: MSG_ItemFullDesc_HeavyStomp
+       shortDescMsg: MSG_ItemShortDesc_HeavyStomp
+       flags: [ TARGET_FLAG_SELECT_ONE, TARGET_FLAG_JUMP_LIKE, TARGET_FLAG_NOT_BELOW, TARGET_FLAG_ALLOW_TARGET_ONLY, TARGET_FLAG_NO_CEILING ]
+       category: MOVE_TYPE_JUMP
+       actionTip: BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING
+       costFP: 3
+       costBP: 2
+   ```
+
+   An entry's position in the file is its ID, so always add new entries at the end. The entry's name decides its constant: `HeavyStomp` becomes `MOVE_HEAVY_STOMP`.
+
+2. Add the messages that `nameMsg`, `fullDescMsg`, and `shortDescMsg` name. The game's own move names are in `msg/2A_PlayerMoves.msg`, full descriptions in `msg/25_FullItemDesc.msg`, and short descriptions in `msg/23_ShortItemDesc.msg`. See [Write messages](/papermario-dx/messages/edit-messages/).
+
+3. In `battle/use_moves.c`, add a line for the move to the end of `gMoveScriptTable`:
+
+   ```c
+   [MOVE_HEAVY_STOMP]          MOVE_SCRIPT("heavy_stomp", 0),
+   ```
+
+   `MOVE_SCRIPT` takes the file's name and which EVT script in the file's `OVL_DEF_BATTLE_SCRIPT` to run, counting from `0`.
+{% /steps %}
+
+These are the fields of a move's entry:
+
+| Field | What it sets |
+| --- | --- |
+| `nameMsg` | The move's name in menus. |
+| `fullDescMsg` | For a partner's move, the description in the pause menu. A badge shows its own description from `registry/items.yaml` instead. |
+| `shortDescMsg` | The description in the battle menu. |
+| `flags` | Which actors the move can target, as `TARGET_FLAG_` flags. See [Choose targets](#choosing-targets). |
+| `category` | Which battle menu offers the move: `MOVE_TYPE_JUMP`, `MOVE_TYPE_HAMMER`, `MOVE_TYPE_STAR_POWER`, or `MOVE_TYPE_PARTNER`. |
+| `actionTip` | The action command instructions shown while the player chooses a target and as the move starts, such as `BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING`, or `NONE`. |
+| `costFP` | The FP the move costs. For a star power, the number of star power bars. |
+| `costBP` | The BP it costs to equip the move's badge. |
+
+## Writing the move's EVT script
+
+This `EVS_UseMove` jumps on the target and deals 5 damage if the player succeeds at the action command, or 3 if they don't:
+
+```c
+#include "common.h"
+#include "battle/script_module.h"
+#include "script_api/battle.h"
+
+#include "battle/common/move/JumpSupport.inc.c"
+
+EvtScript EVS_UseMove = {
+    Call(EnablePlayerBlur, ACTOR_BLUR_ENABLE)
+    Call(ShowActionHud, true)
+    // run up to the target and jump at it
+    ExecWait(EVS_JumpSupport_ApproachAndJump)
+    Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
+    IfEq(LVar0, HIT_RESULT_MISS)
+        ExecWait(EVS_JumpSupport_Miss)
+        Call(EnablePlayerBlur, ACTOR_BLUR_DISABLE)
+        Return
+    EndIf
+    Wait(1)
+    Call(GetPlayerActionQuality, LVar0)
+    Switch(LVar0)
+        CaseGt(0)
+            Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 5,
+                BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_NICE_HIT)
+        CaseDefault
+            Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 3,
+                BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_TRIGGER_EVENTS)
+    EndSwitch
+    // bounce off the target and return home
+    Switch(LVar0)
+        CaseGt(HIT_RESULT_HIT)
+            ExecWait(EVS_JumpSupport_Rebound)
+        CaseDefault
+            ExecWait(EVS_JumpSupport_WeakRebound)
+    EndSwitch
+    Call(EnablePlayerBlur, ACTOR_BLUR_DISABLE)
+    Return
+    End
+};
+
+OVL_DEF_BATTLE_SCRIPT(BATTLE_SCRIPT_KIND_MOVE, &EVS_UseMove);
+```
+
+`battle/common/move/JumpSupport.inc.c` has the EVT scripts that the game's jump moves share, such as running up to the target, jumping, and returning home. For a hammer move, `battle/common/move/HammerSupport.inc.c` has the same kind of EVT scripts. The game's own moves in `battle/move/` are good starting points to copy.
+
+### Choosing targets
+
+The move's `flags` in `registry/moves.yaml` decide which actors it can target. With `TARGET_FLAG_SELECT_ONE`, the player chooses one of them before the move starts, and `SetGoalToTarget` sets the player's goal position to it.
+
+Without `TARGET_FLAG_SELECT_ONE`, the move targets every actor its flags allow. To hit each of them, step through the target list:
+
+```c
+Set(LVar9, 0)
+Call(InitTargetIterator)
+Label(0)
+    Call(SetGoalToTarget, ACTOR_PLAYER)
+    Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, 0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+    Call(ChooseNextTarget, ITER_NEXT, LVar1)
+    Add(LVar9, 1)
+    Call(GetTargetListLength, LVar1)
+    IfLt(LVar9, LVar1)
+        Goto(0)
+    EndIf
+```
+
+### Dealing damage
+
+`PlayerTestEnemy` checks whether the move hits the target without hurting it, and `PlayerDamageEnemy` deals the damage. Both take the same arguments:
+
+| Argument | What it is |
+| --- | --- |
+| 1 | The variable that receives the result, such as `HIT_RESULT_HIT` or `HIT_RESULT_MISS`. |
+| 2 | The [damage type flags](/papermario-dx/battles/actors/attacks/#damage-type-flags), such as `DAMAGE_TYPE_JUMP`. |
+| 3 | `SUPPRESS_EVENT_` flags for the target's reactions to skip, or `0`. |
+| 4 | A status to inflict, such as `DMG_STATUS_KEY(STATUS_FLAG_SLEEP, 3, 75)` for a 75% chance of 3 turns of sleep, or `0`. |
+| 5 | The damage. This is the only argument that can be a variable. |
+| 6 | `BS_FLAGS1_` flags. |
+
+These are the flags for the sixth argument:
+
+| Flag | Effect |
+| --- | --- |
+| `BS_FLAGS1_INCLUDE_POWER_UPS` | Adds Merlee's attack boost, and Power Rush or Mega Rush, to the damage. Jump damage gets them without this flag. |
+| `BS_FLAGS1_TRIGGER_EVENTS` | Lets the hit set off the target's special reactions, such as being scared away by a fear attack. A move that hits more than once usually leaves it off every hit but the last. |
+| `BS_FLAGS1_NICE_HIT` | Marks the hit as a successful action command, which shows **Nice** and counts for badges such as All or Nothing. |
+| `BS_FLAGS1_NO_RATING` | Hides **Nice** and **Super**. |
+
+A partner's moves use `PartnerTestEnemy` and `PartnerDamageEnemy`, which take the same arguments.
+
+### Reading the action command's result
+
+`EVS_JumpSupport_ApproachAndJump` loads and starts the jump action command. After the jump, `GetPlayerActionQuality` gives a number above `0` if the player succeeded, and `0` if they didn't. To give a move a different action command, see [Action commands](/papermario-dx/battles/action-commands/).
+
+## Giving the move to the player with a badge
+
+Jump and hammer moves come from badges. When the player equips a badge, its move appears in the battle menu that matches the move's `category`, and the badge's BP cost is the move's `costBP`.
+
+To make a badge for the move, follow [Add the badge](/papermario-dx/items/add-a-badge/#adding-the-badge), but skip its `registry/moves.yaml` step, and set the badge's `moveID` to your move, such as `MOVE_HEAVY_STOMP`. The badge doesn't need an ability.
+
+A badge's `moveID` is stored in a byte, so a move that a badge gives must be one of the first 256 entries in `registry/moves.yaml`.
+
+## Replacing the basic jump or hammer
+
+The first move in the jump and hammer menus depends on the player's boots and hammer: `MOVE_JUMP1`, `MOVE_JUMP2`, or `MOVE_JUMP3` for normal, Super, or Ultra boots, and `MOVE_HAMMER1` to `MOVE_HAMMER3` for the hammer. To change what one does, point its line in `gMoveScriptTable` at your file.
+
+## Testing the move
+
+{% steps %}
+1. Start the game, and press **D-Pad Left** to open the [debug menu](/papermario-dx/debug/debug-menu/).
+2. Select **Edit Inventory > Badges**, and set an empty slot to your badge's ID. The badge's name appears next to the ID once it's right.
+3. Close the debug menu, then equip the badge from the **Badges** tab of the pause menu.
+4. Open the debug menu again, and start a battle with **Battle Select**.
+5. In the battle, choose the move from the jump menu.
+{% /steps %}
+
+If the player hasn't got the Lucky Star, action commands always fail. To give it to them, select **Edit Inventory > Equipment** in the debug menu and turn on **Lucky Star**.

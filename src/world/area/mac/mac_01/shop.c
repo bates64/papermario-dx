@@ -179,13 +179,13 @@ ShopOwner ShopOwnerRowf = {
 };
 
 EvtScript EVS_SetupBadgeShop = {
-    IfLt(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_DEPARTED)
         Goto(1)
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Goto(2)
     EndIf
-    IfLt(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_DEPARTED)
         Goto(3)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)

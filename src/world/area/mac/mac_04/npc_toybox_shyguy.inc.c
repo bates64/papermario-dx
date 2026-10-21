@@ -197,7 +197,7 @@ EvtScript EVS_ShyGuy_StealStoreroomKey = {
 };
 
 EvtScript EVS_OnEnterShop = {
-    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
+    IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_DEPARTED)
         Return
     EndIf
     IfGt(GB_StoryProgress, STORY_CH4_GOT_STOREROOM_KEY)
