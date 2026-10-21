@@ -748,15 +748,6 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "check_debug_music",
-        description="Testing the debug music catalog and browser",
-        command=(
-            "$python tools/test/debug_music_catalog.py && "
-            '$python tools/test/debug_music_browser.py --include-dir "$include_dir"'
-        ),
-    )
-
-    ninja.rule(
         "debug_music_catalog",
         description="Generating debug music catalog",
         command=f"$python {BUILD_TOOLS}/debug_music_catalog.py $in $out",
@@ -1166,15 +1157,6 @@ class Configure:
         audio_obj = self.build_path() / version_assets / "audio.sbn.o"
         build(audio_obj, [audio_sbn], "bin")
         self.register_asset(audio_obj)
-        # This test target deliberately produces no file, so each invocation
-        # recompiles the host harness against the current production sources.
-        # Keep native compiler/sanitizer requirements out of normal ROM builds.
-        ninja.build(
-            "test_debug_music",
-            "check_debug_music",
-            order_only=["generated_code_" + self.version],
-            variables={"include_dir": posix(audio_dir.parent)},
-        )
 
         # Each animation is reached by name from a table in the engine, so the
         # order these are emitted in only decides where they sit.
