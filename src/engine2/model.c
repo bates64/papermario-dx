@@ -100,14 +100,9 @@ enum {
     RENDER_TASK_LIST_FAR, // dist >= 3M
 };
 
-#define WORLD_TEXTURE_MEMORY_SIZE 0x20000
-#define BATTLE_TEXTURE_MEMORY_SIZE 0x8000
-
 u8* gBackgroundTintModePtr; // NOTE: the type for this u8 is TintMode, as shown in SetModelTintMode
 ModelList* gCurrentModels;
 ModelTreeInfoList* gCurrentModelTreeNodeInfo;
-
-extern Addr TextureHeap;
 
 typedef struct FogSettings {
     /* 0x00 */ s32 enabled;
@@ -564,7 +559,10 @@ Gfx AlphaTestCombineModes[][5] = {
     },
 };
 
-void* TextureHeapBase = (void*) &TextureHeap;
+void* TextureHeapBase = (void*) TextureHeap;
+
+// Where a battle stage's textures start in the texture heap, from the layout.
+extern char battle_textures_CLASS_VRAM[];
 
 u8 ShroudTintAmt = 0;
 u8 ShroudTintR = 0;
@@ -1359,8 +1357,6 @@ TextureHandle TextureHandles[128];
 BSS s32 NextTextureHandleIdx;
 // The index in the texture pool of the texture each texture handle holds.
 BSS s16 TextureHandlePoolIndices[ARRAY_COUNT(TextureHandles)];
-// The end of the part of the texture heap that textures are loading into.
-BSS void* TextureHeapMax;
 
 extern Addr BattleEntityHeapBottom; // todo ???
 
@@ -2143,7 +2139,7 @@ static s32 tex_pool_load_entry(s32 poolIdx) {
     }
 
     ASSERT_MSG(NextTextureHandleIdx < ARRAY_COUNT(TextureHandles), "Too many textures in one map");
-    ASSERT_MSG(TextureHeapPos + entry->size <= TextureHeapMax, "Ran out of texture memory");
+    ASSERT_MSG(TextureHeapPos + entry->size <= TextureHeapBase + TEXTURE_MEMORY_SIZE, "Ran out of texture memory");
     handleIdx = NextTextureHandleIdx++;
     gTexturePoolHandles[poolIdx] = handleIdx;
     TextureHandlePoolIndices[handleIdx] = poolIdx;
@@ -2170,7 +2166,7 @@ static s32 tex_pool_load_entry(s32 poolIdx) {
     );
     gSPEndDisplayList(((Gfx*) TextureHeapPos));
     TextureHeapPos += sizeof(Gfx);
-    ASSERT_MSG(TextureHeapPos <= TextureHeapMax, "Ran out of texture memory");
+    ASSERT_MSG(TextureHeapPos <= TextureHeapBase + TEXTURE_MEMORY_SIZE, "Ran out of texture memory");
 
     return handleIdx;
 }
@@ -2249,15 +2245,13 @@ void load_next_model_textures(ModelNode* model) {
 
 // load all textures used by models, starting from the root
 void mdl_load_all_textures(ModelNode* rootModel) {
-    s32 baseOffset = 0;
-
-    // textures are loaded to the upper half of the texture heap when not in the world
-    if (gGameStatusPtr->context != CONTEXT_WORLD) {
-        baseOffset = WORLD_TEXTURE_MEMORY_SIZE;
+    // A battle loads code over the bottom of the texture heap, where the map's textures were, so its stage's textures
+    // go above that code. Leaving a battle reloads the map's textures.
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
+        TextureHeapPos = TextureHeapBase;
+    } else {
+        TextureHeapPos = (void*) ALIGN16((u32) battle_textures_CLASS_VRAM);
     }
-
-    TextureHeapPos = TextureHeapBase + baseOffset;
-    TextureHeapMax = TextureHeapPos + (baseOffset == 0 ? WORLD_TEXTURE_MEMORY_SIZE : BATTLE_TEXTURE_MEMORY_SIZE);
 
     if (rootModel != nullptr) {
         s32 i;
@@ -4506,7 +4500,7 @@ void* mdl_get_next_texture_address(s32 size) {
 
     offset = (offset >> 6) << 6;
 
-    if (size + offset > WORLD_TEXTURE_MEMORY_SIZE + BATTLE_TEXTURE_MEMORY_SIZE) {
+    if (size + offset > TEXTURE_MEMORY_SIZE) {
         return nullptr;
     } else {
         return TextureHeapBase + offset;

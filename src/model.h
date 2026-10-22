@@ -3,6 +3,10 @@
 
 #include "common.h"
 
+/// Size of the memory the current map's or battle stage's textures load into.
+#define TEXTURE_MEMORY_SIZE 0x28000
+extern u8 TextureHeap[TEXTURE_MEMORY_SIZE];
+
 typedef union ModelNodePropertyData {
     s32 s;
     f32 f;
