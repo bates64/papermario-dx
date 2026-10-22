@@ -24,7 +24,6 @@ BSS s32 BattleEnemiesCreated;
 void load_stage_assets(Stage* stage) {
     void* compressedAsset;
     ModelNode* rootModel;
-    s32 texturesOffset;
     u32 size;
 
     compressedAsset = load_asset_by_name(gBattleStageShapeName, &size);
@@ -34,9 +33,8 @@ void load_stage_assets(Stage* stage) {
     ASSERT(size <= 0x8000);
 
     rootModel = gMapShapeData.header.root;
-    texturesOffset = get_asset_offset(stage->texture, &size);
     if (rootModel != nullptr) {
-        load_data_for_models(rootModel, texturesOffset, size);
+        load_data_for_models(rootModel);
     }
     load_battle_hit_asset(gBattleStageHitName);
 

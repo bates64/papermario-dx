@@ -34,7 +34,7 @@ typedef struct MapSettings {
         /*      */ s32 msgID;
         /*      */ s32 (*get)(void);
     /* 0x3C */ } tattle;
-    /* 0x40 */ const char* textureArchive;
+    /* 0x40 */ const char* textureArchive; ///< Unused: every map finds its textures in the texture pool
     /* 0x44 */ s8 songVariation; ///< 0 or 1. @see bgm_get_map_default_variation
     /* 0x45 */ s8 sfxReverb;
     /* 0x46 */ PAD(2);
@@ -55,7 +55,6 @@ MapSettings* get_current_map_settings(void);
 /// writes names this size.
 #define ASSET_NAME_MAX 32
 
-extern char wMapTexName[ASSET_NAME_MAX];
 extern char wMapHitName[ASSET_NAME_MAX];
 extern char wMapShapeName[ASSET_NAME_MAX];
 extern char wMapBgName[ASSET_NAME_MAX];

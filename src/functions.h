@@ -345,7 +345,7 @@ void play_model_animation(s32, AnimScriptPtr);
 s32 heap_free(void* ptr);
 
 void load_battle_hit_asset(const char* hitName);
-void load_data_for_models(struct ModelNode* model, s32 romOffset, s32 size);
+void load_data_for_models(struct ModelNode* model);
 void load_player_actor(void);
 
 void btl_bonk_cleanup(void);
@@ -925,7 +925,6 @@ void render_entities(void);
 void render_player(void);
 void render_workers_scene(void);
 void render_effects_scene(void);
-s32 get_asset_offset(const char*, u32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);
 s32 is_status_bar_visible(void);
@@ -1016,7 +1015,7 @@ void load_battle_section(void);
 void btl_update(void);
 void update_item_entities(void);
 void restore_map_collision_data(void);
-void mdl_load_all_textures(struct ModelNode* model, s32 romOffset, s32 size);
+void mdl_load_all_textures(struct ModelNode* model);
 void mdl_calculate_model_sizes(void);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS

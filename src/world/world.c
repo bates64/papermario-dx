@@ -18,7 +18,6 @@ BSS MapSettings gMapSettings;
 
 char wMapHitName[ASSET_NAME_MAX];
 char wMapShapeName[ASSET_NAME_MAX];
-char wMapTexName[ASSET_NAME_MAX];
 char wMapBgName[ASSET_NAME_MAX];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
@@ -108,12 +107,6 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapName);
     gMapSettings = *settings;
 
-    if (gMapSettings.textureArchive != nullptr) {
-        sprintf(wMapTexName, "%s_tex", gMapSettings.textureArchive);
-    } else {
-        sprintf(wMapTexName, "%s_tex", gAreas[areaID].id);
-    }
-
     if (gMapSettings.bgName != nullptr) {
         strcpy(wMapBgName, gMapSettings.bgName);
     }
@@ -183,12 +176,8 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     sfx_set_reverb_mode(WorldReverbModeMapping[gMapSettings.sfxReverb & 0x3]);
     sfx_reset_door_sounds();
 
-    if (!skipLoadingAssets) {
-        s32 texturesOffset = get_asset_offset(wMapTexName, &decompressedSize);
-
-        if (gMapSettings.modelTreeRoot != nullptr) {
-            load_data_for_models(gMapSettings.modelTreeRoot, texturesOffset, decompressedSize);
-        }
+    if (!skipLoadingAssets && gMapSettings.modelTreeRoot != nullptr) {
+        load_data_for_models(gMapSettings.modelTreeRoot);
     }
 
     if (gMapSettings.bgName != nullptr) {
@@ -287,26 +276,6 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
         (u8*) ASSET_TABLE_FIRST_ENTRY + curAsset->offset,
         (u8*) ASSET_TABLE_FIRST_ENTRY + curAsset->offset + curAsset->compressedLength, ret
     );
-    heap_free(assetTableBuffer);
-    return ret;
-}
-
-s32 get_asset_offset(const char* assetName, u32* compressedSize) {
-    AssetHeader firstHeader;
-    AssetHeader* assetTableBuffer;
-    AssetHeader* curAsset;
-    s32 ret;
-
-    dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + sizeof(AssetHeader), &firstHeader);
-    assetTableBuffer = heap_malloc(firstHeader.offset);
-    curAsset = &assetTableBuffer[0];
-    dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
-    while (strcmp(curAsset->name, assetName) != 0) {
-        ASSERT_MSG(curAsset->name[0] != '\0', "Asset not found: %s", assetName);
-        curAsset++;
-    }
-    *compressedSize = curAsset->compressedLength;
-    ret = (s32) ASSET_TABLE_FIRST_ENTRY + curAsset->offset;
     heap_free(assetTableBuffer);
     return ret;
 }

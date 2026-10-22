@@ -2,7 +2,6 @@
 
 export s32 map_init(void) {
     use_map_geometry("arn_20");
-    sprintf(wMapTexName, "arn_tex");
     return false;
 }
 
