@@ -21,7 +21,6 @@ s32 ForegroundModels[] = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "jan_tex",
     .bg = "jan_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
@@ -39,7 +38,6 @@ EvtScript EVS_PreBattle_b = {
 };
 
 OVL_DEF_STAGE(b) = {
-    .texture = "jan_tex",
     .bg = "jan_bg",
     .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,

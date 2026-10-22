@@ -20,7 +20,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "sam_tex",
     .bg = "sam_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

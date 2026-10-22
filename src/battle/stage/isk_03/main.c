@@ -15,7 +15,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "isk_tex",
     .bg = "sbk3_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
@@ -24,7 +23,6 @@ OVL_DEF_STAGE() = {
 // isk_03:b
 
 OVL_DEF_STAGE(b) = {
-    .texture = "isk_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

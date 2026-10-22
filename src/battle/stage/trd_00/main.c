@@ -20,7 +20,6 @@ s32 ForegroundModels[] = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "trd_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,

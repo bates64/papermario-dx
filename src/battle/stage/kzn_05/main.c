@@ -93,7 +93,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "kzn_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

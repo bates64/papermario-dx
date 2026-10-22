@@ -95,7 +95,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "omo_tex",
     .bg = "omo_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,

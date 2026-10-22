@@ -15,7 +15,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "pra_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };
@@ -31,7 +30,6 @@ EvtScript EVS_PreBattle_b = {
 };
 
 OVL_DEF_STAGE(b) = {
-    .texture = "pra_tex",
     .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
 };
@@ -48,7 +46,6 @@ EvtScript EVS_PreBattle_c = {
 };
 
 OVL_DEF_STAGE(c) = {
-    .texture = "pra_tex",
     .preBattle = &EVS_PreBattle_c,
     .postBattle = &EVS_PostBattle,
 };

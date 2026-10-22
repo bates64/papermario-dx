@@ -25,7 +25,6 @@ s32 ForegroundModels[] = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "kzn_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,
@@ -41,7 +40,6 @@ EvtScript EVS_PreBattle_b = {
 };
 
 OVL_DEF_STAGE(b) = {
-    .texture = "kzn_tex",
     .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
     .foregroundModelList = ForegroundModels,

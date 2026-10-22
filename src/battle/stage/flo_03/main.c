@@ -186,7 +186,6 @@ s32 ForegroundVineModels[] = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "flo_tex",
     .bg = "fla_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
