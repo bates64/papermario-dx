@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2026-10-22
+
 ### Icon files replace `Icons.xml` ([Alex](https://starhaven.dev/bates64.com))
 
 Every PNG in `icon/` is now an [icon](https://docs.starhaven.dev/papermario-dx/graphics/icons/), so to add one, add a PNG there. No need to list it in an XML table.
