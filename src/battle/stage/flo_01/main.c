@@ -35,7 +35,6 @@ s32 ForegroundModels[] = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "flo_tex",
     .bg = "fla_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
@@ -67,7 +66,6 @@ s32 ForegroundModels_b[] = {
 };
 
 OVL_DEF_STAGE(b) = {
-    .texture = "flo_tex",
     .bg = "fla_bg",
     .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
@@ -101,7 +99,6 @@ s32 ForegroundModels_c[] = {
 };
 
 OVL_DEF_STAGE(c) = {
-    .texture = "flo_tex",
     .bg = "fla_bg",
     .preBattle = &EVS_PreBattle_c,
     .postBattle = &EVS_PostBattle,

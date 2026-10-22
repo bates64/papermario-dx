@@ -39,7 +39,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "tik_tex",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
 };

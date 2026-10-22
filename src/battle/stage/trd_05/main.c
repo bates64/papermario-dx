@@ -33,7 +33,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "trd_tex",
     .bg = "nok_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
@@ -59,7 +58,6 @@ EvtScript EVS_PreBattle_b = {
 };
 
 OVL_DEF_STAGE(b) = {
-    .texture = "trd_tex",
     .preBattle = &EVS_PreBattle_b,
     .postBattle = &EVS_PostBattle,
 };
@@ -92,7 +90,6 @@ EvtScript EVS_PreBattle_c = {
 };
 
 OVL_DEF_STAGE(c) = {
-    .texture = "trd_tex",
     .preBattle = &EVS_PreBattle_c,
     .postBattle = &EVS_PostBattle,
 };
@@ -124,7 +121,6 @@ EvtScript EVS_PreBattle_d = {
 };
 
 OVL_DEF_STAGE(d) = {
-    .texture = "trd_tex",
     .preBattle = &EVS_PreBattle_d,
     .postBattle = &EVS_PostBattle,
 };
@@ -147,7 +143,6 @@ EvtScript EVS_PreBattle_e = {
 };
 
 OVL_DEF_STAGE(e) = {
-    .texture = "trd_tex",
     .preBattle = &EVS_PreBattle_e,
     .postBattle = &EVS_PostBattle,
 };
@@ -172,7 +167,6 @@ EvtScript EVS_PreBattle_f = {
 };
 
 OVL_DEF_STAGE(f) = {
-    .texture = "trd_tex",
     .preBattle = &EVS_PreBattle_f,
     .postBattle = &EVS_PostBattle,
 };

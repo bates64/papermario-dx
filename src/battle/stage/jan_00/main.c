@@ -24,7 +24,6 @@ EvtScript EVS_PostBattle = {
 };
 
 OVL_DEF_STAGE() = {
-    .texture = "jan_tex",
     .bg = "yos_bg",
     .preBattle = &EVS_PreBattle,
     .postBattle = &EVS_PostBattle,
