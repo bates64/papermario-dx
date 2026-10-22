@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### Maps and stages can use any texture (Clover)
+
+Every texture is now in one shared pool, so a map or battle stage is no longer limited to one texture archive. The folders in `mapfs/tex` only group textures.
+
+To update a mod:
+
+- Delete `.texture` from each battle stage and `.textureArchive` from each map.
+- Delete any code that sets `wMapTexName`. A map can use another area's textures without it.
+- If two of the mod's textures share a name, rename one of them. Names must be unique across every folder in `mapfs/tex`.
+- In calls to `load_data_for_models` and `mdl_load_all_textures`, delete the texture archive's offset and size. Both take only the root model.
+- Replace calls to `get_asset_offset`, which is removed, with `load_asset_by_name`, which loads the asset.
+- Delete calls to `load_texture_variants`, which is removed. Loading a map's textures loads their variants too.
+
 ## 2026-10-22
 
 ### Icon files replace `Icons.xml` ([Alex](https://starhaven.dev/bates64.com))
