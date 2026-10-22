@@ -23,7 +23,9 @@ SaveBootRecord gSaveBootRecord ALIGNED8;
 #define BOOT_RECORD_FIRST_PAGE 1
 SaveData gCurrentSaveFile ALIGNED8;
 
-_Static_assert(sizeof(DX_MOD_NAME) <= ARRAY_COUNT(gCurrentSaveFile.modName), "DX_MOD_NAME is too long to fit in a save file");
+_Static_assert(
+    sizeof(DX_MOD_NAME) <= ARRAY_COUNT(gCurrentSaveFile.modName), "DX_MOD_NAME is too long to fit in a save file"
+);
 
 char MagicSaveString[] = "Mario Story 006";
 
