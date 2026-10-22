@@ -184,8 +184,11 @@ let
       mkdir -p $out
       # Fixed file order, times, and owners keep the archive the same when its
       # contents are, so the publish step stores an unchanged toolchain once.
+      # Each -9 thread takes about 674 MiB, so two threads keep it inside a CI
+      # container's memory. The archive is the same however many threads
+      # compress it.
       tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -c $dir \
-        | xz -9 -T0 > $out/papermario-dx-${platformTag}.tar.xz
+        | xz -9 -T2 > $out/papermario-dx-${platformTag}.tar.xz
     '';
 in
 archive
