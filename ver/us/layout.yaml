@@ -19,6 +19,11 @@ asset_stack:
 classes:
   battle: { vram: 0x8023E000, follows: [heaps_legacy] }
   battle_move: { vram: 0x802A1000, follows: [battle] }
+  # Where a battle stage's textures start in the texture heap: above the
+  # segments a battle loads into the heap's range once its stage is loaded.
+  # The heap setup and shims a battle runs as it starts don't count, as they
+  # finish before the stage's textures load.
+  battle_textures: { follows: [battle_move] }
   dgb_01_smash_bridges: { vram: 0x80200000, vram_symbol: D_80200000 }
   effect_gfx: { vram: 0x9000000 }
   engine1: { vram: 0x800DC500, follows: [main] }
