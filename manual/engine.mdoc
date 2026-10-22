@@ -51,9 +51,9 @@ Not everything the game loads is an overlay. Map geometry, textures, sprites, me
 | [**Item entity**](/papermario-dx/items/add-an-item/#giving-the-item-to-the-player) | An item placed in the world, such as a coin |
 | [**Trigger**](/papermario-dx/world/triggers/) | Something that starts an EVT script, such as pressing **A** at a wall |
 
-The world is divided into **areas**, and each area holds one or more [**maps**](/papermario-dx/world/create-a-map/). An area groups maps for technical reasons: they usually share textures and the same area flags, and they don't have to be one place in the story.
+The world is divided into **areas**, and each area holds one or more [**maps**](/papermario-dx/world/create-a-map/). An area groups maps that share the same area flags, and its maps don't have to be one place in the story.
 
-When a map loads, the engine loads its code and assets and starts its main EVT script, set as `.main` in its `OVL_DEF_MAP()`. The main EVT script sets up everything else on the map: its NPCs, entities, exits, and anything else it needs. Before the map's geometry loads, an optional `map_init` C function can choose different geometry or textures.
+When a map loads, the engine loads its code and assets and starts its main EVT script, set as `.main` in its `OVL_DEF_MAP()`. The main EVT script sets up everything else on the map: its NPCs, entities, exits, and anything else it needs. Before the map's geometry loads, an optional `map_init` C function can choose different geometry. Each model finds its textures in the texture pool by name, so a map can use any texture.
 
 NPCs are placed in groups, and each group has an [**encounter**](/papermario-dx/world/npcs/#enemies). For enemies, the encounter chooses which battle starts when they touch the player. Most NPCs move with C **AI** functions, which enemies use to notice and chase the player, and other NPCs use to wander.
 

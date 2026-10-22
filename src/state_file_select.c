@@ -53,7 +53,7 @@ void state_init_file_select(void) {
     general_heap_create();
     hud_element_set_aux_cache(0, 0);
     hud_element_clear_cache();
-    mdl_load_all_textures(nullptr, 0, 0);
+    mdl_load_all_textures(nullptr);
 
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
     gCameras[CAM_DEFAULT].needsInit = true;

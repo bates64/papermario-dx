@@ -189,7 +189,7 @@ void state_step_end_battle(void) {
                     );
                 }
 
-                mdl_load_all_textures(mapSettings->modelTreeRoot, get_asset_offset(wMapTexName, &sizeTemp), sizeTemp);
+                mdl_load_all_textures(mapSettings->modelTreeRoot);
                 mdl_calculate_model_sizes();
                 npc_reload_all();
 

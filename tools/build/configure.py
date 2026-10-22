@@ -682,12 +682,6 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "tex",
-        description="Building texture $tex_name",
-        command=f"$python {BUILD_TOOLS}/mapfs/tex.py $out $tex_name $asset_stack",
-    )
-
-    ninja.rule(
         "pack_title_data",
         description="Packing title screen data",
         command=f"$python {BUILD_TOOLS}/mapfs/pack_title_data.py $version $out $in",
@@ -1307,7 +1301,6 @@ class Configure:
         for name in self.map_sources():
             contents.append(self.map_build_dir() / f"{name}_shape.bin")
             contents.append(self.map_build_dir() / f"{name}_hit.bin")
-        contents += [mapfs / "tex" / f"{n[:-5]}.bin" for n in names("tex", "*_tex.json")]
         contents += [mapfs / "bg" / n for n in names("bg", "*_bg.png")]
         contents.append(mapfs / "title_data.bin")
         contents += [mapfs / "party" / n for n in names("party", "*.png")]
@@ -1525,19 +1518,6 @@ class Configure:
                     implicit_deps=sorted(
                         (ROOT / path.parent).glob(path.name.split(".")[0] + ".*.png")
                     ),
-                )
-            elif name.endswith("_tex"):
-                compress = False
-                tex_dir = path.parent / name
-                build(
-                    bin_path,
-                    [tex_dir, path.parent / (name + ".json")],
-                    "tex",
-                    variables={
-                        "tex_name": name,
-                        "asset_stack": ",".join(self.asset_stack),
-                    },
-                    asset_deps=[f"mapfs/tex/{name}"],
                 )
             elif name.endswith("_shape"):
                 compress = True

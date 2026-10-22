@@ -413,7 +413,7 @@ class TexImage:
             used = {index for row in rows for index in row}
             palette = img.palette(alpha="force")
 
-            # load_texture_by_name assumes palettes have a particular length
+            # get_texture_sizes assumes palettes have a particular length
             palette_count = (0x20 if fmt_str == "CI4" else 0x200) // 2
             if max(used) >= palette_count:
                 print(f"warning: {self.img_name} uses more than {palette_count} colors, truncating")
@@ -491,7 +491,7 @@ class TexImage:
 
     def expected_size(self) -> int:
         """
-        Uses logic from load_texture_by_name to calculate the expected size.
+        Uses logic from get_texture_sizes to calculate the expected size.
         """
 
         raster_size = self.main_width * self.main_height

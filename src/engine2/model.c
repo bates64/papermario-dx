@@ -1312,8 +1312,6 @@ ModelNode** gCurrentModelTreeRoot;
 ModelTransformGroupList* gCurrentTransformGroups;
 ModelCustomGfxList* gCurrentCustomModelGfxPtr;
 
-BSS TextureHeader gCurrentTextureHeader ALIGNED(16);
-
 BSS ModelList wModelList;
 BSS ModelList bModelList;
 
@@ -2161,101 +2159,6 @@ get_texture_sizes(TextureHeader* header, u32* rasterSize, u32* paletteSize, u32*
     }
 }
 
-void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 size) {
-    char* textureName = (char*) propertyName->data.p;
-    u32 startOffset = romOffset;
-    s32 textureIdx = 0;
-    u32 paletteSize = 0;
-    u32 rasterSize = 0;
-    u32 auxPaletteSize = 0;
-    u32 auxRasterSize = 0;
-    TextureHeader* header;
-    TextureHandle* textureHandle;
-    s32 mainSize;
-
-    if (textureName == nullptr) {
-        (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
-        return;
-    }
-
-    while (romOffset < startOffset + size) {
-        dma_copy((u8*) romOffset, (u8*) romOffset + sizeof(gCurrentTextureHeader), &gCurrentTextureHeader);
-        header = &gCurrentTextureHeader;
-
-        get_texture_sizes(header, &rasterSize, &paletteSize, &auxRasterSize, &auxPaletteSize);
-
-        if (strcmp(textureName, header->name) == 0) {
-            // found the texture with `textureName`
-            break;
-        }
-
-        textureIdx++;
-        mainSize = rasterSize + paletteSize + sizeof(*header);
-        romOffset += mainSize;
-        romOffset += auxRasterSize + auxPaletteSize;
-    }
-
-    if (romOffset >= startOffset + size) {
-        // did not find the texture with `textureName`
-        printf("could not find texture '%s'\n", textureName);
-        (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
-        return;
-    }
-
-    (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = textureIdx + 1;
-    textureHandle = &TextureHandles[(*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID];
-    romOffset += sizeof(*header);
-
-    if (textureHandle->gfx == nullptr) {
-        load_texture_impl(romOffset, textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize);
-        load_texture_variants(
-            romOffset + rasterSize + paletteSize + auxRasterSize + auxPaletteSize,
-            (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID, startOffset, size
-        );
-    }
-}
-
-// loads variations for current texture by looping through the following textures until a non-variant is found
-void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 size) {
-    u32 offset;
-    TextureHeader iterTextureHeader;
-    TextureHeader* header;
-    TextureHandle* textureHandle;
-    u32 rasterSize;
-    u32 paletteSize;
-    u32 auxRasterSize;
-    u32 auxPaletteSize;
-    s32 mainSize;
-    s32 currentTextureID = textureID;
-
-    for (offset = romOffset; offset < baseOffset + size;) {
-        dma_copy((u8*) offset, (u8*) offset + sizeof(iterTextureHeader), &iterTextureHeader);
-        header = &iterTextureHeader;
-
-        if (strcmp(header->name, "end_of_textures") == 0) {
-            return;
-        }
-
-        if (!header->isVariant) {
-            // done reading variants
-            break;
-        }
-
-        get_texture_sizes(header, &rasterSize, &paletteSize, &auxRasterSize, &auxPaletteSize);
-
-        textureID++;
-        currentTextureID = textureID;
-        textureHandle = &TextureHandles[currentTextureID];
-        load_texture_impl(
-            offset + sizeof(*header), textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize
-        );
-
-        mainSize = rasterSize + paletteSize + sizeof(*header);
-        offset += mainSize;
-        offset += auxRasterSize + auxPaletteSize;
-    }
-}
-
 ModelNodeProperty* get_model_property(ModelNode* node, ModelPropertyKeys key) {
     s32 numProperties = node->numProperties;
     ModelNodeProperty* propertyList = node->propertyList;
@@ -2330,7 +2233,7 @@ s32 tex_pool_variant_handle(s32 handleIdx, s32 variation) {
 }
 
 // load textures used by models, starting from current model
-void load_next_model_textures(ModelNode* model, s32 romOffset, s32 texSize) {
+void load_next_model_textures(ModelNode* model) {
     if (model->type != SHAPE_TYPE_MODEL) {
         if (model->groupData != nullptr) {
             s32 numChildren = model->groupData->numChildren;
@@ -2339,7 +2242,7 @@ void load_next_model_textures(ModelNode* model, s32 romOffset, s32 texSize) {
                 s32 i;
 
                 for (i = 0; i < numChildren; i++) {
-                    load_next_model_textures(model->groupData->childList[i], romOffset, texSize);
+                    load_next_model_textures(model->groupData->childList[i]);
                 }
             }
         }
@@ -2353,7 +2256,7 @@ void load_next_model_textures(ModelNode* model, s32 romOffset, s32 texSize) {
 }
 
 // load all textures used by models, starting from the root
-void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 size) {
+void mdl_load_all_textures(ModelNode* rootModel) {
     s32 baseOffset = 0;
 
     // textures are loaded to the upper half of the texture heap when not in the world
@@ -2364,7 +2267,7 @@ void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 size) {
     TextureHeapPos = TextureHeapBase + baseOffset;
     TextureHeapMax = TextureHeapPos + (baseOffset == 0 ? WORLD_TEXTURE_MEMORY_SIZE : BATTLE_TEXTURE_MEMORY_SIZE);
 
-    if (rootModel != nullptr && romOffset != 0 && size != 0) {
+    if (rootModel != nullptr) {
         s32 i;
 
         for (i = 0; i < ARRAY_COUNT(TextureHandles); i++) {
@@ -2374,9 +2277,7 @@ void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 size) {
         tex_pool_clear_assignments();
 
         TreeIterPos = 0;
-        if (rootModel != nullptr) {
-            load_next_model_textures(rootModel, romOffset, size);
-        }
+        load_next_model_textures(rootModel);
     }
 }
 
@@ -3388,14 +3289,12 @@ Model* get_model_from_list_index(s32 listIndex) {
     return (*gCurrentModels)[listIndex];
 }
 
-void load_data_for_models(ModelNode* rootModel, s32 texturesOffset, s32 size) {
+void load_data_for_models(ModelNode* rootModel) {
     Matrix4f mtx;
 
     guMtxIdentF(mtx);
 
-    if (texturesOffset != 0) {
-        mdl_load_all_textures(rootModel, texturesOffset, size);
-    }
+    mdl_load_all_textures(rootModel);
 
     *gCurrentModelTreeRoot = rootModel;
     TreeIterPos = 0;

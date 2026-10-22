@@ -108,7 +108,7 @@ typedef FormationRow Formation[];
 
 /// A battle stage. Its geometry is the stage.xml in its directory.
 typedef struct Stage {
-    /* 0x00 */ const char* texture;
+    /* 0x00 */ const char* texture; ///< Unused: every stage finds its textures in the texture pool
     /* 0x04 */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
     /* 0x08 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
     /* 0x0C */ const char* bg;
