@@ -2,21 +2,21 @@
 
 #include "common.h"
 
-#define TXP_UNASSIGNED -1
-
-/// A texture in the texture pool, which holds every map's textures.
+/// Where a texture is in the texture pool, which holds every map's textures. Entries are in their texture archives'
+/// order, so a texture's variants are the entries after it.
 typedef struct TexPoolEntry {
-    /* 0x00 */ const char name[32];
-    /* 0x20 */ const u32 romStart; ///< Offset from tex_pool_ROM_START
-    /* 0x24 */ const u32 romEnd;
-    /* 0x28 */ s32 assignedHandleIdx; ///< The texture handle it's loaded into, or TXP_UNASSIGNED
-    /* 0x2C */ char reserved[4];
-} TexPoolEntry; // size = 0x30
+    /* 0x00 */ u32 romStart; ///< Offset from tex_pool_ROM_START of the texture's header
+    /* 0x04 */ u32 size;     ///< Size of the header and every image and palette after it
+} TexPoolEntry; // size = 0x08
 
-extern TexPoolEntry gTexturePoolEntries[];
+extern const TexPoolEntry gTexturePoolEntries[];
+extern const s32 gTexturePoolCount;
 
-/// The texture named `name`, or nullptr if the pool has no texture with that name.
-TexPoolEntry* tex_pool_lookup(const char* name);
+/// How many of the entries after each pool texture are its variants.
+extern const u8 gTexturePoolVariantCounts[];
 
-/// Forgets which textures are loaded, before a map or battle loads its textures.
-void tex_pool_clear_assignments(void);
+/// The texture handle each pool texture is loaded into, or 0 if it isn't loaded.
+extern u8 gTexturePoolHandles[];
+
+/// The index in the pool of the texture named `name`, or -1 if the pool has no texture with that name.
+s32 tex_pool_find(const char* name);

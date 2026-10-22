@@ -1357,8 +1357,8 @@ TextureHandle TextureHandles[128];
 
 // The next free texture handle. Handle 0 means a model has no texture.
 BSS s32 NextTextureHandleIdx;
-// The pool texture each texture handle holds.
-BSS TexPoolEntry* TextureHandlePoolEntries[ARRAY_COUNT(TextureHandles)];
+// The index in the texture pool of the texture each texture handle holds.
+BSS s16 TextureHandlePoolIndices[ARRAY_COUNT(TextureHandles)];
 // The end of the part of the texture heap that textures are loading into.
 BSS void* TextureHeapMax;
 
@@ -2035,50 +2035,6 @@ void appendGfx_model(void* data) {
     gDPPipeSync((*gfxPos)++);
 }
 
-void load_texture_impl(
-    u32 romOffset, TextureHandle* handle, TextureHeader* header, s32 mainSize, s32 mainPalSize, s32 auxSize,
-    s32 auxPalSize
-) {
-    Gfx** temp;
-
-    // load main img + palette to texture heap
-    handle->raster = (IMG_PTR) TextureHeapPos;
-    if (mainPalSize != 0) {
-        handle->palette = (PAL_PTR) (TextureHeapPos + mainSize);
-    } else {
-        handle->palette = nullptr;
-    }
-    dma_copy((u8*) romOffset, (u8*) (romOffset + mainSize + mainPalSize), TextureHeapPos);
-    romOffset += mainSize + mainPalSize;
-    TextureHeapPos += mainSize + mainPalSize;
-
-    // load aux img + palette to texture heap
-    if (auxSize != 0) {
-        handle->auxRaster = (IMG_PTR) TextureHeapPos;
-        if (auxPalSize != 0) {
-            handle->auxPalette = (PAL_PTR) (TextureHeapPos + auxSize);
-        } else {
-            handle->auxPalette = nullptr;
-        }
-        dma_copy((u8*) romOffset, (u8*) (romOffset + auxSize + auxPalSize), TextureHeapPos);
-        TextureHeapPos += auxSize + auxPalSize;
-    } else {
-        handle->auxPalette = nullptr;
-        handle->auxRaster = nullptr;
-    }
-
-    // copy header data and create a display list for the texture
-    handle->gfx = (Gfx*) TextureHeapPos;
-    memcpy(&handle->header, header, sizeof(*header));
-    make_texture_gfx(
-        header, (Gfx**) &TextureHeapPos, handle->raster, handle->palette, handle->auxRaster, handle->auxPalette, 0, 0,
-        0, 0
-    );
-
-    temp = (Gfx**) &TextureHeapPos;
-    gSPEndDisplayList((*temp)++);
-}
-
 // Sizes of the main image, its palette, the aux image, and its palette that follow a texture header.
 static void
 get_texture_sizes(TextureHeader* header, u32* rasterSize, u32* paletteSize, u32* auxRasterSize, u32* auxPaletteSize) {
@@ -2174,62 +2130,98 @@ ModelNodeProperty* get_model_property(ModelNode* node, ModelPropertyKeys key) {
 
 // Loads a texture from the texture pool, which holds every map's textures, and returns its handle. A texture loads
 // once, and every model that uses it shares its handle.
-static s32 tex_pool_load_entry(TexPoolEntry* entry) {
-    TextureHandle* textureHandle;
-    TextureHeader header;
+static s32 tex_pool_load_entry(s32 poolIdx) {
+    const TexPoolEntry* entry = &gTexturePoolEntries[poolIdx];
+    TextureHandle* handle;
     u32 rasterSize, paletteSize, auxRasterSize, auxPaletteSize;
-    u32 romOffset;
-    s32 handleIdx;
+    u32 romOffset = (u32) tex_pool_ROM_START + entry->romStart;
+    s32 handleIdx = gTexturePoolHandles[poolIdx];
+    u8* data;
 
-    if (entry->assignedHandleIdx != TXP_UNASSIGNED) {
-        return entry->assignedHandleIdx;
+    if (handleIdx != 0) {
+        return handleIdx;
     }
 
     ASSERT_MSG(NextTextureHandleIdx < ARRAY_COUNT(TextureHandles), "Too many textures in one map");
+    ASSERT_MSG(TextureHeapPos + entry->size <= TextureHeapMax, "Ran out of texture memory");
     handleIdx = NextTextureHandleIdx++;
-    entry->assignedHandleIdx = handleIdx;
-    TextureHandlePoolEntries[handleIdx] = entry;
-    textureHandle = &TextureHandles[handleIdx];
+    gTexturePoolHandles[poolIdx] = handleIdx;
+    TextureHandlePoolIndices[handleIdx] = poolIdx;
+    handle = &TextureHandles[handleIdx];
 
-    romOffset = (u32) tex_pool_ROM_START + entry->romStart;
-    dma_copy((u8*) romOffset, (u8*) romOffset + sizeof(header), &header);
-    romOffset += sizeof(header);
+    // the header arrives with its images and palettes, which then move down over it, so only the handle keeps it
+    dma_copy((u8*) romOffset, (u8*) romOffset + entry->size, TextureHeapPos);
+    memcpy(&handle->header, TextureHeapPos, sizeof(handle->header));
+    memmove(TextureHeapPos, TextureHeapPos + sizeof(handle->header), entry->size - sizeof(handle->header));
+    data = TextureHeapPos;
+    TextureHeapPos += entry->size - sizeof(handle->header);
 
-    get_texture_sizes(&header, &rasterSize, &paletteSize, &auxRasterSize, &auxPaletteSize);
-    ASSERT_MSG(
-        TextureHeapPos + rasterSize + paletteSize + auxRasterSize + auxPaletteSize <= TextureHeapMax,
-        "Ran out of texture memory"
+    get_texture_sizes(&handle->header, &rasterSize, &paletteSize, &auxRasterSize, &auxPaletteSize);
+    handle->raster = data;
+    handle->palette = paletteSize != 0 ? (PAL_PTR) (data + rasterSize) : nullptr;
+    data += rasterSize + paletteSize;
+    handle->auxRaster = auxRasterSize != 0 ? data : nullptr;
+    handle->auxPalette = auxPaletteSize != 0 ? (PAL_PTR) (data + auxRasterSize) : nullptr;
+
+    handle->gfx = (Gfx*) TextureHeapPos;
+    make_texture_gfx(
+        &handle->header, (Gfx**) &TextureHeapPos, handle->raster, handle->palette, handle->auxRaster,
+        handle->auxPalette, 0, 0, 0, 0
     );
-    load_texture_impl(romOffset, textureHandle, &header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize);
+    gSPEndDisplayList(((Gfx*) TextureHeapPos));
+    TextureHeapPos += sizeof(Gfx);
+    ASSERT_MSG(TextureHeapPos <= TextureHeapMax, "Ran out of texture memory");
+
     return handleIdx;
 }
 
 void tex_pool_load_texture(ModelNodeProperty* propertyName) {
     ModelTreeInfo* treeInfo = &(*gCurrentModelTreeNodeInfo)[TreeIterPos];
     char* textureName = (char*) propertyName->data.p;
-    TexPoolEntry* entry;
+    s32 poolIdx;
 
     if (textureName == nullptr) {
         treeInfo->textureID = 0;
         return;
     }
 
-    entry = tex_pool_lookup(textureName);
-    if (entry == nullptr) {
+    poolIdx = tex_pool_find(textureName);
+    if (poolIdx < 0) {
         printf("could not find texture '%s'\n", textureName);
         treeInfo->textureID = 0;
         return;
     }
 
-    treeInfo->textureID = tex_pool_load_entry(entry);
+    treeInfo->textureID = tex_pool_load_entry(poolIdx);
 }
 
-// The handle of a texture's variant, which is the texture `variation` places after it in its texture archive.
+// Loads the textures marked as variants of every texture the models use, so drawing never has to load one.
+static void tex_pool_load_variants(void) {
+    s32 modelTextureCount = NextTextureHandleIdx;
+    s32 handleIdx;
+    s32 i;
+
+    for (handleIdx = 1; handleIdx < modelTextureCount; handleIdx++) {
+        s32 poolIdx = TextureHandlePoolIndices[handleIdx];
+
+        for (i = 1; i <= gTexturePoolVariantCounts[poolIdx]; i++) {
+            tex_pool_load_entry(poolIdx + i);
+        }
+    }
+}
+
+// The handle of the texture `variation` places after a texture in its texture archive, or 0 for no texture if the
+// map didn't load it.
 s32 tex_pool_variant_handle(s32 handleIdx, s32 variation) {
+    s32 poolIdx = TextureHandlePoolIndices[handleIdx] + variation;
+
     if (variation == 0) {
         return handleIdx;
     }
-    return tex_pool_load_entry(TextureHandlePoolEntries[handleIdx] + variation);
+    if (poolIdx >= gTexturePoolCount) {
+        return 0;
+    }
+    return gTexturePoolHandles[poolIdx];
 }
 
 // load textures used by models, starting from current model
@@ -2273,11 +2265,15 @@ void mdl_load_all_textures(ModelNode* rootModel) {
         for (i = 0; i < ARRAY_COUNT(TextureHandles); i++) {
             TextureHandles[i].gfx = nullptr;
         }
+        // forget only the pool textures the previous load used
+        for (i = 1; i < NextTextureHandleIdx; i++) {
+            gTexturePoolHandles[TextureHandlePoolIndices[i]] = 0;
+        }
         NextTextureHandleIdx = 1;
-        tex_pool_clear_assignments();
 
         TreeIterPos = 0;
         load_next_model_textures(rootModel);
+        tex_pool_load_variants();
     }
 }
 
