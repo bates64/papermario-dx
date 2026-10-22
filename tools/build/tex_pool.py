@@ -159,35 +159,71 @@ def archive_names(asset_stack: Tuple[Path, ...]) -> List[str]:
     return sorted(names)
 
 
+def hash_texture_name(name: str) -> int:
+    """FNV-1a, as hash_texture_name in src/dx/texture_pool.c."""
+    h = 0x811C9DC5
+    for byte in name.encode("ascii"):
+        h ^= byte
+        h = (h * 0x01000193) & 0xFFFFFFFF
+    return h
+
+
 def build(out_path: Path, header_path: Path, asset_stack: Tuple[Path, ...]):
     out_bytes = bytearray()
-    entries: List[Tuple[str, int, int]] = []
+    # each texture's name, start, size, and how many variants follow it
+    entries: List[Tuple[str, int, int, int]] = []
     archive_of: Dict[str, str] = {}
 
     for archive in archive_names(asset_stack):
         with open(get_asset_path(Path(f"mapfs/tex/{archive}.json"), asset_stack)) as f:
             textures = json.load(f)
 
-        for texture in textures:
+        for index, texture in enumerate(textures):
             name = texture["name"]
             if name in archive_of:
                 raise Exception(f"Texture {name} is in both {archive_of[name]} and {archive}")
             archive_of[name] = archive
 
+            variants = 0
+            while index + 1 + variants < len(textures) and textures[index + 1 + variants].get("variant", False):
+                variants += 1
+
             start = len(out_bytes)
             img_from_json(texture, archive, asset_stack).add_bytes(archive, out_bytes)
-            entries.append((name, start, len(out_bytes)))
+            entries.append((name, start, len(out_bytes) - start, variants))
+
+    hashes: Dict[int, str] = {}
+    for name, *_ in entries:
+        h = hash_texture_name(name)
+        if h in hashes:
+            raise Exception(f"Textures {hashes[h]} and {name} have the same hash; rename one of them")
+        hashes[h] = name
+    by_hash = sorted((hash_texture_name(name), index) for index, (name, *_) in enumerate(entries))
 
     with open(out_path, "wb") as f:
         f.write(out_bytes)
 
     with open(header_path, "w") as f:
         f.write('#include "dx/texture_pool.h"\n\n')
-        f.write("TexPoolEntry gTexturePoolEntries[] = {\n")
-        for name, start, end in entries:
-            f.write(f'    {{ "{name}", 0x{start:X}, 0x{end:X}, TXP_UNASSIGNED }},\n')
-        f.write("    {},\n")
-        f.write("};\n")
+        f.write(f"const s32 gTexturePoolCount = {len(entries)};\n\n")
+        f.write("const TexPoolEntry gTexturePoolEntries[] = {\n")
+        for name, start, size, _ in entries:
+            f.write(f"    {{ 0x{start:X}, 0x{size:X} }}, // {name}\n")
+        f.write("};\n\n")
+        f.write("const u8 gTexturePoolVariantCounts[] = {\n")
+        for name, _, _, variants in entries:
+            f.write(f"    {variants}, // {name}\n")
+        f.write("};\n\n")
+        f.write("// Every texture's name hash, sorted, and the index in gTexturePoolEntries of the texture with each.\n")
+        f.write("static const u32 gTexturePoolHashes[] = {\n")
+        for h, _ in by_hash:
+            f.write(f"    0x{h:08X},\n")
+        f.write("};\n\n")
+        f.write("static const u16 gTexturePoolHashIndices[] = {\n")
+        for _, index in by_hash:
+            f.write(f"    {index},\n")
+        f.write("};\n\n")
+        f.write(f"u8 gTexturePoolHandles[{len(entries)}];\n")
 
 
 if __name__ == "__main__":
