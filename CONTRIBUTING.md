@@ -34,7 +34,7 @@ Modders find out what changed from the changelog in `manual/changelog.md`. Each 
 
 If modders will notice your change, add a bullet to the Unreleased section of the changelog. Say what changed and, if they have to do something after updating, what to do. If it isn't obvious who will notice and why, add a sentence about that too. It's much easier to write now than to dig out of the diff later.
 
-Leave out changes that only affect working on Paper Mario DX itself, such as CI and the release scripts.
+Leave out changes outside `src` and `assets`, such as to `tools`, CI, or the release scripts, unless modders will notice them another way, such as a slower build. Diorama64 shows only the files in the asset stack by default, so most modders never see the rest.
 
 ### Before a release
 
