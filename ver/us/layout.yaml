@@ -100,6 +100,7 @@ segments:
   - { name: sprites }
   - { name: msg }
   - { name: mapfs }
+  - { name: tex_pool }
 
 # Which segment links each asset object, matched by the directory it sits in.
 # A directory marked "each" gives every file its own segment, named by the
@@ -128,6 +129,7 @@ assets:
     assets/us/n_aspMain_text.bin: main
     assets/us/rspboot_font.bin: boot
     assets/us/sprite_shading_profiles.bin: sprite_shading_profiles
+    assets/us/tex_pool.bin: tex_pool
 
 # Directories whose images are packed into a larger blob rather than being
 # textures in their own right.
