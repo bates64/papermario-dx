@@ -617,6 +617,12 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "tex_pool",
+        description="Building the texture pool",
+        command=f"$python {BUILD_TOOLS}/tex_pool.py $out $header_path $asset_stack",
+    )
+
+    ninja.rule(
         "move_data",
         description="Generating move data",
         command=f"$python {BUILD_TOOLS}/move_data.py $out $in",
@@ -1123,6 +1129,17 @@ class Configure:
             variables={"header_path": icon_header, "asset_stack": asset_stack},
             implicit_outputs=[icon_header],
             implicit_deps=self.layer_tree("icon"),
+        )
+
+        tex_pool_header = posix(self.build_path() / "include" / "tex_pool_table.h")
+        packed(
+            "tex_pool.bin",
+            "tex_pool",
+            [],
+            variables={"header_path": tex_pool_header, "asset_stack": asset_stack},
+            implicit_outputs=[tex_pool_header],
+            implicit_deps=self.layer_tree("mapfs/tex")
+            + [posix(BUILD_TOOLS / "tex_pool.py"), "tools/splat_ext/tex_archives.py"],
         )
 
         shading_header = posix(
