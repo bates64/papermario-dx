@@ -188,4 +188,4 @@ git fetch papermario-dx
 git merge papermario-dx/main
 ```
 
-`main` can hold unfinished work, and its changes aren't in the changelog's release notes until the next release. A toolchain is published for every release but only for the newest commits on `main`. If you merge an older `main` commit, the build can fail with an error that no commit in your history has a published toolchain. Merge a release to fix it.
+`main` can hold unfinished work, and its changes aren't in the changelog's release notes until the next release. Every release and every commit on `main` gets a toolchain. A `main` commit's toolchain is deleted 90 days after the next commit lands. If you've merged a `main` commit whose toolchain has been deleted, your build warns you and keeps using the toolchain you already downloaded. A fresh copy of your project has nothing to fall back on, so its build fails with an error that no commit in your history has a published toolchain. Merge a release to fix it.
