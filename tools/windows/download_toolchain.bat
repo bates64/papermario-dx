@@ -55,9 +55,20 @@ for /f "usebackq delims=" %%L in (`findstr /l /b /g:"%PUBLISHED%" "%HISTORY%" 2^
 )
 del "%HISTORY%" "%PUBLISHED%"
 
+set "LATEST_RELEASE="
+for /f "usebackq tokens=1-2" %%A in ("%INDEX%") do (
+    if "%%A"=="release" set "LATEST_RELEASE=%%B"
+)
+set "UPDATING_URL=https://docs.starhaven.dev/papermario-dx/developing/without-diorama64/#updating-dx"
 if not defined COMMIT (
+    if exist "%TOOLCHAIN_DIR%\bin\ninja.exe" (
+        echo Warning: no commit in this history has a published windows toolchain any more, so the installed one is used.
+        echo To get a published toolchain again, merge dx's newest release, !LATEST_RELEASE!: !UPDATING_URL!
+        exit /b 0
+    )
     echo Error: no commit in this history has a published windows toolchain.
-    echo Toolchains are kept for every dx release and dx's newest commits on main. Merge a dx release, then build again.
+    echo dx keeps toolchains for every release, and for each commit on main until 90 days after the next one.
+    echo Merge dx's newest release, !LATEST_RELEASE!, then build again: !UPDATING_URL!
     exit /b 1
 )
 set "HASH="

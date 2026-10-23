@@ -62,9 +62,17 @@ else
   exit 1
 fi
 
+LATEST_RELEASE=$(awk '$1 == "release" { tag = $2 } END { print tag }' "$INDEX")
+UPDATING_URL="https://docs.starhaven.dev/papermario-dx/developing/without-diorama64/#updating-dx"
 if [ -z "$COMMIT" ]; then
+  if [ -x "$TOOLCHAIN_DIR/bin/mips-linux-gnu-gcc" ]; then
+    echo "Warning: no commit in this history has a published $PLATFORM toolchain any more, so the installed one is used." >&2
+    echo "To get a published toolchain again, merge dx's newest release, $LATEST_RELEASE: $UPDATING_URL" >&2
+    exit 0
+  fi
   echo "Error: no commit in this history has a published $PLATFORM toolchain." >&2
-  echo "Toolchains are kept for every dx release and dx's newest commits on main. Merge a dx release, then build again." >&2
+  echo "dx keeps toolchains for every release, and for each commit on main until 90 days after the next one." >&2
+  echo "Merge dx's newest release, $LATEST_RELEASE, then build again: $UPDATING_URL" >&2
   exit 1
 fi
 HASH=$(awk -v commit="$COMMIT" -v key="$PLATFORM.tar.xz" '$1 == "commit" && $2 == commit && $3 == key { print $4; exit }' "$INDEX")
