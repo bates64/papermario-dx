@@ -9,11 +9,13 @@
 # commit it's for.
 #
 # Each line of the index is either `commit <commit> <file> <hash>`, for each
-# toolchain a kept commit has, or `release <tag> <commit>`, for each release.
+# toolchain a remaining record names, or `release <tag> <commit>`, for each
+# release.
 #
 # Run it from a clone of dx, with S3_ENDPOINT and AWS credentials set. Set
 # DRY_RUN=1 to print what it would delete instead of deleting it. It writes the
-# index either way, since the download scripts can't work without it.
+# index either way, since the download scripts can't work without it; after a
+# dry run, the index also lists the commits it would have deleted.
 set -euo pipefail
 
 KEEP_MAIN=50
@@ -64,9 +66,9 @@ aws s3 ls "$BUCKET/toolchains/" | while read -r day _ _ name; do
 done
 
 index=$(
-  for commit in $keep; do
-    [ -d "$records/$commit" ] || continue
-    for record in "$records/$commit"/*; do
+  for dir in "$records"/*/; do
+    commit=$(basename "$dir")
+    for record in "$dir"*; do
       echo "commit $commit ${record##*/} $(cat "$record")"
     done
   done
