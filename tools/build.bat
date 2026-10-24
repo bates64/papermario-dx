@@ -25,6 +25,10 @@ if not exist build.ninja (
     if errorlevel 1 exit /b 1
 )
 
+rem Parallel compiles that find no sccache server all try to start one, and all
+rem but one fail, so start it first. It fails harmlessly if one is running.
+sccache.exe --start-server >nul 2>nul
+
 rem Build
 echo Building...
 ninja.exe %*

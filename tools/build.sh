@@ -22,4 +22,10 @@ if [ ! -f "$ROOT/build.ninja" ]; then
   "$ROOT/tools/configure.sh"
 fi
 
+# Parallel compiles that find no sccache server all try to start one, and all
+# but one fail, so start it first. It fails harmlessly if one is running.
+if command -v sccache >/dev/null 2>&1; then
+  sccache --start-server >/dev/null 2>&1 || true
+fi
+
 exec ninja "$@"

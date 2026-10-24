@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fixed builds sometimes failing with sccache's `os error 10048` on Windows, most often in the first build after a toolchain update.
+
 ## 2026-10-22
 
 ### Icon files replace `Icons.xml` ([Alex](https://starhaven.dev/bates64.com))
