@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Star Rod keeps the names of models, colliders, zones, and markers unique and limited to letters, digits, and underscores. When two objects in a map share a name, the last one in its tree keeps it and the others get a suffix such as `_1`, so code using the name still gets the same object. Spaces and other characters become underscores. If one of your maps had duplicate names or names with spaces, check the code that refers to them after you build.
 - Fixed builds sometimes failing with sccache's `os error 10048` on Windows, most often in the first build after a toolchain update.
 
 ## 2026-10-22
