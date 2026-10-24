@@ -7,11 +7,10 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    # Not `follows`-ed to our nixpkgs: tools/star-rod.nix rebuilds star-rod's
-    # jar using its own pinned nixpkgs/Gradle, since its offline dependency
-    # resolution (gradle/verification-metadata.xml) is pinned to that exact
-    # Gradle version.
-    star-rod.url = "git+https://tangled.org/starhaven.dev/star-rod?rev=2a37eaa9d0f3b0dd91693facbe6ab44cecf2b30e";
+    # Not `follows`-ed to our nixpkgs: star-rod builds its jar with its own
+    # pinned nixpkgs/Gradle, since its offline dependency resolution
+    # (gradle/verification-metadata.xml) is pinned to that exact Gradle version.
+    star-rod.url = "git+https://tangled.org/starhaven.dev/star-rod?rev=993a12bd2fa335234cc4dc56c2b82b63afaf4832";
   };
   nixConfig = {
     extra-substituters = [
@@ -58,19 +57,14 @@
           '';
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
-        # Plain platform-independent bytecode; rebuilt per-system (like the
-        # rest of the toolchain) rather than cross-referencing a single
-        # build, since CI's aarch64-darwin runner can't build/substitute an
-        # x86_64-linux derivation.
-        starRodJar = import ./tools/star-rod.nix { starRod = star-rod; inherit system; };
+        # Built for this system, so building any of the toolchains here never
+        # needs another system's build or a cache that has it.
+        starRodJar = star-rod.packages.${system}.jar;
 
         windowsToolchain = import ./tools/windows {
-          inherit pkgs nixpkgs-binutils-2_39 baseRom llvmVersion;
+          inherit pkgs nixpkgs-binutils-2_39 baseRom llvmVersion starRodJar;
           mipsCrossGcc = pkgsCross.stdenv.cc;
           src = self;
-          # Windows-toolchain is only ever built from the x86_64-linux branch
-          # below, so this is always that same system's starRodJar.
-          inherit starRodJar;
         };
         pythonDeps = windowsToolchain.passthru.pythonDeps;
 
@@ -91,10 +85,11 @@
           exec ${pkgs.jdk17}/bin/java -cp ${starRodJar}/share/java/StarRod.jar app.StarRodMain "$@"
         '';
 
-        unixToolchain = import ./tools/unix {
+        unixToolchainWith = starRodJar: import ./tools/unix {
           inherit pkgs nixpkgs-binutils-2_39 mipsGdb starRodJar llvmTools;
           mipsCrossGcc = pkgsCross.stdenv.cc;
         };
+        unixToolchain = unixToolchainWith starRodJar;
         # The toolchain's own compiler and binutils, so every build of the game uses the same ones.
         mipsTools = [ unixToolchain.passthru.mips-gcc unixToolchain.passthru.mips-binutils ];
         linuxRom = pkgs.runCommand "papermario-linux-rom" {
@@ -202,6 +197,10 @@
           macos-x86_64-toolchain = macosToolchain "x86_64";
           macos-aarch64-gcc = (macosToolchain "aarch64").passthru.mips-gcc;
         } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          # The x86_64 toolchain that's published, which CI builds on an
+          # aarch64-linux host. The jar is the same bytecode on every system,
+          # so the aarch64 one spares compiling it under emulation.
+          unix-toolchain-with-aarch64-jar = unixToolchainWith star-rod.packages.aarch64-linux.jar;
           windows-rom = windowsToolchain.passthru.wineRom;
         };
 

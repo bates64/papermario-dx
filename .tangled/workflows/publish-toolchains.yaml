@@ -1,8 +1,10 @@
 # Builds every platform's toolchain on this one Linux host and publishes them
 # to S3, where the download scripts find them (see tools/index_toolchains.sh).
 # The Windows and macOS toolchains are cross-compiled. The x86_64 Linux one
-# builds under this host's x86_64 emulation. The clangd index, which takes far
-# longer, is published for releases only (see publish-clangd-index.yaml).
+# builds under this host's x86_64 emulation, except for Star Rod's jar, which
+# is the same on every system and so built natively. The clangd index, which
+# takes far longer, is published for releases only (see
+# publish-clangd-index.yaml).
 #
 # Each step skips itself outside dx's own repository, such as in a mod, which
 # carries dx's history and so this workflow.
@@ -74,7 +76,7 @@ steps:
         tools/publish_toolchain.sh "result-macos-$arch/papermario-dx-macos-$arch.tar.xz" "macos-$arch.tar.xz" tar.xz
       done
 
-      nix build .#packages.x86_64-linux.unix-toolchain --out-link result-linux-x86_64
+      nix build .#packages.x86_64-linux.unix-toolchain-with-aarch64-jar --out-link result-linux-x86_64
       tools/publish_toolchain.sh result-linux-x86_64/papermario-dx-linux-x86_64.tar.xz linux-x86_64.tar.xz tar.xz
 
       # watch-store is killed when this step ends, which can be before it has
