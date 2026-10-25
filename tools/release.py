@@ -11,10 +11,13 @@ Unreleased section. This is committed, and the commit is tagged with the
 release's name. The tag's message is the release notes: its subject is the
 release's name, and its body is the release's section of the changelog.
 
-A patch's section also goes into main's changelog, in a commit on the local
-main branch, just above the release it patches. Main listed the patch's notes
-under Unreleased when its fixes landed there, so the commit removes them from
-that section.
+A patch's section also goes into main's changelog, just above the release it
+patches. Main listed the patch's notes under Unreleased when its fixes landed
+there, so this removes them from that section. It's committed on the local main
+branch as a merge of the patch that keeps main's files otherwise as they are,
+since main already has the patch's fixes. That makes the patch part of the next
+release's history, so a mod updating from the patch merges only what's changed
+since it.
 """
 
 import argparse
@@ -93,9 +96,11 @@ def commit_patch_to_main(tag: str, section: str):
         worktree = Path(tmp) / "main"
         git("worktree", "add", "--quiet", str(worktree), "main")
         try:
+            git("-C", str(worktree), "merge", "--quiet", "--no-commit", "--strategy=ours", tag)
             changelog = worktree / CHANGELOG.relative_to(ROOT)
             changelog.write_text(add_patch_to_main_changelog(changelog.read_text(), tag.removeprefix("dx-"), section))
-            git("-C", str(worktree), "commit", "--quiet", "--message", f"list {tag} in the changelog", "--", str(changelog))
+            git("-C", str(worktree), "add", "--", str(changelog))
+            git("-C", str(worktree), "commit", "--quiet", "--message", f"merge {tag} into main")
         finally:
             git("worktree", "remove", "--force", str(worktree))
 
