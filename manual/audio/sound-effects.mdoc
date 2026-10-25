@@ -37,7 +37,7 @@ A one-shot's file looks like this:
 | Attribute | Meaning |
 | --- | --- |
 | `wav` | The sample to play. It's the name of an instrument in an always-loaded bank, without `.wav`. To play a sample the game already has, such as `open_popup`, change this name. |
-| `volume` | The volume in hexadecimal, from `00` to `FF`. |
+| `volume` | The volume in hexadecimal, from `00` to `7F`. The game squares it, so `40` plays at about a quarter of full volume. |
 | `lockVolume`, `lockPitch` | Keep your values when game code plays the sound with its own volume or pitch. `lockPan` and `lockReverb` work the same way. |
 | `pan`, `reverb`, `pitch`, `randomPitch`, `envelope` | Optional. If you leave them out, the defaults apply. |
 
