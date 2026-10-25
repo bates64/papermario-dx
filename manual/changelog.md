@@ -12,8 +12,7 @@ Every texture is now in one shared pool, so a map or battle stage is no longer l
 
 To update a mod:
 
-- Delete `.texture` from each battle stage and `.textureArchive` from each map.
-- Delete any code that sets `wMapTexName`. A map can use another area's textures without it.
+- Delete `.texture` from each battle stage, `.textureArchive` from each map, and any code that sets `wMapTexName`. They're deprecated and do nothing, since a map or stage can use another area's textures without them.
 - If two of the mod's textures share a name, rename one of them. Names must be unique across every folder in `mapfs/tex`.
 - In calls to `load_data_for_models` and `mdl_load_all_textures`, delete the texture archive's offset and size. Both take only the root model.
 - Replace calls to `get_asset_offset`, which is removed, with `load_asset_by_name`, which loads the asset.

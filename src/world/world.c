@@ -16,6 +16,7 @@
 BSS const char* wMapName;
 BSS MapSettings gMapSettings;
 
+char wMapTexName[ASSET_NAME_MAX];
 char wMapHitName[ASSET_NAME_MAX];
 char wMapShapeName[ASSET_NAME_MAX];
 char wMapBgName[ASSET_NAME_MAX];

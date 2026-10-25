@@ -550,6 +550,13 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define FALL_THROUGH
 #endif
 
+// Warn wherever a symbol is used, with msg saying what to do instead.
+#ifdef __GNUC__
+#define DEPRECATED(msg) __attribute__((deprecated(msg)))
+#else
+#define DEPRECATED(msg)
+#endif
+
 // Use Og when compiling the function.
 #ifdef __GNUC__
 #define OPTIMIZE_OG __attribute__((optimize("Og")))

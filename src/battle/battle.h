@@ -108,14 +108,15 @@ typedef FormationRow Formation[];
 
 /// A battle stage. Its geometry is the stage.xml in its directory.
 typedef struct Stage {
-    /* 0x00 */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
-    /* 0x04 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
-    /* 0x08 */ const char* bg;
-    /* 0x0C */ s32* foregroundModelList;
-    /* 0x10 */ s32 stageEnemyCount;         // number of enemies in the stageFormation
-    /* 0x14 */ Formation* stageFormation;   // extra enemies native to this stage
-    /* 0x18 */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
-} Stage; // size = 0x1C
+    /* 0x00 */ const char* texture DEPRECATED("stages can use any texture, so this does nothing; delete it");
+    /* 0x04 */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
+    /* 0x08 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
+    /* 0x0C */ const char* bg;
+    /* 0x10 */ s32* foregroundModelList;
+    /* 0x14 */ s32 stageEnemyCount;         // number of enemies in the stageFormation
+    /* 0x18 */ Formation* stageFormation;   // extra enemies native to this stage
+    /* 0x1C */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
+} Stage; // size = 0x20
 
 #define BATTLE_STAGE_EXPORT_NAME "gBattleStage"
 
