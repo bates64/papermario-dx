@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2026-10-25
+
 ### Maps and stages can use any texture (Clover and [Alex](https://starhaven.dev/bates64.com))
 
 Every texture is now in one shared pool, so a map or battle stage can use textures from any area, and each texture is in the ROM only once. The texture archives in `mapfs/tex` only group textures, and Star Rod's map editor has a dropdown to pick which texture archive to browse.
