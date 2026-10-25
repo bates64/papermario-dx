@@ -2,21 +2,23 @@
 
 ## Unreleased
 
-- If the toolchain for your mod's version of DX has been deleted, which can happen if you merged a `main` commit, the build warns you and keeps using the toolchain you already have instead of failing.
-- Star Rod keeps the names of models, colliders, zones, and markers unique and limited to letters, digits, and underscores. When two objects in a map share a name, the last one in its tree keeps it and the others get a suffix such as `_1`, so code using the name still gets the same object. Spaces and other characters become underscores. If one of your maps had duplicate names or names with spaces, check the code that refers to them after you build.
-- Fixed builds sometimes failing with sccache's `os error 10048` on Windows, most often in the first build after a toolchain update.
+### Maps and stages can use any texture (Clover and [Alex](https://starhaven.dev/bates64.com))
 
-### Maps and stages can use any texture (Clover)
-
-Every texture is now in one shared pool, so a map or battle stage is no longer limited to one texture archive. The folders in `mapfs/tex` only group textures.
+Every texture is now in one shared pool, so a map or battle stage can use textures from any area, and each texture is in the ROM only once. The texture archives in `mapfs/tex` only group textures, and Star Rod's map editor has a dropdown to pick which texture archive to browse.
 
 To update a mod:
 
-- Delete `.texture` from each battle stage, `.textureArchive` from each map, and any code that sets `wMapTexName`. They're deprecated and do nothing, since a map or stage can use another area's textures without them.
-- If two of the mod's textures share a name, rename one of them. Names must be unique across every folder in `mapfs/tex`.
-- In calls to `load_data_for_models` and `mdl_load_all_textures`, delete the texture archive's offset and size. Both take only the root model.
-- Replace calls to `get_asset_offset`, which is removed, with `load_asset_by_name`, which loads the asset.
-- Delete calls to `load_texture_variants`, which is removed. Loading a map's textures loads their variants too.
+- Delete `.texture` from battle stages, `.textureArchive` from maps, and any code that sets `wMapTexName`.
+- Rename any textures that share a name, even across texture archives.
+- Delete the texture archive offset and size from calls to `load_data_for_models` and `mdl_load_all_textures`.
+- Replace `get_asset_offset` with `load_asset_by_name`.
+- Delete calls to `load_texture_variants`.
+
+### Map object names must be unique C identifiers ([Alex](https://starhaven.dev/bates64.com))
+
+The names of models, colliders, zones, and markers must be unique within a map and valid C identifiers. Star Rod renames any that aren't. When two objects share a name, the last one in its tree keeps it and the others get a suffix such as `_1`. Spaces and other characters become underscores.
+
+If a map had duplicate names or names with spaces, check the code that refers to them after building.
 
 ## 2026-10-22
 
