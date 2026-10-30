@@ -70,7 +70,6 @@ def compile_command(compiler: str, version: str, source_rel: Path, object_path: 
         "-fno-pic",
         "-fno-exceptions",
         "-fno-stack-protector",
-        "-fno-toplevel-reorder",
         "-fno-zero-initialized-in-bss",
         "-Wno-builtin-declaration-mismatch",
         f"-Iver/{version}/include",
