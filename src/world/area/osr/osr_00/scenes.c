@@ -17,8 +17,8 @@ API_CALLABLE(SetModelRemapTint) {
     return ApiStatus_DONE2;
 }
 
-BSS IMG_BIN PeachLetterImg[charset_peach_letter_png_width * charset_peach_letter_png_height];
-BSS PAL_BIN PeachLetterPal[0x100];
+BSS IMG_BIN PeachLetterImg[charset_peach_letter_png_width * charset_peach_letter_png_height] ALIGNED8;
+BSS PAL_BIN PeachLetterPal[0x100] ALIGNED8;
 
 BSS MessageImageData MsgImage;
 

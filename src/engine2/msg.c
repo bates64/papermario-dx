@@ -84,7 +84,7 @@ s32 gMsgBGScrollAmtY;
 u8* D_8015131C;
 Gfx* D_80151338;
 
-static MSG_BIN gMessageBuffers[2][1024];
+static MSG_BIN gMessageBuffers[2][1024] ALIGNED8;
 static MessagePrintState gMessagePrinters[3];
 #if VERSION_JP
 static s32 D_80155C38;
@@ -94,7 +94,7 @@ static s16 D_80155C98;
 static Mtx gMessageWindowProjMatrix[2];
 
 IMG_BIN D_80159B50[0x200];
-PAL_BIN D_8015C7E0[0x10];
+PAL_BIN D_8015C7E0[0x10] ALIGNED8;
 
 extern s16 MsgStyleVerticalLineOffsets[];
 

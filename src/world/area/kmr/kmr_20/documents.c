@@ -20,9 +20,9 @@ HudScript HES_EmptyBook_disabled = HES_TEMPLATE_ITEM(key_EmptyBook_disabled);
 
 BSS PopupMenu ChooseDocumentPopupMenu;
 BSS IMG_BIN LetterBackgroundImg[0x3D86] ALIGNED(16);
-BSS PAL_BIN LetterBackgroundPal[0x100];
-BSS IMG_BIN LetterPhotoImg[0x3D86];
-BSS PAL_BIN LetterPhotoPal[0x100];
+BSS PAL_BIN LetterBackgroundPal[0x100] ALIGNED8;
+BSS IMG_BIN LetterPhotoImg[0x3D86] ALIGNED8;
+BSS PAL_BIN LetterPhotoPal[0x100] ALIGNED8;
 BSS s32 LetterWorkerID;
 BSS s32 LetterAlpha;
 BSS MessageImageData LetterImgData[2];
