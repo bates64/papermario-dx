@@ -1,4 +1,5 @@
 #include "hos_10.h"
+#include "world/area/kmr/kmr_20.h"
 #include "effects.h"
 
 API_CALLABLE(NpcOrbitPlayerPos) {
@@ -194,10 +195,10 @@ EvtScript EVS_Scene_CastleDescending = {
     Call(EnableModel, MODEL_nagare, false)
     Call(TranslateGroup, MODEL_castle, 0, -2500, 0)
     Call(ScaleGroup, MODEL_castle, 0.4, 0.4, 0.4)
-    PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, 7.0, MV_BubbleFXPtr)
+    PlayEffect(EFFECT_ENDING_DECALS, 2, $EndingDecalsPos_1.pos.x, $EndingDecalsPos_1.pos.y, $EndingDecalsPos_1.pos.z, 7.0, MV_BubbleFXPtr)
     Call(SetHaloAlpha, MV_BubbleFXPtr, 128)
     ChildThread
-        PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 0, 0, 10.0, MV_HaloFXPtr)
+        PlayEffect(EFFECT_ENDING_DECALS, 2, $EndingDecalsPos_2.pos.x, $EndingDecalsPos_2.pos.y, $EndingDecalsPos_2.pos.z, 10.0, MV_HaloFXPtr)
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Add(LVar1, 12)
@@ -350,7 +351,7 @@ EvtScript EVS_Scene_CastleDescending = {
         EndLoop
     EndThread
     Wait(290)
-    Call(GotoMap, "osr_02", osr_02_ENTRY_2)
+    Call(GotoMap, "osr_02", 2)
     Wait(100)
     Return
     End
@@ -393,7 +394,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
     Call(EnableModel, MODEL_nagare, false)
     Call(TranslateGroup, MODEL_castle, 0, -2500, 0)
     Call(ScaleGroup, MODEL_castle, 0.4, 0.4, 0.4)
-    PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 35, 70, 7.0, LVarA)
+    PlayEffect(EFFECT_ENDING_DECALS, 2, $EndingDecalsPos_1.pos.x, $EndingDecalsPos_1.pos.y, $EndingDecalsPos_1.pos.z, 7.0, LVarA)
     Call(SetHaloAlpha, LVarA, 128)
     Call(EnableTexPanning, MODEL_k2, true)
     Call(EnableTexPanning, MODEL_k7, true)
@@ -549,7 +550,7 @@ EvtScript EVS_Scene_SpiritsFlyingAway = {
     Call(FadeScreenToWhite)
     Wait(90)
     Call(ClearCurrentPartner)
-    Call(GotoMapSpecial, "kmr_20", kmr_20_ENTRY_2, TRANSITION_OUTRO_END_SCENE)
+    Call(GotoMapSpecial, $kmr_20.Ending, TRANSITION_OUTRO_END_SCENE)
     Wait(100)
     Return
     End

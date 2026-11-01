@@ -448,23 +448,23 @@ EvtScript EVS_BombReaction_Lakitu_03 = {
 };
 
 BombTrigger Npc_BombTrigger_01 = {
-    .pos = { 5.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Npc_BombTrigger_01.pos,
+    .diameter = 2.0f * $BombPos_Npc_BombTrigger_01.radius,
 };
 
 BombTrigger Npc_BombTrigger_02 = {
-    .pos = { -5.0f, 0.0f, -20.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Npc_BombTrigger_02.pos,
+    .diameter = 2.0f * $BombPos_Npc_BombTrigger_02.radius,
 };
 
 BombTrigger Npc_BombTrigger_03 = {
-    .pos = { 50.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Npc_BombTrigger_03.pos,
+    .diameter = 2.0f * $BombPos_Npc_BombTrigger_03.radius,
 };
 
 BombTrigger Npc_BombTrigger_04 = {
-    .pos = { 105.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Npc_BombTrigger_04.pos,
+    .diameter = 2.0f * $BombPos_Npc_BombTrigger_04.radius,
 };
 
 EvtScript EVS_SetupMachineDamageReactions = {
@@ -583,8 +583,8 @@ EvtScript EVS_NpcInit_Lakitu_03 = {
 NpcData NpcData_MachineGang[] = {
     {
         .id = NPC_Lakitu_01,
-        .pos = { 0.0f, 15.0f, 60.0f },
-        .yaw = 90,
+        .pos = $Lakitu_01.pos,
+        .yaw = $Lakitu_01.yaw,
         .init = &EVS_NpcInit_Lakitu_01,
         .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -594,8 +594,8 @@ NpcData NpcData_MachineGang[] = {
     },
     {
         .id = NPC_Lakitu_02,
-        .pos = { 65.0f, 15.0f, 60.0f },
-        .yaw = 270,
+        .pos = $Lakitu_02.pos,
+        .yaw = $Lakitu_02.yaw,
         .init = &EVS_NpcInit_Lakitu_02,
         .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -605,8 +605,8 @@ NpcData NpcData_MachineGang[] = {
     },
     {
         .id = NPC_Lakitu_03,
-        .pos = { 135.0f, 15.0f, 35.0f },
-        .yaw = 270,
+        .pos = $Lakitu_03.pos,
+        .yaw = $Lakitu_03.yaw,
         .init = &EVS_NpcInit_Lakitu_03,
         .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -616,8 +616,8 @@ NpcData NpcData_MachineGang[] = {
     },
     {
         .id = NPC_Magikoopa,
-        .pos = { -60.0f, 0.0f, 50.0f },
-        .yaw = 90,
+        .pos = $Magikoopa.pos,
+        .yaw = $Magikoopa.yaw,
         .init = &EVS_NpcInit_Magikoopa,
         .settings = &NpcSettings_YMagikoopa,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -627,8 +627,8 @@ NpcData NpcData_MachineGang[] = {
     },
     {
         .id = NPC_FlyingMagikoopa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $FlyingMagikoopa.pos,
+        .yaw = $FlyingMagikoopa.yaw,
         .init = &EVS_NpcInit_FlyingMagikoopa,
         .settings = &NpcSettings_YMagikoopa,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

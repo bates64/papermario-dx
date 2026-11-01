@@ -451,8 +451,8 @@ EvtScript EVS_NpcInit_Eldstar = {
 NpcData NpcData_StarSpirits[] = {
     {
         .id = NPC_Eldstar,
-        .pos = { -30.0f, 260.0f, -170.0f },
-        .yaw = 270,
+        .pos = $Eldstar.pos,
+        .yaw = $Eldstar.yaw,
         .init = &EVS_NpcInit_Eldstar,
         .settings = &NpcSettings_StarSpirit,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -462,8 +462,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Mamar,
-        .pos = { 100.0f, 260.0f, -215.0f },
-        .yaw = 270,
+        .pos = $Mamar.pos,
+        .yaw = $Mamar.yaw,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -471,8 +471,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { -145.0f, 260.0f, -225.0f },
-        .yaw = 90,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -480,8 +480,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Muskular,
-        .pos = { 20.0f, 260.0f, -45.0f },
-        .yaw = 270,
+        .pos = $Muskular.pos,
+        .yaw = $Muskular.yaw,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -489,8 +489,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Misstar,
-        .pos = { -155.0f, 260.0f, -125.0f },
-        .yaw = 90,
+        .pos = $Misstar.pos,
+        .yaw = $Misstar.yaw,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -498,8 +498,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Klevar,
-        .pos = { 90.0f, 260.0f, -110.0f },
-        .yaw = 270,
+        .pos = $Klevar.pos,
+        .yaw = $Klevar.yaw,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -507,8 +507,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Kalmar,
-        .pos = { -75.0f, 260.0f, -290.0f },
-        .yaw = 90,
+        .pos = $Kalmar.pos,
+        .yaw = $Kalmar.yaw,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,

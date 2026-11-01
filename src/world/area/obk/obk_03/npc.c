@@ -34,8 +34,8 @@ EvtScript EVS_NpcInit_Igor = {
 
 NpcData NpcData_Igor = {
     .id = NPC_Igor,
-    .pos = { 43.0f, -200.0f, -9.0f },
-    .yaw = 90,
+    .pos = $Igor.pos,
+    .yaw = $Igor.yaw,
     .init = &EVS_NpcInit_Igor,
     .settings = &NpcSettings_Boo,
     .flags = BASE_PASSIVE_FLAGS,

@@ -1,12 +1,16 @@
 #include "kpa_32.h"
+#include "world/area/kpa/kpa_51.h"
+#include "world/area/kpa/kpa_81.h"
+#include "world/area/kpa/kpa_90.h"
+#include "world/area/kpa/kpa_96.h"
 
 EvtScript EVS_ExitDoors_kpa_81_2 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_32_ENTRY_0, "kpa_81", kpa_81_ENTRY_2, COLLIDER_ttw, MODEL_b4_doa, MODEL_o1256);
-EvtScript EVS_ExitWalk_kpa_90_0 = EVT_EXIT_WALK(60, kpa_32_ENTRY_1, "kpa_90", kpa_90_ENTRY_0);
+    EVT_EXIT_DOUBLE_DOOR($GuardDoor1, $kpa_81.LowerGrandHall, COLLIDER_ttw, MODEL_b4_doa, MODEL_o1256);
+EvtScript EVS_ExitWalk_kpa_90_0 = EVT_EXIT_WALK(60, $EastJailStairs, $kpa_90.LowerGrandHall);
 EvtScript EVS_ExitDoors_kpa_51_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_32_ENTRY_2, "kpa_51", kpa_51_ENTRY_0, COLLIDER_tte, MODEL_o1258, MODEL_o1257);
+    EVT_EXIT_DOUBLE_DOOR($WaterPuzzleHall, $kpa_51.LowerGrandHall, COLLIDER_tte, MODEL_o1258, MODEL_o1257);
 EvtScript EVS_ExitDoors_kpa_96_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_32_ENTRY_3, "kpa_96", kpa_96_ENTRY_0, COLLIDER_tt4, MODEL_o1248, MODEL_o1254);
+    EVT_EXIT_DOUBLE_DOOR($ItemShop, $kpa_96.LowerGrandHall, COLLIDER_tt4, MODEL_o1248, MODEL_o1254);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kpa_81_2, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -26,22 +30,22 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_32_ENTRY_0)
-            Set(LVar0, kpa_32_ENTRY_0)
+        CaseEq($GuardDoor1.index)
+            Set(LVar0, $GuardDoor1.index)
             Set(LVar2, MODEL_o1256)
             Set(LVar3, MODEL_b4_doa)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_32_ENTRY_1)
+        CaseEq($EastJailStairs.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_32_ENTRY_2)
+        CaseEq($WaterPuzzleHall.index)
             Set(LVar0, 2)
             Set(LVar2, MODEL_o1258)
             Set(LVar3, MODEL_o1257)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_32_ENTRY_3)
+        CaseEq($ItemShop.index)
             Set(LVar0, 3)
             Set(LVar2, MODEL_o1248)
             Set(LVar3, MODEL_o1254)

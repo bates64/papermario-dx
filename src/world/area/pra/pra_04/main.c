@@ -1,12 +1,15 @@
 #include "pra_04.h"
+#include "world/area/pra/pra_02.h"
+#include "world/area/pra/pra_10.h"
+#include "world/area/pra/pra_39.h"
 
 EvtScript EVS_ExitDoor_pra_02_4 =
-    EVT_EXIT_SINGLE_DOOR(pra_04_ENTRY_0, "pra_02", pra_02_ENTRY_4, COLLIDER_deilittssw, MODEL_o847, DOOR_SWING_OUT);
+    EVT_EXIT_SINGLE_DOOR($EntryHall, $pra_02.ReflectedSaveRoom, COLLIDER_deilittssw, MODEL_o847, DOOR_SWING_OUT);
 
 EvtScript EVS_ExitDoors_pra_39_0 =
-    EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_1, "pra_39", pra_39_ENTRY_0, COLLIDER_deilittse, MODEL_o874, MODEL_o876);
+    EVT_EXIT_DOUBLE_DOOR($ShootingStarHall, $pra_39.ReflectedSaveRoom, COLLIDER_deilittse, MODEL_o874, MODEL_o876);
 EvtScript EVS_ExitDoors_pra_10_0 =
-    EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_2, "pra_10", pra_10_ENTRY_0, COLLIDER_deilittsse, MODEL_o986, MODEL_o987);
+    EVT_EXIT_DOUBLE_DOOR($PDownDUpHall, $pra_10.ReflectedSaveRoom, COLLIDER_deilittsse, MODEL_o986, MODEL_o987);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_pra_02_4, TRIGGER_WALL_PRESS_A, COLLIDER_deilittssw, 1, 0)
@@ -19,15 +22,15 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_04_ENTRY_0)
+        CaseEq($EntryHall.index)
             Set(LVar2, MODEL_o847)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(pra_04_ENTRY_1)
+        CaseEq($ShootingStarHall.index)
             Set(LVar2, MODEL_o874)
             Set(LVar3, MODEL_o876)
             ExecWait(EnterDoubleDoor)
-        CaseEq(pra_04_ENTRY_2)
+        CaseEq($PDownDUpHall.index)
             Set(LVar2, MODEL_o986)
             Set(LVar3, MODEL_o987)
             ExecWait(EnterDoubleDoor)

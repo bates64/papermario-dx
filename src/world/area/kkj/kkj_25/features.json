@@ -1,0 +1,1567 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 1,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 24,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 26,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 40,
+      "name": "Effects",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 1,
+      "name": "TowerStaircase",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -605,
+        0,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 24,
+      "name": "Bowser_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 212,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_WorldBowser_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "parent": 24,
+      "name": "Peach_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 10,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_Peach1_Still",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "parent": 24,
+      "name": "Kammy_05",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 14,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_BattleKammy_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parent": 24,
+      "name": "Twink_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 205,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Twink_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 24,
+      "name": "StarRod",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 185,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_StarRod_Still",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 24,
+      "name": "Bowser_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 212,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_WorldBowser_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 24,
+      "name": "Peach_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 10,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_Peach1_Still",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 24,
+      "name": "Kammy_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 14,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_BattleKammy_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 24,
+      "name": "Kammy_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 14,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_BattleKammy_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 11,
+      "parent": 24,
+      "name": "Twink_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 205,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Twink_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "parent": 24,
+      "name": "Bowser_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 212,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_WorldBowser_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 13,
+      "parent": 24,
+      "name": "Peach_01_1",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 10,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_Peach1_Still",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 14,
+      "parent": 24,
+      "name": "Kammy_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 14,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_BattleKammy_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 15,
+      "parent": 24,
+      "name": "Kammy_04",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 14,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_BattleKammy_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 16,
+      "parent": 24,
+      "name": "Twink_01_1",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 205,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Twink_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 17,
+      "parent": 24,
+      "name": "Eldstar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 214,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldEldstar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 18,
+      "parent": 24,
+      "name": "Mamar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 222,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldMamar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 19,
+      "parent": 24,
+      "name": "Skolar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 227,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldSkolar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 20,
+      "parent": 24,
+      "name": "Muskular",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 225,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldMuskular_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 21,
+      "parent": 24,
+      "name": "Misstar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 224,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldMisstar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 22,
+      "parent": 24,
+      "name": "Klevar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 218,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldKlevar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 23,
+      "parent": 24,
+      "name": "Kalmar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 216,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldKalmar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 25,
+      "parent": 26,
+      "name": "GreenStompSwitch_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        300,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "GreenStompSwitch"
+      }
+    },
+    {
+      "id": 27,
+      "parent": 40,
+      "name": "RadialShimmerPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        150,
+        60,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 28,
+      "parent": 40,
+      "name": "RingBlastPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        220,
+        -43,
+        350
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 29,
+      "parent": 40,
+      "name": "RingBlastPos_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        370,
+        -10,
+        180
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 30,
+      "parent": 40,
+      "name": "RingBlastPos_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        350,
+        50,
+        -100
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 31,
+      "parent": 40,
+      "name": "RingBlastPos_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        570,
+        0,
+        100
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 32,
+      "parent": 40,
+      "name": "RingBlastPos_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        500,
+        0,
+        100
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 33,
+      "parent": 40,
+      "name": "DamageStarsPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        205,
+        90,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 34,
+      "parent": 40,
+      "name": "StarsShimmerPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        100,
+        45,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 35,
+      "parent": 40,
+      "name": "RadialShimmerPos_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        100,
+        28,
+        10
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 36,
+      "parent": 40,
+      "name": "SparklesPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        110,
+        20,
+        3
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 37,
+      "parent": 40,
+      "name": "SparklesPos_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        100,
+        20,
+        3
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 38,
+      "parent": 40,
+      "name": "SparklesPos_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        90,
+        20,
+        3
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 39,
+      "parent": 40,
+      "name": "DamageStarsPos_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        530,
+        45,
+        -50
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    }
+  ]
+}

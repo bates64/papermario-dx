@@ -169,8 +169,8 @@ EvtScript EVS_NpcInit_GateFlower = {
 
 NpcData NpcData_GateFlower = {
     .id = NPC_GateFlower,
-    .pos = { 385.0f, 0.0f, -35.0f },
-    .yaw = 90,
+    .pos = $GateFlower.pos,
+    .yaw = $GateFlower.yaw,
     .init = &EVS_NpcInit_GateFlower,
     .settings = &NpcSettings_GateFlower,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -181,20 +181,9 @@ NpcData NpcData_GateFlower = {
 
 NpcData NpcData_Spiny_01 = {
     .id = NPC_Spiny_01,
-    .pos = { 80.0f, 0.0f, 0.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 80, 0, 0 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 80, 0, 0 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Spiny_01.pos,
+    .yaw = $Spiny_01.yaw,
+    .territory = $Spiny_01.territory,
     .settings = &NpcSettings_Spiny_Wander,
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,
@@ -203,20 +192,9 @@ NpcData NpcData_Spiny_01 = {
 
 NpcData NpcData_Spiny_02 = {
     .id = NPC_Spiny_02,
-    .pos = { -320.0f, 0.0f, 0.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -320, 0, 0 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -320, 0, 0 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Spiny_02.pos,
+    .yaw = $Spiny_02.yaw,
+    .territory = $Spiny_02.territory,
     .settings = &NpcSettings_Spiny_Wander,
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPINY_DROPS,

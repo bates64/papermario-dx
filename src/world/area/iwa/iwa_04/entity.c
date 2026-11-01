@@ -52,13 +52,12 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerAltitude)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, -561, -250, 121, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
-    Call(MakeEntity, Entity_ArrowSign, -513, 0, -97, 0, 90, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_ArrowSign, 600, 0, 200, 0, 270, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_ArrowSign, 336, -140, 203, 0, 70, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_ArrowSign, 730, -250, -95, 0, 90, MAKE_ENTITY_END)
-    Call(MakeItemEntity, ITEM_LETTER_CHAIN_GOOMPAPA_1, -275, -250, 150, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_IWA04_Item_Letter10)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    Call(MakeMarkerEntity, $ArrowSign_1)
+    Call(MakeMarkerEntity, $ArrowSign_2)
+    Call(MakeMarkerEntity, $ArrowSign_3)
+    Call(MakeMarkerEntity, $ArrowSign_4)
+    Call(MakeMarkerEntity, $Item_LetterChainGoompapa1_1)
     Return
     End
 };

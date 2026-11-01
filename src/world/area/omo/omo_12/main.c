@@ -1,6 +1,7 @@
 #include "omo_12.h"
+#include "world/area/omo/omo_11.h"
 
-EvtScript EVS_ExitWalk_omo_11_0 = EVT_EXIT_WALK(60, omo_12_ENTRY_0, "omo_11", omo_11_ENTRY_0);
+EvtScript EVS_ExitWalk_omo_11_0 = EVT_EXIT_WALK(60, $Omo11, $omo_11.Omo12);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

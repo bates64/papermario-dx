@@ -1,0 +1,1018 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 3,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 11,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 18,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 22,
+      "name": "Foliage",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 3,
+      "name": "Jan00",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -330,
+        0,
+        330
+      ],
+      "yaw": 45.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 3,
+      "name": "Jan05",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        500,
+        -20,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 3,
+      "name": "Jan09",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        -450
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 11,
+      "name": "SpearGuy",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        255,
+        15,
+        -65
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 176,
+          "palette": 0,
+          "anim": 3,
+          "animName": "ANIM_SpearGuy_IdleUp",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            255,
+            0,
+            -65
+          ],
+          "useCircle": true,
+          "radius": 150,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            255,
+            0,
+            -65
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parent": 11,
+      "name": "HurtPlant",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        400,
+        0,
+        235
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 85,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_HurtPlant_Hiding",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 11,
+      "name": "MBush_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -407,
+        0,
+        -42
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 108,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_MBush_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 11,
+      "name": "MBush_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -120,
+        0,
+        -395
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 108,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_MBush_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 11,
+      "name": "HeartPlant_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -219,
+        0,
+        420
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 82,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_HeartPlant_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 11,
+      "name": "HeartPlant_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -157,
+        0,
+        452
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 82,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_HeartPlant_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 11,
+      "name": "YoshiKid",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -450,
+        0,
+        -290
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 233,
+          "palette": 4,
+          "anim": 1,
+          "animName": "ANIM_YoshiKid_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "parent": 18,
+      "name": "Item_Coin_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        75,
+        -60,
+        90
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_JAN08_Item_CoinA",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 13,
+      "parent": 18,
+      "name": "Item_Coin_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        100,
+        -60,
+        90
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_JAN08_Item_CoinB",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 14,
+      "parent": 18,
+      "name": "Item_Coin_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        125,
+        -60,
+        90
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_JAN08_Item_CoinC",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 15,
+      "parent": 18,
+      "name": "BellbellPlant_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        54,
+        0,
+        -380
+      ],
+      "yaw": 35.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BellbellPlant"
+      }
+    },
+    {
+      "id": 16,
+      "parent": 18,
+      "name": "TrumpetPlant_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -450,
+        0,
+        166
+      ],
+      "yaw": 170.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "TrumpetPlant"
+      }
+    },
+    {
+      "id": 17,
+      "parent": 18,
+      "name": "HiddenYellowBlock_ThunderRage_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        24,
+        60,
+        -410
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HiddenYellowBlock",
+        "itemName": "ITEM_THUNDER_RAGE",
+        "gameFlagName": "GF_JAN08_HiddenItem_ThunderRage"
+      }
+    },
+    {
+      "id": 19,
+      "parent": 22,
+      "name": "BombPos_Tree1",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        -357,
+        0,
+        -270
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "parent": 22,
+      "name": "BombPos_Tree2",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        -145,
+        0,
+        -460
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "parent": 22,
+      "name": "BombPos_Tree3",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        341,
+        0,
+        -124
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

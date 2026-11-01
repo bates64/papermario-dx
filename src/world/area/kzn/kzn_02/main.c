@@ -1,7 +1,9 @@
 #include "kzn_02.h"
+#include "world/area/kzn/kzn_01.h"
+#include "world/area/kzn/kzn_03.h"
 
-EvtScript EVS_ExitWalk_kzn_01_1 = EVT_EXIT_WALK(60, kzn_02_ENTRY_0, "kzn_01", kzn_01_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_03_0 = EVT_EXIT_WALK(60, kzn_02_ENTRY_1, "kzn_03", kzn_03_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_01_1 = EVT_EXIT_WALK(60, $Kzn01, $kzn_01.Kzn02);
+EvtScript EVS_ExitWalk_kzn_03_0 = EVT_EXIT_WALK(60, $Kzn03, $kzn_03.Kzn02);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -12,7 +14,7 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kzn_02_ENTRY_2)
+    IfNe(LVar0, $Entry2.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)
@@ -73,14 +75,14 @@ EvtScript EVS_StartTexPanners = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o80, .pos = { -790.0, 20.0,  0.0 }},
-    { .colliderID = COLLIDER_o81, .pos = { -790.0, 20.0,  0.0 }},
-    { .colliderID = COLLIDER_o58, .pos = { -250.0, 20.0,  0.0 }},
-    { .colliderID = COLLIDER_o59, .pos = { -250.0, 20.0,  0.0 }},
-    { .colliderID = COLLIDER_o77, .pos = {  250.0, 20.0, 15.0 }},
-    { .colliderID = COLLIDER_o78, .pos = {  250.0, 20.0, 15.0 }},
-    { .colliderID = COLLIDER_o83, .pos = {  790.0, 20.0,  0.0 }},
-    { .colliderID = COLLIDER_o84, .pos = {  790.0, 20.0,  0.0 }},
+    { .colliderID = COLLIDER_o80, .pos = $LavaReset_o80.pos },
+    { .colliderID = COLLIDER_o81, .pos = $LavaReset_o81.pos },
+    { .colliderID = COLLIDER_o58, .pos = $LavaReset_o58.pos },
+    { .colliderID = COLLIDER_o59, .pos = $LavaReset_o59.pos },
+    { .colliderID = COLLIDER_o77, .pos = $LavaReset_o77.pos },
+    { .colliderID = COLLIDER_o78, .pos = $LavaReset_o78.pos },
+    { .colliderID = COLLIDER_o83, .pos = $LavaReset_o83.pos },
+    { .colliderID = COLLIDER_o84, .pos = $LavaReset_o84.pos },
     { .colliderID = NO_COLLIDER }
 };
 

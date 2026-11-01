@@ -1,0 +1,607 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 1,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 6,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 7,
+      "name": "LavaReset_o582",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        200,
+        150,
+        180
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 8,
+      "name": "LavaReset_o357",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        200,
+        150,
+        180
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 1,
+      "name": "Kzn20",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -390,
+        0,
+        210
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 4,
+      "name": "Kolorado",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        445,
+        150,
+        175
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 88,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Kolorado_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "parent": 4,
+      "name": "Misstar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        285,
+        160,
+        80
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 224,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldMisstar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parent": 6,
+      "name": "Chest",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        480,
+        235,
+        175
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Chest",
+        "itemName": "0"
+      }
+    }
+  ]
+}

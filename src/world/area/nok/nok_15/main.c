@@ -1,19 +1,21 @@
 #include "nok_15.h"
+#include "world/area/nok/nok_14.h"
+#include "world/area/trd/trd_00.h"
 #include "effects.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_nok_14_1 = EVT_EXIT_WALK(60, nok_15_ENTRY_0, "nok_14", nok_14_ENTRY_1);
-EvtScript EVS_ExitWalk_trd_00_0 = EVT_EXIT_WALK(60, nok_15_ENTRY_1, "trd_00", trd_00_ENTRY_0);
-EvtScript EVS_ExitWalk_trd_00_4 = EVT_EXIT_WALK(60, nok_15_ENTRY_2, "trd_00", trd_00_ENTRY_4);
+EvtScript EVS_ExitWalk_nok_14_1 = EVT_EXIT_WALK(60, $Nok14, $nok_14.Nok15);
+EvtScript EVS_ExitWalk_trd_00_0 = EVT_EXIT_WALK(60, $KoopaBrosFortress, $trd_00.PleasantPath);
+EvtScript EVS_ExitWalk_trd_00_4 = EVT_EXIT_WALK(60, $KoopaBrosFortressUpper, $trd_00.PleasantPathUpper);
 
 BombTrigger BombPos_Wall = {
-    .pos = { -26.0f, 0.0f, -531.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BlastWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 60, 61, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Set(GF_NOK15_BombedWall, true)
     Call(EnableModel, MODEL_bomb_ato, true)
     Call(EnableModel, MODEL_bomb_1, false)
@@ -47,14 +49,14 @@ EvtScript EVS_SetupTexPan = {
 };
 
 EvtScript EVS_GotoMap_nok_15_4 = {
-    Call(GotoMap, "nok_15", nok_15_ENTRY_4)
+    Call(GotoMap, $UpperPipe)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_nok_15_3 = {
-    Call(GotoMap, "nok_15", nok_15_ENTRY_3)
+    Call(GotoMap, $LowerPipe)
     Wait(100)
     Return
     End
@@ -73,11 +75,11 @@ EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_nok_14_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     BindTrigger(EVS_ExitWalk_trd_00_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili2, 1, 0)
     BindTrigger(EVS_ExitWalk_trd_00_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
-    Set(LVar0, nok_15_ENTRY_3)
+    Set(LVar0, $LowerPipe.index)
     Set(LVar1, COLLIDER_o680)
     Set(LVar2, EVS_GotoMap_nok_15_4)
     BindTrigger(EVS_ExitPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
-    Set(LVar0, nok_15_ENTRY_4)
+    Set(LVar0, $UpperPipe.index)
     Set(LVar1, COLLIDER_o679)
     Set(LVar2, EVS_GotoMap_nok_15_3)
     BindTrigger(EVS_ExitPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
@@ -102,7 +104,7 @@ EvtScript EVS_Main = {
     EndIf
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
-    IfLe(LVar0, nok_15_ENTRY_2)
+    IfLe(LVar0, $KoopaBrosFortressUpper.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

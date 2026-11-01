@@ -56,20 +56,9 @@ EvtScript EVS_NpcInit_Bzzap_02 = {
 
 NpcData NpcData_Dayzee_01 = {
     .id = NPC_Dayzee_01,
-    .pos = { -350.0f, 0.0f, 40.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -350, 0, 40 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -350, 0, 40 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Dayzee_01.pos,
+    .yaw = $Dayzee_01.yaw,
+    .territory = $Dayzee_01.territory,
     .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
@@ -79,20 +68,9 @@ NpcData NpcData_Dayzee_01 = {
 
 NpcData NpcData_Dayzee_02 = {
     .id = NPC_Dayzee_02,
-    .pos = { 260.0f, 0.0f, 75.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 260, 0, 75 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 260, 0, 75 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Dayzee_02.pos,
+    .yaw = $Dayzee_02.yaw,
+    .territory = $Dayzee_02.territory,
     .settings = &NpcSettings_CrazyDayzee_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = CRAZY_DAYZEE_DROPS,
@@ -102,20 +80,9 @@ NpcData NpcData_Dayzee_02 = {
 
 NpcData NpcData_Bzzap_01 = {
     .id = NPC_Bzzap_01,
-    .pos = { -50.0f, 55.0f, 90.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -50, 55, 90 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -50, 50, 90 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Bzzap_01.pos,
+    .yaw = $Bzzap_01.yaw,
+    .territory = $Bzzap_01.territory,
     .settings = &NpcSettings_Bzzap_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BZZAP_DROPS,
@@ -125,20 +92,9 @@ NpcData NpcData_Bzzap_01 = {
 
 NpcData NpcData_Bzzap_02 = {
     .id = NPC_Bzzap_02,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -50, 55, 90 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -50, 50, 90 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Bzzap_02.pos,
+    .yaw = $Bzzap_02.yaw,
+    .territory = $Bzzap_02.territory,
     .init = &EVS_NpcInit_Bzzap_02,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,

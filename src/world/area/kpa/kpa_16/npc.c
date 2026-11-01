@@ -287,8 +287,8 @@ EvtScript EVS_NpcInit_Guards = {
 NpcData NpcData_Guards[] = {
     {
         .id = NPC_Koopatrol_01,
-        .pos = { 585.0f, 230.0f, -145.0f },
-        .yaw = 270,
+        .pos = $Koopatrol_01.pos,
+        .yaw = $Koopatrol_01.yaw,
         .init = &EVS_NpcInit_Guards,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -297,8 +297,8 @@ NpcData NpcData_Guards[] = {
     },
     {
         .id = NPC_Koopatrol_02,
-        .pos = { 525.0f, 230.0f, -165.0f },
-        .yaw = 270,
+        .pos = $Koopatrol_02.pos,
+        .yaw = $Koopatrol_02.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = KOOPATROL_DROPS,
@@ -306,8 +306,8 @@ NpcData NpcData_Guards[] = {
     },
     {
         .id = NPC_Koopatrol_03,
-        .pos = { 550.0f, 230.0f, -120.0f },
-        .yaw = 270,
+        .pos = $Koopatrol_03.pos,
+        .yaw = $Koopatrol_03.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = KOOPATROL_DROPS,
@@ -315,8 +315,8 @@ NpcData NpcData_Guards[] = {
     },
     {
         .id = NPC_Magikoopa,
-        .pos = { 505.0f, 230.0f, -120.0f },
-        .yaw = 270,
+        .pos = $Magikoopa.pos,
+        .yaw = $Magikoopa.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = MAGIKOOPA_DROPS,

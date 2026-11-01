@@ -1,13 +1,9 @@
 #include "isk_09.h"
 
-EntryList Entrances = {
-    [isk_09_ENTRY_0]    { -575.0, -390.0,   81.0,    0.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_isk_09 },
     .songVariation = 1,
     .sfxReverb = 2,

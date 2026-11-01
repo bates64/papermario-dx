@@ -1,10 +1,12 @@
 #include "tik_01.h"
+#include "world/area/tik/tik_03.h"
+#include "world/area/tik/tik_06.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_06_0 = EVT_EXIT_WALK(60, tik_01_ENTRY_0, "tik_06", tik_06_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_06_0 = EVT_EXIT_WALK(60, $SewerEntrance, $tik_06.WarpZone1);
 
-EvtScript EVS_ExitWalk_tik_03_0 = EVT_EXIT_WALK(60, tik_01_ENTRY_1, "tik_03", tik_03_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_03_0 = EVT_EXIT_WALK(60, $ShortElevatorRoom, $tik_03.WarpZone1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -49,7 +51,7 @@ EvtScript EVS_Main = {
     EndThread
     Exec(EVS_SetupDrips)
     Call(GetEntryID, LVar0)
-    IfLt(LVar0, tik_01_ENTRY_2)
+    IfLt(LVar0, $GoombaVillage.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

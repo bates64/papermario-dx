@@ -1,4 +1,6 @@
 #include "kkj_26.h"
+#include "world/area/hos/hos_00.h"
+#include "world/area/kkj/kkj_14.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
 
@@ -6,7 +8,7 @@ EvtScript EVS_GotoMap_hos_00_1 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "hos_00", hos_00_ENTRY_1, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $hos_00.ShootingStarSummit, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -15,7 +17,7 @@ EvtScript EVS_GotoMap_hos_00_1 = {
 EvtScript EVS_ExitDoors_kkj_14_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, kkj_26_ENTRY_0)
+    Set(LVar0, $PeachsRoom.index)
     Set(LVar1, COLLIDER_ttw)
     Set(LVar2, MODEL_o85)
     Set(LVar3, MODEL_o83)
@@ -23,7 +25,7 @@ EvtScript EVS_ExitDoors_kkj_14_1 = {
     Set(LVar5, MODEL_o84)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "kkj_14", kkj_14_ENTRY_1)
+    Call(GotoMap, $kkj_14.Balcony)
     Wait(100)
     Return
     End
@@ -38,16 +40,16 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_26_ENTRY_0)
+        CaseEq($PeachsRoom.index)
             Set(LVar2, MODEL_o85)
             Set(LVar3, MODEL_o83)
             Set(LVar4, MODEL_o86)
             Set(LVar5, MODEL_o84)
             ExecWait(EnterSplitDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kkj_26_ENTRY_1)
+        CaseEq($AllSpiritsRescued.index)
             Exec(EVS_Scene_AfterAllSpiritsRescued)
-        CaseEq(kkj_26_ENTRY_2)
+        CaseEq($WhereIsMario.index)
             Exec(EVS_Scene_WhereIsMario)
     EndSwitch
     Return
@@ -59,7 +61,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_KKJ_26)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_26_ENTRY_1)
+    IfEq(LVar0, $AllSpiritsRescued.index)
         Set(GB_StoryProgress, STORY_CH7_BEGAN_PEACH_MISSION)
     EndIf
     Call(UseDoorSounds, DOOR_SOUNDS_DOOR)

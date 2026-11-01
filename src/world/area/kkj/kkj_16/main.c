@@ -1,4 +1,6 @@
 #include "kkj_16.h"
+#include "world/area/kkj/kkj_11.h"
+#include "world/area/sbk/sbk_02.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
 
@@ -6,19 +8,19 @@ EvtScript EVS_EndPeachChapter2 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "sbk_02", sbk_02_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $sbk_02.PeachInterlude, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_ExitDoor_kkj_11_2 =
-    EVT_EXIT_SINGLE_DOOR(kkj_16_ENTRY_0, "kkj_11", kkj_11_ENTRY_2, COLLIDER_tte, MODEL_o43, DOOR_SWING_IN);
+    EVT_EXIT_SINGLE_DOOR($UpperHall, $kkj_11.Library, COLLIDER_tte, MODEL_o43, DOOR_SWING_IN);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_16_ENTRY_0)
+        CaseEq($UpperHall.index)
             Set(LVar2, MODEL_o43)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)

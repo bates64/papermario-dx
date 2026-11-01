@@ -38,13 +38,12 @@ EvtScript EVS_BindLockTrigger = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD02_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, -265, 195, -55, 80, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_BindLockTrigger)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_LOWERED_SECOND_STAIRS)
-        Call(MakeEntity, Entity_BlueSwitch, 10, 187, 100, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TRD02_LowerStairs))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
     EndIf
     Return
     End

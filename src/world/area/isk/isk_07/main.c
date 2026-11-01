@@ -1,7 +1,9 @@
 #include "isk_07.h"
+#include "world/area/isk/isk_04.h"
+#include "world/area/isk/isk_08.h"
 
-EvtScript EVS_ExitWalk_isk_08_2 = EVT_EXIT_WALK(40, isk_07_ENTRY_0, "isk_08", isk_08_ENTRY_2);
-EvtScript EVS_ExitWalk_isk_04_1 = EVT_EXIT_WALK(40, isk_07_ENTRY_1, "isk_04", isk_04_ENTRY_1);
+EvtScript EVS_ExitWalk_isk_08_2 = EVT_EXIT_WALK(40, $DescendingStairs2, $isk_08.SarcophagusHall2);
+EvtScript EVS_ExitWalk_isk_04_1 = EVT_EXIT_WALK(40, $DescendingStairs1, $isk_04.SarcophagusHall2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_08_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

@@ -1,4 +1,6 @@
 #include "mac_04.h"
+#include "world/area/mac/mac_02.h"
+#include "world/area/mac/mac_05.h"
 #include "model.h"
 
 API_CALLABLE(SetNightFogParams) {
@@ -22,8 +24,8 @@ API_CALLABLE(SetNightTintMode) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_mac_05_0 = EVT_EXIT_WALK(60, mac_04_ENTRY_1, "mac_05", mac_05_ENTRY_0);
-EvtScript EVS_ExitWalk_mac_02_0 = EVT_EXIT_WALK(60, mac_04_ENTRY_0, "mac_02", mac_02_ENTRY_0);
+EvtScript EVS_ExitWalk_mac_05_0 = EVT_EXIT_WALK(60, $PortDistrict, $mac_05.ResidentialDistrict);
+EvtScript EVS_ExitWalk_mac_02_0 = EVT_EXIT_WALK(60, $SouthernDistrict, $mac_02.ResidentialDistrict);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mac_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
@@ -35,14 +37,14 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mac_04_ENTRY_2)
+        CaseEq($Toybox.index)
             Exec(EVS_BindExitTriggers)
             Exec(EVS_ExitToybox)
             Thread
                 Wait(20)
                 Set(MF_MusicMixTrigger, true)
             EndThread
-        CaseEq(mac_04_ENTRY_3)
+        CaseEq($ToyTrain.index)
             Exec(EVS_BindExitTriggers)
             Call(SetPlayerPos, -420, 20, -95)
             Call(SetNpcPos, NPC_PARTNER, -420, 20, -65)
@@ -50,11 +52,11 @@ EvtScript EVS_EnterMap = {
                 Wait(20)
                 Set(MF_MusicMixTrigger, true)
             EndThread
-        CaseEq(mac_04_ENTRY_4)
+        CaseEq($WishingToad.index)
             Call(SetNightTintMode)
             Call(SetNightFogParams, 0, 0, 0, 0, 0, 0, 0, 950, 1000)
             Exec(EVS_Scene_WishingToadKid)
-        CaseEq(mac_04_ENTRY_5)
+        CaseEq($PeachInterlude.index)
             Exec(EVS_BindExitTriggers)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)
@@ -69,7 +71,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_04_ENTRY_4)
+    IfEq(LVar0, $WishingToad.index)
         Call(MakeNpcs, false, WishSceneNPCs)
     Else
         Switch(GB_StoryProgress)
@@ -100,7 +102,7 @@ EvtScript EVS_Main = {
     EndIf
     Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_04_ENTRY_5)
+    IfEq(LVar0, $PeachInterlude.index)
         Wait(65)
     Else
         Wait(1)

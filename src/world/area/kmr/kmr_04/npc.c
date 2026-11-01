@@ -116,7 +116,7 @@ EvtScript EVS_NpcAI_Goompa = {
                 Thread
                     Call(ShakeCam, CAM_DEFAULT, 0, 15 * DT, 1.0)
                 EndThread
-                PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_1, 495, 15, 9, 460, 15, 9, 6)
+                PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_1, $DamageStarsPos_1.pos.x, $DamageStarsPos_1.pos.y, $DamageStarsPos_1.pos.z, 460, 15, 9, 6)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Injured)
                 Call(NpcMoveTo, NPC_PARTNER, 250, 6, 60 * DT)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Injured)
@@ -256,8 +256,8 @@ EvtScript EVS_NpcInit_JrTroopa = {
 
 NpcData NpcData_JrTroopa = {
     .id = NPC_JrTroopa,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $JrTroopa.pos,
+    .yaw = $JrTroopa.yaw,
     .init = &EVS_NpcInit_JrTroopa,
     .settings = &NpcSettings_JrTroopa,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
@@ -267,8 +267,8 @@ NpcData NpcData_JrTroopa = {
 
 NpcData NpcData_Goompa = {
     .id = NPC_Goompa,
-    .pos = { -58.0f, 0.0f, 130.0f },
-    .yaw = 0,
+    .pos = $Goompa.pos,
+    .yaw = $Goompa.yaw,
     .settings = &NpcSettings_Goompa,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .animations = {

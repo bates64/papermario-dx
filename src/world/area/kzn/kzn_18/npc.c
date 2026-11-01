@@ -141,8 +141,8 @@ EvtScript EVS_NpcInit_Piranha = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -153,8 +153,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_Piranha = {
     .id = NPC_PutridPiranha,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $PutridPiranha.pos,
+    .yaw = $PutridPiranha.yaw,
     .init = &EVS_NpcInit_Piranha,
     .settings = &NpcSettings_PutridPiranhaSentinel,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

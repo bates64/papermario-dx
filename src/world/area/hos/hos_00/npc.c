@@ -1,4 +1,5 @@
 #include "hos_00.h"
+#include "world/area/osr/osr_01.h"
 
 #include "world/common/npc/Toad/idle.inc.c"
 #include "world/common/npc/ToadKid/idle.inc.c"
@@ -24,7 +25,7 @@ EvtScript EVS_Scene_Wishing = {
     Wait(10)
     Call(SpeakToPlayer, NPC_ToadKid, ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle, 0, MSG_HOS_006E)
     Wait(50)
-    Call(GotoMap, "osr_01", osr_01_ENTRY_3)
+    Call(GotoMap, $osr_01.Wishing)
     Wait(100)
     Return
     End
@@ -119,8 +120,8 @@ EvtScript EVS_NpcInit_Twink = {
 
 NpcData NpcData_Twink = {
     .id = NPC_Twink,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Twink.pos,
+    .yaw = $Twink.yaw,
     .init = &EVS_NpcInit_Twink,
     .settings = &NpcSettings_Twink,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -130,8 +131,8 @@ NpcData NpcData_Twink = {
 
 NpcData NpcData_FlyingMagikoopa = {
     .id = NPC_FlyingMagikoopa,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $FlyingMagikoopa.pos,
+    .yaw = $FlyingMagikoopa.yaw,
     .init = &EVS_NpcInit_FlyingMagikoopa,
     .settings = &NpcSettings_FlyingMagikoopa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -142,8 +143,8 @@ NpcData NpcData_FlyingMagikoopa = {
 NpcData NpcData_Wishing[] = {
     {
         .id = NPC_Toadette,
-        .pos = { 280.0f, -10.0f, -50.0f },
-        .yaw = 90,
+        .pos = $Toadette.pos,
+        .yaw = $Toadette.yaw,
         .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,
@@ -151,8 +152,8 @@ NpcData NpcData_Wishing[] = {
     },
     {
         .id = NPC_ToadKid,
-        .pos = { 330.0f, -10.0f, -40.0f },
-        .yaw = 270,
+        .pos = $ToadKid.pos,
+        .yaw = $ToadKid.yaw,
         .settings = &NpcSettings_ToadKid,
         .flags = ENEMY_FLAG_PASSIVE,
         .drops = NO_DROPS,

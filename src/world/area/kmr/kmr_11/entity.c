@@ -65,9 +65,8 @@ EvtScript EVS_Interact_SwitchBush = {
 EvtScript EVS_OnBreak_SpecialBrick = {
     Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
     Call(PlaySoundAt, SOUND_SPAWN_BLOCK, SOUND_SPACE_DEFAULT, 665, 35, 70)
-    PlayEffect(EFFECT_SPARKLES, 0, 665, 48, 70, 10)
-    Call(MakeEntity, Entity_YellowBlock, 665, 35, 70, 45, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KMR11_ItemBlock_SuperShroom)
+    PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 10)
+    Call(MakeMarkerEntity, $YellowBlock_SuperShroom_1)
     Return
     End
 };
@@ -75,8 +74,7 @@ EvtScript EVS_OnBreak_SpecialBrick = {
 EvtScript EVS_MakeEntities = {
     IfLe(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
         IfEq(GB_StoryProgress, STORY_CH0_FOUND_GATEHOUSE_SWITCH)
-            Call(MakeEntity, Entity_BlueSwitch, -469, 0, 153, 0, MAKE_ENTITY_END)
-            Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KMR11_Switch_SelfDestruct))
+            Call(MakeMarkerEntity, $BlueSwitch_1)
             Set(MV_SwitchEntityID, LVar0)
             BindTrigger(EVS_Scene_SelfDestruct, TRIGGER_AREA_FLAG_SET, AF_KMR11_Switch_SelfDestruct, 1, 0)
             BindTrigger(EVS_Scene_OverhearEnemies, TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
@@ -88,15 +86,13 @@ EvtScript EVS_MakeEntities = {
             BindTrigger(EVS_Scene_OverhearEnemies, TRIGGER_WALL_PRESS_A, COLLIDER_tt, 1, 0)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_BrickBlock, 625, -25, 110, 45, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BrickBlock_1)
     IfEq(GF_KMR11_ItemBlock_SuperShroom, false)
         Call(AssignScript, EVS_OnBreak_SpecialBrick)
     Else
-        Call(MakeEntity, Entity_YellowBlock, 665, 35, 70, 45, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-        Call(AssignBlockFlag, GF_KMR11_ItemBlock_SuperShroom)
+        Call(MakeMarkerEntity, $YellowBlock_SuperShroom_2)
     EndIf
-    Call(MakeEntity, Entity_HiddenPanel, 550, 0, -550, 0, MODEL_point, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_KMR11_HiddenPanel)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
     Return
     End
 };

@@ -1,4 +1,7 @@
 #include "sam_02.h"
+#include "world/area/sam/sam_01.h"
+#include "world/area/sam/sam_11.h"
+#include "world/area/tik/tik_17.h"
 #include "sprite/player.h"
 
 #include "world/common/entity/Pipe.inc.c"
@@ -14,8 +17,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { 230.0f, 20.0f, -370.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o186);
@@ -25,21 +28,21 @@ ShakeTreeConfig ShakeTree_Tree2 = {
 };
 
 BombTrigger BombPos_Tree2 = {
-    .pos = { 264.0f, 24.0f, 316.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree2.pos,
+    .diameter = 2.0f * $BombPos_Tree2.radius,
 };
 
-EvtScript EVS_ExitWalk_sam_01_0 = EVT_EXIT_WALK(60, sam_02_ENTRY_0, "sam_01", sam_01_ENTRY_0);
-EvtScript EVS_ExitWalk_sam_11_0 = EVT_EXIT_WALK(60, sam_02_ENTRY_1, "sam_11", sam_11_ENTRY_0);
+EvtScript EVS_ExitWalk_sam_01_0 = EVT_EXIT_WALK(60, $MayorArea, $sam_01.ShiverCityCenter);
+EvtScript EVS_ExitWalk_sam_11_0 = EVT_EXIT_WALK(60, $PondArea, $sam_11.ShiverCityCenter);
 
 EvtScript EVS_GotoMap_tik_17_1 = {
-    Call(GotoMap, "tik_17", tik_17_ENTRY_1)
+    Call(GotoMap, $tik_17.ShiverCity)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_17_1 = EVT_EXIT_PIPE_VERTICAL(sam_02_ENTRY_2, COLLIDER_ttd, EVS_GotoMap_tik_17_1);
+EvtScript EVS_ExitPipe_tik_17_1 = EVT_EXIT_PIPE_VERTICAL($Pipe, COLLIDER_ttd, EVS_GotoMap_tik_17_1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sam_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -63,14 +66,14 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(sam_02_ENTRY_2)
+        CaseEq($Pipe.index)
             IfEq(GF_SAM01_Visited, false)
                 Set(GF_SAM01_Visited, true)
                 Set(GB_StoryProgress, STORY_CH7_ARRIVED_AT_SHIVER_CITY)
             EndIf
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
             Wait(1)
-        CaseEq(sam_02_ENTRY_3)
+        CaseEq($ThrownOut.index)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
             Call(SetPlayerJumpscale, 1.0)

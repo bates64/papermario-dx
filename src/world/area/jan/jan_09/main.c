@@ -1,14 +1,18 @@
 #include "jan_09.h"
+#include "world/area/jan/jan_06.h"
+#include "world/area/jan/jan_08.h"
+#include "world/area/jan/jan_10.h"
+#include "world/area/jan/jan_11.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_jan_10_0 = EVT_EXIT_WALK(60, jan_09_ENTRY_2, "jan_10", jan_10_ENTRY_0);
-EvtScript EVS_ExitWalk_jan_08_2 = EVT_EXIT_WALK(60, jan_09_ENTRY_0, "jan_08", jan_08_ENTRY_2);
-EvtScript EVS_ExitWalk_jan_06_3 = EVT_EXIT_WALK(60, jan_09_ENTRY_1, "jan_06", jan_06_ENTRY_3);
+EvtScript EVS_ExitWalk_jan_10_0 = EVT_EXIT_WALK(60, $Jan10, $jan_10.Jan09);
+EvtScript EVS_ExitWalk_jan_08_2 = EVT_EXIT_WALK(60, $Jan08, $jan_08.Jan09);
+EvtScript EVS_ExitWalk_jan_06_3 = EVT_EXIT_WALK(60, $Jan06, $jan_06.Jan09);
 
 EvtScript EVS_GotoMap_jan_11_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(GotoMap, "jan_11", jan_11_ENTRY_0)
+    Call(GotoMap, $jan_11.Jan09)
     Wait(100)
     Return
     End
@@ -28,7 +32,7 @@ EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_o245, 1, 0)
     BindTrigger(EVS_ExitWalk_jan_08_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
     BindTrigger(EVS_ExitWalk_jan_06_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    Set(LVar0, jan_09_ENTRY_3)
+    Set(LVar0, $Pipe.index)
     Set(LVar1, COLLIDER_o208)
     Set(LVar2, EVS_GotoMap_jan_11_0)
     BindTrigger(EVS_TouchFloor_Pipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
@@ -54,7 +58,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilits, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, jan_09_ENTRY_3)
+    IfNe(LVar0, $Pipe.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

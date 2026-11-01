@@ -1,6 +1,7 @@
 #include "kzn_22.h"
+#include "world/area/kzn/kzn_20.h"
 
-EvtScript EVS_ExitWalk_kzn_20_1 = EVT_EXIT_WALK(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_20_1 = EVT_EXIT_WALK(60, $Kzn20, $kzn_20.Kzn22);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_20_1, TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
@@ -135,8 +136,8 @@ EvtScript EVS_UpdateLavaLevel = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o582, .pos = { 200.0, 150.0, 180.0 }},
-    { .colliderID = COLLIDER_o357, .pos = { 200.0, 150.0, 180.0 }},
+    { .colliderID = COLLIDER_o582, .pos = $LavaReset_o582.pos },
+    { .colliderID = COLLIDER_o357, .pos = $LavaReset_o357.pos },
     { .colliderID = NO_COLLIDER }
 };
 

@@ -1,4 +1,7 @@
 #include "kpa_81.h"
+#include "world/area/kpa/kpa_04.h"
+#include "world/area/kpa/kpa_32.h"
+#include "world/area/kpa/kpa_50.h"
 
 export s32 map_init(void) {
     use_map_geometry("kpa_80");
@@ -26,24 +29,24 @@ s32 LeftDoorModels[] = {
 };
 
 EvtScript EVS_ExitDoors_kpa_50_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_81_ENTRY_0, "kpa_50", kpa_50_ENTRY_1, COLLIDER_deilittw, MODEL_o174, MODEL_o173);
+    EVT_EXIT_DOUBLE_DOOR($GuardDoor1Hall, $kpa_50.GuardDoor1, COLLIDER_deilittw, MODEL_o174, MODEL_o173);
 
 EvtScript EVS_ExitDoors_kpa_32_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, kpa_81_ENTRY_2)
+    Set(LVar0, $LowerGrandHall.index)
     Set(LVar1, COLLIDER_o166)
     Set(LVar2, RightDoorModels)
     Set(LVar3, LeftDoorModels)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "kpa_32", kpa_32_ENTRY_0)
+    Call(GotoMap, $kpa_32.GuardDoor1)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_kpa_04_1 = EVT_EXIT_WALK(60, kpa_81_ENTRY_3, "kpa_04", kpa_04_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_04_1 = EVT_EXIT_WALK(60, $CaveExit, $kpa_04.GuardDoor1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kpa_50_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
@@ -58,19 +61,19 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_81_ENTRY_0)
-            Set(LVar0, kpa_81_ENTRY_0)
+        CaseEq($GuardDoor1Hall.index)
+            Set(LVar0, $GuardDoor1Hall.index)
             Set(LVar2, MODEL_o174)
             Set(LVar3, MODEL_o173)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_81_ENTRY_2)
-            Set(LVar0, kpa_81_ENTRY_2)
+        CaseEq($LowerGrandHall.index)
+            Set(LVar0, $LowerGrandHall.index)
             Set(LVar2, LeftDoorModels)
             Set(LVar3, RightDoorModels)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_81_ENTRY_3)
+        CaseEq($CaveExit.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
@@ -107,11 +110,11 @@ EvtScript EVS_Main = {
     IfNe(GB_KPA81_BowserDoorState, 0)
         Call(GetEntryID, LVar0)
         Switch(LVar0)
-            CaseEq(kpa_81_ENTRY_0)
+            CaseEq($GuardDoor1Hall.index)
                 BindTrigger(EVS_UnusedMoveStatue, TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
-            CaseEq(kpa_81_ENTRY_2)
+            CaseEq($LowerGrandHall.index)
                 BindTrigger(EVS_UnusedMoveStatue, TRIGGER_WALL_PRESS_A, COLLIDER_o146, 1, 0)
-            CaseEq(kpa_81_ENTRY_3)
+            CaseEq($CaveExit.index)
         EndSwitch
     EndIf
     Call(ParentColliderToModel, COLLIDER_o146, MODEL_o145)

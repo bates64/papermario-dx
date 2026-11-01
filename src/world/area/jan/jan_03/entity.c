@@ -1,9 +1,10 @@
 #include "jan_03.h"
+#include "world/area/tik/tik_08.h"
 #include "entity.h"
 #include "sprite/player.h"
 
 EvtScript EVS_GotoMap_tik_08_4 = {
-    Call(GotoMap, "tik_08", tik_08_ENTRY_4)
+    Call(GotoMap, $tik_08.JadeJungle)
     Wait(100)
     Return
     End
@@ -55,15 +56,14 @@ EvtScript EVS_MakeEntities = {
     IfEq(GF_JAN03_WarpPipe, false)
         IfEq(GF_TIK08_WarpPipe, true)
             Call(GetEntryID, LVar0)
-            IfNe(LVar0, jan_03_ENTRY_3)
+            IfNe(LVar0, $Pipe.index)
                 Set(GF_JAN03_WarpPipe, true)
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Entity_BlueWarpPipe, -540, 0, 195, 30, jan_03_ENTRY_3, EVS_GotoMap_tik_08_4, EVT_INDEX_OF_GAME_FLAG(GF_JAN03_WarpPipe), MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_SavePoint, 100, 60, -25, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_ScriptSpring, -556, 0, -195, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
+    Call(MakeMarkerEntity, $BlueWarpPipe_1)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Return
     End
 };

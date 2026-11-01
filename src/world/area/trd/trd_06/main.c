@@ -1,4 +1,5 @@
 #include "trd_06.h"
+#include "world/area/trd/trd_04.h"
 #include "effects.h"
 
 extern EvtScript EVS_Main;
@@ -9,19 +10,18 @@ extern EvtScript EVS_SetupMusic;
 extern EvtScript EVS_Scene_FallIntoCell;
 extern EvtScript EVS_Scene_ImprisonedKoopaBros;
 
-EvtScript EVS_ExitDoors_trd_04_5 =
-    EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5, COLLIDER_ttw, MODEL_o93, MODEL_o94);
+EvtScript EVS_ExitDoors_trd_04_5 = EVT_EXIT_DOUBLE_DOOR($Trd04, $trd_04.Trd06, COLLIDER_ttw, MODEL_o93, MODEL_o94);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_06_ENTRY_0)
+        CaseEq($FallIntoCell.index)
             Exec(EVS_Scene_FallIntoCell)
-        CaseEq(trd_06_ENTRY_1)
+        CaseEq($Trd04.index)
             Set(LVar2, MODEL_o93)
             Set(LVar3, MODEL_o94)
             ExecWait(EnterDoubleDoor)
-        CaseLe(trd_06_ENTRY_3)
+        CaseLe($Entry3.index)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
             Call(DisablePartnerAI, false)
@@ -36,15 +36,15 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_CellWall = {
-    .pos = { 160.0f, 0.0f, 160.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_CellWall.pos,
+    .diameter = 2.0f * $BombPos_CellWall.radius,
 };
 
 EvtScript EVS_BombWall_Cell = {
 #if !VERSION_JP
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
 #endif
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 19, 19, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_VISIBLE)
     Loop(10)
         Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_VISIBLE)
@@ -137,7 +137,7 @@ EvtScript EVS_Main = {
     ExecWait(EVS_MakeEntities)
     BindTrigger(EVS_ExitDoors_trd_04_5, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Call(GetEntryID, LVar0)
-    IfLe(LVar0, trd_06_ENTRY_1)
+    IfLe(LVar0, $Trd04.index)
         IfEq(GF_TRD06_BombedWall, false)
             BindTrigger(EVS_BombWall_Cell, TRIGGER_POINT_BOMB, BombPos_CellWall, 1, 0)
             Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_HIDDEN)

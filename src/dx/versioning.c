@@ -1,5 +1,6 @@
 #include "dx/versioning.h"
 #include "dx/config.h"
+#include "world/entries.h"
 #include <string.h>
 
 void ver_deserialize_standard(SaveData* saveData);
@@ -64,8 +65,8 @@ void ver_deserialize_standard(SaveData* saveData) {
     gPlayerData = saveData->player;
 
     if (!get_map_IDs_by_hash(saveData->mapHash, &gGameStatus.areaID, &gGameStatus.mapID)) {
-        get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatus.areaID, &gGameStatus.mapID);
-        gGameStatus.entryID = NEW_GAME_ENTRY_ID;
+        get_map_IDs_by_name_checked(NEW_GAME_ENTRY.map, &gGameStatus.areaID, &gGameStatus.mapID);
+        gGameStatus.entryID = NEW_GAME_ENTRY.index;
     } else {
         gGameStatus.entryID = saveData->entryID;
     }
@@ -524,8 +525,8 @@ void ver_deserialize_vanilla_save(SaveData* newSave) {
         newSave->mapHash = hash_string(gAreas[oldSave.areaID].maps[oldSave.mapID]);
         newSave->entryID = oldSave.entryID;
     } else {
-        newSave->mapHash = hash_string(NEW_GAME_MAP_ID);
-        newSave->entryID = NEW_GAME_ENTRY_ID;
+        newSave->mapHash = hash_string(NEW_GAME_ENTRY.map);
+        newSave->entryID = NEW_GAME_ENTRY.index;
     }
     newSave->savePos = oldSave.savePos;
 

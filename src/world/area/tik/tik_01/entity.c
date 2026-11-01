@@ -1,4 +1,7 @@
 #include "tik_01.h"
+#include "world/area/dro/dro_01.h"
+#include "world/area/kmr/kmr_02.h"
+#include "world/area/nok/nok_02.h"
 #include "entity.h"
 
 EvtScript EVS_SpawnSwitch = {
@@ -29,21 +32,21 @@ EvtScript EVS_SmashBlock = {
 };
 
 EvtScript EVS_GotoMap_kmr_02_3 = {
-    Call(GotoMap, "kmr_02", kmr_02_ENTRY_3)
+    Call(GotoMap, $kmr_02.WarpPipe)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_nok_02_2 = {
-    Call(GotoMap, "nok_02", nok_02_ENTRY_2)
+    Call(GotoMap, $nok_02.Pipe)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_dro_01_2 = {
-    Call(GotoMap, "dro_01", dro_01_ENTRY_2)
+    Call(GotoMap, $dro_01.Pipe)
     Wait(100)
     Return
     End
@@ -60,8 +63,7 @@ EvtScript EVS_OnSwitchActivate = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TIK01_Hammer2Block, false)
-        Call(MakeEntity, Entity_Hammer2Block, -240, -10, 0, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_SmashBlock)
+        Call(MakeMarkerEntity, $Hammer2Block_1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o64, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
@@ -75,12 +77,9 @@ EvtScript EVS_MakeEntities = {
             Call(SetEntityPosition, MV_EntityID_Switch, 125, -10, 25)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_BlueWarpPipe, 150, -10, -82, 0, tik_01_ENTRY_2,
-        EVS_GotoMap_kmr_02_3, EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BlueWarpPipe,  50, -10, -82, 0, tik_01_ENTRY_3,
-        EVS_GotoMap_nok_02_2, EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BlueWarpPipe, -50, -10, -82, 0, tik_01_ENTRY_4,
-        EVS_GotoMap_dro_01_2, EVT_INDEX_OF_GAME_FLAG(GF_TIK01_WarpPipes), MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BlueWarpPipe_1)
+    Call(MakeMarkerEntity, $BlueWarpPipe_2)
+    Call(MakeMarkerEntity, $BlueWarpPipe_3)
     Return
     End
 };

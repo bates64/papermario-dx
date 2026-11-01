@@ -1,0 +1,912 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 3,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 22,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 24,
+      "name": "Foliage",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 3,
+      "name": "JrTroopasPlayground",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -340,
+        0,
+        348
+      ],
+      "yaw": 48.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 3,
+      "name": "BehindVillage",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        480,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 3,
+      "name": "FallFromVillage",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -310,
+        20,
+        -80
+      ],
+      "yaw": 135.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 5,
+      "name": "Goompa",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -50,
+        0,
+        80
+      ],
+      "yaw": 45.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Goompa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 22,
+      "name": "Item_Coin_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        345,
+        205,
+        -250
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_KMR03_Item_CoinA",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 7,
+      "parent": 22,
+      "name": "Item_Coin_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        345,
+        230,
+        -250
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_KMR03_Item_CoinB",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 8,
+      "parent": 22,
+      "name": "Item_Coin_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        345,
+        255,
+        -250
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_KMR03_Item_CoinC",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 9,
+      "parent": 22,
+      "name": "Item_Coin_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        345,
+        280,
+        -250
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_KMR03_Item_CoinD",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 10,
+      "parent": 22,
+      "name": "Item_FireFlower_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        229,
+        250,
+        -156
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_FIRE_FLOWER",
+        "gameFlagName": "GF_KMR02_Item_FireFlower",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 11,
+      "parent": 22,
+      "name": "Hammer1Block_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        45,
+        0,
+        70
+      ],
+      "yaw": 15.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Hammer1Block",
+        "scriptName": "EVS_OnSmashBlock1"
+      }
+    },
+    {
+      "id": 12,
+      "parent": 22,
+      "name": "Hammer2Block_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        230,
+        0,
+        310
+      ],
+      "yaw": 15.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Hammer2Block",
+        "scriptName": "EVS_OnSmashBlock2"
+      }
+    },
+    {
+      "id": 13,
+      "parent": 22,
+      "name": "BrickBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        230,
+        50,
+        -160
+      ],
+      "yaw": 15.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 14,
+      "parent": 22,
+      "name": "BrickBlock_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        165,
+        0,
+        380
+      ],
+      "yaw": 20.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 15,
+      "parent": 22,
+      "name": "HiddenYellowBlock_RepelGel_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        230,
+        60,
+        310
+      ],
+      "yaw": 15.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HiddenYellowBlock",
+        "itemName": "ITEM_REPEL_GEL",
+        "gameFlagName": "GF_KMR03_HiddenItem_RepelGel"
+      }
+    },
+    {
+      "id": 16,
+      "parent": 22,
+      "name": "YellowBlock_Coin_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -170,
+        0,
+        370
+      ],
+      "yaw": 43.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "YellowBlock",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_KMR03_ItemBlock_Coin"
+      }
+    },
+    {
+      "id": 17,
+      "parent": 22,
+      "name": "HeartBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        130,
+        60,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HeartBlock"
+      }
+    },
+    {
+      "id": 18,
+      "parent": 22,
+      "name": "HiddenPanel_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        300,
+        0,
+        150
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HiddenPanel",
+        "gameFlagName": "GF_KMR03_HiddenPanel",
+        "modelName": "MODEL_jimen_1"
+      }
+    },
+    {
+      "id": 19,
+      "parent": 22,
+      "name": "SimpleSpring_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        345,
+        75,
+        -250
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "SimpleSpring",
+        "launchDist": 100
+      }
+    },
+    {
+      "id": 20,
+      "parent": 22,
+      "name": "Item_Mushroom_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -23,
+        100,
+        35
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "GF_KMR03_Tree1_Mushroom",
+        "spawnMode": "ITEM_SPAWN_MODE_FALL_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 21,
+      "parent": 22,
+      "name": "Item_Mushroom_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -85,
+        100,
+        16
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "GF_KMR03_Tree1_Mushroom",
+        "spawnMode": "ITEM_SPAWN_MODE_FALL_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 23,
+      "parent": 24,
+      "name": "BombPos_Tree1",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        -42,
+        0,
+        -13
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

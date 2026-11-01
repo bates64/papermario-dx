@@ -1,4 +1,5 @@
 #include "kkj_23.h"
+#include "world/area/kkj/kkj_14.h"
 #include "sprite/player.h"
 
 #include "../common/Searchlights.inc.c"
@@ -63,7 +64,7 @@ EvtScript EVS_CapturePeach = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, $kkj_14.TossedBack, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return
@@ -131,8 +132,8 @@ AnimID LimitAnims_Kammy[] = {
 NpcData NpcData_Kammy[] = {
     {
         .id = NPC_Kammy,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy.pos,
+        .yaw = $Kammy.yaw,
         .settings = &NpcSettings_Kammy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -141,8 +142,8 @@ NpcData NpcData_Kammy[] = {
     },
     {
         .id = NPC_Koopatrol_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_01.pos,
+        .yaw = $Koopatrol_01.yaw,
         .init = &EVS_NpcInit_Koopatrol_01,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -152,8 +153,8 @@ NpcData NpcData_Kammy[] = {
     },
     {
         .id = NPC_Koopatrol_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_02.pos,
+        .yaw = $Koopatrol_02.yaw,
         .init = &EVS_NpcInit_Koopatrol_02,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

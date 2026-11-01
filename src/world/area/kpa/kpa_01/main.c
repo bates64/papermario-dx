@@ -1,11 +1,13 @@
 #include "kpa_01.h"
+#include "world/area/kpa/kpa_03.h"
+#include "world/area/kpa/kpa_14.h"
 
 #include "world/common/util/CreateDarkness.inc.c"
 
 EvtScript EVS_ExitDoor_kpa_14_1 =
-    EVT_EXIT_SINGLE_DOOR(kpa_01_ENTRY_0, "kpa_14", kpa_14_ENTRY_1, COLLIDER_tte, MODEL_o205, DOOR_SWING_IN);
+    EVT_EXIT_SINGLE_DOOR($LavaChannel3, $kpa_14.DarkCave1, COLLIDER_tte, MODEL_o205, DOOR_SWING_IN);
 
-EvtScript EVS_ExitWalk_kpa_03_0 = EVT_EXIT_WALK(60, kpa_01_ENTRY_1, "kpa_03", kpa_03_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_03_0 = EVT_EXIT_WALK(60, $DarkCave2, $kpa_03.DarkCave1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_kpa_14_1, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
@@ -17,14 +19,14 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_01_ENTRY_0)
-            Set(LVar0, kpa_01_ENTRY_0)
+        CaseEq($LavaChannel3.index)
+            Set(LVar0, $LavaChannel3.index)
             Set(LVar1, MODEL_exit2)
             Set(LVar2, MODEL_o205)
             Set(LVar3, DOOR_SWING_IN)
             Exec(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_01_ENTRY_1)
+        CaseEq($DarkCave2.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

@@ -88,18 +88,13 @@ EvtScript EVS_UseSpring = {
 EvtScript EVS_OpenChest_HammerThrow = EVT_OPEN_CHEST(ITEM_HAMMER_THROW, GF_KMR10_Chest_HammerThrow);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KMR10_ItemBlock_SleepySheep)
-    Call(MakeEntity, Entity_Chest, 633, 142, 119, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_KMR10_Chest_HammerThrow)
-    Call(AssignScript, EVS_OpenChest_HammerThrow)
+    Call(MakeMarkerEntity, $YellowBlock_SleepySheep_1)
+    Call(MakeMarkerEntity, $Chest_HammerThrow)
     IfEq(GF_KMR10_KnockedSpringOutOfTree, false)
-        Call(MakeEntity, Entity_ScriptSpring, 370, 115, -20, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_UseSpring)
+        Call(MakeMarkerEntity, $ScriptSpring_1)
         Set(MV_EntityID_Spring, LVar0)
     Else
-        Call(MakeEntity, Entity_ScriptSpring, 370, 10, 20, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_UseSpring)
+        Call(MakeMarkerEntity, $ScriptSpring_2)
     EndIf
     Return
     End

@@ -1,4 +1,5 @@
 #include "kzn_22.h"
+#include "world/area/kzn/kzn_23.h"
 #include "sprite/player.h"
 
 #include "world/common/npc/Kolorado/idle.inc.c"
@@ -235,7 +236,7 @@ EvtScript EVS_Scene_Misstar = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMap, "kzn_23", kzn_23_ENTRY_0)
+    Call(GotoMap, $kzn_23.Kzn22)
     Wait(100)
     Return
     End
@@ -256,8 +257,8 @@ EvtScript EVS_NpcInit_Misstar = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { 445.0f, 150.0f, 175.0f },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -268,8 +269,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
-    .pos = { 285.0f, 160.0f, 80.0f },
-    .yaw = 270,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .init = &EVS_NpcInit_Misstar,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,

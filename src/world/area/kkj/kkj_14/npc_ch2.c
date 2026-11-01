@@ -23,8 +23,8 @@ AnimID LimitAnims_Kammy_Ch2[] = {
 NpcData NpcData_Characters_Ch2[] = {
     {
         .id = NPC_Bowser,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Bowser_1.pos,
+        .yaw = $Bowser_1.yaw,
         .settings = &NpcSettings_Bowser,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -33,8 +33,8 @@ NpcData NpcData_Characters_Ch2[] = {
     },
     {
         .id = NPC_Kammy,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy_1.pos,
+        .yaw = $Kammy_1.yaw,
         .settings = &NpcSettings_Kammy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,

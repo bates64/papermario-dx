@@ -10,7 +10,7 @@ EvtScript EVS_SetupMusic = {
             Call(SetMusic, 0, SONG_TOAD_TOWN, 0, VOL_LEVEL_FULL)
     EndSwitch
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, osr_00_ENTRY_3)
+    IfEq(LVar0, $Invitation.index)
         Call(ClearAmbientSounds, 250)
     EndIf
     Return

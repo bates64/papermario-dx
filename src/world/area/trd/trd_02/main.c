@@ -1,4 +1,6 @@
 #include "trd_02.h"
+#include "world/area/trd/trd_01.h"
+#include "world/area/trd/trd_03.h"
 #include "effects.h"
 
 extern EvtScript EVS_UnlockFortressDoor;
@@ -7,14 +9,14 @@ extern EvtScript EVS_MakeEntities;
 extern NpcGroupList DefaultNPCs;
 
 EvtScript EVS_ExitDoors_trd_01_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_0, "trd_01", trd_01_ENTRY_1, COLLIDER_ttw, MODEL_o6, MODEL_o7);
+    EVT_EXIT_DOUBLE_DOOR($Trd01Lower, $trd_01.Trd02Lower, COLLIDER_ttw, MODEL_o6, MODEL_o7);
 EvtScript EVS_ExitDoors_trd_03_0 =
-    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_1, "trd_03", trd_03_ENTRY_0, COLLIDER_tte, MODEL_o9, MODEL_o8);
+    EVT_EXIT_DOUBLE_DOOR($Trd03Lower, $trd_03.Trd04Lower, COLLIDER_tte, MODEL_o9, MODEL_o8);
 EvtScript EVS_ExitDoors_trd_01_2 =
-    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_2, "trd_01", trd_01_ENTRY_2, COLLIDER_ttw2, MODEL_o13, MODEL_o12);
+    EVT_EXIT_DOUBLE_DOOR($Trd01Upper, $trd_01.Trd02Upper, COLLIDER_ttw2, MODEL_o13, MODEL_o12);
 EvtScript EVS_ExitDoors_trd_03_2 =
-    EVT_EXIT_DOUBLE_DOOR(trd_02_ENTRY_3, "trd_03", trd_03_ENTRY_2, COLLIDER_tte2, MODEL_o10, MODEL_o11);
-EvtScript EVS_ExitWalk_trd_03_4 = EVT_EXIT_WALK(40, trd_02_ENTRY_4, "trd_03", trd_03_ENTRY_4);
+    EVT_EXIT_DOUBLE_DOOR($Trd03Upper, $trd_03.Trd02Upper, COLLIDER_tte2, MODEL_o10, MODEL_o11);
+EvtScript EVS_ExitWalk_trd_03_4 = EVT_EXIT_WALK(40, $Trd03Walk, $trd_03.Trd02Walk);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_trd_03_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deilia, 1, 0)
@@ -27,27 +29,27 @@ EvtScript EVS_EnterMap = {
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_02_ENTRY_0)
+        CaseEq($Trd01Lower.index)
             Set(LVar2, MODEL_o6)
             Set(LVar3, MODEL_o7)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_02_ENTRY_1)
+        CaseEq($Trd03Lower.index)
             Set(LVar2, MODEL_o9)
             Set(LVar3, MODEL_o8)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_02_ENTRY_2)
+        CaseEq($Trd01Upper.index)
             Set(LVar2, MODEL_o13)
             Set(LVar3, MODEL_o12)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_02_ENTRY_3)
+        CaseEq($Trd03Upper.index)
             Set(LVar2, MODEL_o10)
             Set(LVar3, MODEL_o11)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_02_ENTRY_4)
+        CaseEq($Trd03Walk.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
@@ -123,14 +125,14 @@ EvtScript EVS_Scene_LowerStairs = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 255.0f, 50.0f, -80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BlastBombableWall = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 17, 11, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_anaaki, true)
     Loop(10)
         Call(SetGroupVisibility, MODEL_g14, MODEL_GROUP_VISIBLE)

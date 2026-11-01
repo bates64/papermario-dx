@@ -210,20 +210,9 @@ EvtScript EVS_NpcInit_GoombaBros_Blue = {
 NpcData NpcData_GoombaBros_Red[] = {
     {
         .id = NPC_GoombaBros_Red,
-        .pos = { 526.0f, 80.0f, 0.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $GoombaBros_Red.pos,
+        .yaw = $GoombaBros_Red.yaw,
+        .territory = $GoombaBros_Red.territory,
         .init = &EVS_NpcInit_GoombaBros_Red,
         .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
@@ -232,20 +221,9 @@ NpcData NpcData_GoombaBros_Red[] = {
     },
     {
         .id = NPC_GoombaBros_Blue,
-        .pos = { 498.0f, 80.0f, -10.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $GoombaBros_Blue.pos,
+        .yaw = $GoombaBros_Blue.yaw,
+        .territory = $GoombaBros_Blue.territory,
         .init = &EVS_NpcInit_GoombaBros_Blue,
         .settings = &NpcSettings_GoombaBros_Guard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,

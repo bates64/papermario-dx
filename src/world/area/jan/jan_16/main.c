@@ -1,9 +1,12 @@
 #include "jan_16.h"
+#include "world/area/jan/jan_15.h"
+#include "world/area/jan/jan_17.h"
+#include "world/area/jan/jan_22.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_jan_15_1 = EVT_EXIT_WALK(60, jan_16_ENTRY_0, "jan_15", jan_15_ENTRY_1);
-EvtScript EVS_ExitWalk_jan_22_1 = EVT_EXIT_WALK(60, jan_16_ENTRY_1, "jan_22", jan_22_ENTRY_1);
-EvtScript EVS_ExitWalk_jan_17_0 = EVT_EXIT_WALK(60, jan_16_ENTRY_2, "jan_17", jan_17_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_15_1 = EVT_EXIT_WALK(60, $Jan15, $jan_15.Jan16);
+EvtScript EVS_ExitWalk_jan_22_1 = EVT_EXIT_WALK(60, $Jan22, $jan_22.Jan16);
+EvtScript EVS_ExitWalk_jan_17_0 = EVT_EXIT_WALK(60, $Jan17, $jan_17.Jan16);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_15_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -15,13 +18,13 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_SpawnButterflies = {
     IfNe(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
-        PlayEffect(EFFECT_BUTTERFLIES, 5, -310, 10, 0)
-        PlayEffect(EFFECT_BUTTERFLIES, 5, -210, 10, 240)
-        PlayEffect(EFFECT_BUTTERFLIES, 5, 330, 10, 260)
+        PlayEffect(EFFECT_BUTTERFLIES, 5, $ButterfliesPos_1.pos.x, $ButterfliesPos_1.pos.y, $ButterfliesPos_1.pos.z)
+        PlayEffect(EFFECT_BUTTERFLIES, 5, $ButterfliesPos_2.pos.x, $ButterfliesPos_2.pos.y, $ButterfliesPos_2.pos.z)
+        PlayEffect(EFFECT_BUTTERFLIES, 5, $ButterfliesPos_3.pos.x, $ButterfliesPos_3.pos.y, $ButterfliesPos_3.pos.z)
     EndIf
-    PlayEffect(EFFECT_BUTTERFLIES, 5, -300, 10, 270)
-    PlayEffect(EFFECT_BUTTERFLIES, 5, -80, 10, 390)
-    PlayEffect(EFFECT_BUTTERFLIES, 5, 430, 10, 0)
+    PlayEffect(EFFECT_BUTTERFLIES, 5, $ButterfliesPos_4.pos.x, $ButterfliesPos_4.pos.y, $ButterfliesPos_4.pos.z)
+    PlayEffect(EFFECT_BUTTERFLIES, 5, $ButterfliesPos_5.pos.x, $ButterfliesPos_5.pos.y, $ButterfliesPos_5.pos.z)
+    PlayEffect(EFFECT_BUTTERFLIES, 5, $ButterfliesPos_6.pos.x, $ButterfliesPos_6.pos.y, $ButterfliesPos_6.pos.z)
     Return
     End
 };
@@ -91,8 +94,8 @@ EvtScript EVS_EnterFalling = {
             BreakLoop
         EndIf
     EndLoop
-    PlayEffect(EFFECT_DROP_LEAVES, 0, 35, 120, 340, 100)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, 55, 120, 330, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
     AddF(MV_BranchWobbleVel, -7.5)
     Call(SetPanTarget, CAM_DEFAULT, 0, 190, 350)
     Call(SetCamSpeed, CAM_DEFAULT, 1.2)
@@ -107,8 +110,8 @@ EvtScript EVS_EnterFalling = {
     Call(NpcJump0, NPC_PARTNER, 35, 130, 330, 15)
     Thread
         Loop(3)
-            PlayEffect(EFFECT_DROP_LEAVES, 0, 35, 120, 340, 100)
-            PlayEffect(EFFECT_DROP_LEAVES, 0, 55, 120, 340, 100)
+            PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+            PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_3.pos.x, $DropLeavesPos_3.pos.y, $DropLeavesPos_3.pos.z, 100)
             Wait(5)
         EndLoop
     EndThread
@@ -135,7 +138,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_16_ENTRY_4)
+    IfEq(LVar0, $Jan23.index)
         Exec(EVS_EnterFalling)
         Exec(EVS_BindExitTriggers)
     Else

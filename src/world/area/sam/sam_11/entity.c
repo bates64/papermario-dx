@@ -415,20 +415,19 @@ EvtScript EVS_Interact_Padlock = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_SAM11_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 153, 8, -145, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_Interact_Padlock)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Thread
         Call(MonitorCurrentFloor)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, 224, 150, -328, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Call(SetEntityCullMode, 1)
     Set(MF_RoofLandTriggerGuard, false)
     BindTrigger(EVS_TouchFloor_RightRoof, TRIGGER_FLOOR_TOUCH, COLLIDER_o570, 1, 0)
     BindTrigger(EVS_TouchFloor_LeftRoof, TRIGGER_FLOOR_TOUCH, COLLIDER_g_yuki2, 1, 0)
-    Call(MakeItemEntity, ITEM_WAREHOUSE_KEY, 0, -60, 220, ITEM_SPAWN_MODE_KEY, GF_SAM11_Item_WarehouseKey)
+    Call(MakeMarkerEntity, $Item_WarehouseKey_1)
     Return
     End
 };

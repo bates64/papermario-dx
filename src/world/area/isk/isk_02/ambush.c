@@ -88,7 +88,7 @@ EvtScript EVS_ManageSarcophagus2 = {
                 Goto(5)
             EndIf
     EndIf
-    Call(MakeItemEntity, ITEM_SPIKE_SHIELD, -133, 1, 500, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_ISK02_Item_SpikeShield)
+    Call(MakeMarkerEntity, $Item_SpikeShield_1)
     Set(AF_ISK02_OpeningSarcophagus2, true)
     Call(SetNpcFlagBits, NPC_Pokey_02, NPC_FLAG_INVISIBLE, false)
     Set(LVar0, AF_ISK02_Sarcophagus2Opened)

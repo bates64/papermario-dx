@@ -71,7 +71,7 @@ EvtScript EVS_SetupVines = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o76, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o80, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, jan_14_ENTRY_1)
+    IfNe(LVar0, $Jan15.index)
         Set(LVarC, VINE_IDX_1)
     Else
         Set(LVarC, VINE_IDX_0)

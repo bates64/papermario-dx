@@ -1,14 +1,9 @@
 #include "tik_14.h"
 
-EntryList Entrances = {
-    [tik_14_ENTRY_0]    { -173.0,    0.0,    0.0,   90.0 },
-    [tik_14_ENTRY_1]    {   30.0,    0.0,   45.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_tik_14 },
     .songVariation = 1,
     .sfxReverb = 2,

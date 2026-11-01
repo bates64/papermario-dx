@@ -1,4 +1,6 @@
 #include "nok_12.h"
+#include "world/area/nok/nok_11.h"
+#include "world/area/nok/nok_13.h"
 
 API_CALLABLE(UpdateEnounterStages) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -25,8 +27,8 @@ API_CALLABLE(UpdateEnounterStages) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_nok_11_1 = EVT_EXIT_WALK(60, nok_12_ENTRY_0, "nok_11", nok_11_ENTRY_1);
-EvtScript EVS_ExitWalk_nok_13_0 = EVT_EXIT_WALK(60, nok_12_ENTRY_1, "nok_13", nok_13_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_11_1 = EVT_EXIT_WALK(60, $Nok11, $nok_11.Nok12);
+EvtScript EVS_ExitWalk_nok_13_0 = EVT_EXIT_WALK(60, $Nok13, $nok_13.Nok12);
 
 EvtScript EVS_UpdateEnounterStages = {
     Label(0)
@@ -106,7 +108,7 @@ EvtScript EVS_Main = {
         Call(MakeNpcs, false, DefaultNPCs)
     Else
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, nok_12_ENTRY_2)
+        IfEq(LVar0, $Entry2.index)
             Call(MakeNpcs, false, DemoNPCs)
         EndIf
     EndIf
@@ -117,7 +119,7 @@ EvtScript EVS_Main = {
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, nok_12_ENTRY_2)
+        IfEq(LVar0, $Entry2.index)
             ExecWait(EVS_PlayDemoScene1)
         Else
             ExecWait(EVS_PlayDemoScene2)

@@ -12,8 +12,8 @@ EvtScript EVS_NpcInit_Luigi_Scenes = {
     Call(SetNpcCollisionSize, NPC_SELF, 46, 26)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(kmr_20_ENTRY_2)
-        CaseOrEq(kmr_20_ENTRY_3)
+        CaseOrEq($Ending.index)
+        CaseOrEq($EpilogueLetter.index)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_IdleSit)
             Call(SetNpcPos, NPC_SELF, 196, 44, -37)
             Call(SetNpcYaw, NPC_SELF, 270)
@@ -26,8 +26,8 @@ EvtScript EVS_NpcInit_Luigi_Scenes = {
 NpcData NpcData_Scenes[] = {
     {
         .id = NPC_Scene_Parakarry,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Scene_Parakarry.pos,
+        .yaw = $Scene_Parakarry.yaw,
         .settings = &NpcSettings_Scenes,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
@@ -35,8 +35,8 @@ NpcData NpcData_Scenes[] = {
     },
     {
         .id = NPC_Scene_Luigi,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Scene_Luigi.pos,
+        .yaw = $Scene_Luigi.yaw,
         .init = &EVS_NpcInit_Luigi_Scenes,
         .settings = &NpcSettings_Scenes,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_GRAVITY,

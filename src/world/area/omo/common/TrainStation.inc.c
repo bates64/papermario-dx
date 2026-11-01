@@ -1,4 +1,5 @@
 #include "common.h"
+#include "world/area/omo/omo_16.h"
 
 extern Vec2i ConductorPos;
 extern TrainPath TrainPath_DepartRight[];
@@ -58,7 +59,7 @@ EvtScript EVS_Train_DepartRight = {
             Wait(1)
             Goto(10)
         EndIf
-    Call(GotoMap, "omo_16", omo_16_ENTRY_0)
+    Call(GotoMap, $omo_16.TrainLeft)
     Set(GB_OMO_TrainRoute, TRAIN_ROUTE_RIGHT)
     Wait(100)
     Return
@@ -86,7 +87,7 @@ EvtScript EVS_Train_DepartLeft = {
             Wait(1)
             Goto(10)
         EndIf
-    Call(GotoMap, "omo_16", omo_16_ENTRY_1)
+    Call(GotoMap, $omo_16.TrainRight)
     Set(GB_OMO_TrainRoute, TRAIN_ROUTE_LEFT)
     Wait(100)
     Return
@@ -137,7 +138,7 @@ EvtScript EVS_Train_ArriveFromRight = {
                 Wait(1)
                 Goto(20)
             EndIf
-        Call(GotoMap, "omo_16", omo_16_ENTRY_1)
+        Call(GotoMap, $omo_16.TrainRight)
         Set(GB_OMO_TrainRoute, TRAIN_ROUTE_LEFT)
         Wait(100)
     EndIf
@@ -189,7 +190,7 @@ EvtScript EVS_Train_ArriveFromLeft = {
                 Wait(1)
                 Goto(20)
             EndIf
-        Call(GotoMap, "omo_16", omo_16_ENTRY_0)
+        Call(GotoMap, $omo_16.TrainLeft)
         Set(GB_OMO_TrainRoute, TRAIN_ROUTE_RIGHT)
         Wait(100)
     EndIf

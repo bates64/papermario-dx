@@ -1,7 +1,9 @@
 #include "kmr_07.h"
+#include "world/area/kmr/kmr_06.h"
+#include "world/area/kmr/kmr_12.h"
 
-EvtScript EVS_ExitWalk_kmr_06_1 = EVT_EXIT_WALK(60, kmr_07_ENTRY_0, "kmr_06", kmr_06_ENTRY_1);
-EvtScript EVS_ExitWalk_kmr_12_0 = EVT_EXIT_WALK(60, kmr_07_ENTRY_1, "kmr_12", kmr_12_ENTRY_0);
+EvtScript EVS_ExitWalk_kmr_06_1 = EVT_EXIT_WALK(60, $GoombaRoad2, $kmr_06.GoombaRoad3);
+EvtScript EVS_ExitWalk_kmr_12_0 = EVT_EXIT_WALK(60, $GoombaRoad4, $kmr_12.GoombaRoad3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kmr_06_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -18,7 +20,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kmr_07_ENTRY_A)
+    IfNe(LVar0, $Entry10.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

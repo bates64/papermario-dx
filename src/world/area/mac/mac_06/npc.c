@@ -1,4 +1,7 @@
 #include "mac_06.h"
+#include "world/area/jan/jan_00.h"
+#include "world/area/kmr/kmr_22.h"
+#include "world/area/mac/mac_05.h"
 #include "model.h"
 #include "effects.h"
 #include "world/common/prefab/Whale.h"
@@ -156,7 +159,7 @@ API_CALLABLE(AwaitSkipScenePrompt) {
 
 EvtScript EVS_NpcIdle_Whale = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_06_ENTRY_0)
+    IfEq(LVar0, $PortDistrict.index)
         Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
         Call(NpcFlyTo, NPC_Whale, 50, LVar1, 500, 120, 0, EASING_SIN_OUT)
         Thread
@@ -168,9 +171,9 @@ EvtScript EVS_NpcIdle_Whale = {
         IfEq(GF_StartedChapter5, false)
             Set(GF_StartedChapter5, true)
             Call(FadeOutMusic, 0, 1500)
-            Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_5, TRANSITION_BEGIN_OR_END_CHAPTER)
+            Call(GotoMapSpecial, $kmr_22.Chapter5, TRANSITION_BEGIN_OR_END_CHAPTER)
         Else
-            Call(GotoMap, "jan_00", jan_00_ENTRY_0)
+            Call(GotoMap, $jan_00.ToadTown)
         EndIf
     Else
         Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
@@ -188,7 +191,7 @@ EvtScript EVS_NpcIdle_Whale = {
         Wait(150)
         Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(NpcFlyTo, NPC_Whale, -500, LVar1, 500, 120, 0, EASING_COS_IN)
-        Call(GotoMap, "mac_05", mac_05_ENTRY_1)
+        Call(GotoMap, $mac_05.WhaleRide)
     EndIf
     Return
     End
@@ -254,7 +257,7 @@ EvtScript EVS_NpcInit_Whale = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_NO_SPRITE, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_06_ENTRY_0)
+    IfEq(LVar0, $PortDistrict.index)
         Call(InterpPlayerYaw, 90, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
         Call(InterpNpcYaw, NPC_Kolorado, 90, 0)
@@ -300,10 +303,10 @@ EvtScript EVS_NpcInit_Whale = {
     Thread
         Call(AwaitSkipScenePrompt)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, mac_06_ENTRY_0)
-            Call(GotoMap, "jan_00", jan_00_ENTRY_0)
+        IfEq(LVar0, $PortDistrict.index)
+            Call(GotoMap, $jan_00.ToadTown)
         Else
-            Call(GotoMap, "mac_05", mac_05_ENTRY_1)
+            Call(GotoMap, $mac_05.WhaleRide)
         EndIf
     EndThread
     Return
@@ -384,7 +387,7 @@ EvtScript EVS_NpcIdle_JrTroopa = {
     EndChildThread
     Call(SetNpcSpeed, NPC_SELF, 2.0)
     Call(NpcMoveTo, NPC_SELF, -300, 500, 0)
-    Call(GotoMap, "mac_05", mac_05_ENTRY_1)
+    Call(GotoMap, $mac_05.WhaleRide)
     Wait(100)
     Return
     End
@@ -404,8 +407,8 @@ EvtScript EVS_NpcInit_JrTroopa = {
 
 NpcData NpcData_Whale = {
     .id = NPC_Whale,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Whale.pos,
+    .yaw = $Whale.yaw,
     .init = &EVS_NpcInit_Whale,
     .settings = &NpcSettings_Whale,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -415,8 +418,8 @@ NpcData NpcData_Whale = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = COMMON_PASSIVE_FLAGS,
@@ -433,8 +436,8 @@ AnimID LimitAnims_JrTroopa[] = {
 
 NpcData NpcData_JrTroopa = {
     .id = NPC_JrTroopa,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $JrTroopa.pos,
+    .yaw = $JrTroopa.yaw,
     .init = &EVS_NpcInit_JrTroopa,
     .settings = &NpcSettings_JrTroopa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

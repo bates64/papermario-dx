@@ -1,7 +1,9 @@
 #include "arn_05.h"
+#include "world/area/arn/arn_02.h"
+#include "world/area/arn/arn_03.h"
 
-EvtScript EVS_ExitWalk_arn_03_1 = EVT_EXIT_WALK(60, arn_05_ENTRY_0, "arn_03", arn_03_ENTRY_1);
-EvtScript EVS_ExitWalk_arn_02_0 = EVT_EXIT_WALK(60, arn_05_ENTRY_1, "arn_02", arn_02_ENTRY_0);
+EvtScript EVS_ExitWalk_arn_03_1 = EVT_EXIT_WALK(60, $Arn03, $arn_03.Arn05);
+EvtScript EVS_ExitWalk_arn_02_0 = EVT_EXIT_WALK(60, $Arn02, $arn_02.Arn05);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_arn_03_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

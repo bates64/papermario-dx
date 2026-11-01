@@ -9,11 +9,9 @@ EvtScript EVS_OnBreakBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HiddenYellowBlock, 325, 205, -30, 0, ITEM_LIFE_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KZN06_HiddenItem_LifeShroom)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_LifeShroom_1)
     IfEq(GF_KZN06_Hammer3Block, false)
-        Call(MakeEntity, Entity_Hammer3BlockWideZ, 385, 5, 180, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnBreakBlock)
+        Call(MakeMarkerEntity, $Hammer3BlockWideZ_1)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
         Call(CreatePushBlockGrid, 0, 12, 1, -330, 145, -90, 0)

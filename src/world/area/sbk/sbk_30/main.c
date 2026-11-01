@@ -1,10 +1,15 @@
 #include "sbk_30.h"
+#include "world/area/dro/dro_01.h"
+#include "world/area/sbk/sbk_20.h"
+#include "world/area/sbk/sbk_31.h"
+#include "world/area/sbk/sbk_40.h"
+#include "world/area/sbk/sbk_99.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_sbk_99_1 = EVT_EXIT_WALK(60, sbk_30_ENTRY_0, "sbk_99", sbk_99_ENTRY_1);
-EvtScript EVS_ExitWalk_sbk_31_0 = EVT_EXIT_WALK(60, sbk_30_ENTRY_1, "sbk_31", sbk_31_ENTRY_0);
-EvtScript EVS_ExitWalk_sbk_20_3 = EVT_EXIT_WALK(60, sbk_30_ENTRY_2, "sbk_20", sbk_20_ENTRY_3);
-EvtScript EVS_ExitWalk_sbk_40_2 = EVT_EXIT_WALK(60, sbk_30_ENTRY_3, "sbk_40", sbk_40_ENTRY_2);
+EvtScript EVS_ExitWalk_sbk_99_1 = EVT_EXIT_WALK(60, $MtRugged, $sbk_99.Sbk30);
+EvtScript EVS_ExitWalk_sbk_31_0 = EVT_EXIT_WALK(60, $East, $sbk_31.West);
+EvtScript EVS_ExitWalk_sbk_20_3 = EVT_EXIT_WALK(60, $North, $sbk_20.South);
+EvtScript EVS_ExitWalk_sbk_40_2 = EVT_EXIT_WALK(60, $South, $sbk_40.North);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sbk_99_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -18,15 +23,15 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(sbk_30_ENTRY_0)
+        CaseEq($MtRugged.index)
             IfEq(GF_SBK30_Visited, false)
                 Set(GF_SBK30_Visited, true)
                 Set(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_DESERT)
             EndIf
-        CaseEq(sbk_30_ENTRY_1)
-        CaseEq(sbk_30_ENTRY_2)
-        CaseEq(sbk_30_ENTRY_3)
-        CaseEq(sbk_30_ENTRY_4)
+        CaseEq($East.index)
+        CaseEq($North.index)
+        CaseEq($South.index)
+        CaseEq($RuinsRisingA.index)
             Return
     EndSwitch
     Set(LVar0, EVS_BindExitTriggers)
@@ -51,10 +56,10 @@ EvtScript EVS_Scene_RuinsRising = {
     Thread
         Wait(60)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, sbk_30_ENTRY_4)
-            Call(GotoMap, "dro_01", dro_01_ENTRY_3)
+        IfEq(LVar0, $RuinsRisingA.index)
+            Call(GotoMap, $dro_01.RuinsRisingA)
         Else
-            Call(GotoMap, "dro_01", dro_01_ENTRY_4)
+            Call(GotoMap, $dro_01.RuinsRisingB)
         EndIf
         Wait(100)
     EndThread
@@ -83,8 +88,8 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupFoliage)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(sbk_30_ENTRY_4)
-        CaseOrEq(sbk_30_ENTRY_5)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             ExecWait(EVS_Scene_RuinsRising)
         EndCaseGroup
         CaseDefault

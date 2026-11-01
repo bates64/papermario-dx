@@ -180,8 +180,8 @@ EvtScript EVS_NpcInit_Kalmar = {
 
 NpcData NpcData_Kalmar = {
     .id = NPC_Kalmar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Kalmar.pos,
+    .yaw = $Kalmar.yaw,
     .init = &EVS_NpcInit_Kalmar,
     .settings = &NpcSettings_StarSpirit,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

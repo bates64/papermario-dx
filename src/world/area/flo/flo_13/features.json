@@ -1,0 +1,1088 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 2,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 14,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 18,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 2,
+      "name": "Flo14",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        570,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 2,
+      "name": "Flo15",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -570,
+        0,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 14,
+      "name": "Lakilester",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 0,
+          "palette": 0,
+          "anim": 0,
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "parent": 14,
+      "name": "Lakilulu",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 0,
+          "palette": 0,
+          "anim": 0,
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parent": 14,
+      "name": "Lakilulu_Spiny",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 0,
+          "palette": 0,
+          "anim": 0,
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 14,
+      "name": "Lakitu_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        335,
+        90,
+        45
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 98,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Lakitu_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            335,
+            90,
+            45
+          ],
+          "useCircle": true,
+          "radius": 250,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            335,
+            90,
+            45
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 14,
+      "name": "Lakitu_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -320,
+        90,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 98,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Lakitu_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            -320,
+            90,
+            0
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            -320,
+            90,
+            0
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 14,
+      "name": "Spiny_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 182,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Spiny_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 14,
+      "name": "Spiny_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 182,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Spiny_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 14,
+      "name": "Spiny_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 182,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Spiny_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 11,
+      "parent": 14,
+      "name": "Spiny_04",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 182,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Spiny_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "parent": 14,
+      "name": "Spiny_05",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 182,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Spiny_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 13,
+      "parent": 14,
+      "name": "Spiny_06",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 182,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Spiny_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 15,
+      "parent": 18,
+      "name": "Item_MegaSmash_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -61,
+        60,
+        -85
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MEGA_SMASH",
+        "gameFlagName": "GF_FLO13_Item_MegaSmash",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 16,
+      "parent": 18,
+      "name": "Item_ShootingStar_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        128,
+        0,
+        157
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_SHOOTING_STAR",
+        "gameFlagName": "GF_FLO13_Item_ShootingStar",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 17,
+      "parent": 18,
+      "name": "BombableRock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -160,
+        160,
+        -90
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BombableRock",
+        "scriptName": "EVS_OnBlast_Rock"
+      }
+    }
+  ]
+}

@@ -214,7 +214,7 @@ EvtScript EVS_Scene_RescuedMuskular = {
 
 EvtScript EVS_NpcInit_Muskular = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_04_ENTRY_5)
+    IfEq(LVar0, $PeachInterlude.index)
         Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Muskular)
         Exec(EVS_Scene_RescuedMuskular)
     Else

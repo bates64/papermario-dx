@@ -1,4 +1,7 @@
 #include "iwa_11.h"
+#include "world/area/iwa/iwa_10.h"
+#include "world/area/kmr/kmr_22.h"
+#include "world/area/mac/mac_03.h"
 
 API_CALLABLE(GetSmallWheelsAngle) {
     f32 angle = clamp_angle(script->varTable[2] * -2.4f);
@@ -339,7 +342,7 @@ EvtScript EVS_TravelToToadTown = {
         EndLoop
     EndThread
     Wait(1200)
-    Call(GotoMap, "mac_03", mac_03_ENTRY_1)
+    Call(GotoMap, $mac_03.MtRugged)
     Wait(100)
     Return
     End
@@ -372,11 +375,11 @@ EvtScript EVS_TravelToMtRugged = {
     IfEq(GF_StartedChapter2, false)
         Set(GF_StartedChapter2, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_2, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, $kmr_22.Chapter2, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, "iwa_10", iwa_10_ENTRY_0)
+    Call(GotoMap, $iwa_10.Train)
     Wait(100)
     Return
     End

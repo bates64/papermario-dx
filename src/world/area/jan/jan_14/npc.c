@@ -40,8 +40,8 @@ EvtScript EVS_NpcInit_JungleFuzzy = {
 
 NpcData NpcData_JungleFuzzy_01 = {
     .id = NPC_JungleFuzzy_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $JungleFuzzy_01.pos,
+    .yaw = $JungleFuzzy_01.yaw,
     .init = &EVS_NpcInit_JungleFuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -52,8 +52,8 @@ NpcData NpcData_JungleFuzzy_01 = {
 
 NpcData NpcData_JungleFuzzy_02 = {
     .id = NPC_JungleFuzzy_02,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $JungleFuzzy_02.pos,
+    .yaw = $JungleFuzzy_02.yaw,
     .init = &EVS_NpcInit_JungleFuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

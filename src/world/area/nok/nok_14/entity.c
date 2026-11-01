@@ -58,31 +58,26 @@ EvtScript EVS_BreakBlock_ThunderBolt = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Signpost, -150, 0, -175, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_ReadSign_NoEntry)
+    Call(MakeMarkerEntity, $Signpost_1)
     Set(LVar0, 1)
     IfLt(GB_StoryProgress, STORY_CH1_MADE_SECOND_BRIDGE)
         Set(LVar0, 0)
     EndIf
     IfEq(LVar0, 0)
-        Call(MakeEntity, Entity_BlueSwitch, 100, 0, -185, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_NOK14_HitSwitch))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
     EndIf
-    Call(MakeItemEntity, ITEM_COIN, -655, 75, -35, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinA)
-    Call(MakeItemEntity, ITEM_COIN, -640, 75, -20, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinB)
-    Call(MakeItemEntity, ITEM_COIN, -640, 75, -50, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinC)
-    Call(MakeItemEntity, ITEM_COIN, -670, 75, -20, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinD)
-    Call(MakeItemEntity, ITEM_COIN, -670, 75, -50, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_CoinE)
-    Call(MakeEntity, Entity_BrickBlock, -345, 77, -117, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_BreakBlock_ThunderBolt)
-    Call(MakeItemEntity, ITEM_THUNDER_BOLT, -345, 102, -117, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK14_Item_ThunderBolt)
+    Call(MakeMarkerEntity, $Item_Coin_1)
+    Call(MakeMarkerEntity, $Item_Coin_2)
+    Call(MakeMarkerEntity, $Item_Coin_3)
+    Call(MakeMarkerEntity, $Item_Coin_4)
+    Call(MakeMarkerEntity, $Item_Coin_5)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $Item_ThunderBolt_1)
     Set(MV_Item_ThunderBolt, LVar0)
-    Call(MakeEntity, Entity_BrickBlock, 200, 60, -160, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 250, 60, -160, 0, ITEM_FIRE_FLOWER, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_NOK14_HiddenItem_FireFlower)
-    Call(MakeEntity, Entity_BrickBlock, 300, 60, -160, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenPanel, -650, 75, -50, 0, MODEL_o251, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_NOK14_HiddenPanel)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_FireFlower_1)
+    Call(MakeMarkerEntity, $BrickBlock_3)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
     Return
     End
 };

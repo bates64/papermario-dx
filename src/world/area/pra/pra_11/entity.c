@@ -6,9 +6,7 @@
 EvtScript EVS_OpenChest_RedKey = EVT_OPEN_CHEST(ITEM_RED_KEY, GF_PRA11_Chest_RedKey);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Chest, 200, 20, 94, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_PRA11_Chest_RedKey)
-    Call(AssignScript, EVS_OpenChest_RedKey)
+    Call(MakeMarkerEntity, $Chest_RedKey)
     Return
     End
 };

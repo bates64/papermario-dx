@@ -156,8 +156,8 @@ EvtScript EVS_NpcIdle_KoloradoPanic = {
 EvtScript EVS_NpcInit_Kolorado = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(sbk_30_ENTRY_4)
-        CaseOrEq(sbk_30_ENTRY_5)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Call(SetNpcPos, NPC_SELF, 210, 0, -210)
             Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_KoloradoPanic)
         EndCaseGroup
@@ -209,8 +209,8 @@ EvtScript EVS_NpcInit_Archeologist_01 = {
     Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Archeologist_01)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(sbk_30_ENTRY_4)
-        CaseOrEq(sbk_30_ENTRY_5)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Archeologist_01)
         EndCaseGroup
     EndSwitch
@@ -244,8 +244,8 @@ EvtScript EVS_NpcInit_Archeologist_02 = {
     Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Archeologist_02)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(sbk_30_ENTRY_4)
-        CaseOrEq(sbk_30_ENTRY_5)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Archeologist_01)
         EndCaseGroup
     EndSwitch
@@ -256,8 +256,8 @@ EvtScript EVS_NpcInit_Archeologist_02 = {
 NpcData NpcData_Archeologist_02[] = {
     {
         .id = NPC_Kolorado,
-        .pos = { 200.0f, 0.0f, -100.0f },
-        .yaw = 90,
+        .pos = $Kolorado.pos,
+        .yaw = $Kolorado.yaw,
         .init = &EVS_NpcInit_Kolorado,
         .settings = &NpcSettings_Kolorado,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -267,20 +267,9 @@ NpcData NpcData_Archeologist_02[] = {
     },
     {
         .id = NPC_Archeologist_01,
-        .pos = { 238.0f, 0.0f, -112.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 100 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Archeologist_01.pos,
+        .yaw = $Archeologist_01.yaw,
+        .territory = $Archeologist_01.territory,
         .init = &EVS_NpcInit_Archeologist_01,
         .settings = &NpcSettings_Archeologist,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -290,20 +279,9 @@ NpcData NpcData_Archeologist_02[] = {
     },
     {
         .id = NPC_Archeologist_02,
-        .pos = { 170.0f, 0.0f, -190.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 100 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Archeologist_02.pos,
+        .yaw = $Archeologist_02.yaw,
+        .territory = $Archeologist_02.territory,
         .init = &EVS_NpcInit_Archeologist_02,
         .settings = &NpcSettings_Archeologist,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,

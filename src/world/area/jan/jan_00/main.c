@@ -1,4 +1,6 @@
 #include "jan_00.h"
+#include "world/area/jan/jan_01.h"
+#include "world/area/jan/jan_08.h"
 #include "npc.h"
 #include "effects.h"
 #include "entity.h"
@@ -10,8 +12,8 @@ extern EvtScript EVS_MakeEntities;
 extern EvtScript EVS_SetupWhale;
 extern EvtScript EVS_SetupFoliage;
 
-EvtScript EVS_ExitWalk_jan_01_0 = EVT_EXIT_WALK(60, jan_00_ENTRY_1, "jan_01", jan_01_ENTRY_0);
-EvtScript EVS_ExitWalk_jan_08_0 = EVT_EXIT_WALK(60, jan_00_ENTRY_2, "jan_08", jan_08_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_01_0 = EVT_EXIT_WALK(60, $Jan01, $jan_01.Jan00);
+EvtScript EVS_ExitWalk_jan_08_0 = EVT_EXIT_WALK(60, $Jan08, $jan_08.Jan00);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
@@ -51,7 +53,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitse, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_00_ENTRY_0)
+    IfEq(LVar0, $ToadTown.index)
         Exec(EVS_BindExitTriggers)
     Else
         Set(LVar0, EVS_BindExitTriggers)

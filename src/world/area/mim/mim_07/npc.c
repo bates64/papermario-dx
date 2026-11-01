@@ -43,13 +43,13 @@ s32 JrTroopaPath_EastFromNorth[] = {
 EvtScript EVS_NpcIdle_JrTroopa = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mim_07_ENTRY_0)
+        CaseEq($North.index)
             UseBuf(JrTroopa_TriggerPos_South)
-        CaseEq(mim_07_ENTRY_1)
+        CaseEq($West.index)
             UseBuf(JrTroopa_TriggerPos_South)
-        CaseEq(mim_07_ENTRY_2)
+        CaseEq($South.index)
             UseBuf(JrTroopa_TriggerPos_North)
-        CaseEq(mim_07_ENTRY_3)
+        CaseEq($East.index)
             UseBuf(JrTroopa_TriggerPos_East)
     EndSwitch
     BufRead2(LVar1, LVar2)
@@ -71,19 +71,19 @@ EvtScript EVS_NpcIdle_JrTroopa = {
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mim_07_ENTRY_0)
+        CaseEq($North.index)
             IfLt(LVar1, 0)
                 UseBuf(JrTroopaPath_SouthFromWest)
             Else
                 UseBuf(JrTroopaPath_SouthFromEast)
             EndIf
-        CaseEq(mim_07_ENTRY_2)
+        CaseEq($South.index)
             IfLt(LVar1, 0)
                 UseBuf(JrTroopaPath_NorthFromWest)
             Else
                 UseBuf(JrTroopaPath_NorthFromEast)
             EndIf
-        CaseEq(mim_07_ENTRY_3)
+        CaseEq($East.index)
             IfLt(LVar3, 0)
                 UseBuf(JrTroopaPath_EastFromSouth)
             Else
@@ -180,20 +180,9 @@ EvtScript EVS_NpcInit_Fuzzy = {
 
 NpcData NpcData_Fuzzy_01 = {
     .id = NPC_Fuzzy_01,
-    .pos = { -240.0f, 0.0f, -240.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 400 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Fuzzy_01.pos,
+    .yaw = $Fuzzy_01.yaw,
+    .territory = $Fuzzy_01.territory,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = 0,
@@ -204,20 +193,9 @@ NpcData NpcData_Fuzzy_01 = {
 
 NpcData NpcData_Fuzzy_02 = {
     .id = NPC_Fuzzy_02,
-    .pos = { 270.0f, 0.0f, 200.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 400 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Fuzzy_02.pos,
+    .yaw = $Fuzzy_02.yaw,
+    .territory = $Fuzzy_02.territory,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = 0,
@@ -228,8 +206,8 @@ NpcData NpcData_Fuzzy_02 = {
 
 NpcData NpcData_JrTroopa = {
     .id = NPC_JrTroopa,
-    .pos = { -338.0f, 0.0f, 0.0f },
-    .yaw = 0,
+    .pos = $JrTroopa.pos,
+    .yaw = $JrTroopa.yaw,
     .init = &EVS_NpcInit_JrTroopa,
     .settings = &NpcSettings_JrTroopa,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,

@@ -10,8 +10,8 @@
 #define TRAIN_ARRIVAL_MESSAGE MSG_CH4_0011
 #define TRAIN_LEFT_THRESHOLD -350
 #define TRAIN_RIGHT_THRESHOLD 350
-#define TRAIN_LEFT_ENTRY omo_10_ENTRY_2
-#define TRAIN_RIGHT_ENTRY omo_10_ENTRY_3
+#define TRAIN_LEFT_ENTRY $TrainLeft.index
+#define TRAIN_RIGHT_ENTRY $TrainRight.index
 
 #include "../common/TrainStation.inc.c"
 

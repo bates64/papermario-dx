@@ -18,11 +18,9 @@ EvtScript EVS_OnInspect_Menu = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, -150, 60, -375, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenPanel, -50, 0, -300, 0, MODEL_o106, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_MAC05_HiddenPanel)
-    Call(MakeEntity, Entity_MulticoinBlock, -490, 130, 160, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_MAC05_MultiCoinBrick)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $MulticoinBlock_1)
     BindTrigger(EVS_OnInspect_StreetSign, TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     BindTrigger(EVS_OnInspect_Menu, TRIGGER_WALL_PRESS_A, COLLIDER_o154, 1, 0)
     Return

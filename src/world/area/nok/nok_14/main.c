@@ -1,4 +1,6 @@
 #include "nok_14.h"
+#include "world/area/nok/nok_13.h"
+#include "world/area/nok/nok_15.h"
 
 API_CALLABLE(UpdateEnounterStages) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -25,8 +27,8 @@ API_CALLABLE(UpdateEnounterStages) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_nok_13_2 = EVT_EXIT_WALK(60, nok_14_ENTRY_0, "nok_13", nok_13_ENTRY_2);
-EvtScript EVS_ExitWalk_nok_15_0 = EVT_EXIT_WALK(60, nok_14_ENTRY_1, "nok_15", nok_15_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_13_2 = EVT_EXIT_WALK(60, $Nok13, $nok_13.Nok14);
+EvtScript EVS_ExitWalk_nok_15_0 = EVT_EXIT_WALK(60, $Nok15, $nok_15.Nok14);
 
 EvtScript EVS_SetupTexPan = {
     // flowers

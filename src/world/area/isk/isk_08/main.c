@@ -1,4 +1,8 @@
 #include "isk_08.h"
+#include "world/area/isk/isk_07.h"
+#include "world/area/isk/isk_09.h"
+#include "world/area/isk/isk_10.h"
+#include "world/area/isk/isk_11.h"
 
 s32 adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
@@ -17,10 +21,10 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_isk_09_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_0, "isk_09", isk_09_ENTRY_0);
-EvtScript EVS_ExitWalk_isk_10_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_1, "isk_10", isk_10_ENTRY_0);
-EvtScript EVS_ExitWalk_isk_07_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_2, "isk_07", isk_07_ENTRY_0);
-EvtScript EVS_ExitWalk_isk_11_0 = EVT_EXIT_WALK(40, isk_08_ENTRY_3, "isk_11", isk_11_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_09_0 = EVT_EXIT_WALK(40, $SuperHammerRoom, $isk_09.DescendingStairs2);
+EvtScript EVS_ExitWalk_isk_10_0 = EVT_EXIT_WALK(40, $VerticalShaft, $isk_10.DescendingStairs2);
+EvtScript EVS_ExitWalk_isk_07_0 = EVT_EXIT_WALK(40, $SarcophagusHall2, $isk_07.DescendingStairs2);
+EvtScript EVS_ExitWalk_isk_11_0 = EVT_EXIT_WALK(40, $StonePuzzleRoom, $isk_11.DescendingStairs2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_09_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)

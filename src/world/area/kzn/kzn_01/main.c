@@ -1,7 +1,9 @@
 #include "kzn_01.h"
+#include "world/area/jan/jan_22.h"
+#include "world/area/kzn/kzn_02.h"
 
-EvtScript EVS_ExitWalk_jan_22_2 = EVT_EXIT_WALK(60, kzn_01_ENTRY_0, "jan_22", jan_22_ENTRY_2);
-EvtScript EVS_ExitWalk_kzn_02_0 = EVT_EXIT_WALK(60, kzn_01_ENTRY_1, "kzn_02", kzn_02_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_22_2 = EVT_EXIT_WALK(60, $JadeJungle, $jan_22.MtLavalava);
+EvtScript EVS_ExitWalk_kzn_02_0 = EVT_EXIT_WALK(60, $Kzn02, $kzn_02.Kzn01);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_22_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

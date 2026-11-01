@@ -69,8 +69,8 @@ AnimID LimitAnims_Koopatrol_Intro[] = {
 
 NpcData NpcData_Bowser_Intro = {
     .id = NPC_Bowser_Body,
-    .pos = { 0.0f, -500.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_Body_1.pos,
+    .yaw = $Bowser_Body_1.yaw,
     .init = &EVS_NpcInit_Bowser_Body_Intro,
     .settings = &NpcSettings_Bowser,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -82,8 +82,8 @@ NpcData NpcData_Bowser_Intro = {
 NpcData NpcData_Characters_Intro[] = {
     {
         .id = NPC_Bowser_Prop,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Bowser_Prop_1.pos,
+        .yaw = $Bowser_Prop_1.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -92,8 +92,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Koopatrol_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_01.pos,
+        .yaw = $Koopatrol_01.yaw,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -102,8 +102,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Koopatrol_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_02.pos,
+        .yaw = $Koopatrol_02.yaw,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -112,8 +112,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Kammy,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy.pos,
+        .yaw = $Kammy.yaw,
         .settings = &NpcSettings_Kammy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -122,8 +122,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Peach,
-        .pos = { 670.0f, 0.0f, -12.0f },
-        .yaw = 270,
+        .pos = $Peach.pos,
+        .yaw = $Peach.yaw,
         .settings = &NpcSettings_Peach,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
         .drops = NO_DROPS,

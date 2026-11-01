@@ -1,15 +1,16 @@
 #include "tik_12.h"
+#include "world/area/tik/tik_04.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript EVS_GotoMap_tik_04_3 = {
-    Call(GotoMap, "tik_04", tik_04_ENTRY_3)
+    Call(GotoMap, $tik_04.MetalBlockRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_04_3 = EVT_EXIT_PIPE_HORIZONTAL(tik_12_ENTRY_0, COLLIDER_o48, EVS_GotoMap_tik_04_3);
+EvtScript EVS_ExitPipe_tik_04_3 = EVT_EXIT_PIPE_HORIZONTAL($ScalesRoom, COLLIDER_o48, EVS_GotoMap_tik_04_3);
 
 EvtScript EVS_BindExitTriggers = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o48, COLLIDER_FLAGS_UPPER_MASK)

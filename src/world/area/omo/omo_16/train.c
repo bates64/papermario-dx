@@ -1,10 +1,14 @@
 #include "omo_16.h"
+#include "world/area/omo/omo_03.h"
+#include "world/area/omo/omo_06.h"
+#include "world/area/omo/omo_08.h"
+#include "world/area/omo/omo_10.h"
 
 #include "../common/ToyTrain.inc.c"
 
 EvtScript EVS_Conductor_AnnounceArrival = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, omo_16_ENTRY_0)
+    IfEq(LVar0, $TrainLeft.index)
         Wait(140)
         Switch(GB_OMO_TrainRoute)
             CaseEq(TRAIN_ROUTE_BLUE_PINK)
@@ -98,7 +102,7 @@ EvtScript EVS_Scene_TrainTraveling = {
     Exec(EVS_UpdateCameraDuringLongTrainRide)
     Exec(EVS_Conductor_AnnounceArrival)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, omo_16_ENTRY_0)
+    IfEq(LVar0, $TrainLeft.index)
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, TrainPath_LeftToRight)
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
@@ -116,13 +120,13 @@ EvtScript EVS_Scene_TrainTraveling = {
             EndIf
             Switch(GB_OMO_TrainRoute)
                 CaseEq(TRAIN_ROUTE_BLUE_PINK)
-                    Call(GotoMap, "omo_06", omo_06_ENTRY_2)
+                    Call(GotoMap, $omo_06.TrainLeft)
                 CaseEq(TRAIN_ROUTE_PINK_GREEN)
-                    Call(GotoMap, "omo_08", omo_08_ENTRY_1)
+                    Call(GotoMap, $omo_08.TrainLeft)
                 CaseEq(TRAIN_ROUTE_GREEN_RED)
-                    Call(GotoMap, "omo_10", omo_10_ENTRY_2)
+                    Call(GotoMap, $omo_10.TrainLeft)
                 CaseEq(TRAIN_ROUTE_RED_BLUE)
-                    Call(GotoMap, "omo_03", omo_03_ENTRY_2)
+                    Call(GotoMap, $omo_03.TrainLeft)
             EndSwitch
             Wait(100)
             Return
@@ -147,13 +151,13 @@ EvtScript EVS_Scene_TrainTraveling = {
             EndIf
             Switch(GB_OMO_TrainRoute)
                 CaseEq(TRAIN_ROUTE_BLUE_PINK)
-                    Call(GotoMap, "omo_03", omo_03_ENTRY_3)
+                    Call(GotoMap, $omo_03.TrainRight)
                 CaseEq(TRAIN_ROUTE_PINK_GREEN)
-                    Call(GotoMap, "omo_06", omo_06_ENTRY_3)
+                    Call(GotoMap, $omo_06.TrainRight)
                 CaseEq(TRAIN_ROUTE_GREEN_RED)
-                    Call(GotoMap, "omo_08", omo_08_ENTRY_2)
+                    Call(GotoMap, $omo_08.TrainRight)
                 CaseEq(TRAIN_ROUTE_RED_BLUE)
-                    Call(GotoMap, "omo_10", omo_10_ENTRY_3)
+                    Call(GotoMap, $omo_10.TrainRight)
             EndSwitch
             Wait(100)
             Return

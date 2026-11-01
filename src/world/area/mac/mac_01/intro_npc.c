@@ -3,8 +3,8 @@
 NpcData NpcData_IntroNPCs[] = {
     {
         .id = NPC_Luigi,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Luigi.pos,
+        .yaw = $Luigi.yaw,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -12,8 +12,8 @@ NpcData NpcData_IntroNPCs[] = {
     },
     {
         .id = NPC_IntroToad1,
-        .pos = { -94.0f, 0.0f, -117.0f },
-        .yaw = 90,
+        .pos = $IntroToad1.pos,
+        .yaw = $IntroToad1.yaw,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
@@ -22,22 +22,9 @@ NpcData NpcData_IntroNPCs[] = {
     },
     {
         .id = NPC_IntroToad2,
-        .pos = { 40.0f, 0.0f, -300.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { 40, 0, -300 },
-                    { -40, 0, -300 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 10 },
-            }
-        },
+        .pos = $IntroToad2.pos,
+        .yaw = $IntroToad2.yaw,
+        .territory = $IntroToad2.territory,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
@@ -46,8 +33,8 @@ NpcData NpcData_IntroNPCs[] = {
     },
     {
         .id = NPC_IntroToad3,
-        .pos = { -380.0f, 20.0f, -100.0f },
-        .yaw = 270,
+        .pos = $IntroToad3.pos,
+        .yaw = $IntroToad3.yaw,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,

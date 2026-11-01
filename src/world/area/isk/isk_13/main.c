@@ -1,6 +1,7 @@
 #include "isk_13.h"
+#include "world/area/isk/isk_12.h"
 
-EvtScript EVS_ExitWalk_isk_12_3 = EVT_EXIT_WALK(40, isk_13_ENTRY_0, "isk_12", isk_12_ENTRY_3);
+EvtScript EVS_ExitWalk_isk_12_3 = EVT_EXIT_WALK(40, $SandDrainage3, $isk_12.LunarStoneRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_12_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

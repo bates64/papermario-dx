@@ -1,8 +1,10 @@
 #include "kpa_102.h"
+#include "world/area/kpa/kpa_41.h"
+#include "world/area/kpa/kpa_53.h"
 
-EvtScript EVS_ExitWalk_kpa_41_2 = EVT_EXIT_WALK(40, kpa_102_ENTRY_0, "kpa_41", kpa_41_ENTRY_2);
+EvtScript EVS_ExitWalk_kpa_41_2 = EVT_EXIT_WALK(40, $MazeRoom, $kpa_41.UpperRight);
 EvtScript EVS_ExitDoors_kpa_53_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_102_ENTRY_1, "kpa_53", kpa_53_ENTRY_0, COLLIDER_tte, MODEL_o631, MODEL_o632);
+    EVT_EXIT_DOUBLE_DOOR($FakePeachHallway, $kpa_53.BlueFireBridge, COLLIDER_tte, MODEL_o631, MODEL_o632);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_41_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -14,12 +16,12 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_102_ENTRY_0)
+        CaseEq($MazeRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(kpa_102_ENTRY_1)
-            Set(LVar0, kpa_102_ENTRY_1)
+        CaseEq($FakePeachHallway.index)
+            Set(LVar0, $FakePeachHallway.index)
             Set(LVar2, MODEL_o631)
             Set(LVar3, MODEL_o632)
             Exec(EnterDoubleDoor)

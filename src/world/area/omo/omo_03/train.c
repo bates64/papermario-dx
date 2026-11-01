@@ -1,4 +1,5 @@
 #include "omo_03.h"
+#include "world/area/omo/omo_16.h"
 
 // these are not really necessary in this file, but are written explicitly
 // to mirror pattern in stations which use the shared TrainStation.inc.c
@@ -8,8 +9,8 @@
 #define TRAIN_ARRIVAL_MESSAGE MSG_CH4_000E
 #define TRAIN_LEFT_THRESHOLD -350
 #define TRAIN_RIGHT_THRESHOLD 350
-#define TRAIN_LEFT_ENTRY omo_03_ENTRY_2
-#define TRAIN_RIGHT_ENTRY omo_03_ENTRY_3
+#define TRAIN_LEFT_ENTRY $TrainLeft.index
+#define TRAIN_RIGHT_ENTRY $TrainRight.index
 
 #include "../common/ToyTrain.inc.c"
 #include "../common/TrainStationSwitches.inc.c"
@@ -207,7 +208,7 @@ EvtScript EVS_Conductor_ResumeStuckTrain = {
                     Wait(1)
                     Goto(30)
                 EndIf
-            Call(GotoMap, "omo_16", omo_16_ENTRY_0)
+            Call(GotoMap, $omo_16.TrainLeft)
             Set(GB_OMO_TrainRoute, TRAIN_ROUTE_RIGHT)
             Wait(100)
         EndIf
@@ -246,7 +247,7 @@ EvtScript EVS_Train_DepartRight = {
             Wait(1)
             Goto(10)
         EndIf
-    Call(GotoMap, "omo_16", omo_16_ENTRY_0)
+    Call(GotoMap, $omo_16.TrainLeft)
     Set(GB_OMO_TrainRoute, TRAIN_ROUTE_RIGHT)
     Wait(100)
     Return
@@ -284,7 +285,7 @@ EvtScript EVS_Train_DepartLeft = {
             Wait(1)
             Goto(10)
         EndIf
-    Call(GotoMap, "omo_16", omo_16_ENTRY_1)
+    Call(GotoMap, $omo_16.TrainRight)
     Set(GB_OMO_TrainRoute, TRAIN_ROUTE_LEFT)
     Wait(100)
     Return
@@ -356,7 +357,7 @@ EvtScript EVS_Train_ArriveFromRight = {
                 Wait(1)
                 Goto(20)
             EndIf
-        Call(GotoMap, "omo_16", omo_16_ENTRY_1)
+        Call(GotoMap, $omo_16.TrainRight)
         Set(GB_OMO_TrainRoute, TRAIN_ROUTE_LEFT)
         Wait(100)
     EndIf
@@ -453,7 +454,7 @@ EvtScript EVS_Train_ArriveFromLeft = {
             Wait(1)
             Goto(20)
         EndIf
-    Call(GotoMap, "omo_16", omo_16_ENTRY_0)
+    Call(GotoMap, $omo_16.TrainLeft)
     Set(GB_OMO_TrainRoute, TRAIN_ROUTE_RIGHT)
     Wait(100)
     Return
@@ -574,7 +575,7 @@ EvtScript EVS_SetupTrain = {
                 Exec(EVS_Train_ArriveFromLeft)
             CaseEq(TRAIN_RIGHT_ENTRY)
                 Exec(EVS_Train_ArriveFromRight)
-            CaseEq(omo_03_ENTRY_6)
+            CaseEq($TrainReturned.index)
                 Call(EnableGroup, MODEL_popo, false)
                 Call(EnableGroup, MODEL_po, true)
             CaseDefault

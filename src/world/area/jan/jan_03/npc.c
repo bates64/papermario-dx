@@ -694,8 +694,8 @@ AnimID LimitAnims_VillageLeader[] = {
 
 NpcData NpcData_VillageLeader = {
     .id = NPC_VillageLeader,
-    .pos = { -300.0f, 0.0f, -70.0f },
-    .yaw = 270,
+    .pos = $VillageLeader.pos,
+    .yaw = $VillageLeader.yaw,
     .init = &EVS_NpcInit_VillageLeader,
     .settings = &NpcSettings_Yoshi,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -714,8 +714,8 @@ AnimID LimitAnims_Sushie[] = {
 
 NpcData NpcData_Sushie = {
     .id = NPC_Sushie,
-    .pos = { -425.0f, 0.0f, -350.0f },
-    .yaw = 90,
+    .pos = $Sushie.pos,
+    .yaw = $Sushie.yaw,
     .init = &EVS_NpcInit_Sushie,
     .settings = &NpcSettings_Sushie,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -735,8 +735,8 @@ AnimID LimitAnims_Kolorado[] = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { -475.0f, 0.0f, -75.0f },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -749,8 +749,8 @@ NpcData NpcData_Kolorado = {
 NpcData NpcData_Toad[] = {
     {
         .id = NPC_Toad,
-        .pos = { 275.0f, 0.0f, -70.0f },
-        .yaw = 0,
+        .pos = $Toad.pos,
+        .yaw = $Toad.yaw,
         .init = &EVS_NpcInit_Toad,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -760,8 +760,8 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_Yoshi_01,
-        .pos = { 125.0f, 30.0f, -425.0f },
-        .yaw = 270,
+        .pos = $Yoshi_01.pos,
+        .yaw = $Yoshi_01.yaw,
         .init = &EVS_NpcInit_Yoshi_01,
         .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -771,22 +771,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_Yoshi_02,
-        .pos = { -350.0f, 0.0f, -220.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -375, 0, -220 },
-                    { -325, 0, -220 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Yoshi_02.pos,
+        .yaw = $Yoshi_02.yaw,
+        .territory = $Yoshi_02.territory,
         .init = &EVS_NpcInit_Yoshi_02,
         .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -796,22 +783,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_Yoshi_03,
-        .pos = { -100.0f, 0.0f, -80.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -100, 0, -20 },
-                    { -210, 0, -80 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Yoshi_03.pos,
+        .yaw = $Yoshi_03.yaw,
+        .territory = $Yoshi_03.territory,
         .init = &EVS_NpcInit_Yoshi_03,
         .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -821,25 +795,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_YoshiKid_01,
-        .pos = { -450.0f, 0.0f, -160.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 5,
-                .points  = {
-                    { -450, 0, -160 },
-                    { -378, 0, -81 },
-                    { -590, 0, -100 },
-                    { -464, 0, -46 },
-                    { -495, 0, -147 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $YoshiKid_01.pos,
+        .yaw = $YoshiKid_01.yaw,
+        .territory = $YoshiKid_01.territory,
         .init = &EVS_NpcInit_YoshiKid_01,
         .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -849,23 +807,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_YoshiKid_02,
-        .pos = { -340.0f, 0.0f, -385.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 3,
-                .points  = {
-                    { -340, 0, -385 },
-                    { -290, 0, -310 },
-                    { -360, 0, -310 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $YoshiKid_02.pos,
+        .yaw = $YoshiKid_02.yaw,
+        .territory = $YoshiKid_02.territory,
         .init = &EVS_NpcInit_YoshiKid_02,
         .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -875,23 +819,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_YoshiKid_03,
-        .pos = { -260.0f, 0.0f, -220.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 3,
-                .points  = {
-                    { -260, 0, -220 },
-                    { -270, 0, -220 },
-                    { -260, 0, -230 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $YoshiKid_03.pos,
+        .yaw = $YoshiKid_03.yaw,
+        .territory = $YoshiKid_03.territory,
         .init = &EVS_NpcInit_YoshiKid_03,
         .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -901,23 +831,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_YoshiKid_04,
-        .pos = { -460.0f, 0.0f, 150.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 3,
-                .points  = {
-                    { -460, 0, 150 },
-                    { -450, 0, 150 },
-                    { -460, 0, 160 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $YoshiKid_04.pos,
+        .yaw = $YoshiKid_04.yaw,
+        .territory = $YoshiKid_04.territory,
         .init = &EVS_NpcInit_YoshiKid_04,
         .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -927,23 +843,9 @@ NpcData NpcData_Toad[] = {
     },
     {
         .id = NPC_YoshiKid_05,
-        .pos = { -320.0f, 0.0f, 80.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 3,
-                .points  = {
-                    { -320, 0, 80 },
-                    { -330, 0, 80 },
-                    { -320, 0, 90 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $YoshiKid_05.pos,
+        .yaw = $YoshiKid_05.yaw,
+        .territory = $YoshiKid_05.territory,
         .init = &EVS_NpcInit_YoshiKid_05,
         .settings = &NpcSettings_YoshiKid_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -963,8 +865,8 @@ AnimID LimitAnims_Raven[] = {
 NpcData NpcData_Ravens[] = {
     {
         .id = NPC_Raven_01,
-        .pos = { -650.0f, 374.0f, -150.0f },
-        .yaw = 90,
+        .pos = $Raven_01.pos,
+        .yaw = $Raven_01.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -975,8 +877,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_02,
-        .pos = { -645.0f, 457.0f, -255.0f },
-        .yaw = 90,
+        .pos = $Raven_02.pos,
+        .yaw = $Raven_02.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -988,8 +890,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_03,
-        .pos = { -570.0f, 374.0f, -300.0f },
-        .yaw = 90,
+        .pos = $Raven_03.pos,
+        .yaw = $Raven_03.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -999,8 +901,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_04,
-        .pos = { -500.0f, 374.0f, -285.0f },
-        .yaw = 270,
+        .pos = $Raven_04.pos,
+        .yaw = $Raven_04.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1010,8 +912,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_05,
-        .pos = { -450.0f, 374.0f, -175.0f },
-        .yaw = 270,
+        .pos = $Raven_05.pos,
+        .yaw = $Raven_05.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1023,8 +925,8 @@ NpcData NpcData_Ravens[] = {
 
 NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
-    .pos = { 300.0f, 0.0f, 400.0f },
-    .yaw = 90,
+    .pos = $ChuckQuizmo.pos,
+    .yaw = $ChuckQuizmo.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_JAN, QUIZ_COUNT_JAN, QUIZ_MAP_JAN_03 }},
     .settings = &NpcSettings_ChuckQuizmo,

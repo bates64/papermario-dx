@@ -1,24 +1,28 @@
 #include "hos_00.h"
+#include "world/area/hos/hos_01.h"
+#include "world/area/hos/hos_06.h"
+#include "world/area/osr/osr_00.h"
+#include "world/area/osr/osr_01.h"
 
 #include "../common/FallingStars.inc.c"
 
 EvtScript EVS_ExitWalk_osr = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, hos_00_ENTRY_0)
+    Call(UseExitHeading, 60, $PeachsCastle.index)
     Exec(ExitWalk)
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH0_WAKE_UP, STORY_CH8_REACHED_PEACHS_CASTLE)
-            Call(GotoMap, "osr_01", osr_01_ENTRY_1)
+            Call(GotoMap, $osr_01.ShootingStarPath)
         CaseDefault
-            Call(GotoMap, "osr_00", osr_00_ENTRY_1)
+            Call(GotoMap, $osr_00.ShootingStarPath)
     EndSwitch
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_hos_01_0 = EVT_EXIT_WALK(60, hos_00_ENTRY_1, "hos_01", hos_01_ENTRY_0);
-EvtScript EVS_ExitWalk_hos_06_0 = EVT_EXIT_WALK(60, hos_00_ENTRY_2, "hos_06", hos_06_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_01_0 = EVT_EXIT_WALK(60, $ShootingStarSummit, $hos_01.ShootingStarPath);
+EvtScript EVS_ExitWalk_hos_06_0 = EVT_EXIT_WALK(60, $MerluvleesHouse, $hos_06.ShootingStarPath);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_osr, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -49,7 +53,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, hos_00_ENTRY_3)
+    IfEq(LVar0, $StarShip.index)
         Call(SetGroupVisibility, MODEL_g107, MODEL_GROUP_HIDDEN)
         Exec(EVS_Scene_Wishing)
         Return
@@ -70,14 +74,14 @@ EvtScript EVS_Main = {
     Set(GF_MAP_ShootingStarSummit, true)
     Set(GF_MAC01_RowfBadgesChosen, false)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, hos_00_ENTRY_3)
+    IfEq(LVar0, $StarShip.index)
         Call(MakeNpcs, false, WishingNPCs)
     Else
         Call(MakeNpcs, false, DefaultNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, hos_00_ENTRY_3)
+    IfNe(LVar0, $StarShip.index)
         Exec(EVS_Starfall_Directed)
     EndIf
     ExecWait(EVS_SetupMusic)

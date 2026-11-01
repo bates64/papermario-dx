@@ -1,4 +1,7 @@
 #include "osr_03.h"
+#include "world/area/kkj/kkj_14.h"
+#include "world/area/kkj/kkj_15.h"
+#include "world/area/kkj/kkj_26.h"
 #include "effects.h"
 
 API_CALLABLE(SetPlayerAsPeach) {
@@ -136,23 +139,23 @@ EvtScript EVS_Scene_BeginInterlude = {
     Set(GB_KKJ_LastPartner, LVar0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-            Call(GotoMap, "kkj_15", kkj_15_ENTRY_2)
+            Call(GotoMap, $kkj_15.Interlude)
         CaseLt(STORY_CH0_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_3)
+            Call(GotoMap, $kkj_14.Chapter0)
         CaseLt(STORY_CH1_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_4)
+            Call(GotoMap, $kkj_14.Chapter1)
         CaseLt(STORY_CH2_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_5)
+            Call(GotoMap, $kkj_14.Chapter2)
         CaseLt(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_6)
+            Call(GotoMap, $kkj_14.Chapter3)
         CaseLt(STORY_CH4_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_7)
+            Call(GotoMap, $kkj_14.Chapter4)
         CaseLt(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_8)
+            Call(GotoMap, $kkj_14.Chapter5)
         CaseLt(STORY_CH6_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_14", kkj_14_ENTRY_9)
+            Call(GotoMap, $kkj_14.Chapter6)
         CaseLt(STORY_CH7_BEGAN_PEACH_MISSION)
-            Call(GotoMap, "kkj_26", kkj_26_ENTRY_1)
+            Call(GotoMap, $kkj_26.AllSpiritsRescued)
     EndSwitch
     Wait(100)
     Return

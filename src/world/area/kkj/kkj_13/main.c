@@ -1,4 +1,6 @@
 #include "kkj_13.h"
+#include "world/area/kkj/kkj_12.h"
+#include "world/area/kkj/kkj_22.h"
 
 Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
@@ -20,25 +22,25 @@ Gfx setup_gfx_candle_lights[] = {
 };
 
 EvtScript EVS_ExitDoors_kkj_12_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_13_ENTRY_0, "kkj_12", kkj_12_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+    EVT_EXIT_DOUBLE_DOOR($StairsHallway, $kkj_12.WindowHallway, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
 EvtScript EVS_ExitDoors_kkj_22_0 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_13_ENTRY_1, "kkj_22", kkj_22_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
+    EVT_EXIT_DOUBLE_DOOR($DoubleStaircase, $kkj_22.WindowHallway, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_13_ENTRY_0)
+        CaseEq($StairsHallway.index)
             Set(LVar2, MODEL_door1)
             Set(LVar3, MODEL_door2)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_Scene_MarioConfrontsBowser)
-        CaseEq(kkj_13_ENTRY_1)
+        CaseEq($DoubleStaircase.index)
             Set(LVar2, MODEL_door4)
             Set(LVar3, MODEL_door3)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_13_ENTRY_2)
+        CaseEq($BowserAttacks.index)
             Exec(EVS_Scene_BowserAttacks)
-        CaseEq(kkj_13_ENTRY_3)
+        CaseEq($PeachCaptured.index)
             Exec(EVS_Scene_PeachCaptured)
     EndSwitch
     Return
@@ -56,7 +58,7 @@ EvtScript EVS_Main = {
         Call(MakeNpcs, false, ChapterNPCs)
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_13_ENTRY_2)
+    IfEq(LVar0, $BowserAttacks.index)
         Call(EnableGroup, MODEL_g152, false)
         Call(EnableGroup, MODEL_g154, false)
         Call(EnableGroup, MODEL_g153, false)

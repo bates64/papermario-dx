@@ -13,10 +13,10 @@ EvtScript EVS_SetupMusic = {
     EndSwitch
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(mac_00_ENTRY_4)
-        CaseOrEq(mac_00_ENTRY_5)
-        CaseOrEq(mac_00_ENTRY_6)
-        CaseOrEq(mac_00_ENTRY_7)
+        CaseOrEq($MariosHouse.index)
+        CaseOrEq($Intro.index)
+        CaseOrEq($Demo.index)
+        CaseOrEq($Epilogue.index)
             Call(ClearAmbientSounds, 250)
         EndCaseGroup
     EndSwitch

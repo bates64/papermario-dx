@@ -1,4 +1,7 @@
 #include "isk_11.h"
+#include "world/area/isk/isk_08.h"
+#include "world/area/isk/isk_12.h"
+#include "world/area/isk/isk_19.h"
 
 b32 CamAdjustReady = false;
 
@@ -25,10 +28,10 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_isk_08_3 = EVT_EXIT_WALK(40, isk_11_ENTRY_0, "isk_08", isk_08_ENTRY_3);
-EvtScript EVS_ExitWalk_isk_12_0 = EVT_EXIT_WALK(40, isk_11_ENTRY_1, "isk_12", isk_12_ENTRY_0);
-EvtScript EVS_ExitWalk_isk_12_1 = EVT_EXIT_WALK(40, isk_11_ENTRY_2, "isk_12", isk_12_ENTRY_1);
-EvtScript EVS_ExitWalk_isk_19_0 = EVT_EXIT_WALK(40, isk_11_ENTRY_3, "isk_19", isk_19_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_08_3 = EVT_EXIT_WALK(40, $DescendingStairs2, $isk_08.StonePuzzleRoom);
+EvtScript EVS_ExitWalk_isk_12_0 = EVT_EXIT_WALK(40, $SandDrainage3Upper, $isk_12.StonePuzzleRoomUpper);
+EvtScript EVS_ExitWalk_isk_12_1 = EVT_EXIT_WALK(40, $SandDrainage3Lower, $isk_12.StonePuzzleRoomLower);
+EvtScript EVS_ExitWalk_isk_19_0 = EVT_EXIT_WALK(40, $BossAntechamber, $isk_19.StonePuzzleRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_08_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

@@ -5,20 +5,9 @@
 
 NpcData NpcData_Pokey_01 = {
     .id = NPC_Pokey_01,
-    .pos = { -140.0f, 0.0f, -270.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -140, 0, -270 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 1000 },
-        }
-    },
+    .pos = $Pokey_01.pos,
+    .yaw = $Pokey_01.yaw,
+    .territory = $Pokey_01.territory,
     .settings = &NpcSettings_Pokey_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = POKEY_DROPS,
@@ -28,20 +17,9 @@ NpcData NpcData_Pokey_01 = {
 
 NpcData NpcData_Pokey_02 = {
     .id = NPC_Pokey_02,
-    .pos = { -120.0f, 0.0f, 110.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -120, 0, 110 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 1000 },
-        }
-    },
+    .pos = $Pokey_02.pos,
+    .yaw = $Pokey_02.yaw,
+    .territory = $Pokey_02.territory,
     .settings = &NpcSettings_Pokey_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = POKEY_DROPS,
@@ -51,20 +29,9 @@ NpcData NpcData_Pokey_02 = {
 
 NpcData NpcData_Bandit = {
     .id = NPC_Bandit,
-    .pos = { 23.0f, 0.0f, -260.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 23, 0, -260 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 1000 },
-        }
-    },
+    .pos = $Bandit.pos,
+    .yaw = $Bandit.yaw,
+    .territory = $Bandit.territory,
     .settings = &NpcSettings_Bandit_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BANDIT_DROPS,

@@ -755,16 +755,26 @@ void goto_map(Evt* script, s32 mode) {
     s16 areaID;
     s16 mapTransitionEffect = TRANSITION_STANDARD;
 
+    s32 entryID;
+
     if (mode == 2) {
         areaID = evt_get_variable(script, *args++);
         mapID = evt_get_variable(script, *args++);
+        entryID = evt_get_variable(script, *args++);
+    } else if (script->curArgc == (mode == 1 ? 2 : 1)) {
+        // an entry marker, such as $kmr_03.Front, in place of the map's name and the entry's index
+        const EntryMarker* entry = (const EntryMarker*) evt_get_variable(script, *args++);
+
+        get_map_IDs_by_name_checked(entry->map, &areaID, &mapID);
+        entryID = entry->index;
     } else {
         get_map_IDs_by_name_checked((char*) evt_get_variable(script, *args++), &areaID, &mapID);
+        entryID = evt_get_variable(script, *args++);
     }
 
     gGameStatusPtr->areaID = areaID;
     gGameStatusPtr->mapID = mapID;
-    gGameStatusPtr->entryID = evt_get_variable(script, *args++);
+    gGameStatusPtr->entryID = entryID;
 
     if (mode == 1) {
         mapTransitionEffect = evt_get_variable(script, *args++);

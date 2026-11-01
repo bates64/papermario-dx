@@ -247,7 +247,7 @@ EvtScript EVS_Scene_KammySetAmbush = {
         Call(ShowEmote, MV_AmbushID, EMOTE_QUESTION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
         Wait(5 * DT)
     EndIf
-    Call(GotoMap, "omo_04", omo_04_ENTRY_0)
+    Call(GotoMap, $Omo03)
     Wait(100 * DT)
     Return
     End

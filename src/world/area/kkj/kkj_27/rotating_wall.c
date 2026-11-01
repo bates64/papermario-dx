@@ -1,4 +1,5 @@
 #include "kkj_27.h"
+#include "world/area/kkj/kkj_15.h"
 #include "sprite/player.h"
 
 s32 SpillLightAmount = 0;
@@ -66,7 +67,7 @@ EvtScript EVS_Scene_RotatingWall = {
     EndThread
     Wait(80 * DT)
     Set(GF_KKJ14_SkipSecretPassage, true)
-    Call(GotoMap, "kkj_15", kkj_15_ENTRY_1)
+    Call(GotoMap, $kkj_15.SecretPassage)
     Wait(100 * DT)
     Return
     End

@@ -1,0 +1,814 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 4,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 9,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 14,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 4,
+      "name": "Trd00",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -310,
+        0,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 4,
+      "name": "Trd02Lower",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        310,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 4,
+      "name": "Trd02Upper",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        310,
+        220,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 4,
+      "name": "Trd09",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        310,
+        520,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "parent": 9,
+      "name": "KoopaTroopa_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        260,
+        0,
+        30
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 93,
+          "palette": 1,
+          "anim": 1,
+          "animName": "ANIM_KoopaTroopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            260,
+            0,
+            40
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            260,
+            0,
+            40
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "sizeX": 30,
+          "sizeZ": 25,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 9,
+      "name": "KoopaTroopa_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 93,
+          "palette": 1,
+          "anim": 1,
+          "animName": "ANIM_KoopaTroopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            240,
+            220,
+            130
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            240,
+            220,
+            130
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 9,
+      "name": "KoopaTroopa_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 93,
+          "palette": 1,
+          "anim": 1,
+          "animName": "ANIM_KoopaTroopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            80,
+            220,
+            265
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            80,
+            220,
+            265
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 9,
+      "name": "Bobomb",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -255,
+        640,
+        35
+      ],
+      "yaw": 180.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 31,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Bobomb_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            -255,
+            640,
+            35
+          ],
+          "useCircle": true,
+          "radius": 100,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            -255,
+            640,
+            35
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 14,
+      "name": "Item_SmashCharge_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -268,
+        656,
+        -40
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_SMASH_CHARGE",
+        "gameFlagName": "GF_TRD01_Item_SmashCharge",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 11,
+      "parent": 14,
+      "name": "Item_KoopaFortressKey_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        254,
+        0,
+        30
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_KOOPA_FORTRESS_KEY",
+        "gameFlagName": "GF_TRD01_Item_FortressKey",
+        "spawnMode": "ITEM_SPAWN_MODE_KEY"
+      }
+    },
+    {
+      "id": 12,
+      "parent": 14,
+      "name": "Padlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        315,
+        8,
+        0
+      ],
+      "yaw": -80.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Padlock"
+      }
+    },
+    {
+      "id": 13,
+      "parent": 14,
+      "name": "BlueSwitch_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        0,
+        220,
+        255
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BlueSwitch",
+        "areaFlagName": "AF_TRD01_RaiseStairs"
+      }
+    }
+  ]
+}

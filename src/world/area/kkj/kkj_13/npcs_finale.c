@@ -342,8 +342,8 @@ AnimID LimitAnims_Bowser[] = {
 
 NpcData NpcData_Bowser_Body = {
     .id = NPC_Bowser_Body,
-    .pos = { 0.0f, -500.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_Body.pos,
+    .yaw = $Bowser_Body.yaw,
     .init = &EVS_NpcInit_Bowser_Body,
     .settings = &NpcSettings_Bowser,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -354,8 +354,8 @@ NpcData NpcData_Bowser_Body = {
 
 NpcData NpcData_Bowser_Prop = {
     .id = NPC_Bowser_Prop,
-    .pos = { 0.0f, -500.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_Prop.pos,
+    .yaw = $Bowser_Prop.yaw,
     .init = &EVS_NpcInit_Bowser_Prop,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -366,8 +366,8 @@ NpcData NpcData_Bowser_Prop = {
 
 NpcData NpcData_CaptivePeach = {
     .id = NPC_CaptivePeach,
-    .pos = { 670.0f, 0.0f, -12.0f },
-    .yaw = 270,
+    .pos = $CaptivePeach.pos,
+    .yaw = $CaptivePeach.yaw,
     .init = &EVS_NpcInit_CaptivePeach,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,

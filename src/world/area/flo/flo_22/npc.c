@@ -106,8 +106,8 @@ EvtScript EVS_NpcInit_Dayzee = {
 
 NpcData NpcData_Bzzap = {
     .id = NPC_Bzzap,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Bzzap.pos,
+    .yaw = $Bzzap.yaw,
     .init = &EVS_NpcInit_Bzzap,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -117,8 +117,8 @@ NpcData NpcData_Bzzap = {
 
 NpcData NpcData_Dayzee = {
     .id = NPC_Dayzee,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Dayzee.pos,
+    .yaw = $Dayzee.yaw,
     .init = &EVS_NpcInit_Dayzee,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

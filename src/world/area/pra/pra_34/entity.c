@@ -11,10 +11,10 @@ EvtScript EVS_Interact_Padlock = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_PRA34_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 240, 8, -75, 270, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_Interact_Padlock)
         Set(MV_FarPadlockEntityID, LVar0)
-        Call(MakeEntity, Entity_Padlock, 240, 8, 75, 270, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_2)
         Call(AssignScript, EVS_Interact_Padlock)
         Set(MV_NearPadlockEntityID, LVar0)
     EndIf

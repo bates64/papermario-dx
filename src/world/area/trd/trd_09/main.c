@@ -1,4 +1,6 @@
 #include "trd_09.h"
+#include "world/area/trd/trd_01.h"
+#include "world/area/trd/trd_10.h"
 
 extern EvtScript EVS_PlayDemoScene;
 extern EvtScript EVS_SetupMusic;
@@ -6,10 +8,8 @@ extern EvtScript EVS_MakeEntities;
 extern NpcGroupList DemoNPCs;
 extern NpcGroupList DefaultNPCs;
 
-EvtScript EVS_ExitDoors_trd_01_3 =
-    EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_0, "trd_01", trd_01_ENTRY_3, COLLIDER_tt5, MODEL_o67, MODEL_o63);
-EvtScript EVS_ExitDoors_trd_10_0 =
-    EVT_EXIT_DOUBLE_DOOR(trd_09_ENTRY_1, "trd_10", trd_10_ENTRY_0, COLLIDER_tt4, MODEL_o60, MODEL_o65);
+EvtScript EVS_ExitDoors_trd_01_3 = EVT_EXIT_DOUBLE_DOOR($Trd01, $trd_01.Trd09, COLLIDER_tt5, MODEL_o67, MODEL_o63);
+EvtScript EVS_ExitDoors_trd_10_0 = EVT_EXIT_DOUBLE_DOOR($Trd10, $trd_10.Trd09, COLLIDER_tt4, MODEL_o60, MODEL_o65);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_trd_01_3, TRIGGER_WALL_PRESS_A, COLLIDER_tt5, 1, 0)
@@ -30,11 +30,11 @@ EvtScript EVS_EnterMap = {
     Exec(EVS_BindExitTriggers)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_09_ENTRY_0)
+        CaseEq($Trd01.index)
             Set(LVar2, MODEL_o67)
             Set(LVar3, MODEL_o63)
             ExecWait(EnterDoubleDoor)
-        CaseEq(trd_09_ENTRY_1)
+        CaseEq($Trd10.index)
             Set(LVar2, MODEL_o60)
             Set(LVar3, MODEL_o65)
             ExecWait(EnterDoubleDoor)

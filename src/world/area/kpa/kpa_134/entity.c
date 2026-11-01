@@ -61,22 +61,19 @@ EvtScript EVS_UnlockPrompt_Door = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA134_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 743, 10, 115, 270, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Set(MV_EntityID_Padlock, LVar0)
         BindPadlock(EVS_UnlockPrompt_Door, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_BowsersCastle, 0, 1)
     Else
         BindTrigger(EVS_ExitDoors_kpa_130_0, TRIGGER_WALL_PRESS_A, COLLIDER_nno, 1, 0)
     EndIf
     IfEq(GF_KPA134_BlueSwitch, false)
-        Call(MakeEntity, Entity_BlueSwitch, -224, 355, -25, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA134_HitWaterSwitch))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
         Set(MV_SwitchEntityID, LVar0)
     EndIf
-    Call(MakeEntity, Entity_BrickBlock, -224, 330, -25, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_BreakBlock_Brick)
-    Call(MakeEntity, Entity_SimpleSpring, 475, 0, -20, 90, 60, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 195, 300, -75, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA134_HiddenItem_MapleSyrup)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $SimpleSpring_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_MapleSyrup_1)
     Return
     End
 };

@@ -377,8 +377,8 @@ EvtScript EVS_NpcInit_GourmetGuy = {
 NpcData NpcData_GourmetGuy[] = {
     {
         .id = NPC_GourmetGuy,
-        .pos = { -250.0f, 10.0f, 85.0f },
-        .yaw = 90,
+        .pos = $GourmetGuy.pos,
+        .yaw = $GourmetGuy.yaw,
         .init = &EVS_NpcInit_GourmetGuy,
         .settings = &NpcSettings_GourmetGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -388,8 +388,8 @@ NpcData NpcData_GourmetGuy[] = {
     },
     {
         .id = NPC_GourmetGuy_Knife,
-        .pos = { -250.0f, 10.0f, 85.0f },
-        .yaw = 90,
+        .pos = $GourmetGuy_Knife.pos,
+        .yaw = $GourmetGuy_Knife.yaw,
         .settings = &NpcSettings_GourmetGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -398,8 +398,8 @@ NpcData NpcData_GourmetGuy[] = {
     },
     {
         .id = NPC_GourmetGuy_Fork,
-        .pos = { -250.0f, 10.0f, 85.0f },
-        .yaw = 90,
+        .pos = $GourmetGuy_Fork.pos,
+        .yaw = $GourmetGuy_Fork.yaw,
         .settings = &NpcSettings_GourmetGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -410,20 +410,9 @@ NpcData NpcData_GourmetGuy[] = {
 
 NpcData NpcData_GrooveGuy = {
     .id = NPC_GrooveGuy,
-    .pos = { 320.0f, 10.0f, -145.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 320, 10, -145 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 320, 10, -145 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $GrooveGuy.pos,
+    .yaw = $GrooveGuy.yaw,
+    .territory = $GrooveGuy.territory,
     .settings = &NpcSettings_GrooveGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_A,

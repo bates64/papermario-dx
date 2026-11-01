@@ -1,4 +1,6 @@
 #include "trd_03.h"
+#include "world/area/trd/trd_02.h"
+#include "world/area/trd/trd_04.h"
 #include "effects.h"
 
 extern EvtScript EVS_SetupMusic;
@@ -28,14 +30,14 @@ API_CALLABLE(GetFrameCounter) {
 }
 
 EvtScript EVS_ExitDoors_trd_02_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_0, "trd_02", trd_02_ENTRY_1, COLLIDER_ttw, MODEL_d1, MODEL_d2);
+    EVT_EXIT_DOUBLE_DOOR($Trd04Lower, $trd_02.Trd03Lower, COLLIDER_ttw, MODEL_d1, MODEL_d2);
 EvtScript EVS_ExitDoors_trd_04_0 =
-    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_1, "trd_04", trd_04_ENTRY_0, COLLIDER_tte, MODEL_d3, MODEL_d4);
+    EVT_EXIT_DOUBLE_DOOR($Trd02Lower, $trd_04.Trd03Lower, COLLIDER_tte, MODEL_d3, MODEL_d4);
 EvtScript EVS_ExitDoors_trd_02_3 =
-    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_2, "trd_02", trd_02_ENTRY_3, COLLIDER_ttwo, MODEL_o33, MODEL_o34);
+    EVT_EXIT_DOUBLE_DOOR($Trd02Upper, $trd_02.Trd03Upper, COLLIDER_ttwo, MODEL_o33, MODEL_o34);
 EvtScript EVS_ExitDoors_trd_04_2 =
-    EVT_EXIT_DOUBLE_DOOR(trd_03_ENTRY_3, "trd_04", trd_04_ENTRY_2, COLLIDER_tteo, MODEL_o31, MODEL_o32);
-EvtScript EVS_ExitDoors_trd_02_4 = EVT_EXIT_WALK(40, trd_03_ENTRY_4, "trd_02", trd_02_ENTRY_4);
+    EVT_EXIT_DOUBLE_DOOR($Trd04Upper, $trd_04.Trd03Upper, COLLIDER_tteo, MODEL_o31, MODEL_o32);
+EvtScript EVS_ExitDoors_trd_02_4 = EVT_EXIT_WALK(40, $Trd02Walk, $trd_02.Trd03Walk);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_trd_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -50,27 +52,27 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_03_ENTRY_0)
+        CaseEq($Trd04Lower.index)
             Set(LVar2, MODEL_d1)
             Set(LVar3, MODEL_d2)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_03_ENTRY_1)
+        CaseEq($Trd02Lower.index)
             Set(LVar2, MODEL_d3)
             Set(LVar3, MODEL_d4)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_03_ENTRY_2)
+        CaseEq($Trd02Upper.index)
             Set(LVar2, MODEL_o33)
             Set(LVar3, MODEL_o34)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_03_ENTRY_3)
+        CaseEq($Trd04Upper.index)
             Set(LVar2, MODEL_o31)
             Set(LVar3, MODEL_o32)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_03_ENTRY_4)
+        CaseEq($Trd02Walk.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
@@ -79,17 +81,17 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_MiddleCell = {
-    .pos = { -160.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_MiddleCell.pos,
+    .diameter = 2.0f * $BombPos_MiddleCell.radius,
 };
 
 BombTrigger BombPos_RightCell = {
-    .pos = { 360.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_RightCell.pos,
+    .diameter = 2.0f * $BombPos_RightCell.radius,
 };
 
 EvtScript EVS_BombWall_MiddleCell = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 40, 10, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_nk2, true)
     Loop(10)
         Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_VISIBLE)
@@ -106,7 +108,7 @@ EvtScript EVS_BombWall_MiddleCell = {
 };
 
 EvtScript EVS_BombWall_RightCell = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 43, 10, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_2.pos.x, $BombetteBreakingPos_2.pos.y, $BombetteBreakingPos_2.pos.z, 10, 30)
     Call(EnableModel, MODEL_nk3, true)
     Loop(10)
         Call(SetGroupVisibility, MODEL_ana3, MODEL_GROUP_VISIBLE)

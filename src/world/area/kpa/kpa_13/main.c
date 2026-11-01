@@ -1,8 +1,11 @@
 #include "kpa_13.h"
+#include "world/area/kpa/kpa_12.h"
+#include "world/area/kpa/kpa_14.h"
+#include "world/area/kpa/kpa_15.h"
 
-EvtScript EVS_ExitWalk_kpa_12_1 = EVT_EXIT_WALK(60, kpa_13_ENTRY_0, "kpa_12", kpa_12_ENTRY_1);
-EvtScript EVS_ExitWalk_kpa_15_0 = EVT_EXIT_WALK(60, kpa_13_ENTRY_2, "kpa_15", kpa_15_ENTRY_0);
-EvtScript EVS_ExitWalk_kpa_14_0 = EVT_EXIT_WALK(60, kpa_13_ENTRY_1, "kpa_14", kpa_14_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_12_1 = EVT_EXIT_WALK(60, $LavaChannel1, $kpa_12.LavaChannel2);
+EvtScript EVS_ExitWalk_kpa_15_0 = EVT_EXIT_WALK(60, $LavaKeyRoom, $kpa_15.LavaChannel2);
+EvtScript EVS_ExitWalk_kpa_14_0 = EVT_EXIT_WALK(60, $LavaChannel3, $kpa_14.LavaChannel2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_12_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -29,18 +32,18 @@ EvtScript EVS_TexPan_Lava = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o1043, .pos = {  110.0,   30.0, -150.0 }},
-    { .colliderID = COLLIDER_o1047, .pos = {  285.0,   30.0,  -20.0 }},
-    { .colliderID = COLLIDER_o1048, .pos = {  500.0,   30.0,  -90.0 }},
-    { .colliderID = COLLIDER_o1041, .pos = {  800.0,   30.0, -150.0 }},
-    { .colliderID = COLLIDER_o1051, .pos = {  935.0,   30.0,  -20.0 }},
-    { .colliderID = COLLIDER_o1040, .pos = { 1150.0,   30.0, -150.0 }},
-    { .colliderID = COLLIDER_o1050, .pos = { 1285.0,   30.0, -175.0 }},
-    { .colliderID = COLLIDER_o1062, .pos = { 1415.0,   30.0, -175.0 }},
-    { .colliderID = COLLIDER_o1064, .pos = { 1515.0,   30.0, -175.0 }},
-    { .colliderID = COLLIDER_o1066, .pos = { 1655.0,   30.0, -175.0 }},
-    { .colliderID = COLLIDER_o1068, .pos = { 1755.0,   30.0, -175.0 }},
-    { .colliderID = COLLIDER_o1042, .pos = { 1860.0,   30.0, -120.0 }},
+    { .colliderID = COLLIDER_o1043, .pos = $LavaReset_o1043.pos },
+    { .colliderID = COLLIDER_o1047, .pos = $LavaReset_o1047.pos },
+    { .colliderID = COLLIDER_o1048, .pos = $LavaReset_o1048.pos },
+    { .colliderID = COLLIDER_o1041, .pos = $LavaReset_o1041.pos },
+    { .colliderID = COLLIDER_o1051, .pos = $LavaReset_o1051.pos },
+    { .colliderID = COLLIDER_o1040, .pos = $LavaReset_o1040.pos },
+    { .colliderID = COLLIDER_o1050, .pos = $LavaReset_o1050.pos },
+    { .colliderID = COLLIDER_o1062, .pos = $LavaReset_o1062.pos },
+    { .colliderID = COLLIDER_o1064, .pos = $LavaReset_o1064.pos },
+    { .colliderID = COLLIDER_o1066, .pos = $LavaReset_o1066.pos },
+    { .colliderID = COLLIDER_o1068, .pos = $LavaReset_o1068.pos },
+    { .colliderID = COLLIDER_o1042, .pos = $LavaReset_o1042.pos },
     { .colliderID = NO_COLLIDER }
 };
 

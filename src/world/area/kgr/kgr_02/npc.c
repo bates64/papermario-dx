@@ -1,4 +1,5 @@
 #include "kgr_02.h"
+#include "world/area/mac/mac_05.h"
 #include "sprite/player.h"
 
 API_CALLABLE(AwaitPartnerWatt) {
@@ -258,7 +259,7 @@ EvtScript EVS_NpcDefeat_Fuzzipede = {
         EndLoop
     EndChildThread
     Wait(120)
-    Call(GotoMap, "mac_05", mac_05_ENTRY_2)
+    Call(GotoMap, $mac_05.WhaleStomach)
     Wait(100)
     Call(InterruptUsePartner)
     Call(DisablePlayerPhysics, false)
@@ -286,8 +287,8 @@ NpcSettings NpcSettings_Fuzzipede = {
 
 NpcData NpcData_Fuzzipede = {
     .id = NPC_Fuzzipede,
-    .pos = { 333.0f, -10.0f, -130.0f },
-    .yaw = 90,
+    .pos = $Fuzzipede.pos,
+    .yaw = $Fuzzipede.yaw,
     .settings = &NpcSettings_Fuzzipede,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,

@@ -551,7 +551,7 @@ EvtScript EVS_Scene_SkolarRescued = {
 
 EvtScript EVS_NpcInit_Skolar = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, arn_07_ENTRY_3)
+    IfEq(LVar0, $PeachInterlude.index)
         Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Skolar)
         Exec(EVS_Scene_SkolarRescued)
     Else
@@ -564,8 +564,8 @@ EvtScript EVS_NpcInit_Skolar = {
 NpcData NpcData_Tubba[] = {
     {
         .id = NPC_Tubba,
-        .pos = { 309.0f, 0.0f, 11.0f },
-        .yaw = 270,
+        .pos = $Tubba.pos,
+        .yaw = $Tubba.yaw,
         .init = &EVS_NpcInit_Tubba,
         .settings = &NpcSettings_TubbaBlubba,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -575,8 +575,8 @@ NpcData NpcData_Tubba[] = {
     },
     {
         .id = NPC_TubbasHeart,
-        .pos = { -10.0f, 50.0f, -170.0f },
-        .yaw = 90,
+        .pos = $TubbasHeart.pos,
+        .yaw = $TubbasHeart.yaw,
         .init = &EVS_NpcInit_TubbasHeart,
         .settings = &NpcSettings_TubbasHeart,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -588,8 +588,8 @@ NpcData NpcData_Tubba[] = {
 NpcData NpcData_Boos[] = {
     {
         .id = NPC_Boo_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Boo_01.pos,
+        .yaw = $Boo_01.yaw,
         .init = &EVS_NpcInit_Boo,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -599,8 +599,8 @@ NpcData NpcData_Boos[] = {
     },
     {
         .id = NPC_Boo_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Boo_02.pos,
+        .yaw = $Boo_02.yaw,
         .init = &EVS_NpcInit_Boo,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -610,8 +610,8 @@ NpcData NpcData_Boos[] = {
     },
     {
         .id = NPC_Boo_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Boo_03.pos,
+        .yaw = $Boo_03.yaw,
         .init = &EVS_NpcInit_Boo,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -621,8 +621,8 @@ NpcData NpcData_Boos[] = {
     },
     {
         .id = NPC_Boo_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Boo_04.pos,
+        .yaw = $Boo_04.yaw,
         .init = &EVS_NpcInit_Boo,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -632,8 +632,8 @@ NpcData NpcData_Boos[] = {
     },
     {
         .id = NPC_Boo_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Boo_05.pos,
+        .yaw = $Boo_05.yaw,
         .init = &EVS_NpcInit_Boo,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -643,8 +643,8 @@ NpcData NpcData_Boos[] = {
     },
     {
         .id = NPC_Boo_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Boo_06.pos,
+        .yaw = $Boo_06.yaw,
         .init = &EVS_NpcInit_Boo,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -656,8 +656,8 @@ NpcData NpcData_Boos[] = {
 
 NpcData NpcData_Bow = {
     .id = NPC_Bow,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bow.pos,
+    .yaw = $Bow.yaw,
     .init = &EVS_NpcInit_Bow,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -667,8 +667,8 @@ NpcData NpcData_Bow = {
 
 NpcData NpcData_Bootler = {
     .id = NPC_Bootler,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bootler.pos,
+    .yaw = $Bootler.yaw,
     .init = &EVS_NpcInit_Bootler,
     .settings = &NpcSettings_Boo,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL  | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -689,20 +689,9 @@ EvtScript EVS_NpcInit_HyperParagoomba = {
 
 NpcData NpcData_HyperParagoomba_01 = {
     .id = NPC_HyperParagoomba_01,
-    .pos = { -216.0f, 60.0f, -10.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -216, 60, -10 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -216, 60, -10 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $HyperParagoomba_01.pos,
+    .yaw = $HyperParagoomba_01.yaw,
+    .territory = $HyperParagoomba_01.territory,
     .init = &EVS_NpcInit_HyperParagoomba,
     .settings = &NpcSettings_HyperParagoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -713,20 +702,9 @@ NpcData NpcData_HyperParagoomba_01 = {
 
 NpcData NpcData_HyperParagoomba_02 = {
     .id = NPC_HyperParagoomba_02,
-    .pos = { 0.0f, 60.0f, 150.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 60, 150 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 60, 150 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $HyperParagoomba_02.pos,
+    .yaw = $HyperParagoomba_02.yaw,
+    .territory = $HyperParagoomba_02.territory,
     .init = &EVS_NpcInit_HyperParagoomba,
     .settings = &NpcSettings_HyperParagoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -737,20 +715,9 @@ NpcData NpcData_HyperParagoomba_02 = {
 
 NpcData NpcData_HyperParagoomba_03 = {
     .id = NPC_HyperParagoomba_03,
-    .pos = { 260.0f, 60.0f, 30.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 260, 60, 30 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 260, 60, 30 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $HyperParagoomba_03.pos,
+    .yaw = $HyperParagoomba_03.yaw,
+    .territory = $HyperParagoomba_03.territory,
     .init = &EVS_NpcInit_HyperParagoomba,
     .settings = &NpcSettings_HyperParagoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -761,8 +728,8 @@ NpcData NpcData_HyperParagoomba_03 = {
 
 NpcData NpcData_Skolar = {
     .id = NPC_Skolar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Skolar.pos,
+    .yaw = $Skolar.yaw,
     .init = &EVS_NpcInit_Skolar,
     .settings = &NpcSettings_StarSpirit,
     .flags = BASE_PASSIVE_FLAGS,

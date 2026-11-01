@@ -20,8 +20,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { -629.0f, 35.0f, 296.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o43, MODEL_o44, MODEL_o45);
@@ -43,8 +43,8 @@ ShakeTreeConfig ShakeTree_Tree2 = {
 };
 
 BombTrigger BombPos_Tree2 = {
-    .pos = { -488.0f, 35.0f, 324.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree2.pos,
+    .diameter = 2.0f * $BombPos_Tree2.radius,
 };
 
 EvtScript EVS_SetupFoliage = {

@@ -11,8 +11,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { 160.0f, 0.0f, -287.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o85, MODEL_o86);
@@ -37,8 +37,8 @@ ShakeTreeConfig ShakeTree_Tree2 = {
 };
 
 BombTrigger BombPos_Tree2 = {
-    .pos = { -628.0f, 0.0f, -95.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree2.pos,
+    .diameter = 2.0f * $BombPos_Tree2.radius,
 };
 
 FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o79, MODEL_o80);
@@ -63,8 +63,8 @@ ShakeTreeConfig ShakeTree_Tree3 = {
 };
 
 BombTrigger BombPos_Tree3 = {
-    .pos = { -391.0f, 0.0f, -135.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree3.pos,
+    .diameter = 2.0f * $BombPos_Tree3.radius,
 };
 
 FoliageModelList Tree4_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o82, MODEL_o83);
@@ -89,8 +89,8 @@ ShakeTreeConfig ShakeTree_Tree4 = {
 };
 
 BombTrigger BombPos_Tree4 = {
-    .pos = { -341.0f, 0.0f, -115.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree4.pos,
+    .diameter = 2.0f * $BombPos_Tree4.radius,
 };
 
 FoliageModelList Tree5_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o88, MODEL_o89);
@@ -115,8 +115,8 @@ ShakeTreeConfig ShakeTree_Tree5 = {
 };
 
 BombTrigger BombPos_Tree5 = {
-    .pos = { 68.0f, 0.0f, -155.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree5.pos,
+    .diameter = 2.0f * $BombPos_Tree5.radius,
 };
 
 FoliageModelList Tree6_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o104, MODEL_o105);
@@ -141,8 +141,8 @@ ShakeTreeConfig ShakeTree_Tree6 = {
 };
 
 BombTrigger BombPos_Tree6 = {
-    .pos = { 251.0f, 0.0f, -135.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree6.pos,
+    .diameter = 2.0f * $BombPos_Tree6.radius,
 };
 
 FoliageModelList Tree7_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o113, MODEL_o114);
@@ -186,8 +186,8 @@ ShakeTreeConfig ShakeTree_Tree7B = {
 };
 
 BombTrigger BombPos_Tree7 = {
-    .pos = { 431.0f, 0.0f, -155.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree7.pos,
+    .diameter = 2.0f * $BombPos_Tree7.radius,
 };
 
 EvtScript EVS_SetupFoliage = {

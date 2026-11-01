@@ -1,4 +1,5 @@
 #include "kkj_16.h"
+#include "world/area/kkj/kkj_14.h"
 #include "sprite/player.h"
 
 AnimID LimitAnims_HammerBros_Later[] = {
@@ -80,7 +81,7 @@ EvtScript EVS_CapturePeach_Later = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Talk, ANIM_HammerBros_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, $kkj_14.TossedBack, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return
@@ -180,8 +181,8 @@ EvtScript EVS_NpcInit_HammerBros_03_Later = {
 NpcData NpcData_Minions_Later[] = {
     {
         .id = NPC_HammerBros_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $HammerBros_01.pos,
+        .yaw = $HammerBros_01.yaw,
         .init = &EVS_NpcInit_HammerBros_01_Later,
         .settings = &NpcSettings_HammerBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -191,8 +192,8 @@ NpcData NpcData_Minions_Later[] = {
     },
     {
         .id = NPC_HammerBros_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $HammerBros_02.pos,
+        .yaw = $HammerBros_02.yaw,
         .init = &EVS_NpcInit_HammerBros_02_Later,
         .settings = &NpcSettings_HammerBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -202,8 +203,8 @@ NpcData NpcData_Minions_Later[] = {
     },
     {
         .id = NPC_HammerBros_03,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $HammerBros_03.pos,
+        .yaw = $HammerBros_03.yaw,
         .init = &EVS_NpcInit_HammerBros_03_Later,
         .settings = &NpcSettings_HammerBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

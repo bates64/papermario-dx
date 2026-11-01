@@ -8,11 +8,9 @@ EvtScript EVS_OpenChest_VolcanoVase = EVT_OPEN_CHEST(ITEM_VOLCANO_VASE, GF_JAN04
 EvtScript EVS_MakeEntities = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH5_BEGAN_PEACH_MISSION, STORY_CH8_REACHED_PEACHS_CASTLE)
-            Call(MakeEntity, Entity_Chest, 0, 0, 0, 0, 0, MAKE_ENTITY_END)
-            Call(AssignChestFlag, GF_JAN04_Chest_VolcanoVase)
-            Call(AssignScript, EVS_OpenChest_VolcanoVase)
+            Call(MakeMarkerEntity, $Chest_VolcanoVase)
     EndSwitch
-    Call(MakeItemEntity, ITEM_STAR_PIECE, 300, 0, -225, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN04_Item_StarPiece)
+    Call(MakeMarkerEntity, $Item_StarPiece_1)
     Return
     End
 };

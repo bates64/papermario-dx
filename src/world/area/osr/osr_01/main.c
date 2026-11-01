@@ -1,8 +1,10 @@
 
 #include "osr_01.h"
+#include "world/area/hos/hos_00.h"
+#include "world/area/mac/mac_01.h"
 
-EvtScript EVS_ExitWalk_mac_01_2 = EVT_EXIT_WALK(60, osr_01_ENTRY_0, "mac_01", mac_01_ENTRY_2);
-EvtScript EVS_ExitWalk_hos_00_0 = EVT_EXIT_WALK(60, osr_01_ENTRY_1, "hos_00", hos_00_ENTRY_0);
+EvtScript EVS_ExitWalk_mac_01_2 = EVT_EXIT_WALK(60, $ToadTown, $mac_01.PeachsCastle);
+EvtScript EVS_ExitWalk_hos_00_0 = EVT_EXIT_WALK(60, $ShootingStarPath, $hos_00.PeachsCastle);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mac_01_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
@@ -44,7 +46,7 @@ EvtScript EVS_Main = {
     Call(PlaySoundAtF, SOUND_LOOP_OSR_FOUNTAIN_BROKEN, SOUND_SPACE_WITH_DEPTH, 300, 2, 399)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_01_ENTRY_3)
+        CaseEq($Wishing.index)
             Call(EnableModel, MODEL_o492, false)
             Exec(EVS_Scene_Wishing)
         CaseDefault

@@ -1,8 +1,10 @@
 #include "kzn_20.h"
+#include "world/area/kzn/kzn_19.h"
+#include "world/area/kzn/kzn_22.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_kzn_19_2 = EVT_EXIT_WALK(60, kzn_20_ENTRY_0, "kzn_19", kzn_19_ENTRY_2);
-EvtScript EVS_ExitWalk_kzn_22_0 = EVT_EXIT_WALK(60, kzn_20_ENTRY_1, "kzn_22", kzn_22_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_19_2 = EVT_EXIT_WALK(60, $Kzn19, $kzn_19.Kzn20);
+EvtScript EVS_ExitWalk_kzn_22_0 = EVT_EXIT_WALK(60, $Kzn22, $kzn_22.Kzn20);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_19_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -26,8 +28,8 @@ EvtScript EVS_UpdateTexPan_Lava = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o919, .pos = { -30.0, 125.0, -15.0 }},
-    { .colliderID = COLLIDER_o870, .pos = {  30.0, 150.0,   0.0 }},
+    { .colliderID = COLLIDER_o919, .pos = $LavaReset_o919.pos },
+    { .colliderID = COLLIDER_o870, .pos = $LavaReset_o870.pos },
     { .colliderID = NO_COLLIDER }
 };
 
@@ -146,12 +148,12 @@ EvtScript EVS_UpdateLavaWaves = {
 };
 
 BombTrigger WeakWallBombTrigger = {
-    .pos = { 175.0, 150.0, 15.0 },
-    .diameter = 0.0
+    .pos = $BombPos_WeakWallBombTrigger.pos,
+    .diameter = 2.0f * $BombPos_WeakWallBombTrigger.radius,
 };
 
 EvtScript EVS_OnBreakWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 2, 2, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableGroup, MODEL_bom_mae, false)
     Call(EnableGroup, MODEL_bom_ato, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)

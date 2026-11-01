@@ -92,58 +92,58 @@ EvtScript EVS_RandomQuaking = {
 };
 
 EvtScript EVS_FortressCollapse_MakeDust1 = {
-    PlayEffect(EFFECT_DUST, 0, -273, 345, -44, 70)
+    PlayEffect(EFFECT_DUST, 0, $DustPos_1.pos.x, $DustPos_1.pos.y, $DustPos_1.pos.z, 70)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust2 = {
-    PlayEffect(EFFECT_LANDING_DUST, 4, -253, 8, 118, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -253, 18, 138, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -253, 18, 98, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -253, 28, 118, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust3 = {
-    PlayEffect(EFFECT_LANDING_DUST, 1, -346, 147, -21, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_5.pos.x, $LandingDustPos_5.pos.y, $LandingDustPos_5.pos.z, 0)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust4 = {
-    PlayEffect(EFFECT_LANDING_DUST, 1, -336, 147, -21, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_6.pos.x, $LandingDustPos_6.pos.y, $LandingDustPos_6.pos.z, 0)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust5 = {
-    PlayEffect(EFFECT_LANDING_DUST, 1, -249, 147, -64, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_7.pos.x, $LandingDustPos_7.pos.y, $LandingDustPos_7.pos.z, 0)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust6 = {
-    PlayEffect(EFFECT_LANDING_DUST, 1, -239, 147, -64, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_8.pos.x, $LandingDustPos_8.pos.y, $LandingDustPos_8.pos.z, 0)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust7 = {
-    PlayEffect(EFFECT_LANDING_DUST, 4, -158, -10, -175, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -158, 0, -155, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -158, 0, -195, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -158, 10, -175, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_9.pos.x, $LandingDustPos_9.pos.y, $LandingDustPos_9.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_10.pos.x, $LandingDustPos_10.pos.y, $LandingDustPos_10.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_11.pos.x, $LandingDustPos_11.pos.y, $LandingDustPos_11.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_12.pos.x, $LandingDustPos_12.pos.y, $LandingDustPos_12.pos.z, 0)
     Return
     End
 };
 
 EvtScript EVS_FortressCollapse_MakeDust8 = {
-    PlayEffect(EFFECT_LANDING_DUST, 4, 263, -10, -264, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, 263, 0, -244, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, 263, 0, -284, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, 263, 10, -264, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_13.pos.x, $LandingDustPos_13.pos.y, $LandingDustPos_13.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_14.pos.x, $LandingDustPos_14.pos.y, $LandingDustPos_14.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_15.pos.x, $LandingDustPos_15.pos.y, $LandingDustPos_15.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_16.pos.x, $LandingDustPos_16.pos.y, $LandingDustPos_16.pos.z, 0)
     Return
     End
 };
@@ -358,8 +358,8 @@ EvtScript EVS_Scene_MeetGoombaKing_Impl = {
     Call(PlaySoundAtCollider, COLLIDER_tt, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -725, 117, -137, 100)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.5)
     Call(SetPlayerPos, -920, 0, -35)
     Call(SetPlayerSpeed, 3.0 / DT)
@@ -373,32 +373,32 @@ EvtScript EVS_Scene_MeetGoombaKing_Impl = {
     Wait(40 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -725, 117, -137, 100)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.2)
     Set(LVar3, 2)
     Exec(EVS_BouncePlayerAndPartner)
     Wait(60 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -725, 117, -137, 100)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 0.6)
     Set(LVar3, 4)
     Exec(EVS_BouncePlayerAndPartner)
     Wait(60 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -725, 117, -137, 100)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Set(LVar3, 6)
     Exec(EVS_BouncePlayerAndPartner)
     Wait(60 * DT)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
     Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -725, 117, -137, 100)
-    PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+    PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.5)
     Set(LVar3, 8)
     Exec(EVS_BouncePlayerAndPartner)
@@ -425,8 +425,8 @@ EvtScript EVS_Scene_MeetGoombaKing_Impl = {
         Call(NpcJump0, NPC_GoombaKing, -419, 119, -91, 30 * DT)
         Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_A, SOUND_SPACE_DEFAULT, -330, 0, -130)
         Call(PlaySoundAt, SOUND_HEAVY_NPC_STEP_B, SOUND_SPACE_DEFAULT, -330, 0, -130)
-        PlayEffect(EFFECT_DROP_LEAVES, 0, -725, 117, -137, 100)
-        PlayEffect(EFFECT_DROP_LEAVES, 0, -617, 108, -137, 100)
+        PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_1.pos.x, $DropLeavesPos_1.pos.y, $DropLeavesPos_1.pos.z, 100)
+        PlayEffect(EFFECT_DROP_LEAVES, 0, $DropLeavesPos_2.pos.x, $DropLeavesPos_2.pos.y, $DropLeavesPos_2.pos.z, 100)
         Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
     EndThread
     ExecWait(EVS_FocusCam_Battlement)

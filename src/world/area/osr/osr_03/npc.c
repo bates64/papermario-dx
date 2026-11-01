@@ -23,8 +23,8 @@ AnimID LimitAnims_Kammy[] = {
 
 NpcData NpcData_Kammy = {
     .id = NPC_Kammy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Kammy.pos,
+    .yaw = $Kammy.yaw,
     .settings = &NpcSettings_Kammy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,

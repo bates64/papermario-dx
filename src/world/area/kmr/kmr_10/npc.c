@@ -10,8 +10,8 @@ EvtScript EVS_NpcInit_Toad = {
 
 NpcData NpcData_Toad = {
     .id = NPC_Dummy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Dummy.pos,
+    .yaw = $Dummy.yaw,
     .init = &EVS_NpcInit_Toad,
     .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

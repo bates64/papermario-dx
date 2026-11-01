@@ -1,0 +1,983 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 4,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 6,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 11,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 31,
+      "name": "Effects",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 32,
+      "name": "BombPos_Wall",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        337,
+        -20,
+        -103
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 0,
+      "parent": 4,
+      "name": "MountainTunnel",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -730,
+        0,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 4,
+      "name": "CrystalPalace",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        985,
+        1140,
+        -200
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 4,
+      "name": "MerlarsSanctuary",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        337,
+        -20,
+        -104
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 4,
+      "name": "Entry3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -255,
+        840,
+        -215
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "parent": 6,
+      "name": "FrostClubba",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        575,
+        480,
+        -50
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 213,
+          "palette": 1,
+          "anim": 2,
+          "animName": "ANIM_WorldClubba_Frost_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            575,
+            480,
+            -50
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            575,
+            480,
+            -50
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 11,
+      "name": "Item_StarPiece_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -160,
+        300,
+        -110
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_STAR_PIECE",
+        "gameFlagName": "GF_SAM10_Item_StarPiece",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 8,
+      "parent": 11,
+      "name": "SavePoint_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -250,
+        870,
+        -210
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "SavePoint"
+      }
+    },
+    {
+      "id": 9,
+      "parent": 11,
+      "name": "RedBlock_MegaJump_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        775,
+        540,
+        -50
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "RedBlock",
+        "itemName": "ITEM_MEGA_JUMP",
+        "gameFlagName": "GF_SAM10_BadgeBlock_MegaJump"
+      }
+    },
+    {
+      "id": 10,
+      "parent": 11,
+      "name": "HeartBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        770,
+        1200,
+        -225
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HeartBlock"
+      }
+    },
+    {
+      "id": 12,
+      "parent": 31,
+      "name": "LandingDustPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        -20,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 13,
+      "parent": 31,
+      "name": "LandingDustPos_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        20,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 14,
+      "parent": 31,
+      "name": "LandingDustPos_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        60,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 15,
+      "parent": 31,
+      "name": "LandingDustPos_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        100,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 16,
+      "parent": 31,
+      "name": "LandingDustPos_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        140,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 17,
+      "parent": 31,
+      "name": "LandingDustPos_6",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        180,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 18,
+      "parent": 31,
+      "name": "LandingDustPos_7",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        220,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 19,
+      "parent": 31,
+      "name": "LandingDustPos_8",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        240,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 20,
+      "parent": 31,
+      "name": "LandingDustPos_9",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        280,
+        -20,
+        -66
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 21,
+      "parent": 31,
+      "name": "LandingDustPos_10",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        -20,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 22,
+      "parent": 31,
+      "name": "LandingDustPos_11",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        20,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 23,
+      "parent": 31,
+      "name": "LandingDustPos_12",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        60,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 24,
+      "parent": 31,
+      "name": "LandingDustPos_13",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        100,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 25,
+      "parent": 31,
+      "name": "LandingDustPos_14",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        140,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 26,
+      "parent": 31,
+      "name": "LandingDustPos_15",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        180,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 27,
+      "parent": 31,
+      "name": "LandingDustPos_16",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        220,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 28,
+      "parent": 31,
+      "name": "LandingDustPos_17",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        240,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 29,
+      "parent": 31,
+      "name": "LandingDustPos_18",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        280,
+        -20,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 30,
+      "parent": 31,
+      "name": "BombetteBreakingPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        135,
+        11,
+        1
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    }
+  ]
+}

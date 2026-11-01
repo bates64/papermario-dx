@@ -1,4 +1,5 @@
 #include "kgr_02.h"
+#include "world/area/kgr/kgr_01.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_Dummy;
@@ -6,21 +7,17 @@ extern EvtScript EVS_StartTongueWiggle;
 extern EvtScript EVS_MonitorFriendlyFire;
 extern NpcGroupList DefaultNPCs;
 
-EntryList Entrances = {
-    [kgr_02_ENTRY_0]    { -175.0,   10.0,    0.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_kgr_02 },
     .sfxReverb = 1,
 };
 
 #include "world/common/util/CreateDarkness.inc.c"
 
-EvtScript EVS_ExitWalk_kgr_01_1 = EVT_EXIT_WALK(60, kgr_02_ENTRY_0, "kgr_01", kgr_01_ENTRY_1);
+EvtScript EVS_ExitWalk_kgr_01_1 = EVT_EXIT_WALK(60, $WhaleMouth, $kgr_01.WhaleStomach);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kgr_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

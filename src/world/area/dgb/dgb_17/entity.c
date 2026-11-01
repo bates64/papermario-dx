@@ -2,8 +2,8 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, -300, 60, 75, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HeartBlock, -450, 60, 75, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $HeartBlock_1)
     Return
     End
 };

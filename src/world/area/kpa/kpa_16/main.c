@@ -1,6 +1,7 @@
 #include "kpa_16.h"
+#include "world/area/kpa/kpa_14.h"
 
-EvtScript EVS_ExitWalk_kpa_14_2 = EVT_EXIT_WALK(40, kpa_16_ENTRY_0, "kpa_14", kpa_14_ENTRY_2);
+EvtScript EVS_ExitWalk_kpa_14_2 = EVT_EXIT_WALK(40, $LavaChannel3, $kpa_14.LavaControlRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_14_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -97,9 +98,9 @@ EvtScript EVS_TexPan_Lava = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o197, .pos = {  470.0,   30.0,  -30.0 }},
-    { .colliderID = COLLIDER_o202, .pos = {  470.0,   30.0,  -30.0 }},
-    { .colliderID = COLLIDER_o785, .pos = {  500.0,  230.0, -140.0 }},
+    { .colliderID = COLLIDER_o197, .pos = $LavaReset_o197.pos },
+    { .colliderID = COLLIDER_o202, .pos = $LavaReset_o202.pos },
+    { .colliderID = COLLIDER_o785, .pos = $LavaReset_o785.pos },
     { .colliderID = NO_COLLIDER }
 };
 

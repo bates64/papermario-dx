@@ -4,8 +4,8 @@
 
 NpcData NpcData_TrainToad = {
     .id = NPC_Conductor,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Conductor.pos,
+    .yaw = $Conductor.yaw,
     .settings = &NpcSettings_TrainToad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,

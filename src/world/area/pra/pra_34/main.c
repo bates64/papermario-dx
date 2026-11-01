@@ -1,4 +1,6 @@
 #include "pra_34.h"
+#include "world/area/pra/pra_29.h"
+#include "world/area/pra/pra_31.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -22,7 +24,7 @@ s32 BothRightDoorModelsR[] = { MODEL_o876, MODEL_o877, MODEL_o878, MODEL_o879, -
 EvtScript EVS_ExitDoors_pra_29_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_34_ENTRY_0)
+    Set(LVar0, $HiddenBridgeRoomSouth.index)
     Set(LVar1, COLLIDER_deilittsw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothLeftDoorModelsL)
@@ -33,7 +35,7 @@ EvtScript EVS_ExitDoors_pra_29_1 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_29", pra_29_ENTRY_1)
+    Call(GotoMap, $pra_29.MirrorHoleRoomSouth)
     Wait(100)
     Return
     End
@@ -42,7 +44,7 @@ EvtScript EVS_ExitDoors_pra_29_1 = {
 EvtScript EVS_ExitDoors_pra_31_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_34_ENTRY_1)
+    Set(LVar0, $DinoPuzzleRoomSouth.index)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -53,7 +55,7 @@ EvtScript EVS_ExitDoors_pra_31_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_31", pra_31_ENTRY_0)
+    Call(GotoMap, $pra_31.MirrorHoleRoomSouth)
     Wait(100)
     Return
     End
@@ -62,7 +64,7 @@ EvtScript EVS_ExitDoors_pra_31_0 = {
 EvtScript EVS_ExitDoors_pra_31_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_34_ENTRY_2)
+    Set(LVar0, $DinoPuzzleRoomNorth.index)
     Set(LVar1, COLLIDER_deilittne)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -73,7 +75,7 @@ EvtScript EVS_ExitDoors_pra_31_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_31", pra_31_ENTRY_2)
+    Call(GotoMap, $pra_31.MirrorHoleRoomNorth)
     Wait(100)
     Return
     End
@@ -82,7 +84,7 @@ EvtScript EVS_ExitDoors_pra_31_2 = {
 EvtScript EVS_ExitDoors_pra_29_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_34_ENTRY_3)
+    Set(LVar0, $HiddenBridgeRoomNorth.index)
     Set(LVar1, COLLIDER_deilittnw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothLeftDoorModelsL)
@@ -93,7 +95,7 @@ EvtScript EVS_ExitDoors_pra_29_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_29", pra_29_ENTRY_2)
+    Call(GotoMap, $pra_29.MirrorHoleRoomNorth)
     Wait(100)
     Return
     End
@@ -148,7 +150,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_34_ENTRY_0)
+        CaseEq($HiddenBridgeRoomSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
                 Set(LVar3, BothLeftDoorModelsR)
@@ -156,7 +158,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearLeftDoorModelsL)
                 Set(LVar3, NearLeftDoorModelsR)
             EndIf
-        CaseEq(pra_34_ENTRY_1)
+        CaseEq($DinoPuzzleRoomSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -164,7 +166,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearRightDoorModelsL)
                 Set(LVar3, NearRightDoorModelsR)
             EndIf
-        CaseEq(pra_34_ENTRY_2)
+        CaseEq($DinoPuzzleRoomNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -172,7 +174,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, FarRightDoorModelsL)
                 Set(LVar3, FarRightDoorModelsR)
             EndIf
-        CaseEq(pra_34_ENTRY_3)
+        CaseEq($HiddenBridgeRoomNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
                 Set(LVar3, BothLeftDoorModelsR)

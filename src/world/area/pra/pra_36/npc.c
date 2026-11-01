@@ -10,20 +10,9 @@ EvtScript EVS_NpcInit_Duplighost = {
 
 NpcData NpcData_Duplighost = {
     .id = NPC_Duplighost,
-    .pos = { 250.0f, 0.0f, 75.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 250, 0, 75 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 250, 0, 75 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Duplighost.pos,
+    .yaw = $Duplighost.yaw,
+    .territory = $Duplighost.territory,
     .init = &EVS_NpcInit_Duplighost,
     .settings = &NpcSettings_Duplighost_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

@@ -1,4 +1,5 @@
 #include "obk_08.h"
+#include "world/area/obk/obk_01.h"
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
@@ -10,9 +11,8 @@ EvtScript EVS_EnterMap = {
     End
 };
 
-EvtScript EVS_ExitMap_obk_01_4 = EVT_EXIT_SPLIT_SINGLE_DOOR(
-    obk_08_ENTRY_0, "obk_01", obk_01_ENTRY_4, COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT
-);
+EvtScript EVS_ExitMap_obk_01_4 =
+    EVT_EXIT_SPLIT_SINGLE_DOOR($Foyer, $obk_01.RecordRoom, COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
 
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)

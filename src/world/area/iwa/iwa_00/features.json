@@ -1,0 +1,938 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 3,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 10,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 18,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 3,
+      "name": "ToadTown",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        55,
+        -5,
+        -25
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 3,
+      "name": "Iwa01",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        1313,
+        90,
+        -40
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 3,
+      "name": "Entry2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        625,
+        -30,
+        259
+      ],
+      "yaw": 45.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 10,
+      "name": "MontyMole_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        880,
+        70,
+        67
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 122,
+          "palette": 0,
+          "anim": 25,
+          "animName": "ANIM_MontyMole_Stand",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            880,
+            70,
+            67
+          ],
+          "useCircle": true,
+          "radius": 120,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            880,
+            70,
+            67
+          ],
+          "useCircle": true,
+          "radius": 50,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parent": 10,
+      "name": "MontyMole_01_Hole",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        880,
+        70,
+        67
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 122,
+          "palette": 0,
+          "anim": 25,
+          "animName": "ANIM_MontyMole_Stand",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            880,
+            70,
+            67
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 10,
+      "name": "MontyMole_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        1220,
+        -30,
+        70
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 122,
+          "palette": 0,
+          "anim": 25,
+          "animName": "ANIM_MontyMole_Stand",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            1220,
+            -30,
+            70
+          ],
+          "useCircle": true,
+          "radius": 120,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            1220,
+            -30,
+            70
+          ],
+          "useCircle": true,
+          "radius": 50,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 10,
+      "name": "MontyMole_02_Hole",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        1220,
+        -30,
+        70
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 122,
+          "palette": 0,
+          "anim": 25,
+          "animName": "ANIM_MontyMole_Stand",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            1220,
+            -30,
+            70
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 10,
+      "name": "Whacka_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        725,
+        -30,
+        225
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 208,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Whacka_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 10,
+      "name": "Whacka_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        725,
+        -30,
+        225
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 208,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Whacka_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 11,
+      "parent": 18,
+      "name": "Item_Coin_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        405,
+        25,
+        25
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_IWA00_Item_CoinA",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 12,
+      "parent": 18,
+      "name": "Item_Coin_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        465,
+        53,
+        25
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_IWA00_Item_CoinB",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 13,
+      "parent": 18,
+      "name": "Item_Coin_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        515,
+        92,
+        25
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_IWA00_Item_CoinC",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 14,
+      "parent": 18,
+      "name": "Hammer1BlockWideZ_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        900,
+        -30,
+        220
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Hammer1BlockWideZ",
+        "scriptName": "EVS_OnSmashBlock"
+      }
+    },
+    {
+      "id": 15,
+      "parent": 18,
+      "name": "YellowBlock_SleepySheep_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        1260,
+        30,
+        140
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "YellowBlock",
+        "itemName": "ITEM_SLEEPY_SHEEP",
+        "gameFlagName": "GF_IWA00_ItemBlock_SleepySheep"
+      }
+    },
+    {
+      "id": 16,
+      "parent": 18,
+      "name": "ArrowSign_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        58,
+        -5,
+        -73
+      ],
+      "yaw": -30.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "ArrowSign",
+        "angle": 90
+      }
+    },
+    {
+      "id": 17,
+      "parent": 18,
+      "name": "ArrowSign_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        926,
+        70,
+        -45
+      ],
+      "yaw": 22.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "ArrowSign",
+        "angle": 90
+      }
+    }
+  ]
+}

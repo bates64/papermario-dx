@@ -1,4 +1,5 @@
 #include "sam_11.h"
+#include "world/area/sam/sam_02.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -216,7 +217,7 @@ EvtScript EVS_DamageFrozenPond_Before = {
             Call(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_CHAR_COLLISION | NPC_FLAG_GRAVITY, false)
             Wait(15)
             Set(GB_SAM11_FrozenPondDamage, 0)
-            Call(GotoMap, "sam_02", sam_02_ENTRY_3)
+            Call(GotoMap, $sam_02.ThrownOut)
     EndSwitch
     Return
     End
@@ -419,8 +420,8 @@ EvtScript EVS_TouchPond_After = {
 };
 
 BombTrigger BombTrigger_Pond = {
-    .pos = { 0.0f, -10.0f, 220.0f },
-    .diameter = 300
+    .pos = $BombPos_BombTrigger_Pond.pos,
+    .diameter = 2.0f * $BombPos_BombTrigger_Pond.radius,
 };
 
 EvtScript EVS_SetupPond = {

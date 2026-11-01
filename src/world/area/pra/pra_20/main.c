@@ -1,4 +1,8 @@
 #include "pra_20.h"
+#include "world/area/pra/pra_19.h"
+#include "world/area/pra/pra_21.h"
+#include "world/area/pra/pra_22.h"
+#include "world/area/pra/pra_29.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -18,12 +22,12 @@ s32 BothRightDoorModelsR[] = { MODEL_o876, MODEL_o877, MODEL_o878, MODEL_o879, -
 
 s32 ModelListNone[] = { -1 };
 
-EvtScript EVS_ExitWalk_pra_19_1 = EVT_EXIT_WALK(60, pra_20_ENTRY_0, "pra_19", pra_19_ENTRY_1);
+EvtScript EVS_ExitWalk_pra_19_1 = EVT_EXIT_WALK(60, $ReflectionMimicRoom, $pra_19.MirroredDoorRoom);
 
 EvtScript EVS_ExitDoor_pra_21_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_20_ENTRY_1)
+    Set(LVar0, $HugeStatueRoom.index)
     Set(LVar1, COLLIDER_deilittssw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, NearSingleDoorModels)
@@ -34,7 +38,7 @@ EvtScript EVS_ExitDoor_pra_21_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_21", pra_21_ENTRY_0)
+    Call(GotoMap, $pra_21.MirroredDoorRoom)
     Wait(100)
     Return
     End
@@ -43,7 +47,7 @@ EvtScript EVS_ExitDoor_pra_21_0 = {
 EvtScript EVS_ExitDoors_pra_29_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_20_ENTRY_2)
+    Set(LVar0, $HiddenBridgeRoomSouth.index)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -54,7 +58,7 @@ EvtScript EVS_ExitDoors_pra_29_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_29", pra_29_ENTRY_0)
+    Call(GotoMap, $pra_29.MirroredDoorRoomSouth)
     Wait(100)
     Return
     End
@@ -63,7 +67,7 @@ EvtScript EVS_ExitDoors_pra_29_0 = {
 EvtScript EVS_ExitDoors_pra_29_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_20_ENTRY_3)
+    Set(LVar0, $HiddenBridgeRoomNorth.index)
     Set(LVar1, COLLIDER_deilittne)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -74,7 +78,7 @@ EvtScript EVS_ExitDoors_pra_29_3 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_29", pra_29_ENTRY_3)
+    Call(GotoMap, $pra_29.MirroredDoorRoomNorth)
     Wait(100)
     Return
     End
@@ -83,7 +87,7 @@ EvtScript EVS_ExitDoors_pra_29_3 = {
 EvtScript EVS_ExitDoor_pra_22_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_20_ENTRY_4)
+    Set(LVar0, $SmallStatueRoom.index)
     Set(LVar1, COLLIDER_deilittnnw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, NearSingleDoorModels)
@@ -94,7 +98,7 @@ EvtScript EVS_ExitDoor_pra_22_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_22", pra_22_ENTRY_0)
+    Call(GotoMap, $pra_22.MirroredDoorRoom)
     Wait(100)
     Return
     End
@@ -113,10 +117,10 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_20_ENTRY_0)
+        CaseEq($ReflectionMimicRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(pra_20_ENTRY_1)
+        CaseEq($HugeStatueRoom.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, NearSingleDoorModels)
                 Set(LVar3, FarSingleDoorModels)
@@ -126,7 +130,7 @@ EvtScript EVS_EnterMap = {
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_20_ENTRY_2)
+        CaseEq($HiddenBridgeRoomSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -136,7 +140,7 @@ EvtScript EVS_EnterMap = {
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_20_ENTRY_3)
+        CaseEq($HiddenBridgeRoomNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -146,7 +150,7 @@ EvtScript EVS_EnterMap = {
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_20_ENTRY_4)
+        CaseEq($SmallStatueRoom.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, NearSingleDoorModels)
                 Set(LVar3, FarSingleDoorModels)

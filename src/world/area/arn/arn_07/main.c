@@ -1,4 +1,8 @@
 #include "arn_07.h"
+#include "world/area/arn/arn_03.h"
+#include "world/area/arn/arn_08.h"
+#include "world/area/kmr/kmr_23.h"
+#include "world/area/mim/mim_12.h"
 #include "sprite/player.h"
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
@@ -62,7 +66,7 @@ EvtScript EVS_SpawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Skolar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -124,17 +128,17 @@ EvtScript EVS_RespawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Skolar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_ExitDoor_arn_08_0 =
-    EVT_EXIT_SINGLE_DOOR(arn_07_ENTRY_0, "arn_08", arn_08_ENTRY_0, COLLIDER_tt3, MODEL_o39, DOOR_SWING_OUT);
+    EVT_EXIT_SINGLE_DOOR($WindyMill, $arn_08.Arn07, COLLIDER_tt3, MODEL_o39, DOOR_SWING_OUT);
 
-EvtScript EVS_ExitWalk_arn_03_0 = EVT_EXIT_WALK(60, arn_07_ENTRY_1, "arn_03", arn_03_ENTRY_0);
-EvtScript EVS_ExitWalk_mim_12_1 = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12", mim_12_ENTRY_1);
+EvtScript EVS_ExitWalk_arn_03_0 = EVT_EXIT_WALK(60, $Arn03, $arn_03.Arn07);
+EvtScript EVS_ExitWalk_mim_12_1 = EVT_EXIT_WALK(60, $ForeverForest, $mim_12.GustyGulch);
 
 EvtScript EVS_Scene_TubbaReunion = {
     Call(DisablePlayerInput, true)
@@ -288,7 +292,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(arn_07_ENTRY_0)
+        CaseEq($WindyMill.index)
             IfEq(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WINDY_MILL)
                 ExecWait(EVS_Scene_TubbaReunion)
                 Exec(EVS_BindExitTriggers)
@@ -298,15 +302,15 @@ EvtScript EVS_EnterMap = {
                 ExecWait(EnterSingleDoor)
                 Exec(EVS_BindExitTriggers)
             EndIf
-        CaseEq(arn_07_ENTRY_1)
+        CaseEq($Arn03.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(arn_07_ENTRY_2)
+        CaseEq($ForeverForest.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(arn_07_ENTRY_3)
+        CaseEq($PeachInterlude.index)
             Exec(EVS_BindExitTriggers)
             Wait(1)
     EndSwitch
@@ -335,7 +339,7 @@ EvtScript EVS_Main = {
     EndIf
     Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, arn_07_ENTRY_3)
+    IfEq(LVar0, $PeachInterlude.index)
         Wait(65)
     EndIf
     Exec(EVS_SetupWindmill)

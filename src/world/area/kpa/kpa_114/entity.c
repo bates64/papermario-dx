@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HeartBlock, -250, 60, 100, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $HeartBlock_1)
     Return
     End
 };

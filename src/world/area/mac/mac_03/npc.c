@@ -88,7 +88,7 @@ EvtScript EVS_NpcInteract_TrainToad_01 = {
             EndIf
     EndSwitch
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_03_ENTRY_1)
+    IfEq(LVar0, $MtRugged.index)
         Call(SpeakToPlayer, NPC_TrainToad_01, ANIM_TrainToad_White_Talk, ANIM_TrainToad_White_Idle, 0, MSG_MAC_Station_0006)
         Return
     EndIf
@@ -568,7 +568,7 @@ EvtScript EVS_NpcInit_ShyGuy = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPIRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
             Call(GetEntryID, LVar0)
-            IfEq(LVar0, mac_03_ENTRY_1)
+            IfEq(LVar0, $MtRugged.index)
                 Set(GF_MAC03_ShyGuyBlockingTracks, true)
                 Set(GF_MAC03_ShyGuyChasedOff, true)
             EndIf
@@ -620,8 +620,8 @@ EvtScript EVS_NpcInit_Toad_04 = {
 NpcData NpcData_Toads[] = {
     {
         .id = NPC_TrainToad_01,
-        .pos = { -370.0f, 20.0f, 90.0f },
-        .yaw = 90,
+        .pos = $TrainToad_01.pos,
+        .yaw = $TrainToad_01.yaw,
         .init = &EVS_NpcInit_TrainToad_01,
         .settings = &NpcSettings_TrainToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -631,8 +631,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_TrainToad_02,
-        .pos = { -424.0f, 74.0f, 2.0f },
-        .yaw = 90,
+        .pos = $TrainToad_02.pos,
+        .yaw = $TrainToad_02.yaw,
         .settings = &NpcSettings_TrainToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
@@ -641,8 +641,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toad_01,
-        .pos = { -232.0f, 10.0f, 74.0f },
-        .yaw = 75,
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
         .init = &EVS_NpcInit_Toad_01,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -652,8 +652,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toadette_01,
-        .pos = { 85.0f, 0.0f, 235.0f },
-        .yaw = 270,
+        .pos = $Toadette_01.pos,
+        .yaw = $Toadette_01.yaw,
         .init = &EVS_NpcInit_Toadette_01,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -663,8 +663,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { -255.0f, 20.0f, 400.0f },
-        .yaw = 90,
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
         .init = &EVS_NpcInit_Toad_02,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -674,20 +674,9 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_ToadKid_01,
-        .pos = { 260.0f, 20.0f, 410.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 260, 20, 410 },
-                .wanderSize = { 40, 20 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 260, 20, 410 },
-                .detectSize = { 10, 10 },
-            }
-        },
+        .pos = $ToadKid_01.pos,
+        .yaw = $ToadKid_01.yaw,
+        .territory = $ToadKid_01.territory,
         .init = &EVS_NpcInit_ToadKid_01,
         .settings = &NpcSettings_ToadKid_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -697,20 +686,9 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_ToadKid_02,
-        .pos = { 320.0f, 20.0f, 410.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 320, 20, 410 },
-                .wanderSize = { 40, 20 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 320, 20, 410 },
-                .detectSize = { 10, 10 },
-            }
-        },
+        .pos = $ToadKid_02.pos,
+        .yaw = $ToadKid_02.yaw,
+        .territory = $ToadKid_02.territory,
         .init = &EVS_NpcInit_ToadKid_02,
         .settings = &NpcSettings_ToadKid_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -720,8 +698,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toad_03,
-        .pos = { 220.0f, 20.0f, -160.0f },
-        .yaw = 90,
+        .pos = $Toad_03.pos,
+        .yaw = $Toad_03.yaw,
         .init = &EVS_NpcInit_Toad_03,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -734,8 +712,8 @@ NpcData NpcData_Toads[] = {
 NpcData NpcData_Toadette[] = {
     {
         .id = NPC_Toadette_02,
-        .pos = { -130.0f, 0.0f, 220.0f },
-        .yaw = 0,
+        .pos = $Toadette_02.pos,
+        .yaw = $Toadette_02.yaw,
         .init = &EVS_NpcInit_Toadette_02,
         .settings = &NpcSettings_Toadette,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -745,8 +723,8 @@ NpcData NpcData_Toadette[] = {
     },
     {
         .id = NPC_Toadette_03,
-        .pos = { -100.0f, 0.0f, 220.0f },
-        .yaw = 90,
+        .pos = $Toadette_03.pos,
+        .yaw = $Toadette_03.yaw,
         .init = &EVS_NpcInit_Toadette_02,
         .settings = &NpcSettings_Toadette,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -756,8 +734,8 @@ NpcData NpcData_Toadette[] = {
     },
     {
         .id = NPC_Toadette_04,
-        .pos = { -70.0f, 0.0f, 220.0f },
-        .yaw = 180,
+        .pos = $Toadette_04.pos,
+        .yaw = $Toadette_04.yaw,
         .init = &EVS_NpcInit_Toadette_02,
         .settings = &NpcSettings_Toadette,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -769,8 +747,8 @@ NpcData NpcData_Toadette[] = {
 
 NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $ShyGuy.pos,
+    .yaw = $ShyGuy.yaw,
     .init = &EVS_NpcInit_ShyGuy,
     .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
@@ -781,20 +759,9 @@ NpcData NpcData_ShyGuy = {
 NpcData NpcData_LilOinks[] = {
     {
         .id = NPC_LilOink_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_01.pos,
+        .yaw = $LilOink_01.yaw,
+        .territory = $LilOink_01.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -803,20 +770,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_02.pos,
+        .yaw = $LilOink_02.yaw,
+        .territory = $LilOink_02.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -825,20 +781,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_03.pos,
+        .yaw = $LilOink_03.yaw,
+        .territory = $LilOink_03.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -847,20 +792,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_04.pos,
+        .yaw = $LilOink_04.yaw,
+        .territory = $LilOink_04.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -869,20 +803,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_05.pos,
+        .yaw = $LilOink_05.yaw,
+        .territory = $LilOink_05.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -891,20 +814,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_06.pos,
+        .yaw = $LilOink_06.yaw,
+        .territory = $LilOink_06.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -913,20 +825,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_07.pos,
+        .yaw = $LilOink_07.yaw,
+        .territory = $LilOink_07.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -935,20 +836,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_08.pos,
+        .yaw = $LilOink_08.yaw,
+        .territory = $LilOink_08.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -957,20 +847,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_09,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_09.pos,
+        .yaw = $LilOink_09.yaw,
+        .territory = $LilOink_09.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -979,20 +858,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_LilOink_10,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $LilOink_10.pos,
+        .yaw = $LilOink_10.yaw,
+        .territory = $LilOink_10.territory,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1001,20 +869,9 @@ NpcData NpcData_LilOinks[] = {
     },
     {
         .id = NPC_Capsule,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 430, 20, -180 },
-                .wanderSize = { 150, 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $Capsule.pos,
+        .yaw = $Capsule.yaw,
+        .territory = $Capsule.territory,
         .init = &EVS_NpcInit_Toad_14,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

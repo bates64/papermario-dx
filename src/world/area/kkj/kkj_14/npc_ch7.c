@@ -36,8 +36,8 @@ AnimID LimitAnims_Koopatrol_Ch7[] = {
 NpcData NpcData_Characters_Ch7[] = {
     {
         .id = NPC_Ch7_Bowser,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Ch7_Bowser.pos,
+        .yaw = $Ch7_Bowser.yaw,
         .settings = &NpcSettings_Bowser,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -46,8 +46,8 @@ NpcData NpcData_Characters_Ch7[] = {
     },
     {
         .id = NPC_Ch7_Koopatrol_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Ch7_Koopatrol_01.pos,
+        .yaw = $Ch7_Koopatrol_01.yaw,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -56,8 +56,8 @@ NpcData NpcData_Characters_Ch7[] = {
     },
     {
         .id = NPC_Ch7_Koopatrol_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Ch7_Koopatrol_02.pos,
+        .yaw = $Ch7_Koopatrol_02.yaw,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -66,8 +66,8 @@ NpcData NpcData_Characters_Ch7[] = {
     },
     {
         .id = NPC_Ch7_Kammy,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Ch7_Kammy.pos,
+        .yaw = $Ch7_Kammy.yaw,
         .settings = &NpcSettings_Kammy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,

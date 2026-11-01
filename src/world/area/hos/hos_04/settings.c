@@ -1,17 +1,9 @@
 #include "hos_04.h"
 
-EntryList Entrances = {
-    [hos_04_ENTRY_0]    { -565.0,    0.0,    0.0,   90.0 },
-    [hos_04_ENTRY_1]    {  100.0,  100.0,    0.0,  270.0 },
-    [hos_04_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
-    [hos_04_ENTRY_3]    { -1570.0,    0.0,    0.0,   90.0 },
-    [hos_04_ENTRY_4]    { -1570.0,    0.0,    0.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "hos_bg",
     .tattle = { MSG_MapTattle_hos_04 },
 };

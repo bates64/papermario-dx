@@ -1,37 +1,25 @@
 #include "tst_03.h"
+#include "world/area/tst/tst_02.h"
+#include "world/area/tst/tst_04.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-EntryList Entrances = {
-    [tst_03_ENTRY_0]    {  -85.0,    0.0,   10.0,    0.0 },
-    [tst_03_ENTRY_1]    { 1536.0,    0.0,   15.0,    0.0 },
-    [tst_03_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_3]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_4]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_5]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_6]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_7]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_8]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_9]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_03_ENTRY_A]    {  354.0,    0.0,  294.0,  117.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
 };
 
 EvtScript EVS_GotoMap_tst_02_1 = {
-    Call(GotoMap, "tst_02", tst_02_ENTRY_1)
+    Call(GotoMap, $tst_02.EntityTest)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tst_04_0 = {
-    Call(GotoMap, "tst_04", tst_04_ENTRY_0)
+    Call(GotoMap, $tst_04.EntityTest)
     Wait(100)
     Return
     End

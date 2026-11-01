@@ -1,6 +1,7 @@
 #include "dgb_10.h"
+#include "world/area/dgb/dgb_09.h"
 
-EvtScript EVS_ExitWalk_dgb_09_3 = EVT_EXIT_WALK(40, dgb_10_ENTRY_0, "dgb_09", dgb_09_ENTRY_3);
+EvtScript EVS_ExitWalk_dgb_09_3 = EVT_EXIT_WALK(40, $Dgb09, $dgb_09.Dgb10);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_dgb_09_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
@@ -11,11 +12,11 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_10_ENTRY_0)
+        CaseEq($Dgb09.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(dgb_10_ENTRY_1)
+        CaseEq($Dgb11.index)
             Call(UseSettingsFrom, CAM_DEFAULT, 375, 0, -188)
             Call(SetPanTarget, CAM_DEFAULT, 375, 0, -188)
             Call(SetCamSpeed, CAM_DEFAULT, 90.0)

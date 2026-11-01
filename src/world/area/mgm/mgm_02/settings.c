@@ -10,14 +10,10 @@ s32 get_tattle(void) {
 }
 #endif
 
-EntryList Entrances = {
-    [mgm_02_ENTRY_0]    { -300.0,  200.0,  200.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
 #if VERSION_PAL
     .tattle = { .get = &get_tattle },
 #else

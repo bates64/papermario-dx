@@ -1,4 +1,5 @@
 #include "nok_02.h"
+#include "world/area/obk/obk_09.h"
 
 EvtScript EVS_Scene_Epilogue = {
     Call(DisablePlayerInput, true)
@@ -29,7 +30,7 @@ EvtScript EVS_Scene_Epilogue = {
     Call(SetNpcAnimation, NPC_KoloradoWife_Epilogue, ANIM_KoloradoWife_Talk)
     Wait(45)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, "obk_09", obk_09_ENTRY_2)
+    Call(GotoMap, $obk_09.Epilogue)
     Wait(100)
     Return
     End

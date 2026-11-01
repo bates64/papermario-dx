@@ -30,8 +30,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree = {
-    .pos = { 266.0f, 0.0f, -209.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree.pos,
+    .diameter = 2.0f * $BombPos_Tree.radius,
 };
 
 EvtScript EVS_SetupFoliage = {

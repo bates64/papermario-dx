@@ -5,17 +5,8 @@ export s32 map_init(void) {
     return false;
 }
 
-EntryList Entrances = {
-    [hos_10_ENTRY_0]    {    0.0,    0.0,    0.0,    0.0 },
-    [hos_10_ENTRY_1]    {    0.0,    0.0,    0.0,    0.0 },
-    [hos_10_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
-    [hos_10_ENTRY_3]    {    0.0, -1000.0,    0.0,   90.0 },
-    [hos_10_ENTRY_4]    {    0.0, -1000.0,    0.0,   90.0 },
-    [hos_10_ENTRY_5]    {    0.0,    0.0,    0.0,    0.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
 };

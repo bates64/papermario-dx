@@ -1,4 +1,6 @@
 #include "kmr_20.h"
+#include "world/area/kmr/kmr_02.h"
+#include "world/area/mac/mac_00.h"
 #include "model.h"
 #include "sprite/player.h"
 
@@ -199,7 +201,7 @@ EvtScript EVS_Scene_BeginEpilogue = {
     Wait(20)
     Call(SpeakToPlayer, NPC_Luigi_1, ANIM_Luigi_TalkSit, ANIM_Luigi_IdleSit, 0, MSG_Outro_000E)
     Wait(30)
-    Call(GotoMap, "kmr_02", kmr_02_ENTRY_4)
+    Call(GotoMap, $kmr_02.Epilogue)
     Wait(100)
     Return
     End
@@ -318,7 +320,7 @@ EvtScript EVS_Scene_EpilogueGetLetter = {
     Call(NpcJump0, NPC_Luigi_1, 594, 30, -216, 15)
     ExecWait(EVS_Luigi_EnterPipe_Epilogue)
     Exec(EVS_FadeOutAmbientSounds)
-    Call(GotoMap, "mac_00", mac_00_ENTRY_7)
+    Call(GotoMap, $mac_00.Epilogue)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return

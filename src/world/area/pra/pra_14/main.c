@@ -1,11 +1,12 @@
 #include "pra_14.h"
+#include "world/area/pra/pra_13.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
 #include "../common/GlassShimmer.inc.c"
 
-EvtScript EVS_ExitWalk_pra_13_1 = EVT_EXIT_WALK(60, pra_14_ENTRY_0, "pra_13", pra_13_ENTRY_1);
-EvtScript EVS_ExitWalk_pra_13_2 = EVT_EXIT_WALK(60, pra_14_ENTRY_1, "pra_13", pra_13_ENTRY_2);
+EvtScript EVS_ExitWalk_pra_13_1 = EVT_EXIT_WALK(60, $BlueMirrorHall1South, $pra_13.BlueMirrorHall2South);
+EvtScript EVS_ExitWalk_pra_13_2 = EVT_EXIT_WALK(60, $BlueMirrorHall1North, $pra_13.BlueMirrorHall2North);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_pra_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
@@ -22,13 +23,13 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_WallA = {
-    .pos = { 13.0f, 0.0f, 70.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_WallA.pos,
+    .diameter = 2.0f * $BombPos_WallA.radius,
 };
 
 BombTrigger BombPos_WallB = {
-    .pos = { 13.0f, 0.0f, -70.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_WallB.pos,
+    .diameter = 2.0f * $BombPos_WallB.radius,
 };
 
 EvtScript EVS_BlastWallA = {

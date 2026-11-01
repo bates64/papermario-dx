@@ -615,8 +615,8 @@ AnimID LimitAnims_LanternGhost[] = {
 
 NpcData NpcData_BigLanternGhost = {
     .id = NPC_BigLanternGhost,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $BigLanternGhost.pos,
+    .yaw = $BigLanternGhost.yaw,
     .init = &EVS_NpcInit_BigLanternGhost,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -630,8 +630,8 @@ NpcData NpcData_BigLanternGhost = {
 
 NpcData NpcData_Watt = {
     .id = NPC_Watt,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Watt.pos,
+    .yaw = $Watt.yaw,
     .init = &EVS_NpcInit_Watt,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -644,8 +644,8 @@ NpcData NpcData_Watt = {
 
 NpcData NpcData_LanternTop = {
     .id = NPC_LaternTop,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $LaternTop.pos,
+    .yaw = $LaternTop.yaw,
     .init = &EVS_NpcInit_LanternTop,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -659,8 +659,8 @@ NpcData NpcData_LanternTop = {
 
 NpcData NpcData_LanternBottom = {
     .id = NPC_LaternBottom,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $LaternBottom.pos,
+    .yaw = $LaternBottom.yaw,
     .init = &EVS_NpcInit_LanternBottom,
     .initVarCount = 1,
     .initVar = { .value = 0 },

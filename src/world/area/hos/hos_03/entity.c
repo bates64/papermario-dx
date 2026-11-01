@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, 200, 60, 275, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Call(SetEntityCullMode, 3)
     Return
     End

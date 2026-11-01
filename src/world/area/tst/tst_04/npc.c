@@ -52,8 +52,8 @@ NpcSettings NpcSettings_Goompa = {
 
 NpcData NpcData_GoombaFamily = {
     .id = NPC_Goompa,
-    .pos = { 80.0f, 40.0f, -84.0f },
-    .yaw = 0,
+    .pos = $Goompa.pos,
+    .yaw = $Goompa.yaw,
     .settings = &NpcSettings_Goompa,
     .flags = ENEMY_FLAG_GRAVITY,
 };

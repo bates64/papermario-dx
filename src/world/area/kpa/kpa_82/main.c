@@ -1,4 +1,6 @@
 #include "kpa_82.h"
+#include "world/area/kpa/kpa_113.h"
+#include "world/area/kpa/kpa_61.h"
 
 export s32 map_init(void) {
     use_map_geometry("kpa_80");
@@ -26,18 +28,18 @@ s32 LeftDoorModels[] = {
 };
 
 EvtScript EVS_ExitDoors_kpa_113_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_82_ENTRY_0, "kpa_113", kpa_113_ENTRY_1, COLLIDER_deilittw, MODEL_o174, MODEL_o173);
+    EVT_EXIT_DOUBLE_DOOR($HiddenDoorRoom2, $kpa_113.GuardDoor2, COLLIDER_deilittw, MODEL_o174, MODEL_o173);
 
 EvtScript EVS_ExitDoors_kpa_61_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, kpa_82_ENTRY_1)
+    Set(LVar0, $Battlement.index)
     Set(LVar1, COLLIDER_o166)
     Set(LVar2, RightDoorModels)
     Set(LVar3, LeftDoorModels)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "kpa_61", kpa_61_ENTRY_0)
+    Call(GotoMap, $kpa_61.GuardDoor2)
     Wait(100)
     Return
     End
@@ -66,14 +68,14 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_82_ENTRY_0)
-            Set(LVar0, kpa_82_ENTRY_0)
+        CaseEq($HiddenDoorRoom2.index)
+            Set(LVar0, $HiddenDoorRoom2.index)
             Set(LVar2, MODEL_o174)
             Set(LVar3, MODEL_o173)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_82_ENTRY_1)
-            Set(LVar0, kpa_82_ENTRY_1)
+        CaseEq($Battlement.index)
+            Set(LVar0, $Battlement.index)
             Set(LVar2, LeftDoorModels)
             Set(LVar3, RightDoorModels)
             ExecWait(BaseEnterDoor)

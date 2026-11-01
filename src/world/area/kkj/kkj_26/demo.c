@@ -23,7 +23,7 @@ EvtScript EVS_ProvideDemoInputs = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "kkj_26", kkj_26_ENTRY_2, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, $WhereIsMario, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(110)
     Return
     End
@@ -42,7 +42,7 @@ EvtScript EVS_MonitorDemoState = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "kkj_26", kkj_26_ENTRY_2, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, $WhereIsMario, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(100)
     Return
     End

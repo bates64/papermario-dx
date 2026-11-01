@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_STAR_PIECE, -150, -60, 60, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN10_Item_StarPiece)
+    Call(MakeMarkerEntity, $Item_StarPiece_1)
     Return
     End
 };

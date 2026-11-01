@@ -1,25 +1,26 @@
 #include "tik_07.h"
+#include "world/area/tik/tik_04.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_04_1 = EVT_EXIT_WALK(60, tik_07_ENTRY_0, "tik_04", tik_04_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_04_1 = EVT_EXIT_WALK(60, $ScalesRoom, $tik_04.ElevatorAtticRoom);
 
 EvtScript EVS_GotoMap_tik_07_2 = {
-    Call(GotoMap, "tik_07", tik_07_ENTRY_2)
+    Call(GotoMap, $EastPipe)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tik_07_1 = {
-    Call(GotoMap, "tik_07", tik_07_ENTRY_1)
+    Call(GotoMap, $WestPipe)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_tik_07_2 = EVT_EXIT_PIPE_VERTICAL(tik_07_ENTRY_1, COLLIDER_dokan_e1, EVS_GotoMap_tik_07_2);
-EvtScript EVS_ExitWalk_tik_07_1 = EVT_EXIT_PIPE_VERTICAL(tik_07_ENTRY_2, COLLIDER_dokan_e2, EVS_GotoMap_tik_07_1);
+EvtScript EVS_ExitWalk_tik_07_2 = EVT_EXIT_PIPE_VERTICAL($WestPipe, COLLIDER_dokan_e1, EVS_GotoMap_tik_07_2);
+EvtScript EVS_ExitWalk_tik_07_1 = EVT_EXIT_PIPE_VERTICAL($EastPipe, COLLIDER_dokan_e2, EVS_GotoMap_tik_07_1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -40,7 +41,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupPlatforms)
     Wait(1)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, tik_07_ENTRY_0)
+    IfEq(LVar0, $ScalesRoom.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

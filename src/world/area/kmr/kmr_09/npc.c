@@ -6,20 +6,9 @@
 
 NpcData NpcData_Goomba_01 = {
     .id = NPC_Goomba_01,
-    .pos = { 200.0f, 0.0f, 24.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { 200, 0, 24 },
-            .wanderSize = { 30, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 200, 0, 24 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Goomba_01.pos,
+    .yaw = $Goomba_01.yaw,
+    .territory = $Goomba_01.territory,
     .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = GOOMBA_DROPS,
@@ -28,20 +17,9 @@ NpcData NpcData_Goomba_01 = {
 
 NpcData NpcData_Goomba_02 = {
     .id = NPC_Goomba_02,
-    .pos = { 250.0f, 0.0f, 35.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { 250, 0, 35 },
-            .wanderSize = { 30, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 250, 0, 35 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Goomba_02.pos,
+    .yaw = $Goomba_02.yaw,
+    .territory = $Goomba_02.territory,
     .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = GOOMBA_DROPS,
@@ -129,20 +107,9 @@ EvtScript EVS_NpcInit_Goomba_Ambush = {
 
 NpcData NpcData_Goomba_Ambush = {
     .id = NPC_Goomba_Ambush,
-    .pos = { -34.0f, 29.0f, -32.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { -20, 0, 10 },
-            .wanderSize = { 30, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -20, 0, 10 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Goomba_Ambush.pos,
+    .yaw = $Goomba_Ambush.yaw,
+    .territory = $Goomba_Ambush.territory,
     .init = &EVS_NpcInit_Goomba_Ambush,
     .settings = &NpcSettings_Goomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -152,20 +119,9 @@ NpcData NpcData_Goomba_Ambush = {
 
 NpcData NpcData_Paragoomba = {
     .id = NPC_Paragoomba,
-    .pos = { 670.0f, 60.0f, 20.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { 670, 60, 20 },
-            .wanderSize = { 30, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 670, 60, 20 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Paragoomba.pos,
+    .yaw = $Paragoomba.yaw,
+    .territory = $Paragoomba.territory,
     .settings = &NpcSettings_Paragoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGOOMBA_DROPS,

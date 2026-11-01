@@ -1,8 +1,11 @@
 #include "jan_22.h"
+#include "world/area/jan/jan_03.h"
+#include "world/area/jan/jan_16.h"
+#include "world/area/kzn/kzn_01.h"
 
-EvtScript EVS_ExitWalk_jan_03_2 = EVT_EXIT_WALK(60, jan_22_ENTRY_0, "jan_03", jan_03_ENTRY_2);
-EvtScript EVS_ExitWalk_jan_16_1 = EVT_EXIT_WALK(60, jan_22_ENTRY_1, "jan_16", jan_16_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_01_0 = EVT_EXIT_WALK(60, jan_22_ENTRY_2, "kzn_01", kzn_01_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_03_2 = EVT_EXIT_WALK(60, $YoshisVillage, $jan_03.Jan22);
+EvtScript EVS_ExitWalk_jan_16_1 = EVT_EXIT_WALK(60, $Jan16, $jan_16.Jan22);
+EvtScript EVS_ExitWalk_kzn_01_0 = EVT_EXIT_WALK(60, $MtLavalava, $kzn_01.JadeJungle);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_03_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -13,10 +16,10 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o170, .pos = {  750.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o70,  .pos = {  750.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o119, .pos = {  960.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o276, .pos = {  960.0,    0.0,   50.0 }},
+    { .colliderID = COLLIDER_o170, .pos = $LavaReset_o170.pos },
+    { .colliderID = COLLIDER_o70, .pos = $LavaReset_o70.pos },
+    { .colliderID = COLLIDER_o119, .pos = $LavaReset_o119.pos },
+    { .colliderID = COLLIDER_o276, .pos = $LavaReset_o276.pos },
     { .colliderID = NO_COLLIDER }
 };
 

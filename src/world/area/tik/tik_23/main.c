@@ -1,17 +1,19 @@
 #include "tik_23.h"
+#include "world/area/tik/tik_20.h"
+#include "world/area/tik/tik_24.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_24_1 = EVT_EXIT_WALK(60, tik_23_ENTRY_0, "tik_24", tik_24_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_24_1 = EVT_EXIT_WALK(60, $HallToUltraBoots, $tik_24.WindyPath);
 
 EvtScript EVS_GotoMap_tik_20_2 = {
-    Call(GotoMap, "tik_20", tik_20_ENTRY_2)
+    Call(GotoMap, $tik_20.WindyPath)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_20_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_23_ENTRY_1, COLLIDER_ttd, EVS_GotoMap_tik_20_2);
+EvtScript EVS_ExitPipe_tik_20_2 = EVT_EXIT_PIPE_HORIZONTAL($SpikesRoom, COLLIDER_ttd, EVS_GotoMap_tik_20_2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_24_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -26,18 +28,18 @@ DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
-            .minPos = { -180,  100 },
-            .maxPos = {  160,   36 },
-            .startY = 200,
-            .endY   = -20,
+            .minPos = { $DripVolume_1.min.x, $DripVolume_1.min.z },
+            .maxPos = { $DripVolume_1.max.x, $DripVolume_1.max.z },
+            .startY = $DripVolume_1.max.y,
+            .endY = $DripVolume_1.min.y,
             .duration = 60,
             .density  = 2,
         },
         {
-            .minPos = {  265, -120 },
-            .maxPos = {   25,  250 },
-            .startY = 200,
-            .endY   = -20,
+            .minPos = { $DripVolume_2.min.x, $DripVolume_2.min.z },
+            .maxPos = { $DripVolume_2.max.x, $DripVolume_2.max.z },
+            .startY = $DripVolume_2.max.y,
+            .endY = $DripVolume_2.min.y,
             .duration = 60,
             .density  = 2,
         }
@@ -61,7 +63,7 @@ EvtScript EVS_Main = {
     Call(MakeNpcs, true, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, tik_23_ENTRY_1)
+    IfEq(LVar0, $SpikesRoom.index)
         EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, EVS_BindExitTriggers)
     Else
         Set(LVar0, EVS_BindExitTriggers)

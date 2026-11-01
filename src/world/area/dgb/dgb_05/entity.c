@@ -3,7 +3,7 @@
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_DGB05_BoardedFloor, false)
-        Call(MakeEntity, Entity_BoardedFloor, 510, -210, 100, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $BoardedFloor_1)
     EndIf
     Return
     End

@@ -4,20 +4,9 @@
 
 NpcData NpcData_Paragloomba_01 = {
     .id = NPC_Paragoomba_01,
-    .pos = { 230.0f, 50.0f, 50.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 230, 50, 50 },
-            .wanderSize = { 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 230, 50, 50 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $Paragoomba_01.pos,
+    .yaw = $Paragoomba_01.yaw,
+    .territory = $Paragoomba_01.territory,
     .settings = &NpcSettings_Paragloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGLOOMBA_DROPS,
@@ -26,20 +15,9 @@ NpcData NpcData_Paragloomba_01 = {
 
 NpcData NpcData_Paragloomba_02 = {
     .id = NPC_Paragoomba_02,
-    .pos = { 535.0f, 50.0f, 20.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 535, 50, 20 },
-            .wanderSize = { 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 535, 50, 20 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $Paragoomba_02.pos,
+    .yaw = $Paragoomba_02.yaw,
+    .territory = $Paragoomba_02.territory,
     .settings = &NpcSettings_Paragloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGLOOMBA_DROPS,

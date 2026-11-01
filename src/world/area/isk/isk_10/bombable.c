@@ -2,17 +2,17 @@
 #include "effects.h"
 
 BombTrigger BombPos_UpperWall = {
-    .pos = { -593.0f, -520.0f, 104.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_UpperWall.pos,
+    .diameter = 2.0f * $BombPos_UpperWall.radius,
 };
 
 BombTrigger BombPos_LowerWall = {
-    .pos = { -569.0f, -780.0f, -99.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_LowerWall.pos,
+    .diameter = 2.0f * $BombPos_LowerWall.radius,
 };
 
 EvtScript EVS_OnBlast_UpperWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 30, 14, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g328, true)
         Wait(1)
@@ -27,7 +27,7 @@ EvtScript EVS_OnBlast_UpperWall = {
 };
 
 EvtScript EVS_OnBlast_LowerWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 27, 19, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_2.pos.x, $BombetteBreakingPos_2.pos.y, $BombetteBreakingPos_2.pos.z, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g327, true)
         Wait(1)

@@ -31,7 +31,7 @@ EvtScript EVS_UnlockPrompt_Door = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA52_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 352, 10, -25, 270, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Set(MV_EntityID_Padlock, LVar0)
         BindPadlock(EVS_UnlockPrompt_Door, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_CastleDoor, 0, 1)
     Else

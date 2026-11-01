@@ -1,4 +1,6 @@
 #include "kkj_03.h"
+#include "world/area/osr/osr_03.h"
+#include "world/area/osr/osr_04.h"
 #include "sprite/player.h"
 
 EvtScript EVS_Scene_MeetingPeach = {
@@ -70,7 +72,7 @@ EvtScript EVS_Scene_MeetingPeach = {
         Call(ShakeCam, CAM_DEFAULT, 0, 200 * DT, 1.0)
     EndThread
     Wait(60 * DT)
-    Call(GotoMap, "osr_04", osr_04_ENTRY_0)
+    Call(GotoMap, $osr_04.WindowHallway)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return
@@ -140,7 +142,7 @@ EvtScript EVS_Scene_Ascending = {
         Call(ShakeCam, CAM_DEFAULT, 0, 200, 1.0)
     EndThread
     Wait(100 * DT)
-    Call(GotoMap, "osr_03", osr_03_ENTRY_1)
+    Call(GotoMap, $osr_03.CastleAscending)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

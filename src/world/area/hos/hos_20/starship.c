@@ -1,4 +1,8 @@
 #include "hos_20.h"
+#include "world/area/hos/hos_00.h"
+#include "world/area/hos/hos_05.h"
+#include "world/area/kpa/kpa_60.h"
+#include "world/area/osr/osr_03.h"
 
 API_CALLABLE(CheckForSkipInput) {
     script->varTable[8] = false;
@@ -47,7 +51,7 @@ EvtScript EVS_AnimateStarship = {
             Call(RotateGroup, MODEL_ry, MV_Starship_Yaw, 0, 1, 0)
             Call(GetModelCenter, MODEL_ry3)
             Call(SetPlayerPos, LVar0, LVar1, LVar2)
-            IfNe(LVar8, hos_20_ENTRY_2)
+            IfNe(LVar8, $ReturnFlight.index)
                 Add(LVar0, -10)
             Else
                 Add(LVar0, 10)
@@ -94,7 +98,7 @@ EvtScript EVS_Starship_Flight1 = {
         EndLoop
         Wait(100)
         Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
-        Call(GotoMap, "hos_00", hos_00_ENTRY_3)
+        Call(GotoMap, $hos_00.StarShip)
     Else
         Thread
             Call(MakeLerp, -300, 0, 120, EASING_QUADRATIC_OUT)
@@ -129,7 +133,7 @@ EvtScript EVS_Starship_Flight1 = {
             EndIf
         EndLoop
         Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
-        Call(GotoMap, "kpa_60", kpa_60_ENTRY_4)
+        Call(GotoMap, $kpa_60.Arrival)
     EndIf
     Wait(100)
     Return
@@ -166,7 +170,7 @@ EvtScript EVS_Starship_Flight2 = {
         EndIf
     EndLoop
     Wait(20)
-    Call(GotoMap, "osr_03", osr_03_ENTRY_3)
+    Call(GotoMap, $osr_03.Starship)
     Wait(100)
     Return
     End
@@ -223,7 +227,7 @@ EvtScript EVS_Starship_Return = {
         EndIf
     EndLoop
     Call(PlaySound, SOUND_STARSHIP_ENGINE_LOOP | SOUND_ID_TRIGGER_CHANGE_SOUND)
-    Call(GotoMap, "hos_05", hos_05_ENTRY_1)
+    Call(GotoMap, $hos_05.StarShip)
     Wait(100)
     Return
     End

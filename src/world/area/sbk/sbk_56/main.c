@@ -1,22 +1,18 @@
 
 #include "sbk_56.h"
+#include "world/area/sbk/sbk_46.h"
+#include "world/area/sbk/sbk_55.h"
+#include "world/area/sbk/sbk_66.h"
 #include "effects.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 extern EvtScript EVS_SetupFoliage;
 
-EntryList Entrances = {
-    [sbk_56_ENTRY_0]    { -475.0,    0.0,    0.0,   90.0 },
-    [sbk_56_ENTRY_1]    {  475.0,    0.0,    0.0,  270.0 },
-    [sbk_56_ENTRY_2]    {    0.0,    0.0, -475.0,  180.0 },
-    [sbk_56_ENTRY_3]    {    0.0,    0.0,  475.0,    0.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_56 },
 };
@@ -33,10 +29,10 @@ API_CALLABLE(StopOasisTracks) {
 
 EvtScript EVS_ExitWalk_sbk_55_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, sbk_56_ENTRY_0)
+    Call(UseExitHeading, 60, $West.index)
     Exec(ExitWalk)
     Call(StopOasisTracks)
-    Call(GotoMap, "sbk_55", sbk_55_ENTRY_1)
+    Call(GotoMap, $sbk_55.East)
     Wait(100)
     Return
     End
@@ -44,10 +40,10 @@ EvtScript EVS_ExitWalk_sbk_55_1 = {
 
 EvtScript EVS_ExitWalk_sbk_46_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, sbk_56_ENTRY_2)
+    Call(UseExitHeading, 60, $North.index)
     Exec(ExitWalk)
     Call(StopOasisTracks)
-    Call(GotoMap, "sbk_46", sbk_46_ENTRY_3)
+    Call(GotoMap, $sbk_46.South)
     Wait(100)
     Return
     End
@@ -55,10 +51,10 @@ EvtScript EVS_ExitWalk_sbk_46_3 = {
 
 EvtScript EVS_ExitWalk_sbk_66_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, sbk_56_ENTRY_3)
+    Call(UseExitHeading, 60, $South.index)
     Exec(ExitWalk)
     Call(StopOasisTracks)
-    Call(GotoMap, "sbk_66", sbk_66_ENTRY_2)
+    Call(GotoMap, $sbk_66.North)
     Wait(100)
     Return
     End

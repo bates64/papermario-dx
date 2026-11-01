@@ -285,8 +285,8 @@ EvtScript EVS_NpcInit_ShyGuy_Crowd = {
 
 NpcData NpcData_ShyGuy_Loner = {
     .id = NPC_ShyGuy_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $ShyGuy_01.pos,
+    .yaw = $ShyGuy_01.yaw,
     .init = &EVS_NpcInit_ShyGuy_Loner,
     .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -297,8 +297,8 @@ NpcData NpcData_ShyGuy_Loner = {
 NpcData NpcData_ShyGuy_Crowd[] = {
     {
         .id = NPC_ShyGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_02.pos,
+        .yaw = $ShyGuy_02.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -307,8 +307,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_03.pos,
+        .yaw = $ShyGuy_03.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -317,8 +317,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_04.pos,
+        .yaw = $ShyGuy_04.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -327,8 +327,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_05.pos,
+        .yaw = $ShyGuy_05.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -337,8 +337,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_06.pos,
+        .yaw = $ShyGuy_06.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -347,8 +347,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_07.pos,
+        .yaw = $ShyGuy_07.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -357,8 +357,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_08.pos,
+        .yaw = $ShyGuy_08.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -367,8 +367,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_09,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_09.pos,
+        .yaw = $ShyGuy_09.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -377,8 +377,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_10,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_10.pos,
+        .yaw = $ShyGuy_10.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -387,8 +387,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_11,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_11.pos,
+        .yaw = $ShyGuy_11.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -400,20 +400,9 @@ NpcData NpcData_ShyGuy_Crowd[] = {
 NpcData NpcData_SpyGuy[] = {
     {
         .id = NPC_SpyGuy,
-        .pos = { 200.0f, 0.0f, 30.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 200, 0, 30 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 200, 0, 30 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $SpyGuy.pos,
+        .yaw = $SpyGuy.yaw,
+        .territory = $SpyGuy.territory,
         .settings = &NpcSettings_SpyGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,

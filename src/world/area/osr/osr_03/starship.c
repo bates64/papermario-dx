@@ -1,4 +1,5 @@
 #include "osr_03.h"
+#include "world/area/kpa/kpa_60.h"
 
 EvtScript EVS_SetStarshipPosRot = {
     Loop(0)
@@ -91,7 +92,7 @@ EvtScript EVS_Scene_Starship = {
         EndIf
     EndThread
     Wait(100)
-    Call(GotoMap, "kpa_60", kpa_60_ENTRY_4)
+    Call(GotoMap, $kpa_60.Arrival)
     Wait(100)
     Return
     End

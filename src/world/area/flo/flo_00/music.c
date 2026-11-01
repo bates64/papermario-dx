@@ -3,15 +3,15 @@
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(flo_00_ENTRY_8)
+        CaseEq($Beanstalk.index)
             IfNe(AF_FLO_RidingBeanstalk, false)
                 Call(SetMusic, 0, SONG_MAGIC_BEANSTALK, BGM_VARIATION_1, VOL_LEVEL_FULL)
             Else
                 Call(SetMusic, 0, SONG_FLOWER_FIELDS_SUNNY, 0, VOL_LEVEL_FULL)
             EndIf
-        CaseEq(flo_00_ENTRY_9)
+        CaseEq($SunReturns.index)
             Call(SetMusic, 0, SONG_SUNSHINE_RETURNS, 0, VOL_LEVEL_FULL)
-        CaseEq(flo_00_ENTRY_A)
+        CaseEq($PeachInterlude.index)
             Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
             Thread
                 Loop(0)
@@ -22,7 +22,7 @@ EvtScript EVS_SetupMusic = {
                 EndLoop
                 Call(SetMusic, 0, SONG_FLOWER_FIELDS_SUNNY, 0, VOL_LEVEL_FULL)
             EndThread
-        CaseEq(flo_00_ENTRY_B)
+        CaseEq(11)
             Call(FadeInMusic, 0, SONG_FLOWER_FIELDS_SUNNY, 0, 3000, 0, 127)
         CaseDefault
             Switch(GB_StoryProgress)

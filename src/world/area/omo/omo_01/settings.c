@@ -1,13 +1,9 @@
 #include "omo_01.h"
 
-EntryList Entrances = {
-    [omo_01_ENTRY_0]    {  350.0,    0.0, -330.0,  225.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "omo_bg",
     .tattle = { MSG_MapTattle_omo_01 },
     .songVariation = 1,

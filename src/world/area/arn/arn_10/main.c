@@ -1,10 +1,10 @@
 #include "arn_10.h"
+#include "world/area/arn/arn_09.h"
+#include "world/area/arn/arn_12.h"
 
-EvtScript EVS_ExitDoor_arn_09_0 =
-    EVT_EXIT_SINGLE_DOOR(arn_10_ENTRY_0, "arn_09", arn_09_ENTRY_0, COLLIDER_ttw, MODEL_o44, DOOR_SWING_IN);
+EvtScript EVS_ExitDoor_arn_09_0 = EVT_EXIT_SINGLE_DOOR($Arn09, $arn_09.Arn10, COLLIDER_ttw, MODEL_o44, DOOR_SWING_IN);
 
-EvtScript EVS_ExitDoor_arn_12_0 =
-    EVT_EXIT_SINGLE_DOOR(arn_10_ENTRY_1, "arn_12", arn_12_ENTRY_0, COLLIDER_tte, MODEL_o37, DOOR_SWING_OUT);
+EvtScript EVS_ExitDoor_arn_12_0 = EVT_EXIT_SINGLE_DOOR($Arn12, $arn_12.Arn10, COLLIDER_tte, MODEL_o37, DOOR_SWING_OUT);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_arn_09_0, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -16,12 +16,12 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(arn_10_ENTRY_0)
+        CaseEq($Arn09.index)
             Set(LVar2, MODEL_o44)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(arn_10_ENTRY_1)
+        CaseEq($Arn12.index)
             Set(LVar2, MODEL_o37)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)

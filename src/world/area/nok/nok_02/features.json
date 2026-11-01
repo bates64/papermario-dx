@@ -1,0 +1,1691 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 5,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 31,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 35,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 37,
+      "name": "Foliage",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 5,
+      "name": "Nok01",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -484,
+        0,
+        5
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 5,
+      "name": "Nok03",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        2,
+        0,
+        -479
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 5,
+      "name": "Pipe",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        365,
+        35,
+        90
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 5,
+      "name": "Entry3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        -60
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 5,
+      "name": "Entry4",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -360,
+        0,
+        -50
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 6,
+      "parent": 31,
+      "name": "Koopa_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -109,
+        0,
+        191
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            -109,
+            0,
+            191
+          ],
+          "useCircle": true,
+          "radius": 500,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            -109,
+            0,
+            191
+          ],
+          "useCircle": true,
+          "radius": 100,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 31,
+      "name": "FuzzyThief",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -109,
+        0,
+        191
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 31,
+      "name": "KoopaShell_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -109,
+        0,
+        191
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 31,
+      "name": "Koopa_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        192,
+        0,
+        152
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 94,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_KoopaWithoutShell_CryIdle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            192,
+            0,
+            152
+          ],
+          "useCircle": true,
+          "radius": 500,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              199,
+              0,
+              152
+            ],
+            [
+              107,
+              0,
+              152
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 31,
+      "name": "KoopaShell_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 11,
+      "parent": 31,
+      "name": "Kooper",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        20,
+        0,
+        -145
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 220,
+          "palette": 0,
+          "anim": 3,
+          "animName": "ANIM_WorldKooper_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "parent": 31,
+      "name": "FuzzyBoss",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        12,
+        10,
+        -351
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 13,
+      "parent": 31,
+      "name": "KoopersShell",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        12,
+        0,
+        -351
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 220,
+          "palette": 0,
+          "anim": 3,
+          "animName": "ANIM_WorldKooper_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 14,
+      "parent": 31,
+      "name": "MiscFuzzy1",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 15,
+      "parent": 31,
+      "name": "MiscFuzzy2",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 16,
+      "parent": 31,
+      "name": "Koopa_01_1",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -109,
+        0,
+        191
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            -85,
+            0,
+            260
+          ],
+          "useCircle": true,
+          "radius": 500,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            -124,
+            0,
+            250
+          ],
+          "useCircle": true,
+          "radius": 80,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 17,
+      "parent": 31,
+      "name": "Koopa_02_1",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        200,
+        0,
+        117
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            170
+          ],
+          "useCircle": true,
+          "radius": 500,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            200,
+            0,
+            117
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "sizeX": 50,
+          "sizeZ": 30,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 18,
+      "parent": 31,
+      "name": "Bobomb_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        -333
+      ],
+      "yaw": 180.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 209,
+          "palette": 2,
+          "anim": 1,
+          "animName": "ANIM_WorldBobomb_Blue_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 19,
+      "parent": 31,
+      "name": "Bobomb_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -7,
+        0,
+        -285
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 209,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldBobomb_Green_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 20,
+      "parent": 31,
+      "name": "Bobomb_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        47,
+        0,
+        -140
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 209,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldBobomb_Green_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 21,
+      "parent": 31,
+      "name": "Kolorado",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -240,
+        0,
+        -70
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 88,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Kolorado_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 22,
+      "parent": 31,
+      "name": "Fuzzy_Later",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 23,
+      "parent": 31,
+      "name": "KoopaKoot",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        330,
+        0,
+        -100
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 92,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_KoopaKoot_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 24,
+      "parent": 31,
+      "name": "KoloradoWife",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -328,
+        0,
+        -180
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 89,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_KoloradoWife_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 25,
+      "parent": 31,
+      "name": "Koopa_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -307,
+        0,
+        97
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 26,
+      "parent": 31,
+      "name": "Koopa_04",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        285,
+        0,
+        223
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Koopa_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              240,
+              0,
+              175
+            ],
+            [
+              350,
+              0,
+              250
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 27,
+      "parent": 31,
+      "name": "Parakarry",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 226,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldParakarry_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 28,
+      "parent": 31,
+      "name": "Bombette",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 210,
+          "palette": 0,
+          "anim": 3,
+          "animName": "ANIM_WorldBombette_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 29,
+      "parent": 31,
+      "name": "KoloradoWife_Epilogue",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -328,
+        0,
+        -180
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 89,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_KoloradoWife_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 30,
+      "parent": 31,
+      "name": "ChuckQuizmo",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        300,
+        0,
+        330
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 49,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_ChuckQuizmo_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 32,
+      "parent": 35,
+      "name": "Item_StarPiece_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        150,
+        106,
+        250
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_STAR_PIECE",
+        "gameFlagName": "GF_NOK02_Item_StarPiece",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 33,
+      "parent": 35,
+      "name": "BrickBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        151,
+        81,
+        251
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 34,
+      "parent": 35,
+      "name": "BlueWarpPipe_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        365,
+        0,
+        90
+      ],
+      "yaw": 30.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BlueWarpPipe",
+        "gameFlagName": "GF_NOK02_WarpPipe",
+        "scriptName": "EVS_GotoMap_tik_01_3",
+        "entryName": "$Pipe.index"
+      }
+    },
+    {
+      "id": 36,
+      "parent": 37,
+      "name": "BombPos_Tree1",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        443,
+        0,
+        68
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

@@ -457,20 +457,9 @@ EvtScript EVS_NpcInit_BillBlaster = {
 NpcData NpcData_BillBlasters[] = {
     {
         .id = NPC_BillBlaster_01,
-        .pos = { 1260.0f, 0.0f, -40.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $BillBlaster_01.pos,
+        .yaw = $BillBlaster_01.yaw,
+        .territory = $BillBlaster_01.territory,
         .init = &EVS_NpcInit_BillBlaster,
         .settings = &NpcSettings_BillBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -479,20 +468,9 @@ NpcData NpcData_BillBlasters[] = {
     },
     {
         .id = NPC_BillBlaster_03,
-        .pos = { 1275.0f, 0.0f, 5.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $BillBlaster_03.pos,
+        .yaw = $BillBlaster_03.yaw,
+        .territory = $BillBlaster_03.territory,
         .settings = &NpcSettings_BillBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = BILL_BLASTER_DROPS,
@@ -500,20 +478,9 @@ NpcData NpcData_BillBlasters[] = {
     },
     {
         .id = NPC_BillBlaster_02,
-        .pos = { 1290.0f, 0.0f, 50.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $BillBlaster_02.pos,
+        .yaw = $BillBlaster_02.yaw,
+        .territory = $BillBlaster_02.territory,
         .settings = &NpcSettings_BillBlaster,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
@@ -535,8 +502,8 @@ NpcData NpcData_BulletBill_10 = BULLET_BILL_NPC(NPC_BulletBill_10);
 NpcData NpcData_KoopaBros[] = {
     {
         .id = NPC_KoopaBros_Red,
-        .pos = { 1590.0f, 60.0f, 0.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_Red.pos,
+        .yaw = $KoopaBros_Red.yaw,
         .initVarCount = 1,
         .initVar = { .value = 0 },
         .settings = &NpcSettings_KoopaBros_Red,
@@ -544,8 +511,8 @@ NpcData NpcData_KoopaBros[] = {
     },
     {
         .id = NPC_KoopaBros_Green,
-        .pos = { 1590.0f, 60.0f, -10.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_Green.pos,
+        .yaw = $KoopaBros_Green.yaw,
         .initVarCount = 1,
         .initVar = { .value = 0 },
         .settings = &NpcSettings_KoopaBros_Green,
@@ -553,8 +520,8 @@ NpcData NpcData_KoopaBros[] = {
     },
     {
         .id = NPC_KoopaBros_Yellow,
-        .pos = { 1605.0f, 60.0f, 5.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_Yellow.pos,
+        .yaw = $KoopaBros_Yellow.yaw,
         .initVarCount = 1,
         .initVar = { .value = 0 },
         .settings = &NpcSettings_KoopaBros_Yellow,
@@ -562,8 +529,8 @@ NpcData NpcData_KoopaBros[] = {
     },
     {
         .id = NPC_KoopaBros_Black,
-        .pos = { 1620.0f, 60.0f, 20.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_Black.pos,
+        .yaw = $KoopaBros_Black.yaw,
         .initVarCount = 1,
         .initVar = { .value = 0 },
         .settings = &NpcSettings_KoopaBros_Black,
@@ -604,20 +571,9 @@ EvtScript EVS_NpcInit_BulletBill_Demo = {
 
 NpcData NpcData_BulletBill_Demo1 = {
     .id = NPC_BulletBill_Demo1,
-    .pos = { -100.0f, 11.0f, 50.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BulletBill_Demo1.pos,
+    .yaw = $BulletBill_Demo1.yaw,
+    .territory = $BulletBill_Demo1.territory,
     .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -629,20 +585,9 @@ NpcData NpcData_BulletBill_Demo1 = {
 
 NpcData NpcData_BulletBill_Demo2 = {
     .id = NPC_BulletBill_Demo2,
-    .pos = { -150.0f, 11.0f, 5.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BulletBill_Demo2.pos,
+    .yaw = $BulletBill_Demo2.yaw,
+    .territory = $BulletBill_Demo2.territory,
     .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -654,20 +599,9 @@ NpcData NpcData_BulletBill_Demo2 = {
 
 NpcData NpcData_BulletBill_Demo3 = {
     .id = NPC_BulletBill_Demo3,
-    .pos = { 120.0f, 11.0f, 50.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BulletBill_Demo3.pos,
+    .yaw = $BulletBill_Demo3.yaw,
+    .territory = $BulletBill_Demo3.territory,
     .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -679,20 +613,9 @@ NpcData NpcData_BulletBill_Demo3 = {
 
 NpcData NpcData_BulletBill_Demo4 = {
     .id = NPC_BulletBill_Demo4,
-    .pos = { 330.0f, 11.0f, 5.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BulletBill_Demo4.pos,
+    .yaw = $BulletBill_Demo4.yaw,
+    .territory = $BulletBill_Demo4.territory,
     .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },
@@ -704,20 +627,9 @@ NpcData NpcData_BulletBill_Demo4 = {
 
 NpcData NpcData_BulletBill_Demo5 = {
     .id = NPC_BulletBill_Demo5,
-    .pos = { 380.0f, 11.0f, -40.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BulletBill_Demo5.pos,
+    .yaw = $BulletBill_Demo5.yaw,
+    .territory = $BulletBill_Demo5.territory,
     .init = &EVS_NpcInit_BulletBill_Demo,
     .initVarCount = 1,
     .initVar = { .value = 0 },

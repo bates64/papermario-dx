@@ -156,8 +156,8 @@ EvtScript EVS_NpcInit_Dryite = {
 NpcData NpcData_Prisoners[] = {
     {
         .id = NPC_Toad_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
         .init = &EVS_NpcInit_Toad_01,
         .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
@@ -167,8 +167,8 @@ NpcData NpcData_Prisoners[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
         .init = &EVS_NpcInit_Toad_02,
         .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
@@ -178,8 +178,8 @@ NpcData NpcData_Prisoners[] = {
     },
     {
         .id = NPC_ToadGuard,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $ToadGuard.pos,
+        .yaw = $ToadGuard.yaw,
         .init = &EVS_NpcInit_ToadGuard,
         .settings = &NpcSettings_ToadGuard,
         .flags = BASE_PASSIVE_FLAGS,
@@ -189,8 +189,8 @@ NpcData NpcData_Prisoners[] = {
     },
     {
         .id = NPC_Dryite,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Dryite.pos,
+        .yaw = $Dryite.yaw,
         .init = &EVS_NpcInit_Dryite,
         .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS,
@@ -232,22 +232,9 @@ EvtScript EVS_NpcInit_Koopatrol = {
 
 NpcData NpcData_Koopatrol = {
     .id = NPC_Koopatrol,
-    .pos = { 60.0f, 0.0f, 55.0f },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points  = {
-                { 60, 0, 55 },
-                { 140, 0, 55 },
-            },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 60, 0, 55 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Koopatrol.pos,
+    .yaw = $Koopatrol.yaw,
+    .territory = $Koopatrol.territory,
     .init = &EVS_NpcInit_Koopatrol,
     .settings = &NpcSettings_Koopatrol_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,

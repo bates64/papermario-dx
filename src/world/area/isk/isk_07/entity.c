@@ -16,31 +16,29 @@ EvtScript EVS_SmashBlock_Stone = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_ISK07_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, -300, -380, 530, 50, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Set(MV_LockEntityID, LVar0)
     EndIf
     IfEq(GF_ISK07_Hammer2Block, false)
-        Call(MakeEntity, Entity_Hammer2BlockWideX, 470, -250, 270, 150, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_SmashBlock_Stone)
+        Call(MakeMarkerEntity, $Hammer2BlockWideX_1)
     EndIf
     IfEq(GF_ISK07_OpenedSarcophagi, false)
-        Call(MakeEntity, Entity_TriggerBlock, -250, -330, 545, -25, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_HitBlock_Trigger)
+        Call(MakeMarkerEntity, $TriggerBlock_1)
     EndIf
     IfEq(GF_ISK07_Defeated_Mummies, true)
-        Call(MakeItemEntity, ITEM_RUINS_KEY, -250, -390, 545, ITEM_SPAWN_MODE_KEY, GF_ISK07_Item_RuinsKey)
+        Call(MakeMarkerEntity, $Item_RuinsKey_1)
     EndIf
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 415, -193, 291, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 291, -193, 415, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 131, -193, 489, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -44, -193, 505, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -214, -193, 459, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 415, -323, 291, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 291, -323, 415, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 131, -323, 489, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -44, -323, 505, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -214, -323, 459, 0.3, LVar0)
-    Call(MakeItemEntity, ITEM_ARTIFACT, 490, -250, 215, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_ISK07_Item_Artifact)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_3.pos.x, $FlamePos_3.pos.y, $FlamePos_3.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_4.pos.x, $FlamePos_4.pos.y, $FlamePos_4.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_5.pos.x, $FlamePos_5.pos.y, $FlamePos_5.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_6.pos.x, $FlamePos_6.pos.y, $FlamePos_6.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_7.pos.x, $FlamePos_7.pos.y, $FlamePos_7.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_8.pos.x, $FlamePos_8.pos.y, $FlamePos_8.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_9.pos.x, $FlamePos_9.pos.y, $FlamePos_9.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_10.pos.x, $FlamePos_10.pos.y, $FlamePos_10.pos.z, 0.3, LVar0)
+    Call(MakeMarkerEntity, $Item_Artifact_1)
     Return
     End
 };

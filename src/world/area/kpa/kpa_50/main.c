@@ -1,8 +1,10 @@
 #include "kpa_50.h"
+#include "world/area/kpa/kpa_70.h"
+#include "world/area/kpa/kpa_81.h"
 
-EvtScript EVS_ExitWalk_kpa_70_1 = EVT_EXIT_WALK(60, kpa_50_ENTRY_0, "kpa_70", kpa_70_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_70_1 = EVT_EXIT_WALK(60, $EntryLavaHall, $kpa_70.GuardDoor1Hall);
 EvtScript EVS_ExitDoors_kpa_81_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_50_ENTRY_1, "kpa_81", kpa_81_ENTRY_0, COLLIDER_tte, MODEL_o324, MODEL_o322);
+    EVT_EXIT_DOUBLE_DOOR($GuardDoor1, $kpa_81.GuardDoor1Hall, COLLIDER_tte, MODEL_o324, MODEL_o322);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_70_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -14,11 +16,11 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_50_ENTRY_0)
+        CaseEq($EntryLavaHall.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_50_ENTRY_1)
-            Set(LVar0, kpa_50_ENTRY_1)
+        CaseEq($GuardDoor1.index)
+            Set(LVar0, $GuardDoor1.index)
             Set(LVar2, MODEL_o324)
             Set(LVar3, MODEL_o322)
             Exec(EnterDoubleDoor)

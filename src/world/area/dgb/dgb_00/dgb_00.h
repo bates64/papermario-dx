@@ -8,7 +8,9 @@
 #include "map.h"
 
 #include "../dgb.h"
-#include "world/area/arn/arn_20/map.xml.h"
+#include "mapfs/w_arn_20_shape.h"
+#include "mapfs/w_arn_20_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldGoombario.h"
 #include "sprite/npc/WorldKooper.h"

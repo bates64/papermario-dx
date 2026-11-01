@@ -6,20 +6,9 @@
 
 NpcData NpcData_HyperParagoomba = {
     .id = NPC_HyperParagoomba,
-    .pos = { -350.0f, 180.0f, 150.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -350, 180, 150 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -350, 180, 150 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $HyperParagoomba.pos,
+    .yaw = $HyperParagoomba.yaw,
+    .territory = $HyperParagoomba.territory,
     .settings = &NpcSettings_HyperParagoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_PARAGOOMBA_DROPS,
@@ -29,20 +18,9 @@ NpcData NpcData_HyperParagoomba = {
 
 NpcData NpcData_HyperGoomba = {
     .id = NPC_HyperGoomba,
-    .pos = { 360.0f, 208.0f, 100.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 360, 208, 100 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 360, 208, 100 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $HyperGoomba.pos,
+    .yaw = $HyperGoomba.yaw,
+    .territory = $HyperGoomba.territory,
     .settings = &NpcSettings_HyperGoomba_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_GOOMBA_DROPS,
@@ -52,20 +30,9 @@ NpcData NpcData_HyperGoomba = {
 
 NpcData NpcData_HyperCleft_01 = {
     .id = NPC_HyperCleft_01,
-    .pos = { 150.0f, 177.0f, 160.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 150, 177, 160 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 150, 177, 160 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $HyperCleft_01.pos,
+    .yaw = $HyperCleft_01.yaw,
+    .territory = $HyperCleft_01.territory,
     .settings = &NpcSettings_HyperCleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_CLEFT_DROPS,
@@ -75,20 +42,9 @@ NpcData NpcData_HyperCleft_01 = {
 
 NpcData NpcData_HyperCleft_02 = {
     .id = NPC_HyperCleft_02,
-    .pos = { 550.0f, 230.0f, 125.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 550, 230, 125 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 550, 230, 125 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $HyperCleft_02.pos,
+    .yaw = $HyperCleft_02.yaw,
+    .territory = $HyperCleft_02.territory,
     .settings = &NpcSettings_HyperCleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = HYPER_CLEFT_DROPS,

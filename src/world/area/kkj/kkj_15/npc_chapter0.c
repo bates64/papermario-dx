@@ -33,8 +33,8 @@ AnimID LimitAnims_KoopaBros_Ch0[] = {
 NpcData NpcData_Characters_Ch0[] = {
     {
         .id = NPC_Bowser,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Bowser.pos,
+        .yaw = $Bowser.yaw,
         .settings = &NpcSettings_Bowser,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -43,8 +43,8 @@ NpcData NpcData_Characters_Ch0[] = {
     },
     {
         .id = NPC_Kammy,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy.pos,
+        .yaw = $Kammy.yaw,
         .settings = &NpcSettings_Kammy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -53,8 +53,8 @@ NpcData NpcData_Characters_Ch0[] = {
     },
     {
         .id = NPC_KoopaBros_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $KoopaBros_01.pos,
+        .yaw = $KoopaBros_01.yaw,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -63,8 +63,8 @@ NpcData NpcData_Characters_Ch0[] = {
     },
     {
         .id = NPC_KoopaBros_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $KoopaBros_02.pos,
+        .yaw = $KoopaBros_02.yaw,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -73,8 +73,8 @@ NpcData NpcData_Characters_Ch0[] = {
     },
     {
         .id = NPC_KoopaBros_03,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $KoopaBros_03.pos,
+        .yaw = $KoopaBros_03.yaw,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -83,8 +83,8 @@ NpcData NpcData_Characters_Ch0[] = {
     },
     {
         .id = NPC_KoopaBros_04,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $KoopaBros_04.pos,
+        .yaw = $KoopaBros_04.yaw,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,

@@ -1,4 +1,5 @@
 #include "trd_06.h"
+#include "world/area/trd/trd_10.h"
 
 #include "world/common/enemy/KoopaBros/wander.inc.c"
 
@@ -11,7 +12,7 @@ EvtScript EVS_Scene_ImprisonedKoopaBros = {
     Call(FadeOutMusic, 0, 2000)
     Wait(30)
     Call(GetEntryID, LVar0)
-    Call(GotoMap, "trd_10", trd_10_ENTRY_1)
+    Call(GotoMap, $trd_10.Trd06)
     Wait(100)
     Return
     End
@@ -20,20 +21,9 @@ EvtScript EVS_Scene_ImprisonedKoopaBros = {
 NpcData NpcData_KoopaBros[] = {
     {
         .id = NPC_KoopaBros_Red,
-        .pos = { 60.0f, 0.0f, -60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 60, 0, -60 },
-                .wanderSize = { 20 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 60, 0, -60 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $KoopaBros_Red.pos,
+        .yaw = $KoopaBros_Red.yaw,
+        .territory = $KoopaBros_Red.territory,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -41,20 +31,9 @@ NpcData NpcData_KoopaBros[] = {
     },
     {
         .id = NPC_KoopaBros_Black,
-        .pos = { 60.0f, 0.0f, 0.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 60, 0, 0 },
-                .wanderSize = { 20 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 60, 0, 60 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $KoopaBros_Black.pos,
+        .yaw = $KoopaBros_Black.yaw,
+        .territory = $KoopaBros_Black.territory,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -62,20 +41,9 @@ NpcData NpcData_KoopaBros[] = {
     },
     {
         .id = NPC_KoopaBros_Yellow,
-        .pos = { -10.0f, 0.0f, -60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -10, 0, -60 },
-                .wanderSize = { 20 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -10, 0, -60 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $KoopaBros_Yellow.pos,
+        .yaw = $KoopaBros_Yellow.yaw,
+        .territory = $KoopaBros_Yellow.territory,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -83,20 +51,9 @@ NpcData NpcData_KoopaBros[] = {
     },
     {
         .id = NPC_KoopaBros_Green,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 20 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -10, 0, 60 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $KoopaBros_Green.pos,
+        .yaw = $KoopaBros_Green.yaw,
+        .territory = $KoopaBros_Green.territory,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,

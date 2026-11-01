@@ -1,9 +1,11 @@
 #include "osr_00.h"
+#include "world/area/kkj/kkj_00.h"
+#include "world/area/mac/mac_01.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_mac_01_2 = EVT_EXIT_WALK(60, osr_00_ENTRY_0, "mac_01", mac_01_ENTRY_2);
+EvtScript EVS_ExitWalk_mac_01_2 = EVT_EXIT_WALK(60, $ToadTown, $mac_01.PeachsCastle);
 EvtScript EVS_ExitDoors_kkj_00_6 =
-    EVT_EXIT_DOUBLE_DOOR(osr_00_ENTRY_2, "kkj_00", kkj_00_ENTRY_6, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
+    EVT_EXIT_DOUBLE_DOOR($CastleDoor, $kkj_00.Ending, COLLIDER_deilitn, MODEL_d2, MODEL_d1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mac_01_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
@@ -15,14 +17,14 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_00_ENTRY_2)
+        CaseEq($CastleDoor.index)
             Set(LVar2, MODEL_d2)
             Set(LVar3, MODEL_d1)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(osr_00_ENTRY_3)
+        CaseEq($Invitation.index)
             Exec(EVS_Scene_ShowInvitation)
-        CaseEq(osr_00_ENTRY_4)
+        CaseEq($ApproachParty.index)
             Exec(EVS_Scene_ApproachParty)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)
@@ -67,11 +69,11 @@ EvtScript EVS_Main = {
             Call(MakeNpcs, false, EpilogueNPCs)
     EndSwitch
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, osr_00_ENTRY_3)
+    IfNe(LVar0, $Invitation.index)
         Exec(EVS_SetupMusic)
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, osr_00_ENTRY_3)
+    IfNe(LVar0, $Invitation.index)
         Exec(EVS_TexPan_Fountain)
         Call(PlaySoundAtF, SOUND_LOOP_OSR_FOUNTAIN_INTACT, SOUND_SPACE_WITH_DEPTH, 300, 0, 400)
     EndIf

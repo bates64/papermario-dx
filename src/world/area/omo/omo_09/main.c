@@ -1,6 +1,7 @@
 #include "omo_09.h"
+#include "world/area/omo/omo_08.h"
 
-EvtScript EVS_ExitWalk_omo_08_0 = EVT_EXIT_WALK(60, omo_09_ENTRY_0, "omo_08", omo_08_ENTRY_0);
+EvtScript EVS_ExitWalk_omo_08_0 = EVT_EXIT_WALK(60, $Omo08, $omo_08.Omo09);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -36,7 +37,7 @@ EvtScript EVS_Main = {
                     Call(MakeNpcs, true, KoopatrolAmbushNPCs)
                 CaseEq(2)
                     Call(MakeNpcs, true, DefaultNPCs)
-                    Call(MakeItemEntity, ITEM_SUPER_SODA, 1900, 150, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO09_Item_SuperSoda)
+                    Call(MakeMarkerEntity, $Item_SuperSoda_1)
             EndSwitch
         Else
             Call(MakeNpcs, true, DefaultNPCs)

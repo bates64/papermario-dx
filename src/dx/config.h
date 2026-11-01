@@ -27,11 +27,8 @@
 /// Skips the demo reel playing while waiting for the player to 'Press Start'.
 #define DX_SKIP_DEMO 1
 
-/// Map to load when starting a new game.
-#define NEW_GAME_MAP_ID "kmr_20"
-
-/// Entry to use when starting a new game.
-#define NEW_GAME_ENTRY_ID kmr_20_ENTRY_0
+/// Entry where the player starts a new game.
+#define NEW_GAME_ENTRY $kmr_20.GameStart
 
 /// Story progress when starting a new game.
 #define NEW_GAME_STORY_PROGRESS STORY_INTRO

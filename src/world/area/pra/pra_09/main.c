@@ -1,4 +1,6 @@
 #include "pra_09.h"
+#include "world/area/pra/pra_03.h"
+#include "world/area/pra/pra_11.h"
 #include "effects.h"
 
 #include "../common/Reflection.inc.c"
@@ -7,7 +9,7 @@
 EvtScript EVS_ExitDoors_pra_03_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_09_ENTRY_0)
+    Set(LVar0, $SaveRoom.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
@@ -15,13 +17,13 @@ EvtScript EVS_ExitDoors_pra_03_2 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_03", pra_03_ENTRY_2)
+    Call(GotoMap, $pra_03.RedKeyHall)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_pra_11_0 = EVT_EXIT_WALK(60, pra_09_ENTRY_1, "pra_11", pra_11_ENTRY_0);
+EvtScript EVS_ExitWalk_pra_11_0 = EVT_EXIT_WALK(60, $RedKeyRoom, $pra_11.RedKeyHall);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_pra_03_2, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
@@ -35,14 +37,14 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_09_ENTRY_0)
+        CaseEq($SaveRoom.index)
             Set(LVar2, MODEL_o772)
             Set(LVar3, MODEL_o768)
             Set(LVar4, MODEL_o844)
             Set(LVar5, MODEL_o846)
             ExecWait(EnterSplitDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_09_ENTRY_1)
+        CaseEq($RedKeyRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
@@ -51,12 +53,12 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 487.0f, 0.0f, 80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BlastWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 38, 30, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_g260, false)
     Call(EnableModel, MODEL_g265, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittse, COLLIDER_FLAGS_UPPER_MASK)

@@ -8,16 +8,10 @@ s32 get_tattle(void) {
     }
 }
 
-EntryList Entrances = {
-    [flo_10_ENTRY_0]    { -360.0,    0.0,    0.0,   90.0 },
-    [flo_10_ENTRY_1]    { -360.0,    0.0,    0.0,   90.0 },
-    [flo_10_ENTRY_2]    { -100.0,  -10.0, -172.0,  135.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "fla_bg",
     .tattle = { .get = &get_tattle },
 };

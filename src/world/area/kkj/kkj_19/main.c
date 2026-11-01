@@ -1,4 +1,6 @@
 #include "kkj_19.h"
+#include "world/area/kkj/kkj_00.h"
+#include "world/area/kkj/kkj_10.h"
 
 typedef struct IngredientSouce {
     /* 0x00 */ s32 itemID;
@@ -153,16 +155,16 @@ API_CALLABLE(CreateIngredientInfoWindows) {
 EvtScript EVS_ExitDoor_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, kkj_19_ENTRY_0)
+    Set(LVar0, $EntryHall.index)
     Set(LVar1, COLLIDER_ttse)
     Set(LVar2, MODEL_o95)
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(GotoMap, "kkj_00", kkj_00_ENTRY_3)
+        Call(GotoMap, $kkj_00.Kitchen)
     Else
-        Call(GotoMap, "kkj_10", kkj_10_ENTRY_3)
+        Call(GotoMap, $kkj_10.Kitchen)
     EndIf
     Wait(100)
     Return
@@ -179,7 +181,7 @@ EvtScript EVS_EnterMap = {
     IfEq(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
         Exec(EVS_ManageBaking)
     Else
-        Set(LVar0, kkj_19_ENTRY_0)
+        Set(LVar0, $EntryHall.index)
         Set(LVar2, MODEL_o95)
         Set(LVar3, DOOR_SWING_IN)
         ExecWait(EnterSingleDoor)

@@ -1,6 +1,7 @@
 #include "dgb_13.h"
+#include "world/area/dgb/dgb_03.h"
 
-EvtScript EVS_ExitWalk_dgb_03_5 = EVT_EXIT_WALK(26, dgb_13_ENTRY_0, "dgb_03", dgb_03_ENTRY_5);
+EvtScript EVS_ExitWalk_dgb_03_5 = EVT_EXIT_WALK(26, $Dgb03, $dgb_03.Dgb13);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_dgb_03_5, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)

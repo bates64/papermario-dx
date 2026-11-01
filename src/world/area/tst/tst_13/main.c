@@ -5,14 +5,10 @@ void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* d
 extern EvtScript EVS_Main;
 extern NpcGroupList DefaultNPCs;
 
-EntryList Entrances = {
-    [tst_13_ENTRY_0]    {    0.0,    0.0,  100.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "nok_bg",
 };
 
@@ -176,8 +172,8 @@ NpcSettings NpcSettings_09 = {
 NpcData NpcData_Testing[] = {
     {
         .id = NPC_00,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Npc_00.pos,
+        .yaw = $Npc_00.yaw,
         .settings = &NpcSettings_00,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -186,8 +182,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_01,
-        .pos = { 20.0f, 0.0f, 20.0f },
-        .yaw = 0,
+        .pos = $Npc_01.pos,
+        .yaw = $Npc_01.yaw,
         .settings = &NpcSettings_01,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -196,8 +192,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_02,
-        .pos = { 40.0f, 0.0f, 40.0f },
-        .yaw = 0,
+        .pos = $Npc_02.pos,
+        .yaw = $Npc_02.yaw,
         .settings = &NpcSettings_02,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -206,8 +202,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_03,
-        .pos = { 60.0f, 0.0f, 60.0f },
-        .yaw = 0,
+        .pos = $Npc_03.pos,
+        .yaw = $Npc_03.yaw,
         .settings = &NpcSettings_03,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -216,8 +212,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_04,
-        .pos = { 80.0f, 0.0f, 80.0f },
-        .yaw = 0,
+        .pos = $Npc_04.pos,
+        .yaw = $Npc_04.yaw,
         .settings = &NpcSettings_04,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -226,8 +222,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_05,
-        .pos = { 100.0f, 0.0f, 100.0f },
-        .yaw = 0,
+        .pos = $Npc_05.pos,
+        .yaw = $Npc_05.yaw,
         .settings = &NpcSettings_05,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -236,8 +232,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_06,
-        .pos = { 120.0f, 0.0f, 120.0f },
-        .yaw = 0,
+        .pos = $Npc_06.pos,
+        .yaw = $Npc_06.yaw,
         .settings = &NpcSettings_06,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -246,8 +242,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_07,
-        .pos = { 140.0f, 0.0f, 140.0f },
-        .yaw = 0,
+        .pos = $Npc_07.pos,
+        .yaw = $Npc_07.yaw,
         .settings = &NpcSettings_07,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -256,8 +252,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_08,
-        .pos = { 160.0f, 0.0f, 160.0f },
-        .yaw = 0,
+        .pos = $Npc_08.pos,
+        .yaw = $Npc_08.yaw,
         .settings = &NpcSettings_08,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
@@ -266,8 +262,8 @@ NpcData NpcData_Testing[] = {
     },
     {
         .id = NPC_09,
-        .pos = { 180.0f, 0.0f, 180.0f },
-        .yaw = 0,
+        .pos = $Npc_09.pos,
+        .yaw = $Npc_09.yaw,
         .settings = &NpcSettings_09,
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {

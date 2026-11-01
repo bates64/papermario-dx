@@ -2,13 +2,10 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, -225, -100, 175, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA61_ItemBlock_SuperShroomA)
-    Call(MakeEntity, Entity_YellowBlock, 60, -100, 60, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA61_ItemBlock_MapleSyrup)
-    Call(MakeEntity, Entity_YellowBlock, 575, -100, 60, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA61_ItemBlock_SuperShroomB)
-    Call(MakeItemEntity, ITEM_JAMMIN_JELLY, 1070, -40, 320, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KPA61_Item_JamminJelly)
+    Call(MakeMarkerEntity, $YellowBlock_SuperShroom_1)
+    Call(MakeMarkerEntity, $YellowBlock_MapleSyrup_1)
+    Call(MakeMarkerEntity, $YellowBlock_SuperShroom_2)
+    Call(MakeMarkerEntity, $Item_JamminJelly_1)
     Return
     End
 };

@@ -2,21 +2,21 @@
 #include "effects.h"
 
 EvtScript EVS_SetupFlames = {
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -358, -323, 358, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -459, -323, 214, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -358, -453, 358, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -459, -453, 214, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_3.pos.x, $FlamePos_3.pos.y, $FlamePos_3.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_4.pos.x, $FlamePos_4.pos.y, $FlamePos_4.pos.z, 0.3, LVar0)
     Return
     End
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { -569.0f, -520.0f, 207.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_OnBlast_Wall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 36, 12, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g293, true)
         Wait(1)

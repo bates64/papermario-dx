@@ -26,7 +26,7 @@ EvtScript EVS_ProvideDemoInputs1 = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "nok_12", nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, $Entry2, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(100)
     Return
     End
@@ -45,7 +45,7 @@ EvtScript EVS_MonitorDemoState1 = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "nok_12", nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, $Entry2, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(100)
     Return
     End
@@ -105,7 +105,7 @@ EvtScript EVS_ProvideDemoInputs2 = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "nok_12", nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, $Entry2, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(100)
     Return
     End
@@ -124,7 +124,7 @@ EvtScript EVS_MonitorDemoState2 = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "nok_12", nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, $Entry2, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(216)
     Return
     End

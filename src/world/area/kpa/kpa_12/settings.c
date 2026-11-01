@@ -8,16 +8,10 @@ s32 get_tattle(void) {
     }
 }
 
-EntryList Entrances = {
-    [kpa_12_ENTRY_0]    {   30.0,   30.0, -150.0,   90.0 },
-    [kpa_12_ENTRY_1]    { 1470.0,   30.0, -150.0,  270.0 },
-    [kpa_12_ENTRY_2]    {   17.0,  -20.0,  -17.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { .get = &get_tattle },
     .songVariation = 1,
     .sfxReverb = 3,

@@ -1,15 +1,16 @@
 #include "tik_19.h"
+#include "world/area/mac/mac_00.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript EVS_GotoMap_mac_00_3 = {
-    Call(GotoMap, "mac_00", mac_00_ENTRY_3)
+    Call(GotoMap, $mac_00.PondPipe)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_mac_00_3 = EVT_EXIT_PIPE_HORIZONTAL(tik_19_ENTRY_0, COLLIDER_ttd, EVS_GotoMap_mac_00_3);
+EvtScript EVS_ExitPipe_mac_00_3 = EVT_EXIT_PIPE_HORIZONTAL($GateDistrict, COLLIDER_ttd, EVS_GotoMap_mac_00_3);
 
 EvtScript EVS_BindExitTriggers = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ttd, COLLIDER_FLAGS_UPPER_MASK)

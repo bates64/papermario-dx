@@ -1,4 +1,5 @@
 #include "kmr_02.h"
+#include "world/area/tik/tik_01.h"
 #include "entity.h"
 #include "effects.h"
 
@@ -19,7 +20,7 @@ API_CALLABLE(PlayerHasBadgeEquipped) {
 }
 
 EvtScript EVS_GotoMap_tik_01_2 = {
-    Call(GotoMap, "tik_01", tik_01_ENTRY_2)
+    Call(GotoMap, $tik_01.GoombaVillage)
     Wait(100)
     Return
     End
@@ -65,19 +66,19 @@ EvtScript EVS_OnSmash_GateBlock = {
 EvtScript EVS_SummonGateBlock = {
     Call(PlaySoundAt, SOUND_KAMMY_SUMMON_MAGIC, SOUND_SPACE_DEFAULT, 373, 88, 255)
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 373, 88, 255, 1, 100)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, $GatherEnergyPinkPos_1.pos.x, $GatherEnergyPinkPos_1.pos.y, $GatherEnergyPinkPos_1.pos.z, 1, 100)
     Wait(20 * DT)
     Call(PlaySoundAt, SOUND_KAMMY_SUMMON_BLOCK, SOUND_SPACE_DEFAULT, 326, 150, 261)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, 326, 150, 261, 1, 60)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, $GatherEnergyPinkPos_2.pos.x, $GatherEnergyPinkPos_2.pos.y, $GatherEnergyPinkPos_2.pos.z, 1, 60)
     Wait(20 * DT)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, 326, 150, 261, 1, 60)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, $GatherEnergyPinkPos_2.pos.x, $GatherEnergyPinkPos_2.pos.y, $GatherEnergyPinkPos_2.pos.z, 1, 60)
     Wait(10 * DT)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, 326, 150, 261, 1, 60)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, $GatherEnergyPinkPos_2.pos.x, $GatherEnergyPinkPos_2.pos.y, $GatherEnergyPinkPos_2.pos.z, 1, 60)
     Wait(5 * DT)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, 326, 150, 261, 1, 60)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, $GatherEnergyPinkPos_2.pos.x, $GatherEnergyPinkPos_2.pos.y, $GatherEnergyPinkPos_2.pos.z, 1, 60)
     Wait(3 * DT)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, 326, 150, 261, 1, 60)
-    Call(MakeEntity, Entity_Hammer1Block, 326, 120, 261, 148, MAKE_ENTITY_END)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 1, $GatherEnergyPinkPos_2.pos.x, $GatherEnergyPinkPos_2.pos.y, $GatherEnergyPinkPos_2.pos.z, 1, 60)
+    Call(MakeMarkerEntity, $Hammer1Block_1)
     Set(LVarA, LVar0)
     Call(AssignScript, EVS_OnSmash_GateBlock)
     Call(AnimateBlockScale)
@@ -121,23 +122,22 @@ EvtScript EVS_MakeEntities = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_GATE_CRUSHED)
         CaseLt(STORY_CH0_SMASHED_GATE_BLOCK)
-            Call(MakeEntity, Entity_Hammer1BlockWideX, 326, 0, 261, 270, MAKE_ENTITY_END)
-            Call(AssignScript, EVS_OnSmash_GateBlock)
+            Call(MakeMarkerEntity, $Hammer1BlockWideX_1)
         CaseLt(STORY_CH0_TWINK_GAVE_LUCKY_STAR)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt2, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
     IfEq(GF_KMR02_WarpPipe, false)
         IfEq(GF_TIK01_WarpPipes, true)
             Call(GetEntryID, LVar0)
-            IfNe(LVar0, kmr_02_ENTRY_3)
+            IfNe(LVar0, $WarpPipe.index)
                 Set(GF_KMR02_WarpPipe, true)
             EndIf
         EndIf
     EndIf
-    Call(MakeEntity, Entity_BlueWarpPipe, 0, 0, 355, 0, kmr_02_ENTRY_3, EVS_GotoMap_tik_01_2, EVT_INDEX_OF_GAME_FLAG(GF_KMR02_WarpPipe), MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_SavePoint, 250, 60, 75, -15, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BlueWarpPipe_1)
+    Call(MakeMarkerEntity, $SavePoint_1)
     IfGe(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
-        Call(MakeItemEntity, ITEM_SHOOTING_STAR, 510, 0, -340, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR02_Item_ShootingStar)
+        Call(MakeMarkerEntity, $Item_ShootingStar_1)
     EndIf
     Return
     End

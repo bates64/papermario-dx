@@ -30,14 +30,14 @@ EvtScript EVS_UnlockPrompt_PrisonCell = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA91_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, -5, 10, 13, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Set(MV_EntityID_Padlock, LVar0)
         BindPadlock(EVS_UnlockPrompt_PrisonCell, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), KeyList_PrisonCell, 0, 1)
     Else
         BindTrigger(EVS_OpenCellDoor, TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)
     EndIf
     IfEq(GF_KPA91_Defeated_Guard, true)
-        Call(MakeItemEntity, ITEM_PRISON_KEY, 60, 0, 55, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KPA91_Item_PrisonKey1)
+        Call(MakeMarkerEntity, $Item_PrisonKey_1)
     EndIf
     Return
     End

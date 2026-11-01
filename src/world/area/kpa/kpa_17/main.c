@@ -1,13 +1,15 @@
 #include "kpa_17.h"
+#include "world/area/kpa/kpa_10.h"
+#include "world/area/kpa/kpa_11.h"
 
 EvtScript EVS_ExitWalk_kpa_1X_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kpa_17_ENTRY_1)
+    Call(UseExitHeading, 60, $OutsideJail.index)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, "kpa_11", kpa_11_ENTRY_2)
+        Call(GotoMap, $kpa_11.LowerJail)
     Else
-        Call(GotoMap, "kpa_10", kpa_10_ENTRY_2)
+        Call(GotoMap, $kpa_10.LowerJail)
     EndIf
     Wait(100)
     Return
@@ -22,7 +24,7 @@ EvtScript EVS_BindExitTriggers = {
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kpa_17_ENTRY_0)
+    IfEq(LVar0, $FallIntoCell.index)
         Exec(EVS_BindExitTriggers)
         Exec(EVS_Scene_FallIntoCell)
     Else
@@ -34,8 +36,8 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 1186.0f, 30.0f, -562.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_Main = {

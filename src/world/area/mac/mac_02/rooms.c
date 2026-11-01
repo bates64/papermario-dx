@@ -122,7 +122,7 @@ EvtScript EVS_SetupRooms = {
         MODEL_souko,
         InsideNPCs_BlueHouse)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_02_ENTRY_5)
+    IfEq(LVar0, $RipCheatoPipe.index)
         Set(LVar0, 3)
         Exec(EVS_RoomListener_TayceT)
         Call(SetGroupVisibility, MODEL_souko_in, MODEL_GROUP_VISIBLE)

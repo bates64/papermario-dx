@@ -1,21 +1,27 @@
 #include "mac_02.h"
+#include "world/area/mac/mac_01.h"
+#include "world/area/mac/mac_03.h"
+#include "world/area/mac/mac_04.h"
+#include "world/area/mim/mim_10.h"
+#include "world/area/tik/tik_06.h"
+#include "world/area/tik/tik_15.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_mac_04_0 = EVT_EXIT_WALK(60, mac_02_ENTRY_0, "mac_04", mac_04_ENTRY_0);
-EvtScript EVS_ExitWalk_mim_10_0 = EVT_EXIT_WALK(60, mac_02_ENTRY_1, "mim_10", mim_10_ENTRY_0);
-EvtScript EVS_ExitWalk_mac_01_3 = EVT_EXIT_WALK(60, mac_02_ENTRY_2, "mac_01", mac_01_ENTRY_3);
-EvtScript EVS_ExitWalk_mac_03_0 = EVT_EXIT_WALK(60, mac_02_ENTRY_3, "mac_03", mac_03_ENTRY_0);
+EvtScript EVS_ExitWalk_mac_04_0 = EVT_EXIT_WALK(60, $ResidentialDistrict, $mac_04.SouthernDistrict);
+EvtScript EVS_ExitWalk_mim_10_0 = EVT_EXIT_WALK(60, $ForeverForest, $mim_10.ToadTown);
+EvtScript EVS_ExitWalk_mac_01_3 = EVT_EXIT_WALK(60, $PlazaDistrict, $mac_01.SouthernDistrict);
+EvtScript EVS_ExitWalk_mac_03_0 = EVT_EXIT_WALK(60, $StationDistrict, $mac_03.SouthernDistrict);
 
 EvtScript EVS_GotoMap_tik_06_3 = {
-    Call(GotoMap, "tik_06", tik_06_ENTRY_3)
+    Call(GotoMap, $tik_06.SouthernDistrict)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tik_15_1 = {
-    Call(GotoMap, "tik_15", tik_15_ENTRY_1)
+    Call(GotoMap, $tik_15.SouthernDistrict)
     Wait(100)
     Return
     End
@@ -36,11 +42,11 @@ EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mim_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     BindTrigger(EVS_ExitWalk_mac_01_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
     BindTrigger(EVS_ExitWalk_mac_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
-    Set(LVar0, mac_02_ENTRY_4)
+    Set(LVar0, $SewerPipe.index)
     Set(LVar1, COLLIDER_deilip)
     Set(LVar2, EVS_GotoMap_tik_06_3)
     BindTrigger(EVS_SetupPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
-    Set(LVar0, mac_02_ENTRY_5)
+    Set(LVar0, $RipCheatoPipe.index)
     Set(LVar1, COLLIDER_deilid)
     Set(LVar2, EVS_GotoMap_tik_15_1)
     BindTrigger(EVS_SetupPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
@@ -102,7 +108,7 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupFoliage)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
-    IfLe(LVar0, mac_02_ENTRY_3)
+    IfLe(LVar0, $StationDistrict.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

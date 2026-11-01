@@ -170,8 +170,8 @@ EvtScript EVS_NpcInit_Peach = {
 
 NpcData NpcData_Bowser_Body = {
     .id = NPC_Bowser_Body,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_Body.pos,
+    .yaw = $Bowser_Body.yaw,
     .init = &EVS_NpcInit_Bowser_Body,
     .settings = &NpcSettings_Bowser,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
@@ -181,8 +181,8 @@ NpcData NpcData_Bowser_Body = {
 
 NpcData NpcData_Bowser_Prop = {
     .id = NPC_Bowser_Prop,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_Prop.pos,
+    .yaw = $Bowser_Prop.yaw,
     .init = &EVS_NpcInit_Bowser_Propeller,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -192,8 +192,8 @@ NpcData NpcData_Bowser_Prop = {
 
 NpcData NpcData_Peach = {
     .id = NPC_Peach,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Peach.pos,
+    .yaw = $Peach.yaw,
     .init = &EVS_NpcInit_Peach,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,

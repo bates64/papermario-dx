@@ -1,38 +1,26 @@
 
 #include "tst_01.h"
+#include "world/area/mac/machi.h"
+#include "world/area/tst/tst_02.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-EntryList Entrances = {
-    [tst_01_ENTRY_0]    {  -35.0,    0.0,   17.0,    0.0 },
-    [tst_01_ENTRY_1]    {  338.0,    0.0,    5.0,    0.0 },
-    [tst_01_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_3]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_4]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_5]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_6]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_7]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_8]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_9]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_01_ENTRY_A]    {  354.0,    0.0,  294.0,  117.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
 };
 
 EvtScript EVS_GotoMap_machi_7 = {
-    Call(GotoMap, "machi", machi_ENTRY_7)
+    Call(GotoMap, $machi.Entry7)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tst_02_0 = {
-    Call(GotoMap, "tst_02", tst_02_ENTRY_0)
+    Call(GotoMap, $tst_02.JumpWidthTest)
     Wait(100)
     Return
     End

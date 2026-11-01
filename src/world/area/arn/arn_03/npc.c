@@ -368,22 +368,9 @@ EvtScript EVS_NpcInit_Boo_05 = {
 
 NpcData NpcData_Boo_01 = {
     .id = NPC_Boo_01,
-    .pos = { 36.0f, 185.0f, 140.0f },
-    .yaw = 90,
-    .territory = {
-        .patrol = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points  = {
-                { 36, 10, 185 },
-                { 56, 10, 185 },
-            },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 479, 215, 198 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $Boo_01.pos,
+    .yaw = $Boo_01.yaw,
+    .territory = $Boo_01.territory,
     .init = &EVS_NpcInit_Boo_01,
     .settings = &NpcSettings_Boo_Patrol,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -394,8 +381,8 @@ NpcData NpcData_Boo_01 = {
 
 NpcData NpcData_Boo_02 = {
     .id = NPC_Boo_02,
-    .pos = { 209.0f, 185.0f, 217.0f },
-    .yaw = 90,
+    .pos = $Boo_02.pos,
+    .yaw = $Boo_02.yaw,
     .init = &EVS_NpcInit_Boo_02,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -406,22 +393,9 @@ NpcData NpcData_Boo_02 = {
 
 NpcData NpcData_Boo_03 = {
     .id = NPC_Boo_03,
-    .pos = { 379.0f, 186.0f, 186.0f },
-    .yaw = 90,
-    .territory = {
-        .patrol = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points  = {
-                { 379, 10, 186 },
-                { 399, 10, 186 },
-            },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 479, 215, 198 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $Boo_03.pos,
+    .yaw = $Boo_03.yaw,
+    .territory = $Boo_03.territory,
     .init = &EVS_NpcInit_Boo_03,
     .settings = &NpcSettings_Boo_Patrol,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -432,8 +406,8 @@ NpcData NpcData_Boo_03 = {
 
 NpcData NpcData_Boo_04 = {
     .id = NPC_Boo_04,
-    .pos = { 544.0f, 235.0f, 128.0f },
-    .yaw = 90,
+    .pos = $Boo_04.pos,
+    .yaw = $Boo_04.yaw,
     .init = &EVS_NpcInit_Boo_04,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -444,8 +418,8 @@ NpcData NpcData_Boo_04 = {
 
 NpcData NpcData_Boo_05 = {
     .id = NPC_Boo_Prankster,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_Prankster.pos,
+    .yaw = $Boo_Prankster.yaw,
     .init = &EVS_NpcInit_Boo_05,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -508,8 +482,8 @@ EvtScript EVS_NpcInit_Boo_09 = {
 NpcData NpcData_Boo_06[] = {
     {
         .id = NPC_Boo_06,
-        .pos = { 36.0f, 277.0f, 140.0f },
-        .yaw = 90,
+        .pos = $Boo_06.pos,
+        .yaw = $Boo_06.yaw,
         .init = &EVS_NpcInit_Boo_06,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -518,8 +492,8 @@ NpcData NpcData_Boo_06[] = {
     },
     {
         .id = NPC_Boo_07,
-        .pos = { 180.0f, 285.0f, 182.0f },
-        .yaw = 90,
+        .pos = $Boo_07.pos,
+        .yaw = $Boo_07.yaw,
         .init = &EVS_NpcInit_Boo_07,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -528,8 +502,8 @@ NpcData NpcData_Boo_06[] = {
     },
     {
         .id = NPC_Boo_08,
-        .pos = { 349.0f, 286.0f, 152.0f },
-        .yaw = 90,
+        .pos = $Boo_08.pos,
+        .yaw = $Boo_08.yaw,
         .init = &EVS_NpcInit_Boo_08,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -538,8 +512,8 @@ NpcData NpcData_Boo_06[] = {
     },
     {
         .id = NPC_Boo_09,
-        .pos = { 490.0f, 324.0f, 128.0f },
-        .yaw = 90,
+        .pos = $Boo_09.pos,
+        .yaw = $Boo_09.yaw,
         .init = &EVS_NpcInit_Boo_09,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

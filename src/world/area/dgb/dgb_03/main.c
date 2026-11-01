@@ -1,25 +1,31 @@
 #include "dgb_03.h"
+#include "world/area/dgb/dgb_02.h"
+#include "world/area/dgb/dgb_04.h"
+#include "world/area/dgb/dgb_05.h"
+#include "world/area/dgb/dgb_09.h"
+#include "world/area/dgb/dgb_13.h"
+#include "world/area/dgb/dgb_14.h"
 
 EvtScript EVS_ExitDoors_dgb_02_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_03_ENTRY_1, "dgb_02", dgb_02_ENTRY_0, COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+    $Dgb02, $dgb_02.Dgb03, COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_09_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_03_ENTRY_4, "dgb_09", dgb_09_ENTRY_0, COLLIDER_deilittne, MODEL_o106, MODEL_o105, DOOR_SOUNDS_CREAKY
+    $Dgb09, $dgb_09.Dgb03, COLLIDER_deilittne, MODEL_o106, MODEL_o105, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_04_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_03_ENTRY_0, "dgb_04", dgb_04_ENTRY_0, COLLIDER_deilittsw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY
+    $Dgb04, $dgb_04.Dgb03, COLLIDER_deilittsw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY
 );
 
-EvtScript EVS_ExitWalk_dgb_13_0 = EVT_EXIT_WALK(26, dgb_03_ENTRY_2, "dgb_13", dgb_13_ENTRY_0);
+EvtScript EVS_ExitWalk_dgb_13_0 = EVT_EXIT_WALK(26, $Dgb05, $dgb_13.Dgb03);
 
 EvtScript EVS_ExitDoors_dgb_05_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    dgb_03_ENTRY_2, "dgb_05", dgb_05_ENTRY_0, COLLIDER_deilitts, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+    $Dgb05, $dgb_05.Dgb03, COLLIDER_deilitts, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_ExitDoors_dgb_14_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_03_ENTRY_3, "dgb_14", dgb_14_ENTRY_0, COLLIDER_deilittnw, MODEL_o103, MODEL_o104, DOOR_SOUNDS_CREAKY
+    $Dgb14, $dgb_14.Dgb03, COLLIDER_deilittnw, MODEL_o103, MODEL_o104, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_BindExitTriggers = {
@@ -31,37 +37,37 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_03_ENTRY_0)
+        CaseEq($Dgb04.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_o30)
             Set(LVar3, MODEL_o31)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(dgb_03_ENTRY_1)
+        CaseEq($Dgb02.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_o102)
             Set(LVar3, MODEL_o101)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(dgb_03_ENTRY_2)
+        CaseEq($Dgb05.index)
             Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
             Set(LVar2, MODEL_o76)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(dgb_03_ENTRY_3)
+        CaseEq($Dgb14.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_o103)
             Set(LVar3, MODEL_o104)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(dgb_03_ENTRY_4)
+        CaseEq($Dgb09.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_o106)
             Set(LVar3, MODEL_o105)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(dgb_03_ENTRY_5)
+        CaseEq($Dgb13.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalkShort)
             Wait(1)

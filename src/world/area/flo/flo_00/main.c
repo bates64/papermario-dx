@@ -1,4 +1,11 @@
 #include "flo_00.h"
+#include "world/area/flo/flo_08.h"
+#include "world/area/flo/flo_09.h"
+#include "world/area/flo/flo_14.h"
+#include "world/area/flo/flo_16.h"
+#include "world/area/flo/flo_23.h"
+#include "world/area/flo/flo_25.h"
+#include "world/area/mac/mac_01.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
@@ -34,7 +41,7 @@ EvtScript EVS_Wisterwood_Exit = {
         EndIf
     EndLoop
     Call(PlaySoundAtCollider, COLLIDER_deilittn, SOUND_WOODEN_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
-    Call(GotoMap, "mac_01", mac_01_ENTRY_5)
+    Call(GotoMap, $mac_01.FlowerGate)
     Wait(100)
     Return
     End
@@ -73,12 +80,12 @@ EvtScript EVS_Wisterwood_Enter = {
     End
 };
 
-EvtScript EVS_ExitWalk_flo_14_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_1, "flo_14", flo_14_ENTRY_0);
-EvtScript EVS_ExitWalk_flo_23_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_2, "flo_23", flo_23_ENTRY_0);
-EvtScript EVS_ExitWalk_flo_25_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_3, "flo_25", flo_25_ENTRY_0);
-EvtScript EVS_ExitWalk_flo_16_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_4, "flo_16", flo_16_ENTRY_0);
-EvtScript EVS_ExitWalk_flo_09_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_5, "flo_09", flo_09_ENTRY_0);
-EvtScript EVS_ExitWalk_flo_08_0 = EVT_EXIT_WALK(60, flo_00_ENTRY_6, "flo_08", flo_08_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_14_0 = EVT_EXIT_WALK(60, $Flo14, $flo_14.Flo00);
+EvtScript EVS_ExitWalk_flo_23_0 = EVT_EXIT_WALK(60, $Flo23, $flo_23.Flo00);
+EvtScript EVS_ExitWalk_flo_25_0 = EVT_EXIT_WALK(60, $Flo25, $flo_25.Flo00);
+EvtScript EVS_ExitWalk_flo_16_0 = EVT_EXIT_WALK(60, $Flo16, $flo_16.Flo00);
+EvtScript EVS_ExitWalk_flo_09_0 = EVT_EXIT_WALK(60, $Flo09, $flo_09.Flo00);
+EvtScript EVS_ExitWalk_flo_08_0 = EVT_EXIT_WALK(60, $Flo08, $flo_08.Flo00);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_14_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
@@ -98,35 +105,35 @@ EvtScript EVS_EnterMap = {
         Exec(EVS_BindExitTriggers)
     Else
         Call(GetEntryID, LVar0)
-        IfNe(LVar0, flo_00_ENTRY_8)
+        IfNe(LVar0, $Beanstalk.index)
             Set(AF_FLO_RidingBeanstalk, false)
         EndIf
         Switch(LVar0)
-            CaseEq(flo_00_ENTRY_0)
+            CaseEq($ToadTown.index)
                 Thread
                     ExecWait(EVS_Wisterwood_Enter)
                     Exec(EVS_BindExitTriggers)
                 EndThread
-            CaseRange(flo_00_ENTRY_1, flo_00_ENTRY_6)
+            CaseRange($Flo14.index, $Flo08.index)
                 Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
-            CaseEq(flo_00_ENTRY_7)
+            CaseEq($BeanstalkGrown.index)
                 Thread
                     ExecWait(EVS_Scene_BeanstalkGrewRemark)
                     Exec(EVS_BindExitTriggers)
                 EndThread
-            CaseEq(flo_00_ENTRY_8)
+            CaseEq($Beanstalk.index)
                 Thread
                     ExecWait(EVS_Enter_Beanstalk)
                     Exec(EVS_BindExitTriggers)
                 EndThread
-            CaseEq(flo_00_ENTRY_9)
+            CaseEq($SunReturns.index)
                 Exec(EVS_Scene_SunReturns)
                 Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
-            CaseEq(flo_00_ENTRY_A)
+            CaseEq($PeachInterlude.index)
                 Exec(EVS_BindExitTriggers)
-            CaseEq(flo_00_ENTRY_B)
+            CaseEq(11)
                 Exec(EVS_Scene_Epilogue)
         EndSwitch
     EndIf
@@ -145,7 +152,7 @@ EvtScript EVS_Main = {
     EndIf
     Set(GF_MAC01_RowfBadgesChosen, false)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, flo_00_ENTRY_B)
+    IfEq(LVar0, 11)
         Call(MakeNpcs, false, EpilogueNPCs)
     Else
         Call(MakeNpcs, false, DefaultNPCs)
@@ -168,7 +175,7 @@ EvtScript EVS_Main = {
     Call(GetLoadType, LVar1)
     IfNe(LVar1, LOAD_FROM_FILE_SELECT)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, flo_00_ENTRY_A)
+        IfEq(LVar0, $PeachInterlude.index)
             Wait(65)
         EndIf
     EndIf

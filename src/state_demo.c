@@ -26,7 +26,7 @@ DemoSceneData DemoScenes[] = {
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "nok_12",
-        .index = nok_12_ENTRY_2,
+        .index = 2,
         .partnerID = PARTNER_GOOMBARIO,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
@@ -37,28 +37,28 @@ DemoSceneData DemoScenes[] = {
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "isk_04",
-        .index = isk_04_ENTRY_5,
+        .index = 5,
         .partnerID = PARTNER_PARAKARRY,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "tik_03",
-        .index = tik_03_ENTRY_2,
+        .index = 2,
         .partnerID = PARTNER_KOOPER,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "trd_09",
-        .index = trd_09_ENTRY_2,
+        .index = 2,
         .partnerID = PARTNER_PARAKARRY,
         .storyProgress = STORY_CH1_STAR_SPIRIT_RESCUED
     },
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "jan_04",
-        .index = jan_04_ENTRY_4,
+        .index = 4,
         .partnerID = PARTNER_SUSHIE,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
@@ -69,14 +69,14 @@ DemoSceneData DemoScenes[] = {
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "mac_00",
-        .index = mac_00_ENTRY_6,
+        .index = 6,
         .partnerID = PARTNER_BOMBETTE,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "kzn_02",
-        .index = kzn_02_ENTRY_2,
+        .index = 2,
         .partnerID = PARTNER_KOOPER,
         .storyProgress = STORY_CH5_LAVA_STREAM_BLOCKED
     },
@@ -87,14 +87,14 @@ DemoSceneData DemoScenes[] = {
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "mac_03",
-        .index = mac_03_ENTRY_3,
+        .index = 3,
         .partnerID = PARTNER_BOMBETTE,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "nok_02" ,
-        .index = nok_02_ENTRY_4,
+        .index = 4,
         .partnerID = PARTNER_GOOMBARIO,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
@@ -105,14 +105,14 @@ DemoSceneData DemoScenes[] = {
     {
         .sceneType = DEMO_SCENE_PEACH,
         .mapName = "kkj_11",
-        .index = kkj_11_ENTRY_8,
+        .index = 8,
         .partnerID = PARTNER_TWINK,
         .storyProgress = STORY_CH5_BEGAN_PEACH_MISSION
     },
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "arn_08",
-        .index = arn_08_ENTRY_2,
+        .index = 2,
         .partnerID = PARTNER_BOW,
         .storyProgress = STORY_CH3_UNLOCKED_WINDY_MILL
     },
@@ -123,14 +123,14 @@ DemoSceneData DemoScenes[] = {
     {
         .sceneType = DEMO_SCENE_WORLD,
         .mapName = "nok_12",
-        .index = nok_12_ENTRY_3,
+        .index = 3,
         .partnerID = PARTNER_GOOMBARIO,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
     {
         .sceneType = DEMO_SCENE_PEACH,
         .mapName = "kkj_26",
-        .index = kkj_26_ENTRY_3,
+        .index = 3,
         .partnerID = PARTNER_NONE,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },

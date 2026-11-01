@@ -1,7 +1,9 @@
 #include "jan_14.h"
+#include "world/area/jan/jan_13.h"
+#include "world/area/jan/jan_15.h"
 
-EvtScript EVS_ExitWalk_jan_15_0 = EVT_EXIT_WALK(60, jan_14_ENTRY_1, "jan_15", jan_15_ENTRY_0);
-EvtScript EVS_ExitWalk_jan_13_1 = EVT_EXIT_WALK(60, jan_14_ENTRY_0, "jan_13", jan_13_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_15_0 = EVT_EXIT_WALK(60, $Jan15, $jan_15.Jan14);
+EvtScript EVS_ExitWalk_jan_13_1 = EVT_EXIT_WALK(60, $Jan13, $jan_13.Jan14);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)

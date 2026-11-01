@@ -88,8 +88,8 @@ AnimID LimitAnims_Twink_Npc3[] = {
 
 NpcData NpcData_Bowser_Npc3 = {
     .id = NPC_Bowser_03,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_03.pos,
+    .yaw = $Bowser_03.yaw,
     .init = &EVS_NpcInit_Bowser_03_Npc3,
     .settings = &NpcSettings_Bowser,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -100,8 +100,8 @@ NpcData NpcData_Bowser_Npc3 = {
 
 NpcData NpcData_Peach_Npc3 = {
     .id = NPC_Peach_02,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Peach_02.pos,
+    .yaw = $Peach_02.yaw,
     .init = &EVS_NpcInit_Peach_Npc3,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -112,8 +112,8 @@ NpcData NpcData_Peach_Npc3 = {
 
 NpcData NpcData_Kammy_Npc3 = {
     .id = NPC_Kammy_05,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Kammy_05.pos,
+    .yaw = $Kammy_05.yaw,
     .init = &EVS_NpcInit_Kammy_Broom_Npc3,
     .settings = &NpcSettings_Kammy_Flying,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -141,8 +141,8 @@ NpcData NpcData_Kammy_Npc3 = {
 
 NpcData NpcData_Twink_Npc3 = {
     .id = NPC_Twink_02,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Twink_02.pos,
+    .yaw = $Twink_02.yaw,
     .init = &EVS_NpcInit_Twink_02_Npc3,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -153,8 +153,8 @@ NpcData NpcData_Twink_Npc3 = {
 
 NpcData NpcData_StarRod_Npc3 = {
     .id = NPC_StarRod,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $StarRod.pos,
+    .yaw = $StarRod.yaw,
     .init = &EVS_NpcInit_StarRod_Npc3,
     .settings = &NpcSettings_StarRod,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

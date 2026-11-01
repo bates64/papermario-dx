@@ -2,19 +2,19 @@
 #include "entity.h"
 
 EvtScript EVS_MakeFlowerCoins = {
-    Call(MakeItemEntity, ITEM_COIN, 15, 100, 415, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN00_Item_CoinA)
-    Call(MakeItemEntity, ITEM_COIN, 15, 125, 415, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN00_Item_CoinB)
+    Call(MakeMarkerEntity, $Item_Coin_1)
+    Call(MakeMarkerEntity, $Item_Coin_2)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_STOP_WATCH, 370, 0, -210, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN00_Item_StopWatch)
+    Call(MakeMarkerEntity, $Item_StopWatch_1)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, jan_00_ENTRY_0)
+    IfNe(LVar0, $ToadTown.index)
         Exec(EVS_MakeFlowerCoins)
     EndIf
-    Call(MakeEntity, Entity_SpinningFlower, 15, 0, 415, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $SpinningFlower_1)
     Return
     End
 };

@@ -1,4 +1,7 @@
 #include "kpa_60.h"
+#include "world/area/hos/hos_20.h"
+#include "world/area/kmr/kmr_22.h"
+#include "world/area/kpa/kpa_63.h"
 
 EvtScript EVS_SetStarshipPosRot = {
     Loop(0)
@@ -53,11 +56,11 @@ EvtScript EVS_Scene_Arrival = {
         Wait(15)
         Set(GF_StartedChapter8, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_8, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, $kmr_22.Chapter8, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, "kpa_63", kpa_63_ENTRY_1)
+    Call(GotoMap, $kpa_63.Starship)
     Wait(100)
     Return
     End
@@ -101,7 +104,7 @@ EvtScript EVS_Scene_Departure = {
             EndIf
     EndThread
     Wait(40)
-    Call(GotoMap, "hos_20", hos_20_ENTRY_2)
+    Call(GotoMap, $hos_20.ReturnFlight)
     Wait(100)
     Return
     End

@@ -1,7 +1,9 @@
 #include "kzn_10.h"
+#include "world/area/kzn/kzn_09.h"
+#include "world/area/kzn/kzn_11.h"
 
-EvtScript EVS_ExitWalk_kzn_09_1 = EVT_EXIT_WALK(60, kzn_10_ENTRY_0, "kzn_09", kzn_09_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_11_0 = EVT_EXIT_WALK(60, kzn_10_ENTRY_1, "kzn_11", kzn_11_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_09_1 = EVT_EXIT_WALK(60, $Kzn09, $kzn_09.Kzn10);
+EvtScript EVS_ExitWalk_kzn_11_0 = EVT_EXIT_WALK(60, $Kzn11, $kzn_11.Kzn10);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -38,7 +40,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Thread
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, kzn_10_ENTRY_0)
+        IfEq(LVar0, $Kzn09.index)
             Call(UseSettingsFrom, CAM_DEFAULT, -445, -13, 0)
             Call(SetPanTarget, CAM_DEFAULT, -445, -13, 0)
         Else

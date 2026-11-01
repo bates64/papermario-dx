@@ -116,7 +116,7 @@ EvtScript EVS_SetupSpinyTromp = {
                 KillThread(MV_ScreenShakeTID)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_gogo, COLLIDER_FLAGS_UPPER_MASK)
                 Call(PlaySoundAtCollider, COLLIDER_gogo, SOUND_TROMP_CRASH, SOUND_SPACE_DEFAULT)
-                PlayEffect(EFFECT_BOMBETTE_BREAKING, 2, 32, 32, 1, 10, 45)
+                PlayEffect(EFFECT_BOMBETTE_BREAKING, 2, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 45)
                 Call(EnableModel, MODEL_mae, false)
                 Call(EnableModel, MODEL_ato, true)
                 Thread

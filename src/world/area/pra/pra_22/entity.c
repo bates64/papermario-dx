@@ -76,12 +76,9 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerFloor)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, 366, -200, 80, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 55, 80, 75, 0, ITEM_JAMMIN_JELLY, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_PRA22_HiddenItem_JamminJelly)
-    Call(MakeEntity, Entity_HiddenPanel, 50, 0, 75, 0, MODEL_o1088, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_PRA22_HiddenPanel)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_JamminJelly_1)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
     Return
     End
 };

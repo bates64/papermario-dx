@@ -1,22 +1,24 @@
 #include "obk_03.h"
+#include "world/area/obk/obk_02.h"
+#include "world/area/obk/obk_04.h"
 
 EvtScript EVS_ExitDoor_obk_02_1 = EVT_EXIT_SPLIT_SINGLE_DOOR(
-    obk_03_ENTRY_0, "obk_02", obk_02_ENTRY_1, COLLIDER_tt2, MODEL_door_2_1, MODEL_door_2_2, DOOR_SWING_IN
+    $BasementStairs, $obk_02.Basement, COLLIDER_tt2, MODEL_door_2_1, MODEL_door_2_2, DOOR_SWING_IN
 );
 
 EvtScript EVS_ExitDoor_obk_04_0 = EVT_EXIT_SPLIT_SINGLE_DOOR(
-    obk_03_ENTRY_1, "obk_04", obk_04_ENTRY_0, COLLIDER_tt1, MODEL_door_1, MODEL_o494, DOOR_SWING_OUT
+    $SuperBootsRoom, $obk_04.Basement, COLLIDER_tt1, MODEL_door_1, MODEL_o494, DOOR_SWING_OUT
 );
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(obk_03_ENTRY_0)
+        CaseEq($BasementStairs.index)
             Set(LVar2, MODEL_door_2_1)
             Set(LVar4, MODEL_door_2_2)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSplitSingleDoor)
-        CaseEq(obk_03_ENTRY_1)
+        CaseEq($SuperBootsRoom.index)
             Set(LVar2, MODEL_door_1)
             Set(LVar4, MODEL_o494)
             Set(LVar3, DOOR_SWING_OUT)

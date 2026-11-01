@@ -52,8 +52,8 @@ AnimID LimitAnims_Bubulb[] = {
 NpcData NpcData_TayceT[] = {
     {
         .id = NPC_TayceT,
-        .pos = { -217.0f, 20.0f, -434.0f },
-        .yaw = 90,
+        .pos = $TayceT.pos,
+        .yaw = $TayceT.yaw,
         .init = &EVS_NpcInit_TayceT,
         .settings = &NpcSettings_TayceT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -64,8 +64,8 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_FiceT,
-        .pos = { 389.0f, 0.0f, -90.0f },
-        .yaw = 90,
+        .pos = $FiceT.pos,
+        .yaw = $FiceT.yaw,
         .init = &EVS_NpcInit_FiceT,
         .settings = &NpcSettings_FiceT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -75,8 +75,8 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_Bubulb,
-        .pos = { 150.0f, 20.0f, 500.0f },
-        .yaw = 90,
+        .pos = $Bubulb.pos,
+        .yaw = $Bubulb.yaw,
         .init = &EVS_NpcInit_Bubulb,
         .settings = &NpcSettings_Bubulb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -87,20 +87,9 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_Toad_01,
-        .pos = { 40.0f, 0.0f, -60.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -50, 0, 0 },
-                .wanderSize = { 100 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 10 },
-            }
-        },
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
+        .territory = $Toad_01.territory,
         .init = &EVS_NpcInit_Toad_01,
         .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -110,8 +99,8 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_CookingApprentice,
-        .pos = { -26.0f, 0.0f, -220.0f },
-        .yaw = 270,
+        .pos = $CookingApprentice.pos,
+        .yaw = $CookingApprentice.yaw,
         .init = &EVS_NpcInit_CookingApprentice,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -121,8 +110,8 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { -350.0f, 20.0f, -140.0f },
-        .yaw = 90,
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
         .init = &EVS_NpcInit_Toad_02,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -132,20 +121,9 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_ToadKid,
-        .pos = { 180.0f, 20.0f, -435.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 180, 20, -435 },
-                .wanderSize = { 100 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 180, 20, -435 },
-                .detectSize = { 10 },
-            }
-        },
+        .pos = $ToadKid.pos,
+        .yaw = $ToadKid.yaw,
+        .territory = $ToadKid.territory,
         .init = &EVS_NpcInit_ToadKid,
         .settings = &NpcSettings_ToadKid_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -155,20 +133,9 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_Toad_03,
-        .pos = { -160.0f, 0.0f, 25.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -50, 0, 0 },
-                .wanderSize = { 100 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 10 },
-            }
-        },
+        .pos = $Toad_03.pos,
+        .yaw = $Toad_03.yaw,
+        .territory = $Toad_03.territory,
         .init = &EVS_NpcInit_Toad_03,
         .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -178,8 +145,8 @@ NpcData NpcData_TayceT[] = {
     },
     {
         .id = NPC_Toad_04,
-        .pos = { -80.0f, 0.0f, 300.0f },
-        .yaw = 90,
+        .pos = $Toad_04.pos,
+        .yaw = $Toad_04.yaw,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -191,8 +158,8 @@ NpcData NpcData_TayceT[] = {
 
 NpcData NpcData_Bootler = {
     .id = NPC_Bootler,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bootler.pos,
+    .yaw = $Bootler.yaw,
     .init = &EVS_NpcInit_Bootler,
     .settings = &NpcSettings_Bootler,
     .flags = COMMON_PASSIVE_FLAGS,
@@ -213,8 +180,8 @@ AnimID LimitAnims_ShyGuy[] = {
 
 NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $ShyGuy.pos,
+    .yaw = $ShyGuy.yaw,
     .init = &EVS_NpcInit_ShyGuy,
     .settings = &NpcSettings_Toad,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,

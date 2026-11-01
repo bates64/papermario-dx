@@ -1,4 +1,5 @@
 #include "flo_18.h"
+#include "world/area/flo/flo_15.h"
 #include "effects.h"
 
 enum {
@@ -590,10 +591,10 @@ EvtScript EVS_DamageMachine = {
                 EndLoop
             EndThread
             Call(PlaySoundAt, SOUND_FLO_PUFF_PUFF_EXPLODE, SOUND_SPACE_DEFAULT, 70, 40, 10)
-            PlayEffect(EFFECT_RING_BLAST, 0, 70, 40, 10, 3.0, 30)
+            PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_1.pos.x, $RingBlastPos_1.pos.y, $RingBlastPos_1.pos.z, 3.0, 30)
             Call(ShakeCam, CAM_DEFAULT, 0, 20, 1.0)
             Call(PlaySoundAt, SOUND_FLO_PUFF_PUFF_EXPLODE, SOUND_SPACE_DEFAULT, 0, 30, 30)
-            PlayEffect(EFFECT_RING_BLAST, 0, 0, 30, 30, 4.0, 40)
+            PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_2.pos.x, $RingBlastPos_2.pos.y, $RingBlastPos_2.pos.z, 4.0, 40)
             Call(ShakeCam, CAM_DEFAULT, 0, 20, 2.0)
             ExecWait(EVS_BreakSmokestack)
             Call(PlaySoundAtCollider, COLLIDER_o126, SOUND_LRAW_PUFF_PUFF_MACHINE | SOUND_ID_TRIGGER_CHANGE_SOUND, SOUND_SPACE_DEFAULT)
@@ -602,7 +603,7 @@ EvtScript EVS_DamageMachine = {
             Wait(30)
             ExecWait(EVS_BreakAntenna)
             Set(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-            Call(GotoMap, "flo_15", flo_15_ENTRY_1)
+            Call(GotoMap, $flo_15.Flo18)
             Wait(70)
             Return
         EndIf
@@ -614,23 +615,23 @@ EvtScript EVS_DamageMachine = {
 };
 
 BombTrigger Machine_BombTrigger_01 = {
-    .pos = { 5.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Machine_BombTrigger_01.pos,
+    .diameter = 2.0f * $BombPos_Machine_BombTrigger_01.radius,
 };
 
 BombTrigger Machine_BombTrigger_02 = {
-    .pos = { -5.0f, 0.0f, -20.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Machine_BombTrigger_02.pos,
+    .diameter = 2.0f * $BombPos_Machine_BombTrigger_02.radius,
 };
 
 BombTrigger Machine_BombTrigger_03 = {
-    .pos = { 50.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Machine_BombTrigger_03.pos,
+    .diameter = 2.0f * $BombPos_Machine_BombTrigger_03.radius,
 };
 
 BombTrigger Machine_BombTrigger_04 = {
-    .pos = { 105.0f, 0.0f, -10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Machine_BombTrigger_04.pos,
+    .diameter = 2.0f * $BombPos_Machine_BombTrigger_04.radius,
 };
 
 EvtScript EVS_SetupMachine = {

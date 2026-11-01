@@ -145,8 +145,8 @@ EvtScript EVS_NpcInteract_HintDryite = {
 EvtScript EVS_NpcInit_HintDryite = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(dro_01_ENTRY_3)
-        CaseOrEq(dro_01_ENTRY_4)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Dryite_Green_Talk)
             Return
         EndCaseGroup

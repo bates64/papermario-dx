@@ -473,8 +473,8 @@ EvtScript EVS_NpcInit_KeepAwayBoo8 = {
 
 NpcData NpcData_HiddenBoo = {
     .id = NPC_HiddenBoo,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $HiddenBoo.pos,
+    .yaw = $HiddenBoo.yaw,
     .init = &EVS_NpcInit_HiddenBoo,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -484,8 +484,8 @@ NpcData NpcData_HiddenBoo = {
 
 NpcData NpcData_KeepAwayBoo1 = {
     .id = NPC_KeepAwayBoo1,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo1.pos,
+    .yaw = $KeepAwayBoo1.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo1,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -495,8 +495,8 @@ NpcData NpcData_KeepAwayBoo1 = {
 
 NpcData NpcData_KeepAwayBoo2 = {
     .id = NPC_KeepAwayBoo2,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo2.pos,
+    .yaw = $KeepAwayBoo2.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo2,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -506,8 +506,8 @@ NpcData NpcData_KeepAwayBoo2 = {
 
 NpcData NpcData_KeepAwayBoo3 = {
     .id = NPC_KeepAwayBoo3,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo3.pos,
+    .yaw = $KeepAwayBoo3.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo3,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -517,8 +517,8 @@ NpcData NpcData_KeepAwayBoo3 = {
 
 NpcData NpcData_KeepAwayBoo4 = {
     .id = NPC_KeepAwayBoo4,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo4.pos,
+    .yaw = $KeepAwayBoo4.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo4,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -528,8 +528,8 @@ NpcData NpcData_KeepAwayBoo4 = {
 
 NpcData NpcData_KeepAwayBoo5 = {
     .id = NPC_KeepAwayBoo5,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo5.pos,
+    .yaw = $KeepAwayBoo5.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo5,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -539,8 +539,8 @@ NpcData NpcData_KeepAwayBoo5 = {
 
 NpcData NpcData_KeepAwayBoo6 = {
     .id = NPC_KeepAwayBoo6,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo6.pos,
+    .yaw = $KeepAwayBoo6.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo6,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -550,8 +550,8 @@ NpcData NpcData_KeepAwayBoo6 = {
 
 NpcData NpcData_KeepAwayBoo7 = {
     .id = NPC_KeepAwayBoo7,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo7.pos,
+    .yaw = $KeepAwayBoo7.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo7,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -561,8 +561,8 @@ NpcData NpcData_KeepAwayBoo7 = {
 
 NpcData NpcData_KeepAwayBoo8 = {
     .id = NPC_KeepAwayBoo8,
-    .pos = { 176.0f, 0.0f, -173.0f },
-    .yaw = 270,
+    .pos = $KeepAwayBoo8.pos,
+    .yaw = $KeepAwayBoo8.yaw,
     .init = &EVS_NpcInit_KeepAwayBoo8,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -608,8 +608,8 @@ EvtScript EVS_NpcInit_TutorialBoo = {
 NpcData NpcData_KeepAwayExtras[] = {
     {
         .id = NPC_LeaderBoo,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $LeaderBoo.pos,
+        .yaw = $LeaderBoo.yaw,
         .init = &EVS_NpcInit_Boo_10,
         .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -618,8 +618,8 @@ NpcData NpcData_KeepAwayExtras[] = {
     },
     {
         .id = NPC_DummyBoo,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $DummyBoo.pos,
+        .yaw = $DummyBoo.yaw,
         .init = &EVS_NpcInit_Boo_11,
         .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_HAS_NO_SPRITE,
@@ -630,8 +630,8 @@ NpcData NpcData_KeepAwayExtras[] = {
 
 NpcData NpcData_TutorialBoo = {
     .id = NPC_TutorialBoo,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $TutorialBoo.pos,
+    .yaw = $TutorialBoo.yaw,
     .init = &EVS_NpcInit_TutorialBoo,
     .settings = &NpcSettings_Boo,
     .flags = BASE_PASSIVE_FLAGS,

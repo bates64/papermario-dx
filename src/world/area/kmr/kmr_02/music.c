@@ -13,8 +13,8 @@ EvtScript EVS_SetupMusic = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(kmr_02_ENTRY_1)
-        CaseOrEq(kmr_02_ENTRY_5)
+        CaseOrEq($ForestClearing.index)
+        CaseOrEq($AfterRevival.index)
             Call(ClearAmbientSounds, 250)
         EndCaseGroup
     EndSwitch

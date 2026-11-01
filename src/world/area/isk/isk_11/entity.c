@@ -4,19 +4,19 @@
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_ISK11_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 355, -460, 430, -40, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Set(MV_LockEntityID, LVar0)
     EndIf
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -131, -453, 489, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 131, -453, 489, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 291, -453, 415, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -44, -583, 505, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 131, -583, 489, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -44, -713, 505, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 131, -713, 489, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -44, -843, 505, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 131, -843, 489, 0.3, LVar0)
-    Call(MakeEntity, Entity_HeartBlock, -75, -720, 625, 0, MAKE_ENTITY_END)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_3.pos.x, $FlamePos_3.pos.y, $FlamePos_3.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_4.pos.x, $FlamePos_4.pos.y, $FlamePos_4.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_5.pos.x, $FlamePos_5.pos.y, $FlamePos_5.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_6.pos.x, $FlamePos_6.pos.y, $FlamePos_6.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_7.pos.x, $FlamePos_7.pos.y, $FlamePos_7.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_8.pos.x, $FlamePos_8.pos.y, $FlamePos_8.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_9.pos.x, $FlamePos_9.pos.y, $FlamePos_9.pos.z, 0.3, LVar0)
+    Call(MakeMarkerEntity, $HeartBlock_1)
     Return
     End
 };

@@ -1,4 +1,6 @@
 #include "iwa_00.h"
+#include "world/area/iwa/iwa_01.h"
+#include "world/area/iwa/iwa_10.h"
 
 b32 should_player_be_sliding(void) {
     Shadow* shadow = get_shadow_by_index(gPlayerStatus.shadowID);
@@ -12,8 +14,8 @@ API_CALLABLE(SetupSlidingCheck) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_iwa_10_1 = EVT_EXIT_WALK(60, iwa_00_ENTRY_0, "iwa_10", iwa_10_ENTRY_1);
-EvtScript EVS_ExitWalk_iwa_01_0 = EVT_EXIT_WALK(60, iwa_00_ENTRY_1, "iwa_01", iwa_01_ENTRY_0);
+EvtScript EVS_ExitWalk_iwa_10_1 = EVT_EXIT_WALK(60, $ToadTown, $iwa_10.Iwa00);
+EvtScript EVS_ExitWalk_iwa_01_0 = EVT_EXIT_WALK(60, $Iwa01, $iwa_01.Iwa00);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_iwa_10_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

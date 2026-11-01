@@ -120,7 +120,7 @@ void btl_state_update_end_battle(void) {
                 get_map_IDs_by_name_checked("gv_01", &areaID, &mapID);
                 gGameStatusPtr->areaID = areaID;
                 gGameStatusPtr->mapID = mapID;
-                gGameStatusPtr->entryID = gv_01_ENTRY_0;
+                gGameStatusPtr->entryID = 0;
                 set_game_mode(GAME_MODE_GAME_OVER);
             } else {
                 btl_set_state(BATTLE_STATE_NONE);

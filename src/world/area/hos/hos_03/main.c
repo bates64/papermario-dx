@@ -1,7 +1,9 @@
 #include "hos_03.h"
+#include "world/area/hos/hos_02.h"
+#include "world/area/hos/hos_04.h"
 
-EvtScript EVS_ExitWalk_hos_02_1 = EVT_EXIT_WALK(60, hos_03_ENTRY_0, "hos_02", hos_02_ENTRY_1);
-EvtScript EVS_ExitWalk_hos_04_0 = EVT_EXIT_WALK(60, hos_03_ENTRY_1, "hos_04", hos_04_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_02_1 = EVT_EXIT_WALK(60, $StarWay, $hos_02.StarHaven);
+EvtScript EVS_ExitWalk_hos_04_0 = EVT_EXIT_WALK(60, $OutsideSanctuary, $hos_04.StarHaven);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_hos_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)

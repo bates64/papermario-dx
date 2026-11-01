@@ -1,4 +1,5 @@
 #include "mac_01.h"
+#include "world/area/osr/osr_00.h"
 
 API_CALLABLE(HideRowfBadges_IntroScene) {
     if (evt_get_variable(nullptr, GF_MAC01_RowfBadgeAvailableA) == 0) {
@@ -55,7 +56,7 @@ EvtScript EVS_Scene_IntroWalking = {
     EndLoop
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Wait(75 * DT)
-    Call(GotoMap, "osr_00", osr_00_ENTRY_4)
+    Call(GotoMap, $osr_00.ApproachParty)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

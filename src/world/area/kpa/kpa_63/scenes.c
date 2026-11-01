@@ -1,4 +1,5 @@
 #include "kpa_63.h"
+#include "world/area/kpa/kpa_60.h"
 
 API_CALLABLE(SetPassengerPos) {
     Bytecode* args = script->ptrReadPos;
@@ -157,7 +158,7 @@ EvtScript EVS_Starship_Depart = {
         EndLoop
     EndThread
     Wait(50)
-    Call(GotoMap, "kpa_60", kpa_60_ENTRY_5)
+    Call(GotoMap, $kpa_60.Departure)
     Wait(100)
     Return
     End

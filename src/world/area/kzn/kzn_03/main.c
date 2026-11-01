@@ -1,11 +1,15 @@
 #include "kzn_03.h"
+#include "world/area/kzn/kzn_02.h"
+#include "world/area/kzn/kzn_04.h"
+#include "world/area/kzn/kzn_05.h"
+#include "world/area/kzn/kzn_09.h"
 #include "entity.h"
 
-EvtScript EVS_ExitWalk_kzn_02_1 = EVT_EXIT_WALK(60, kzn_03_ENTRY_0, "kzn_02", kzn_02_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_04_0 = EVT_EXIT_WALK(60, kzn_03_ENTRY_1, "kzn_04", kzn_04_ENTRY_0);
-EvtScript EVS_ExitWalk_kzn_09_0 = EVT_EXIT_WALK(60, kzn_03_ENTRY_2, "kzn_09", kzn_09_ENTRY_0);
-EvtScript EVS_ExitWalk_kzn_05_1 = EVT_EXIT_WALK(60, kzn_03_ENTRY_3, "kzn_05", kzn_05_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_09_2 = EVT_EXIT_WALK(60, kzn_03_ENTRY_4, "kzn_09", kzn_09_ENTRY_2);
+EvtScript EVS_ExitWalk_kzn_02_1 = EVT_EXIT_WALK(60, $Kzn02, $kzn_02.Kzn03);
+EvtScript EVS_ExitWalk_kzn_04_0 = EVT_EXIT_WALK(60, $Kzn04, $kzn_04.Kzn03);
+EvtScript EVS_ExitWalk_kzn_09_0 = EVT_EXIT_WALK(60, $Kzn09Upper, $kzn_09.Kzn03Upper);
+EvtScript EVS_ExitWalk_kzn_05_1 = EVT_EXIT_WALK(60, $Kzn05, $kzn_05.Kzn03);
+EvtScript EVS_ExitWalk_kzn_09_2 = EVT_EXIT_WALK(60, $Kzn09Lower, $kzn_09.Kzn03Lower);
 
 EvtScript EVS_BindTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

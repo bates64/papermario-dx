@@ -1,19 +1,25 @@
 #include "mac_01.h"
+#include "world/area/kmr/kmr_22.h"
+#include "world/area/mac/mac_00.h"
+#include "world/area/mac/mac_02.h"
+#include "world/area/nok/nok_11.h"
+#include "world/area/osr/osr_00.h"
+#include "world/area/osr/osr_01.h"
 
-EvtScript EVS_ExitWalk_mac_00_1 = EVT_EXIT_WALK(60, mac_01_ENTRY_0, "mac_00", mac_00_ENTRY_1);
+EvtScript EVS_ExitWalk_mac_00_1 = EVT_EXIT_WALK(60, $GateDistrict, $mac_00.PlazaDistrict);
 
 EvtScript EVS_ExitWalk_nok_11_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, mac_01_ENTRY_1)
+    Call(UseExitHeading, 60, $PleasantPath.index)
     Exec(ExitWalk)
     IfEq(GF_StartedChapter1, false)
         Set(GF_StartedChapter1, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, $kmr_22.Chapter1, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, "nok_11", nok_11_ENTRY_0)
+    Call(GotoMap, $nok_11.ToadTown)
     Wait(100)
     Return
     End
@@ -43,16 +49,16 @@ EvtScript EVS_ExitDoors_osr_01_0 = {
     Wait(17)
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH0_WAKE_UP, STORY_CH8_REACHED_PEACHS_CASTLE)
-            Call(GotoMap, "osr_01", osr_01_ENTRY_0)
+            Call(GotoMap, $osr_01.ToadTown)
         CaseDefault
-            Call(GotoMap, "osr_00", osr_00_ENTRY_0)
+            Call(GotoMap, $osr_00.ToadTown)
     EndSwitch
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_mac_02_2 = EVT_EXIT_WALK(60, mac_01_ENTRY_3, "mac_02", mac_02_ENTRY_2);
+EvtScript EVS_ExitWalk_mac_02_2 = EVT_EXIT_WALK(60, $SouthernDistrict, $mac_02.PlazaDistrict);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mac_00_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -76,7 +82,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mac_01_ENTRY_2)
+        CaseEq($PeachsCastle.index)
             Call(DisablePlayerInput, true)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
             Call(RotateGroup, MODEL_east_gate, 80, 0, 1, 0)
@@ -97,9 +103,9 @@ EvtScript EVS_EnterMap = {
             Call(PlaySoundAtCollider, COLLIDER_deilitn, SOUND_LARGE_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
             Call(DisablePlayerInput, false)
-        CaseEq(mac_01_ENTRY_4)
+        CaseEq($Intro.index)
             Exec(EVS_Scene_IntroWalking)
-        CaseEq(mac_01_ENTRY_5)
+        CaseEq($FlowerGate.index)
             ExecWait(EVS_EnterFlowerGate)
             Exec(EVS_BindExitTriggers)
         CaseDefault

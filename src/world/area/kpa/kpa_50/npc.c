@@ -5,20 +5,9 @@
 
 NpcData NpcData_Koopatrol_01 = {
     .id = NPC_Koopatrol_01,
-    .pos = { -251.0f, 0.0f, -30.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -251, 0, -30 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -251, 0, -30 },
-            .detectSize = { 300 },
-        }
-    },
+    .pos = $Koopatrol_01.pos,
+    .yaw = $Koopatrol_01.yaw,
+    .territory = $Koopatrol_01.territory,
     .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
@@ -27,20 +16,9 @@ NpcData NpcData_Koopatrol_01 = {
 
 NpcData NpcData_Koopatrol_02 = {
     .id = NPC_Koopatrol_02,
-    .pos = { 100.0f, 0.0f, -30.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 100, 0, -30 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 100, 0, -30 },
-            .detectSize = { 300 },
-        }
-    },
+    .pos = $Koopatrol_02.pos,
+    .yaw = $Koopatrol_02.yaw,
+    .territory = $Koopatrol_02.territory,
     .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
@@ -50,20 +28,9 @@ NpcData NpcData_Koopatrol_02 = {
 NpcData NpcData_HammerBros_01[] = {
     {
         .id = NPC_HammerBros,
-        .pos = { 450.0f, 0.0f, -30.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 450, 0, -30 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 450, 0, -30 },
-                .detectSize = { 300 },
-            }
-        },
+        .pos = $HammerBros.pos,
+        .yaw = $HammerBros.yaw,
+        .territory = $HammerBros.territory,
         .settings = &NpcSettings_HammerBros_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = HAMMER_BROS_DROPS,

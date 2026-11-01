@@ -385,8 +385,8 @@ AnimID LimitAnims_Councillor[] = {
 NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_YoshiLeader,
-        .pos = { 323.0f, 30.0f, 412.0f },
-        .yaw = 270,
+        .pos = $YoshiLeader.pos,
+        .yaw = $YoshiLeader.yaw,
         .init = &EVS_NpcInit_VillageLeader,
         .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -396,8 +396,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_YoshiCouncillor,
-        .pos = { 172.0f, 30.0f, 418.0f },
-        .yaw = 90,
+        .pos = $YoshiCouncillor.pos,
+        .yaw = $YoshiCouncillor.yaw,
         .init = &EVS_NpcInit_Councillor,
         .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -408,22 +408,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Yoshi_01,
-        .pos = { -520.0f, 0.0f, -270.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -520, 0, -270 },
-                    { -420, 0, -270 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -520, 0, -270 },
-                .detectSize = { 100 },
-            }
-        },
+        .pos = $Yoshi_01.pos,
+        .yaw = $Yoshi_01.yaw,
+        .territory = $Yoshi_01.territory,
         .init = &EVS_NpcInit_Yoshi_01,
         .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -433,23 +420,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Yoshi_02,
-        .pos = { 180.0f, 0.0f, -520.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 3,
-                .points  = {
-                    { 180, 0, -520 },
-                    { 10, 0, -520 },
-                    { 100, 0, -600 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 5, 0, -554 },
-                .detectSize = { 100 },
-            }
-        },
+        .pos = $Yoshi_02.pos,
+        .yaw = $Yoshi_02.yaw,
+        .territory = $Yoshi_02.territory,
         .init = &EVS_NpcInit_Yoshi_02,
         .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -459,22 +432,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Yoshi_03,
-        .pos = { 600.0f, 0.0f, -150.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { 600, 0, -150 },
-                    { 485, 0, -220 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 600, 0, -150 },
-                .detectSize = { 100 },
-            }
-        },
+        .pos = $Yoshi_03.pos,
+        .yaw = $Yoshi_03.yaw,
+        .territory = $Yoshi_03.territory,
         .init = &EVS_NpcInit_Yoshi_03,
         .settings = &NpcSettings_Yoshi_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -486,8 +446,8 @@ NpcData NpcData_Townsfolk[] = {
 
 NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
-    .pos = { -150.0f, 15.0f, 300.0f },
-    .yaw = 90,
+    .pos = $ChuckQuizmo.pos,
+    .yaw = $ChuckQuizmo.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_JAN, QUIZ_COUNT_JAN, QUIZ_MAP_JAN_02 }},
     .settings = &NpcSettings_ChuckQuizmo,

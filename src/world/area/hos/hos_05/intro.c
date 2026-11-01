@@ -1940,7 +1940,7 @@ EvtScript EVS_Scene_IntroStory = {
     Thread
         Call(SetWorldColorParams, 117, 28, 42, 0, 0, 0, 15)
     EndThread
-    PlayEffect(EFFECT_LIGHTNING, 1, 0, 20, 0, 0, 0)
+    PlayEffect(EFFECT_LIGHTNING, 1, $LightningPos_1.pos.x, $LightningPos_1.pos.y, $LightningPos_1.pos.z, 0, 0)
     Set(ArrayVar(17), LVarF)
     Thread
         Call(FadeAwayTapeGraphic)
@@ -1988,8 +1988,8 @@ EvtScript EVS_Scene_IntroStory = {
         Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Panic)
         Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Panic)
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_FlyRodTalk)
-        PlayEffect(EFFECT_ENDING_DECALS, 2, 0, 180, 0, 2.59375, ArrayVar(15))
-        PlayEffect(EFFECT_LIGHT_RAYS, 1, 0, 200, 0, 1.0, ArrayVar(16))
+        PlayEffect(EFFECT_ENDING_DECALS, 2, $EndingDecalsPos_1.pos.x, $EndingDecalsPos_1.pos.y, $EndingDecalsPos_1.pos.z, 2.59375, ArrayVar(15))
+        PlayEffect(EFFECT_LIGHT_RAYS, 1, $LightRaysPos_1.pos.x, $LightRaysPos_1.pos.y, $LightRaysPos_1.pos.z, 1.0, ArrayVar(16))
     EndThread
     Thread
         Call(AddBowserHoverOffset)
@@ -2058,7 +2058,7 @@ EvtScript EVS_Scene_IntroStory = {
             Wait(1)
         EndLoop
     EndThread
-    PlayEffect(EFFECT_LIGHTNING, 2, 0, 0, 0, 0, 0)
+    PlayEffect(EFFECT_LIGHTNING, 2, $LightningPos_2.pos.x, $LightningPos_2.pos.y, $LightningPos_2.pos.z, 0, 0)
     Set(ArrayVar(17), LVarF)
     Set(LVar0, 120)
     Set(LVar1, 895)
@@ -2124,13 +2124,13 @@ EvtScript EVS_Scene_IntroStory = {
     Set(LVar4, 209)
     Set(LVar5, 153)
     Call(CamPushIn_BowserInhale)
-    PlayEffect(EFFECT_FIRE_BREATH, 0, -30, 210, 142, 0, 180, 0, 5, 2, 30)
+    PlayEffect(EFFECT_FIRE_BREATH, 0, $FireBreathPos_1.pos.x, $FireBreathPos_1.pos.y, $FireBreathPos_1.pos.z, 0, 180, 0, 5, 2, 30)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarFireBreath)
     Thread
         Call(CamPullBack_BowserExhale)
     EndThread
     Wait(20 * DT)
-    PlayEffect(EFFECT_SHIMMER_BURST, 0, 0, 180, 0, 0.703125, 30)
+    PlayEffect(EFFECT_SHIMMER_BURST, 0, $ShimmerBurstPos_1.pos.x, $ShimmerBurstPos_1.pos.y, $ShimmerBurstPos_1.pos.z, 0.703125, 30)
     Thread
         Wait(2)
         Call(RemoveEffect, ArrayVar(15))
@@ -2229,8 +2229,8 @@ EvtScript EVS_Scene_IntroStory = {
     Call(SetPanTarget, CAM_DEFAULT, 0, 177, 0)
     Call(LoadSettings, CAM_DEFAULT, IntroCamSettings12)
     Call(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_ClownCarStarRod)
-    PlayEffect(EFFECT_LIGHT_RAYS, 2, 20, 265, -21, 1.0, ArrayVar(18))
-    PlayEffect(EFFECT_BULB_GLOW, 2, 20, 265, -21, 1.0, ArrayVar(19))
+    PlayEffect(EFFECT_LIGHT_RAYS, 2, $LightRaysPos_2.pos.x, $LightRaysPos_2.pos.y, $LightRaysPos_2.pos.z, 1.0, ArrayVar(18))
+    PlayEffect(EFFECT_BULB_GLOW, 2, $BulbGlowPos_1.pos.x, $BulbGlowPos_1.pos.y, $BulbGlowPos_1.pos.z, 1.0, ArrayVar(19))
     Set(LVar0, 120)
     Set(LVar1, 895)
     Loop(20)
@@ -2255,7 +2255,7 @@ EvtScript EVS_Scene_IntroStory = {
         Call(DismissEffect, ArrayVar(18))
         Call(DismissEffect, ArrayVar(19))
     EndThread
-    PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, 18, 256, -21, 0.40625, 60)
+    PlayEffect(EFFECT_ENERGY_SHOCKWAVE, 0, $EnergyShockwavePos_1.pos.x, $EnergyShockwavePos_1.pos.y, $EnergyShockwavePos_1.pos.z, 0.40625, 60)
     Set(LVar0, 120)
     SetF(LVar1, 895)
     Loop(40)
@@ -2308,7 +2308,7 @@ EvtScript EVS_Scene_IntroStory = {
     EndLoop
     Wait(15 * DT)
     Call(SetNpcImgFXParams, NPC_Eldstar, IMGFX_SET_ALPHA, 255, 0, 0, 0)
-    PlayEffect(EFFECT_SOMETHING_ROTATING, 2, -130, 220, 130, 1, 0)
+    PlayEffect(EFFECT_SOMETHING_ROTATING, 2, $SomethingRotatingPos_1.pos.x, $SomethingRotatingPos_1.pos.y, $SomethingRotatingPos_1.pos.z, 1, 0)
     Set(ArrayVar(0), LVarF)
     Set(LVar0, -130)
     Set(LVar1, 220)

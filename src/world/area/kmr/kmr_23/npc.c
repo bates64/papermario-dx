@@ -476,19 +476,19 @@ EvtScript EVS_Scene_EndOfChapter = {
     Call(GetEntryID, LVar0)
     Set(LVar1, MSG_Menus_01A5)
     Switch(LVar0)
-        CaseEq(kmr_23_ENTRY_0)
+        CaseEq($Eldstar.index)
             Set(LVar1, MSG_Menus_01A5)
-        CaseEq(kmr_23_ENTRY_1)
+        CaseEq($Mamar.index)
             Set(LVar1, MSG_Menus_01A6)
-        CaseEq(kmr_23_ENTRY_2)
+        CaseEq($Skolar.index)
             Set(LVar1, MSG_Menus_01A7)
-        CaseEq(kmr_23_ENTRY_3)
+        CaseEq($Muskular.index)
             Set(LVar1, MSG_Menus_01A8)
-        CaseEq(kmr_23_ENTRY_4)
+        CaseEq($Misstar.index)
             Set(LVar1, MSG_Menus_01A9)
-        CaseEq(kmr_23_ENTRY_5)
+        CaseEq($Klevar.index)
             Set(LVar1, MSG_Menus_01AA)
-        CaseEq(kmr_23_ENTRY_6)
+        CaseEq($Kalmar.index)
             Set(LVar1, MSG_Menus_01AB)
     EndSwitch
     Call(ShowMessageAtScreenPos, LVar1, 160, 40)
@@ -521,8 +521,8 @@ EvtScript EVS_NpcInit_Eldstar_02 = {
 NpcData NpcData_Eldstar[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit.pos,
+        .yaw = $StarSpirit.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -531,8 +531,8 @@ NpcData NpcData_Eldstar[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit.pos,
+        .yaw = $AuxSpirit.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -544,8 +544,8 @@ NpcData NpcData_Eldstar[] = {
 NpcData NpcData_Mamar[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit_1.pos,
+        .yaw = $StarSpirit_1.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -554,8 +554,8 @@ NpcData NpcData_Mamar[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit_1.pos,
+        .yaw = $AuxSpirit_1.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -567,8 +567,8 @@ NpcData NpcData_Mamar[] = {
 NpcData NpcData_Skolar[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit_2.pos,
+        .yaw = $StarSpirit_2.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -577,8 +577,8 @@ NpcData NpcData_Skolar[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit_2.pos,
+        .yaw = $AuxSpirit_2.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -590,8 +590,8 @@ NpcData NpcData_Skolar[] = {
 NpcData NpcData_Muskular[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit_3.pos,
+        .yaw = $StarSpirit_3.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -600,8 +600,8 @@ NpcData NpcData_Muskular[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit_3.pos,
+        .yaw = $AuxSpirit_3.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -613,8 +613,8 @@ NpcData NpcData_Muskular[] = {
 NpcData NpcData_Misstar[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit_4.pos,
+        .yaw = $StarSpirit_4.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -623,8 +623,8 @@ NpcData NpcData_Misstar[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit_4.pos,
+        .yaw = $AuxSpirit_4.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -636,8 +636,8 @@ NpcData NpcData_Misstar[] = {
 NpcData NpcData_Klevar[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit_5.pos,
+        .yaw = $StarSpirit_5.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -646,8 +646,8 @@ NpcData NpcData_Klevar[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit_5.pos,
+        .yaw = $AuxSpirit_5.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -659,8 +659,8 @@ NpcData NpcData_Klevar[] = {
 NpcData NpcData_Kalmar[] = {
     {
         .id = NPC_StarSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarSpirit_6.pos,
+        .yaw = $StarSpirit_6.yaw,
         .init = &EVS_NpcInit_Eldstar_01,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -669,8 +669,8 @@ NpcData NpcData_Kalmar[] = {
     },
     {
         .id = NPC_AuxSpirit,
-        .pos = { -40.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $AuxSpirit_6.pos,
+        .yaw = $AuxSpirit_6.yaw,
         .init = &EVS_NpcInit_Eldstar_02,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

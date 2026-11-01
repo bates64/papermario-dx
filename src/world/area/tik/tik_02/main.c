@@ -1,6 +1,7 @@
 #include "tik_02.h"
+#include "world/area/tik/tik_18.h"
 
-EvtScript EVS_ExitWalk_tik_18_1 = EVT_EXIT_WALK(60, tik_02_ENTRY_0, "tik_18", tik_18_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_18_1 = EVT_EXIT_WALK(60, $HallToBlooper, $tik_18.BlooperBoss);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_18_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

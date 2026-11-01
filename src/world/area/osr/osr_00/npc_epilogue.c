@@ -214,8 +214,8 @@ AnimID LimitAnims_YoshiKid[] = {
 NpcData NpcData_Yoshis[] = {
     {
         .id = NPC_YoshiLeader,
-        .pos = { 70.0f, 0.0f, -30.0f },
-        .yaw = 270,
+        .pos = $YoshiLeader.pos,
+        .yaw = $YoshiLeader.yaw,
         .init = &EVS_NpcInit_LeaderYoshi,
         .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -226,8 +226,8 @@ NpcData NpcData_Yoshis[] = {
     },
     {
         .id = NPC_Yoshi,
-        .pos = { 70.0f, 0.0f, 400.0f },
-        .yaw = 270,
+        .pos = $Yoshi.pos,
+        .yaw = $Yoshi.yaw,
         .init = &EVS_NpcInit_Yoshi,
         .settings = &NpcSettings_Yoshi,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -238,8 +238,8 @@ NpcData NpcData_Yoshis[] = {
     },
     {
         .id = NPC_YoshiKid,
-        .pos = { 160.0f, 0.0f, 540.0f },
-        .yaw = 270,
+        .pos = $YoshiKid.pos,
+        .yaw = $YoshiKid.yaw,
         .init = &EVS_NpcInit_YoshiKid,
         .settings = &NpcSettings_YoshiKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -274,8 +274,8 @@ AnimID LimitAnims_Penguin[] = {
 NpcData NpcData_Penguins[] = {
     {
         .id = NPC_MayorPenguin,
-        .pos = { 150.0f, 0.0f, 105.0f },
-        .yaw = 270,
+        .pos = $MayorPenguin.pos,
+        .yaw = $MayorPenguin.yaw,
         .init = &EVS_NpcInit_MayorPenguin,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -286,8 +286,8 @@ NpcData NpcData_Penguins[] = {
     },
     {
         .id = NPC_MayorPenguinWife,
-        .pos = { 200.0f, 0.0f, 105.0f },
-        .yaw = 270,
+        .pos = $MayorPenguinWife.pos,
+        .yaw = $MayorPenguinWife.yaw,
         .init = &EVS_NpcInit_MayorPenguinWife,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -298,8 +298,8 @@ NpcData NpcData_Penguins[] = {
     },
     {
         .id = NPC_Penguin_01,
-        .pos = { 115.0f, 0.0f, 540.0f },
-        .yaw = 90,
+        .pos = $Penguin_01.pos,
+        .yaw = $Penguin_01.yaw,
         .init = &EVS_NpcInit_Penguin_01,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -309,8 +309,8 @@ NpcData NpcData_Penguins[] = {
     },
     {
         .id = NPC_Penguin_02,
-        .pos = { 208.0f, 0.0f, 540.0f },
-        .yaw = 270,
+        .pos = $Penguin_02.pos,
+        .yaw = $Penguin_02.yaw,
         .init = &EVS_NpcInit_Penguin_02,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -337,8 +337,8 @@ AnimID LimitAnims_Mouser[] = {
 NpcData NpcData_Mousers[] = {
     {
         .id = NPC_Moustafa,
-        .pos = { -60.0f, 0.0f, -20.0f },
-        .yaw = 90,
+        .pos = $Moustafa.pos,
+        .yaw = $Moustafa.yaw,
         .init = &EVS_NpcInit_Moustafa,
         .settings = &NpcSettings_Mouser,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -349,8 +349,8 @@ NpcData NpcData_Mousers[] = {
     },
     {
         .id = NPC_Mouser,
-        .pos = { -100.0f, 0.0f, -50.0f },
-        .yaw = 90,
+        .pos = $Mouser.pos,
+        .yaw = $Mouser.yaw,
         .init = &EVS_NpcInit_Mouser,
         .settings = &NpcSettings_Mouser,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -370,8 +370,8 @@ AnimID LimitAnims_Boos[] = {
 NpcData NpcData_Boos[] = {
     {
         .id = NPC_Boo_01,
-        .pos = { 270.0f, 20.0f, 175.0f },
-        .yaw = 270,
+        .pos = $Boo_01.pos,
+        .yaw = $Boo_01.yaw,
         .init = &EVS_NpcInit_Boo_01,
         .settings = &NpcSettings_Boo,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -381,8 +381,8 @@ NpcData NpcData_Boos[] = {
     },
     {
         .id = NPC_Boo_02,
-        .pos = { 320.0f, 20.0f, 200.0f },
-        .yaw = 270,
+        .pos = $Boo_02.pos,
+        .yaw = $Boo_02.yaw,
         .init = &EVS_NpcInit_Boo_02,
         .settings = &NpcSettings_Boo,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -409,8 +409,8 @@ AnimID LimitAnims_ToadGuard[] = {
 NpcData NpcData_Toads[] = {
     {
         .id = NPC_Toad,
-        .pos = { -25.0f, 0.0f, 200.0f },
-        .yaw = 90,
+        .pos = $Toad.pos,
+        .yaw = $Toad.yaw,
         .init = &EVS_NpcInit_Toad,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -420,8 +420,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_ToadGuard_01,
-        .pos = { -50.0f, 0.0f, -200.0f },
-        .yaw = 90,
+        .pos = $ToadGuard_01.pos,
+        .yaw = $ToadGuard_01.yaw,
         .init = &EVS_NpcInit_ToadGuard_01,
         .settings = &NpcSettings_ToadGuard,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -431,8 +431,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_ToadGuard_02,
-        .pos = { 560.0f, 20.0f, 100.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_02.pos,
+        .yaw = $ToadGuard_02.yaw,
         .init = &EVS_NpcInit_ToadGuard_02,
         .settings = &NpcSettings_ToadGuard,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,

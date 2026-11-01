@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, -250, 120, 140, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Call(MakeItemEntity, ITEM_SNOWMAN_SCARF, NPC_DISPOSE_LOCATION, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(MV_ScarfItemID, LVar0)
     Return

@@ -1,4 +1,8 @@
 #include "common.h"
+#include "world/area/omo/omo_03.h"
+#include "world/area/omo/omo_06.h"
+#include "world/area/omo/omo_08.h"
+#include "world/area/omo/omo_10.h"
 #include "sprite/player.h"
 
 typedef Bytecode TrainPath;
@@ -526,13 +530,13 @@ EvtScript EVS_DisembarkTrain = {
 EvtScript EVS_SkipTrainRideToDestination = {
     Switch(AB_OMO_TrainDest)
         CaseEq(OMO_STATION_BLUE)
-            Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_3, TRANSITION_TOY_TRAIN)
+            Call(GotoMapSpecial, $omo_03.TrainRight, TRANSITION_TOY_TRAIN)
         CaseEq(OMO_STATION_PINK)
-            Call(GotoMapSpecial, "omo_06", omo_06_ENTRY_3, TRANSITION_TOY_TRAIN)
+            Call(GotoMapSpecial, $omo_06.TrainRight, TRANSITION_TOY_TRAIN)
         CaseEq(OMO_STATION_GREEN)
-            Call(GotoMapSpecial, "omo_08", omo_08_ENTRY_2, TRANSITION_TOY_TRAIN)
+            Call(GotoMapSpecial, $omo_08.TrainRight, TRANSITION_TOY_TRAIN)
         CaseEq(OMO_STATION_RED)
-            Call(GotoMapSpecial, "omo_10", omo_10_ENTRY_3, TRANSITION_TOY_TRAIN)
+            Call(GotoMapSpecial, $omo_10.TrainRight, TRANSITION_TOY_TRAIN)
     EndSwitch
     Wait(100)
     Return
@@ -544,49 +548,49 @@ EvtScript EVS_SkipTrainRideToNextStation = {
         CaseEq(OMO_STATION_BLUE)
             Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_PINK)
-                    Call(GotoMapSpecial, "omo_06", omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_06.TrainLeft, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_GREEN)
-                    Call(GotoMapSpecial, "omo_08", omo_08_ENTRY_1, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_08.TrainLeft, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_RED)
-                    Call(GotoMapSpecial, "omo_10", omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_10.TrainLeft, TRANSITION_TOY_TRAIN)
             EndSwitch
         CaseEq(OMO_STATION_PINK)
             Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_BLUE)
-                    Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_03.TrainLeft, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_GREEN)
-                    Call(GotoMapSpecial, "omo_08", omo_08_ENTRY_1, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_08.TrainLeft, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_RED)
-                    Call(GotoMapSpecial, "omo_10", omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_10.TrainLeft, TRANSITION_TOY_TRAIN)
             EndSwitch
         CaseEq(OMO_STATION_GREEN)
             Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_BLUE)
-                    Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_03.TrainLeft, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_PINK)
                     IfEq(GF_OMO03_BlueSwitchActivated, true)
-                        Call(GotoMapSpecial, "omo_06", omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
+                        Call(GotoMapSpecial, $omo_06.TrainLeft, TRANSITION_TOY_TRAIN)
                     Else
-                        Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
+                        Call(GotoMapSpecial, $omo_03.TrainLeft, TRANSITION_TOY_TRAIN)
                     EndIf
                 CaseEq(OMO_STATION_RED)
-                    Call(GotoMapSpecial, "omo_10", omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_10.TrainLeft, TRANSITION_TOY_TRAIN)
             EndSwitch
         CaseEq(OMO_STATION_RED)
             Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_BLUE)
-                    Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
+                    Call(GotoMapSpecial, $omo_03.TrainLeft, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_PINK)
                     IfEq(GF_OMO03_BlueSwitchActivated, true)
-                        Call(GotoMapSpecial, "omo_06", omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
+                        Call(GotoMapSpecial, $omo_06.TrainLeft, TRANSITION_TOY_TRAIN)
                     Else
-                        Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
+                        Call(GotoMapSpecial, $omo_03.TrainLeft, TRANSITION_TOY_TRAIN)
                     EndIf
                 CaseEq(OMO_STATION_GREEN)
                     IfEq(GF_OMO03_BlueSwitchActivated, true)
-                        Call(GotoMapSpecial, "omo_08", omo_08_ENTRY_1, TRANSITION_TOY_TRAIN)
+                        Call(GotoMapSpecial, $omo_08.TrainLeft, TRANSITION_TOY_TRAIN)
                     Else
-                        Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
+                        Call(GotoMapSpecial, $omo_03.TrainLeft, TRANSITION_TOY_TRAIN)
                     EndIf
             EndSwitch
     EndSwitch

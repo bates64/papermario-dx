@@ -134,16 +134,16 @@ EvtScript EVS_Scene_TheEnd = {
     Call(PlayerMoveTo, 320, -80, 0)
     Call(PlayerMoveTo, 300, -120, 0)
     Wait(30)
-    PlayEffect(EFFECT_FIREWORK_ROCKET, 0, 153, 370, -350, -1, 4, -1, 1.6, 70)
+    PlayEffect(EFFECT_FIREWORK_ROCKET, 0, $FireworkRocketPos_1.pos.x, $FireworkRocketPos_1.pos.y, $FireworkRocketPos_1.pos.z, -1, 4, -1, 1.6, 70)
     Call(ChooseFireworkColors, LVarF)
     Wait(30)
-    PlayEffect(EFFECT_FIREWORK_ROCKET, 1, 333, 420, -270, -1, 4, -1, 1.6, 70)
+    PlayEffect(EFFECT_FIREWORK_ROCKET, 1, $FireworkRocketPos_2.pos.x, $FireworkRocketPos_2.pos.y, $FireworkRocketPos_2.pos.z, -1, 4, -1, 1.6, 70)
     Call(ChooseFireworkColors, LVarF)
     Wait(30)
-    PlayEffect(EFFECT_FIREWORK_ROCKET, 0, -27, 320, -430, -1, 4, -1, 1.6, 70)
+    PlayEffect(EFFECT_FIREWORK_ROCKET, 0, $FireworkRocketPos_3.pos.x, $FireworkRocketPos_3.pos.y, $FireworkRocketPos_3.pos.z, -1, 4, -1, 1.6, 70)
     Call(ChooseFireworkColors, LVarF)
     Wait(80)
-    PlayEffect(EFFECT_FIREWORK_ROCKET, 2, 153, 370, -350, -1, 4, -1, 1.6, 70)
+    PlayEffect(EFFECT_FIREWORK_ROCKET, 2, $FireworkRocketPos_1.pos.x, $FireworkRocketPos_1.pos.y, $FireworkRocketPos_1.pos.z, -1, 4, -1, 1.6, 70)
     Call(ChooseFireworkColors, LVarF)
     Wait(30)
     Thread
@@ -209,7 +209,7 @@ EvtScript EVS_Scene_TheEnd = {
     EndLoop
     Wait(600)
     Thread
-        PlayEffect(EFFECT_FIREWORK_ROCKET, 0, 310, 280, -250, -1, 6, -1, 1.6, 70)
+        PlayEffect(EFFECT_FIREWORK_ROCKET, 0, $FireworkRocketPos_4.pos.x, $FireworkRocketPos_4.pos.y, $FireworkRocketPos_4.pos.z, -1, 6, -1, 1.6, 70)
         Call(ChooseFireworkColors, LVarF)
     EndThread
     Wait(20)

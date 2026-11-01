@@ -23,8 +23,8 @@ EvtScript EVS_NpcInit_TrafficBoo2 = {
 NpcData NpcData_TrafficBoos[] = {
     {
         .id = NPC_TrafficBoo1,
-        .pos = { 523.0f, -139.0f, 193.0f },
-        .yaw = 0,
+        .pos = $TrafficBoo1.pos,
+        .yaw = $TrafficBoo1.yaw,
         .init = &EVS_NpcInit_TrafficBoo1,
         .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -33,8 +33,8 @@ NpcData NpcData_TrafficBoos[] = {
     },
     {
         .id = NPC_TrafficBoo2,
-        .pos = { 473.0f, -122.0f, 247.0f },
-        .yaw = 0,
+        .pos = $TrafficBoo2.pos,
+        .yaw = $TrafficBoo2.yaw,
         .init = &EVS_NpcInit_TrafficBoo2,
         .settings = &NpcSettings_Boo,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

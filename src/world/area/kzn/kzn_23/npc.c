@@ -1,4 +1,5 @@
 #include "kzn_23.h"
+#include "world/area/jan/jan_04.h"
 #include "entity.h"
 #include "effects.h"
 #include "sprite/player.h"
@@ -162,19 +163,19 @@ EvtScript EVS_SpawnPyroclasts = {
             Exec(EVS_PlayPyroclastSounds)
             Switch(LVar0)
                 CaseEq(0)
-                    PlayEffect(EFFECT_65, 2, 50, 2650, -20, 1, 0)
+                    PlayEffect(EFFECT_65, 2, $Effect65Pos_1.pos.x, $Effect65Pos_1.pos.y, $Effect65Pos_1.pos.z, 1, 0)
                     Set(LVarE, LVarF)
                     Call(LoadPath, 15, PyroclastPathA, ARRAY_COUNT(PyroclastPathA), EASING_QUADRATIC_OUT)
                 CaseEq(1)
-                    PlayEffect(EFFECT_65, 2, -20, 2650, -20, 1, 0)
+                    PlayEffect(EFFECT_65, 2, $Effect65Pos_2.pos.x, $Effect65Pos_2.pos.y, $Effect65Pos_2.pos.z, 1, 0)
                     Set(LVarE, LVarF)
                     Call(LoadPath, 10, PyroclastPathB, ARRAY_COUNT(PyroclastPathB), EASING_QUADRATIC_OUT)
                 CaseEq(2)
-                    PlayEffect(EFFECT_65, 2, 10, 2650, -20, 1, 0)
+                    PlayEffect(EFFECT_65, 2, $Effect65Pos_3.pos.x, $Effect65Pos_3.pos.y, $Effect65Pos_3.pos.z, 1, 0)
                     Set(LVarE, LVarF)
                     Call(LoadPath, 15, PyroclastPathC, ARRAY_COUNT(PyroclastPathC), EASING_QUADRATIC_OUT)
                 CaseEq(3)
-                    PlayEffect(EFFECT_65, 2, -50, 2650, -20, 1, 0)
+                    PlayEffect(EFFECT_65, 2, $Effect65Pos_4.pos.x, $Effect65Pos_4.pos.y, $Effect65Pos_4.pos.z, 1, 0)
                     Set(LVarE, LVarF)
                     Call(LoadPath, 20, PyroclastPathD, ARRAY_COUNT(PyroclastPathD), EASING_QUADRATIC_OUT)
             EndSwitch
@@ -243,7 +244,7 @@ EvtScript EVS_Scene_Misstar = {
     Exec(EVS_SpawnPyroclasts)
     Wait(35)
     // make the chest thrown from the volcano
-    Call(MakeEntity, Entity_Chest, 0, 2650, 0, 148, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $Chest)
     Set(LVarA, LVar0)
     Thread
         Call(AnimateChestSize)
@@ -262,7 +263,7 @@ EvtScript EVS_Scene_Misstar = {
     EndLoop
     // end scene
     Wait(45)
-    Call(GotoMap, "jan_04", jan_04_ENTRY_1)
+    Call(GotoMap, $jan_04.MtLavalava)
     Wait(100)
     Return
     End
@@ -278,8 +279,8 @@ EvtScript EVS_NpcInit_Misstar = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -290,8 +291,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .init = &EVS_NpcInit_Misstar,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER,

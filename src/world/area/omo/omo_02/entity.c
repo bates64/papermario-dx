@@ -37,14 +37,11 @@ EvtScript EVS_StarBoxLaunch_Impl = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, 300, 60, -100, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_OMO02_ItemBlock_SleepySheep)
-    Call(MakeEntity, Entity_HiddenYellowBlock, -200, 60, -78, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_OMO02_HiddenItem_Coin)
-    Call(MakeEntity, Entity_BrickBlock, -80, 89, -78, 0, MAKE_ENTITY_END)
-    Call(MakeItemEntity, ITEM_SHOOTING_STAR, -80, 114, -78, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_OMO02_Item_ShootingStar)
-    Call(MakeEntity, Entity_StarBoxLauncher, -358, 0, -82, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_StarBoxLaunch_Impl)
+    Call(MakeMarkerEntity, $YellowBlock_SleepySheep_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_Coin_1)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $Item_ShootingStar_1)
+    Call(MakeMarkerEntity, $StarBoxLauncher_1)
     Return
     End
 };

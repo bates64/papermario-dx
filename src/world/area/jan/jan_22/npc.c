@@ -283,9 +283,9 @@ EvtScript EVS_BuildingEffects = {
         Call(ShakeCam, CAM_DEFAULT, 0, 8, 1.0)
         Call(RandInt, 4, LVar0)
         Add(LVar0, 1)
-        PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, 290, 155, 0, 240, 0, 0, LVar0)
+        PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, $DamageStarsPos_1.pos.x, $DamageStarsPos_1.pos.y, $DamageStarsPos_1.pos.z, 240, 0, 0, LVar0)
         Wait(10 * DT)
-        PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, 275, 150, 0, 240, 0, 0, 3)
+        PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, $DamageStarsPos_2.pos.x, $DamageStarsPos_2.pos.y, $DamageStarsPos_2.pos.z, 240, 0, 0, 3)
         Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
         Wait(4 * DT)
         Call(ShakeCam, CAM_DEFAULT, 0, 2, 1.0)
@@ -1419,8 +1419,8 @@ EvtScript EVS_NpcInit_Misstar = {
 NpcData NpcData_Kolorado[] = {
     {
         .id = NPC_Kolorado_01,
-        .pos = { -100.0f, 0.0f, 10.0f },
-        .yaw = 90,
+        .pos = $Kolorado_01.pos,
+        .yaw = $Kolorado_01.yaw,
         .init = &EVS_NpcInit_Kolorado_HeldCaptive,
         .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
@@ -1430,8 +1430,8 @@ NpcData NpcData_Kolorado[] = {
     },
     {
         .id = NPC_Kolorado_02,
-        .pos = { -100.0f, 0.0f, 10.0f },
-        .yaw = 90,
+        .pos = $Kolorado_02.pos,
+        .yaw = $Kolorado_02.yaw,
         .init = &EVS_NpcInit_Kolorado_WaitingToExplore,
         .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1441,8 +1441,8 @@ NpcData NpcData_Kolorado[] = {
     },
     {
         .id = NPC_ZiplineDummy1,
-        .pos = { -100.0f, 0.0f, 10.0f },
-        .yaw = 90,
+        .pos = $ZiplineDummy1.pos,
+        .yaw = $ZiplineDummy1.yaw,
         .init = &EVS_NpcInit_ZiplineDummy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -1452,8 +1452,8 @@ NpcData NpcData_Kolorado[] = {
     },
     {
         .id = NPC_ZiplineDummy2,
-        .pos = { -100.0f, 0.0f, 10.0f },
-        .yaw = 90,
+        .pos = $ZiplineDummy2.pos,
+        .yaw = $ZiplineDummy2.yaw,
         .init = &EVS_NpcInit_ZiplineDummy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -1465,23 +1465,9 @@ NpcData NpcData_Kolorado[] = {
 
 NpcData NpcData_SpearGuy = {
     .id = NPC_SpearGuy,
-    .pos = { -70.0f, 0.0f, 10.0f },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 3,
-            .points  = {
-                { 368, 0, 190 },
-                { 411, 0, 190 },
-                { 396, 0, 239 },
-            },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -70, 0, 10 },
-            .detectSize = { 100 },
-        }
-    },
+    .pos = $SpearGuy.pos,
+    .yaw = $SpearGuy.yaw,
+    .territory = $SpearGuy.territory,
     .init = &EVS_NpcInit_SpearGuy,
     .settings = &NpcSettings_SpearGuy_Patrol,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1492,8 +1478,8 @@ NpcData NpcData_SpearGuy = {
 NpcData NpcData_RaphaelRaven[] = {
     {
         .id = NPC_RaphaelRaven,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RaphaelRaven.pos,
+        .yaw = $RaphaelRaven.yaw,
         .init = &EVS_NpcInit_RaphaelRaven,
         .settings = &NpcSettings_RaphaelRaven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1503,8 +1489,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_01.pos,
+        .yaw = $Raven_01.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -1514,8 +1500,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_02.pos,
+        .yaw = $Raven_02.yaw,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -1526,8 +1512,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_03.pos,
+        .yaw = $Raven_03.yaw,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -1536,8 +1522,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_04.pos,
+        .yaw = $Raven_04.yaw,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -1546,8 +1532,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_05.pos,
+        .yaw = $Raven_05.yaw,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
@@ -1558,8 +1544,8 @@ NpcData NpcData_RaphaelRaven[] = {
 
 NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
-    .pos = { 1075.0f, 120.0f, 130.0f },
-    .yaw = 90,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .init = &EVS_NpcInit_Misstar,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

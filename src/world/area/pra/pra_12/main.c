@@ -1,4 +1,5 @@
 #include "pra_12.h"
+#include "world/area/pra/pra_10.h"
 
 export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_REFLECT_FLOOR;
@@ -12,7 +13,7 @@ export s32 map_init(void) {
 EvtScript EVS_ExitDoors_pra_10_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_12_ENTRY_0)
+    Set(LVar0, $PDownDUpHall.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
@@ -20,7 +21,7 @@ EvtScript EVS_ExitDoors_pra_10_1 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_10", pra_10_ENTRY_1)
+    Call(GotoMap, $pra_10.PDownDUpRoom)
     Wait(100)
     Return
     End
@@ -33,7 +34,7 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_EnterMap = {
-    Set(LVar0, pra_12_ENTRY_0)
+    Set(LVar0, $PDownDUpHall.index)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
     Set(LVar4, MODEL_o844)

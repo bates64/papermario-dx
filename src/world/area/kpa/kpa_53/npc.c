@@ -338,8 +338,8 @@ EvtScript EVS_NpcInit_Guardian = {
 NpcData NpcData_Imposter[] = {
     {
         .id = NPC_Follower,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Follower.pos,
+        .yaw = $Follower.yaw,
         .init = &EVS_NpcInit_Follower,
         .settings = &NpcSettings_Peach,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
@@ -349,8 +349,8 @@ NpcData NpcData_Imposter[] = {
     },
     {
         .id = NPC_Guardian,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Guardian.pos,
+        .yaw = $Guardian.yaw,
         .init = &EVS_NpcInit_Guardian,
         .settings = &NpcSettings_Peach,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH,
@@ -360,8 +360,8 @@ NpcData NpcData_Imposter[] = {
     },
     {
         .id = NPC_Duplighost,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Duplighost.pos,
+        .yaw = $Duplighost.yaw,
         .init = &EVS_NpcInit_Duplighost,
         .settings = &NpcSettings_Duplighost,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,

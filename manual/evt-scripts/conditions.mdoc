@@ -44,9 +44,9 @@ To choose between several values, use a `Switch`. `Switch(A)` compares `A` again
 ```c
 Call(GetEntryID, LVar0)
 Switch(LVar0)
-    CaseEq(kmr_02_ENTRY_0)
-        Exec(EVS_ArriveFromVillage)
-    CaseEq(kmr_02_ENTRY_1)
+    CaseEq($GoombaRoad.index)
+        Exec(EVS_ArriveFromRoad)
+    CaseEq($ForestClearing.index)
         Exec(EVS_ArriveFromForest)
     CaseDefault
         Exec(EVS_ArriveSomewhereElse)

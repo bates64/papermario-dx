@@ -1,14 +1,9 @@
 #include "arn_10.h"
 
-EntryList Entrances = {
-    [arn_10_ENTRY_0]    { -225.0,    0.0,    0.0,   90.0 },
-    [arn_10_ENTRY_1]    {  225.0,    0.0,    0.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_arn_10 },
     .songVariation = 1,
     .sfxReverb = 1,

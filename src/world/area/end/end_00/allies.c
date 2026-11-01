@@ -41,13 +41,13 @@ EvtScript EVS_ParadePhase_Luigi = {
 };
 
 EvtScript EVS_ParadePhase_Partners = {
-    PlayEffect(EFFECT_CONFETTI, 3, -2545, 200, 0, 1, 800)
+    PlayEffect(EFFECT_CONFETTI, 3, $ConfettiPos_1.pos.x, $ConfettiPos_1.pos.y, $ConfettiPos_1.pos.z, 1, 800)
     Call(EnableNpcShadow, NPC_Goombario, false)
     Call(EnableNpcShadow, NPC_Bombette, false)
     ChildThread
         Loop(0)
             Wait(25)
-            PlayEffect(EFFECT_CONFETTI, 4, -2530, 95, 5, 1, 20)
+            PlayEffect(EFFECT_CONFETTI, 4, $ConfettiPos_2.pos.x, $ConfettiPos_2.pos.y, $ConfettiPos_2.pos.z, 1, 20)
             Wait(20)
         EndLoop
     EndChildThread

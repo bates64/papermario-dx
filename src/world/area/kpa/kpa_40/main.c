@@ -1,16 +1,18 @@
 
 #include "kpa_40.h"
+#include "world/area/kpa/kpa_41.h"
+#include "world/area/kpa/kpa_52.h"
 
 EvtScript EVS_ExitDoors_kpa_52_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_40_ENTRY_0, "kpa_52", kpa_52_ENTRY_1, COLLIDER_ttw, MODEL_o526, MODEL_o525);
-EvtScript EVS_ExitWalk_kpa_40_3 = EVT_EXIT_WALK(60, kpa_40_ENTRY_1, "kpa_40", kpa_40_ENTRY_3);
+    EVT_EXIT_DOUBLE_DOOR($SplitLevelHall, $kpa_52.MazeGuideRoom, COLLIDER_ttw, MODEL_o526, MODEL_o525);
+EvtScript EVS_ExitWalk_kpa_40_3 = EVT_EXIT_WALK(60, $LowerRight, $UpperLeft);
 
 EvtScript EVS_ExitWalk_kpa_41_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kpa_40_ENTRY_2)
+    Call(UseExitHeading, 60, $UpperRight.index)
     Exec(ExitWalk)
     Set(AB_KPA_MazeProgress, 1)
-    Call(GotoMap, "kpa_41", kpa_41_ENTRY_3)
+    Call(GotoMap, $kpa_41.UpperLeft)
     Wait(100)
     Return
     End
@@ -27,8 +29,8 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_40_ENTRY_0)
-            Set(LVar0, kpa_40_ENTRY_0)
+        CaseEq($SplitLevelHall.index)
+            Set(LVar0, $SplitLevelHall.index)
             Set(LVar2, MODEL_o526)
             Set(LVar3, MODEL_o525)
             Exec(EnterDoubleDoor)

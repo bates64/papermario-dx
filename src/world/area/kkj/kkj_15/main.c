@@ -1,4 +1,8 @@
 #include "kkj_15.h"
+#include "world/area/arn/arn_07.h"
+#include "world/area/kkj/kkj_11.h"
+#include "world/area/kmr/kmr_10.h"
+#include "world/area/trd/trd_00.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
 
@@ -25,7 +29,7 @@ EvtScript EVS_EndPeachChapter0 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "kmr_10", kmr_10_ENTRY_0, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $kmr_10.GoombaKingsCastle, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -35,7 +39,7 @@ EvtScript EVS_EndPeachChapter1 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "trd_00", trd_00_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $trd_00.PeachInterlude, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -45,14 +49,14 @@ EvtScript EVS_EndPeachChapter3 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "arn_07", arn_07_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $arn_07.PeachInterlude, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_ExitDoor_kkj_11_3 =
-    EVT_EXIT_SINGLE_DOOR(kkj_15_ENTRY_0, "kkj_11", kkj_11_ENTRY_3, COLLIDER_tte, MODEL_o2, DOOR_SWING_IN);
+    EVT_EXIT_SINGLE_DOOR($UpperHall, $kkj_11.PassageOutlet, COLLIDER_tte, MODEL_o2, DOOR_SWING_IN);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_kkj_11_3, TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
@@ -63,12 +67,12 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_15_ENTRY_0)
+        CaseEq($UpperHall.index)
             Set(LVar2, MODEL_o2)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kkj_15_ENTRY_1)
+        CaseEq($SecretPassage.index)
             Switch(GB_StoryProgress)
                 CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
                     Exec(EVS_EnterRotatingWall)
@@ -82,7 +86,7 @@ EvtScript EVS_EnterMap = {
                     Exec(EVS_EnterRotatingWall)
                     Exec(EVS_BindExitTriggers)
             EndSwitch
-        CaseEq(kkj_15_ENTRY_2)
+        CaseEq($Interlude.index)
             Exec(EVS_Scene_Chapter0_BowserAndKammy)
     EndSwitch
     Return
@@ -95,7 +99,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_15_ENTRY_2)
+        CaseEq($Interlude.index)
             Set(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
     EndSwitch
     Switch(GB_StoryProgress)
@@ -134,7 +138,7 @@ EvtScript EVS_Main = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_15_ENTRY_1)
+    IfEq(LVar0, $SecretPassage.index)
         IfEq(GB_StoryProgress, STORY_CH3_BEGAN_PEACH_MISSION)
             Call(StopSound, SOUND_KKJ_ROTATING_WALL)
         Else

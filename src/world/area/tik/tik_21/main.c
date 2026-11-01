@@ -1,20 +1,23 @@
 #include "tik_21.h"
+#include "world/area/tik/tik_14.h"
+#include "world/area/tik/tik_20.h"
+#include "world/area/tik/tik_22.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_20_1 = EVT_EXIT_WALK(60, tik_21_ENTRY_0, "tik_20", tik_20_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_20_1 = EVT_EXIT_WALK(60, $SpikesRoom, $tik_20.HiddenBlocksRoom);
 
 EvtScript EVS_ExitDoors_tik_22_0 =
-    EVT_EXIT_DOUBLE_DOOR(tik_21_ENTRY_1, "tik_22", tik_22_ENTRY_0, COLLIDER_tte, MODEL_o46, MODEL_o47);
+    EVT_EXIT_DOUBLE_DOOR($PathToShiverCity, $tik_22.HiddenBlocksRoom, COLLIDER_tte, MODEL_o46, MODEL_o47);
 
 EvtScript EVS_GotoMap_tik_14_0 = {
-    Call(GotoMap, "tik_14", tik_14_ENTRY_0)
+    Call(GotoMap, $tik_14.HiddenBlocksRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_14_0 = EVT_EXIT_PIPE_VERTICAL(tik_21_ENTRY_2, COLLIDER_o49, EVS_GotoMap_tik_14_0);
+EvtScript EVS_ExitPipe_tik_14_0 = EVT_EXIT_PIPE_VERTICAL($RipCheatoAntechamber, COLLIDER_o49, EVS_GotoMap_tik_14_0);
 
 EvtScript EVS_ShowMessage_DoorLocked = {
     Call(DisablePlayerInput, true)
@@ -39,15 +42,15 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_21_ENTRY_0)
+        CaseEq($SpikesRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(tik_21_ENTRY_1)
+        CaseEq($PathToShiverCity.index)
             Set(LVar2, MODEL_o46)
             Set(LVar3, MODEL_o47)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(tik_21_ENTRY_2)
+        CaseEq($RipCheatoAntechamber.index)
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
     EndSwitch
     Wait(1)
@@ -61,18 +64,18 @@ DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
-            .minPos = { -320,  -19 },
-            .maxPos = {   60,   46 },
-            .startY = 200,
-            .endY   = -20,
+            .minPos = { $DripVolume_1.min.x, $DripVolume_1.min.z },
+            .maxPos = { $DripVolume_1.max.x, $DripVolume_1.max.z },
+            .startY = $DripVolume_1.max.y,
+            .endY = $DripVolume_1.min.y,
             .duration = 60,
             .density  = 2,
         },
         {
-            .minPos = {  233, -100 },
-            .maxPos = {   45,  235 },
-            .startY = 200,
-            .endY   = -20,
+            .minPos = { $DripVolume_2.min.x, $DripVolume_2.min.z },
+            .maxPos = { $DripVolume_2.max.x, $DripVolume_2.max.z },
+            .startY = $DripVolume_2.max.y,
+            .endY = $DripVolume_2.min.y,
             .duration = 60,
             .density  = 1,
         }

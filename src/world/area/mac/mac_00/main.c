@@ -1,4 +1,8 @@
 #include "mac_00.h"
+#include "world/area/kmr/kmr_10.h"
+#include "world/area/kmr/kmr_20.h"
+#include "world/area/mac/mac_01.h"
+#include "world/area/tik/tik_19.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
@@ -14,25 +18,25 @@ API_CALLABLE(DummyInitFunction) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_kmr_10_1 = EVT_EXIT_WALK(60, mac_00_ENTRY_0, "kmr_10", kmr_10_ENTRY_1);
-EvtScript EVS_ExitWalk_mac_01_0 = EVT_EXIT_WALK(60, mac_00_ENTRY_1, "mac_01", mac_01_ENTRY_0);
+EvtScript EVS_ExitWalk_kmr_10_1 = EVT_EXIT_WALK(60, $GoombaRoad, $kmr_10.ToadTown);
+EvtScript EVS_ExitWalk_mac_01_0 = EVT_EXIT_WALK(60, $PlazaDistrict, $mac_01.GateDistrict);
 
 EvtScript EVS_GotoMap_tik_19_9 = {
-    Call(GotoMap, "tik_19", tik_19_ENTRY_0)
+    Call(GotoMap, $tik_19.GateDistrict)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_kmr_20_4 = {
-    Call(GotoMap, "kmr_20", kmr_20_ENTRY_4)
+    Call(GotoMap, $kmr_20.ToadTown)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_19_9 = EVT_EXIT_PIPE_VERTICAL(mac_00_ENTRY_3, COLLIDER_deilit, EVS_GotoMap_tik_19_9);
-EvtScript EVS_ExitPipe_kmr_20_4 = EVT_EXIT_PIPE_VERTICAL(mac_00_ENTRY_4, COLLIDER_deilim, EVS_GotoMap_kmr_20_4);
+EvtScript EVS_ExitPipe_tik_19_9 = EVT_EXIT_PIPE_VERTICAL($PondPipe, COLLIDER_deilit, EVS_GotoMap_tik_19_9);
+EvtScript EVS_ExitPipe_kmr_20_4 = EVT_EXIT_PIPE_VERTICAL($MariosHouse, COLLIDER_deilim, EVS_GotoMap_kmr_20_4);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mac_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -49,13 +53,13 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(mac_00_ENTRY_3)
-        CaseOrEq(mac_00_ENTRY_4)
+        CaseOrEq($PondPipe.index)
+        CaseOrEq($MariosHouse.index)
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
         EndCaseGroup
-        CaseEq(mac_00_ENTRY_5)
+        CaseEq($Intro.index)
             Exec(EVS_Scene_Intro)
-        CaseEq(mac_00_ENTRY_7)
+        CaseEq($Epilogue.index)
             ExecWait(EVS_Scene_BeginEpilogue)
             Exec(EVS_BindExitTriggers)
         CaseDefault

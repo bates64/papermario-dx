@@ -252,8 +252,8 @@ EvtScript EVS_NpcInteract_Moustafa = {
 EvtScript EVS_NpcInit_DisguisedMoustafa = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(dro_02_ENTRY_2)
-        CaseOrEq(dro_02_ENTRY_3)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Call(SetNpcPos, NPC_SELF, 200, 0, -15)
             Call(InterpNpcYaw, NPC_SELF, 270, 0)
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLIP_INSTANTLY, true)

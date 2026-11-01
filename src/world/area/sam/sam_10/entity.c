@@ -7,9 +7,8 @@ API_CALLABLE(SetStarStoneItemScale) {
 }
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_RedBlock, 775, 540, -50, 0, ITEM_MEGA_JUMP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SAM10_BadgeBlock_MegaJump)
-    Call(MakeItemEntity, ITEM_STAR_PIECE, -160, 300, -110, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM10_Item_StarPiece)
+    Call(MakeMarkerEntity, $RedBlock_MegaJump_1)
+    Call(MakeMarkerEntity, $Item_StarPiece_1)
     IfLt(GB_StoryProgress, STORY_CH7_RAISED_FROZEN_STAIRS)
         Call(DropResizableItemEntity, ITEM_STAR_STONE, NPC_DISPOSE_LOCATION, ITEM_SPAWN_MODE_DECORATION, 0)
         Call(SetStarStoneItemScale)
@@ -18,8 +17,8 @@ EvtScript EVS_MakeEntities = {
         Call(DropResizableItemEntity, ITEM_STAR_STONE, -117, 179, -55, ITEM_SPAWN_MODE_DECORATION, 0)
         Call(SetStarStoneItemScale)
     EndIf
-    Call(MakeEntity, Entity_SavePoint, -250, 870, -210, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HeartBlock, 770, 1200, -225, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $HeartBlock_1)
     Return
     End
 };

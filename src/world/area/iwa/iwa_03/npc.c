@@ -5,20 +5,9 @@
 
 NpcData NpcData_Cleft_01 = {
     .id = NPC_Cleft_01,
-    .pos = { -525.0f, -75.0f, 60.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -525, -75, 60 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -525, -75, 60 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Cleft_01.pos,
+    .yaw = $Cleft_01.yaw,
+    .territory = $Cleft_01.territory,
     .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
@@ -28,20 +17,9 @@ NpcData NpcData_Cleft_01 = {
 
 NpcData NpcData_Cleft_02 = {
     .id = NPC_Cleft_02,
-    .pos = { -1686.0f, -60.0f, 180.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -1686, -60, 180 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -1686, -60, 180 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Cleft_02.pos,
+    .yaw = $Cleft_02.yaw,
+    .territory = $Cleft_02.territory,
     .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
@@ -51,20 +29,9 @@ NpcData NpcData_Cleft_02 = {
 
 NpcData NpcData_Cleft_03 = {
     .id = NPC_Cleft_03,
-    .pos = { -1300.0f, 408.0f, -125.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -1300, 408, -125 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -1290, 408, -125 },
-            .detectSize = { 140 },
-        }
-    },
+    .pos = $Cleft_03.pos,
+    .yaw = $Cleft_03.yaw,
+    .territory = $Cleft_03.territory,
     .settings = &NpcSettings_Cleft_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
@@ -75,20 +42,9 @@ NpcData NpcData_Cleft_03 = {
 NpcData NpcData_MontyMole[] = {
     {
         .id = NPC_MontyMole,
-        .pos = { -1000.0f, 23.0f, 60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -1000, 23, 60 },
-                .wanderSize = { 40 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -1000, 23, 60 },
-                .detectSize = { 250 },
-            }
-        },
+        .pos = $MontyMole.pos,
+        .yaw = $MontyMole.yaw,
+        .territory = $MontyMole.territory,
         .settings = &NpcSettings_MontyMole_GroundAmbush,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MONTY_MOLE_DROPS,
@@ -97,20 +53,9 @@ NpcData NpcData_MontyMole[] = {
     },
     {
         .id = NPC_MontyMole_Hole,
-        .pos = { -1000.0f, 23.0f, 60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $MontyMole_Hole.pos,
+        .yaw = $MontyMole_Hole.yaw,
+        .territory = $MontyMole_Hole.territory,
         .settings = &NpcSettings_MontyMole_GroundAmbush_Hole,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DISABLE_AI | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,

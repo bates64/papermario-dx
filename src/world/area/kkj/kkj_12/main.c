@@ -1,4 +1,6 @@
 #include "kkj_12.h"
+#include "world/area/kkj/kkj_11.h"
+#include "world/area/kkj/kkj_13.h"
 
 API_CALLABLE(DisableSpotlightSources) {
     s32 i;
@@ -11,9 +13,9 @@ API_CALLABLE(DisableSpotlightSources) {
 }
 
 EvtScript EVS_ExitDoors_kkj_11_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_0, "kkj_11", kkj_11_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+    EVT_EXIT_DOUBLE_DOOR($UpperHall, $kkj_11.StairsHallway, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
 EvtScript EVS_ExitDoors_kkj_13_0 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_12_ENTRY_1, "kkj_13", kkj_13_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
+    EVT_EXIT_DOUBLE_DOOR($WindowHallway, $kkj_13.StairsHallway, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kkj_11_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
@@ -30,11 +32,11 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_12_ENTRY_0)
+        CaseEq($UpperHall.index)
             Set(LVar2, MODEL_door1)
             Set(LVar3, MODEL_door2)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_12_ENTRY_1)
+        CaseEq($WindowHallway.index)
             Set(LVar2, MODEL_door4)
             Set(LVar3, MODEL_door3)
             ExecWait(EnterDoubleDoor)

@@ -1,4 +1,6 @@
 #include "omo_15.h"
+#include "world/area/kmr/kmr_23.h"
+#include "world/area/omo/omo_14.h"
 #include "sprite/player.h"
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
@@ -71,13 +73,13 @@ EvtScript EVS_TrySpawningStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH4_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_3, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Muskular, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_omo_14_1 = EVT_EXIT_WALK(60, omo_15_ENTRY_0, "omo_14", omo_14_ENTRY_1);
+EvtScript EVS_ExitWalk_omo_14_1 = EVT_EXIT_WALK(60, $Omo14, $omo_14.Omo15);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_14_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

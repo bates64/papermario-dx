@@ -1,4 +1,5 @@
 #include "omo_03.h"
+#include "world/area/mac/mac_04.h"
 
 Vec3f FallPath[] = {
     { -170.0,   400.0, -196.0 },
@@ -135,7 +136,7 @@ EvtScript EVS_Scene_TrainDropped = {
     EndThread
     Set(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)
     Wait(75)
-    Call(GotoMap, "mac_04", mac_04_ENTRY_3)
+    Call(GotoMap, $mac_04.ToyTrain)
     Wait(100)
     Return
     End

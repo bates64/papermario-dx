@@ -5,20 +5,9 @@
 
 NpcData NpcData_Fuzzy = {
     .id = NPC_Fuzzy,
-    .pos = { 270.0f, 0.0f, 200.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 270, 0, 200 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Fuzzy.pos,
+    .yaw = $Fuzzy.yaw,
+    .territory = $Fuzzy.territory,
     .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = FOREST_FUZZY_DROPS,

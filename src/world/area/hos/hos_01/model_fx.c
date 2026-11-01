@@ -124,12 +124,12 @@ EvtScript EVS_SetupModelFX = {
     IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
         Call(EnableModel, MODEL_power, false)
     Else
-        PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
+        PlayEffect(EFFECT_75, 0, $Effect75Pos_1.pos.x, $Effect75Pos_1.pos.y, $Effect75Pos_1.pos.z, 1, -1)
         Set(MV_StarWarpFXPtr, LVarF)
         Set(LVar0, 255)
         Call(SetStarWarpMasterAlpha, MV_StarWarpFXPtr, LVar0)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, hos_01_ENTRY_1)
+        IfEq(LVar0, $StarWay.index)
             Call(SetStarWarpTravelParams, MV_StarWarpFXPtr)
         Else
             Call(SetStarWarpIdleParams, MV_StarWarpFXPtr)

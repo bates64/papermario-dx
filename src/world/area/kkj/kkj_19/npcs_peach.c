@@ -37,8 +37,8 @@ EvtScript EVS_NpcInit_Twink = {
 // normally, you cant interact with your partner, so a dummy npc is created to allow it
 NpcData NpcData_Twink = {
     .id = NPC_Twink,
-    .pos = { 0.0f, -500.0f, 0.0f },
-    .yaw = 0,
+    .pos = $Twink.pos,
+    .yaw = $Twink.yaw,
     .init = &EVS_NpcInit_Twink,
     .settings = &NpcSettings_Twink,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_CANT_INTERACT,

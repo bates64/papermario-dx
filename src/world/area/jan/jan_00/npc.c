@@ -493,7 +493,7 @@ EvtScript EVS_NpcInteract_Kolorado_01 = {
         Exec(EVS_UpdateWhaleRiderYaw)
         Call(UpdateWhaleTravel, WHALE_TRAVEL_DEPART)
         Call(EnableGroup, MODEL_kujira, false)
-        Call(GotoMap, "mac_06", mac_06_ENTRY_1)
+        Call(GotoMap, "mac_06", 1)
         Wait(100)
     EndIf
     Return
@@ -506,7 +506,7 @@ EvtScript EVS_NpcInit_Kolorado_01 = {
     Call(SetNpcAnimation, NPC_SELF, XNIM_Whale_Idle)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_00_ENTRY_0)
+    IfEq(LVar0, $ToadTown.index)
         Call(DisablePlayerPhysics, true)
         Call(InterpPlayerYaw, 90, 0)
         Call(DisablePartnerAI, false)
@@ -627,7 +627,7 @@ EvtScript EVS_NpcIdle_JrTroopa = {
         Call(NpcMoveTo, NPC_SELF, -555, -32, 0)
     EndThread
     Wait(100)
-    Call(GotoMap, "mac_06", mac_06_ENTRY_1)
+    Call(GotoMap, "mac_06", 1)
     Wait(100)
     Return
     End
@@ -645,8 +645,8 @@ EvtScript EVS_NpcInit_JrTroopa = {
 NpcData NpcData_Characters[] = {
     {
         .id = NPC_Whale,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Whale.pos,
+        .yaw = $Whale.yaw,
         .init = &EVS_NpcInit_Kolorado_01,
         .settings = &NpcSettings_Whale,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -656,8 +656,8 @@ NpcData NpcData_Characters[] = {
     },
     {
         .id = NPC_Kolorado_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Kolorado_02.pos,
+        .yaw = $Kolorado_02.yaw,
         .init = &EVS_NpcInit_Kolorado_02,
         .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -667,8 +667,8 @@ NpcData NpcData_Characters[] = {
     },
     {
         .id = NPC_JrTroopa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $JrTroopa.pos,
+        .yaw = $JrTroopa.yaw,
         .init = &EVS_NpcInit_JrTroopa,
         .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -679,8 +679,8 @@ NpcData NpcData_Characters[] = {
 
 NpcData NpcData_HeartPlant_01 = {
     .id = NPC_HeartPlant_01,
-    .pos = { 455.0f, 0.0f, 115.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_01.pos,
+    .yaw = $HeartPlant_01.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -690,8 +690,8 @@ NpcData NpcData_HeartPlant_01 = {
 
 NpcData NpcData_HeartPlant_02 = {
     .id = NPC_HeartPlant_02,
-    .pos = { 167.0f, 0.0f, 404.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_02.pos,
+    .yaw = $HeartPlant_02.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -701,8 +701,8 @@ NpcData NpcData_HeartPlant_02 = {
 
 NpcData NpcData_HeartPlant_03 = {
     .id = NPC_HeartPlant_03,
-    .pos = { 90.0f, 0.0f, 316.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_03.pos,
+    .yaw = $HeartPlant_03.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -712,8 +712,8 @@ NpcData NpcData_HeartPlant_03 = {
 
 NpcData NpcData_HeartPlant_04 = {
     .id = NPC_HeartPlant_04,
-    .pos = { 424.0f, 0.0f, 182.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_04.pos,
+    .yaw = $HeartPlant_04.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -723,8 +723,8 @@ NpcData NpcData_HeartPlant_04 = {
 
 NpcData NpcData_HeartPlant_05 = {
     .id = NPC_HeartPlant_05,
-    .pos = { 143.0f, 0.0f, 260.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_05.pos,
+    .yaw = $HeartPlant_05.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,

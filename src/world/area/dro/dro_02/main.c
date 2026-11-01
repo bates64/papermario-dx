@@ -1,6 +1,8 @@
 #include "dro_02.h"
+#include "world/area/dro/dro_01.h"
+#include "world/area/sbk/sbk_02.h"
 
-EvtScript EVS_ExitWalk_dro_01_1 = EVT_EXIT_WALK(60, dro_02_ENTRY_0, "dro_01", dro_01_ENTRY_1);
+EvtScript EVS_ExitWalk_dro_01_1 = EVT_EXIT_WALK(60, $Dro01, $dro_01.Dro02);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_dro_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -34,10 +36,10 @@ EvtScript EVS_EnterScene = {
     Thread
         Wait(60)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, dro_02_ENTRY_2)
-            Call(GotoMap, "sbk_02", sbk_02_ENTRY_6)
+        IfEq(LVar0, $RuinsRisingA.index)
+            Call(GotoMap, $sbk_02.RuinsRisingA)
         Else
-            Call(GotoMap, "sbk_02", sbk_02_ENTRY_7)
+            Call(GotoMap, $sbk_02.RuinsRisingB)
         EndIf
         Wait(100)
     EndThread
@@ -56,8 +58,8 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(dro_02_ENTRY_2)
-        CaseOrEq(dro_02_ENTRY_3)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             ExecWait(EVS_EnterScene)
         EndCaseGroup
         CaseDefault

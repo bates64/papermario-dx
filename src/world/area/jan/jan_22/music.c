@@ -2,7 +2,7 @@
 
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_22_ENTRY_3)
+    IfEq(LVar0, $PeachInterlude.index)
         Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
         Thread
             Loop(0)
@@ -16,7 +16,7 @@ EvtScript EVS_SetupMusic = {
     Else
         Switch(GB_StoryProgress)
             CaseRange(STORY_CH5_RAPHAEL_MOVED_ROOT, STORY_CH5_RAPHAEL_WAITING_FOR_MARIO)
-                IfNe(LVar0, jan_22_ENTRY_1)
+                IfNe(LVar0, $Jan16.index)
                     Call(SetMusic, 0, SONG_RAPHAEL_RAVEN, 0, VOL_LEVEL_FULL)
                     Set(AF_JAN_PlayingRaphaelVariant, false)
                 EndIf

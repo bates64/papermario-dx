@@ -5,17 +5,10 @@ export s32 map_init(void) {
     return false;
 }
 
-EntryList Entrances = {
-    [kkj_13_ENTRY_0]    {  -95.0,    0.0,    0.0,   90.0 },
-    [kkj_13_ENTRY_1]    { 1295.0,    0.0,    0.0,  270.0 },
-    [kkj_13_ENTRY_2]    {  630.0,    0.0,    0.0,   90.0 },
-    [kkj_13_ENTRY_3]    {    0.0,    0.0,    0.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "kpa_bg",
     .tattle = { MSG_MapTattle_kkj_13 },
     .songVariation = 1,

@@ -1,4 +1,5 @@
 #include "kmr_02.h"
+#include "world/area/kmr/kmr_03.h"
 #include "sprite/player.h"
 
 EvtScript EVS_SetDoorRot_House = {
@@ -184,7 +185,7 @@ EvtScript EVS_RoomListener_Verdana = {
                         EndThread
                     EndIf
                     Wait(20 * DT)
-                    Call(GotoMap, "kmr_03", kmr_03_ENTRY_2)
+                    Call(GotoMap, $kmr_03.FallFromVillage)
                     Wait(100 * DT)
                 EndIf
             EndIf

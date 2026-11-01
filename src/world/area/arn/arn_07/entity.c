@@ -36,7 +36,7 @@ EvtScript EVS_BindLockTrigger = {
 
 EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-        Call(MakeEntity, Entity_Padlock, 10, 30, -155, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_BindLockTrigger)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf

@@ -1,18 +1,21 @@
 #include "tik_20.h"
+#include "world/area/tik/tik_08.h"
+#include "world/area/tik/tik_21.h"
+#include "world/area/tik/tik_23.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_08_1 = EVT_EXIT_WALK(60, tik_20_ENTRY_0, "tik_08", tik_08_ENTRY_1);
-EvtScript EVS_ExitWalk_tik_21_0 = EVT_EXIT_WALK(60, tik_20_ENTRY_1, "tik_21", tik_21_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_08_1 = EVT_EXIT_WALK(60, $SecondLevelEntry, $tik_08.SpikesRoom);
+EvtScript EVS_ExitWalk_tik_21_0 = EVT_EXIT_WALK(60, $HiddenBlocksRoom, $tik_21.SpikesRoom);
 
 EvtScript EVS_GotoMap_tik_23_1 = {
-    Call(GotoMap, "tik_23", tik_23_ENTRY_1)
+    Call(GotoMap, $tik_23.SpikesRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_23_1 = EVT_EXIT_PIPE_VERTICAL(tik_20_ENTRY_2, COLLIDER_o109, EVS_GotoMap_tik_23_1);
+EvtScript EVS_ExitPipe_tik_23_1 = EVT_EXIT_PIPE_VERTICAL($WindyPath, COLLIDER_o109, EVS_GotoMap_tik_23_1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_08_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -23,8 +26,8 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_yuka, .pos = { -190.0,   30.0,  -85.0 }},
-    { .colliderID = COLLIDER_yuka2, .pos = {  200.0,   30.0,  -70.0 }},
+    { .colliderID = COLLIDER_yuka, .pos = $LavaReset_yuka.pos },
+    { .colliderID = COLLIDER_yuka2, .pos = $LavaReset_yuka2.pos },
     { .colliderID = NO_COLLIDER }
 };
 
@@ -34,18 +37,18 @@ DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
-            .minPos = { -312,  -19 },
-            .maxPos = {   52,   46 },
-            .startY = 200,
-            .endY   = -20,
+            .minPos = { $DripVolume_1.min.x, $DripVolume_1.min.z },
+            .maxPos = { $DripVolume_1.max.x, $DripVolume_1.max.z },
+            .startY = $DripVolume_1.max.y,
+            .endY = $DripVolume_1.min.y,
             .duration = 60,
             .density  = 2,
         },
         {
-            .minPos = {  460,  -50 },
-            .maxPos = {   40,  185 },
-            .startY = 200,
-            .endY   = -20,
+            .minPos = { $DripVolume_2.min.x, $DripVolume_2.min.z },
+            .maxPos = { $DripVolume_2.max.x, $DripVolume_2.max.z },
+            .startY = $DripVolume_2.max.y,
+            .endY = $DripVolume_2.min.y,
             .duration = 60,
             .density  = 1,
         }
@@ -96,12 +99,12 @@ EvtScript EVS_Main = {
     Wait(1)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(tik_20_ENTRY_0)
-        CaseOrEq(tik_20_ENTRY_1)
+        CaseOrEq($SecondLevelEntry.index)
+        CaseOrEq($HiddenBlocksRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
         EndCaseGroup
-        CaseEq(tik_20_ENTRY_2)
+        CaseEq($WindyPath.index)
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
     EndSwitch
     Wait(1)

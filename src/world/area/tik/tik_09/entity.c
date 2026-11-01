@@ -1,4 +1,5 @@
 #include "tik_09.h"
+#include "world/area/mim/mim_11.h"
 #include "entity.h"
 
 EvtScript EVS_SpawnSwitch = {
@@ -39,7 +40,7 @@ EvtScript EVS_SpawnSwitch = {
 };
 
 EvtScript EVS_GotoMap_mim_11_3 = {
-    Call(GotoMap, "mim_11", mim_11_ENTRY_3)
+    Call(GotoMap, $mim_11.Pipe)
     Wait(100)
     Return
     End
@@ -64,7 +65,7 @@ EvtScript EVS_MakeEntities = {
             Call(SetEntityPosition, MV_EntityID_Switch, -10, -10, 10)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_BlueWarpPipe, -30, -10, -40, 0, tik_09_ENTRY_2, EVS_GotoMap_mim_11_3, EVT_INDEX_OF_GAME_FLAG(GF_TIK09_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BlueWarpPipe_1)
     Return
     End
 };

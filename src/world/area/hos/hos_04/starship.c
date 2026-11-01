@@ -1,4 +1,9 @@
 #include "hos_04.h"
+#include "world/area/hos/hos_00.h"
+#include "world/area/hos/hos_05.h"
+#include "world/area/hos/hos_20.h"
+#include "world/area/kpa/kpa_60.h"
+#include "world/area/osr/osr_03.h"
 
 API_CALLABLE(ScreenOverlayFadeIn) {
     if (isInitialCall) {
@@ -54,7 +59,7 @@ EvtScript EVS_Starship_FlyingAway = {
         EndLoop
     EndThread
     Wait(55)
-    Call(GotoMap, "hos_20", hos_20_ENTRY_0)
+    Call(GotoMap, $hos_20.Flight1)
     Wait(100)
     Return
     End
@@ -150,7 +155,7 @@ EvtScript EVS_BetaStarship_Flight1 = {
         Goto(20)
     EndIf
     IfLt(GB_StoryProgress, STORY_UNUSED_0000005D)
-        Call(GotoMap, "hos_00", hos_00_ENTRY_3)
+        Call(GotoMap, $hos_00.StarShip)
     Else
         Set(LVar0, 2)
         Loop(10)
@@ -159,7 +164,7 @@ EvtScript EVS_BetaStarship_Flight1 = {
             Wait(1)
         EndLoop
         Wait(20)
-        Call(GotoMap, "kpa_60", kpa_60_ENTRY_4)
+        Call(GotoMap, $kpa_60.Arrival)
     EndIf
     Wait(100)
     Return
@@ -224,7 +229,7 @@ EvtScript EVS_BetaStarship_Flight2 = {
         Wait(1)
     EndLoop
     Wait(20)
-    Call(GotoMap, "osr_03", osr_03_ENTRY_3)
+    Call(GotoMap, $osr_03.Starship)
     Wait(100)
     Return
     End
@@ -296,7 +301,7 @@ EvtScript EVS_BetaStarship_Return = {
         Add(MV_Starship_PosX, LVar0)
         Wait(1)
     EndLoop
-    Call(GotoMap, "hos_05", hos_05_ENTRY_1)
+    Call(GotoMap, $hos_05.StarShip)
     Wait(100)
     Return
     End

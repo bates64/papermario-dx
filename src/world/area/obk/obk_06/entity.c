@@ -3,7 +3,7 @@
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_OBK06_Item_BoosPortrait, false)
-        Call(MakeItemEntity, ITEM_BOO_PORTRAIT, 230, 125, -215, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OBK06_Item_BoosPortrait)
+        Call(MakeMarkerEntity, $Item_BooPortrait_1)
         Thread
             Loop(0)
                 IfNe(GF_OBK06_Item_BoosPortrait, false)
@@ -14,9 +14,8 @@ EvtScript EVS_MakeEntities = {
             EndLoop
         EndThread
     EndIf
-    Call(MakeEntity, Entity_WoodenCrate, -110, 30, 50, 0, -1, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_WoodenCrate, -110, 0, 50, 0, ITEM_STAR_PIECE, MAKE_ENTITY_END)
-    Call(AssignCrateFlag, GF_OBK06_Crate_StarPiece)
+    Call(MakeMarkerEntity, $WoodenCrate_1)
+    Call(MakeMarkerEntity, $WoodenCrate_2)
     Return
     End
 };

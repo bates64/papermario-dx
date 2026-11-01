@@ -1,0 +1,1477 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 4,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 23,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 27,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 29,
+      "name": "Foliage",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 4,
+      "name": "Jan02",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -583,
+        0,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 4,
+      "name": "Jan05",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -405,
+        0,
+        -405
+      ],
+      "yaw": 135.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 4,
+      "name": "Jan22",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        583,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 4,
+      "name": "Pipe",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -540,
+        35,
+        195
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "parent": 23,
+      "name": "VillageLeader",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -300,
+        0,
+        -70
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 207,
+          "palette": 0,
+          "anim": 3,
+          "animName": "ANIM_VillageLeader_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 23,
+      "name": "Sushie",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -425,
+        0,
+        -350
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 228,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldSushie_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 23,
+      "name": "Kolorado",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -475,
+        0,
+        -75
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 88,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Kolorado_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 23,
+      "name": "Toad",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        275,
+        0,
+        -70
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 195,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Toad_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 23,
+      "name": "Yoshi_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        125,
+        30,
+        -425
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 232,
+          "palette": 1,
+          "anim": 1,
+          "animName": "ANIM_Yoshi_Blue_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 23,
+      "name": "Yoshi_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -350,
+        0,
+        -220
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 232,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Yoshi_Green_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -375,
+              0,
+              -220
+            ],
+            [
+              -325,
+              0,
+              -220
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 11,
+      "parent": 23,
+      "name": "Yoshi_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -100,
+        0,
+        -80
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 232,
+          "palette": 3,
+          "anim": 1,
+          "animName": "ANIM_Yoshi_Yellow_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -100,
+              0,
+              -20
+            ],
+            [
+              -210,
+              0,
+              -80
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "parent": 23,
+      "name": "YoshiKid_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -450,
+        0,
+        -160
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 233,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_YoshiKid_Green_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -450,
+              0,
+              -160
+            ],
+            [
+              -378,
+              0,
+              -81
+            ],
+            [
+              -590,
+              0,
+              -100
+            ],
+            [
+              -464,
+              0,
+              -46
+            ],
+            [
+              -495,
+              0,
+              -147
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 13,
+      "parent": 23,
+      "name": "YoshiKid_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -340,
+        0,
+        -385
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 233,
+          "palette": 4,
+          "anim": 1,
+          "animName": "ANIM_YoshiKid_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -340,
+              0,
+              -385
+            ],
+            [
+              -290,
+              0,
+              -310
+            ],
+            [
+              -360,
+              0,
+              -310
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 14,
+      "parent": 23,
+      "name": "YoshiKid_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -260,
+        0,
+        -220
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 233,
+          "palette": 1,
+          "anim": 1,
+          "animName": "ANIM_YoshiKid_Blue_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -260,
+              0,
+              -220
+            ],
+            [
+              -270,
+              0,
+              -220
+            ],
+            [
+              -260,
+              0,
+              -230
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 15,
+      "parent": 23,
+      "name": "YoshiKid_04",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -460,
+        0,
+        150
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 233,
+          "palette": 3,
+          "anim": 1,
+          "animName": "ANIM_YoshiKid_Yellow_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -460,
+              0,
+              150
+            ],
+            [
+              -450,
+              0,
+              150
+            ],
+            [
+              -460,
+              0,
+              160
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 16,
+      "parent": 23,
+      "name": "YoshiKid_05",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -320,
+        0,
+        80
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 233,
+          "palette": 2,
+          "anim": 1,
+          "animName": "ANIM_YoshiKid_Purple_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": true,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              -320,
+              0,
+              80
+            ],
+            [
+              -330,
+              0,
+              80
+            ],
+            [
+              -320,
+              0,
+              90
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 17,
+      "parent": 23,
+      "name": "Raven_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -650,
+        374,
+        -150
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 160,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Raven_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 18,
+      "parent": 23,
+      "name": "Raven_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -645,
+        457,
+        -255
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 160,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Raven_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 19,
+      "parent": 23,
+      "name": "Raven_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -570,
+        374,
+        -300
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 160,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Raven_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 20,
+      "parent": 23,
+      "name": "Raven_04",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -500,
+        374,
+        -285
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 160,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Raven_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 21,
+      "parent": 23,
+      "name": "Raven_05",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -450,
+        374,
+        -175
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 160,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_Raven_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 22,
+      "parent": 23,
+      "name": "ChuckQuizmo",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        300,
+        0,
+        400
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 49,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_ChuckQuizmo_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 24,
+      "parent": 27,
+      "name": "SavePoint_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        100,
+        60,
+        -25
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "SavePoint"
+      }
+    },
+    {
+      "id": 25,
+      "parent": 27,
+      "name": "ScriptSpring_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -556,
+        0,
+        -195
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "ScriptSpring",
+        "scriptName": "EVS_UseSpring"
+      }
+    },
+    {
+      "id": 26,
+      "parent": 27,
+      "name": "BlueWarpPipe_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -540,
+        0,
+        195
+      ],
+      "yaw": 30.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BlueWarpPipe",
+        "gameFlagName": "GF_JAN03_WarpPipe",
+        "scriptName": "EVS_GotoMap_tik_08_4",
+        "entryName": "$Pipe.index"
+      }
+    },
+    {
+      "id": 28,
+      "parent": 29,
+      "name": "BombPos_Tree1",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        576,
+        0,
+        -135
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

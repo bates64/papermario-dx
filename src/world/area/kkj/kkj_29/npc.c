@@ -65,8 +65,8 @@ AnimID LimitAnims_Koopatrol[] = {
 NpcData NpcData_Characters[] = {
     {
         .id = NPC_Bowser,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Bowser.pos,
+        .yaw = $Bowser.yaw,
         .settings = &NpcSettings_Bowser,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -75,8 +75,8 @@ NpcData NpcData_Characters[] = {
     },
     {
         .id = NPC_Koopatrol_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_01.pos,
+        .yaw = $Koopatrol_01.yaw,
         .init = &EVS_NpcInit_Koopatrol_01,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -86,8 +86,8 @@ NpcData NpcData_Characters[] = {
     },
     {
         .id = NPC_Koopatrol_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_02.pos,
+        .yaw = $Koopatrol_02.yaw,
         .init = &EVS_NpcInit_Koopatrol_02,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -97,8 +97,8 @@ NpcData NpcData_Characters[] = {
     },
     {
         .id = NPC_HammerBros,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $HammerBros.pos,
+        .yaw = $HammerBros.yaw,
         .init = &EVS_NpcInit_HammerBros,
         .settings = &NpcSettings_HammerBros,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,

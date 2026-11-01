@@ -1,11 +1,12 @@
 #include "kpa_117.h"
+#include "world/area/kpa/kpa_116.h"
 
 EvtScript EVS_Empty = {
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_kpa_116_1 = EVT_EXIT_WALK(60, kpa_117_ENTRY_0, "kpa_116", kpa_116_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_116_1 = EVT_EXIT_WALK(60, $DeadEndPassage, $kpa_116.DeadEndRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_116_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

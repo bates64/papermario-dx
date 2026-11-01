@@ -1,4 +1,5 @@
 #include "tik_08.h"
+#include "world/area/jan/jan_03.h"
 #include "entity.h"
 
 EvtScript EVS_SpawnSwitch = {
@@ -20,7 +21,7 @@ EvtScript EVS_SpawnSwitch = {
 };
 
 EvtScript EVS_GotoMap_jan_03_3 = {
-    Call(GotoMap, "jan_03", jan_03_ENTRY_3)
+    Call(GotoMap, $jan_03.Pipe)
     Wait(100)
     Return
     End
@@ -45,7 +46,7 @@ EvtScript EVS_MakeEntities = {
             Call(SetEntityPosition, MV_BlueSwitch, 90, -10, 100)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_BlueWarpPipe, 95, -10, -88, 0, tik_08_ENTRY_4, EVS_GotoMap_jan_03_3, EVT_INDEX_OF_GAME_FLAG(GF_TIK08_WarpPipe), MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BlueWarpPipe_1)
     Return
     End
 };

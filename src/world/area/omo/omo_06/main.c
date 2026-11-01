@@ -1,8 +1,10 @@
 #include "omo_06.h"
+#include "world/area/omo/omo_07.h"
+#include "world/area/omo/omo_17.h"
 
-EvtScript EVS_ExitWalk_omo_17_2 = EVT_EXIT_WALK(60, omo_06_ENTRY_0, "omo_17", omo_17_ENTRY_2);
-EvtScript EVS_ExitWalk_omo_17_3 = EVT_EXIT_WALK(60, omo_06_ENTRY_1, "omo_17", omo_17_ENTRY_3);
-EvtScript EVS_ExitWalk_omo_07_0 = EVT_EXIT_WALK(60, omo_06_ENTRY_4, "omo_07", omo_07_ENTRY_0);
+EvtScript EVS_ExitWalk_omo_17_2 = EVT_EXIT_WALK(60, $Omo17South, $omo_17.Omo06South);
+EvtScript EVS_ExitWalk_omo_17_3 = EVT_EXIT_WALK(60, $Omo17North, $omo_17.Omo06North);
+EvtScript EVS_ExitWalk_omo_07_0 = EVT_EXIT_WALK(60, $Omo07, $omo_07.Omo06);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_17_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
@@ -21,7 +23,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseRange(omo_06_ENTRY_2, omo_06_ENTRY_3)
+        CaseRange($TrainLeft.index, $TrainRight.index)
             Exec(EVS_BindExitTriggers)
             Wait(3)
         CaseDefault

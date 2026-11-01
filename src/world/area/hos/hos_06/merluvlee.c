@@ -611,7 +611,7 @@ EvtScript EVS_PerformHintRitual = {
     Call(SetCamPitch, CAM_DEFAULT, LVar0, LVar1)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, 1.0)
-    PlayEffect(EFFECT_MERLON_HOUSE_STARS, 0, -298, 21, -330)
+    PlayEffect(EFFECT_MERLON_HOUSE_STARS, 0, $MerlonHouseStarsPos_1.pos.x, $MerlonHouseStarsPos_1.pos.y, $MerlonHouseStarsPos_1.pos.z)
     Set(ArrayVar(2), LVarF)
     Call(GetModelCenter, MODEL_o100)
     Add(LVar1, 20)

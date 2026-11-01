@@ -2,19 +2,10 @@
 
 extern EvtScript EVS_Main;
 
-EntryList Entrances = {
-    [trd_00_ENTRY_0]    { -973.0,    0.0,  204.0,   90.0 },
-    [trd_00_ENTRY_1]    { -525.0,    0.0,  130.0,  240.0 },
-    [trd_00_ENTRY_2]    {  400.0,    0.0,  185.0,  180.0 },
-    [trd_00_ENTRY_3]    {  587.0,    0.0,    6.0,   90.0 },
-    [trd_00_ENTRY_4]    { -955.0,  200.0, -101.0,   90.0 },
-    [trd_00_ENTRY_5]    { -518.0,    0.0,  212.0,  240.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "nok_bg",
     .tattle = { MSG_MapTattle_trd_00 },
 };

@@ -1,4 +1,6 @@
 #include "kmr_20.h"
+#include "world/area/mac/mac_00.h"
+#include "world/area/osr/osr_00.h"
 #include "model.h"
 #include "sprite/player.h"
 
@@ -49,10 +51,10 @@ EvtScript EVS_Player_EnterPipe_Intro = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
-    Set(LVar0, kmr_20_ENTRY_4)
+    Set(LVar0, $ToadTown.index)
     Call(Pipe_GetEntryPos)
     Call(PlayerMoveTo, LVar1, LVar3, 3)
-    Set(LVar0, kmr_20_ENTRY_4)
+    Set(LVar0, $ToadTown.index)
     Call(Pipe_GetEntryPos)
     Call(SetPlayerPos, LVar1, LVar2, LVar3)
     Wait(2)
@@ -77,10 +79,10 @@ EvtScript EVS_Luigi_EnterPipe_Intro = {
     Call(SetNpcFlagBits, NPC_Scene_Luigi, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_Scene_Luigi, NPC_FLAG_FLYING, true)
     Call(EnableNpcShadow, NPC_Scene_Luigi, false)
-    Set(LVar0, kmr_20_ENTRY_4)
+    Set(LVar0, $ToadTown.index)
     Call(Pipe_GetEntryPos)
     Call(NpcMoveTo, NPC_Scene_Luigi, LVar1, LVar3, 3)
-    Set(LVar0, kmr_20_ENTRY_4)
+    Set(LVar0, $ToadTown.index)
     Call(Pipe_GetEntryPos)
     Call(SetNpcPos, NPC_Scene_Luigi, LVar1, LVar2, LVar3)
     Wait(2)
@@ -347,7 +349,7 @@ EvtScript EVS_Scene_BeginGame = {
     Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, 0, VOL_LEVEL_FULL)
     Wait(5 * DT)
     Call(ClearAmbientSounds, 250)
-    Call(GotoMapSpecial, "osr_00", osr_00_ENTRY_3, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, $osr_00.Invitation, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(15 * DT)
     Call(ClearAmbientSounds, 250)
     Wait(100 * DT)
@@ -398,7 +400,7 @@ EvtScript EVS_Scene_SettingOff = {
     Call(NpcJump0, NPC_Scene_Luigi, 594, 30, -216, 15 * DT)
     ExecWait(EVS_Luigi_EnterPipe_Intro)
     Exec(EVS_FadeOutAmbientSounds)
-    Call(GotoMap, "mac_00", mac_00_ENTRY_5)
+    Call(GotoMap, $mac_00.Intro)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return

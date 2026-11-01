@@ -6,7 +6,7 @@ EvtScript EVS_SetupMusic = {
         Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
     Else
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, omo_08_ENTRY_0)
+        IfEq(LVar0, $Omo09.index)
             Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
         Else
             Call(SetMusic, 0, SONG_TOYBOX_TRAIN, 0, VOL_LEVEL_FULL)

@@ -15,8 +15,8 @@ EvtScript EVS_NpcInit_GateBoo_02 = {
 NpcData NpcData_GateBoos[] = {
     {
         .id = NPC_GateBoo_01,
-        .pos = { -68.0f, 65.0f, -56.0f },
-        .yaw = 270,
+        .pos = $GateBoo_01.pos,
+        .yaw = $GateBoo_01.yaw,
         .init = &EVS_NpcInit_GateBoo_01,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -25,8 +25,8 @@ NpcData NpcData_GateBoos[] = {
     },
     {
         .id = NPC_GateBoo_02,
-        .pos = { -125.0f, 65.0f, 60.0f },
-        .yaw = 270,
+        .pos = $GateBoo_02.pos,
+        .yaw = $GateBoo_02.yaw,
         .init = &EVS_NpcInit_GateBoo_02,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

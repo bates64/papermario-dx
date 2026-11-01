@@ -1,6 +1,7 @@
 #include "jan_07.h"
+#include "world/area/jan/jan_06.h"
 
-EvtScript EVS_ExitWalk_jan_06_1 = EVT_EXIT_WALK(60, jan_07_ENTRY_0, "jan_06", jan_06_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_06_1 = EVT_EXIT_WALK(60, $Jan06, $jan_06.Jan07);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_06_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

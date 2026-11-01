@@ -109,8 +109,8 @@ EvtScript EVS_NpcInit_Goombaria = {
 
 NpcData NpcData_Goombaria = {
     .id = NPC_Goombaria,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Goombaria.pos,
+    .yaw = $Goombaria.yaw,
     .init = &EVS_NpcInit_Goombaria,
     .settings = &NpcSettings_Goombaria,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -121,8 +121,8 @@ NpcData NpcData_Goombaria = {
 NpcData NpcData_StarSpirits[] = {
     {
         .id = NPC_Eldstar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Eldstar.pos,
+        .yaw = $Eldstar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -131,8 +131,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Mamar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Mamar.pos,
+        .yaw = $Mamar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -141,8 +141,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -151,8 +151,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Muskular,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Muskular.pos,
+        .yaw = $Muskular.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -161,8 +161,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Misstar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Misstar.pos,
+        .yaw = $Misstar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -171,8 +171,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Klevar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Klevar.pos,
+        .yaw = $Klevar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -181,8 +181,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Kalmar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Kalmar.pos,
+        .yaw = $Kalmar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

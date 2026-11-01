@@ -1,10 +1,14 @@
 #include "sbk_02.h"
+#include "world/area/isk/isk_01.h"
+#include "world/area/sbk/sbk_01.h"
+#include "world/area/sbk/sbk_03.h"
+#include "world/area/sbk/sbk_12.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_sbk_01_1 = EVT_EXIT_WALK(60, sbk_02_ENTRY_0, "sbk_01", sbk_01_ENTRY_1);
-EvtScript EVS_ExitWalk_sbk_03_0 = EVT_EXIT_WALK(60, sbk_02_ENTRY_1, "sbk_03", sbk_03_ENTRY_0);
-EvtScript EVS_ExitWalk_sbk_12_2 = EVT_EXIT_WALK(60, sbk_02_ENTRY_3, "sbk_12", sbk_12_ENTRY_2);
-EvtScript EVS_ExitWalk_isk_01_0 = EVT_EXIT_WALK(60, sbk_02_ENTRY_4, "isk_01", isk_01_ENTRY_0);
+EvtScript EVS_ExitWalk_sbk_01_1 = EVT_EXIT_WALK(60, $West, $sbk_01.East);
+EvtScript EVS_ExitWalk_sbk_03_0 = EVT_EXIT_WALK(60, $East, $sbk_03.West);
+EvtScript EVS_ExitWalk_sbk_12_2 = EVT_EXIT_WALK(60, $South, $sbk_12.North);
+EvtScript EVS_ExitWalk_isk_01_0 = EVT_EXIT_WALK(60, $DryDryRuins, $isk_01.DryDryDesert);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sbk_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -18,10 +22,10 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(sbk_02_ENTRY_5)
+        CaseEq($PeachInterlude.index)
             Exec(EVS_BindExitTriggers)
-        CaseOrEq(sbk_02_ENTRY_6)
-        CaseOrEq(sbk_02_ENTRY_7)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Exec(EVS_BindExitTriggers)
         EndCaseGroup
         CaseDefault
@@ -42,7 +46,7 @@ EvtScript EVS_Main = {
     Call(MakeNpcs, false, DefaultNPCs)
     ExecWait(EVS_MakeEntities)
     IfLt(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
-        PlayEffect(EFFECT_SUN, FX_SUN_FROM_LEFT, 0, 0, 0, 0, 0)
+        PlayEffect(EFFECT_SUN, FX_SUN_FROM_LEFT, $SunPos_1.pos.x, $SunPos_1.pos.y, $SunPos_1.pos.z, 0, 0)
         Set(MV_Effect_Sun, LVarF)
     EndIf
     IfEq(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
@@ -52,8 +56,8 @@ EvtScript EVS_Main = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(sbk_02_ENTRY_6)
-        CaseOrEq(sbk_02_ENTRY_7)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
         EndCaseGroup
         CaseDefault
             ExecWait(EVS_SetupRuins)
@@ -61,10 +65,10 @@ EvtScript EVS_Main = {
     Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(sbk_02_ENTRY_5)
+        CaseEq($PeachInterlude.index)
             Wait(65)
-        CaseOrEq(sbk_02_ENTRY_6)
-        CaseOrEq(sbk_02_ENTRY_7)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             Exec(EVS_Ruins_Arise_Continued)
             Wait(3)
         EndCaseGroup

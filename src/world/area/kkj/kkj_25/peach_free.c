@@ -125,7 +125,7 @@ EvtScript EVS_Scene_PeachBreaksFree = {
     Call(SetNpcJumpscale, NPC_Twink_01, 0.0)
     Call(NpcJump0, NPC_Twink_01, 530, 45, -50, 30)
     Call(PlaySoundAtNpc, NPC_Kammy_01, SOUND_HIT_NORMAL, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, 530, 45, -50, -1, -1, 0, 3)
+    PlayEffect(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, $DamageStarsPos_2.pos.x, $DamageStarsPos_2.pos.y, $DamageStarsPos_2.pos.z, -1, -1, 0, 3)
     Thread
         Call(SetNpcAnimation, NPC_Kammy_01, ANIM_BattleKammy_Broom)
         Call(SetNpcPos, NPC_Kammy_02, 530, 15, -50)

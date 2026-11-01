@@ -597,8 +597,8 @@ EvtScript EVS_NpcInit_Luigi_1 = {
 
 NpcData NpcData_Luigi_0 = {
     .id = NPC_Luigi_0,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Luigi_0.pos,
+    .yaw = $Luigi_0.yaw,
     .init = &EVS_NpcInit_Luigi_0,
     .settings = &NpcSettings_Luigi,
     .flags = BASE_PASSIVE_FLAGS,
@@ -609,8 +609,8 @@ NpcData NpcData_Luigi_0 = {
 
 NpcData NpcData_Luigi_1 = {
     .id = NPC_Luigi_1,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Luigi_1.pos,
+    .yaw = $Luigi_1.yaw,
     .init = &EVS_NpcInit_Luigi_1,
     .settings = &NpcSettings_Luigi,
     .flags = BASE_PASSIVE_FLAGS,
@@ -716,8 +716,8 @@ EvtScript EVS_NpcInit_ShyGuy = {
 
 NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $ShyGuy.pos,
+    .yaw = $ShyGuy.yaw,
     .init = &EVS_NpcInit_ShyGuy,
     .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,

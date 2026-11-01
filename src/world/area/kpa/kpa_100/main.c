@@ -1,4 +1,5 @@
 #include "kpa_100.h"
+#include "world/area/kpa/kpa_08.h"
 #include "sprite.h"
 
 export s32 map_init(void) {
@@ -6,7 +7,7 @@ export s32 map_init(void) {
     return false;
 }
 
-EvtScript EVS_ExitWalk_kpa_08_1 = EVT_EXIT_WALK(60, kpa_100_ENTRY_0, "kpa_08", kpa_08_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_08_1 = EVT_EXIT_WALK(60, $KeyTimingPuzzle, $kpa_08.KeyRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_08_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

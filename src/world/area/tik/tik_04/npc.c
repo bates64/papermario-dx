@@ -5,14 +5,14 @@
 EvtScript EVS_NpcIdle_SpikedGloomba = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_04_ENTRY_0)
+        CaseEq($SpringRoom.index)
             Call(SetNpcPos, NPC_SELF, 280, -10, 0)
-        CaseEq(tik_04_ENTRY_1)
+        CaseEq($ElevatorAtticRoom.index)
             Call(BindNpcAI, NPC_SELF, EVS_NpcAI_SpikedGloomba_Wander)
             Return
-        CaseEq(tik_04_ENTRY_2)
+        CaseEq($ShortElevatorRoom.index)
             Call(SetNpcPos, NPC_SELF, 280, -10, 0)
-        CaseEq(tik_04_ENTRY_3)
+        CaseEq($MetalBlockRoom.index)
             Call(SetNpcPos, NPC_SELF, 360, -10, 0)
     EndSwitch
     Label(100)
@@ -46,20 +46,9 @@ EvtScript EVS_NpcInit_SpikedGloomba = {
 
 NpcData NpcData_SpikedGloomba_01 = {
     .id = NPC_SpikedGoomba_01,
-    .pos = { 40.0f, -135.0f, 10.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 40, -135, 10 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 40, -135, 10 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $SpikedGoomba_01.pos,
+    .yaw = $SpikedGoomba_01.yaw,
+    .territory = $SpikedGoomba_01.territory,
     .init = &EVS_NpcInit_SpikedGloomba,
     .settings = &NpcSettings_SpikedGloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -69,20 +58,9 @@ NpcData NpcData_SpikedGloomba_01 = {
 
 NpcData NpcData_SpikedGloomba_02 = {
     .id = NPC_SpikedGoomba_02,
-    .pos = { 141.0f, -135.0f, 85.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 141, -135, 85 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 141, -135, 85 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $SpikedGoomba_02.pos,
+    .yaw = $SpikedGoomba_02.yaw,
+    .territory = $SpikedGoomba_02.territory,
     .init = &EVS_NpcInit_SpikedGloomba,
     .settings = &NpcSettings_SpikedGloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,

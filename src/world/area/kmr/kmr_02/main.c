@@ -1,10 +1,13 @@
 #include "kmr_02.h"
+#include "world/area/kmr/kmr_00.h"
+#include "world/area/kmr/kmr_05.h"
+#include "world/area/kmr/kmr_09.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_kmr_05_1 = EVT_EXIT_WALK(60, kmr_02_ENTRY_2, "kmr_05", kmr_05_ENTRY_1);
-EvtScript EVS_ExitWalk_kmr_00_0 = EVT_EXIT_WALK(60, kmr_02_ENTRY_1, "kmr_00", kmr_00_ENTRY_0);
-EvtScript EVS_ExitWalk_kmr_09_0 = EVT_EXIT_WALK(60, kmr_02_ENTRY_0, "kmr_09", kmr_09_ENTRY_0);
+EvtScript EVS_ExitWalk_kmr_05_1 = EVT_EXIT_WALK(60, $BehindVillage, $kmr_05.GoombaVillage);
+EvtScript EVS_ExitWalk_kmr_00_0 = EVT_EXIT_WALK(60, $ForestClearing, $kmr_00.GoombaVillage);
+EvtScript EVS_ExitWalk_kmr_09_0 = EVT_EXIT_WALK(60, $GoombaRoad, $kmr_09.GoombaVillage);
 
 EvtScript EVS_SetupGoombaRoadGate = {
     IfGe(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
@@ -34,11 +37,11 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kmr_02_ENTRY_0)
+    IfNe(LVar0, $GoombaRoad.index)
         Exec(EVS_SetupGoombaRoadGate)
     EndIf
     Switch(LVar0)
-        CaseEq(kmr_02_ENTRY_2)
+        CaseEq($BehindVillage.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             IfEq(GF_KMR02_ReturnedWithGoompa, false)
@@ -50,7 +53,7 @@ EvtScript EVS_EnterMap = {
                 Set(GF_KMR02_ReturnedWithGoompa, true)
                 Call(DisablePlayerInput, false)
             EndIf
-        CaseEq(kmr_02_ENTRY_3)
+        CaseEq($WarpPipe.index)
             IfEq(GF_KMR02_WarpPipe, false)
                 Call(DisablePlayerInput, true)
                 Call(DisablePlayerPhysics, true)
@@ -69,10 +72,10 @@ EvtScript EVS_EnterMap = {
             EndIf
             Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
-        CaseEq(kmr_02_ENTRY_5)
+        CaseEq($AfterRevival.index)
             Exec(EVS_SetWallsDown_ToadHouse)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kmr_02_ENTRY_A)
+        CaseEq($Entry10.index)
             // beta entrance for 'post' pipe
             Exec(EnterPostPipe)
             Exec(EVS_BindExitTriggers)
@@ -126,7 +129,7 @@ EvtScript EVS_Main = {
     EndIf
     // check for cutscene entry
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kmr_02_ENTRY_4)
+    IfNe(LVar0, $Epilogue.index)
         Goto(10)
     EndIf
     Call(MakeNpcs, false, EpilogueNPCs)
@@ -174,7 +177,7 @@ EvtScript EVS_Main = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kmr_02_ENTRY_5)
+    IfEq(LVar0, $AfterRevival.index)
         Wait(30)
         Call(SetMapChangeFadeSlowest)
     EndIf

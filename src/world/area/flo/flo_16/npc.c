@@ -5,20 +5,9 @@
 
 NpcData NpcData_RuffPuff_01 = {
     .id = NPC_RuffPuff_01,
-    .pos = { 440.0f, 145.0f, 15.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 440, 145, 15 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 485, 145, 55 },
-            .detectSize = { 225, 95 },
-        }
-    },
+    .pos = $RuffPuff_01.pos,
+    .yaw = $RuffPuff_01.yaw,
+    .territory = $RuffPuff_01.territory,
     .settings = &NpcSettings_RuffPuff_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = RUFF_PUFF_DROPS,
@@ -28,20 +17,9 @@ NpcData NpcData_RuffPuff_01 = {
 
 NpcData NpcData_RuffPuff_02 = {
     .id = NPC_RuffPuff_02,
-    .pos = { 600.0f, 145.0f, 15.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 600, 145, 15 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 485, 145, 55 },
-            .detectSize = { 225, 95 },
-        }
-    },
+    .pos = $RuffPuff_02.pos,
+    .yaw = $RuffPuff_02.yaw,
+    .territory = $RuffPuff_02.territory,
     .settings = &NpcSettings_RuffPuff_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = RUFF_PUFF_DROPS,

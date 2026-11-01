@@ -7,8 +7,7 @@
 
 EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(130, 480, -75, 0)
-    Call(MakeEntity, Entity_HiddenPanel, 350, 350, 55, 0, MODEL_o149, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_KZN09_HiddenPanel)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
     Return
     End
 };

@@ -1,4 +1,5 @@
 #include "mgm_02.h"
+#include "world/area/mgm/mgm_00.h"
 #include "hud_element.h"
 #include "effects.h"
 #include "model.h"
@@ -1691,11 +1692,11 @@ EvtScript EVS_Toad_GovernGame = {
     EndThread
     Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(CreateSignpost)
-    PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175, 0, 0)
+    PlayEffect(EFFECT_WALKING_DUST, 1, $WalkingDustPos_1.pos.x, $WalkingDustPos_1.pos.y, $WalkingDustPos_1.pos.z, 0, 0)
     Thread
         Call(SetNpcPos, NPC_Toad, 358, -20, 185)
         Call(EnableNpcShadow, NPC_Toad, true)
-        PlayEffect(EFFECT_WALKING_DUST, 1, 358, 5, 189, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 1, $WalkingDustPos_2.pos.x, $WalkingDustPos_2.pos.y, $WalkingDustPos_2.pos.z, 0, 0)
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, false)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -1787,7 +1788,7 @@ EvtScript EVS_NpcInteract_Toad = {
         Call(HideCoinCounter)
         Wait(12)
         Exec(EVS_DestroyMinigame)
-        Call(GotoMap, "mgm_00", mgm_00_ENTRY_2)
+        Call(GotoMap, $mgm_00.SmashAttack)
         Wait(100)
         Return
     EndIf
@@ -1809,7 +1810,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0040)
             Exec(EVS_DestroyMinigame)
-            Call(GotoMap, "mgm_00", mgm_00_ENTRY_2)
+            Call(GotoMap, $mgm_00.SmashAttack)
             Wait(100)
             Return
     EndSwitch
@@ -1827,11 +1828,11 @@ EvtScript EVS_NpcInteract_Toad = {
     Wait(25)
     Thread
         Wait(12)
-        PlayEffect(EFFECT_WALKING_DUST, 1, 358, -10, 185, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 1, $WalkingDustPos_3.pos.x, $WalkingDustPos_3.pos.y, $WalkingDustPos_3.pos.z, 0, 0)
         Call(SetNpcPos, NPC_Toad, 358, 500, 185)
         Call(EnableNpcShadow, NPC_Toad, false)
         Call(DestroySignpost)
-        PlayEffect(EFFECT_WALKING_DUST, 1, 355, 30, -180, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 1, $WalkingDustPos_4.pos.x, $WalkingDustPos_4.pos.y, $WalkingDustPos_4.pos.z, 0, 0)
     EndThread
     Call(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
     Call(PushSong, SONG_PLAYROOM, 0)
@@ -1855,8 +1856,8 @@ EvtScript EVS_NpcInit_Toad = {
 
 NpcData NpcData_GuideToad = {
     .id = NPC_Toad,
-    .pos = { 353.0f, -20.0f, 185.0f },
-    .yaw = 270,
+    .pos = $Toad.pos,
+    .yaw = $Toad.yaw,
     .init = &EVS_NpcInit_Toad,
     .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -1939,8 +1940,8 @@ EvtScript EVS_NpcInit_Luigi = {
 
 NpcData NpcData_Fuzzy_01 = {
     .id = NPC_Fuzzy_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Fuzzy_01.pos,
+    .yaw = $Fuzzy_01.yaw,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -1951,8 +1952,8 @@ NpcData NpcData_Fuzzy_01 = {
 
 NpcData NpcData_Fuzzy_02 = {
     .id = NPC_Fuzzy_02,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Fuzzy_02.pos,
+    .yaw = $Fuzzy_02.yaw,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -1963,8 +1964,8 @@ NpcData NpcData_Fuzzy_02 = {
 
 NpcData NpcData_Fuzzy_03 = {
     .id = NPC_Fuzzy_03,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Fuzzy_03.pos,
+    .yaw = $Fuzzy_03.yaw,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -1975,8 +1976,8 @@ NpcData NpcData_Fuzzy_03 = {
 
 NpcData NpcData_Fuzzy_04 = {
     .id = NPC_Fuzzy_04,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Fuzzy_04.pos,
+    .yaw = $Fuzzy_04.yaw,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -1987,8 +1988,8 @@ NpcData NpcData_Fuzzy_04 = {
 
 NpcData NpcData_Fuzzy_05 = {
     .id = NPC_Fuzzy_05,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Fuzzy_05.pos,
+    .yaw = $Fuzzy_05.yaw,
     .init = &EVS_NpcInit_Fuzzy,
     .settings = &NpcSettings_Fuzzy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -1999,8 +2000,8 @@ NpcData NpcData_Fuzzy_05 = {
 
 NpcData NpcData_Bobomb_01 = {
     .id = NPC_Bobomb_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bobomb_01.pos,
+    .yaw = $Bobomb_01.yaw,
     .init = &EVS_NpcInit_Bobomb,
     .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2011,8 +2012,8 @@ NpcData NpcData_Bobomb_01 = {
 
 NpcData NpcData_Bobomb_02 = {
     .id = NPC_Bobomb_02,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bobomb_02.pos,
+    .yaw = $Bobomb_02.yaw,
     .init = &EVS_NpcInit_Bobomb,
     .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2023,8 +2024,8 @@ NpcData NpcData_Bobomb_02 = {
 
 NpcData NpcData_Bobomb_03 = {
     .id = NPC_Bobomb_03,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bobomb_03.pos,
+    .yaw = $Bobomb_03.yaw,
     .init = &EVS_NpcInit_Bobomb,
     .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2035,8 +2036,8 @@ NpcData NpcData_Bobomb_03 = {
 
 NpcData NpcData_Bobomb_04 = {
     .id = NPC_Bobomb_04,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bobomb_04.pos,
+    .yaw = $Bobomb_04.yaw,
     .init = &EVS_NpcInit_Bobomb,
     .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2047,8 +2048,8 @@ NpcData NpcData_Bobomb_04 = {
 
 NpcData NpcData_Bobomb_05 = {
     .id = NPC_Bobomb_05,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Bobomb_05.pos,
+    .yaw = $Bobomb_05.yaw,
     .init = &EVS_NpcInit_Bobomb,
     .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2060,8 +2061,8 @@ NpcData NpcData_Bobomb_05 = {
 NpcData NpcData_Luigis[] = {
     {
         .id = NPC_Luigi_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_01.pos,
+        .yaw = $Luigi_01.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2071,8 +2072,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_02.pos,
+        .yaw = $Luigi_02.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2082,8 +2083,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_03.pos,
+        .yaw = $Luigi_03.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2093,8 +2094,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_04.pos,
+        .yaw = $Luigi_04.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2104,8 +2105,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_05.pos,
+        .yaw = $Luigi_05.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2115,8 +2116,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_06.pos,
+        .yaw = $Luigi_06.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2126,8 +2127,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_07.pos,
+        .yaw = $Luigi_07.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2137,8 +2138,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_08.pos,
+        .yaw = $Luigi_08.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2148,8 +2149,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_09,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_09.pos,
+        .yaw = $Luigi_09.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
@@ -2159,8 +2160,8 @@ NpcData NpcData_Luigis[] = {
     },
     {
         .id = NPC_Luigi_10,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Luigi_10.pos,
+        .yaw = $Luigi_10.yaw,
         .init = &EVS_NpcInit_Luigi,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,

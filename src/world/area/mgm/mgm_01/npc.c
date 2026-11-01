@@ -1,4 +1,5 @@
 #include "mgm_01.h"
+#include "world/area/mgm/mgm_00.h"
 #include "hud_element.h"
 #include "effects.h"
 #include "entity.h"
@@ -964,7 +965,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Call(HideCoinCounter)
             Wait(12)
             Exec(EVS_DestroyMinigame)
-            Call(GotoMap, "mgm_00", mgm_00_ENTRY_1)
+            Call(GotoMap, $mgm_00.JumpAttack)
             Wait(100)
             Return
         EndIf
@@ -974,7 +975,7 @@ EvtScript EVS_NpcInteract_Toad = {
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0032)
             Exec(EVS_DestroyMinigame)
-            Call(GotoMap, "mgm_00", mgm_00_ENTRY_1)
+            Call(GotoMap, $mgm_00.JumpAttack)
             Wait(100)
             Return
         EndIf
@@ -1040,8 +1041,8 @@ EvtScript EVS_NpcInit_Toad = {
 
 NpcData NpcData_Toad = {
     .id = NPC_Toad,
-    .pos = { 0.0f, 0.0f, -20.0f },
-    .yaw = 270,
+    .pos = $Toad.pos,
+    .yaw = $Toad.yaw,
     .init = &EVS_NpcInit_Toad,
     .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,

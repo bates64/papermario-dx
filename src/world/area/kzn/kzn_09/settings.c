@@ -1,15 +1,9 @@
 #include "kzn_09.h"
 
-EntryList Entrances = {
-    [kzn_09_ENTRY_0]    { -445.0,  870.0,  -40.0,   90.0 },
-    [kzn_09_ENTRY_1]    {  435.0,  719.0,   10.0,  270.0 },
-    [kzn_09_ENTRY_2]    { -445.0,  400.0,   95.0,   90.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_kzn_09 },
     .songVariation = 1,
     .sfxReverb = 2,

@@ -1,4 +1,5 @@
 #include "kkj_26.h"
+#include "world/area/kkj/kkj_14.h"
 #include "sprite/player.h"
 
 EvtScript EVS_Scene_WhereIsMario = {
@@ -62,7 +63,7 @@ EvtScript EVS_Scene_AfterAllSpiritsRescued = {
     Call(EnablePartnerAI)
     Call(func_802D1270, 480, -20, 2.0 / DT)
     Call(SetPlayerAnimation, ANIM_Peach2_OpenDoors)
-    Set(LVar0, kkj_26_ENTRY_0)
+    Set(LVar0, $PeachsRoom.index)
     Set(LVar1, COLLIDER_ttw)
     Set(LVar2, MODEL_o85)
     Set(LVar3, MODEL_o83)
@@ -70,7 +71,7 @@ EvtScript EVS_Scene_AfterAllSpiritsRescued = {
     Set(LVar5, MODEL_o84)
     Exec(ExitSplitDoubleDoor)
     Wait(17 * DT)
-    Call(GotoMap, "kkj_14", kkj_14_ENTRY_A)
+    Call(GotoMap, $kkj_14.Chapter7)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return

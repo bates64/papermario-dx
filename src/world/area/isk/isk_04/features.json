@@ -1,0 +1,766 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 6,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 9,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 11,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 15,
+      "name": "Effects",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 16,
+      "name": "BombPos_Wall",
+      "desc": "",
+      "hidden": false,
+      "type": "Sphere",
+      "pos": [
+        510,
+        25,
+        -184
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "volComp": {
+        "radius": 0.0,
+        "height": 0.0,
+        "minPos": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maxPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 0,
+      "parent": 6,
+      "name": "SandDrainage1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        594,
+        -80,
+        84
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 6,
+      "name": "SarcophagusHall2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        594,
+        -340,
+        84
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 6,
+      "name": "SandDrainage2Upper",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        524,
+        25,
+        -169
+      ],
+      "yaw": 170.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 6,
+      "name": "SandDrainage2Lower",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        571,
+        -80,
+        -186
+      ],
+      "yaw": 170.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 6,
+      "name": "PyramidStoneRoom",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        524,
+        -210,
+        -169
+      ],
+      "yaw": 170.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "parent": 6,
+      "name": "Entry5",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        543,
+        25,
+        5
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 7,
+      "parent": 9,
+      "name": "BuzzyBeetle_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        561,
+        25,
+        47
+      ],
+      "yaw": 355.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 43,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_BuzzyBeetle_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            606,
+            25,
+            94
+          ],
+          "useCircle": true,
+          "radius": 80,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            561,
+            25,
+            47
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 9,
+      "name": "BuzzyBeetle_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        608,
+        -260,
+        -158
+      ],
+      "yaw": 175.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 43,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_BuzzyBeetle_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            596,
+            -260,
+            -203
+          ],
+          "useCircle": true,
+          "radius": 80,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            608,
+            -260,
+            -158
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 11,
+      "name": "Padlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        600,
+        -330,
+        100
+      ],
+      "yaw": 160.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Padlock"
+      }
+    },
+    {
+      "id": 12,
+      "parent": 15,
+      "name": "FlamePos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        504,
+        -193,
+        43
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 13,
+      "parent": 15,
+      "name": "FlamePos_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        486,
+        -193,
+        -128
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 14,
+      "parent": 15,
+      "name": "BombetteBreakingPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        63,
+        22,
+        1
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    }
+  ]
+}

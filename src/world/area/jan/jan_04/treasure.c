@@ -65,7 +65,7 @@ EvtScript EVS_Scene_TreasureChest = {
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_04_ENTRY_1)
+    IfEq(LVar0, $MtLavalava.index)
         Call(PlaySound, SOUND_FALL_LONG)
         Call(UseSettingsFrom, CAM_DEFAULT, -350, 300, 0)
         Call(SetPanTarget, CAM_DEFAULT, -350, 300, 0)
@@ -73,7 +73,7 @@ EvtScript EVS_Scene_TreasureChest = {
         Call(SetCamSpeed, CAM_DEFAULT, 90.0)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, 1.0)
-        Call(MakeEntity, Entity_Chest, 0, 2650, 0, 148, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Chest)
         Set(LVarA, LVar0)
         Thread
             Call(AnimateFlyingChestRotScale)
@@ -91,7 +91,7 @@ EvtScript EVS_Scene_TreasureChest = {
             EndLoop
         EndThread
         Wait(50)
-        Call(GotoMap, "jan_04", jan_04_ENTRY_2)
+        Call(GotoMap, $TreasureChest)
         Wait(100)
     Else
         Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
@@ -106,7 +106,7 @@ EvtScript EVS_Scene_TreasureChest = {
         Call(SetCamSpeed, CAM_DEFAULT, 1.2)
         Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, 1.0)
-        Call(MakeEntity, Entity_Chest, 0, 2650, 0, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Chest_1)
         Set(LVarA, LVar0)
         Thread
             Call(AnimateFallingChestRot)
@@ -123,9 +123,9 @@ EvtScript EVS_Scene_TreasureChest = {
         EndLoop
         Call(PlaySoundAt, SOUND_JAN_CHEST_IMPACT, SOUND_SPACE_DEFAULT, LVar1, LVar2, LVar3)
         Thread
-            PlayEffect(EFFECT_WALKING_DUST, 2, -15, 0, 0, 10, 10)
-            PlayEffect(EFFECT_WALKING_DUST, 2, 0, 0, 0, 0, 0)
-            PlayEffect(EFFECT_WALKING_DUST, 2, 15, 0, 0, 350, 350)
+            PlayEffect(EFFECT_WALKING_DUST, 2, $WalkingDustPos_1.pos.x, $WalkingDustPos_1.pos.y, $WalkingDustPos_1.pos.z, 10, 10)
+            PlayEffect(EFFECT_WALKING_DUST, 2, $WalkingDustPos_2.pos.x, $WalkingDustPos_2.pos.y, $WalkingDustPos_2.pos.z, 0, 0)
+            PlayEffect(EFFECT_WALKING_DUST, 2, $WalkingDustPos_3.pos.x, $WalkingDustPos_3.pos.y, $WalkingDustPos_3.pos.z, 350, 350)
             Call(ShakeCam, CAM_DEFAULT, 0, 30, 1.0)
         EndThread
         Call(LoadPath, 10, ChestBouncePath, ARRAY_COUNT(ChestBouncePath), EASING_LINEAR)
@@ -138,8 +138,8 @@ EvtScript EVS_Scene_TreasureChest = {
             EndIf
         EndLoop
         Call(PlaySoundAt, SOUND_JAN_CHEST_IMPACT, SOUND_SPACE_DEFAULT, LVar1, LVar2, LVar3)
-        PlayEffect(EFFECT_WALKING_DUST, 2, -10, 0, 15, 0, 0)
-        PlayEffect(EFFECT_WALKING_DUST, 2, -10, 0, 15, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 2, $WalkingDustPos_4.pos.x, $WalkingDustPos_4.pos.y, $WalkingDustPos_4.pos.z, 0, 0)
+        PlayEffect(EFFECT_WALKING_DUST, 2, $WalkingDustPos_4.pos.x, $WalkingDustPos_4.pos.y, $WalkingDustPos_4.pos.z, 0, 0)
         Wait(60)
         Exec(EVS_GotoMap_kmr_24_0)
     EndIf

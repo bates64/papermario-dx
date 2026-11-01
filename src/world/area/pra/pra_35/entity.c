@@ -6,9 +6,7 @@
 EvtScript EVS_OpenChest_TripleDip = EVT_OPEN_CHEST(ITEM_TRIPLE_DIP, GF_PRA35_Chest_TripleDip);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Chest, 435, 0, -70, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_PRA35_Chest_TripleDip)
-    Call(AssignScript, EVS_OpenChest_TripleDip)
+    Call(MakeMarkerEntity, $Chest_TripleDip)
     Return
     End
 };

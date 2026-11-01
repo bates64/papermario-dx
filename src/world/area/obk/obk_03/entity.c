@@ -112,8 +112,7 @@ EvtScript EVS_ThirdSwitch_JumpToSafety = {
 };
 
 EvtScript EVS_HitSwitch_First = {
-    Call(MakeEntity, Entity_BlueSwitch, 360, -210, -100, 0, MAKE_ENTITY_END)
-    Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_OBK03_HitSecondSwitch))
+    Call(MakeMarkerEntity, $BlueSwitch_1)
     Call(AssignScript, EVS_HitSwitch_Second)
     Exec(EVS_SecondSwitch_JumpToSafety)
     Set(LVar2, 360)
@@ -129,8 +128,7 @@ EvtScript EVS_HitSwitch_First = {
 };
 
 EvtScript EVS_HitSwitch_Second = {
-    Call(MakeEntity, Entity_HugeBlueSwitch, 440, -210, -100, 0, MAKE_ENTITY_END)
-    Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_OBK03_HitThirdSwitch))
+    Call(MakeMarkerEntity, $HugeBlueSwitch_1)
     Call(AssignScript, EVS_HitSwitch_Third)
     Exec(EVS_ThirdSwitch_JumpToSafety)
     Set(LVar2, 440)
@@ -156,14 +154,12 @@ EvtScript EVS_HitSwitch_Third = {
 
 EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH3_HIT_HUGE_BLUE_SWITCH)
-        Call(MakeEntity, Entity_BlueSwitch, 300, -210, -100, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_OBK03_HitFirstSwitch))
+        Call(MakeMarkerEntity, $BlueSwitch_2)
         Call(AssignScript, EVS_HitSwitch_First)
     EndIf
-    Call(MakeEntity, Entity_WoodenCrate, -130, 0, -50, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-    Call(AssignCrateFlag, GF_OBK03_Crate_SuperShroom)
-    Call(MakeEntity, Entity_WoodenCrate, 155, 0, -100, 0, -1, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_WoodenCrate, -165, 0, -50, 0, -1, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $WoodenCrate_1)
+    Call(MakeMarkerEntity, $WoodenCrate_2)
+    Call(MakeMarkerEntity, $WoodenCrate_3)
     Return
     End
 };

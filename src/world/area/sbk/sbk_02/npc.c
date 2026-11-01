@@ -175,7 +175,7 @@ EvtScript EVS_Scene_RescuedMamar = {
 
 EvtScript EVS_NpcInit_Mamar = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, sbk_02_ENTRY_5)
+    IfEq(LVar0, $PeachInterlude.index)
         Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Mamar)
         Exec(EVS_Scene_RescuedMamar)
     Else
@@ -251,8 +251,8 @@ EvtScript EVS_NpcInit_TradingToad = {
 
 NpcData NpcData_Mamar = {
     .id = NPC_Mamar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Mamar.pos,
+    .yaw = $Mamar.yaw,
     .init = &EVS_NpcInit_Mamar,
     .settings = &NpcSettings_StarSpirit,
     .flags = BASE_PASSIVE_FLAGS,
@@ -262,8 +262,8 @@ NpcData NpcData_Mamar = {
 
 NpcData NpcData_TradingToad = {
     .id = NPC_TradingToad,
-    .pos = { 0.0f, 2.0f, 150.0f },
-    .yaw = 90,
+    .pos = $TradingToad.pos,
+    .yaw = $TradingToad.yaw,
     .init = &EVS_NpcInit_TradingToad,
     .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,

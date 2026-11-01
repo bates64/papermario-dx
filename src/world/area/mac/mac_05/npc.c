@@ -1,4 +1,5 @@
 #include "mac_05.h"
+#include "world/area/mac/mac_06.h"
 #include "sprite/player.h"
 #include "inventory.h"
 
@@ -1012,7 +1013,7 @@ EvtScript EVS_NpcInteract_Whale = {
     Set(MF_WhaleDepartureReady, false)
     Thread
         Call(UpdateWhaleTravel, WHALE_TRAVEL_DEPART)
-        Call(GotoMap, "mac_06", mac_06_ENTRY_0)
+        Call(GotoMap, $mac_06.PortDistrict)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AF)
@@ -1050,7 +1051,7 @@ EvtScript EVS_NpcInit_Whale = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_05_ENTRY_2)
+    IfEq(LVar0, $WhaleStomach.index)
         Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
         Call(SetNpcPos, NPC_Whale, -220, 10, 372)
         Return
@@ -2079,8 +2080,8 @@ EvtScript EVS_NpcInit_TradeEventToad = {
 
 NpcData NpcData_Whale = {
     .id = NPC_Whale,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Whale.pos,
+    .yaw = $Whale.yaw,
     .init = &EVS_NpcInit_Whale,
     .settings = &NpcSettings_Whale,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -2091,8 +2092,8 @@ NpcData NpcData_Whale = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = COMMON_PASSIVE_FLAGS,
@@ -2103,8 +2104,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_Fishmael = {
     .id = NPC_Fishmael,
-    .pos = { 370.0f, -10.0f, -115.0f },
-    .yaw = 270,
+    .pos = $Fishmael.pos,
+    .yaw = $Fishmael.yaw,
     .init = &EVS_NpcInit_Fishmael,
     .settings = &NpcSettings_Fishmael,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -2124,8 +2125,8 @@ AnimID LimitAnims_Fuzzipede[] = {
 
 NpcData NpcData_Fuzzipede = {
     .id = NPC_Fuzzipede,
-    .pos = { 320.0f, -10.0f, -115.0f },
-    .yaw = 90,
+    .pos = $Fuzzipede.pos,
+    .yaw = $Fuzzipede.yaw,
     .init = &EVS_NpcInit_Fuzzipede,
     .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -2156,8 +2157,8 @@ AnimID LimitAnims_JrTroopa[] = {
 NpcData NpcData_JrTroopa[] = {
     {
         .id = NPC_JrTroopa_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $JrTroopa_01.pos,
+        .yaw = $JrTroopa_01.yaw,
         .init = &EVS_NpcInit_JrTroopa_01,
         .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -2168,8 +2169,8 @@ NpcData NpcData_JrTroopa[] = {
     },
     {
         .id = NPC_JrTroopa_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $JrTroopa_02.pos,
+        .yaw = $JrTroopa_02.yaw,
         .init = &EVS_NpcInit_JrTroopa_02,
         .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
@@ -2183,8 +2184,8 @@ NpcData NpcData_JrTroopa[] = {
 NpcData NpcData_Toads[] = {
     {
         .id = NPC_Toad_04,
-        .pos = { 320.0f, 0.0f, -300.0f },
-        .yaw = 270,
+        .pos = $Toad_04.pos,
+        .yaw = $Toad_04.yaw,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2194,8 +2195,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toad_05,
-        .pos = { -330.0f, -10.0f, -90.0f },
-        .yaw = 90,
+        .pos = $Toad_05.pos,
+        .yaw = $Toad_05.yaw,
         .init = &EVS_NpcInit_Toad_05,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2205,8 +2206,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toad_06,
-        .pos = { -50.0f, 0.0f, -400.0f },
-        .yaw = 270,
+        .pos = $Toad_06.pos,
+        .yaw = $Toad_06.yaw,
         .init = &EVS_NpcInit_Toad_06,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2216,22 +2217,9 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_Toad_07,
-        .pos = { 200.0f, 0.0f, -220.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -120, 0, -220 },
-                    { 200, 0, -220 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 180, 20, -435 },
-                .detectSize = { 10 },
-            }
-        },
+        .pos = $Toad_07.pos,
+        .yaw = $Toad_07.yaw,
+        .territory = $Toad_07.territory,
         .init = &EVS_NpcInit_Toad_07,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2244,8 +2232,8 @@ NpcData NpcData_Toads[] = {
 NpcData NpcData_Bartender[] = {
     {
         .id = NPC_Bartender,
-        .pos = { -85.0f, 0.0f, -520.0f },
-        .yaw = 90,
+        .pos = $Bartender.pos,
+        .yaw = $Bartender.yaw,
         .init = &EVS_NpcInit_Bartender,
         .settings = &NpcSettings_Bartender,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2255,8 +2243,8 @@ NpcData NpcData_Bartender[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { 30.0f, 0.0f, -570.0f },
-        .yaw = 270,
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
         .init = &EVS_NpcInit_Toad_02,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2266,8 +2254,8 @@ NpcData NpcData_Bartender[] = {
     },
     {
         .id = NPC_Chanterelle,
-        .pos = { 208.0f, 0.0f, -530.0f },
-        .yaw = 270,
+        .pos = $Chanterelle.pos,
+        .yaw = $Chanterelle.yaw,
         .init = &EVS_NpcInit_Chanterelle,
         .settings = &NpcSettings_Chanterelle,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2277,8 +2265,8 @@ NpcData NpcData_Bartender[] = {
     },
     {
         .id = NPC_ArtistToad,
-        .pos = { 158.0f, 0.0f, -555.0f },
-        .yaw = 90,
+        .pos = $ArtistToad.pos,
+        .yaw = $ArtistToad.yaw,
         .init = &EVS_NpcInit_ArtistToad,
         .settings = &NpcSettings_MusicianPoet,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -2288,8 +2276,8 @@ NpcData NpcData_Bartender[] = {
     },
     {
         .id = NPC_TradeEventToad,
-        .pos = { 92.0f, 0.0f, -500.0f },
-        .yaw = 90,
+        .pos = $TradeEventToad.pos,
+        .yaw = $TradeEventToad.yaw,
         .init = &EVS_NpcInit_TradeEventToad,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -2301,8 +2289,8 @@ NpcData NpcData_Bartender[] = {
 
 NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
-    .pos = { 472.0f, 0.0f, -230.0f },
-    .yaw = 90,
+    .pos = $ChuckQuizmo.pos,
+    .yaw = $ChuckQuizmo.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_MAC, QUIZ_COUNT_MAC, QUIZ_MAP_MAC_05 }},
     .settings = &NpcSettings_ChuckQuizmo,

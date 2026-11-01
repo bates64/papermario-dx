@@ -1,7 +1,7 @@
 #include "sbk_05.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_FIRE_FLOWER, -100, 0, -445, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SBK05_Item_FireFlower)
+    Call(MakeMarkerEntity, $Item_FireFlower_1)
     Return
     End
 };

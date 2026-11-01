@@ -8,7 +8,9 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "world/area/kpa/kpa_80/map.xml.h"
+#include "mapfs/w_kpa_80_shape.h"
+#include "mapfs/w_kpa_80_hit.h"
+#include "map.xml.h"
 
 #include "sprite/npc/WorldBobomb.h"
 

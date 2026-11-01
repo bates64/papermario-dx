@@ -1,7 +1,9 @@
 #include "kpa_113.h"
+#include "world/area/kpa/kpa_112.h"
+#include "world/area/kpa/kpa_114.h"
 
-EvtScript EVS_ExitWalk_kpa_112_1 = EVT_EXIT_WALK(40, kpa_113_ENTRY_0, "kpa_112", kpa_112_ENTRY_1);
-EvtScript EVS_ExitWalk_kpa_114_0 = EVT_EXIT_WALK(40, kpa_113_ENTRY_2, "kpa_114", kpa_114_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_112_1 = EVT_EXIT_WALK(40, $HiddenPassage1, $kpa_112.HiddenDoorRoom2);
+EvtScript EVS_ExitWalk_kpa_114_0 = EVT_EXIT_WALK(40, $HiddenPassage2, $kpa_114.HiddenDoorRoom2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_112_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -18,7 +20,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kpa_113_ENTRY_1)
+    IfEq(LVar0, $GuardDoor2.index)
         Set(LVar2, MODEL_o136)
         Set(LVar3, MODEL_o137)
         ExecWait(EnterDoubleDoor)

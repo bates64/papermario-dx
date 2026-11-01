@@ -291,8 +291,8 @@ AnimID LimitAnims_Ninji_Ending[] = {
 
 NpcData NpcData_Peach_Ending = {
     .id = NPC_Peach,
-    .pos = { 0.0f, 100.0f, -440.0f },
-    .yaw = 270,
+    .pos = $Peach.pos,
+    .yaw = $Peach.yaw,
     .settings = &NpcSettings_Peach,
     .flags = ENDING_PEACH_FLAGS,
     .drops = NO_DROPS,
@@ -303,8 +303,8 @@ NpcData NpcData_Peach_Ending = {
 NpcData NpcData_SpecialToads_Ending[] = {
     {
         .id = NPC_ToadMinister,
-        .pos = { 100.0f, 0.0f, 250.0f },
-        .yaw = 270,
+        .pos = $ToadMinister.pos,
+        .yaw = $ToadMinister.yaw,
         .settings = &NpcSettings_ToadMinister,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -313,8 +313,8 @@ NpcData NpcData_SpecialToads_Ending[] = {
     },
     {
         .id = NPC_TayceT,
-        .pos = { -200.0f, 0.0f, 260.0f },
-        .yaw = 90,
+        .pos = $TayceT.pos,
+        .yaw = $TayceT.yaw,
         .settings = &NpcSettings_TayceT,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -323,8 +323,8 @@ NpcData NpcData_SpecialToads_Ending[] = {
     },
     {
         .id = NPC_RussT_02,
-        .pos = { 300.0f, 0.0f, 150.0f },
-        .yaw = 90,
+        .pos = $RussT_02.pos,
+        .yaw = $RussT_02.yaw,
         .init = &EVS_NpcInit_RussT_Ending,
         .settings = &NpcSettings_RussT,
         .flags = ENDING_NPC_FLAGS,
@@ -334,8 +334,8 @@ NpcData NpcData_SpecialToads_Ending[] = {
     },
     {
         .id = NPC_ShiverToad_02,
-        .pos = { 330.0f, 0.0f, 135.0f },
-        .yaw = 270,
+        .pos = $ShiverToad_02.pos,
+        .yaw = $ShiverToad_02.yaw,
         .init = &EVS_NpcInit_ShiverToad_02_Ending,
         .settings = &NpcSettings_ShiverToad,
         .flags = ENDING_NPC_FLAGS,
@@ -348,8 +348,8 @@ NpcData NpcData_SpecialToads_Ending[] = {
 NpcData NpcData_Party_Ending[] = {
     {
         .id = NPC_Goombario,
-        .pos = { 180.0f, 0.0f, 80.0f },
-        .yaw = 270,
+        .pos = $Goombario.pos,
+        .yaw = $Goombario.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -358,8 +358,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Kooper,
-        .pos = { 225.0f, 0.0f, 225.0f },
-        .yaw = 270,
+        .pos = $Kooper.pos,
+        .yaw = $Kooper.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -368,8 +368,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Bombette,
-        .pos = { 270.0f, 0.0f, 115.0f },
-        .yaw = 270,
+        .pos = $Bombette.pos,
+        .yaw = $Bombette.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -378,8 +378,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Parakarry,
-        .pos = { 325.0f, 10.0f, 175.0f },
-        .yaw = 270,
+        .pos = $Parakarry.pos,
+        .yaw = $Parakarry.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_PARAKARRY_FLAGS,
         .drops = NO_DROPS,
@@ -388,8 +388,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Bow,
-        .pos = { -270.0f, 0.0f, 145.0f },
-        .yaw = 90,
+        .pos = $Bow.pos,
+        .yaw = $Bow.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -398,8 +398,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Watt,
-        .pos = { -235.0f, 0.0f, 85.0f },
-        .yaw = 90,
+        .pos = $Watt.pos,
+        .yaw = $Watt.yaw,
         .initVarCount = 1,
         .initVar = { .value = 0 },
         .settings = &NpcSettings_Dummy,
@@ -410,8 +410,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Sushie,
-        .pos = { -190.0f, 0.0f, 50.0f },
-        .yaw = 90,
+        .pos = $Sushie.pos,
+        .yaw = $Sushie.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -420,8 +420,8 @@ NpcData NpcData_Party_Ending[] = {
     },
     {
         .id = NPC_Lakilester,
-        .pos = { -320.0f, 0.0f, -60.0f },
-        .yaw = 90,
+        .pos = $Lakilester.pos,
+        .yaw = $Lakilester.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -433,8 +433,8 @@ NpcData NpcData_Party_Ending[] = {
 NpcData NpcData_Wizards_Ending[] = {
     {
         .id = NPC_Merlon,
-        .pos = { -145.0f, 0.0f, 415.0f },
-        .yaw = 90,
+        .pos = $Merlon.pos,
+        .yaw = $Merlon.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -445,8 +445,8 @@ NpcData NpcData_Wizards_Ending[] = {
     },
     {
         .id = NPC_Merluvlee,
-        .pos = { -225.0f, 0.0f, 380.0f },
-        .yaw = 90,
+        .pos = $Merluvlee.pos,
+        .yaw = $Merluvlee.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -457,8 +457,8 @@ NpcData NpcData_Wizards_Ending[] = {
     },
     {
         .id = NPC_Merlow,
-        .pos = { -175.0f, 0.0f, 330.0f },
-        .yaw = 90,
+        .pos = $Merlow.pos,
+        .yaw = $Merlow.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -469,8 +469,8 @@ NpcData NpcData_Wizards_Ending[] = {
     },
     {
         .id = NPC_Merlee,
-        .pos = { -250.0f, 0.0f, 350.0f },
-        .yaw = 90,
+        .pos = $Merlee.pos,
+        .yaw = $Merlee.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -479,8 +479,8 @@ NpcData NpcData_Wizards_Ending[] = {
     },
     {
         .id = NPC_Merle,
-        .pos = { -220.0f, 0.0f, 450.0f },
-        .yaw = 90,
+        .pos = $Merle.pos,
+        .yaw = $Merle.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -492,8 +492,8 @@ NpcData NpcData_Wizards_Ending[] = {
 NpcData NpcData_PartyFamily_Ending[] = {
     {
         .id = NPC_Lakilulu,
-        .pos = { -365.0f, 0.0f, -60.0f },
-        .yaw = 90,
+        .pos = $Lakilulu.pos,
+        .yaw = $Lakilulu.yaw,
         .settings = &NpcSettings_Lakilulu,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -502,8 +502,8 @@ NpcData NpcData_PartyFamily_Ending[] = {
     },
     {
         .id = NPC_Bootler,
-        .pos = { -340.0f, 0.0f, 100.0f },
-        .yaw = 90,
+        .pos = $Bootler.pos,
+        .yaw = $Bootler.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -512,8 +512,8 @@ NpcData NpcData_PartyFamily_Ending[] = {
     },
     {
         .id = NPC_Goompa,
-        .pos = { 170.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Goompa.pos,
+        .yaw = $Goompa.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -522,8 +522,8 @@ NpcData NpcData_PartyFamily_Ending[] = {
     },
     {
         .id = NPC_Goombaria,
-        .pos = { 140.0f, 0.0f, 50.0f },
-        .yaw = 270,
+        .pos = $Goombaria.pos,
+        .yaw = $Goombaria.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -535,8 +535,8 @@ NpcData NpcData_PartyFamily_Ending[] = {
 NpcData NpcData_Visitors_Ending[] = {
     {
         .id = NPC_Yoshi,
-        .pos = { -340.0f, 0.0f, 310.0f },
-        .yaw = 90,
+        .pos = $Yoshi.pos,
+        .yaw = $Yoshi.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -545,8 +545,8 @@ NpcData NpcData_Visitors_Ending[] = {
     },
     {
         .id = NPC_Penguin_02,
-        .pos = { 225.0f, 0.0f, -80.0f },
-        .yaw = 270,
+        .pos = $Penguin_02.pos,
+        .yaw = $Penguin_02.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -555,8 +555,8 @@ NpcData NpcData_Visitors_Ending[] = {
     },
     {
         .id = NPC_Penguin_03,
-        .pos = { -250.0f, 0.0f, -150.0f },
-        .yaw = 90,
+        .pos = $Penguin_03.pos,
+        .yaw = $Penguin_03.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -565,8 +565,8 @@ NpcData NpcData_Visitors_Ending[] = {
     },
     {
         .id = NPC_Dryite,
-        .pos = { -320.0f, 0.0f, 245.0f },
-        .yaw = 90,
+        .pos = $Dryite.pos,
+        .yaw = $Dryite.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -575,8 +575,8 @@ NpcData NpcData_Visitors_Ending[] = {
     },
     {
         .id = NPC_Ninji,
-        .pos = { -395.0f, 68.0f, 50.0f },
-        .yaw = 90,
+        .pos = $Ninji.pos,
+        .yaw = $Ninji.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -588,8 +588,8 @@ NpcData NpcData_Visitors_Ending[] = {
 NpcData NpcData_Toads_Ending[] = {
     {
         .id = NPC_Toad_04,
-        .pos = { 200.0f, 0.0f, 420.0f },
-        .yaw = 270,
+        .pos = $Toad_04.pos,
+        .yaw = $Toad_04.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -598,8 +598,8 @@ NpcData NpcData_Toads_Ending[] = {
     },
     {
         .id = NPC_Toad_05,
-        .pos = { -120.0f, 0.0f, 205.0f },
-        .yaw = 90,
+        .pos = $Toad_05.pos,
+        .yaw = $Toad_05.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -608,8 +608,8 @@ NpcData NpcData_Toads_Ending[] = {
     },
     {
         .id = NPC_Toad_06,
-        .pos = { -440.0f, 0.0f, 220.0f },
-        .yaw = 90,
+        .pos = $Toad_06.pos,
+        .yaw = $Toad_06.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -618,8 +618,8 @@ NpcData NpcData_Toads_Ending[] = {
     },
     {
         .id = NPC_Toad_07,
-        .pos = { 285.0f, 0.0f, 290.0f },
-        .yaw = 270,
+        .pos = $Toad_07.pos,
+        .yaw = $Toad_07.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -631,8 +631,8 @@ NpcData NpcData_Toads_Ending[] = {
 NpcData NpcData_Toadettes_Ending[] = {
     {
         .id = NPC_Toadette_03,
-        .pos = { -300.0f, 0.0f, 100.0f },
-        .yaw = 90,
+        .pos = $Toadette_03.pos,
+        .yaw = $Toadette_03.yaw,
         .init = &EVS_NpcInit_Toadette_03_Ending,
         .settings = &NpcSettings_Toadette,
         .flags = ENDING_NPC_FLAGS,
@@ -642,8 +642,8 @@ NpcData NpcData_Toadettes_Ending[] = {
     },
     {
         .id = NPC_Toadette_04,
-        .pos = { -270.0f, 0.0f, 85.0f },
-        .yaw = 270,
+        .pos = $Toadette_04.pos,
+        .yaw = $Toadette_04.yaw,
         .init = &EVS_NpcInit_Toadette_04_Ending,
         .settings = &NpcSettings_Toadette,
         .flags = ENDING_NPC_FLAGS,
@@ -653,8 +653,8 @@ NpcData NpcData_Toadettes_Ending[] = {
     },
     {
         .id = NPC_Toadette_05,
-        .pos = { -190.0f, 0.0f, 160.0f },
-        .yaw = 90,
+        .pos = $Toadette_05.pos,
+        .yaw = $Toadette_05.yaw,
         .settings = &NpcSettings_Toadette,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -663,8 +663,8 @@ NpcData NpcData_Toadettes_Ending[] = {
     },
     {
         .id = NPC_Toadette_06,
-        .pos = { 190.0f, 0.0f, 300.0f },
-        .yaw = 270,
+        .pos = $Toadette_06.pos,
+        .yaw = $Toadette_06.yaw,
         .settings = &NpcSettings_Toadette,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -676,8 +676,8 @@ NpcData NpcData_Toadettes_Ending[] = {
 NpcData NpcData_ToadGuards_Ending[] = {
     {
         .id = NPC_ToadGuard_03,
-        .pos = { 100.0f, 0.0f, 150.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_03.pos,
+        .yaw = $ToadGuard_03.yaw,
         .init = &EVS_NpcInit_ToadGuard_03_Ending,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENDING_NPC_FLAGS,
@@ -687,8 +687,8 @@ NpcData NpcData_ToadGuards_Ending[] = {
     },
     {
         .id = NPC_ToadGuard_04,
-        .pos = { -50.0f, 100.0f, -365.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_04.pos,
+        .yaw = $ToadGuard_04.yaw,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -697,8 +697,8 @@ NpcData NpcData_ToadGuards_Ending[] = {
     },
     {
         .id = NPC_ToadGuard_05,
-        .pos = { 225.0f, 0.0f, 125.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_05.pos,
+        .yaw = $ToadGuard_05.yaw,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -707,8 +707,8 @@ NpcData NpcData_ToadGuards_Ending[] = {
     },
     {
         .id = NPC_ToadGuard_06,
-        .pos = { -392.0f, 40.0f, -230.0f },
-        .yaw = 90,
+        .pos = $ToadGuard_06.pos,
+        .yaw = $ToadGuard_06.yaw,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,
@@ -717,8 +717,8 @@ NpcData NpcData_ToadGuards_Ending[] = {
     },
     {
         .id = NPC_ToadGuard_07,
-        .pos = { -392.0f, 40.0f, -230.0f },
-        .yaw = 90,
+        .pos = $ToadGuard_07.pos,
+        .yaw = $ToadGuard_07.yaw,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENDING_NPC_FLAGS,
         .drops = NO_DROPS,

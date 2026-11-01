@@ -1,4 +1,7 @@
 #include "kkj_18.h"
+#include "world/area/kkj/kkj_11.h"
+#include "world/area/kkj/kkj_19.h"
+#include "world/area/mac/mac_04.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
 
@@ -25,7 +28,7 @@ EvtScript EVS_EndPeachChapter4 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "mac_04", mac_04_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $mac_04.PeachInterlude, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
@@ -59,16 +62,16 @@ EvtScript EVS_UpdateClockPendulum = {
 EvtScript EVS_ExitDoor_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, kkj_18_ENTRY_0)
+    Set(LVar0, $UpperHall.index)
     Set(LVar1, COLLIDER_ttw)
     Set(LVar2, MODEL_o9)
     Set(LVar3, DOOR_SWING_OUT)
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(AB_KKJ_CompletedBakeStep, CAKE_TYPE_NONE)
-        Call(GotoMap, "kkj_11", kkj_11_ENTRY_6)
+        Call(GotoMap, $kkj_11.DiningRoom)
     Else
-        Call(GotoMap, "kkj_19", kkj_19_ENTRY_0)
+        Call(GotoMap, $kkj_19.EntryHall)
     EndIf
     Wait(100)
     Return

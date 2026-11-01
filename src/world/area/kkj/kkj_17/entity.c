@@ -15,7 +15,7 @@ EvtScript EVS_AutoRemoveDeepFocus = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_DEEP_FOCUS_A, 100, 0, -30, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KKJ17_Item_DeepFocus)
+    Call(MakeMarkerEntity, $Item_DeepFocusA_1)
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
         IfEq(GF_KKJ17_Item_DeepFocus, false)
             Exec(EVS_AutoRemoveDeepFocus)

@@ -1,4 +1,6 @@
 #include "mac_05.h"
+#include "world/area/kgr/kgr_01.h"
+#include "world/area/mac/mac_04.h"
 #include "world/common/prefab/Whale.h"
 
 API_CALLABLE(WaveScaleInterp) {
@@ -65,14 +67,14 @@ EvtScript EVS_AnimateFish = {
     End
 };
 
-EvtScript EVS_ExitWalk_mac_04_1 = EVT_EXIT_WALK(60, mac_05_ENTRY_0, "mac_04", mac_04_ENTRY_1);
+EvtScript EVS_ExitWalk_mac_04_1 = EVT_EXIT_WALK(60, $ResidentialDistrict, $mac_04.PortDistrict);
 
 EvtScript EVS_ExitWalk_kgr_01_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, mac_05_ENTRY_3)
+    Call(UseExitHeading, 60, $WhaleMouth.index)
     Exec(ExitWalk)
     Set(GB_StoryProgress, STORY_CH5_ENTERED_WHALE)
-    Call(GotoMap, "kgr_01", kgr_01_ENTRY_0)
+    Call(GotoMap, $kgr_01.PortDistrict)
     Wait(100)
     Return
     End
@@ -94,16 +96,16 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mac_05_ENTRY_0)
+        CaseEq($ResidentialDistrict.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(mac_05_ENTRY_1)
+        CaseEq($WhaleRide.index)
             Exec(EVS_Scene_ArriveByWhale)
             Exec(EVS_BindExitTriggers)
-        CaseEq(mac_05_ENTRY_2)
+        CaseEq($WhaleStomach.index)
             Exec(EVS_Scene_FuzzipedeDefeated)
             Exec(EVS_BindExitTriggers)
-        CaseEq(mac_05_ENTRY_3)
+        CaseEq($WhaleMouth.index)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
             Call(SetPlayerPos, -160, -10, 371)
@@ -150,7 +152,7 @@ EvtScript EVS_Main = {
             Set(LVar0, NpcSetB)
         CaseLt(STORY_CH5_RETURNED_TO_TOAD_TOWN)
             Call(GetEntryID, LVar1)
-            IfEq(LVar1, mac_05_ENTRY_1)
+            IfEq(LVar1, $WhaleRide.index)
                 IfEq(GF_MAC01_Defeated_JrTroopa4, false)
                     Set(LVar0, NpcSetC)
                 Else

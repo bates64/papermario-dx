@@ -51,10 +51,9 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerLastFloor)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, -516, -780, -71, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -453, 43, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -510, -713, 43, 0.3, LVar0)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
     Return
     End
 };

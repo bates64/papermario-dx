@@ -2,8 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HiddenYellowBlock, 315, 93, 60, 0, ITEM_THUNDER_RAGE, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SBK10_HiddenItem_ThunderRage)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_ThunderRage_1)
     Return
     End
 };

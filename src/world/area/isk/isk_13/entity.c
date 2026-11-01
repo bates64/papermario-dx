@@ -9,15 +9,14 @@ EvtScript EVS_OnSmash_Block = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_LUNAR_STONE, 460, -568, -342, ITEM_SPAWN_MODE_KEY, GF_ISK13_Item_LunarStone)
+    Call(MakeMarkerEntity, $Item_LunarStone_1)
     IfEq(GF_ISK13_Hammer2Block, false)
-        Call(MakeEntity, Entity_Hammer2BlockWideX, 568, -650, -302, 25, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnSmash_Block)
+        Call(MakeMarkerEntity, $Hammer2BlockWideX_1)
     EndIf
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 415, -453, -291, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 415, -583, -291, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 489, -453, -131, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 489, -583, -131, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_3.pos.x, $FlamePos_3.pos.y, $FlamePos_3.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_4.pos.x, $FlamePos_4.pos.y, $FlamePos_4.pos.z, 0.3, LVar0)
     Return
     End
 };

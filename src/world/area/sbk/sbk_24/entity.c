@@ -2,8 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HiddenRedBlock, 340, 60, -170, 0, ITEM_RUNAWAY_PAY, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SBK24_HiddenBadge_RunawayPay)
+    Call(MakeMarkerEntity, $HiddenRedBlock_RunawayPay_1)
     Return
     End
 };

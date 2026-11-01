@@ -1,17 +1,19 @@
 #include "nok_02.h"
+#include "world/area/nok/nok_01.h"
+#include "world/area/nok/nok_03.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_nok_01_1 = EVT_EXIT_WALK(60, nok_02_ENTRY_0, "nok_01", nok_01_ENTRY_1);
+EvtScript EVS_ExitWalk_nok_01_1 = EVT_EXIT_WALK(60, $Nok01, $nok_01.Nok02);
 
 EvtScript EVS_ExitWalk_nok_03_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, true)
     EndIf
-    Call(UseExitHeading, 60, nok_02_ENTRY_1)
+    Call(UseExitHeading, 60, $Nok03.index)
     Exec(ExitWalk)
-    Call(GotoMap, "nok_03", nok_03_ENTRY_0)
+    Call(GotoMap, $nok_03.Nok02)
     Wait(100)
     Return
     End
@@ -52,7 +54,7 @@ EvtScript EVS_TexPan_Flowers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(nok_02_ENTRY_2)
+        CaseEq($Pipe.index)
             IfEq(GF_NOK02_WarpPipe, false)
                 Call(DisablePlayerInput, true)
                 Call(DisablePlayerPhysics, true)
@@ -71,7 +73,7 @@ EvtScript EVS_EnterMap = {
             EndIf
             Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
-        CaseEq(nok_02_ENTRY_4)
+        CaseEq($Entry4.index)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
@@ -85,7 +87,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, nok_02_ENTRY_3)
+    IfEq(LVar0, $Entry3.index)
         Call(MakeNpcs, false, EpilogueNPCs)
         ExecWait(EVS_MakeEntities)
         Exec(EVS_TexPan_Flowers)

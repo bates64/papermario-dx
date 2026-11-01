@@ -2,16 +2,16 @@
 
 EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, hos_10_ENTRY_1)
+    IfEq(LVar0, $Descent.index)
         Wait(75)
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_10_ENTRY_1)
+        CaseEq($Descent.index)
             Call(MakeNpcs, false, NpcGroup_Descent)
-        CaseEq(hos_10_ENTRY_2)
+        CaseEq($FlyAway.index)
             Call(MakeNpcs, false, NpcGroup_FlyAway)
         CaseDefault
     EndSwitch
@@ -21,16 +21,16 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_10_ENTRY_1)
+        CaseEq($Descent.index)
             Wait(50)
             Exec(EVS_Scene_CastleDescending)
-        CaseEq(hos_10_ENTRY_2)
+        CaseEq($FlyAway.index)
             Exec(EVS_Scene_SpiritsFlyingAway)
-        CaseEq(hos_10_ENTRY_3)
+        CaseEq($Entry3.index)
             ExecWait(EVS_Scene_RisingAboveClouds)
-        CaseEq(hos_10_ENTRY_4)
+        CaseEq($Entry4.index)
             ExecWait(EVS_Scene_UnusedWhiteScreen)
-        CaseEq(hos_10_ENTRY_5)
+        CaseEq($PreTitle.index)
             Wait(30)
             Exec(EVS_Scene_PreTitle)
     EndSwitch

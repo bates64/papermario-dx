@@ -2,14 +2,11 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_DIZZY_DIAL, -248, 193, 45, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_ARN02_Item_DizzyDial)
-    Call(MakeItemEntity, ITEM_LETTER_TO_FICE_T, 536, 260, 227, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_ARN02_Item_LetterFiceT)
-    Call(MakeEntity, Entity_YellowBlock, -350, 172, 170, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_ARN02_ItemBlock_CoinA)
-    Call(MakeEntity, Entity_YellowBlock, 225, 265, 30, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_ARN02_ItemBlock_CoinB)
-    Call(MakeEntity, Entity_YellowBlock, 275, 265, 150, 0, ITEM_REPEL_GEL, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_ARN02_ItemBlock_RepelGel)
+    Call(MakeMarkerEntity, $Item_DizzyDial_1)
+    Call(MakeMarkerEntity, $Item_LetterToFiceT_1)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_2)
+    Call(MakeMarkerEntity, $YellowBlock_RepelGel_1)
     Return
     End
 };

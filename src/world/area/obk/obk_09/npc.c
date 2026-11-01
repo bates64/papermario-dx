@@ -134,8 +134,8 @@ EvtScript EVS_NpcInit_Bootler_Epilogue = {
 NpcData NpcData_Default[] = {
     {
         .id = NPC_Bow,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Bow.pos,
+        .yaw = $Bow.yaw,
         .init = &EVS_NpcInit_Bow,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -144,8 +144,8 @@ NpcData NpcData_Default[] = {
     },
     {
         .id = NPC_Bootler,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Bootler.pos,
+        .yaw = $Bootler.yaw,
         .init = &EVS_NpcInit_Bootler,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -155,8 +155,8 @@ NpcData NpcData_Default[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .init = &EVS_NpcInit_Skolar,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -168,8 +168,8 @@ NpcData NpcData_Default[] = {
 NpcData NpcData_Epilogue[] = {
     {
         .id = NPC_Bow,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Bow_1.pos,
+        .yaw = $Bow_1.yaw,
         .init = &EVS_NpcInit_Bow_Epilogue,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -178,8 +178,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_Bootler,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Bootler_1.pos,
+        .yaw = $Bootler_1.yaw,
         .init = &EVS_NpcInit_Bootler_Epilogue,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

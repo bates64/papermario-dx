@@ -1,13 +1,17 @@
 
 #include "kpa_33.h"
+#include "world/area/kpa/kpa_09.h"
+#include "world/area/kpa/kpa_52.h"
+#include "world/area/kpa/kpa_61.h"
+#include "world/area/kpa/kpa_94.h"
 
-EvtScript EVS_ExitWalk_kpa_94_1 = EVT_EXIT_WALK(60, kpa_33_ENTRY_0, "kpa_94", kpa_94_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_94_1 = EVT_EXIT_WALK(60, $WestJailStairs, $kpa_94.UpperGrandHall);
 EvtScript EVS_ExitDoors_kpa_61_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_1, "kpa_61", kpa_61_ENTRY_1, COLLIDER_tt3, MODEL_o1250, MODEL_b3_doa);
+    EVT_EXIT_DOUBLE_DOOR($Battlement, $kpa_61.UpperGrandHall, COLLIDER_tt3, MODEL_o1250, MODEL_b3_doa);
 EvtScript EVS_ExitDoors_kpa_52_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_2, "kpa_52", kpa_52_ENTRY_0, COLLIDER_tte, MODEL_o1252, MODEL_o1253);
+    EVT_EXIT_DOUBLE_DOOR($SplitLevelHall, $kpa_52.UpperGrandHall, COLLIDER_tte, MODEL_o1252, MODEL_o1253);
 EvtScript EVS_ExitDoors_kpa_09_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_33_ENTRY_3, "kpa_09", kpa_09_ENTRY_1, COLLIDER_tt4, MODEL_o1258, MODEL_o1259);
+    EVT_EXIT_DOUBLE_DOOR($ShroomTimingPuzzle, $kpa_09.UpperGrandHall, COLLIDER_tt4, MODEL_o1258, MODEL_o1259);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_94_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -27,23 +31,23 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_33_ENTRY_0)
+        CaseEq($WestJailStairs.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_33_ENTRY_1)
-            Set(LVar0, kpa_33_ENTRY_1)
+        CaseEq($Battlement.index)
+            Set(LVar0, $Battlement.index)
             Set(LVar2, MODEL_o1250)
             Set(LVar3, MODEL_b3_doa)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_33_ENTRY_2)
-            Set(LVar0, kpa_33_ENTRY_2)
+        CaseEq($SplitLevelHall.index)
+            Set(LVar0, $SplitLevelHall.index)
             Set(LVar2, MODEL_o1252)
             Set(LVar3, MODEL_o1253)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_33_ENTRY_3)
-            Set(LVar0, kpa_33_ENTRY_3)
+        CaseEq($ShroomTimingPuzzle.index)
+            Set(LVar0, $ShroomTimingPuzzle.index)
             Set(LVar2, MODEL_o1258)
             Set(LVar3, MODEL_o1259)
             Exec(EnterDoubleDoor)

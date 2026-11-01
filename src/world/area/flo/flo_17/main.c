@@ -1,10 +1,12 @@
 #include "flo_17.h"
+#include "world/area/flo/flo_16.h"
+#include "world/area/flo/flo_18.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript EVS_ExitWalk_flo_16_1 = EVT_EXIT_WALK(60, flo_17_ENTRY_0, "flo_16", flo_16_ENTRY_1);
-EvtScript EVS_ExitWalk_flo_18_0 = EVT_EXIT_WALK(60, flo_17_ENTRY_1, "flo_18", flo_18_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_16_1 = EVT_EXIT_WALK(60, $Flo16, $flo_16.Flo17);
+EvtScript EVS_ExitWalk_flo_18_0 = EVT_EXIT_WALK(60, $Flo18, $flo_18.Flo17);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_16_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -14,25 +16,25 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o116, .pos = { -530.0,    0.0, -110.0 }},
-    { .colliderID = COLLIDER_o118, .pos = { -540.0,    0.0,  -50.0 }},
-    { .colliderID = COLLIDER_o117, .pos = { -530.0,    0.0,   80.0 }},
-    { .colliderID = COLLIDER_o121, .pos = { -270.0,    0.0, -120.0 }},
-    { .colliderID = COLLIDER_o120, .pos = { -270.0,    0.0, -120.0 }},
-    { .colliderID = COLLIDER_o119, .pos = { -270.0,    0.0,   35.0 }},
-    { .colliderID = COLLIDER_o124, .pos = { -130.0,    0.0,  -50.0 }},
-    { .colliderID = COLLIDER_o123, .pos = { -130.0,    0.0,  -50.0 }},
-    { .colliderID = COLLIDER_o122, .pos = { -140.0,    0.0,   75.0 }},
-    { .colliderID = COLLIDER_o128, .pos = {  120.0,    0.0,  -50.0 }},
-    { .colliderID = COLLIDER_o127, .pos = {  120.0,    0.0,  -50.0 }},
-    { .colliderID = COLLIDER_o125, .pos = {  130.0,    0.0,   60.0 }},
-    { .colliderID = COLLIDER_o126, .pos = {  120.0,    0.0,  120.0 }},
-    { .colliderID = COLLIDER_o132, .pos = {  280.0,    0.0, -110.0 }},
-    { .colliderID = COLLIDER_o131, .pos = {  280.0,    0.0, -110.0 }},
-    { .colliderID = COLLIDER_o130, .pos = {  270.0,    0.0,  -50.0 }},
-    { .colliderID = COLLIDER_o129, .pos = {  280.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o134, .pos = {  525.0,    0.0,  -70.0 }},
-    { .colliderID = COLLIDER_o133, .pos = {  525.0,    0.0,   50.0 }},
+    { .colliderID = COLLIDER_o116, .pos = $LavaReset_o116.pos },
+    { .colliderID = COLLIDER_o118, .pos = $LavaReset_o118.pos },
+    { .colliderID = COLLIDER_o117, .pos = $LavaReset_o117.pos },
+    { .colliderID = COLLIDER_o121, .pos = $LavaReset_o121.pos },
+    { .colliderID = COLLIDER_o120, .pos = $LavaReset_o120.pos },
+    { .colliderID = COLLIDER_o119, .pos = $LavaReset_o119.pos },
+    { .colliderID = COLLIDER_o124, .pos = $LavaReset_o124.pos },
+    { .colliderID = COLLIDER_o123, .pos = $LavaReset_o123.pos },
+    { .colliderID = COLLIDER_o122, .pos = $LavaReset_o122.pos },
+    { .colliderID = COLLIDER_o128, .pos = $LavaReset_o128.pos },
+    { .colliderID = COLLIDER_o127, .pos = $LavaReset_o127.pos },
+    { .colliderID = COLLIDER_o125, .pos = $LavaReset_o125.pos },
+    { .colliderID = COLLIDER_o126, .pos = $LavaReset_o126.pos },
+    { .colliderID = COLLIDER_o132, .pos = $LavaReset_o132.pos },
+    { .colliderID = COLLIDER_o131, .pos = $LavaReset_o131.pos },
+    { .colliderID = COLLIDER_o130, .pos = $LavaReset_o130.pos },
+    { .colliderID = COLLIDER_o129, .pos = $LavaReset_o129.pos },
+    { .colliderID = COLLIDER_o134, .pos = $LavaReset_o134.pos },
+    { .colliderID = COLLIDER_o133, .pos = $LavaReset_o133.pos },
     { .colliderID = NO_COLLIDER }
 };
 

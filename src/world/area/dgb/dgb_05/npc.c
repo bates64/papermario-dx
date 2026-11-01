@@ -5,20 +5,9 @@
 NpcData NpcData_Clubba_01[] = {
     {
         .id = NPC_Clubba_01,
-        .pos = { 132.0f, -110.0f, 238.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 132, -110, 238 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 325, 0, 185 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Clubba_01.pos,
+        .yaw = $Clubba_01.yaw,
+        .territory = $Clubba_01.territory,
         .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
@@ -31,20 +20,9 @@ NpcData NpcData_Clubba_01[] = {
 NpcData NpcData_Clubba_02[] = {
     {
         .id = NPC_Clubba_02,
-        .pos = { 503.0f, -210.0f, 225.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 503, -210, 225 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 503, -210, 290 },
-                .detectSize = { 200, 150 },
-            }
-        },
+        .pos = $Clubba_02.pos,
+        .yaw = $Clubba_02.yaw,
+        .territory = $Clubba_02.territory,
         .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,

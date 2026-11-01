@@ -1,8 +1,10 @@
 #include "flo_16.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/flo/flo_17.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_flo_00_4 = EVT_EXIT_WALK(60, flo_16_ENTRY_0, "flo_00", flo_00_ENTRY_4);
-EvtScript EVS_ExitWalk_flo_17_0 = EVT_EXIT_WALK(60, flo_16_ENTRY_1, "flo_17", flo_17_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_00_4 = EVT_EXIT_WALK(60, $Flo00, $flo_00.Flo16);
+EvtScript EVS_ExitWalk_flo_17_0 = EVT_EXIT_WALK(60, $Flo17, $flo_17.Flo16);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_00_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -12,8 +14,8 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o190, .pos = { -310.0,    0.0,    0.0 }},
-    { .colliderID = COLLIDER_o191, .pos = {  305.0,  100.0,    0.0 }},
+    { .colliderID = COLLIDER_o190, .pos = $LavaReset_o190.pos },
+    { .colliderID = COLLIDER_o191, .pos = $LavaReset_o191.pos },
     { .colliderID = NO_COLLIDER }
 };
 

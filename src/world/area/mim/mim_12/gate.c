@@ -411,7 +411,7 @@ EvtScript EVS_SetupForestGate = {
             ExecWait(EVS_Scene_UnlockGate)
         CaseGe(STORY_CH3_UNLOCKED_GUSTY_GULCH)
             Call(GetEntryID, LVar0)
-            IfEq(LVar0, mim_12_ENTRY_0)
+            IfEq(LVar0, $Mim11.index)
                 Set(AF_MIM12_BackgroundLitUp, false)
                 Call(InitializeForestFogProperties)
             Else

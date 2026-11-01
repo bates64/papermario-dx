@@ -623,20 +623,9 @@ EvtScript EVS_NpcInit_KoloradoWife_Epilogue = {
 NpcData NpcData_Crisis[] = {
     {
         .id = NPC_Koopa_01,
-        .pos = { -109.0f, 0.0f, 191.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -109, 0, 191 },
-                .wanderSize = { 100 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -109, 0, 191 },
-                .detectSize = { 500 },
-            }
-        },
+        .pos = $Koopa_01.pos,
+        .yaw = $Koopa_01.yaw,
+        .territory = $Koopa_01.territory,
         .init = &EVS_NpcInit_Koopa_01_Crisis,
         .settings = &NpcSettings_Koopa_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -646,8 +635,8 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_FuzzyThief,
-        .pos = { -109.0f, 0.0f, 191.0f },
-        .yaw = 0,
+        .pos = $FuzzyThief.pos,
+        .yaw = $FuzzyThief.yaw,
         .init = &EVS_NpcInit_Fuzzy_Thief,
         .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
@@ -656,8 +645,8 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_KoopaShell_01,
-        .pos = { -109.0f, 0.0f, 191.0f },
-        .yaw = 0,
+        .pos = $KoopaShell_01.pos,
+        .yaw = $KoopaShell_01.yaw,
         .init = &EVS_NpcInit_KoopaShell_01_Crisis,
         .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -666,22 +655,9 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_Koopa_02,
-        .pos = { 192.0f, 0.0f, 152.0f },
-        .yaw = 0,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { 199, 0, 152 },
-                    { 107, 0, 152 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 192, 0, 152 },
-                .detectSize = { 500 },
-            }
-        },
+        .pos = $Koopa_02.pos,
+        .yaw = $Koopa_02.yaw,
+        .territory = $Koopa_02.territory,
         .init = &EVS_NpcInit_Koopa_02_Crisis,
         .settings = &NpcSettings_KoopaWithoutShell_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -691,8 +667,8 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_KoopaShell_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $KoopaShell_02.pos,
+        .yaw = $KoopaShell_02.yaw,
         .init = &EVS_NpcInit_KoopaShell_02_Crisis,
         .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -701,8 +677,8 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_Kooper,
-        .pos = { 20.0f, 0.0f, -145.0f },
-        .yaw = 0,
+        .pos = $Kooper.pos,
+        .yaw = $Kooper.yaw,
         .init = &EVS_NpcInit_Kooper,
         .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -712,8 +688,8 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_FuzzyBoss,
-        .pos = { 12.0f, 10.0f, -351.0f },
-        .yaw = 90,
+        .pos = $FuzzyBoss.pos,
+        .yaw = $FuzzyBoss.yaw,
         .init = &EVS_NpcInit_FuzzyBoss,
         .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -722,8 +698,8 @@ NpcData NpcData_Crisis[] = {
     },
     {
         .id = NPC_KoopersShell,
-        .pos = { 12.0f, 0.0f, -351.0f },
-        .yaw = 90,
+        .pos = $KoopersShell.pos,
+        .yaw = $KoopersShell.yaw,
         .init = &EVS_NpcInit_KoopersShell,
         .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -734,8 +710,8 @@ NpcData NpcData_Crisis[] = {
 
 NpcData NpcData_Fuzzy_01 = {
     .id = NPC_MiscFuzzy1,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $MiscFuzzy1.pos,
+    .yaw = $MiscFuzzy1.yaw,
     .init = &EVS_NpcInit_MiscFuzzy1,
     .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -745,8 +721,8 @@ NpcData NpcData_Fuzzy_01 = {
 
 NpcData NpcData_Fuzzy_02 = {
     .id = NPC_MiscFuzzy2,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $MiscFuzzy2.pos,
+    .yaw = $MiscFuzzy2.yaw,
     .init = &EVS_NpcInit_MiscFuzzy2,
     .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -757,20 +733,9 @@ NpcData NpcData_Fuzzy_02 = {
 NpcData NpcData_Normal[] = {
     {
         .id = NPC_Koopa_01,
-        .pos = { -109.0f, 0.0f, 191.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -124, 0, 250 },
-                .wanderSize = { 80 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -85, 0, 260 },
-                .detectSize = { 500 },
-            }
-        },
+        .pos = $Koopa_01_1.pos,
+        .yaw = $Koopa_01_1.yaw,
+        .territory = $Koopa_01_1.territory,
         .init = &EVS_NpcInit_Koopa_01_Normal,
         .settings = &NpcSettings_Koopa_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -780,20 +745,9 @@ NpcData NpcData_Normal[] = {
     },
     {
         .id = NPC_Koopa_02,
-        .pos = { 200.0f, 0.0f, 117.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 200, 0, 117 },
-                .wanderSize = { 50, 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 170 },
-                .detectSize = { 500 },
-            }
-        },
+        .pos = $Koopa_02_1.pos,
+        .yaw = $Koopa_02_1.yaw,
+        .territory = $Koopa_02_1.territory,
         .init = &EVS_NpcInit_Koopa_02_Normal,
         .settings = &NpcSettings_Koopa_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -803,8 +757,8 @@ NpcData NpcData_Normal[] = {
     },
     {
         .id = NPC_Bobomb_01,
-        .pos = { 0.0f, 0.0f, -333.0f },
-        .yaw = 180,
+        .pos = $Bobomb_01.pos,
+        .yaw = $Bobomb_01.yaw,
         .init = &EVS_NpcInit_Bobomb_01,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -814,8 +768,8 @@ NpcData NpcData_Normal[] = {
     },
     {
         .id = NPC_Bobomb_02,
-        .pos = { -7.0f, 0.0f, -285.0f },
-        .yaw = 0,
+        .pos = $Bobomb_02.pos,
+        .yaw = $Bobomb_02.yaw,
         .init = &EVS_NpcInit_Bobomb_02,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -825,8 +779,8 @@ NpcData NpcData_Normal[] = {
     },
     {
         .id = NPC_Bobomb_03,
-        .pos = { 47.0f, 0.0f, -140.0f },
-        .yaw = 270,
+        .pos = $Bobomb_03.pos,
+        .yaw = $Bobomb_03.yaw,
         .init = &EVS_NpcInit_Bobomb_03,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -836,8 +790,8 @@ NpcData NpcData_Normal[] = {
     },
     {
         .id = NPC_Kolorado,
-        .pos = { -240.0f, 0.0f, -70.0f },
-        .yaw = 0,
+        .pos = $Kolorado.pos,
+        .yaw = $Kolorado.yaw,
         .init = &EVS_NpcInit_Kolorado,
         .settings = &NpcSettings_Kolorado,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -849,8 +803,8 @@ NpcData NpcData_Normal[] = {
 
 NpcData NpcData_Fuzzy_Later = {
     .id = NPC_Fuzzy_Later,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Fuzzy_Later.pos,
+    .yaw = $Fuzzy_Later.yaw,
     .init = &EVS_NpcInit_Fuzzy_Later,
     .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
@@ -861,8 +815,8 @@ NpcData NpcData_Fuzzy_Later = {
 NpcData NpcData_Shared[] = {
     {
         .id = NPC_KoopaKoot,
-        .pos = { 330.0f, 0.0f, -100.0f },
-        .yaw = 270,
+        .pos = $KoopaKoot.pos,
+        .yaw = $KoopaKoot.yaw,
         .init = &EVS_NpcInit_KoopaKoot,
         .settings = &NpcSettings_KoopaKoot,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -872,8 +826,8 @@ NpcData NpcData_Shared[] = {
     },
     {
         .id = NPC_KoloradoWife,
-        .pos = { -328.0f, 0.0f, -180.0f },
-        .yaw = 0,
+        .pos = $KoloradoWife.pos,
+        .yaw = $KoloradoWife.yaw,
         .init = &EVS_NpcInit_KoloradoWife,
         .settings = &NpcSettings_KoloradoWife,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -883,8 +837,8 @@ NpcData NpcData_Shared[] = {
     },
     {
         .id = NPC_Koopa_03,
-        .pos = { -307.0f, 0.0f, 97.0f },
-        .yaw = 90,
+        .pos = $Koopa_03.pos,
+        .yaw = $Koopa_03.yaw,
         .init = &EVS_NpcInit_Koopa_03,
         .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -894,22 +848,9 @@ NpcData NpcData_Shared[] = {
     },
     {
         .id = NPC_Koopa_04,
-        .pos = { 285.0f, 0.0f, 223.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { 240, 0, 175 },
-                    { 350, 0, 250 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Koopa_04.pos,
+        .yaw = $Koopa_04.yaw,
+        .territory = $Koopa_04.territory,
         .init = &EVS_NpcInit_Koopa_04,
         .settings = &NpcSettings_KoopaWithoutShell_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -922,8 +863,8 @@ NpcData NpcData_Shared[] = {
 NpcData NpcData_Epilogue[] = {
     {
         .id = NPC_Parakarry,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Parakarry.pos,
+        .yaw = $Parakarry.yaw,
         .init = &EVS_NpcInit_Koopa_Epilogue,
         .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -932,8 +873,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_Bombette,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Bombette.pos,
+        .yaw = $Bombette.yaw,
         .init = &EVS_NpcInit_Bombette_Epilogue,
         .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -942,8 +883,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_KoloradoWife_Epilogue,
-        .pos = { -328.0f, 0.0f, -180.0f },
-        .yaw = 0,
+        .pos = $KoloradoWife_Epilogue.pos,
+        .yaw = $KoloradoWife_Epilogue.yaw,
         .init = &EVS_NpcInit_KoloradoWife_Epilogue,
         .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -955,8 +896,8 @@ NpcData NpcData_Epilogue[] = {
 
 NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
-    .pos = { 300.0f, 0.0f, 330.0f },
-    .yaw = 270,
+    .pos = $ChuckQuizmo.pos,
+    .yaw = $ChuckQuizmo.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_NOK, QUIZ_COUNT_NOK, QUIZ_MAP_NOK_02 }},
     .settings = &NpcSettings_ChuckQuizmo,

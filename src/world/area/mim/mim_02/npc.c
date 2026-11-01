@@ -153,8 +153,8 @@ EvtScript EVS_NpcInit_Oaklie = {
 
 NpcData NpcData_Oaklie = {
     .id = NPC_Oaklie,
-    .pos = { -426.0f, 58.0f, -70.0f },
-    .yaw = 270,
+    .pos = $Oaklie.pos,
+    .yaw = $Oaklie.yaw,
     .init = &EVS_NpcInit_Oaklie,
     .settings = &NpcSettings_Oaklie,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -165,20 +165,9 @@ NpcData NpcData_Oaklie = {
 
 NpcData NpcData_Fuzzy_01 = {
     .id = NPC_Fuzzy_01,
-    .pos = { 300.0f, 0.0f, 130.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 400 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Fuzzy_01.pos,
+    .yaw = $Fuzzy_01.yaw,
+    .territory = $Fuzzy_01.territory,
     .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = 0,
     .drops = FOREST_FUZZY_DROPS,
@@ -188,20 +177,9 @@ NpcData NpcData_Fuzzy_01 = {
 
 NpcData NpcData_Fuzzy_02 = {
     .id = NPC_Fuzzy_02,
-    .pos = { -100.0f, 0.0f, -320.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 400 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Fuzzy_02.pos,
+    .yaw = $Fuzzy_02.yaw,
+    .territory = $Fuzzy_02.territory,
     .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = 0,
     .drops = FOREST_FUZZY_DROPS,

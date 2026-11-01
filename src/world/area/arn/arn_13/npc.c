@@ -62,8 +62,8 @@ EvtScript EVS_NpcInit_HyperGoomba = {
 
 NpcData NpcData_TubbasHeart = {
     .id = NPC_TubbasHeart,
-    .pos = { 80.0f, 50.0f, 0.0f },
-    .yaw = 270,
+    .pos = $TubbasHeart.pos,
+    .yaw = $TubbasHeart.yaw,
     .init = &EVS_NpcInit_TubbasHeart,
     .settings = &NpcSettings_TubbasHeart,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
@@ -73,20 +73,9 @@ NpcData NpcData_TubbasHeart = {
 
 NpcData NpcData_HyperGoomba = {
     .id = NPC_HyperGoomba,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $HyperGoomba.pos,
+    .yaw = $HyperGoomba.yaw,
+    .territory = $HyperGoomba.territory,
     .init = &EVS_NpcInit_HyperGoomba,
     .settings = &NpcSettings_HyperGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

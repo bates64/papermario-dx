@@ -6,10 +6,10 @@ DripVolumeList DripVolumes = {
     .count = 1,
     .volumes = {
         {
-            .minPos = { -215,   35 },
-            .maxPos = {  228,  102 },
-            .startY = 210,
-            .endY   = 0,
+            .minPos = { $DripVolume_1.min.x, $DripVolume_1.min.z },
+            .maxPos = { $DripVolume_1.max.x, $DripVolume_1.max.z },
+            .startY = $DripVolume_1.max.y,
+            .endY = $DripVolume_1.min.y,
             .duration = 60,
             .density  = 2,
         }

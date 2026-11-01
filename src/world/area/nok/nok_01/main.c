@@ -1,4 +1,6 @@
 #include "nok_01.h"
+#include "world/area/nok/nok_02.h"
+#include "world/area/nok/nok_13.h"
 
 EvtScript EVS_ExitWalk_nok_13_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
@@ -7,9 +9,9 @@ EvtScript EVS_ExitWalk_nok_13_1 = {
     EndIf
     Call(StopAllRadioStations)
     Call(ClearAmbientSounds, 250)
-    Call(UseExitHeading, 60, nok_01_ENTRY_0)
+    Call(UseExitHeading, 60, $PleasantPath.index)
     Exec(ExitWalk)
-    Call(GotoMap, "nok_13", nok_13_ENTRY_1)
+    Call(GotoMap, $nok_13.KoopaVillage)
     Wait(100)
     Return
     End
@@ -19,9 +21,9 @@ EvtScript EVS_ExitWalk_nok_02_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(StopAllRadioStations)
     Call(ClearAmbientSounds, 250)
-    Call(UseExitHeading, 60, nok_01_ENTRY_1)
+    Call(UseExitHeading, 60, $Nok02.index)
     Exec(ExitWalk)
-    Call(GotoMap, "nok_02", nok_02_ENTRY_0)
+    Call(GotoMap, $nok_02.Nok01)
     Wait(100)
     Return
     End
@@ -43,7 +45,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Set(LFlag0, false)
-    IfEq(LVar0, nok_01_ENTRY_0)
+    IfEq(LVar0, $PleasantPath.index)
         IfLt(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_VILLAGE)
             Set(LFlag0, true)
             Thread

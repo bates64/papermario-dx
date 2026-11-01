@@ -6,7 +6,7 @@
 
 EvtScript EVS_NpcInit_Clubba_Napping = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, dgb_03_ENTRY_3)
+    IfEq(LVar0, $Dgb14.index)
         Call(SetNpcPos, NPC_SELF, -330, 210, -20)
     EndIf
     Return
@@ -16,20 +16,9 @@ EvtScript EVS_NpcInit_Clubba_Napping = {
 NpcData NpcData_Clubba_Wander[] = {
     {
         .id = NPC_Clubba_Wander,
-        .pos = { 180.0f, 0.0f, -122.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 180, 0, -122 },
-                .wanderSize = { 40 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 75 },
-                .detectSize = { 355, 255 },
-            }
-        },
+        .pos = $Clubba_Wander.pos,
+        .yaw = $Clubba_Wander.yaw,
+        .territory = $Clubba_Wander.territory,
         .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
@@ -42,22 +31,9 @@ NpcData NpcData_Clubba_Wander[] = {
 NpcData NpcData_Clubba_Patrol[] = {
     {
         .id = NPC_Clubba_Patrol,
-        .pos = { -272.0f, 0.0f, -135.0f },
-        .yaw = 270,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -272, 0, -135 },
-                    { -171, 0, -135 },
-                },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 75 },
-                .detectSize = { 355, 255 },
-            }
-        },
+        .pos = $Clubba_Patrol.pos,
+        .yaw = $Clubba_Patrol.yaw,
+        .territory = $Clubba_Patrol.territory,
         .settings = &NpcSettings_Clubba_Patrol,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
@@ -70,20 +46,9 @@ NpcData NpcData_Clubba_Patrol[] = {
 NpcData NpcData_Clubba_Napping[] = {
     {
         .id = NPC_Clubba_Napping,
-        .pos = { -326.0f, 210.0f, 80.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -326, 210, 80 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 75 },
-                .detectSize = { 355, 255 },
-            }
-        },
+        .pos = $Clubba_Napping.pos,
+        .yaw = $Clubba_Napping.yaw,
+        .territory = $Clubba_Napping.territory,
         .init = &EVS_NpcInit_Clubba_Napping,
         .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

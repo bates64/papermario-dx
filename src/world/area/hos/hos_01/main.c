@@ -1,16 +1,19 @@
 #include "hos_01.h"
+#include "world/area/hos/hos_00.h"
+#include "world/area/hos/hos_02.h"
+#include "world/area/kmr/kmr_24.h"
 
 #include "../common/FallingStars.inc.c"
 
 EvtScript EVS_GotoMap_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, "kmr_24", kmr_24_ENTRY_0, TRANSITION_AFTER_SAVE_PROMPT)
+    Call(GotoMapSpecial, $kmr_24.Entry0, TRANSITION_AFTER_SAVE_PROMPT)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_hos_00_1 = EVT_EXIT_WALK(60, hos_01_ENTRY_0, "hos_00", hos_00_ENTRY_1);
+EvtScript EVS_ExitWalk_hos_00_1 = EVT_EXIT_WALK(60, $ShootingStarPath, $hos_00.ShootingStarSummit);
 
 EvtScript EVS_ExitStarWarp = {
     SetGroup(EVT_GROUP_EXIT_MAP)
@@ -33,7 +36,7 @@ EvtScript EVS_ExitStarWarp = {
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     ExecWait(EVS_AscendStarWarp)
-    Call(GotoMap, "hos_02", hos_02_ENTRY_0)
+    Call(GotoMap, $hos_02.ShootingStarSummit)
     Wait(100)
     Return
     End
@@ -42,7 +45,7 @@ EvtScript EVS_ExitStarWarp = {
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_hos_00_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, hos_01_ENTRY_1)
+    IfNe(LVar0, $StarWay.index)
         BindTrigger(EVS_ExitStarWarp, TRIGGER_FLOOR_TOUCH, COLLIDER_deilin, 1, 0)
     EndIf
     Return
@@ -131,11 +134,11 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_01_ENTRY_0)
+        CaseEq($ShootingStarPath.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(hos_01_ENTRY_1)
+        CaseEq($StarWay.index)
             Thread
                 ExecWait(EVS_EnterStarWarp)
                 Exec(EVS_BindExitTriggers)

@@ -1,18 +1,19 @@
 #include "arn_08.h"
+#include "world/area/arn/arn_07.h"
 
 // equivalent to EVT_EXIT_SPLIT_SINGLE_DOOR but with a call to ClearDefeatedEnemies
 EvtScript EVS_ExitDoor_arn_07_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(ClearDefeatedEnemies)
-    Set(LVar0, arn_08_ENTRY_0)
+    Set(LVar0, $Arn07.index)
     Set(LVar1, COLLIDER_tts)
     Set(LVar2, MODEL_doa)
     Set(LVar4, MODEL_o37)
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSplitSingleDoor)
     Wait(17)
-    Call(GotoMap, "arn_07", arn_07_ENTRY_0)
+    Call(GotoMap, $arn_07.WindyMill)
     Wait(100)
     Return
     End
@@ -33,14 +34,14 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(arn_08_ENTRY_0)
+        CaseEq($Arn07.index)
             Set(LVar4, MODEL_o37)
             Set(LVar2, MODEL_doa)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSplitSingleDoor)
             Set(AF_ARN_UsingWellSpring, false)
             Exec(EVS_BindExitTriggers)
-        CaseEq(arn_08_ENTRY_1)
+        CaseEq($WellSpring.index)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
             IfEq(GB_StoryProgress, STORY_CH3_HEART_ESCAPED_WELL)

@@ -82,23 +82,13 @@ EvtScript EVS_StarBoxLaunch3 = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Chest, 1130, 0, 0, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_OMO07_Chest_FryingPan)
-    Call(AssignScript, EVS_OpenChest_FryingPan)
-    Call(MakeEntity, Entity_Chest, -910, 80, -100, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_OMO07_Chest_DefendPlusA)
-    Call(AssignScript, EVS_OpenChest_DefendPlus)
-    Call(MakeEntity, Entity_Chest, 750, 0, -100, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_OMO07_Chest_IcePower)
-    Call(AssignScript, EVS_OpenChest_IcePower)
-    Call(MakeEntity, Entity_YellowBlock, 650, 60, -30, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_OMO07_ItemBlock_Coin)
-    Call(MakeEntity, Entity_StarBoxLauncher, -330, 0, 127, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_StarBoxLaunch1)
-    Call(MakeEntity, Entity_StarBoxLauncher, -260, 0, 127, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_StarBoxLaunch2)
-    Call(MakeEntity, Entity_StarBoxLauncher, -192, 80, -132, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_StarBoxLaunch3)
+    Call(MakeMarkerEntity, $Chest_FryingPan)
+    Call(MakeMarkerEntity, $Chest_DefendPlusA)
+    Call(MakeMarkerEntity, $Chest_IcePower)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
+    Call(MakeMarkerEntity, $StarBoxLauncher_1)
+    Call(MakeMarkerEntity, $StarBoxLauncher_2)
+    Call(MakeMarkerEntity, $StarBoxLauncher_3)
     Return
     End
 };

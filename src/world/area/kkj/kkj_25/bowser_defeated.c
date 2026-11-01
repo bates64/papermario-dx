@@ -1,4 +1,5 @@
 #include "kkj_25.h"
+#include "world/area/osr/osr_03.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -295,7 +296,7 @@ EvtScript EVS_Scene_BowserDefeated = {
         Call(SetPlayerAnimation, ANIM_MarioW1_Lift)
     EndThread
     Call(NpcJump0, NPC_StarRod, 150, 60, 0, 15 * DT)
-    PlayEffect(EFFECT_RADIAL_SHIMMER, 14, 150, 60, 0, 1, 330)
+    PlayEffect(EFFECT_RADIAL_SHIMMER, 14, $RadialShimmerPos_1.pos.x, $RadialShimmerPos_1.pos.y, $RadialShimmerPos_1.pos.z, 1, 330)
     Wait(310 * DT)
     Call(ShowMessageAtScreenPos, MSG_CH8_00AA, 160, 40)
     Call(PlaySound, SOUND_LRAW_KPA_ARENA_ACTIVE)
@@ -378,7 +379,7 @@ EvtScript EVS_Scene_BowserDefeated = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(40)
     Call(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 220, -43, 350)
-    PlayEffect(EFFECT_RING_BLAST, 0, 220, -43, 350, 8.0, 40)
+    PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_1.pos.x, $RingBlastPos_1.pos.y, $RingBlastPos_1.pos.z, 8.0, 40)
     Set(MV_DestructState, DESTRUCT_STATE_2)
     Wait(50)
     Set(MV_ArenaState, ARENA_STATE_OVERLOADING)
@@ -405,7 +406,7 @@ EvtScript EVS_Scene_BowserDefeated = {
     Wait(20)
     Call(SpeakToPlayer, NPC_Bowser_03, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 512, MSG_CH8_00AD)
     Call(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 370, -10, 180)
-    PlayEffect(EFFECT_RING_BLAST, 0, 370, -10, 180, 6.0, 40)
+    PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_2.pos.x, $RingBlastPos_2.pos.y, $RingBlastPos_2.pos.z, 6.0, 40)
     Set(MV_DestructState, DESTRUCT_STATE_3)
     Wait(20)
     Call(InterpNpcYaw, NPC_Peach_02, 90, 0)
@@ -438,7 +439,7 @@ EvtScript EVS_Scene_BowserDefeated = {
     Call(SpeakToNpc, NPC_Bowser_03, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 512, NPC_Kammy_05, MSG_CH8_00AE)
     Wait(5)
     Call(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 350, 50, -100)
-    PlayEffect(EFFECT_RING_BLAST, 0, 350, 50, -100, 4.0, 20)
+    PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_3.pos.x, $RingBlastPos_3.pos.y, $RingBlastPos_3.pos.z, 4.0, 20)
     Set(MV_DestructState, DESTRUCT_STATE_5)
     Wait(25)
     Call(SpeakToNpc, NPC_Kammy_05, ANIM_BattleKammy_FlyTalk, ANIM_BattleKammy_FlyStill, 512, NPC_Bowser_03, MSG_CH8_00AF)
@@ -450,7 +451,7 @@ EvtScript EVS_Scene_BowserDefeated = {
     EndThread
     Thread
         Call(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 570, 0, 100)
-        PlayEffect(EFFECT_RING_BLAST, 0, 570, 0, 100, 4.0, 20)
+        PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_4.pos.x, $RingBlastPos_4.pos.y, $RingBlastPos_4.pos.z, 4.0, 20)
         Set(MV_DestructState, DESTRUCT_STATE_6)
     EndThread
     Wait(30)
@@ -459,7 +460,7 @@ EvtScript EVS_Scene_BowserDefeated = {
     Wait(20)
     Call(StopSound, SOUND_LRAW_RUMBLE)
     Call(PlaySoundAt, SOUND_KPA_EXPLOSION_CLUSTER, SOUND_SPACE_DEFAULT, 500, 0, 100)
-    PlayEffect(EFFECT_RING_BLAST, 0, 500, 0, 100, 8.0, 90)
+    PlayEffect(EFFECT_RING_BLAST, 0, $RingBlastPos_5.pos.x, $RingBlastPos_5.pos.y, $RingBlastPos_5.pos.z, 8.0, 90)
     Set(MV_DestructState, DESTRUCT_STATE_7)
     Call(SetNpcAnimation, NPC_Bowser_03, ANIM_WorldBowser_Shock)
     Call(ShowMessageAtScreenPos, MSG_CH8_00B1, 160, 40)
@@ -494,7 +495,7 @@ EvtScript EVS_Scene_BowserDefeated = {
         Call(FadeScreenFromWhite)
     EndThread
     ExecWait(EVS_BowserAndKammyBlownAway)
-    Call(GotoMap, "osr_03", osr_03_ENTRY_5)
+    Call(GotoMap, $osr_03.CastleDestruction)
     Wait(100)
     Return
     End

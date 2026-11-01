@@ -25,8 +25,8 @@ EvtScript EVS_NpcInit_Boo = {
 
 NpcData NpcData_Boo = {
     .id = NPC_Boo,
-    .pos = { -300.0f, 10.0f, 150.0f },
-    .yaw = 270,
+    .pos = $Boo.pos,
+    .yaw = $Boo.yaw,
     .init = &EVS_NpcInit_Boo,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,

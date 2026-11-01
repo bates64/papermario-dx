@@ -49,7 +49,7 @@ EvtScript EVS_MonitorCeilingPound = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Switch(LVar0)
             CaseRange(620, 660)
-                Call(MakeItemEntity, ITEM_STAR_PIECE, 640, 145, -100, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_FLO16_Item_StarPiece)
+                Call(MakeMarkerEntity, $Item_StarPiece_1)
                 Set(AF_FLO16_FoundHiddenStarPiece, true)
         EndSwitch
     EndIf
@@ -61,8 +61,7 @@ EvtScript EVS_MakeEntities = {
     Set(AF_FLO16_FoundHiddenStarPiece, false)
     BindTrigger(EVS_MonitorCeilingPound, TRIGGER_FLOOR_TOUCH, COLLIDER_o214, 1, 0)
     EVT_MAKE_SUPER_BLOCK(350, 240, -100, 0)
-    Call(MakeEntity, Entity_ScriptSpring, 472, 100, -100, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Return
     End
 };

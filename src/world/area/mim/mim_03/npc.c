@@ -43,8 +43,8 @@ EvtScript EVS_NpcInit_Oaklie = {
 
 NpcData NpcData_Oaklie = {
     .id = NPC_Oaklie,
-    .pos = { 0.0f, 32.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Oaklie.pos,
+    .yaw = $Oaklie.yaw,
     .init = &EVS_NpcInit_Oaklie,
     .settings = &NpcSettings_Oaklie,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

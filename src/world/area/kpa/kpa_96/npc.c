@@ -142,8 +142,8 @@ EvtScript EVS_NpcInit_SpikedGoomba = {
 
 NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
-    .pos = { -122.0f, 0.0f, 163.0f },
-    .yaw = 90,
+    .pos = $SpikedGoomba.pos,
+    .yaw = $SpikedGoomba.yaw,
     .init = &EVS_NpcInit_SpikedGoomba,
     .settings = &NpcSettings_SpikedGoomba,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

@@ -1,4 +1,5 @@
 #include "obk_09.h"
+#include "world/area/omo/omo_03.h"
 
 API_CALLABLE(SetInvitationLetterScale) {
     get_item_entity(script->varTable[0])->scale = 0.6f;
@@ -52,7 +53,7 @@ EvtScript EVS_Scene_Epilogue = {
     Call(SetNpcAnimation, NPC_Bow, ANIM_WorldBow_CelebrateSlow)
     Wait(30)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, "omo_03", omo_03_ENTRY_5)
+    Call(GotoMap, $omo_03.Epilogue)
     Wait(100)
     Return
     End

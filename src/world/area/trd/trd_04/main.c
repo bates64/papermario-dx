@@ -1,4 +1,8 @@
 #include "trd_04.h"
+#include "world/area/trd/trd_03.h"
+#include "world/area/trd/trd_05.h"
+#include "world/area/trd/trd_06.h"
+#include "world/area/trd/trd_07.h"
 #include "effects.h"
 
 extern EvtScript EVS_Main;
@@ -10,21 +14,20 @@ extern NpcGroupList NpcGroupBefore;
 extern NpcGroupList NpcGroupAfter;
 
 EvtScript EVS_ExitDoors_trd_03_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_0, "trd_03", trd_03_ENTRY_1, COLLIDER_ttw2, MODEL_o6, MODEL_o7);
+    EVT_EXIT_DOUBLE_DOOR($Trd03Lower, $trd_03.Trd02Lower, COLLIDER_ttw2, MODEL_o6, MODEL_o7);
 
 EvtScript EVS_ExitDoors_trd_05_0 =
-    EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_1, "trd_05", trd_05_ENTRY_0, COLLIDER_tte2, MODEL_o9, MODEL_o8);
+    EVT_EXIT_DOUBLE_DOOR($Trd05Lower, $trd_05.Trd04Lower, COLLIDER_tte2, MODEL_o9, MODEL_o8);
 
 EvtScript EVS_ExitDoors_trd_03_3 =
-    EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_2, "trd_03", trd_03_ENTRY_3, COLLIDER_ttw3, MODEL_o13, MODEL_o12);
+    EVT_EXIT_DOUBLE_DOOR($Trd03Upper, $trd_03.Trd04Upper, COLLIDER_ttw3, MODEL_o13, MODEL_o12);
 
 EvtScript EVS_ExitDoors_trd_05_3 =
-    EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_3, "trd_05", trd_05_ENTRY_3, COLLIDER_tte3, MODEL_o10, MODEL_o11);
+    EVT_EXIT_DOUBLE_DOOR($Trd05Upper, $trd_05.Trd04Upper, COLLIDER_tte3, MODEL_o10, MODEL_o11);
 
-EvtScript EVS_ExitWalk_trd_07_0 = EVT_EXIT_WALK(60, trd_04_ENTRY_4, "trd_07", trd_07_ENTRY_0);
+EvtScript EVS_ExitWalk_trd_07_0 = EVT_EXIT_WALK(60, $Trd07, $trd_07.Trd04);
 
-EvtScript EVS_ExitDoors_trd_06_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_5, "trd_06", trd_06_ENTRY_1, COLLIDER_tte, MODEL_o29, MODEL_o28);
+EvtScript EVS_ExitDoors_trd_06_1 = EVT_EXIT_DOUBLE_DOOR($Trd06, $trd_06.Trd04, COLLIDER_tte, MODEL_o29, MODEL_o28);
 
 ITEM_LIST(KeyList, ITEM_KOOPA_FORTRESS_KEY);
 
@@ -60,30 +63,30 @@ EvtScript EVS_EnterMap = {
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_04_ENTRY_0)
+        CaseEq($Trd03Lower.index)
             Set(LVar2, MODEL_o6)
             Set(LVar3, MODEL_o7)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_04_ENTRY_1)
+        CaseEq($Trd05Lower.index)
             Set(LVar2, MODEL_o9)
             Set(LVar3, MODEL_o8)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_04_ENTRY_2)
+        CaseEq($Trd03Upper.index)
             Set(LVar2, MODEL_o13)
             Set(LVar3, MODEL_o12)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_04_ENTRY_3)
+        CaseEq($Trd05Upper.index)
             Set(LVar2, MODEL_o10)
             Set(LVar3, MODEL_o11)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_04_ENTRY_4)
+        CaseEq($Trd07.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(trd_04_ENTRY_5)
+        CaseEq($Trd06.index)
             Set(LVar2, MODEL_o29)
             Set(LVar3, MODEL_o28)
             ExecWait(EnterDoubleDoor)

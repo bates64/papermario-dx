@@ -7,7 +7,7 @@
 
 EvtScript EVS_NpcInteract_TrainToad_01 = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, iwa_10_ENTRY_0)
+    IfEq(LVar0, $Train.index)
         Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_White_Talk, ANIM_TrainToad_White_Idle, 0, MSG_CH2_0001)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_White_Talk, ANIM_TrainToad_White_Idle, 0, MSG_CH2_0002)
@@ -31,7 +31,7 @@ EvtScript EVS_NpcInit_TrainToad_01 = {
 EvtScript EVS_NpcInit_TrainToad_02 = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, iwa_10_ENTRY_0)
+    IfEq(LVar0, $Train.index)
         Call(SetNpcPos, NPC_SELF, -425, 70, -20)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Else
@@ -124,8 +124,8 @@ EvtScript EVS_NpcInit_Toadette_01 = {
 NpcData NpcData_TrainToad[] = {
     {
         .id = NPC_TrainToad_01,
-        .pos = { -440.0f, 20.0f, 110.0f },
-        .yaw = 90,
+        .pos = $TrainToad_01.pos,
+        .yaw = $TrainToad_01.yaw,
         .init = &EVS_NpcInit_TrainToad_01,
         .settings = &NpcSettings_TrainToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -135,8 +135,8 @@ NpcData NpcData_TrainToad[] = {
     },
     {
         .id = NPC_TrainToad_02,
-        .pos = { -425.0f, 70.0f, -20.0f },
-        .yaw = 0,
+        .pos = $TrainToad_02.pos,
+        .yaw = $TrainToad_02.yaw,
         .init = &EVS_NpcInit_TrainToad_02,
         .settings = &NpcSettings_TrainToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -147,8 +147,8 @@ NpcData NpcData_TrainToad[] = {
 
 NpcData NpcData_Toad = {
     .id = NPC_Toad,
-    .pos = { -254.0f, 20.0f, 165.0f },
-    .yaw = 270,
+    .pos = $Toad.pos,
+    .yaw = $Toad.yaw,
     .init = &EVS_NpcInit_Toad,
     .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -160,8 +160,8 @@ NpcData NpcData_Toad = {
 NpcData NpcData_Toadette[] = {
     {
         .id = NPC_Toadette_02,
-        .pos = { -562.0f, 0.0f, 384.0f },
-        .yaw = 90,
+        .pos = $Toadette_02.pos,
+        .yaw = $Toadette_02.yaw,
         .init = &EVS_NpcInit_Toadette_02,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -171,8 +171,8 @@ NpcData NpcData_Toadette[] = {
     },
     {
         .id = NPC_Toadette_03,
-        .pos = { -582.0f, 0.0f, 406.0f },
-        .yaw = 90,
+        .pos = $Toadette_03.pos,
+        .yaw = $Toadette_03.yaw,
         .init = &EVS_NpcInit_Toadette_02,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -182,8 +182,8 @@ NpcData NpcData_Toadette[] = {
     },
     {
         .id = NPC_Toadette_04,
-        .pos = { -524.0f, 0.0f, 411.0f },
-        .yaw = 270,
+        .pos = $Toadette_04.pos,
+        .yaw = $Toadette_04.yaw,
         .init = &EVS_NpcInit_Toadette_02,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -196,8 +196,8 @@ NpcData NpcData_Toadette[] = {
 NpcData NpcData_Dryite[] = {
     {
         .id = NPC_Dryite,
-        .pos = { -344.0f, 0.0f, 379.0f },
-        .yaw = 270,
+        .pos = $Dryite.pos,
+        .yaw = $Dryite.yaw,
         .init = &EVS_NpcInit_Dryite,
         .settings = &NpcSettings_Dryite,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -207,8 +207,8 @@ NpcData NpcData_Dryite[] = {
     },
     {
         .id = NPC_Toadette_01,
-        .pos = { -760.0f, 0.0f, 160.0f },
-        .yaw = 90,
+        .pos = $Toadette_01.pos,
+        .yaw = $Toadette_01.yaw,
         .init = &EVS_NpcInit_Toadette_01,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

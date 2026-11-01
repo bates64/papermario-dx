@@ -1,8 +1,11 @@
 #include "sam_10.h"
+#include "world/area/pra/pra_01.h"
+#include "world/area/sam/sam_09.h"
+#include "world/area/sam/sam_12.h"
 
-EvtScript EVS_ExitWalk_sam_09_1 = EVT_EXIT_WALK(60, sam_10_ENTRY_0, "sam_09", sam_09_ENTRY_1);
-EvtScript EVS_ExitWalk_pra_01_0 = EVT_EXIT_WALK(60, sam_10_ENTRY_1, "pra_01", pra_01_ENTRY_0);
-EvtScript EVS_ExitWalk_sam_12_0 = EVT_EXIT_WALK(60, sam_10_ENTRY_2, "sam_12", sam_12_ENTRY_0);
+EvtScript EVS_ExitWalk_sam_09_1 = EVT_EXIT_WALK(60, $MountainTunnel, $sam_09.MountainPeaks);
+EvtScript EVS_ExitWalk_pra_01_0 = EVT_EXIT_WALK(60, $CrystalPalace, $pra_01.MountainPeaks);
+EvtScript EVS_ExitWalk_sam_12_0 = EVT_EXIT_WALK(60, $MerlarsSanctuary, $sam_12.MountainPeaks);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sam_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -20,7 +23,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfLt(LVar0, sam_10_ENTRY_3)
+    IfLt(LVar0, $Entry3.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

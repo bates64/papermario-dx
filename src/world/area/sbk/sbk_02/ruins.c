@@ -1,4 +1,5 @@
 #include "sbk_02.h"
+#include "world/area/sbk/sbk_30.h"
 #include "effects.h"
 #include "model.h"
 
@@ -56,8 +57,8 @@ API_CALLABLE(InterpWorldEnvColor) {
 ITEM_LIST(PedestalKeyList, ITEM_PULSE_STONE);
 
 EvtScript EVS_Pedestal_Sink = {
-    PlayEffect(EFFECT_SMOKE_IMPACT, 0, 0, 0, 0, 20, 10, 0, 60)
-    PlayEffect(EFFECT_DUST, 2, 0, 0, 0, 60)
+    PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_1.pos.x, $SmokeImpactPos_1.pos.y, $SmokeImpactPos_1.pos.z, 20, 10, 0, 60)
+    PlayEffect(EFFECT_DUST, 2, $DustPos_1.pos.x, $DustPos_1.pos.y, $DustPos_1.pos.z, 60)
     Call(PlaySoundAtCollider, COLLIDER_iwa, SOUND_SBK_RUINS_PEDESTAL_SINK, SOUND_SPACE_DEFAULT)
     Set(LVar2, 0)
     Call(MakeLerp, 0, -50, 50, EASING_LINEAR)
@@ -312,16 +313,16 @@ EvtScript EVS_Ruins_Arise = {
     Thread
         Wait(100)
         Loop(5)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 0, -180, 0, 260, 20, 10, 0, 60)
-            PlayEffect(EFFECT_DUST, 2, -180, 0, 260, 60)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_2.pos.x, $SmokeImpactPos_2.pos.y, $SmokeImpactPos_2.pos.z, 20, 10, 0, 60)
+            PlayEffect(EFFECT_DUST, 2, $DustPos_2.pos.x, $DustPos_2.pos.y, $DustPos_2.pos.z, 60)
             Wait(40)
         EndLoop
     EndThread
     Thread
         Wait(110)
         Loop(4)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 0, 180, 0, 260, 20, 10, 0, 60)
-            PlayEffect(EFFECT_DUST, 2, 180, 0, 260, 60)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_3.pos.x, $SmokeImpactPos_3.pos.y, $SmokeImpactPos_3.pos.z, 20, 10, 0, 60)
+            PlayEffect(EFFECT_DUST, 2, $DustPos_3.pos.x, $DustPos_3.pos.y, $DustPos_3.pos.z, 60)
             Wait(50)
         EndLoop
     EndThread
@@ -378,16 +379,16 @@ EvtScript EVS_Ruins_FinishRising = {
     EndThread
     Thread
         Loop(3)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 0, -180, 0, 260, 20, 10, 0, 60)
-            PlayEffect(EFFECT_DUST, 2, -180, 0, 260, 60)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_2.pos.x, $SmokeImpactPos_2.pos.y, $SmokeImpactPos_2.pos.z, 20, 10, 0, 60)
+            PlayEffect(EFFECT_DUST, 2, $DustPos_2.pos.x, $DustPos_2.pos.y, $DustPos_2.pos.z, 60)
             Wait(40)
         EndLoop
     EndThread
     Thread
         Wait(10)
         Loop(2)
-            PlayEffect(EFFECT_SMOKE_IMPACT, 0, 180, 0, 260, 20, 10, 0, 60)
-            PlayEffect(EFFECT_DUST, 2, 180, 0, 260, 60)
+            PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_3.pos.x, $SmokeImpactPos_3.pos.y, $SmokeImpactPos_3.pos.z, 20, 10, 0, 60)
+            PlayEffect(EFFECT_DUST, 2, $DustPos_3.pos.x, $DustPos_3.pos.y, $DustPos_3.pos.z, 60)
             Wait(50)
         EndLoop
     EndThread
@@ -564,11 +565,11 @@ EvtScript EVS_Steps_Unfold = {
             BreakLoop
         EndIf
     EndLoop
-    PlayEffect(EFFECT_SMOKE_IMPACT, 0, 61, 2, -83, 20, 10, 0, 60)
-    PlayEffect(EFFECT_DUST, 2, 61, 2, -83, 60)
+    PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_4.pos.x, $SmokeImpactPos_4.pos.y, $SmokeImpactPos_4.pos.z, 20, 10, 0, 60)
+    PlayEffect(EFFECT_DUST, 2, $DustPos_4.pos.x, $DustPos_4.pos.y, $DustPos_4.pos.z, 60)
     Wait(3)
-    PlayEffect(EFFECT_SMOKE_IMPACT, 0, -61, 2, -83, 20, 10, 0, 60)
-    PlayEffect(EFFECT_DUST, 2, -61, 2, -83, 60)
+    PlayEffect(EFFECT_SMOKE_IMPACT, 0, $SmokeImpactPos_5.pos.x, $SmokeImpactPos_5.pos.y, $SmokeImpactPos_5.pos.z, 20, 10, 0, 60)
+    PlayEffect(EFFECT_DUST, 2, $DustPos_5.pos.x, $DustPos_5.pos.y, $DustPos_5.pos.z, 60)
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     Return
     End
@@ -641,9 +642,9 @@ EvtScript EVS_OnInteract_Pedestal = {
     Wait(60)
     Wait(50)
     IfEq(LFlag0, false)
-        Call(GotoMap, "sbk_30", sbk_30_ENTRY_4)
+        Call(GotoMap, $sbk_30.RuinsRisingA)
     Else
-        Call(GotoMap, "sbk_30", sbk_30_ENTRY_5)
+        Call(GotoMap, $sbk_30.RuinsRisingB)
     EndIf
     Wait(100)
     Return

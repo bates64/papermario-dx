@@ -1,6 +1,7 @@
 #include "isk_14.h"
+#include "world/area/isk/isk_10.h"
 
-EvtScript EVS_ExitWalk_isk_10_1 = EVT_EXIT_WALK(40, isk_14_ENTRY_0, "isk_10", isk_10_ENTRY_1);
+EvtScript EVS_ExitWalk_isk_10_1 = EVT_EXIT_WALK(40, $VerticalShaft, $isk_10.DiamondStoneRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_10_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

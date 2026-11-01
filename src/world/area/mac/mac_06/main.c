@@ -57,7 +57,7 @@ EvtScript EVS_Main = {
     Call(SetTexPanner, MODEL_o214, TEX_PANNER_1)
     Call(SpawnSunEffect, FX_SUN_FROM_LEFT)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_06_ENTRY_0)
+    IfEq(LVar0, $PortDistrict.index)
         Thread
             TEX_PAN_PARAMS_ID(TEX_PANNER_1)
             TEX_PAN_PARAMS_STEP(  400,  150,  200,  -60)

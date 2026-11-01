@@ -207,7 +207,7 @@ EvtScript EVS_Scene_ReceiveStarBeam = {
     Call(NpcJump0, NPC_Kalmar, LVar0, LVar1, LVar2, 5)
     Call(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Idle)
     Thread
-        PlayEffect(EFFECT_RADIAL_SHIMMER, 2, 0, 154, 85, 2.8, 100)
+        PlayEffect(EFFECT_RADIAL_SHIMMER, 2, $RadialShimmerPos_1.pos.x, $RadialShimmerPos_1.pos.y, $RadialShimmerPos_1.pos.z, 2.8, 100)
         Call(PlaySound, SOUND_RELEASE_ENERGY)
         Wait(115)
         Call(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
@@ -216,27 +216,27 @@ EvtScript EVS_Scene_ReceiveStarBeam = {
     EndThread
     Wait(40)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 10, 154, 88)
-    PlayEffect(EFFECT_SPARKLES, 0, 10, 154, 88, 10)
+    PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 10)
     Wait(6)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 10, 154, 88)
-    PlayEffect(EFFECT_SPARKLES, 0, 10, 154, 88, 15)
+    PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 15)
     Wait(6)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, -10, 154, 88)
-    PlayEffect(EFFECT_SPARKLES, 0, -10, 154, 88, 20)
+    PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_2.pos.x, $SparklesPos_2.pos.y, $SparklesPos_2.pos.z, 20)
     Wait(6)
     Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 10, 154, 88)
-    PlayEffect(EFFECT_SPARKLES, 0, 10, 154, 88, 25)
+    PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 25)
     Wait(6)
     Call(SetPlayerAnimation, ANIM_Mario1_UsePower)
     Loop(3)
         Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 0, 154, 88)
-        PlayEffect(EFFECT_SPARKLES, 0, 0, 154, 88, 30)
+        PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_3.pos.x, $SparklesPos_3.pos.y, $SparklesPos_3.pos.z, 30)
         Wait(6)
         Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, -10, 154, 88)
-        PlayEffect(EFFECT_SPARKLES, 0, -10, 154, 88, 30)
+        PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_2.pos.x, $SparklesPos_2.pos.y, $SparklesPos_2.pos.z, 30)
         Wait(6)
         Call(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 10, 154, 88)
-        PlayEffect(EFFECT_SPARKLES, 0, 10, 154, 88, 30)
+        PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 30)
         Wait(6)
     EndLoop
     Call(UnlockStarBeam)
@@ -294,7 +294,7 @@ EvtScript EVS_Scene_ReceiveStarBeam = {
 EvtScript EVS_NpcInit_StarSpirit = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseRange(hos_05_ENTRY_0, hos_05_ENTRY_1)
+        CaseRange($OutsideSanctuary.index, $StarShip.index)
             Call(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Back)
             Call(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Back)
             Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Back)
@@ -385,8 +385,8 @@ AnimID LimitAnims_Kalmar[] = {
 NpcData NpcData_StarSpirits[] = {
     {
         .id = NPC_Mamar,
-        .pos = { 220.0f, 220.0f, -170.0f },
-        .yaw = 270,
+        .pos = $Mamar.pos,
+        .yaw = $Mamar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -396,8 +396,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { -275.0f, 220.0f, 60.0f },
-        .yaw = 90,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -407,8 +407,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Muskular,
-        .pos = { 125.0f, 220.0f, 250.0f },
-        .yaw = 270,
+        .pos = $Muskular.pos,
+        .yaw = $Muskular.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -418,8 +418,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Misstar,
-        .pos = { -125.0f, 220.0f, 250.0f },
-        .yaw = 90,
+        .pos = $Misstar.pos,
+        .yaw = $Misstar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -429,8 +429,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Klevar,
-        .pos = { 275.0f, 220.0f, 60.0f },
-        .yaw = 270,
+        .pos = $Klevar.pos,
+        .yaw = $Klevar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -440,8 +440,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Kalmar,
-        .pos = { -220.0f, 220.0f, -170.0f },
-        .yaw = 90,
+        .pos = $Kalmar.pos,
+        .yaw = $Kalmar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -451,8 +451,8 @@ NpcData NpcData_StarSpirits[] = {
     },
     {
         .id = NPC_Eldstar,
-        .pos = { 0.0f, 220.0f, -275.0f },
-        .yaw = 270,
+        .pos = $Eldstar.pos,
+        .yaw = $Eldstar.yaw,
         .init = &EVS_NpcInit_StarSpirit,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -490,8 +490,8 @@ AnimID LimitAnims_Kammy[] = {
 NpcData NpcData_Thieves[] = {
     {
         .id = NPC_Bowser_Body,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Bowser_Body.pos,
+        .yaw = $Bowser_Body.yaw,
         .settings = &NpcSettings_Bowser,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -500,8 +500,8 @@ NpcData NpcData_Thieves[] = {
     },
     {
         .id = NPC_Bowser_Prop,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Bowser_Prop.pos,
+        .yaw = $Bowser_Prop.yaw,
         .settings = &NpcSettings_Bowser,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -510,8 +510,8 @@ NpcData NpcData_Thieves[] = {
     },
     {
         .id = NPC_Kammy,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Kammy.pos,
+        .yaw = $Kammy.yaw,
         .settings = &NpcSettings_Kammy_Flying,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
@@ -520,8 +520,8 @@ NpcData NpcData_Thieves[] = {
     },
     {
         .id = NPC_StarRod,
-        .pos = { 0.0f, 174.0f, 0.0f },
-        .yaw = 270,
+        .pos = $StarRod.pos,
+        .yaw = $StarRod.yaw,
         .settings = &NpcSettings_StarRod,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,

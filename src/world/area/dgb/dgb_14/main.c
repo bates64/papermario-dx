@@ -1,23 +1,25 @@
 #include "dgb_14.h"
+#include "world/area/dgb/dgb_03.h"
+#include "world/area/dgb/dgb_15.h"
 #include "sprite/player.h"
 
 EvtScript EVS_ExitDoors_dgb_03_3 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_14_ENTRY_1, "dgb_03", dgb_03_ENTRY_3, COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+    $Dgb15, $dgb_03.Dgb14, COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_15_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_14_ENTRY_0, "dgb_15", dgb_15_ENTRY_0, COLLIDER_deilittne, MODEL_o31, MODEL_o30, DOOR_SOUNDS_CREAKY
+    $Dgb03, $dgb_15.Dgb14, COLLIDER_deilittne, MODEL_o31, MODEL_o30, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_14_ENTRY_0)
+        CaseEq($Dgb03.index)
             Set(LVar2, MODEL_o102)
             Set(LVar3, MODEL_o101)
             ExecWait(EnterDoubleDoor)
-        CaseEq(dgb_14_ENTRY_1)
+        CaseEq($Dgb15.index)
             Call(DisablePlayerInput, true)
             Set(LVar2, MODEL_o31)
             Set(LVar3, MODEL_o30)

@@ -1,27 +1,31 @@
 #include "tik_06.h"
+#include "world/area/mac/mac_02.h"
+#include "world/area/tik/tik_01.h"
+#include "world/area/tik/tik_08.h"
+#include "world/area/tik/tik_18.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_01_0 = EVT_EXIT_WALK(60, tik_06_ENTRY_0, "tik_01", tik_01_ENTRY_0);
-EvtScript EVS_ExitWalk_tik_18_0 = EVT_EXIT_WALK(60, tik_06_ENTRY_1, "tik_18", tik_18_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_01_0 = EVT_EXIT_WALK(60, $WarpZone1, $tik_01.SewerEntrance);
+EvtScript EVS_ExitWalk_tik_18_0 = EVT_EXIT_WALK(60, $HallToBlooper, $tik_18.SewerEntrance);
 
 EvtScript EVS_GotoMap_mac_02_4 = {
-    Call(GotoMap, "mac_02", mac_02_ENTRY_4)
+    Call(GotoMap, $mac_02.SewerPipe)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_OnEnterPipe_Upward = EVT_EXIT_PIPE_HORIZONTAL(tik_06_ENTRY_3, COLLIDER_o89, EVS_GotoMap_mac_02_4);
+EvtScript EVS_OnEnterPipe_Upward = EVT_EXIT_PIPE_HORIZONTAL($SouthernDistrict, COLLIDER_o89, EVS_GotoMap_mac_02_4);
 
 EvtScript EVS_GotoMap_tik_08_3 = {
-    Call(GotoMap, "tik_08", tik_08_ENTRY_3)
+    Call(GotoMap, $tik_08.SewerEntrance)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_OnEnterPipe_Downward = EVT_EXIT_PIPE_VERTICAL(tik_06_ENTRY_2, COLLIDER_o57, EVS_GotoMap_tik_08_3);
+EvtScript EVS_OnEnterPipe_Downward = EVT_EXIT_PIPE_VERTICAL($SecondLevelEntry, COLLIDER_o57, EVS_GotoMap_tik_08_3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_01_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -41,10 +45,10 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_06_ENTRY_2)
+        CaseEq($SecondLevelEntry.index)
             Set(LVarA, EVS_BindExitTriggers)
             Exec(EVS_Pipe_EnterVertical)
-        CaseEq(tik_06_ENTRY_3)
+        CaseEq($SouthernDistrict.index)
             Set(LVarA, EVS_BindExitTriggers)
             Set(LVarB, COLLIDER_o89)
             Exec(EVS_Pipe_EnterHorizontal)

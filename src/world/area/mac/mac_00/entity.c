@@ -10,9 +10,8 @@ EvtScript EVS_Inspect_StreetSign = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HiddenPanel, 545, 20, 205, 0, MODEL_o262, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_MAC00_HiddenPanel)
-    Call(MakeItemEntity, ITEM_STAR_PIECE, -420, 20, 410, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC00_Item_StarPiece)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $Item_StarPiece_1)
     BindTrigger(EVS_Inspect_StreetSign, TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     Return
     End

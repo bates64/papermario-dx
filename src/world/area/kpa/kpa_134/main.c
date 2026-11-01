@@ -1,11 +1,13 @@
 #include "kpa_134.h"
+#include "world/area/kpa/kpa_130.h"
+#include "world/area/kpa/kpa_133.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_kpa_133_1 = EVT_EXIT_WALK(40, kpa_134_ENTRY_0, "kpa_133", kpa_133_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_133_1 = EVT_EXIT_WALK(40, $LeftPuzzleLow, $kpa_133.RightPuzzleLow);
 EvtScript EVS_ExitDoors_kpa_130_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_134_ENTRY_1, "kpa_130", kpa_130_ENTRY_0, COLLIDER_nno, MODEL_o408, MODEL_o409);
-EvtScript EVS_ExitWalk_kpa_133_2 = EVT_EXIT_WALK(40, kpa_134_ENTRY_2, "kpa_133", kpa_133_ENTRY_2);
-EvtScript EVS_ExitWalk_kpa_133_3 = EVT_EXIT_WALK(40, kpa_134_ENTRY_3, "kpa_133", kpa_133_ENTRY_3);
+    EVT_EXIT_DOUBLE_DOOR($BillBlasterHall, $kpa_130.RightWaterPuzzle, COLLIDER_nno, MODEL_o408, MODEL_o409);
+EvtScript EVS_ExitWalk_kpa_133_2 = EVT_EXIT_WALK(40, $LeftPuzzleMid, $kpa_133.RightPuzzleMid);
+EvtScript EVS_ExitWalk_kpa_133_3 = EVT_EXIT_WALK(40, $LeftPuzzleHigh, $kpa_133.RightPuzzleHigh);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_133_1, TRIGGER_FLOOR_ABOVE, COLLIDER_exitw, 1, 0)
@@ -18,19 +20,19 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_134_ENTRY_0)
+        CaseEq($LeftPuzzleLow.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_134_ENTRY_1)
+        CaseEq($BillBlasterHall.index)
             Set(LVar0, 1)
             Set(LVar2, MODEL_o408)
             Set(LVar3, MODEL_o409)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_134_ENTRY_2)
+        CaseEq($LeftPuzzleMid.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_134_ENTRY_3)
+        CaseEq($LeftPuzzleHigh.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

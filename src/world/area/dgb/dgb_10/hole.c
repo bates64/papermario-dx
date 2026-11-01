@@ -1,4 +1,5 @@
 #include "dgb_10.h"
+#include "world/area/dgb/dgb_11.h"
 
 API_CALLABLE(AwaitFallInHole) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -9,11 +10,11 @@ API_CALLABLE(AwaitFallInHole) {
     }
 
     if (playerStatus->pos.x < 440.0f) {
-        entry = dgb_11_ENTRY_3;
+        entry = $dgb_11.HoleNorthWest.index;
     } else if (playerStatus->pos.z < -170.0f) {
-        entry = dgb_11_ENTRY_2;
+        entry = $dgb_11.HoleNorthEast.index;
     } else {
-        entry = dgb_11_ENTRY_1;
+        entry = $dgb_11.HoleSouthEast.index;
     }
     script->varTable[0] = entry;
 

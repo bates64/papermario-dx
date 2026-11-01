@@ -1,7 +1,9 @@
 #include "sam_08.h"
+#include "world/area/sam/sam_07.h"
+#include "world/area/sam/sam_09.h"
 
-EvtScript EVS_ExitWalk_sam_07_1 = EVT_EXIT_WALK(60, sam_08_ENTRY_0, "sam_07", sam_07_ENTRY_1);
-EvtScript EVS_ExitWalk_sam_09_0 = EVT_EXIT_WALK(60, sam_08_ENTRY_1, "sam_09", sam_09_ENTRY_0);
+EvtScript EVS_ExitWalk_sam_07_1 = EVT_EXIT_WALK(60, $MountainPassage, $sam_07.MountainHills);
+EvtScript EVS_ExitWalk_sam_09_0 = EVT_EXIT_WALK(60, $MountainTunnel, $sam_09.MountainHills);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sam_07_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

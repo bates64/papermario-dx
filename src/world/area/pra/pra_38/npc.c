@@ -10,20 +10,9 @@ EvtScript EVS_NpcInit_Swoopula = {
 
 NpcData NpcData_Swoopula_01 = {
     .id = NPC_Swoopula_01,
-    .pos = { 175.0f, 130.0f, 75.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 175, 130, 75 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 175, 130, 75 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Swoopula_01.pos,
+    .yaw = $Swoopula_01.yaw,
+    .territory = $Swoopula_01.territory,
     .init = &EVS_NpcInit_Swoopula,
     .settings = &NpcSettings_Swoopula_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -34,20 +23,9 @@ NpcData NpcData_Swoopula_01 = {
 
 NpcData NpcData_Swoopula_02 = {
     .id = NPC_Swoopula_02,
-    .pos = { 325.0f, 130.0f, 75.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 325, 130, 75 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 325, 130, 75 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Swoopula_02.pos,
+    .yaw = $Swoopula_02.yaw,
+    .territory = $Swoopula_02.territory,
     .init = &EVS_NpcInit_Swoopula,
     .settings = &NpcSettings_Swoopula_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

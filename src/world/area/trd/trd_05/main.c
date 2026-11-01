@@ -1,4 +1,6 @@
 #include "trd_05.h"
+#include "world/area/trd/trd_00.h"
+#include "world/area/trd/trd_04.h"
 #include "effects.h"
 
 extern EvtScript EVS_SetupMusic;
@@ -12,12 +14,12 @@ API_CALLABLE(SetMapChangeFadeRate) {
 }
 
 EvtScript EVS_ExitDoors_trd_04_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_0, "trd_04", trd_04_ENTRY_1, COLLIDER_ttw, MODEL_doa2, MODEL_doa1);
+    EVT_EXIT_DOUBLE_DOOR($Trd04Lower, $trd_04.Trd05Lower, COLLIDER_ttw, MODEL_doa2, MODEL_doa1);
 EvtScript EVS_ExitDoors_trd_00_2 =
-    EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_1, "trd_00", trd_00_ENTRY_2, COLLIDER_ttse, MODEL_doa4, MODEL_doa6);
-EvtScript EVS_ExitWalk_trd_00_3 = EVT_EXIT_WALK(60, trd_05_ENTRY_2, "trd_00", trd_00_ENTRY_3);
+    EVT_EXIT_DOUBLE_DOOR($Trd00Door, $trd_00.Trd05Door, COLLIDER_ttse, MODEL_doa4, MODEL_doa6);
+EvtScript EVS_ExitWalk_trd_00_3 = EVT_EXIT_WALK(60, $Trd00Walk, $trd_00.Trd05Walk);
 EvtScript EVS_ExitDoors_trd_04_3 =
-    EVT_EXIT_DOUBLE_DOOR(trd_05_ENTRY_3, "trd_04", trd_04_ENTRY_3, COLLIDER_ttw2, MODEL_doa7, MODEL_doa8);
+    EVT_EXIT_DOUBLE_DOOR($Trd04Upper, $trd_04.Trd05Upper, COLLIDER_ttw2, MODEL_doa7, MODEL_doa8);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_trd_04_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -33,20 +35,20 @@ EvtScript EVS_EnterMap = {
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_05_ENTRY_0)
+        CaseEq($Trd04Lower.index)
             Set(LVar2, MODEL_doa2)
             Set(LVar3, MODEL_doa1)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_05_ENTRY_1)
+        CaseEq($Trd00Door.index)
             Set(LVar2, MODEL_doa4)
             Set(LVar3, MODEL_doa6)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_05_ENTRY_2)
+        CaseEq($Trd00Walk.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(trd_05_ENTRY_3)
+        CaseEq($Trd04Upper.index)
             Set(LVar2, MODEL_doa7)
             Set(LVar3, MODEL_doa8)
             ExecWait(EnterDoubleDoor)
@@ -58,12 +60,12 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 300.0f, 0.0f, 0.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BombWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 29, 0, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_VISIBLE)

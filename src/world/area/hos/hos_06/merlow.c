@@ -238,8 +238,8 @@ EvtScript EVS_NpcInit_Merlow = {
 NpcData NpcData_Family[] = {
     {
         .id = NPC_Merluvlee,
-        .pos = { 62.0f, 20.0f, 7.0f },
-        .yaw = 270,
+        .pos = $Merluvlee.pos,
+        .yaw = $Merluvlee.yaw,
         .init = &EVS_NpcInit_Merluvlee_Passthrough,
         .settings = &NpcSettings_Merluvlee,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,
@@ -251,8 +251,8 @@ NpcData NpcData_Family[] = {
     },
     {
         .id = NPC_Merlow,
-        .pos = { -150.0f, 160.0f, -25.0f },
-        .yaw = 0,
+        .pos = $Merlow.pos,
+        .yaw = $Merlow.yaw,
         .init = &EVS_NpcInit_Merlow,
         .settings = &NpcSettings_Merlow,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL,

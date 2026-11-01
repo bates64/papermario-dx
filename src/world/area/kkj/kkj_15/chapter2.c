@@ -1,4 +1,5 @@
 #include "kkj_15.h"
+#include "world/area/kkj/kkj_11.h"
 
 EvtScript EVS_ExtiDoor_Chapter2 = {
     IfEq(AF_KKJ_PeachSawGrandHall, false)
@@ -8,16 +9,16 @@ EvtScript EVS_ExtiDoor_Chapter2 = {
         Call(EnablePartnerAI)
         Call(DisablePlayerInput, false)
     EndIf
-    Set(LVar0, kkj_15_ENTRY_0)
+    Set(LVar0, $UpperHall.index)
     Set(LVar1, COLLIDER_tte)
     Set(LVar2, MODEL_o2)
     Set(LVar3, DOOR_SWING_IN)
     Exec(ExitSingleDoor)
     Wait(17)
     IfEq(AF_KKJ_PeachSawGrandHall, false)
-        Call(GotoMap, "kkj_11", kkj_11_ENTRY_7)
+        Call(GotoMap, $kkj_11.PassageOutletFirst)
     Else
-        Call(GotoMap, "kkj_11", kkj_11_ENTRY_3)
+        Call(GotoMap, $kkj_11.PassageOutlet)
     EndIf
     Wait(100)
     Return

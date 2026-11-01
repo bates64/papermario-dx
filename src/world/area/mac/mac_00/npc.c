@@ -189,8 +189,8 @@ EvtScript EVS_NpcInit_Toad_02 = {
 NpcData NpcData_ShyGuy_01[] = {
     {
         .id = NPC_ShyGuyThief,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuyThief.pos,
+        .yaw = $ShyGuyThief.yaw,
         .init = &EVS_NpcInit_ShyGuyThief,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -199,8 +199,8 @@ NpcData NpcData_ShyGuy_01[] = {
     },
     {
         .id = NPC_ShyGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_02.pos,
+        .yaw = $ShyGuy_02.yaw,
         .init = &EVS_NpcInit_ShyGuy_02,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -210,8 +210,8 @@ NpcData NpcData_ShyGuy_01[] = {
     },
     {
         .id = NPC_GardenShyGuy1,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $GardenShyGuy1.pos,
+        .yaw = $GardenShyGuy1.yaw,
         .init = &EVS_NpcInit_GardenShyGuy1,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH,
@@ -223,8 +223,8 @@ NpcData NpcData_ShyGuy_01[] = {
 
 NpcData NpcData_RussT = {
     .id = NPC_RussT,
-    .pos = { -66.0f, 20.0f, -532.0f },
-    .yaw = 119,
+    .pos = $RussT.pos,
+    .yaw = $RussT.yaw,
     .init = &EVS_NpcInit_RussT,
     .settings = &NpcSettings_RussT,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -236,8 +236,8 @@ NpcData NpcData_RussT = {
 NpcData NpcData_Toad_01[] = {
     {
         .id = NPC_Toad_01,
-        .pos = { 430.0f, 20.0f, -373.0f },
-        .yaw = 223,
+        .pos = $Toad_01_2.pos,
+        .yaw = $Toad_01_2.yaw,
         .init = &EVS_NpcInit_Toad_01,
         .settings = &NpcSettings_HarryT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -247,8 +247,8 @@ NpcData NpcData_Toad_01[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 223,
+        .pos = $Toad_02_1.pos,
+        .yaw = $Toad_02_1.yaw,
         .init = &EVS_NpcInit_Toad_02,
         .settings = &NpcSettings_HarryT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -285,8 +285,8 @@ AnimID LimitAnims_Lee[] = {
 NpcData NpcData_Toad_03[] = {
     {
         .id = NPC_TheMaster,
-        .pos = { 375.0f, 115.0f, -440.0f },
-        .yaw = 225,
+        .pos = $TheMaster_1.pos,
+        .yaw = $TheMaster_1.yaw,
         .init = &EVS_NpcInit_TheMaster,
         .settings = &NpcSettings_TheMaster,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -297,8 +297,8 @@ NpcData NpcData_Toad_03[] = {
     },
     {
         .id = NPC_Chan,
-        .pos = { 310.0f, 115.0f, -390.0f },
-        .yaw = 45,
+        .pos = $Chan_2.pos,
+        .yaw = $Chan_2.yaw,
         .init = &EVS_NpcInit_Chan,
         .settings = &NpcSettings_Chan,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -309,8 +309,8 @@ NpcData NpcData_Toad_03[] = {
     },
     {
         .id = NPC_Lee,
-        .pos = { 330.0f, 115.0f, -410.0f },
-        .yaw = 45,
+        .pos = $Lee_2.pos,
+        .yaw = $Lee_2.yaw,
         .init = &EVS_NpcInit_Lee,
         .settings = &NpcSettings_Lee,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -323,8 +323,8 @@ NpcData NpcData_Toad_03[] = {
 
 NpcData NpcData_Quizmo_Unused = {
     .id = NPC_ChuckQuizmo,
-    .pos = { 545.0f, 20.0f, 150.0f },
-    .yaw = 30,
+    .pos = $ChuckQuizmo_1.pos,
+    .yaw = $ChuckQuizmo_1.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_MAC, QUIZ_COUNT_MAC, QUIZ_MAP_MAC_00 }},
     .settings = &NpcSettings_ChuckQuizmo,
@@ -337,8 +337,8 @@ NpcData NpcData_Quizmo_Unused = {
 NpcData NpcData_Waterfront_Family[] = {
     {
         .id = NPC_Waterfront_Dad,
-        .pos = { -496.0f, 20.0f, 218.0f },
-        .yaw = 133,
+        .pos = $Waterfront_Dad.pos,
+        .yaw = $Waterfront_Dad.yaw,
         .init = &EVS_NpcInit_WaterfrontDad,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -348,8 +348,8 @@ NpcData NpcData_Waterfront_Family[] = {
     },
     {
         .id = NPC_Waterfront_Mom,
-        .pos = { -566.0f, 20.0f, 267.0f },
-        .yaw = 133,
+        .pos = $Waterfront_Mom.pos,
+        .yaw = $Waterfront_Mom.yaw,
         .init = &EVS_NpcInit_WaterfrontMom,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -359,8 +359,8 @@ NpcData NpcData_Waterfront_Family[] = {
     },
     {
         .id = NPC_Waterfront_Kid1,
-        .pos = { -508.0f, 20.0f, 324.0f },
-        .yaw = 313,
+        .pos = $Waterfront_Kid1.pos,
+        .yaw = $Waterfront_Kid1.yaw,
         .init = &EVS_NpcInit_WaterfrontKid1,
         .settings = &NpcSettings_ToadKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -370,8 +370,8 @@ NpcData NpcData_Waterfront_Family[] = {
     },
     {
         .id = NPC_Waterfront_Kid2,
-        .pos = { -480.0f, 20.0f, 329.0f },
-        .yaw = 313,
+        .pos = $Waterfront_Kid2.pos,
+        .yaw = $Waterfront_Kid2.yaw,
         .init = &EVS_NpcInit_WaterfrontKid2,
         .settings = &NpcSettings_ToadKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -383,8 +383,8 @@ NpcData NpcData_Waterfront_Family[] = {
 
 NpcData NpcData_PrizeToad = {
     .id = NPC_Toad_PrizeToad,
-    .pos = { -112.0f, 0.0f, -62.0f },
-    .yaw = 90,
+    .pos = $Toad_PrizeToad.pos,
+    .yaw = $Toad_PrizeToad.yaw,
     .init = &EVS_NpcInit_TradingToad,
     .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,

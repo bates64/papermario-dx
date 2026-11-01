@@ -66,8 +66,8 @@ NpcSettings NpcSettings_Tutankoopa_02 = {
 NpcData NpcData_Tutankoopa[] = {
     {
         .id = NPC_Tutankoopa_01,
-        .pos = { 457.0f, -1300.0f, 316.0f },
-        .yaw = 230,
+        .pos = $Tutankoopa_01.pos,
+        .yaw = $Tutankoopa_01.yaw,
         .init = &EVS_NpcInit_Tutankoopa_01,
         .initVarCount = 1,
         .initVar = { .value = 0 },
@@ -95,8 +95,8 @@ NpcData NpcData_Tutankoopa[] = {
     },
     {
         .id = NPC_Tutankoopa_02,
-        .pos = { 500.0f, -1300.0f, 316.0f },
-        .yaw = 230,
+        .pos = $Tutankoopa_02.pos,
+        .yaw = $Tutankoopa_02.yaw,
         .settings = &NpcSettings_Tutankoopa_02,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
@@ -123,8 +123,8 @@ NpcData NpcData_Tutankoopa[] = {
 
 NpcData NpcData_ChainChomp = {
     .id = NPC_ChainChomp,
-    .pos = { 457.0f, -1300.0f, 316.0f },
-    .yaw = 230,
+    .pos = $ChainChomp.pos,
+    .yaw = $ChainChomp.yaw,
     .init = &EVS_NpcInit_ChainChomp,
     .settings = &NpcSettings_ChainChomp,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

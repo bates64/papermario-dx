@@ -25,8 +25,8 @@
 NpcData NpcData_Chapter1[] = {
     {
         .id = NPC_Eldstar,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Eldstar.pos,
+        .yaw = $Eldstar.yaw,
         .init = &EVS_NpcInit_Eldstar,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -35,8 +35,8 @@ NpcData NpcData_Chapter1[] = {
     },
     {
         .id = NPC_KoopaBros_01,
-        .pos = { 10.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_01.pos,
+        .yaw = $KoopaBros_01.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -45,8 +45,8 @@ NpcData NpcData_Chapter1[] = {
     },
     {
         .id = NPC_KoopaBros_02,
-        .pos = { 90.0f, 10.0f, 91.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_02.pos,
+        .yaw = $KoopaBros_02.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -55,8 +55,8 @@ NpcData NpcData_Chapter1[] = {
     },
     {
         .id = NPC_KoopaBros_03,
-        .pos = { 86.0f, 0.0f, -7.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_03.pos,
+        .yaw = $KoopaBros_03.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -65,8 +65,8 @@ NpcData NpcData_Chapter1[] = {
     },
     {
         .id = NPC_KoopaBros_04,
-        .pos = { 54.0f, -2.0f, -47.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_04.pos,
+        .yaw = $KoopaBros_04.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -78,8 +78,8 @@ NpcData NpcData_Chapter1[] = {
 NpcData NpcData_Chapter2[] = {
     {
         .id = NPC_Mamar,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Mamar.pos,
+        .yaw = $Mamar.yaw,
         .init = &EVS_NpcInit_Mamar,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -88,8 +88,8 @@ NpcData NpcData_Chapter2[] = {
     },
     {
         .id = NPC_Tutankoopa,
-        .pos = { 78.0f, 19.0f, 20.0f },
-        .yaw = 270,
+        .pos = $Tutankoopa.pos,
+        .yaw = $Tutankoopa.yaw,
         .init = &EVS_NpcInit_Tutankoopa,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -115,8 +115,8 @@ NpcData NpcData_Chapter2[] = {
     },
     {
         .id = NPC_ChainChomp_01,
-        .pos = { 23.0f, -4.0f, -180.0f },
-        .yaw = 270,
+        .pos = $ChainChomp_01.pos,
+        .yaw = $ChainChomp_01.yaw,
         .init = &EVS_NpcInit_ChainChomp,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -142,8 +142,8 @@ NpcData NpcData_Chapter2[] = {
     },
     {
         .id = NPC_ChainChomp_02,
-        .pos = { 23.0f, -4.0f, -180.0f },
-        .yaw = 270,
+        .pos = $ChainChomp_02.pos,
+        .yaw = $ChainChomp_02.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
@@ -168,8 +168,8 @@ NpcData NpcData_Chapter2[] = {
     },
     {
         .id = NPC_ChainChomp_03,
-        .pos = { 23.0f, -4.0f, -180.0f },
-        .yaw = 270,
+        .pos = $ChainChomp_03.pos,
+        .yaw = $ChainChomp_03.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
@@ -194,8 +194,8 @@ NpcData NpcData_Chapter2[] = {
     },
     {
         .id = NPC_ChainChomp_04,
-        .pos = { 23.0f, -4.0f, -180.0f },
-        .yaw = 270,
+        .pos = $ChainChomp_04.pos,
+        .yaw = $ChainChomp_04.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
@@ -220,8 +220,8 @@ NpcData NpcData_Chapter2[] = {
     },
     {
         .id = NPC_ChainChomp_05,
-        .pos = { 23.0f, -4.0f, -180.0f },
-        .yaw = 270,
+        .pos = $ChainChomp_05.pos,
+        .yaw = $ChainChomp_05.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
@@ -249,8 +249,8 @@ NpcData NpcData_Chapter2[] = {
 NpcData NpcData_Chapter3[] = {
     {
         .id = NPC_Skolar,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .init = &EVS_NpcInit_Skolar,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -259,8 +259,8 @@ NpcData NpcData_Chapter3[] = {
     },
     {
         .id = NPC_Tubba,
-        .pos = { 54.0f, -1.0f, 1.0f },
-        .yaw = 270,
+        .pos = $Tubba.pos,
+        .yaw = $Tubba.yaw,
         .init = &EVS_NpcInit_Tubba,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -272,8 +272,8 @@ NpcData NpcData_Chapter3[] = {
 NpcData NpcData_Chapter4[] = {
     {
         .id = NPC_Muskular,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Muskular.pos,
+        .yaw = $Muskular.yaw,
         .init = &EVS_NpcInit_Muskular,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -282,8 +282,8 @@ NpcData NpcData_Chapter4[] = {
     },
     {
         .id = NPC_GeneralGuy,
-        .pos = { 97.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $GeneralGuy.pos,
+        .yaw = $GeneralGuy.yaw,
         .init = &EVS_NpcInit_GeneralGuy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -309,8 +309,8 @@ NpcData NpcData_Chapter4[] = {
     },
     {
         .id = NPC_ShyGuy_01,
-        .pos = { 17.0f, 0.0f, -14.0f },
-        .yaw = 270,
+        .pos = $ShyGuy_01.pos,
+        .yaw = $ShyGuy_01.yaw,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -319,8 +319,8 @@ NpcData NpcData_Chapter4[] = {
     },
     {
         .id = NPC_ShyGuy_02,
-        .pos = { 47.0f, 0.0f, 25.0f },
-        .yaw = 270,
+        .pos = $ShyGuy_02.pos,
+        .yaw = $ShyGuy_02.yaw,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -332,8 +332,8 @@ NpcData NpcData_Chapter4[] = {
 NpcData NpcData_Chapter5[] = {
     {
         .id = NPC_Misstar,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Misstar.pos,
+        .yaw = $Misstar.yaw,
         .init = &EVS_NpcInit_Misstar,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -342,8 +342,8 @@ NpcData NpcData_Chapter5[] = {
     },
     {
         .id = NPC_LavaPiranhaHead,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $LavaPiranhaHead.pos,
+        .yaw = $LavaPiranhaHead.yaw,
         .init = &EVS_NpcInit_LavaPiranhaHead,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_DO_NOT_KILL,
@@ -353,8 +353,8 @@ NpcData NpcData_Chapter5[] = {
     },
     {
         .id = NPC_LavaBud_01,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $LavaBud_01.pos,
+        .yaw = $LavaBud_01.yaw,
         .init = &EVS_NpcInit_LavaBud,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
@@ -364,8 +364,8 @@ NpcData NpcData_Chapter5[] = {
     },
     {
         .id = NPC_LavaBud_02,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $LavaBud_02.pos,
+        .yaw = $LavaBud_02.yaw,
         .init = &EVS_NpcInit_LavaBud,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
@@ -378,8 +378,8 @@ NpcData NpcData_Chapter5[] = {
 NpcData NpcData_Chapter6[] = {
     {
         .id = NPC_Klevar,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Klevar.pos,
+        .yaw = $Klevar.yaw,
         .init = &EVS_NpcInit_Klevar,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -388,8 +388,8 @@ NpcData NpcData_Chapter6[] = {
     },
     {
         .id = NPC_HuffNPuff_Body,
-        .pos = { 70.0f, 109.0f, 1.0f },
-        .yaw = 270,
+        .pos = $HuffNPuff_Body.pos,
+        .yaw = $HuffNPuff_Body.yaw,
         .init = &EVS_NpcInit_HuffNPuff_Body,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -398,8 +398,8 @@ NpcData NpcData_Chapter6[] = {
     },
     {
         .id = NPC_HuffNPuff_Face,
-        .pos = { 70.0f, 109.0f, 1.0f },
-        .yaw = 270,
+        .pos = $HuffNPuff_Face.pos,
+        .yaw = $HuffNPuff_Face.yaw,
         .init = &EVS_NpcInit_HuffNPuff_Face,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -408,8 +408,8 @@ NpcData NpcData_Chapter6[] = {
     },
     {
         .id = NPC_HuffNPuff_Arms,
-        .pos = { 70.0f, 109.0f, 1.0f },
-        .yaw = 270,
+        .pos = $HuffNPuff_Arms.pos,
+        .yaw = $HuffNPuff_Arms.yaw,
         .init = &EVS_NpcInit_HuffNPuff_Arms,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -418,8 +418,8 @@ NpcData NpcData_Chapter6[] = {
     },
     {
         .id = NPC_RuffPuff_01,
-        .pos = { 60.0f, 40.0f, -50.0f },
-        .yaw = 270,
+        .pos = $RuffPuff_01.pos,
+        .yaw = $RuffPuff_01.yaw,
         .init = &EVS_NpcInit_RuffPuff_01,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -428,8 +428,8 @@ NpcData NpcData_Chapter6[] = {
     },
     {
         .id = NPC_RuffPuff_02,
-        .pos = { 14.0f, 61.0f, 1.0f },
-        .yaw = 270,
+        .pos = $RuffPuff_02.pos,
+        .yaw = $RuffPuff_02.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
@@ -440,8 +440,8 @@ NpcData NpcData_Chapter6[] = {
 NpcData NpcData_Chapter7[] = {
     {
         .id = NPC_Kalmar,
-        .pos = { -62.0f, 96.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kalmar.pos,
+        .yaw = $Kalmar.yaw,
         .init = &EVS_NpcInit_Kalmar,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -450,8 +450,8 @@ NpcData NpcData_Chapter7[] = {
     },
     {
         .id = NPC_CrystalKing,
-        .pos = { 60.0f, -2.0f, 0.0f },
-        .yaw = 270,
+        .pos = $CrystalKing.pos,
+        .yaw = $CrystalKing.yaw,
         .init = &EVS_NpcInit_CrystalKing,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -460,8 +460,8 @@ NpcData NpcData_Chapter7[] = {
     },
     {
         .id = NPC_IceCube,
-        .pos = { 10.0f, 31.0f, -12.0f },
-        .yaw = 270,
+        .pos = $IceCube.pos,
+        .yaw = $IceCube.yaw,
         .init = &EVS_NpcInit_IceCube,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -470,8 +470,8 @@ NpcData NpcData_Chapter7[] = {
     },
     {
         .id = NPC_IceSphere,
-        .pos = { 40.0f, 68.0f, 0.0f },
-        .yaw = 270,
+        .pos = $IceSphere.pos,
+        .yaw = $IceSphere.yaw,
         .init = &EVS_NpcInit_IceSphere,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -480,8 +480,8 @@ NpcData NpcData_Chapter7[] = {
     },
     {
         .id = NPC_IceSpike,
-        .pos = { 96.0f, 53.0f, 0.0f },
-        .yaw = 270,
+        .pos = $IceSpike.pos,
+        .yaw = $IceSpike.yaw,
         .init = &EVS_NpcInit_IceSpike,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -492,8 +492,8 @@ NpcData NpcData_Chapter7[] = {
 
 NpcData NpcData_Chapter8 = {
     .id = NPC_Bowser,
-    .pos = { 58.0f, 0.0f, 20.0f },
-    .yaw = 270,
+    .pos = $Bowser.pos,
+    .yaw = $Bowser.yaw,
     .init = &EVS_NpcInit_Bowser,
     .settings = &NpcSettings_Dummy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

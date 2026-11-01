@@ -3,8 +3,8 @@
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(dro_02_ENTRY_2)
-        CaseOrEq(dro_02_ENTRY_3)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
         EndCaseGroup
         CaseDefault
             Call(SetMusic, 0, SONG_DRY_DRY_OUTPOST, 0, VOL_LEVEL_FULL)

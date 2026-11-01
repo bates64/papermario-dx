@@ -17,7 +17,7 @@ EvtScript EVS_SetupMusic = {
     Thread
         Call(GetEntryID, LVar0)
         Switch(LVar0)
-            CaseEq(kmr_20_ENTRY_0)
+            CaseEq($GameStart.index)
                 Wait(300)
                 Call(PlayAmbientSounds, AMBIENT_BIRDS)
             CaseDefault

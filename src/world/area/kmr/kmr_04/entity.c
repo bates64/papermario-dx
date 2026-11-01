@@ -9,16 +9,14 @@ EvtScript EVS_OnSmashBlock = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KMR04_Hammer1Block, false)
-        Call(MakeEntity, Entity_Hammer1Block, -80, 0, 400, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnSmashBlock)
+        Call(MakeMarkerEntity, $Hammer1Block_1)
     EndIf
-    Call(MakeEntity, Entity_BrickBlock, -230, 60, -140, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, -440, 60, 20, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 60, 0, 370, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 85, 0, 395, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_MulticoinBlock, 100, 0, -70, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KMR04_MultiCoinBrick)
-    Call(MakeEntity, Entity_SavePoint, 0, 60, 0, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $BrickBlock_3)
+    Call(MakeMarkerEntity, $BrickBlock_4)
+    Call(MakeMarkerEntity, $MulticoinBlock_1)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Return
     End
 };

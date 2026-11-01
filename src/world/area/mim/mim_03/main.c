@@ -1,4 +1,7 @@
 #include "mim_03.h"
+#include "world/area/mim/mim_01.h"
+#include "world/area/mim/mim_02.h"
+#include "world/area/mim/mim_04.h"
 
 #include "../common/SetForeverForestFog.inc.c"
 
@@ -7,10 +10,10 @@ API_CALLABLE(GetPlayerDistFromMapCenter) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_n = EVT_EXIT_WALK(60, mim_03_ENTRY_0, "mim_01", mim_01_ENTRY_1);
-EvtScript EVS_ExitWalk_w = EVT_EXIT_WALK(60, mim_03_ENTRY_1, "mim_04", mim_04_ENTRY_3);
-EvtScript EVS_ExitWalk_s = EVT_EXIT_WALK(60, mim_03_ENTRY_2, "mim_02", mim_02_ENTRY_0);
-EvtScript EVS_ExitWalk_e = EVT_EXIT_WALK(60, mim_03_ENTRY_3, "mim_01", mim_01_ENTRY_1);
+EvtScript EVS_ExitWalk_n = EVT_EXIT_WALK(60, $North, $mim_01.West);
+EvtScript EVS_ExitWalk_w = EVT_EXIT_WALK(60, $West, $mim_04.East);
+EvtScript EVS_ExitWalk_s = EVT_EXIT_WALK(60, $South, $mim_02.North);
+EvtScript EVS_ExitWalk_e = EVT_EXIT_WALK(60, $East, $mim_01.West);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_n, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)

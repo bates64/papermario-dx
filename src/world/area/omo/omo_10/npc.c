@@ -38,8 +38,8 @@ EvtScript EVS_NpcInit_TrainToad = {
 NpcData NpcData_Toads[] = {
     {
         .id = NPC_Conductor,
-        .pos = { 10.0f, 50.0f, -105.0f },
-        .yaw = 270,
+        .pos = $Conductor.pos,
+        .yaw = $Conductor.yaw,
         .init = &EVS_NpcInit_Conductor,
         .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -49,8 +49,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_TrainToad,
-        .pos = { -50.0f, 0.0f, 80.0f },
-        .yaw = 90,
+        .pos = $TrainToad.pos,
+        .yaw = $TrainToad.yaw,
         .init = &EVS_NpcInit_TrainToad,
         .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

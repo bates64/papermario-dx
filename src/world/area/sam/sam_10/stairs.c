@@ -100,24 +100,24 @@ EvtScript EVS_ItemPrompt_StarStoneSocket = {
     Wait(30)
     Call(PlaySound, SOUND_SAM_STAIRS_LOUD_THUD)
     Call(ShakeCam, CAM_DEFAULT, 0, 10, 3.0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, -20, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 20, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 60, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 100, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 140, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 180, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 220, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 240, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 280, -20, -66, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, -20, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 20, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 60, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 100, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 140, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 180, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 220, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 240, -20, -166, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 3, 280, -20, -166, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_5.pos.x, $LandingDustPos_5.pos.y, $LandingDustPos_5.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_6.pos.x, $LandingDustPos_6.pos.y, $LandingDustPos_6.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_7.pos.x, $LandingDustPos_7.pos.y, $LandingDustPos_7.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_8.pos.x, $LandingDustPos_8.pos.y, $LandingDustPos_8.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_9.pos.x, $LandingDustPos_9.pos.y, $LandingDustPos_9.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_10.pos.x, $LandingDustPos_10.pos.y, $LandingDustPos_10.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_11.pos.x, $LandingDustPos_11.pos.y, $LandingDustPos_11.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_12.pos.x, $LandingDustPos_12.pos.y, $LandingDustPos_12.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_13.pos.x, $LandingDustPos_13.pos.y, $LandingDustPos_13.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_14.pos.x, $LandingDustPos_14.pos.y, $LandingDustPos_14.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_15.pos.x, $LandingDustPos_15.pos.y, $LandingDustPos_15.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_16.pos.x, $LandingDustPos_16.pos.y, $LandingDustPos_16.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_17.pos.x, $LandingDustPos_17.pos.y, $LandingDustPos_17.pos.z, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 3, $LandingDustPos_18.pos.x, $LandingDustPos_18.pos.y, $LandingDustPos_18.pos.z, 0)
     Wait(20)
     Call(SetGroupVisibility, MODEL_move1, MODEL_GROUP_HIDDEN)
     Call(SetGroupVisibility, MODEL_move2, MODEL_GROUP_VISIBLE)
@@ -206,12 +206,12 @@ EvtScript EVS_ItemPrompt_StarStoneSocket = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 337.0f, -20.0f, -103.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BlastWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 2, 135, 11, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 2, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_a_oku, true)
     Loop(10)
         Call(EnableModel, MODEL_a_kabe, true)

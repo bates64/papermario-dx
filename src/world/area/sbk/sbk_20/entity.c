@@ -9,25 +9,22 @@ EvtScript EVS_OnHitInertBlock = {
             IfEq(GF_SBK20_ItemBlock_Mushroom, false)
                 Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                 Call(PlaySoundAt, SOUND_SPAWN_BLOCK, SOUND_SPACE_DEFAULT, -80, 60, -200)
-                PlayEffect(EFFECT_SPARKLES, 0, -80, 73, -200, 10)
-                Call(MakeEntity, Entity_YellowBlock, -80, 60, -200, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
-                Call(AssignBlockFlag, GF_SBK20_ItemBlock_Mushroom)
+                PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 10)
+                Call(MakeMarkerEntity, $YellowBlock_Mushroom_1)
             EndIf
         CaseEq(10)
             IfEq(GF_SBK20_ItemBlock_SuperShroom, false)
                 Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                 Call(PlaySoundAt, SOUND_SPAWN_BLOCK, SOUND_SPACE_DEFAULT, -180, 60, -200)
-                PlayEffect(EFFECT_SPARKLES, 0, -180, 73, -200, 10)
-                Call(MakeEntity, Entity_YellowBlock, -180, 60, -200, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-                Call(AssignBlockFlag, GF_SBK20_ItemBlock_SuperShroom)
+                PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_2.pos.x, $SparklesPos_2.pos.y, $SparklesPos_2.pos.z, 10)
+                Call(MakeMarkerEntity, $YellowBlock_SuperShroom_1)
             EndIf
         CaseEq(100)
             IfEq(GF_SBK20_ItemBlock_UltraShroom, false)
                 Call(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                 Call(PlaySoundAt, SOUND_SPAWN_BLOCK, SOUND_SPACE_DEFAULT, -130, 60, -150)
-                PlayEffect(EFFECT_SPARKLES, 0, -130, 73, -150, 10)
-                Call(MakeEntity, Entity_YellowBlock, -130, 60, -150, 0, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
-                Call(AssignBlockFlag, GF_SBK20_ItemBlock_UltraShroom)
+                PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_3.pos.x, $SparklesPos_3.pos.y, $SparklesPos_3.pos.z, 10)
+                Call(MakeMarkerEntity, $YellowBlock_UltraShroom_1)
             EndIf
     EndSwitch
     Return
@@ -35,19 +32,15 @@ EvtScript EVS_OnHitInertBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_InertYellowBlock, -130, 0, -200, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_OnHitInertBlock)
+    Call(MakeMarkerEntity, $InertYellowBlock_1)
     IfEq(GF_SBK20_ItemBlock_Mushroom, true)
-        Call(MakeEntity, Entity_YellowBlock, -80, 60, -200, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
-        Call(AssignBlockFlag, GF_SBK20_ItemBlock_Mushroom)
+        Call(MakeMarkerEntity, $YellowBlock_Mushroom_2)
     EndIf
     IfEq(GF_SBK20_ItemBlock_SuperShroom, true)
-        Call(MakeEntity, Entity_YellowBlock, -180, 60, -200, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-        Call(AssignBlockFlag, GF_SBK20_ItemBlock_SuperShroom)
+        Call(MakeMarkerEntity, $YellowBlock_SuperShroom_2)
     EndIf
     IfEq(GF_SBK20_ItemBlock_UltraShroom, true)
-        Call(MakeEntity, Entity_YellowBlock, -130, 60, -150, 0, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
-        Call(AssignBlockFlag, GF_SBK20_ItemBlock_UltraShroom)
+        Call(MakeMarkerEntity, $YellowBlock_UltraShroom_2)
     EndIf
     Return
     End

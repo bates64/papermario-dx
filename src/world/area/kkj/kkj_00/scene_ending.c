@@ -1,4 +1,5 @@
 #include "kkj_00.h"
+#include "world/area/end/end_00.h"
 #include "sprite/player.h"
 
 #include "world/common/npc/ToadGuard/base.h"
@@ -218,7 +219,7 @@ EvtScript EVS_Scene_Ending = {
     Call(FadeScreenToWhite)
     Wait(60)
     Call(FadeOutMusic, 0, 2000)
-    Call(GotoMapSpecial, "end_00", end_00_ENTRY_0, TRANSITION_OUTRO_END_SCENE)
+    Call(GotoMapSpecial, $end_00.Entry0, TRANSITION_OUTRO_END_SCENE)
     Wait(100)
     Return
     End

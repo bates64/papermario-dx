@@ -23,9 +23,9 @@ EvtScript EVS_OnShakeTree1 = {
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfLt(LVar0, 490)
-        Call(MakeItemEntity, ITEM_COIN, 540, 290, -180, ITEM_SPAWN_MODE_FALL, GF_KMR05_Tree1_Coin)
+        Call(MakeMarkerEntity, $Item_Coin_1)
     Else
-        Call(MakeItemEntity, ITEM_COIN, 436, 300, -180, ITEM_SPAWN_MODE_FALL, GF_KMR05_Tree1_Coin)
+        Call(MakeMarkerEntity, $Item_Coin_2)
     EndIf
     Set(MF_Tree1CoinDropped, true)
     Return
@@ -40,8 +40,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { 488.0f, 245.0f, -196.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 EvtScript EVS_SetupFoliage = {

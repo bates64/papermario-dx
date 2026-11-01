@@ -36,7 +36,7 @@ EvtScript EVS_OpenLockedDoor = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_DGB01_UnlockedEastWing, false)
-        Call(MakeEntity, Entity_Padlock, 490, 8, 0, -80, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_OpenLockedDoor)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf

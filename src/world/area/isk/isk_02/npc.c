@@ -82,20 +82,9 @@ EvtScript EVS_NpcInit_Pokey_03 = {
 
 NpcData NpcData_Pokey_01 = {
     .id = NPC_Pokey_01,
-    .pos = { -296.0f, 0.0f, 421.0f },
-    .yaw = 304,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -301, 0, 427 },
-            .wanderSize = { 200 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -301, 0, 427 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Pokey_01.pos,
+    .yaw = $Pokey_01.yaw,
+    .territory = $Pokey_01.territory,
     .init = &EVS_NpcInit_Pokey_01,
     .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -105,20 +94,9 @@ NpcData NpcData_Pokey_01 = {
 
 NpcData NpcData_Pokey_02 = {
     .id = NPC_Pokey_02,
-    .pos = { -133.0f, 0.0f, 497.0f },
-    .yaw = 284,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -134, 0, 495 },
-            .wanderSize = { 200 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -140, 0, 510 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Pokey_02.pos,
+    .yaw = $Pokey_02.yaw,
+    .territory = $Pokey_02.territory,
     .init = &EVS_NpcInit_Pokey_02,
     .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -128,20 +106,9 @@ NpcData NpcData_Pokey_02 = {
 
 NpcData NpcData_Pokey_03 = {
     .id = NPC_Pokey_03,
-    .pos = { 45.0f, 0.0f, 505.0f },
-    .yaw = 264,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 46, 0, 514 },
-            .wanderSize = { 200 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 47, 0, 518 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Pokey_03.pos,
+    .yaw = $Pokey_03.yaw,
+    .territory = $Pokey_03.territory,
     .init = &EVS_NpcInit_Pokey_03,
     .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,

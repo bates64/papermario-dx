@@ -1,12 +1,14 @@
 #include "jan_17.h"
+#include "world/area/jan/jan_16.h"
+#include "world/area/jan/jan_18.h"
 
 API_CALLABLE(EnableFog) {
     enable_world_fog();
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_jan_16_2 = EVT_EXIT_WALK(60, jan_17_ENTRY_0, "jan_16", jan_16_ENTRY_2);
-EvtScript EVS_ExitWalk_jan_18_0 = EVT_EXIT_WALK(60, jan_17_ENTRY_1, "jan_18", jan_18_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_16_2 = EVT_EXIT_WALK(60, $Jan16, $jan_16.Jan17);
+EvtScript EVS_ExitWalk_jan_18_0 = EVT_EXIT_WALK(60, $Jan18, $jan_18.Jan17);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_16_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

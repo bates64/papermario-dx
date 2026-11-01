@@ -1,4 +1,5 @@
 #include "sbk_54.h"
+#include "world/area/sbk/sbk_45.h"
 #include "entity.h"
 
 TweesterPath TweesterPath1 = {
@@ -17,15 +18,14 @@ TweesterPath* TweesterPaths[] = {
 EvtScript EVS_GotoMap_sbk_45_4 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(GotoMap, "sbk_45", sbk_45_ENTRY_4)
+    Call(GotoMap, $sbk_45.Pipe)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Tweester, 327, 0, 8, 0, TweesterPaths, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_GotoMap_sbk_45_4)
+    Call(MakeMarkerEntity, $Tweester_1)
     Return
     End
 };

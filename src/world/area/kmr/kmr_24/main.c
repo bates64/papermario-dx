@@ -1,4 +1,5 @@
 #include "kmr_24.h"
+#include "world/area/osr/osr_03.h"
 #include "fio.h"
 #include "game_modes.h"
 
@@ -33,7 +34,7 @@ API_CALLABLE(SaveAndContinue) {
     get_map_IDs_by_name_checked("osr_03", &areaID, &mapID);
     gGameStatusPtr->areaID = areaID;
     gGameStatusPtr->mapID = mapID;
-    gGameStatusPtr->entryID = osr_03_ENTRY_4;
+    gGameStatusPtr->entryID = $osr_03.Interlude.index;
     fio_save_game(gGameStatusPtr->saveSlot);
     // and continue
     gGameStatusPtr->areaID = curArea;
@@ -56,7 +57,7 @@ EvtScript EVS_SaveAndContinue_Prompt = {
             Wait(100)
         CaseEq(2)
     EndSwitch
-    Call(GotoMapSpecial, "osr_03", osr_03_ENTRY_4, TRANSITION_AFTER_SAVE_PROMPT)
+    Call(GotoMapSpecial, $osr_03.Interlude, TRANSITION_AFTER_SAVE_PROMPT)
     Wait(100)
     Return
     End

@@ -438,8 +438,8 @@ EvtScript EVS_NpcInit_Boo_06 = {
 
 NpcData NpcData_Boo_01 = {
     .id = NPC_Boo_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_01.pos,
+    .yaw = $Boo_01.yaw,
     .init = &EVS_NpcInit_Boo_01,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -450,8 +450,8 @@ NpcData NpcData_Boo_01 = {
 
 NpcData NpcData_Boo_02 = {
     .id = NPC_Boo_02,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_02.pos,
+    .yaw = $Boo_02.yaw,
     .init = &EVS_NpcInit_Boo_02,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -461,8 +461,8 @@ NpcData NpcData_Boo_02 = {
 
 NpcData NpcData_Boo_03 = {
     .id = NPC_Boo_03,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_03.pos,
+    .yaw = $Boo_03.yaw,
     .init = &EVS_NpcInit_Boo_03,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -472,8 +472,8 @@ NpcData NpcData_Boo_03 = {
 
 NpcData NpcData_Boo_04 = {
     .id = NPC_Boo_04,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_04.pos,
+    .yaw = $Boo_04.yaw,
     .init = &EVS_NpcInit_Boo_04,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -483,8 +483,8 @@ NpcData NpcData_Boo_04 = {
 
 NpcData NpcData_Boo_05 = {
     .id = NPC_Boo_05,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_05.pos,
+    .yaw = $Boo_05.yaw,
     .init = &EVS_NpcInit_Boo_05,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -494,8 +494,8 @@ NpcData NpcData_Boo_05 = {
 
 NpcData NpcData_Boo_06 = {
     .id = NPC_Boo_06,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Boo_06.pos,
+    .yaw = $Boo_06.yaw,
     .init = &EVS_NpcInit_Boo_06,
     .settings = &NpcSettings_Boo,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -573,7 +573,7 @@ EvtScript EVS_Scene_ThrownOutBySentinel = {
     Call(SetPlayerAnimation, ANIM_MarioW2_Collapse)
     Thread
         Wait(2)
-        PlayEffect(EFFECT_EMOTE, EMOTE_FRUSTRATION, 0, 175, 0, -35, 20, -20, 30, 0)
+        PlayEffect(EFFECT_EMOTE, EMOTE_FRUSTRATION, $EmotePos_1.pos.x, $EmotePos_1.pos.y, $EmotePos_1.pos.z, -35, 20, -20, 30, 0)
     EndThread
     Thread
         Call(SetCamDistance, CAM_DEFAULT, 320.0)
@@ -651,8 +651,8 @@ EvtScript EVS_NpcInit_Sentinel = {
 
 NpcData NpcData_Sentinel = {
     .id = NPC_Sentinel,
-    .pos = { 0.0f, 0.0f, -1000.0f },
-    .yaw = 90,
+    .pos = $Sentinel.pos,
+    .yaw = $Sentinel.yaw,
     .init = &EVS_NpcInit_Sentinel,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

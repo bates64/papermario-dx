@@ -2,7 +2,7 @@
 
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, flo_15_ENTRY_1)
+    IfEq(LVar0, $Flo18.index)
         Call(SetMusic, 0, SONG_SUNSHINE_RETURNS, 0, VOL_LEVEL_FULL)
     Else
         Switch(GB_StoryProgress)

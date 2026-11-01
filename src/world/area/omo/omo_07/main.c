@@ -1,6 +1,7 @@
 #include "omo_07.h"
+#include "world/area/omo/omo_06.h"
 
-EvtScript EVS_ExitWalk_omo_06_4 = EVT_EXIT_WALK(60, omo_07_ENTRY_0, "omo_06", omo_06_ENTRY_4);
+EvtScript EVS_ExitWalk_omo_06_4 = EVT_EXIT_WALK(60, $Omo06, $omo_06.Omo07);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_06_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -25,7 +26,7 @@ EvtScript EVS_Main = {
                     Call(MakeNpcs, true, HammerBrosAmbushNPCs)
                 CaseEq(2)
                     Call(MakeNpcs, true, DefaultNPCs)
-                    Call(MakeItemEntity, ITEM_THUNDER_RAGE, 1080, 0, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO07_Item_ThunderRage)
+                    Call(MakeMarkerEntity, $Item_ThunderRage_1)
             EndSwitch
         Else
             Call(MakeNpcs, true, DefaultNPCs)

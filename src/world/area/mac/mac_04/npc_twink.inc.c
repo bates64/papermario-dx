@@ -4,7 +4,7 @@
 
 EvtScript EVS_NpcInit_TwinkEndCh4 = {
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, mac_04_ENTRY_5)
+    IfNe(LVar0, $PeachInterlude.index)
         Call(RemoveNpc, NPC_SELF)
     EndIf
     Return

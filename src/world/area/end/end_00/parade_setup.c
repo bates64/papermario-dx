@@ -1,4 +1,5 @@
 #include "end_00.h"
+#include "world/area/end/end_01.h"
 
 #include "world/common/npc/VannaT/base.h"
 #include "effects.h"
@@ -1301,7 +1302,7 @@ EvtScript EVS_ManageParade = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMap, "end_01", end_01_ENTRY_0)
+    Call(GotoMap, $end_01.Entry0)
     Call(FadeOutMusic, 0, 500)
     Wait(100)
     Return

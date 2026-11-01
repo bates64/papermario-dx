@@ -608,7 +608,7 @@ EvtScript EVS_SetupChandelier = {
         Call(TranslateModel, MODEL_kusari_2, 0, LVar0, 0)
         Call(TranslateModel, MODEL_wa, 0, LVar0, 0)
         Call(TranslateModel, MODEL_hi, 0, LVar0, 0)
-        Call(MakeItemEntity, ITEM_BOO_WEIGHT, 447, -350, 278, ITEM_SPAWN_MODE_DECORATION, 0)
+        Call(MakeMarkerEntity, $Item_BooWeight_1)
         BindTrigger(EVS_LaunchFromCouch_Crash, TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
     Else
         Set(MV_UnusedPosOffset, 0)

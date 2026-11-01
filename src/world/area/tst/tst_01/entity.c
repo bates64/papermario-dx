@@ -2,12 +2,12 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, 136, 80, 63, 0, ITEM_FLOWER_POINT, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_YellowBlock, 190, 0, 63, 0, ITEM_NONE, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 201, 60, -20, 0, ITEM_HEART, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 230, 60, -20, 0, ITEM_HEART, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenRedBlock, 258, 60, -20, 0, ITEM_FLOWER_POINT, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_RedBlock, 315, 60, 63, 0, ITEM_FLOWER_POINT, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $YellowBlock_FlowerPoint_1)
+    Call(MakeMarkerEntity, $YellowBlock_None_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_Heart_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_Heart_2)
+    Call(MakeMarkerEntity, $HiddenRedBlock_FlowerPoint_1)
+    Call(MakeMarkerEntity, $RedBlock_FlowerPoint_1)
     Return
     End
 };

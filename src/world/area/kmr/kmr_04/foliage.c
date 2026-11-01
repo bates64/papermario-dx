@@ -353,8 +353,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { -352.0f, 0.0f, 10.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o194);
@@ -388,8 +388,8 @@ ShakeTreeConfig ShakeTree_Tree2 = {
 };
 
 BombTrigger BombPos_Tree2 = {
-    .pos = { -92.0f, 0.0f, -295.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree2.pos,
+    .diameter = 2.0f * $BombPos_Tree2.radius,
 };
 
 EvtScript EVS_OnShakeTree3 = {
@@ -400,7 +400,7 @@ EvtScript EVS_OnShakeTree3 = {
         Return
     EndIf
     Wait(15)
-    Call(MakeItemEntity, ITEM_DOLLY, 250, 132, -100, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_KMR04_Tree3_Dolly)
+    Call(MakeMarkerEntity, $Item_Dolly_1)
     Set(AF_KMR04_DollyDropped, true)
     Thread
         Label(10)
@@ -442,8 +442,8 @@ ShakeTreeConfig ShakeTree_Tree3 = {
 };
 
 BombTrigger BombPos_Tree3 = {
-    .pos = { 248.0f, 0.0f, -122.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree3.pos,
+    .diameter = 2.0f * $BombPos_Tree3.radius,
 };
 
 EvtScript EVS_SetupFoliage = {

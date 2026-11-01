@@ -2,10 +2,8 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, 205, 60, 110, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA111_ItemBlock_SuperShroom)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 5, 60, 110, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA111_HiddenItem_MapleSyrup)
+    Call(MakeMarkerEntity, $YellowBlock_SuperShroom_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_MapleSyrup_1)
     Return
     End
 };

@@ -1,4 +1,5 @@
 #include "kmr_00.h"
+#include "world/area/kmr/kmr_02.h"
 #include "effects.h"
 #include "model.h"
 #include "sprite/player.h"
@@ -666,7 +667,7 @@ EvtScript EVS_Scene_MarioRevived = {
     Set(GB_StoryProgress, STORY_CH0_WAKE_UP)
     Call(DisablePlayerPhysics, false)
     Call(SlowlyStopAmbientSounds)
-    Call(GotoMapSpecial, "kmr_02", kmr_02_ENTRY_5, TRANSITION_MARIO_BLACK)
+    Call(GotoMapSpecial, $kmr_02.AfterRevival, TRANSITION_MARIO_BLACK)
     Return
     End
 };

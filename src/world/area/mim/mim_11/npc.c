@@ -50,8 +50,8 @@ EvtScript EVS_NpcInit_Bootler = {
 NpcData NpcData_Bootler[] = {
     {
         .id = NPC_Bootler,
-        .pos = { 68.0f, 60.0f, -145.0f },
-        .yaw = 0,
+        .pos = $Bootler.pos,
+        .yaw = $Bootler.yaw,
         .init = &EVS_NpcInit_Bootler,
         .settings = &NpcSettings_Boo,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -60,8 +60,8 @@ NpcData NpcData_Bootler[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { 68.0f, 60.0f, -145.0f },
-        .yaw = 135,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .init = &EVS_NpcInit_Skolar,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,

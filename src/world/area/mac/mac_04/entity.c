@@ -1,4 +1,6 @@
 #include "mac_04.h"
+#include "world/area/kmr/kmr_22.h"
+#include "world/area/omo/omo_03.h"
 #include "entity.h"
 #include "sprite.h"
 
@@ -146,11 +148,11 @@ EvtScript EVS_EnterToybox = {
     IfEq(GF_StartedChapter4, false)
         Set(GF_StartedChapter4, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_4, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, $kmr_22.Chapter4, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, "omo_03", omo_03_ENTRY_4)
+    Call(GotoMap, $omo_03.ToadTown)
     Wait(100)
     Return
     End
@@ -277,7 +279,7 @@ EvtScript EVS_OnInspect_StreetSign = {
 
 EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
-        Call(MakeEntity, Entity_Padlock, 155, 48, -480, 90, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_UnlockStoreroom)
         Set(MV_StoreroomLockEntityID, LVar0)
         Call(SetEntityCullMode, 3)
@@ -298,8 +300,7 @@ EvtScript EVS_MakeEntities = {
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_SNOWMAN_DOLL, VIS_GROUP_2), 50, 40, -310, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_SnowmanDoll)
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_VOLT_SHROOM, VIS_GROUP_2), 50, 40, -370, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_VoltShroom)
     Call(MakeItemEntity, ITEM_VIS_GROUP(ITEM_DIZZY_DIAL, VIS_GROUP_2), 50, 40, -490, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC04_Item_DizzyDial)
-    Call(MakeEntity, Entity_ScriptSpring, -480, 20, -90, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring_Toybox)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Call(SetEntityCullMode, 2)
     BindTrigger(EVS_OnInspect_StreetSign, TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     Return

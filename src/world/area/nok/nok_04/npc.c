@@ -1535,8 +1535,8 @@ EvtScript EVS_NpcInit_Kooper = {
 NpcData NpcData_Minigame[] = {
     {
         .id = NPC_KoopersShell,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $KoopersShell.pos,
+        .yaw = $KoopersShell.yaw,
         .init = &EVS_NpcInit_KoopersShell,
         .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1545,20 +1545,9 @@ NpcData NpcData_Minigame[] = {
     },
     {
         .id = NPC_AmbushFuzzy,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $AmbushFuzzy.pos,
+        .yaw = $AmbushFuzzy.yaw,
+        .territory = $AmbushFuzzy.territory,
         .init = &EVS_NpcInit_WrongFuzzy,
         .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1567,20 +1556,9 @@ NpcData NpcData_Minigame[] = {
     },
     {
         .id = NPC_Fuzzy_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Fuzzy_01.pos,
+        .yaw = $Fuzzy_01.yaw,
+        .territory = $Fuzzy_01.territory,
         .init = &EVS_NpcInit_Fuzzy_Aux,
         .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1589,20 +1567,9 @@ NpcData NpcData_Minigame[] = {
     },
     {
         .id = NPC_Fuzzy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Fuzzy_02.pos,
+        .yaw = $Fuzzy_02.yaw,
+        .territory = $Fuzzy_02.territory,
         .init = &EVS_NpcInit_Fuzzy_Aux,
         .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1611,20 +1578,9 @@ NpcData NpcData_Minigame[] = {
     },
     {
         .id = NPC_Fuzzy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 0 },
-                .wanderSize = { 0 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Fuzzy_03.pos,
+        .yaw = $Fuzzy_03.yaw,
+        .territory = $Fuzzy_03.territory,
         .init = &EVS_NpcInit_Fuzzy_Aux,
         .settings = &NpcSettings_Fuzzy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1633,8 +1589,8 @@ NpcData NpcData_Minigame[] = {
     },
     {
         .id = NPC_Kooper,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Kooper.pos,
+        .yaw = $Kooper.yaw,
         .init = &EVS_NpcInit_Kooper,
         .settings = &NpcSettings_Koopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1645,20 +1601,9 @@ NpcData NpcData_Minigame[] = {
 
 NpcData NpcData_Miniboss = {
     .id = NPC_BossFuzzy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 0, 0 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BossFuzzy.pos,
+    .yaw = $BossFuzzy.yaw,
+    .territory = $BossFuzzy.territory,
     .init = &EVS_SetupMinigame,
     .settings = &NpcSettings_Fuzzy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

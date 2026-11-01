@@ -27,14 +27,11 @@ EvtScript EVS_MakeEntities = {
     Call(GetDemoState, LVar0)
     IfEq(LVar0, DEMO_STATE_NONE)
         IfEq(GF_MAC03_BombedRock, false)
-            Call(MakeEntity, Entity_BombableRock, -200, 0, 0, 0, MAKE_ENTITY_END)
-            Call(AssignScript, EVS_OnBlast_RailRock)
+            Call(MakeMarkerEntity, $BombableRock_1)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_HiddenPanel, 525, 0, 175, 0, MODEL_o11, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_MAC03_HiddenPanel)
-    Call(MakeEntity, Entity_Signpost, 185, 20, -350, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_ReadSign_LilOInks)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $Signpost_1)
     BindTrigger(EVS_OnInspect_StreetSign, TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     Return
     End

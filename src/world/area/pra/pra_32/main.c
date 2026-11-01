@@ -1,4 +1,6 @@
 #include "pra_32.h"
+#include "world/area/kmr/kmr_23.h"
+#include "world/area/pra/pra_40.h"
 #include "sprite/player.h"
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
@@ -64,7 +66,7 @@ EvtScript EVS_SpawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_6, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Kalmar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -126,7 +128,7 @@ EvtScript EVS_RespawnStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH7_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_6, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Kalmar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -143,13 +145,13 @@ s32 DoorModelsR[] = {
 EvtScript EVS_ExitDoors_pra_40_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_32_ENTRY_0)
+    Set(LVar0, $BossAntechamber.index)
     Set(LVar1, COLLIDER_deilittw)
     Set(LVar2, DoorModelsL)
     Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_40", pra_40_ENTRY_1)
+    Call(GotoMap, $pra_40.CrystalSummit)
     Wait(100)
     Return
     End

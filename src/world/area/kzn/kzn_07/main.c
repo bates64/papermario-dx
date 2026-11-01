@@ -1,4 +1,5 @@
 #include "kzn_07.h"
+#include "world/area/kzn/kzn_06.h"
 #include "model.h"
 
 #include "../common/LavaGlowLighting.inc.c"
@@ -8,7 +9,7 @@ ModelIDList LavaModelIDs = {
     .list = { MODEL_yougan }
 };
 
-EvtScript EVS_ExitWalk_kzn_06 = EVT_EXIT_WALK(60, kzn_07_ENTRY_0, "kzn_06", kzn_06_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_06 = EVT_EXIT_WALK(60, $Kzn06, $kzn_06.Kzn07);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_06, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -43,8 +44,8 @@ EvtScript EVS_SetupTexPanners = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o365, .pos = {  120.0, 0.0, 100.0 }},
-    { .colliderID = COLLIDER_o411, .pos = { -120.0, 0.0, 100.0 }},
+    { .colliderID = COLLIDER_o365, .pos = $LavaReset_o365.pos },
+    { .colliderID = COLLIDER_o411, .pos = $LavaReset_o411.pos },
     { .colliderID = NO_COLLIDER }
 };
 

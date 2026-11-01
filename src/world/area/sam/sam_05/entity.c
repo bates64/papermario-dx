@@ -2,9 +2,8 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_LETTER_TO_MERLOW, 100, 0, -100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM05_Item_Letter06)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 490, 140, -75, 0, ITEM_STOP_WATCH, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SAM05_HiddenItem_StopWatch)
+    Call(MakeMarkerEntity, $Item_LetterToMerlow_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_StopWatch_1)
     Return
     End
 };

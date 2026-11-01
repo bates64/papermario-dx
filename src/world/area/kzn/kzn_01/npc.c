@@ -47,8 +47,8 @@ EvtScript EVS_NpcInit_PutridPiranha = {
 
 NpcData NpcPutridPiranha = {
     .id = NPC_PutridPiranha,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $PutridPiranha.pos,
+    .yaw = $PutridPiranha.yaw,
     .init = &EVS_NpcInit_PutridPiranha,
     .settings = &NpcSettings_PutridPiranhaSentinel,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

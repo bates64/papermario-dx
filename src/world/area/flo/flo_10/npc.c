@@ -1,4 +1,5 @@
 #include "flo_10.h"
+#include "world/area/flo/flo_12.h"
 #include "sprite/player.h"
 
 #include "world/common/npc/Lily/idle.inc.c"
@@ -17,7 +18,7 @@ EvtScript EVS_Scene_SunReturns = {
     Wait(20)
     Call(SpeakToPlayer, NPC_Lily, ANIM_Lily_Talk, ANIM_Lily_Idle, 0, MSG_CH6_00C6)
     Wait(10)
-    Call(GotoMap, "flo_12", flo_12_ENTRY_1)
+    Call(GotoMap, $flo_12.Flo10)
     Wait(100)
     Return
     End
@@ -53,7 +54,7 @@ EvtScript EVS_OnInteract_WaterStoneSocket = {
                 Wait(10 * DT)
                 Call(SetPlayerAnimation, ANIM_MarioW1_PlaceItem)
                 Call(RemoveKeyItemAt, LVar1)
-                Call(MakeItemEntity, ITEM_WATER_STONE, 0, -60, 6, ITEM_SPAWN_MODE_DECORATION, 0)
+                Call(MakeMarkerEntity, $Item_WaterStone_2)
                 Set(LVarA, LVar0)
                 Call(CloseChoicePopup)
                 Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
@@ -198,8 +199,8 @@ EvtScript EVS_NpcInit_Lily = {
 
 NpcData NpcData_Lily = {
     .id = NPC_Lily,
-    .pos = { 80.0f, -60.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Lily.pos,
+    .yaw = $Lily.yaw,
     .init = &EVS_NpcInit_Lily,
     .settings = &NpcSettings_Lily,
     .flags = BASE_PASSIVE_FLAGS,

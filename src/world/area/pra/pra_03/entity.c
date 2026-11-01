@@ -84,9 +84,8 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerFloor)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, 124, -200, -75, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
-    Call(MakeEntity, Entity_SavePoint, -200, 60, -75, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Return
     End
 };

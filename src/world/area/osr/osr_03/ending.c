@@ -1,4 +1,5 @@
 #include "osr_03.h"
+#include "world/area/hos/hos_10.h"
 #include "effects.h"
 
 API_CALLABLE(FlashScreenWhite) {
@@ -169,7 +170,7 @@ EvtScript EVS_Scene_CastleDestruction = {
     KillThread(LVar9)
     Wait(50)
     Call(PlaySound, SOUND_KPA_LIGHT_RAYS)
-    PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, -430, 1920, 15, LVar9)
+    PlayEffect(EFFECT_LIGHT_RAYS, 2, $LightRaysPos_1.pos.x, $LightRaysPos_1.pos.y, $LightRaysPos_1.pos.z, 15, LVar9)
     Wait(30)
     Thread
         Call(BigExplosionRumble, 30, 2.0)
@@ -183,7 +184,7 @@ EvtScript EVS_Scene_CastleDestruction = {
             EndIf
         EndLoop
     EndThread
-    Call(GotoMapSpecial, "hos_10", hos_10_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, $hos_10.Descent, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(100)
     Return
     End

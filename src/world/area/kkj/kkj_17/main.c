@@ -1,12 +1,13 @@
 #include "kkj_17.h"
+#include "world/area/kkj/kkj_11.h"
 
 EvtScript EVS_ExitDoors_kkj_11_5 =
-    EVT_EXIT_SINGLE_DOOR(kkj_17_ENTRY_0, "kkj_11", kkj_11_ENTRY_5, COLLIDER_ttw, MODEL_o2, DOOR_SWING_OUT);
+    EVT_EXIT_SINGLE_DOOR($UpperHall, $kkj_11.Storeroom, COLLIDER_ttw, MODEL_o2, DOOR_SWING_OUT);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_17_ENTRY_0)
+        CaseEq($UpperHall.index)
             Set(LVar2, MODEL_o2)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)

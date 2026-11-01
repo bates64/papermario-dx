@@ -154,8 +154,8 @@ AnimID LimitAnims_Monstar[] = {
 
 NpcData NpcData_Monstar = {
     .id = NPC_Monstar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Monstar.pos,
+    .yaw = $Monstar.yaw,
     .init = &EVS_NpcInit_Monstar,
     .settings = &NpcSettings_Monstar,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -175,8 +175,8 @@ AnimID LimitAnims_StarKid[] = {
 NpcData NpcData_StarKids[] = {
     {
         .id = NPC_StarKid_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_01.pos,
+        .yaw = $StarKid_01.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -186,8 +186,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_02.pos,
+        .yaw = $StarKid_02.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -197,8 +197,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_03.pos,
+        .yaw = $StarKid_03.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -208,8 +208,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_04.pos,
+        .yaw = $StarKid_04.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -219,8 +219,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_05.pos,
+        .yaw = $StarKid_05.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -230,8 +230,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_06.pos,
+        .yaw = $StarKid_06.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -241,8 +241,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_07.pos,
+        .yaw = $StarKid_07.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -252,8 +252,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_08.pos,
+        .yaw = $StarKid_08.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -263,8 +263,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_09,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_09.pos,
+        .yaw = $StarKid_09.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -274,8 +274,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_10,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_10.pos,
+        .yaw = $StarKid_10.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -285,8 +285,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_11,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_11.pos,
+        .yaw = $StarKid_11.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -296,8 +296,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_12,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_12.pos,
+        .yaw = $StarKid_12.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -307,8 +307,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_13,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_13.pos,
+        .yaw = $StarKid_13.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -318,8 +318,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_14,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_14.pos,
+        .yaw = $StarKid_14.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -329,8 +329,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_15,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_15.pos,
+        .yaw = $StarKid_15.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -340,8 +340,8 @@ NpcData NpcData_StarKids[] = {
     },
     {
         .id = NPC_StarKid_16,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $StarKid_16.pos,
+        .yaw = $StarKid_16.yaw,
         .init = &EVS_NpcInit_StarKid,
         .settings = &NpcSettings_Twink,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -354,20 +354,9 @@ NpcData NpcData_StarKids[] = {
 NpcData NpcData_Gulpit[] = {
     {
         .id = NPC_Gulpit,
-        .pos = { -75.0f, 0.0f, 0.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -75, 0, 0 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -75, 0, 0 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Gulpit.pos,
+        .yaw = $Gulpit.yaw,
+        .territory = $Gulpit.territory,
         .settings = &NpcSettings_Gulpit_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = GULPIT_DROPS,
@@ -381,20 +370,9 @@ NpcData NpcData_Gulpit[] = {
 NpcData NpcData_FrostPiranha_01[] = {
     {
         .id = NPC_FrostPiranha_01,
-        .pos = { 100.0f, 0.0f, 50.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 100, 0, 50 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 100, 0, 50 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $FrostPiranha_01.pos,
+        .yaw = $FrostPiranha_01.yaw,
+        .territory = $FrostPiranha_01.territory,
         .settings = &NpcSettings_FrostPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = FROST_PIRANHA_DROPS,
@@ -408,20 +386,9 @@ NpcData NpcData_FrostPiranha_01[] = {
 NpcData NpcData_FrostPiranha_02[] = {
     {
         .id = NPC_FrostPiranha_02,
-        .pos = { -400.0f, 0.0f, 0.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -400, 0, 0 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -400, 0, 0 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $FrostPiranha_02.pos,
+        .yaw = $FrostPiranha_02.yaw,
+        .territory = $FrostPiranha_02.territory,
         .settings = &NpcSettings_FrostPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = FROST_PIRANHA_DROPS,

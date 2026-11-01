@@ -74,7 +74,7 @@ EvtScript EVS_NpcDefeat_Kammy_Broom_Npc1 = {
     Call(PostBattleHideWorld_Npc1)
     Set(GF_KKJ25_Defeated_Kammy, true)
     // reload the map in the 'midpoint' configuration
-    Call(GotoMap, "kkj_25", kkj_25_ENTRY_1)
+    Call(GotoMap, "kkj_25", 1)
     Wait(100)
     Return
     End
@@ -180,8 +180,8 @@ AnimID LimitAnims_Twink_Npc1[] = {
 
 NpcData NpcData_Bowser_Npc1 = {
     .id = NPC_Bowser_01,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_01.pos,
+    .yaw = $Bowser_01.yaw,
     .init = &EVS_NpcInit_Bowser_Npc1,
     .settings = &NpcSettings_Bowser,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -192,8 +192,8 @@ NpcData NpcData_Bowser_Npc1 = {
 
 NpcData NpcData_Peach_Npc1 = {
     .id = NPC_Peach_01,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Peach_01.pos,
+    .yaw = $Peach_01.yaw,
     .init = &EVS_NpcInit_BattleKooper_01_Npc1,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
@@ -205,8 +205,8 @@ NpcData NpcData_Peach_Npc1 = {
 NpcData NpcData_Kammy_Npc1[] = {
     {
         .id = NPC_Kammy_01,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy_01.pos,
+        .yaw = $Kammy_01.yaw,
         .init = &EVS_NpcInit_Kammy_Broom_Npc1,
         .settings = &NpcSettings_Kammy_Flying,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -233,8 +233,8 @@ NpcData NpcData_Kammy_Npc1[] = {
     },
     {
         .id = NPC_Kammy_02,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy_02.pos,
+        .yaw = $Kammy_02.yaw,
         .init = &EVS_NpcInit_Kammy_Npc1,
         .settings = &NpcSettings_Kammy_Flying,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -263,8 +263,8 @@ NpcData NpcData_Kammy_Npc1[] = {
 
 NpcData NpcData_Twink_Npc1 = {
     .id = NPC_Twink_01,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Twink_01.pos,
+    .yaw = $Twink_01.yaw,
     .init = &EVS_NpcInit_Twink_Npc1,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,

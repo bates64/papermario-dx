@@ -2,9 +2,8 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HeartBlock, 800, 60, 0, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_RedBlock, 220, 60, 10, 0, ITEM_CLOSE_CALL, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KMR06_BadgeBlock_CloseCall)
+    Call(MakeMarkerEntity, $HeartBlock_1)
+    Call(MakeMarkerEntity, $RedBlock_CloseCall_1)
     Return
     End
 };

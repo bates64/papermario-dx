@@ -1077,95 +1077,97 @@ typedef b32 (*EvtPredicateF6Func)(f32, f32, f32, f32, f32, f32);
 #define IfTrue(b)  IfNe(b, 0)
 #define IfFalse(b) IfEq(b, 0)
 
-#define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
+/// Exit scripts: the player leaves through `exit`, one of this map's entry markers, such as `$West`, to `dest`, an
+/// entry marker of the map to go to, such as `$kmr_03.Front`.
+#define EVT_EXIT_WALK(walkDistance, exit, dest) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(UseExitHeading, walkDistance, exitIdx) \
+        Call(UseExitHeading, walkDistance, (exit).index) \
         Exec(ExitWalk) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, dest) \
         Wait(100) \
         Return \
         End \
     }
 
-#define EVT_EXIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, modelID, swingDir) \
+#define EVT_EXIT_SINGLE_DOOR(exit, dest, colliderID, modelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, true) \
-        Set(LVar0, exitIdx) \
+        Set(LVar0, (exit).index) \
         Set(LVar1, colliderID) \
         Set(LVar2, modelID) \
         Set(LVar3, swingDir) \
         Exec(ExitSingleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, dest) \
         Wait(100) \
         Return \
         End \
     }
 
-#define EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, modelID, swingDir, sounds) \
+#define EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(exit, dest, colliderID, modelID, swingDir, sounds) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, true) \
         Call(UseDoorSounds, sounds) \
-        Set(LVar0, exitIdx) \
+        Set(LVar0, (exit).index) \
         Set(LVar1, colliderID) \
         Set(LVar2, modelID) \
         Set(LVar3, swingDir) \
         Exec(ExitSingleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, dest) \
         Wait(100) \
         Return \
         End \
     }
 
-#define EVT_EXIT_SPLIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, topModelID, bottomModelID, swingDir) \
+#define EVT_EXIT_SPLIT_SINGLE_DOOR(exit, dest, colliderID, topModelID, bottomModelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, true) \
-        Set(LVar0, exitIdx) \
+        Set(LVar0, (exit).index) \
         Set(LVar1, colliderID) \
         Set(LVar2, topModelID) \
         Set(LVar4, bottomModelID) \
         Set(LVar3, swingDir) \
         Exec(ExitSplitSingleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, dest) \
         Wait(100) \
         Return \
         End \
     }
 
-#define EVT_EXIT_DOUBLE_DOOR(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID) \
+#define EVT_EXIT_DOUBLE_DOOR(exit, dest, colliderID, leftDoorModelID, rightDoorModelID) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, true) \
-        Set(LVar0, exitIdx) \
+        Set(LVar0, (exit).index) \
         Set(LVar1, colliderID) \
         Set(LVar2, leftDoorModelID) \
         Set(LVar3, rightDoorModelID) \
         Exec(ExitDoubleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, dest) \
         Wait(100) \
         Return \
         End \
     }
 
-#define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
+#define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exit, dest, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, true) \
         Call(UseDoorSounds, sounds) \
-        Set(LVar0, exitIdx) \
+        Set(LVar0, (exit).index) \
         Set(LVar1, colliderID) \
         Set(LVar2, leftDoorModelID) \
         Set(LVar3, rightDoorModelID) \
         Exec(ExitDoubleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, dest) \
         Wait(100) \
         Return \
         End \

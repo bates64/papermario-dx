@@ -1,4 +1,5 @@
 #include "jan_11.h"
+#include "world/area/jan/jan_09.h"
 
 #include "world/common/util/CreateDarkness.inc.c"
 
@@ -10,18 +11,18 @@ DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
-            .minPos = { -154,  100 },
-            .maxPos = {   92,   36 },
-            .startY = 200,
-            .endY   = 0,
+            .minPos = { $DripVolume_1.min.x, $DripVolume_1.min.z },
+            .maxPos = { $DripVolume_1.max.x, $DripVolume_1.max.z },
+            .startY = $DripVolume_1.max.y,
+            .endY = $DripVolume_1.min.y,
             .duration = 60,
             .density  = 2,
         },
          {
-            .minPos = {  212,   10 },
-            .maxPos = {   53,  122 },
-            .startY = 200,
-            .endY   = 0,
+            .minPos = { $DripVolume_2.min.x, $DripVolume_2.min.z },
+            .maxPos = { $DripVolume_2.max.x, $DripVolume_2.max.z },
+            .startY = $DripVolume_2.max.y,
+            .endY = $DripVolume_2.min.y,
             .duration = 60,
             .density  = 2,
         }
@@ -37,13 +38,13 @@ EvtScript EVS_SetupDrips = {
 };
 
 EvtScript EVS_GotoMap_jan_09_3 = {
-    Call(GotoMap, "jan_09", jan_09_ENTRY_3)
+    Call(GotoMap, $jan_09.Pipe)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_jan_09_3 = EVT_EXIT_PIPE_HORIZONTAL(jan_11_ENTRY_0, COLLIDER_o10, EVS_GotoMap_jan_09_3);
+EvtScript EVS_ExitPipe_jan_09_3 = EVT_EXIT_PIPE_HORIZONTAL($Jan09, COLLIDER_o10, EVS_GotoMap_jan_09_3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitPipe_jan_09_3, TRIGGER_WALL_PUSH, COLLIDER_o10, 1, 0)

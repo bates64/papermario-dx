@@ -65,7 +65,7 @@ EvtScript EVS_Scene_FallIntoCell = {
 };
 
 EvtScript EVS_BlastWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 8, 8, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_g296, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitte, COLLIDER_FLAGS_UPPER_MASK)
     Set(GF_KPA17_BombedWall, true)
@@ -193,8 +193,8 @@ EvtScript EVS_NpcInit_ToadMinister = {
 NpcData NpcData_Prisoners[] = {
     {
         .id = NPC_Toad_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
         .init = &EVS_NpcInit_Toad_01,
         .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
@@ -204,8 +204,8 @@ NpcData NpcData_Prisoners[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
         .init = &EVS_NpcInit_Toad_02,
         .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS,
@@ -215,8 +215,8 @@ NpcData NpcData_Prisoners[] = {
     },
     {
         .id = NPC_ToadGuard,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $ToadGuard.pos,
+        .yaw = $ToadGuard.yaw,
         .init = &EVS_NpcInit_ToadGuard,
         .settings = &NpcSettings_ToadGuard,
         .flags = BASE_PASSIVE_FLAGS,
@@ -226,8 +226,8 @@ NpcData NpcData_Prisoners[] = {
     },
     {
         .id = NPC_ToadMinister,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $ToadMinister.pos,
+        .yaw = $ToadMinister.yaw,
         .init = &EVS_NpcInit_ToadMinister,
         .settings = &NpcSettings_ToadMinister,
         .flags = BASE_PASSIVE_FLAGS,

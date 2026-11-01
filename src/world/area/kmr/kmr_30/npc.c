@@ -8,8 +8,8 @@ NpcSettings NpcSettings_ParadePeach = {
 
 NpcData NpcData_ParadePeach = {
     .id = NPC_ParadePeach,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $ParadePeach.pos,
+    .yaw = $ParadePeach.yaw,
     .settings = &NpcSettings_ParadePeach,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,

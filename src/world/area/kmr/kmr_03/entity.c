@@ -36,30 +36,25 @@ EvtScript EVS_TetherCameraToPlayer = {
 
 EvtScript EVS_MakeEntities = {
     IfLt(GB_StoryProgress, STORY_CH0_LEFT_THE_PLAYGROUND)
-        Call(MakeEntity, Entity_Hammer1Block, 45, 0, 70, 15, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnSmashBlock1)
+        Call(MakeMarkerEntity, $Hammer1Block_1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     IfEq(GF_KMR03_Hammer1Block, false)
-        Call(MakeEntity, Entity_Hammer2Block, 230, 0, 310, 15, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnSmashBlock2)
+        Call(MakeMarkerEntity, $Hammer2Block_1)
     EndIf
-    Call(MakeEntity, Entity_HiddenYellowBlock, 230, 60, 310, 15, ITEM_REPEL_GEL, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KMR03_HiddenItem_RepelGel)
-    Call(MakeEntity, Entity_BrickBlock, 230, 50, -160, 15, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 165, 0, 380, 20, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_YellowBlock, -170, 0, 370, 43, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KMR03_ItemBlock_Coin)
-    Call(MakeEntity, Entity_SimpleSpring, 345, 75, -250, 0, 100, MAKE_ENTITY_END)
-    Call(MakeItemEntity, ITEM_COIN, 345, 205, -250, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR03_Item_CoinA)
-    Call(MakeItemEntity, ITEM_COIN, 345, 230, -250, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR03_Item_CoinB)
-    Call(MakeItemEntity, ITEM_COIN, 345, 255, -250, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR03_Item_CoinC)
-    Call(MakeItemEntity, ITEM_COIN, 345, 280, -250, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR03_Item_CoinD)
-    Call(MakeItemEntity, ITEM_FIRE_FLOWER, 229, 250, -156, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR02_Item_FireFlower)
-    Call(MakeEntity, Entity_HiddenPanel, 300, 0, 150, 0, MODEL_jimen_1, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_KMR03_HiddenPanel)
-    Call(MakeEntity, Entity_HeartBlock, 130, 60, 0, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_RepelGel_1)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
+    Call(MakeMarkerEntity, $SimpleSpring_1)
+    Call(MakeMarkerEntity, $Item_Coin_1)
+    Call(MakeMarkerEntity, $Item_Coin_2)
+    Call(MakeMarkerEntity, $Item_Coin_3)
+    Call(MakeMarkerEntity, $Item_Coin_4)
+    Call(MakeMarkerEntity, $Item_FireFlower_1)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $HeartBlock_1)
     Return
     End
 };

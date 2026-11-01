@@ -14,8 +14,8 @@ EvtScript EVS_NpcInit_TrafficBoo1 = {
 
 NpcData NpcData_TrafficBoo1 = {
     .id = NPC_TrafficBoo1,
-    .pos = { 523.0f, -139.0f, 193.0f },
-    .yaw = 0,
+    .pos = $TrafficBoo1.pos,
+    .yaw = $TrafficBoo1.yaw,
     .init = &EVS_NpcInit_TrafficBoo1,
     .settings = &NpcSettings_Boo,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -33,8 +33,8 @@ EvtScript EVS_NpcInit_TrafficBoo2 = {
 
 NpcData NpcData_TrafficBoo2 = {
     .id = NPC_TrafficBoo2,
-    .pos = { 473.0f, -122.0f, 247.0f },
-    .yaw = 0,
+    .pos = $TrafficBoo2.pos,
+    .yaw = $TrafficBoo2.yaw,
     .init = &EVS_NpcInit_TrafficBoo2,
     .settings = &NpcSettings_Boo,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -55,8 +55,8 @@ EvtScript EVS_NpcInit_GuardBoo = {
 
 NpcData NpcData_GuardBoo = {
     .id = NPC_GuardBoo,
-    .pos = { 168.0f, 0.0f, -161.0f },
-    .yaw = 270,
+    .pos = $GuardBoo.pos,
+    .yaw = $GuardBoo.yaw,
     .init = &EVS_NpcInit_GuardBoo,
     .settings = &NpcSettings_Boo,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

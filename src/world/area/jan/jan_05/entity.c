@@ -2,10 +2,9 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_RedBlock, 0, 60, 0, 0, ITEM_POWER_QUAKE, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_JAN05_BadgeBlock_PowerQuake)
-    Call(MakeEntity, Entity_CymbalPlant, 205, 0, 220, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_TrumpetPlant, -386, 0, -214, 160, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $RedBlock_PowerQuake_1)
+    Call(MakeMarkerEntity, $CymbalPlant_1)
+    Call(MakeMarkerEntity, $TrumpetPlant_1)
     Return
     End
 };

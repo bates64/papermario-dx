@@ -1,22 +1,24 @@
 #include "kpa_41.h"
+#include "world/area/kpa/kpa_102.h"
+#include "world/area/kpa/kpa_40.h"
 
-EvtScript EVS_ExitWalk_LowerLeft = EVT_EXIT_WALK(60, kpa_41_ENTRY_0, "kpa_40", kpa_40_ENTRY_1);
+EvtScript EVS_ExitWalk_LowerLeft = EVT_EXIT_WALK(60, $LowerLeft, $kpa_40.LowerRight);
 
 EvtScript EVS_ExitWalk_LowerRight = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kpa_41_ENTRY_1)
+    Call(UseExitHeading, 60, $LowerRight.index)
     Exec(ExitWalk)
     Switch(AB_KPA_MazeProgress)
         CaseOrEq(1)
         CaseOrEq(2)
         CaseOrEq(4)
             Add(AB_KPA_MazeProgress, 1)
-            Call(GotoMap, "kpa_41", kpa_41_ENTRY_0)
+            Call(GotoMap, $LowerLeft)
         EndCaseGroup
         CaseOrEq(0)
         CaseOrEq(3)
         CaseOrEq(5)
-            Call(GotoMap, "kpa_40", kpa_40_ENTRY_3)
+            Call(GotoMap, $kpa_40.UpperLeft)
         EndCaseGroup
     EndSwitch
     Wait(100)
@@ -24,24 +26,24 @@ EvtScript EVS_ExitWalk_LowerRight = {
     End
 };
 
-EvtScript EVS_ExitWalk_UpperLeft = EVT_EXIT_WALK(60, kpa_41_ENTRY_3, "kpa_40", kpa_40_ENTRY_2);
+EvtScript EVS_ExitWalk_UpperLeft = EVT_EXIT_WALK(60, $UpperLeft, $kpa_40.UpperRight);
 
 EvtScript EVS_ExitWalk_UpperRight = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kpa_41_ENTRY_2)
+    Call(UseExitHeading, 60, $UpperRight.index)
     Exec(ExitWalk)
     Switch(AB_KPA_MazeProgress)
         CaseEq(5)
             Set(AB_KPA_MazeProgress, 0)
-            Call(GotoMap, "kpa_102", kpa_102_ENTRY_0)
+            Call(GotoMap, $kpa_102.MazeRoom)
         CaseEq(3)
             Add(AB_KPA_MazeProgress, 1)
-            Call(GotoMap, "kpa_41", kpa_41_ENTRY_3)
+            Call(GotoMap, $UpperLeft)
         CaseOrEq(0)
         CaseOrEq(1)
         CaseOrEq(2)
         CaseOrEq(4)
-            Call(GotoMap, "kpa_40", kpa_40_ENTRY_3)
+            Call(GotoMap, $kpa_40.UpperLeft)
         EndCaseGroup
     EndSwitch
     Wait(100)
@@ -61,7 +63,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_41_ENTRY_2)
+        CaseEq($UpperRight.index)
             Set(AB_KPA_MazeProgress, 5)
         CaseDefault
     EndSwitch

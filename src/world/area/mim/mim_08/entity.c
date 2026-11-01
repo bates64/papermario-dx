@@ -2,8 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_RedBlock, 0, 93, 0, 45, ITEM_HP_PLUS_A, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_MIM08_BadgeBlock_HPPlusA)
+    Call(MakeMarkerEntity, $RedBlock_HpPlusA_1)
     Return
     End
 };

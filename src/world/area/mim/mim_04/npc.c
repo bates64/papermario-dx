@@ -54,20 +54,9 @@ EvtScript EVS_NpcInit_Bubulb = {
 
 NpcData NpcData_Fuzzy = {
     .id = NPC_Fuzzy,
-    .pos = { 240.0f, 0.0f, -240.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 240, 0, -240 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 240, 0, -240 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Fuzzy.pos,
+    .yaw = $Fuzzy.yaw,
+    .territory = $Fuzzy.territory,
     .settings = &NpcSettings_ForestFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = FOREST_FUZZY_DROPS,
@@ -77,8 +66,8 @@ NpcData NpcData_Fuzzy = {
 
 NpcData NpcData_Bubulb = {
     .id = NPC_Bubulb,
-    .pos = { 0.0f, 32.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bubulb.pos,
+    .yaw = $Bubulb.yaw,
     .init = &EVS_NpcInit_Bubulb,
     .settings = &NpcSettings_Bubulb,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

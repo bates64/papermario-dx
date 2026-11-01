@@ -1,4 +1,7 @@
 #include "kkj_23.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/kkj/kkj_22.h"
+#include "world/area/kkj/kkj_24.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
 
@@ -6,22 +9,22 @@ EvtScript EVS_EndPeachChapter6 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "flo_00", flo_00_ENTRY_A, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $flo_00.PeachInterlude, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_ExitDoors_kkj_22_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_0, "kkj_22", kkj_22_ENTRY_1, COLLIDER_tte, MODEL_o5, MODEL_o4);
+    EVT_EXIT_DOUBLE_DOOR($DoubleStaircase, $kkj_22.Rooftop, COLLIDER_tte, MODEL_o5, MODEL_o4);
 
 EvtScript EVS_ExitDoors_kkj_24_0 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_1, "kkj_24", kkj_24_ENTRY_0, COLLIDER_ttw, MODEL_o9, MODEL_o10);
+    EVT_EXIT_DOUBLE_DOOR($TowerStaircase, $kkj_24.Rooftop, COLLIDER_ttw, MODEL_o9, MODEL_o10);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_23_ENTRY_0)
+        CaseEq($DoubleStaircase.index)
             Set(LVar2, MODEL_o5)
             Set(LVar3, MODEL_o4)
             ExecWait(EnterDoubleDoor)
@@ -30,7 +33,7 @@ EvtScript EVS_EnterMap = {
             Else
                 Exec(EVS_BowserTauntMario)
             EndIf
-        CaseEq(kkj_23_ENTRY_1)
+        CaseEq($TowerStaircase.index)
             Set(LVar2, MODEL_o9)
             Set(LVar3, MODEL_o10)
             ExecWait(EnterDoubleDoor)

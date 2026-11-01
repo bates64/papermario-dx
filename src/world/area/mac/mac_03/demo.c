@@ -118,7 +118,7 @@ EvtScript EVS_DemoDepartForMtRugged = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "mac_03", mac_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, $PlayroomPipe, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(110)
     Return
     End
@@ -137,7 +137,7 @@ EvtScript EVS_MonitorDemoState = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "mac_03", mac_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, $PlayroomPipe, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(100)
     Return
     End

@@ -15,20 +15,9 @@ AnimID LimitAnims_JungleFuzzy[] = {
 
 NpcData NpcData_JungleFuzzy = {
     .id = NPC_JungleFuzzy,
-    .pos = { 310.0f, 24.0f, 35.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 310, 24, 35 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 310, 24, 35 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $JungleFuzzy.pos,
+    .yaw = $JungleFuzzy.yaw,
+    .territory = $JungleFuzzy.territory,
     .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
@@ -56,20 +45,9 @@ AnimID LimitAnims_SpearGuy_Custom[] = {
 NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
-        .pos = { -298.0f, 35.0f, 37.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = false,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -298, 0, 37 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -298, 0, 37 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $SpearGuy.pos,
+        .yaw = $SpearGuy.yaw,
+        .territory = $SpearGuy.territory,
         .settings = &NpcSettings_SpearGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = SPEAR_GUY_DROPS,
@@ -82,8 +60,8 @@ NpcData NpcData_SpearGuy[] = {
 
 NpcData NpcData_HeartPlant = {
     .id = NPC_HeartPlant,
-    .pos = { 410.0f, 0.0f, -30.0f },
-    .yaw = 270,
+    .pos = $HeartPlant.pos,
+    .yaw = $HeartPlant.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -93,8 +71,8 @@ NpcData NpcData_HeartPlant = {
 
 NpcData NpcData_HurtPlant_01 = {
     .id = NPC_HurtPlant_01,
-    .pos = { 110.0f, 0.0f, 55.0f },
-    .yaw = 90,
+    .pos = $HurtPlant_01.pos,
+    .yaw = $HurtPlant_01.yaw,
     .settings = &NpcSettings_HurtPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = HURT_PLANT_DROPS,
@@ -104,8 +82,8 @@ NpcData NpcData_HurtPlant_01 = {
 
 NpcData NpcData_HurtPlant_02 = {
     .id = NPC_HurtPlant_02,
-    .pos = { -430.0f, 0.0f, -80.0f },
-    .yaw = 90,
+    .pos = $HurtPlant_02.pos,
+    .yaw = $HurtPlant_02.yaw,
     .settings = &NpcSettings_HurtPlant,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = HURT_PLANT_DROPS,

@@ -1,4 +1,6 @@
 #include "sam_11.h"
+#include "world/area/sam/sam_02.h"
+#include "world/area/sam/sam_03.h"
 
 EvtScript EVS_LoadPondAnimation = {
     Call(LoadAnimatedModel, 0, ShatterPondSkeleton)
@@ -20,8 +22,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { 447.0f, 0.0f, -144.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o192);
@@ -33,8 +35,8 @@ ShakeTreeConfig ShakeTree_Tree2 = {
 };
 
 BombTrigger BombPos_Tree2 = {
-    .pos = { -440.0f, 0.0f, -178.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree2.pos,
+    .diameter = 2.0f * $BombPos_Tree2.radius,
 };
 
 FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_o190);
@@ -46,8 +48,8 @@ ShakeTreeConfig ShakeTree_Tree3 = {
 };
 
 BombTrigger BombPos_Tree3 = {
-    .pos = { -450.0f, 0.0f, -80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree3.pos,
+    .diameter = 2.0f * $BombPos_Tree3.radius,
 };
 
 EvtScript EVS_ExitWalk_sam_02_1 = {
@@ -55,9 +57,9 @@ EvtScript EVS_ExitWalk_sam_02_1 = {
         Return
     EndIf
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, sam_11_ENTRY_0)
+    Call(UseExitHeading, 60, $ShiverCityCenter.index)
     Exec(ExitWalk)
-    Call(GotoMap, "sam_02", sam_02_ENTRY_1)
+    Call(GotoMap, $sam_02.PondArea)
     Wait(100)
     Return
     End
@@ -69,9 +71,9 @@ EvtScript EVS_ExitWalk_sam_03_0 = {
         Return
     EndIf
     Set(GF_SAM11_LeftTown, true)
-    Call(UseExitHeading, 60, sam_11_ENTRY_1)
+    Call(UseExitHeading, 60, $SnowfieldRoad.index)
     Exec(ExitWalk)
-    Call(GotoMap, "sam_03", sam_03_ENTRY_0)
+    Call(GotoMap, $sam_03.PondArea)
     Wait(100)
     Return
     End
@@ -91,7 +93,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, sam_11_ENTRY_2)
+    IfNe(LVar0, $Epilogue.index)
         Goto(10)
     EndIf
     Call(MakeNpcs, false, EpilogueNPCs)
@@ -134,7 +136,7 @@ EvtScript EVS_Main = {
     BindTrigger(EVS_ShakeTree, TRIGGER_POINT_BOMB, BombPos_Tree3, 1, 0)
     Call(InitAnimatedModels)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, sam_11_ENTRY_2)
+    IfNe(LVar0, $Epilogue.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Wait(1)

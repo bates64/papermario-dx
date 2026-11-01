@@ -6,20 +6,9 @@
 NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
-        .pos = { -200.0f, 90.0f, -330.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -200, 90, -330 },
-                .wanderSize = { 20 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { -182, 90, -302 },
-                .detectSize = { 212, 100 },
-            }
-        },
+        .pos = $SpearGuy.pos,
+        .yaw = $SpearGuy.yaw,
+        .territory = $SpearGuy.territory,
         .settings = &NpcSettings_SpearGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = SPEAR_GUY_DROPS,
@@ -31,8 +20,8 @@ NpcData NpcData_SpearGuy[] = {
 
 NpcData NpcData_MBush_01 = {
     .id = NPC_MBush_01,
-    .pos = { 335.0f, 0.0f, -40.0f },
-    .yaw = 90,
+    .pos = $MBush_01.pos,
+    .yaw = $MBush_01.yaw,
     .settings = &NpcSettings_MBush,
     .flags = MBUSH_FLAGS,
     .drops = MBUSH_DROPS,
@@ -42,8 +31,8 @@ NpcData NpcData_MBush_01 = {
 
 NpcData NpcData_MBush_02 = {
     .id = NPC_MBush_02,
-    .pos = { 415.0f, 0.0f, -65.0f },
-    .yaw = 90,
+    .pos = $MBush_02.pos,
+    .yaw = $MBush_02.yaw,
     .settings = &NpcSettings_MBush,
     .flags = MBUSH_FLAGS,
     .drops = MBUSH_DROPS,

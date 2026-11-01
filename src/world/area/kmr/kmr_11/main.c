@@ -1,4 +1,7 @@
 #include "kmr_11.h"
+#include "world/area/kmr/kmr_10.h"
+#include "world/area/kmr/kmr_12.h"
+#include "world/area/kmr/kmr_24.h"
 #include "foliage.h"
 
 API_CALLABLE(SetupFog) {
@@ -33,7 +36,7 @@ EvtScript EVS_PlayBridgeAnimation = {
 
 EvtScript EVS_BadExit_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, "kmr_24", kmr_24_ENTRY_0, TRANSITION_MARIO_BLACK)
+    Call(GotoMapSpecial, $kmr_24.Entry0, TRANSITION_MARIO_BLACK)
     Wait(100)
     Return
     End
@@ -41,9 +44,9 @@ EvtScript EVS_BadExit_kmr_24_0 = {
 
 EvtScript EVS_ExitWalk_kmr_12_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kmr_11_ENTRY_0)
+    Call(UseExitHeading, 60, $GoombaRoad4.index)
     Exec(ExitWalk)
-    Call(GotoMap, "kmr_12", kmr_12_ENTRY_1)
+    Call(GotoMap, $kmr_12.GoombaKingsCastle)
     Wait(100)
     Return
     End
@@ -51,10 +54,10 @@ EvtScript EVS_ExitWalk_kmr_12_1 = {
 
 EvtScript EVS_ExitWalk_kmr_10_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kmr_11_ENTRY_1)
+    Call(UseExitHeading, 60, $ToadTownEntrance.index)
     Exec(ExitWalk)
     IfGe(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-        Call(GotoMap, "kmr_10", kmr_10_ENTRY_0)
+        Call(GotoMap, $kmr_10.GoombaKingsCastle)
         Wait(100)
         Return
     Else

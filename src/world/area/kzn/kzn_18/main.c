@@ -1,11 +1,13 @@
 #include "kzn_18.h"
+#include "world/area/kzn/kzn_17.h"
+#include "world/area/kzn/kzn_19.h"
 
 extern EvtScript EVS_MakeEntities;
 extern NpcGroupList DefaultNPCs;
 
-EvtScript EVS_ExitWalk_kzn_17_1 = EVT_EXIT_WALK(60, kzn_18_ENTRY_0, "kzn_17", kzn_17_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_19_0 = EVT_EXIT_WALK(60, kzn_18_ENTRY_1, "kzn_19", kzn_19_ENTRY_0);
-EvtScript EVS_ExitWalk_kzn_19_1 = EVT_EXIT_WALK(60, kzn_18_ENTRY_2, "kzn_19", kzn_19_ENTRY_1);
+EvtScript EVS_ExitWalk_kzn_17_1 = EVT_EXIT_WALK(60, $Kzn17, $kzn_17.Kzn18);
+EvtScript EVS_ExitWalk_kzn_19_0 = EVT_EXIT_WALK(60, $Kzn19Upper, $kzn_19.Kzn18Upper);
+EvtScript EVS_ExitWalk_kzn_19_1 = EVT_EXIT_WALK(60, $Kzn19Lower, $kzn_19.Kzn18Lower);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_17_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
@@ -67,7 +69,7 @@ EvtScript EVS_SetupTexPan = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o382, .pos = { 50.0, 200.0, -185.0 }},
+    { .colliderID = COLLIDER_o382, .pos = $LavaReset_o382.pos },
     { .colliderID = NO_COLLIDER }
 };
 

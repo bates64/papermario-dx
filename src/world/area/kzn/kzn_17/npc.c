@@ -140,8 +140,8 @@ EvtScript EVS_NpcInit_Kolorado = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -153,20 +153,9 @@ NpcData NpcData_Kolorado = {
 NpcData NpcData_Piranha[] = {
     {
         .id = NPC_Piranha,
-        .pos = { -325.0f, 0.0f, 150.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -325, 0, 150 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { -390, 0, 130 },
-                .detectSize = { 270, 130 },
-            }
-        },
+        .pos = $Piranha.pos,
+        .yaw = $Piranha.yaw,
+        .territory = $Piranha.territory,
         .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = PUTRID_PIRANHA_DROPS,
@@ -178,20 +167,9 @@ NpcData NpcData_Piranha[] = {
 
 NpcData NpcData_SpikeTop = {
     .id = NPC_SpikeTop,
-    .pos = { -450.0f, 0.0f, 100.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -450, 0, 100 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { -450, 0, 100 },
-            .detectSize = { 270, 130 },
-        }
-    },
+    .pos = $SpikeTop.pos,
+    .yaw = $SpikeTop.yaw,
+    .territory = $SpikeTop.territory,
     .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SPIKE_TOP_DROPS,

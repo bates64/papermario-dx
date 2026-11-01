@@ -1,4 +1,6 @@
 #include "../mac_01.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/kmr/kmr_22.h"
 
 EvtScript EVS_MinhThankYou = {
     Call(DisablePlayerInput, true)
@@ -274,16 +276,16 @@ EvtScript EVS_Scene_FlowerGateAppears = {
     Call(SetCamProperties, CAM_DEFAULT, 1, 266, 27, 373, 300, 15, -6)
 #endif
     Exec(EVS_PlayFlowerGateSong)
-    PlayEffect(EFFECT_LIGHT_RAYS, 0, 266, 50, 338, 1, LVar9)
+    PlayEffect(EFFECT_LIGHT_RAYS, 0, $LightRaysPos_1.pos.x, $LightRaysPos_1.pos.y, $LightRaysPos_1.pos.z, 1, LVar9)
     Call(PlaySoundAtCollider, COLLIDER_deilitf, SOUND_FLOWER_GATE, SOUND_SPACE_DEFAULT)
     ExecWait(EVS_FadeInFlowerGateGlowAlpha)
     Thread
         Wait(10)
-        PlayEffect(EFFECT_FLOATING_FLOWER, 0, 266, 50, 338, 100)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, $FloatingFlowerPos_1.pos.x, $FloatingFlowerPos_1.pos.y, $FloatingFlowerPos_1.pos.z, 100)
         Wait(10)
-        PlayEffect(EFFECT_FLOATING_FLOWER, 0, 240, 50, 338, 100)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, $FloatingFlowerPos_2.pos.x, $FloatingFlowerPos_2.pos.y, $FloatingFlowerPos_2.pos.z, 100)
         Wait(10)
-        PlayEffect(EFFECT_FLOATING_FLOWER, 0, 292, 50, 338, 100)
+        PlayEffect(EFFECT_FLOATING_FLOWER, 0, $FloatingFlowerPos_3.pos.x, $FloatingFlowerPos_3.pos.y, $FloatingFlowerPos_3.pos.z, 100)
     EndThread
     Set(LVar0, 3)
     ExecGetID(LVar2, EVS_ModulateFlowerGateGlowAlpha)
@@ -304,7 +306,7 @@ EvtScript EVS_Scene_FlowerGateAppears = {
     Call(DismissEffect, LVar9)
     Call(PlaySoundAt, SOUND_WOODEN_DOOR_WAVES, SOUND_SPACE_DEFAULT, 266, 50, 338)
     Loop(3)
-        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, 266, 50, 338, 1, 20)
+        PlayEffect(EFFECT_ENERGY_ORB_WAVE, FX_ENERGY_ORB_WAVE_PINK_WAVE, $EnergyOrbWavePos_1.pos.x, $EnergyOrbWavePos_1.pos.y, $EnergyOrbWavePos_1.pos.z, 1, 20)
         Wait(5)
     EndLoop
     Loop(0)
@@ -702,11 +704,11 @@ EvtScript EVS_ExitFlowerGate = {
     IfEq(GF_StartedChapter6, false)
         Set(GF_StartedChapter6, true)
         Call(FadeOutMusic, 0, 1500)
-        Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_6, TRANSITION_BEGIN_OR_END_CHAPTER)
+        Call(GotoMapSpecial, $kmr_22.Chapter6, TRANSITION_BEGIN_OR_END_CHAPTER)
         Wait(100)
         Return
     EndIf
-    Call(GotoMap, "flo_00", flo_00_ENTRY_0)
+    Call(GotoMap, $flo_00.ToadTown)
     Wait(100)
     Return
     End

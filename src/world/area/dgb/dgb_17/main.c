@@ -1,11 +1,13 @@
 #include "dgb_17.h"
+#include "world/area/dgb/dgb_01.h"
+#include "world/area/dgb/dgb_15.h"
 
 EvtScript EVS_ExitDoors_dgb_15_1 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_17_ENTRY_0, "dgb_15", dgb_15_ENTRY_1, COLLIDER_deilittw, MODEL_o142, MODEL_o143, DOOR_SOUNDS_CREAKY
+    $Dgb15, $dgb_15.Dgb17, COLLIDER_deilittw, MODEL_o142, MODEL_o143, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_01_5 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_17_ENTRY_1, "dgb_01", dgb_01_ENTRY_5, COLLIDER_deilitte, MODEL_o199, MODEL_o198, DOOR_SOUNDS_CREAKY
+    $Dgb01, $dgb_01.Dgb17, COLLIDER_deilitte, MODEL_o199, MODEL_o198, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_BindExitTriggers = {
@@ -25,11 +27,11 @@ EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_17_ENTRY_0)
+        CaseEq($Dgb15.index)
             Set(LVar2, MODEL_o142)
             Set(LVar3, MODEL_o143)
             ExecWait(EnterDoubleDoor)
-        CaseEq(dgb_17_ENTRY_1)
+        CaseEq($Dgb01.index)
             Set(LVar2, MODEL_o199)
             Set(LVar3, MODEL_o198)
             ExecWait(EnterDoubleDoor)

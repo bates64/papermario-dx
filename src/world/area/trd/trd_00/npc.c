@@ -285,7 +285,7 @@ EvtScript EVS_Scene_RescuedEldstar = {
 
 EvtScript EVS_NpcInit_Eldstar = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, trd_00_ENTRY_5)
+    IfEq(LVar0, $PeachInterlude.index)
         Call(GetLoadType, LVar1)
         IfEq(LVar1, 1)
             Call(RemoveNpc, NPC_SELF)
@@ -303,8 +303,8 @@ EvtScript EVS_NpcInit_Eldstar = {
 
 NpcData NpcData_KoopaBros = {
     .id = NPC_KoopaBros,
-    .pos = { -469.0f, 0.0f, 101.0f },
-    .yaw = 0,
+    .pos = $KoopaBros.pos,
+    .yaw = $KoopaBros.yaw,
     .init = &EVS_NpcInit_KoopaBros,
     .settings = &NpcSettings_KoopaBros,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -314,20 +314,9 @@ NpcData NpcData_KoopaBros = {
 
 NpcData NpcData_Eldstar = {
     .id = NPC_Eldstar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { NPC_DISPOSE_LOCATION },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { NPC_DISPOSE_LOCATION },
-            .detectSize = { 500 },
-        }
-    },
+    .pos = $Eldstar.pos,
+    .yaw = $Eldstar.yaw,
+    .territory = $Eldstar.territory,
     .init = &EVS_NpcInit_Eldstar,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_FLYING,

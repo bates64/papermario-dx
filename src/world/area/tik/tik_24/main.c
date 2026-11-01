@@ -1,7 +1,9 @@
 #include "tik_24.h"
+#include "world/area/tik/tik_23.h"
+#include "world/area/tik/tik_25.h"
 
-EvtScript EVS_ExitWalk_tik_25_0 = EVT_EXIT_WALK(60, tik_24_ENTRY_0, "tik_25", tik_25_ENTRY_0);
-EvtScript EVS_ExitWalk_tik_23_0 = EVT_EXIT_WALK(60, tik_24_ENTRY_1, "tik_23", tik_23_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_25_0 = EVT_EXIT_WALK(60, $UltraBootsRoom, $tik_25.HallToUltraBoots);
+EvtScript EVS_ExitWalk_tik_23_0 = EVT_EXIT_WALK(60, $WindyPath, $tik_23.HallToUltraBoots);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_25_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

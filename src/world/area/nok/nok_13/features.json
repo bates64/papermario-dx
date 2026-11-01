@@ -1,0 +1,804 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 3,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 17,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 19,
+      "name": "Effects",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 3,
+      "name": "Nok12",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -488,
+        150,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 3,
+      "name": "KoopaVillage",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        165,
+        0,
+        -483
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 3,
+      "name": "Nok14",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        277,
+        150,
+        210
+      ],
+      "yaw": 315.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 5,
+      "name": "UnusedFuzzy",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        175,
+        0,
+        -270
+      ],
+      "yaw": 180.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            175,
+            0,
+            -270
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            175,
+            0,
+            -270
+          ],
+          "useCircle": true,
+          "radius": 70,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 17,
+      "name": "Item_HoneySyrup_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -155,
+        150,
+        -130
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_HONEY_SYRUP",
+        "gameFlagName": "GF_NOK13_Item_HoneySyrup",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    },
+    {
+      "id": 7,
+      "parent": 17,
+      "name": "Signpost_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -430,
+        150,
+        -75
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Signpost",
+        "scriptName": "EVS_ReadSign_Directions"
+      }
+    },
+    {
+      "id": 8,
+      "parent": 17,
+      "name": "BrickBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        70,
+        0,
+        -250
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock",
+        "scriptName": "EVS_BreakBlock_First"
+      }
+    },
+    {
+      "id": 9,
+      "parent": 17,
+      "name": "BrickBlock_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        70,
+        0,
+        -320
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock",
+        "scriptName": "EVS_BreakBlock_Second"
+      }
+    },
+    {
+      "id": 10,
+      "parent": 17,
+      "name": "BrickBlock_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -10,
+        0,
+        -285
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock",
+        "scriptName": "EVS_BreakBlock_Third"
+      }
+    },
+    {
+      "id": 11,
+      "parent": 17,
+      "name": "BrickBlock_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        70,
+        0,
+        -250
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 12,
+      "parent": 17,
+      "name": "BrickBlock_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        70,
+        0,
+        -320
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 13,
+      "parent": 17,
+      "name": "BrickBlock_6",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -10,
+        0,
+        -285
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 14,
+      "parent": 17,
+      "name": "RedBlock_AttackFxB_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        40,
+        60,
+        -285
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "RedBlock",
+        "itemName": "ITEM_ATTACK_FX_B",
+        "gameFlagName": "GF_NOK13_BadgeBlock_AttackFXB"
+      }
+    },
+    {
+      "id": 15,
+      "parent": 17,
+      "name": "RedBlock_AttackFxB_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        40,
+        60,
+        -285
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "RedBlock",
+        "itemName": "ITEM_ATTACK_FX_B",
+        "gameFlagName": "GF_NOK13_BadgeBlock_AttackFXB"
+      }
+    },
+    {
+      "id": 16,
+      "parent": 17,
+      "name": "HiddenPanel_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -255,
+        150,
+        -100
+      ],
+      "yaw": 90.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HiddenPanel",
+        "gameFlagName": "GF_NOK13_HiddenPanel",
+        "modelName": "MODEL_jimen_u"
+      }
+    },
+    {
+      "id": 18,
+      "parent": 19,
+      "name": "SparklesPos_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Position",
+      "pos": [
+        40,
+        73,
+        -285
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    }
+  ]
+}

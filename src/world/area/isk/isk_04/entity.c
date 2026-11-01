@@ -4,11 +4,11 @@
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_ISK04_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 600, -330, 100, 160, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Set(MV_RuinsLockEntityID, LVar0)
     EndIf
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 504, -193, 43, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 486, -193, -128, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
     Return
     End
 };

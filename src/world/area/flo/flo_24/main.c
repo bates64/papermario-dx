@@ -1,10 +1,12 @@
 #include "flo_24.h"
+#include "world/area/flo/flo_08.h"
+#include "world/area/flo/flo_10.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript EVS_ExitWalk_flo_08_1 = EVT_EXIT_WALK(60, flo_24_ENTRY_0, "flo_08", flo_08_ENTRY_1);
-EvtScript EVS_ExitWalk_flo_10_0 = EVT_EXIT_WALK(60, flo_24_ENTRY_1, "flo_10", flo_10_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_08_1 = EVT_EXIT_WALK(60, $Flo08, $flo_08.Flo24);
+EvtScript EVS_ExitWalk_flo_10_0 = EVT_EXIT_WALK(60, $Flo10, $flo_10.Flo24);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_08_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -34,7 +36,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, flo_24_ENTRY_2)
+    IfEq(LVar0, $Fountain.index)
         Exec(EVS_Scene_FillWithWater)
         Exec(EVS_BindExitTriggers)
     Else

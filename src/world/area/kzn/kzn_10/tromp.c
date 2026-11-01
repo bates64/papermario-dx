@@ -54,7 +54,7 @@ EvtScript EVS_SpinyTromp_ManageCamera = {
 EvtScript EVS_SpinyTromp_Dust = {
     SetGroup(EVT_GROUP_PASSIVE_NPC)
     Loop(5)
-        PlayEffect(EFFECT_DUST, 1, -430, 100, 0, 30)
+        PlayEffect(EFFECT_DUST, 1, $DustPos_1.pos.x, $DustPos_1.pos.y, $DustPos_1.pos.z, 30)
         Wait(2)
     EndLoop
     Label(0)
@@ -70,7 +70,7 @@ EvtScript EVS_SpinyTromp_Dust = {
         Goto(0)
     EndIf
     Loop(8)
-        PlayEffect(EFFECT_DUST, 1, 400, -80, 0, 40)
+        PlayEffect(EFFECT_DUST, 1, $DustPos_2.pos.x, $DustPos_2.pos.y, $DustPos_2.pos.z, 40)
         Wait(5)
     EndLoop
     Return
@@ -97,7 +97,7 @@ EvtScript EVS_SetupSpinyTromp = {
     Call(GetEntryID, LVar3)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        IfEq(LVar3, kzn_10_ENTRY_0)
+        IfEq(LVar3, $Kzn09.index)
             IfGe(LVar0, -400)
                 BreakLoop
             EndIf

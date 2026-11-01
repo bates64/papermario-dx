@@ -142,13 +142,13 @@ API_CALLABLE(SetStarWarpTravelParams) {
 }
 
 EvtScript EVS_SetupModelFX = {
-    PlayEffect(EFFECT_75, 1, -1105, -86, 230, 1, -1)
+    PlayEffect(EFFECT_75, 1, $Effect75Pos_1.pos.x, $Effect75Pos_1.pos.y, $Effect75Pos_1.pos.z, 1, -1)
     Set(MV_StarWarpEffect, LVarF)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_02_ENTRY_0)
+        CaseEq($ShootingStarSummit.index)
             Call(SetStarWarpTravelParams, MV_StarWarpEffect)
-        CaseEq(hos_02_ENTRY_1)
+        CaseEq($StarHaven.index)
             Call(SetStarWarpIdleParams, MV_StarWarpEffect)
     EndSwitch
     // star shimmer floor

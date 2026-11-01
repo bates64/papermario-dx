@@ -1,8 +1,10 @@
 #include "sam_03.h"
+#include "world/area/sam/sam_04.h"
+#include "world/area/sam/sam_11.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_sam_11_1 = EVT_EXIT_WALK(60, sam_03_ENTRY_0, "sam_11", sam_11_ENTRY_1);
-EvtScript EVS_ExitWalk_sam_04_0 = EVT_EXIT_WALK(60, sam_03_ENTRY_1, "sam_04", sam_04_ENTRY_0);
+EvtScript EVS_ExitWalk_sam_11_1 = EVT_EXIT_WALK(60, $PondArea, $sam_11.SnowfieldRoad);
+EvtScript EVS_ExitWalk_sam_04_0 = EVT_EXIT_WALK(60, $ShiverSnowfield, $sam_04.SnowfieldRoad);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sam_11_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

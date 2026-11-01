@@ -1,11 +1,13 @@
 #include "kkj_00.h"
+#include "world/area/kkj/kkj_01.h"
+#include "world/area/kkj/kkj_19.h"
 
 EvtScript EVS_ExitDoors_kkj_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    kkj_00_ENTRY_1, "kkj_01", kkj_01_ENTRY_0, COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE
+    $UpperHall, $kkj_01.EntryHall, COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE
 );
 
 EvtScript EVS_ExitDoor_kkj_19_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    kkj_00_ENTRY_3, "kkj_19", kkj_19_ENTRY_0, COLLIDER_ttne, MODEL_door8, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+    $Kitchen, $kkj_19.EntryHall, COLLIDER_ttne, MODEL_door8, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_ShowMessage_CantOpen = {
@@ -45,31 +47,31 @@ EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_00_ENTRY_0)
+        CaseEq($FrontDoor.index)
             Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
             Set(LVar2, MODEL_door2)
             Set(LVar3, MODEL_door1)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_00_ENTRY_1)
+        CaseEq($UpperHall.index)
             Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
             Set(LVar2, MODEL_door3)
             Set(LVar3, MODEL_door4)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_00_ENTRY_2)
+        CaseEq($Entry2.index)
             Set(LVar2, MODEL_door5)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_00_ENTRY_3)
+        CaseEq($Kitchen.index)
             Set(LVar2, MODEL_door8)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_00_ENTRY_4)
+        CaseEq($Entry4.index)
             Set(LVar2, MODEL_door7)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_00_ENTRY_5)
+        CaseEq($Intro.index)
             Exec(EVS_Scene_Intro)
-        CaseEq(kkj_00_ENTRY_6)
+        CaseEq($Ending.index)
             Exec(EVS_Scene_Ending)
     EndSwitch
     Return

@@ -133,7 +133,7 @@ EvtScript EVS_ManageSecretPassage = {
     EndThread
     Thread
         Loop(12)
-            PlayEffect(EFFECT_DUST, 0, 0, -390, 550, 30)
+            PlayEffect(EFFECT_DUST, 0, $DustPos_1.pos.x, $DustPos_1.pos.y, $DustPos_1.pos.z, 30)
             Wait(20 * DT)
         EndLoop
     EndThread

@@ -52,10 +52,10 @@ EvtScript EVS_UpdateSceneryPos = {
     Call(TranslateGroup, MODEL_iwa_side, 1750, 0, 0)
     Call(GetEntryID, LVar2)
     Switch(LVar2)
-        CaseEq(iwa_11_ENTRY_0)
+        CaseEq($ToadTownStation.index)
             Set(LVar3, 350)
             Set(MV_TrainMoveSpeed, 10)
-        CaseEq(iwa_11_ENTRY_1)
+        CaseEq($MtRuggedStation.index)
             Set(LVar3, 400)
             Set(MV_TrainMoveSpeed, -10)
     EndSwitch

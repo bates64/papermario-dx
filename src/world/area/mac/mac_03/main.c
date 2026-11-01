@@ -1,17 +1,19 @@
 #include "mac_03.h"
+#include "world/area/mac/mac_02.h"
+#include "world/area/mgm/mgm_00.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_mac_02_3 = EVT_EXIT_WALK(60, mac_03_ENTRY_0, "mac_02", mac_02_ENTRY_3);
+EvtScript EVS_ExitWalk_mac_02_3 = EVT_EXIT_WALK(60, $SouthernDistrict, $mac_02.StationDistrict);
 
 EvtScript EVS_GotoMap_mgm_00_0 = {
-    Call(GotoMap, "mgm_00", mgm_00_ENTRY_0)
+    Call(GotoMap, $mgm_00.StationDistrict)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_mgm_00_0 = EVT_EXIT_PIPE_VERTICAL(mac_02_ENTRY_2, COLLIDER_deilim, EVS_GotoMap_mgm_00_0);
+EvtScript EVS_ExitPipe_mgm_00_0 = EVT_EXIT_PIPE_VERTICAL($PlayroomPipe, COLLIDER_deilim, EVS_GotoMap_mgm_00_0);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mac_02_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)
@@ -23,15 +25,15 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mac_03_ENTRY_0)
+        CaseEq($SouthernDistrict.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(mac_03_ENTRY_1)
+        CaseEq($MtRugged.index)
             Exec(EVS_ArriveFromMtRugged)
             Exec(EVS_BindExitTriggers)
-        CaseEq(mac_03_ENTRY_2)
+        CaseEq($PlayroomPipe.index)
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
-        CaseEq(mac_03_ENTRY_3)
+        CaseEq($Entry3.index)
     EndSwitch
     Return
     End

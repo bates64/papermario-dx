@@ -107,8 +107,8 @@ EvtScript EVS_NpcInit_YoshiKid = {
 
 NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
-    .pos = { -260.0f, 0.0f, -220.0f },
-    .yaw = 270,
+    .pos = $YoshiKid.pos,
+    .yaw = $YoshiKid.yaw,
     .init = &EVS_NpcInit_YoshiKid,
     .settings = &NpcSettings_YoshiKid,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -119,20 +119,9 @@ NpcData NpcData_YoshiKid = {
 
 NpcData NpcData_JungleFuzzy = {
     .id = NPC_JungleFuzzy,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -460, 0, 70 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -460, 0, 70 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $JungleFuzzy.pos,
+    .yaw = $JungleFuzzy.yaw,
+    .territory = $JungleFuzzy.territory,
     .init = &EVS_NpcInit_JungleFuzzy,
     .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

@@ -521,8 +521,8 @@ EvtScript EVS_NpcInit_Misstar = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { -65.0f, 0.0f, 190.0f },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -533,8 +533,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
-    .pos = { 100.0f, 160.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .init = &EVS_NpcInit_Misstar,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

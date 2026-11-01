@@ -828,8 +828,8 @@ EvtScript EVS_NpcInit_ShiverToad_04 = {
 NpcData NpcData_Merle[] = {
     {
         .id = NPC_Merle,
-        .pos = { 0.0f, 90.0f, -300.0f },
-        .yaw = 0,
+        .pos = $Merle.pos,
+        .yaw = $Merle.yaw,
         .init = &EVS_NpcInit_Merle,
         .settings = &NpcSettings_Merle,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -839,8 +839,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_ShiverToad_01,
-        .pos = { -376.0f, 60.0f, 112.0f },
-        .yaw = 0,
+        .pos = $ShiverToad_01.pos,
+        .yaw = $ShiverToad_01.yaw,
         .init = &EVS_NpcInit_ShiverToad_01,
         .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -850,20 +850,9 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_ShiverToad_02,
-        .pos = { 208.0f, 80.0f, 150.0f },
-        .yaw = 180,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 208, 80, 150 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $ShiverToad_02.pos,
+        .yaw = $ShiverToad_02.yaw,
+        .territory = $ShiverToad_02.territory,
         .init = &EVS_NpcInit_ShiverToad_02,
         .settings = &NpcSettings_ShiverToad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -873,8 +862,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_ShiverToad_03,
-        .pos = { 127.0f, 0.0f, 445.0f },
-        .yaw = 180,
+        .pos = $ShiverToad_03.pos,
+        .yaw = $ShiverToad_03.yaw,
         .init = &EVS_NpcInit_ShiverToad_03,
         .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -884,20 +873,9 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_Ninji_01,
-        .pos = { -99.0f, 90.0f, -90.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -99, 90, -90 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Ninji_01.pos,
+        .yaw = $Ninji_01.yaw,
+        .territory = $Ninji_01.territory,
         .init = &EVS_NpcInit_Ninji_01,
         .settings = &NpcSettings_Ninji_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -907,20 +885,9 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_Ninji_02,
-        .pos = { -48.0f, 0.0f, 400.0f },
-        .yaw = 180,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -48, 0, 400 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Ninji_02.pos,
+        .yaw = $Ninji_02.yaw,
+        .territory = $Ninji_02.territory,
         .init = &EVS_NpcInit_Ninji_02,
         .settings = &NpcSettings_Ninji_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -930,8 +897,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_Ninji_03,
-        .pos = { 239.0f, 50.0f, 315.0f },
-        .yaw = 180,
+        .pos = $Ninji_03.pos,
+        .yaw = $Ninji_03.yaw,
         .init = &EVS_NpcInit_Ninji_03,
         .settings = &NpcSettings_Ninji,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -941,8 +908,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_Ninji_04,
-        .pos = { 390.0f, 80.0f, 50.0f },
-        .yaw = 0,
+        .pos = $Ninji_04.pos,
+        .yaw = $Ninji_04.yaw,
         .init = &EVS_NpcInit_Ninji_04,
         .settings = &NpcSettings_Ninji,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -952,20 +919,9 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_StarKid_01,
-        .pos = { -166.0f, 10.0f, 390.0f },
-        .yaw = 180,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -166, 10, 390 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $StarKid_01.pos,
+        .yaw = $StarKid_01.yaw,
+        .territory = $StarKid_01.territory,
         .init = &EVS_NpcInit_StarKid_01,
         .settings = &NpcSettings_StarKid_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -975,8 +931,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_StarKid_02,
-        .pos = { 3.0f, 60.0f, 137.0f },
-        .yaw = 180,
+        .pos = $StarKid_02.pos,
+        .yaw = $StarKid_02.yaw,
         .init = &EVS_NpcInit_StarKid_02,
         .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -986,8 +942,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_StarKid_03,
-        .pos = { 120.0f, 100.0f, -210.0f },
-        .yaw = 0,
+        .pos = $StarKid_03.pos,
+        .yaw = $StarKid_03.yaw,
         .init = &EVS_NpcInit_StarKid_03,
         .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -997,8 +953,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_StarKid_04,
-        .pos = { 369.0f, 90.0f, 9.0f },
-        .yaw = 180,
+        .pos = $StarKid_04.pos,
+        .yaw = $StarKid_04.yaw,
         .init = &EVS_NpcInit_StarKid_04,
         .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1008,8 +964,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_StarKid_05,
-        .pos = { 405.0f, 90.0f, -19.0f },
-        .yaw = 180,
+        .pos = $StarKid_05.pos,
+        .yaw = $StarKid_05.yaw,
         .init = &EVS_NpcInit_StarKid_05,
         .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1019,8 +975,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_StarKid_06,
-        .pos = { 364.0f, 90.0f, -47.0f },
-        .yaw = 180,
+        .pos = $StarKid_06.pos,
+        .yaw = $StarKid_06.yaw,
         .init = &EVS_NpcInit_StarKid_06,
         .settings = &NpcSettings_StarKid,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -1030,8 +986,8 @@ NpcData NpcData_Merle[] = {
     },
     {
         .id = NPC_ShiverToad_04,
-        .pos = { -274.0f, 60.0f, -28.0f },
-        .yaw = 180,
+        .pos = $ShiverToad_04.pos,
+        .yaw = $ShiverToad_04.yaw,
         .init = &EVS_NpcInit_ShiverToad_04,
         .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

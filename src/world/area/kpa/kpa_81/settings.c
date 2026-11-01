@@ -1,16 +1,9 @@
 #include "kpa_81.h"
 
-EntryList Entrances = {
-    [kpa_81_ENTRY_0]    { -195.0,    0.0,  150.0,   90.0 },
-    [kpa_81_ENTRY_1]    {    0.0,  200.0,  150.0,    0.0 },
-    [kpa_81_ENTRY_2]    {  150.0,    0.0,  150.0,  270.0 },
-    [kpa_81_ENTRY_3]    {    0.0,    0.0,   59.0,  180.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_kpa_81 },
     .songVariation = 1,
     .sfxReverb = 2,

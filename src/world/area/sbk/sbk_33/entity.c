@@ -1,4 +1,5 @@
 #include "sbk_33.h"
+#include "world/area/sbk/sbk_24.h"
 #include "entity.h"
 
 TweesterPath DefaultTweesterPath = {
@@ -17,17 +18,15 @@ TweesterPath* TweesterPaths[] = {
 EvtScript EVS_GotoMap_sbk_24_4 = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(GotoMap, "sbk_24", sbk_24_ENTRY_4)
+    Call(GotoMap, $sbk_24.Pipe)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HiddenPanel, 0, 0, 225, 0, MODEL_stage, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_SBK33_HiddenPanel)
-    Call(MakeEntity, Entity_Tweester, 327, 0, 8, 0, TweesterPaths, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_GotoMap_sbk_24_4)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $Tweester_1)
     Return
     End
 };

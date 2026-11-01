@@ -3,12 +3,12 @@
 #include "effects.h"
 
 BombTrigger BombPos_Wall = {
-    .pos = { -230.0f, -10.0f, 0.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_OnBlast_Wall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 18, 0, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_a_kabe, true)
         Wait(1)

@@ -1,9 +1,11 @@
 #include "omo_14.h"
+#include "world/area/omo/omo_02.h"
+#include "world/area/omo/omo_15.h"
 
 #include "world/common/util/CreateDarkness.inc.c"
 
-EvtScript EVS_ExitWalk_omo_02_1 = EVT_EXIT_WALK(60, omo_14_ENTRY_0, "omo_02", omo_02_ENTRY_1);
-EvtScript EVS_ExitWalk_omo_15_0 = EVT_EXIT_WALK(60, omo_14_ENTRY_1, "omo_15", omo_15_ENTRY_0);
+EvtScript EVS_ExitWalk_omo_02_1 = EVT_EXIT_WALK(60, $Omo02, $omo_02.Omo14);
+EvtScript EVS_ExitWalk_omo_15_0 = EVT_EXIT_WALK(60, $Omo15, $omo_15.Omo14);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

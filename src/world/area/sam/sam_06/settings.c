@@ -1,13 +1,9 @@
 #include "sam_06.h"
 
-EntryList Entrances = {
-    [sam_06_ENTRY_0]    { -340.0,    0.0,  340.0,   45.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "sam_bg",
     .tattle = { MSG_MapTattle_sam_06 },
 };

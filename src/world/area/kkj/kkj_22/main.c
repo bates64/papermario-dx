@@ -1,18 +1,20 @@
 #include "kkj_22.h"
+#include "world/area/kkj/kkj_13.h"
+#include "world/area/kkj/kkj_23.h"
 
 EvtScript EVS_ExitDoor_kkj_13_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_0, "kkj_13", kkj_13_ENTRY_1, COLLIDER_ttw, MODEL_o51, MODEL_o52);
+    EVT_EXIT_DOUBLE_DOOR($WindowHallway, $kkj_13.DoubleStaircase, COLLIDER_ttw, MODEL_o51, MODEL_o52);
 EvtScript EVS_ExitDoor_kkj_23_0 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_22_ENTRY_1, "kkj_23", kkj_23_ENTRY_0, COLLIDER_ttnw, MODEL_o94, MODEL_o95);
+    EVT_EXIT_DOUBLE_DOOR($Rooftop, $kkj_23.DoubleStaircase, COLLIDER_ttnw, MODEL_o94, MODEL_o95);
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_22_ENTRY_0)
+        CaseEq($WindowHallway.index)
             Set(LVar2, MODEL_o51)
             Set(LVar3, MODEL_o52)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_22_ENTRY_1)
+        CaseEq($Rooftop.index)
             Set(LVar2, MODEL_o94)
             Set(LVar3, MODEL_o95)
             ExecWait(EnterDoubleDoor)

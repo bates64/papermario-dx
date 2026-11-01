@@ -166,8 +166,8 @@ EvtScript EVS_NpcInit_AlbinoDino_03 = {
 NpcData NpcData_AlbinoDinos[] = {
     {
         .id = NPC_AlbinoDino_01,
-        .pos = { 190.0f, -10.0f, 165.0f },
-        .yaw = 270,
+        .pos = $AlbinoDino_01.pos,
+        .yaw = $AlbinoDino_01.yaw,
         .init = &EVS_NpcInit_AlbinoDino_01,
         .settings = &NpcSettings_AlbinoDino,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -177,8 +177,8 @@ NpcData NpcData_AlbinoDinos[] = {
     },
     {
         .id = NPC_AlbinoDino_02,
-        .pos = { 300.0f, -10.0f, 89.0f },
-        .yaw = 270,
+        .pos = $AlbinoDino_02.pos,
+        .yaw = $AlbinoDino_02.yaw,
         .init = &EVS_NpcInit_AlbinoDino_02,
         .settings = &NpcSettings_AlbinoDino,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -188,8 +188,8 @@ NpcData NpcData_AlbinoDinos[] = {
     },
     {
         .id = NPC_AlbinoDino_03,
-        .pos = { 452.0f, -10.0f, 139.0f },
-        .yaw = 270,
+        .pos = $AlbinoDino_03.pos,
+        .yaw = $AlbinoDino_03.yaw,
         .init = &EVS_NpcInit_AlbinoDino_03,
         .settings = &NpcSettings_AlbinoDino,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

@@ -115,8 +115,8 @@ AnimID LimitAnims_Kalmar_Descent[] = {
 NpcData NpcData_Spirits_Descent[] = {
     {
         .id = NPC_Peach,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Peach.pos,
+        .yaw = $Peach.yaw,
         .init = &EVS_NpcInit_Peach_Descent,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
@@ -126,8 +126,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Twink,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Twink.pos,
+        .yaw = $Twink.yaw,
         .init = &EVS_NpcInit_Twink_Descent,
         .settings = &NpcSettings_Twink,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -137,8 +137,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Eldstar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Eldstar.pos,
+        .yaw = $Eldstar.yaw,
         .init = &EVS_NpcInit_Eldstar_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -148,8 +148,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Mamar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Mamar.pos,
+        .yaw = $Mamar.yaw,
         .init = &EVS_NpcInit_Mamar_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -159,8 +159,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Skolar.pos,
+        .yaw = $Skolar.yaw,
         .init = &EVS_NpcInit_Skolar_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -170,8 +170,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Muskular,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Muskular.pos,
+        .yaw = $Muskular.yaw,
         .init = &EVS_NpcInit_Muskular_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -181,8 +181,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Misstar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Misstar.pos,
+        .yaw = $Misstar.yaw,
         .init = &EVS_NpcInit_Misstar_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -192,8 +192,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Klevar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Klevar.pos,
+        .yaw = $Klevar.yaw,
         .init = &EVS_NpcInit_Klevar_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -203,8 +203,8 @@ NpcData NpcData_Spirits_Descent[] = {
     },
     {
         .id = NPC_Kalmar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Kalmar.pos,
+        .yaw = $Kalmar.yaw,
         .init = &EVS_NpcInit_Kalmar_Descent,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

@@ -3,6 +3,7 @@
 #include "fio.h"
 #include "game_modes.h"
 #include "dx/config.h"
+#include "world/entries.h"
 #include <string.h>
 
 #if VERSION_IQUE
@@ -280,8 +281,10 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                     case FM_CONFIRM_CREATE:
                         clear_player_data();
                         clear_saved_variables();
-                        get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatusPtr->areaID, &gGameStatusPtr->mapID);
-                        gGameStatusPtr->entryID = NEW_GAME_ENTRY_ID;
+                        get_map_IDs_by_name_checked(
+                            NEW_GAME_ENTRY.map, &gGameStatusPtr->areaID, &gGameStatusPtr->mapID
+                        );
+                        gGameStatusPtr->entryID = NEW_GAME_ENTRY.index;
                         evt_set_variable(nullptr, GB_StoryProgress, NEW_GAME_STORY_PROGRESS);
 
                         selected = filemenu_menus[FILE_MENU_MAIN]->selected;

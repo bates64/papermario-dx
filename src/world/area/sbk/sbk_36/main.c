@@ -1,29 +1,26 @@
 #include "sbk_36.h"
+#include "world/area/dro/dro_01.h"
+#include "world/area/sbk/sbk_26.h"
+#include "world/area/sbk/sbk_35.h"
+#include "world/area/sbk/sbk_46.h"
 #include "effects.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 extern EvtScript EVS_SetupFoliage;
 
-EntryList Entrances = {
-    [sbk_36_ENTRY_0]    { -475.0,    0.0,    0.0,   90.0 },
-    [sbk_36_ENTRY_1]    {  475.0,    0.0,    0.0,  270.0 },
-    [sbk_36_ENTRY_2]    {    0.0,    0.0, -475.0,  180.0 },
-    [sbk_36_ENTRY_3]    {    0.0,    0.0,  475.0,    0.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_36 },
 };
 
-EvtScript EVS_ExitWalk_sbk_35_1 = EVT_EXIT_WALK(60, sbk_36_ENTRY_0, "sbk_35", sbk_35_ENTRY_1);
-EvtScript EVS_ExitWalk_dro_01_0 = EVT_EXIT_WALK(60, sbk_36_ENTRY_1, "dro_01", dro_01_ENTRY_0);
-EvtScript EVS_ExitWalk_sbk_26_3 = EVT_EXIT_WALK(60, sbk_36_ENTRY_2, "sbk_26", sbk_26_ENTRY_3);
-EvtScript EVS_ExitWalk_sbk_46_2 = EVT_EXIT_WALK(60, sbk_36_ENTRY_3, "sbk_46", sbk_46_ENTRY_2);
+EvtScript EVS_ExitWalk_sbk_35_1 = EVT_EXIT_WALK(60, $West, $sbk_35.East);
+EvtScript EVS_ExitWalk_dro_01_0 = EVT_EXIT_WALK(60, $DryDryOutpost, $dro_01.DryDryDesert);
+EvtScript EVS_ExitWalk_sbk_26_3 = EVT_EXIT_WALK(60, $North, $sbk_26.South);
+EvtScript EVS_ExitWalk_sbk_46_2 = EVT_EXIT_WALK(60, $South, $sbk_46.North);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sbk_35_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

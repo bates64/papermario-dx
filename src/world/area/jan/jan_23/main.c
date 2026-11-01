@@ -1,6 +1,8 @@
 #include "jan_23.h"
+#include "world/area/jan/jan_16.h"
+#include "world/area/jan/jan_19.h"
 
-EvtScript EVS_ExitWalk_jan_19_1 = EVT_EXIT_WALK(60, jan_23_ENTRY_0, "jan_19", jan_19_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_19_1 = EVT_EXIT_WALK(60, $Jan19, $jan_19.Jan23);
 
 EvtScript EVS_ExitFall_jan_16_4 = {
     Loop(0)
@@ -80,7 +82,7 @@ EvtScript EVS_ExitFall_jan_16_4 = {
         Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndIf
     Wait(30)
-    Call(GotoMap, "jan_16", jan_16_ENTRY_4)
+    Call(GotoMap, $jan_16.Jan23)
     Wait(100)
     Return
     End

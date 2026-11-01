@@ -300,8 +300,8 @@ EvtScript EVS_NpcInit_Parakarry = {
 
 NpcData NpcData_Parakarry = {
     .id = NPC_Parakarry,
-    .pos = { -610.0f, 230.0f, -485.0f },
-    .yaw = 0,
+    .pos = $Parakarry.pos,
+    .yaw = $Parakarry.yaw,
     .init = &EVS_NpcInit_Parakarry,
     .settings = &NpcSettings_Parakarry,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

@@ -1,9 +1,11 @@
 #include "kpa_03.h"
+#include "world/area/kpa/kpa_01.h"
+#include "world/area/kpa/kpa_04.h"
 
 #include "world/common/util/CreateDarkness.inc.c"
 
-EvtScript EVS_ExitWalk_kpa_01_1 = EVT_EXIT_WALK(60, kpa_03_ENTRY_0, "kpa_01", kpa_01_ENTRY_1);
-EvtScript EVS_ExitWalk_kpa_04_0 = EVT_EXIT_WALK(60, kpa_03_ENTRY_1, "kpa_04", kpa_04_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_01_1 = EVT_EXIT_WALK(60, $DarkCave1, $kpa_01.DarkCave2);
+EvtScript EVS_ExitWalk_kpa_04_0 = EVT_EXIT_WALK(60, $CaveExit, $kpa_04.DarkCave2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)

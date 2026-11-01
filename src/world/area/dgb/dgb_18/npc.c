@@ -1,4 +1,5 @@
 #include "dgb_18.h"
+#include "world/area/dgb/dgb_01.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -340,7 +341,7 @@ API_CALLABLE(PostBattleHideWorld) {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, "dgb_01", dgb_01_ENTRY_6)
+    Call(GotoMap, $dgb_01.Dgb18)
     Wait(100)
     Return
     End
@@ -490,25 +491,9 @@ EvtScript EVS_NpcInit_Yakkey = {
 
 NpcData NpcData_Tubba = {
     .id = NPC_Tubba,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 5,
-            .points  = {
-                { 0, 0, 240 },
-                { 175, 0, 240 },
-                { 350, 0, 240 },
-                { 525, 0, 240 },
-                { 700, 0, 240 },
-            },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 300, 0, 240 },
-            .detectSize = { 1000, 250 },
-        }
-    },
+    .pos = $Tubba.pos,
+    .yaw = $Tubba.yaw,
+    .territory = $Tubba.territory,
     .init = &EVS_NpcInit_Tubba,
     .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
@@ -518,8 +503,8 @@ NpcData NpcData_Tubba = {
 
 NpcData NpcData_Yakkey = {
     .id = NPC_Yakkey,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Yakkey.pos,
+    .yaw = $Yakkey.yaw,
     .init = &EVS_NpcInit_Yakkey,
     .settings = &NpcSettings_Yakkey,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

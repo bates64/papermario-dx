@@ -541,7 +541,8 @@ def write_ninja_rules(
     ninja.rule(
         "map_source_header",
         description="Generating $out",
-        command=f"$python {BUILD_TOOLS}/mapfs/source_header.py $out $name",
+        command=f"$python {BUILD_TOOLS}/mapfs/source_header.py $out $name $in $entries",
+        restat=True,
     )
 
     ninja.rule(
@@ -1415,18 +1416,68 @@ class Configure:
             implicit_deps=[Path("src/model.h")],
         )
 
-        # The code includes a map's IDs as map.xml.h and a stage's as
-        # stage.xml.h, generated at the path of the source, as
+        # The code includes a map's IDs and markers as map.xml.h and a stage's
+        # as stage.xml.h, generated at the path of the source, as
         # world/area/kmr/kmr_02/map.xml.h, so code elsewhere can include it by
-        # that path.
+        # that path. The markers come from the features.json beside the map's
+        # code, which also gives other maps its entries as
+        # world/area/kmr/kmr_02.h.
+        entries_headers: List[Path] = []
         for name, source in sources.items():
+            relative = self.layer_relative(source)
+            features = Path("src") / relative.parent / "features.json"
+            if not (ROOT / features).exists():
+                features = source.parent / "features.json"
+            has_features = (ROOT / features).exists() and not assets.is_deleted(features, self.asset_stack)
+            entries_header = self.build_path() / "include" / relative.parent.with_suffix(".h")
+            has_entries = has_features and relative.name == "map.xml"
+            if has_entries:
+                entries_headers.append(entries_header)
             build(
-                self.build_path() / "include" / self.layer_relative(source).with_suffix(".xml.h"),
-                [],
+                self.build_path() / "include" / relative.with_suffix(".xml.h"),
+                [features] if has_features else [],
                 "map_source_header",
-                implicit_deps=[self.map_build_dir() / f"{name}_{part}.h" for part in ["shape", "hit"]],
-                variables={"name": name},
+                implicit_deps=[
+                    BUILD_TOOLS / "mapfs" / "source_header.py",
+                    *(self.map_build_dir() / f"{name}_{part}.h" for part in ["shape", "hit"]),
+                ],
+                implicit_outputs=[posix(entries_header)] if has_entries else [],
+                variables={
+                    "name": name,
+                    "entries": f"--entries {posix(entries_header)} {relative.parent.name}" if has_entries else "",
+                },
             )
+
+        # A map that borrows another's geometry has no source, but still has its
+        # own markers.
+        map_dirs = {self.layer_relative(source).parent for source in sources.values()}
+        for features in sorted((ROOT / "src" / "world" / "area").glob("*/*/features.json")):
+            relative = features.parent.relative_to(ROOT / "src")
+            if relative in map_dirs or assets.is_deleted(features, self.asset_stack):
+                continue
+            entries_header = self.build_path() / "include" / relative.with_suffix(".h")
+            entries_headers.append(entries_header)
+            build(
+                self.build_path() / "include" / relative / "map.xml.h",
+                [features.relative_to(ROOT)],
+                "map_source_header",
+                implicit_deps=[BUILD_TOOLS / "mapfs" / "source_header.py"],
+                implicit_outputs=[posix(entries_header)],
+                variables={"name": "-", "entries": f"--entries {posix(entries_header)} {relative.name}"},
+            )
+
+        # world/entries.h gives code outside the maps every map's entries, such
+        # as dx/config.h's NEW_GAME_ENTRY.
+        include_dir = self.build_path() / "include"
+        all_entries = ROOT / include_dir / "world" / "entries.h"
+        text = "".join(
+            ["#pragma once\n", '#include "map.h"\n']
+            + [f'#include "{posix(header.relative_to(include_dir))}"\n' for header in sorted(entries_headers)]
+        )
+        # Rewriting it unchanged would rebuild everything that includes it on each reconfigure.
+        if not all_entries.exists() or all_entries.read_text() != text:
+            all_entries.parent.mkdir(parents=True, exist_ok=True)
+            all_entries.write_text(text)
 
         src_paths = self.mapfs_contents()
 

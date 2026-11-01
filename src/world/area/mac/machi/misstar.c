@@ -107,8 +107,8 @@ NpcSettings NpcSettings_Misstar = {
 
 NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
-    .pos = { 320.0f, 30.0f, -290.0f },
-    .yaw = 100,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .settings = &NpcSettings_Misstar,
     .flags = ENEMY_FLAG_PASSIVE,
     .animations = {

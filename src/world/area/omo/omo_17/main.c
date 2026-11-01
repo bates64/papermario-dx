@@ -1,9 +1,11 @@
 #include "omo_17.h"
+#include "world/area/omo/omo_05.h"
+#include "world/area/omo/omo_06.h"
 
-EvtScript EVS_ExitWalk_omo_05_0 = EVT_EXIT_WALK(60, omo_17_ENTRY_0, "omo_05", omo_05_ENTRY_0);
-EvtScript EVS_ExitWalk_omo_05_1 = EVT_EXIT_WALK(60, omo_17_ENTRY_1, "omo_05", omo_05_ENTRY_1);
-EvtScript EVS_ExitWalk_omo_06_0 = EVT_EXIT_WALK(60, omo_17_ENTRY_2, "omo_06", omo_06_ENTRY_0);
-EvtScript EVS_ExitWalk_omo_06_1 = EVT_EXIT_WALK(60, omo_17_ENTRY_3, "omo_06", omo_06_ENTRY_1);
+EvtScript EVS_ExitWalk_omo_05_0 = EVT_EXIT_WALK(60, $Omo05South, $omo_05.Omo17South);
+EvtScript EVS_ExitWalk_omo_05_1 = EVT_EXIT_WALK(60, $Omo05North, $omo_05.Omo17North);
+EvtScript EVS_ExitWalk_omo_06_0 = EVT_EXIT_WALK(60, $Omo06South, $omo_06.Omo17South);
+EvtScript EVS_ExitWalk_omo_06_1 = EVT_EXIT_WALK(60, $Omo06North, $omo_06.Omo17North);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -24,7 +26,7 @@ EvtScript EVS_Main = {
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseRange(omo_17_ENTRY_4, omo_17_ENTRY_5)
+        CaseRange($TrainLeft.index, $TrainRight.index)
             ExecWait(EVS_EnterTrain)
             Wait(3)
         CaseDefault

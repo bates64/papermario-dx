@@ -3,9 +3,9 @@
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_02_ENTRY_0)
+        CaseEq($UpperHall.index)
             Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_7)
-        CaseEq(kkj_02_ENTRY_1)
+        CaseEq($WindowHallway.index)
             Call(SetMusic, 0, SONG_PEACHS_CASTLE_PARTY, BGM_VARIATION_1, VOL_LEVEL_5)
     EndSwitch
     Wait(3)

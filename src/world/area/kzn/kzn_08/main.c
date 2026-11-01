@@ -1,4 +1,5 @@
 #include "kzn_08.h"
+#include "world/area/kzn/kzn_06.h"
 #include "model.h"
 
 #include "../common/LavaGlowLighting.inc.c"
@@ -49,7 +50,7 @@ ModelIDList LavaModelIDs = {
     .list = { MODEL_yougan }
 };
 
-EvtScript EVS_ExitWalk_kzn_06 = EVT_EXIT_WALK(60, kzn_08_ENTRY_0, "kzn_06", kzn_06_ENTRY_2);
+EvtScript EVS_ExitWalk_kzn_06 = EVT_EXIT_WALK(60, $Kzn06, $kzn_06.Kzn08);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_06, TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
@@ -58,11 +59,11 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o468, .pos = { -230.0, 0.0, 100.0 }},
-    { .colliderID = COLLIDER_o470, .pos = { -230.0, 0.0, 100.0 }},
-    { .colliderID = COLLIDER_o322, .pos = {  -10.0, 0.0, 100.0 }},
-    { .colliderID = COLLIDER_o446, .pos = {  -10.0, 0.0, 100.0 }},
-    { .colliderID = COLLIDER_o454, .pos = {  -90.0, 0.0, -45.0 }},
+    { .colliderID = COLLIDER_o468, .pos = $LavaReset_o468.pos },
+    { .colliderID = COLLIDER_o470, .pos = $LavaReset_o470.pos },
+    { .colliderID = COLLIDER_o322, .pos = $LavaReset_o322.pos },
+    { .colliderID = COLLIDER_o446, .pos = $LavaReset_o446.pos },
+    { .colliderID = COLLIDER_o454, .pos = $LavaReset_o454.pos },
     { .colliderID = NO_COLLIDER }
 };
 

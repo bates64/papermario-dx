@@ -1,4 +1,6 @@
 #include "pra_22.h"
+#include "world/area/pra/pra_20.h"
+#include "world/area/pra/pra_37.h"
 #include "sprite/player.h"
 
 #include "world/common/util/PushObjectSupport.inc.c"
@@ -32,18 +34,18 @@ s32 DoorModelsL[] = { MODEL_o1001, -1 };
 s32 DoorModelsR[] = { MODEL_o1002, -1 };
 
 EvtScript EVS_ExitDoors_pra_20_4 =
-    EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_20", pra_20_ENTRY_4, COLLIDER_deilittssw, MODEL_o1085, DOOR_SWING_OUT);
+    EVT_EXIT_SINGLE_DOOR($MirroredDoorRoom, $pra_20.SmallStatueRoom, COLLIDER_deilittssw, MODEL_o1085, DOOR_SWING_OUT);
 
 EvtScript EVS_ExitDoors_pra_37_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_22_ENTRY_1)
+    Set(LVar0, $PUpDDownHall.index)
     Set(LVar1, COLLIDER_deilittsse)
     Set(LVar2, DoorModelsL)
     Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_37", pra_37_ENTRY_0)
+    Call(GotoMap, $pra_37.SmallStatueRoom)
     Wait(100)
     Return
     End
@@ -65,11 +67,11 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_22_ENTRY_0)
+        CaseEq($MirroredDoorRoom.index)
             Set(LVar2, MODEL_o1085)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(pra_22_ENTRY_1)
+        CaseEq($PUpDDownHall.index)
             Set(LVar2, DoorModelsL)
             Set(LVar3, DoorModelsR)
             ExecWait(BaseEnterDoor)

@@ -311,20 +311,9 @@ EvtScript EVS_NpcInit_Merlee = {
 NpcData PassiveNPCs[] = {
     {
         .id = NPC_Archeologist,
-        .pos = { -320.0f, 0.0f, -14.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { -303, 0, 22 },
-                .wanderSize = { 146, 38 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Archeologist.pos,
+        .yaw = $Archeologist.yaw,
+        .territory = $Archeologist.territory,
         .init = &EVS_NpcInit_Archeologist,
         .settings = &NpcSettings_Archeologist_Wander,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -334,20 +323,9 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Dryite_01,
-        .pos = { -20.0f, 0.0f, 40.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -20, 0, 40 },
-                .wanderSize = { 60 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Dryite_01.pos,
+        .yaw = $Dryite_01.yaw,
+        .territory = $Dryite_01.territory,
         .init = &EVS_NpcInit_MrE,
         .settings = &NpcSettings_Dryite_Wander,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -357,8 +335,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_DisguisedMoustafa,
-        .pos = { 245.0f, 0.0f, -35.0f },
-        .yaw = 90,
+        .pos = $DisguisedMoustafa.pos,
+        .yaw = $DisguisedMoustafa.yaw,
         .init = &EVS_NpcInit_DisguisedMoustafa,
         .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -368,8 +346,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Toad,
-        .pos = { -143.0f, 0.0f, -170.0f },
-        .yaw = 180,
+        .pos = $Toad.pos,
+        .yaw = $Toad.yaw,
         .init = &EVS_NpcInit_ToadHouseKeeper,
         .settings = &NpcSettings_Toad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -379,8 +357,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Merlee,
-        .pos = { -130.0f, 0.0f, -400.0f },
-        .yaw = 180,
+        .pos = $Merlee.pos,
+        .yaw = $Merlee.yaw,
         .init = &EVS_NpcInit_Merlee,
         .settings = &NpcSettings_Merlee,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -390,8 +368,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Moustafa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Moustafa.pos,
+        .yaw = $Moustafa.yaw,
         .init = &EVS_NpcInit_Moustafa,
         .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -401,8 +379,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Dryite_02,
-        .pos = { 25.0f, 0.0f, -38.0f },
-        .yaw = 270,
+        .pos = $Dryite_02.pos,
+        .yaw = $Dryite_02.yaw,
         .init = &EVS_NpcInit_Dryite_02,
         .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -412,8 +390,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Dryite_03,
-        .pos = { -375.0f, 0.0f, -10.0f },
-        .yaw = 270,
+        .pos = $Dryite_03.pos,
+        .yaw = $Dryite_03.yaw,
         .init = &EVS_NpcInit_Dryite_03,
         .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -423,8 +401,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Mouser_01,
-        .pos = { -50.0f, 0.0f, -470.0f },
-        .yaw = 180,
+        .pos = $Mouser_01.pos,
+        .yaw = $Mouser_01.yaw,
         .init = &EVS_NpcInit_Mouser_01,
         .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -434,8 +412,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Mouser_02,
-        .pos = { -270.0f, 0.0f, 91.0f },
-        .yaw = 270,
+        .pos = $Mouser_02.pos,
+        .yaw = $Mouser_02.yaw,
         .init = &EVS_NpcInit_Mouser_02,
         .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -445,8 +423,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_Mouser_03,
-        .pos = { 210.0f, 0.0f, -35.0f },
-        .yaw = 90,
+        .pos = $Mouser_03.pos,
+        .yaw = $Mouser_03.yaw,
         .init = &EVS_NpcInit_Mouser_03,
         .settings = &NpcSettings_Mouser,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -455,8 +433,8 @@ NpcData PassiveNPCs[] = {
     },
     {
         .id = NPC_ChuckQuizmo,
-        .pos = { -335.0f, 0.0f, 90.0f },
-        .yaw = 270,
+        .pos = $ChuckQuizmo.pos,
+        .yaw = $ChuckQuizmo.yaw,
         .initVarCount = 1,
         .initVar = { .bytes = { 0, QUIZ_AREA_DRO, QUIZ_COUNT_DRO, QUIZ_MAP_DRO_02 } },
         .settings = &NpcSettings_ChuckQuizmo,

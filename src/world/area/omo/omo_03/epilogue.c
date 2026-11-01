@@ -1,4 +1,5 @@
 #include "omo_03.h"
+#include "world/area/jan/jan_04.h"
 #include "effects.h"
 
 Vec3f FlightPath[] = {
@@ -45,7 +46,7 @@ EvtScript EVS_Scene_Epilogue = {
     Call(SetNpcAnimation, NPC_Parakarry, ANIM_WorldParakarry_Talk)
     Wait(60)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, "jan_04", jan_04_ENTRY_3)
+    Call(GotoMap, $jan_04.Epilogue)
     Wait(100)
     Return
     End

@@ -4,12 +4,12 @@
 ITEM_LIST(KeyList, ITEM_RUINS_KEY);
 
 BombTrigger BombPos_Wall = {
-    .pos = { 510.0f, 25.0f, -184.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_OnBlast_Wall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 63, 22, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Loop(10)
         Call(EnableModel, MODEL_g262, true)
         Wait(1)

@@ -1,4 +1,7 @@
 #include "trd_10.h"
+#include "world/area/kmr/kmr_23.h"
+#include "world/area/trd/trd_06.h"
+#include "world/area/trd/trd_09.h"
 #include "sprite/player.h"
 
 extern EvtScript EVS_SetupMusic;
@@ -17,13 +20,13 @@ EvtScript EVS_BossDefeated = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
             Set(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
-            Call(GotoMap, "trd_06", trd_06_ENTRY_2)
+            Call(GotoMap, $trd_06.BossDefeated)
             Wait(100)
             Return
         CaseEq(STORY_CH1_DEFEATED_KOOPA_BROS)
             Set(LVar0, 1)
             Call(GetEntryID, LVar1)
-            IfEq(LVar1, trd_10_ENTRY_1)
+            IfEq(LVar1, $Trd06.index)
                 Set(LVar0, 0)
             EndIf
         CaseDefault
@@ -83,7 +86,7 @@ EvtScript EVS_BossDefeated = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_0, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Eldstar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
@@ -92,11 +95,11 @@ EvtScript EVS_BossDefeated = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_10_ENTRY_0)
+        CaseEq($Trd09.index)
             Set(LVar2, MODEL_o192)
             Set(LVar3, MODEL_o191)
             ExecWait(EnterDoubleDoor)
-        CaseEq(trd_10_ENTRY_1)
+        CaseEq($Trd06.index)
             Call(DisablePartnerAI, false)
             Call(SetNpcPos, NPC_PARTNER, -253, 0, 0)
             Call(SetNpcYaw, NPC_PARTNER, 90)
@@ -107,8 +110,7 @@ EvtScript EVS_EnterMap = {
     End
 };
 
-EvtScript EVS_ExitDoors_trd_09_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1, COLLIDER_ttw, MODEL_o192, MODEL_o191);
+EvtScript EVS_ExitDoors_trd_09_1 = EVT_EXIT_DOUBLE_DOOR($Trd09, $trd_09.Trd10, COLLIDER_ttw, MODEL_o192, MODEL_o191);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_trd_09_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

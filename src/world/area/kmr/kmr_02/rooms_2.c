@@ -84,7 +84,7 @@ s32 InsideNPCs_ToadHouse[] = {
 EvtScript EVS_SetupToadHouse = {
     Call(RotateModel, MODEL_o320, 180, 0, 1, 0)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kmr_02_ENTRY_5)
+    IfNe(LVar0, $AfterRevival.index)
         Call(SetGroupVisibility, MODEL_kino_in, MODEL_GROUP_HIDDEN)
     EndIf
     // toad house

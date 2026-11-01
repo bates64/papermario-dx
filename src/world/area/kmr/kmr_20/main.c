@@ -1,4 +1,5 @@
 #include "kmr_20.h"
+#include "world/area/mac/mac_00.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
@@ -9,7 +10,7 @@ API_CALLABLE(SetupBeginGameTransition) {
 
 EvtScript EVS_GotoMap_mac_00_4 = {
     Exec(EVS_FadeOutAmbientSounds)
-    Call(GotoMap, "mac_00", mac_00_ENTRY_4)
+    Call(GotoMap, $mac_00.MariosHouse)
     Wait(100)
     Return
     End
@@ -17,7 +18,7 @@ EvtScript EVS_GotoMap_mac_00_4 = {
 
 EvtScript EVS_ExitPipe_mac_00_4 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Set(LVarA, kmr_20_ENTRY_4)
+    Set(LVarA, $ToadTown.index)
     Set(LVarB, COLLIDER_o244)
     Set(LVarC, EVS_GotoMap_mac_00_4)
     ExecWait(EVS_Pipe_ExitVertical)
@@ -34,11 +35,11 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_Main = {
     Set(GB_WorldLocation, LOCATION_MARIOS_HOUSE)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kmr_20_ENTRY_2)
+    IfEq(LVar0, $Ending.index)
         Set(GB_StoryProgress, STORY_EPILOGUE)
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kmr_20_ENTRY_4)
+    IfEq(LVar0, $ToadTown.index)
         Set(MF_LuigiWaiting, false)
         IfEq(GF_KMR20_ReunitedWithLuigi, false)
             Set(GF_KMR20_ReunitedWithLuigi, true)
@@ -52,7 +53,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
-    IfLt(LVar0, kmr_20_ENTRY_4)
+    IfLt(LVar0, $ToadTown.index)
         Call(MakeNpcs, false, SceneNPCs)
     Else
         Call(MakeNpcs, false, DefaultNPCs)
@@ -68,19 +69,19 @@ EvtScript EVS_Main = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kmr_20_ENTRY_0)
+        CaseEq($GameStart.index)
             Call(SetupBeginGameTransition)
             Exec(EVS_Scene_BeginGame)
             Wait(5)
-        CaseEq(kmr_20_ENTRY_1)
+        CaseEq($Invitation.index)
             Exec(EVS_Scene_SettingOff)
-        CaseEq(kmr_20_ENTRY_2)
+        CaseEq($Ending.index)
             Wait(60)
             Exec(EVS_Scene_BeginEpilogue)
-        CaseEq(kmr_20_ENTRY_3)
+        CaseEq($EpilogueLetter.index)
             Exec(EVS_BindExitTriggers)
             Exec(EVS_Scene_EpilogueGetLetter)
-        CaseEq(kmr_20_ENTRY_4)
+        CaseEq($ToadTown.index)
             Set(GF_MAP_MariosHouse, true)
             IfEq(MF_LuigiWaiting, true)
                 Exec(EVS_Scene_LuigiWaitingAround)

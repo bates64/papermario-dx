@@ -1,4 +1,5 @@
 #include "kkj_14.h"
+#include "world/area/kkj/kkj_26.h"
 #include "sprite/player.h"
 
 API_CALLABLE(SetPeachDepressed) {
@@ -486,7 +487,7 @@ EvtScript EVS_Scene_Chapter0 = {
     Call(FadeOutMusic, 0, 2000 * DT)
     Call(NpcFlyTo, NPC_PARTNER, 600, 100, -80, 40, 0, EASING_LINEAR)
     Wait(30 * DT)
-    Call(GotoMap, "kkj_26", kkj_26_ENTRY_2)
+    Call(GotoMap, $kkj_26.WhereIsMario)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

@@ -1,21 +1,23 @@
 #include "pra_21.h"
+#include "world/area/pra/pra_20.h"
+#include "world/area/pra/pra_36.h"
 
 s32 DoorModelsL[] = { MODEL_o977, -1 };
 s32 DoorModelsR[] = { MODEL_o976, -1 };
 
 EvtScript EVS_ExitDoor_pra_20_1 =
-    EVT_EXIT_SINGLE_DOOR(pra_21_ENTRY_0, "pra_20", pra_20_ENTRY_1, COLLIDER_deilittnnw, MODEL_o774, DOOR_SWING_IN);
+    EVT_EXIT_SINGLE_DOOR($MirroredDoorRoom, $pra_20.HugeStatueRoom, COLLIDER_deilittnnw, MODEL_o774, DOOR_SWING_IN);
 
 EvtScript EVS_ExitDoors_pra_36_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_21_ENTRY_1)
+    Set(LVar0, $PalaceKeyHall.index)
     Set(LVar1, COLLIDER_deilittnne)
     Set(LVar2, DoorModelsL)
     Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_36", pra_36_ENTRY_0)
+    Call(GotoMap, $pra_36.HugeStatueRoom)
     Wait(100)
     Return
     End
@@ -31,11 +33,11 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_21_ENTRY_0)
+        CaseEq($MirroredDoorRoom.index)
             Set(LVar2, MODEL_o774)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
-        CaseEq(pra_21_ENTRY_1)
+        CaseEq($PalaceKeyHall.index)
             Set(LVar2, DoorModelsL)
             Set(LVar3, DoorModelsR)
             ExecWait(BaseEnterDoor)

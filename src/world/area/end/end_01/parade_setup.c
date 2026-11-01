@@ -1,4 +1,5 @@
 #include "end_01.h"
+#include "world/area/kmr/kmr_30.h"
 #include "effects.h"
 
 extern HeapNode heap_spriteHead;
@@ -833,7 +834,7 @@ EvtScript EVS_ManageParade = {
     Wait(150)
     Exec(EVS_MarioPeachExit)
     Wait(200)
-    Call(GotoMap, "kmr_30", kmr_30_ENTRY_0)
+    Call(GotoMap, $kmr_30.Entry0)
     Wait(100)
     Return
     End

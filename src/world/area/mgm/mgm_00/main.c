@@ -1,4 +1,7 @@
 #include "mgm_00.h"
+#include "world/area/mac/mac_03.h"
+#include "world/area/mgm/mgm_01.h"
+#include "world/area/mgm/mgm_02.h"
 
 EvtScript EVS_SetupMusic = {
     Return
@@ -8,7 +11,7 @@ EvtScript EVS_SetupMusic = {
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript EVS_GotoMap_ToadTown = {
-    Call(GotoMap, "mac_03", mac_03_ENTRY_2)
+    Call(GotoMap, $mac_03.PlayroomPipe)
     Wait(100)
     Return
     End
@@ -16,7 +19,7 @@ EvtScript EVS_GotoMap_ToadTown = {
 
 EvtScript EVS_OnEnterPipe_ToadTown = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Set(LVarA, mgm_00_ENTRY_0)
+    Set(LVarA, $StationDistrict.index)
     Set(LVarB, COLLIDER_deili1)
     Set(LVarC, EVS_GotoMap_ToadTown)
     ExecWait(EVS_Pipe_ExitHorizontal)
@@ -25,16 +28,16 @@ EvtScript EVS_OnEnterPipe_ToadTown = {
 };
 
 EvtScript EVS_GotoMap_JumpAttack = {
-    Call(GotoMap, "mgm_01", mgm_01_ENTRY_0)
+    Call(GotoMap, $mgm_01.Lobby)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_OnEnterPipe_JumpAttack = EVT_EXIT_PIPE_VERTICAL(mgm_00_ENTRY_1, COLLIDER_deili2, EVS_GotoMap_JumpAttack);
+EvtScript EVS_OnEnterPipe_JumpAttack = EVT_EXIT_PIPE_VERTICAL($JumpAttack, COLLIDER_deili2, EVS_GotoMap_JumpAttack);
 
 EvtScript EVS_GotoMap_SmashAttack = {
-    Call(GotoMap, "mgm_02", mgm_02_ENTRY_0)
+    Call(GotoMap, $mgm_02.Lobby)
     Wait(100)
     Return
     End
@@ -42,7 +45,7 @@ EvtScript EVS_GotoMap_SmashAttack = {
 
 EvtScript EVS_OnEnterPipe_SmashAttack = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Set(LVarA, mgm_00_ENTRY_2)
+    Set(LVarA, $SmashAttack.index)
     Set(LVarB, COLLIDER_deili3)
     Set(LVarC, EVS_GotoMap_SmashAttack)
     ExecWait(EVS_Pipe_ExitVertical)
@@ -75,14 +78,14 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mgm_00_ENTRY_0)
+        CaseEq($StationDistrict.index)
             Set(LVarA, EVS_BindExitTriggers)
             Set(LVarB, 1)
             Exec(EVS_Pipe_EnterHorizontal)
-        CaseEq(mgm_00_ENTRY_1)
+        CaseEq($JumpAttack.index)
             Set(LVarA, EVS_BindExitTriggers)
             Exec(EVS_Pipe_EnterVertical)
-        CaseEq(mgm_00_ENTRY_2)
+        CaseEq($SmashAttack.index)
             Set(LVarA, EVS_BindExitTriggers)
             Exec(EVS_Pipe_EnterVertical)
     EndSwitch

@@ -8,7 +8,9 @@
 #include "map.h"
 
 #include "../osr.h"
-#include "world/area/osr/osr_03/map.xml.h"
+#include "mapfs/w_osr_03_shape.h"
+#include "mapfs/w_osr_03_hit.h"
+#include "map.xml.h"
 
 enum {
     MV_SmokeVelY        = MapVar(1),

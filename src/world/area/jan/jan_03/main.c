@@ -1,11 +1,14 @@
 #include "jan_03.h"
+#include "world/area/jan/jan_02.h"
+#include "world/area/jan/jan_05.h"
+#include "world/area/jan/jan_22.h"
 #include "effects.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_jan_02_1 = EVT_EXIT_WALK(60, jan_03_ENTRY_0, "jan_02", jan_02_ENTRY_1);
-EvtScript EVS_ExitWalk_jan_05_0 = EVT_EXIT_WALK(60, jan_03_ENTRY_1, "jan_05", jan_05_ENTRY_0);
-EvtScript EVS_ExitWalk_jan_22_0 = EVT_EXIT_WALK(60, jan_03_ENTRY_2, "jan_22", jan_22_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_02_1 = EVT_EXIT_WALK(60, $Jan02, $jan_02.Jan03);
+EvtScript EVS_ExitWalk_jan_05_0 = EVT_EXIT_WALK(60, $Jan05, $jan_05.YoshisVillage);
+EvtScript EVS_ExitWalk_jan_22_0 = EVT_EXIT_WALK(60, $Jan22, $jan_22.YoshisVillage);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -23,7 +26,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, jan_03_ENTRY_3)
+    IfNe(LVar0, $Pipe.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

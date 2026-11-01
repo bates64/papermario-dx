@@ -53,20 +53,9 @@ EvtScript EVS_NpcInit_SpikedGloomba = {
 
 NpcData NpcData_Gloomba = {
     .id = NPC_Gloomba,
-    .pos = { -60.0f, -10.0f, -30.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -60, -10, -30 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -60, -10, -30 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Gloomba.pos,
+    .yaw = $Gloomba.yaw,
+    .territory = $Gloomba.territory,
     .settings = &NpcSettings_Gloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = GLOOMBA_DROPS,
@@ -75,20 +64,9 @@ NpcData NpcData_Gloomba = {
 
 NpcData NpcData_SpikedGloomba = {
     .id = NPC_SpikedGloomba,
-    .pos = { 30.0f, -10.0f, -20.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 30, -10, -20 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 30, -10, -20 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $SpikedGloomba.pos,
+    .yaw = $SpikedGloomba.yaw,
+    .territory = $SpikedGloomba.territory,
     .init = &EVS_NpcInit_SpikedGloomba,
     .settings = &NpcSettings_SpikedGloomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,

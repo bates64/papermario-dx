@@ -236,7 +236,7 @@ API_CALLABLE(KentTakeCoins) {
 EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Label(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+        IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
             IfGe(LVar0, -260)
                 Goto(10)
             Else
@@ -257,7 +257,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(InterruptUsePartner)
     Call(SetMusic, 0, SONG_MINIBOSS_BATTLE, 0, VOL_LEVEL_FULL)
     Call(SpeakToPlayer, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_012C)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 20)
     Else
         Set(LVar0, -20)
@@ -273,7 +273,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     IfEq(LVar0, 1)
         Goto(50)
     EndIf
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 20)
     Else
         Set(LVar0, -20)
@@ -292,21 +292,21 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Label(20)
     Call(ContinueSpeech, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0135)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 20)
     Else
         Set(LVar0, -20)
     EndIf
     Call(SpeakToPlayer, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0136)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Flee)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 90)
     Else
         Set(LVar0, 270)
     EndIf
     Call(InterpNpcYaw, NPC_KentCKoopa_02, LVar0, 0)
     Wait(30)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 125)
     Else
         Set(LVar0, -430)
@@ -323,7 +323,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     EndIf
     Call(CloseMessage)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, -215)
     Else
         Set(LVar0, -100)
@@ -341,7 +341,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(BindNpcInteract, NPC_KentCKoopa_02, EVS_NpcInteract_KentCKoopa_02)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_KentCKoopa_02, ANIM_KentCKoopa_Idle)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 270)
     Else
         Set(LVar0, 90)
@@ -360,7 +360,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(DisablePlayerInput, false)
     Label(41)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+        IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
             IfGe(LVar0, -255)
                 Set(LVar3, -256)
                 Goto(43)
@@ -396,7 +396,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(DisablePlayerInput, false)
     Label(51)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+        IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
             IfGe(LVar0, -255)
                 Set(LVar3, -256)
                 Goto(53)
@@ -420,7 +420,7 @@ EvtScript EVS_NpcIdle_KentCKoopa_01 = {
     Call(SetMusic, 0, SONG_MINIBOSS_BATTLE, 0, VOL_LEVEL_FULL)
     Call(SetPlayerPos, LVar3, LVar1, LVar2)
     Call(SpeakToPlayer, NPC_KentCKoopa_02, ANIM_KentCKoopa_Talk, ANIM_KentCKoopa_Idle, 0, MSG_CH1_0132)
-    IfEq(AB_NOK11_KentEntryID, nok_11_ENTRY_0)
+    IfEq(AB_NOK11_KentEntryID, $ToadTown.index)
         Set(LVar0, 20)
     Else
         Set(LVar0, -20)
@@ -452,20 +452,9 @@ EvtScript EVS_NpcDefeat_KentCKoopa_02 = {
 
 NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
-    .pos = { -350.0f, 0.0f, -30.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { -350, 0, -30 },
-            .wanderSize = { 50, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -350, 0, -30 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $KoopaTroopa.pos,
+    .yaw = $KoopaTroopa.yaw,
+    .territory = $KoopaTroopa.territory,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = KOOPA_TROOPA_NOK_DROPS,
@@ -474,20 +463,9 @@ NpcData NpcData_KoopaTroopa = {
 
 NpcData NpcData_Paragoomba = {
     .id = NPC_Paragoomba,
-    .pos = { 0.0f, 60.0f, -30.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { 0, 60, -30 },
-            .wanderSize = { 50, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 60, -30 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Paragoomba.pos,
+    .yaw = $Paragoomba.yaw,
+    .territory = $Paragoomba.territory,
     .settings = &NpcSettings_Paragoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = PARAGOOMBA_DROPS,
@@ -496,20 +474,9 @@ NpcData NpcData_Paragoomba = {
 
 NpcData NpcData_SpikedGoomba = {
     .id = NPC_SpikedGoomba,
-    .pos = { 430.0f, 0.0f, -27.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { 430, 0, -27 },
-            .wanderSize = { 50, 20 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 430, 0, -27 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $SpikedGoomba.pos,
+    .yaw = $SpikedGoomba.yaw,
+    .territory = $SpikedGoomba.territory,
     .settings = &NpcSettings_SpikedGoomba_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKED_GOOMBA_DROPS,
@@ -536,8 +503,8 @@ EvtScript EVS_NpcInit_JrTroopa_02 = {
 NpcData NpcData_JrTroopa[] = {
     {
         .id = NPC_JrTroopa_01,
-        .pos = { -170.0f, 0.0f, -155.0f },
-        .yaw = 90,
+        .pos = $JrTroopa_01.pos,
+        .yaw = $JrTroopa_01.yaw,
         .init = &EVS_NpcInit_JrTroopa_01,
         .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -547,8 +514,8 @@ NpcData NpcData_JrTroopa[] = {
     },
     {
         .id = NPC_JrTroopa_02,
-        .pos = { -170.0f, 0.0f, -155.0f },
-        .yaw = 90,
+        .pos = $JrTroopa_02.pos,
+        .yaw = $JrTroopa_02.yaw,
         .init = &EVS_NpcInit_JrTroopa_02,
         .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
@@ -572,7 +539,7 @@ EvtScript EVS_NpcInit_KentCKoopa_02 = {
     Call(BindNpcDefeat, NPC_SELF, EVS_NpcDefeat_KentCKoopa_02)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CHAR_COLLISION, true)
     Call(GetEntryID, LVar3)
-    IfEq(LVar3, nok_11_ENTRY_0)
+    IfEq(LVar3, $ToadTown.index)
         Call(SetNpcYaw, NPC_SELF, 270)
     Else
         Call(SetNpcYaw, NPC_SELF, 90)
@@ -584,8 +551,8 @@ EvtScript EVS_NpcInit_KentCKoopa_02 = {
 NpcData NpcData_KentCKoopa[] = {
     {
         .id = NPC_KentCKoopa_01,
-        .pos = { -164.0f, 0.0f, -37.0f },
-        .yaw = 270,
+        .pos = $KentCKoopa_01.pos,
+        .yaw = $KentCKoopa_01.yaw,
         .init = &EVS_NpcInit_KentCKoopa_01,
         .settings = &NpcSettings_KentCKoopa,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
@@ -594,8 +561,8 @@ NpcData NpcData_KentCKoopa[] = {
     },
     {
         .id = NPC_KentCKoopa_02,
-        .pos = { -164.0f, 0.0f, -37.0f },
-        .yaw = 270,
+        .pos = $KentCKoopa_02.pos,
+        .yaw = $KentCKoopa_02.yaw,
         .init = &EVS_NpcInit_KentCKoopa_02,
         .settings = &NpcSettings_KentCKoopa,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,

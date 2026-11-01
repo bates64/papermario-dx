@@ -269,8 +269,8 @@ EvtScript EVS_NpcInit_JungleFuzzy_01 = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { -70.0f, -9.0f, 90.0f },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
@@ -281,8 +281,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_JungleFuzzy_01 = {
     .id = NPC_JungleFuzzy_01,
-    .pos = { -30.0f, 0.0f, 90.0f },
-    .yaw = 270,
+    .pos = $JungleFuzzy_01.pos,
+    .yaw = $JungleFuzzy_01.yaw,
     .init = &EVS_NpcInit_JungleFuzzy_01,
     .settings = &NpcSettings_JungleFuzzy,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -300,20 +300,9 @@ EvtScript EVS_NpcInit_JungleFuzzy_02 = {
 
 NpcData NpcData_JungleFuzzy_02 = {
     .id = NPC_JungleFuzzy_02,
-    .pos = { -350.0f, 3.0f, 40.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -350, 3, 40 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -350, 3, 40 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $JungleFuzzy_02.pos,
+    .yaw = $JungleFuzzy_02.yaw,
+    .territory = $JungleFuzzy_02.territory,
     .init = &EVS_NpcInit_JungleFuzzy_02,
     .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -324,20 +313,9 @@ NpcData NpcData_JungleFuzzy_02 = {
 
 NpcData NpcData_JungleFuzzy_03 = {
     .id = NPC_JungleFuzzy_03,
-    .pos = { 0.0f, -10.0f, 110.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, -10, 110 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, -10, 110 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $JungleFuzzy_03.pos,
+    .yaw = $JungleFuzzy_03.yaw,
+    .territory = $JungleFuzzy_03.territory,
     .init = &EVS_NpcInit_JungleFuzzy_02,
     .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -348,20 +326,9 @@ NpcData NpcData_JungleFuzzy_03 = {
 
 NpcData NpcData_JungleFuzzy_04 = {
     .id = NPC_JungleFuzzy_04,
-    .pos = { 350.0f, 3.0f, 40.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 350, 3, 40 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 350, 3, 75 },
-            .detectSize = { 200, 125 },
-        }
-    },
+    .pos = $JungleFuzzy_04.pos,
+    .yaw = $JungleFuzzy_04.yaw,
+    .territory = $JungleFuzzy_04.territory,
     .init = &EVS_NpcInit_JungleFuzzy_02,
     .settings = &NpcSettings_JungleFuzzy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

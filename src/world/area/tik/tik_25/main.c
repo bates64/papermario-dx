@@ -1,6 +1,7 @@
 #include "tik_25.h"
+#include "world/area/tik/tik_24.h"
 
-EvtScript EVS_ExitWalk_tik_24_0 = EVT_EXIT_WALK(60, tik_25_ENTRY_0, "tik_24", tik_24_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_24_0 = EVT_EXIT_WALK(60, $HallToUltraBoots, $tik_24.UltraBootsRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_24_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -14,18 +15,18 @@ DripVolumeList DripVolumes = {
     .count = 2,
     .volumes = {
         {
-            .minPos = { -140, -110 },
-            .maxPos = {  120,  240 },
-            .startY = 200,
-            .endY   = -135,
+            .minPos = { $DripVolume_1.min.x, $DripVolume_1.min.z },
+            .maxPos = { $DripVolume_1.max.x, $DripVolume_1.max.z },
+            .startY = $DripVolume_1.max.y,
+            .endY = $DripVolume_1.min.y,
             .duration = 60,
             .density  = 2,
         },
         {
-            .minPos = {    0, -100 },
-            .maxPos = {   90,  235 },
-            .startY = 200,
-            .endY   = -10,
+            .minPos = { $DripVolume_2.min.x, $DripVolume_2.min.z },
+            .maxPos = { $DripVolume_2.max.x, $DripVolume_2.max.z },
+            .startY = $DripVolume_2.max.y,
+            .endY = $DripVolume_2.min.y,
             .duration = 60,
             .density  = 1,
         }

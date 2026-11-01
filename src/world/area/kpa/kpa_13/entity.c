@@ -5,12 +5,10 @@ EvtScript EVS_MakeEntities = {
     Set(AF_KPA13_HitSwitchA, false)
     Set(AF_KPA13_HitSwitchB, false)
     IfEq(GF_KPA13_BlueSwitchA, false)
-        Call(MakeEntity, Entity_BlueSwitch, 285, 10, -55, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA13_HitSwitchA))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
     EndIf
     IfEq(GF_KPA13_BlueSwitchB, false)
-        Call(MakeEntity, Entity_BlueSwitch, 935, 10, -55, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA13_HitSwitchB))
+        Call(MakeMarkerEntity, $BlueSwitch_2)
     EndIf
     Return
     End

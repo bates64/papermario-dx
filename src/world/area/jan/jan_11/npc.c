@@ -121,8 +121,8 @@ EvtScript EVS_NpcInit_YoshiKid = {
 
 NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
-    .pos = { -450.0f, 0.0f, -160.0f },
-    .yaw = 90,
+    .pos = $YoshiKid.pos,
+    .yaw = $YoshiKid.yaw,
     .init = &EVS_NpcInit_YoshiKid,
     .settings = &NpcSettings_YoshiKid,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

@@ -1,7 +1,8 @@
 #include "flo_19.h"
+#include "world/area/flo/flo_21.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_flo_21_0 = EVT_EXIT_WALK(60, flo_19_ENTRY_1, "flo_21", flo_21_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_21_0 = EVT_EXIT_WALK(60, $Flo21, $flo_21.Flo19);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_21_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -37,20 +38,20 @@ EvtScript EVS_Main = {
         Exec(EVS_UpdateTexturePan)
     EndThread
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, flo_19_ENTRY_3)
+    IfNe(LVar0, $Beanstalk.index)
         Set(AF_FLO_RidingBeanstalk, false)
     EndIf
     Switch(LVar0)
-        CaseEq(flo_19_ENTRY_0)
+        CaseEq($Entry0.index)
             Exec(EVS_BindExitTriggers)
-        CaseEq(flo_19_ENTRY_1)
+        CaseEq($Flo21.index)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(flo_19_ENTRY_2)
+        CaseEq($BeanstalkGrowing.index)
             Exec(EVS_Scene_BeanstalkGrowing)
             Exec(EVS_BindExitTriggers)
-        CaseEq(flo_19_ENTRY_3)
+        CaseEq($Beanstalk.index)
             Exec(EVS_Enter_Beanstalk)
             Exec(EVS_BindExitTriggers)
     EndSwitch

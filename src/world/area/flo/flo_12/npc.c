@@ -1,4 +1,5 @@
 #include "flo_12.h"
+#include "world/area/flo/flo_03.h"
 #include "sprite/player.h"
 
 #include "world/common/npc/Rosie/idle.inc.c"
@@ -22,7 +23,7 @@ EvtScript EVS_Scene_SunReturns = {
     Wait(20)
     Call(SpeakToPlayer, NPC_Rosie, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_00C7)
     Wait(10)
-    Call(GotoMap, "flo_03", flo_03_ENTRY_2)
+    Call(GotoMap, $flo_03.Flo12)
     Wait(100)
     Return
     End
@@ -73,7 +74,7 @@ EvtScript EVS_NpcInteract_Rosie = {
                     Call(SetNpcAnimation, NPC_SELF, ANIM_Rosie_TakeOut)
                     Wait(10)
                     Call(SetNpcAnimation, NPC_SELF, ANIM_Rosie_IdleHold)
-                    Call(MakeItemEntity, ITEM_WATER_STONE, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
+                    Call(MakeMarkerEntity, $Item_WaterStone_1)
                     Wait(10)
                     Switch(GF_FLO10_LilyRequestedWaterStone)
                         CaseEq(0)
@@ -126,7 +127,7 @@ EvtScript EVS_NpcInteract_Rosie = {
                 CaseDefault
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0095)
                     Call(RemoveItemEntity, LVar7)
-                    Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
+                    Call(MakeMarkerEntity, $Item_CrystalBerry_1)
                     EVT_GIVE_REWARD(ITEM_WATER_STONE)
                     Wait(10)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0096)
@@ -163,18 +164,18 @@ EvtScript EVS_NpcInit_Rosie = {
             IfEq(GF_FLO12_Met_Rosie, true)
                 Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Rosie_IdleHold)
-                Call(MakeItemEntity, ITEM_WATER_STONE, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
+                Call(MakeMarkerEntity, $Item_WaterStone_2)
                 Set(LVarA, LVar0)
             EndIf
         CaseLt(STORY_CH6_GOT_WATER_STONE)
             Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Rosie_IdleHold)
-            Call(MakeItemEntity, ITEM_WATER_STONE, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
+            Call(MakeMarkerEntity, $Item_WaterStone_3)
             Set(LVarA, LVar0)
         CaseDefault
             Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_IGNORE_CHAR_COLLISION, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Rosie_IdleHold)
-            Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
+            Call(MakeMarkerEntity, $Item_CrystalBerry_2)
             Set(LVarA, LVar0)
     EndSwitch
     Return
@@ -184,8 +185,8 @@ EvtScript EVS_NpcInit_Rosie = {
 NpcData NpcData_Rosie[] = {
     {
         .id = NPC_Rosie,
-        .pos = { -70.0f, 0.0f, 20.0f },
-        .yaw = 90,
+        .pos = $Rosie.pos,
+        .yaw = $Rosie.yaw,
         .init = &EVS_NpcInit_Rosie,
         .settings = &NpcSettings_Rosie,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -195,8 +196,8 @@ NpcData NpcData_Rosie[] = {
     },
     {
         .id = NPC_Dummy,
-        .pos = { -70.0f, 0.0f, 20.0f },
-        .yaw = 90,
+        .pos = $Dummy.pos,
+        .yaw = $Dummy.yaw,
         .settings = &NpcSettings_Dummy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,

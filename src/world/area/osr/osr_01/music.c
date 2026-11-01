@@ -14,7 +14,7 @@ EvtScript EVS_SetupMusic = {
 
 EvtScript EVS_PlaySong_Starship = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, osr_01_ENTRY_3)
+    IfEq(LVar0, $Wishing.index)
         Call(SetMusic, 0, SONG_STARSHIP_THEME, 0, VOL_LEVEL_FULL)
     Else
         Exec(EVS_SetupMusic)

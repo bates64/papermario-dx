@@ -1,4 +1,5 @@
 #include "dgb_15.h"
+#include "world/area/dgb/dgb_14.h"
 
 #include "world/common/npc/Yakkey/idle.inc.c"
 #include "world/common/enemy/Clubba/wander.inc.c"
@@ -137,7 +138,7 @@ API_CALLABLE(PostBattleHideWorld) {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, "dgb_14", dgb_14_ENTRY_1)
+    Call(GotoMap, $dgb_14.Dgb15)
     Wait(100)
     Return
     End
@@ -162,27 +163,9 @@ EvtScript EVS_NpcInit_Tubba = {
 
 NpcData NpcData_Tubba = {
     .id = NPC_Tubba,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 7,
-            .points  = {
-                { -500, 0, 200 },
-                { -700, 0, 200 },
-                { -900, 0, 200 },
-                { -1000, 0, 200 },
-                { -800, 0, 200 },
-                { -600, 0, 200 },
-                { -400, 0, 200 },
-            },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { -500, 0, 200 },
-            .detectSize = { 1000, 250 },
-        }
-    },
+    .pos = $Tubba.pos,
+    .yaw = $Tubba.yaw,
+    .territory = $Tubba.territory,
     .init = &EVS_NpcInit_Tubba,
     .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,

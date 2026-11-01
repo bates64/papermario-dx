@@ -1,7 +1,9 @@
 #include "kmr_05.h"
+#include "world/area/kmr/kmr_02.h"
+#include "world/area/kmr/kmr_03.h"
 
-EvtScript EVS_ExitWalk_kmr_03_1 = EVT_EXIT_WALK(60, kmr_05_ENTRY_0, "kmr_03", kmr_03_ENTRY_1);
-EvtScript EVS_ExitWalk_kmr_02_2 = EVT_EXIT_WALK(60, kmr_05_ENTRY_1, "kmr_02", kmr_02_ENTRY_2);
+EvtScript EVS_ExitWalk_kmr_03_1 = EVT_EXIT_WALK(60, $CliffBottom, $kmr_03.BehindVillage);
+EvtScript EVS_ExitWalk_kmr_02_2 = EVT_EXIT_WALK(60, $GoombaVillage, $kmr_02.BehindVillage);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kmr_03_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -28,7 +30,7 @@ EvtScript EVS_Main = {
     Exec(EnterWalk)
     Wait(1)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kmr_05_ENTRY_0)
+    IfEq(LVar0, $CliffBottom.index)
         IfEq(GF_KMR05_EnemyWarning, false)
             Exec(EVS_GoompaRemark)
             Set(GF_KMR05_EnemyWarning, true)

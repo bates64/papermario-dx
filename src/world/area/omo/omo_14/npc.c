@@ -201,7 +201,7 @@ EvtScript EVS_NpcIdle_ShyGuy_Loner = {
                     Call(ShakeCam, CAM_DEFAULT, 0, 10, 1.0)
                 EndThread
                 Call(PlaySoundAtCollider, COLLIDER_tt1, SOUND_TROMP_CRASH, SOUND_SPACE_DEFAULT)
-                PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 37, 37, 1, 10, 30)
+                PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
                 Call(EnableModel, MODEL_o821, true)
                 Loop(10)
                     Call(EnableModel, MODEL_o823, true)
@@ -380,8 +380,8 @@ EvtScript EVS_NpcInit_ShyGuy_Crowd = {
 
 NpcData NpcData_ShyGuy_Loner = {
     .id = NPC_ShyGuy_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $ShyGuy_01.pos,
+    .yaw = $ShyGuy_01.yaw,
     .init = &EVS_NpcInit_ShyGuy_Loner,
     .settings = &NpcSettings_ShyGuy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -392,8 +392,8 @@ NpcData NpcData_ShyGuy_Loner = {
 NpcData NpcData_ShyGuy_Crowd[] = {
     {
         .id = NPC_ShyGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_02.pos,
+        .yaw = $ShyGuy_02.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -402,8 +402,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_03.pos,
+        .yaw = $ShyGuy_03.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -412,8 +412,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_04.pos,
+        .yaw = $ShyGuy_04.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -422,8 +422,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_05.pos,
+        .yaw = $ShyGuy_05.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -432,8 +432,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_06.pos,
+        .yaw = $ShyGuy_06.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -442,8 +442,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_07.pos,
+        .yaw = $ShyGuy_07.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -452,8 +452,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_08.pos,
+        .yaw = $ShyGuy_08.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -462,8 +462,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_09,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_09.pos,
+        .yaw = $ShyGuy_09.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -472,8 +472,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_10,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_10.pos,
+        .yaw = $ShyGuy_10.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -482,8 +482,8 @@ NpcData NpcData_ShyGuy_Crowd[] = {
     },
     {
         .id = NPC_ShyGuy_11,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ShyGuy_11.pos,
+        .yaw = $ShyGuy_11.yaw,
         .init = &EVS_NpcInit_ShyGuy_Crowd,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

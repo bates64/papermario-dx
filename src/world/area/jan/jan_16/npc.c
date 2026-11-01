@@ -107,13 +107,13 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
     Thread
         Wait(20)
         Loop(10)
-            PlayEffect(EFFECT_LANDING_DUST, 1, 115, 0, 355, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, 205, 0, 475, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
             Wait(2)
-            PlayEffect(EFFECT_LANDING_DUST, 1, 190, 0, 445, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
             Wait(2)
-            PlayEffect(EFFECT_LANDING_DUST, 1, 140, 0, 380, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, 170, 0, 400, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_5.pos.x, $LandingDustPos_5.pos.y, $LandingDustPos_5.pos.z, 0)
             Wait(2)
         EndLoop
     EndThread
@@ -158,15 +158,15 @@ EvtScript EVS_NpcInteract_RaphaelRaven = {
             Call(ScaleGroup, MODEL_g40, 1, LVar2, 1)
             Wait(1)
         EndLoop
-        PlayEffect(EFFECT_LANDING_DUST, 1, 123, 0, 352, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 193, 0, 450, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_6.pos.x, $LandingDustPos_6.pos.y, $LandingDustPos_6.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_7.pos.x, $LandingDustPos_7.pos.y, $LandingDustPos_7.pos.z, 0)
         Loop(10)
             SubF(LVar2, LVar3)
             Call(ScaleGroup, MODEL_g40, 1, LVar2, 1)
             Wait(1)
         EndLoop
-        PlayEffect(EFFECT_LANDING_DUST, 1, 115, 0, 355, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 205, 0, 475, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
         SubF(LVar3, 0.05)
     EndLoop
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o97, COLLIDER_FLAGS_UPPER_MASK)
@@ -209,8 +209,8 @@ EvtScript EVS_NpcInit_RaphaelRaven = {
 NpcData NpcData_RaphaelRaven[] = {
     {
         .id = NPC_RaphaelRaven,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RaphaelRaven.pos,
+        .yaw = $RaphaelRaven.yaw,
         .init = &EVS_NpcInit_RaphaelRaven,
         .settings = &NpcSettings_RaphaelRaven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -220,8 +220,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Raven_01.pos,
+        .yaw = $Raven_01.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -231,8 +231,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Raven_02.pos,
+        .yaw = $Raven_02.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -242,8 +242,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Raven_03.pos,
+        .yaw = $Raven_03.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -253,8 +253,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Raven_04.pos,
+        .yaw = $Raven_04.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -264,8 +264,8 @@ NpcData NpcData_RaphaelRaven[] = {
     },
     {
         .id = NPC_Raven_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Raven_05.pos,
+        .yaw = $Raven_05.yaw,
         .init = &EVS_NpcInit_Raven,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,

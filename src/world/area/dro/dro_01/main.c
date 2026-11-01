@@ -1,19 +1,21 @@
 #include "dro_01.h"
+#include "world/area/dro/dro_02.h"
+#include "world/area/sbk/sbk_36.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript EVS_ExitWalk_sbk_36_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Set(GF_DRO01_HeardHintAboutSpinningRoof, 0)
-    Call(UseExitHeading, 60, 0)
+    Call(UseExitHeading, 60, $DryDryDesert.index)
     Exec(ExitWalk)
-    Call(GotoMap, "sbk_36", 1)
+    Call(GotoMap, $sbk_36.DryDryOutpost)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_dro_02_0 = EVT_EXIT_WALK(60, dro_01_ENTRY_1, "dro_02", dro_02_ENTRY_0);
+EvtScript EVS_ExitWalk_dro_02_0 = EVT_EXIT_WALK(60, $Dro02, $dro_02.Dro01);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sbk_36_1, TRIGGER_FLOOR_ABOVE, 1, 1, 0)
@@ -38,10 +40,10 @@ EvtScript EVS_Scene_RuinsRising = {
     Thread
         Wait(60)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, dro_01_ENTRY_3)
-            Call(GotoMap, "dro_02", dro_02_ENTRY_2)
+        IfEq(LVar0, $RuinsRisingA.index)
+            Call(GotoMap, $dro_02.RuinsRisingA)
         Else
-            Call(GotoMap, "dro_02", dro_02_ENTRY_3)
+            Call(GotoMap, $dro_02.RuinsRisingB)
         EndIf
         Wait(100)
     EndThread
@@ -58,7 +60,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dro_01_ENTRY_2)
+        CaseEq($Pipe.index)
             IfEq(GF_DRO01_WarpPipe, false)
                 Call(DisablePlayerInput, true)
                 Call(DisablePlayerPhysics, true)
@@ -77,11 +79,11 @@ EvtScript EVS_EnterMap = {
             EndIf
             Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
-        CaseOrEq(dro_01_ENTRY_3)
-        CaseOrEq(dro_01_ENTRY_4)
+        CaseOrEq($RuinsRisingA.index)
+        CaseOrEq($RuinsRisingB.index)
             ExecWait(EVS_Scene_RuinsRising)
         EndCaseGroup
-        CaseEq(dro_01_ENTRY_A)
+        CaseEq($Entry10.index)
             Exec(EnterPostPipe)
             Exec(EVS_BindExitTriggers)
         CaseDefault

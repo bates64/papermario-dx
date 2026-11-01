@@ -1,4 +1,8 @@
 #include "mim_11.h"
+#include "world/area/mim/mim_07.h"
+#include "world/area/mim/mim_12.h"
+#include "world/area/obk/obk_01.h"
+#include "world/area/osr/osr_03.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
@@ -131,7 +135,7 @@ EvtScript EVS_Scene_ReachedMansion = {
 // interesting broken, unused snippet for starting next peach sequence
 EvtScript EVS_ExitWarp_osr_03_4 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, "osr_03", osr_03_ENTRY_4, 0xB)
+    Call(GotoMapSpecial, $osr_03.Interlude, 0xB)
     Wait(100)
     Return
     End
@@ -139,19 +143,19 @@ EvtScript EVS_ExitWarp_osr_03_4 = {
 
 EvtScript EVS_ExitWalk_mim_07_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, mim_11_ENTRY_0)
+    Call(UseExitHeading, 60, $Mim07.index)
     Exec(ExitWalk)
     Set(GF_MIM_ChoosingPath, false)
-    Call(GotoMap, "mim_07", mim_07_ENTRY_3)
+    Call(GotoMap, $mim_07.East)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_mim_12_0 = EVT_EXIT_WALK(60, mim_11_ENTRY_1, "mim_12", mim_12_ENTRY_0);
+EvtScript EVS_ExitWalk_mim_12_0 = EVT_EXIT_WALK(60, $Mim12, $mim_12.Mim11);
 
 EvtScript EVS_ExitWalk_obk_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    mim_11_ENTRY_2, "obk_01", obk_01_ENTRY_0, COLLIDER_ttd, MODEL_doa, MODEL_o166, DOOR_SOUNDS_CREAKY
+    $BoosMansion, $obk_01.ForeverForest, COLLIDER_ttd, MODEL_doa, MODEL_o166, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_BindExitTriggers = {
@@ -172,7 +176,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(mim_11_ENTRY_0)
+        CaseEq($Mim07.index)
             Set(AF_MIM11_MansionGateOpen, false)
             IfLt(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
@@ -188,16 +192,16 @@ EvtScript EVS_EnterMap = {
                 Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
             EndIf
-        CaseEq(mim_11_ENTRY_1)
+        CaseEq($Mim12.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(mim_11_ENTRY_2)
+        CaseEq($BoosMansion.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_doa)
             Set(LVar3, MODEL_o166)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(mim_11_ENTRY_3)
+        CaseEq($Pipe.index)
             IfEq(GF_MIM11_WarpPipe, false)
                 Call(DisablePlayerInput, true)
                 Call(DisablePlayerPhysics, true)
@@ -216,9 +220,9 @@ EvtScript EVS_EnterMap = {
             EndIf
             Set(LVarA, EVS_BindExitTriggers)
             ExecWait(EVS_Pipe_EnterVertical)
-        CaseEq(mim_11_ENTRY_4)
+        CaseEq($Entry4.index)
             Exec(EVS_BindExitTriggers)
-        CaseEq(mim_11_ENTRY_5)
+        CaseEq($Entry5.index)
             Call(InterpPlayerYaw, 227, 0)
             Exec(EVS_BindExitTriggers)
     EndSwitch

@@ -2,18 +2,10 @@
 
 extern EvtScript EVS_Main;
 
-EntryList Entrances = {
-    [trd_02_ENTRY_0]    { -257.0,    0.0,   80.0,   90.0 },
-    [trd_02_ENTRY_1]    {  257.0,    0.0,   80.0,  270.0 },
-    [trd_02_ENTRY_2]    { -257.0,  187.0,  -55.0,   90.0 },
-    [trd_02_ENTRY_3]    {  257.0,  187.0,  -55.0,  270.0 },
-    [trd_02_ENTRY_4]    {  235.0,   50.0,  -70.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { MSG_MapTattle_trd_02 },
     .songVariation = 1,
     .sfxReverb = 3,

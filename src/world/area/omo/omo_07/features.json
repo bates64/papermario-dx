@@ -1,0 +1,1164 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 1,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 11,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 20,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 1,
+      "name": "Omo06",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -960,
+        0,
+        73
+      ],
+      "yaw": 90.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 11,
+      "name": "ShyGuy_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 168,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_ShyGuy_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            75,
+            0,
+            50
+          ],
+          "useCircle": true,
+          "radius": 100,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              30,
+              0,
+              50
+            ],
+            [
+              50,
+              0,
+              100
+            ],
+            [
+              100,
+              0,
+              100
+            ],
+            [
+              120,
+              0,
+              50
+            ],
+            [
+              100,
+              0,
+              0
+            ],
+            [
+              50,
+              0,
+              0
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "parent": 11,
+      "name": "ShyGuy_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 168,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_ShyGuy_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            75,
+            0,
+            50
+          ],
+          "useCircle": true,
+          "radius": 100,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              30,
+              0,
+              50
+            ],
+            [
+              50,
+              0,
+              100
+            ],
+            [
+              100,
+              0,
+              100
+            ],
+            [
+              120,
+              0,
+              50
+            ],
+            [
+              100,
+              0,
+              0
+            ],
+            [
+              50,
+              0,
+              0
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "parent": 11,
+      "name": "ShyGuy_03",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 168,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_ShyGuy_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            75,
+            0,
+            50
+          ],
+          "useCircle": true,
+          "radius": 100,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              30,
+              0,
+              50
+            ],
+            [
+              50,
+              0,
+              100
+            ],
+            [
+              100,
+              0,
+              100
+            ],
+            [
+              120,
+              0,
+              50
+            ],
+            [
+              100,
+              0,
+              0
+            ],
+            [
+              50,
+              0,
+              0
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parent": 11,
+      "name": "ShyGuy_04",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Patrol",
+        "flying": true,
+        "sprite": {
+          "id": 168,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_ShyGuy_Red_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            75,
+            0,
+            50
+          ],
+          "useCircle": true,
+          "radius": 100,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "patrol": {
+          "points": [
+            [
+              30,
+              0,
+              50
+            ],
+            [
+              50,
+              0,
+              100
+            ],
+            [
+              100,
+              0,
+              100
+            ],
+            [
+              120,
+              0,
+              50
+            ],
+            [
+              100,
+              0,
+              0
+            ],
+            [
+              50,
+              0,
+              0
+            ]
+          ],
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parent": 11,
+      "name": "Fuzzy",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        1050,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 65,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Fuzzy_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parent": 11,
+      "name": "HammerBros",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        1050,
+        0,
+        0
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 80,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_HammerBros_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "parent": 11,
+      "name": "SkyGuy_01",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -650,
+        140,
+        -105
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 174,
+          "palette": 0,
+          "anim": 52,
+          "animName": "ANIM_SkyGuy_WorldIdle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            -650,
+            140,
+            -105
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            -650,
+            140,
+            -105
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 9,
+      "parent": 11,
+      "name": "SkyGuy_02",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        -550,
+        60,
+        70
+      ],
+      "yaw": 270.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Wander",
+        "flying": true,
+        "sprite": {
+          "id": 174,
+          "palette": 0,
+          "anim": 52,
+          "animName": "ANIM_SkyGuy_WorldIdle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            -550,
+            60,
+            70
+          ],
+          "useCircle": true,
+          "radius": 200,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        },
+        "wander": {
+          "center": [
+            -550,
+            60,
+            70
+          ],
+          "useCircle": true,
+          "radius": 30,
+          "sizeX": 0,
+          "sizeZ": 0,
+          "overrideSpeed": false,
+          "speed": 1.0
+        }
+      }
+    },
+    {
+      "id": 10,
+      "parent": 11,
+      "name": "Kammy",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        -1000,
+        0
+      ],
+      "yaw": 90.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 217,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldKammy_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "parent": 20,
+      "name": "StarBoxLauncher_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -330,
+        0,
+        127
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "StarBoxLauncher",
+        "scriptName": "EVS_StarBoxLaunch1"
+      }
+    },
+    {
+      "id": 13,
+      "parent": 20,
+      "name": "StarBoxLauncher_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -260,
+        0,
+        127
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "StarBoxLauncher",
+        "scriptName": "EVS_StarBoxLaunch2"
+      }
+    },
+    {
+      "id": 14,
+      "parent": 20,
+      "name": "StarBoxLauncher_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -192,
+        80,
+        -132
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "StarBoxLauncher",
+        "scriptName": "EVS_StarBoxLaunch3"
+      }
+    },
+    {
+      "id": 15,
+      "parent": 20,
+      "name": "YellowBlock_Coin_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        650,
+        60,
+        -30
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "YellowBlock",
+        "itemName": "ITEM_COIN",
+        "gameFlagName": "GF_OMO07_ItemBlock_Coin"
+      }
+    },
+    {
+      "id": 16,
+      "parent": 20,
+      "name": "Chest_FryingPan",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        1130,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Chest",
+        "itemName": "0",
+        "gameFlagName": "GF_OMO07_Chest_FryingPan",
+        "scriptName": "EVS_OpenChest_FryingPan"
+      }
+    },
+    {
+      "id": 17,
+      "parent": 20,
+      "name": "Chest_DefendPlusA",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -910,
+        80,
+        -100
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Chest",
+        "itemName": "0",
+        "gameFlagName": "GF_OMO07_Chest_DefendPlusA",
+        "scriptName": "EVS_OpenChest_DefendPlus"
+      }
+    },
+    {
+      "id": 18,
+      "parent": 20,
+      "name": "Chest_IcePower",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        750,
+        0,
+        -100
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Chest",
+        "itemName": "0",
+        "gameFlagName": "GF_OMO07_Chest_IcePower",
+        "scriptName": "EVS_OpenChest_IcePower"
+      }
+    },
+    {
+      "id": 19,
+      "parent": 20,
+      "name": "Item_ThunderRage_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        1080,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_THUNDER_RAGE",
+        "gameFlagName": "GF_OMO07_Item_ThunderRage",
+        "spawnMode": "ITEM_SPAWN_MODE_FIXED_NEVER_VANISH"
+      }
+    }
+  ]
+}

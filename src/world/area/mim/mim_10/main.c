@@ -1,21 +1,24 @@
 #include "mim_10.h"
+#include "world/area/kmr/kmr_22.h"
+#include "world/area/mac/mac_02.h"
+#include "world/area/mim/mim_01.h"
 
-EvtScript EVS_ExitWalk_mac_02_1 = EVT_EXIT_WALK(60, mim_10_ENTRY_0, "mac_02", mac_02_ENTRY_1);
+EvtScript EVS_ExitWalk_mac_02_1 = EVT_EXIT_WALK(60, $ToadTown, $mac_02.ForeverForest);
 
 EvtScript EVS_ExitWalk_mim_01_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, mim_10_ENTRY_1)
+    Call(UseExitHeading, 60, $ForeverForest.index)
     Exec(ExitWalk)
     IfEq(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)
         IfEq(GF_StartedChapter3, false)
             Set(GF_StartedChapter3, true)
             Call(FadeOutMusic, 0, 1500)
-            Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_3, TRANSITION_BEGIN_OR_END_CHAPTER)
+            Call(GotoMapSpecial, $kmr_22.Chapter3, TRANSITION_BEGIN_OR_END_CHAPTER)
             Wait(100)
             Return
         EndIf
     EndIf
-    Call(GotoMap, "mim_01", mim_01_ENTRY_1)
+    Call(GotoMap, $mim_01.West)
     Wait(100)
     Return
     End

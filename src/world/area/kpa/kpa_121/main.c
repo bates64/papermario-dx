@@ -1,7 +1,9 @@
 #include "kpa_121.h"
+#include "world/area/kpa/kpa_83.h"
+#include "world/area/osr/osr_02.h"
 
 EvtScript EVS_ExitDoors_kpa_83_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_121_ENTRY_0, "kpa_83", kpa_83_ENTRY_1, COLLIDER_deilitw, MODEL_o348, MODEL_o356);
+    EVT_EXIT_DOUBLE_DOOR($GuardDoor3, $kpa_83.CastleExit, COLLIDER_deilitw, MODEL_o348, MODEL_o356);
 
 EvtScript EVS_ExitDoor_osr_02_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
@@ -9,13 +11,13 @@ EvtScript EVS_ExitDoor_osr_02_0 = {
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
         Set(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
     EndIf
-    Set(LVar0, kpa_121_ENTRY_1)
+    Set(LVar0, $PeachsCastle.index)
     Set(LVar1, COLLIDER_deilitte)
     Set(LVar2, MODEL_o340)
     Set(LVar3, DOOR_SWING_OUT)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, "osr_02", osr_02_ENTRY_0)
+    Call(GotoMap, $osr_02.BowsersCastle)
     Wait(100)
     Return
     End
@@ -31,13 +33,13 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_121_ENTRY_0)
+        CaseEq($GuardDoor3.index)
             Set(LVar0, 0)
             Set(LVar2, MODEL_o356)
             Set(LVar3, MODEL_o348)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_121_ENTRY_1)
+        CaseEq($PeachsCastle.index)
             Set(LVar0, 1)
             Set(LVar2, MODEL_o340)
             Set(LVar3, DOOR_SWING_OUT)

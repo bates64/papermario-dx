@@ -6,20 +6,9 @@
 
 NpcData NpcData_Bobomb_01 = {
     .id = NPC_Bobomb_01,
-    .pos = { -70.0f, 0.0f, 80.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -70, 0, 80 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 0, 0, 35 },
-            .detectSize = { 250, 175 },
-        }
-    },
+    .pos = $Bobomb_01.pos,
+    .yaw = $Bobomb_01.yaw,
+    .territory = $Bobomb_01.territory,
     .settings = &NpcSettings_Bobomb_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BOBOMB_DROPS,
@@ -29,20 +18,9 @@ NpcData NpcData_Bobomb_01 = {
 
 NpcData NpcData_Bobomb_02 = {
     .id = NPC_Bobomb_02,
-    .pos = { 140.0f, 0.0f, 80.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 140, 0, 80 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 0, 0, 35 },
-            .detectSize = { 250, 175 },
-        }
-    },
+    .pos = $Bobomb_02.pos,
+    .yaw = $Bobomb_02.yaw,
+    .territory = $Bobomb_02.territory,
     .settings = &NpcSettings_Bobomb_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BOBOMB_DROPS,
@@ -52,22 +30,9 @@ NpcData NpcData_Bobomb_02 = {
 
 NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
-    .pos = { 50.0f, 187.0f, 183.0f },
-    .yaw = 0,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points  = {
-                { 70, 187, 183 },
-                { -20, 187, 183 },
-            },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 20, 187, 207 },
-            .detectSize = { 150, 80 },
-        }
-    },
+    .pos = $KoopaTroopa.pos,
+    .yaw = $KoopaTroopa.yaw,
+    .territory = $KoopaTroopa.territory,
     .settings = &NpcSettings_KoopaTroopa_Patrol,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_TRD_DROPS,

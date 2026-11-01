@@ -495,7 +495,7 @@ EvtScript EVS_NpcInit_Toad_04 = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, mac_00_ENTRY_7)
+    IfNe(LVar0, $Epilogue.index)
         Exec(EVS_BlockExitToGoomaRoad)
     EndIf
     Return
@@ -566,8 +566,8 @@ EvtScript EVS_NpcInit_DojoFan = {
 NpcData NpcData_SharedTownsfolk[] = {
     {
         .id = NPC_Toad_04,
-        .pos = { -150.0f, 0.0f, -275.0f },
-        .yaw = 90,
+        .pos = $Toad_04.pos,
+        .yaw = $Toad_04.yaw,
         .init = &EVS_NpcInit_Toad_04,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -577,25 +577,9 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_Toad_05,
-        .pos = { 219.0f, 0.0f, -45.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 5,
-                .points  = {
-                    { 219, 0, -45 },
-                    { 144, 0, -10 },
-                    { 163, 0, -50 },
-                    { 240, 0, 50 },
-                    { 275, 0, 10 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Toad_05.pos,
+        .yaw = $Toad_05.yaw,
+        .territory = $Toad_05.territory,
         .init = &EVS_NpcInit_Toad_05,
         .settings = &NpcSettings_Toad_Wander,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -605,22 +589,9 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_Toad_06,
-        .pos = { -290.0f, 0.0f, -120.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -290, 0, -120 },
-                    { 37, 0, -150 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Toad_06.pos,
+        .yaw = $Toad_06.yaw,
+        .territory = $Toad_06.territory,
         .init = &EVS_NpcInit_Toad_06,
         .settings = &NpcSettings_Toad_Patrol,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -630,8 +601,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_FickleLover,
-        .pos = { -40.0f, 0.0f, 61.0f },
-        .yaw = 90,
+        .pos = $FickleLover.pos,
+        .yaw = $FickleLover.yaw,
         .init = &EVS_NpcInit_FickleLover,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -641,8 +612,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_ShamelessLover,
-        .pos = { -15.0f, 0.0f, 60.0f },
-        .yaw = 270,
+        .pos = $ShamelessLover.pos,
+        .yaw = $ShamelessLover.yaw,
         .init = &EVS_NpcInit_ShamelessLover,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -652,8 +623,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_KrisT,
-        .pos = { 426.0f, 20.0f, 268.0f },
-        .yaw = 90,
+        .pos = $KrisT.pos,
+        .yaw = $KrisT.yaw,
         .init = &EVS_NpcInit_KrisT,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -663,8 +634,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_MissT,
-        .pos = { 381.0f, 20.0f, 326.0f },
-        .yaw = 180,
+        .pos = $MissT.pos,
+        .yaw = $MissT.yaw,
         .init = &EVS_NpcInit_MissT,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -674,8 +645,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_FelissaT,
-        .pos = { 476.0f, 20.0f, 326.0f },
-        .yaw = 270,
+        .pos = $FelissaT.pos,
+        .yaw = $FelissaT.yaw,
         .init = &EVS_NpcInit_FelissaT,
         .settings = &NpcSettings_Toadette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -685,8 +656,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_DojoSpectator,
-        .pos = { 424.0f, 20.0f, -85.0f },
-        .yaw = 270,
+        .pos = $DojoSpectator.pos,
+        .yaw = $DojoSpectator.yaw,
         .init = &EVS_NpcInit_DojoSpectator,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -696,8 +667,8 @@ NpcData NpcData_SharedTownsfolk[] = {
     },
     {
         .id = NPC_DojoFan,
-        .pos = { 373.0f, 0.0f, 22.0f },
-        .yaw = 270,
+        .pos = $DojoFan.pos,
+        .yaw = $DojoFan.yaw,
         .init = &EVS_NpcInit_DojoFan,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,

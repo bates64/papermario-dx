@@ -16,8 +16,8 @@ EvtScript EVS_AutoRemovePowerRush = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_LIFE_SHROOM, -840, 110, 10, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KKJ16_Item_LifeShroom)
-    Call(MakeItemEntity, ITEM_POWER_RUSH, -550, 0, -120, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KKJ16_Item_PowerRush)
+    Call(MakeMarkerEntity, $Item_LifeShroom_1)
+    Call(MakeMarkerEntity, $Item_PowerRush_1)
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
         IfEq(GF_KKJ16_Item_PowerRush, false)
             Exec(EVS_AutoRemovePowerRush)

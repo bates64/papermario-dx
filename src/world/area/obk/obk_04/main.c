@@ -4,7 +4,7 @@
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(obk_04_ENTRY_0)
+        CaseEq($Basement.index)
             Thread
                 Wait(10)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -28,12 +28,12 @@ EvtScript EVS_EnterMap = {
                     BreakLoop
                 EndIf
             EndLoop
-            PlayEffect(EFFECT_LANDING_DUST, 1, -215, 0, 25, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, -215, 0, -25, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, -200, 0, 25, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, -200, 0, -25, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, -185, 0, 25, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 1, -185, 0, -25, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_5.pos.x, $LandingDustPos_5.pos.y, $LandingDustPos_5.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_6.pos.x, $LandingDustPos_6.pos.y, $LandingDustPos_6.pos.z, 0)
             Wait(20)
             Call(EnableModel, MODEL_door1, false)
             Call(MakeLerp, 0, 10, 15, EASING_LINEAR)

@@ -1,4 +1,5 @@
 #include "mac_03.h"
+#include "world/area/iwa/iwa_11.h"
 
 EvtScript EVS_OpenCrossingGates = {
     Set(LVarF, 0)
@@ -464,7 +465,7 @@ EvtScript EVS_DepartForMtRugged = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_03_ENTRY_1)
+    IfEq(LVar0, $MtRugged.index)
         Return
     EndIf
     Call(DisablePlayerInput, true)
@@ -556,7 +557,7 @@ EvtScript EVS_DepartForMtRugged = {
     ExecGetTID(EVS_FollowTrainCamera, LVar9)
     Wait(170)
     Wait(100)
-    Call(GotoMap, "iwa_11", iwa_11_ENTRY_0)
+    Call(GotoMap, $iwa_11.ToadTownStation)
     Return
     End
 };

@@ -1,11 +1,12 @@
 #include "pra_15.h"
+#include "world/area/pra/pra_01.h"
 
 API_CALLABLE(DisableTotalFloorReflections) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_pra_01_3 = EVT_EXIT_WALK(60, pra_15_ENTRY_0, "pra_01", pra_01_ENTRY_3);
+EvtScript EVS_ExitWalk_pra_01_3 = EVT_EXIT_WALK(60, $Entrance, $pra_01.StarPieceCave);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_pra_01_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -16,7 +17,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_15_ENTRY_0)
+        CaseEq($Entrance.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

@@ -21,20 +21,20 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_03_ENTRY_1)
+        CaseEq($CastleAscending.index)
             Exec(MV_Scene_CastleAscending)
-        CaseEq(osr_03_ENTRY_2)
+        CaseEq($TossedOut.index)
             Exec(MV_Scene_PlayerTossedOut)
-        CaseEq(osr_03_ENTRY_3)
+        CaseEq($Starship.index)
             Exec(EVS_HideGroundModels)
             Exec(EVS_Scene_Starship)
-        CaseEq(osr_03_ENTRY_4)
+        CaseEq($Interlude.index)
             Wait(15)
             Exec(EVS_Scene_BeginInterlude)
-        CaseEq(osr_03_ENTRY_5)
+        CaseEq($CastleDestruction.index)
             Exec(EVS_HideGroundModels)
             Exec(EVS_Scene_CastleDestruction)
-        CaseEq(osr_03_ENTRY_6)
+        CaseEq($Entry6.index)
             Exec(EVS_Scene_UnusedTossOut)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)
@@ -50,7 +50,7 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_03_ENTRY_4)
+        CaseEq($Interlude.index)
             Call(MakeNpcs, false, DefaultNPCs)
         CaseDefault
     EndSwitch
@@ -81,7 +81,7 @@ EvtScript EVS_Main = {
     EndSwitch
     Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, osr_03_ENTRY_4)
+    IfEq(LVar0, $Interlude.index)
         Wait(15)
     Else
         Wait(1)

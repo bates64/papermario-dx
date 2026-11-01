@@ -1,0 +1,1651 @@
+{
+  "overrideShape": false,
+  "overrideHit": false,
+  "shapeOverrideName": "",
+  "hitOverrideName": "",
+  "locationName": "LOCATION_TOAD_TOWN",
+  "camVfov": 25,
+  "camNearClip": 16,
+  "camFarClip": 4096,
+  "camBackgroundColor": [
+    0,
+    0,
+    0
+  ],
+  "camLeadsPlayer": true,
+  "camEnabledLast": false,
+  "fogWorld": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "fogEntity": [
+    0,
+    10,
+    10,
+    10,
+    255,
+    950,
+    1000
+  ],
+  "hasSpriteShading": false,
+  "shadingOffset": 0,
+  "texPanners": [
+    {
+      "id": 0,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "generate": false,
+      "useTexels": false,
+      "max": 131072,
+      "init": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "step": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "freq": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "id": 17,
+      "name": "Entrances",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 33,
+      "name": "NPCs",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 52,
+      "name": "Entities",
+      "desc": "",
+      "hidden": false,
+      "type": "Group",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 0,
+      "parent": 17,
+      "name": "Entry0",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        -485
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 1,
+      "parent": 17,
+      "name": "Entry1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        345,
+        0,
+        -345
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 2,
+      "parent": 17,
+      "name": "Entry2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        485,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 3,
+      "parent": 17,
+      "name": "Entry3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 4,
+      "parent": 17,
+      "name": "Entry4",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 5,
+      "parent": 17,
+      "name": "Entry5",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -345,
+        0,
+        345
+      ],
+      "yaw": 45.0,
+      "extracted": false
+    },
+    {
+      "id": 6,
+      "parent": 17,
+      "name": "Entry6",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -485,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 7,
+      "parent": 17,
+      "name": "Entry7",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -345,
+        0,
+        -345
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 8,
+      "parent": 17,
+      "name": "Entry8",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 9,
+      "parent": 17,
+      "name": "Entry9",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false
+    },
+    {
+      "id": 10,
+      "parent": 17,
+      "name": "Entry10",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        354,
+        0,
+        294
+      ],
+      "yaw": 117.0,
+      "extracted": false
+    },
+    {
+      "id": 11,
+      "parent": 17,
+      "name": "Entry11",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -210,
+        35,
+        -100
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 12,
+      "parent": 17,
+      "name": "Entry12",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -150,
+        35,
+        -100
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 13,
+      "parent": 17,
+      "name": "Entry13",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -90,
+        35,
+        -100
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 14,
+      "parent": 17,
+      "name": "Entry14",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -90,
+        35,
+        -200
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 15,
+      "parent": 17,
+      "name": "Entry15",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        -30,
+        35,
+        -200
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 16,
+      "parent": 17,
+      "name": "Entry16",
+      "desc": "",
+      "hidden": false,
+      "type": "Entry",
+      "pos": [
+        30,
+        35,
+        -200
+      ],
+      "yaw": 180.0,
+      "extracted": false
+    },
+    {
+      "id": 18,
+      "parent": 33,
+      "name": "Misstar",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        320,
+        30,
+        -290
+      ],
+      "yaw": 100.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 224,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_WorldMisstar_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 19,
+      "parent": 33,
+      "name": "Npc_05",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        16,
+        0,
+        -411
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 185,
+          "palette": 0,
+          "anim": 0,
+          "animName": "ANIM_StarRod_Still",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 20,
+      "parent": 33,
+      "name": "Npc_06",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        389,
+        0,
+        -278
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 90,
+          "palette": 0,
+          "anim": 5,
+          "animName": "ANIM_Koopa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 21,
+      "parent": 33,
+      "name": "Npc_07",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        481,
+        0,
+        -44
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 88,
+          "palette": 0,
+          "anim": 4,
+          "animName": "ANIM_Kolorado_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 22,
+      "parent": 33,
+      "name": "Goompa",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 23,
+      "parent": 33,
+      "name": "Npc_0B",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 24,
+      "parent": 33,
+      "name": "Npc_0C",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 25,
+      "parent": 33,
+      "name": "Npc_0D",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 26,
+      "parent": 33,
+      "name": "Npc_0E",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 27,
+      "parent": 33,
+      "name": "Npc_0F",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 28,
+      "parent": 33,
+      "name": "Npc_10",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 29,
+      "parent": 33,
+      "name": "Npc_11",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 30,
+      "parent": 33,
+      "name": "Npc_12",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 31,
+      "parent": 33,
+      "name": "Npc_13",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 75,
+          "palette": 0,
+          "anim": 2,
+          "animName": "ANIM_Goompa_Walk",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 32,
+      "parent": 33,
+      "name": "GoombaKing",
+      "desc": "",
+      "hidden": false,
+      "type": "NPC",
+      "pos": [
+        12,
+        0,
+        -13
+      ],
+      "yaw": 0.0,
+      "extracted": false,
+      "npcComp": {
+        "moveType": "Stationary",
+        "flying": false,
+        "sprite": {
+          "id": 73,
+          "palette": 0,
+          "anim": 1,
+          "animName": "ANIM_GoombaKing_Idle",
+          "flipX": false,
+          "flipY": false
+        },
+        "detect": {
+          "center": [
+            0,
+            0,
+            0
+          ],
+          "useCircle": false,
+          "radius": 0,
+          "height": 0,
+          "sizeX": 0,
+          "sizeZ": 0
+        }
+      }
+    },
+    {
+      "id": 34,
+      "parent": 52,
+      "name": "Item_Mushroom_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        70,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "1",
+        "spawnMode": "ITEM_SPAWN_MODE_KEY"
+      }
+    },
+    {
+      "id": 35,
+      "parent": 52,
+      "name": "Item_Mushroom_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        94,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "1",
+        "spawnMode": "ITEM_SPAWN_MODE_KEY"
+      }
+    },
+    {
+      "id": 36,
+      "parent": 52,
+      "name": "Item_Mushroom_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        118,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "1",
+        "spawnMode": "ITEM_SPAWN_MODE_KEY"
+      }
+    },
+    {
+      "id": 37,
+      "parent": 52,
+      "name": "Item_Mushroom_4",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        142,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "1",
+        "spawnMode": "ITEM_SPAWN_MODE_KEY"
+      }
+    },
+    {
+      "id": 38,
+      "parent": 52,
+      "name": "Item_Mushroom_5",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        166,
+        0,
+        0
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Item",
+        "itemName": "ITEM_MUSHROOM",
+        "gameFlagName": "1",
+        "spawnMode": "ITEM_SPAWN_MODE_KEY"
+      }
+    },
+    {
+      "id": 39,
+      "parent": 52,
+      "name": "GreenStompSwitch_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        68,
+        0,
+        -92
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "GreenStompSwitch"
+      }
+    },
+    {
+      "id": 40,
+      "parent": 52,
+      "name": "RedSwitch_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        169,
+        0,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "RedSwitch"
+      }
+    },
+    {
+      "id": 41,
+      "parent": 52,
+      "name": "BrickBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        80,
+        100,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 42,
+      "parent": 52,
+      "name": "BrickBlock_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        120,
+        104,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 43,
+      "parent": 52,
+      "name": "BrickBlock_3",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        160,
+        108,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BrickBlock"
+      }
+    },
+    {
+      "id": 44,
+      "parent": 52,
+      "name": "HugeBlueSwitch_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        278,
+        0,
+        -318
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HugeBlueSwitch"
+      }
+    },
+    {
+      "id": 45,
+      "parent": 52,
+      "name": "BlueSwitch_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        119,
+        0,
+        -166
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "BlueSwitch"
+      }
+    },
+    {
+      "id": 46,
+      "parent": 52,
+      "name": "HiddenYellowBlock_Coin_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        0,
+        60,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "HiddenYellowBlock",
+        "itemName": "ITEM_COIN"
+      }
+    },
+    {
+      "id": 47,
+      "parent": 52,
+      "name": "YellowBlock_Mushroom_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        200,
+        110,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "YellowBlock",
+        "itemName": "ITEM_MUSHROOM"
+      }
+    },
+    {
+      "id": 48,
+      "parent": 52,
+      "name": "YellowBlock_Mushroom_2",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        240,
+        100,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "YellowBlock",
+        "itemName": "ITEM_MUSHROOM"
+      }
+    },
+    {
+      "id": 49,
+      "parent": 52,
+      "name": "MulticoinBlock_1",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        40,
+        60,
+        -326
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "MulticoinBlock"
+      }
+    },
+    {
+      "id": 50,
+      "parent": 52,
+      "name": "GiantChest",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -206,
+        0,
+        -373
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "GiantChest",
+        "itemName": "ITEM_SUPER_HAMMER"
+      }
+    },
+    {
+      "id": 51,
+      "parent": 52,
+      "name": "Chest",
+      "desc": "",
+      "hidden": false,
+      "type": "Entity",
+      "pos": [
+        -131,
+        0,
+        -359
+      ],
+      "yaw": 0.0,
+      "extracted": true,
+      "entityComp": {
+        "type": "Chest",
+        "itemName": "ITEM_ULTRA_HAMMER"
+      }
+    }
+  ]
+}

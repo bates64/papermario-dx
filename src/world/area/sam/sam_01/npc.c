@@ -605,8 +605,8 @@ EvtScript EVS_NpcInit_Penguin_09 = {
 NpcData NpcData_MayorPenguin[] = {
     {
         .id = NPC_MayorPenguin,
-        .pos = { -272.0f, 0.0f, -180.0f },
-        .yaw = 270,
+        .pos = $MayorPenguin.pos,
+        .yaw = $MayorPenguin.yaw,
         .init = &EVS_NpcInit_MayorPenguin,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -616,8 +616,8 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_MayorDummy,
-        .pos = { -272.0f, 0.0f, -180.0f },
-        .yaw = 270,
+        .pos = $MayorDummy.pos,
+        .yaw = $MayorDummy.yaw,
         .init = &EVS_NpcInit_MayorDummy,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -627,8 +627,8 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_MayorPenguinWife,
-        .pos = { -316.0f, 0.0f, 113.0f },
-        .yaw = 270,
+        .pos = $MayorPenguinWife.pos,
+        .yaw = $MayorPenguinWife.yaw,
         .init = &EVS_NpcInit_MayorPenguinWife,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -638,8 +638,8 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_PenguinPatrol,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $PenguinPatrol.pos,
+        .yaw = $PenguinPatrol.yaw,
         .init = &EVS_NpcInit_PenguinPatrol,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -649,8 +649,8 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_Herringway,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Herringway.pos,
+        .yaw = $Herringway.yaw,
         .init = &EVS_NpcInit_Herringway,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -660,20 +660,9 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_Penguin_01,
-        .pos = { -150.0f, 0.0f, 400.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -150, 0, 400 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_01.pos,
+        .yaw = $Penguin_01.yaw,
+        .territory = $Penguin_01.territory,
         .init = &EVS_NpcInit_Penguin_01,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -683,20 +672,9 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_Penguin_02,
-        .pos = { 100.0f, 0.0f, 250.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 100, 0, 250 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_02.pos,
+        .yaw = $Penguin_02.yaw,
+        .territory = $Penguin_02.territory,
         .init = &EVS_NpcInit_Penguin_02,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -706,20 +684,9 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_Penguin_03,
-        .pos = { 400.0f, 0.0f, 50.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 400, 0, 50 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_03.pos,
+        .yaw = $Penguin_03.yaw,
+        .territory = $Penguin_03.territory,
         .init = &EVS_NpcInit_Penguin_03,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -729,8 +696,8 @@ NpcData NpcData_MayorPenguin[] = {
     },
     {
         .id = NPC_Penguin_04,
-        .pos = { 350.0f, 0.0f, -190.0f },
-        .yaw = 0,
+        .pos = $Penguin_04.pos,
+        .yaw = $Penguin_04.yaw,
         .init = &EVS_NpcInit_Penguin_04,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -743,8 +710,8 @@ NpcData NpcData_MayorPenguin[] = {
 NpcData NpcData_Penguin_05[] = {
     {
         .id = NPC_Penguin_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Penguin_05.pos,
+        .yaw = $Penguin_05.yaw,
         .init = &EVS_NpcInit_Penguin_05,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -754,8 +721,8 @@ NpcData NpcData_Penguin_05[] = {
     },
     {
         .id = NPC_Penguin_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Penguin_06.pos,
+        .yaw = $Penguin_06.yaw,
         .init = &EVS_NpcInit_Penguin_06,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -765,8 +732,8 @@ NpcData NpcData_Penguin_05[] = {
     },
     {
         .id = NPC_Penguin_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 180,
+        .pos = $Penguin_07.pos,
+        .yaw = $Penguin_07.yaw,
         .init = &EVS_NpcInit_Penguin_07,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -776,8 +743,8 @@ NpcData NpcData_Penguin_05[] = {
     },
     {
         .id = NPC_Penguin_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Penguin_08.pos,
+        .yaw = $Penguin_08.yaw,
         .init = &EVS_NpcInit_Penguin_08,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -789,8 +756,8 @@ NpcData NpcData_Penguin_05[] = {
 
 NpcData NpcData_Penguin_09 = {
     .id = NPC_Penguin_09,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 0,
+    .pos = $Penguin_09.pos,
+    .yaw = $Penguin_09.yaw,
     .init = &EVS_NpcInit_Penguin_09,
     .settings = &NpcSettings_Penguin,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -800,8 +767,8 @@ NpcData NpcData_Penguin_09 = {
 
 NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
-    .pos = { 230.0f, 0.0f, 150.0f },
-    .yaw = 90,
+    .pos = $ChuckQuizmo.pos,
+    .yaw = $ChuckQuizmo.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_SAM, QUIZ_COUNT_SAM, QUIZ_MAP_SAM_01 }},
     .settings = &NpcSettings_ChuckQuizmo,

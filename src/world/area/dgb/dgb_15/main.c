@@ -1,17 +1,20 @@
 #include "dgb_15.h"
+#include "world/area/dgb/dgb_14.h"
+#include "world/area/dgb/dgb_16.h"
+#include "world/area/dgb/dgb_17.h"
 
 ITEM_LIST(KeyList, ITEM_TUBBA_CASTLE_KEY);
 
 EvtScript EVS_ExitDoors_dgb_14_1 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_15_ENTRY_0, "dgb_14", dgb_14_ENTRY_1, COLLIDER_deilittw, MODEL_o135, MODEL_o136, DOOR_SOUNDS_CREAKY
+    $Dgb14, $dgb_14.Dgb15, COLLIDER_deilittw, MODEL_o135, MODEL_o136, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_17_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_15_ENTRY_1, "dgb_17", dgb_17_ENTRY_0, COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
+    $Dgb17, $dgb_17.Dgb15, COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_16_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    dgb_15_ENTRY_2, "dgb_16", dgb_16_ENTRY_0, COLLIDER_deilittne, MODEL_o123, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+    $Dgb16, $dgb_16.Dgb15, COLLIDER_deilittne, MODEL_o123, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_BindExitTriggers = {
@@ -29,17 +32,17 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_15_ENTRY_0)
+        CaseEq($Dgb14.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_o135)
             Set(LVar3, MODEL_o136)
             ExecWait(EnterDoubleDoor)
-        CaseEq(dgb_15_ENTRY_1)
+        CaseEq($Dgb17.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             Set(LVar2, MODEL_o102)
             Set(LVar3, MODEL_o101)
             ExecWait(EnterDoubleDoor)
-        CaseEq(dgb_15_ENTRY_2)
+        CaseEq($Dgb16.index)
             Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
             Set(LVar2, MODEL_o123)
             Set(LVar3, DOOR_SWING_OUT)

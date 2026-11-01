@@ -1,16 +1,9 @@
 #include "sam_02.h"
 
-EntryList Entrances = {
-    [sam_02_ENTRY_0]    { -485.0,    0.0,   50.0,   90.0 },
-    [sam_02_ENTRY_1]    {  485.0,    0.0,   50.0,  270.0 },
-    [sam_02_ENTRY_2]    {    0.0,   30.0,  270.0,  180.0 },
-    [sam_02_ENTRY_3]    {  470.0,    0.0,   50.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "yki_bg",
     .tattle = { MSG_MapTattle_sam_02 },
 };

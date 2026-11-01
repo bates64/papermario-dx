@@ -6,9 +6,7 @@
 EvtScript EVS_OpenChest = EVT_OPEN_CHEST(ITEM_SHRINK_STOMP, GF_TIK02_Chest_ShrinkStomp);
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Chest, 280, -10, 0, 0, 0, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_TIK02_Chest_ShrinkStomp)
-    Call(AssignScript, EVS_OpenChest)
+    Call(MakeMarkerEntity, $Chest_ShrinkStomp)
     Return
     End
 };

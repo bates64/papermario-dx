@@ -1,4 +1,6 @@
 #include "jan_02.h"
+#include "world/area/jan/jan_01.h"
+#include "world/area/jan/jan_03.h"
 #include "effects.h"
 
 extern s32 PrevPalmTreeVisibility;
@@ -28,15 +30,15 @@ API_CALLABLE(ManageBigPalmTreeVisibility) {
 EvtScript EVS_ExitWalk_jan_01_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(ClearTrackVols)
-    Call(UseExitHeading, 60, jan_02_ENTRY_0)
+    Call(UseExitHeading, 60, $Jan01.index)
     Exec(ExitWalk)
-    Call(GotoMap, "jan_01", jan_01_ENTRY_1)
+    Call(GotoMap, $jan_01.YoshisVillage)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_jan_03_0 = EVT_EXIT_WALK(60, jan_02_ENTRY_1, "jan_03", jan_03_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_03_0 = EVT_EXIT_WALK(60, $Jan03, $jan_03.Jan02);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)

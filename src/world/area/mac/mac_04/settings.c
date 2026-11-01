@@ -1,24 +1,15 @@
 #include "mac_04.h"
 
-EntryList Entrances = {
-    [mac_04_ENTRY_0]    {  610.0,    0.0,    0.0,  280.0 },
-    [mac_04_ENTRY_1]    { -420.0,    0.0,  430.0,   35.0 },
-    [mac_04_ENTRY_2]    { -490.0,   20.0, -150.0,  180.0 },
-    [mac_04_ENTRY_3]    { -420.0,   20.0,  -95.0,    0.0 },
-    [mac_04_ENTRY_4]    {    0.0, -100.0,    0.0,    0.0 },
-    [mac_04_ENTRY_5]    { -420.0,   20.0,  235.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "nok_bg",
     .tattle = { MSG_MapTattle_mac_04 },
 };
 
 export s32 map_init(void) {
-    if (gGameStatusPtr->entryID == mac_04_ENTRY_4) {
+    if (gGameStatusPtr->entryID == $WishingToad.index) {
         sprintf(wMapBgName, "hos_bg");
     }
     return false;

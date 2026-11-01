@@ -1,4 +1,6 @@
 #include "pra_38.h"
+#include "world/area/pra/pra_03.h"
+#include "world/area/pra/pra_05.h"
 
 export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_REFLECT_FLOOR;
@@ -12,7 +14,7 @@ export s32 map_init(void) {
 EvtScript EVS_ExitDoors_pra_03_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_38_ENTRY_0)
+    Set(LVar0, $SaveRoom.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
@@ -20,7 +22,7 @@ EvtScript EVS_ExitDoors_pra_03_1 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_03", pra_03_ENTRY_1)
+    Call(GotoMap, $pra_03.BlueKeyHall)
     Wait(100)
     Return
     End
@@ -29,7 +31,7 @@ EvtScript EVS_ExitDoors_pra_03_1 = {
 EvtScript EVS_ExitDoors_pra_05_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_38_ENTRY_1)
+    Set(LVar0, $BlueKeyRoom.index)
     Set(LVar1, COLLIDER_deilittse)
     Set(LVar2, MODEL_o1019)
     Set(LVar3, MODEL_o1021)
@@ -37,7 +39,7 @@ EvtScript EVS_ExitDoors_pra_05_0 = {
     Set(LVar5, MODEL_o1022)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_05", pra_05_ENTRY_0)
+    Call(GotoMap, $pra_05.BlueKeyHall)
     Wait(100)
     Return
     End
@@ -53,13 +55,13 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_38_ENTRY_0)
+        CaseEq($SaveRoom.index)
             Set(LVar2, MODEL_o772)
             Set(LVar3, MODEL_o768)
             Set(LVar4, MODEL_o844)
             Set(LVar5, MODEL_o846)
             ExecWait(EnterSplitDoubleDoor)
-        CaseEq(pra_38_ENTRY_1)
+        CaseEq($BlueKeyRoom.index)
             Set(LVar2, MODEL_o1019)
             Set(LVar3, MODEL_o1021)
             Set(LVar4, MODEL_o1020)

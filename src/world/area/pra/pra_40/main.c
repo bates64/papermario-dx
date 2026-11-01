@@ -1,12 +1,14 @@
 #include "pra_40.h"
+#include "world/area/pra/pra_31.h"
+#include "world/area/pra/pra_32.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
 
 EvtScript EVS_ExitDoors_pra_31_1 =
-    EVT_EXIT_DOUBLE_DOOR(pra_40_ENTRY_0, "pra_31", pra_31_ENTRY_1, COLLIDER_deilitt1, MODEL_o1055, MODEL_o1053);
+    EVT_EXIT_DOUBLE_DOOR($DinoPuzzleRoom, $pra_31.BossAntechamber, COLLIDER_deilitt1, MODEL_o1055, MODEL_o1053);
 EvtScript EVS_ExitDoors_pra_32_0 =
-    EVT_EXIT_DOUBLE_DOOR(pra_40_ENTRY_1, "pra_32", pra_32_ENTRY_0, COLLIDER_deilitt2, MODEL_o880, MODEL_o878);
+    EVT_EXIT_DOUBLE_DOOR($CrystalSummit, $pra_32.BossAntechamber, COLLIDER_deilitt2, MODEL_o880, MODEL_o878);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_pra_31_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilitt1, 1, 0)
@@ -24,11 +26,11 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_40_ENTRY_0)
+        CaseEq($DinoPuzzleRoom.index)
             Set(LVar2, MODEL_o1055)
             Set(LVar3, MODEL_o1053)
             ExecWait(EnterDoubleDoor)
-        CaseEq(pra_40_ENTRY_1)
+        CaseEq($CrystalSummit.index)
             Set(LVar2, MODEL_o880)
             Set(LVar3, MODEL_o878)
             ExecWait(EnterDoubleDoor)

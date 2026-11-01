@@ -122,8 +122,8 @@ EvtScript EVS_NpcInit_Duplighost = {
 NpcData NpcData_Ambush[] = {
     {
         .id = NPC_Kooper_01A,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Kooper_01A.pos,
+        .yaw = $Kooper_01A.yaw,
         .init = &EVS_NpcInit_TrueKooperA,
         .settings = &NpcSettings_Kooper,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -132,8 +132,8 @@ NpcData NpcData_Ambush[] = {
     },
     {
         .id = NPC_Kooper_02A,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Kooper_02A.pos,
+        .yaw = $Kooper_02A.yaw,
         .init = &EVS_NpcInit_RealKooperA,
         .settings = &NpcSettings_Kooper,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -142,8 +142,8 @@ NpcData NpcData_Ambush[] = {
     },
     {
         .id = NPC_Duplighost,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Duplighost.pos,
+        .yaw = $Duplighost.yaw,
         .init = &EVS_NpcInit_Duplighost,
         .settings = &NpcSettings_Duplighost,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -199,8 +199,8 @@ EvtScript EVS_NpcInit_FakeKooperB = {
 NpcData NpcData_Hittable[] = {
     {
         .id = NPC_Kooper_01B,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Kooper_01B.pos,
+        .yaw = $Kooper_01B.yaw,
         .init = &EVS_NpcInit_TrueKooperB,
         .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -209,8 +209,8 @@ NpcData NpcData_Hittable[] = {
     },
     {
         .id = NPC_Kooper_02B,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Kooper_02B.pos,
+        .yaw = $Kooper_02B.yaw,
         .init = &EVS_NpcInit_FakeKooperB,
         .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -222,20 +222,9 @@ NpcData NpcData_Hittable[] = {
 NpcData NpcData_FrostClubba[] = {
     {
         .id = NPC_Clubba_01,
-        .pos = { -450.0f, 0.0f, -90.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -450, 0, -90 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -450, 0, -90 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Clubba_01.pos,
+        .yaw = $Clubba_01.yaw,
+        .territory = $Clubba_01.territory,
         .settings = &NpcSettings_FrostClubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = FROST_CLUBBA_DROPS,

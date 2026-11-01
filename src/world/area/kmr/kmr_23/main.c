@@ -1,4 +1,6 @@
 #include "kmr_23.h"
+#include "world/area/kmr/kmr_24.h"
+#include "world/area/kzn/kzn_19.h"
 #include "sprite/player.h"
 
 API_CALLABLE(DrawBackCurtains) {
@@ -16,10 +18,10 @@ EvtScript EVS_GotoNextAfterSceneEnd = {
         Wait(1)
     EndLoop
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kmr_23_ENTRY_4)
-        Call(GotoMapSpecial, "kmr_24", kmr_24_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
+    IfNe(LVar0, $Misstar.index)
+        Call(GotoMapSpecial, $kmr_24.Entry0, TRANSITION_BEGIN_OR_END_CHAPTER)
     Else
-        Call(GotoMapSpecial, "kzn_19", kzn_19_ENTRY_3, TRANSITION_END_CHAPTER_INTERRUPTED)
+        Call(GotoMapSpecial, $kzn_19.Entry3, TRANSITION_END_CHAPTER_INTERRUPTED)
     EndIf
     Call(FadeOutMusic, 0, 2000)
     Call(DrawBackCurtains)
@@ -55,19 +57,19 @@ EvtScript EVS_Main = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kmr_23_ENTRY_0)
+        CaseEq($Eldstar.index)
             Call(MakeNpcs, false, NpcGroup_Eldstar)
-        CaseEq(kmr_23_ENTRY_1)
+        CaseEq($Mamar.index)
             Call(MakeNpcs, false, NpcGroup_Mamar)
-        CaseEq(kmr_23_ENTRY_2)
+        CaseEq($Skolar.index)
             Call(MakeNpcs, false, NpcGroup_Skolar)
-        CaseEq(kmr_23_ENTRY_3)
+        CaseEq($Muskular.index)
             Call(MakeNpcs, false, NpcGroup_Muskular)
-        CaseEq(kmr_23_ENTRY_4)
+        CaseEq($Misstar.index)
             Call(MakeNpcs, false, NpcGroup_Misstar)
-        CaseEq(kmr_23_ENTRY_5)
+        CaseEq($Klevar.index)
             Call(MakeNpcs, false, NpcGroup_Klevar)
-        CaseEq(kmr_23_ENTRY_6)
+        CaseEq($Kalmar.index)
             Call(MakeNpcs, false, NpcGroup_Kalmar)
     EndSwitch
     Call(DisablePlayerInput, true)

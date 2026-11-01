@@ -120,7 +120,7 @@ EvtScript EVS_SetupStarship = {
         Exec(EVS_UpdateStarshipCollision)
         Set(MV_Starship_Yaw, -110)
         Call(GetEntryID, LVar0)
-        IfEq(LVar0, hos_05_ENTRY_3)
+        IfEq(LVar0, $Entry3.index)
             Set(MV_Starship_PosY, 900)
         Else
             Set(MV_Starship_PosY, -85)
@@ -178,7 +178,7 @@ EvtScript EVS_Starship_Summon = {
     EndThread
     Call(SetTexPanner, MODEL_o646, TEX_PANNER_9)
     Call(PlaySoundAt, SOUND_STARSHIP_APPEARS, SOUND_SPACE_DEFAULT, 0, 250, 0)
-    PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 250, 0, 10, LVar9)
+    PlayEffect(EFFECT_LIGHT_RAYS, 2, $LightRaysPos_3.pos.x, $LightRaysPos_3.pos.y, $LightRaysPos_3.pos.z, 10, LVar9)
     Wait(20)
     Call(SetModelCustomGfx, MODEL_o646, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetCustomGfxBuilders, CUSTOM_GFX_1, setup_gfx_starship_shimmer, nullptr)

@@ -1,7 +1,9 @@
 #include "isk_18.h"
+#include "world/area/isk/isk_10.h"
+#include "world/area/isk/isk_12.h"
 
-EvtScript EVS_ExitWalk_isk_10_2 = EVT_EXIT_WALK(40, isk_18_ENTRY_0, "isk_10", isk_10_ENTRY_2);
-EvtScript EVS_ExitWalk_isk_12_2 = EVT_EXIT_WALK(40, isk_18_ENTRY_1, "isk_12", isk_12_ENTRY_2);
+EvtScript EVS_ExitWalk_isk_10_2 = EVT_EXIT_WALK(40, $VerticalShaft, $isk_10.DeepTunnel);
+EvtScript EVS_ExitWalk_isk_12_2 = EVT_EXIT_WALK(40, $SandDrainage3, $isk_12.DeepTunnel);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_10_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

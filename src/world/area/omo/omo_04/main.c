@@ -1,6 +1,7 @@
 #include "omo_04.h"
+#include "world/area/omo/omo_03.h"
 
-EvtScript EVS_ExitWalk_omo_03_1 = EVT_EXIT_WALK(60, omo_04_ENTRY_0, "omo_03", omo_03_ENTRY_1);
+EvtScript EVS_ExitWalk_omo_03_1 = EVT_EXIT_WALK(60, $Omo03, $omo_03.Omo04);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_03_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -25,7 +26,7 @@ EvtScript EVS_Main = {
                     Call(MakeNpcs, true, ClubbaAmbushNPCs)
                 CaseEq(2)
                     Call(MakeNpcs, true, DefaultNPCs)
-                    Call(MakeItemEntity, ITEM_MUSHROOM, 1100, 0, 0, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO04_Item_Mushroom)
+                    Call(MakeMarkerEntity, $Item_Mushroom_1)
             EndSwitch
         Else
             Call(MakeNpcs, true, DefaultNPCs)

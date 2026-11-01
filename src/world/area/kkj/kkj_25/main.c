@@ -1,7 +1,8 @@
 #include "kkj_25.h"
+#include "world/area/kkj/kkj_24.h"
 
 EvtScript EVS_ExitDoors_kkj_24_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_25_ENTRY_0, "kkj_24", kkj_24_ENTRY_1, COLLIDER_ttw, MODEL_o84, MODEL_o85);
+    EVT_EXIT_DOUBLE_DOOR($TowerStaircase, $kkj_24.BossArena, COLLIDER_ttw, MODEL_o84, MODEL_o85);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kkj_24_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -12,7 +13,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_25_ENTRY_0)
+        CaseEq($TowerStaircase.index)
             IfEq(GF_KKJ25_Visited, false)
                 Call(DisablePlayerInput, true)
                 Call(SetPlayerPos, -645, 0, 0)
@@ -50,9 +51,9 @@ EvtScript EVS_EnterMap = {
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
             Exec(EVS_Scene_BowserTrapsMario)
-        CaseEq(kkj_25_ENTRY_1)
+        CaseEq(1)
             Exec(EVS_Scene_KammyDefeated)
-        CaseEq(kkj_25_ENTRY_2)
+        CaseEq(2)
             Exec(EVS_Scene_BowserDefeated)
     EndSwitch
     Return
@@ -117,7 +118,7 @@ EvtScript EVS_Main = {
     Call(GetEntryID, LVar0)
     Thread
         Set(MV_ArenaState, ARENA_STATE_IDLE)
-        IfEq(LVar0, kkj_25_ENTRY_0)
+        IfEq(LVar0, $TowerStaircase.index)
             Call(EnableModel, MODEL_o122, false)
             Loop(0)
                 Wait(1)

@@ -2,16 +2,13 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_BrickBlock, 30, 60, -85, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_YellowBlock, 110, 60, -85, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_NOK11_ItemBlock_Coin)
-    Call(MakeEntity, Entity_BrickBlock, 330, 60, -85, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_RedBlock, 380, 60, -85, 0, ITEM_DIZZY_ATTACK, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_NOK11_BadgeBlock_DizzyAttack)
-    Call(MakeEntity, Entity_BrickBlock, 650, 60, -85, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 700, 60, -85, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_YellowBlock, 750, 60, -85, 0, ITEM_FRIGHT_JAR, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_NOK11_ItemBlock_FrightJar)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $RedBlock_DizzyAttack_1)
+    Call(MakeMarkerEntity, $BrickBlock_3)
+    Call(MakeMarkerEntity, $BrickBlock_4)
+    Call(MakeMarkerEntity, $YellowBlock_FrightJar_1)
     Return
     End
 };

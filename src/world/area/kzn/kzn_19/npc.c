@@ -105,10 +105,10 @@ EvtScript EVS_NpcInit_Kolorado = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_LAVA_PIRANHA)
         Call(GetEntryID, LVar0)
         Switch(LVar0)
-            CaseEq(kzn_19_ENTRY_0)
+            CaseEq($Kzn18Upper.index)
                 Call(BindNpcIdle, NPC_SELF, EVS_NpcIdle_Kolorado)
                 Call(BindNpcInteract, NPC_SELF, EVS_NpcInteract_Kolorado)
-            CaseEq(kzn_19_ENTRY_1)
+            CaseEq($Kzn18Lower.index)
                 Call(BindNpcIdle, NPC_SELF, EVS_Kolorado_Escape)
         EndSwitch
     Else
@@ -575,7 +575,7 @@ EvtScript EVS_NpcDefeat_LavaPiranha = {
 
 EvtScript EVS_NpcInit_LavaPiranha = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kzn_19_ENTRY_1)
+    IfEq(LVar0, $Kzn18Lower.index)
         IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_LAVA_PIRANHA)
             Call(SetNpcAnimation, NPC_LavaPiranhaHead, ANIM_LavaPiranha_Idle)
             Call(SetNpcAnimation, NPC_LavaBud_01, ANIM_LavaBud_Idle)
@@ -619,8 +619,8 @@ EvtScript EVS_NpcInit_LavaBud = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { 380.0f, 250.0f, -330.0f },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -631,8 +631,8 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_Misstar = {
     .id = NPC_Misstar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -654,8 +654,8 @@ AnimID LimitAnims_LavaBud[] = {
 NpcData NpcData_LavaPiranha[] = {
     {
         .id = NPC_LavaPiranhaHead,
-        .pos = { 400.0f, 25.0f, -30.0f },
-        .yaw = 270,
+        .pos = $LavaPiranhaHead.pos,
+        .yaw = $LavaPiranhaHead.yaw,
         .init = &EVS_NpcInit_LavaPiranha,
         .settings = &NpcSettings_LavaPiranhaHead,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -666,8 +666,8 @@ NpcData NpcData_LavaPiranha[] = {
     },
     {
         .id = NPC_LavaBud_01,
-        .pos = { 400.0f, 25.0f, -30.0f },
-        .yaw = 270,
+        .pos = $LavaBud_01.pos,
+        .yaw = $LavaBud_01.yaw,
         .init = &EVS_NpcInit_LavaBud,
         .settings = &NpcSettings_LavaPiranhaHead,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -678,8 +678,8 @@ NpcData NpcData_LavaPiranha[] = {
     },
     {
         .id = NPC_LavaBud_02,
-        .pos = { 400.0f, 25.0f, -30.0f },
-        .yaw = 270,
+        .pos = $LavaBud_02.pos,
+        .yaw = $LavaBud_02.yaw,
         .init = &EVS_NpcInit_LavaBud,
         .settings = &NpcSettings_LavaPiranhaHead,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,

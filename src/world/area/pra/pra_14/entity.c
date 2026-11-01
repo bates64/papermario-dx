@@ -4,10 +4,8 @@
 #include "world/common/entity/Chest.inc.c"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_MulticoinBlock, 445, 60, 80, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_PRA14_MultiCoinBrickA)
-    Call(MakeEntity, Entity_MulticoinBlock, 445, 60, -80, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_PRA14_MultiCoinBrickB)
+    Call(MakeMarkerEntity, $MulticoinBlock_1)
+    Call(MakeMarkerEntity, $MulticoinBlock_2)
     Return
     End
 };

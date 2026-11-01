@@ -63,7 +63,7 @@ void curtain_callback_jp_narration(void) {
 EvtScript EVS_SetupNarrator = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_10_ENTRY_3)
+        CaseEq($Entry3.index)
             Call(SetCurtainCallback, curtain_callback_jp_narration)
     EndSwitch
     Return

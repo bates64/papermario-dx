@@ -1,4 +1,5 @@
 #include "obk_05.h"
+#include "world/area/obk/obk_01.h"
 
 s32 adjust_cam_on_landing(void) {
     return LANDING_CAM_NEVER_ADJUST;
@@ -12,7 +13,7 @@ API_CALLABLE(SetupLandingCamAdjust) {
 EvtScript EVS_EnterDoor_obk_05_0 = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(obk_05_ENTRY_0)
+        CaseEq($Foyer.index)
             Set(LVar2, MODEL_door1)
             Set(LVar4, MODEL_door1b)
             Set(LVar3, DOOR_SWING_OUT)
@@ -22,9 +23,8 @@ EvtScript EVS_EnterDoor_obk_05_0 = {
     End
 };
 
-EvtScript EVS_ExitDoor_obk_01_2 = EVT_EXIT_SPLIT_SINGLE_DOOR(
-    obk_05_ENTRY_0, "obk_01", obk_01_ENTRY_2, COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT
-);
+EvtScript EVS_ExitDoor_obk_01_2 =
+    EVT_EXIT_SPLIT_SINGLE_DOOR($Foyer, $obk_01.PotRoom, COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
 
 API_CALLABLE(RetroJar_AwaitPlayerEntry) {
     if (gCollisionStatus.curFloor == COLLIDER_o420) {

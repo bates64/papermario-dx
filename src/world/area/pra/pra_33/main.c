@@ -1,4 +1,6 @@
 #include "pra_33.h"
+#include "world/area/pra/pra_18.h"
+#include "world/area/pra/pra_35.h"
 #include "effects.h"
 
 #include "../common/Reflection.inc.c"
@@ -14,13 +16,13 @@ s32 LeftDoorModelsR[] = { MODEL_o861, -1 };
 EvtScript EVS_ExitDoors_pra_35_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_33_ENTRY_0)
+    Set(LVar0, $TripleDipRoomSouth.index)
     Set(LVar1, COLLIDER_deilittse)
     Set(LVar2, RightDoorModelsL)
     Set(LVar3, RightDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_35", pra_35_ENTRY_0)
+    Call(GotoMap, $pra_35.TurnstyleRoomSouth)
     Wait(100)
     Return
     End
@@ -29,19 +31,19 @@ EvtScript EVS_ExitDoors_pra_35_0 = {
 EvtScript EVS_ExitDoors_pra_18_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_33_ENTRY_1)
+    Set(LVar0, $BridgeMirrorHall.index)
     Set(LVar1, COLLIDER_deilittnw)
     Set(LVar2, LeftDoorModelsL)
     Set(LVar3, LeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_18", pra_18_ENTRY_1)
+    Call(GotoMap, $pra_18.TurnstyleRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_pra_35_2 = EVT_EXIT_WALK(60, pra_33_ENTRY_2, "pra_35", pra_35_ENTRY_2);
+EvtScript EVS_ExitWalk_pra_35_2 = EVT_EXIT_WALK(60, $TripleDipRoomNorth, $pra_35.TurnstyleRoomNorth);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_pra_35_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
@@ -54,17 +56,17 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_33_ENTRY_0)
+        CaseEq($TripleDipRoomSouth.index)
             Set(LVar2, RightDoorModelsL)
             Set(LVar3, RightDoorModelsR)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_33_ENTRY_1)
+        CaseEq($BridgeMirrorHall.index)
             Set(LVar2, LeftDoorModelsL)
             Set(LVar3, LeftDoorModelsR)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_33_ENTRY_2)
+        CaseEq($TripleDipRoomNorth.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
@@ -73,13 +75,13 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 487.0f, 0.0f, -80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BlastWall = {
     Set(GF_PRA33_BombedWall, true)
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 2, 34, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableGroup, MODEL_g267, false)
     Call(EnableGroup, MODEL_g270, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittne, COLLIDER_FLAGS_UPPER_MASK)

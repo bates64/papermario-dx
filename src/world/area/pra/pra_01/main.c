@@ -1,4 +1,7 @@
 #include "pra_01.h"
+#include "world/area/pra/pra_02.h"
+#include "world/area/pra/pra_15.h"
+#include "world/area/sam/sam_10.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -11,13 +14,13 @@ s32 FarDoorModelsR[] = { MODEL_o950, -1 };
 s32 BothDoorModelsL[] = { MODEL_o946, MODEL_o952, -1 };
 s32 BothDoorModelsR[] = { MODEL_o948, MODEL_o950, -1 };
 
-EvtScript EVS_ExitWalk_sam_10_1 = EVT_EXIT_WALK(60, pra_01_ENTRY_0, "sam_10", sam_10_ENTRY_1);
-EvtScript EVS_ExitWalk_pra_15_0 = EVT_EXIT_WALK(60, pra_01_ENTRY_3, "pra_15", pra_15_ENTRY_0);
+EvtScript EVS_ExitWalk_sam_10_1 = EVT_EXIT_WALK(60, $MountainPeaks, $sam_10.CrystalPalace);
+EvtScript EVS_ExitWalk_pra_15_0 = EVT_EXIT_WALK(60, $StarPieceCave, $pra_15.Entrance);
 
 EvtScript EVS_ExitDoor_pra_02_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_01_ENTRY_1)
+    Set(LVar0, $EntryHallSouth.index)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothDoorModelsL)
@@ -28,7 +31,7 @@ EvtScript EVS_ExitDoor_pra_02_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_02", pra_02_ENTRY_0)
+    Call(GotoMap, $pra_02.EntranceSouth)
     Wait(100)
     Return
     End
@@ -37,7 +40,7 @@ EvtScript EVS_ExitDoor_pra_02_0 = {
 EvtScript EVS_ExitDoor_pra_02_5 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_01_ENTRY_2)
+    Set(LVar0, $EntryHallNorth.index)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothDoorModelsL)
@@ -48,7 +51,7 @@ EvtScript EVS_ExitDoor_pra_02_5 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_02", pra_02_ENTRY_5)
+    Call(GotoMap, $pra_02.EntranceNorth)
     Wait(100)
     Return
     End
@@ -66,10 +69,10 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_01_ENTRY_0)
+        CaseEq($MountainPeaks.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(pra_01_ENTRY_1)
+        CaseEq($EntryHallSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothDoorModelsL)
                 Set(LVar3, BothDoorModelsR)
@@ -79,7 +82,7 @@ EvtScript EVS_EnterMap = {
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_01_ENTRY_2)
+        CaseEq($EntryHallNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothDoorModelsL)
                 Set(LVar3, BothDoorModelsR)
@@ -89,10 +92,10 @@ EvtScript EVS_EnterMap = {
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_01_ENTRY_3)
+        CaseEq($StarPieceCave.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(pra_01_ENTRY_4)
+        CaseEq($PeachInterlude.index)
             Exec(EVS_BindExitTriggers)
     EndSwitch
     Return
@@ -142,7 +145,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1386, SURFACE_TYPE_SNOW)
     Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, pra_01_ENTRY_4)
+    IfEq(LVar0, $PeachInterlude.index)
         Wait(65)
     Else
         Wait(1)

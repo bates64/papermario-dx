@@ -1,4 +1,6 @@
 #include "flo_21.h"
+#include "world/area/flo/flo_19.h"
+#include "world/area/kmr/kmr_23.h"
 #include "sprite/player.h"
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
@@ -70,13 +72,13 @@ EvtScript EVS_TrySpawningStarCard = {
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH6_STAR_SPIRIT_RESCUED)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_5, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Klevar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_flo_19_1 = EVT_EXIT_WALK(60, flo_21_ENTRY_0, "flo_19", flo_19_ENTRY_1);
+EvtScript EVS_ExitWalk_flo_19_1 = EVT_EXIT_WALK(60, $Flo19, $flo_19.Flo21);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_19_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

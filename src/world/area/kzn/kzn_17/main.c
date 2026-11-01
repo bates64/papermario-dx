@@ -1,7 +1,9 @@
 #include "kzn_17.h"
+#include "world/area/kzn/kzn_11.h"
+#include "world/area/kzn/kzn_18.h"
 
-EvtScript EVS_ExitWalk_kzn_11_1 = EVT_EXIT_WALK(60, kzn_17_ENTRY_0, "kzn_11", kzn_11_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_18_0 = EVT_EXIT_WALK(60, kzn_17_ENTRY_1, "kzn_18", kzn_18_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_11_1 = EVT_EXIT_WALK(60, $Kzn11, $kzn_11.Kzn17);
+EvtScript EVS_ExitWalk_kzn_18_0 = EVT_EXIT_WALK(60, $Kzn18, $kzn_18.Kzn17);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_11_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

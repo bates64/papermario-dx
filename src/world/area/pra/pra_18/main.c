@@ -1,4 +1,6 @@
 #include "pra_18.h"
+#include "world/area/pra/pra_16.h"
+#include "world/area/pra/pra_33.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -18,7 +20,7 @@ s32 LeftDoorModelsR[] = { MODEL_o997, MODEL_o998, -1 };
 EvtScript EVS_ExitDoors_pra_16_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_18_ENTRY_0)
+    Set(LVar0, $RedMirrorHallSouth.index)
     Set(LVar1, COLLIDER_deilittsw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -29,7 +31,7 @@ EvtScript EVS_ExitDoors_pra_16_1 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_16", pra_16_ENTRY_1)
+    Call(GotoMap, $pra_16.BridgeMirrorHallSouth)
     Wait(100)
     Return
     End
@@ -38,13 +40,13 @@ EvtScript EVS_ExitDoors_pra_16_1 = {
 EvtScript EVS_ExitDoors_pra_33_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_18_ENTRY_1)
+    Set(LVar0, $TurnstyleRoom.index)
     Set(LVar1, COLLIDER_deilittne)
     Set(LVar2, LeftDoorModelsL)
     Set(LVar3, LeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_33", pra_33_ENTRY_1)
+    Call(GotoMap, $pra_33.BridgeMirrorHall)
     Wait(100)
     Return
     End
@@ -53,7 +55,7 @@ EvtScript EVS_ExitDoors_pra_33_1 = {
 EvtScript EVS_ExitDoors_pra_16_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_18_ENTRY_2)
+    Set(LVar0, $RedMirrorHallNorth.index)
     Set(LVar1, COLLIDER_deilittnw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -64,7 +66,7 @@ EvtScript EVS_ExitDoors_pra_16_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_16", pra_16_ENTRY_2)
+    Call(GotoMap, $pra_16.BridgeMirrorHallNorth)
     Wait(100)
     Return
     End
@@ -83,7 +85,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_18_ENTRY_0)
+        CaseEq($RedMirrorHallSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -91,10 +93,10 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearRightDoorModelsL)
                 Set(LVar3, NearRightDoorModelsR)
             EndIf
-        CaseEq(pra_18_ENTRY_1)
+        CaseEq($TurnstyleRoom.index)
             Set(LVar2, LeftDoorModelsL)
             Set(LVar3, LeftDoorModelsR)
-        CaseEq(pra_18_ENTRY_2)
+        CaseEq($RedMirrorHallNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)

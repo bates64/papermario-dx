@@ -2,9 +2,8 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, 1400, 90, -875, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_YellowBlock, 1400, 90, -375, 0, ITEM_LIFE_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA10_ItemBlock_LifeShroom)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $YellowBlock_LifeShroom_1)
     Return
     End
 };

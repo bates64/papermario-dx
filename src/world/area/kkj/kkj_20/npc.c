@@ -337,8 +337,8 @@ EvtScript EVS_NpcInit_Toad = {
 
 NpcData NpcData_Toad = {
     .id = NPC_Toad,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Toad.pos,
+    .yaw = $Toad.yaw,
     .init = &EVS_NpcInit_Toad,
     .settings = &NpcSettings_Toad,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

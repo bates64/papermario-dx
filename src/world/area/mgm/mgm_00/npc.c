@@ -168,8 +168,8 @@ EvtScript EVS_NpcInit_RedToad = {
 
 NpcData NpcData_RedToad = {
     .id = NPC_RedToad,
-    .pos = { -213.0f, 12.0f, -180.0f },
-    .yaw = 90,
+    .pos = $RedToad.pos,
+    .yaw = $RedToad.yaw,
     .init = &EVS_NpcInit_RedToad,
     .settings = &NpcSettings_Toad,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -208,22 +208,9 @@ EvtScript EVS_NpcInit_GreenToad = {
 
 NpcData NpcData_GreenToad = {
     .id = NPC_GreenToad,
-    .pos = { -88.0f, 0.0f, -95.0f },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points = {
-                { -100, 0, -95 },
-                { -70, 0, -95 },
-            },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $GreenToad.pos,
+    .yaw = $GreenToad.yaw,
+    .territory = $GreenToad.territory,
     .init = &EVS_NpcInit_GreenToad,
     .settings = &NpcSettings_Toad_Patrol,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -258,22 +245,9 @@ EvtScript EVS_NpcInit_BlueToad = {
 
 NpcData NpcData_BlueToad = {
     .id = NPC_BlueToad,
-    .pos = { 46.0f, 0.0f, -205.0f },
-    .yaw = 90,
-    .territory = {
-        .patrol = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points = {
-                { 25, 0, -205 },
-                { 75, 0, -205 },
-            },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 0 },
-        }
-    },
+    .pos = $BlueToad.pos,
+    .yaw = $BlueToad.yaw,
+    .territory = $BlueToad.territory,
     .init = &EVS_NpcInit_BlueToad,
     .settings = &NpcSettings_Toad_Patrol,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,

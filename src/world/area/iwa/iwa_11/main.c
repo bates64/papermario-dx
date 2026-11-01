@@ -1,4 +1,6 @@
 #include "iwa_11.h"
+#include "world/area/iwa/iwa_10.h"
+#include "world/area/mac/mac_03.h"
 
 API_CALLABLE(CheckForSkipInput) {
     if (gGameStatusPtr->pressedButtons[0] & (BUTTON_A | BUTTON_B)) {
@@ -15,10 +17,10 @@ EvtScript EVS_MonitorSceneSkip = {
     Call(GetEntryID, LVar0)
     Call(CheckForSkipInput)
     Switch(LVar0)
-        CaseEq(iwa_11_ENTRY_0)
-            Call(GotoMap, "iwa_10", iwa_10_ENTRY_0)
-        CaseEq(iwa_11_ENTRY_1)
-            Call(GotoMap, "mac_03", mac_03_ENTRY_1)
+        CaseEq($ToadTownStation.index)
+            Call(GotoMap, $iwa_10.Train)
+        CaseEq($MtRuggedStation.index)
+            Call(GotoMap, $mac_03.MtRugged)
     EndSwitch
     Wait(100)
     Return
@@ -44,9 +46,9 @@ EvtScript EVS_Main = {
     ExecWait(EVS_InitializeTrainScene)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(iwa_11_ENTRY_0)
+        CaseEq($ToadTownStation.index)
             Exec(EVS_TravelToMtRugged)
-        CaseEq(iwa_11_ENTRY_1)
+        CaseEq($MtRuggedStation.index)
             Exec(EVS_TravelToToadTown)
     EndSwitch
     Exec(EVS_UpdateSceneryPos)

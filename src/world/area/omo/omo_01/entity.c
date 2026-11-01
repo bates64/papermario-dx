@@ -4,13 +4,11 @@
 EvtScript EVS_MakeEntities = {
     IfEq(GF_OMO09_Defeated_CalculatorThief, true)
         IfEq(GF_OMO01_Item_Calculator, false)
-            Call(MakeItemEntity, ITEM_CALCULATOR, -93, 0, 35, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO01_Item_Calculator)
+            Call(MakeMarkerEntity, $Item_Calculator_1)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_HiddenYellowBlock, -80, 60, -235, 0, ITEM_MYSTERY, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_OMO01_HiddenItem_Mystery)
-    Call(MakeEntity, Entity_HiddenYellowBlock, -30, 60, -235, 0, ITEM_FRIGHT_JAR, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_OMO01_HiddenItem_FrightJar)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_Mystery_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_FrightJar_1)
     Return
     End
 };

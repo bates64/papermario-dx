@@ -5,20 +5,9 @@
 NpcData NpcData_Clubba[] = {
     {
         .id = NPC_FrostClubba,
-        .pos = { 575.0f, 480.0f, -50.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 575, 480, -50 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 575, 480, -50 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $FrostClubba.pos,
+        .yaw = $FrostClubba.yaw,
+        .territory = $FrostClubba.territory,
         .settings = &NpcSettings_FrostClubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = FROST_CLUBBA_DROPS,

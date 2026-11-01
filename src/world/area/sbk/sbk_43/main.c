@@ -1,29 +1,26 @@
 #include "sbk_43.h"
+#include "world/area/sbk/sbk_33.h"
+#include "world/area/sbk/sbk_42.h"
+#include "world/area/sbk/sbk_44.h"
+#include "world/area/sbk/sbk_53.h"
 #include "effects.h"
 #include "entity.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-EntryList Entrances = {
-    [sbk_43_ENTRY_0]    { -475.0,    0.0,    0.0,   90.0 },
-    [sbk_43_ENTRY_1]    {  475.0,    0.0,    0.0,  270.0 },
-    [sbk_43_ENTRY_2]    {    0.0,    0.0, -475.0,  180.0 },
-    [sbk_43_ENTRY_3]    {    0.0,    0.0,  475.0,    0.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_43 },
 };
 
-EvtScript EVS_ExitWalk_sbk_42_1 = EVT_EXIT_WALK(60, sbk_43_ENTRY_0, "sbk_42", sbk_42_ENTRY_1);
-EvtScript EVS_ExitWalk_sbk_44_0 = EVT_EXIT_WALK(60, sbk_43_ENTRY_1, "sbk_44", sbk_44_ENTRY_0);
-EvtScript EVS_ExitWalk_sbk_33_3 = EVT_EXIT_WALK(60, sbk_43_ENTRY_2, "sbk_33", sbk_33_ENTRY_3);
-EvtScript EVS_ExitWalk_sbk_53_2 = EVT_EXIT_WALK(60, sbk_43_ENTRY_3, "sbk_53", sbk_53_ENTRY_2);
+EvtScript EVS_ExitWalk_sbk_42_1 = EVT_EXIT_WALK(60, $West, $sbk_42.East);
+EvtScript EVS_ExitWalk_sbk_44_0 = EVT_EXIT_WALK(60, $East, $sbk_44.West);
+EvtScript EVS_ExitWalk_sbk_33_3 = EVT_EXIT_WALK(60, $North, $sbk_33.South);
+EvtScript EVS_ExitWalk_sbk_53_2 = EVT_EXIT_WALK(60, $South, $sbk_53.North);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sbk_42_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

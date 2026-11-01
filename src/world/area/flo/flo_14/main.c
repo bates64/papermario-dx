@@ -1,8 +1,10 @@
 #include "flo_14.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/flo/flo_13.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_flo_00_1 = EVT_EXIT_WALK(60, flo_14_ENTRY_0, "flo_00", flo_00_ENTRY_1);
-EvtScript EVS_ExitWalk_flo_13_0 = EVT_EXIT_WALK(60, flo_14_ENTRY_1, "flo_13", flo_13_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_00_1 = EVT_EXIT_WALK(60, $Flo00, $flo_00.Flo14);
+EvtScript EVS_ExitWalk_flo_13_0 = EVT_EXIT_WALK(60, $Flo13, $flo_13.Flo14);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_13_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -12,17 +14,17 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o129, .pos = { -500.0,    0.0,  -90.0 }},
-    { .colliderID = COLLIDER_o137, .pos = { -510.0,    0.0,    0.0 }},
-    { .colliderID = COLLIDER_o155, .pos = { -500.0,    0.0,  110.0 }},
-    { .colliderID = COLLIDER_o156, .pos = { -250.0,    0.0,  -90.0 }},
-    { .colliderID = COLLIDER_o140, .pos = { -240.0,    0.0,    0.0 }},
-    { .colliderID = COLLIDER_o157, .pos = { -250.0,    0.0,  110.0 }},
-    { .colliderID = COLLIDER_o151, .pos = {  -50.0,    0.0,   25.0 }},
-    { .colliderID = COLLIDER_o152, .pos = {   70.0,   60.0,  -95.0 }},
-    { .colliderID = COLLIDER_o153, .pos = {  410.0,   60.0,  -95.0 }},
-    { .colliderID = COLLIDER_o154, .pos = {  550.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o158, .pos = {  -50.0,    0.0,  110.0 }},
+    { .colliderID = COLLIDER_o129, .pos = $LavaReset_o129.pos },
+    { .colliderID = COLLIDER_o137, .pos = $LavaReset_o137.pos },
+    { .colliderID = COLLIDER_o155, .pos = $LavaReset_o155.pos },
+    { .colliderID = COLLIDER_o156, .pos = $LavaReset_o156.pos },
+    { .colliderID = COLLIDER_o140, .pos = $LavaReset_o140.pos },
+    { .colliderID = COLLIDER_o157, .pos = $LavaReset_o157.pos },
+    { .colliderID = COLLIDER_o151, .pos = $LavaReset_o151.pos },
+    { .colliderID = COLLIDER_o152, .pos = $LavaReset_o152.pos },
+    { .colliderID = COLLIDER_o153, .pos = $LavaReset_o153.pos },
+    { .colliderID = COLLIDER_o154, .pos = $LavaReset_o154.pos },
+    { .colliderID = COLLIDER_o158, .pos = $LavaReset_o158.pos },
     { .colliderID = NO_COLLIDER }
 };
 

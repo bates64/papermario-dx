@@ -1,4 +1,5 @@
 #include "kkj_10.h"
+#include "world/area/kkj/kkj_14.h"
 
 AnimID LimitAnims_Koopatrol_Later[] = {
     ANIM_WorldKoopatrol_Still,
@@ -39,7 +40,7 @@ EvtScript EVS_CapturePeach_Later = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_TalkFlashlight, ANIM_WorldKoopatrol_IdleFlashlight, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, $kkj_14.TossedBack, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
@@ -181,8 +182,8 @@ EvtScript EVS_NpcInit_Koopatrol_02_Later = {
 NpcData NpcData_Koopatrol_Later[] = {
     {
         .id = NPC_Koopatrol_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_01_1.pos,
+        .yaw = $Koopatrol_01_1.yaw,
         .init = &EVS_NpcInit_Koopatrol_01_Later,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -192,8 +193,8 @@ NpcData NpcData_Koopatrol_Later[] = {
     },
     {
         .id = NPC_Koopatrol_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_02_1.pos,
+        .yaw = $Koopatrol_02_1.yaw,
         .init = &EVS_NpcInit_Koopatrol_02_Later,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

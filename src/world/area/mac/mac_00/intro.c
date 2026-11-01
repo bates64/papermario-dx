@@ -1,4 +1,5 @@
 #include "mac_00.h"
+#include "world/area/mac/mac_01.h"
 #include "sprite/player.h"
 
 EvtScript EVS_PlayerExitPipe_Intro = {
@@ -85,7 +86,7 @@ EvtScript EVS_Scene_Intro = {
     Call(SetCamSpeed, CAM_DEFAULT, 0.5 / DT)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, 1.0)
-    Call(GotoMap, "mac_01", mac_01_ENTRY_4)
+    Call(GotoMap, $mac_01.Intro)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

@@ -170,8 +170,8 @@ EvtScript EVS_NpcInit_GateFlower = {
 
 NpcData NpcData_GateFlower = {
     .id = NPC_GateFlower,
-    .pos = { 505.0f, 0.0f, -25.0f },
-    .yaw = 90,
+    .pos = $GateFlower.pos,
+    .yaw = $GateFlower.yaw,
     .init = &EVS_NpcInit_GateFlower,
     .settings = &NpcSettings_GateFlower,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -182,20 +182,9 @@ NpcData NpcData_GateFlower = {
 
 NpcData NpcData_RuffPuff = {
     .id = NPC_RuffPuff,
-    .pos = { -200.0f, 45.0f, 0.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -200, 45, 0 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -200, 45, 0 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $RuffPuff.pos,
+    .yaw = $RuffPuff.yaw,
+    .territory = $RuffPuff.territory,
     .settings = &NpcSettings_RuffPuff_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = RUFF_PUFF_DROPS,
@@ -205,20 +194,9 @@ NpcData NpcData_RuffPuff = {
 
 NpcData NpcData_Bzzap = {
     .id = NPC_Bzzap,
-    .pos = { 150.0f, 55.0f, 0.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 150, 50, 0 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 150, 50, 0 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Bzzap.pos,
+    .yaw = $Bzzap.yaw,
+    .territory = $Bzzap.territory,
     .settings = &NpcSettings_Bzzap_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = BZZAP_DROPS,

@@ -1,4 +1,6 @@
 #include "pra_19.h"
+#include "world/area/pra/pra_20.h"
+#include "world/area/pra/pra_35.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -10,19 +12,19 @@ s32 DoorModelsR[] = { MODEL_o768, MODEL_o846, -1 };
 EvtScript EVS_ExitDoor_pra_35_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_19_ENTRY_0)
+    Set(LVar0, $TripleDipRoom.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, DoorModelsL)
     Set(LVar3, DoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_35", pra_35_ENTRY_1)
+    Call(GotoMap, $pra_35.ReflectionMimicRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_pra_20_0 = EVT_EXIT_WALK(60, pra_19_ENTRY_1, "pra_20", pra_20_ENTRY_0);
+EvtScript EVS_ExitWalk_pra_20_0 = EVT_EXIT_WALK(60, $MirroredDoorRoom, $pra_20.ReflectionMimicRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_pra_35_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
@@ -36,12 +38,12 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_19_ENTRY_0)
+        CaseEq($TripleDipRoom.index)
             Set(LVar2, DoorModelsL)
             Set(LVar3, DoorModelsR)
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_19_ENTRY_1)
+        CaseEq($MirroredDoorRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

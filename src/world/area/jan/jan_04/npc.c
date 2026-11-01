@@ -125,8 +125,8 @@ EvtScript EVS_Sushie_ShoutAtChildren = {
 };
 
 BombTrigger BombPos_SushieTree = {
-    .pos = { 30.0f, 0.0f, -110.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_SushieTree.pos,
+    .diameter = 2.0f * $BombPos_SushieTree.radius,
 };
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
@@ -189,7 +189,7 @@ EvtScript EVS_NpcIdle_Sushie = {
 
 EvtScript EVS_NpcInit_Sushie = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_04_ENTRY_3)
+    IfEq(LVar0, $Epilogue.index)
         Return
     EndIf
     IfEq(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
@@ -264,8 +264,8 @@ EvtScript EVS_NpcInit_Bubulb = {
 NpcData NpcData_Characters[] = {
     {
         .id = NPC_Sushie,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Sushie.pos,
+        .yaw = $Sushie.yaw,
         .init = &EVS_NpcInit_Sushie,
         .settings = &NpcSettings_Sushie,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -274,8 +274,8 @@ NpcData NpcData_Characters[] = {
     },
     {
         .id = NPC_Bubulb,
-        .pos = { -230.0f, 0.0f, -320.0f },
-        .yaw = 90,
+        .pos = $Bubulb.pos,
+        .yaw = $Bubulb.yaw,
         .init = &EVS_NpcInit_Bubulb,
         .settings = &NpcSettings_Bubulb,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -288,8 +288,8 @@ NpcData NpcData_Characters[] = {
 NpcData NpcData_YoshiKids[] = {
     {
         .id = NPC_YoshiKid_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $YoshiKid_01.pos,
+        .yaw = $YoshiKid_01.yaw,
         .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -298,8 +298,8 @@ NpcData NpcData_YoshiKids[] = {
     },
     {
         .id = NPC_YoshiKid_02,
-        .pos = { 45.0f, 0.0f, -70.0f },
-        .yaw = 90,
+        .pos = $YoshiKid_02.pos,
+        .yaw = $YoshiKid_02.yaw,
         .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -308,8 +308,8 @@ NpcData NpcData_YoshiKids[] = {
     },
     {
         .id = NPC_YoshiKid_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $YoshiKid_03.pos,
+        .yaw = $YoshiKid_03.yaw,
         .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -318,8 +318,8 @@ NpcData NpcData_YoshiKids[] = {
     },
     {
         .id = NPC_YoshiKid_04,
-        .pos = { 20.0f, 0.0f, -70.0f },
-        .yaw = 270,
+        .pos = $YoshiKid_04.pos,
+        .yaw = $YoshiKid_04.yaw,
         .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -328,8 +328,8 @@ NpcData NpcData_YoshiKids[] = {
     },
     {
         .id = NPC_YoshiKid_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $YoshiKid_05.pos,
+        .yaw = $YoshiKid_05.yaw,
         .settings = &NpcSettings_YoshiKid,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,

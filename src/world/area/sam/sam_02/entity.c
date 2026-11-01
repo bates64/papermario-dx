@@ -3,18 +3,18 @@
 
 EvtScript EVS_MakeToadHouseGifts = {
     IfEq(GF_SAM02_MushroomPresents, true)
-        Call(MakeItemEntity, ITEM_ULTRA_SHROOM, 350, 0, -120, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_UltraShroom)
-        Call(MakeItemEntity, ITEM_MUSHROOM, 330, 0, -100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_MushroomA)
-        Call(MakeItemEntity, ITEM_MUSHROOM, 330, 0, -140, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_MushroomB)
-        Call(MakeItemEntity, ITEM_MUSHROOM, 370, 0, -100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_MushroomC)
-        Call(MakeItemEntity, ITEM_MUSHROOM, 370, 0, -140, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_MushroomD)
+        Call(MakeMarkerEntity, $Item_UltraShroom_1)
+        Call(MakeMarkerEntity, $Item_Mushroom_1)
+        Call(MakeMarkerEntity, $Item_Mushroom_2)
+        Call(MakeMarkerEntity, $Item_Mushroom_3)
+        Call(MakeMarkerEntity, $Item_Mushroom_4)
     EndIf
     Return
     End
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, 160, 60, 200, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Exec(EVS_MakeToadHouseGifts)
     Return
     End

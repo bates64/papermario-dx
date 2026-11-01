@@ -1,15 +1,16 @@
 #include "dgb_00.h"
+#include "world/area/arn/arn_04.h"
+#include "world/area/dgb/dgb_01.h"
 
 export s32 map_init(void) {
     use_map_geometry("arn_20");
     return false;
 }
 
-EvtScript EVS_ExitWalk_arn_04_1 = EVT_EXIT_WALK(60, dgb_00_ENTRY_0, "arn_04", arn_04_ENTRY_1);
+EvtScript EVS_ExitWalk_arn_04_1 = EVT_EXIT_WALK(60, $GustyGulch, $arn_04.TubbasManor);
 
-EvtScript EVS_ExitDoors_dgb_01_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_00_ENTRY_1, "dgb_01", dgb_01_ENTRY_0, COLLIDER_deiliwt, MODEL_d1, MODEL_d2, DOOR_SOUNDS_CREAKY
-);
+EvtScript EVS_ExitDoors_dgb_01_0 =
+    EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS($Dgb01, $dgb_01.Dgb00, COLLIDER_deiliwt, MODEL_d1, MODEL_d2, DOOR_SOUNDS_CREAKY);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_arn_04_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -36,11 +37,11 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_00_ENTRY_0)
+        CaseEq($GustyGulch.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(dgb_00_ENTRY_1)
+        CaseEq($Dgb01.index)
             IfGe(GB_StoryProgress, STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
                 IfLt(GB_StoryProgress, STORY_CH3_ESCAPED_TUBBAS_MANOR)
                     Exec(EVS_BindExitTriggers)
@@ -56,7 +57,7 @@ EvtScript EVS_EnterMap = {
             Set(LVar3, MODEL_d2)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(dgb_00_ENTRY_2)
+        CaseEq(2)
             Exec(EVS_BindExitTriggers)
             Exec(EVS_Scene_ThrownOutBySentinel)
     EndSwitch
@@ -70,7 +71,7 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, dgb_00_ENTRY_2)
+    IfEq(LVar0, 2)
         Call(MakeNpcs, false, DefaultNPCs)
     Else
         Call(MakeNpcs, false, BooNPCs)

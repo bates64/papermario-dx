@@ -7,7 +7,7 @@ EvtScript EVS_SetupMusic = {
     Else
         Call(GetEntryID, LVar0)
         Switch(LVar0)
-            CaseRange(omo_06_ENTRY_2, omo_06_ENTRY_3)
+            CaseRange($TrainLeft.index, $TrainRight.index)
                 Call(SetMusic, 0, SONG_TOYBOX_TRAIN, 0, VOL_LEVEL_FULL)
             CaseDefault
                 Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)

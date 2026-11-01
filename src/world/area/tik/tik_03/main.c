@@ -1,17 +1,19 @@
 #include "tik_03.h"
+#include "world/area/tik/tik_01.h"
+#include "world/area/tik/tik_04.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_01_1 = EVT_EXIT_WALK(60, tik_03_ENTRY_0, "tik_01", tik_01_ENTRY_1);
+EvtScript EVS_ExitWalk_tik_01_1 = EVT_EXIT_WALK(60, $WarpZone1, $tik_01.ShortElevatorRoom);
 
 EvtScript EVS_GotoMap_tik_04_2 = {
-    Call(GotoMap, "tik_04", tik_04_ENTRY_2)
+    Call(GotoMap, $tik_04.ShortElevatorRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_04_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_03_ENTRY_1, COLLIDER_o46, EVS_GotoMap_tik_04_2);
+EvtScript EVS_ExitPipe_tik_04_2 = EVT_EXIT_PIPE_HORIZONTAL($ScalesRoom, COLLIDER_o46, EVS_GotoMap_tik_04_2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_01_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -23,7 +25,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_03_ENTRY_1)
+        CaseEq($ScalesRoom.index)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o46, EVS_BindExitTriggers)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)

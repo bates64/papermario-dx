@@ -1,10 +1,13 @@
 #include "kpa_11.h"
+#include "world/area/kpa/kpa_12.h"
+#include "world/area/kpa/kpa_17.h"
+#include "world/area/kpa/kpa_62.h"
 
-EvtScript EVS_ExitWalk_kpa_62_1 = EVT_EXIT_WALK(60, kpa_11_ENTRY_0, "kpa_62", kpa_62_ENTRY_1);
-EvtScript EVS_ExitWalk_kpa_12_0 = EVT_EXIT_WALK(60, kpa_11_ENTRY_1, "kpa_12", kpa_12_ENTRY_0);
-EvtScript EVS_ExitWalk_kpa_17_1 = EVT_EXIT_WALK(60, kpa_11_ENTRY_2, "kpa_17", kpa_17_ENTRY_1);
-EvtScript EVS_ExitWalk_kpa_62_2 = EVT_EXIT_WALK(60, kpa_11_ENTRY_3, "kpa_62", kpa_62_ENTRY_2);
-EvtScript EVS_ExitWalk_kpa_12_2 = EVT_EXIT_WALK(60, kpa_11_ENTRY_4, "kpa_12", kpa_12_ENTRY_2);
+EvtScript EVS_ExitWalk_kpa_62_1 = EVT_EXIT_WALK(60, $FrontDoorUpper, $kpa_62.OutsideJailUpper);
+EvtScript EVS_ExitWalk_kpa_12_0 = EVT_EXIT_WALK(60, $LavaChannel1Upper, $kpa_12.OutsideJailUpper);
+EvtScript EVS_ExitWalk_kpa_17_1 = EVT_EXIT_WALK(60, $LowerJail, $kpa_17.OutsideJail);
+EvtScript EVS_ExitWalk_kpa_62_2 = EVT_EXIT_WALK(60, $FrontDoorLower, $kpa_62.OutsideJailLower);
+EvtScript EVS_ExitWalk_kpa_12_2 = EVT_EXIT_WALK(60, $LavaChannel1Lower, $kpa_12.OutsideJailLower);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_62_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -59,7 +62,7 @@ EvtScript EVS_StartLavaTexPanners = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o1234, .pos = { 1400.0,   30.0, -325.0 }},
+    { .colliderID = COLLIDER_o1234, .pos = $LavaReset_o1234.pos },
     { .colliderID = NO_COLLIDER }
 };
 

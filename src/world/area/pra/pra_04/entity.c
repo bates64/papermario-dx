@@ -92,14 +92,11 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerFloor)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, 124, -200, 80, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     IfEq(GF_PRA04_BoardedFloor, false)
-        Call(MakeEntity, Entity_BoardedFloor, 124, 0, 80, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_BreakFloor)
+        Call(MakeMarkerEntity, $BoardedFloor_1)
     EndIf
-    Call(MakeEntity, Entity_YellowBlock, -200, 60, 75, 0, ITEM_SUPER_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_PRA04_ItemBlock_SuperShroom)
+    Call(MakeMarkerEntity, $YellowBlock_SuperShroom_1)
     Return
     End
 };

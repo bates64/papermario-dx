@@ -1,11 +1,13 @@
 #include "trd_07.h"
+#include "world/area/trd/trd_04.h"
+#include "world/area/trd/trd_08.h"
 
 extern EvtScript EVS_SetupMagicDoors;
 extern EvtScript EVS_SetupMusic;
 extern NpcGroupList DefaultNPCs;
 
-EvtScript EVS_ExitWalk_trd_08_0 = EVT_EXIT_WALK(60, trd_07_ENTRY_1, "trd_08", trd_08_ENTRY_0);
-EvtScript EVS_ExitWalk_trd_04_4 = EVT_EXIT_WALK(60, trd_07_ENTRY_0, "trd_04", trd_04_ENTRY_4);
+EvtScript EVS_ExitWalk_trd_08_0 = EVT_EXIT_WALK(60, $Trd08, $trd_08.Trd07);
+EvtScript EVS_ExitWalk_trd_04_4 = EVT_EXIT_WALK(60, $Trd04, $trd_04.Trd07);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_trd_08_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

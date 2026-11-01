@@ -1,6 +1,7 @@
 #include "obk_06.h"
+#include "world/area/obk/obk_02.h"
 
-EvtScript EVS_ExitWalk_obk_02_2 = EVT_EXIT_WALK(60, obk_06_ENTRY_1, "obk_02", obk_02_ENTRY_2);
+EvtScript EVS_ExitWalk_obk_02_2 = EVT_EXIT_WALK(60, $BasementStairs, $obk_02.Library);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_obk_02_2, TRIGGER_FLOOR_ABOVE, COLLIDER__deili, 1, 0)
@@ -11,9 +12,9 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(obk_06_ENTRY_0)
+        CaseEq($PotRoom.index)
             BindTrigger(EVS_ExitWalk_obk_02_2, TRIGGER_FLOOR_TOUCH, COLLIDER__deili, 1, 0)
-        CaseEq(obk_06_ENTRY_1)
+        CaseEq($BasementStairs.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

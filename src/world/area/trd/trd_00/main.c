@@ -1,4 +1,7 @@
 #include "trd_00.h"
+#include "world/area/nok/nok_15.h"
+#include "world/area/trd/trd_01.h"
+#include "world/area/trd/trd_05.h"
 #include "sprite/player.h"
 
 extern EvtScript EVS_Main;
@@ -6,13 +9,12 @@ extern EvtScript EVS_SetupMusic;
 extern EvtScript EVS_MakeEntities;
 extern NpcGroupList DefaultNPCs;
 
-EvtScript EVS_ExitWalk_nok_15_1 = EVT_EXIT_WALK(60, trd_00_ENTRY_0, "nok_15", nok_15_ENTRY_1);
-EvtScript EVS_ExitDoors_trd_01_0 =
-    EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_1, "trd_01", trd_01_ENTRY_0, COLLIDER_tt2, MODEL_o62, MODEL_doa);
+EvtScript EVS_ExitWalk_nok_15_1 = EVT_EXIT_WALK(60, $PleasantPath, $nok_15.KoopaBrosFortress);
+EvtScript EVS_ExitDoors_trd_01_0 = EVT_EXIT_DOUBLE_DOOR($Trd01, $trd_01.Trd00, COLLIDER_tt2, MODEL_o62, MODEL_doa);
 EvtScript EVS_ExitDoors_trd_05_1 =
-    EVT_EXIT_DOUBLE_DOOR(trd_00_ENTRY_2, "trd_05", trd_05_ENTRY_1, COLLIDER_tt3, MODEL_o70, MODEL_o69);
-EvtScript EVS_ExitWalk_trd_05_2 = EVT_EXIT_WALK(60, trd_00_ENTRY_3, "trd_05", trd_05_ENTRY_2);
-EvtScript EVS_ExitWalk_nok_15_2 = EVT_EXIT_WALK(60, trd_00_ENTRY_4, "nok_15", nok_15_ENTRY_2);
+    EVT_EXIT_DOUBLE_DOOR($Trd05Door, $trd_05.Trd00Door, COLLIDER_tt3, MODEL_o70, MODEL_o69);
+EvtScript EVS_ExitWalk_trd_05_2 = EVT_EXIT_WALK(60, $Trd05Walk, $trd_05.Trd00Walk);
+EvtScript EVS_ExitWalk_nok_15_2 = EVT_EXIT_WALK(60, $PleasantPathUpper, $nok_15.KoopaBrosFortressUpper);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_nok_15_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -69,7 +71,7 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_00_ENTRY_0)
+        CaseEq($PleasantPath.index)
             IfLt(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)
                 Set(GB_StoryProgress, STORY_CH1_ARRIVED_AT_KOOPA_FORTRESS)
                 ExecWait(EVS_Scene_ArriveAtFortress)
@@ -78,23 +80,23 @@ EvtScript EVS_EnterMap = {
                 Set(LVar0, EVS_BindExitTriggers)
                 Exec(EnterWalk)
             EndIf
-        CaseEq(trd_00_ENTRY_1)
+        CaseEq($Trd01.index)
             Set(LVar2, MODEL_o62)
             Set(LVar3, MODEL_doa)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_00_ENTRY_2)
+        CaseEq($Trd05Door.index)
             Set(LVar2, MODEL_o70)
             Set(LVar3, MODEL_o69)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(trd_00_ENTRY_3)
+        CaseEq($Trd05Walk.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(trd_00_ENTRY_4)
+        CaseEq($PleasantPathUpper.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(trd_00_ENTRY_5)
+        CaseEq($PeachInterlude.index)
             Exec(EVS_BindExitTriggers)
     EndSwitch
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
@@ -110,10 +112,10 @@ EvtScript EVS_Main = {
     Call(MakeNpcs, true, DefaultNPCs)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(trd_00_ENTRY_0)
+        CaseEq($PleasantPath.index)
             // do nothing
-        CaseOrEq(trd_00_ENTRY_1)
-        CaseOrEq(trd_00_ENTRY_4)
+        CaseOrEq($Trd01.index)
+        CaseOrEq($PleasantPathUpper.index)
         EndCaseGroup
     EndSwitch
     ExecWait(EVS_MakeEntities)
@@ -127,7 +129,7 @@ EvtScript EVS_Main = {
     EndIf
     Exec(EVS_EnterMap)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, trd_00_ENTRY_5)
+    IfEq(LVar0, $PeachInterlude.index)
         Wait(65)
     Else
         Wait(1)

@@ -5,20 +5,9 @@
 NpcData NpcData_DryBones[] = {
     {
         .id = NPC_DryBones,
-        .pos = { -73.0f, 0.0f, 0.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -73, 0, 0 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -73, 0, 0 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $DryBones.pos,
+        .yaw = $DryBones.yaw,
+        .territory = $DryBones.territory,
         .settings = &NpcSettings_DryBones_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = DRY_BONES_DROPS,

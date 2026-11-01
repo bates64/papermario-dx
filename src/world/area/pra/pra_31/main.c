@@ -1,4 +1,6 @@
 #include "pra_31.h"
+#include "world/area/pra/pra_34.h"
+#include "world/area/pra/pra_40.h"
 
 s32 NearLeftDoorModelsL[] = { MODEL_o772, -1 };
 s32 NearLeftDoorModelsR[] = { MODEL_o768, -1 };
@@ -10,13 +12,13 @@ s32 FarLeftDoorModelsR[] = { MODEL_o861, -1 };
 EvtScript EVS_ExitDoors_pra_34_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_31_ENTRY_0)
+    Set(LVar0, $MirrorHoleRoomSouth.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, NearLeftDoorModelsL)
     Set(LVar3, NearLeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_34", pra_34_ENTRY_1)
+    Call(GotoMap, $pra_34.DinoPuzzleRoomSouth)
     Wait(100)
     Return
     End
@@ -25,13 +27,13 @@ EvtScript EVS_ExitDoors_pra_34_1 = {
 EvtScript EVS_ExitDoors_pra_40_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_31_ENTRY_1)
+    Set(LVar0, $BossAntechamber.index)
     Set(LVar1, COLLIDER_deilitte)
     Set(LVar2, RightDoorModelsL)
     Set(LVar3, RightDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_40", pra_40_ENTRY_0)
+    Call(GotoMap, $pra_40.DinoPuzzleRoom)
     Wait(100)
     Return
     End
@@ -40,13 +42,13 @@ EvtScript EVS_ExitDoors_pra_40_0 = {
 EvtScript EVS_ExitDoors_pra_34_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_31_ENTRY_2)
+    Set(LVar0, $MirrorHoleRoomNorth.index)
     Set(LVar1, COLLIDER_deilittnw)
     Set(LVar2, FarLeftDoorModelsL)
     Set(LVar3, FarLeftDoorModelsR)
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_34", pra_34_ENTRY_2)
+    Call(GotoMap, $pra_34.DinoPuzzleRoomNorth)
     Wait(100)
     Return
     End
@@ -63,13 +65,13 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_31_ENTRY_0)
+        CaseEq($MirrorHoleRoomSouth.index)
             Set(LVar2, NearLeftDoorModelsL)
             Set(LVar3, NearLeftDoorModelsR)
-        CaseEq(pra_31_ENTRY_1)
+        CaseEq($BossAntechamber.index)
             Set(LVar2, RightDoorModelsL)
             Set(LVar3, RightDoorModelsR)
-        CaseEq(pra_31_ENTRY_2)
+        CaseEq($MirrorHoleRoomNorth.index)
             Set(LVar2, FarLeftDoorModelsL)
             Set(LVar3, FarLeftDoorModelsR)
     EndSwitch

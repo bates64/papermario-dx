@@ -92,7 +92,7 @@ EvtScript EVS_ToadHouse_ReturnFromRest = {
     EndIf
     IfEq(MF_SkipIcedPotato, false)
         Set(MF_SkipIcedPotato, true)
-        Call(MakeItemEntity, ITEM_ICED_POTATO, 349, 25, -280, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_IcedPotato)
+        Call(MakeMarkerEntity, $Item_IcedPotato_1)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
         IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
@@ -370,8 +370,8 @@ EvtScript EVS_NpcInit_Penguin_07 = {
 NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_Penguin_ShopOwner,
-        .pos = { 35.0f, 0.0f, -365.0f },
-        .yaw = 180,
+        .pos = $Penguin_ShopOwner.pos,
+        .yaw = $Penguin_ShopOwner.yaw,
         .init = &EVS_NpcInit_Penguin_ShopOwner,
         .settings = &NpcSettings_Penguin,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -381,8 +381,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_ShiverToad,
-        .pos = { 329.0f, 0.0f, -167.0f },
-        .yaw = 180,
+        .pos = $ShiverToad.pos,
+        .yaw = $ShiverToad.yaw,
         .init = &EVS_NpcInit_ShiverToad,
         .settings = &NpcSettings_ShiverToad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -393,20 +393,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Penguin_04,
-        .pos = { 0.0f, 0.0f, 60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 0, 60 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_04.pos,
+        .yaw = $Penguin_04.yaw,
+        .territory = $Penguin_04.territory,
         .init = &EVS_NpcInit_Penguin_04,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -416,20 +405,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Penguin_05,
-        .pos = { -400.0f, 0.0f, 60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -400, 0, 60 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_05.pos,
+        .yaw = $Penguin_05.yaw,
+        .territory = $Penguin_05.territory,
         .init = &EVS_NpcInit_Penguin_05,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -439,20 +417,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Penguin_06,
-        .pos = { 400.0f, 0.0f, 60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 400, 0, 60 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_06.pos,
+        .yaw = $Penguin_06.yaw,
+        .territory = $Penguin_06.territory,
         .init = &EVS_NpcInit_Penguin_06,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -462,8 +429,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_Penguin_07,
-        .pos = { -237.0f, 0.0f, 273.0f },
-        .yaw = 0,
+        .pos = $Penguin_07.pos,
+        .yaw = $Penguin_07.yaw,
         .init = &EVS_NpcInit_Penguin_07,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -476,8 +443,8 @@ NpcData NpcData_Townsfolk[] = {
 NpcData NpcData_MysteryOnly[] = {
     {
         .id = NPC_Penguin_02,
-        .pos = { -380.0f, 0.0f, -140.0f },
-        .yaw = 0,
+        .pos = $Penguin_02.pos,
+        .yaw = $Penguin_02.yaw,
         .init = &EVS_NpcInit_Penguin_02,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -487,20 +454,9 @@ NpcData NpcData_MysteryOnly[] = {
     },
     {
         .id = NPC_Penguin_03,
-        .pos = { 200.0f, 0.0f, 60.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 200, 0, 60 },
-                .wanderSize = { 50 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0 },
-            }
-        },
+        .pos = $Penguin_03.pos,
+        .yaw = $Penguin_03.yaw,
+        .territory = $Penguin_03.territory,
         .init = &EVS_NpcInit_Penguin_03,
         .settings = &NpcSettings_Penguin_Wander,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -512,8 +468,8 @@ NpcData NpcData_MysteryOnly[] = {
 
 NpcData NpcData_ChuckQuizmo = {
     .id = NPC_ChuckQuizmo,
-    .pos = { -230.0f, 0.0f, 160.0f },
-    .yaw = 90,
+    .pos = $ChuckQuizmo.pos,
+    .yaw = $ChuckQuizmo.yaw,
     .initVarCount = 1,
     .initVar = { .bytes = { 0, QUIZ_AREA_SAM, QUIZ_COUNT_SAM, QUIZ_MAP_SAM_02 }},
     .settings = &NpcSettings_ChuckQuizmo,

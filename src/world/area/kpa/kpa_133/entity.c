@@ -28,19 +28,18 @@ API_CALLABLE(SetSpringPosition) {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_KPA133_BlueSwitch, false)
-        Call(MakeEntity, Entity_BlueSwitch, 60, 115, 10, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA133_HitWaterSwitch))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
         Call(AssignScript, EVS_TriggerSwitch)
     EndIf
     IfEq(GF_KPA133_BlueSwitch, true)
-        Call(MakeEntity, Entity_SimpleSpring, 150, 115, 0, 90, 60, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $SimpleSpring_1)
     Else
-        Call(MakeEntity, Entity_SimpleSpring, 150, 150, -105, 90, 60, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $SimpleSpring_2)
         Set(MV_SpringEntityID, LVar0)
         Call(SetSpringRotation, -90, 0, 0)
         Exec(EVS_SetupHiddenSpring)
     EndIf
-    Call(MakeItemEntity, ITEM_BOWSER_CASTLE_KEY, -350, 215, -50, ITEM_SPAWN_MODE_KEY, GF_KPA133_Item_CastleKey2)
+    Call(MakeMarkerEntity, $Item_BowserCastleKey_1)
     Return
     End
 };
@@ -87,12 +86,12 @@ EvtScript EVS_SetupHiddenSpring = {
                 BreakLoop
             EndIf
         EndLoop
-        PlayEffect(EFFECT_LANDING_DUST, 1, 135, 115, -70, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 180, 115, -70, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 135, 115, -55, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 180, 115, -55, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 135, 115, -40, 0)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 180, 115, -40, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_5.pos.x, $LandingDustPos_5.pos.y, $LandingDustPos_5.pos.z, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_6.pos.x, $LandingDustPos_6.pos.y, $LandingDustPos_6.pos.z, 0)
         Wait(20)
         Call(EnableModel, MODEL_kakusitobira, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_123, COLLIDER_FLAGS_UPPER_MASK)

@@ -7,13 +7,12 @@
 
 EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(250, 60, 300, 0)
-    Call(MakeItemEntity, ITEM_COIN, 75, -60, 90, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN08_Item_CoinA)
-    Call(MakeItemEntity, ITEM_COIN, 100, -60, 90, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN08_Item_CoinB)
-    Call(MakeItemEntity, ITEM_COIN, 125, -60, 90, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_JAN08_Item_CoinC)
-    Call(MakeEntity, Entity_BellbellPlant, 54, 0, -380, 35, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 24, 60, -410, 0, ITEM_THUNDER_RAGE, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_JAN08_HiddenItem_ThunderRage)
-    Call(MakeEntity, Entity_TrumpetPlant, -450, 0, 166, 170, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $Item_Coin_1)
+    Call(MakeMarkerEntity, $Item_Coin_2)
+    Call(MakeMarkerEntity, $Item_Coin_3)
+    Call(MakeMarkerEntity, $BellbellPlant_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_ThunderRage_1)
+    Call(MakeMarkerEntity, $TrumpetPlant_1)
     Return
     End
 };

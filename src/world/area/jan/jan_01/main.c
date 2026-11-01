@@ -1,8 +1,10 @@
 #include "jan_01.h"
+#include "world/area/jan/jan_00.h"
+#include "world/area/jan/jan_02.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_jan_00_1 = EVT_EXIT_WALK(60, jan_01_ENTRY_0, "jan_00", jan_00_ENTRY_1);
-EvtScript EVS_ExitWalk_jan_02_0 = EVT_EXIT_WALK(60, jan_01_ENTRY_1, "jan_02", jan_02_ENTRY_0);
+EvtScript EVS_ExitWalk_jan_00_1 = EVT_EXIT_WALK(60, $Jan00, $jan_00.Jan01);
+EvtScript EVS_ExitWalk_jan_02_0 = EVT_EXIT_WALK(60, $YoshisVillage, $jan_02.Jan01);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_00_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

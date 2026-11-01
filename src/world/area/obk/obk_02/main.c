@@ -1,4 +1,7 @@
 #include "obk_02.h"
+#include "world/area/obk/obk_01.h"
+#include "world/area/obk/obk_03.h"
+#include "world/area/obk/obk_06.h"
 
 enum {
     REGION_INIT_LAST    = -2,
@@ -9,12 +12,12 @@ enum {
 };
 
 EvtScript EVS_ExitDoor_obk_01_1 =
-    EVT_EXIT_SINGLE_DOOR(obk_02_ENTRY_0, "obk_01", obk_01_ENTRY_1, COLLIDER_tt1, MODEL_door1b, DOOR_SWING_OUT);
+    EVT_EXIT_SINGLE_DOOR($Foyer, $obk_01.BasementStairs, COLLIDER_tt1, MODEL_door1b, DOOR_SWING_OUT);
 
 EvtScript EVS_ExitDoor_obk_03_0 =
-    EVT_EXIT_SINGLE_DOOR(obk_02_ENTRY_1, "obk_03", obk_03_ENTRY_0, COLLIDER_tt2, MODEL_door2, DOOR_SWING_OUT);
+    EVT_EXIT_SINGLE_DOOR($Basement, $obk_03.BasementStairs, COLLIDER_tt2, MODEL_door2, DOOR_SWING_OUT);
 
-EvtScript EVS_ExitWalk_obk_06_1 = EVT_EXIT_WALK(60, obk_02_ENTRY_2, "obk_06", obk_06_ENTRY_1);
+EvtScript EVS_ExitWalk_obk_06_1 = EVT_EXIT_WALK(60, $Library, $obk_06.BasementStairs);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_obk_01_1, TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
@@ -27,17 +30,17 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(obk_02_ENTRY_0)
+        CaseEq($Foyer.index)
             Set(LVar2, MODEL_door1b)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
             ExecWait(EVS_BindExitTriggers)
-        CaseEq(obk_02_ENTRY_1)
+        CaseEq($Basement.index)
             Set(LVar2, MODEL_door2)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
             ExecWait(EVS_BindExitTriggers)
-        CaseEq(obk_02_ENTRY_2)
+        CaseEq($Library.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

@@ -1,4 +1,6 @@
 #include "isk_01.h"
+#include "world/area/isk/isk_02.h"
+#include "world/area/sbk/sbk_02.h"
 
 s32 adjust_cam_on_landing(void) {
     return LANDING_CAM_ALWAYS_ADJUST;
@@ -9,8 +11,8 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_sbk_02_4 = EVT_EXIT_WALK(40, isk_01_ENTRY_0, "sbk_02", sbk_02_ENTRY_4);
-EvtScript EVS_ExitWalk_isk_02_0 = EVT_EXIT_WALK(40, isk_01_ENTRY_1, "isk_02", isk_02_ENTRY_0);
+EvtScript EVS_ExitWalk_sbk_02_4 = EVT_EXIT_WALK(40, $DryDryDesert, $sbk_02.DryDryRuins);
+EvtScript EVS_ExitWalk_isk_02_0 = EVT_EXIT_WALK(40, $SarcophagusHall1, $isk_02.Entrance);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sbk_02_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

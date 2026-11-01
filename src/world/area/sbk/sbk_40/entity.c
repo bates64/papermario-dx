@@ -2,11 +2,10 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_MulticoinBlock, 0, 60, -100, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SBK40_MultiCoinBrick)
-    Call(MakeEntity, Entity_BrickBlock, 165, 60, -300, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 110, 60, 130, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, -110, 60, 200, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $MulticoinBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $BrickBlock_3)
     Return
     End
 };

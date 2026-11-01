@@ -38,7 +38,7 @@ EvtScript EVS_NpcDefeat_Bowser_Npc2 = {
     Call(PostBattleHideWorld_Npc2)
     Set(GF_KKJ25_Defeated_Bowser, true)
     // reload the map in the 'final' configuration
-    Call(GotoMap, "kkj_25", kkj_25_ENTRY_2)
+    Call(GotoMap, "kkj_25", 2)
     Wait(100)
     Return
     End
@@ -232,8 +232,8 @@ AnimID LimitAnims_Kalmar_Npc2[] = {
 
 NpcData NpcData_Bowser_Npc2 = {
     .id = NPC_Bowser_02,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Bowser_02.pos,
+    .yaw = $Bowser_02.yaw,
     .init = &EVS_NpcInit_Bowser_Npc2,
     .settings = &NpcSettings_Bowser,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -244,8 +244,8 @@ NpcData NpcData_Bowser_Npc2 = {
 
 NpcData NpcData_Peach_Npc2 = {
     .id = NPC_Peach_01,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Peach_01_1.pos,
+    .yaw = $Peach_01_1.yaw,
     .init = &EVS_NpcInit_Peach_Npc2,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
@@ -257,8 +257,8 @@ NpcData NpcData_Peach_Npc2 = {
 NpcData NpcData_Kammy_Npc2[] = {
     {
         .id = NPC_Kammy_03,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy_03.pos,
+        .yaw = $Kammy_03.yaw,
         .init = &EVS_NpcInit_Kammy_Broom_Npc2,
         .settings = &NpcSettings_Kammy_Flying,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
@@ -285,8 +285,8 @@ NpcData NpcData_Kammy_Npc2[] = {
     },
     {
         .id = NPC_Kammy_04,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Kammy_04.pos,
+        .yaw = $Kammy_04.yaw,
         .init = &EVS_NpcInit_Kammy_Npc2,
         .settings = &NpcSettings_Kammy_Flying,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -315,8 +315,8 @@ NpcData NpcData_Kammy_Npc2[] = {
 
 NpcData NpcData_Twink_Npc2 = {
     .id = NPC_Twink_01,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Twink_01_1.pos,
+    .yaw = $Twink_01_1.yaw,
     .init = &EVS_NpcInit_Twink_Npc2,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -327,8 +327,8 @@ NpcData NpcData_Twink_Npc2 = {
 
 NpcData NpcData_Eldstar_Npc2 = {
     .id = NPC_Eldstar,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Eldstar.pos,
+    .yaw = $Eldstar.yaw,
     .init = &EVS_NpcInit_Eldstar_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -339,8 +339,8 @@ NpcData NpcData_Eldstar_Npc2 = {
 
 NpcData NpcData_Mamar_Npc2 = {
     .id = NPC_Mamar,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Mamar.pos,
+    .yaw = $Mamar.yaw,
     .init = &EVS_NpcInit_Mamar_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -351,8 +351,8 @@ NpcData NpcData_Mamar_Npc2 = {
 
 NpcData NpcData_Skolar_Npc2 = {
     .id = NPC_Skolar,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Skolar.pos,
+    .yaw = $Skolar.yaw,
     .init = &EVS_NpcInit_Skolar_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -363,8 +363,8 @@ NpcData NpcData_Skolar_Npc2 = {
 
 NpcData NpcData_Muskular_Npc2 = {
     .id = NPC_Muskular,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Muskular.pos,
+    .yaw = $Muskular.yaw,
     .init = &EVS_NpcInit_Muskular_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -375,8 +375,8 @@ NpcData NpcData_Muskular_Npc2 = {
 
 NpcData NpcData_Misstar_Npc2 = {
     .id = NPC_Misstar,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Misstar.pos,
+    .yaw = $Misstar.yaw,
     .init = &EVS_NpcInit_Misstar_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -387,8 +387,8 @@ NpcData NpcData_Misstar_Npc2 = {
 
 NpcData NpcData_Klevar_Npc2 = {
     .id = NPC_Klevar,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Klevar.pos,
+    .yaw = $Klevar.yaw,
     .init = &EVS_NpcInit_Klevar_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -399,8 +399,8 @@ NpcData NpcData_Klevar_Npc2 = {
 
 NpcData NpcData_Kalmar_Npc2 = {
     .id = NPC_Kalmar,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
+    .pos = $Kalmar.pos,
+    .yaw = $Kalmar.yaw,
     .init = &EVS_NpcInit_Kalmar_Npc2,
     .settings = &NpcSettings_StarSpirit,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

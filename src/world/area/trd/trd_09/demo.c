@@ -50,7 +50,7 @@ EvtScript EVS_ProvideDemoInputs = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "trd_09", trd_09_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
+    Call(GotoMapSpecial, $Demo, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(123)
     Return
     End
@@ -69,7 +69,7 @@ EvtScript EVS_MonitorDemoState = {
         Return
     EndIf
     Set(GF_DemoSceneDone, true)
-    Call(GotoMapSpecial, "trd_09", trd_09_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
+    Call(GotoMapSpecial, $Demo, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(113)
     Return
     End

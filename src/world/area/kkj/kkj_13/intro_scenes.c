@@ -1,4 +1,6 @@
 #include "kkj_13.h"
+#include "world/area/hos/hos_10.h"
+#include "world/area/osr/osr_03.h"
 #include "effects.h"
 #include "sprite.h"
 #include "sprite/player.h"
@@ -310,7 +312,7 @@ EvtScript EVS_Scene_BowserAttacks = {
         Call(EnableGroup, MODEL_g152, true)
         Call(EnableGroup, MODEL_g154, true)
         Call(PlaySoundAt, SOUND_GLASS_SHATTER, SOUND_SPACE_DEFAULT, 600, 60, -150)
-        PlayEffect(EFFECT_SPARKLES, 0, 600, 60, -150, 120)
+        PlayEffect(EFFECT_SPARKLES, 0, $SparklesPos_1.pos.x, $SparklesPos_1.pos.y, $SparklesPos_1.pos.z, 120)
         Call(ShatterWindow)
         Wait(1)
         Call(ScreenWhiteFlashOff)
@@ -434,7 +436,7 @@ EvtScript EVS_Scene_BowserAttacks = {
     Wait(10 * DT)
     Call(FadeOutMusic, 0, 500)
     Call(PlaySoundAtNpc, NPC_Bowser_Body, SOUND_BOWSER_STAR_ROD_USE, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, 780, 95, 27, 1, 30)
+    PlayEffect(EFFECT_GATHER_ENERGY_PINK, 0, $GatherEnergyPinkPos_1.pos.x, $GatherEnergyPinkPos_1.pos.y, $GatherEnergyPinkPos_1.pos.z, 1, 30)
     Wait(40 * DT)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, 4.0)
@@ -460,7 +462,7 @@ EvtScript EVS_Scene_BowserAttacks = {
         EndLoop
     EndThread
     Wait(30 * DT)
-    Call(GotoMap, "osr_03", osr_03_ENTRY_2)
+    Call(GotoMap, $osr_03.TossedOut)
     Wait(100 * DT)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -503,7 +505,7 @@ EvtScript EVS_Scene_PeachCaptured = {
     EndThread
     Wait(30 * DT)
     Call(InterpNpcYaw, NPC_Kammy, 270, 0)
-    Call(GotoMap, "hos_10", hos_10_ENTRY_5)
+    Call(GotoMap, $hos_10.PreTitle)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

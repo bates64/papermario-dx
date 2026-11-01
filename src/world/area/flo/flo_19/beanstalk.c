@@ -1,4 +1,5 @@
 #include "flo_19.h"
+#include "world/area/flo/flo_00.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -300,7 +301,7 @@ EvtScript EVS_Exit_Beanstalk = {
                 Wait(1)
                 Goto(10)
             EndIf
-        Call(GotoMap, "flo_00", flo_00_ENTRY_8)
+        Call(GotoMap, $flo_00.Beanstalk)
         Wait(100)
     EndIf
     Return
@@ -357,9 +358,9 @@ EvtScript EVS_Scene_BeanstalkGrowing = {
                     Call(EnableGroup, MODEL_ha, true)
                     Call(EnableModel, MODEL_o142, false)
                     Wait(48)
-                    PlayEffect(EFFECT_CLOUD_PUFF, 0, 22, 15, 0)
+                    PlayEffect(EFFECT_CLOUD_PUFF, 0, $CloudPuffPos_1.pos.x, $CloudPuffPos_1.pos.y, $CloudPuffPos_1.pos.z)
                     Wait(10)
-                    PlayEffect(EFFECT_CLOUD_PUFF, 0, 22, 15, 0)
+                    PlayEffect(EFFECT_CLOUD_PUFF, 0, $CloudPuffPos_1.pos.x, $CloudPuffPos_1.pos.y, $CloudPuffPos_1.pos.z)
                 EndThread
                 Set(AF_FLO_BeanstalkGrowing, true)
             EndIf
@@ -380,7 +381,7 @@ EvtScript EVS_Scene_BeanstalkGrowing = {
     EndLoop
     Wait(15)
     Set(GB_StoryProgress, STORY_CH6_GREW_MAGIC_BEANSTALK)
-    Call(GotoMap, "flo_00", flo_00_ENTRY_7)
+    Call(GotoMap, $flo_00.BeanstalkGrown)
     Return
     End
 };

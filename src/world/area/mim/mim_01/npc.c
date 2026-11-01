@@ -5,20 +5,9 @@
 NpcData NpcData_PiranhaPlant[] = {
     {
         .id = NPC_PiranhaPlant,
-        .pos = { 135.0f, 0.0f, -300.0f },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 135, 0, -300 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 0, 0 },
-                .detectSize = { 400 },
-            }
-        },
+        .pos = $PiranhaPlant.pos,
+        .yaw = $PiranhaPlant.yaw,
+        .territory = $PiranhaPlant.territory,
         .settings = &NpcSettings_PiranhaPlant,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = PIRANHA_PLANT_DROPS,

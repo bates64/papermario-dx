@@ -1,7 +1,9 @@
 #include "mim_12.h"
+#include "world/area/arn/arn_07.h"
+#include "world/area/mim/mim_11.h"
 
-EvtScript EVS_ExitWalk_mim_11_1 = EVT_EXIT_WALK(60, mim_12_ENTRY_0, "mim_11", mim_11_ENTRY_1);
-EvtScript EVS_ExitWalk_arn_07_2 = EVT_EXIT_WALK(60, mim_12_ENTRY_1, "arn_07", arn_07_ENTRY_2);
+EvtScript EVS_ExitWalk_mim_11_1 = EVT_EXIT_WALK(60, $Mim11, $mim_11.Mim12);
+EvtScript EVS_ExitWalk_arn_07_2 = EVT_EXIT_WALK(60, $GustyGulch, $arn_07.ForeverForest);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_mim_11_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

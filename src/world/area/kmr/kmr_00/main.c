@@ -1,6 +1,7 @@
 #include "kmr_00.h"
+#include "world/area/kmr/kmr_02.h"
 
-EvtScript EVS_ExitWalk_kmr_02_1 = EVT_EXIT_WALK(60, kmr_00_ENTRY_0, "kmr_02", kmr_02_ENTRY_1);
+EvtScript EVS_ExitWalk_kmr_02_1 = EVT_EXIT_WALK(60, $GoombaVillage, $kmr_02.ForestClearing);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kmr_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)

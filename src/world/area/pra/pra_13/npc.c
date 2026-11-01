@@ -68,7 +68,7 @@ EvtScript EVS_ImposterSpin = {
 
 EvtScript EVS_Scene_ImpostersCaught = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, pra_13_ENTRY_2)
+    IfEq(LVar0, $BlueMirrorHall2North.index)
         IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
             Call(DisablePlayerInput, true)
             Wait(10)
@@ -157,7 +157,7 @@ EvtScript EVS_NpcInit_FakeMario = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Mario1_Idle)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, pra_13_ENTRY_2)
+    IfEq(LVar0, $BlueMirrorHall2North.index)
         IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
             Call(SetNpcPos, NPC_SELF, 375, 0, -59)
         EndIf
@@ -178,7 +178,7 @@ EvtScript EVS_NpcInit_FakeBombette = {
     Call(BindNpcDefeat, NPC_SELF, EVS_Scene_DefeatImposters)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_USE_INSPECT_ICON, true)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, pra_13_ENTRY_2)
+    IfEq(LVar0, $BlueMirrorHall2North.index)
         IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MIRROR_DUPLIGHOSTS)
             Call(SetNpcPos, NPC_SELF, 345, 0, -59)
             MallocArray(16, LVarA)
@@ -211,8 +211,8 @@ EvtScript EVS_NpcInit_Duplighost_02 = {
 
 NpcData NpcData_FakeMario = {
     .id = NPC_FakeMario,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $FakeMario.pos,
+    .yaw = $FakeMario.yaw,
     .init = &EVS_NpcInit_FakeMario,
     .settings = &NpcSettings_Duplighost,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -223,8 +223,8 @@ NpcData NpcData_FakeMario = {
 NpcData NpcData_Imposters[] = {
     {
         .id = NPC_FakeBombette,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $FakeBombette.pos,
+        .yaw = $FakeBombette.yaw,
         .init = &EVS_NpcInit_FakeBombette,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -233,8 +233,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_Duplighost_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Duplighost_01.pos,
+        .yaw = $Duplighost_01.yaw,
         .init = &EVS_NpcInit_Duplighost_01,
         .settings = &NpcSettings_Duplighost,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -243,8 +243,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_Duplighost_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Duplighost_02.pos,
+        .yaw = $Duplighost_02.yaw,
         .init = &EVS_NpcInit_Duplighost_02,
         .settings = &NpcSettings_Duplighost,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,

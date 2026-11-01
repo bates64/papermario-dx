@@ -1,7 +1,8 @@
 #include "sam_01.h"
+#include "world/area/sam/sam_02.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_sam_02_0 = EVT_EXIT_WALK(60, sam_01_ENTRY_0, "sam_02", sam_02_ENTRY_0);
+EvtScript EVS_ExitWalk_sam_02_0 = EVT_EXIT_WALK(60, $ShiverCityCenter, $sam_02.MayorArea);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sam_02_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)

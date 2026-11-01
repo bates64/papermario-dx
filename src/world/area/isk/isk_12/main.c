@@ -1,11 +1,14 @@
 #include "isk_12.h"
+#include "world/area/isk/isk_11.h"
+#include "world/area/isk/isk_13.h"
+#include "world/area/isk/isk_18.h"
 
 b32 CamAdjustReady = false;
 
 s32 adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    if (gGameStatusPtr->entryID == isk_12_ENTRY_0) {
+    if (gGameStatusPtr->entryID == $StonePuzzleRoomUpper.index) {
         if (!CamAdjustReady) {
             if (!(gPlayerStatus.pos.y > -520.0f)) {
                 CamAdjustReady = true;
@@ -31,10 +34,10 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_isk_11_1 = EVT_EXIT_WALK(40, isk_12_ENTRY_0, "isk_11", isk_11_ENTRY_1);
-EvtScript EVS_ExitWalk_isk_11_2 = EVT_EXIT_WALK(40, isk_12_ENTRY_1, "isk_11", isk_11_ENTRY_2);
-EvtScript EVS_ExitWalk_isk_18_1 = EVT_EXIT_WALK(40, isk_12_ENTRY_2, "isk_18", isk_18_ENTRY_1);
-EvtScript EVS_ExitWalk_isk_13_0 = EVT_EXIT_WALK(40, isk_12_ENTRY_3, "isk_13", isk_13_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_11_1 = EVT_EXIT_WALK(40, $StonePuzzleRoomUpper, $isk_11.SandDrainage3Upper);
+EvtScript EVS_ExitWalk_isk_11_2 = EVT_EXIT_WALK(40, $StonePuzzleRoomLower, $isk_11.SandDrainage3Lower);
+EvtScript EVS_ExitWalk_isk_18_1 = EVT_EXIT_WALK(40, $DeepTunnel, $isk_18.SandDrainage3);
+EvtScript EVS_ExitWalk_isk_13_0 = EVT_EXIT_WALK(40, $LunarStoneRoom, $isk_13.SandDrainage3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_11_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)

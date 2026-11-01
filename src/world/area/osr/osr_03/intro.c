@@ -1,4 +1,6 @@
 #include "osr_03.h"
+#include "world/area/hos/hos_10.h"
+#include "world/area/kkj/kkj_13.h"
 #include "sprite/player.h"
 
 API_CALLABLE(MakeCastleChainAngle) {
@@ -224,7 +226,7 @@ EvtScript MV_Scene_CastleAscending = {
     Call(SetCamDistance, CAM_DEFAULT, 1000.0)
     Call(SetCamSpeed, CAM_DEFAULT, 0.75)
     Wait(180 * DT)
-    Call(GotoMap, "kkj_13", kkj_13_ENTRY_2)
+    Call(GotoMap, $kkj_13.BowserAttacks)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return
@@ -277,7 +279,7 @@ EvtScript MV_Scene_PlayerTossedOut = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMap, "kkj_13", kkj_13_ENTRY_3)
+    Call(GotoMap, $kkj_13.PeachCaptured)
     Wait(100)
     Return
     End
@@ -313,7 +315,7 @@ EvtScript EVS_Scene_UnusedTossOut = {
     Wait(15)
     ExecWait(EVS_UnusedFalling2)
     Wait(60)
-    Call(GotoMap, "hos_10", hos_10_ENTRY_5)
+    Call(GotoMap, $hos_10.PreTitle)
     Wait(100)
     Call(DisablePlayerInput, false)
     Return

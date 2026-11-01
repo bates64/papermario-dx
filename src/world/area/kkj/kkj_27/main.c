@@ -1,4 +1,5 @@
 #include "kkj_27.h"
+#include "world/area/kkj/kkj_14.h"
 
 Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
@@ -19,7 +20,7 @@ Gfx setup_gfx_candle_lights[] = {
     gsSPEndDisplayList(),
 };
 
-EvtScript EVS_ExitWalk_kkj_14_2 = EVT_EXIT_WALK(60, kkj_27_ENTRY_0, "kkj_14", kkj_14_ENTRY_2);
+EvtScript EVS_ExitWalk_kkj_14_2 = EVT_EXIT_WALK(60, $PeachsRoom, $kkj_14.SecretPassage);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kkj_14_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
@@ -30,7 +31,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_27_ENTRY_0)
+        CaseEq($PeachsRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

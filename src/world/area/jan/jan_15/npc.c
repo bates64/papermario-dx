@@ -177,8 +177,8 @@ EvtScript EVS_NpcInit_PutridPiranha = {
 NpcData NpcData_Piranhas[] = {
     {
         .id = NPC_PutridPiranha_01,
-        .pos = { 365.0f, 0.0f, -45.0f },
-        .yaw = 270,
+        .pos = $PutridPiranha_01.pos,
+        .yaw = $PutridPiranha_01.yaw,
         .init = &EVS_NpcInit_PutridPiranha,
         .settings = &NpcSettings_PutridPiranhaSentinel,
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -187,8 +187,8 @@ NpcData NpcData_Piranhas[] = {
     },
     {
         .id = NPC_PutridPiranha_02,
-        .pos = { 325.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $PutridPiranha_02.pos,
+        .yaw = $PutridPiranha_02.yaw,
         .settings = &NpcSettings_PutridPiranhaSentinel,
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = PIRANHA_SENTINEL_DROPS,
@@ -196,8 +196,8 @@ NpcData NpcData_Piranhas[] = {
     },
     {
         .id = NPC_PutridPiranha_03,
-        .pos = { 375.0f, 0.0f, 45.0f },
-        .yaw = 270,
+        .pos = $PutridPiranha_03.pos,
+        .yaw = $PutridPiranha_03.yaw,
         .settings = &NpcSettings_PutridPiranhaSentinel,
         .flags = ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = PIRANHA_SENTINEL_DROPS,
@@ -207,8 +207,8 @@ NpcData NpcData_Piranhas[] = {
 
 NpcData NpcData_HeartPlant_01 = {
     .id = NPC_HeartPlant_01,
-    .pos = { -183.0f, 0.0f, 47.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_01.pos,
+    .yaw = $HeartPlant_01.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -218,8 +218,8 @@ NpcData NpcData_HeartPlant_01 = {
 
 NpcData NpcData_HeartPlant_02 = {
     .id = NPC_HeartPlant_02,
-    .pos = { -124.0f, 0.0f, 20.0f },
-    .yaw = 270,
+    .pos = $HeartPlant_02.pos,
+    .yaw = $HeartPlant_02.yaw,
     .settings = &NpcSettings_HeartPlant,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_INSPECT_ICON | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,

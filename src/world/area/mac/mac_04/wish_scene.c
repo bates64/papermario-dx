@@ -1,4 +1,5 @@
 #include "mac_04.h"
+#include "world/area/hos/hos_20.h"
 
 EvtScript EVS_Scene_WishingToadKid = {
     Call(DisablePlayerInput, true)
@@ -15,7 +16,7 @@ EvtScript EVS_Scene_WishingToadKid = {
     Wait(20)
     Call(SpeakToPlayer, NPC_WishingToadKid, ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Disappointed, 0, MSG_HOS_0070)
     Wait(10)
-    Call(GotoMap, "hos_20", hos_20_ENTRY_1)
+    Call(GotoMap, $hos_20.Flight2)
     Wait(100)
     Return
     End
@@ -31,8 +32,8 @@ EvtScript EVS_NpcInit_WishingToadKid = {
 NpcData NpcData_WishSceneToads[] = {
     {
         .id = NPC_WishingToadKid,
-        .pos = { 350.0f, 0.0f, -20.0f },
-        .yaw = 270,
+        .pos = $WishingToadKid.pos,
+        .yaw = $WishingToadKid.yaw,
         .init = &EVS_NpcInit_WishingToadKid,
         .settings = &NpcSettings_Toad,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -41,8 +42,8 @@ NpcData NpcData_WishSceneToads[] = {
     },
     {
         .id = NPC_GossipTrio1,
-        .pos = { -245.0f, 20.0f, 100.0f },
-        .yaw = 270,
+        .pos = $GossipTrio1_1.pos,
+        .yaw = $GossipTrio1_1.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
@@ -51,8 +52,8 @@ NpcData NpcData_WishSceneToads[] = {
     },
     {
         .id = NPC_GossipTrio2,
-        .pos = { -25.0f, 0.0f, 170.0f },
-        .yaw = 270,
+        .pos = $GossipTrio2_1.pos,
+        .yaw = $GossipTrio2_1.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,
@@ -61,8 +62,8 @@ NpcData NpcData_WishSceneToads[] = {
     },
     {
         .id = NPC_GossipTrio3,
-        .pos = { -100.0f, 0.0f, 305.0f },
-        .yaw = 90,
+        .pos = $GossipTrio3_1.pos,
+        .yaw = $GossipTrio3_1.yaw,
         .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT,
         .drops = NO_DROPS,

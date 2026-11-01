@@ -85,7 +85,7 @@ EvtScript EVS_NpcIdle_ToadGuard_02 = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kkj_01_ENTRY_4)
+    IfNe(LVar0, $PeachsRoom.index)
         Return
     EndIf
     Call(WaitForPlayerInputEnabled)
@@ -291,8 +291,8 @@ EvtScript EVS_NpcInit_Koopa = {
 NpcData NpcData_ToadMinister[] = {
     {
         .id = NPC_ToadMinister,
-        .pos = { 0.0f, 0.0f, 350.0f },
-        .yaw = 270,
+        .pos = $ToadMinister.pos,
+        .yaw = $ToadMinister.yaw,
         .init = &EVS_NpcInit_ToadMinister,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_ToadMinister,
@@ -301,8 +301,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Toad_01,
-        .pos = { 100.0f, 0.0f, 175.0f },
-        .yaw = 270,
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
         .init = &EVS_NpcInit_Toad_01,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Toad,
@@ -311,20 +311,9 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { 200.0f, 0.0f, 110.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 200, 0, 110 },
-                .wanderSize = { 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 200, 0, 110 },
-                .detectSize = { 70 },
-            }
-        },
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
+        .territory = $Toad_02.territory,
         .init = &EVS_NpcInit_Toad_02,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Toadette_Wander,
@@ -333,22 +322,9 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Toad_03,
-        .pos = { -250.0f, 0.0f, 225.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -250, 0, 225 },
-                    { 300, 0, -50 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -250, 0, 225 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Toad_03.pos,
+        .yaw = $Toad_03.yaw,
+        .territory = $Toad_03.territory,
         .init = &EVS_NpcInit_Toad_03,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Toad_Patrol,
@@ -357,20 +333,9 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Toadette,
-        .pos = { -170.0f, 0.0f, 100.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -170, 0, 100 },
-                .wanderSize = { 70 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -170, 0, 100 },
-                .detectSize = { 70 },
-            }
-        },
+        .pos = $Toadette.pos,
+        .yaw = $Toadette.yaw,
+        .territory = $Toadette.territory,
         .init = &EVS_NpcInit_Toadette,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Toadette_Wander,
@@ -379,8 +344,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_ToadGuard_01,
-        .pos = { -55.0f, 100.0f, -360.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_01.pos,
+        .yaw = $ToadGuard_01.yaw,
         .init = &EVS_NpcInit_ToadGuard_01,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_ToadGuard,
@@ -389,8 +354,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_ToadGuard_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $ToadGuard_02.pos,
+        .yaw = $ToadGuard_02.yaw,
         .init = &EVS_NpcInit_ToadGuard_02,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_ToadGuard,
@@ -399,8 +364,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Dryite,
-        .pos = { 170.0f, 0.0f, 345.0f },
-        .yaw = 90,
+        .pos = $Dryite.pos,
+        .yaw = $Dryite.yaw,
         .init = &EVS_NpcInit_Dryite,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Dryite,
@@ -409,8 +374,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Mouser,
-        .pos = { 200.0f, 0.0f, 325.0f },
-        .yaw = 270,
+        .pos = $Mouser.pos,
+        .yaw = $Mouser.yaw,
         .init = &EVS_NpcInit_Mouser,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Mouser,
@@ -419,8 +384,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_MayorPenguin,
-        .pos = { -150.0f, 0.0f, 0.0f },
-        .yaw = 90,
+        .pos = $MayorPenguin.pos,
+        .yaw = $MayorPenguin.yaw,
         .init = &EVS_NpcInit_MayorPenguin,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Penguin,
@@ -429,8 +394,8 @@ NpcData NpcData_ToadMinister[] = {
     },
     {
         .id = NPC_Koopa,
-        .pos = { -120.0f, 0.0f, -15.0f },
-        .yaw = 270,
+        .pos = $Koopa.pos,
+        .yaw = $Koopa.yaw,
         .init = &EVS_NpcInit_Koopa,
         .drops  = NO_DROPS,
         .settings = &NpcSettings_Koopa,

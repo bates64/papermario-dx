@@ -1,11 +1,13 @@
 #include "kpa_133.h"
+#include "world/area/kpa/kpa_134.h"
+#include "world/area/kpa/kpa_51.h"
 #include "effects.h"
 
 EvtScript EVS_ExitDoors_kpa_51_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_133_ENTRY_0, "kpa_51", kpa_51_ENTRY_1, COLLIDER_ttw, MODEL_o486, MODEL_o485);
-EvtScript EVS_ExitWalk_kpa_134_0 = EVT_EXIT_WALK(40, kpa_133_ENTRY_1, "kpa_134", kpa_134_ENTRY_0);
-EvtScript EVS_ExitWalk_kpa_134_2 = EVT_EXIT_WALK(40, kpa_133_ENTRY_2, "kpa_134", kpa_134_ENTRY_2);
-EvtScript EVS_ExitWalk_kpa_134_3 = EVT_EXIT_WALK(40, kpa_133_ENTRY_3, "kpa_134", kpa_134_ENTRY_3);
+    EVT_EXIT_DOUBLE_DOOR($WaterPuzzleHall, $kpa_51.LeftWaterPuzzle, COLLIDER_ttw, MODEL_o486, MODEL_o485);
+EvtScript EVS_ExitWalk_kpa_134_0 = EVT_EXIT_WALK(40, $RightPuzzleLow, $kpa_134.LeftPuzzleLow);
+EvtScript EVS_ExitWalk_kpa_134_2 = EVT_EXIT_WALK(40, $RightPuzzleMid, $kpa_134.LeftPuzzleMid);
+EvtScript EVS_ExitWalk_kpa_134_3 = EVT_EXIT_WALK(40, $RightPuzzleHigh, $kpa_134.LeftPuzzleHigh);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kpa_51_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -19,19 +21,19 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_133_ENTRY_0)
-            Set(LVar0, kpa_133_ENTRY_0)
+        CaseEq($WaterPuzzleHall.index)
+            Set(LVar0, $WaterPuzzleHall.index)
             Set(LVar2, MODEL_o486)
             Set(LVar3, MODEL_o485)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_133_ENTRY_1)
+        CaseEq($RightPuzzleLow.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_133_ENTRY_2)
+        CaseEq($RightPuzzleMid.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(kpa_133_ENTRY_3)
+        CaseEq($RightPuzzleHigh.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch
@@ -40,12 +42,12 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_Wall = {
-    .pos = { 388.0f, 240.0f, -25.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Wall.pos,
+    .diameter = 2.0f * $BombPos_Wall.radius,
 };
 
 EvtScript EVS_BlastWall = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 56, 56, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(EnableModel, MODEL_o235, true)

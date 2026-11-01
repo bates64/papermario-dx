@@ -1,4 +1,6 @@
 #include "pra_13.h"
+#include "world/area/pra/pra_02.h"
+#include "world/area/pra/pra_14.h"
 #include "effects.h"
 
 #include "../common/Reflection.inc.c"
@@ -30,14 +32,14 @@ EvtScript EVS_ExitDoors_pra_02_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_02", pra_02_ENTRY_2)
+    Call(GotoMap, $pra_02.MirrorHallSouth)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_pra_14_0 = EVT_EXIT_WALK(60, pra_13_ENTRY_1, "pra_14", pra_14_ENTRY_0);
-EvtScript EVS_ExitWalk_pra_14_1 = EVT_EXIT_WALK(60, pra_13_ENTRY_2, "pra_14", pra_14_ENTRY_1);
+EvtScript EVS_ExitWalk_pra_14_0 = EVT_EXIT_WALK(60, $BlueMirrorHall2South, $pra_14.BlueMirrorHall1South);
+EvtScript EVS_ExitWalk_pra_14_1 = EVT_EXIT_WALK(60, $BlueMirrorHall2North, $pra_14.BlueMirrorHall1North);
 
 EvtScript EVS_ExitDoors_pra_02_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
@@ -54,7 +56,7 @@ EvtScript EVS_ExitDoors_pra_02_3 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_02", pra_02_ENTRY_3)
+    Call(GotoMap, $pra_02.MirrorHallNorth)
     Wait(100)
     Return
     End
@@ -72,7 +74,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_13_ENTRY_0)
+        CaseEq($EntryHallSouth.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
@@ -83,13 +85,13 @@ EvtScript EVS_EnterMap = {
             EndIf
             ExecWait(BaseEnterDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(pra_13_ENTRY_1)
+        CaseEq($BlueMirrorHall2South.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(pra_13_ENTRY_2)
+        CaseEq($BlueMirrorHall2North.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(pra_13_ENTRY_3)
+        CaseEq($EntryHallNorth.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
@@ -106,17 +108,17 @@ EvtScript EVS_EnterMap = {
 };
 
 BombTrigger BombPos_NearWall = {
-    .pos = { 487.0f, 0.0f, 80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_NearWall.pos,
+    .diameter = 2.0f * $BombPos_NearWall.radius,
 };
 
 BombTrigger BombPos_FarWall = {
-    .pos = { 487.0f, 0.0f, -80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_FarWall.pos,
+    .diameter = 2.0f * $BombPos_FarWall.radius,
 };
 
 EvtScript EVS_BlastWall_Near = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 50, 34, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_g260, false)
     Call(EnableModel, MODEL_g265, false)
     Call(EnableModel, MODEL_o952, true)
@@ -129,7 +131,7 @@ EvtScript EVS_BlastWall_Near = {
 };
 
 EvtScript EVS_BlastWall_Far = {
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 65, 34, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_2.pos.x, $BombetteBreakingPos_2.pos.y, $BombetteBreakingPos_2.pos.z, 10, 30)
     Call(EnableModel, MODEL_g289, false)
     Call(EnableModel, MODEL_g290, false)
     Call(EnableModel, MODEL_o1009, true)

@@ -1,5 +1,6 @@
 
 #include "tst_04.h"
+#include "world/area/tst/tst_03.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
@@ -58,28 +59,14 @@ API_CALLABLE(PushPartnerTest) {
     return ApiStatus_DONE2;
 }
 
-EntryList Entrances = {
-    [tst_04_ENTRY_0]    { -484.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_1]    {  484.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_2]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_3]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_4]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_5]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_6]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_7]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_8]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_9]    {    0.0,    0.0,    0.0,    0.0 },
-    [tst_04_ENTRY_A]    {  354.0,    0.0,  294.0,  117.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
 };
 
 EvtScript EVS_GotoMap_tst_03_1 = {
-    Call(GotoMap, "tst_03", tst_03_ENTRY_1)
+    Call(GotoMap, $tst_03.MovingPlatformsTest)
     Wait(100)
     Return
     End

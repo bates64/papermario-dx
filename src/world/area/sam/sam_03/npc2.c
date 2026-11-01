@@ -5,20 +5,9 @@
 NpcData NpcData_Gulpit_01[] = {
     {
         .id = NPC_Gulpit_01,
-        .pos = { -345.0f, 0.0f, 115.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -345, 0, 115 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -345, 0, 115 },
-                .detectSize = { 250 },
-            }
-        },
+        .pos = $Gulpit_01.pos,
+        .yaw = $Gulpit_01.yaw,
+        .territory = $Gulpit_01.territory,
         .settings = &NpcSettings_Gulpit_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,
@@ -32,20 +21,9 @@ NpcData NpcData_Gulpit_01[] = {
 NpcData NpcData_Gulpit_02[] = {
     {
         .id = NPC_Gulpit_02,
-        .pos = { 200.0f, 0.0f, 0.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 200, 0, 0 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 200, 0, 0 },
-                .detectSize = { 250 },
-            }
-        },
+        .pos = $Gulpit_02.pos,
+        .yaw = $Gulpit_02.yaw,
+        .territory = $Gulpit_02.territory,
         .settings = &NpcSettings_Gulpit_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = GULPIT_DROPS,

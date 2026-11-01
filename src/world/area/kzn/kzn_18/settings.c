@@ -10,16 +10,10 @@ s32 get_tattle(void) {
     }
 }
 
-EntryList Entrances = {
-    [kzn_18_ENTRY_0]    { -405.0,  250.0, -330.0,   90.0 },
-    [kzn_18_ENTRY_1]    {  435.0,  250.0, -350.0,  270.0 },
-    [kzn_18_ENTRY_2]    {  490.0,   25.0,   -5.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .tattle = { .get = get_tattle },
     .songVariation = 1,
     .sfxReverb = 2,

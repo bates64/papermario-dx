@@ -1,4 +1,5 @@
 #include "trd_05.h"
+#include "world/area/trd/trd_06.h"
 #include "sprite.h"
 #include "sprite/player.h"
 
@@ -360,7 +361,7 @@ EvtScript EVS_OnHitTrapTrigger = {
     Else
         Wait(20)
     EndIf
-    Call(GotoMap, "trd_06", trd_06_ENTRY_0)
+    Call(GotoMap, $trd_06.FallIntoCell)
     Wait(100)
     Return
     End

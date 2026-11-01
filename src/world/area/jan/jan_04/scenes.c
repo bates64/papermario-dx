@@ -77,7 +77,7 @@ EvtScript EVS_Scene_Epilogue = {
     EndChildThread
     Wait(90)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, "flo_00", flo_00_ENTRY_B)
+    Call(GotoMap, "flo_00", 11)
     Wait(100)
     Return
     End

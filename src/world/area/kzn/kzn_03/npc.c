@@ -160,8 +160,8 @@ EvtScript EVS_NpcInit_ZiplineDummy = {
 NpcData NpcData_PassiveNPCs[] = {
     {
         .id = NPC_Kolorado,
-        .pos = { 392.0f, 470.0f, 218.0f },
-        .yaw = 90,
+        .pos = $Kolorado.pos,
+        .yaw = $Kolorado.yaw,
         .init = &EVS_NpcInit_Kolorado,
         .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -171,8 +171,8 @@ NpcData NpcData_PassiveNPCs[] = {
     },
     {
         .id = NPC_ZiplineDummy1,
-        .pos = { 392.0f, 470.0f, 218.0f },
-        .yaw = 90,
+        .pos = $ZiplineDummy1.pos,
+        .yaw = $ZiplineDummy1.yaw,
         .init = &EVS_NpcInit_ZiplineDummy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -182,8 +182,8 @@ NpcData NpcData_PassiveNPCs[] = {
     },
     {
         .id = NPC_ZiplineDummy2,
-        .pos = { 392.0f, 470.0f, 218.0f },
-        .yaw = 90,
+        .pos = $ZiplineDummy2.pos,
+        .yaw = $ZiplineDummy2.yaw,
         .init = &EVS_NpcInit_ZiplineDummy,
         .settings = &NpcSettings_Dummy,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -195,20 +195,9 @@ NpcData NpcData_PassiveNPCs[] = {
 
 NpcData NpcData_SpikeTop_01 = {
     .id = NPC_SpikeTop_01,
-    .pos = { 140.0f, 670.0f, -20.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 140, 670, -20 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { -50, 670, -25 },
-            .detectSize = { 240, 115 },
-        }
-    },
+    .pos = $SpikeTop_01.pos,
+    .yaw = $SpikeTop_01.yaw,
+    .territory = $SpikeTop_01.territory,
     .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
@@ -218,20 +207,9 @@ NpcData NpcData_SpikeTop_01 = {
 
 NpcData NpcData_SpikeTop_02 = {
     .id = NPC_SpikeTop_02,
-    .pos = { -200.0f, 670.0f, -35.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -200, 670, -35 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { -50, 670, -25 },
-            .detectSize = { 240, 115 },
-        }
-    },
+    .pos = $SpikeTop_02.pos,
+    .yaw = $SpikeTop_02.yaw,
+    .territory = $SpikeTop_02.territory,
     .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
@@ -241,20 +219,9 @@ NpcData NpcData_SpikeTop_02 = {
 
 NpcData NpcData_SpikeTop_03 = {
     .id = NPC_SpikeTop_03,
-    .pos = { 30.0f, 20.0f, 320.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 30, 20, 320 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 140, 20, 275 },
-            .detectSize = { 180, 95 },
-        }
-    },
+    .pos = $SpikeTop_03.pos,
+    .yaw = $SpikeTop_03.yaw,
+    .territory = $SpikeTop_03.territory,
     .settings = &NpcSettings_SpikeTop_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = SPIKE_TOP_DROPS,
@@ -265,20 +232,9 @@ NpcData NpcData_SpikeTop_03 = {
 NpcData NpcData_PutridPiranha[] = {
     {
         .id = NPC_Piranha,
-        .pos = { 260.0f, 20.0f, 255.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 260, 20, 255 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 260, 20, 255 },
-                .detectSize = { 100, 50 },
-            }
-        },
+        .pos = $Piranha.pos,
+        .yaw = $Piranha.yaw,
+        .territory = $Piranha.territory,
         .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = PUTRID_PIRANHA_DROPS,

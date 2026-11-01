@@ -1,0 +1,204 @@
+---
+title: Markers
+sidebar:
+  order: 10
+---
+
+A **marker** is a named position or shape in a map, such as where an NPC stands, where the player enters, or where a block sits. You place markers in the map editor, and the map's code refers to each one by its name with a `$` in front, such as `$Goompa`. Every map in dx keeps its positions in markers, so to move something, you move its marker instead of changing numbers in code.
+
+## Place a marker
+
+{% steps %}
+1. Open the map's `map.xml`, and select the **Markers** tab of the Outline.
+2. Right-click the floor where the marker should go, and select the kind of marker to make, such as **New NPC...**.
+3. Enter a name for the marker, such as `Goompa`, and select **Create**. Your code refers to the marker by this name, so it must start with a letter and use only letters, numbers, and underscores. It also can't be the name of another marker in the map or the name of a map, such as `kmr_03`.
+{% /steps %}
+
+To move a marker, select it and drag the move gizmo, or type its position in its card. To rename it, right-click it in the Outline and select **Rename...**.
+
+## Use a marker in code
+
+Save the map and build the mod. The map's header, such as `kmr_02.h`, includes `map.xml.h`, which then gives the map's code each marker as a constant named after it. The `$` marks names that come from the map editor, so you can tell them apart from names your code defines.
+
+Each kind of marker has its own type, defined in `map.h`, and its fields hold what you set in the editor. For example, an NPC marker named `Goompa` is an `NpcMarker`, and `$Goompa.pos` is its position. Positions are `Vec3f`, so you can take their parts as `.x`, `.y`, and `.z`.
+
+The fields are constants, so they work anywhere a number written in the code would: in data, such as an `NpcData`, and in EVT scripts. A file of the map's code that doesn't use a marker doesn't carry its data.
+
+If you rename or remove a marker, the build fails at each place your code still uses the old name, so you can find and update them all. It also fails if two of the map's names would be the same, such as a marker named `Route_Start` in a map whose path `Route` has a point named `Start`. The error names both, so you can rename one.
+
+## Position
+
+A Position marker is a point, such as where an item appears or where an effect plays. It's a `PositionMarker`, with one field, `pos`.
+
+```c
+Call(MakeItemEntity, ITEM_SHOOTING_STAR, $ShootingStar.pos.x, $ShootingStar.pos.y, $ShootingStar.pos.z,
+    ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KMR02_Item_ShootingStar)
+```
+
+## Entry
+
+An Entry marker is where the player appears when they enter the map, facing the marker's direction. It's an `EntryMarker`, with `pos`, `yaw`, `index`, its place in the map's list of entries, and `map`, the name of the map it's in.
+
+The map's entries are its Entry markers in the order they appear in the Outline. `map.xml.h` gives them as `$Entries`, a list to point the map's settings at:
+
+```c
+OVL_DEF_MAP() = {
+    .main = &EVS_Main,
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
+    ...
+};
+```
+
+To do something when the player enters by one entry, compare the entry ID with that marker's `index`:
+
+```c
+Call(GetEntryID, LVar0)
+Switch(LVar0)
+    CaseEq($Front.index)
+        Exec(EVS_EnterFromTown)
+EndSwitch
+```
+
+To move an entry to a different place in the list, drag its marker in the Outline. Code that uses `index` follows it, including code in other maps.
+
+### Send the player to another map
+
+Each map's entries also go in a header of their own, which the build puts in the area's folder next to the map's folder, such as `world/area/kmr/kmr_03.h`. When another map includes it, it gets the entries as fields of a constant named after the map, so the entry that kmr_03 calls `$Front` is `$kmr_03.Front`:
+
+```c
+#include "world/area/kmr/kmr_03.h"
+
+EvtScript EVS_ExitWalk_kmr_03 = EVT_EXIT_WALK(60, $West, $kmr_03.Front);
+```
+
+The exit macros, such as `EVT_EXIT_WALK` and `EVT_EXIT_SINGLE_DOOR`, take the entry the player leaves by and the entry they arrive at. If kmr_03 renames or removes `Front`, the build fails here, so you can update the exit.
+
+To send the player from your own script, give `GotoMap` the entry marker, and it takes the map's name and the entry's index from it. `GotoMapSpecial` does the same, with the transition after the marker:
+
+```c
+Call(GotoMap, $kmr_03.Front)
+Call(GotoMapSpecial, $kmr_03.Front, TRANSITION_STANDARD)
+```
+
+The header holds only the map's entries, so a change to the map's other markers doesn't rebuild the maps that include it.
+
+## NPC
+
+An NPC marker is where an NPC starts, and the area it wanders, patrols, and watches for the player in. It's an `NpcMarker`, with `pos`, `yaw`, and `territory`. You set the territory in the marker's card, and `territory` is an `EnemyTerritory` ready for the NPC's data:
+
+```c
+NpcData NpcData_Goompa = {
+    .id = NPC_Goompa,
+    .pos = $Goompa.pos,
+    .yaw = $Goompa.yaw,
+    .territory = $Goompa.territory,
+    ...
+};
+```
+
+## Entity
+
+An Entity marker is an object the game makes at a position, such as a save block, a chest, or a switch. You choose its type and settings in its card, such as the item a block holds or the flag that records it's been opened. It's an `EntityMarker`, with `pos`, `yaw`, and those settings.
+
+Make the entity from an EVT script, usually the map's script that makes its entities:
+
+```c
+EvtScript EVS_MakeEntities = {
+    Call(MakeMarkerEntity, $SaveBlock)
+    Call(MakeMarkerEntity, $PipeToTunnels)
+    Return
+    End
+};
+```
+
+`MakeMarkerEntity` makes the entity of the marker's type, with its settings, and returns its index in `LVar0`, like `MakeEntity` does.
+
+## Path
+
+A path is a set of points where each point can lead to any number of others, such as a route, a patrol, or the spaces of a board game. It's a `PathMarker`, with `count` and `points`, and your code walks it as a graph.
+
+### Draw a path
+
+{% steps %}
+1. Right-click the floor where the path should start, and select **New Path...**.
+2. Enter a name for the path, such as `Route`, and select **Create**. The new path has one point, where you right-clicked.
+3. Select the **Paths** button in the view's toolbar, which shows an arrow leading away from a point.
+4. Drag from the path's point to another place on the floor. When you let go, a new point appears there, and the first point leads to it.
+{% /steps %}
+
+Paths mode shows every path in the map, and draws their points over everything else so you can reach them behind scenery. The arrows along each line show which way it leads. In Paths mode, the mouse edits whichever path you're pointing at:
+
+| To | Do this |
+|---|---|
+| Add a point that a point leads to | Drag from the point to an empty spot. |
+| Connect two points | Drag from the first point to the second. |
+| Disconnect two points | Drag from the first point to the second again. The line turns red before you let go. |
+| Add a point in the middle of a line | Click the line, or drag from it to where the new point should go. |
+| Route a line through an existing point | Drag from the line to the point. |
+| Delete a point | Right-click it, or select it and press **Delete**. |
+| Remove a line | Right-click it. |
+| Move points | Hold **Alt** and drag a point. |
+
+A drag snaps to a point of the same path when it ends near one, and the point it snaps to gets larger, so you can see which one you'll hit. Deleting a point keeps the path connected: the points that led to it lead to the points it led to instead.
+
+To move points with the move gizmo, select **Select** mode, select the path's marker in the Outline, and click one of its points. The point's card shows its position, so you can also type exact values there.
+
+### Use a path in code
+
+Each point is a `PathMarkerPoint`, with a position and the indices of the points it leads to:
+
+```c
+typedef struct PathMarkerPoint {
+    Vec3s pos;
+    u16 nextCount;
+    const u16* next;
+} PathMarkerPoint;
+```
+
+Your code finds points by name. Select a point and enter a name in the **Name** field of its card, such as `Start`, and the map's code gets its index as `$Route_Start`. You only need to name the points your code refers to directly. For example, this function finds where a point leads, taking the first way when there's more than one:
+
+```c
+s32 next_stop(s32 stop) {
+    const PathMarkerPoint* point = &$Route.points[stop];
+    return point->nextCount > 0 ? point->next[0] : -1;
+}
+```
+
+`next_stop($Route_Start)` gives the index of the point that `Start` leads to.
+
+## Sphere
+
+A Sphere marker is a ball, such as the area a bomb has to explode in to break a wall. It's a `SphereMarker`, with `pos` and `radius`.
+
+```c
+BombTrigger BombPos_Wall = {
+    .pos = $BombWall.pos,
+    .diameter = 2.0f * $BombWall.radius,
+};
+```
+
+## Cylinder
+
+A Cylinder marker is an upright cylinder, such as an area to check whether the player is standing in. It's a `CylinderMarker`, with `pos`, the center of its base, and `radius` and `height`.
+
+```c
+f32 dx = playerStatus->pos.x - $Fountain.pos.x;
+f32 dz = playerStatus->pos.z - $Fountain.pos.z;
+b32 inFountain = SQ(dx) + SQ(dz) < SQ($Fountain.radius);
+```
+
+## Volume
+
+A Volume marker is a box, such as where water drips from or where flowers can grow. It's a `VolumeMarker`, with `min` and `max`, its opposite corners. Take the parts the code needs:
+
+```c
+DripVolume Drips[] = {
+    {
+        .minPos = { $Drip.min.x, $Drip.min.z },
+        .maxPos = { $Drip.max.x, $Drip.max.z },
+        .startY = $Drip.max.y,
+        .endY = $Drip.min.y,
+    },
+};
+```

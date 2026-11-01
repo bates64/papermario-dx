@@ -1,4 +1,5 @@
 #include "arn_08.h"
+#include "world/area/arn/arn_09.h"
 #include "sprite/player.h"
 
 API_CALLABLE(AwaitPlayerFallDist) {
@@ -45,7 +46,7 @@ EvtScript EVS_ExitWell = {
     IfLt(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
         Set(GB_StoryProgress, STORY_CH3_WENT_DOWN_THE_WELL)
     EndIf
-    Call(GotoMap, "arn_09", arn_09_ENTRY_1)
+    Call(GotoMap, $arn_09.Well)
     Wait(100)
     Return
     End

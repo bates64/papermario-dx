@@ -1,4 +1,8 @@
 #include "machi.h"
+#include "world/area/iwa/iwa_00.h"
+#include "world/area/jan/jan_00.h"
+#include "world/area/kmr/kmr_09.h"
+#include "world/area/tst/tst_01.h"
 
 API_CALLABLE(CheckGameVarRanges) {
     GameVarRange* bytes;
@@ -26,35 +30,35 @@ API_CALLABLE(CheckGameVarRanges) {
 }
 
 EvtScript EVS_GotoMap_kmr_09_1 = {
-    Call(GotoMap, "kmr_09", kmr_09_ENTRY_1)
+    Call(GotoMap, $kmr_09.GoombaRoad2)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_nok_10_0 = {
-    Call(GotoMap, "nok_10", nok_10_ENTRY_0) //@bug map does not exist!
+    Call(GotoMap, "nok_10", 0) //@bug map does not exist!
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_iwa_00_0 = {
-    Call(GotoMap, "iwa_00", iwa_00_ENTRY_0)
+    Call(GotoMap, $iwa_00.ToadTown)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_tst_01_0 = {
-    Call(GotoMap, "tst_01", tst_01_ENTRY_0)
+    Call(GotoMap, $tst_01.Machi)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_GotoMap_jan_00_0 = {
-    Call(GotoMap, "jan_00", jan_00_ENTRY_0)
+    Call(GotoMap, $jan_00.ToadTown)
     Wait(100)
     Return
     End

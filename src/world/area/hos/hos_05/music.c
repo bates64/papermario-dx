@@ -12,12 +12,12 @@ EvtScript EVS_PlayIntroStoryMusic = {
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_05_ENTRY_1)
+        CaseEq($StarShip.index)
             Call(SetMusic, 0, SONG_STARSHIP_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
             Call(PlaySound, SOUND_LOOP_STAR_SANCTUARY_INSIDE)
-        CaseEq(hos_05_ENTRY_3)
+        CaseEq($Entry3.index)
             Exec(EVS_PlayIntroStoryMusic)
-        CaseEq(hos_05_ENTRY_4)
+        CaseEq($Entry4.index)
         CaseDefault
             IfEq(AF_HOS05_SkipMusicChange, false)
                 Call(SetMusic, 0, SONG_STAR_SANCTUARY, 0, VOL_LEVEL_FULL)

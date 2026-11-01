@@ -1,4 +1,8 @@
 #include "kpa_60.h"
+#include "world/area/kpa/kpa_10.h"
+#include "world/area/kpa/kpa_11.h"
+#include "world/area/kpa/kpa_63.h"
+#include "world/area/kpa/kpa_70.h"
 
 EvtScript EVS_OpenAirshipDockDoor = {
     Call(PlaySoundAtCollider, COLLIDER_deilitts, SOUND_AIRSHIP_DOCK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -51,17 +55,17 @@ EvtScript EVS_CloseAirshipDockDoor = {
 };
 
 EvtScript EVS_ExitDoor_kpa_70_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    kpa_60_ENTRY_0, "kpa_70", kpa_70_ENTRY_0, COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL
+    $Entry0, $kpa_70.FrontDoor, COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL
 );
 
 EvtScript EVS_ExitWalk_kpa_1X_Upper = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kpa_60_ENTRY_1)
+    Call(UseExitHeading, 60, $Entry1.index)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, "kpa_11", kpa_11_ENTRY_0)
+        Call(GotoMap, $kpa_11.FrontDoorUpper)
     Else
-        Call(GotoMap, "kpa_10", kpa_10_ENTRY_0)
+        Call(GotoMap, $kpa_10.FrontDoorUpper)
     EndIf
     Wait(100)
     Return
@@ -70,12 +74,12 @@ EvtScript EVS_ExitWalk_kpa_1X_Upper = {
 
 EvtScript EVS_ExitWalk_kpa_1X_Lower = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, kpa_60_ENTRY_2)
+    Call(UseExitHeading, 60, $Entry2.index)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, false)
-        Call(GotoMap, "kpa_11", kpa_11_ENTRY_3)
+        Call(GotoMap, $kpa_11.FrontDoorLower)
     Else
-        Call(GotoMap, "kpa_10", kpa_10_ENTRY_3)
+        Call(GotoMap, $kpa_10.FrontDoorLower)
     EndIf
     Wait(100)
     Return
@@ -87,9 +91,9 @@ EvtScript EVS_ExitDoor_kpa_63_0 = {
     Call(DisablePlayerInput, true)
     ExecWait(EVS_OpenAirshipDockDoor)
     Wait(15)
-    Call(UseExitHeading, 60, kpa_60_ENTRY_3)
+    Call(UseExitHeading, 60, $Entry3.index)
     Exec(ExitWalk)
-    Call(GotoMap, "kpa_63", kpa_63_ENTRY_0)
+    Call(GotoMap, $kpa_63.FrontDoor)
     Wait(100)
     Return
     End
@@ -139,21 +143,21 @@ EvtScript EVS_HideDistalGeometry = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_60_ENTRY_0)
+        CaseEq($Entry0.index)
             ExecWait(EVS_HideDistalGeometry)
             Set(LVar2, MODEL_o1647)
             Set(LVar3, MODEL_o1646)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_60_ENTRY_3)
+        CaseEq($Entry3.index)
             ExecWait(EVS_HideDistalGeometry)
             Thread
                 ExecWait(EVS_EnterFromAirshipDock)
                 Exec(EVS_BindExitTriggers)
             EndThread
-        CaseEq(kpa_60_ENTRY_4)
+        CaseEq($Arrival.index)
             Exec(EVS_Scene_Arrival)
-        CaseEq(kpa_60_ENTRY_5)
+        CaseEq($Departure.index)
             Exec(EVS_Scene_Departure)
         CaseDefault
             ExecWait(EVS_HideDistalGeometry)
@@ -179,8 +183,8 @@ EvtScript EVS_TexPan_Lava = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o1559, .pos = { -455.0,  -15.0,   35.0 }},
-    { .colliderID = COLLIDER_o1560, .pos = { -545.0,   10.0,   15.0 }},
+    { .colliderID = COLLIDER_o1559, .pos = $LavaReset_o1559.pos },
+    { .colliderID = COLLIDER_o1560, .pos = $LavaReset_o1560.pos },
     { .colliderID = NO_COLLIDER }
 };
 

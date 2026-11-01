@@ -81,7 +81,7 @@ EvtScript EVS_NpcAI_Sentinel_Wander = {
         Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 10)
     EndThread
     Wait(30)
-    Call(GotoMap, "dgb_00", dgb_00_ENTRY_2)
+    Call(GotoMap, "dgb_00", 2)
     Wait(100)
     Return
     End

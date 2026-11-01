@@ -3,9 +3,9 @@
 #include "effects.h"
 
 EvtScript EVS_MakeEntities = {
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 486, -845, 130, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 499, -845, 42, 0.3, LVar0)
-    Call(MakeEntity, Entity_SavePoint, 560, -850, 100, -10, MAKE_ENTITY_END)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Return
     End
 };

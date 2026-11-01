@@ -1,4 +1,5 @@
 #include "flo_15.h"
+#include "world/area/flo/flo_00.h"
 #include "sprite/player.h"
 
 #include "world/common/npc/Sun/idle.inc.c"
@@ -65,7 +66,7 @@ EvtScript EVS_Scene_SunReturns = {
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
     Add(LVar1, 400)
     Call(NpcJump0, NPC_Sun_01, LVar0, LVar1, LVar2, 40)
-    Call(GotoMap, "flo_00", flo_00_ENTRY_9)
+    Call(GotoMap, $flo_00.SunReturns)
     Wait(70)
     Return
     End
@@ -201,8 +202,8 @@ EvtScript EVS_NpcInit_Sun_02 = {
 NpcData NpcData_Sun[] = {
     {
         .id = NPC_Sun_01,
-        .pos = { 0.0f, 250.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Sun_01.pos,
+        .yaw = $Sun_01.yaw,
         .init = &EVS_NpcInit_Sun_01,
         .settings = &NpcSettings_Sun,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -212,8 +213,8 @@ NpcData NpcData_Sun[] = {
     },
     {
         .id = NPC_Sun_02,
-        .pos = { 0.0f, 250.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Sun_02.pos,
+        .yaw = $Sun_02.yaw,
         .init = &EVS_NpcInit_Sun_02,
         .settings = &NpcSettings_Sun,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_USE_INSPECT_ICON,

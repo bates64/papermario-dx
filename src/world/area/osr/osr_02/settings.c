@@ -5,15 +5,10 @@ export s32 map_init(void) {
     return false;
 }
 
-EntryList Entrances = {
-    [osr_02_ENTRY_0]    { -205.0,    0.0,   55.0,  135.0 },
-    [osr_02_ENTRY_1]    {    0.0,   20.0, -290.0,  180.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "kpa_bg",
     .tattle = { MSG_MapTattle_osr_02 },
 };

@@ -164,8 +164,8 @@ EvtScript EVS_NpcInit_Kolorado = {
 
 NpcData NpcData_Kolorado = {
     .id = NPC_Kolorado,
-    .pos = { -740.0f, 20.0f, 0.0f },
-    .yaw = 90,
+    .pos = $Kolorado.pos,
+    .yaw = $Kolorado.yaw,
     .init = &EVS_NpcInit_Kolorado,
     .settings = &NpcSettings_Kolorado,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -176,20 +176,9 @@ NpcData NpcData_Kolorado = {
 
 NpcData NpcData_LavaBubble = {
     .id = NPC_LavaBubble,
-    .pos = { 250.0f, 50.0f, 0.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 250, 50, 0 },
-            .wanderSize = { 20 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 250, 50, 0 },
-            .detectSize = { 70, 200 },
-        }
-    },
+    .pos = $LavaBubble.pos,
+    .yaw = $LavaBubble.yaw,
+    .territory = $LavaBubble.territory,
     .settings = &NpcSettings_LavaBubble_Wander,
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = LAVA_BUBBLE_DROPS,

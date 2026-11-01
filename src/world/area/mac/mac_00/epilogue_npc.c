@@ -149,8 +149,8 @@ AnimID LimitAnims_Luigi[] = {
 
 NpcData NpcData_Luigi_Epilogue = {
     .id = NPC_Luigi_Epilogue,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $Luigi_Epilogue.pos,
+    .yaw = $Luigi_Epilogue.yaw,
     .settings = &NpcSettings_Dummy,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
@@ -182,8 +182,8 @@ AnimID LimitAnims_Gooma_Epilogue[] = {
 NpcData NpcData_GoombaFamilypa_Epilogue[] = {
     {
         .id = NPC_Goompapa_Epilogue,
-        .pos = { 70.0f, 0.0f, -30.0f },
-        .yaw = 90,
+        .pos = $Goompapa_Epilogue.pos,
+        .yaw = $Goompapa_Epilogue.yaw,
         .init = &EVS_NpcInit_Goompapa_Epilogue,
         .settings = &NpcSettings_Goompapa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -194,8 +194,8 @@ NpcData NpcData_GoombaFamilypa_Epilogue[] = {
     },
     {
         .id = NPC_Goomama_Epilogue,
-        .pos = { 40.0f, 0.0f, 20.0f },
-        .yaw = 90,
+        .pos = $Goomama_Epilogue.pos,
+        .yaw = $Goomama_Epilogue.yaw,
         .init = &EVS_NpcInit_Goomama_Epilogue,
         .settings = &NpcSettings_Goomama,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -206,8 +206,8 @@ NpcData NpcData_GoombaFamilypa_Epilogue[] = {
     },
     {
         .id = NPC_Gooma_Epilogue,
-        .pos = { 20.0f, 0.0f, -35.0f },
-        .yaw = 90,
+        .pos = $Gooma_Epilogue.pos,
+        .yaw = $Gooma_Epilogue.yaw,
         .init = &EVS_NpcInit_Gooma_Epilogue,
         .settings = &NpcSettings_Gooma,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -235,8 +235,8 @@ AnimID LimitAnims_VannaT_Epilogue[] = {
 NpcData NpcData_ChuckQuizmo_Epilogue[] = {
     {
         .id = NPC_ChuckQuizmo,
-        .pos = { 545.0f, 20.0f, 150.0f },
-        .yaw = 30,
+        .pos = $ChuckQuizmo.pos,
+        .yaw = $ChuckQuizmo.yaw,
         .init = &EVS_NpcInit_ChuckQuizmo_Epilogue,
         .settings = &NpcSettings_Dummy,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -247,8 +247,8 @@ NpcData NpcData_ChuckQuizmo_Epilogue[] = {
     },
     {
         .id = NPC_VannaT_Epilogue,
-        .pos = { 500.0f, 20.0f, -130.0f },
-        .yaw = 270,
+        .pos = $VannaT_Epilogue.pos,
+        .yaw = $VannaT_Epilogue.yaw,
         .init = &EVS_NpcInit_VannaT_Epilogue,
         .settings = &NpcSettings_VannaT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -283,8 +283,8 @@ AnimID LimitAnims_Lee_Epilogue[] = {
 NpcData NpcData_DojoMembers_Epilogue[] = {
     {
         .id = NPC_TheMaster,
-        .pos = { 375.0f, 115.0f, -440.0f },
-        .yaw = 225,
+        .pos = $TheMaster.pos,
+        .yaw = $TheMaster.yaw,
         .init = &EVS_NpcInit_TheMaster_Epilogue,
         .settings = &NpcSettings_TheMaster,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -295,8 +295,8 @@ NpcData NpcData_DojoMembers_Epilogue[] = {
     },
     {
         .id = NPC_Chan,
-        .pos = { 310.0f, 115.0f, -390.0f },
-        .yaw = 45,
+        .pos = $Chan.pos,
+        .yaw = $Chan.yaw,
         .init = &EVS_NpcInit_Chan_Epilogue,
         .settings = &NpcSettings_Chan,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -307,8 +307,8 @@ NpcData NpcData_DojoMembers_Epilogue[] = {
     },
     {
         .id = NPC_Lee,
-        .pos = { 330.0f, 115.0f, -410.0f },
-        .yaw = 45,
+        .pos = $Lee.pos,
+        .yaw = $Lee.yaw,
         .init = &EVS_NpcInit_Lee_Epilogue,
         .settings = &NpcSettings_Lee,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
@@ -329,8 +329,8 @@ AnimID LimitAnims_HarryT_Epilogue[] = {
 NpcData NpcData_Toad_01_Epilogue[] = {
     {
         .id = NPC_Toad_01,
-        .pos = { 430.0f, 20.0f, -373.0f },
-        .yaw = 223,
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
         .init = &EVS_NpcInit_Toad_01_Epilogue,
         .settings = &NpcSettings_HarryT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
@@ -341,8 +341,8 @@ NpcData NpcData_Toad_01_Epilogue[] = {
     },
     {
         .id = NPC_HarryT,
-        .pos = { 410.0f, 20.0f, -320.0f },
-        .yaw = 43,
+        .pos = $HarryT.pos,
+        .yaw = $HarryT.yaw,
         .init = &EVS_NpcInit_HarryT_Epilogue,
         .settings = &NpcSettings_HarryT,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,

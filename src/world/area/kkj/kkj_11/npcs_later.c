@@ -1,4 +1,5 @@
 #include "kkj_11.h"
+#include "world/area/kkj/kkj_14.h"
 
 AnimID LimitAnims_Koopatrol_Later[] = {
     ANIM_WorldKoopatrol_Still,
@@ -39,7 +40,7 @@ EvtScript EVS_CapturePeach_Later = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Talk, ANIM_WorldKoopatrol_Idle, 0, MSG_Peach_0175)
     Call(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     Wait(20)
-    Call(GotoMapSpecial, "kkj_14", kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
+    Call(GotoMapSpecial, $kkj_14.TossedBack, TRANSITION_PEACH_CAPTURED)
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
@@ -88,7 +89,7 @@ EvtScript EVS_CheckForPeach_Koopatrol_02_Later = {
 EvtScript EVS_NpcIdle_Koopatrol_01_Later = {
     Exec(EVS_CheckForPeach_Koopatrol_01_Later)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_11_ENTRY_1)
+    IfEq(LVar0, $StairsHallway.index)
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
         Call(WaitForPlayerInputEnabled)
         Thread
@@ -114,7 +115,7 @@ EvtScript EVS_NpcIdle_Koopatrol_01_Later = {
 EvtScript EVS_NpcIdle_Koopatrol_04_Later = {
     Exec(EVS_CheckForPeach_Koopatrol_01_Later)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_11_ENTRY_4)
+    IfEq(LVar0, $PeachsRoom.index)
         Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
         Call(WaitForPlayerInputEnabled)
         Thread
@@ -258,7 +259,7 @@ EvtScript EVS_NpcInteract_Koopatrol_03_Later = {
 
 EvtScript EVS_NpcInit_Koopatrol_01_Later = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_11_ENTRY_1)
+    IfEq(LVar0, $StairsHallway.index)
         Call(SetNpcPos, NPC_SELF, -70, 100, -350)
         Call(SetNpcYaw, NPC_SELF, 90)
     Else
@@ -293,7 +294,7 @@ EvtScript EVS_NpcInit_Koopatrol_03_Later = {
 
 EvtScript EVS_NpcInit_Koopatrol_04_Later = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_11_ENTRY_4)
+    IfEq(LVar0, $PeachsRoom.index)
         Call(SetNpcPos, NPC_SELF, -40, 0, -220)
         Call(SetNpcYaw, NPC_SELF, 90)
     Else
@@ -309,8 +310,8 @@ EvtScript EVS_NpcInit_Koopatrol_04_Later = {
 NpcData NpcData_Minions_Later[] = {
     {
         .id = NPC_Koopatrol_01,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_01_1.pos,
+        .yaw = $Koopatrol_01_1.yaw,
         .init = &EVS_NpcInit_Koopatrol_01_Later,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -320,8 +321,8 @@ NpcData NpcData_Minions_Later[] = {
     },
     {
         .id = NPC_Koopatrol_02,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_02_1.pos,
+        .yaw = $Koopatrol_02_1.yaw,
         .init = &EVS_NpcInit_Koopatrol_02_Later,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -331,8 +332,8 @@ NpcData NpcData_Minions_Later[] = {
     },
     {
         .id = NPC_Koopatrol_03,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_03_1.pos,
+        .yaw = $Koopatrol_03_1.yaw,
         .init = &EVS_NpcInit_Koopatrol_03_Later,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -342,8 +343,8 @@ NpcData NpcData_Minions_Later[] = {
     },
     {
         .id = NPC_Koopatrol_04,
-        .pos = { 0.0f, -500.0f, 0.0f },
-        .yaw = 0,
+        .pos = $Koopatrol_04_1.pos,
+        .yaw = $Koopatrol_04_1.yaw,
         .init = &EVS_NpcInit_Koopatrol_04_Later,
         .settings = &NpcSettings_Koopatrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

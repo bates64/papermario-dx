@@ -1,4 +1,5 @@
 #include "isk_05.h"
+#include "world/area/isk/isk_04.h"
 
 s32 adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
@@ -15,7 +16,7 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_isk_04_4 = EVT_EXIT_WALK(40, isk_05_ENTRY_0, "isk_04", isk_04_ENTRY_4);
+EvtScript EVS_ExitWalk_isk_04_4 = EVT_EXIT_WALK(40, $DescendingStairs1, $isk_04.PyramidStoneRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_04_4, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

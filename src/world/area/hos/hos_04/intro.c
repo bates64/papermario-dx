@@ -201,8 +201,8 @@ EvtScript EVS_NpcInit_Twink = {
 
 NpcData NpcData_Twink = {
     .id = NPC_Twink,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Twink.pos,
+    .yaw = $Twink.yaw,
     .init = &EVS_NpcInit_Twink,
     .settings = &NpcSettings_Twink,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

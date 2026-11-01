@@ -116,8 +116,8 @@ EvtScript EVS_NpcInit_RipCheato = {
 
 NpcData NpcData_RipCheato = {
     .id = NPC_RipCheato,
-    .pos = { -80.0f, -10.0f, 0.0f },
-    .yaw = 270,
+    .pos = $RipCheato.pos,
+    .yaw = $RipCheato.yaw,
     .init = &EVS_NpcInit_RipCheato,
     .settings = &NpcSettings_RipCheato,
     .flags = BASE_PASSIVE_FLAGS,

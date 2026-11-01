@@ -28,7 +28,7 @@ EvtScript EVS_StartGustyMusic = {
 
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mim_12_ENTRY_0)
+    IfEq(LVar0, $Mim11.index)
         ExecWait(EVS_StartForestMusic)
     Else
         ExecWait(EVS_StartGustyMusic)

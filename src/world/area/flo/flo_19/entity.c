@@ -1,7 +1,7 @@
 #include "flo_19.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_S_JUMP_CHG, -200, 160, -213, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_FLO19_Item_SJumpChg)
+    Call(MakeMarkerEntity, $Item_SJumpChg_1)
     Return
     End
 };

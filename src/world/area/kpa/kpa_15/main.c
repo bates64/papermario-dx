@@ -1,6 +1,7 @@
 #include "kpa_15.h"
+#include "world/area/kpa/kpa_13.h"
 
-EvtScript EVS_ExitWalk_kpa_13_2 = EVT_EXIT_WALK(40, kpa_15_ENTRY_0, "kpa_13", kpa_13_ENTRY_2);
+EvtScript EVS_ExitWalk_kpa_13_2 = EVT_EXIT_WALK(40, $LavaChannel2, $kpa_13.LavaKeyRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_13_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

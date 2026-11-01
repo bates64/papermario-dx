@@ -446,7 +446,7 @@ SearchBushConfig SearchBush_Bush18 = {
 
 EvtScript EVS_SetupBushes = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, jan_09_ENTRY_3)
+    IfEq(LVar0, $Pipe.index)
         Exec(EVS_ForceMoveCliffTopBushes)
     EndIf
     BindTrigger(EVS_Inspect_MoveBush_RightShore, TRIGGER_WALL_PRESS_A, COLLIDER_o84, 1, 0)

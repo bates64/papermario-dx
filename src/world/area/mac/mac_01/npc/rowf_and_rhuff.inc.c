@@ -712,8 +712,8 @@ NpcSettings NpcSettings_Rhuff = {
 NpcData NpcData_RowfAndRhuff[] = {
     {
         .id = NPC_Rowf,
-        .pos = { -213.0f, -54.0f, 256.0f },
-        .yaw = 90,
+        .pos = $Rowf_1.pos,
+        .yaw = $Rowf_1.yaw,
         .init = &EVS_NpcInit_Rowf,
         .settings = &NpcSettings_Rowf,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -726,8 +726,8 @@ NpcData NpcData_RowfAndRhuff[] = {
     },
     {
         .id = NPC_Rhuff,
-        .pos = { -250.0f, 0.0f, 263.0f },
-        .yaw = 90,
+        .pos = $Rhuff_1.pos,
+        .yaw = $Rhuff_1.yaw,
         .init = &EVS_NpcInit_Rhuff,
         .settings = &NpcSettings_Rhuff,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,

@@ -14,10 +14,10 @@ EvtScript EVS_PlayToadTownSong = {
 EvtScript EVS_PlayMusicByPosition = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_00_ENTRY_0)
+        CaseEq($PeachsCastle.index)
             Exec(EVS_PlayToadTownSong)
-        CaseOrEq(hos_00_ENTRY_1)
-        CaseOrEq(hos_00_ENTRY_2)
+        CaseOrEq($ShootingStarSummit.index)
+        CaseOrEq($MerluvleesHouse.index)
             Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)
         EndCaseGroup
     EndSwitch
@@ -55,7 +55,7 @@ EvtScript EVS_PlayMusicByPosition = {
 
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, hos_00_ENTRY_3)
+    IfEq(LVar0, $StarShip.index)
         Call(SetMusic, 0, SONG_STARSHIP_THEME, 0, VOL_LEVEL_FULL)
     Else
         Exec(EVS_PlayMusicByPosition)

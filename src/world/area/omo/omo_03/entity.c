@@ -1,4 +1,5 @@
 #include "omo_03.h"
+#include "world/area/mac/mac_04.h"
 #include "entity.h"
 
 EvtScript EVS_TetherCamToPlayer = {
@@ -21,7 +22,7 @@ EvtScript EVS_UseSpring_Exit = {
         Call(EnableCameraFollowPlayerY)
         Thread
             Wait(6)
-            Call(GotoMap, "mac_04", mac_04_ENTRY_2)
+            Call(GotoMap, $mac_04.Toybox)
             Wait(100)
         EndThread
         Call(SetPlayerJumpscale, 0.7)
@@ -76,13 +77,10 @@ EvtScript EVS_Scene_EnterSpring = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, -250, 60, 50, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_ScriptSpring, -150, 0, 250, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring_Exit)
-    Call(MakeEntity, Entity_HiddenPanel, 203, 0, 200, 0, MODEL_o930, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_OMO03_HiddenPanel)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 400, 60, -50, 0, ITEM_STONE_CAP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_OMO03_HiddenItem_StoneCap)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_StoneCap_1)
     Return
     End
 };

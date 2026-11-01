@@ -1,9 +1,10 @@
 #include "pra_11.h"
+#include "world/area/pra/pra_09.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
 
-EvtScript EVS_ExitWalk_pra_09_1 = EVT_EXIT_WALK(60, pra_11_ENTRY_0, "pra_09", pra_09_ENTRY_1);
+EvtScript EVS_ExitWalk_pra_09_1 = EVT_EXIT_WALK(60, $RedKeyHall, $pra_09.RedKeyRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_pra_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)

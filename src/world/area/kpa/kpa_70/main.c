@@ -1,4 +1,6 @@
 #include "kpa_70.h"
+#include "world/area/kpa/kpa_50.h"
+#include "world/area/kpa/kpa_62.h"
 
 EvtScript EVS_SetupChainDrive = {
     Call(LoadAnimatedModel, 0, ChainDriveSkeleton)
@@ -13,19 +15,19 @@ EvtScript EVS_ExitDoors_kpa_62_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Wait(3)
-    Set(LVar0, kpa_70_ENTRY_0)
+    Set(LVar0, $FrontDoor.index)
     Set(LVar1, COLLIDER_deilittw)
     Set(LVar2, MODEL_o1431)
     Set(LVar3, MODEL_o1432)
     Exec(ExitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "kpa_62", kpa_62_ENTRY_0)
+    Call(GotoMap, $kpa_62.EntryLavaHall)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_kpa_50_0 = EVT_EXIT_WALK(60, kpa_70_ENTRY_1, "kpa_50", kpa_50_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_50_0 = EVT_EXIT_WALK(60, $GuardDoor1Hall, $kpa_50.EntryLavaHall);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_50_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -89,14 +91,14 @@ EvtScript EVS_Main = {
     BindTrigger(EVS_ExitDoors_kpa_62_0, TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_70_ENTRY_0)
+        CaseEq($FrontDoor.index)
             Thread
                 Set(LVar2, MODEL_o1431)
                 Set(LVar3, MODEL_o1432)
                 ExecWait(EnterDoubleDoor)
                 ExecWait(EVS_BindExitTriggers)
             EndThread
-        CaseEq(kpa_70_ENTRY_1)
+        CaseEq($GuardDoor1Hall.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

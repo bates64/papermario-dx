@@ -254,7 +254,7 @@ EvtScript EVS_SetupRooms = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseRange(mac_04_ENTRY_2, mac_04_ENTRY_3)
+        CaseRange($Toybox.index, $ToyTrain.index)
             Call(SetGroupVisibility, MODEL_heiho_in, MODEL_GROUP_VISIBLE)
             Call(InitEntryFromToybox)
             Set(LVar0, 90)

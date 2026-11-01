@@ -11,8 +11,7 @@ EvtScript EVS_ReadSign_HowToPlay = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_Signpost, -55, -2, -80, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_ReadSign_HowToPlay)
+    Call(MakeMarkerEntity, $Signpost_1)
     Return
     End
 };

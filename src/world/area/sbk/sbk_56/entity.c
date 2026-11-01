@@ -7,7 +7,7 @@
 #include "world/common/entity/SuperBlock.inc.c"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HeartBlock, 300, 60, 0, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $HeartBlock_1)
     EVT_MAKE_SUPER_BLOCK(-50, 60, 275, 0)
     Return
     End

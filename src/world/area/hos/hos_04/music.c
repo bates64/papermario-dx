@@ -10,10 +10,10 @@ EvtScript EVS_PlayIntroSong = {
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_04_ENTRY_2)
+        CaseEq($StarShip.index)
             Call(SetMusic, 0, SONG_STARSHIP_THEME, 0, VOL_LEVEL_FULL)
-        CaseEq(hos_04_ENTRY_3)
-        CaseEq(hos_04_ENTRY_4)
+        CaseEq($Entry3.index)
+        CaseEq($Entry4.index)
             Exec(EVS_PlayIntroSong)
         CaseDefault
             IfEq(GF_HOS04_Visited, false)

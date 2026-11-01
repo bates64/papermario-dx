@@ -122,7 +122,7 @@ EvtScript ItemPrompt_Statue = {
     EndIf
     Call(DisablePlayerInput, true)
     Call(RemoveKeyItemAt, LVar1)
-    Call(MakeItemEntity, ITEM_JADE_RAVEN, 0, 15, -400, ITEM_SPAWN_MODE_DECORATION, 0)
+    Call(MakeMarkerEntity, $Item_JadeRaven_2)
     Set(MV_JadeRavenItemIdx, LVar0)
     Call(CloseChoicePopup)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)

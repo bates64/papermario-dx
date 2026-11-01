@@ -202,8 +202,8 @@ EvtScript EVS_NpcInit_AntiGuy = {
 
 NpcData NpcData_AntiGuy = {
     .id = NPC_AntiGuy,
-    .pos = { 110.0f, 0.0f, -20.0f },
-    .yaw = 270,
+    .pos = $AntiGuy.pos,
+    .yaw = $AntiGuy.yaw,
     .init = &EVS_NpcInit_AntiGuy,
     .settings = &NpcSettings_AntiGuy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -214,20 +214,9 @@ NpcData NpcData_AntiGuy = {
 
 NpcData NpcData_ShyGuy = {
     .id = NPC_ShyGuy,
-    .pos = { 300.0f, 0.0f, 50.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 300, 0, 50 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 300, 0, 50 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $ShyGuy.pos,
+    .yaw = $ShyGuy.yaw,
+    .territory = $ShyGuy.territory,
     .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
@@ -237,20 +226,9 @@ NpcData NpcData_ShyGuy = {
 
 NpcData NpcData_GrooveGuy = {
     .id = NPC_GrooveGuy,
-    .pos = { -222.0f, 0.0f, 35.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -222, 0, 35 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -222, 0, 35 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $GrooveGuy.pos,
+    .yaw = $GrooveGuy.yaw,
+    .territory = $GrooveGuy.territory,
     .settings = &NpcSettings_GrooveGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_B,

@@ -1,9 +1,11 @@
 #include "kkj_02.h"
+#include "world/area/kkj/kkj_01.h"
+#include "world/area/kkj/kkj_03.h"
 
 EvtScript EVS_ExitDoors_kkj_01_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_02_ENTRY_0, "kkj_01", kkj_01_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+    EVT_EXIT_DOUBLE_DOOR($UpperHall, $kkj_01.StairsHallway, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
 EvtScript EVS_ExitDoors_kkj_03_0 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_02_ENTRY_1, "kkj_03", kkj_03_ENTRY_0, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
+    EVT_EXIT_DOUBLE_DOOR($WindowHallway, $kkj_03.StairsHallway, COLLIDER_deilit2, MODEL_door4, MODEL_door3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kkj_01_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
@@ -15,11 +17,11 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_02_ENTRY_0)
+        CaseEq($UpperHall.index)
             Set(LVar2, MODEL_door1)
             Set(LVar3, MODEL_door2)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_02_ENTRY_1)
+        CaseEq($WindowHallway.index)
             Set(LVar2, MODEL_door4)
             Set(LVar3, MODEL_door3)
             ExecWait(EnterDoubleDoor)

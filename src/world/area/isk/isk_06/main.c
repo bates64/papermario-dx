@@ -1,11 +1,12 @@
 #include "isk_06.h"
+#include "world/area/isk/isk_04.h"
 
 b32 CamAdjustReady = false;
 
 s32 adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    if (gGameStatusPtr->entryID == isk_06_ENTRY_0) {
+    if (gGameStatusPtr->entryID == $DescendingStairs1Upper.index) {
         if (!CamAdjustReady) {
             if (!(gPlayerStatus.pos.y > -130.0f)) {
                 CamAdjustReady = true;
@@ -29,8 +30,8 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_isk_04_2 = EVT_EXIT_WALK(40, isk_06_ENTRY_0, "isk_04", isk_04_ENTRY_2);
-EvtScript EVS_ExitWalk_isk_04_3 = EVT_EXIT_WALK(40, isk_06_ENTRY_1, "isk_04", isk_04_ENTRY_3);
+EvtScript EVS_ExitWalk_isk_04_2 = EVT_EXIT_WALK(40, $DescendingStairs1Upper, $isk_04.SandDrainage2Upper);
+EvtScript EVS_ExitWalk_isk_04_3 = EVT_EXIT_WALK(40, $DescendingStairs1Lower, $isk_04.SandDrainage2Lower);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_04_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)

@@ -3,18 +3,17 @@
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_SAM07_FloorRaised, false)
-        Call(MakeEntity, Entity_GreenStompSwitch, -945, -179, -75, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $GreenStompSwitch_1)
         Set(MV_SwitchEntityID, LVar0)
         Call(AssignScript, EVS_UseGreenSwitch)
     Else
-        Call(MakeEntity, Entity_GreenStompSwitch, -945, 1, -75, 0, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $GreenStompSwitch_2)
         Set(MV_SwitchEntityID, LVar0)
         Call(AssignScript, EVS_UseGreenSwitch)
     EndIf
-    Call(MakeEntity, Entity_BrickBlock, 810, 330, -120, 90, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 810, 360, -120, 90, ITEM_ULTRA_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SAM07_HiddenItem_UltraShroom)
-    Call(MakeEntity, Entity_SavePoint, -1350, -60, -120, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_UltraShroom_1)
+    Call(MakeMarkerEntity, $SavePoint_1)
     Return
     End
 };

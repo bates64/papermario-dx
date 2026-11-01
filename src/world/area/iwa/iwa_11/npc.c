@@ -7,7 +7,7 @@
 EvtScript EVS_NpcInit_TrainToad = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, iwa_11_ENTRY_0)
+    IfEq(LVar0, $ToadTownStation.index)
         Call(SetNpcPos, NPC_SELF, -425, 70, -20)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Else
@@ -20,8 +20,8 @@ EvtScript EVS_NpcInit_TrainToad = {
 
 NpcData NpcData_TrainToad = {
     .id = NPC_TrainToad,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 90,
+    .pos = $TrainToad.pos,
+    .yaw = $TrainToad.yaw,
     .init = &EVS_NpcInit_TrainToad,
     .settings = &NpcSettings_TrainToad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

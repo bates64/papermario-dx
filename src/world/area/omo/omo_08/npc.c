@@ -100,8 +100,8 @@ EvtScript EVS_NpcInit_BoxedShyGuy = {
 NpcData NpcData_Toads[] = {
     {
         .id = NPC_Conductor,
-        .pos = { -145.0f, 50.0f, -110.0f },
-        .yaw = 270,
+        .pos = $Conductor.pos,
+        .yaw = $Conductor.yaw,
         .init = &EVS_NpcInit_Conductor,
         .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -111,8 +111,8 @@ NpcData NpcData_Toads[] = {
     },
     {
         .id = NPC_TrainToad,
-        .pos = { -250.0f, 0.0f, 50.0f },
-        .yaw = 90,
+        .pos = $TrainToad.pos,
+        .yaw = $TrainToad.yaw,
         .init = &EVS_NpcInit_TrainToad,
         .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -124,20 +124,9 @@ NpcData NpcData_Toads[] = {
 
 NpcData NpcData_ShyGuy_01 = {
     .id = NPC_ShyGuy_01,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -15, 0, 365 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -15, 0, 365 },
-            .detectSize = { 120 },
-        }
-    },
+    .pos = $ShyGuy_01.pos,
+    .yaw = $ShyGuy_01.yaw,
+    .territory = $ShyGuy_01.territory,
     .init = &EVS_NpcInit_BoxedShyGuy,
     .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -147,20 +136,9 @@ NpcData NpcData_ShyGuy_01 = {
 
 NpcData NpcData_ShyGuy_02 = {
     .id = NPC_ShyGuy_02,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 64, 0, 275 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 64, 0, 275 },
-            .detectSize = { 120 },
-        }
-    },
+    .pos = $ShyGuy_02.pos,
+    .yaw = $ShyGuy_02.yaw,
+    .territory = $ShyGuy_02.territory,
     .init = &EVS_NpcInit_BoxedShyGuy,
     .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -170,20 +148,9 @@ NpcData NpcData_ShyGuy_02 = {
 
 NpcData NpcData_ShyGuy_03 = {
     .id = NPC_ShyGuy_03,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 145, 0, 365 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 145, 0, 365 },
-            .detectSize = { 120 },
-        }
-    },
+    .pos = $ShyGuy_03.pos,
+    .yaw = $ShyGuy_03.yaw,
+    .territory = $ShyGuy_03.territory,
     .init = &EVS_NpcInit_BoxedShyGuy,
     .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -193,20 +160,9 @@ NpcData NpcData_ShyGuy_03 = {
 
 NpcData NpcData_ShyGuy_04 = {
     .id = NPC_ShyGuy_04,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 224, 0, 275 },
-            .wanderSize = { 100 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 224, 0, 275 },
-            .detectSize = { 120 },
-        }
-    },
+    .pos = $ShyGuy_04.pos,
+    .yaw = $ShyGuy_04.yaw,
+    .territory = $ShyGuy_04.territory,
     .init = &EVS_NpcInit_BoxedShyGuy,
     .settings = &NpcSettings_ShyGuy_Wander,
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

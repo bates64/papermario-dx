@@ -188,8 +188,8 @@ AnimID LimitAnims_Bobomb_Epilogue[] = {
 NpcData NpcData_Koopas_Epilogue[] = {
     {
         .id = NPC_Kolorado,
-        .pos = { 60.0f, 0.0f, -120.0f },
-        .yaw = 90,
+        .pos = $Kolorado.pos,
+        .yaw = $Kolorado.yaw,
         .init = &EVS_NpcInit_Kolorado_Epilogue,
         .settings = &NpcSettings_Kolorado,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -199,8 +199,8 @@ NpcData NpcData_Koopas_Epilogue[] = {
     },
     {
         .id = NPC_KoloradoWife,
-        .pos = { 100.0f, 0.0f, -110.0f },
-        .yaw = 270,
+        .pos = $KoloradoWife.pos,
+        .yaw = $KoloradoWife.yaw,
         .init = &EVS_NpcInit_KoloradoWife_Epilogue,
         .settings = &NpcSettings_KoloradoWife,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -210,8 +210,8 @@ NpcData NpcData_Koopas_Epilogue[] = {
     },
     {
         .id = NPC_KoopaKoot,
-        .pos = { -330.0f, 0.0f, 330.0f },
-        .yaw = 90,
+        .pos = $KoopaKoot.pos,
+        .yaw = $KoopaKoot.yaw,
         .init = &EVS_NpcInit_KoopaKoot_Epilogue,
         .settings = &NpcSettings_KoopaKoot,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -221,8 +221,8 @@ NpcData NpcData_Koopas_Epilogue[] = {
     },
     {
         .id = NPC_Koopa,
-        .pos = { 300.0f, 20.0f, -100.0f },
-        .yaw = 270,
+        .pos = $Koopa.pos,
+        .yaw = $Koopa.yaw,
         .init = &EVS_NpcInit_Koopa_Epilogue,
         .settings = &NpcSettings_Koopa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -232,8 +232,8 @@ NpcData NpcData_Koopas_Epilogue[] = {
     },
     {
         .id = NPC_Bobomb,
-        .pos = { 252.0f, 20.0f, -100.0f },
-        .yaw = 90,
+        .pos = $Bobomb.pos,
+        .yaw = $Bobomb.yaw,
         .init = &EVS_NpcInit_Bobomb_Epilogue,
         .settings = &NpcSettings_Bobomb,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -253,8 +253,8 @@ AnimID LimitAnims_Rowf_Epilogue[] = {
 NpcData NpcData_RowfAndRhuff_Epilogue[] = {
     {
         .id = NPC_Rowf,
-        .pos = { -213.0f, -54.0f, 256.0f },
-        .yaw = 90,
+        .pos = $Rowf.pos,
+        .yaw = $Rowf.yaw,
         .init = &EVS_NpcInit_Rowf_Epilogue,
         .settings = &NpcSettings_Dummy,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -267,8 +267,8 @@ NpcData NpcData_RowfAndRhuff_Epilogue[] = {
     },
     {
         .id = NPC_Rhuff,
-        .pos = { -250.0f, 0.0f, 263.0f },
-        .yaw = 90,
+        .pos = $Rhuff.pos,
+        .yaw = $Rhuff.yaw,
         .init = &EVS_NpcInit_Rhuff_Epilogue,
         .settings = &NpcSettings_Dummy,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -291,8 +291,8 @@ AnimID LimitAnims_Dryite_Epilogue[] = {
 NpcData NpcData_Dryites_Epilogue[] = {
     {
         .id = NPC_Dryite_01,
-        .pos = { -10.0f, 0.0f, 360.0f },
-        .yaw = 90,
+        .pos = $Dryite_01.pos,
+        .yaw = $Dryite_01.yaw,
         .init = &EVS_NpcInit_Dryite_01_Epilogue,
         .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -302,8 +302,8 @@ NpcData NpcData_Dryites_Epilogue[] = {
     },
     {
         .id = NPC_Dryite_02,
-        .pos = { 25.0f, 0.0f, 300.0f },
-        .yaw = 270,
+        .pos = $Dryite_02.pos,
+        .yaw = $Dryite_02.yaw,
         .init = &EVS_NpcInit_Dryite_02_Epilogue,
         .settings = &NpcSettings_Dryite,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -331,8 +331,8 @@ AnimID LimitAnims_Poet_Epilogue[] = {
 NpcData NpcData_Artists_Epilogue[] = {
     {
         .id = NPC_Chanterelle,
-        .pos = { 260.0f, 20.0f, 560.0f },
-        .yaw = 270,
+        .pos = $Chanterelle.pos,
+        .yaw = $Chanterelle.yaw,
         .init = &EVS_NpcInit_Chanterelle_Epilogue,
         .settings = &NpcSettings_Chanterelle,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -343,8 +343,8 @@ NpcData NpcData_Artists_Epilogue[] = {
     },
     {
         .id = NPC_Poet,
-        .pos = { 230.0f, 20.0f, 500.0f },
-        .yaw = 90,
+        .pos = $Poet.pos,
+        .yaw = $Poet.yaw,
         .init = &EVS_NpcInit_Poet_Epilogue,
         .settings = &NpcSettings_MusicianPoet,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -355,8 +355,8 @@ NpcData NpcData_Artists_Epilogue[] = {
     },
     {
         .id = NPC_Composer,
-        .pos = { 300.0f, 20.0f, 500.0f },
-        .yaw = 270,
+        .pos = $Composer.pos,
+        .yaw = $Composer.yaw,
         .init = &EVS_NpcInit_Composer_Epilogue,
         .settings = &NpcSettings_MusicianComposer,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

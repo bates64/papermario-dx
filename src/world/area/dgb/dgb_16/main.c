@@ -1,14 +1,15 @@
 #include "dgb_16.h"
+#include "world/area/dgb/dgb_15.h"
 
 EvtScript EVS_ExitDoors_dgb_15_2 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    dgb_16_ENTRY_0, "dgb_15", dgb_15_ENTRY_2, COLLIDER_deilittne, MODEL_o123, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
+    $Dgb15, $dgb_15.Dgb16, COLLIDER_deilittne, MODEL_o123, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_16_ENTRY_0)
+        CaseEq($Dgb15.index)
             IfEq(GF_DGB16_EscapedFromTubba, false)
                 Set(GF_DGB16_EscapedFromTubba, true)
                 Set(GB_ARN_Tubba_MapID, 18)

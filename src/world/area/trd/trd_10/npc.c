@@ -340,8 +340,8 @@ NpcSettings NpcSettings_KoopaBros_04 = {
 NpcData NpcData_KoopaBros_01[] = {
     {
         .id = NPC_KoopaBros_01,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_01.pos,
+        .yaw = $KoopaBros_01.yaw,
         .settings = &NpcSettings_KoopaBros_01,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
@@ -349,8 +349,8 @@ NpcData NpcData_KoopaBros_01[] = {
     },
     {
         .id = NPC_KoopaBros_02,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_02.pos,
+        .yaw = $KoopaBros_02.yaw,
         .settings = &NpcSettings_KoopaBros_02,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
@@ -358,8 +358,8 @@ NpcData NpcData_KoopaBros_01[] = {
     },
     {
         .id = NPC_KoopaBros_03,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_03.pos,
+        .yaw = $KoopaBros_03.yaw,
         .settings = &NpcSettings_KoopaBros_03,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
@@ -367,8 +367,8 @@ NpcData NpcData_KoopaBros_01[] = {
     },
     {
         .id = NPC_KoopaBros_04,
-        .pos = { 0.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $KoopaBros_04.pos,
+        .yaw = $KoopaBros_04.yaw,
         .settings = &NpcSettings_KoopaBros_04,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,

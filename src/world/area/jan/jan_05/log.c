@@ -74,7 +74,7 @@ EvtScript EVS_LogAnim_FallDown = {
     EndLoop
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(PlaySoundAtCollider, COLLIDER_o94, SOUND_JAN_LOG_LAND, 0)
-    PlayEffect(EFFECT_LANDING_DUST, 4, -185, 0, 320, 0)
+    PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
     Call(ShakeCam, CAM_DEFAULT, 2, 3, 1)
     Return
     End

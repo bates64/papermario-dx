@@ -1,4 +1,6 @@
 #include "omo_17.h"
+#include "world/area/omo/omo_05.h"
+#include "world/area/omo/omo_06.h"
 
 #include "../common/ToyTrain.inc.c"
 
@@ -39,7 +41,7 @@ EvtScript EVS_EnterTrain = {
     Exec(EVS_UpdateCameraDuringTrainTransition)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(omo_17_ENTRY_4)
+        CaseEq($TrainLeft.index)
             Set(MV_TrainRideState, TRAIN_STATE_INIT)
             Set(MV_TrainPath, TrainPath_LeftToRight)
             Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
@@ -51,10 +53,10 @@ EvtScript EVS_EnterTrain = {
                     Wait(1)
                     Goto(10)
                 EndIf
-                Call(GotoMap, "omo_06", omo_06_ENTRY_0)
+                Call(GotoMap, $omo_06.Omo17South)
                 Wait(100)
             EndThread
-        CaseEq(omo_17_ENTRY_5)
+        CaseEq($TrainRight.index)
             Set(MV_TrainRideState, TRAIN_STATE_INIT)
             Set(MV_TrainPath, TrainPath_RightToLeft)
             Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
@@ -66,7 +68,7 @@ EvtScript EVS_EnterTrain = {
                     Wait(1)
                     Goto(20)
                 EndIf
-                Call(GotoMap, "omo_05", omo_05_ENTRY_1)
+                Call(GotoMap, $omo_05.Omo17North)
                 Wait(100)
             EndThread
     EndSwitch

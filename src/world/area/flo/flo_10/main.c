@@ -1,9 +1,10 @@
 #include "flo_10.h"
+#include "world/area/flo/flo_24.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript EVS_ExitWalk_flo_24_1 = EVT_EXIT_WALK(60, flo_10_ENTRY_0, "flo_24", flo_24_ENTRY_1);
+EvtScript EVS_ExitWalk_flo_24_1 = EVT_EXIT_WALK(60, $Flo24, $flo_24.Flo10);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_24_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -28,9 +29,9 @@ EvtScript EVS_Main = {
     EVT_FLOWER_SPAWN_REGION(  263, -248,  362,  146,  0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(flo_10_ENTRY_1)
+        CaseEq($Flo07.index)
             Exec(EVS_Scene_SunReturns)
-        CaseEq(flo_10_ENTRY_2)
+        CaseEq($Fountain.index)
             Exec(EVS_Scene_PostReleaseFountain)
             Exec(EVS_BindExitTriggers)
         CaseDefault

@@ -1,4 +1,6 @@
 #include "osr_00.h"
+#include "world/area/kkj/kkj_00.h"
+#include "world/area/kmr/kmr_20.h"
 #include "ld_addrs.h"
 #include "charset/charset.h"
 #include "model.h"
@@ -57,7 +59,7 @@ EvtScript EVS_Scene_ShowInvitation = {
     Wait(12 * DT)
     Call(ShowMessageAtScreenPos, MSG_Intro_0023, 160, 40)
     Wait(3)
-    Call(GotoMapSpecial, "kmr_20", kmr_20_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, $kmr_20.Invitation, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(40 * DT)
     Return
     End
@@ -82,7 +84,7 @@ EvtScript EVS_Scene_ApproachParty = {
         Call(SetNpcAnimation, NPC_Luigi, ANIM_Luigi_IdleBack)
     EndThread
     Wait(100 * DT)
-    Call(GotoMap, "kkj_00", kkj_00_ENTRY_5)
+    Call(GotoMap, $kkj_00.Intro)
     Wait(100 * DT)
     Call(DisablePlayerInput, false)
     Return

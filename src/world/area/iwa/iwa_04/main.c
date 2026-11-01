@@ -1,7 +1,9 @@
 #include "iwa_04.h"
+#include "world/area/iwa/iwa_02.h"
+#include "world/area/sbk/sbk_99.h"
 
-EvtScript EVS_ExitWalk_iwa_02_2 = EVT_EXIT_WALK(60, iwa_04_ENTRY_0, "iwa_02", iwa_02_ENTRY_2);
-EvtScript EVS_ExitWalk_sbk_99_0 = EVT_EXIT_WALK(60, iwa_04_ENTRY_1, "sbk_99", sbk_99_ENTRY_0);
+EvtScript EVS_ExitWalk_iwa_02_2 = EVT_EXIT_WALK(60, $Iwa02, $iwa_02.Iwa04);
+EvtScript EVS_ExitWalk_sbk_99_0 = EVT_EXIT_WALK(60, $DryDryDesert, $sbk_99.MtRugged);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_iwa_02_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

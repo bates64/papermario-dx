@@ -1,4 +1,5 @@
 #include "flo_03.h"
+#include "world/area/flo/flo_18.h"
 #include "sprite/player.h"
 #include "world/common/enemy/CrazyDayzee/base.h"
 #include "world/common/enemy/MontyMole/base.h"
@@ -48,7 +49,7 @@ EvtScript EVS_Scene_SunReturns = {
     Call(SpeakToPlayer, NPC_Petunia, ANIM_Petunia_Talk, ANIM_Petunia_Idle, 0, MSG_CH6_00C8)
     Call(SetNpcAnimation, NPC_Petunia, ANIM_Petunia_Dance)
     Wait(10)
-    Call(GotoMap, "flo_18", flo_18_ENTRY_1)
+    Call(GotoMap, $flo_18.Flo03)
     Wait(100)
     Return
     End
@@ -770,8 +771,8 @@ EvtScript EVS_NpcInit_MontyMole_04 = {
 
 NpcData NpcData_Petunia = {
     .id = NPC_Petunia,
-    .pos = { -30.0f, 0.0f, 100.0f },
-    .yaw = 270,
+    .pos = $Petunia.pos,
+    .yaw = $Petunia.yaw,
     .init = &EVS_NpcInit_Petunia,
     .settings = &NpcSettings_Petunia,
     .flags = BASE_PASSIVE_FLAGS,
@@ -782,8 +783,8 @@ NpcData NpcData_Petunia = {
 
 NpcData NpcData_Dayzee = {
     .id = NPC_Dayzee,
-    .pos = { -233.0f, 0.0f, -217.0f },
-    .yaw = 90,
+    .pos = $Dayzee.pos,
+    .yaw = $Dayzee.yaw,
     .init = &EVS_NpcInit_Dayzee,
     .settings = &NpcSettings_Dummy,
     .flags = BASE_PASSIVE_FLAGS,
@@ -793,8 +794,8 @@ NpcData NpcData_Dayzee = {
 
 NpcData NpcData_MontyMole_01 = {
     .id = NPC_MontyMole_01,
-    .pos = { -100.0f, 0.0f, 210.0f },
-    .yaw = 90,
+    .pos = $MontyMole_01.pos,
+    .yaw = $MontyMole_01.yaw,
     .init = &EVS_NpcInit_MontyMole_01,
     .settings = &NpcSettings_Dummy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -804,8 +805,8 @@ NpcData NpcData_MontyMole_01 = {
 
 NpcData NpcData_MontyMole_02 = {
     .id = NPC_MontyMole_02,
-    .pos = { -130.0f, 0.0f, 0.0f },
-    .yaw = 90,
+    .pos = $MontyMole_02.pos,
+    .yaw = $MontyMole_02.yaw,
     .init = &EVS_NpcInit_MontyMole_02,
     .settings = &NpcSettings_Dummy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -815,8 +816,8 @@ NpcData NpcData_MontyMole_02 = {
 
 NpcData NpcData_MontyMole_03 = {
     .id = NPC_MontyMole_03,
-    .pos = { 75.0f, 0.0f, 20.0f },
-    .yaw = 270,
+    .pos = $MontyMole_03.pos,
+    .yaw = $MontyMole_03.yaw,
     .init = &EVS_NpcInit_MontyMole_03,
     .settings = &NpcSettings_Dummy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -826,8 +827,8 @@ NpcData NpcData_MontyMole_03 = {
 
 NpcData NpcData_MontyMole_04 = {
     .id = NPC_MontyMole_04,
-    .pos = { 71.0f, 0.0f, 200.0f },
-    .yaw = 270,
+    .pos = $MontyMole_04.pos,
+    .yaw = $MontyMole_04.yaw,
     .init = &EVS_NpcInit_MontyMole_04,
     .settings = &NpcSettings_Dummy,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

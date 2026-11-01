@@ -623,7 +623,7 @@ EvtScript EVS_ManageImpostersScene = {
     Wait(35)
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
     Call(PlaySoundAtCollider, COLLIDER_o1054, SOUND_TROMP_CRASH, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 34, 22, 1, 10, 30)
+    PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, $BombetteBreakingPos_1.pos.x, $BombetteBreakingPos_1.pos.y, $BombetteBreakingPos_1.pos.z, 10, 30)
     Call(EnableModel, MODEL_o1024, false)
     Call(EnableModel, MODEL_o1026, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1054, COLLIDER_FLAGS_UPPER_MASK)
@@ -1032,8 +1032,8 @@ AnimID LimitAnims_Duplighost[] = {
 NpcData NpcData_Imposters[] = {
     {
         .id = NPC_FakeKooper,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $FakeKooper.pos,
+        .yaw = $FakeKooper.yaw,
         .init = &EVS_NpcInit_FakeKooper,
         .settings = &NpcSettings_Kooper,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1042,8 +1042,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_FakeGoompa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $FakeGoompa.pos,
+        .yaw = $FakeGoompa.yaw,
         .init = &EVS_NpcInit_FakeGoompa,
         .settings = &NpcSettings_Goompa,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1053,8 +1053,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_FakeLuigi,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $FakeLuigi.pos,
+        .yaw = $FakeLuigi.yaw,
         .init = &EVS_NpcInit_FakeLuigi,
         .settings = &NpcSettings_Kooper,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1064,8 +1064,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_FakeKoopaKoot,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $FakeKoopaKoot.pos,
+        .yaw = $FakeKoopaKoot.yaw,
         .init = &EVS_NpcInit_FakeKoopaKoot,
         .settings = &NpcSettings_KoopaKoot,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1075,8 +1075,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_FakeKolorado,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $FakeKolorado.pos,
+        .yaw = $FakeKolorado.yaw,
         .init = &EVS_NpcInit_FakeKolorado,
         .settings = &NpcSettings_Kolorado,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1086,8 +1086,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_ExamplePlayer,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $ExamplePlayer.pos,
+        .yaw = $ExamplePlayer.yaw,
         .init = &EVS_NpcInit_ExamplePlayer,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1097,8 +1097,8 @@ NpcData NpcData_Imposters[] = {
     },
     {
         .id = NPC_ExampleKooper,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $ExampleKooper.pos,
+        .yaw = $ExampleKooper.yaw,
         .init = &EVS_NpcInit_ExampleKooper,
         .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1110,8 +1110,8 @@ NpcData NpcData_Imposters[] = {
 NpcData NpcData_Duplighosts[] = {
     {
         .id = NPC_GoompaGhost,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $GoompaGhost.pos,
+        .yaw = $GoompaGhost.yaw,
         .init = &EVS_NpcInit_Duplighost_Goompa,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1121,8 +1121,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_LuigiGhost,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $LuigiGhost.pos,
+        .yaw = $LuigiGhost.yaw,
         .init = &EVS_NpcInit_Duplighost_Luigi,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1132,8 +1132,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_KoopaKootGhost,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $KoopaKootGhost.pos,
+        .yaw = $KoopaKootGhost.yaw,
         .init = &EVS_NpcInit_Duplighost_KoopaKoot,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1143,8 +1143,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_KoloradoGhost,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $KoloradoGhost.pos,
+        .yaw = $KoloradoGhost.yaw,
         .init = &EVS_NpcInit_Duplighost_Kolorado,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1154,8 +1154,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_Duplighost_Controller,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Duplighost_Controller.pos,
+        .yaw = $Duplighost_Controller.yaw,
         .init = &EVS_NpcInit_Duplighost_Controller,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1308,8 +1308,8 @@ EvtScript EVS_NpcInit_TargetKolorado = {
 NpcData NpcData_Targets[] = {
     {
         .id = NPC_TargetKooper,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $TargetKooper.pos,
+        .yaw = $TargetKooper.yaw,
         .init = &EVS_NpcInit_TargetKooper,
         .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1318,8 +1318,8 @@ NpcData NpcData_Targets[] = {
     },
     {
         .id = NPC_TargetGoompa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $TargetGoompa.pos,
+        .yaw = $TargetGoompa.yaw,
         .init = &EVS_NpcInit_TargetGoompa,
         .settings = &NpcSettings_Goompa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1329,8 +1329,8 @@ NpcData NpcData_Targets[] = {
     },
     {
         .id = NPC_TargetLuigi,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $TargetLuigi.pos,
+        .yaw = $TargetLuigi.yaw,
         .init = &EVS_NpcInit_TargetLuigi,
         .settings = &NpcSettings_Kooper,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1340,8 +1340,8 @@ NpcData NpcData_Targets[] = {
     },
     {
         .id = NPC_TargetKoopaKoot,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $TargetKoopaKoot.pos,
+        .yaw = $TargetKoopaKoot.yaw,
         .init = &EVS_NpcInit_TargetKoopaKoot,
         .settings = &NpcSettings_KoopaKoot,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1351,8 +1351,8 @@ NpcData NpcData_Targets[] = {
     },
     {
         .id = NPC_TargetKolorado,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $TargetKolorado.pos,
+        .yaw = $TargetKolorado.yaw,
         .init = &EVS_NpcInit_TargetKolorado,
         .settings = &NpcSettings_Kolorado,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,

@@ -1,9 +1,11 @@
 #include "kpa_130.h"
+#include "world/area/kpa/kpa_111.h"
+#include "world/area/kpa/kpa_134.h"
 
 EvtScript EVS_ExitDoors_kpa_134_1 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_130_ENTRY_0, "kpa_134", kpa_134_ENTRY_1, COLLIDER_ttw, MODEL_o11, MODEL_o9);
+    EVT_EXIT_DOUBLE_DOOR($RightWaterPuzzle, $kpa_134.BillBlasterHall, COLLIDER_ttw, MODEL_o11, MODEL_o9);
 EvtScript EVS_ExitDoors_kpa_111_0 =
-    EVT_EXIT_DOUBLE_DOOR(kpa_130_ENTRY_1, "kpa_111", kpa_111_ENTRY_0, COLLIDER_tte, MODEL_o455, MODEL_o454);
+    EVT_EXIT_DOUBLE_DOOR($HiddenDoorRoom1, $kpa_111.BillBlasterHall, COLLIDER_tte, MODEL_o455, MODEL_o454);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kpa_134_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -15,13 +17,13 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_130_ENTRY_0)
-            Set(LVar0, kpa_130_ENTRY_0)
+        CaseEq($RightWaterPuzzle.index)
+            Set(LVar0, $RightWaterPuzzle.index)
             Set(LVar2, MODEL_o11)
             Set(LVar3, MODEL_o9)
             Exec(EnterDoubleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_130_ENTRY_1)
+        CaseEq($HiddenDoorRoom1.index)
             Set(LVar0, 1)
             Set(LVar2, MODEL_o455)
             Set(LVar3, MODEL_o454)

@@ -4,26 +4,19 @@
 extern EvtScript EVS_Main;
 extern EvtScript EVS_MakeEntities;
 
-EntryList Entrances = {
-    [tst_10_ENTRY_0]    {    0.0,    0.0, -480.0,  180.0 },
-    [tst_10_ENTRY_1]    { -480.0,    0.0,    0.0,   90.0 },
-    [tst_10_ENTRY_2]    {    0.0,    0.0,  480.0,    0.0 },
-    [tst_10_ENTRY_3]    {  480.0,    0.0,    0.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "nok_bg",
 };
 
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
 EvtScript EVS_ExitWalk_tst_10_2 = {
     Call(DisablePlayerInput, true)
-    Call(UseExitHeading, 60, tst_10_ENTRY_0)
+    Call(UseExitHeading, 60, $North.index)
     Exec(ExitWalk)
-    Call(GotoMap, "tst_10", tst_10_ENTRY_2)
+    Call(GotoMap, $South)
     Wait(100)
     Return
     End
@@ -32,9 +25,9 @@ EvtScript EVS_ExitWalk_tst_10_2 = {
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
 EvtScript EVS_ExitWalk_tst_10_3 = {
     Call(DisablePlayerInput, true)
-    Call(UseExitHeading, 60, tst_10_ENTRY_1)
+    Call(UseExitHeading, 60, $West.index)
     Exec(ExitWalk)
-    Call(GotoMap, "tst_10", tst_10_ENTRY_3)
+    Call(GotoMap, $East)
     Wait(100)
     Return
     End
@@ -43,9 +36,9 @@ EvtScript EVS_ExitWalk_tst_10_3 = {
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
 EvtScript EVS_ExitWalk_tst_10_0 = {
     Call(DisablePlayerInput, true)
-    Call(UseExitHeading, 60, tst_10_ENTRY_2)
+    Call(UseExitHeading, 60, $South.index)
     Exec(ExitWalk)
-    Call(GotoMap, "tst_10", tst_10_ENTRY_0)
+    Call(GotoMap, $North)
     Wait(100)
     Return
     End
@@ -54,9 +47,9 @@ EvtScript EVS_ExitWalk_tst_10_0 = {
 // note: sets DisablePlayerInput, but does not use EVT_GROUP_EXIT_MAP
 EvtScript EVS_ExitWalk_tst_10_1 = {
     Call(DisablePlayerInput, true)
-    Call(UseExitHeading, 60, tst_10_ENTRY_3)
+    Call(UseExitHeading, 60, $East.index)
     Exec(ExitWalk)
-    Call(GotoMap, "tst_10", tst_10_ENTRY_1)
+    Call(GotoMap, $West)
     Wait(100)
     Return
     End
@@ -104,8 +97,8 @@ EvtScript EVS_Main = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_HeartBlock, -13, 60, -50, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenPanel, -111, 0, -55, 0, MODEL_o137, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $HeartBlock_1)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
     Return
     End
 };

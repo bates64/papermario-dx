@@ -1,27 +1,31 @@
 #include "tik_04.h"
+#include "world/area/tik/tik_03.h"
+#include "world/area/tik/tik_05.h"
+#include "world/area/tik/tik_07.h"
+#include "world/area/tik/tik_12.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_05_0 = EVT_EXIT_WALK(60, tik_04_ENTRY_0, "tik_05", tik_05_ENTRY_0);
-EvtScript EVS_ExitWalk_tik_07_0 = EVT_EXIT_WALK(60, tik_04_ENTRY_1, "tik_07", tik_07_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_05_0 = EVT_EXIT_WALK(60, $SpringRoom, $tik_05.ScalesRoom);
+EvtScript EVS_ExitWalk_tik_07_0 = EVT_EXIT_WALK(60, $ElevatorAtticRoom, $tik_07.ScalesRoom);
 
 EvtScript EVS_GotoMap_tik_03_1 = {
-    Call(GotoMap, "tik_03", tik_03_ENTRY_1)
+    Call(GotoMap, $tik_03.ScalesRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_03_1 = EVT_EXIT_PIPE_HORIZONTAL(tik_04_ENTRY_2, COLLIDER_ttd, EVS_GotoMap_tik_03_1);
+EvtScript EVS_ExitPipe_tik_03_1 = EVT_EXIT_PIPE_HORIZONTAL($ShortElevatorRoom, COLLIDER_ttd, EVS_GotoMap_tik_03_1);
 
 EvtScript EVS_GotoMap_tik_12_0 = {
-    Call(GotoMap, "tik_12", tik_12_ENTRY_0)
+    Call(GotoMap, $tik_12.ScalesRoom)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_12_0 = EVT_EXIT_PIPE_VERTICAL(tik_04_ENTRY_3, COLLIDER_ttd2, EVS_GotoMap_tik_12_0);
+EvtScript EVS_ExitPipe_tik_12_0 = EVT_EXIT_PIPE_VERTICAL($MetalBlockRoom, COLLIDER_ttd2, EVS_GotoMap_tik_12_0);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_05_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -51,9 +55,9 @@ EvtScript EVS_Main = {
     Exec(EVS_SetupPlatforms)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_04_ENTRY_2)
+        CaseEq($ShortElevatorRoom.index)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, EVS_BindExitTriggers)
-        CaseEq(tik_04_ENTRY_3)
+        CaseEq($MetalBlockRoom.index)
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)

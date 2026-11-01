@@ -1,13 +1,13 @@
 #include "dgb_13.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_MEGA_RUSH, -910, 50, -206, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_MegaRush)
-    Call(MakeItemEntity, ITEM_COIN, -530, 55, -190, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinA)
-    Call(MakeItemEntity, ITEM_COIN, -510, 55, -175, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinB)
-    Call(MakeItemEntity, ITEM_COIN, -510, 55, -205, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinC)
-    Call(MakeItemEntity, ITEM_COIN, -490, 55, -160, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinD)
-    Call(MakeItemEntity, ITEM_COIN, -490, 55, -190, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinE)
-    Call(MakeItemEntity, ITEM_COIN, -490, 55, -220, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB13_Item_CoinF)
+    Call(MakeMarkerEntity, $Item_MegaRush_1)
+    Call(MakeMarkerEntity, $Item_Coin_1)
+    Call(MakeMarkerEntity, $Item_Coin_2)
+    Call(MakeMarkerEntity, $Item_Coin_3)
+    Call(MakeMarkerEntity, $Item_Coin_4)
+    Call(MakeMarkerEntity, $Item_Coin_5)
+    Call(MakeMarkerEntity, $Item_Coin_6)
     Return
     End
 };

@@ -284,7 +284,7 @@ EvtScript EVS_OpenHiddenPassage = {
     Thread
         Wait(20 * DT)
         Call(PlaySoundAt, SOUND_KKJ_DROP_INTO_ASHES, SOUND_SPACE_DEFAULT, -125, 10, -120)
-        PlayEffect(EFFECT_SMOKE_BURST, 0, -125, 10, -120, 2.0, 30)
+        PlayEffect(EFFECT_SMOKE_BURST, 0, $SmokeBurstPos_1.pos.x, $SmokeBurstPos_1.pos.y, $SmokeBurstPos_1.pos.z, 2.0, 30)
     EndThread
     Call(MakeLerp, 0, -180, 30 * DT, EASING_QUADRATIC_IN)
     Loop(0)

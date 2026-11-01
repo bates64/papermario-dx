@@ -371,8 +371,8 @@ EvtScript EVS_NpcInit_Lakitu_02 = {
 NpcData NpcData_Lakitus[] = {
     {
         .id = NPC_Lakitu_01,
-        .pos = { 553.0f, 60.0f, 52.0f },
-        .yaw = 270,
+        .pos = $Lakitu_01.pos,
+        .yaw = $Lakitu_01.yaw,
         .init = &EVS_NpcInit_Lakitu_01,
         .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -381,8 +381,8 @@ NpcData NpcData_Lakitus[] = {
     },
     {
         .id = NPC_Lakitu_02,
-        .pos = { 553.0f, 60.0f, 52.0f },
-        .yaw = 270,
+        .pos = $Lakitu_02.pos,
+        .yaw = $Lakitu_02.yaw,
         .init = &EVS_NpcInit_Lakitu_02,
         .settings = &NpcSettings_Lakitu,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,

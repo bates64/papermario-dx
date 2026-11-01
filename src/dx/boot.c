@@ -1,5 +1,6 @@
 #include "dx/boot.h"
 #include "dx/config.h"
+#include "world/entries.h"
 #include "fio.h"
 #include "game_modes.h"
 #include <string.h>
@@ -106,8 +107,8 @@ void boot_new_game(void) {
 
     clear_player_data();
     clear_saved_variables();
-    get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatus.areaID, &gGameStatus.mapID);
-    gGameStatus.entryID = NEW_GAME_ENTRY_ID;
+    get_map_IDs_by_name_checked(NEW_GAME_ENTRY.map, &gGameStatus.areaID, &gGameStatus.mapID);
+    gGameStatus.entryID = NEW_GAME_ENTRY.index;
     evt_set_variable(nullptr, GB_StoryProgress, NEW_GAME_STORY_PROGRESS);
 
     for (i = 0; i < ARRAY_COUNT(gSaveSlotSummary[slot].filename); i++) {

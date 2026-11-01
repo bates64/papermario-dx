@@ -1,4 +1,13 @@
 #include "kmr_22.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/iwa/iwa_10.h"
+#include "world/area/jan/jan_00.h"
+#include "world/area/kmr/kmr_00.h"
+#include "world/area/kpa/kpa_63.h"
+#include "world/area/mim/mim_01.h"
+#include "world/area/nok/nok_11.h"
+#include "world/area/omo/omo_03.h"
+#include "world/area/sam/sam_02.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -112,24 +121,24 @@ EvtScript EVS_EnterMap = {
     Wait(30)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kmr_22_ENTRY_0)
-            Call(GotoMapSpecial, "kmr_00", kmr_00_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_1)
-            Call(GotoMapSpecial, "nok_11", nok_11_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_2)
-            Call(GotoMapSpecial, "iwa_10", iwa_10_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_3)
-            Call(GotoMapSpecial, "mim_01", mim_01_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_4)
-            Call(GotoMapSpecial, "omo_03", omo_03_ENTRY_4, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_5)
-            Call(GotoMapSpecial, "jan_00", jan_00_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_6)
-            Call(GotoMapSpecial, "flo_00", flo_00_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_7)
-            Call(GotoMapSpecial, "sam_02", sam_02_ENTRY_2, TRANSITION_BEGIN_OR_END_CHAPTER)
-        CaseEq(kmr_22_ENTRY_8)
-            Call(GotoMapSpecial, "kpa_63", kpa_63_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Prologue.index)
+            Call(GotoMapSpecial, $kmr_00.GoombaVillage, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter1.index)
+            Call(GotoMapSpecial, $nok_11.ToadTown, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter2.index)
+            Call(GotoMapSpecial, $iwa_10.Train, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter3.index)
+            Call(GotoMapSpecial, $mim_01.West, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter4.index)
+            Call(GotoMapSpecial, $omo_03.ToadTown, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter5.index)
+            Call(GotoMapSpecial, $jan_00.ToadTown, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter6.index)
+            Call(GotoMapSpecial, $flo_00.ToadTown, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter7.index)
+            Call(GotoMapSpecial, $sam_02.Pipe, TRANSITION_BEGIN_OR_END_CHAPTER)
+        CaseEq($Chapter8.index)
+            Call(GotoMapSpecial, $kpa_63.Starship, TRANSITION_BEGIN_OR_END_CHAPTER)
     EndSwitch
     Call(DismissCurtains)
     Wait(100)
@@ -141,7 +150,7 @@ EvtScript EVS_Main = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kmr_22_ENTRY_0)
+    IfEq(LVar0, $Prologue.index)
         Call(SetPlayerPos, -200, 0, 0)
     Else
         Call(SetPlayerPos, -95, 0, 0)
@@ -169,21 +178,21 @@ EvtScript EVS_Main = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kmr_22_ENTRY_1)
+        CaseEq($Chapter1.index)
             Call(MakeNpcs, false, NpcGroup_Chapter1)
-        CaseEq(kmr_22_ENTRY_2)
+        CaseEq($Chapter2.index)
             Call(MakeNpcs, false, NpcGroup_Chapter2)
-        CaseEq(kmr_22_ENTRY_3)
+        CaseEq($Chapter3.index)
             Call(MakeNpcs, false, NpcGroup_Chapter3)
-        CaseEq(kmr_22_ENTRY_4)
+        CaseEq($Chapter4.index)
             Call(MakeNpcs, false, NpcGroup_Chapter4)
-        CaseEq(kmr_22_ENTRY_5)
+        CaseEq($Chapter5.index)
             Call(MakeNpcs, false, NpcGroup_Chapter5)
-        CaseEq(kmr_22_ENTRY_6)
+        CaseEq($Chapter6.index)
             Call(MakeNpcs, false, NpcGroup_Chapter6)
-        CaseEq(kmr_22_ENTRY_7)
+        CaseEq($Chapter7.index)
             Call(MakeNpcs, false, NpcGroup_Chapter7)
-        CaseEq(kmr_22_ENTRY_8)
+        CaseEq($Chapter8.index)
             Call(MakeNpcs, false, NpcGroup_Chapter8)
     EndSwitch
     Call(DisablePlayerInput, true)

@@ -24,7 +24,7 @@ EvtScript EVS_PlayRumbleSounds = {
 
 EvtScript EVS_HuffNPuff_JumpOut = {
     Call(PlaySoundAtNpc, NPC_HuffNPuff_01, SOUND_HUFF_N_PUFF_EMERGE, SOUND_SPACE_DEFAULT)
-    PlayEffect(EFFECT_SHOCKWAVE, 3, 650, 104, 0)
+    PlayEffect(EFFECT_SHOCKWAVE, 3, $ShockwavePos_1.pos.x, $ShockwavePos_1.pos.y, $ShockwavePos_1.pos.z)
     Wait(15)
     Call(SetNpcJumpscale, NPC_HuffNPuff_02, 0.0)
     Call(NpcJump0, NPC_HuffNPuff_02, 650, 50, 0, 5)
@@ -573,8 +573,8 @@ AnimID LimitAnims_HuffNPuff[] = {
 NpcData NpcData_HuffNPuff[] = {
     {
         .id = NPC_HuffNPuff_01,
-        .pos = { 650.0f, NPC_DISPOSE_POS_Y, 0.0f },
-        .yaw = 270,
+        .pos = $HuffNPuff_01.pos,
+        .yaw = $HuffNPuff_01.yaw,
         .init = &EVS_NpcInit_HuffNPuff_Face,
         .settings = &NpcSettings_HuffNPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -584,8 +584,8 @@ NpcData NpcData_HuffNPuff[] = {
     },
     {
         .id = NPC_HuffNPuff_02,
-        .pos = { 650.0f, 100.0f, 0.0f },
-        .yaw = 270,
+        .pos = $HuffNPuff_02.pos,
+        .yaw = $HuffNPuff_02.yaw,
         .init = &EVS_NpcInit_HuffNPuff_Body,
         .settings = &NpcSettings_HuffNPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -595,8 +595,8 @@ NpcData NpcData_HuffNPuff[] = {
     },
     {
         .id = NPC_HuffNPuff_03,
-        .pos = { 650.0f, NPC_DISPOSE_POS_Y, 0.0f },
-        .yaw = 270,
+        .pos = $HuffNPuff_03.pos,
+        .yaw = $HuffNPuff_03.yaw,
         .init = &EVS_NpcInit_HuffNPuff_Arms,
         .settings = &NpcSettings_HuffNPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -614,8 +614,8 @@ AnimID LimitAnims_RuffPuff[] = {
 NpcData NpcData_RuffPuffs[] = {
     {
         .id = NPC_RuffPuff_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_01.pos,
+        .yaw = $RuffPuff_01.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -625,8 +625,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_02.pos,
+        .yaw = $RuffPuff_02.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -636,8 +636,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_03.pos,
+        .yaw = $RuffPuff_03.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -647,8 +647,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_04.pos,
+        .yaw = $RuffPuff_04.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -658,8 +658,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_05.pos,
+        .yaw = $RuffPuff_05.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -669,8 +669,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_06.pos,
+        .yaw = $RuffPuff_06.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -680,8 +680,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_07,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_07.pos,
+        .yaw = $RuffPuff_07.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -691,8 +691,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_08,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_08.pos,
+        .yaw = $RuffPuff_08.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -702,8 +702,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_09,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_09.pos,
+        .yaw = $RuffPuff_09.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -713,8 +713,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_10,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_10.pos,
+        .yaw = $RuffPuff_10.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -724,8 +724,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_11,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_11.pos,
+        .yaw = $RuffPuff_11.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -735,8 +735,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_12,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_12.pos,
+        .yaw = $RuffPuff_12.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -746,8 +746,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_13,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_13.pos,
+        .yaw = $RuffPuff_13.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -757,8 +757,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_14,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_14.pos,
+        .yaw = $RuffPuff_14.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
@@ -768,8 +768,8 @@ NpcData NpcData_RuffPuffs[] = {
     },
     {
         .id = NPC_RuffPuff_15,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $RuffPuff_15.pos,
+        .yaw = $RuffPuff_15.yaw,
         .init = &EVS_NpcInit_RuffPuff,
         .settings = &NpcSettings_RuffPuff,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,

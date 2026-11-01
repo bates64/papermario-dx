@@ -1,4 +1,6 @@
 #include "tik_09.h"
+#include "world/area/tik/tik_08.h"
+#include "world/area/tik/tik_10.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
@@ -29,8 +31,8 @@ EvtScript EVS_CloseGates = {
     End
 };
 
-EvtScript EVS_ExitWalk_tik_10_0 = EVT_EXIT_WALK(60, tik_09_ENTRY_0, "tik_10", tik_10_ENTRY_0);
-EvtScript EVS_ExitWalk_tik_08_0 = EVT_EXIT_WALK(60, tik_09_ENTRY_1, "tik_08", tik_08_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_10_0 = EVT_EXIT_WALK(60, $BlockPuzzleRoom, $tik_10.WarpZone2);
+EvtScript EVS_ExitWalk_tik_08_0 = EVT_EXIT_WALK(60, $SecondLevelEntry, $tik_08.WarpZone2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_10_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -42,7 +44,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(DisablePlayerInput, true)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, tik_09_ENTRY_2)
+    IfEq(LVar0, $ForeverForest.index)
         EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
     Else
         Set(LVar0, EVS_BindExitTriggers)

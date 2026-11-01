@@ -13,7 +13,7 @@ EvtScript EVS_SetupMusic = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kpa_63_ENTRY_0)
+    IfEq(LVar0, $FrontDoor.index)
         Call(SetMusic, 0, SONG_BOWSERS_CASTLE, 0, VOL_LEVEL_FULL)
         Thread
             Wait(30)

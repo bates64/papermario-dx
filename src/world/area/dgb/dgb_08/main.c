@@ -1,22 +1,23 @@
 #include "dgb_08.h"
+#include "world/area/dgb/dgb_01.h"
 
 EvtScript EVS_ExitDoors_dgb_01_2 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_08_ENTRY_0, "dgb_01", dgb_01_ENTRY_2, COLLIDER_deilittse, MODEL_o142, MODEL_o143, DOOR_SOUNDS_CREAKY
+    $Dgb01Lower, $dgb_01.Dgb08Lower, COLLIDER_deilittse, MODEL_o142, MODEL_o143, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_ExitDoors_dgb_01_4 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    dgb_08_ENTRY_1, "dgb_01", dgb_01_ENTRY_4, COLLIDER_deilittne, MODEL_o140, MODEL_o141, DOOR_SOUNDS_CREAKY
+    $Dgb01Upper, $dgb_01.Dgb08Upper, COLLIDER_deilittne, MODEL_o140, MODEL_o141, DOOR_SOUNDS_CREAKY
 );
 
 EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_08_ENTRY_0)
+        CaseEq($Dgb01Lower.index)
             Set(LVar2, MODEL_o142)
             Set(LVar3, MODEL_o143)
             ExecWait(EnterDoubleDoor)
-        CaseEq(dgb_08_ENTRY_1)
+        CaseEq($Dgb01Upper.index)
             Set(LVar2, MODEL_o140)
             Set(LVar3, MODEL_o141)
             ExecWait(EnterDoubleDoor)

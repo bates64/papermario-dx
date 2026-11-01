@@ -4,7 +4,7 @@ EvtScript EVS_SetupMusic = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH5_DEFEATED_LAVA_PIRANHA)
             Call(GetEntryID, LVar0)
-            IfEq(LVar0, kzn_19_ENTRY_1)
+            IfEq(LVar0, $Kzn18Lower.index)
                 Call(FadeOutMusic, 0, 500)
                 Call(PlayAmbientSounds, AMBIENT_LAVA_1)
                 Return

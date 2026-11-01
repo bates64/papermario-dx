@@ -4,20 +4,9 @@
 
 NpcData NpcData_BuzzyBeetle = {
     .id = NPC_BuzzyBeetle,
-    .pos = { -6.0f, -135.0f, 75.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -6, -135, 75 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 60, -135, 5 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $BuzzyBeetle.pos,
+    .yaw = $BuzzyBeetle.yaw,
+    .territory = $BuzzyBeetle.territory,
     .settings = &NpcSettings_BuzzyBeetle_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = TIK_BUZZY_BEETLE_DROPS,

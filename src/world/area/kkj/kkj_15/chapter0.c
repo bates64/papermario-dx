@@ -186,7 +186,7 @@ EvtScript EVS_Scene_Chapter0_BowserAndKammy = {
         Call(SetNpcFlagBits, NPC_KoopaBros_02, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBros_02, 100, -40, 18)
         Call(PlaySoundAtNpc, NPC_KoopaBros_02, SOUND_KOOPA_BROS_LAND, SOUND_PARAM_MUTE)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 100, 0, -40, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBros_02, false)
         Call(SetNpcAnimation, NPC_KoopaBros_02, ANIM_KoopaBros_Red_IdleCrouch)
     EndThread
@@ -200,7 +200,7 @@ EvtScript EVS_Scene_Chapter0_BowserAndKammy = {
         Call(SetNpcFlagBits, NPC_KoopaBros_01, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBros_01, 128, -15, 18)
         Call(PlaySoundAtNpc, NPC_KoopaBros_01, SOUND_KOOPA_BROS_LAND, SOUND_PARAM_MUTE)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 128, 0, -15, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBros_01, false)
         Call(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Black_IdleCrouch)
     EndThread
@@ -214,7 +214,7 @@ EvtScript EVS_Scene_Chapter0_BowserAndKammy = {
         Call(SetNpcFlagBits, NPC_KoopaBros_03, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBros_03, 140, -90, 18)
         Call(PlaySoundAtNpc, NPC_KoopaBros_03, SOUND_KOOPA_BROS_LAND, SOUND_PARAM_MUTE)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 140, 0, -90, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBros_03, false)
         Call(SetNpcAnimation, NPC_KoopaBros_03, ANIM_KoopaBros_Yellow_IdleCrouch)
     EndThread
@@ -228,7 +228,7 @@ EvtScript EVS_Scene_Chapter0_BowserAndKammy = {
         Call(SetNpcFlagBits, NPC_KoopaBros_04, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBros_04, 168, -45, 18)
         Call(PlaySoundAtNpc, NPC_KoopaBros_04, SOUND_KOOPA_BROS_LAND, SOUND_PARAM_MUTE)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 168, 0, -45, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBros_04, false)
         Call(SetNpcAnimation, NPC_KoopaBros_04, ANIM_KoopaBros_Green_IdleCrouch)
     EndThread
@@ -310,7 +310,7 @@ EvtScript EVS_Scene_Chapter0_BowserAndKammy = {
     ExecGetTID(EVS_PlaySounds_KoopaBrosShowOff, LVarB)
     Call(SetLightSourcePos, 100, 0, -40)
     Call(EnableSpriteShading, true)
-    PlayEffect(EFFECT_LIGHT_RAYS, 3, 100, 0, -40, 1, LVarA)
+    PlayEffect(EFFECT_LIGHT_RAYS, 3, $LightRaysPos_1.pos.x, $LightRaysPos_1.pos.y, $LightRaysPos_1.pos.z, 1, LVarA)
     Call(WaitForCam, CAM_DEFAULT, 1.0)
     Call(SpeakToNpc, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, NPC_KoopaBros_01, MSG_Peach_CH1_KoopaBros_000F)
     Wait(20 * DT)

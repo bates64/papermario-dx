@@ -122,23 +122,19 @@ EvtScript EVS_BreakBlock_Brick = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_ScriptSpring, -150, -80, -50, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring_Basement)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Call(SetEntityCullMode, 1)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_STAR_SPIRIT_DEPARTED)
         CaseLt(STORY_CH2_STAR_SPIRIT_DEPARTED)
-            Call(MakeEntity, Entity_BombableRock, 300, 0, 150, 0, MAKE_ENTITY_END)
-            Call(AssignScript, EVS_BlastRock)
+            Call(MakeMarkerEntity, $BombableRock_1)
         CaseLt(STORY_CH3_STAR_SPIRIT_RESCUED)
         CaseLt(STORY_CH4_STAR_SPIRIT_DEPARTED)
         CaseLt(STORY_CH5_STAR_SPIRIT_DEPARTED)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            Call(MakeEntity, Entity_Hammer3Block, 300, 0, 150, 55, MAKE_ENTITY_END)
-            Call(AssignScript, EVS_SmashBlock)
+            Call(MakeMarkerEntity, $Hammer3Block_1)
         CaseLt(STORY_CH7_STAR_SPIRIT_DEPARTED)
-            Call(MakeEntity, Entity_BrickBlock, 300, 90, 150, 55, MAKE_ENTITY_END)
-            Call(AssignScript, EVS_BreakBlock_Brick)
+            Call(MakeMarkerEntity, $BrickBlock_1)
         CaseLt(STORY_EPILOGUE)
     EndSwitch
     Return

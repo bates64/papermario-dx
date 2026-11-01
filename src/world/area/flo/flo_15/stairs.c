@@ -39,8 +39,8 @@ EvtScript EVS_MonitorFallingStairs = {
         Call(WaitForCam, CAM_DEFAULT, 1.0)
         Thread
             Wait(100)
-            PlayEffect(EFFECT_LANDING_DUST, 4, -180, 0, -15, 0)
-            PlayEffect(EFFECT_LANDING_DUST, 4, -190, 0, -35, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
+            PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
         EndThread
         Thread
             Loop(6)

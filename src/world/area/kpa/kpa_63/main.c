@@ -1,4 +1,5 @@
 #include "kpa_63.h"
+#include "world/area/kpa/kpa_62.h"
 
 EvtScript EVS_OpenHangerDoor = {
     Call(PlaySoundAtCollider, COLLIDER_tts, SOUND_AIRSHIP_DOCK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
@@ -39,9 +40,9 @@ EvtScript EVS_ExitDoor_kpa_62_3 = {
     Call(DisablePlayerInput, true)
     Exec(EVS_OpenHangerDoor)
     Wait(15)
-    Call(UseExitHeading, 60, kpa_63_ENTRY_0)
+    Call(UseExitHeading, 60, $FrontDoor.index)
     Exec(ExitWalk)
-    Call(GotoMap, "kpa_62", kpa_62_ENTRY_3)
+    Call(GotoMap, $kpa_62.Hanger)
     Wait(100)
     Return
     End
@@ -61,7 +62,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kpa_63_ENTRY_1)
+    IfEq(LVar0, $Starship.index)
         Exec(EVS_Starship_Arrive)
         Exec(EVS_BindExitTriggers)
     Else

@@ -1,4 +1,6 @@
 #include "hos_02.h"
+#include "world/area/hos/hos_01.h"
+#include "world/area/hos/hos_03.h"
 #include "world/surfaces.h"
 
 EvtScript EVS_ExitStarWarp = {
@@ -19,17 +21,17 @@ EvtScript EVS_ExitStarWarp = {
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, false)
     ExecWait(EVS_DescendStarWarp)
-    Call(GotoMap, "hos_01", hos_01_ENTRY_1)
+    Call(GotoMap, $hos_01.StarWay)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_hos_03_0 = EVT_EXIT_WALK(60, hos_02_ENTRY_1, "hos_03", hos_03_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_03_0 = EVT_EXIT_WALK(60, $StarHaven, $hos_03.StarWay);
 
 EvtScript EVS_BindExitTriggers = {
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, hos_02_ENTRY_0)
+    IfNe(LVar0, $ShootingStarSummit.index)
         BindTrigger(EVS_ExitStarWarp, TRIGGER_FLOOR_TOUCH, COLLIDER_deiliw, 1, 0)
     EndIf
     BindTrigger(EVS_ExitWalk_hos_03_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -102,12 +104,12 @@ EvtScript EVS_Main = {
     Call(MakeNpcs, false, DefaultNPCs)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_02_ENTRY_0)
+        CaseEq($ShootingStarSummit.index)
             Thread
                 ExecWait(EVS_EnterStarWarp)
                 Exec(EVS_BindExitTriggers)
             EndThread
-        CaseEq(hos_02_ENTRY_1)
+        CaseEq($StarHaven.index)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)

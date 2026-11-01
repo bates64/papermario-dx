@@ -1,4 +1,5 @@
 #include "flo_00.h"
+#include "world/area/flo/flo_19.h"
 #include "sprite/player.h"
 
 #define BEANSTALK_BASE_X -83
@@ -294,7 +295,7 @@ EvtScript EVS_Exit_Beanstalk = {
                 Wait(1)
                 Goto(10)
             EndIf
-        Call(GotoMap, "flo_19", flo_19_ENTRY_3)
+        Call(GotoMap, $flo_19.Beanstalk)
         Wait(100)
     EndIf
     Return
@@ -416,7 +417,7 @@ EvtScript EVS_Scene_BeanstalkGrowing = {
         EndIf
     Call(FadeInMusic, 0, SONG_CLOUDY_CLIMB, 0, 3000, 0, 127)
     Call(FadeOutMusic, 1, 3000)
-    Call(GotoMap, "flo_19", flo_19_ENTRY_2)
+    Call(GotoMap, $flo_19.BeanstalkGrowing)
     Wait(100)
     Return
     End

@@ -71,8 +71,8 @@ EvtScript EVS_NpcInit_BubbleFlower = {
 // uses a dummy bubulb for collision
 NpcData NpcData_BubbleFlower = {
     .id = NPC_BubbleFlower,
-    .pos = { 617.0f, 0.0f, 108.0f },
-    .yaw = 270,
+    .pos = $BubbleFlower.pos,
+    .yaw = $BubbleFlower.yaw,
     .init = &EVS_NpcInit_BubbleFlower,
     .settings = &NpcSettings_BubbleFlower,
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_HAS_NO_SPRITE,
@@ -83,20 +83,9 @@ NpcData NpcData_BubbleFlower = {
 
 NpcData NpcData_Bzzap = {
     .id = NPC_Bzzap,
-    .pos = { -175.0f, 55.0f, 15.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -175, 55, 15 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -175, 55, 15 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Bzzap.pos,
+    .yaw = $Bzzap.yaw,
+    .territory = $Bzzap.territory,
     .settings = &NpcSettings_Bzzap_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = BZZAP_DROPS,

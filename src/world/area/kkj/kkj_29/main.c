@@ -1,4 +1,6 @@
 #include "kkj_29.h"
+#include "world/area/jan/jan_22.h"
+#include "world/area/kkj/kkj_10.h"
 
 #include "../common/RestoreFromPeachState.inc.c"
 
@@ -6,20 +8,20 @@ EvtScript EVS_EndPeachChapter5 = {
     Set(LVar0, GB_KKJ_LastPartner)
     Call(RestoreFromPeachState)
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
-    Call(GotoMapSpecial, "jan_22", jan_22_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
+    Call(GotoMapSpecial, $jan_22.PeachInterlude, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
     Return
     End
 };
 
 EvtScript EVS_ExitDoor_kkj_10_2 =
-    EVT_EXIT_SINGLE_DOOR(kkj_29_ENTRY_0, "kkj_10", kkj_10_ENTRY_2, COLLIDER_tte, MODEL_o57, DOOR_SWING_IN);
+    EVT_EXIT_SINGLE_DOOR($EntryHall, $kkj_10.QuizRoom, COLLIDER_tte, MODEL_o57, DOOR_SWING_IN);
 
 EvtScript EVS_EnterMap = {
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
         Exec(EVS_ManageQuizGame)
     Else
-        Set(LVar0, kkj_29_ENTRY_0)
+        Set(LVar0, $EntryHall.index)
         Set(LVar2, MODEL_o57)
         Set(LVar3, DOOR_SWING_IN)
         ExecWait(EnterSingleDoor)

@@ -1,4 +1,5 @@
 #include "flo_00.h"
+#include "world/area/sam/sam_11.h"
 
 #include "world/common/npc/Lakilester/idle.inc.c"
 #include "world/common/npc/Lakilulu/idle.h"
@@ -35,7 +36,7 @@ EvtScript EVS_Scene_Epilogue = {
     Call(InterpNpcYaw, NPC_Lakilester_Epilogue, 270, 0)
     Wait(40)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, "sam_11", sam_11_ENTRY_2)
+    Call(GotoMap, $sam_11.Epilogue)
     Wait(100)
     Return
     End
@@ -67,8 +68,8 @@ EvtScript EVS_NpcInit_Parakarry_Epilogue = {
 NpcData NpcData_Lakilester_Epilogue[] = {
     {
         .id = NPC_Lakilester_Epilogue,
-        .pos = { 144.0f, 0.0f, 374.0f },
-        .yaw = 90,
+        .pos = $Lakilester_Epilogue.pos,
+        .yaw = $Lakilester_Epilogue.yaw,
         .init = &EVS_NpcInit_Lakilester_Epilogue,
         .settings = &NpcSettings_Lakilester,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -77,8 +78,8 @@ NpcData NpcData_Lakilester_Epilogue[] = {
     },
     {
         .id = NPC_Lakilulu_Epilogue,
-        .pos = { 198.0f, 0.0f, 363.0f },
-        .yaw = 270,
+        .pos = $Lakilulu_Epilogue.pos,
+        .yaw = $Lakilulu_Epilogue.yaw,
         .init = &EVS_NpcInit_Lakilulu_Epilogue,
         .settings = &NpcSettings_Lakilulu,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -87,8 +88,8 @@ NpcData NpcData_Lakilester_Epilogue[] = {
     },
     {
         .id = NPC_Parakarry_Epilogue,
-        .pos = { 266.0f, 0.0f, 322.0f },
-        .yaw = 0,
+        .pos = $Parakarry_Epilogue.pos,
+        .yaw = $Parakarry_Epilogue.yaw,
         .init = &EVS_NpcInit_Parakarry_Epilogue,
         .settings = &NpcSettings_Parakarry,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

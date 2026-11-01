@@ -1,4 +1,5 @@
 #include "iwa_10.h"
+#include "world/area/iwa/iwa_11.h"
 
 EvtScript EVS_SpawnSmoke = {
     Call(PlaySoundAtModel, MODEL_07, SOUND_SEQ_TRAIN_CHUG, SOUND_SPACE_DEFAULT)
@@ -523,7 +524,7 @@ EvtScript EVS_DepartForToadTown = {
     ExecGetTID(EVS_FollowTrainCamera, LVar9)
     Wait(130)
     Wait(100)
-    Call(GotoMap, "iwa_11", iwa_11_ENTRY_1)
+    Call(GotoMap, $iwa_11.MtRuggedStation)
     Wait(100)
     Return
     End

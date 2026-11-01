@@ -1,4 +1,5 @@
 #include "kkj_03.h"
+#include "world/area/kkj/kkj_02.h"
 
 Gfx setup_gfx_candle_lights[] = {
     gsDPPipeSync(),
@@ -20,7 +21,7 @@ Gfx setup_gfx_candle_lights[] = {
 };
 
 EvtScript EVS_ExitDoors_kkj_02_1 =
-    EVT_EXIT_DOUBLE_DOOR(kkj_03_ENTRY_0, "kkj_02", kkj_02_ENTRY_1, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
+    EVT_EXIT_DOUBLE_DOOR($StairsHallway, $kkj_02.WindowHallway, COLLIDER_deilit1, MODEL_door1, MODEL_door2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoors_kkj_02_1, TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
@@ -31,12 +32,12 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_03_ENTRY_0)
+        CaseEq($StairsHallway.index)
             Set(LVar2, MODEL_door1)
             Set(LVar3, MODEL_door2)
             ExecWait(EnterDoubleDoor)
             Exec(EVS_Scene_MeetingPeach)
-        CaseEq(kkj_03_ENTRY_1)
+        CaseEq($Ascending.index)
             Exec(EVS_Scene_Ascending)
     EndSwitch
     Return

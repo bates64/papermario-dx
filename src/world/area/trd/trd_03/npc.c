@@ -174,8 +174,8 @@ EvtScript EVS_NpcInit_KoopaTroopa_02 = {
 
 NpcData NpcData_KoopaBros = {
     .id = NPC_KoopaBros,
-    .pos = { -569.0f, 0.0f, -57.0f },
-    .yaw = 270,
+    .pos = $KoopaBros.pos,
+    .yaw = $KoopaBros.yaw,
     .init = &EVS_NpcInit_KoopaBros,
     .settings = &NpcSettings_KoopaBros,
     .flags = BASE_PASSIVE_FLAGS,
@@ -185,20 +185,9 @@ NpcData NpcData_KoopaBros = {
 
 NpcData NpcData_KoopaTroopa_01 = {
     .id = NPC_KoopaTroopa_01,
-    .pos = { -520.0f, 0.0f, 15.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -520, 0, 15 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -520, 0, 15 },
-            .detectSize = { 350 },
-        }
-    },
+    .pos = $KoopaTroopa_01.pos,
+    .yaw = $KoopaTroopa_01.yaw,
+    .territory = $KoopaTroopa_01.territory,
     .init = &EVS_NpcInit_KoopaTroopa_01,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -209,20 +198,9 @@ NpcData NpcData_KoopaTroopa_01 = {
 
 NpcData NpcData_KoopaTroopa_02 = {
     .id = NPC_KoopaTroopa_02,
-    .pos = { -52.0f, 0.0f, -21.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -52, 0, -21 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -52, 0, -21 },
-            .detectSize = { 350 },
-        }
-    },
+    .pos = $KoopaTroopa_02.pos,
+    .yaw = $KoopaTroopa_02.yaw,
+    .territory = $KoopaTroopa_02.territory,
     .init = &EVS_NpcInit_KoopaTroopa_02,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -233,20 +211,9 @@ NpcData NpcData_KoopaTroopa_02 = {
 
 NpcData NpcData_KoopaTroopa_03 = {
     .id = NPC_KoopaTroopa_03,
-    .pos = { 375.0f, 0.0f, 15.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 375, 0, 15 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 375, 0, 15 },
-            .detectSize = { 350 },
-        }
-    },
+    .pos = $KoopaTroopa_03.pos,
+    .yaw = $KoopaTroopa_03.yaw,
+    .territory = $KoopaTroopa_03.territory,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPA_TROOPA_TRD_DROPS,

@@ -2,12 +2,12 @@
 #include "effects.h"
 
 EvtScript EVS_SetupFlames = {
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 305, -738, 435, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 138, -738, 514, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -46, -738, 530, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -225, -738, 482, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -376, -738, 376, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, -482, -738, 225, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_3.pos.x, $FlamePos_3.pos.y, $FlamePos_3.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_4.pos.x, $FlamePos_4.pos.y, $FlamePos_4.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_5.pos.x, $FlamePos_5.pos.y, $FlamePos_5.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_6.pos.x, $FlamePos_6.pos.y, $FlamePos_6.pos.z, 0.3, LVar0)
     Return
     End
 };

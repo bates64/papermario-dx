@@ -1,27 +1,28 @@
 #include "dgb_11.h"
+#include "world/area/dgb/dgb_02.h"
 
 EvtScript EVS_ExitDoor_dgb_02_3 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    dgb_11_ENTRY_0, "dgb_02", dgb_02_ENTRY_3, COLLIDER_deilits, MODEL_o109, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
+    $Dgb02, $dgb_02.Dgb11, COLLIDER_deilits, MODEL_o109, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(dgb_11_ENTRY_0)
+        CaseEq($Dgb02.index)
             Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
             Set(LVar2, MODEL_o109)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
             Return
-        CaseEq(dgb_11_ENTRY_1)
+        CaseEq($HoleSouthEast.index)
             Call(UseSettingsFrom, CAM_DEFAULT, 500, 0, -100)
             Call(SetPanTarget, CAM_DEFAULT, 500, 0, -100)
             Set(LVar3, 1)
-        CaseEq(dgb_11_ENTRY_2)
+        CaseEq($HoleNorthEast.index)
             Call(UseSettingsFrom, CAM_DEFAULT, 500, 75, -250)
             Call(SetPanTarget, CAM_DEFAULT, 500, 75, -250)
             Set(LVar3, 75)
-        CaseEq(dgb_11_ENTRY_3)
+        CaseEq($HoleNorthWest.index)
             Call(SetZoneEnabled, ZONE_o203, false)
             Call(UseSettingsFrom, CAM_DEFAULT, 375, 0, -175)
             Call(SetPanTarget, CAM_DEFAULT, 375, 0, -175)

@@ -37,20 +37,9 @@ EvtScript EVS_NpcInit_KoopaTroopa = {
 
 NpcData NpcData_KoopaTroopa = {
     .id = NPC_KoopaTroopa,
-    .pos = { -75.0f, 0.0f, -30.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -75, 0, -30 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 1000 },
-        }
-    },
+    .pos = $KoopaTroopa.pos,
+    .yaw = $KoopaTroopa.yaw,
+    .territory = $KoopaTroopa.territory,
     .init = &EVS_NpcInit_KoopaTroopa,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -60,20 +49,9 @@ NpcData NpcData_KoopaTroopa = {
 
 NpcData NpcData_ParaTroopa_01 = {
     .id = NPC_ParaTroopa_01,
-    .pos = { 0.0f, 50.0f, 30.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 0, 50, 30 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 0, 50, 30 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $ParaTroopa_01.pos,
+    .yaw = $ParaTroopa_01.yaw,
+    .territory = $ParaTroopa_01.territory,
     .init = &EVS_NpcInit_KoopaTroopa,
     .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -83,20 +61,9 @@ NpcData NpcData_ParaTroopa_01 = {
 
 NpcData NpcData_ParaTroopa_02 = {
     .id = NPC_ParaTroopa_02,
-    .pos = { 75.0f, 50.0f, -30.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 75, 50, -30 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 75, 50, -30 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $ParaTroopa_02.pos,
+    .yaw = $ParaTroopa_02.yaw,
+    .territory = $ParaTroopa_02.territory,
     .init = &EVS_NpcInit_KoopaTroopa,
     .settings = &NpcSettings_ParaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,

@@ -1,18 +1,20 @@
 #include "flo_11.h"
+#include "world/area/flo/flo_12.h"
+#include "world/area/flo/flo_23.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_flo_23_1 = EVT_EXIT_WALK(60, flo_11_ENTRY_0, "flo_23", flo_23_ENTRY_1);
-EvtScript EVS_ExitWalk_flo_12_0 = EVT_EXIT_WALK(60, flo_11_ENTRY_1, "flo_12", flo_12_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_23_1 = EVT_EXIT_WALK(60, $Flo23, $flo_23.Flo11);
+EvtScript EVS_ExitWalk_flo_12_0 = EVT_EXIT_WALK(60, $Flo12, $flo_12.Flo11);
 
 // template for GotoMap exits used with pipes in the maze
-#define EVT_GOTO_MAP(mapName, entry) \
+#define EVT_GOTO_MAP(entry) \
 { \
     SetGroup(EVT_GROUP_EXIT_MAP) \
-    Call(GotoMap, mapName, entry) \
+    Call(GotoMap, entry) \
     Wait(100) \
     Return \
     End \
@@ -25,12 +27,12 @@ EvtScript EVS_ExitWalk_flo_12_0 = EVT_EXIT_WALK(60, flo_11_ENTRY_1, "flo_12", fl
     Set(LVar2, exitScript) \
     BindTrigger(EVS_OnEnterPipe, TRIGGER_FLOOR_TOUCH, LVar1, 1, 0)
 
-EvtScript EVS_GotoMap_flo_11_5 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_5);
-EvtScript EVS_GotoMap_flo_11_6 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_6);
-EvtScript EVS_GotoMap_flo_11_7 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_7);
-EvtScript EVS_GotoMap_flo_11_2 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_2);
-EvtScript EVS_GotoMap_flo_11_3 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_3);
-EvtScript EVS_GotoMap_flo_11_4 = EVT_GOTO_MAP("flo_11", flo_11_ENTRY_4);
+EvtScript EVS_GotoMap_flo_11_5 = EVT_GOTO_MAP($Entry5);
+EvtScript EVS_GotoMap_flo_11_6 = EVT_GOTO_MAP($Entry6);
+EvtScript EVS_GotoMap_flo_11_7 = EVT_GOTO_MAP($Entry7);
+EvtScript EVS_GotoMap_flo_11_2 = EVT_GOTO_MAP($Entry2);
+EvtScript EVS_GotoMap_flo_11_3 = EVT_GOTO_MAP($Entry3);
+EvtScript EVS_GotoMap_flo_11_4 = EVT_GOTO_MAP($Entry4);
 
 EvtScript EVS_OnEnterPipe = {
     Set(LVarA, LVar0)
@@ -44,12 +46,12 @@ EvtScript EVS_OnEnterPipe = {
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_12_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     BindTrigger(EVS_ExitWalk_flo_23_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
-    EVT_SETUP_PIPE(flo_11_ENTRY_2, COLLIDER_o91, EVS_GotoMap_flo_11_5) // link 2 <--> 5
-    EVT_SETUP_PIPE(flo_11_ENTRY_3, COLLIDER_o92, EVS_GotoMap_flo_11_6) // link 3 <--> 6
-    EVT_SETUP_PIPE(flo_11_ENTRY_4, COLLIDER_o93, EVS_GotoMap_flo_11_7) // link 4 <--> 7
-    EVT_SETUP_PIPE(flo_11_ENTRY_5, COLLIDER_o94, EVS_GotoMap_flo_11_2) // link 2 <--> 5
-    EVT_SETUP_PIPE(flo_11_ENTRY_6, COLLIDER_o95, EVS_GotoMap_flo_11_3) // link 3 <--> 6
-    EVT_SETUP_PIPE(flo_11_ENTRY_7, COLLIDER_o96, EVS_GotoMap_flo_11_4) // link 4 <--> 7
+    EVT_SETUP_PIPE($Entry2.index, COLLIDER_o91, EVS_GotoMap_flo_11_5) // link 2 <--> 5
+    EVT_SETUP_PIPE($Entry3.index, COLLIDER_o92, EVS_GotoMap_flo_11_6) // link 3 <--> 6
+    EVT_SETUP_PIPE($Entry4.index, COLLIDER_o93, EVS_GotoMap_flo_11_7) // link 4 <--> 7
+    EVT_SETUP_PIPE($Entry5.index, COLLIDER_o94, EVS_GotoMap_flo_11_2) // link 2 <--> 5
+    EVT_SETUP_PIPE($Entry6.index, COLLIDER_o95, EVS_GotoMap_flo_11_3) // link 3 <--> 6
+    EVT_SETUP_PIPE($Entry7.index, COLLIDER_o96, EVS_GotoMap_flo_11_4) // link 4 <--> 7
     Return
     End
 };
@@ -63,7 +65,7 @@ EvtScript EVS_Main = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilite, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
-    IfLe(LVar0, flo_11_ENTRY_1)
+    IfLe(LVar0, $Flo12.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
         Exec(EVS_Scene_LakituAmbush)

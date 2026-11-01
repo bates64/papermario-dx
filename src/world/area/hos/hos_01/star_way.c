@@ -45,7 +45,7 @@ EvtScript EVS_Scene_StarWayOpened = {
     Call(SetCamSpeed, CAM_DEFAULT, 1.5)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, 1.0)
-    PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
+    PlayEffect(EFFECT_75, 0, $Effect75Pos_2.pos.x, $Effect75Pos_2.pos.y, $Effect75Pos_2.pos.z, 1, -1)
     Set(MV_StarWarpFXPtr, LVarF)
     Call(SetStarWarpIdleParams, MV_StarWarpFXPtr)
     Call(MakeLerp, 1, 255, 55, EASING_QUADRATIC_IN)

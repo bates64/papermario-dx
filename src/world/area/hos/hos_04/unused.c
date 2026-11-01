@@ -13,7 +13,7 @@ EvtScript EVS_DoNothing = {
 EvtScript EVS_SetupUnused = {
     Call(GetLastEntryID)
     Switch(LVar0)
-        CaseEq(hos_04_ENTRY_0)
+        CaseEq($StarHaven.index)
             Set(LVar0, -1)
             Exec(EVS_DoNothing)
     EndSwitch

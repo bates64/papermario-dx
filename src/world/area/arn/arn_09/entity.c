@@ -1,4 +1,5 @@
 #include "arn_09.h"
+#include "world/area/arn/arn_08.h"
 #include "entity.h"
 #include "sprite/player.h"
 
@@ -13,7 +14,7 @@ EvtScript EVS_UseSpring = {
     Wait(1)
     Call(SetPlayerJumpscale, 1.0)
     Call(PlayerJump, 0, 200, 0, 30)
-    Call(GotoMap, "arn_08", arn_08_ENTRY_1)
+    Call(GotoMap, $arn_08.WellSpring)
     Wait(100)
     Call(DisablePlayerInput, false)
     Call(DisablePlayerPhysics, false)
@@ -40,8 +41,7 @@ EvtScript EVS_LandFromWell = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_ScriptSpring, 0, 0, 0, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Return
     End
 };

@@ -145,8 +145,8 @@ EvtScript EVS_NpcInit_ShopOwner = {
 NpcData NpcData_Townsfolk[] = {
     {
         .id = NPC_StarMan_01,
-        .pos = { -463.0f, 10.0f, 400.0f },
-        .yaw = 270,
+        .pos = $StarMan_01.pos,
+        .yaw = $StarMan_01.yaw,
         .init = &EVS_NpcInit_StarKid_01,
         .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -156,8 +156,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_StarMan_02,
-        .pos = { -325.0f, 10.0f, 600.0f },
-        .yaw = 270,
+        .pos = $StarMan_02.pos,
+        .yaw = $StarMan_02.yaw,
         .init = &EVS_NpcInit_StarKid_02,
         .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -167,20 +167,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_StarMan_03,
-        .pos = { 0.0f, 10.0f, 300.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 0, 10, 300 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 0, 10, 300 },
-                .detectSize = { 30 },
-            }
-        },
+        .pos = $StarMan_03.pos,
+        .yaw = $StarMan_03.yaw,
+        .territory = $StarMan_03.territory,
         .init = &EVS_NpcInit_StarKid_03,
         .settings = &NpcSettings_StarMan_Wander,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -190,20 +179,9 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_StarMan_04,
-        .pos = { 250.0f, 10.0f, 500.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 250, 10, 500 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 250, 10, 500 },
-                .detectSize = { 30 },
-            }
-        },
+        .pos = $StarMan_04.pos,
+        .yaw = $StarMan_04.yaw,
+        .territory = $StarMan_04.territory,
         .init = &EVS_NpcInit_StarKid_04,
         .settings = &NpcSettings_StarMan_Wander,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -213,8 +191,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_StarMan_05,
-        .pos = { -485.0f, 335.0f, -100.0f },
-        .yaw = 270,
+        .pos = $StarMan_05.pos,
+        .yaw = $StarMan_05.yaw,
         .init = &EVS_NpcInit_StarKid_05,
         .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -224,8 +202,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_StarMan_ToadHouse,
-        .pos = { 458.0f, 35.0f, 233.0f },
-        .yaw = 270,
+        .pos = $StarMan_ToadHouse.pos,
+        .yaw = $StarMan_ToadHouse.yaw,
         .init = &EVS_NpcInit_ToadHouseKeeper,
         .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -235,8 +213,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_StarMan_ShopOwner,
-        .pos = { 140.0f, 285.0f, -315.0f },
-        .yaw = 270,
+        .pos = $StarMan_ShopOwner.pos,
+        .yaw = $StarMan_ShopOwner.yaw,
         .init = &EVS_NpcInit_ShopOwner,
         .settings = &NpcSettings_StarMan,
         .flags = COMMON_PASSIVE_FLAGS,
@@ -246,8 +224,8 @@ NpcData NpcData_Townsfolk[] = {
     },
     {
         .id = NPC_ChuckQuizmo,
-        .pos = { -200.0f, 0.0f, 400.0f },
-        .yaw = 90,
+        .pos = $ChuckQuizmo.pos,
+        .yaw = $ChuckQuizmo.yaw,
         .initVarCount = 1,
         .initVar = { .bytes = { 0, QUIZ_AREA_HOS, QUIZ_COUNT_HOS, QUIZ_MAP_HOS_03 }},
         .settings = &NpcSettings_ChuckQuizmo,

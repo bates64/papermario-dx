@@ -1,4 +1,5 @@
 #include "dgb_11.h"
+#include "world/area/dgb/dgb_10.h"
 #include "entity.h"
 #include "animation_script.h"
 #include "sprite/player.h"
@@ -85,7 +86,7 @@ EvtScript EVS_UseSpring = {
             Wait(1)
             Thread
                 Wait(8)
-                Call(GotoMap, "dgb_10", dgb_10_ENTRY_1)
+                Call(GotoMap, $dgb_10.Dgb11)
                 Wait(100)
             EndThread
             Set(LVar3, 500)
@@ -113,9 +114,8 @@ EvtScript EVS_UseSpring = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_D_DOWN_JUMP, 250, 75, -100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB11_Item_DDownJump)
-    Call(MakeEntity, Entity_ScriptSpring, 375, 0, -250, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
+    Call(MakeMarkerEntity, $Item_DDownJump_1)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
     Set(MV_SpringEntityID, LVar0)
     Return
     End

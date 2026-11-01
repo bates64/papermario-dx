@@ -109,24 +109,21 @@ EvtScript EVS_OnBreakBlock_SpringL = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_GiantChest, -270, -90, 0, 90, ITEM_ULTRA_BOOTS, MAKE_ENTITY_END)
-    Call(AssignChestFlag, GF_TIK25_GiantChest)
+    Call(MakeMarkerEntity, $GiantChest)
     Exec(EVS_SetupGiantChest_UltraBoots)
-    Call(MakeEntity, Entity_BrickBlock, 210, -75, -20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_OnBreakBlock_SpringR)
+    Call(MakeMarkerEntity, $BrickBlock_1)
     IfEq(GF_TIK25_SpringBrickA, false)
-        Call(MakeEntity, Entity_SimpleSpring, 210, -50, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $SimpleSpring_1)
         Set(MV_EntityID_SpringR, LVar0)
     Else
-        Call(MakeEntity, Entity_SimpleSpring, 150, -135, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $SimpleSpring_2)
     EndIf
-    Call(MakeEntity, Entity_BrickBlock, -120, -45, -20, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_OnBreakBlock_SpringL)
+    Call(MakeMarkerEntity, $BrickBlock_2)
     IfEq(GF_TIK25_SpringBrickB, false)
-        Call(MakeEntity, Entity_SimpleSpring, -120, -20, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $SimpleSpring_3)
         Set(MV_EntityID_SpringL, LVar0)
     Else
-        Call(MakeEntity, Entity_SimpleSpring, -60, -135, -20, 0, 100, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $SimpleSpring_4)
     EndIf
     Return
     End

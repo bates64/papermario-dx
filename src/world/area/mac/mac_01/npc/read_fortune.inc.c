@@ -245,7 +245,7 @@ EvtScript EVS_Merlon_ReadFortuneFX = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, 1.0)
     Set(ArrayVar(6), 1)
-    PlayEffect(EFFECT_MERLON_HOUSE_STARS, 0, -298, 21, -330)
+    PlayEffect(EFFECT_MERLON_HOUSE_STARS, 0, $MerlonHouseStarsPos_1.pos.x, $MerlonHouseStarsPos_1.pos.y, $MerlonHouseStarsPos_1.pos.z)
     Set(ArrayVar(2), LVarF)
     Call(GetModelCenter, MODEL_tama)
     PlayEffect(EFFECT_MOTION_BLUR_FLAME, 0, LVar0, LVar1, LVar2, 1, -1)

@@ -1,8 +1,10 @@
 #include "jan_04.h"
+#include "world/area/jan/jan_05.h"
+#include "world/area/kmr/kmr_24.h"
 
 EvtScript EVS_GotoMap_kmr_24_0 = {
     Call(FadeOutMusic, 0, 1500)
-    Call(GotoMapSpecial, "kmr_24", kmr_24_ENTRY_0, TRANSITION_MARIO_WHITE)
+    Call(GotoMapSpecial, $kmr_24.Entry0, TRANSITION_MARIO_WHITE)
     Wait(100)
     Return
     End
@@ -10,9 +12,9 @@ EvtScript EVS_GotoMap_kmr_24_0 = {
 
 EvtScript EVS_ExitWalk_jan_05_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, jan_04_ENTRY_0)
+    Call(UseExitHeading, 60, $Jan05.index)
     Exec(ExitWalk)
-    Call(GotoMap, "jan_05", jan_05_ENTRY_2)
+    Call(GotoMap, $jan_05.Jan04)
     Wait(100)
     Return
     End
@@ -27,15 +29,15 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(jan_04_ENTRY_0)
+        CaseEq($Jan05.index)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseRange(jan_04_ENTRY_1, jan_04_ENTRY_2)
+        CaseRange($MtLavalava.index, $TreasureChest.index)
             Exec(EVS_Scene_TreasureChest)
-        CaseEq(jan_04_ENTRY_3)
+        CaseEq($Epilogue.index)
             Exec(EVS_Scene_Epilogue)
-        CaseEq(jan_04_ENTRY_4)
+        CaseEq($Entry4.index)
     EndSwitch
     Return
     End
@@ -47,9 +49,9 @@ EvtScript EVS_Main = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(jan_04_ENTRY_0)
+        CaseEq($Jan05.index)
             Call(MakeNpcs, false, DefaultNPCs)
-        CaseEq(jan_04_ENTRY_3)
+        CaseEq($Epilogue.index)
             Call(MakeNpcs, false, EpilogueNPCs)
     EndSwitch
     Exec(EVS_MakeEntities)

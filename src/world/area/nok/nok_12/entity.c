@@ -56,25 +56,21 @@ EvtScript EVS_OnShakeTree_DropSwitch = {
 EvtScript EVS_MakeEntities = {
     IfLe(GB_StoryProgress, STORY_CH1_KNOCKED_SWITCH_FROM_TREE)
         IfEq(GB_StoryProgress, STORY_CH1_KNOCKED_SWITCH_FROM_TREE)
-            Call(MakeEntity, Entity_BlueSwitch, -470, 0, -150, 0, MAKE_ENTITY_END)
-            Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_NOK12_HitSwitch))
+            Call(MakeMarkerEntity, $BlueSwitch_1)
         Else
             Call(MakeEntity, Entity_BlueSwitch, NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
             Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_NOK12_HitSwitch))
             Set(MV_SwitchEntityID, LVar0)
         EndIf
     EndIf
-    Call(MakeEntity, Entity_YellowBlock, -560, 60, -120, 0, ITEM_POW_BLOCK, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_NOK12_ItemBlock_POWBlock)
-    Call(MakeEntity, Entity_BrickBlock, -165, 60, -130, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_BreakBlock_Ambush)
-    Call(MakeEntity, Entity_BrickBlock, 520, 110, -180, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 595, 110, -180, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 720, 135, -180, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_MulticoinBlock, 820, 135, -180, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_NOK12_MultiCoinBrick)
-    Call(MakeItemEntity, ITEM_STAR_PIECE, -220, -50, 155, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK12_Item_StarPiece)
-    Call(MakeItemEntity, ITEM_SLEEPY_SHEEP, 392, 25, -145, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK12_Item_SleepySheep)
+    Call(MakeMarkerEntity, $YellowBlock_PowBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $BrickBlock_3)
+    Call(MakeMarkerEntity, $BrickBlock_4)
+    Call(MakeMarkerEntity, $MulticoinBlock_1)
+    Call(MakeMarkerEntity, $Item_StarPiece_1)
+    Call(MakeMarkerEntity, $Item_SleepySheep_1)
     Return
     End
 };

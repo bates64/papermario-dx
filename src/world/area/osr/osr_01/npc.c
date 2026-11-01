@@ -1,5 +1,6 @@
 
 #include "osr_01.h"
+#include "world/area/mac/mac_04.h"
 
 #include "world/common/npc/Toad/idle.inc.c"
 
@@ -18,7 +19,7 @@ EvtScript EVS_Scene_Wishing = {
     Wait(30)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_HOS_006F)
     Wait(10)
-    Call(GotoMap, "mac_04", mac_04_ENTRY_4)
+    Call(GotoMap, $mac_04.WishingToad)
     Wait(100)
     Return
     End
@@ -87,7 +88,7 @@ EvtScript EVS_NpcInteract_Toad = {
 EvtScript EVS_NpcInit_Toad = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_01_ENTRY_3)
+        CaseEq($Wishing.index)
             Call(SetNpcPos, NPC_SELF, 0, 0, 400)
             Call(SetNpcYaw, NPC_SELF, 90)
         CaseDefault
@@ -99,8 +100,8 @@ EvtScript EVS_NpcInit_Toad = {
 
 NpcData NpcData_Toad = {
     .id = NPC_Toad,
-    .pos = { 25.0f, 0.0f, 130.0f },
-    .yaw = 270,
+    .pos = $Toad.pos,
+    .yaw = $Toad.yaw,
     .init = &EVS_NpcInit_Toad,
     .settings = &NpcSettings_Toad,
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,

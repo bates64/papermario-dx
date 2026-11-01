@@ -5,20 +5,9 @@
 
 NpcData NpcData_Koopatrol_01 = {
     .id = NPC_Koopatrol_01,
-    .pos = { 300.0f, -160.0f, 140.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 300, -160, 140 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 300, -160, 140 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Koopatrol_01.pos,
+    .yaw = $Koopatrol_01.yaw,
+    .territory = $Koopatrol_01.territory,
     .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
@@ -27,20 +16,9 @@ NpcData NpcData_Koopatrol_01 = {
 
 NpcData NpcData_Koopatrol_02 = {
     .id = NPC_Koopatrol_02,
-    .pos = { 850.0f, -160.0f, 390.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 850, -160, 390 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 850, -160, 390 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $Koopatrol_02.pos,
+    .yaw = $Koopatrol_02.yaw,
+    .territory = $Koopatrol_02.territory,
     .settings = &NpcSettings_Koopatrol_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = KOOPATROL_DROPS,
@@ -50,20 +28,9 @@ NpcData NpcData_Koopatrol_02 = {
 NpcData NpcData_FlyingMagikoopa_01[] = {
     {
         .id = NPC_FlyingMagikoopa_01,
-        .pos = { 500.0f, 250.0f, -50.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 500, 250, -50 },
-                .wanderSize = { 120, 25 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 500, 250, -50 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $FlyingMagikoopa_01.pos,
+        .yaw = $FlyingMagikoopa_01.yaw,
+        .territory = $FlyingMagikoopa_01.territory,
         .settings = &NpcSettings_FlyingMagikoopa_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = FLYING_MAGIKOOPA_DROPS,
@@ -77,20 +44,9 @@ NpcData NpcData_FlyingMagikoopa_01[] = {
 NpcData NpcData_FlyingMagikoopa_02[] = {
     {
         .id = NPC_FlyingMagikoopa_02,
-        .pos = { 200.0f, 250.0f, -50.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 200, 250, -50 },
-                .wanderSize = { 120, 25 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { 200, 250, -50 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $FlyingMagikoopa_02.pos,
+        .yaw = $FlyingMagikoopa_02.yaw,
+        .territory = $FlyingMagikoopa_02.territory,
         .settings = &NpcSettings_FlyingMagikoopa_Wander,
         .flags = ENEMY_FLAG_FLYING,
         .drops = FLYING_MAGIKOOPA_DROPS,

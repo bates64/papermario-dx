@@ -1,10 +1,12 @@
 #include "flo_23.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/flo/flo_11.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript EVS_ExitWalk_flo_00_2 = EVT_EXIT_WALK(60, flo_23_ENTRY_0, "flo_00", flo_00_ENTRY_2);
-EvtScript EVS_ExitWalk_flo_11_0 = EVT_EXIT_WALK(60, flo_23_ENTRY_1, "flo_11", flo_11_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_00_2 = EVT_EXIT_WALK(60, $Flo00, $flo_00.Flo23);
+EvtScript EVS_ExitWalk_flo_11_0 = EVT_EXIT_WALK(60, $Flo11, $flo_11.Flo23);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_11_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

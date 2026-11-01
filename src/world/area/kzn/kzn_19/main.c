@@ -1,4 +1,7 @@
 #include "kzn_19.h"
+#include "world/area/kmr/kmr_23.h"
+#include "world/area/kzn/kzn_18.h"
+#include "world/area/kzn/kzn_20.h"
 #include "sprite/player.h"
 
 #include "world/common/prefab/StarSpiritCard.inc.c"
@@ -14,7 +17,7 @@ EvtScript EVS_TrySpawningStarCard = {
             Set(GB_StoryProgress, STORY_CH5_DEFEATED_LAVA_PIRANHA)
         CaseEq(STORY_CH5_DEFEATED_LAVA_PIRANHA)
             Call(GetEntryID, LVar0)
-            IfEq(LVar0, kzn_19_ENTRY_3)
+            IfEq(LVar0, $Entry3.index)
                 Return
             EndIf
             Set(LVar0, true)
@@ -77,15 +80,15 @@ EvtScript EVS_TrySpawningStarCard = {
     Call(AwaitSpiritCardProgress, SPIRIT_CARD_NOTIFY_PLAYER_TOUCH)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     Call(DisablePlayerInput, true)
-    Call(GotoMapSpecial, "kmr_23", kmr_23_ENTRY_4, TRANSITION_GET_STAR_CARD)
+    Call(GotoMapSpecial, $kmr_23.Misstar, TRANSITION_GET_STAR_CARD)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_kzn_18_1 = EVT_EXIT_WALK(60, kzn_19_ENTRY_0, "kzn_18", kzn_18_ENTRY_1);
-EvtScript EVS_ExitWalk_kzn_18_2 = EVT_EXIT_WALK(60, kzn_19_ENTRY_1, "kzn_18", kzn_18_ENTRY_2);
-EvtScript EVS_ExitWalk_kzn_20_0 = EVT_EXIT_WALK(60, kzn_19_ENTRY_2, "kzn_20", kzn_20_ENTRY_0);
+EvtScript EVS_ExitWalk_kzn_18_1 = EVT_EXIT_WALK(60, $Kzn18Upper, $kzn_18.Kzn19Upper);
+EvtScript EVS_ExitWalk_kzn_18_2 = EVT_EXIT_WALK(60, $Kzn18Lower, $kzn_18.Kzn19Lower);
+EvtScript EVS_ExitWalk_kzn_20_0 = EVT_EXIT_WALK(60, $Kzn20, $kzn_20.Kzn19);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kzn_18_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili3, 1, 0)
@@ -189,14 +192,14 @@ EvtScript EVS_Main = {
     Call(SetSpriteShading, SHADING_KZN_19)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kzn_19_ENTRY_3)
+    IfEq(LVar0, $Entry3.index)
         Call(MakeNpcs, true, EscapeNPCs)
     Else
         Call(MakeNpcs, true, BossNPCs)
     EndIf
     ExecWait(EVS_MakeEntities)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kzn_19_ENTRY_3)
+    IfEq(LVar0, $Entry3.index)
         Thread
             ExecWait(EVS_Misstar_Escape)
             Exec(EVS_BindExitTriggers)

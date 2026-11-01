@@ -1,4 +1,6 @@
 #include "hos_05.h"
+#include "world/area/hos/hos_04.h"
+#include "world/area/hos/hos_20.h"
 #include "effects.h"
 #include "model.h"
 
@@ -116,9 +118,9 @@ EvtScript EVS_Starship_Depart = {
         EndIf
     EndLoop
     IfLt(GB_StoryProgress, STORY_UNUSED_0000005D)
-        Call(GotoMap, "hos_04", hos_04_ENTRY_2)
+        Call(GotoMap, $hos_04.StarShip)
     Else
-        Call(GotoMap, "hos_20", hos_20_ENTRY_0)
+        Call(GotoMap, $hos_20.Flight1)
     EndIf
     Wait(100)
     Return

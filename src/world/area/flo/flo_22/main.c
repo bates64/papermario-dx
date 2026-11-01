@@ -1,7 +1,8 @@
 #include "flo_22.h"
+#include "world/area/flo/flo_03.h"
 #include "effects.h"
 
-EvtScript EVS_ExitWalk_flo_03_1 = EVT_EXIT_WALK(60, flo_22_ENTRY_0, "flo_03", flo_03_ENTRY_1);
+EvtScript EVS_ExitWalk_flo_03_1 = EVT_EXIT_WALK(60, $Flo03, $flo_03.Flo22);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_03_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

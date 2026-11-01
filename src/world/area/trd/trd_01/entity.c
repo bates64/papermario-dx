@@ -59,18 +59,17 @@ EvtScript EVS_BindLockTrigger = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD01_UnlockedDoor, false)
-        Call(MakeEntity, Entity_Padlock, 315, 8, 0, -80, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_BindLockTrigger)
         Set(MV_EntityID_Padlock, LVar0)
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_RAISED_SUBMERGED_STAIRS)
-        Call(MakeEntity, Entity_BlueSwitch, 0, 220, 255, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TRD01_RaiseStairs))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
     EndIf
-    Call(MakeItemEntity, ITEM_SMASH_CHARGE, -268, 656, -40, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_TRD01_Item_SmashCharge)
+    Call(MakeMarkerEntity, $Item_SmashCharge_1)
     IfEq(GF_TRD01_Defeated_KoopaGuard, true)
         IfEq(GF_TRD01_Item_FortressKey, false)
-            Call(MakeItemEntity, ITEM_KOOPA_FORTRESS_KEY, 254, 0, 30, ITEM_SPAWN_MODE_KEY, GF_TRD01_Item_FortressKey)
+            Call(MakeMarkerEntity, $Item_KoopaFortressKey_1)
         EndIf
     EndIf
     Return

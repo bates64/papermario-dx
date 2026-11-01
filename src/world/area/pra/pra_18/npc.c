@@ -341,8 +341,8 @@ EvtScript EVS_NpcInit_Clubba_03_Aux = {
 NpcData NpcData_Clubba_01[] = {
     {
         .id = NPC_Clubba_01,
-        .pos = { 268.0f, 0.0f, 70.0f },
-        .yaw = 270,
+        .pos = $Clubba_01.pos,
+        .yaw = $Clubba_01.yaw,
         .init = &EVS_NpcInit_Clubba_01,
         .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
@@ -351,8 +351,8 @@ NpcData NpcData_Clubba_01[] = {
     },
     {
         .id = NPC_Clubba_01_Aux,
-        .pos = { 268.0f, 0.0f, 70.0f },
-        .yaw = 270,
+        .pos = $Clubba_01_Aux.pos,
+        .yaw = $Clubba_01_Aux.yaw,
         .init = &EVS_NpcInit_Clubba_01_Aux,
         .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
@@ -364,8 +364,8 @@ NpcData NpcData_Clubba_01[] = {
 NpcData NpcData_Clubba_02[] = {
     {
         .id = NPC_Clubba_02,
-        .pos = { 490.0f, 0.0f, 70.0f },
-        .yaw = 270,
+        .pos = $Clubba_02.pos,
+        .yaw = $Clubba_02.yaw,
         .init = &EVS_NpcInit_Clubba_02,
         .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
@@ -374,8 +374,8 @@ NpcData NpcData_Clubba_02[] = {
     },
     {
         .id = NPC_Clubba_02_Aux,
-        .pos = { 490.0f, 0.0f, 70.0f },
-        .yaw = 270,
+        .pos = $Clubba_02_Aux.pos,
+        .yaw = $Clubba_02_Aux.yaw,
         .init = &EVS_NpcInit_Clubba_02_Aux,
         .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
@@ -387,8 +387,8 @@ NpcData NpcData_Clubba_02[] = {
 NpcData NpcData_Clubba_03[] = {
     {
         .id = NPC_Clubba_03,
-        .pos = { 717.0f, 0.0f, 70.0f },
-        .yaw = 270,
+        .pos = $Clubba_03.pos,
+        .yaw = $Clubba_03.yaw,
         .init = &EVS_NpcInit_Clubba_03,
         .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,
@@ -397,8 +397,8 @@ NpcData NpcData_Clubba_03[] = {
     },
     {
         .id = NPC_Clubba_03_Aux,
-        .pos = { 717.0f, 0.0f, 70.0f },
-        .yaw = 270,
+        .pos = $Clubba_03_Aux.pos,
+        .yaw = $Clubba_03_Aux.yaw,
         .init = &EVS_NpcInit_Clubba_03_Aux,
         .settings = &NpcSettings_Clubba,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | CLUBBA_EXTRA_FLAGS,

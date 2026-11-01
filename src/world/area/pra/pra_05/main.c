@@ -1,4 +1,5 @@
 #include "pra_05.h"
+#include "world/area/pra/pra_38.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -6,7 +7,7 @@
 EvtScript EVS_ExitDoors_pra_38_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_05_ENTRY_0)
+    Set(LVar0, $BlueKeyHall.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
@@ -14,7 +15,7 @@ EvtScript EVS_ExitDoors_pra_38_1 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_38", pra_38_ENTRY_1)
+    Call(GotoMap, $pra_38.BlueKeyRoom)
     Wait(100)
     Return
     End
@@ -27,7 +28,7 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 EvtScript EVS_EnterMap = {
-    Set(LVar0, pra_05_ENTRY_0)
+    Set(LVar0, $BlueKeyHall.index)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
     Set(LVar4, MODEL_o844)

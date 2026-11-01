@@ -1,11 +1,12 @@
 #include "kpa_101.h"
+#include "world/area/kpa/kpa_09.h"
 
 export s32 map_init(void) {
     use_map_geometry("kpa_119");
     return false;
 }
 
-EvtScript EVS_ExitWalk_kpa_09_0 = EVT_EXIT_WALK(60, kpa_101_ENTRY_0, "kpa_09", kpa_09_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_09_0 = EVT_EXIT_WALK(60, $ShroomTimingPuzzle, $kpa_09.ShroomRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_09_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

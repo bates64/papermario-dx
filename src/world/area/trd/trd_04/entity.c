@@ -108,12 +108,12 @@ EvtScript EVS_DropSwitch = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TRD04_UnlockedLowerDoor, false)
-        Call(MakeEntity, Entity_Padlock, 265, 8, 90, -80, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_1)
         Call(AssignScript, EVS_Padlock_LowerDoors)
         Set(MV_EntityID_PadlockLower, LVar0)
     EndIf
     IfEq(GF_TRD04_UnlockedUpperDoor, false)
-        Call(MakeEntity, Entity_Padlock, -265, 195, -55, 80, MAKE_ENTITY_END)
+        Call(MakeMarkerEntity, $Padlock_2)
         Call(AssignScript, EVS_Padlock_UpperDoors)
         Set(MV_EntityID_PadlockUpper, LVar0)
     EndIf

@@ -3,14 +3,14 @@
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseOrEq(flo_19_ENTRY_0)
-        CaseOrEq(flo_19_ENTRY_1)
+        CaseOrEq($Entry0.index)
+        CaseOrEq($Flo21.index)
             Call(SetMusic, 0, SONG_CLOUDY_CLIMB, 0, VOL_LEVEL_FULL)
         EndCaseGroup
-        CaseOrEq(flo_19_ENTRY_2)
+        CaseOrEq($BeanstalkGrowing.index)
         CaseOrEq(7)
         EndCaseGroup
-        CaseEq(flo_19_ENTRY_3)
+        CaseEq($Beanstalk.index)
             IfNe(AF_FLO_RidingBeanstalk, false)
             Else
                 Call(FadeOutMusic, 1, 3000)

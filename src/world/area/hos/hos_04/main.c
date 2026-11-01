@@ -1,20 +1,22 @@
 #include "hos_04.h"
+#include "world/area/hos/hos_03.h"
+#include "world/area/hos/hos_05.h"
 
-EvtScript EVS_ExitWalk_hos_03_1 = EVT_EXIT_WALK(60, hos_04_ENTRY_0, "hos_03", hos_03_ENTRY_1);
+EvtScript EVS_ExitWalk_hos_03_1 = EVT_EXIT_WALK(60, $StarHaven, $hos_03.OutsideSanctuary);
 
 #if VERSION_JP
 EvtScript EVS_ExitWalk_hos_05_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o162, COLLIDER_FLAGS_UPPER_MASK)
-    Call(UseExitHeading, 60, hos_04_ENTRY_1)
+    Call(UseExitHeading, 60, $StarSanctuary.index)
     Exec(ExitWalk)
-    Call(GotoMap, "hos_05", hos_05_ENTRY_0)
+    Call(GotoMap, $hos_05.OutsideSanctuary)
     Wait(100)
     Return
     End
 };
 #else
-EvtScript EVS_ExitWalk_hos_05_0 = EVT_EXIT_WALK(60, hos_04_ENTRY_1, "hos_05", hos_05_ENTRY_0);
+EvtScript EVS_ExitWalk_hos_05_0 = EVT_EXIT_WALK(60, $StarSanctuary, $hos_05.OutsideSanctuary);
 #endif
 
 EvtScript EVS_BindExitTriggers = {
@@ -28,7 +30,7 @@ EvtScript EVS_EnterMap = {
     Set(AF_HOS05_SkipMusicChange, false)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_04_ENTRY_0)
+        CaseEq($StarHaven.index)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitnw, COLLIDER_FLAGS_UPPER_MASK)
             IfEq(GF_HOS04_Visited, false)
                 Thread
@@ -75,23 +77,23 @@ EvtScript EVS_EnterMap = {
                 Exec(EnterWalk)
                 Wait(1)
             EndIf
-        CaseEq(hos_04_ENTRY_1)
+        CaseEq($StarSanctuary.index)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitnw, COLLIDER_FLAGS_UPPER_MASK)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
-        CaseEq(hos_04_ENTRY_2)
+        CaseEq($StarShip.index)
             Exec(EVS_Starship_FlyingAway)
-        CaseEq(hos_04_ENTRY_3)
+        CaseEq($Entry3.index)
             ExecWait(EVS_Intro_PreHeist_Unused)
-        CaseEq(hos_04_ENTRY_4)
+        CaseEq($Entry4.index)
             ExecWait(EVS_Intro_PostHeist)
-        CaseEq(hos_04_ENTRY_5)
+        CaseEq(5)
             Call(EnableGroup, MODEL_g1, false)
             Exec(EVS_BetaStarship_Flight1)
-        CaseEq(hos_04_ENTRY_6)
+        CaseEq(6)
             Call(EnableGroup, MODEL_g1, false)
             Exec(EVS_BetaStarship_Flight2)
-        CaseEq(hos_04_ENTRY_7)
+        CaseEq(7)
             Call(EnableGroup, MODEL_g1, false)
             Exec(EVS_BetaStarship_Return)
     EndSwitch

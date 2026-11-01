@@ -98,22 +98,17 @@ EvtScript EVS_OnBreakBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_SavePoint, 365, 530, 135, 0, MAKE_ENTITY_END)
-    Call(MakeItemEntity, ITEM_FIRE_SHIELD, 75, 290, 235, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_KZN03_Item_FireShield)
-    Call(MakeEntity, Entity_BrickBlock, 215, 745, -105, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BrickBlock, 85, 770, -105, 0, MAKE_ENTITY_END)
-    Call(MakeItemEntity, ITEM_POW_BLOCK, 85, 795, -105, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_KZN03_Item_POWBlock)
-    Call(MakeEntity, Entity_YellowBlock, 35, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinA)
-    Call(MakeEntity, Entity_YellowBlock, -15, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinB)
-    Call(MakeEntity, Entity_YellowBlock, -65, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinC)
-    Call(MakeEntity, Entity_YellowBlock, -115, 730, -105, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KZN03_ItemBlock_CoinD)
+    Call(MakeMarkerEntity, $SavePoint_1)
+    Call(MakeMarkerEntity, $Item_FireShield_1)
+    Call(MakeMarkerEntity, $BrickBlock_1)
+    Call(MakeMarkerEntity, $BrickBlock_2)
+    Call(MakeMarkerEntity, $Item_PowBlock_1)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_2)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_3)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_4)
     IfLt(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
-        Call(MakeEntity, Entity_Hammer3Block, 490, 470, 210, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnBreakBlock)
+        Call(MakeMarkerEntity, $Hammer3Block_1)
         Thread
             Loop(0)
                 IfGe(GB_StoryProgress, STORY_CH5_SMASHED_ULTRA_BLOCK)
@@ -126,15 +121,12 @@ EvtScript EVS_MakeEntities = {
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_on_off, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(MakeEntity, Entity_ScriptSpring, 160, 30, 350, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpringA)
-    Call(MakeEntity, Entity_ScriptSpring, 335, 265, 360, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpringB)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    Call(MakeMarkerEntity, $ScriptSpring_2)
     Thread
         Call(IsPlayerOnFirstCliff)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, -410, 645, 120, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpringC)
+    Call(MakeMarkerEntity, $ScriptSpring_3)
     Return
     End
 };

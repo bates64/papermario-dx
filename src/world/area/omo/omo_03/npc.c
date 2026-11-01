@@ -122,8 +122,8 @@ EvtScript EVS_NpcInit_TrainToad = {
 NpcData NpcData_TrainToads[] = {
     {
         .id = NPC_Conductor,
-        .pos = { 170.0f, 50.0f, -115.0f },
-        .yaw = 270,
+        .pos = $Conductor.pos,
+        .yaw = $Conductor.yaw,
         .init = &EVS_NpcInit_Conductor,
         .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -133,8 +133,8 @@ NpcData NpcData_TrainToads[] = {
     },
     {
         .id = NPC_TrainToad,
-        .pos = { 158.0f, 0.0f, 85.0f },
-        .yaw = 90,
+        .pos = $TrainToad.pos,
+        .yaw = $TrainToad.yaw,
         .init = &EVS_NpcInit_TrainToad,
         .settings = &NpcSettings_TrainToad,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -147,8 +147,8 @@ NpcData NpcData_TrainToads[] = {
 NpcData NpcData_Epilogue[] = {
     {
         .id = NPC_Parakarry,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Parakarry.pos,
+        .yaw = $Parakarry.yaw,
         .settings = &NpcSettings_Parakarry,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -156,8 +156,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_Watt,
-        .pos = { 50.0f, 15.0f, 160.0f },
-        .yaw = 90,
+        .pos = $Watt.pos,
+        .yaw = $Watt.yaw,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -165,8 +165,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_ShyGuy_01,
-        .pos = { 100.0f, 0.0f, 160.0f },
-        .yaw = 270,
+        .pos = $ShyGuy_01.pos,
+        .yaw = $ShyGuy_01.yaw,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -174,8 +174,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_ShyGuy_02,
-        .pos = { 115.0f, 0.0f, 200.0f },
-        .yaw = 270,
+        .pos = $ShyGuy_02.pos,
+        .yaw = $ShyGuy_02.yaw,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
@@ -183,8 +183,8 @@ NpcData NpcData_Epilogue[] = {
     },
     {
         .id = NPC_ShyGuy_03,
-        .pos = { 145.0f, 0.0f, 150.0f },
-        .yaw = 270,
+        .pos = $ShyGuy_03.pos,
+        .yaw = $ShyGuy_03.yaw,
         .settings = &NpcSettings_ShyGuy,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,

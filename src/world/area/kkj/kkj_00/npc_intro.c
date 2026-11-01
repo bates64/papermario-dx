@@ -42,7 +42,7 @@ EvtScript EVS_NpcIdle_Toadette_01_Intro = {
 
 EvtScript EVS_NpcIdle_Toad_01_Intro = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_00_ENTRY_5)
+    IfEq(LVar0, $Intro.index)
         Call(WaitForPlayerInputEnabled)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(AwaitPlayerLeave, LVar0, LVar2, 100)
@@ -178,7 +178,7 @@ EvtScript EVS_NpcInteract_ToadGuard_02_Intro = {
 EvtScript EVS_NpcInit_Luigi_Intro = {
     Call(SetNpcCollisionSize, NPC_SELF, 46, 26)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, kkj_00_ENTRY_5)
+    IfEq(LVar0, $Intro.index)
         Call(SetNpcPos, NPC_SELF, 0, 0, 580)
         Call(SetNpcYaw, NPC_SELF, 0)
     Else
@@ -192,7 +192,7 @@ EvtScript EVS_NpcInit_Luigi_Intro = {
 
 EvtScript EVS_NpcInit_Toad_01_Intro = {
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kkj_00_ENTRY_5)
+    IfNe(LVar0, $Intro.index)
         Call(SetNpcPos, NPC_SELF, 60, 0, 320)
         Call(SetNpcYaw, NPC_SELF, 270)
     EndIf
@@ -262,8 +262,8 @@ EvtScript EVS_NpcInit_ToadGuard_02_Intro = {
 NpcData NpcData_Characters_Intro[] = {
     {
         .id = NPC_Luigi,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Luigi.pos,
+        .yaw = $Luigi.yaw,
         .init = &EVS_NpcInit_Luigi_Intro,
         .settings = &NpcSettings_Luigi,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -272,8 +272,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Toad_01,
-        .pos = { 182.0f, 0.0f, 320.0f },
-        .yaw = 270,
+        .pos = $Toad_01.pos,
+        .yaw = $Toad_01.yaw,
         .init = &EVS_NpcInit_Toad_01_Intro,
         .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -282,22 +282,9 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Toad_02,
-        .pos = { -250.0f, 0.0f, 250.0f },
-        .yaw = 90,
-        .territory = {
-            .patrol = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .numPoints  = 2,
-                .points  = {
-                    { -250, 0, 250 },
-                    { 250, 0, 250 },
-                },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -250, 0, 250 },
-                .detectSize = { 200 },
-            }
-        },
+        .pos = $Toad_02.pos,
+        .yaw = $Toad_02.yaw,
+        .territory = $Toad_02.territory,
         .init = &EVS_NpcInit_Toad_02_Intro,
         .settings = &NpcSettings_Toad_Patrol,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -306,8 +293,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Toad_03,
-        .pos = { 150.0f, 0.0f, 0.0f },
-        .yaw = 270,
+        .pos = $Toad_03.pos,
+        .yaw = $Toad_03.yaw,
         .init = &EVS_NpcInit_Toad_03_Intro,
         .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -316,8 +303,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Toadette_01,
-        .pos = { -300.0f, 0.0f, 100.0f },
-        .yaw = 90,
+        .pos = $Toadette_01.pos,
+        .yaw = $Toadette_01.yaw,
         .init = &EVS_NpcInit_Toadette_01_Intro,
         .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -326,8 +313,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Toadette_02,
-        .pos = { -270.0f, 0.0f, 85.0f },
-        .yaw = 270,
+        .pos = $Toadette_02.pos,
+        .yaw = $Toadette_02.yaw,
         .init = &EVS_NpcInit_Toadette_02_Intro,
         .settings = &NpcSettings_Toadette,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -336,8 +323,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_RussT_01,
-        .pos = { 300.0f, 0.0f, 150.0f },
-        .yaw = 90,
+        .pos = $RussT_01.pos,
+        .yaw = $RussT_01.yaw,
         .init = &EVS_NpcInit_RussT_Intro,
         .settings = &NpcSettings_RussT,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -346,8 +333,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_ShiverToad_01,
-        .pos = { 330.0f, 0.0f, 135.0f },
-        .yaw = 270,
+        .pos = $ShiverToad_01.pos,
+        .yaw = $ShiverToad_01.yaw,
         .init = &EVS_NpcInit_ShiverToad_Intro,
         .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -356,8 +343,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_Penguin_01,
-        .pos = { -120.0f, 100.0f, -305.0f },
-        .yaw = 90,
+        .pos = $Penguin_01.pos,
+        .yaw = $Penguin_01.yaw,
         .init = &EVS_NpcInit_Penguin_01_Intro,
         .settings = &NpcSettings_Penguin,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -366,8 +353,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_ToadGuard_01,
-        .pos = { 100.0f, 0.0f, 150.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_01.pos,
+        .yaw = $ToadGuard_01.yaw,
         .init = &EVS_NpcInit_ToadGuard_01_Intro,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -376,8 +363,8 @@ NpcData NpcData_Characters_Intro[] = {
     },
     {
         .id = NPC_ToadGuard_02,
-        .pos = { -50.0f, 100.0f, -365.0f },
-        .yaw = 270,
+        .pos = $ToadGuard_02.pos,
+        .yaw = $ToadGuard_02.yaw,
         .init = &EVS_NpcInit_ToadGuard_02_Intro,
         .settings = &NpcSettings_ToadGuard,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

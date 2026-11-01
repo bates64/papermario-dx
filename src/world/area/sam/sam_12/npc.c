@@ -12,8 +12,8 @@ EvtScript EVS_NpcInit_Merlar = {
 
 NpcData NpcData_Merlar = {
     .id = NPC_Merlar,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 180,
+    .pos = $Merlar.pos,
+    .yaw = $Merlar.yaw,
     .init = &EVS_NpcInit_Merlar,
     .settings = &NpcSettings_Merlar,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

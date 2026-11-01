@@ -52,7 +52,7 @@ EvtScript EVS_NpcDefeat_Pokey_01 = {
                         Call(PanToTarget, CAM_DEFAULT, 0, true)
                         Call(WaitForCam, CAM_DEFAULT, 1.0)
                         Wait(45)
-                        Call(MakeItemEntity, ITEM_RUINS_KEY, -250, -240, 545, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_ISK07_Item_RuinsKey)
+                        Call(MakeMarkerEntity, $Item_RuinsKey_2)
                         Set(GF_ISK07_Defeated_Mummies, true)
                         ExecWait(EVS_OpenEntryDoor)
                         Wait(60)
@@ -174,20 +174,9 @@ EvtScript EVS_NpcInit_Pokey_03 = {
 
 NpcData NpcData_Pokey_01 = {
     .id = NPC_Pokey_01,
-    .pos = { -132.0f, -390.0f, 492.0f },
-    .yaw = 304,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -301, 0, 427 },
-            .wanderSize = { 200 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -301, 0, 427 },
-            .detectSize = { 400 },
-        }
-    },
+    .pos = $Pokey_01.pos,
+    .yaw = $Pokey_01.yaw,
+    .territory = $Pokey_01.territory,
     .init = &EVS_NpcInit_Pokey_01,
     .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -197,20 +186,9 @@ NpcData NpcData_Pokey_01 = {
 
 NpcData NpcData_Pokey_02 = {
     .id = NPC_Pokey_02,
-    .pos = { 45.0f, -390.0f, 507.0f },
-    .yaw = 263,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 52, -390, 573 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 52, -390, 573 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $Pokey_02.pos,
+    .yaw = $Pokey_02.yaw,
+    .territory = $Pokey_02.territory,
     .init = &EVS_NpcInit_Pokey_02,
     .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
@@ -220,20 +198,9 @@ NpcData NpcData_Pokey_02 = {
 
 NpcData NpcData_Pokey_03 = {
     .id = NPC_Pokey_03,
-    .pos = { 220.0f, -389.0f, 467.0f },
-    .yaw = 244,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 243, -390, 523 },
-            .wanderSize = { 50 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 243, -390, 523 },
-            .detectSize = { 150 },
-        }
-    },
+    .pos = $Pokey_03.pos,
+    .yaw = $Pokey_03.yaw,
+    .territory = $Pokey_03.territory,
     .init = &EVS_NpcInit_Pokey_03,
     .settings = &NpcSettings_PokeyMummy_Wander,
     .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,

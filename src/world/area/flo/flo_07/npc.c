@@ -1,4 +1,6 @@
 #include "flo_07.h"
+#include "world/area/flo/flo_10.h"
+#include "world/area/flo/flo_25.h"
 #include "foliage.h"
 
 #include "world/common/npc/Posie/idle.inc.c"
@@ -18,7 +20,7 @@ EvtScript EVS_Scene_SunReturns = {
     Wait(20)
     Call(SpeakToPlayer, NPC_Posie, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_00C5)
     Wait(10)
-    Call(GotoMap, "flo_10", flo_10_ENTRY_1)
+    Call(GotoMap, $flo_10.Flo07)
     Wait(100)
     Return
     End
@@ -57,9 +59,9 @@ EvtScript EVS_MakeCrystalBerry = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Sub(LVar0, LVar2)
     IfLt(LVar0, -250)
-        Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -225, 100, -25, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_FLO07_Item_CrystalBerry)
+        Call(MakeMarkerEntity, $Item_CrystalBerry_1)
     Else
-        Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -265, 100, 54, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_FLO07_Item_CrystalBerry)
+        Call(MakeMarkerEntity, $Item_CrystalBerry_2)
         Set(GF_FLO07_CrystalBerryFellOnLeftSide, true)
     EndIf
     Call(PlaySound, SOUND_LRAW_RUMBLE | SOUND_ID_TRIGGER_CHANGE_SOUND)
@@ -133,9 +135,9 @@ EvtScript EVS_NpcInit_Posie = {
     IfEq(GB_StoryProgress, STORY_CH6_GOT_CRYSTAL_BERRY)
         IfEq(GF_FLO07_Item_CrystalBerry, false)
             IfEq(GF_FLO07_CrystalBerryFellOnLeftSide, false)
-                Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -225, 0, -25, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_FLO07_Item_CrystalBerry)
+                Call(MakeMarkerEntity, $Item_CrystalBerry_3)
             Else
-                Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -265, 0, 54, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_FLO07_Item_CrystalBerry)
+                Call(MakeMarkerEntity, $Item_CrystalBerry_4)
             EndIf
         EndIf
     EndIf
@@ -195,7 +197,7 @@ EvtScript EVS_OnHit_CrystalTree = {
                 CaseGe(5)
                     Call(SpeakToPlayer, NPC_Posie, ANIM_Posie_TalkAngry, ANIM_Posie_Idle, 0, MSG_CH6_006D)
                     Set(AB_FLO_PoiseKickedOutCount, 1)
-                    Call(GotoMap, "flo_25", flo_25_ENTRY_1)
+                    Call(GotoMap, $flo_25.Flo07)
                     Wait(100)
             EndSwitch
         EndIf
@@ -216,8 +218,8 @@ ShakeTreeConfig ShakeTree_CrystalTree = {
 };
 
 BombTrigger BombPos_CrystalTree = {
-    .pos = { -309.0f, 0.0f, 31.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_CrystalTree.pos,
+    .diameter = 2.0f * $BombPos_CrystalTree.radius,
 };
 
 EvtScript EVS_SetupFoliage = {
@@ -230,8 +232,8 @@ EvtScript EVS_SetupFoliage = {
 
 NpcData NpcData_Posie = {
     .id = NPC_Posie,
-    .pos = { -260.0f, 0.0f, 0.0f },
-    .yaw = 90,
+    .pos = $Posie.pos,
+    .yaw = $Posie.yaw,
     .init = &EVS_NpcInit_Posie,
     .settings = &NpcSettings_Posie,
     .flags = BASE_PASSIVE_FLAGS,

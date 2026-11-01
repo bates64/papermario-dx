@@ -3,7 +3,7 @@
 EvtScript EVS_TexPan_MotionLines = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, hos_20_ENTRY_2)
+    IfEq(LVar0, $ReturnFlight.index)
         Call(RotateModel, MODEL_h1, 180, 0, 0, 1)
         Call(RotateModel, MODEL_h2, 180, 0, 0, 1)
         Call(RotateModel, MODEL_h3, 180, 0, 0, 1)
@@ -51,11 +51,11 @@ EvtScript EVS_Main = {
     Exec(EVS_TexPan_MotionLines)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_20_ENTRY_0)
+        CaseEq($Flight1.index)
             Exec(EVS_Starship_Flight1)
-        CaseEq(hos_20_ENTRY_1)
+        CaseEq($Flight2.index)
             Exec(EVS_Starship_Flight2)
-        CaseEq(hos_20_ENTRY_2)
+        CaseEq($ReturnFlight.index)
             Exec(EVS_Starship_Return)
     EndSwitch
     Return

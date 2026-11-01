@@ -1,7 +1,9 @@
 #include "kpa_90.h"
+#include "world/area/kpa/kpa_32.h"
+#include "world/area/kpa/kpa_91.h"
 
-EvtScript EVS_ExitWalk_kpa_91_0 = EVT_EXIT_WALK(60, kpa_90_ENTRY_1, "kpa_91", kpa_91_ENTRY_0);
-EvtScript EVS_ExitWalk_kpa_32_1 = EVT_EXIT_WALK(60, kpa_90_ENTRY_0, "kpa_32", kpa_32_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_91_0 = EVT_EXIT_WALK(60, $EastUpperJail, $kpa_91.EastJailStairs);
+EvtScript EVS_ExitWalk_kpa_32_1 = EVT_EXIT_WALK(60, $LowerGrandHall, $kpa_32.EastJailStairs);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_91_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

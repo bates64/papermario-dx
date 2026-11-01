@@ -101,8 +101,8 @@ AnimID LimitAnims_Kalmar_FlyAway[] = {
 NpcData NpcData_Spirits_FlyAway[] = {
     {
         .id = NPC_Twink,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Twink_1.pos,
+        .yaw = $Twink_1.yaw,
         .init = &EVS_NpcInit_Twink_FlyAway,
         .settings = &NpcSettings_Twink,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -112,8 +112,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Eldstar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Eldstar_1.pos,
+        .yaw = $Eldstar_1.yaw,
         .init = &EVS_NpcInit_Eldstar_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -123,8 +123,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Mamar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Mamar_1.pos,
+        .yaw = $Mamar_1.yaw,
         .init = &EVS_NpcInit_Mamar_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -134,8 +134,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Skolar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Skolar_1.pos,
+        .yaw = $Skolar_1.yaw,
         .init = &EVS_NpcInit_Skolar_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -145,8 +145,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Muskular,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Muskular_1.pos,
+        .yaw = $Muskular_1.yaw,
         .init = &EVS_NpcInit_Muskular_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -156,8 +156,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Misstar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Misstar_1.pos,
+        .yaw = $Misstar_1.yaw,
         .init = &EVS_NpcInit_Misstar_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -167,8 +167,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Klevar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Klevar_1.pos,
+        .yaw = $Klevar_1.yaw,
         .init = &EVS_NpcInit_Klevar_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -178,8 +178,8 @@ NpcData NpcData_Spirits_FlyAway[] = {
     },
     {
         .id = NPC_Kalmar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Kalmar_1.pos,
+        .yaw = $Kalmar_1.yaw,
         .init = &EVS_NpcInit_Kalmar_FlyAway,
         .settings = &NpcSettings_StarSpirit,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,

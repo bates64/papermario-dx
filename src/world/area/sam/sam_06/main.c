@@ -1,4 +1,5 @@
 #include "sam_06.h"
+#include "world/area/sam/sam_05.h"
 #include "effects.h"
 
 #include "foliage.h"
@@ -12,8 +13,8 @@ ShakeTreeConfig ShakeTree_Tree1 = {
 };
 
 BombTrigger BombPos_Tree1 = {
-    .pos = { -185.0f, 90.0f, -225.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree1.pos,
+    .diameter = 2.0f * $BombPos_Tree1.radius,
 };
 
 FoliageModelList Tree2_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki3);
@@ -25,8 +26,8 @@ ShakeTreeConfig ShakeTree_Tree2 = {
 };
 
 BombTrigger BombPos_Tree2 = {
-    .pos = { -451.0f, 60.0f, 80.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree2.pos,
+    .diameter = 2.0f * $BombPos_Tree2.radius,
 };
 
 FoliageModelList Tree3_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki5b);
@@ -38,8 +39,8 @@ ShakeTreeConfig ShakeTree_Tree3 = {
 };
 
 BombTrigger BombPos_Tree3 = {
-    .pos = { -405.0f, 0.0f, 228.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree3.pos,
+    .diameter = 2.0f * $BombPos_Tree3.radius,
 };
 
 FoliageModelList Tree4_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki6b);
@@ -51,8 +52,8 @@ ShakeTreeConfig ShakeTree_Tree4 = {
 };
 
 BombTrigger BombPos_Tree4 = {
-    .pos = { 291.0f, 0.0f, 385.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree4.pos,
+    .diameter = 2.0f * $BombPos_Tree4.radius,
 };
 
 FoliageModelList Tree5_LeafModels = FOLIAGE_MODEL_LIST(MODEL_ki10);
@@ -64,11 +65,11 @@ ShakeTreeConfig ShakeTree_Tree5 = {
 };
 
 BombTrigger BombPos_Tree5 = {
-    .pos = { 108.0f, 83.0f, 115.0f },
-    .diameter = 0.0f
+    .pos = $BombPos_Tree5.pos,
+    .diameter = 2.0f * $BombPos_Tree5.radius,
 };
 
-EvtScript EVS_ExitWalk_sam_05_1 = EVT_EXIT_WALK(60, sam_06_ENTRY_0, "sam_05", sam_05_ENTRY_1);
+EvtScript EVS_ExitWalk_sam_05_1 = EVT_EXIT_WALK(60, $StarbornPath, $sam_05.StarbornValley);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_sam_05_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)

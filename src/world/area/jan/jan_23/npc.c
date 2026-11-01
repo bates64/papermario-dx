@@ -592,8 +592,8 @@ EvtScript EVS_NpcInit_Raven_05 = {
 NpcData NpcData_Ravens[] = {
     {
         .id = NPC_RaphaelRaven,
-        .pos = { 590.0f, 210.0f, 0.0f },
-        .yaw = 270,
+        .pos = $RaphaelRaven.pos,
+        .yaw = $RaphaelRaven.yaw,
         .init = &EVS_NpcInit_RaphaelRaven,
         .settings = &NpcSettings_RaphaelRaven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY,
@@ -603,8 +603,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_01.pos,
+        .yaw = $Raven_01.yaw,
         .init = &EVS_NpcInit_Raven_01,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -614,8 +614,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_02.pos,
+        .yaw = $Raven_02.yaw,
         .init = &EVS_NpcInit_Raven_02,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -627,8 +627,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_03.pos,
+        .yaw = $Raven_03.yaw,
         .init = &EVS_NpcInit_Raven_03,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -638,8 +638,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_04.pos,
+        .yaw = $Raven_04.yaw,
         .init = &EVS_NpcInit_Raven_04,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
@@ -649,8 +649,8 @@ NpcData NpcData_Ravens[] = {
     },
     {
         .id = NPC_Raven_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $Raven_05.pos,
+        .yaw = $Raven_05.yaw,
         .init = &EVS_NpcInit_Raven_05,
         .settings = &NpcSettings_Raven,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,

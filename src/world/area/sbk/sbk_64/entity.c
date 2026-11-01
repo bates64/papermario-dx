@@ -2,8 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, 0, 0, 0, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SBK64_ItemBlock_Coin)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
     Return
     End
 };

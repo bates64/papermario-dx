@@ -1,9 +1,13 @@
 #include "jan_06.h"
+#include "world/area/jan/jan_05.h"
+#include "world/area/jan/jan_07.h"
+#include "world/area/jan/jan_09.h"
+#include "world/area/jan/jan_12.h"
 
-EvtScript EVS_ExitWalk_jan_05_3 = EVT_EXIT_WALK(60, jan_06_ENTRY_0, "jan_05", jan_05_ENTRY_3);
-EvtScript EVS_ExitWalk_jan_07_0 = EVT_EXIT_WALK(60, jan_06_ENTRY_1, "jan_07", jan_07_ENTRY_0);
-EvtScript EVS_ExitWalk_jan_12_0 = EVT_EXIT_WALK(60, jan_06_ENTRY_2, "jan_12", jan_12_ENTRY_0);
-EvtScript EVS_ExitWalk_jan_09_1 = EVT_EXIT_WALK(60, jan_06_ENTRY_3, "jan_09", jan_09_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_05_3 = EVT_EXIT_WALK(60, $Jan05, $jan_05.Jan06);
+EvtScript EVS_ExitWalk_jan_07_0 = EVT_EXIT_WALK(60, $Jan07, $jan_07.Jan06);
+EvtScript EVS_ExitWalk_jan_12_0 = EVT_EXIT_WALK(60, $Jan12, $jan_12.Jan06);
+EvtScript EVS_ExitWalk_jan_09_1 = EVT_EXIT_WALK(60, $Jan09, $jan_09.Jan06);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_05_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)
@@ -44,7 +48,7 @@ EvtScript EVS_InitRavenStatueObjects = {
         Call(RotateModel, MODEL_o148, 0, 0, 1, 0)
         Call(RotateModel, MODEL_o151, 0, 0, 1, 0)
         Call(RotateModel, MODEL_o162, 0, 0, 1, 0)
-        Call(MakeItemEntity, ITEM_JADE_RAVEN, -100, 15, -400, ITEM_SPAWN_MODE_DECORATION, 0)
+        Call(MakeMarkerEntity, $Item_JadeRaven_1)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o247, COLLIDER_FLAGS_UPPER_MASK)
     EndIf

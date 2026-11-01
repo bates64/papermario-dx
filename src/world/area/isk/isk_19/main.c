@@ -1,7 +1,9 @@
 #include "isk_19.h"
+#include "world/area/isk/isk_11.h"
+#include "world/area/isk/isk_16.h"
 
-EvtScript EVS_ExitWalk_isk_11_3 = EVT_EXIT_WALK(40, isk_19_ENTRY_0, "isk_11", isk_11_ENTRY_3);
-EvtScript EVS_ExitWalk_isk_16_0 = EVT_EXIT_WALK(40, isk_19_ENTRY_1, "isk_16", isk_16_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_11_3 = EVT_EXIT_WALK(40, $StonePuzzleRoom, $isk_11.BossAntechamber);
+EvtScript EVS_ExitWalk_isk_16_0 = EVT_EXIT_WALK(40, $TutankoopaRoom, $isk_16.BossAntechamber);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_11_3, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

@@ -1,4 +1,7 @@
 #include "kpa_14.h"
+#include "world/area/kpa/kpa_01.h"
+#include "world/area/kpa/kpa_13.h"
+#include "world/area/kpa/kpa_16.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -11,12 +14,12 @@ API_CALLABLE(GetActingPartner) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_kpa_13_1 = EVT_EXIT_WALK(60, kpa_14_ENTRY_0, "kpa_13", kpa_13_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_13_1 = EVT_EXIT_WALK(60, $LavaChannel2, $kpa_13.LavaChannel3);
 
 EvtScript EVS_ExitDoor_kpa_01_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, kpa_14_ENTRY_1)
+    Set(LVar0, $DarkCave1.index)
     Set(LVar1, COLLIDER_deilitte)
     IfEq(GF_KPA16_ShutOffLava, false)
         Set(LVar2, MODEL_o1035)
@@ -26,13 +29,13 @@ EvtScript EVS_ExitDoor_kpa_01_0 = {
     Set(LVar3, DOOR_SWING_OUT)
     Exec(ExitSingleDoor)
     Wait(17)
-    Call(GotoMap, "kpa_01", kpa_01_ENTRY_0)
+    Call(GotoMap, $kpa_01.LavaChannel3)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_kpa_16_0 = EVT_EXIT_WALK(60, kpa_14_ENTRY_2, "kpa_16", kpa_16_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_16_0 = EVT_EXIT_WALK(60, $LavaControlRoom, $kpa_16.LavaChannel3);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -44,18 +47,18 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kpa_14_ENTRY_0)
+        CaseEq($LavaChannel2.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(kpa_14_ENTRY_1)
-            Set(LVar0, kpa_14_ENTRY_1)
+        CaseEq($DarkCave1.index)
+            Set(LVar0, $DarkCave1.index)
             Set(LVar1, COLLIDER_deilitte)
             Set(LVar2, MODEL_o1035)
             Set(LVar3, DOOR_SWING_OUT)
             Exec(EnterSingleDoor)
             Exec(EVS_BindExitTriggers)
-        CaseEq(kpa_14_ENTRY_2)
+        CaseEq($LavaControlRoom.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
@@ -90,14 +93,14 @@ EvtScript EVS_TexPan_Lava = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o202, .pos = {  110.0,   30.0, -135.0 }},
-    { .colliderID = COLLIDER_o201, .pos = {  345.0,   30.0, -135.0 }},
-    { .colliderID = COLLIDER_o196, .pos = {  550.0,   30.0, -135.0 }},
-    { .colliderID = COLLIDER_o197, .pos = {  800.0,   30.0, -135.0 }},
-    { .colliderID = COLLIDER_o195, .pos = { 1045.0,   30.0, -135.0 }},
-    { .colliderID = COLLIDER_o198, .pos = { 1400.0,   30.0, -135.0 }},
-    { .colliderID = COLLIDER_o200, .pos = { 1590.0,   30.0,  -90.0 }},
-    { .colliderID = COLLIDER_o199, .pos = { 1940.0,   30.0, -135.0 }},
+    { .colliderID = COLLIDER_o202, .pos = $LavaReset_o202.pos },
+    { .colliderID = COLLIDER_o201, .pos = $LavaReset_o201.pos },
+    { .colliderID = COLLIDER_o196, .pos = $LavaReset_o196.pos },
+    { .colliderID = COLLIDER_o197, .pos = $LavaReset_o197.pos },
+    { .colliderID = COLLIDER_o195, .pos = $LavaReset_o195.pos },
+    { .colliderID = COLLIDER_o198, .pos = $LavaReset_o198.pos },
+    { .colliderID = COLLIDER_o200, .pos = $LavaReset_o200.pos },
+    { .colliderID = COLLIDER_o199, .pos = $LavaReset_o199.pos },
     { .colliderID = NO_COLLIDER }
 };
 

@@ -1,12 +1,14 @@
 #include "osr_02.h"
+#include "world/area/kkj/kkj_10.h"
+#include "world/area/kpa/kpa_121.h"
 #include "effects.h"
 
 EvtScript EVS_ExitDoor_kpa_121_1 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1, COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL
+    $BowsersCastle, $kpa_121.PeachsCastle, COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL
 );
 
 EvtScript EVS_ExitDoor_kkj_10_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    osr_02_ENTRY_1, "kkj_10", kkj_10_ENTRY_0, COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE
+    $PeachsCastle, $kkj_10.CastleEntrance, COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE
 );
 
 EvtScript EVS_KeepPeachFromBowsersCastle = {
@@ -39,17 +41,17 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_02_ENTRY_0)
+        CaseEq($BowsersCastle.index)
             Call(UseDoorSounds, DOOR_SOUNDS_METAL)
             Set(LVar2, MODEL_o570)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
-        CaseEq(osr_02_ENTRY_1)
+        CaseEq($PeachsCastle.index)
             Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
             Set(LVar2, MODEL_d2)
             Set(LVar3, MODEL_d1)
             ExecWait(EnterDoubleDoor)
-        CaseEq(osr_02_ENTRY_2)
+        CaseEq(2)
             Exec(EVS_Scene_ReturnStarRod)
     EndSwitch
     Exec(EVS_BindExitTriggers)
@@ -70,7 +72,7 @@ EvtScript EVS_Main = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(osr_02_ENTRY_2)
+        CaseEq(2)
             Call(MakeNpcs, false, DefaultNPCs)
     EndSwitch
     ExecWait(EVS_MakeEntities)

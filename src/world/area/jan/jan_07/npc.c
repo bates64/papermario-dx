@@ -296,20 +296,9 @@ EvtScript EVS_NpcInit_SpearGuy_Hitbox = {
 NpcData NpcData_SpearGuy[] = {
     {
         .id = NPC_SpearGuy,
-        .pos = { -28.0f, 0.0f, 13.0f },
-        .yaw = 90,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -28, 0, 13 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -28, 0, 13 },
-                .detectSize = { 150 },
-            }
-        },
+        .pos = $SpearGuy.pos,
+        .yaw = $SpearGuy.yaw,
+        .territory = $SpearGuy.territory,
         .settings = &NpcSettings_SpearGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPEAR_GUY_DROPS,
@@ -318,8 +307,8 @@ NpcData NpcData_SpearGuy[] = {
     },
     {
         .id = NPC_SpearGuy_Hitbox,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $SpearGuy_Hitbox.pos,
+        .yaw = $SpearGuy_Hitbox.yaw,
         .init = &EVS_NpcInit_SpearGuy_Hitbox,
         .settings = &NpcSettings_SpearGuy_Hitbox,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -331,8 +320,8 @@ NpcData NpcData_SpearGuy[] = {
 NpcData NpcData_PutridPiranhas[] = {
     {
         .id = NPC_PutridPiranha_01,
-        .pos = { -20.0f, 0.0f, 20.0f },
-        .yaw = 90,
+        .pos = $PutridPiranha_01.pos,
+        .yaw = $PutridPiranha_01.yaw,
         .init = &EVS_NpcInit_PutridPiranha,
         .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -341,8 +330,8 @@ NpcData NpcData_PutridPiranhas[] = {
     },
     {
         .id = NPC_PutridPiranha_02,
-        .pos = { 80.0f, 0.0f, 20.0f },
-        .yaw = 270,
+        .pos = $PutridPiranha_02.pos,
+        .yaw = $PutridPiranha_02.yaw,
         .settings = &NpcSettings_PutridPiranha,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
@@ -352,8 +341,8 @@ NpcData NpcData_PutridPiranhas[] = {
 
 NpcData NpcData_YoshiKid = {
     .id = NPC_YoshiKid,
-    .pos = { 30.0f, 0.0f, 20.0f },
-    .yaw = 90,
+    .pos = $YoshiKid.pos,
+    .yaw = $YoshiKid.yaw,
     .init = &EVS_NpcInit_YoshiKid,
     .settings = &NpcSettings_YoshiKid,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

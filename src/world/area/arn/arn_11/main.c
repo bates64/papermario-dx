@@ -1,4 +1,5 @@
 #include "arn_11.h"
+#include "world/area/arn/arn_13.h"
 #include "sprite/player.h"
 
 EvtScript EVS_SetupCamera = {
@@ -51,8 +52,7 @@ EvtScript EVS_Scene_MeetHeart = {
     End
 };
 
-EvtScript EVS_ExitDoor_arn_13_1 =
-    EVT_EXIT_SINGLE_DOOR(arn_11_ENTRY_0, "arn_13", arn_13_ENTRY_1, COLLIDER_ttw, MODEL_o37, DOOR_SWING_IN);
+EvtScript EVS_ExitDoor_arn_13_1 = EVT_EXIT_SINGLE_DOOR($Arn13, $arn_13.Arn11, COLLIDER_ttw, MODEL_o37, DOOR_SWING_IN);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitDoor_arn_13_1, TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

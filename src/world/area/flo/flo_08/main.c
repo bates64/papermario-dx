@@ -1,10 +1,12 @@
 #include "flo_08.h"
+#include "world/area/flo/flo_00.h"
+#include "world/area/flo/flo_24.h"
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
 
-EvtScript EVS_ExitWalk_flo_00_6 = EVT_EXIT_WALK(60, flo_08_ENTRY_0, "flo_00", flo_00_ENTRY_6);
-EvtScript EVS_ExitWalk_flo_24_0 = EVT_EXIT_WALK(60, flo_08_ENTRY_1, "flo_24", flo_24_ENTRY_0);
+EvtScript EVS_ExitWalk_flo_00_6 = EVT_EXIT_WALK(60, $Flo00, $flo_00.Flo08);
+EvtScript EVS_ExitWalk_flo_24_0 = EVT_EXIT_WALK(60, $Flo24, $flo_24.Flo08);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_flo_00_6, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -14,9 +16,9 @@ EvtScript EVS_BindExitTriggers = {
 };
 
 LavaReset SafeFloorColliders[] = {
-    { .colliderID = COLLIDER_o158, .pos = { -540.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o132, .pos = {   60.0,    0.0,   50.0 }},
-    { .colliderID = COLLIDER_o223, .pos = {   60.0,    0.0,   50.0 }},
+    { .colliderID = COLLIDER_o158, .pos = $LavaReset_o158.pos },
+    { .colliderID = COLLIDER_o132, .pos = $LavaReset_o132.pos },
+    { .colliderID = COLLIDER_o223, .pos = $LavaReset_o223.pos },
     { .colliderID = NO_COLLIDER }
 };
 

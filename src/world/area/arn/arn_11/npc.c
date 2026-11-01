@@ -151,8 +151,8 @@ EvtScript EVS_NpcInit_TubbasHeart = {
 
 NpcData NpcData_TubbasHeart = {
     .id = NPC_TubbasHeart,
-    .pos = { 119.0f, 60.0f, 0.0f },
-    .yaw = 270,
+    .pos = $TubbasHeart.pos,
+    .yaw = $TubbasHeart.yaw,
     .init = &EVS_NpcInit_TubbasHeart,
     .settings = &NpcSettings_TubbasHeart,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,

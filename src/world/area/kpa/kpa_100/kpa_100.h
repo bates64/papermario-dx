@@ -8,7 +8,9 @@
 #include "map.h"
 
 #include "../kpa.h"
-#include "world/area/kpa/kpa_117/map.xml.h"
+#include "mapfs/w_kpa_117_shape.h"
+#include "mapfs/w_kpa_117_hit.h"
+#include "map.xml.h"
 
 extern EvtScript EVS_Main;
 extern EvtScript EVS_SetupMusic;

@@ -144,20 +144,9 @@ EvtScript EVS_NpcInit_KoopaTroopa_01 = {
 
 NpcData NpcData_KoopaTroopa_01 = {
     .id = NPC_KoopaTroopa_01,
-    .pos = { 260.0f, 0.0f, 30.0f },
-    .yaw = 0,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_RECT,
-            .centerPos  = { 260, 0, 40 },
-            .wanderSize = { 30, 25 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 260, 0, 40 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $KoopaTroopa_01.pos,
+    .yaw = $KoopaTroopa_01.yaw,
+    .territory = $KoopaTroopa_01.territory,
     .init = &EVS_NpcInit_KoopaTroopa_01,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_NO_DROPS,
@@ -168,20 +157,9 @@ NpcData NpcData_KoopaTroopa_01 = {
 
 NpcData NpcData_KoopaTroopa_02 = {
     .id = NPC_KoopaTroopa_02,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 240, 220, 130 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 240, 220, 130 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $KoopaTroopa_02.pos,
+    .yaw = $KoopaTroopa_02.yaw,
+    .territory = $KoopaTroopa_02.territory,
     .init = &EVS_NpcInit_KoopaTroopa_02,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -192,20 +170,9 @@ NpcData NpcData_KoopaTroopa_02 = {
 
 NpcData NpcData_KoopaTroopa_03 = {
     .id = NPC_KoopaTroopa_03,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 80, 220, 265 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 80, 220, 265 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $KoopaTroopa_03.pos,
+    .yaw = $KoopaTroopa_03.yaw,
+    .territory = $KoopaTroopa_03.territory,
     .init = &EVS_NpcInit_KoopaTroopa_02,
     .settings = &NpcSettings_KoopaTroopa_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_NO_SHADOW_RAYCAST,
@@ -216,20 +183,9 @@ NpcData NpcData_KoopaTroopa_03 = {
 
 NpcData NpcData_Bobomb = {
     .id = NPC_Bobomb,
-    .pos = { -255.0f, 640.0f, 35.0f },
-    .yaw = 180,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -255, 640, 35 },
-            .wanderSize = { 0 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -255, 640, 35 },
-            .detectSize = { 100 },
-        }
-    },
+    .pos = $Bobomb.pos,
+    .yaw = $Bobomb.yaw,
+    .territory = $Bobomb.territory,
     .settings = &NpcSettings_Bobomb_Guard,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BOBOMB_DROPS,

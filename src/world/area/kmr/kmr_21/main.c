@@ -1,4 +1,5 @@
 #include "kmr_21.h"
+#include "world/area/kmr/kmr_22.h"
 
 typedef struct TitleDataFile {
     /* 0x00 */ s32 imgOffsetTitle;
@@ -149,7 +150,7 @@ EvtScript EVS_Scene_ShowTitle = {
         EndIf
     EndLoop
     Wait(15 * DT)
-    Call(GotoMapSpecial, "kmr_22", kmr_22_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
+    Call(GotoMapSpecial, $kmr_22.Prologue, TRANSITION_BEGIN_OR_END_CHAPTER)
     Wait(100 * DT)
     Return
     End

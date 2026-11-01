@@ -9,14 +9,13 @@ EvtScript EVS_OnBreakHammerBlock = {
 };
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeItemEntity, ITEM_PYRAMID_STONE, 316, 82, -481, ITEM_SPAWN_MODE_KEY, GF_ISK05_Item_PyramidStone)
+    Call(MakeMarkerEntity, $Item_PyramidStone_1)
     IfEq(GF_ISK05_Hammer2Block, false)
-        Call(MakeEntity, Entity_Hammer2BlockWideX, 431, 0, -478, 45, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnBreakHammerBlock)
+        Call(MakeMarkerEntity, $Hammer2BlockWideX_1)
     EndIf
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 415, 196, -290, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 290, 196, -411, 0.3, LVar0)
-    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, 415, 66, -290, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_1.pos.x, $FlamePos_1.pos.y, $FlamePos_1.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_2.pos.x, $FlamePos_2.pos.y, $FlamePos_2.pos.z, 0.3, LVar0)
+    PlayEffect(EFFECT_FLAME, FX_FLAME_RED, $FlamePos_3.pos.x, $FlamePos_3.pos.y, $FlamePos_3.pos.z, 0.3, LVar0)
     Return
     End
 };

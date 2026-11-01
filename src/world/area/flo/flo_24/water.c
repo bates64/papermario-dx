@@ -1,4 +1,5 @@
 #include "flo_24.h"
+#include "world/area/flo/flo_10.h"
 
 EvtScript EVS_Scene_FillWithWater = {
     Call(DisablePlayerInput, true)
@@ -36,7 +37,7 @@ EvtScript EVS_Scene_FillWithWater = {
     EndThread
     Wait(30)
     Set(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
-    Call(GotoMap, "flo_10", flo_10_ENTRY_2)
+    Call(GotoMap, $flo_10.Fountain)
     Wait(100)
     Return
     End
@@ -50,7 +51,7 @@ EvtScript EVS_SetupWater = {
         Call(EnableGroup, MODEL_g60, false)
     EndIf
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, flo_24_ENTRY_2)
+    IfNe(LVar0, $Fountain.index)
         Call(EnableGroup, MODEL_g67, false)
     EndIf
     // water surface

@@ -1,11 +1,13 @@
 #include "mim_01.h"
+#include "world/area/mim/mim_02.h"
+#include "world/area/mim/mim_10.h"
 
 #include "../common/SetForeverForestFog.inc.c"
 
-EvtScript EVS_ExitWalk_n = EVT_EXIT_WALK(60, mim_01_ENTRY_0, "mim_01", mim_01_ENTRY_1);
-EvtScript EVS_ExitWalk_w = EVT_EXIT_WALK(60, mim_01_ENTRY_1, "mim_10", mim_10_ENTRY_1);
-EvtScript EVS_ExitWalk_s = EVT_EXIT_WALK(60, mim_01_ENTRY_2, "mim_01", mim_01_ENTRY_1);
-EvtScript EVS_ExitWalk_e = EVT_EXIT_WALK(60, mim_01_ENTRY_3, "mim_02", mim_02_ENTRY_1);
+EvtScript EVS_ExitWalk_n = EVT_EXIT_WALK(60, $North, $West);
+EvtScript EVS_ExitWalk_w = EVT_EXIT_WALK(60, $West, $mim_10.ForeverForest);
+EvtScript EVS_ExitWalk_s = EVT_EXIT_WALK(60, $South, $West);
+EvtScript EVS_ExitWalk_e = EVT_EXIT_WALK(60, $East, $mim_02.West);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_n, TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)

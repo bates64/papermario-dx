@@ -361,8 +361,8 @@ EvtScript EVS_NpcInit_Bobomb_04 = {
 
 NpcData NpcData_Bombette = {
     .id = NPC_Bombette,
-    .pos = { 0.0f, 0.0f, 0.0f },
-    .yaw = 0,
+    .pos = $Bombette.pos,
+    .yaw = $Bombette.yaw,
     .init = &EVS_NpcInit_Bombette,
     .settings = &NpcSettings_Bobomb,
     .flags = BASE_PASSIVE_FLAGS,
@@ -374,8 +374,8 @@ NpcData NpcData_Bombette = {
 NpcData NpcData_Jailers[] = {
     {
         .id = NPC_Jailer_KoopaTroopa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Jailer_KoopaTroopa.pos,
+        .yaw = $Jailer_KoopaTroopa.yaw,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -393,8 +393,8 @@ NpcData NpcData_Jailers[] = {
     },
     {
         .id = NPC_Jailer_Bobomb_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Jailer_Bobomb_01.pos,
+        .yaw = $Jailer_Bobomb_01.yaw,
         .init = &EVS_NpcInit_Bobomb_Jailer,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -403,8 +403,8 @@ NpcData NpcData_Jailers[] = {
     },
     {
         .id = NPC_Jailer_Bobomb_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Jailer_Bobomb_02.pos,
+        .yaw = $Jailer_Bobomb_02.yaw,
         .init = &EVS_NpcInit_Bobomb_Jailer,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
@@ -416,8 +416,8 @@ NpcData NpcData_Jailers[] = {
 NpcData NpcData_Inmates[] = {
     {
         .id = NPC_Bobomb_01,
-        .pos = { 25.0f, 0.0f, 127.0f },
-        .yaw = 270,
+        .pos = $Bobomb_01.pos,
+        .yaw = $Bobomb_01.yaw,
         .init = &EVS_NpcInit_Bobomb_01,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -427,8 +427,8 @@ NpcData NpcData_Inmates[] = {
     },
     {
         .id = NPC_Bobomb_02,
-        .pos = { -30.0f, 0.0f, 130.0f },
-        .yaw = 90,
+        .pos = $Bobomb_02.pos,
+        .yaw = $Bobomb_02.yaw,
         .init = &EVS_NpcInit_Bobomb_02,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -438,8 +438,8 @@ NpcData NpcData_Inmates[] = {
     },
     {
         .id = NPC_Bobomb_03,
-        .pos = { -140.0f, 0.0f, -90.0f },
-        .yaw = 270,
+        .pos = $Bobomb_03.pos,
+        .yaw = $Bobomb_03.yaw,
         .init = &EVS_NpcInit_Bobomb_03,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
@@ -449,8 +449,8 @@ NpcData NpcData_Inmates[] = {
     },
     {
         .id = NPC_Bobomb_04,
-        .pos = { -75.0f, 0.0f, -80.0f },
-        .yaw = 90,
+        .pos = $Bobomb_04.pos,
+        .yaw = $Bobomb_04.yaw,
         .init = &EVS_NpcInit_Bobomb_04,
         .settings = &NpcSettings_Bobomb,
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,

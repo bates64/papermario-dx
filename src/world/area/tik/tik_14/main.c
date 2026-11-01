@@ -1,17 +1,19 @@
 #include "tik_14.h"
+#include "world/area/tik/tik_15.h"
+#include "world/area/tik/tik_21.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_15_0 = EVT_EXIT_WALK(60, tik_14_ENTRY_1, "tik_15", tik_15_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_15_0 = EVT_EXIT_WALK(60, $RipCheatosHome, $tik_15.RipCheatoAntechamber);
 
 EvtScript EVS_GotoMap_tik_21_2 = {
-    Call(GotoMap, "tik_21", tik_21_ENTRY_2)
+    Call(GotoMap, $tik_21.RipCheatoAntechamber)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_21_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_14_ENTRY_0, COLLIDER_o47, EVS_GotoMap_tik_21_2);
+EvtScript EVS_ExitPipe_tik_21_2 = EVT_EXIT_PIPE_HORIZONTAL($HiddenBlocksRoom, COLLIDER_o47, EVS_GotoMap_tik_21_2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitPipe_tik_21_2, TRIGGER_WALL_PUSH, COLLIDER_o47, 1, 0)
@@ -24,9 +26,9 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_14_ENTRY_0)
+        CaseEq($HiddenBlocksRoom.index)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o47, EVS_BindExitTriggers)
-        CaseEq(tik_14_ENTRY_1)
+        CaseEq($RipCheatosHome.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
     EndSwitch

@@ -1,7 +1,9 @@
 #include "omo_03.h"
+#include "world/area/omo/omo_04.h"
+#include "world/area/omo/omo_13.h"
 
-EvtScript EVS_ExitWalk_omo_13_1 = EVT_EXIT_WALK(60, omo_03_ENTRY_0, "omo_13", omo_13_ENTRY_1);
-EvtScript EVS_ExitWalk_omo_04_0 = EVT_EXIT_WALK(60, omo_03_ENTRY_1, "omo_04", omo_04_ENTRY_0);
+EvtScript EVS_ExitWalk_omo_13_1 = EVT_EXIT_WALK(60, $Omo13, $omo_13.Omo03);
+EvtScript EVS_ExitWalk_omo_04_0 = EVT_EXIT_WALK(60, $Omo04, $omo_04.Omo03);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_omo_13_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -20,17 +22,17 @@ EvtScript EVS_EnterMap = {
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseRange(omo_03_ENTRY_0, omo_03_ENTRY_1)
+        CaseRange($Omo13.index, $Omo04.index)
             Set(LVar0, EVS_BindExitTriggers)
             Exec(EnterWalk)
             Wait(1)
-        CaseEq(omo_03_ENTRY_4)
+        CaseEq($ToadTown.index)
             Set(AF_OMO03_EnteringViaSpring, true)
             Exec(EVS_BindExitTriggers)
             Exec(EVS_Scene_EnterSpring)
-        CaseEq(omo_03_ENTRY_5)
+        CaseEq($Epilogue.index)
             Exec(EVS_Scene_Epilogue)
-        CaseEq(omo_03_ENTRY_6)
+        CaseEq($TrainReturned.index)
             Exec(EVS_Scene_TrainDropped)
         CaseDefault
             Exec(EVS_BindExitTriggers)
@@ -63,7 +65,7 @@ EvtScript EVS_Main = {
         Set(AF_OMO03_ToggleDialogue_Conductor, false)
         Set(GF_MAP_ShyGuysToybox, true)
         Call(GetEntryID, LVar0)
-        IfNe(LVar0, omo_03_ENTRY_5)
+        IfNe(LVar0, $Epilogue.index)
             Call(MakeNpcs, true, DefaultNPCs)
         Else
             Call(MakeNpcs, true, EpilogueNPCs)

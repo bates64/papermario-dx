@@ -1381,6 +1381,54 @@ API_CALLABLE(MakeEntity) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(MakeMarkerEntity) {
+    const EntityMarker* marker = (const EntityMarker*) evt_get_variable(script, *script->ptrReadPos);
+    s32 x = marker->pos.x;
+    s32 y = marker->pos.y;
+    s32 z = marker->pos.z;
+    Entity* entity;
+
+    if (marker->blueprint == nullptr) {
+        script->varTable[0] =
+            make_item_entity_nodelay(marker->args[0], x, y, z, marker->args[1], evt_get_variable_index(marker->flag));
+        return ApiStatus_DONE2;
+    }
+
+    gLastCreatedEntityIndex = create_entity(
+        marker->blueprint, x, y, z, (s32) marker->yaw, marker->args[0], marker->args[1], marker->args[2],
+        MAKE_ENTITY_END
+    );
+    script->varTable[0] = gLastCreatedEntityIndex;
+    entity = get_entity_by_index(gLastCreatedEntityIndex);
+
+    if (marker->script != nullptr) {
+        entity->script.source = marker->script;
+    }
+
+    switch (marker->flagKind) {
+        case ENTITY_MARKER_FLAG_BLOCK:
+            entity->dataBuf.block->gameFlagIndex = evt_get_variable_index(marker->flag);
+            break;
+        case ENTITY_MARKER_FLAG_CHEST:
+            entity->dataBuf.chest->gameFlagIndex = evt_get_variable_index(marker->flag);
+            break;
+        case ENTITY_MARKER_FLAG_PANEL:
+            entity->dataBuf.hiddenPanel->pickupVar = evt_get_variable_index(marker->flag);
+            break;
+        case ENTITY_MARKER_FLAG_CRATE:
+            entity->dataBuf.crate->globalFlagIndex = evt_get_variable_index(marker->flag);
+            break;
+        case ENTITY_MARKER_FLAG_SWITCH:
+            entity->dataBuf.swtch->areaFlagIndex = marker->flag;
+            if (get_area_flag(marker->flag)) {
+                entity->flags |= ENTITY_FLAG_PENDING_INSTANCE_DELETE;
+            }
+            break;
+    }
+
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(SetEntityCullMode) {
     Entity* entity = get_entity_by_index(gLastCreatedEntityIndex);
     Bytecode* args = script->ptrReadPos;

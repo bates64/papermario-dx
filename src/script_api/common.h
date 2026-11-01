@@ -244,16 +244,16 @@ API_CALLABLE(UpdateColliderTransform);
 /// @param bool
 API_CALLABLE(SetZoneEnabled);
 
-/// Makes the player go to the given map and at the given entrance.
+/// Makes the player go to an entry marker of another map, such as `$kmr_03.Front`. Also takes the map's name and the
+/// entry ID in place of the marker.
 /// @evtapi
-/// @param mapName
-/// @param entryID
+/// @param entry
 API_CALLABLE(GotoMap);
 
-/// Makes the player go to the given map and at the given entrance with a unique fadeout effect.
+/// Makes the player go to an entry marker of another map, such as `$kmr_03.Front`, with a unique fadeout effect. Also
+/// takes the map's name and the entry ID in place of the marker.
 /// @evtapi
-/// @param mapName
-/// @param entryID
+/// @param entry
 /// @param transitionType
 /// See [`ScreenTransitions`].
 API_CALLABLE(GotoMapSpecial);
@@ -2308,6 +2308,13 @@ API_CALLABLE(PlayEffect_impl);
 /// @param MAKE_ENTITY_END
 /// @evtout LVar0 entityID
 API_CALLABLE(MakeEntity);
+
+/// Makes the entity or item an Entity marker from the map editor describes, with its settings, such as an item block's
+/// item and flag, or a chest's script.
+/// @evtapi
+/// @param marker
+/// @evtout LVar0 entityID, or the item entity's index
+API_CALLABLE(MakeMarkerEntity);
 
 /// @evtapi
 /// @param cullMode

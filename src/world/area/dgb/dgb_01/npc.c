@@ -1,4 +1,6 @@
 #include "dgb_01.h"
+#include "world/area/dgb/dgb_00.h"
+#include "world/area/dgb/dgb_08.h"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel_04
@@ -89,7 +91,7 @@ EvtScript EVS_NpcInit_Tubba_Floor3 = {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba_Floor2 = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, "dgb_08", dgb_08_ENTRY_1)
+    Call(GotoMap, $dgb_08.Dgb01Upper)
     Wait(100)
     Return
     End
@@ -174,7 +176,7 @@ EvtScript EVS_NpcIdle_Tubba_Floor1 = {
 // failsafe if the player somehow defeats Tubba
 EvtScript EVS_NpcDefeat_Tubba_Floor1 = {
     Call(PostBattleHideWorld)
-    Call(GotoMap, "dgb_00", dgb_00_ENTRY_1)
+    Call(GotoMap, $dgb_00.Dgb01)
     Wait(100)
     Return
     End
@@ -250,20 +252,9 @@ EvtScript EVS_NpcInit_Sentinel_04 = {
 
 NpcData NpcData_Sentinel_01 = {
     .id = NPC_Sentinel_01,
-    .pos = { -180.0f, 100.0f, 230.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -180, 100, 230 },
-            .wanderSize = { 35 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 450, 1000 },
-        }
-    },
+    .pos = $Sentinel_01.pos,
+    .yaw = $Sentinel_01.yaw,
+    .territory = $Sentinel_01.territory,
     .init = &EVS_NpcInit_Sentinel_01,
     .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -273,20 +264,9 @@ NpcData NpcData_Sentinel_01 = {
 
 NpcData NpcData_Sentinel_02 = {
     .id = NPC_Sentinel_02,
-    .pos = { 180.0f, 100.0f, 230.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 180, 100, 230 },
-            .wanderSize = { 35 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 450, 1000 },
-        }
-    },
+    .pos = $Sentinel_02.pos,
+    .yaw = $Sentinel_02.yaw,
+    .territory = $Sentinel_02.territory,
     .init = &EVS_NpcInit_Sentinel_02,
     .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -296,20 +276,9 @@ NpcData NpcData_Sentinel_02 = {
 
 NpcData NpcData_Sentinel_03 = {
     .id = NPC_Sentinel_03,
-    .pos = { -180.0f, 100.0f, -230.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -180, 100, -230 },
-            .wanderSize = { 35 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 450, 1000 },
-        }
-    },
+    .pos = $Sentinel_03.pos,
+    .yaw = $Sentinel_03.yaw,
+    .territory = $Sentinel_03.territory,
     .init = &EVS_NpcInit_Sentinel_03,
     .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -319,20 +288,9 @@ NpcData NpcData_Sentinel_03 = {
 
 NpcData NpcData_Sentinel_04 = {
     .id = NPC_Sentinel_04,
-    .pos = { 180.0f, 100.0f, -230.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 180, 100, -230 },
-            .wanderSize = { 35 },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 0, 0, 0 },
-            .detectSize = { 450, 1000 },
-        }
-    },
+    .pos = $Sentinel_04.pos,
+    .yaw = $Sentinel_04.yaw,
+    .territory = $Sentinel_04.territory,
     .init = &EVS_NpcInit_Sentinel_04,
     .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -357,8 +315,8 @@ AnimID LimitAnims_Tubba[] = {
 
 NpcData NpcData_Tubba_Floor3 = {
     .id = NPC_Tubba,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
+    .pos = $Tubba.pos,
+    .yaw = $Tubba.yaw,
     .init = &EVS_NpcInit_Tubba_Floor3,
     .settings = &NpcSettings_TubbaBlubba,
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -369,22 +327,9 @@ NpcData NpcData_Tubba_Floor3 = {
 
 NpcData NpcData_Tubba_Floor2 = {
     .id = NPC_Tubba,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 2,
-            .points  = {
-                { 320, 210, 0 },
-                { 370, 210, 0 },
-            },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 350, 210, 0 },
-            .detectSize = { 1000, 250 },
-        }
-    },
+    .pos = $Tubba_1.pos,
+    .yaw = $Tubba_1.yaw,
+    .territory = $Tubba_1.territory,
     .init = &EVS_NpcInit_Tubba_Floor2,
     .settings = &NpcSettings_TubbaBlubba_Patrol,
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
@@ -396,28 +341,9 @@ NpcData NpcData_Tubba_Floor2 = {
 
 NpcData NpcData_Tubba_Floor1 = {
     .id = NPC_Tubba,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 270,
-    .territory = {
-        .patrol = {
-            .isFlying = false,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .numPoints  = 8,
-            .points  = {
-                { 156, 0, 187 },
-                { -36, 0, 290 },
-                { -159, 0, 50 },
-                { -80, 0, -218 },
-                { 66, 0, -362 },
-                { 196, 0, -268 },
-                { 280, 0, -124 },
-                { 250, 0, 100 },
-            },
-            .detectShape = SHAPE_RECT,
-            .detectPos  = { 250, 0, 100 },
-            .detectSize = { 1000, 250 },
-        }
-    },
+    .pos = $Tubba_2.pos,
+    .yaw = $Tubba_2.yaw,
+    .territory = $Tubba_2.territory,
     .init = &EVS_NpcInit_Tubba_Floor1,
     .settings = &NpcSettings_TubbaBlubba_Patrol,
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,

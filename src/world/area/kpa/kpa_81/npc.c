@@ -1,4 +1,5 @@
 #include "kpa_81.h"
+#include "world/area/kpa/kpa_17.h"
 #include "sprite/player.h"
 
 #include "world/common/npc/Toad/idle.inc.c"
@@ -200,7 +201,7 @@ EvtScript EVS_NpcIdle_Door = {
     Wait(65)
     Call(DisablePlayerInput, false)
     Set(GB_KPA81_BowserDoorState, 1)
-    Call(GotoMap, "kpa_17", kpa_17_ENTRY_0)
+    Call(GotoMap, $kpa_17.FallIntoCell)
     Return
     End
 };
@@ -216,8 +217,8 @@ EvtScript EVS_NpcInit_Door = {
 
 NpcData NpcData_Door = {
     .id = NPC_Door,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Door.pos,
+    .yaw = $Door.yaw,
     .init = &EVS_NpcInit_Door,
     .settings = &NpcSettings_Toad,
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,

@@ -8,7 +8,7 @@
 #define EVT_EXIT_PIPE_HORIZONTAL(entry, collider, script) \
 { \
     SetGroup(EVT_GROUP_EXIT_MAP) \
-    Set(LVarA, entry) \
+    Set(LVarA, (entry).index) \
     Set(LVarB, collider) \
     Set(LVarC, script) \
     ExecWait(EVS_Pipe_ExitHorizontal) \
@@ -19,7 +19,7 @@
 #define EVT_EXIT_PIPE_VERTICAL(entry, collider, script) \
 { \
     SetGroup(EVT_GROUP_EXIT_MAP) \
-    Set(LVarA, entry) \
+    Set(LVarA, (entry).index) \
     Set(LVarB, collider) \
     Set(LVarC, script) \
     ExecWait(EVS_Pipe_ExitVertical) \

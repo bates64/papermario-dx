@@ -1,10 +1,13 @@
 #include "nok_13.h"
+#include "world/area/nok/nok_01.h"
+#include "world/area/nok/nok_12.h"
+#include "world/area/nok/nok_14.h"
 
-EvtScript EVS_ExitWalk_nok_12_1 = EVT_EXIT_WALK(60, nok_13_ENTRY_0, "nok_12", nok_12_ENTRY_1);
+EvtScript EVS_ExitWalk_nok_12_1 = EVT_EXIT_WALK(60, $Nok12, $nok_12.Nok13);
 
-EvtScript EVS_ExitWalk_nok_01_0 = EVT_EXIT_WALK(60, nok_13_ENTRY_1, "nok_01", nok_01_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_01_0 = EVT_EXIT_WALK(60, $KoopaVillage, $nok_01.PleasantPath);
 
-EvtScript EVS_ExitWalk_nok_14_0 = EVT_EXIT_WALK(60, nok_13_ENTRY_2, "nok_14", nok_14_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_14_0 = EVT_EXIT_WALK(60, $Nok14, $nok_14.Nok13);
 
 EvtScript EVS_SetupTexPan = {
     // flowers

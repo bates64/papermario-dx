@@ -1,6 +1,7 @@
 #include "iwa_10.h"
+#include "world/area/iwa/iwa_00.h"
 
-EvtScript EVS_ExitWalk_iwa_00_0 = EVT_EXIT_WALK(60, iwa_10_ENTRY_1, "iwa_00", iwa_00_ENTRY_0);
+EvtScript EVS_ExitWalk_iwa_00_0 = EVT_EXIT_WALK(60, $Iwa00, $iwa_00.ToadTown);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_iwa_00_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -16,7 +17,7 @@ EvtScript EVS_EnterMap = {
         Return
     EndIf
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, iwa_10_ENTRY_1)
+    IfEq(LVar0, $Iwa00.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

@@ -1,7 +1,8 @@
 #include "kpa_119.h"
+#include "world/area/kpa/kpa_118.h"
 #include "sprite.h"
 
-EvtScript EVS_ExitWalk_kpa_118_1 = EVT_EXIT_WALK(60, kpa_119_ENTRY_0, "kpa_118", kpa_118_ENTRY_1);
+EvtScript EVS_ExitWalk_kpa_118_1 = EVT_EXIT_WALK(60, $HiddenPassage3, $kpa_118.HiddenKeyRoom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_118_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

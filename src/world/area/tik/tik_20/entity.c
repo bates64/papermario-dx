@@ -2,8 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_YellowBlock, 475, 70, -100, 0, ITEM_SHOOTING_STAR, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_TIK20_ItemBlock_ShootingStar)
+    Call(MakeMarkerEntity, $YellowBlock_ShootingStar_1)
     Return
     End
 };

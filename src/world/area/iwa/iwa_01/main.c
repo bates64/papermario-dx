@@ -1,4 +1,7 @@
 #include "iwa_01.h"
+#include "world/area/iwa/iwa_00.h"
+#include "world/area/iwa/iwa_02.h"
+#include "world/area/iwa/iwa_03.h"
 
 b32 should_player_be_sliding(void) {
     Shadow* shadow = get_shadow_by_index(gPlayerStatus.shadowID);
@@ -12,10 +15,10 @@ API_CALLABLE(SetupSlidingCheck) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_iwa_00_1 = EVT_EXIT_WALK(60, iwa_01_ENTRY_0, "iwa_00", iwa_00_ENTRY_1);
-EvtScript EVS_ExitWalk_iwa_03_0 = EVT_EXIT_WALK(60, iwa_01_ENTRY_1, "iwa_03", iwa_03_ENTRY_0);
-EvtScript EVS_ExitWalk_iwa_02_0 = EVT_EXIT_WALK(60, iwa_01_ENTRY_2, "iwa_02", iwa_02_ENTRY_0);
-EvtScript EVS_ExitWalk_iwa_02_1 = EVT_EXIT_WALK(60, iwa_01_ENTRY_3, "iwa_02", iwa_02_ENTRY_1);
+EvtScript EVS_ExitWalk_iwa_00_1 = EVT_EXIT_WALK(60, $Iwa00, $iwa_00.Iwa01);
+EvtScript EVS_ExitWalk_iwa_03_0 = EVT_EXIT_WALK(60, $Iwa03, $iwa_03.Iwa01);
+EvtScript EVS_ExitWalk_iwa_02_0 = EVT_EXIT_WALK(60, $Iwa02Lower, $iwa_02.Iwa01Lower);
+EvtScript EVS_ExitWalk_iwa_02_1 = EVT_EXIT_WALK(60, $Iwa02Upper, $iwa_02.Iwa01Upper);
 
 EvtScript EVS_StartTexPanners = {
     // waterfalls

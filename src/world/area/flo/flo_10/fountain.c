@@ -1,4 +1,5 @@
 #include "flo_10.h"
+#include "world/area/flo/flo_24.h"
 #include "sprite/npc/Lily.h"
 #include "sprite/player.h"
 
@@ -194,7 +195,7 @@ EvtScript EVS_Scene_ReleaseFountain = {
     Call(ShakeCam, CAM_DEFAULT, 0, 5, 1.0)
     ExecWait(EVS_FountainSlowing)
     Wait(60)
-    Call(GotoMap, "flo_24", flo_24_ENTRY_2)
+    Call(GotoMap, $flo_24.Fountain)
     Wait(100)
     Return
     End

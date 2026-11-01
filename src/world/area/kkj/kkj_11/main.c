@@ -1,4 +1,11 @@
 #include "kkj_11.h"
+#include "world/area/kkj/kkj_10.h"
+#include "world/area/kkj/kkj_12.h"
+#include "world/area/kkj/kkj_14.h"
+#include "world/area/kkj/kkj_15.h"
+#include "world/area/kkj/kkj_16.h"
+#include "world/area/kkj/kkj_17.h"
+#include "world/area/kkj/kkj_18.h"
 
 API_CALLABLE(DisableAllLightSources) {
     s32 i;
@@ -11,31 +18,31 @@ API_CALLABLE(DisableAllLightSources) {
 }
 
 EvtScript EVS_ExitDoors_kkj_10_1 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_0, "kkj_10", kkj_10_ENTRY_1, COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE
+    $EntryHall, $kkj_10.UpperHall, COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE
 );
 
 EvtScript EVS_ExitDoors_kkj_12_0 = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_1, "kkj_12", kkj_12_ENTRY_0, COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE
+    $StairsHallway, $kkj_12.UpperHall, COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE
 );
 
 EvtScript EVS_ExitDoor_kkj_14_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_4, "kkj_14", kkj_14_ENTRY_0, COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+    $PeachsRoom, $kkj_14.UpperHall, COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_ExitDoor_kkj_16_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_2, "kkj_16", kkj_16_ENTRY_0, COLLIDER_ttsw, MODEL_door5, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+    $Library, $kkj_16.UpperHall, COLLIDER_ttsw, MODEL_door5, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_ExitDoor_kkj_15_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_3, "kkj_15", kkj_15_ENTRY_0, COLLIDER_ttw, MODEL_door6, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
+    $PassageOutlet, $kkj_15.UpperHall, COLLIDER_ttw, MODEL_door6, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_ExitDoor_kkj_17_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_5, "kkj_17", kkj_17_ENTRY_0, COLLIDER_tte, MODEL_door8, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
+    $Storeroom, $kkj_17.UpperHall, COLLIDER_tte, MODEL_door8, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_ExitDoor_kkj_18_0 = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(
-    kkj_11_ENTRY_6, "kkj_18", kkj_18_ENTRY_0, COLLIDER_ttse, MODEL_door9, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
+    $DiningRoom, $kkj_18.UpperHall, COLLIDER_ttse, MODEL_door9, DOOR_SWING_IN, DOOR_SOUNDS_BASIC
 );
 
 EvtScript EVS_BindExitTriggers = {
@@ -58,37 +65,37 @@ EvtScript EVS_EnterMap = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(kkj_11_ENTRY_0)
+        CaseEq($EntryHall.index)
             Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
             Set(LVar2, MODEL_door2)
             Set(LVar3, MODEL_door1)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_11_ENTRY_1)
+        CaseEq($StairsHallway.index)
             Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
             Set(LVar2, MODEL_door3)
             Set(LVar3, MODEL_door4)
             ExecWait(EnterDoubleDoor)
-        CaseEq(kkj_11_ENTRY_2)
+        CaseEq($Library.index)
             Set(LVar2, MODEL_door5)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_11_ENTRY_3)
+        CaseEq($PassageOutlet.index)
             Set(LVar2, MODEL_door6)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_11_ENTRY_4)
+        CaseEq($PeachsRoom.index)
             Set(LVar2, MODEL_door7)
             Set(LVar3, DOOR_SWING_OUT)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_11_ENTRY_5)
+        CaseEq($Storeroom.index)
             Set(LVar2, MODEL_door8)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_11_ENTRY_6)
+        CaseEq($DiningRoom.index)
             Set(LVar2, MODEL_door9)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSingleDoor)
-        CaseEq(kkj_11_ENTRY_7)
+        CaseEq($PassageOutletFirst.index)
             ExecWait(EVS_FirstTimeEnterHall)
     EndSwitch
     Return

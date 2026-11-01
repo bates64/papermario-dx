@@ -1,4 +1,5 @@
 #include "hos_10.h"
+#include "world/area/kmr/kmr_21.h"
 #include "effects.h"
 #include "sprite/player.h"
 
@@ -65,7 +66,7 @@ EvtScript EVS_Scene_PreTitle = {
                 BreakLoop
             EndIf
         EndLoop
-        PlayEffect(EFFECT_LANDING_DUST, 4, 0, -130, 480, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 4, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
     EndThread
     Call(MakeLerp, 350, -200, 400 * DT, EASING_LINEAR)
     Set(LVar2, 0)
@@ -80,7 +81,7 @@ EvtScript EVS_Scene_PreTitle = {
             BreakLoop
         EndIf
     EndLoop
-    Call(GotoMapSpecial, "kmr_21", kmr_21_ENTRY_0, TRANSITION_SLOW_FADE_TO_WHITE)
+    Call(GotoMapSpecial, $kmr_21.Entry0, TRANSITION_SLOW_FADE_TO_WHITE)
     Wait(100 * DT)
     Return
     End

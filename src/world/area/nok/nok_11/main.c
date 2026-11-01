@@ -1,19 +1,21 @@
 #include "nok_11.h"
+#include "world/area/mac/mac_01.h"
+#include "world/area/nok/nok_12.h"
 
 EvtScript EVS_ExitWalk_mac_01_1 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaArea, true)
     EndIf
-    Call(UseExitHeading, 60, nok_11_ENTRY_0)
+    Call(UseExitHeading, 60, $ToadTown.index)
     Exec(ExitWalk)
-    Call(GotoMap, "mac_01", mac_01_ENTRY_1)
+    Call(GotoMap, $mac_01.PleasantPath)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_nok_12_0 = EVT_EXIT_WALK(60, nok_11_ENTRY_1, "nok_12", nok_12_ENTRY_0);
+EvtScript EVS_ExitWalk_nok_12_0 = EVT_EXIT_WALK(60, $Nok12, $nok_12.Nok11);
 
 EvtScript EVS_SetupTexPan = {
     // flowers

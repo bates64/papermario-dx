@@ -117,8 +117,8 @@ EvtScript EVS_NpcInit_Goompa = {
 
 NpcData NpcData_GoombaFamily = {
     .id = NPC_Goompa,
-    .pos = { -50.0f, 0.0f, 80.0f },
-    .yaw = 45,
+    .pos = $Goompa.pos,
+    .yaw = $Goompa.yaw,
     .init = &EVS_NpcInit_Goompa,
     .settings = &NpcSettings_Goompa,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

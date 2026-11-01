@@ -211,8 +211,8 @@ EvtScript EVS_NpcInit_Dummy = {
 NpcData NpcData_Snowmen[] = {
     {
         .id = NPC_Snowman_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Snowman_01.pos,
+        .yaw = $Snowman_01.yaw,
         .init = &EVS_NpcInit_Snowman_01,
         .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -222,8 +222,8 @@ NpcData NpcData_Snowmen[] = {
     },
     {
         .id = NPC_Snowman_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Snowman_02.pos,
+        .yaw = $Snowman_02.yaw,
         .init = &EVS_NpcInit_Snowman_02,
         .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -233,8 +233,8 @@ NpcData NpcData_Snowmen[] = {
     },
     {
         .id = NPC_Snowman_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Snowman_03.pos,
+        .yaw = $Snowman_03.yaw,
         .init = &EVS_NpcInit_Snowman_03,
         .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -244,8 +244,8 @@ NpcData NpcData_Snowmen[] = {
     },
     {
         .id = NPC_Snowman_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Snowman_04.pos,
+        .yaw = $Snowman_04.yaw,
         .init = &EVS_NpcInit_Snowman_04,
         .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -255,8 +255,8 @@ NpcData NpcData_Snowmen[] = {
     },
     {
         .id = NPC_Snowman_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Snowman_05.pos,
+        .yaw = $Snowman_05.yaw,
         .init = &EVS_NpcInit_Snowman_05,
         .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -266,8 +266,8 @@ NpcData NpcData_Snowmen[] = {
     },
     {
         .id = NPC_Snowman_06,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Snowman_06.pos,
+        .yaw = $Snowman_06.yaw,
         .init = &EVS_NpcInit_Snowman_06,
         .settings = &NpcSettings_Snowman,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -279,8 +279,8 @@ NpcData NpcData_Snowmen[] = {
 
 NpcData NpcData_Dummy = {
     .id = NPC_LetterDummy,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $LetterDummy.pos,
+    .yaw = $LetterDummy.yaw,
     .init = &EVS_NpcInit_Dummy,
     .settings = &NpcSettings_Snowman,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

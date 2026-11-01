@@ -10,19 +10,14 @@ EvtScript EVS_OnSmashBlock = {
 
 EvtScript EVS_MakeEntities = {
     IfEq(GF_TIK23_Hammer2Block, false)
-        Call(MakeEntity, Entity_Hammer2Block, -280, -20, -20, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_OnSmashBlock)
+        Call(MakeMarkerEntity, $Hammer2Block_1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o102, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(MakeEntity, Entity_HiddenYellowBlock, -75, 40, -120, 0, ITEM_MAPLE_SYRUP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_TIK23_HiddenItem_MapleSyrup)
-    Call(MakeEntity, Entity_HiddenYellowBlock, 175, 40, 0, 0, ITEM_STOP_WATCH, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_TIK23_HiddenItem_StopWatch)
-    Call(MakeEntity, Entity_HiddenYellowBlock, -250, 40, -100, 0, ITEM_VOLT_SHROOM, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_TIK23_HiddenItem_VoltShroom)
-    Call(MakeEntity, Entity_YellowBlock, -200, 40, -100, 0, ITEM_COIN, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_TIK23_ItemBlock_Coin)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_MapleSyrup_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_StopWatch_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_VoltShroom_1)
+    Call(MakeMarkerEntity, $YellowBlock_Coin_1)
     Return
     End
 };

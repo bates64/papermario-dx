@@ -1,4 +1,5 @@
 #include "osr_04.h"
+#include "world/area/kkj/kkj_03.h"
 
 export s32 map_init(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
@@ -571,7 +572,7 @@ EvtScript EVS_Scene_BowsersAssault = {
     EndLoop
     Exec(EVS_RaiseSmokeClouds)
     ExecWait(EVS_LiftCastleUp)
-    Call(GotoMap, "kkj_03", kkj_03_ENTRY_1)
+    Call(GotoMap, $kkj_03.Ascending)
     Wait(100 * DT)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)

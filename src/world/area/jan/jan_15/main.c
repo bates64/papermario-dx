@@ -1,20 +1,22 @@
 #include "jan_15.h"
+#include "world/area/jan/jan_14.h"
+#include "world/area/jan/jan_16.h"
 
 EvtScript EVS_ExitWalk_jan_16 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(UseExitHeading, 60, jan_15_ENTRY_1)
+    Call(UseExitHeading, 60, $Jan16.index)
     Exec(ExitWalk)
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_RAPHAELS_TREE)
-        Call(GotoMap, "jan_16", jan_16_ENTRY_3)
+        Call(GotoMap, $jan_16.Jan15FirstVisit)
     Else
-        Call(GotoMap, "jan_16", jan_16_ENTRY_0)
+        Call(GotoMap, $jan_16.Jan15)
     EndIf
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitWalk_jan_14_1 = EVT_EXIT_WALK(60, jan_15_ENTRY_0, "jan_14", jan_14_ENTRY_1);
+EvtScript EVS_ExitWalk_jan_14_1 = EVT_EXIT_WALK(60, $Jan14, $jan_14.Jan15);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_jan_14_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilis, 1, 0)

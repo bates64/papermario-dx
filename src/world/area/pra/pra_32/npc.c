@@ -240,8 +240,8 @@ EvtScript EVS_NpcInit_Kalmar = {
 NpcData NpcData_CrystalKing_01[] = {
     {
         .id = NPC_CrystalKing_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $CrystalKing_01.pos,
+        .yaw = $CrystalKing_01.yaw,
         .init = &EVS_NpcInit_CrystalKing_Aux,
         .settings = &NpcSettings_CrystalKing,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -250,8 +250,8 @@ NpcData NpcData_CrystalKing_01[] = {
     },
     {
         .id = NPC_CrystalKing_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $CrystalKing_02.pos,
+        .yaw = $CrystalKing_02.yaw,
         .settings = &NpcSettings_CrystalKing,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
@@ -259,8 +259,8 @@ NpcData NpcData_CrystalKing_01[] = {
     },
     {
         .id = NPC_Kalmar,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Kalmar.pos,
+        .yaw = $Kalmar.yaw,
         .init = &EVS_NpcInit_Kalmar,
         .settings = &NpcSettings_StarSpirit,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
@@ -269,8 +269,8 @@ NpcData NpcData_CrystalKing_01[] = {
     },
     {
         .id = NPC_CrystalKing_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $CrystalKing_03.pos,
+        .yaw = $CrystalKing_03.yaw,
         .init = &EVS_NpcInit_CrystalKing,
         .settings = &NpcSettings_CrystalKing,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,

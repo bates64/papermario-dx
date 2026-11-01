@@ -1,18 +1,21 @@
 #include "tik_08.h"
+#include "world/area/tik/tik_06.h"
+#include "world/area/tik/tik_09.h"
+#include "world/area/tik/tik_20.h"
 
 #include "world/common/entity/Pipe.inc.c"
 
-EvtScript EVS_ExitWalk_tik_09_1 = EVT_EXIT_WALK(60, tik_08_ENTRY_0, "tik_09", tik_09_ENTRY_1);
-EvtScript EVS_ExitWalk_tik_20_0 = EVT_EXIT_WALK(60, tik_08_ENTRY_1, "tik_20", tik_20_ENTRY_0);
+EvtScript EVS_ExitWalk_tik_09_1 = EVT_EXIT_WALK(60, $WarpZone2, $tik_09.SecondLevelEntry);
+EvtScript EVS_ExitWalk_tik_20_0 = EVT_EXIT_WALK(60, $SpikesRoom, $tik_20.SecondLevelEntry);
 
 EvtScript EVS_GotoMap_tik_06_2 = {
-    Call(GotoMap, "tik_06", tik_06_ENTRY_2)
+    Call(GotoMap, $tik_06.SecondLevelEntry)
     Wait(100)
     Return
     End
 };
 
-EvtScript EVS_ExitPipe_tik_06_2 = EVT_EXIT_PIPE_HORIZONTAL(tik_06_ENTRY_3, COLLIDER_ttd, EVS_GotoMap_tik_06_2);
+EvtScript EVS_ExitPipe_tik_06_2 = EVT_EXIT_PIPE_HORIZONTAL($SewerEntrance, COLLIDER_ttd, EVS_GotoMap_tik_06_2);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_tik_09_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
@@ -70,11 +73,11 @@ EvtScript EVS_Main = {
     Wait(1)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(tik_08_ENTRY_2)
+        CaseEq($BoardedFloor.index)
             ExecWait(EVS_BindExitTriggers)
-        CaseEq(tik_08_ENTRY_4)
+        CaseEq($JadeJungle.index)
             EVT_ENTER_PIPE_VERTICAL(EVS_BindExitTriggers)
-        CaseEq(tik_08_ENTRY_3)
+        CaseEq($SewerEntrance.index)
             EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_ttd, EVS_BindExitTriggers)
         CaseDefault
             Set(LVar0, EVS_BindExitTriggers)

@@ -1,4 +1,6 @@
 #include "pra_16.h"
+#include "world/area/pra/pra_02.h"
+#include "world/area/pra/pra_18.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -24,7 +26,7 @@ EvtScript EVS_ExitDoors_pra_02_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, pra_16_ENTRY_0)
+    Set(LVar0, $EntryHallSouth.index)
     Set(LVar1, COLLIDER_deilittsw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -35,7 +37,7 @@ EvtScript EVS_ExitDoors_pra_02_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_02", pra_02_ENTRY_2)
+    Call(GotoMap, $pra_02.MirrorHallSouth)
     Wait(100)
     Return
     End
@@ -45,7 +47,7 @@ EvtScript EVS_ExitDoors_pra_18_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, pra_16_ENTRY_1)
+    Set(LVar0, $BridgeMirrorHallSouth.index)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothLeftDoorModelsL)
@@ -56,7 +58,7 @@ EvtScript EVS_ExitDoors_pra_18_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_18", pra_18_ENTRY_0)
+    Call(GotoMap, $pra_18.RedMirrorHallSouth)
     Wait(100)
     Return
     End
@@ -66,7 +68,7 @@ EvtScript EVS_ExitDoors_pra_18_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, pra_16_ENTRY_2)
+    Set(LVar0, $BridgeMirrorHallNorth.index)
     Set(LVar1, COLLIDER_deilittne)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothLeftDoorModelsL)
@@ -77,7 +79,7 @@ EvtScript EVS_ExitDoors_pra_18_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_18", pra_18_ENTRY_2)
+    Call(GotoMap, $pra_18.RedMirrorHallNorth)
     Wait(100)
     Return
     End
@@ -87,7 +89,7 @@ EvtScript EVS_ExitDoors_pra_02_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, pra_16_ENTRY_3)
+    Set(LVar0, $EntryHallNorth.index)
     Set(LVar1, COLLIDER_deilittnw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -98,7 +100,7 @@ EvtScript EVS_ExitDoors_pra_02_3 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_02", pra_02_ENTRY_3)
+    Call(GotoMap, $pra_02.MirrorHallNorth)
     Wait(100)
     Return
     End
@@ -116,7 +118,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_16_ENTRY_0)
+        CaseEq($EntryHallSouth.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
@@ -125,7 +127,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearRightDoorModelsL)
                 Set(LVar3, NearRightDoorModelsR)
             EndIf
-        CaseEq(pra_16_ENTRY_1)
+        CaseEq($BridgeMirrorHallSouth.index)
             Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
@@ -134,7 +136,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearLeftDoorModelsL)
                 Set(LVar3, NearLeftDoorModelsR)
             EndIf
-        CaseEq(pra_16_ENTRY_2)
+        CaseEq($BridgeMirrorHallNorth.index)
             Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
@@ -143,7 +145,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, FarLeftDoorModelsL)
                 Set(LVar3, FarLeftDoorModelsR)
             EndIf
-        CaseEq(pra_16_ENTRY_3)
+        CaseEq($EntryHallNorth.index)
             Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)

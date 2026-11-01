@@ -1,4 +1,6 @@
 #include "pra_10.h"
+#include "world/area/pra/pra_04.h"
+#include "world/area/pra/pra_12.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -6,7 +8,7 @@
 EvtScript EVS_ExitDoors_pra_04_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_10_ENTRY_0)
+    Set(LVar0, $ReflectedSaveRoom.index)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, MODEL_o772)
     Set(LVar3, MODEL_o768)
@@ -14,7 +16,7 @@ EvtScript EVS_ExitDoors_pra_04_2 = {
     Set(LVar5, MODEL_o846)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_04", pra_04_ENTRY_2)
+    Call(GotoMap, $pra_04.PDownDUpHall)
     Wait(100)
     Return
     End
@@ -23,7 +25,7 @@ EvtScript EVS_ExitDoors_pra_04_2 = {
 EvtScript EVS_ExitDoors_pra_12_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_10_ENTRY_1)
+    Set(LVar0, $PDownDUpRoom.index)
     Set(LVar1, COLLIDER_deilittse)
     Set(LVar2, MODEL_o1019)
     Set(LVar3, MODEL_o1021)
@@ -31,7 +33,7 @@ EvtScript EVS_ExitDoors_pra_12_0 = {
     Set(LVar5, MODEL_o1022)
     Exec(ExitSplitDoubleDoor)
     Wait(17)
-    Call(GotoMap, "pra_12", pra_12_ENTRY_0)
+    Call(GotoMap, $pra_12.PDownDUpHall)
     Wait(100)
     Return
     End
@@ -47,13 +49,13 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_10_ENTRY_0)
+        CaseEq($ReflectedSaveRoom.index)
             Set(LVar2, MODEL_o772)
             Set(LVar3, MODEL_o768)
             Set(LVar4, MODEL_o844)
             Set(LVar5, MODEL_o846)
             ExecWait(EnterSplitDoubleDoor)
-        CaseEq(pra_10_ENTRY_1)
+        CaseEq($PDownDUpRoom.index)
             Set(LVar2, MODEL_o1019)
             Set(LVar3, MODEL_o1021)
             Set(LVar4, MODEL_o1020)

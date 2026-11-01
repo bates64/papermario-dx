@@ -189,7 +189,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcFlagBits, NPC_KoopaBrosRed, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosRed, 20, 160, 20)
         Call(PlaySoundAtNpc, NPC_KoopaBrosRed, SOUND_KOOPA_BROS_LAND, SOUND_SPACE_DEFAULT)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 20, 0, 160, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_1.pos.x, $LandingDustPos_1.pos.y, $LandingDustPos_1.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBrosRed, false)
         Call(SetNpcAnimation, NPC_KoopaBrosRed, ANIM_KoopaBros_Red_IdleCrouch)
         Call(SetNpcYaw, NPC_KoopaBrosRed, 270)
@@ -204,7 +204,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcFlagBits, NPC_KoopaBrosBlk, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosBlk, 48, 185, 20)
         Call(PlaySoundAtNpc, NPC_KoopaBrosBlk, SOUND_KOOPA_BROS_LAND, SOUND_SPACE_DEFAULT)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 48, 0, 185, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_2.pos.x, $LandingDustPos_2.pos.y, $LandingDustPos_2.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBrosBlk, false)
         Call(SetNpcAnimation, NPC_KoopaBrosBlk, ANIM_KoopaBros_Black_IdleCrouch)
         Call(SetNpcYaw, NPC_KoopaBrosBlk, 270)
@@ -219,7 +219,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcFlagBits, NPC_KoopaBrosYlw, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosYlw, 60, 110, 20)
         Call(PlaySoundAtNpc, NPC_KoopaBrosYlw, SOUND_KOOPA_BROS_LAND, SOUND_SPACE_DEFAULT)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 60, 0, 110, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_3.pos.x, $LandingDustPos_3.pos.y, $LandingDustPos_3.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBrosYlw, false)
         Call(SetNpcAnimation, NPC_KoopaBrosYlw, ANIM_KoopaBros_Yellow_IdleCrouch)
         Call(SetNpcYaw, NPC_KoopaBrosYlw, 270)
@@ -234,7 +234,7 @@ EvtScript EVS_NpcIdle_Door = {
         Call(SetNpcFlagBits, NPC_KoopaBrosGrn, NPC_FLAG_FLYING, false)
         Call(NpcMoveTo, NPC_KoopaBrosGrn, 88, 155, 20)
         Call(PlaySoundAtNpc, NPC_KoopaBrosGrn, SOUND_KOOPA_BROS_LAND, SOUND_SPACE_DEFAULT)
-        PlayEffect(EFFECT_LANDING_DUST, 1, 88, 0, 155, 0)
+        PlayEffect(EFFECT_LANDING_DUST, 1, $LandingDustPos_4.pos.x, $LandingDustPos_4.pos.y, $LandingDustPos_4.pos.z, 0)
         Call(EnableNpcBlur, NPC_KoopaBrosGrn, false)
         Call(SetNpcAnimation, NPC_KoopaBrosGrn, ANIM_KoopaBros_Green_IdleCrouch)
         Call(SetNpcYaw, NPC_KoopaBrosGrn, 270)
@@ -501,8 +501,8 @@ AnimID LimitAnims_KoopaBros[] = {
 NpcData NpcData_Enemies[] = {
     {
         .id = NPC_KoopaBrosBlk,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $KoopaBrosBlk.pos,
+        .yaw = $KoopaBrosBlk.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -512,8 +512,8 @@ NpcData NpcData_Enemies[] = {
     },
     {
         .id = NPC_KoopaBrosRed,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $KoopaBrosRed.pos,
+        .yaw = $KoopaBrosRed.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -523,8 +523,8 @@ NpcData NpcData_Enemies[] = {
     },
     {
         .id = NPC_KoopaBrosYlw,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $KoopaBrosYlw.pos,
+        .yaw = $KoopaBrosYlw.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -534,8 +534,8 @@ NpcData NpcData_Enemies[] = {
     },
     {
         .id = NPC_KoopaBrosGrn,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 270,
+        .pos = $KoopaBrosGrn.pos,
+        .yaw = $KoopaBrosGrn.yaw,
         .init = &EVS_NpcInit_KoopaBros,
         .settings = &NpcSettings_KoopaBros,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -545,8 +545,8 @@ NpcData NpcData_Enemies[] = {
     },
     {
         .id = NPC_JrTroopa,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $JrTroopa.pos,
+        .yaw = $JrTroopa.yaw,
         .init = &EVS_NpcInit_JrTroopa,
         .settings = &NpcSettings_JrTroopa,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -555,8 +555,8 @@ NpcData NpcData_Enemies[] = {
     },
     {
         .id = NPC_Door,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Door.pos,
+        .yaw = $Door.yaw,
         .init = &EVS_NpcInit_Door,
         .settings = &NpcSettings_Toad,
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,

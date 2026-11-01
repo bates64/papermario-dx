@@ -2,7 +2,7 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_RedSwitch, 0, 0, 300, 0, MAKE_ENTITY_END)
+    Call(MakeMarkerEntity, $RedSwitch_1)
     Return
     End
 };

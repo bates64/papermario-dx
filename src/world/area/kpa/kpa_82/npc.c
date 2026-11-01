@@ -1295,8 +1295,8 @@ EvtScript EVS_NpcInit_AntiGuy = {
 NpcData NpcData_AntiGuys[] = {
     {
         .id = NPC_Dummy,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $Dummy.pos,
+        .yaw = $Dummy.yaw,
         .init = &EVS_NpcInit_Door,
         .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_DOOR_ENEMY_FLAGS,
@@ -1305,8 +1305,8 @@ NpcData NpcData_AntiGuys[] = {
     },
     {
         .id = NPC_AntiGuy_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $AntiGuy_01.pos,
+        .yaw = $AntiGuy_01.yaw,
         .init = &EVS_NpcInit_AntiGuy,
         .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
@@ -1315,8 +1315,8 @@ NpcData NpcData_AntiGuys[] = {
     },
     {
         .id = NPC_AntiGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $AntiGuy_02.pos,
+        .yaw = $AntiGuy_02.yaw,
         .init = &EVS_NpcInit_AntiGuy,
         .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
@@ -1325,8 +1325,8 @@ NpcData NpcData_AntiGuys[] = {
     },
     {
         .id = NPC_AntiGuy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
+        .pos = $AntiGuy_03.pos,
+        .yaw = $AntiGuy_03.yaw,
         .init = &EVS_NpcInit_AntiGuy,
         .settings = &NpcSettings_ShyGuy,
         .flags = QUIZ_ANTI_GUY_ENEMY_FLAGS,
@@ -1353,20 +1353,9 @@ NpcData NpcData_AntiGuys[] = {
 NpcData NpcData_Goombas[] = {
     {
         .id = NPC_Goomba_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Goomba_01.pos,
+        .yaw = $Goomba_01.yaw,
+        .territory = $Goomba_01.territory,
         .init = &EVS_NpcInit_Goomba,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1375,20 +1364,9 @@ NpcData NpcData_Goombas[] = {
     },
     {
         .id = NPC_Goomba_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Goomba_02.pos,
+        .yaw = $Goomba_02.yaw,
+        .territory = $Goomba_02.territory,
         .init = &EVS_NpcInit_Goomba,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1397,20 +1375,9 @@ NpcData NpcData_Goombas[] = {
     },
     {
         .id = NPC_Goomba_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Goomba_03.pos,
+        .yaw = $Goomba_03.yaw,
+        .territory = $Goomba_03.territory,
         .init = &EVS_NpcInit_Goomba,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1419,20 +1386,9 @@ NpcData NpcData_Goombas[] = {
     },
     {
         .id = NPC_Goomba_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Goomba_04.pos,
+        .yaw = $Goomba_04.yaw,
+        .territory = $Goomba_04.territory,
         .init = &EVS_NpcInit_Goomba,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1441,20 +1397,9 @@ NpcData NpcData_Goombas[] = {
     },
     {
         .id = NPC_Goomba_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Goomba_05.pos,
+        .yaw = $Goomba_05.yaw,
+        .territory = $Goomba_05.territory,
         .init = &EVS_NpcInit_Goomba,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1466,20 +1411,9 @@ NpcData NpcData_Goombas[] = {
 NpcData NpcData_RedShyGuys[] = {
     {
         .id = NPC_RedShyGuy_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $RedShyGuy_01.pos,
+        .yaw = $RedShyGuy_01.yaw,
+        .territory = $RedShyGuy_01.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1488,20 +1422,9 @@ NpcData NpcData_RedShyGuys[] = {
     },
     {
         .id = NPC_RedShyGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $RedShyGuy_02.pos,
+        .yaw = $RedShyGuy_02.yaw,
+        .territory = $RedShyGuy_02.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1510,20 +1433,9 @@ NpcData NpcData_RedShyGuys[] = {
     },
     {
         .id = NPC_RedShyGuy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $RedShyGuy_03.pos,
+        .yaw = $RedShyGuy_03.yaw,
+        .territory = $RedShyGuy_03.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1532,20 +1444,9 @@ NpcData NpcData_RedShyGuys[] = {
     },
     {
         .id = NPC_RedShyGuy_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $RedShyGuy_04.pos,
+        .yaw = $RedShyGuy_04.yaw,
+        .territory = $RedShyGuy_04.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1554,20 +1455,9 @@ NpcData NpcData_RedShyGuys[] = {
     },
     {
         .id = NPC_RedShyGuy_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $RedShyGuy_05.pos,
+        .yaw = $RedShyGuy_05.yaw,
+        .territory = $RedShyGuy_05.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1579,20 +1469,9 @@ NpcData NpcData_RedShyGuys[] = {
 NpcData NpcData_BlueShyGuys[] = {
     {
         .id = NPC_BlueShyGuy_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $BlueShyGuy_01.pos,
+        .yaw = $BlueShyGuy_01.yaw,
+        .territory = $BlueShyGuy_01.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1601,20 +1480,9 @@ NpcData NpcData_BlueShyGuys[] = {
     },
     {
         .id = NPC_BlueShyGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $BlueShyGuy_02.pos,
+        .yaw = $BlueShyGuy_02.yaw,
+        .territory = $BlueShyGuy_02.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1623,20 +1491,9 @@ NpcData NpcData_BlueShyGuys[] = {
     },
     {
         .id = NPC_BlueShyGuy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $BlueShyGuy_03.pos,
+        .yaw = $BlueShyGuy_03.yaw,
+        .territory = $BlueShyGuy_03.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1645,20 +1502,9 @@ NpcData NpcData_BlueShyGuys[] = {
     },
     {
         .id = NPC_BlueShyGuy_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $BlueShyGuy_04.pos,
+        .yaw = $BlueShyGuy_04.yaw,
+        .territory = $BlueShyGuy_04.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1667,20 +1513,9 @@ NpcData NpcData_BlueShyGuys[] = {
     },
     {
         .id = NPC_BlueShyGuy_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $BlueShyGuy_05.pos,
+        .yaw = $BlueShyGuy_05.yaw,
+        .territory = $BlueShyGuy_05.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1692,20 +1527,9 @@ NpcData NpcData_BlueShyGuys[] = {
 NpcData NpcData_GreenShyGuys[] = {
     {
         .id = NPC_GreenShyGuy_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $GreenShyGuy_01.pos,
+        .yaw = $GreenShyGuy_01.yaw,
+        .territory = $GreenShyGuy_01.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1714,20 +1538,9 @@ NpcData NpcData_GreenShyGuys[] = {
     },
     {
         .id = NPC_GreenShyGuy_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $GreenShyGuy_02.pos,
+        .yaw = $GreenShyGuy_02.yaw,
+        .territory = $GreenShyGuy_02.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1736,20 +1549,9 @@ NpcData NpcData_GreenShyGuys[] = {
     },
     {
         .id = NPC_GreenShyGuy_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $GreenShyGuy_03.pos,
+        .yaw = $GreenShyGuy_03.yaw,
+        .territory = $GreenShyGuy_03.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1758,20 +1560,9 @@ NpcData NpcData_GreenShyGuys[] = {
     },
     {
         .id = NPC_GreenShyGuy_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $GreenShyGuy_04.pos,
+        .yaw = $GreenShyGuy_04.yaw,
+        .territory = $GreenShyGuy_04.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1780,20 +1571,9 @@ NpcData NpcData_GreenShyGuys[] = {
     },
     {
         .id = NPC_GreenShyGuy_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $GreenShyGuy_05.pos,
+        .yaw = $GreenShyGuy_05.yaw,
+        .territory = $GreenShyGuy_05.territory,
         .init = &EVS_NpcInit_ShyGuy,
         .settings = &NpcSettings_ShyGuy_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1805,20 +1585,9 @@ NpcData NpcData_GreenShyGuys[] = {
 NpcData NpcData_DarkTroopas[] = {
     {
         .id = NPC_DarkTroopa_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $DarkTroopa_01.pos,
+        .yaw = $DarkTroopa_01.yaw,
+        .territory = $DarkTroopa_01.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1827,20 +1596,9 @@ NpcData NpcData_DarkTroopas[] = {
     },
     {
         .id = NPC_DarkTroopa_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $DarkTroopa_02.pos,
+        .yaw = $DarkTroopa_02.yaw,
+        .territory = $DarkTroopa_02.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1849,20 +1607,9 @@ NpcData NpcData_DarkTroopas[] = {
     },
     {
         .id = NPC_DarkTroopa_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $DarkTroopa_03.pos,
+        .yaw = $DarkTroopa_03.yaw,
+        .territory = $DarkTroopa_03.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1871,20 +1618,9 @@ NpcData NpcData_DarkTroopas[] = {
     },
     {
         .id = NPC_DarkTroopa_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $DarkTroopa_04.pos,
+        .yaw = $DarkTroopa_04.yaw,
+        .territory = $DarkTroopa_04.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1893,20 +1629,9 @@ NpcData NpcData_DarkTroopas[] = {
     },
     {
         .id = NPC_DarkTroopa_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $DarkTroopa_05.pos,
+        .yaw = $DarkTroopa_05.yaw,
+        .territory = $DarkTroopa_05.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1918,20 +1643,9 @@ NpcData NpcData_DarkTroopas[] = {
 NpcData NpcData_KoopaTroopas[] = {
     {
         .id = NPC_KoopaTroopa_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $KoopaTroopa_01.pos,
+        .yaw = $KoopaTroopa_01.yaw,
+        .territory = $KoopaTroopa_01.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1940,20 +1654,9 @@ NpcData NpcData_KoopaTroopas[] = {
     },
     {
         .id = NPC_KoopaTroopa_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $KoopaTroopa_02.pos,
+        .yaw = $KoopaTroopa_02.yaw,
+        .territory = $KoopaTroopa_02.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1962,20 +1665,9 @@ NpcData NpcData_KoopaTroopas[] = {
     },
     {
         .id = NPC_KoopaTroopa_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $KoopaTroopa_03.pos,
+        .yaw = $KoopaTroopa_03.yaw,
+        .territory = $KoopaTroopa_03.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -1984,20 +1676,9 @@ NpcData NpcData_KoopaTroopas[] = {
     },
     {
         .id = NPC_KoopaTroopa_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $KoopaTroopa_04.pos,
+        .yaw = $KoopaTroopa_04.yaw,
+        .territory = $KoopaTroopa_04.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -2006,20 +1687,9 @@ NpcData NpcData_KoopaTroopas[] = {
     },
     {
         .id = NPC_KoopaTroopa_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $KoopaTroopa_05.pos,
+        .yaw = $KoopaTroopa_05.yaw,
+        .territory = $KoopaTroopa_05.territory,
         .init = &EVS_NpcInit_KoopaTroopa,
         .settings = &NpcSettings_KoopaTroopa_Wander,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -2031,20 +1701,9 @@ NpcData NpcData_KoopaTroopas[] = {
 NpcData NpcData_Bobombs[] = {
     {
         .id = NPC_Bobomb_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Bobomb_01.pos,
+        .yaw = $Bobomb_01.yaw,
+        .territory = $Bobomb_01.territory,
         .init = &EVS_NpcInit_Bobomb,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -2053,20 +1712,9 @@ NpcData NpcData_Bobombs[] = {
     },
     {
         .id = NPC_Bobomb_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Bobomb_02.pos,
+        .yaw = $Bobomb_02.yaw,
+        .territory = $Bobomb_02.territory,
         .init = &EVS_NpcInit_Bobomb,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -2075,20 +1723,9 @@ NpcData NpcData_Bobombs[] = {
     },
     {
         .id = NPC_Bobomb_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Bobomb_03.pos,
+        .yaw = $Bobomb_03.yaw,
+        .territory = $Bobomb_03.territory,
         .init = &EVS_NpcInit_Bobomb,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -2097,20 +1734,9 @@ NpcData NpcData_Bobombs[] = {
     },
     {
         .id = NPC_Bobomb_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Bobomb_04.pos,
+        .yaw = $Bobomb_04.yaw,
+        .territory = $Bobomb_04.territory,
         .init = &EVS_NpcInit_Bobomb,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,
@@ -2119,20 +1745,9 @@ NpcData NpcData_Bobombs[] = {
     },
     {
         .id = NPC_Bobomb_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 0,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_RECT,
-                .centerPos  = { 0, 0, 150 },
-                .wanderSize = { 130, 100 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 150 },
-                .detectSize = { 130, 100 },
-            }
-        },
+        .pos = $Bobomb_05.pos,
+        .yaw = $Bobomb_05.yaw,
+        .territory = $Bobomb_05.territory,
         .init = &EVS_NpcInit_Bobomb,
         .settings = &NpcSettings_Short,
         .flags = QUIZ_GAME_ENEMY_FLAGS,

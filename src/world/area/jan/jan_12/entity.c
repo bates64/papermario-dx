@@ -2,10 +2,9 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_PinkFlower, 130, 0, -110, 170, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_BellbellPlant, -350, 30, -55, 25, MAKE_ENTITY_END)
-    Call(MakeEntity, Entity_HiddenYellowBlock, -310, 90, -25, 0, ITEM_STONE_CAP, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_JAN12_HiddenItem_StoneCap)
+    Call(MakeMarkerEntity, $PinkFlower_1)
+    Call(MakeMarkerEntity, $BellbellPlant_1)
+    Call(MakeMarkerEntity, $HiddenYellowBlock_StoneCap_1)
     Return
     End
 };

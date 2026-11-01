@@ -3,7 +3,6 @@
 
 #include "common_structs.h"
 #include "enums.h"
-#include "world/entrances.h"
 #include "script_api/map.h"
 #include "npc.h"
 
@@ -42,6 +41,85 @@ typedef struct MapSettings {
 
 /// Define the descriptor exported by a map overlay.
 #define OVL_DEF_MAP() export MapSettings settings
+
+// The map editor's markers. A map's code gets each of its markers from map.xml.h, as a constant named after it with a
+// `$` in front, such as `$Goompa`.
+
+/// How map.xml.h declares markers, so their fields are constant expressions in C++ as well as in C.
+#ifdef __cplusplus
+#define MARKER_CONST static constexpr
+#else
+#define MARKER_CONST static const
+#endif
+
+typedef struct PositionMarker {
+    Vec3f pos;
+    f32 yaw;
+} PositionMarker;
+
+/// Where the player appears when they enter a map. Another map gets a map's entries as fields of a constant named after
+/// it, such as `$kmr_03.Front`, by including that map's header, such as world/area/kmr/kmr_03.h.
+typedef struct EntryMarker {
+    const char* map;
+    Vec3f pos;
+    f32 yaw;
+    s32 index; ///< Its place in the map's entry list, `$Entries`, the entry ID GotoMap and GetEntryID use.
+} EntryMarker;
+
+typedef struct NpcMarker {
+    Vec3f pos;
+    f32 yaw;
+    EnemyTerritory territory;
+} NpcMarker;
+
+enum EntityMarkerFlagKind {
+    ENTITY_MARKER_FLAG_NONE,
+    ENTITY_MARKER_FLAG_BLOCK,
+    ENTITY_MARKER_FLAG_CHEST,
+    ENTITY_MARKER_FLAG_PANEL,
+    ENTITY_MARKER_FLAG_CRATE,
+    ENTITY_MARKER_FLAG_SWITCH,
+};
+
+/// An entity or item for MakeMarkerEntity to make.
+typedef struct EntityMarker {
+    Vec3f pos;
+    f32 yaw;
+    EntityBlueprint* blueprint; ///< nullptr for an item
+    s32 args[3]; ///< The blueprint's arguments, or an item's ID and spawn mode.
+    EvtScript* script;
+    s32 flag;
+    u8 flagKind; ///< enum EntityMarkerFlagKind
+} EntityMarker;
+
+typedef struct SphereMarker {
+    Vec3f pos;
+    f32 radius;
+} SphereMarker;
+
+typedef struct CylinderMarker {
+    Vec3f pos; ///< The center of its base.
+    f32 radius;
+    f32 height;
+} CylinderMarker;
+
+typedef struct VolumeMarker {
+    Vec3f min;
+    Vec3f max;
+} VolumeMarker;
+
+typedef struct PathMarkerPoint {
+    Vec3s pos;
+    u16 nextCount;
+    const u16* next; ///< The indices of the points it leads to.
+} PathMarkerPoint;
+
+/// Points that each lead to any number of others. The map's code gets the index of each named point as
+/// `$<path>_<point>`, such as `$Route_Start`.
+typedef struct PathMarker {
+    s32 count;
+    const PathMarkerPoint* points;
+} PathMarker;
 
 typedef struct AreaConfig {
     s32 mapCount;

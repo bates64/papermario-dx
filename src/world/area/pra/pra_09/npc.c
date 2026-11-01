@@ -758,8 +758,8 @@ EvtScript EVS_NpcInit_Duplighost_04 = {
 NpcData NpcData_InteractableBombettes[] = {
     {
         .id = NPC_Bombette_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_01.pos,
+        .yaw = $Bombette_01.yaw,
         .init = &EVS_NpcInit_Bombette_01,
         .settings = &NpcSettings_Bombette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -768,8 +768,8 @@ NpcData NpcData_InteractableBombettes[] = {
     },
     {
         .id = NPC_Bombette_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_02.pos,
+        .yaw = $Bombette_02.yaw,
         .init = &EVS_NpcInit_Bombette_02,
         .settings = &NpcSettings_Bombette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -778,8 +778,8 @@ NpcData NpcData_InteractableBombettes[] = {
     },
     {
         .id = NPC_Bombette_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_03.pos,
+        .yaw = $Bombette_03.yaw,
         .init = &EVS_NpcInit_Bombette_03,
         .settings = &NpcSettings_Bombette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -788,8 +788,8 @@ NpcData NpcData_InteractableBombettes[] = {
     },
     {
         .id = NPC_Bombette_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_04.pos,
+        .yaw = $Bombette_04.yaw,
         .init = &EVS_NpcInit_Bombette_04,
         .settings = &NpcSettings_Bombette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -798,8 +798,8 @@ NpcData NpcData_InteractableBombettes[] = {
     },
     {
         .id = NPC_Bombette_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_05.pos,
+        .yaw = $Bombette_05.yaw,
         .init = &EVS_NpcInit_Bombette_05,
         .settings = &NpcSettings_Bombette,
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -811,8 +811,8 @@ NpcData NpcData_InteractableBombettes[] = {
 NpcData NpcData_Duplighosts[] = {
     {
         .id = NPC_Duplighost_01,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Duplighost_01.pos,
+        .yaw = $Duplighost_01.yaw,
         .init = &EVS_NpcInit_Duplighost_01,
         .settings = &NpcSettings_Duplighost,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -821,8 +821,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_Duplighost_02,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Duplighost_02.pos,
+        .yaw = $Duplighost_02.yaw,
         .init = &EVS_NpcInit_Duplighost_02,
         .settings = &NpcSettings_Duplighost,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -831,8 +831,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_Duplighost_03,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Duplighost_03.pos,
+        .yaw = $Duplighost_03.yaw,
         .init = &EVS_NpcInit_Duplighost_03,
         .settings = &NpcSettings_Duplighost,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -841,8 +841,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_Duplighost_04,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Duplighost_04.pos,
+        .yaw = $Duplighost_04.yaw,
         .init = &EVS_NpcInit_Duplighost_04,
         .settings = &NpcSettings_Duplighost,
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -851,8 +851,8 @@ NpcData NpcData_Duplighosts[] = {
     },
     {
         .id = NPC_Duplighost_05,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Duplighost_05.pos,
+        .yaw = $Duplighost_05.yaw,
         .init = &EVS_NpcInit_Duplighost_05,
         .settings = &NpcSettings_Duplighost,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS,
@@ -1004,8 +1004,8 @@ EvtScript EVS_NpcInit_TargetBombette_05 = {
 NpcData NpcData_TargetBombettes[] = {
     {
         .id = NPC_Bombette_01_Target,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_01_Target.pos,
+        .yaw = $Bombette_01_Target.yaw,
         .init = &EVS_NpcInit_TargetBombette_01,
         .settings = &NpcSettings_Bombette,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1014,8 +1014,8 @@ NpcData NpcData_TargetBombettes[] = {
     },
     {
         .id = NPC_Bombette_02_Target,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_02_Target.pos,
+        .yaw = $Bombette_02_Target.yaw,
         .init = &EVS_NpcInit_TargetBombette_02,
         .settings = &NpcSettings_Bombette,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1024,8 +1024,8 @@ NpcData NpcData_TargetBombettes[] = {
     },
     {
         .id = NPC_Bombette_03_Target,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_03_Target.pos,
+        .yaw = $Bombette_03_Target.yaw,
         .init = &EVS_NpcInit_TargetBombette_03,
         .settings = &NpcSettings_Bombette,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1034,8 +1034,8 @@ NpcData NpcData_TargetBombettes[] = {
     },
     {
         .id = NPC_Bombette_04_Target,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_04_Target.pos,
+        .yaw = $Bombette_04_Target.yaw,
         .init = &EVS_NpcInit_TargetBombette_04,
         .settings = &NpcSettings_Bombette,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
@@ -1044,8 +1044,8 @@ NpcData NpcData_TargetBombettes[] = {
     },
     {
         .id = NPC_Bombette_05_Target,
-        .pos = { NPC_DISPOSE_LOCATION },
-        .yaw = 90,
+        .pos = $Bombette_05_Target.pos,
+        .yaw = $Bombette_05_Target.yaw,
         .init = &EVS_NpcInit_TargetBombette_05,
         .settings = &NpcSettings_Bombette,
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,

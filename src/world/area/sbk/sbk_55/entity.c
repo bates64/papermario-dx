@@ -2,9 +2,8 @@
 #include "entity.h"
 
 EvtScript EVS_MakeEntities = {
-    Call(MakeEntity, Entity_MulticoinBlock, 0, 60, -100, 0, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_SBK55_MultiCoinBrick)
-    Call(MakeItemEntity, ITEM_TASTY_TONIC, 420, 0, 168, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SBK55_Item_TastyTonic)
+    Call(MakeMarkerEntity, $MulticoinBlock_1)
+    Call(MakeMarkerEntity, $Item_TastyTonic_1)
     Return
     End
 };

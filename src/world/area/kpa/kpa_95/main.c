@@ -1,4 +1,5 @@
 #include "kpa_95.h"
+#include "world/area/kpa/kpa_94.h"
 
 EvtScript EVS_OpenCellDoor = {
     Call(DisablePlayerInput, true)
@@ -22,7 +23,7 @@ EvtScript EVS_OpenCellDoor = {
     End
 };
 
-EvtScript EVS_ExitWalk_kpa_94_0 = EVT_EXIT_WALK(60, kpa_95_ENTRY_0, "kpa_94", kpa_94_ENTRY_0);
+EvtScript EVS_ExitWalk_kpa_94_0 = EVT_EXIT_WALK(60, $WestJailStairs, $kpa_94.WestUpperJail);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kpa_94_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)

@@ -1,17 +1,9 @@
 #include "nok_15.h"
 
-EntryList Entrances = {
-    [nok_15_ENTRY_0]    { -782.0,    0.0,  -48.0,   90.0 },
-    [nok_15_ENTRY_1]    {  -21.0,    0.0, -931.0,  145.0 },
-    [nok_15_ENTRY_2]    { -238.0,  200.0, -758.0,  130.0 },
-    [nok_15_ENTRY_3]    {  -62.0,   30.0, -430.0,    0.0 },
-    [nok_15_ENTRY_4]    { -138.0,  260.0, -638.0,  320.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
     .bgName = "nok_bg",
     .tattle = { MSG_MapTattle_nok_15 },
 };

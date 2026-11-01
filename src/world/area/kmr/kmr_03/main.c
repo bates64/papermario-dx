@@ -1,7 +1,9 @@
 #include "kmr_03.h"
+#include "world/area/kmr/kmr_04.h"
+#include "world/area/kmr/kmr_05.h"
 
-EvtScript EVS_ExitWalk_kmr_04_0 = EVT_EXIT_WALK(60, kmr_03_ENTRY_0, "kmr_04", kmr_04_ENTRY_0);
-EvtScript EVS_ExitWalk_kmr_05_0 = EVT_EXIT_WALK(60, kmr_03_ENTRY_1, "kmr_05", kmr_05_ENTRY_0);
+EvtScript EVS_ExitWalk_kmr_04_0 = EVT_EXIT_WALK(60, $JrTroopasPlayground, $kmr_04.CliffBottom);
+EvtScript EVS_ExitWalk_kmr_05_0 = EVT_EXIT_WALK(60, $BehindVillage, $kmr_05.CliffBottom);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_kmr_04_0, TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
@@ -20,7 +22,7 @@ EvtScript EVS_Main = {
     ExecWait(EVS_SetupFoliage)
     Exec(EVS_SetupMusic)
     Call(GetEntryID, LVar0)
-    IfNe(LVar0, kmr_03_ENTRY_2)
+    IfNe(LVar0, $FallFromVillage.index)
         Set(LVar0, EVS_BindExitTriggers)
         Exec(EnterWalk)
     Else

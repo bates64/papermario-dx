@@ -33,8 +33,8 @@ NpcSettings NpcSettings_Conductor = {
 
 NpcData NpcData_Conductor = {
     .id = NPC_Conductor,
-    .pos = { NPC_DISPOSE_LOCATION },
-    .yaw = 0,
+    .pos = $Conductor.pos,
+    .yaw = $Conductor.yaw,
     .initVarCount = 1,
     .initVar = { .value = 0 },
     .settings = &NpcSettings_Conductor,
@@ -44,20 +44,9 @@ NpcData NpcData_Conductor = {
 NpcData NpcData_SpyGuy[] = {
     {
         .id = NPC_SpyGuy,
-        .pos = { -305.0f, 0.0f, 135.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -305, 0, 135 },
-                .wanderSize = { 30 },
-                .detectShape = SHAPE_CYLINDER,
-                .detectPos  = { -305, 0, 135 },
-                .detectSize = { 250 },
-            }
-        },
+        .pos = $SpyGuy.pos,
+        .yaw = $SpyGuy.yaw,
+        .territory = $SpyGuy.territory,
         .settings = &NpcSettings_SpyGuy_Wander,
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
@@ -71,20 +60,9 @@ NpcData NpcData_SpyGuy[] = {
 
 NpcData NpcData_PyroGuy = {
     .id = NPC_PyroGuy,
-    .pos = { 354.0f, 10.0f, -113.0f },
-    .yaw = 270,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { 354, 10, -113 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { 354, 10, -113 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $PyroGuy.pos,
+    .yaw = $PyroGuy.yaw,
+    .territory = $PyroGuy.territory,
     .settings = &NpcSettings_PyroGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PYRO_GUY_DROPS,
@@ -94,20 +72,9 @@ NpcData NpcData_PyroGuy = {
 
 NpcData NpcData_GrooveGuy = {
     .id = NPC_GrooveGuy,
-    .pos = { -150.0f, 10.0f, -125.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -150, 10, -125 },
-            .wanderSize = { 30 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -150, 10, -125 },
-            .detectSize = { 200 },
-        }
-    },
+    .pos = $GrooveGuy.pos,
+    .yaw = $GrooveGuy.yaw,
+    .territory = $GrooveGuy.territory,
     .settings = &NpcSettings_GrooveGuy_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_B,

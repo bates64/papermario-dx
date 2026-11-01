@@ -1,13 +1,9 @@
 #include "kkj_28.h"
 
-EntryList Entrances = {
-    [kkj_28_ENTRY_0]    {  325.0,    0.0,  -30.0,  270.0 },
-};
-
 OVL_DEF_MAP() = {
     .main = &EVS_Main,
-    .entryList = &Entrances,
-    .entryCount = ENTRY_COUNT(Entrances),
+    .entryList = &$Entries,
+    .entryCount = ENTRY_COUNT($Entries),
 #if VERSION_JP
     .tattle = { MSG_MapTattle_018B },
 #endif

@@ -1,4 +1,6 @@
 #include "pra_29.h"
+#include "world/area/pra/pra_20.h"
+#include "world/area/pra/pra_34.h"
 
 #include "../common/Reflection.inc.c"
 #include "../common/Reflection.data.inc.c"
@@ -22,7 +24,7 @@ s32 BothRightDoorModelsR[] = { MODEL_o997, MODEL_o1094, -1 };
 EvtScript EVS_ExitDoors_pra_20_2 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_29_ENTRY_0)
+    Set(LVar0, $MirroredDoorRoomSouth.index)
     Set(LVar1, COLLIDER_deilittsw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothLeftDoorModelsL)
@@ -33,7 +35,7 @@ EvtScript EVS_ExitDoors_pra_20_2 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_20", pra_20_ENTRY_2)
+    Call(GotoMap, $pra_20.HiddenBridgeRoomSouth)
     Wait(100)
     Return
     End
@@ -42,7 +44,7 @@ EvtScript EVS_ExitDoors_pra_20_2 = {
 EvtScript EVS_ExitDoors_pra_34_0 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_29_ENTRY_1)
+    Set(LVar0, $MirrorHoleRoomSouth.index)
     Set(LVar1, COLLIDER_deilittse)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -53,7 +55,7 @@ EvtScript EVS_ExitDoors_pra_34_0 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_34", pra_34_ENTRY_0)
+    Call(GotoMap, $pra_34.HiddenBridgeRoomSouth)
     Wait(100)
     Return
     End
@@ -62,7 +64,7 @@ EvtScript EVS_ExitDoors_pra_34_0 = {
 EvtScript EVS_ExitDoors_pra_34_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_29_ENTRY_2)
+    Set(LVar0, $MirrorHoleRoomNorth.index)
     Set(LVar1, COLLIDER_deilittne)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothRightDoorModelsL)
@@ -73,7 +75,7 @@ EvtScript EVS_ExitDoors_pra_34_3 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_34", pra_34_ENTRY_3)
+    Call(GotoMap, $pra_34.HiddenBridgeRoomNorth)
     Wait(100)
     Return
     End
@@ -82,7 +84,7 @@ EvtScript EVS_ExitDoors_pra_34_3 = {
 EvtScript EVS_ExitDoors_pra_20_3 = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(LVar0, pra_29_ENTRY_3)
+    Set(LVar0, $MirroredDoorRoomNorth.index)
     Set(LVar1, COLLIDER_deilittnw)
     IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, BothLeftDoorModelsL)
@@ -93,7 +95,7 @@ EvtScript EVS_ExitDoors_pra_20_3 = {
     EndIf
     Exec(BaseExitDoor)
     Wait(17)
-    Call(GotoMap, "pra_20", pra_20_ENTRY_3)
+    Call(GotoMap, $pra_20.HiddenBridgeRoomNorth)
     Wait(100)
     Return
     End
@@ -111,7 +113,7 @@ EvtScript EVS_BindExitTriggers = {
 EvtScript EVS_EnterMap = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(pra_29_ENTRY_0)
+        CaseEq($MirroredDoorRoomSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
                 Set(LVar3, BothLeftDoorModelsR)
@@ -119,7 +121,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearLeftDoorModelsL)
                 Set(LVar3, NearLeftDoorModelsR)
             EndIf
-        CaseEq(pra_29_ENTRY_1)
+        CaseEq($MirrorHoleRoomSouth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -127,7 +129,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, NearRightDoorModelsL)
                 Set(LVar3, NearRightDoorModelsR)
             EndIf
-        CaseEq(pra_29_ENTRY_2)
+        CaseEq($MirrorHoleRoomNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothRightDoorModelsL)
                 Set(LVar3, BothRightDoorModelsR)
@@ -135,7 +137,7 @@ EvtScript EVS_EnterMap = {
                 Set(LVar2, FarRightDoorModelsL)
                 Set(LVar3, FarRightDoorModelsR)
             EndIf
-        CaseEq(pra_29_ENTRY_3)
+        CaseEq($MirroredDoorRoomNorth.index)
             IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, BothLeftDoorModelsL)
                 Set(LVar3, BothLeftDoorModelsR)

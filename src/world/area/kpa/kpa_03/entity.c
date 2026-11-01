@@ -54,10 +54,8 @@ EvtScript EVS_MakeEntities = {
     Thread
         Call(MonitorPlayerAltitude)
     EndThread
-    Call(MakeEntity, Entity_ScriptSpring, -400, -300, -150, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_UseSpring)
-    Call(MakeEntity, Entity_YellowBlock, 620, -65, -200, 0, ITEM_SHOOTING_STAR, MAKE_ENTITY_END)
-    Call(AssignBlockFlag, GF_KPA03_ItemBlock_ShootingStar)
+    Call(MakeMarkerEntity, $ScriptSpring_1)
+    Call(MakeMarkerEntity, $YellowBlock_ShootingStar_1)
     Return
     End
 };

@@ -3,14 +3,14 @@
 EvtScript EVS_SetupMusic = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
-        CaseEq(hos_10_ENTRY_1)
+        CaseEq($Descent.index)
             Call(SetMusic, 0, SONG_INTRO_STORY, BGM_VARIATION_3, VOL_LEVEL_FULL)
-        CaseEq(hos_10_ENTRY_2)
+        CaseEq($FlyAway.index)
             // do nothing
-        CaseOrEq(hos_10_ENTRY_3)
-        CaseOrEq(hos_10_ENTRY_4)
+        CaseOrEq($Entry3.index)
+        CaseOrEq($Entry4.index)
         EndCaseGroup
-        CaseEq(hos_10_ENTRY_5)
+        CaseEq($PreTitle.index)
             Thread
                 Wait(10)
                 Call(SetMusic, 0, SONG_MARIO_FALLS, 0, VOL_LEVEL_FULL)

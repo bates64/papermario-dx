@@ -43,18 +43,16 @@ EvtScript EVS_OnInspect_StreetSign = {
 
 EvtScript EVS_MakeEntities = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, mac_02_ENTRY_5)
+    IfEq(LVar0, $RipCheatoPipe.index)
         IfEq(GF_MAC02_UnlockedHouse, false)
-            Call(MakeEntity, Entity_Padlock, -470, 30, -155, 180, MAKE_ENTITY_END)
+            Call(MakeMarkerEntity, $Padlock_1)
             Set(MV_BlueHouseLockEntityID, LVar0)
             BindPadlock(EVS_ChooseItem_OddKey, TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), ItemList_OddKey, 0, 1)
         EndIf
     EndIf
-    Call(MakeItemEntity, ITEM_ODD_KEY, -412, 20, -320, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_MAC02_Item_OddKey)
-    Call(MakeEntity, Entity_HiddenPanel, 400, 0, 100, 0, MODEL_o236, MAKE_ENTITY_END)
-    Call(AssignPanelFlag, GF_MAC02_HiddenPanel)
-    Call(MakeEntity, Entity_Signpost, -375, 0, 190, 0, MAKE_ENTITY_END)
-    Call(AssignScript, EVS_ReadSign)
+    Call(MakeMarkerEntity, $Item_OddKey_1)
+    Call(MakeMarkerEntity, $HiddenPanel_1)
+    Call(MakeMarkerEntity, $Signpost_1)
     BindTrigger(EVS_OnInspect_StreetSign, TRIGGER_WALL_PRESS_A, COLLIDER_sign, 1, 0)
     Return
     End

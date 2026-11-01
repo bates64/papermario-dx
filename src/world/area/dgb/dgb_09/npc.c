@@ -10,20 +10,9 @@
 NpcData NpcData_Clubba_Wander[] = {
     {
         .id = NPC_Clubba_Wander,
-        .pos = { -350.0f, 0.0f, 180.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { -350, 0, 180 },
-                .wanderSize = { 40 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 50 },
-                .detectSize = { 600, 250 },
-            }
-        },
+        .pos = $Clubba_Wander.pos,
+        .yaw = $Clubba_Wander.yaw,
+        .territory = $Clubba_Wander.territory,
         .settings = &NpcSettings_Clubba_Wander,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
@@ -36,7 +25,7 @@ NpcData NpcData_Clubba_Wander[] = {
 
 EvtScript EVS_NpcInit_Clubba_Napping = {
     Call(GetEntryID, LVar0)
-    IfEq(LVar0, dgb_09_ENTRY_3)
+    IfEq(LVar0, $Dgb10.index)
         Call(SetNpcPos, NPC_SELF, 240, 0, 88)
         Call(InterpNpcYaw, NPC_SELF, 270, 0)
     EndIf
@@ -47,20 +36,9 @@ EvtScript EVS_NpcInit_Clubba_Napping = {
 NpcData NpcData_Clubba_Napping[] = {
     {
         .id = NPC_Clubba_Napping,
-        .pos = { 310.0f, 0.0f, 88.0f },
-        .yaw = 270,
-        .territory = {
-            .wander = {
-                .isFlying = true,
-                .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-                .wanderShape = SHAPE_CYLINDER,
-                .centerPos  = { 310, 0, 88 },
-                .wanderSize = { 40 },
-                .detectShape = SHAPE_RECT,
-                .detectPos  = { 0, 0, 50 },
-                .detectSize = { 600, 250 },
-            }
-        },
+        .pos = $Clubba_Napping.pos,
+        .yaw = $Clubba_Napping.yaw,
+        .territory = $Clubba_Napping.territory,
         .init = &EVS_NpcInit_Clubba_Napping,
         .settings = &NpcSettings_Clubba_Napping,
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
@@ -74,20 +52,9 @@ NpcData NpcData_Clubba_Napping[] = {
 
 NpcData NpcData_Sentinel = {
     .id = NPC_Sentinel,
-    .pos = { -20.0f, 100.0f, 180.0f },
-    .yaw = 90,
-    .territory = {
-        .wander = {
-            .isFlying = true,
-            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
-            .wanderShape = SHAPE_CYLINDER,
-            .centerPos  = { -20, 100, 180 },
-            .wanderSize = { 40 },
-            .detectShape = SHAPE_CYLINDER,
-            .detectPos  = { -20, 100, 180 },
-            .detectSize = { 250 },
-        }
-    },
+    .pos = $Sentinel.pos,
+    .yaw = $Sentinel.yaw,
+    .territory = $Sentinel.territory,
     .settings = &NpcSettings_Sentinel_Wander,
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = NO_DROPS,

@@ -7,10 +7,9 @@
 
 EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(-800, 210, -130, 0)
-    Call(MakeItemEntity, ITEM_PEBBLE, -770, -240, 30, ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS_NEVER_VANISH, 0)
+    Call(MakeMarkerEntity, $Item_Pebble_1)
     IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_FIRST_DUPLIGHOST)
-        Call(MakeEntity, Entity_BlueSwitch, -960, -120, -37, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_SAM08_ImposterSwitchPressed))
+        Call(MakeMarkerEntity, $BlueSwitch_1)
     EndIf
     Return
     End

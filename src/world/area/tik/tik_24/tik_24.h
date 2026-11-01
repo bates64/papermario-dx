@@ -8,7 +8,9 @@
 #include "map.h"
 
 #include "../tik.h"
-#include "world/area/tik/tik_18/map.xml.h"
+#include "mapfs/w_tik_18_shape.h"
+#include "mapfs/w_tik_18_hit.h"
+#include "map.xml.h"
 
 enum {
     NPC_DarkTroopa_01       = 0,

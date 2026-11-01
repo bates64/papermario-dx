@@ -1,11 +1,13 @@
 #include "isk_03.h"
+#include "world/area/isk/isk_02.h"
+#include "world/area/isk/isk_04.h"
 
 b32 CamAdjustReady = false;
 
 s32 adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    if (gGameStatusPtr->entryID == isk_03_ENTRY_0) {
+    if (gGameStatusPtr->entryID == $SarcophagusHall1Upper.index) {
         if (!CamAdjustReady) {
             if (!(gPlayerStatus.pos.y > 0.0f)) {
                 CamAdjustReady = true;
@@ -29,9 +31,9 @@ API_CALLABLE(SetupLandingCamAdjust) {
     return ApiStatus_DONE2;
 }
 
-EvtScript EVS_ExitWalk_isk_02_1 = EVT_EXIT_WALK(40, isk_03_ENTRY_0, "isk_02", isk_02_ENTRY_1);
-EvtScript EVS_ExitWalk_isk_02_2 = EVT_EXIT_WALK(40, isk_03_ENTRY_1, "isk_02", isk_02_ENTRY_2);
-EvtScript EVS_ExitWalk_isk_04_0 = EVT_EXIT_WALK(40, isk_03_ENTRY_2, "isk_04", isk_04_ENTRY_0);
+EvtScript EVS_ExitWalk_isk_02_1 = EVT_EXIT_WALK(40, $SarcophagusHall1Upper, $isk_02.SandDrainage1Upper);
+EvtScript EVS_ExitWalk_isk_02_2 = EVT_EXIT_WALK(40, $SarcophagusHall1Lower, $isk_02.SandDrainage1Lower);
+EvtScript EVS_ExitWalk_isk_04_0 = EVT_EXIT_WALK(40, $DescendingStairs1, $isk_04.SandDrainage1);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_isk_02_1, TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)

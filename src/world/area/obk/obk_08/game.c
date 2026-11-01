@@ -305,7 +305,7 @@ EvtScript EVS_Scene_BoosUnleashed = {
             Call(SetNpcJumpscale, NPC_DummyBoo, 2.0)
             Call(NpcJump0, NPC_DummyBoo, 0, 0, 0, 20)
             Call(SetNpcPos, NPC_DummyBoo, NPC_DISPOSE_LOCATION)
-            Call(MakeItemEntity, ITEM_BOO_RECORD, 0, 0, -20, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OBK08_Item_Record)
+            Call(MakeMarkerEntity, $Item_BooRecord_2)
             Wait(20)
             Call(GetNpcPos, NPC_LeaderBoo, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

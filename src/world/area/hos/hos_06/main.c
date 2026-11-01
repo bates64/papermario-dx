@@ -1,4 +1,5 @@
 #include "hos_06.h"
+#include "world/area/hos/hos_00.h"
 
 EvtScript EVS_Animate_MysticPyramid = {
     Thread
@@ -20,7 +21,7 @@ EvtScript EVS_Animate_MysticPyramid = {
     End
 };
 
-EvtScript EVS_ExitWalk_hos_00_2 = EVT_EXIT_WALK(60, hos_06_ENTRY_0, "hos_00", hos_00_ENTRY_2);
+EvtScript EVS_ExitWalk_hos_00_2 = EVT_EXIT_WALK(60, $ShootingStarPath, $hos_00.MerluvleesHouse);
 
 EvtScript EVS_BindExitTriggers = {
     BindTrigger(EVS_ExitWalk_hos_00_2, TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)

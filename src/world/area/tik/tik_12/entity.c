@@ -20,12 +20,10 @@ EvtScript EVS_SmashBlockB = {
 EvtScript EVS_MakeEntities = {
     EVT_MAKE_SUPER_BLOCK(240, 0, -40, 0)
     IfEq(GF_TIK12_Hammer3BlockA, false)
-        Call(MakeEntity, Entity_Hammer3Block, 140, -135, 55, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_SmashBlockA)
+        Call(MakeMarkerEntity, $Hammer3Block_1)
     EndIf
     IfEq(GF_TIK12_Hammer3BlockB, false)
-        Call(MakeEntity, Entity_Hammer3Block, 140, -135, 105, 0, MAKE_ENTITY_END)
-        Call(AssignScript, EVS_SmashBlockB)
+        Call(MakeMarkerEntity, $Hammer3Block_2)
     EndIf
     Return
     End
